@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -42,6 +42,8 @@ Partial Class frmMain
         Me.mnuMainHelpWiki = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainHelpForumEng = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainHelpForumGer = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.mnuMainHelpBugTracker = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainHelpSeparator0 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuMainHelpVersions = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainHelpUpdate = New System.Windows.Forms.ToolStripMenuItem()
@@ -752,6 +754,7 @@ Partial Class frmMain
         Me.pbAudioChannels = New System.Windows.Forms.PictureBox()
         Me.pbStudio = New System.Windows.Forms.PictureBox()
         Me.lblStudio = New System.Windows.Forms.Label()
+        Me.pbVideoChannels = New System.Windows.Forms.PictureBox()
         Me.pbPosterCache = New System.Windows.Forms.PictureBox()
         Me.pbFanartSmallCache = New System.Windows.Forms.PictureBox()
         Me.pbLandscapeCache = New System.Windows.Forms.PictureBox()
@@ -827,7 +830,8 @@ Partial Class frmMain
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrRunTasks = New System.Windows.Forms.Timer(Me.components)
-        Me.pbVideoChannels = New System.Windows.Forms.PictureBox()
+        Me.mnuMainFileProfile = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.StatusStrip.SuspendLayout()
         Me.mnuMain.SuspendLayout()
         CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1081,6 +1085,7 @@ Partial Class frmMain
         CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbAudioChannels, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbVideoChannels, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1095,7 +1100,6 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.SuspendLayout()
         CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoadSettings.SuspendLayout()
-        CType(Me.pbVideoChannels, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'BottomToolStripPanel
@@ -1136,7 +1140,7 @@ Partial Class frmMain
         '
         'mnuMainFile
         '
-        Me.mnuMainFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainFileExit})
+        Me.mnuMainFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainFileProfile, Me.ToolStripSeparator5, Me.mnuMainFileExit})
         Me.mnuMainFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.mnuMainFile.Name = "mnuMainFile"
         Me.mnuMainFile.Size = New System.Drawing.Size(37, 20)
@@ -1146,7 +1150,7 @@ Partial Class frmMain
         '
         Me.mnuMainFileExit.Image = CType(resources.GetObject("mnuMainFileExit.Image"), System.Drawing.Image)
         Me.mnuMainFileExit.Name = "mnuMainFileExit"
-        Me.mnuMainFileExit.Size = New System.Drawing.Size(92, 22)
+        Me.mnuMainFileExit.Size = New System.Drawing.Size(152, 22)
         Me.mnuMainFileExit.Text = "E&xit"
         '
         'mnuMainEdit
@@ -1161,12 +1165,12 @@ Partial Class frmMain
         '
         Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"), System.Drawing.Image)
         Me.mnuMainEditSettings.Name = "mnuMainEditSettings"
-        Me.mnuMainEditSettings.Size = New System.Drawing.Size(125, 22)
+        Me.mnuMainEditSettings.Size = New System.Drawing.Size(152, 22)
         Me.mnuMainEditSettings.Text = "&Settings..."
         '
         'mnuMainHelp
         '
-        Me.mnuMainHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainHelpWiki, Me.mnuMainHelpForumEng, Me.mnuMainHelpForumGer, Me.mnuMainHelpSeparator0, Me.mnuMainHelpVersions, Me.mnuMainHelpUpdate, Me.mnuMainHelpSeparator1, Me.mnuMainHelpAbout})
+        Me.mnuMainHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainHelpWiki, Me.mnuMainHelpForumEng, Me.mnuMainHelpForumGer, Me.ToolStripSeparator1, Me.mnuMainHelpBugTracker, Me.mnuMainHelpSeparator0, Me.mnuMainHelpVersions, Me.mnuMainHelpUpdate, Me.mnuMainHelpSeparator1, Me.mnuMainHelpAbout})
         Me.mnuMainHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.mnuMainHelp.Name = "mnuMainHelp"
         Me.mnuMainHelp.Size = New System.Drawing.Size(43, 20)
@@ -1193,6 +1197,18 @@ Partial Class frmMain
         Me.mnuMainHelpForumGer.Name = "mnuMainHelpForumGer"
         Me.mnuMainHelpForumGer.Size = New System.Drawing.Size(185, 22)
         Me.mnuMainHelpForumGer.Text = "German Forum"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(182, 6)
+        '
+        'mnuMainHelpBugTracker
+        '
+        Me.mnuMainHelpBugTracker.Image = Global.Ember_Media_Manager.My.Resources.Resources.bug
+        Me.mnuMainHelpBugTracker.Name = "mnuMainHelpBugTracker"
+        Me.mnuMainHelpBugTracker.Size = New System.Drawing.Size(185, 22)
+        Me.mnuMainHelpBugTracker.Text = "Bug Tracker"
         '
         'mnuMainHelpSeparator0
         '
@@ -1490,14 +1506,16 @@ Partial Class frmMain
         '
         'mnuMainDonatePayPal
         '
+        Me.mnuMainDonatePayPal.Image = Global.Ember_Media_Manager.My.Resources.Resources.paypal
         Me.mnuMainDonatePayPal.Name = "mnuMainDonatePayPal"
-        Me.mnuMainDonatePayPal.Size = New System.Drawing.Size(114, 22)
+        Me.mnuMainDonatePayPal.Size = New System.Drawing.Size(152, 22)
         Me.mnuMainDonatePayPal.Text = "PayPal"
         '
         'mnuMainDonatePatreon
         '
+        Me.mnuMainDonatePatreon.Image = Global.Ember_Media_Manager.My.Resources.Resources.patreon
         Me.mnuMainDonatePatreon.Name = "mnuMainDonatePatreon"
-        Me.mnuMainDonatePatreon.Size = New System.Drawing.Size(114, 22)
+        Me.mnuMainDonatePatreon.Size = New System.Drawing.Size(152, 22)
         Me.mnuMainDonatePatreon.Text = "Patreon"
         '
         'mnuMainError
@@ -3005,8 +3023,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = False
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -3864,8 +3882,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = False
         Me.dgvMovieSets.AllowUserToDeleteRows = False
         Me.dgvMovieSets.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4075,8 +4093,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4390,8 +4408,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4600,8 +4618,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -9191,6 +9209,17 @@ Partial Class frmMain
         Me.lblStudio.TextAlign = System.Drawing.ContentAlignment.TopRight
         Me.lblStudio.UseMnemonic = False
         '
+        'pbVideoChannels
+        '
+        Me.pbVideoChannels.BackColor = System.Drawing.Color.Transparent
+        Me.pbVideoChannels.Location = New System.Drawing.Point(0, 20)
+        Me.pbVideoChannels.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbVideoChannels.Name = "pbVideoChannels"
+        Me.pbVideoChannels.Size = New System.Drawing.Size(60, 40)
+        Me.pbVideoChannels.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.pbVideoChannels.TabIndex = 33
+        Me.pbVideoChannels.TabStop = False
+        '
         'pbPosterCache
         '
         Me.pbPosterCache.Location = New System.Drawing.Point(740, 130)
@@ -9724,16 +9753,17 @@ Partial Class frmMain
         'tmrRunTasks
         '
         '
-        'pbVideoChannels
+        'mnuMainFileProfile
         '
-        Me.pbVideoChannels.BackColor = System.Drawing.Color.Transparent
-        Me.pbVideoChannels.Location = New System.Drawing.Point(0, 20)
-        Me.pbVideoChannels.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbVideoChannels.Name = "pbVideoChannels"
-        Me.pbVideoChannels.Size = New System.Drawing.Size(60, 40)
-        Me.pbVideoChannels.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
-        Me.pbVideoChannels.TabIndex = 33
-        Me.pbVideoChannels.TabStop = False
+        Me.mnuMainFileProfile.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
+        Me.mnuMainFileProfile.Name = "mnuMainFileProfile"
+        Me.mnuMainFileProfile.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMainFileProfile.Text = "Select Profile..."
+        '
+        'ToolStripSeparator5
+        '
+        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(149, 6)
         '
         'frmMain
         '
@@ -10154,6 +10184,7 @@ Partial Class frmMain
         CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbAudioChannels, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbVideoChannels, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).EndInit()
@@ -10170,7 +10201,6 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.ResumeLayout(False)
         CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoadSettings.ResumeLayout(False)
-        CType(Me.pbVideoChannels, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout
 
@@ -10975,4 +11005,8 @@ End Sub
     Friend WithEvents mnuMainDonatePayPal As ToolStripMenuItem
     Friend WithEvents mnuMainDonatePatreon As ToolStripMenuItem
     Friend WithEvents pbVideoChannels As PictureBox
+    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents mnuMainHelpBugTracker As ToolStripMenuItem
+    Friend WithEvents mnuMainFileProfile As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
 End Class

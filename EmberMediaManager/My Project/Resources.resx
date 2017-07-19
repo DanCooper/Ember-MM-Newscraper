@@ -149,6 +149,9 @@
   <data name="hasSubtitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasSubtitle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="colRating" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\colRating.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="urlYouTube" xml:space="preserve">
     <value>http://www.youtube.com/</value>
   </data>
@@ -164,12 +167,12 @@
   <data name="hasTrailer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasTrailer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="de" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Countries\de.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="urlXBMC" xml:space="preserve">
     <value>http://www.xbmc.org/</value>
     <comment>XBMC is a free and open source media player application</comment>
-  </data>
-  <data name="menuAdd" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\menuAdd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="hasSet" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasSet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -180,6 +183,9 @@
   <data name="MovieListTableHeader" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MovieListTableHeader.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="MediaListLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MediaListLogo.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="en" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Countries\en.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -188,6 +194,9 @@
   </data>
   <data name="imdb" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\imdb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="hasClearLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\hasClearLogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="urlEmberWiki" xml:space="preserve">
     <value>http://wiki.embermediamanager.org</value>
@@ -211,6 +220,9 @@
   <data name="desc" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\desc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="star" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="urlMoviePostersDb" xml:space="preserve">
     <value>http://www.moviepostersdb.com/</value>
   </data>
@@ -221,7 +233,7 @@
     <value>..\Resources\modules.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="urlEmberMediaManager" xml:space="preserve">
-    <value>http://www.EmberMediaManager.org/</value>
+    <value>http://www.embermediamanager.org/</value>
     <comment>Ember Media Manager - Simply the best media manager :)</comment>
   </data>
   <data name="hasMeta" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -235,6 +247,9 @@
   </data>
   <data name="languages" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\languages.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Play_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Play_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="hasCharacterArt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasCharacterArt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -254,12 +269,15 @@
   <data name="EmberSplashScreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\EmberSplashScreen.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="urlEmberBugTracker" xml:space="preserve">
+    <value>http://bugs.embermediamanager.org</value>
+  </data>
   <data name="urlIMPAwards" xml:space="preserve">
     <value>http://www.impawards.com/</value>
     <comment>Internet Movie Poster Awards - Featuring one of the largest collections of movie poster images on the web.</comment>
   </data>
-  <data name="MovieListTableCol" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MovieListTableCol.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="heart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\heart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="urlFfmpeg" xml:space="preserve">
     <value>http://www.ffmpeg.org/</value>
@@ -271,8 +289,8 @@
   <data name="MovieListTableRowEnd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MovieListTableRowEnd.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="de" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\Countries\de.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="menuAdd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\menuAdd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="invalid" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\invalid.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -280,14 +298,8 @@
   <data name="hasLandscape" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\haslandscape.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="MovieListFooter" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MovieListFooter.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="hasFanart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasFanart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="hasActorThumb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\hasActorThumb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="urlTheMovieDb" xml:space="preserve">
     <value>http://www.themoviedb.org/</value>
@@ -302,8 +314,8 @@
   <data name="hasExtrathumb" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasExtrathumb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="MediaListLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MediaListLogo.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="bug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bug.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MovieListHeader" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MovieListHeader.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
@@ -321,14 +333,20 @@
   <data name="tvtunes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tvtunes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="preview" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\preview.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="hasNfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasNfo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Play_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Play_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MovieListTableCol" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MovieListTableCol.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="tvep_Default" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tvep-Default.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="colUserRating" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\colUserRating.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="haswatched" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\haswatched.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -336,8 +354,11 @@
   <data name="hasLanguage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\haslanguage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="hasClearLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\hasClearLogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="paypal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\paypal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="hasActorThumb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\hasActorThumb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="actor_silhouette" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\actor_silhouette.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -361,19 +382,10 @@
   <data name="hasDiscArt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasDiscArt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="star" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\star.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MovieListFooter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MovieListFooter.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="preview" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\preview.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="heart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\heart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="colRating" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\colRating.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="colUserRating" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\colUserRating.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="patreon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\patreon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

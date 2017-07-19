@@ -28,6 +28,7 @@ Imports NLog
 Public Class Settings
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private Shared _XMLSettings As New clsXMLSettings
@@ -161,6 +162,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieScraperCastWithImgOnly = value
+        End Set
+    End Property
+
+    Public Property TVScraperCastWithImgOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperCastWithImgOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperCastWithImgOnly = value
         End Set
     End Property
 
@@ -7290,6 +7300,7 @@ Public Class Settings
         TVMetadataPerFileType = New List(Of MetadataPerType)
         TVMultiPartMatching = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
         TVScanOrderModify = False
+        TVScraperCastWithImgOnly = False
         TVScraperCleanFields = False
         TVScraperDurationRuntimeFormat = "<m>"
         TVScraperEpisodeActors = True
