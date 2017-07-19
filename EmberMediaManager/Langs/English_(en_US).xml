@@ -1190,7 +1190,7 @@
   <string id="1098">DiscArt</string>
   <string id="1099">Get Missing Episodes</string>
   <string id="1100">Unmark all items in the list</string>
-  <string id="1101"></string>
+  <string id="1101">Select profile</string>
   <string id="1102">No ClearArts found</string>
   <string id="1103">No ClearLogos found</string>
   <string id="1104">No DiscArts found</string>
@@ -1201,7 +1201,7 @@
   <string id="1109">Select ClearArt</string>
   <string id="1110">Select ClearLogo</string>
   <string id="1111">Select DiscArt</string>
-  <string id="1112"></string>
+  <string id="1112">Do you want to restart Ember Media Manager and load the selected profile?</string>
   <string id="1113"></string>
   <string id="1114"></string>
   <string id="1115"></string>

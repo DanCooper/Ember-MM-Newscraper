@@ -9935,7 +9935,7 @@ Public Class frmMain
                 Master.DB.Close_MyVideos()
             End If
 
-            Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
+            Master.eSettings.Version = Master.Version
 
             If Not Master.isCL AndAlso Not WindowState = FormWindowState.Minimized Then
                 'disable filters to proper save TV Show/Season SplitterDistance
