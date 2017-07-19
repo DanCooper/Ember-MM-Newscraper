@@ -34,15 +34,48 @@ Public Class dlgProfileSelect
 
 #Region "Properties"
 
-    Public ReadOnly Property SelectedProfile As String
+    Public ReadOnly Property SelectedProfileFullPath As String
         Get
-            Return _selectedprofile
+            If Not String.IsNullOrEmpty(_selectedprofile) Then
+                Return Path.Combine(Master.eProfiles.ProfilesFullPath, _selectedprofile)
+            Else
+                Return String.Empty
+            End If
         End Get
     End Property
 
 #End Region
 
 #Region "Methods"
+
+    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
+        If clbDirectories.CheckedItems.Count > 0 Then
+            Master.eProfiles.Autoload = chkProfileAuto.Checked
+            Master.eProfiles.DefaultProfile = clbDirectories.CheckedItems(0).ToString
+            Master.eProfiles.SaveSettings()
+        End If
+    End Sub
+
+    Private Sub clbDirectories_SelectedIndexChanged(sender As Object, e As EventArgs) Handles clbDirectories.SelectedIndexChanged
+        _selectedprofile = clbDirectories.SelectedItem.ToString
+    End Sub
+
+    Private Sub clbDirectories_ItemCheck(sender As Object, e As EventArgs) Handles clbDirectories.ItemCheck
+        RemoveHandler clbDirectories.ItemCheck, AddressOf clbDirectories_ItemCheck
+        ' Cycle through every item and check every other.
+        Dim iCurrent As Integer = DirectCast(sender, CheckedListBox).SelectedIndex
+
+        ' Set flag to true to know when this code is being executed. Used in the ItemCheck
+        ' event handler.
+        'insideCheckEveryOther = True
+
+        For i = 0 To clbDirectories.Items.Count - 1
+            clbDirectories.SetItemChecked(i, i = iCurrent)
+        Next
+
+        'insideCheckEveryOther = False
+        AddHandler clbDirectories.ItemCheck, AddressOf clbDirectories_ItemCheck
+    End Sub
 
     Private Sub dlgProfiles_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetUp()
@@ -85,41 +118,11 @@ Public Class dlgProfileSelect
         Else
             clbDirectories.SelectedItem = "Default"
         End If
+        chkProfileAuto.Checked = Master.eProfiles.Autoload
     End Sub
 
     Private Sub SetUp()
-        'Can't use eLang, settings with language info is not loaded at this time
-
-        'btnOK.Text = Master.eLang.GetString(179, "OK")
-        'btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-    End Sub
-
-    Private Sub clbDirectories_SelectedIndexChanged(sender As Object, e As EventArgs) Handles clbDirectories.SelectedIndexChanged
-        _selectedprofile = clbDirectories.SelectedItem.ToString
-    End Sub
-
-    Private Sub clbDirectories_ItemCheck(sender As Object, e As EventArgs) Handles clbDirectories.ItemCheck
-        RemoveHandler clbDirectories.ItemCheck, AddressOf clbDirectories_ItemCheck
-        ' Cycle through every item and check every other.
-        Dim iCurrent As Integer = DirectCast(sender, CheckedListBox).SelectedIndex
-
-        ' Set flag to true to know when this code is being executed. Used in the ItemCheck
-        ' event handler.
-        'insideCheckEveryOther = True
-
-        For i = 0 To clbDirectories.Items.Count - 1
-            clbDirectories.SetItemChecked(i, i = iCurrent)
-        Next
-
-        'insideCheckEveryOther = False
-        AddHandler clbDirectories.ItemCheck, AddressOf clbDirectories_ItemCheck
-    End Sub
-
-    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
-        If clbDirectories.CheckedItems.Count > 0 Then
-            Master.eProfiles.DefaultProfile = clbDirectories.CheckedItems(0).ToString
-            Master.eProfiles.SaveSettings()
-        End If
+        'Can't use eLang, settings with language info is not loaded at this point
     End Sub
 
 #End Region 'Methods

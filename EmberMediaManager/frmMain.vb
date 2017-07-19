@@ -9978,7 +9978,7 @@ Public Class frmMain
         Visible = False
 
         If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
-            TrayIcon = New System.Windows.Forms.NotifyIcon(components)
+            TrayIcon = New NotifyIcon(components)
             TrayIcon.Icon = Icon
             TrayIcon.ContextMenuStrip = cmnuTray
             TrayIcon.Text = "Ember Media Manager"
@@ -10726,6 +10726,59 @@ Public Class frmMain
                     CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
             End Select
         End If
+    End Sub
+
+    Private Sub mnuMainFileProfile_Click(sender As Object, e As EventArgs) Handles mnuMainFileProfile.Click
+        Using dProfileSelect As New dlgProfileSelect
+            Select Case dProfileSelect.ShowDialog
+                'TODO: add restart with commandline
+                '    Case DialogResult.OK
+                '        If Not Master.SettingsPath = dProfileSelect.SelectedProfileFullPath Then
+                '            If MessageBox.Show(Master.eLang.GetString(1112, "Do you want to restart Ember Media Manager and load the selected profile?"),
+                '                               Master.eLang.GetString(298, "Restart Ember Media Manager?"),
+                '                               MessageBoxButtons.YesNo,
+                '                               MessageBoxIcon.Question) = DialogResult.Yes Then
+                '                Application.Restart()
+                '            End If
+                '        End If
+            End Select
+        End Using
+    End Sub
+
+    Private Sub mnuMainToolsReloadMovies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsReloadMovies.Click, cmnuTrayToolsReloadMovies.Click
+        ReloadAll_Movie()
+    End Sub
+
+    Private Sub mnuMainToolsReloadMovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsReloadMovieSets.Click
+        ReloadAll_MovieSet()
+    End Sub
+
+    Private Sub mnuMainToolsReloadTVShows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsReloadTVShows.Click
+        ReloadAll_TVShow(True)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentMovieAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieAll.Click
+        RewriteAll_Movie(True)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentMovieNFO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieNFO.Click
+        RewriteAll_Movie(False)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentMovieSetAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieSetAll.Click
+        RewriteAll_MovieSet(True)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentMovieSetNFO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieSetNFO.Click
+        RewriteAll_MovieSet(False)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentTVShowAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentTVShowAll.Click
+        RewriteAll_TVShow(True)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentTVShowNFO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentTVShowNFO.Click
+        RewriteAll_TVShow(False)
     End Sub
 
     Private Sub mnuTagsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTagsAdd.Click
@@ -14767,42 +14820,6 @@ Public Class frmMain
             SetControlsEnabled(True)
         End If
     End Sub
-
-    Private Sub mnuMainToolsReloadMovies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsReloadMovies.Click, cmnuTrayToolsReloadMovies.Click
-        ReloadAll_Movie()
-    End Sub
-
-    Private Sub mnuMainToolsReloadMovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsReloadMovieSets.Click
-        ReloadAll_MovieSet()
-    End Sub
-
-    Private Sub mnuMainToolsReloadTVShows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsReloadTVShows.Click
-        ReloadAll_TVShow(True)
-    End Sub
-
-    Private Sub mnuMainToolsRewriteContentMovieAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieAll.Click
-        RewriteAll_Movie(True)
-    End Sub
-
-    Private Sub mnuMainToolsRewriteContentMovieNFO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieNFO.Click
-        RewriteAll_Movie(False)
-    End Sub
-
-    Private Sub mnuMainToolsRewriteContentMovieSetAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieSetAll.Click
-        RewriteAll_MovieSet(True)
-    End Sub
-
-    Private Sub mnuMainToolsRewriteContentMovieSetNFO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieSetNFO.Click
-        RewriteAll_MovieSet(False)
-    End Sub
-
-    Private Sub mnuMainToolsRewriteContentTVShowAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentTVShowAll.Click
-        RewriteAll_TVShow(True)
-    End Sub
-
-    Private Sub mnuMainToolsRewriteContentTVShowNFO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentTVShowNFO.Click
-        RewriteAll_TVShow(False)
-    End Sub
     ''' <summary>
     ''' Adds a new single Movie row with informations from DB
     ''' </summary>
@@ -16834,6 +16851,10 @@ Public Class frmMain
         Dim strScrapeTVShows As String = Master.eLang.GetString(1234, "Scrape TV Shows")
         mnuScrapeTVShows.Text = strScrapeTVShows
         cmnuTrayScrapeTVShows.Text = strScrapeTVShows
+
+        'Select Profile
+        Dim strSelectProfile As String = Master.eLang.GetString(1101, "Select profile")
+        mnuMainFileProfile.Text = String.Concat(strSelectProfile, "...")
 
         'Set
         Dim strSet As String = Master.eLang.GetString(29, "Set")

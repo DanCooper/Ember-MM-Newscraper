@@ -20,7 +20,6 @@
 
 Imports NLog
 Imports System.IO
-Imports System.Xml
 Imports System.Xml.Serialization
 
 
@@ -32,7 +31,8 @@ Public Class Profiles
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared strProfilesPath As String = Path.Combine(Functions.AppPath, "Profiles\profiles.xml")
+    Private _strProfilesFullPath As String = Path.Combine(Functions.AppPath, "Profiles")
+    Public Shared _strProfileSettingsPath As String = Path.Combine(Functions.AppPath, "Profiles\profiles.xml")
 
 #End Region 'Fields
 
@@ -45,6 +45,24 @@ Public Class Profiles
     Public ReadOnly Property DefaultProfileSpecified() As Boolean
         Get
             Return Not String.IsNullOrEmpty(DefaultProfile)
+        End Get
+    End Property
+
+    <XmlIgnore>
+    Public ReadOnly Property DefaultProfileFullPath() As String
+        Get
+            If DefaultProfileSpecified Then
+                Return Path.Combine(_strProfilesFullPath, DefaultProfile)
+            Else
+                Return String.Empty
+            End If
+        End Get
+    End Property
+
+    <XmlIgnore>
+    Public ReadOnly Property ProfilesFullPath() As String
+        Get
+            Return _strProfilesFullPath
         End Get
     End Property
 
@@ -66,9 +84,9 @@ Public Class Profiles
     Public Sub LoadSettings()
         Autoload = False
         DefaultProfile = String.Empty
-        If File.Exists(strProfilesPath) Then
+        If File.Exists(_strProfileSettingsPath) Then
             Dim xmlSer As XmlSerializer = Nothing
-            Using xmlSR As StreamReader = New StreamReader(strProfilesPath)
+            Using xmlSR As StreamReader = New StreamReader(_strProfileSettingsPath)
                 xmlSer = New XmlSerializer(GetType(Profiles))
                 Dim nSettings = DirectCast(xmlSer.Deserialize(xmlSR), Profiles)
                 Autoload = nSettings.Autoload
@@ -78,16 +96,16 @@ Public Class Profiles
     End Sub
 
     Public Sub SaveSettings()
-        If Not File.Exists(strProfilesPath) OrElse (Not CBool(File.GetAttributes(strProfilesPath) And FileAttributes.ReadOnly)) Then
-            If File.Exists(strProfilesPath) Then
-                Dim fAtt As FileAttributes = File.GetAttributes(strProfilesPath)
+        If Not File.Exists(_strProfileSettingsPath) OrElse (Not CBool(File.GetAttributes(_strProfileSettingsPath) And FileAttributes.ReadOnly)) Then
+            If File.Exists(_strProfileSettingsPath) Then
+                Dim fAtt As FileAttributes = File.GetAttributes(_strProfileSettingsPath)
                 Try
-                    File.SetAttributes(strProfilesPath, FileAttributes.Normal)
+                    File.SetAttributes(_strProfileSettingsPath, FileAttributes.Normal)
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
-            Using xmlSW As New StreamWriter(strProfilesPath)
+            Using xmlSW As New StreamWriter(_strProfileSettingsPath)
                 Dim xmlSer As New XmlSerializer(GetType(Profiles))
                 xmlSer.Serialize(xmlSW, Me)
             End Using

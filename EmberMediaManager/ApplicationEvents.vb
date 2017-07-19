@@ -131,14 +131,14 @@ Namespace My
                     Master.SettingsPath = Path.Combine(Functions.AppPath, "Profiles\Default")
                 End If
             ElseIf Master.eProfiles.DefaultProfileSpecified AndAlso
-                Directory.Exists(Path.Combine(Functions.AppPath, String.Concat("Profiles\", Master.eProfiles.DefaultProfile))) AndAlso
+                Directory.Exists(Master.eProfiles.DefaultProfileFullPath) AndAlso
                 Master.eProfiles.Autoload Then
-                Master.SettingsPath = Path.Combine(Functions.AppPath, String.Concat("Profiles\", Master.eProfiles.DefaultProfile))
+                Master.SettingsPath = Master.eProfiles.DefaultProfileFullPath
             Else
                 'show Profile Select dialog
                 Using dProfileSelect As New dlgProfileSelect
-                    If dProfileSelect.ShowDialog() = DialogResult.OK AndAlso Not String.IsNullOrEmpty(dProfileSelect.SelectedProfile) Then
-                        Master.SettingsPath = Path.Combine(Functions.AppPath, String.Concat("Profiles\", dProfileSelect.SelectedProfile))
+                    If dProfileSelect.ShowDialog() = DialogResult.OK AndAlso Not String.IsNullOrEmpty(dProfileSelect.SelectedProfileFullPath) Then
+                        Master.SettingsPath = dProfileSelect.SelectedProfileFullPath
                     Else
                         logger.Info("====Ember Media Manager exiting====")
                         Environment.Exit(0)
