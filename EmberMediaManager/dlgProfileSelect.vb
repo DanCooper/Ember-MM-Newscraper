@@ -62,18 +62,12 @@ Public Class dlgProfileSelect
 
     Private Sub clbDirectories_ItemCheck(sender As Object, e As EventArgs) Handles clbDirectories.ItemCheck
         RemoveHandler clbDirectories.ItemCheck, AddressOf clbDirectories_ItemCheck
-        ' Cycle through every item and check every other.
+
         Dim iCurrent As Integer = DirectCast(sender, CheckedListBox).SelectedIndex
-
-        ' Set flag to true to know when this code is being executed. Used in the ItemCheck
-        ' event handler.
-        'insideCheckEveryOther = True
-
         For i = 0 To clbDirectories.Items.Count - 1
             clbDirectories.SetItemChecked(i, i = iCurrent)
         Next
 
-        'insideCheckEveryOther = False
         AddHandler clbDirectories.ItemCheck, AddressOf clbDirectories_ItemCheck
     End Sub
 
