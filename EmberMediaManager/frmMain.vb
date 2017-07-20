@@ -17484,8 +17484,12 @@ Public Class frmMain
                 pnlSearchTVShows.Visible = True
 
                 'fixing TV-Splitter issues
-                scTV.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVShow
-                scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVSeason
+                Try
+                    scTV.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVShow
+                    scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVSeason
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
                 AddHandler scTV.SplitterMoved, AddressOf TVSplitterMoved
                 AddHandler scTVSeasonsEpisodes.SplitterMoved, AddressOf TVSplitterMoved
 
