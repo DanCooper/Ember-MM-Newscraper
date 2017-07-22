@@ -863,9 +863,7 @@ Public Class Scanner
 
                 If Not cEpisode.TVEpisode.TitleSpecified Then
                     'nothing usable in the title after filters have runs
-                    cEpisode.TVEpisode.Title = String.Format("{0} S{1}E{2}{3}", cEpisode.TVShow.Title, cEpisode.TVEpisode.Season.ToString.PadLeft(2, Convert.ToChar("0")),
-                                                       cEpisode.TVEpisode.Episode.ToString.PadLeft(2, Convert.ToChar("0")),
-                                                       If(cEpisode.TVEpisode.SubEpisodeSpecified, String.Concat(".", cEpisode.TVEpisode.SubEpisode), String.Empty))
+                    cEpisode.TVEpisode.Title = StringUtils.BuildGenericTitle_TVEpisode(cEpisode)
                 End If
             End If
 

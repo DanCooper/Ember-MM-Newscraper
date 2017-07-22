@@ -104,6 +104,15 @@ Public Class StringUtils
         Return name.Trim
     End Function
 
+    Public Shared Function BuildGenericTitle_TVEpisode(ByVal tDBElement As Database.DBElement) As String
+        If tDBElement Is Nothing OrElse Not tDBElement.ContentType = Enums.ContentType.TVEpisode Then Return String.Empty
+        Return String.Format("{0} S{1}E{2}{3}",
+                             tDBElement.TVShow.Title,
+                             tDBElement.TVEpisode.Season.ToString.PadLeft(2, Convert.ToChar("0")),
+                             tDBElement.TVEpisode.Episode.ToString.PadLeft(2, Convert.ToChar("0")),
+                             If(tDBElement.TVEpisode.SubEpisodeSpecified, String.Concat(".", tDBElement.TVEpisode.SubEpisode), String.Empty))
+    End Function
+
     Public Shared Function GenreFilter(ByRef aGenres As List(Of String), Optional ByVal addNewGenres As Boolean = True) As Boolean
         Dim nGernes As New List(Of String)
 

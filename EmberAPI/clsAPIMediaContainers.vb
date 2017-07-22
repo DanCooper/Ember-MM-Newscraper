@@ -287,7 +287,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_title)
+                Return Not String.IsNullOrEmpty(_title) AndAlso Not Regex.IsMatch(_title, "s\d{2}e\d{2}$", RegexOptions.IgnoreCase)
             End Get
         End Property
 
