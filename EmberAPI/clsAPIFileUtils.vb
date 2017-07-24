@@ -1055,8 +1055,8 @@ Namespace FileUtils
                 Case Enums.ModifierType.MainBanner
                     With Master.eSettings
                         If isVideoTS Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieBannerAD) Then FilenameList.Add(Path.Combine(basePath, "banner.jpg"))
                             If bForced OrElse (.MovieUseExtended AndAlso .MovieBannerExtended) Then FilenameList.Add(Path.Combine(basePath, "banner.jpg"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieBannerAD) Then FilenameList.Add(Path.Combine(basePath, "banner.jpg"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieBannerNMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(fileParPath).Name), ".banner.jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieBannerYAMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(fileParPath).FullName, Directory.GetParent(fileParPath).Name), ".banner.jpg"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieBannerExpertVTS) Then
@@ -1069,8 +1069,8 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieBannerAD) Then FilenameList.Add(Path.Combine(basePath, "banner.jpg"))
                             If bForced OrElse (.MovieUseExtended AndAlso .MovieBannerExtended) Then FilenameList.Add(Path.Combine(basePath, "banner.jpg"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieBannerAD) Then FilenameList.Add(Path.Combine(basePath, "banner.jpg"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieBannerNMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".banner.jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieBannerYAMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".banner.jpg"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieBannerExpertBDMV) Then
@@ -1083,9 +1083,9 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isSingle Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieBannerAD) Then FilenameList.Add(Path.Combine(fileParPath, "banner.jpg"))
                             If bForced OrElse (.MovieUseExtended AndAlso isVideoTSFile AndAlso .MovieBannerExtended) Then FilenameList.Add(Path.Combine(fileParPath, "banner.jpg"))
                             If bForced OrElse (.MovieUseExtended AndAlso Not isVideoTSFile AndAlso .MovieBannerExtended) Then FilenameList.Add(String.Concat(filePathStack, "-banner.jpg"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieBannerAD) Then FilenameList.Add(Path.Combine(fileParPath, "banner.jpg"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieBannerNMJ) Then FilenameList.Add(String.Concat(filePathStack, ".banner.jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieBannerYAMJ) Then FilenameList.Add(String.Concat(filePath, ".banner.jpg"))
                             If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS Then
@@ -1130,8 +1130,8 @@ Namespace FileUtils
                 Case Enums.ModifierType.MainClearArt
                     With Master.eSettings
                         If isVideoTS Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearArtAD) Then FilenameList.Add(Path.Combine(basePath, "clearart.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso .MovieClearArtExtended) Then FilenameList.Add(Path.Combine(basePath, "clearart.png"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearArtAD) Then FilenameList.Add(Path.Combine(basePath, "clearart.png"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieClearArtExpertVTS) Then
                                 For Each a In .MovieClearArtExpertVTS.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieUseBaseDirectoryExpertVTS Then
@@ -1142,8 +1142,8 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearArtAD) Then FilenameList.Add(Path.Combine(basePath, "clearart.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso .MovieClearArtExtended) Then FilenameList.Add(Path.Combine(basePath, "clearart.png"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearArtAD) Then FilenameList.Add(Path.Combine(basePath, "clearart.png"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieClearArtExpertBDMV) Then
                                 For Each a In .MovieClearArtExpertBDMV.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieUseBaseDirectoryExpertBDMV Then
@@ -1154,9 +1154,9 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isSingle Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearArtAD) Then FilenameList.Add(Path.Combine(fileParPath, "clearart.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso isVideoTSFile AndAlso .MovieClearArtExtended) Then FilenameList.Add(Path.Combine(fileParPath, "clearart.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso Not isVideoTSFile AndAlso .MovieClearArtExtended) Then FilenameList.Add(String.Concat(filePathStack, "-clearart.png"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearArtAD) Then FilenameList.Add(Path.Combine(fileParPath, "clearart.png"))
                             If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS Then
                                 For Each a In .MovieClearArtExpertVTS.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     FilenameList.Add(Path.Combine(fileParPath, a.Replace("<filename>", fileName)))
@@ -1197,8 +1197,8 @@ Namespace FileUtils
                 Case Enums.ModifierType.MainClearLogo
                     With Master.eSettings
                         If isVideoTS Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearLogoAD) Then FilenameList.Add(Path.Combine(basePath, "logo.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso .MovieClearLogoExtended) Then FilenameList.Add(Path.Combine(basePath, "clearlogo.png"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearLogoAD) Then FilenameList.Add(Path.Combine(basePath, "logo.png"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieClearLogoExpertVTS) Then
                                 For Each a In .MovieClearLogoExpertVTS.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieUseBaseDirectoryExpertVTS Then
@@ -1209,8 +1209,8 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearLogoAD) Then FilenameList.Add(Path.Combine(basePath, "logo.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso .MovieClearLogoExtended) Then FilenameList.Add(Path.Combine(basePath, "clearlogo.png"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearLogoAD) Then FilenameList.Add(Path.Combine(basePath, "logo.png"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieClearLogoExpertBDMV) Then
                                 For Each a In .MovieClearLogoExpertBDMV.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieUseBaseDirectoryExpertBDMV Then
@@ -1221,9 +1221,9 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isSingle Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearLogoAD) Then FilenameList.Add(Path.Combine(fileParPath, "logo.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso isVideoTSFile AndAlso .MovieClearLogoExtended) Then FilenameList.Add(Path.Combine(fileParPath, "clearlogo.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso Not isVideoTSFile AndAlso .MovieClearLogoExtended) Then FilenameList.Add(String.Concat(filePathStack, "-clearlogo.png"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieClearLogoAD) Then FilenameList.Add(Path.Combine(fileParPath, "logo.png"))
                             If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS Then
                                 For Each a In .MovieClearLogoExpertVTS.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     FilenameList.Add(Path.Combine(fileParPath, a.Replace("<filename>", fileName)))
@@ -1264,8 +1264,8 @@ Namespace FileUtils
                 Case Enums.ModifierType.MainDiscArt
                     With Master.eSettings
                         If isVideoTS Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieDiscArtAD) Then FilenameList.Add(Path.Combine(basePath, "disc.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso .MovieDiscArtExtended) Then FilenameList.Add(Path.Combine(basePath, "discart.png"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieDiscArtAD) Then FilenameList.Add(Path.Combine(basePath, "disc.png"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieDiscArtExpertVTS) Then
                                 For Each a In .MovieDiscArtExpertVTS.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieUseBaseDirectoryExpertVTS Then
@@ -1276,8 +1276,8 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieDiscArtAD) Then FilenameList.Add(Path.Combine(basePath, "disc.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso .MovieDiscArtExtended) Then FilenameList.Add(Path.Combine(basePath, "discart.png"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieDiscArtAD) Then FilenameList.Add(Path.Combine(basePath, "disc.png"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieDiscArtExpertBDMV) Then
                                 For Each a In .MovieDiscArtExpertBDMV.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieUseBaseDirectoryExpertBDMV Then
@@ -1288,9 +1288,9 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isSingle Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieDiscArtAD) Then FilenameList.Add(Path.Combine(fileParPath, "disc.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso isVideoTSFile AndAlso .MovieDiscArtExtended) Then FilenameList.Add(Path.Combine(fileParPath, "discart.png"))
                             If bForced OrElse (.MovieUseExtended AndAlso Not isVideoTSFile AndAlso .MovieDiscArtExtended) Then FilenameList.Add(String.Concat(filePathStack, "-discart.png"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieDiscArtAD) Then FilenameList.Add(Path.Combine(fileParPath, "disc.png"))
                             If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS Then
                                 For Each a In .MovieDiscArtExpertVTS.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     FilenameList.Add(Path.Combine(fileParPath, a.Replace("<filename>", fileName)))
@@ -1397,9 +1397,9 @@ Namespace FileUtils
                 Case Enums.ModifierType.MainFanart
                     With Master.eSettings
                         If isVideoTS Then
+                            If bForced OrElse (.MovieUseFrodo AndAlso .MovieFanartFrodo) Then FilenameList.Add(Path.Combine(basePath, "fanart.jpg"))
                             If bForced OrElse (.MovieUseBoxee AndAlso .MovieFanartBoxee) Then FilenameList.Add(Path.Combine(basePath, "fanart.jpg"))
                             If bForced OrElse (.MovieUseEden AndAlso .MovieFanartEden) Then FilenameList.Add(String.Concat(filePath, "-fanart.jpg"))
-                            If bForced OrElse (.MovieUseFrodo AndAlso .MovieFanartFrodo) Then FilenameList.Add(Path.Combine(basePath, "fanart.jpg"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieFanartNMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(fileParPath).Name), ".fanart.jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieFanartYAMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(fileParPath).FullName, Directory.GetParent(fileParPath).Name), ".fanart.jpg"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieFanartExpertVTS) Then
@@ -1412,8 +1412,8 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If bForced OrElse (.MovieUseEden AndAlso .MovieFanartEden) Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index-fanart.jpg"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieFanartFrodo) Then FilenameList.Add(Path.Combine(basePath, "fanart.jpg"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MovieFanartEden) Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index-fanart.jpg"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieFanartNMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".fanart.jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieFanartYAMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".fanart.jpg"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieFanartExpertBDMV) Then
@@ -1426,10 +1426,10 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isSingle Then
-                            If bForced OrElse (.MovieUseBoxee AndAlso .MovieFanartBoxee) Then FilenameList.Add(Path.Combine(fileParPath, "fanart.jpg"))
-                            If bForced OrElse (.MovieUseEden AndAlso .MovieFanartEden) Then FilenameList.Add(String.Concat(filePath, "-fanart.jpg"))
                             If bForced OrElse (.MovieUseFrodo AndAlso isVideoTSFile AndAlso .MovieFanartFrodo) Then FilenameList.Add(Path.Combine(fileParPath, "fanart.jpg"))
                             If bForced OrElse (.MovieUseFrodo AndAlso Not isVideoTSFile AndAlso .MovieFanartFrodo) Then FilenameList.Add(String.Concat(filePathStack, "-fanart.jpg"))
+                            If bForced OrElse (.MovieUseBoxee AndAlso .MovieFanartBoxee) Then FilenameList.Add(Path.Combine(fileParPath, "fanart.jpg"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MovieFanartEden) Then FilenameList.Add(String.Concat(filePath, "-fanart.jpg"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieFanartNMJ) Then FilenameList.Add(String.Concat(filePathStack, ".fanart.jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieFanartYAMJ) Then FilenameList.Add(String.Concat(filePath, ".fanart.jpg"))
                             If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS Then
@@ -1452,8 +1452,8 @@ Namespace FileUtils
                                 End If
                             End If
                         Else
-                            If bForced OrElse (.MovieUseEden AndAlso .MovieFanartEden) Then FilenameList.Add(String.Concat(filePath, "-fanart.jpg"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieFanartFrodo) Then FilenameList.Add(String.Concat(filePathStack, "-fanart.jpg"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MovieFanartEden) Then FilenameList.Add(String.Concat(filePath, "-fanart.jpg"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieFanartNMJ) Then FilenameList.Add(String.Concat(filePathStack, ".fanart.jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieFanartYAMJ) Then FilenameList.Add(String.Concat(filePath, ".fanart.jpg"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieFanartExpertMulti) Then
@@ -1475,8 +1475,8 @@ Namespace FileUtils
                 Case Enums.ModifierType.MainLandscape
                     With Master.eSettings
                         If isVideoTS Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(basePath, "landscape.jpg"))
                             If bForced OrElse (.MovieUseExtended AndAlso .MovieLandscapeExtended) Then FilenameList.Add(Path.Combine(basePath, "landscape.jpg"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(basePath, "landscape.jpg"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieLandscapeExpertVTS) Then
                                 For Each a In .MovieLandscapeExpertVTS.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieUseBaseDirectoryExpertVTS Then
@@ -1487,8 +1487,8 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If bForced OrElse (.MovieUseAD AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(basePath, "landscape.jpg"))
                             If bForced OrElse (.MovieUseExtended AndAlso .MovieLandscapeExtended) Then FilenameList.Add(Path.Combine(basePath, "landscape.jpg"))
+                            If bForced OrElse (.MovieUseAD AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(basePath, "landscape.jpg"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieLandscapeExpertBDMV) Then
                                 For Each a In .MovieLandscapeExpertBDMV.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieUseBaseDirectoryExpertBDMV Then
@@ -1499,10 +1499,10 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isSingle Then
-                            If bForced OrElse (.MovieUseAD AndAlso isVideoTSFile AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(fileParPath, "landscape.jpg"))
-                            If bForced OrElse (.MovieUseAD AndAlso Not isVideoTSFile AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(fileParPath, "landscape.jpg"))
                             If bForced OrElse (.MovieUseExtended AndAlso isVideoTSFile AndAlso .MovieLandscapeExtended) Then FilenameList.Add(Path.Combine(fileParPath, "landscape.jpg"))
                             If bForced OrElse (.MovieUseExtended AndAlso Not isVideoTSFile AndAlso .MovieLandscapeExtended) Then FilenameList.Add(String.Concat(filePathStack, "-landscape.jpg"))
+                            If bForced OrElse (.MovieUseAD AndAlso isVideoTSFile AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(fileParPath, "landscape.jpg"))
+                            If bForced OrElse (.MovieUseAD AndAlso Not isVideoTSFile AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(fileParPath, "landscape.jpg"))
                             If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS Then
                                 For Each a In .MovieLandscapeExpertVTS.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     FilenameList.Add(Path.Combine(fileParPath, a.Replace("<filename>", fileName)))
@@ -1543,10 +1543,10 @@ Namespace FileUtils
                 Case Enums.ModifierType.MainNFO
                     With Master.eSettings
                         If isVideoTS Then
-                            If bForced OrElse (.MovieUseBoxee AndAlso .MovieNFOBoxee) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
-                            If bForced OrElse (.MovieUseEden AndAlso .MovieNFOEden) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieNFOFrodo AndAlso .MovieXBMCProtectVTSBDMV) Then FilenameList.Add(Path.Combine(basePath, "movie.nfo"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieNFOFrodo AndAlso Not .MovieXBMCProtectVTSBDMV) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If bForced OrElse (.MovieUseBoxee AndAlso .MovieNFOBoxee) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MovieNFOEden) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieNFONMJ) Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".nfo"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieNFOYAMJ) Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".nfo"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieNFOExpertVTS) Then
@@ -1559,9 +1559,9 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If bForced OrElse (.MovieUseEden AndAlso .MovieNFOEden) Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieNFOFrodo AndAlso .MovieXBMCProtectVTSBDMV) Then FilenameList.Add(Path.Combine(basePath, "movie.nfo"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieNFOFrodo AndAlso Not .MovieXBMCProtectVTSBDMV) Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MovieNFOEden) Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieNFONMJ) Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".nfo"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieNFOYAMJ) Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".nfo"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieNFOExpertBDMV) Then
@@ -1574,11 +1574,11 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isSingle Then
+                            If bForced OrElse (.MovieUseFrodo AndAlso .MovieNFOFrodo AndAlso isVideoTSFile) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If bForced OrElse (.MovieUseFrodo AndAlso .MovieNFOFrodo AndAlso Not isVideoTSFile) Then FilenameList.Add(String.Concat(filePathStack, ".nfo"))
                             If bForced OrElse (.MovieUseBoxee AndAlso .MovieNFOBoxee AndAlso isVideoTSFile) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If bForced OrElse (.MovieUseBoxee AndAlso .MovieNFOBoxee AndAlso Not isVideoTSFile) Then FilenameList.Add(Path.Combine(fileParPath, "movie.nfo"))
                             If bForced OrElse (.MovieUseEden AndAlso .MovieNFOEden) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
-                            If bForced OrElse (.MovieUseFrodo AndAlso .MovieNFOFrodo AndAlso isVideoTSFile) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
-                            If bForced OrElse (.MovieUseFrodo AndAlso .MovieNFOFrodo AndAlso Not isVideoTSFile) Then FilenameList.Add(String.Concat(filePathStack, ".nfo"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieNFONMJ) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieNFOYAMJ) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS Then
@@ -1603,8 +1603,8 @@ Namespace FileUtils
                                 End If
                             End If
                         Else
-                            If bForced OrElse (.MovieUseEden AndAlso .MovieNFOEden) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieNFOFrodo) Then FilenameList.Add(String.Concat(filePathStack, ".nfo"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MovieNFOEden) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieNFONMJ) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieNFOYAMJ) Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieNFOExpertMulti) Then
@@ -1626,9 +1626,9 @@ Namespace FileUtils
                 Case Enums.ModifierType.MainPoster
                     With Master.eSettings
                         If isVideoTS Then
+                            If bForced OrElse (.MovieUseFrodo AndAlso .MoviePosterFrodo) Then FilenameList.Add(Path.Combine(basePath, "poster.jpg"))
                             If bForced OrElse (.MovieUseBoxee AndAlso .MoviePosterBoxee) Then FilenameList.Add(Path.Combine(basePath, "folder.jpg"))
                             If bForced OrElse (.MovieUseEden AndAlso .MoviePosterEden) Then FilenameList.Add(String.Concat(filePath, ".tbn"))
-                            If bForced OrElse (.MovieUseFrodo AndAlso .MoviePosterFrodo) Then FilenameList.Add(Path.Combine(basePath, "poster.jpg"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MoviePosterNMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(fileParPath).Name), ".jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MoviePosterYAMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(fileParPath).FullName, Directory.GetParent(fileParPath).Name), ".jpg"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MoviePosterExpertVTS) Then
@@ -1641,8 +1641,8 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If bForced OrElse (.MovieUseEden AndAlso .MoviePosterEden) Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index.tbn"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MoviePosterFrodo) Then FilenameList.Add(Path.Combine(basePath, "poster.jpg"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MoviePosterEden) Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index.tbn"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MoviePosterNMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MoviePosterYAMJ) Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".jpg"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MoviePosterExpertBDMV) Then
@@ -1655,10 +1655,10 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isSingle Then
-                            If bForced OrElse (.MovieUseBoxee AndAlso .MoviePosterBoxee) Then FilenameList.Add(Path.Combine(fileParPath, "folder.jpg"))
-                            If bForced OrElse (.MovieUseEden AndAlso .MoviePosterEden) Then FilenameList.Add(String.Concat(filePath, ".tbn"))
                             If bForced OrElse (.MovieUseFrodo AndAlso isVideoTSFile AndAlso .MoviePosterFrodo) Then FilenameList.Add(Path.Combine(fileParPath, "poster.jpg"))
                             If bForced OrElse (.MovieUseFrodo AndAlso Not isVideoTSFile AndAlso .MoviePosterFrodo) Then FilenameList.Add(String.Concat(filePathStack, "-poster.jpg"))
+                            If bForced OrElse (.MovieUseBoxee AndAlso .MoviePosterBoxee) Then FilenameList.Add(Path.Combine(fileParPath, "folder.jpg"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MoviePosterEden) Then FilenameList.Add(String.Concat(filePath, ".tbn"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MoviePosterNMJ) Then FilenameList.Add(String.Concat(filePathStack, ".jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MoviePosterYAMJ) Then FilenameList.Add(String.Concat(filePath, ".jpg"))
                             If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS Then
@@ -1681,9 +1681,9 @@ Namespace FileUtils
                                 End If
                             End If
                         Else
+                            If bForced OrElse (.MovieUseFrodo AndAlso .MovieFanartFrodo) Then FilenameList.Add(String.Concat(filePathStack, "-poster.jpg"))
                             If bForced OrElse (.MovieUseBoxee AndAlso .MoviePosterBoxee) Then FilenameList.Add(Path.Combine(filePath, ".tbn"))
                             If bForced OrElse (.MovieUseEden AndAlso .MovieFanartEden) Then FilenameList.Add(String.Concat(filePath, ".tbn"))
-                            If bForced OrElse (.MovieUseFrodo AndAlso .MovieFanartFrodo) Then FilenameList.Add(String.Concat(filePathStack, "-poster.jpg"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieFanartNMJ) Then FilenameList.Add(String.Concat(filePathStack, ".jpg"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieFanartYAMJ) Then FilenameList.Add(String.Concat(String.Concat(filePath, ".jpg")))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MoviePosterExpertMulti) Then
@@ -1740,8 +1740,8 @@ Namespace FileUtils
                 Case Enums.ModifierType.MainTrailer
                     With Master.eSettings
                         If isVideoTS Then
-                            If bForced OrElse (.MovieUseEden AndAlso .MovieTrailerEden) Then FilenameList.Add(String.Concat(filePath, "-trailer"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieTrailerFrodo AndAlso Not .MovieXBMCProtectVTSBDMV) Then FilenameList.Add(String.Concat(filePath, "-trailer"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MovieTrailerEden) Then FilenameList.Add(String.Concat(filePath, "-trailer"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieTrailerNMJ) Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer]"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieTrailerYAMJ) Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer]"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieTrailerExpertVTS) Then
@@ -1754,8 +1754,8 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If bForced OrElse (.MovieUseEden AndAlso .MovieTrailerEden) Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, "index-trailer"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieTrailerFrodo AndAlso Not .MovieXBMCProtectVTSBDMV) Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, "index-trailer"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MovieTrailerEden) Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, "index-trailer"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieTrailerNMJ) Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer]"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieTrailerYAMJ) Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer]"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieTrailerExpertBDMV) Then
@@ -1768,8 +1768,8 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isSingle Then
-                            If bForced OrElse (.MovieUseEden AndAlso .MovieTrailerEden) Then FilenameList.Add(String.Concat(filePath, "-trailer"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieTrailerFrodo) Then FilenameList.Add(String.Concat(filePathStack, "-trailer"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MovieTrailerEden) Then FilenameList.Add(String.Concat(filePath, "-trailer"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieTrailerNMJ) Then FilenameList.Add(String.Concat(filePath, ".[trailer]"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieTrailerYAMJ) Then FilenameList.Add(String.Concat(filePath, ".[trailer]"))
                             If .MovieUseExpert AndAlso isVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS Then
@@ -1792,8 +1792,8 @@ Namespace FileUtils
                                 End If
                             End If
                         Else
-                            If bForced OrElse (.MovieUseEden AndAlso .MovieTrailerEden) Then FilenameList.Add(String.Concat(filePath, "-trailer"))
                             If bForced OrElse (.MovieUseFrodo AndAlso .MovieTrailerFrodo) Then FilenameList.Add(String.Concat(filePathStack, "-trailer"))
+                            If bForced OrElse (.MovieUseEden AndAlso .MovieTrailerEden) Then FilenameList.Add(String.Concat(filePath, "-trailer"))
                             If bForced OrElse (.MovieUseNMJ AndAlso .MovieTrailerNMJ) Then FilenameList.Add(String.Concat(filePath, ".[trailer]"))
                             If bForced OrElse (.MovieUseYAMJ AndAlso .MovieTrailerYAMJ) Then FilenameList.Add(String.Concat(filePath, ".[trailer]"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) Then
@@ -1914,7 +1914,6 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainNFO
                     With Master.eSettings
-                        'If .MovieSetUseMSAA AndAlso .MovieSetNFOMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, ".nfo")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetNFOExpertSingle) Then
                             For Each a In .MovieSetNFOExpertSingle.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<settitle>", fSetTitle)))
@@ -1931,11 +1930,6 @@ Namespace FileUtils
                                 FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<settitle>", fSetTitle)))
                             Next
                         End If
-                        'If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPosterExpertParent) Then
-                        '    For Each a In .MovieSetPosterExpertParent.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
-                        '        FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<settitle>", fSetName)))
-                        '    Next
-                        'End If
                     End With
             End Select
 
@@ -1973,9 +1967,9 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.EpisodeNFO
                     With Master.eSettings
+                        If .TVUseFrodo AndAlso .TVEpisodeNFOFrodo Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
                         If .TVUseBoxee AndAlso .TVEpisodeNFOBoxee Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
                         If .TVUseEden Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
-                        If .TVUseFrodo AndAlso .TVEpisodeNFOFrodo Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
                         If .TVUseYAMJ AndAlso .TVEpisodeNFOYAMJ Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeNFOExpert) Then
                             For Each a In .TVEpisodeNFOExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
@@ -1986,8 +1980,8 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.EpisodePoster
                     With Master.eSettings
-                        If .TVUseBoxee AndAlso .TVEpisodePosterBoxee Then FilenameList.Add(String.Concat(fEpisodePath, ".tbn"))
                         If .TVUseFrodo AndAlso .TVEpisodePosterFrodo Then FilenameList.Add(String.Concat(fEpisodePath, "-thumb.jpg"))
+                        If .TVUseBoxee AndAlso .TVEpisodePosterBoxee Then FilenameList.Add(String.Concat(fEpisodePath, ".tbn"))
                         If .TVUseYAMJ AndAlso .TVEpisodePosterYAMJ Then FilenameList.Add(String.Concat(fEpisodePath, ".videoimage.jpg"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodePosterExpert) Then
                             For Each a In .TVEpisodePosterExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
@@ -2100,8 +2094,8 @@ Namespace FileUtils
                 Case Enums.ModifierType.SeasonLandscape
                     With Master.eSettings
                         If DBElement.TVSeason.Season = 0 Then 'season specials
-                            If .TVUseAD AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
                             If .TVUseExtended AndAlso .TVSeasonLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
+                            If .TVUseAD AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
                             If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonLandscapeExpert) Then
                                 For Each a In .TVSeasonLandscapeExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
@@ -2112,8 +2106,8 @@ Namespace FileUtils
                                 Next
                             End If
                         Else
-                            If .TVUseAD AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
                             If .TVUseExtended AndAlso .TVSeasonLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
+                            If .TVUseAD AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
                             If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonLandscapeExpert) Then
                                 For Each a In .TVSeasonLandscapeExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
@@ -2129,8 +2123,8 @@ Namespace FileUtils
                 Case Enums.ModifierType.SeasonPoster
                     With Master.eSettings
                         If DBElement.TVSeason.Season = 0 Then 'season specials
-                            If .TVUseBoxee AndAlso .TVSeasonPosterBoxee AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
                             If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-poster.jpg"))
+                            If .TVUseBoxee AndAlso .TVSeasonPosterBoxee AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
                             If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
                             If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".jpg"))
                             If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonPosterExpert) Then
@@ -2143,8 +2137,8 @@ Namespace FileUtils
                                 Next
                             End If
                         Else
-                            If .TVUseBoxee AndAlso .TVSeasonPosterBoxee AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
                             If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-poster.jpg", sSeason)))
+                            If .TVUseBoxee AndAlso .TVSeasonPosterBoxee AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
                             If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
                             If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".jpg"))
                             If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonPosterExpert) Then
@@ -2224,8 +2218,8 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainBanner
                     With Master.eSettings
-                        If .TVUseBoxee AndAlso .TVShowBannerBoxee Then FilenameList.Add(Path.Combine(fShowPath, "banner.jpg"))
                         If .TVUseFrodo AndAlso .TVShowBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, "banner.jpg"))
+                        If .TVUseBoxee AndAlso .TVShowBannerBoxee Then FilenameList.Add(Path.Combine(fShowPath, "banner.jpg"))
                         If .TVUseYAMJ AndAlso .TVShowBannerYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat(fShowFolder, ".banner.jpg")))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowBannerExpert) Then
                             For Each a In .TVShowBannerExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
@@ -2236,8 +2230,8 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainCharacterArt
                     With Master.eSettings
-                        If .TVUseAD AndAlso .TVShowCharacterArtAD Then FilenameList.Add(Path.Combine(fShowPath, "character.png"))
                         If .TVUseExtended AndAlso .TVShowCharacterArtExtended Then FilenameList.Add(Path.Combine(fShowPath, "characterart.png"))
+                        If .TVUseAD AndAlso .TVShowCharacterArtAD Then FilenameList.Add(Path.Combine(fShowPath, "character.png"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowCharacterArtExpert) Then
                             For Each a In .TVShowCharacterArtExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
@@ -2247,8 +2241,8 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainClearArt
                     With Master.eSettings
-                        If .TVUseAD AndAlso .TVShowClearArtAD Then FilenameList.Add(Path.Combine(fShowPath, "clearart.png"))
                         If .TVUseExtended AndAlso .TVShowClearArtExtended Then FilenameList.Add(Path.Combine(fShowPath, "clearart.png"))
+                        If .TVUseAD AndAlso .TVShowClearArtAD Then FilenameList.Add(Path.Combine(fShowPath, "clearart.png"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowClearArtExpert) Then
                             For Each a In .TVShowClearArtExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
@@ -2258,8 +2252,8 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainClearLogo
                     With Master.eSettings
-                        If .TVUseAD AndAlso .TVShowClearLogoAD Then FilenameList.Add(Path.Combine(fShowPath, "logo.png"))
                         If .TVUseExtended AndAlso .TVShowClearLogoExtended Then FilenameList.Add(Path.Combine(fShowPath, "clearlogo.png"))
+                        If .TVUseAD AndAlso .TVShowClearLogoAD Then FilenameList.Add(Path.Combine(fShowPath, "logo.png"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowClearLogoExpert) Then
                             For Each a In .TVShowClearLogoExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
@@ -2269,15 +2263,15 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainExtrafanarts
                     With Master.eSettings
+                        If .TVUseFrodo AndAlso .TVShowExtrafanartsFrodo Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
                         If .TVUseEden AndAlso .TVShowExtrafanartsFrodo Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
                         If .TVUseExpert AndAlso .TVShowExtrafanartsExpert Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
-                        If .TVUseFrodo AndAlso .TVShowExtrafanartsFrodo Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
                     End With
 
                 Case Enums.ModifierType.MainFanart
                     With Master.eSettings
-                        If .TVUseBoxee AndAlso .TVShowFanartBoxee Then FilenameList.Add(Path.Combine(fShowPath, "fanart.jpg"))
                         If .TVUseFrodo AndAlso .TVShowFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "fanart.jpg"))
+                        If .TVUseBoxee AndAlso .TVShowFanartBoxee Then FilenameList.Add(Path.Combine(fShowPath, "fanart.jpg"))
                         If .TVUseYAMJ AndAlso .TVShowFanartYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat(fShowFolder, ".fanart.jpg")))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowFanartExpert) Then
                             For Each a In .TVShowFanartExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
@@ -2288,8 +2282,8 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainLandscape
                     With Master.eSettings
-                        If .TVUseAD AndAlso .TVShowLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "landscape.jpg"))
                         If .TVUseExtended AndAlso .TVShowLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, "landscape.jpg"))
+                        If .TVUseAD AndAlso .TVShowLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "landscape.jpg"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowLandscapeExpert) Then
                             For Each a In .TVShowLandscapeExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
@@ -2299,8 +2293,8 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainNFO
                     With Master.eSettings
-                        If .TVUseBoxee AndAlso .TVShowNFOBoxee Then FilenameList.Add(Path.Combine(fShowPath, "tvshow.nfo"))
                         If .TVUseFrodo AndAlso .TVShowNFOFrodo Then FilenameList.Add(Path.Combine(fShowPath, "tvshow.nfo"))
+                        If .TVUseBoxee AndAlso .TVShowNFOBoxee Then FilenameList.Add(Path.Combine(fShowPath, "tvshow.nfo"))
                         If .TVUseYAMJ AndAlso .TVShowNFOYAMJ Then FilenameList.Add(Path.Combine(fShowPath, "tvshow.nfo"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowNFOExpert) Then
                             For Each a In .TVShowNFOExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
@@ -2311,8 +2305,8 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainPoster
                     With Master.eSettings
-                        If .TVUseBoxee AndAlso .TVShowPosterBoxee Then FilenameList.Add(Path.Combine(fShowPath, "folder.jpg"))
                         If .TVUseFrodo AndAlso .TVShowPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "poster.jpg"))
+                        If .TVUseBoxee AndAlso .TVShowPosterBoxee Then FilenameList.Add(Path.Combine(fShowPath, "folder.jpg"))
                         If .TVUseYAMJ AndAlso .TVShowPosterYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat(fShowFolder, ".jpg")))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowPosterExpert) Then
                             For Each a In .TVShowPosterExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
