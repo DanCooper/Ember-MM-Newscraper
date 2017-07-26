@@ -8513,7 +8513,7 @@ Public Class frmMain
                 dgvMovies.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("LandscapePath").Visible = Not CheckColumnHide_Movies("LandscapePath")
                 dgvMovies.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
-                dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("ListTitle").ReadOnly = True
                 dgvMovies.Columns("ListTitle").MinimumWidth = 83
                 dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
