@@ -97,7 +97,7 @@ Public Class FileFolderRenamer
 
     Private Shared Function ApplyPattern(ByVal pattern As String, ByVal flag As String, ByVal v As String) As String
         pattern = pattern.Replace(String.Concat("$", flag), v)
-        If Not v = String.Empty Then
+        If Not String.IsNullOrEmpty(v) Then
             pattern = pattern.Replace(String.Concat("$-", flag), v)
             pattern = pattern.Replace(String.Concat("$+", flag), v)
             pattern = pattern.Replace(String.Concat("$^", flag), v)
