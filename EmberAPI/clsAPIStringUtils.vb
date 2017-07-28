@@ -971,13 +971,11 @@ Public Class StringUtils
     ''' <summary>
     ''' Transform the codified US movie certification value to MPAA certification
     ''' </summary>
-    ''' <param name="sCert"><c>String</c> USA certification</param>
-    ''' <returns><c>String</c>MPAA certification, or String.Empty if <paramref name="sCert"/> was not recognized</returns>
+    ''' <param name="strCert"><c>String</c> USA certification</param>
+    ''' <returns><c>String</c>MPAA certification, or String.Empty if <paramref name="strCert"/> was not recognized</returns>
     ''' <remarks>Converts entries such as "usa:g" into "Rated G"</remarks>
-    Public Shared Function USACertToMPAA(ByVal sCert As String) As String
-        If String.IsNullOrEmpty(sCert) Then Return String.Empty
-
-        Select Case sCert.ToLower
+    Public Shared Function USACertToMPAA(ByVal strCert As String) As String
+        Select Case strCert.ToLower
             Case "usa:g"
                 Return "Rated G"
             Case "usa:pg"
@@ -988,8 +986,13 @@ Public Class StringUtils
                 Return "Rated R"
             Case "usa:nc-17"
                 Return "Rated NC-17"
+            Case "usa:approved"
+                Return "Approved"
+            Case "usa:passed"
+                Return "Passed"
+            Case Else
+                Return strCert
         End Select
-        Return String.Empty
     End Function
 
 #End Region 'Methods
