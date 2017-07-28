@@ -1343,7 +1343,7 @@ Public Class Scanner
                 Else
                     Dim HasFile As Boolean = False
                     Dim tList As IOrderedEnumerable(Of FileInfo) = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
-                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
+                             Not Regex.IsMatch(f.Name, AdvancedSettings.GetSetting("NotValidFileContains", "[^\w\s]\s?trailer|[^\w\s]\s?sample"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
                             FileUtils.Common.isStacked(f.FullName)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
 
                     If tList.Count > 1 AndAlso sSource.IsSingle Then
@@ -1400,10 +1400,10 @@ Public Class Scanner
         For Each lFile As FileInfo In di.GetFiles.OrderBy(Function(s) s.Name)
             Try
                 If Not TVEpisodePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso
-                    Not Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
+                    Not Regex.IsMatch(lFile.Name, AdvancedSettings.GetSetting("NotValidFileContains", "[^\w\s]\s?trailer|[^\w\s]\s?sample"), RegexOptions.IgnoreCase) AndAlso
                     (Not Convert.ToInt32(Master.eSettings.TVSkipLessThan) > 0 OrElse lFile.Length >= Master.eSettings.TVSkipLessThan * 1048576) Then
                     tShow.Episodes.Add(New Database.DBElement(Enums.ContentType.TVEpisode) With {.Filename = lFile.FullName, .TVEpisode = New MediaContainers.EpisodeDetails})
-                ElseIf Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) Then
+                ElseIf Regex.IsMatch(lFile.Name, AdvancedSettings.GetSetting("NotValidFileContains", "[^\w\s]\s?trailer|[^\w\s]\s?sample"), RegexOptions.IgnoreCase) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) Then
                     logger.Info(String.Format("[Sanner] [ScanForFiles_TV] File ""{0}"" has been ignored (ignore list)", lFile.FullName))
                 End If
             Catch ex As Exception
