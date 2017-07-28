@@ -88,6 +88,12 @@ Public Class frmSettingsHolder
             Flat_ScanFolder_Remove()
         Else
             Cascade_Group_Remove()
+            If chkAddMovieSource.Checked OrElse chkAddTVShowSource.Checked OrElse chkScanFolder.Checked Then
+                Cascade_Group_Remove()
+                If chkAddMovieSource.Checked Then Flat_AddMovieSource_Add()
+                If chkAddTVShowSource.Checked Then Flat_AddTVShowSource_Add()
+                If chkScanFolder.Checked Then Flat_ScanFolder_Add()
+            End If
         End If
     End Sub
 
@@ -136,11 +142,6 @@ Public Class frmSettingsHolder
             regKey.SetValue("MUIVerb", "Ember Media Manager")
             regKey.SetValue("Position", "Bottom")
             regKey.CreateSubKey("menus\\shell")
-
-            'add a separator (empty SubKey with a name between two submenu names (ascending))
-            If Not Functions.GetWindowsClientVersion() = "Win10" AndAlso (chkAddMovieSource.Checked OrElse chkAddTVShowSource.Checked) AndAlso chkScanFolder.Checked Then
-                regKey.CreateSubKey("menus\\shell\s-separator")
-            End If
 
             If chkAddMovieSource.Checked Then
                 Cascade_AddMovieSource_Add()
