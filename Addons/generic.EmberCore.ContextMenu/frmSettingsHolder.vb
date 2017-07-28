@@ -88,12 +88,9 @@ Public Class frmSettingsHolder
             Flat_ScanFolder_Remove()
         Else
             Cascade_Group_Remove()
-            If chkAddMovieSource.Checked OrElse chkAddTVShowSource.Checked OrElse chkScanFolder.Checked Then
-                Cascade_Group_Remove()
-                If chkAddMovieSource.Checked Then Flat_AddMovieSource_Add()
-                If chkAddTVShowSource.Checked Then Flat_AddTVShowSource_Add()
-                If chkScanFolder.Checked Then Flat_ScanFolder_Add()
-            End If
+            If chkAddMovieSource.Checked Then Flat_AddMovieSource_Add()
+            If chkAddTVShowSource.Checked Then Flat_AddTVShowSource_Add()
+            If chkScanFolder.Checked Then Flat_ScanFolder_Add()
         End If
     End Sub
 
