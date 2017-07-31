@@ -823,9 +823,9 @@ CREATE VIEW seasonslist
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
-        CASE WHEN seasons.Season IS NOT 999 THEN COUNT(DISTINCT episodelist.idEpisode) ELSE NULL END AS Episodes,
+        CASE WHEN seasons.Season IS NOT -1 THEN COUNT(DISTINCT episodelist.idEpisode) ELSE NULL END AS Episodes,
         COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS Playcount,
-        CASE WHEN seasons.Season IS NOT 999 THEN CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END ELSE NULL END AS HasWatched,
+        CASE WHEN seasons.Season IS NOT -1 THEN CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END ELSE NULL END AS HasWatched,
         COUNT(DISTINCT CASE WHEN episodelist.New IS 1 THEN episodelist.idEpisode ELSE NULL END) AS NewEpisodes,
         CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 THEN 0 ELSE 1 END AS Missing
         FROM

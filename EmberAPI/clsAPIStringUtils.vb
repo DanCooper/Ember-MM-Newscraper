@@ -528,17 +528,18 @@ Public Class StringUtils
     ''' <summary>
     ''' For a given <c>Integer</c> season number, determine the appropriate season text
     ''' </summary>
-    ''' <param name="sSeason"><c>Integer</c> season value. Valid values are 0 or higher. Negatives evaluate to Unknonw</param>
+    ''' <param name="iSeason"><c>Integer</c> season value. Valid values are -1 or higher.</param>
     ''' <returns><c>String</c> title appropriate for the season</returns>
-    ''' <remarks>For <paramref name="sSeason"/> greater than 0, evaluates to (regional equivalent of) "Season XX" where XX is a 0-padded number.
+    ''' <remarks>For <paramref name="iSeason"/> greater than 0, evaluates to (regional equivalent of) "Season XX" where XX is a 0-padded number.
     ''' For 0, returns equivalent of "Season Specials".
-    ''' For less than 0, returns equivalent of "Unknown"</remarks>
-    Public Shared Function FormatSeasonText(ByVal sSeason As Integer) As String
-        If sSeason > 0 AndAlso sSeason <> 999 Then
-            Return String.Concat(Master.eLang.GetString(650, "Season"), " ", sSeason.ToString.PadLeft(2, Convert.ToChar("0")))
-        ElseIf sSeason = 0 Then
+    ''' For -1, returns equivalent of "* All Seasons".
+    ''' For less than -1, returns equivalent of "Unknown"</remarks>
+    Public Shared Function FormatSeasonText(ByVal iSeason As Integer) As String
+        If iSeason > 0 Then
+            Return String.Concat(Master.eLang.GetString(650, "Season"), " ", iSeason.ToString.PadLeft(2, Convert.ToChar("0")))
+        ElseIf iSeason = 0 Then
             Return Master.eLang.GetString(655, "Season Specials")
-        ElseIf sSeason = 999 Then
+        ElseIf iSeason = -1 Then
             Return Master.eLang.GetString(1256, "* All Seasons")
         Else
             Return Master.eLang.GetString(138, "Unknown")

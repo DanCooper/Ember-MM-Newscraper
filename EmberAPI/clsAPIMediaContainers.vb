@@ -2641,7 +2641,14 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property SeasonSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_season.ToString) AndAlso Not _season = -1
+                Return Not _season = -2
+            End Get
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property IsAllSeasons() As Boolean
+            Get
+                Return _season = -1
             End Get
         End Property
 
@@ -2739,7 +2746,7 @@ Namespace MediaContainers
             _locked = False
             _plot = String.Empty
             _scrapersource = String.Empty
-            _season = -1
+            _season = -2 '-1 is reserved for * All Seasons entry
             _tmdb = String.Empty
             _tvdb = String.Empty
             _title = String.Empty
@@ -4386,13 +4393,13 @@ Namespace MediaContainers
 
                     'Season Banner
                     If Banner.LoadAndCache(tContentType, True) Then
-                        If DBElement.TVSeason.Season = 999 Then
+                        If DBElement.TVSeason.IsAllSeasons Then
                             Banner.LocalFilePath = Banner.ImageOriginal.Save_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsBanner)
                         Else
                             Banner.LocalFilePath = Banner.ImageOriginal.Save_TVSeason(DBElement, Enums.ModifierType.SeasonBanner)
                         End If
                     Else
-                        If DBElement.TVSeason.Season = 999 Then
+                        If DBElement.TVSeason.IsAllSeasons Then
                             Images.Delete_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsBanner)
                             Banner = New Image
                         Else
@@ -4403,13 +4410,13 @@ Namespace MediaContainers
 
                     'Season Fanart
                     If Fanart.LoadAndCache(tContentType, True) Then
-                        If DBElement.TVSeason.Season = 999 Then
+                        If DBElement.TVSeason.IsAllSeasons Then
                             Fanart.LocalFilePath = Fanart.ImageOriginal.Save_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsFanart)
                         Else
                             Fanart.LocalFilePath = Fanart.ImageOriginal.Save_TVSeason(DBElement, Enums.ModifierType.SeasonFanart)
                         End If
                     Else
-                        If DBElement.TVSeason.Season = 999 Then
+                        If DBElement.TVSeason.IsAllSeasons Then
                             Images.Delete_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsFanart)
                             Fanart = New Image
                         Else
@@ -4420,13 +4427,13 @@ Namespace MediaContainers
 
                     'Season Landscape
                     If Landscape.LoadAndCache(tContentType, True) Then
-                        If DBElement.TVSeason.Season = 999 Then
+                        If DBElement.TVSeason.IsAllSeasons Then
                             Landscape.LocalFilePath = Landscape.ImageOriginal.Save_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsLandscape)
                         Else
                             Landscape.LocalFilePath = Landscape.ImageOriginal.Save_TVSeason(DBElement, Enums.ModifierType.SeasonLandscape)
                         End If
                     Else
-                        If DBElement.TVSeason.Season = 999 Then
+                        If DBElement.TVSeason.IsAllSeasons Then
                             Images.Delete_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsLandscape)
                             Landscape = New Image
                         Else
@@ -4437,13 +4444,13 @@ Namespace MediaContainers
 
                     'Season Poster
                     If Poster.LoadAndCache(tContentType, True) Then
-                        If DBElement.TVSeason.Season = 999 Then
+                        If DBElement.TVSeason.IsAllSeasons Then
                             Poster.LocalFilePath = Poster.ImageOriginal.Save_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsPoster)
                         Else
                             Poster.LocalFilePath = Poster.ImageOriginal.Save_TVSeason(DBElement, Enums.ModifierType.SeasonPoster)
                         End If
                     Else
-                        If DBElement.TVSeason.Season = 999 Then
+                        If DBElement.TVSeason.IsAllSeasons Then
                             Images.Delete_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsPoster)
                             Poster = New Image
                         Else

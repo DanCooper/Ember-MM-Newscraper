@@ -977,7 +977,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("DateAdded"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
-            SaveSorting_Movies()
+            SortingSave_Movies()
         End If
     End Sub
     ''' <summary>
@@ -1008,7 +1008,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("DateModified"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
-            SaveSorting_Movies()
+            SortingSave_Movies()
         End If
     End Sub
     ''' <summary>
@@ -1039,7 +1039,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("SortedTitle"), System.ComponentModel.ListSortDirection.Ascending)
             End If
 
-            SaveSorting_Movies()
+            SortingSave_Movies()
         End If
     End Sub
     ''' <summary>
@@ -1068,7 +1068,7 @@ Public Class frmMain
                 dgvTVShows.Sort(dgvTVShows.Columns("SortedTitle"), System.ComponentModel.ListSortDirection.Ascending)
             End If
 
-            SaveFilter_Shows()
+            SortingSave_TVShows()
         End If
     End Sub
     ''' <summary>
@@ -1099,7 +1099,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("Rating"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
-            SaveSorting_Movies()
+            SortingSave_Movies()
         End If
     End Sub
     ''' <summary>
@@ -1130,7 +1130,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("ReleaseDate"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
-            SaveSorting_Movies()
+            SortingSave_Movies()
         End If
     End Sub
     ''' <summary>
@@ -1161,7 +1161,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("Year"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
-            SaveSorting_Movies()
+            SortingSave_Movies()
         End If
     End Sub
 
@@ -5261,7 +5261,7 @@ Public Class frmMain
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Dim idShow As Integer = CInt(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
             For Each tID As Long In lItemsToRemove
-                If Not tID = 999 Then
+                If Not tID = -1 Then
                     Master.DB.Delete_TVSeason(tID, True)
                     RemoveRow_TVSeason(tID)
                 End If
@@ -6170,7 +6170,7 @@ Public Class frmMain
             btnFilterSortYear_Movies.Image = Nothing
         End If
 
-        SaveSorting_Movies()
+        SortingSave_Movies()
     End Sub
 
     Private Sub dgvMovieSets_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellClick
@@ -6619,7 +6619,7 @@ Public Class frmMain
             dgvMovieSets.CurrentCell = dgvMovieSets.Rows(0).Cells("ListTitle")
         End If
 
-        SaveSorting_MovieSets()
+        SortingSave_MovieSets()
     End Sub
 
     Private Sub dgvTVEpisodes_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellClick
@@ -7088,9 +7088,11 @@ Public Class frmMain
         If dgvTVEpisodes.RowCount > 0 Then
             dgvTVEpisodes.CurrentCell = Nothing
             dgvTVEpisodes.ClearSelection()
-            dgvTVEpisodes.Rows(0).Selected = True
-            dgvTVEpisodes.CurrentCell = dgvTVEpisodes.Rows(0).Cells("Title")
+            'dgvTVEpisodes.Rows(0).Selected = True
+            'dgvTVEpisodes.CurrentCell = dgvTVEpisodes.Rows(0).Cells("Title")
         End If
+
+        SortingSave_TVEpisodes()
     End Sub
 
     Private Sub dgvTVSeasons_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellClick
@@ -7102,7 +7104,7 @@ Public Class frmMain
         End If
 
         If colName = "HasWatched" Then
-            If Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = 999 Then
+            If Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = -1 Then
                 CreateTask(Enums.ContentType.TVSeason,
                            Enums.SelectionType.Selected,
                            Enums.TaskManagerType.SetWatchedState,
@@ -7179,7 +7181,7 @@ Public Class frmMain
 
         dgvTVSeasons.ShowCellToolTips = True
 
-        If colName = "HasWatched" AndAlso e.RowIndex >= 0 AndAlso Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = 999 Then
+        If colName = "HasWatched" AndAlso e.RowIndex >= 0 AndAlso Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = -1 Then
             oldStatus = GetStatus()
             SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
         ElseIf (colName = "BannerPath" OrElse colName = "FanartPath" OrElse
@@ -7260,8 +7262,8 @@ Public Class frmMain
         End If
 
         'text fields
-        If (colName = "SeasonText" OrElse colName = "Episodes") AndAlso e.RowIndex >= 0 Then
-            If Convert.ToBoolean(dgvTVSeasons.Item("Missing", e.RowIndex).Value) AndAlso Not CInt(dgvTVSeasons.Item("Season", e.RowIndex).Value) = 999 Then
+        If (colName = "Season" OrElse colName = "SeasonText" OrElse colName = "Episodes") AndAlso e.RowIndex >= 0 Then
+            If Convert.ToBoolean(dgvTVSeasons.Item("Missing", e.RowIndex).Value) AndAlso Not CInt(dgvTVSeasons.Item("Season", e.RowIndex).Value) = -1 Then
                 e.CellStyle.ForeColor = Color.Gray
                 e.CellStyle.SelectionForeColor = Color.LightGray
             ElseIf Convert.ToBoolean(dgvTVSeasons.Item("Mark", e.RowIndex).Value) Then
@@ -7278,7 +7280,7 @@ Public Class frmMain
             End If
         End If
 
-        If e.ColumnIndex >= 3 AndAlso e.RowIndex >= 0 Then
+        If e.ColumnIndex >= 2 AndAlso e.RowIndex >= 0 Then
 
             'background
             If Convert.ToBoolean(dgvTVSeasons.Item("Lock", e.RowIndex).Value) Then
@@ -7304,7 +7306,7 @@ Public Class frmMain
             End If
 
             'boolean fields
-            If colName = "HasWatched" AndAlso Not CInt(dgvTVSeasons.Item("Season", e.RowIndex).Value) = 999 Then
+            If colName = "HasWatched" AndAlso Not CInt(dgvTVSeasons.Item("Season", e.RowIndex).Value) = -1 Then
                 e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -7315,6 +7317,12 @@ Public Class frmMain
                 ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 0, 1))
                 e.Handled = True
             End If
+        End If
+
+        'set the *All Seasons season number to "invisible"
+        If e.RowIndex >= 0 AndAlso colName = "Season" AndAlso CInt(dgvTVSeasons.Item("Season", e.RowIndex).Value) = -1 Then
+            e.CellStyle.ForeColor = e.CellStyle.BackColor
+            e.CellStyle.SelectionForeColor = e.CellStyle.SelectionBackColor
         End If
     End Sub
 
@@ -7386,7 +7394,7 @@ Public Class frmMain
                         End If
                         'if any one item is set as unlocked, show menu "Lock"
                         'if any one item is set as locked, show menu "Unlock"
-                        If Not CInt(sRow.Cells("Season").Value) = 999 AndAlso Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
+                        If Not CInt(sRow.Cells("Season").Value) = -1 AndAlso Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
                             bShowWatched = True
                             If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowUnwatched Then Exit For
                         Else
@@ -7440,7 +7448,7 @@ Public Class frmMain
 
                     'Watched / Unwatched menu
                     Dim bIsWatched As Boolean = False
-                    Dim bIsAllSeasons As Boolean = CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999
+                    Dim bIsAllSeasons As Boolean = CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = -1
                     If Not bIsAllSeasons Then
                         bIsWatched = Convert.ToBoolean(dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value)
                     End If
@@ -7454,7 +7462,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub dgvTVSeason_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVSeasons.Resize
+    Private Sub dgvTVSeasons_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVSeasons.Resize
         ResizeTVLists(2)
     End Sub
 
@@ -7481,9 +7489,11 @@ Public Class frmMain
         If dgvTVSeasons.RowCount > 0 Then
             dgvTVSeasons.CurrentCell = Nothing
             dgvTVSeasons.ClearSelection()
-            dgvTVSeasons.Rows(0).Selected = True
-            dgvTVSeasons.CurrentCell = dgvTVSeasons.Rows(0).Cells("SeasonText")
+            'dgvTVSeasons.Rows(0).Selected = True
+            'dgvTVSeasons.CurrentCell = dgvTVSeasons.Rows(0).Cells("SeasonText")
         End If
+
+        SortingSave_TVSeasons()
     End Sub
 
     Private Sub dgvTVShows_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellClick
@@ -8058,7 +8068,7 @@ Public Class frmMain
         '    Me.btnFilterSortDateModified_Shows.Image = Nothing
         'End If
 
-        SaveFilter_Shows()
+        SortingSave_TVShows()
     End Sub
 
     Private Sub mnuMainDonatePatreon_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainDonatePatreon.Click
@@ -8874,13 +8884,13 @@ Public Class frmMain
             EnableFilters_MovieSets(True)
             EnableFilters_Shows(True)
             If doMovies Then
-                RestoreSorting_Movies()
+                SortingRestore_Movies()
             End If
             If doMovieSets Then
-                RestoreSorting_MovieSets()
+                SortingRestore_MovieSets()
             End If
             If doTVShows Then
-                RestoreSorting_Shows()
+                SortingRestore_TVShows()
             End If
             If doMovies AndAlso doMovieSets AndAlso doTVShows Then
                 UpdateMainTabCounts()
@@ -8891,13 +8901,14 @@ Public Class frmMain
     Private Sub FillList_TVEpisodes(ByVal ShowID As Long, ByVal Season As Integer)
         RemoveHandler dgvTVEpisodes.SelectionChanged, AddressOf dgvTVEpisodes_SelectionChanged
         Dim sEpisodeSorting As Enums.EpisodeSorting = Master.DB.GetTVShowEpisodeSorting(ShowID)
+        Dim bIsAllSeasons As Boolean = Season = -1
 
         bsTVEpisodes.DataSource = Nothing
         dgvTVEpisodes.DataSource = Nothing
 
         dgvTVEpisodes.Enabled = False
 
-        If Season = 999 Then
+        If bIsAllSeasons Then
             Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Season, Episode;"))
         Else
             Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, " AND Season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Episode;"))
@@ -8940,7 +8951,7 @@ Public Class frmMain
         dgvTVEpisodes.Columns("Episode").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
         dgvTVEpisodes.Columns("Episode").Resizable = DataGridViewTriState.False
         dgvTVEpisodes.Columns("Episode").ReadOnly = True
-        dgvTVEpisodes.Columns("Episode").MinimumWidth = If(Season = 999, 35, 70)
+        dgvTVEpisodes.Columns("Episode").MinimumWidth = If(bIsAllSeasons, 41, 82)
         dgvTVEpisodes.Columns("Episode").SortMode = DataGridViewColumnSortMode.Automatic
         dgvTVEpisodes.Columns("Episode").Visible = Not sEpisodeSorting = Enums.EpisodeSorting.Aired
         dgvTVEpisodes.Columns("Episode").ToolTipText = Master.eLang.GetString(755, "Episode #")
@@ -8984,11 +8995,11 @@ Public Class frmMain
         dgvTVEpisodes.Columns("Rating").Visible = Not CheckColumnHide_TVEpisodes("Rating")
         dgvTVEpisodes.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
         dgvTVEpisodes.Columns("Season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-        dgvTVEpisodes.Columns("Season").MinimumWidth = 35
+        dgvTVEpisodes.Columns("Season").MinimumWidth = 41
         dgvTVEpisodes.Columns("Season").Resizable = DataGridViewTriState.False
         dgvTVEpisodes.Columns("Season").ReadOnly = True
         dgvTVEpisodes.Columns("Season").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("Season").Visible = Season = 999
+        dgvTVEpisodes.Columns("Season").Visible = bIsAllSeasons
         dgvTVEpisodes.Columns("Season").ToolTipText = Master.eLang.GetString(659, "Season #")
         dgvTVEpisodes.Columns("Season").HeaderText = "#"
         dgvTVEpisodes.Columns("Season").DefaultCellStyle.Format = "00"
@@ -9015,10 +9026,13 @@ Public Class frmMain
         If Master.isWindows Then dgvTVEpisodes.Columns("Title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
         ResizeTVLists(dgvTVEpisodes.Columns("Title").Index)
 
-        dgvTVEpisodes.ClearSelection()
         dgvTVEpisodes.CurrentCell = Nothing
+        dgvTVEpisodes.ClearSelection()
+
+        If Not Master.isCL Then SortingRestore_TVEpisodes(bIsAllSeasons)
 
         dgvTVEpisodes.Enabled = True
+
         AddHandler dgvTVEpisodes.SelectionChanged, AddressOf dgvTVEpisodes_SelectionChanged
     End Sub
 
@@ -9035,7 +9049,7 @@ Public Class frmMain
             Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT DISTINCT seasonslist.* ",
                                                                 "FROM seasonslist ",
                                                                 "LEFT OUTER JOIN episodelist ON (seasonslist.idShow = episodelist.idShow) AND (seasonslist.Season = episodelist.Season) ",
-                                                                "WHERE seasonslist.idShow = ", ShowID, " AND (episodelist.Missing = 0 OR seasonslist.Season = 999) ",
+                                                                "WHERE seasonslist.idShow = ", ShowID, " AND (episodelist.Missing = 0 OR seasonslist.Season = -1) ",
                                                                 "ORDER BY seasonslist.Season;"))
         End If
 
@@ -9059,6 +9073,8 @@ Public Class frmMain
                 End If
             End Try
         End If
+
+        dgvTVSeasons.Columns("Season").DisplayIndex = 0
 
         For i As Integer = 0 To dgvTVSeasons.Columns.Count - 1
             dgvTVSeasons.Columns(i).Visible = False
@@ -9103,21 +9119,31 @@ Public Class frmMain
         dgvTVSeasons.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
         dgvTVSeasons.Columns("PosterPath").Visible = Not CheckColumnHide_TVSeasons("PosterPath")
         dgvTVSeasons.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+        dgvTVSeasons.Columns("Season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+        dgvTVSeasons.Columns("Season").MinimumWidth = 41
+        dgvTVSeasons.Columns("Season").Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns("Season").ReadOnly = True
+        dgvTVSeasons.Columns("Season").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns("Season").Visible = True
+        dgvTVSeasons.Columns("Season").ToolTipText = Master.eLang.GetString(659, "Season #")
+        dgvTVSeasons.Columns("Season").HeaderText = "#"
+        dgvTVSeasons.Columns("Season").DefaultCellStyle.Format = "00"
         dgvTVSeasons.Columns("SeasonText").Resizable = DataGridViewTriState.False
         dgvTVSeasons.Columns("SeasonText").ReadOnly = True
         dgvTVSeasons.Columns("SeasonText").MinimumWidth = 83
         dgvTVSeasons.Columns("SeasonText").SortMode = DataGridViewColumnSortMode.Automatic
         dgvTVSeasons.Columns("SeasonText").Visible = True
-        dgvTVSeasons.Columns("SeasonText").ToolTipText = Master.eLang.GetString(650, "Season")
-        dgvTVSeasons.Columns("SeasonText").HeaderText = Master.eLang.GetString(650, "Season")
+        dgvTVSeasons.Columns("SeasonText").ToolTipText = Master.eLang.GetString(865, "Season Title")
+        dgvTVSeasons.Columns("SeasonText").HeaderText = Master.eLang.GetString(865, "Season Title")
 
         dgvTVSeasons.Columns("idSeason").ValueType = GetType(Long)
         dgvTVSeasons.Columns("idShow").ValueType = GetType(Long)
+        dgvTVSeasons.Columns("Season").ValueType = GetType(Integer)
 
         If Master.isWindows Then dgvTVSeasons.Columns("SeasonText").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
         ResizeTVLists(dgvTVSeasons.Columns("SeasonText").Index)
 
-        dgvTVSeasons.Sort(dgvTVSeasons.Columns("SeasonText"), System.ComponentModel.ListSortDirection.Ascending)
+        If Not Master.isCL Then SortingRestore_TVSeasons()
 
         FillList_TVEpisodes(ShowID, Convert.ToInt32(dgvTVSeasons.Item("Season", 0).Value))
 
@@ -12718,15 +12744,15 @@ Public Class frmMain
 
             Dim sModifier As New Structures.ScrapeModifiers
             sModifier.DoSearch = ScrapeModifiers.DoSearch
-            sModifier.AllSeasonsBanner = ScrapeModifiers.AllSeasonsBanner AndAlso AllSeasonsBannerAllowed AndAlso CInt(drvRow.Item("Season")) = 999
-            sModifier.AllSeasonsFanart = ScrapeModifiers.AllSeasonsFanart AndAlso AllSeasonsFanartAllowed AndAlso CInt(drvRow.Item("Season")) = 999
-            sModifier.AllSeasonsLandscape = ScrapeModifiers.AllSeasonsLandscape AndAlso AllSeasonsLandscapeAllowed AndAlso CInt(drvRow.Item("Season")) = 999
-            sModifier.AllSeasonsPoster = ScrapeModifiers.AllSeasonsPoster AndAlso AllSeasonsPosterAllowed AndAlso CInt(drvRow.Item("Season")) = 999
-            sModifier.SeasonBanner = ScrapeModifiers.SeasonBanner AndAlso SeasonBannerAllowed AndAlso Not CInt(drvRow.Item("Season")) = 999
-            sModifier.SeasonFanart = ScrapeModifiers.SeasonFanart AndAlso SeasonFanartAllowed AndAlso Not CInt(drvRow.Item("Season")) = 999
-            sModifier.SeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso SeasonLandscapeAllowed AndAlso Not CInt(drvRow.Item("Season")) = 999
+            sModifier.AllSeasonsBanner = ScrapeModifiers.AllSeasonsBanner AndAlso AllSeasonsBannerAllowed AndAlso CInt(drvRow.Item("Season")) = -1
+            sModifier.AllSeasonsFanart = ScrapeModifiers.AllSeasonsFanart AndAlso AllSeasonsFanartAllowed AndAlso CInt(drvRow.Item("Season")) = -1
+            sModifier.AllSeasonsLandscape = ScrapeModifiers.AllSeasonsLandscape AndAlso AllSeasonsLandscapeAllowed AndAlso CInt(drvRow.Item("Season")) = -1
+            sModifier.AllSeasonsPoster = ScrapeModifiers.AllSeasonsPoster AndAlso AllSeasonsPosterAllowed AndAlso CInt(drvRow.Item("Season")) = -1
+            sModifier.SeasonBanner = ScrapeModifiers.SeasonBanner AndAlso SeasonBannerAllowed AndAlso Not CInt(drvRow.Item("Season")) = -1
+            sModifier.SeasonFanart = ScrapeModifiers.SeasonFanart AndAlso SeasonFanartAllowed AndAlso Not CInt(drvRow.Item("Season")) = -1
+            sModifier.SeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso SeasonLandscapeAllowed AndAlso Not CInt(drvRow.Item("Season")) = -1
             sModifier.SeasonNFO = ScrapeModifiers.SeasonNFO
-            sModifier.SeasonPoster = ScrapeModifiers.SeasonPoster AndAlso SeasonPosterAllowed AndAlso Not CInt(drvRow.Item("Season")) = 999
+            sModifier.SeasonPoster = ScrapeModifiers.SeasonPoster AndAlso SeasonPosterAllowed AndAlso Not CInt(drvRow.Item("Season")) = -1
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
@@ -12926,7 +12952,7 @@ Public Class frmMain
             Dim enableIMDB As Boolean = False
             Dim enableTMDB As Boolean = False
             Dim enableTVDB As Boolean = False
-            If Not CInt(dgvTVSeasons.SelectedRows(0).Cells("season").Value) = 999 Then
+            If Not CInt(dgvTVSeasons.SelectedRows(0).Cells("season").Value) = -1 Then
                 For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
                     If Not String.IsNullOrEmpty(dgvTVShows.SelectedRows(0).Cells("strIMDB").Value.ToString) Then
                         enableIMDB = True
@@ -13443,13 +13469,13 @@ Public Class frmMain
                             Dim aContainer As New MediaContainers.SearchResultsContainer
                             Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
-                            If tmpDBElement.TVSeason.Season = 999 Then
+                            If tmpDBElement.TVSeason.IsAllSeasons Then
                                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsBanner, True)
                             Else
                                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonBanner, True)
                             End If
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.SeasonBanners.Count > 0 OrElse (tmpDBElement.TVSeason.Season = 999 AndAlso aContainer.MainBanners.Count > 0) Then
+                                If aContainer.SeasonBanners.Count > 0 OrElse (tmpDBElement.TVSeason.IsAllSeasons AndAlso aContainer.MainBanners.Count > 0) Then
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
@@ -13935,7 +13961,7 @@ Public Class frmMain
                             Dim aContainer As New MediaContainers.SearchResultsContainer
                             Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
-                            If tmpDBElement.TVSeason.Season = 999 Then
+                            If tmpDBElement.TVSeason.IsAllSeasons Then
                                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsFanart, True)
                             Else
                                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonFanart, True)
@@ -14090,13 +14116,13 @@ Public Class frmMain
                             Dim aContainer As New MediaContainers.SearchResultsContainer
                             Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
-                            If tmpDBElement.TVSeason.Season = 999 Then
+                            If tmpDBElement.TVSeason.IsAllSeasons Then
                                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsLandscape, True)
                             Else
                                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
                             End If
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.SeasonLandscapes.Count > 0 OrElse (tmpDBElement.TVSeason.Season = 999 AndAlso aContainer.MainLandscapes.Count > 0) Then
+                                If aContainer.SeasonLandscapes.Count > 0 OrElse (tmpDBElement.TVSeason.IsAllSeasons AndAlso aContainer.MainLandscapes.Count > 0) Then
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
@@ -14222,13 +14248,13 @@ Public Class frmMain
                             Dim aContainer As New MediaContainers.SearchResultsContainer
                             Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
-                            If tmpDBElement.TVSeason.Season = 999 Then
+                            If tmpDBElement.TVSeason.IsAllSeasons Then
                                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsPoster, True)
                             Else
                                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonPoster, True)
                             End If
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.SeasonPosters.Count > 0 OrElse (tmpDBElement.TVSeason.Season = 999 AndAlso aContainer.MainPosters.Count > 0) Then
+                                If aContainer.SeasonPosters.Count > 0 OrElse (tmpDBElement.TVSeason.IsAllSeasons AndAlso aContainer.MainPosters.Count > 0) Then
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
@@ -15587,10 +15613,10 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub RestoreSorting_Movies()
+    Private Sub SortingRestore_Movies()
         With Master.eSettings
             If .GeneralMainFilterSortColumn_Movies = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
-                .GeneralMainFilterSortColumn_Movies = 3         'ListTitle in movielist
+                .GeneralMainFilterSortColumn_Movies = 4         'ListTitle in movielist
                 .GeneralMainFilterSortOrder_Movies = 0          'ASC
             End If
 
@@ -15600,10 +15626,10 @@ Public Class frmMain
         End With
     End Sub
 
-    Private Sub RestoreSorting_MovieSets()
+    Private Sub SortingRestore_MovieSets()
         With Master.eSettings
             If .GeneralMainFilterSortColumn_MovieSets = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
-                .GeneralMainFilterSortColumn_MovieSets = 3         'ListTitle in movielist
+                .GeneralMainFilterSortColumn_MovieSets = 1         'ListTitle in movielist
                 .GeneralMainFilterSortOrder_MovieSets = 0          'ASC
             End If
 
@@ -15613,10 +15639,40 @@ Public Class frmMain
         End With
     End Sub
 
-    Private Sub RestoreSorting_Shows()
+    Private Sub SortingRestore_TVEpisodes(ByVal bIsAllSeasons As Boolean)
+        With Master.eSettings
+            If .GeneralMainFilterSortColumn_Episodes = 0 AndAlso .GeneralMainFilterSortOrder_Episodes = 0 Then
+                .GeneralMainFilterSortColumn_Episodes = 4         'Episode # in episodelist
+                .GeneralMainFilterSortOrder_Episodes = 0          'ASC
+            End If
+
+            If dgvTVEpisodes.DataSource IsNot Nothing Then
+                If bIsAllSeasons Then
+                    dgvTVEpisodes.Sort(dgvTVEpisodes.Columns("Season"), CType(.GeneralMainFilterSortOrder_Episodes, ComponentModel.ListSortDirection))
+                Else
+                    dgvTVEpisodes.Sort(dgvTVEpisodes.Columns(.GeneralMainFilterSortColumn_Episodes), CType(.GeneralMainFilterSortOrder_Episodes, ComponentModel.ListSortDirection))
+                End If
+            End If
+        End With
+    End Sub
+
+    Private Sub SortingRestore_TVSeasons()
+        With Master.eSettings
+            If .GeneralMainFilterSortColumn_Seasons = 0 AndAlso .GeneralMainFilterSortOrder_Seasons = 0 Then
+                .GeneralMainFilterSortColumn_Seasons = 2         'Season # in seasonlist
+                .GeneralMainFilterSortOrder_Seasons = 0          'ASC
+            End If
+
+            If dgvTVSeasons.DataSource IsNot Nothing Then
+                dgvTVSeasons.Sort(dgvTVSeasons.Columns(.GeneralMainFilterSortColumn_Seasons), CType(.GeneralMainFilterSortOrder_Seasons, ComponentModel.ListSortDirection))
+            End If
+        End With
+    End Sub
+
+    Private Sub SortingRestore_TVShows()
         With Master.eSettings
             If .GeneralMainFilterSortColumn_Shows = 0 AndAlso .GeneralMainFilterSortOrder_Shows = 0 Then
-                .GeneralMainFilterSortColumn_Shows = 1         'ListTitle in tvshowlist
+                .GeneralMainFilterSortColumn_Shows = 2        'ListTitle in tvshowlist
                 .GeneralMainFilterSortOrder_Shows = 0          'ASC
             End If
 
@@ -15626,7 +15682,7 @@ Public Class frmMain
         End With
     End Sub
 
-    Private Sub SaveSorting_Movies()
+    Private Sub SortingSave_Movies()
         Dim Order As Integer
         If dgvMovies.SortOrder = SortOrder.None Then Order = 0 'ComponentModel.ListSortDirection has only ASC and DESC. So set [None] to ASC
         If dgvMovies.SortOrder = SortOrder.Ascending Then Order = 0
@@ -15636,7 +15692,7 @@ Public Class frmMain
         Master.eSettings.GeneralMainFilterSortOrder_Movies = Order
     End Sub
 
-    Private Sub SaveSorting_MovieSets()
+    Private Sub SortingSave_MovieSets()
         Dim Order As Integer
         If dgvMovieSets.SortOrder = SortOrder.None Then Order = 0 'ComponentModel.ListSortDirection has only ASC and DESC. So set [None] to ASC
         If dgvMovieSets.SortOrder = SortOrder.Ascending Then Order = 0
@@ -15646,7 +15702,27 @@ Public Class frmMain
         Master.eSettings.GeneralMainFilterSortOrder_MovieSets = Order
     End Sub
 
-    Private Sub SaveFilter_Shows()
+    Private Sub SortingSave_TVEpisodes()
+        Dim Order As Integer
+        If dgvTVEpisodes.SortOrder = SortOrder.None Then Order = 0 'ComponentModel.ListSortDirection has only ASC and DESC. So set [None] to ASC
+        If dgvTVEpisodes.SortOrder = SortOrder.Ascending Then Order = 0
+        If dgvTVEpisodes.SortOrder = SortOrder.Descending Then Order = 1
+
+        Master.eSettings.GeneralMainFilterSortColumn_Episodes = dgvTVEpisodes.SortedColumn.Index
+        Master.eSettings.GeneralMainFilterSortOrder_Episodes = Order
+    End Sub
+
+    Private Sub SortingSave_TVSeasons()
+        Dim Order As Integer
+        If dgvTVSeasons.SortOrder = SortOrder.None Then Order = 0 'ComponentModel.ListSortDirection has only ASC and DESC. So set [None] to ASC
+        If dgvTVSeasons.SortOrder = SortOrder.Ascending Then Order = 0
+        If dgvTVSeasons.SortOrder = SortOrder.Descending Then Order = 1
+
+        Master.eSettings.GeneralMainFilterSortColumn_Seasons = dgvTVSeasons.SortedColumn.Index
+        Master.eSettings.GeneralMainFilterSortOrder_Seasons = Order
+    End Sub
+
+    Private Sub SortingSave_TVShows()
         Dim Order As Integer
         If dgvTVShows.SortOrder = SortOrder.None Then Order = 0 'ComponentModel.ListSortDirection has only ASC and DESC. So set [None] to ASC
         If dgvTVShows.SortOrder = SortOrder.Ascending Then Order = 0

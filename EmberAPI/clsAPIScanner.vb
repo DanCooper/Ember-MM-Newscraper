@@ -397,7 +397,7 @@ Public Class Scanner
     End Sub
 
     Public Sub GetFolderContents_TVSeason(ByRef tDBElement As Database.DBElement)
-        Dim iSeason As Integer = tDBElement.TVSeason.Season
+        Dim bIsAllSeasons As Boolean = tDBElement.TVSeason.IsAllSeasons
         Dim strSeasonPath As String = String.Empty
         Dim strShowPath As String = tDBElement.ShowPath
         Dim bInside As Boolean = False
@@ -407,7 +407,7 @@ Public Class Scanner
         tDBElement.ImagesContainer = New MediaContainers.ImagesContainer
 
         'check if there is a season directory
-        strSeasonPath = Functions.GetSeasonDirectoryFromShowPath(strShowPath, iSeason)
+        strSeasonPath = Functions.GetSeasonDirectoryFromShowPath(strShowPath, tDBElement.TVSeason.Season)
         If Not String.IsNullOrEmpty(strSeasonPath) Then 'If Functions.IsSeasonDirectory(Directory.GetParent(TVDB.Filename).FullName) Then
             bInside = True
         End If
@@ -424,7 +424,7 @@ Public Class Scanner
         End Try
 
         'season banner
-        If iSeason = 999 Then 'all-seasons
+        If bIsAllSeasons Then 'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsBanner)
                 tDBElement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If tDBElement.ImagesContainer.Banner.LocalFilePathSpecified Then Exit For
@@ -437,7 +437,7 @@ Public Class Scanner
         End If
 
         'season fanart 
-        If iSeason = 999 Then 'all-seasons
+        If bIsAllSeasons Then 'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsFanart)
                 tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
@@ -450,7 +450,7 @@ Public Class Scanner
         End If
 
         'season landscape
-        If iSeason = 999 Then 'all-seasons
+        If bIsAllSeasons Then 'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsLandscape)
                 tDBElement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If tDBElement.ImagesContainer.Landscape.LocalFilePathSpecified Then Exit For
@@ -463,7 +463,7 @@ Public Class Scanner
         End If
 
         'season poster
-        If iSeason = 999 Then 'all-seasons
+        If bIsAllSeasons Then 'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsPoster)
                 tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
@@ -1061,12 +1061,12 @@ Public Class Scanner
 
             'create the "* All Seasons" entry if needed
             If isNew Then
-                Dim tmpAllSeasons As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = 999)
+                Dim tmpAllSeasons As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.IsAllSeasons)
                 If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
                     tmpAllSeasons = New Database.DBElement(Enums.ContentType.TVSeason)
                     tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTVShow)
                     tmpAllSeasons.Filename = Path.Combine(DBTVShow.ShowPath, "file.ext")
-                    tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
+                    tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = -1}
                     GetFolderContents_TVSeason(tmpAllSeasons)
                     DBTVShow.Seasons.Add(tmpAllSeasons)
                     newSeasonsIndex.Add(tmpAllSeasons.TVSeason.Season)

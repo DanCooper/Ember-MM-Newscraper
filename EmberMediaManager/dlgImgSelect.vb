@@ -128,7 +128,7 @@ Public Class dlgImgSelect
     Private DoSeasonLandscape As Boolean = False
     Private DoSeasonPoster As Boolean = False
 
-    Private DoOnlySeason As Integer = -1
+    Private DoOnlySeason As Integer = -2
 
     Private LoadedAllSeasonsBanner As Boolean = False
     Private LoadedAllSeasonsFanart As Boolean = False
@@ -152,7 +152,7 @@ Public Class dlgImgSelect
     Private LoadedSeasonPoster As Boolean = False
 
     Private currListImage As New iTag
-    Private currListImageSelectedSeason As Integer = -1
+    Private currListImageSelectedSeason As Integer = -2
     Private currListImageSelectedImageType As Enums.ModifierType
     Private currSubImage As New iTag
     Private currSubImageSelectedType As Enums.ModifierType
@@ -264,20 +264,20 @@ Public Class dlgImgSelect
             Case Enums.ModifierType.MainExtrafanarts
                 If tResultImagesContainer.ImagesContainer.Extrafanarts.Where(Function(f) f.URLOriginal = tTag.Image.URLOriginal).Count = 0 Then
                     tResultImagesContainer.ImagesContainer.Extrafanarts.Add(tTag.Image)
-                    AddSubImage(tTag.Image, pnlSubImages.Controls.Count, Enums.ModifierType.MainExtrafanarts, -1)
+                    AddSubImage(tTag.Image, pnlSubImages.Controls.Count, Enums.ModifierType.MainExtrafanarts, -2)
                     ReorderSubImages()
                 End If
             Case Enums.ModifierType.MainExtrathumbs
                 If tResultImagesContainer.ImagesContainer.Extrathumbs.Where(Function(f) f.URLOriginal = tTag.Image.URLOriginal).Count = 0 Then
                     tTag.Image.Index = tResultImagesContainer.ImagesContainer.Extrathumbs.Count
                     tResultImagesContainer.ImagesContainer.Extrathumbs.Add(tTag.Image)
-                    AddSubImage(tTag.Image, pnlSubImages.Controls.Count, Enums.ModifierType.MainExtrathumbs, -1)
+                    AddSubImage(tTag.Image, pnlSubImages.Controls.Count, Enums.ModifierType.MainExtrathumbs, -2)
                     ReorderSubImages()
                 End If
         End Select
     End Sub
 
-    Private Sub AddListImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -1)
+    Private Sub AddListImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -2)
         Dim tTag As iTag = CreateImageTag(tImage, ModifierType, iSeason, iIndex)
 
         ReDim Preserve pnlListImage_Panel(iIndex)
@@ -469,7 +469,7 @@ Public Class dlgImgSelect
         iSubImage_NextTop = iSubImage_NextTop + iSubImage_Size_Panel.Height + iSubImage_DistanceTop
     End Sub
 
-    Private Sub AddTopImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -1)
+    Private Sub AddTopImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -2)
         Dim tTag As iTag = CreateImageTag(tImage, ModifierType, iSeason)
 
         ReDim Preserve pnlTopImage_Panel(iIndex)
@@ -974,7 +974,7 @@ Public Class dlgImgSelect
         End Select
     End Sub
 
-    Private Function CreateImageTag(ByRef tImage As MediaContainers.Image, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -1, Optional ByVal iIndex As Integer = -1) As iTag
+    Private Function CreateImageTag(ByRef tImage As MediaContainers.Image, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -2, Optional ByVal iIndex As Integer = -1) As iTag
         Dim nTag As New iTag
 
         nTag.Image = tImage
@@ -1005,13 +1005,13 @@ Public Class dlgImgSelect
         End If
 
         'Season
-        If iSeason = 999 Then
-            nTag.iSeason = 999
+        If iSeason = -1 Then
+            nTag.iSeason = -1
             nTag.strSeason = Master.eLang.GetString(1256, "* All Seasons")
         ElseIf iSeason = 0 Then
             nTag.iSeason = 0
             nTag.strSeason = Master.eLang.GetString(655, "Season Specials")
-        ElseIf Not iSeason = -1 Then
+        ElseIf Not iSeason = -2 Then
             nTag.iSeason = iSeason
             nTag.strSeason = String.Format(Master.eLang.GetString(726, "Season {0}"), iSeason)
         Else
@@ -1101,49 +1101,49 @@ Public Class dlgImgSelect
 
         If currSubImageSelectedType = Enums.ModifierType.MainExtrafanarts AndAlso DoMainExtrafanarts Then
             For Each img In tResultImagesContainer.ImagesContainer.Extrafanarts
-                AddSubImage(img, iCount, Enums.ModifierType.MainExtrafanarts, -1)
+                AddSubImage(img, iCount, Enums.ModifierType.MainExtrafanarts, -2)
                 iCount += 1
             Next
         ElseIf currSubImageSelectedType = Enums.ModifierType.MainExtrathumbs AndAlso DoMainExtrathumbs Then
             tResultImagesContainer.ImagesContainer.SortExtrathumbs()
             For Each img In tResultImagesContainer.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
                 img.Index = iCount
-                AddSubImage(img, iCount, Enums.ModifierType.MainExtrathumbs, -1)
+                AddSubImage(img, iCount, Enums.ModifierType.MainExtrathumbs, -2)
                 iCount += 1
             Next
         ElseIf currSubImageSelectedType = Enums.ModifierType.SeasonBanner AndAlso DoSeasonBanner Then
-            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) f.Season = 999)
+            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) f.Season = -1)
                 AddSubImage(sSeason.Banner, iCount, Enums.ModifierType.AllSeasonsBanner, sSeason.Season)
                 iCount += 1
             Next
-            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) Not f.Season = 999).OrderBy(Function(f) f.Season)
+            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) Not f.Season = -1).OrderBy(Function(f) f.Season)
                 AddSubImage(sSeason.Banner, iCount, Enums.ModifierType.SeasonBanner, sSeason.Season)
                 iCount += 1
             Next
         ElseIf currSubImageSelectedType = Enums.ModifierType.SeasonFanart AndAlso DoSeasonFanart Then
-            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) f.Season = 999)
+            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) f.Season = -1)
                 AddSubImage(sSeason.Fanart, iCount, Enums.ModifierType.AllSeasonsFanart, sSeason.Season)
                 iCount += 1
             Next
-            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) Not f.Season = 999).OrderBy(Function(f) f.Season)
+            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) Not f.Season = -1).OrderBy(Function(f) f.Season)
                 AddSubImage(sSeason.Fanart, iCount, Enums.ModifierType.SeasonFanart, sSeason.Season)
                 iCount += 1
             Next
         ElseIf currSubImageSelectedType = Enums.ModifierType.SeasonLandscape AndAlso DoSeasonLandscape Then
-            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) f.Season = 999)
+            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) f.Season = -1)
                 AddSubImage(sSeason.Landscape, iCount, Enums.ModifierType.AllSeasonsLandscape, sSeason.Season)
                 iCount += 1
             Next
-            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) Not f.Season = 999).OrderBy(Function(f) f.Season)
+            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) Not f.Season = -1).OrderBy(Function(f) f.Season)
                 AddSubImage(sSeason.Landscape, iCount, Enums.ModifierType.SeasonLandscape, sSeason.Season)
                 iCount += 1
             Next
         ElseIf currSubImageSelectedType = Enums.ModifierType.SeasonPoster AndAlso DoSeasonPoster Then
-            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) f.Season = 999)
+            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) f.Season = -1)
                 AddSubImage(sSeason.Poster, iCount, Enums.ModifierType.AllSeasonsPoster, sSeason.Season)
                 iCount += 1
             Next
-            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) Not f.Season = 999).OrderBy(Function(f) f.Season)
+            For Each sSeason As MediaContainers.EpisodeOrSeasonImagesContainer In tResultImagesContainer.Seasons.Where(Function(f) Not f.Season = -1).OrderBy(Function(f) f.Season)
                 AddSubImage(sSeason.Poster, iCount, Enums.ModifierType.SeasonPoster, sSeason.Season)
                 iCount += 1
             Next
@@ -1468,10 +1468,10 @@ Public Class dlgImgSelect
                                         tSearchResultsContainer.MainClearArts.Count + tSearchResultsContainer.MainClearLogos.Count +
                                         tSearchResultsContainer.MainDiscArts.Count + tSearchResultsContainer.MainFanarts.Count +
                                         tSearchResultsContainer.MainLandscapes.Count + tSearchResultsContainer.MainPosters.Count +
-                                        tSearchResultsContainer.SeasonBanners.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count +
-                                        tSearchResultsContainer.SeasonFanarts.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count +
-                                        tSearchResultsContainer.SeasonLandscapes.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count +
-                                        tSearchResultsContainer.SeasonPosters.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count, "max")
+                                        tSearchResultsContainer.SeasonBanners.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count +
+                                        tSearchResultsContainer.SeasonFanarts.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count +
+                                        tSearchResultsContainer.SeasonLandscapes.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count +
+                                        tSearchResultsContainer.SeasonPosters.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count, "max")
 
         'Main Posters
         If DoMainPoster OrElse DoAllSeasonsPoster Then
@@ -1595,7 +1595,7 @@ Public Class dlgImgSelect
 
         'Season Banners
         If DoSeasonBanner OrElse DoAllSeasonsBanner Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonBanners.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonBanners.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
                 tImg.LoadAndCache(tContentType, False, True)
                 If bwImgDownload.CancellationPending Then
                     Return True
@@ -1610,7 +1610,7 @@ Public Class dlgImgSelect
 
         'Season Fanarts
         If DoSeasonFanart OrElse DoAllSeasonsFanart Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
                 tImg.LoadAndCache(tContentType, False, True)
                 If bwImgDownload.CancellationPending Then
                     Return True
@@ -1625,7 +1625,7 @@ Public Class dlgImgSelect
 
         'Season Landscapes
         If DoSeasonLandscape OrElse DoAllSeasonsLandscape Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
                 tImg.LoadAndCache(tContentType, False, True)
                 If bwImgDownload.CancellationPending Then
                     Return True
@@ -1640,7 +1640,7 @@ Public Class dlgImgSelect
 
         'Season Posters
         If DoSeasonPoster OrElse DoAllSeasonsPoster Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonPosters.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonPosters.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
                 tImg.LoadAndCache(tContentType, False, True)
                 If bwImgDownload.CancellationPending Then
                     Return True
@@ -1792,42 +1792,42 @@ Public Class dlgImgSelect
         Select Case tTag.ImageType
             Case Enums.ModifierType.AllSeasonsBanner
                 iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonBanners.Where(Function(f) f.Season = 999)
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonBanners.Where(Function(f) f.Season = -1)
                     AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsBanner)
                     iCount += 1
                 Next
                 For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainBanners
-                    AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsBanner, 999)
+                    AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsBanner, -1)
                     iCount += 1
                 Next
             Case Enums.ModifierType.AllSeasonsFanart
                 iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts.Where(Function(f) f.Season = 999)
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts.Where(Function(f) f.Season = -1)
                     AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsFanart)
                     iCount += 1
                 Next
                 For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                    AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsFanart, 999)
+                    AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsFanart, -1)
                     iCount += 1
                 Next
             Case Enums.ModifierType.AllSeasonsLandscape
                 iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes.Where(Function(f) f.Season = 999)
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes.Where(Function(f) f.Season = -1)
                     AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsLandscape)
                     iCount += 1
                 Next
                 For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
-                    AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsLandscape, 999)
+                    AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsLandscape, -1)
                     iCount += 1
                 Next
             Case Enums.ModifierType.AllSeasonsPoster
                 iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonPosters.Where(Function(f) f.Season = 999)
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonPosters.Where(Function(f) f.Season = -1)
                     AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsPoster)
                     iCount += 1
                 Next
                 For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                    AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsPoster, 999)
+                    AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsPoster, -1)
                     iCount += 1
                 Next
             Case Enums.ModifierType.EpisodeFanart
@@ -2316,7 +2316,7 @@ Public Class dlgImgSelect
             ClearListImages()
             CreateSubImages()
             If currSubImageSelectedType = Enums.ModifierType.MainExtrafanarts OrElse currSubImageSelectedType = Enums.ModifierType.MainExtrathumbs Then
-                currSubImage = New iTag With {.ImageType = currSubImageSelectedType, .iSeason = -1}
+                currSubImage = New iTag With {.ImageType = currSubImageSelectedType, .iSeason = -2}
                 DeselectAllTopImages()
                 CreateListImages(currSubImage)
             End If

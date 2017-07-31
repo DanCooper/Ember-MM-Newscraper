@@ -1017,7 +1017,7 @@ Namespace Kodi
 
             If kTVSeasons IsNot Nothing Then
                 If kTVSeasons.seasons IsNot Nothing Then
-                    Dim result = kTVSeasons.seasons.FirstOrDefault(Function(f) f.season = If(tDBElement.TVSeason.Season = 999, -1, tDBElement.TVSeason.Season))
+                    Dim result = kTVSeasons.seasons.FirstOrDefault(Function(f) f.season = tDBElement.TVSeason.Season)
                     If result IsNot Nothing Then
                         logger.Trace(String.Format("[APIKodi] [{0}] SearchTVSeason: ""{1}: Season {2}"" | OK, found in host database! [ID:{3}]", _currenthost.Label, tDBElement.ShowPath, tDBElement.TVSeason.Season, result.seasonid))
                         Return result
@@ -1609,7 +1609,7 @@ Namespace Kodi
 
             Dim bIsNew As Boolean = False
 
-            If mDBElement.TVSeason.Season = 999 Then
+            If mDBElement.TVSeason.IsAllSeasons Then
                 logger.Info(String.Format("[APIKodi] [{0}] UpdateInfo_TVSeason: ""{1}: Season {2}"" | Skip syncing process (* All Seasons entry can't be synced)", _currenthost.Label, mDBElement.ShowPath, mDBElement.TVSeason.Season))
                 Return True
             End If

@@ -62,11 +62,15 @@ Partial Public Class clsXMLSettings
     Private _generalinfopanelstatemovieset As Integer
     Private _generalinfopanelstatetvshow As Integer
     Private _generallanguage As String
+    Private _generalmainfiltersortcolumn_episodes As Integer
     Private _generalmainfiltersortcolumn_movies As Integer
     Private _generalmainfiltersortcolumn_moviesets As Integer
+    Private _generalmainfiltersortcolumn_seasons As Integer
     Private _generalmainfiltersortcolumn_shows As Integer
+    Private _generalmainfiltersortorder_episodes As Integer
     Private _generalmainfiltersortorder_movies As Integer
     Private _generalmainfiltersortorder_moviesets As Integer
+    Private _generalmainfiltersortorder_seasons As Integer
     Private _generalmainfiltersortorder_shows As Integer
     Private _generalmoviesettheme As String
     Private _generalmovietheme As String
@@ -5082,6 +5086,24 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property GeneralMainFilterSortColumn_Episodes() As Integer
+        Get
+            Return Me._generalmainfiltersortcolumn_episodes
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalmainfiltersortcolumn_episodes = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortColumn_Seasons() As Integer
+        Get
+            Return Me._generalmainfiltersortcolumn_seasons
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalmainfiltersortcolumn_seasons = value
+        End Set
+    End Property
+
     Public Property GeneralMainFilterSortOrder_Movies() As Integer
         Get
             Return Me._generalmainfiltersortorder_movies
@@ -5106,6 +5128,24 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._generalmainfiltersortorder_shows = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortOrder_Seasons() As Integer
+        Get
+            Return Me._generalmainfiltersortorder_seasons
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalmainfiltersortorder_seasons = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortOrder_Episodes() As Integer
+        Get
+            Return Me._generalmainfiltersortorder_episodes
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalmainfiltersortorder_episodes = value
         End Set
     End Property
 

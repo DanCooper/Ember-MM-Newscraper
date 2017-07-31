@@ -163,7 +163,7 @@ Public Class MediaExporter
                 ElseIf part.ContentType = Enums.ContentType.TVSeason Then
                     If tTVShow IsNot Nothing Then
                         _iCounter_TVSeason = 1
-                        For Each tSeason As Database.DBElement In tTVShow.Seasons.Where(Function(f) Not f.TVSeason.Season = 999)
+                        For Each tSeason As Database.DBElement In tTVShow.Seasons.Where(Function(f) Not f.TVSeason.IsAllSeasons)
                             If Not sfunction Is Nothing Then
                                 If Not sfunction(tTVShow.TVShow.Title, tSeason.TVSeason.Title) Then Return Nothing
                             End If

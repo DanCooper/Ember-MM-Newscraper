@@ -938,10 +938,10 @@ Public Class NFO
         End If
 
         'create the "* All Seasons" entry if needed
-        Dim tmpAllSeasons As Database.DBElement = DBTV.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = 999)
+        Dim tmpAllSeasons As Database.DBElement = DBTV.Seasons.FirstOrDefault(Function(f) f.TVSeason.IsAllSeasons)
         If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
             tmpAllSeasons = New Database.DBElement(Enums.ContentType.TVSeason)
-            tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
+            tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = -1}
             tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTV)
             DBTV.Seasons.Add(tmpAllSeasons)
         End If
@@ -950,7 +950,7 @@ Public Class NFO
         Dim iIndex As Integer = 0
         While iIndex <= DBTV.Seasons.Count - 1
             Dim iSeason As Integer = DBTV.Seasons.Item(iIndex).TVSeason.Season
-            If Not iSeason = 999 AndAlso DBTV.Episodes.Where(Function(f) f.TVEpisode.Season = iSeason).Count = 0 Then
+            If Not iSeason = -1 AndAlso DBTV.Episodes.Where(Function(f) f.TVEpisode.Season = iSeason).Count = 0 Then
                 DBTV.Seasons.RemoveAt(iIndex)
             Else
                 iIndex += 1

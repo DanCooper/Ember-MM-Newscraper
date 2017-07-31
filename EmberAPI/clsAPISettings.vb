@@ -4085,6 +4085,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralMainFilterSortColumn_Episodes() As Integer
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterSortColumn_Episodes
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.GeneralMainFilterSortColumn_Episodes = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortColumn_Seasons() As Integer
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterSortColumn_Seasons
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.GeneralMainFilterSortColumn_Seasons = value
+        End Set
+    End Property
+
     Public Property GeneralMainFilterSortOrder_Movies() As Integer
         Get
             Return Settings._XMLSettings.GeneralMainFilterSortOrder_Movies
@@ -4109,6 +4127,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.GeneralMainFilterSortOrder_Shows = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortOrder_Seasons() As Integer
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterSortOrder_Seasons
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.GeneralMainFilterSortOrder_Seasons = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortOrder_Episodes() As Integer
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterSortOrder_Episodes
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.GeneralMainFilterSortOrder_Episodes = value
         End Set
     End Property
 
@@ -6939,11 +6975,15 @@ Public Class Settings
         GeneralInfoPanelStateMovieSet = 200
         GeneralInfoPanelStateTVShow = 200
         GeneralLanguage = "English_(en_US)"
+        GeneralMainFilterSortColumn_Episodes = 1
         GeneralMainFilterSortColumn_MovieSets = 1
         GeneralMainFilterSortColumn_Movies = 3
+        GeneralMainFilterSortColumn_Seasons = 1
         GeneralMainFilterSortColumn_Shows = 1
+        GeneralMainFilterSortOrder_Episodes = 0
         GeneralMainFilterSortOrder_MovieSets = 0
         GeneralMainFilterSortOrder_Movies = 0
+        GeneralMainFilterSortOrder_Seasons = 0
         GeneralMainFilterSortOrder_Shows = 0
         GeneralMovieSetTheme = "Default"
         GeneralMovieTheme = "Default"
