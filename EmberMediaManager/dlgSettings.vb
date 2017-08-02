@@ -1853,15 +1853,12 @@ Public Class dlgSettings
             cbMovieScraperCertLang.SelectedIndex = 0
             chkMovieScraperCertForMPAA.Enabled = False
             chkMovieScraperCertForMPAA.Checked = False
-            chkMovieScraperCertFSK.Enabled = False
-            chkMovieScraperCertFSK.Checked = False
             chkMovieScraperCertOnlyValue.Enabled = False
             chkMovieScraperCertOnlyValue.Checked = False
         Else
             cbMovieScraperCertLang.Enabled = True
             cbMovieScraperCertLang.SelectedIndex = 0
             chkMovieScraperCertForMPAA.Enabled = True
-            chkMovieScraperCertFSK.Enabled = True
             chkMovieScraperCertOnlyValue.Enabled = True
         End If
     End Sub
@@ -1874,15 +1871,12 @@ Public Class dlgSettings
             cbTVScraperShowCertLang.SelectedIndex = 0
             chkTVScraperShowCertForMPAA.Enabled = False
             chkTVScraperShowCertForMPAA.Checked = False
-            chkTVScraperShowCertFSK.Enabled = False
-            chkTVScraperShowCertFSK.Checked = False
             chkTVScraperShowCertOnlyValue.Enabled = False
             chkTVScraperShowCertOnlyValue.Checked = False
         Else
             cbTVScraperShowCertLang.Enabled = True
             cbTVScraperShowCertLang.SelectedIndex = 0
             chkTVScraperShowCertForMPAA.Enabled = True
-            chkTVScraperShowCertFSK.Enabled = True
             chkTVScraperShowCertOnlyValue.Enabled = True
         End If
     End Sub
@@ -3030,7 +3024,6 @@ Public Class dlgSettings
             chkMovieScraperCert.Checked = .MovieScraperCert
             chkMovieScraperCertForMPAA.Checked = .MovieScraperCertForMPAA
             chkMovieScraperCertForMPAAFallback.Checked = .MovieScraperCertForMPAAFallback
-            chkMovieScraperCertFSK.Checked = .MovieScraperCertFSK
             chkMovieScraperCertOnlyValue.Checked = .MovieScraperCertOnlyValue
             chkMovieScraperCleanFields.Checked = .MovieScraperCleanFields
             chkMovieScraperCleanPlotOutline.Checked = .MovieScraperCleanPlotOutline
@@ -3166,7 +3159,6 @@ Public Class dlgSettings
             chkTVScraperShowCreators.Checked = .TVScraperShowCreators
             chkTVScraperShowCertForMPAA.Checked = .TVScraperShowCertForMPAA
             chkTVScraperShowCertForMPAAFallback.Checked = .TVScraperShowCertForMPAAFallback
-            chkTVScraperShowCertFSK.Checked = .TVScraperShowCertFSK
             chkTVScraperShowCertOnlyValue.Checked = .TVScraperShowCertOnlyValue
             chkTVScraperShowEpiGuideURL.Checked = .TVScraperShowEpiGuideURL
             chkTVScraperShowGenre.Checked = .TVScraperShowGenre
@@ -5108,7 +5100,6 @@ Public Class dlgSettings
             .MovieScraperCert = chkMovieScraperCert.Checked
             .MovieScraperCertForMPAA = chkMovieScraperCertForMPAA.Checked
             .MovieScraperCertForMPAAFallback = chkMovieScraperCertForMPAAFallback.Checked
-            .MovieScraperCertFSK = chkMovieScraperCertFSK.Checked
             .MovieScraperCertOnlyValue = chkMovieScraperCertOnlyValue.Checked
             If Not String.IsNullOrEmpty(cbMovieScraperCertLang.Text) Then
                 If cbMovieScraperCertLang.SelectedIndex = 0 Then
@@ -5302,7 +5293,6 @@ Public Class dlgSettings
             .TVScraperShowCreators = chkTVScraperShowCreators.Checked
             .TVScraperShowCertForMPAA = chkTVScraperShowCertForMPAA.Checked
             .TVScraperShowCertForMPAAFallback = chkTVScraperShowCertForMPAAFallback.Checked
-            .TVScraperShowCertFSK = chkTVScraperShowCertFSK.Checked
             .TVScraperShowCertOnlyValue = chkTVScraperShowCertOnlyValue.Checked
             If Not String.IsNullOrEmpty(cbTVScraperShowCertLang.Text) Then
                 If cbTVScraperShowCertLang.SelectedIndex = 0 Then
@@ -6803,11 +6793,6 @@ Public Class dlgSettings
         chkMovieScraperCertForMPAA.Text = strUseCertForMPAA
         chkTVScraperShowCertForMPAA.Text = strUseCertForMPAA
 
-        'Use MPAA as Fallback for FSK Rating
-        Dim strUseMPAAAsFallbackForFSK As String = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
-        chkMovieScraperCertFSK.Text = strUseMPAAAsFallbackForFSK
-        chkTVScraperShowCertFSK.Text = strUseMPAAAsFallbackForFSK
-
         'Watched
         Dim strWatched As String = Master.eLang.GetString(981, "Watched")
 
@@ -8167,7 +8152,6 @@ Public Class dlgSettings
         chkMovieRecognizeVTSExpertVTS.CheckedChanged,
         chkMovieScanOrderModify.CheckedChanged,
         chkMovieScraperCastWithImg.CheckedChanged,
-        chkMovieScraperCertFSK.CheckedChanged,
         chkMovieScraperCertForMPAAFallback.CheckedChanged,
         chkMovieScraperCertOnlyValue.CheckedChanged,
         chkMovieScraperCleanFields.CheckedChanged,

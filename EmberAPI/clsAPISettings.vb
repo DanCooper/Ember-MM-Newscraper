@@ -1336,24 +1336,6 @@ Public Class Settings
             Settings._XMLSettings.MovieLockYear = value
         End Set
     End Property
-
-    Public Property MovieScraperCertFSK() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieScraperCertFSK
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieScraperCertFSK = value
-        End Set
-    End Property
-
-    Public Property TVScraperShowCertFSK() As Boolean
-        Get
-            Return Settings._XMLSettings.TVScraperShowCertFSK
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVScraperShowCertFSK = value
-        End Set
-    End Property
     Public Property MovieLockStudio() As Boolean
         Get
             Return Settings._XMLSettings.MovieLockStudio
@@ -7165,7 +7147,6 @@ Public Class Settings
         MovieScraperUseDetailView = False
         MovieScraperUseMDDuration = True
         MovieScraperUserRating = True
-        MovieScraperCertFSK = False
         MovieScraperCredits = True
         MovieScraperXBMCTrailerFormat = False
         MovieScraperYear = True
@@ -7363,7 +7344,6 @@ Public Class Settings
         TVScraperShowCert = False
         TVScraperShowCertForMPAA = False
         TVScraperShowCertForMPAAFallback = False
-        TVScraperShowCertFSK = False
         TVScraperShowCertLang = String.Empty
         TVScraperShowCertOnlyValue = False
         TVScraperShowCreators = True

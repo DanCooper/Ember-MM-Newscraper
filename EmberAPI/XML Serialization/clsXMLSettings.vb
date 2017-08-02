@@ -248,7 +248,6 @@ Partial Public Class clsXMLSettings
     Private _moviescraperusedetailview As Boolean
     Private _moviescraperusemdduration As Boolean
     Private _moviescraperuserrating As Boolean
-    Private _moviescrapercertfsk As Boolean
     Private _moviescrapercredits As Boolean
     Private _moviescraperxbmctrailerformat As Boolean
     Private _moviescraperyear As Boolean
@@ -444,7 +443,6 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowcert As Boolean
     Private _tvscrapershowcertformpaa As Boolean
     Private _tvscrapershowcertformpaafallback As Boolean
-    Private _tvscrapershowcertfsk As Boolean
     Private _tvscrapershowcertlang As String
     Private _tvscrapershowcertonlyvalue As Boolean
     Private _tvscrapershowcreators As Boolean
@@ -2380,23 +2378,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieScraperCertFSK() As Boolean
-        Get
-            Return Me._moviescrapercertfsk
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviescrapercertfsk = value
-        End Set
-    End Property
-
-    Public Property TVScraperShowCertFSK() As Boolean
-        Get
-            Return Me._tvscrapershowcertfsk
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvscrapershowcertfsk = value
-        End Set
-    End Property
     Public Property MovieLockStudio() As Boolean
         Get
             Return Me._movielockstudio
