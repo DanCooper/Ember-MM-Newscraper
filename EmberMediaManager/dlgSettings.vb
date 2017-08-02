@@ -3183,7 +3183,7 @@ Public Class dlgSettings
                 txtTVSeasonBannerWidth.Text = .TVSeasonBannerWidth.ToString
             End If
             chkTVShowExtrafanartsKeepExisting.Checked = .TVShowExtrafanartsKeepExisting
-            chkTVShowExtrafanartsPrefSizeOnly.Checked = .TVShowExtrafanartsPrefOnly
+            chkTVShowExtrafanartsPrefSizeOnly.Checked = .TVShowExtrafanartsPrefSizeOnly
             chkTVShowExtrafanartsPreselect.Checked = .TVShowExtrafanartsPreselect
             chkTVShowExtrafanartsResize.Checked = .TVShowExtrafanartsResize
             If .TVShowExtrafanartsResize Then
@@ -5350,7 +5350,6 @@ Public Class dlgSettings
             .TVShowExtrafanartsHeight = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsHeight.Text), Convert.ToInt32(txtTVShowExtrafanartsHeight.Text), 0)
             .TVShowExtrafanartsLimit = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsLimit.Text), Convert.ToInt32(txtTVShowExtrafanartsLimit.Text), 0)
             .TVShowExtrafanartsKeepExisting = chkTVShowExtrafanartsKeepExisting.Checked
-            .TVShowExtrafanartsPrefOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
             .TVShowExtrafanartsPrefSize = CType(cbTVShowExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
             .TVShowExtrafanartsPrefSizeOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
             .TVShowExtrafanartsPreselect = chkTVShowExtrafanartsPreselect.Checked
@@ -5359,7 +5358,7 @@ Public Class dlgSettings
             .TVShowFanartHeight = If(Not String.IsNullOrEmpty(txtTVShowFanartHeight.Text), Convert.ToInt32(txtTVShowFanartHeight.Text), 0)
             .TVShowFanartKeepExisting = chkTVShowFanartKeepExisting.Checked
             .TVShowFanartPrefSize = CType(cbTVShowFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
-            .TVShowFanartPrefSizeOnly = chkTVShowFanartKeepExisting.Checked
+            .TVShowFanartPrefSizeOnly = chkTVShowFanartPrefSizeOnly.Checked
             .TVShowFanartResize = chkTVShowFanartResize.Checked
             .TVShowFanartWidth = If(Not String.IsNullOrEmpty(txtTVShowFanartWidth.Text), Convert.ToInt32(txtTVShowFanartWidth.Text), 0)
             .TVShowFilterCustom.Clear()
@@ -8048,9 +8047,9 @@ Public Class dlgSettings
         chkGeneralDisplayLangFlags.CheckedChanged,
         chkGeneralDoubleClickScrape.CheckedChanged,
         chkGeneralImageFilterAutoscraper.CheckedChanged,
+        chkGeneralImageFilterFanart.CheckedChanged,
         chkGeneralImageFilterImagedialog.CheckedChanged,
         chkGeneralImageFilterPoster.CheckedChanged,
-        chkGeneralImageFilterFanart.CheckedChanged,
         chkGeneralImagesGlassOverlay.CheckedChanged,
         chkGeneralOverwriteNfo.CheckedChanged,
         chkGeneralSourceFromFolder.CheckedChanged,
@@ -8086,8 +8085,8 @@ Public Class dlgSettings
         chkMovieExtrafanartsKeepExisting.CheckedChanged,
         chkMovieExtrafanartsPrefOnly.CheckedChanged,
         chkMovieExtrafanartsPreselect.CheckedChanged,
-        chkMovieExtrathumbsCreatorNoSpoilers.CheckedChanged,
         chkMovieExtrathumbsCreatorNoBlackBars.CheckedChanged,
+        chkMovieExtrathumbsCreatorNoSpoilers.CheckedChanged,
         chkMovieExtrathumbsEden.CheckedChanged,
         chkMovieExtrathumbsExpertBDMV.CheckedChanged,
         chkMovieExtrathumbsExpertSingle.CheckedChanged,
@@ -8136,6 +8135,7 @@ Public Class dlgSettings
         chkMovieLockTitle.CheckedChanged,
         chkMovieLockTop250.CheckedChanged,
         chkMovieLockTrailer.CheckedChanged,
+        chkMovieLockUserRating.CheckedChanged,
         chkMovieLockYear.CheckedChanged,
         chkMovieNFOBoxee.CheckedChanged,
         chkMovieNFOEden.CheckedChanged,
@@ -8157,6 +8157,8 @@ Public Class dlgSettings
         chkMovieScraperCleanFields.CheckedChanged,
         chkMovieScraperCleanPlotOutline.CheckedChanged,
         chkMovieScraperCollectionsAuto.CheckedChanged,
+        chkMovieScraperCollectionsExtendedInfo.CheckedChanged,
+        chkMovieScraperCollectionsYAMJCompatibleSets.CheckedChanged,
         chkMovieScraperCountry.CheckedChanged,
         chkMovieScraperCredits.CheckedChanged,
         chkMovieScraperDetailView.CheckedChanged,
@@ -8175,6 +8177,7 @@ Public Class dlgSettings
         chkMovieScraperTitle.CheckedChanged,
         chkMovieScraperTop250.CheckedChanged,
         chkMovieScraperTrailer.CheckedChanged,
+        chkMovieScraperUserRating.CheckedChanged,
         chkMovieScraperXBMCTrailerFormat.CheckedChanged,
         chkMovieScraperYear.CheckedChanged,
         chkMovieSetBannerExtended.CheckedChanged,
@@ -8259,6 +8262,7 @@ Public Class dlgSettings
         chkTVLockEpisodeRating.CheckedChanged,
         chkTVLockEpisodeRuntime.CheckedChanged,
         chkTVLockEpisodeTitle.CheckedChanged,
+        chkTVLockEpisodeUserRating.CheckedChanged,
         chkTVLockSeasonPlot.CheckedChanged,
         chkTVLockSeasonTitle.CheckedChanged,
         chkTVLockShowCert.CheckedChanged,
@@ -8272,7 +8276,9 @@ Public Class dlgSettings
         chkTVLockShowStatus.CheckedChanged,
         chkTVLockShowStudio.CheckedChanged,
         chkTVLockShowTitle.CheckedChanged,
+        chkTVLockShowUserRating.CheckedChanged,
         chkTVScanOrderModify.CheckedChanged,
+        chkTVScraperCastWithImg.CheckedChanged,
         chkTVScraperCleanFields.CheckedChanged,
         chkTVScraperEpisodeAired.CheckedChanged,
         chkTVScraperEpisodeCredits.CheckedChanged,
@@ -8283,6 +8289,7 @@ Public Class dlgSettings
         chkTVScraperEpisodeRating.CheckedChanged,
         chkTVScraperEpisodeRuntime.CheckedChanged,
         chkTVScraperEpisodeTitle.CheckedChanged,
+        chkTVScraperEpisodeUserRating.CheckedChanged,
         chkTVScraperSeasonAired.CheckedChanged,
         chkTVScraperSeasonPlot.CheckedChanged,
         chkTVScraperSeasonTitle.CheckedChanged,
@@ -8297,6 +8304,7 @@ Public Class dlgSettings
         chkTVScraperShowStatus.CheckedChanged,
         chkTVScraperShowStudio.CheckedChanged,
         chkTVScraperShowTitle.CheckedChanged,
+        chkTVScraperShowUserRating.CheckedChanged,
         chkTVScraperUseDisplaySeasonEpisode.CheckedChanged,
         chkTVScraperUseSRuntimeForEp.CheckedChanged,
         chkTVSeasonBannerFrodo.CheckedChanged,
@@ -8411,8 +8419,6 @@ Public Class dlgSettings
         txtMoviePosterHeight.TextChanged,
         txtMoviePosterWidth.TextChanged,
         txtMovieScraperCastLimit.TextChanged,
-        chkMovieScraperCollectionsExtendedInfo.CheckedChanged,
-        chkMovieScraperCollectionsYAMJCompatibleSets.CheckedChanged,
         txtMovieScraperDurationRuntimeFormat.TextChanged,
         txtMovieScraperGenreLimit.TextChanged,
         txtMovieScraperMPAANotRated.TextChanged,
@@ -8488,7 +8494,7 @@ Public Class dlgSettings
         txtTVShowPosterHeight.TextChanged,
         txtTVShowPosterWidth.TextChanged,
         txtTVShowThemeTvTunesCustomPath.TextChanged,
-        txtTVShowThemeTvTunesSubDir.TextChanged, chkMovieScraperUserRating.CheckedChanged, chkMovieLockUserRating.CheckedChanged, chkTVScraperShowUserRating.CheckedChanged, chkTVScraperEpisodeUserRating.CheckedChanged, chkTVLockShowUserRating.CheckedChanged, chkTVLockEpisodeUserRating.CheckedChanged, chkTVScraperCastWithImg.CheckedChanged
+        txtTVShowThemeTvTunesSubDir.TextChanged
 
         SetApplyButton(True)
     End Sub

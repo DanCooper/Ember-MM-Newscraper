@@ -680,15 +680,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowExtrafanartsPrefOnly() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowExtrafanartsPrefOnly
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowExtrafanartsPrefOnly = value
-        End Set
-    End Property
-
     Public Property MovieExtrafanartsPrefSizeOnly() As Boolean
         Get
             Return Settings._XMLSettings.MovieExtrafanartsPrefSizeOnly
@@ -7404,7 +7395,6 @@ Public Class Settings
         TVShowClearLogoKeepExisting = False
         TVShowExtrafanartsLimit = 4
         TVShowExtrafanartsKeepExisting = False
-        TVShowExtrafanartsPrefOnly = False
         TVShowExtrafanartsPrefSize = Enums.TVFanartSize.Any
         TVShowExtrafanartsPrefSizeOnly = False
         TVShowExtrafanartsPreselect = True

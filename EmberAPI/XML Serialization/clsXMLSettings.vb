@@ -500,7 +500,6 @@ Partial Public Class clsXMLSettings
     Private _tvshowclearlogokeepexisting As Boolean
     Private _tvshowextrafanartslimit As Integer
     Private _tvshowextrafanartskeepexisting As Boolean
-    Private _tvshowextrafanartsprefonly As Boolean
     Private _tvshowextrafanartsprefsize As Enums.TVFanartSize
     Private _tvshowextrafanartsprefsizeonly As Boolean
     Private _tvshowextrafanartspreselect As Boolean
@@ -1657,15 +1656,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._moviesetfanartheight = value
-        End Set
-    End Property
-
-    Public Property TVShowExtrafanartsPrefOnly() As Boolean
-        Get
-            Return Me._tvshowextrafanartsprefonly
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowextrafanartsprefonly = value
         End Set
     End Property
 
