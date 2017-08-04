@@ -189,6 +189,106 @@ Namespace FileUtils
             End If
 
         End Sub
+
+        Public Shared Function GetAllItemsOfDBElement(ByVal tDBElement As Database.DBElement) As List(Of FileSystemInfo)
+            Dim lstItems As New List(Of FileSystemInfo)
+
+            Select Case tDBElement.ContentType
+                Case Enums.ContentType.Movie, Enums.ContentType.TVEpisode
+                    If tDBElement.FilenameSpecified Then
+                        If tDBElement.IsSingle OrElse isBDRip(tDBElement.Filename) OrElse isVideoTS(tDBElement.Filename) Then
+                            lstItems.Add(GetMainPath(tDBElement.Filename))
+                        Else
+                            Select Case tDBElement.ContentType
+                                Case Enums.ContentType.Movie
+                                    lstItems.Add(New FileInfo(tDBElement.Filename))
+                                    Dim lstFiles As New List(Of String)
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainBanner))
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainClearArt))
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainClearLogo))
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainDiscArt))
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainFanart))
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainLandscape))
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainNFO))
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainPoster))
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainSubtitle))
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme))
+                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTrailer))
+                                    lstFiles = lstFiles.Distinct().ToList()  'remove double entries
+                                    lstFiles.Sort()
+                                    For Each nFile In lstFiles
+                                        Dim nFileinfo As New FileInfo(nFile)
+                                        If nFileinfo.Exists Then lstItems.Add(nFileinfo)
+                                    Next
+
+                                Case Enums.ContentType.TVEpisode
+                                    lstItems.Add(New FileInfo(tDBElement.Filename))
+                                    Dim lstFiles As New List(Of String)
+                                    lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeFanart))
+                                    lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeNFO))
+                                    lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodePoster))
+                                    lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeSubtitle))
+                                    lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeWatchedFile))
+                                    lstFiles = lstFiles.Distinct().ToList()  'remove double entries
+                                    lstFiles.Sort()
+                                    For Each nFile In lstFiles
+                                        Dim nFileinfo As New FileInfo(nFile)
+                                        If nFileinfo.Exists Then lstItems.Add(nFileinfo)
+                                    Next
+                            End Select
+                        End If
+                    End If
+
+
+                Case Enums.ContentType.Movieset
+                    Dim lstFiles As New List(Of String)
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainBanner))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainClearArt))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainClearLogo))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainDiscArt))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainFanart))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainLandscape))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainNFO))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainPoster))
+                    lstFiles = lstFiles.Distinct().ToList()  'remove double entries
+                    lstFiles.Sort()
+                    For Each nFile In lstFiles
+                        Dim nFileinfo As New FileInfo(nFile)
+                        If nFileinfo.Exists Then lstItems.Add(nFileinfo)
+                    Next
+
+                Case Enums.ContentType.TVSeason
+                    For Each nEpisode In tDBElement.Episodes
+                        lstItems.AddRange(GetAllItemsOfDBElement(nEpisode))
+                    Next
+                    Dim lstFiles As New List(Of String)
+                    If tDBElement.TVSeason.IsAllSeasons Then
+                        lstFiles.AddRange(GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsBanner))
+                        lstFiles.AddRange(GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsFanart))
+                        lstFiles.AddRange(GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsLandscape))
+                        lstFiles.AddRange(GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsPoster))
+                        lstFiles = lstFiles.Distinct().ToList()  'remove double entries
+                        lstFiles.Sort()
+                    Else
+                        lstFiles.AddRange(GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonBanner))
+                        lstFiles.AddRange(GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonFanart))
+                        lstFiles.AddRange(GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonLandscape))
+                        lstFiles.AddRange(GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonNFO))
+                        lstFiles.AddRange(GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonPoster))
+                        lstFiles = lstFiles.Distinct().ToList()  'remove double entries
+                        lstFiles.Sort()
+                    End If
+                    For Each nFile In lstFiles
+                        Dim nFileinfo As New FileInfo(nFile)
+                        If nFileinfo.Exists Then lstItems.Add(nFileinfo)
+                    Next
+
+                Case Enums.ContentType.TVShow
+                    lstItems.Add(New DirectoryInfo(tDBElement.ShowPath))
+            End Select
+
+            Return lstItems
+        End Function
         ''' <summary>
         ''' Determine the lowest-level directory from the supplied path string. 
         ''' </summary>
