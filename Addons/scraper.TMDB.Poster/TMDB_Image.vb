@@ -464,7 +464,7 @@ Public Class TMDB_Image
             settings.SetBooleanSetting("DoShowFanart", ConfigModifier_TV.MainFanart, , , Enums.ContentType.TV)
             settings.SetBooleanSetting("DoShowPoster", ConfigModifier_TV.MainPoster, , , Enums.ContentType.TV)
 
-            settings.SetSetting("ApiKey", _setup_TV.txtApiKey.Text, , , Enums.ContentType.TV)
+            settings.SetSetting("APIKey", _setup_TV.txtApiKey.Text, , , Enums.ContentType.TV)
         End Using
     End Sub
 
