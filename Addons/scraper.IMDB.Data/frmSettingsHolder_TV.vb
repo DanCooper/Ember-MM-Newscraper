@@ -225,7 +225,7 @@ Public Class frmSettingsHolder_TV
         chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
         chkScraperShowPlot.Text = Master.eLang.GetString(65, "Plot")
         chkScraperShowPremiered.Text = Master.eLang.GetString(724, "Premiered")
-        chkScraperShowRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        chkScraperShowRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkScraperShowStudios.Text = Master.eLang.GetString(226, "Studios")
         chkScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
         gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")

@@ -73,16 +73,16 @@ Public Class dlgMovieDataScraperPreview
         lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         lblRating.Text = Master.eLang.GetString(245, "Rating:")
         lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
-        lblRuntime.Text = Master.eLang.GetString(238, "Runtime:")
+        lblRuntime.Text = String.Concat(Master.eLang.GetString(238, "Runtime"), ":")
         lblStudios.Text = String.Concat(Master.eLang.GetString(226, "Studios"), ":")
-        lblTagline.Text = Master.eLang.GetString(243, "Tagline:")
-        lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        lblTop250.Text = Master.eLang.GetString(240, "Top 250:")
+        lblTagline.Text = String.Concat(Master.eLang.GetString(397, "Tagline"), ":")
+        lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
+        lblTop250.Text = String.Concat(Master.eLang.GetString(591, "Top 250"), ":")
         lblTopDetails.Text = Master.eLang.GetString(1254, "Only data in selected tabs will be used!")
         lblTopTitle.Text = Master.eLang.GetString(1253, "Scraperresults")
         lblTrailerURL.Text = String.Concat(Master.eLang.GetString(227, "Trailer URL"), ":")
-        lblVotes.Text = Master.eLang.GetString(244, "Votes:")
-        lblYear.Text = Master.eLang.GetString(49, "Year:")
+        lblVotes.Text = String.Concat(Master.eLang.GetString(244, "Votes"), ":")
+        lblYear.Text = String.Concat(Master.eLang.GetString(278, "Year"), ":")
     End Sub
 
     ''' <summary>

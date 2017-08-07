@@ -204,7 +204,7 @@ Public Class frmSettingsHolder_Movie
         chkPlot.Text = Master.eLang.GetString(65, "Plot")
         chkRating.Text = Master.eLang.GetString(400, "Rating")
         chkRelease.Text = Master.eLang.GetString(57, "Release Date")
-        chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        chkRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkSearchDeviant.Text = Master.eLang.GetString(98, "Search -/+ 1 year if no search result was found")
         chkStudios.Text = Master.eLang.GetString(226, "Studios")
         chkTagline.Text = Master.eLang.GetString(397, "Tagline")

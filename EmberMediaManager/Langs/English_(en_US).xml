@@ -47,7 +47,7 @@
   <string id="46">Or</string>
   <string id="47">New</string>
   <string id="48">Marked</string>
-  <string id="49">Year:</string>
+  <string id="49"></string>
   <string id="50">Source:</string>
   <string id="51">Genre:</string>
   <string id="52">Filters</string>
@@ -236,15 +236,15 @@
   <string id="235">MPAA Rating:</string>
   <string id="236">Release Date:</string>
   <string id="237">Countries</string>
-  <string id="238">Runtime:</string>
+  <string id="238">Runtime</string>
   <string id="239">Director:</string>
-  <string id="240">Top 250:</string>
+  <string id="240"></string>
   <string id="241">Plot:</string>
   <string id="242">Plot Outline:</string>
-  <string id="243">Tagline:</string>
-  <string id="244">Votes:</string>
+  <string id="243">Tags</string>
+  <string id="244">Votes</string>
   <string id="245">Rating:</string>
-  <string id="246">Title:</string>
+  <string id="246"></string>
   <string id="247">Season Scraped</string>
   <string id="248">Show Scraped</string>
   <string id="249">Enable Image Caching</string>
@@ -394,7 +394,7 @@
   <string id="393">Producers</string>
   <string id="394">Credits (Writers)</string>
   <string id="395">Studio</string>
-  <string id="396">Runtime</string>
+  <string id="396"></string>
   <string id="397">Tagline</string>
   <string id="398">TeraCopy.exe not found</string>
   <string id="399">Downloading and Saving Contents into Database</string>
@@ -880,7 +880,7 @@
   <string id="879">Single Folder</string>
   <string id="880">Parent Folder</string>
   <string id="881">Added</string>
-  <string id="882"></string>
+  <string id="882">comma separated</string>
   <string id="883">Episode Scraped</string>
   <string id="884">IMDB Mirror:</string>
   <string id="885">Change Watched Status</string>

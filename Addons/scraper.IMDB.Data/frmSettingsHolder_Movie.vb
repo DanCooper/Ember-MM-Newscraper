@@ -213,7 +213,7 @@ Public Class frmSettingsHolder_Movie
         chkPopularTitles.Text = Master.eLang.GetString(1182, "Popular Titles")
         chkRating.Text = Master.eLang.GetString(400, "Rating")
         chkRelease.Text = Master.eLang.GetString(57, "Release Date")
-        chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        chkRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkShortTitles.Text = Master.eLang.GetString(837, "Short Titles")
         chkStudios.Text = Master.eLang.GetString(226, "Studios")
         chkTagline.Text = Master.eLang.GetString(397, "Tagline")

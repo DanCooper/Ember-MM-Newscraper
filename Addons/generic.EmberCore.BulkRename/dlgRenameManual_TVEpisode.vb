@@ -96,7 +96,7 @@ Public Class dlgRenameManual_TVEpisode
         Label2.Text = Master.eLang.GetString(15, "File Name")
         btnOK.Text = Master.eLang.GetString(179, "OK")
         btnCancel.Text = Master.eLang.GetString(19, "Close")
-        lblTitle.Text = Master.eLang.GetString(246, "Title:")
+        lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
         Label3.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
         txtTitle.Text = _DBElement.TVEpisode.Title
     End Sub

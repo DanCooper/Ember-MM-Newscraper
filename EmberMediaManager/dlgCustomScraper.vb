@@ -1245,7 +1245,7 @@ Public Class dlgCustomScraper
         chkMainOptionsPlot.Text = Master.eLang.GetString(65, "Plot")
         chkMainOptionsRating.Text = Master.eLang.GetString(400, "Rating")
         chkMainOptionsReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
-        chkMainOptionsRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        chkMainOptionsRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkMainOptionsStudios.Text = Master.eLang.GetString(226, "Studios")
         chkMainOptionsTagline.Text = Master.eLang.GetString(397, "Tagline")
         chkMainOptionsTitle.Text = Master.eLang.GetString(21, "Title")

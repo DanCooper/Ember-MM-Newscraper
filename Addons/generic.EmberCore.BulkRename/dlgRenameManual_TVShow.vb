@@ -82,7 +82,7 @@ Public Class dlgRenameManual_TVShow
         lblFolder.Text = Master.eLang.GetString(13, "Folder Name")
         btnOK.Text = Master.eLang.GetString(179, "OK")
         btnCancel.Text = Master.eLang.GetString(19, "Close")
-        lblTitle.Text = Master.eLang.GetString(246, "Title:")
+        lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
         lblStatus.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
         txtTitle.Text = _DBElement.TVShow.Title
     End Sub

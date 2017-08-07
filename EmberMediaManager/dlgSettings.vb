@@ -6643,7 +6643,7 @@ Public Class dlgSettings
         lblTVScraperGlobalRating.Text = strRating
 
         'Runtime
-        Dim strRuntime As String = Master.eLang.GetString(396, "Runtime")
+        Dim strRuntime As String = Master.eLang.GetString(238, "Runtime")
         lblMovieScraperGlobalRuntime.Text = strRuntime
         lblTVScraperGlobalRuntime.Text = strRuntime
 
