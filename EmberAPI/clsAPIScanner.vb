@@ -599,7 +599,7 @@ Public Class Scanner
             If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
                 Return False
             End If
-            For Each s As String In AdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanarts|extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+            For Each s As String In AdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanart|extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
                 If dInfo.Name.ToLower = s.ToLower Then
                     logger.Info(String.Format("[Sanner] [IsValidDir] [NotValidDirIs] Path ""{0}"" has been skipped (path name is ""{1}"")", dInfo.FullName, s))
                     Return False
