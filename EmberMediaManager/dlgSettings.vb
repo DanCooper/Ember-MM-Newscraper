@@ -727,15 +727,16 @@ Public Class dlgSettings
     Private Sub btnTVSourcesRegexTVShowMatchingAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingAdd.Click
         If String.IsNullOrEmpty(btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then
             Dim lID = (From lRegex As Settings.regexp In TVShowMatching Select lRegex.ID).Max
-            TVShowMatching.Add(New Settings.regexp With {.ID = Convert.ToInt32(lID) + 1,
-                                                            .Regexp = txtTVSourcesRegexTVShowMatchingRegex.Text,
-                                                            .defaultSeason = If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text) OrElse Not Integer.TryParse(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0), -1, CInt(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text)),
-                                                            .byDate = chkTVSourcesRegexTVShowMatchingByDate.Checked})
+            TVShowMatching.Add(New Settings.regexp With {
+                               .ID = Convert.ToInt32(lID) + 1,
+                               .Regexp = txtTVSourcesRegexTVShowMatchingRegex.Text,
+                               .defaultSeason = If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text) OrElse Not Integer.TryParse(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0), -2, CInt(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text)),
+                               .byDate = chkTVSourcesRegexTVShowMatchingByDate.Checked})
         Else
             Dim selRex = From lRegex As Settings.regexp In TVShowMatching Where lRegex.ID = Convert.ToInt32(btnTVSourcesRegexTVShowMatchingAdd.Tag)
             If selRex.Count > 0 Then
                 selRex(0).Regexp = txtTVSourcesRegexTVShowMatchingRegex.Text
-                selRex(0).defaultSeason = CInt(If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text), "-1", txtTVSourcesRegexTVShowMatchingDefaultSeason.Text))
+                selRex(0).defaultSeason = CInt(If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text), "-2", txtTVSourcesRegexTVShowMatchingDefaultSeason.Text))
                 selRex(0).byDate = chkTVSourcesRegexTVShowMatchingByDate.Checked
             End If
         End If
@@ -2731,7 +2732,7 @@ Public Class dlgSettings
         btnTVSourcesRegexTVShowMatchingAdd.Tag = lItem.Text
 
         txtTVSourcesRegexTVShowMatchingRegex.Text = lItem.SubItems(1).Text.ToString
-        txtTVSourcesRegexTVShowMatchingDefaultSeason.Text = If(Not lItem.SubItems(2).Text = "-1", lItem.SubItems(2).Text, String.Empty)
+        txtTVSourcesRegexTVShowMatchingDefaultSeason.Text = If(Not lItem.SubItems(2).Text = "-2", lItem.SubItems(2).Text, String.Empty)
 
         Select Case lItem.SubItems(3).Text
             Case "Yes"
@@ -4043,7 +4044,7 @@ Public Class dlgSettings
         For Each rShow As Settings.regexp In TVShowMatching
             lvItem = New ListViewItem(rShow.ID.ToString)
             lvItem.SubItems.Add(rShow.Regexp)
-            lvItem.SubItems.Add(If(Not rShow.defaultSeason.ToString = "-1", rShow.defaultSeason.ToString, String.Empty))
+            lvItem.SubItems.Add(If(Not rShow.defaultSeason.ToString = "-2", rShow.defaultSeason.ToString, String.Empty))
             lvItem.SubItems.Add(If(rShow.byDate, "Yes", "No"))
             lvTVSourcesRegexTVShowMatching.Items.Add(lvItem)
         Next
@@ -7246,7 +7247,9 @@ Public Class dlgSettings
     End Sub
 
     Private Sub ValidateTVShowMatching()
-        If Not String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingRegex.Text) AndAlso (String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text) OrElse Integer.TryParse(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0)) Then
+        If Not String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingRegex.Text) AndAlso
+            (String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text.Trim) OrElse Integer.TryParse(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0) AndAlso
+            CInt(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text.Trim) >= 0) Then
             btnTVSourcesRegexTVShowMatchingAdd.Enabled = True
         Else
             btnTVSourcesRegexTVShowMatchingAdd.Enabled = False

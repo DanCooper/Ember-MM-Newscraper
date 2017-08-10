@@ -1142,18 +1142,38 @@ Public Class Scanner
                 'no season specified -> assume defaultSeason
                 eItem.Season = defaultSeason
                 Dim Episode As Match = Regex.Match(tEpisode, "(\d*)(.*)")
-                eItem.Episode = CInt(Episode.Groups(1).Value)
+                Dim iEpisode As Integer = 0
+                If Integer.TryParse(Episode.Groups(1).Value, iEpisode) Then
+                    eItem.Episode = iEpisode
+                Else
+                    Return False
+                End If
                 If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
             ElseIf Not String.IsNullOrEmpty(tSeason) AndAlso String.IsNullOrEmpty(tEpisode) Then
-                'no episode specification -> assume defaultSeason
+                'no episode specification -> assume defaultSeason and use the "season" group as episode number
                 eItem.Season = defaultSeason
-                eItem.Episode = CInt(tSeason)
+                Dim iEpisode As Integer = 0
+                If Integer.TryParse(tSeason, iEpisode) Then
+                    eItem.Episode = iEpisode
+                Else
+                    Return False
+                End If
             Else
                 'season and episode specified
-                eItem.Season = CInt(tSeason)
-                Dim Episode As Match = Regex.Match(tEpisode, "(\d*)(.*)")
-                eItem.Episode = CInt(Episode.Groups(1).Value)
-                If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
+                Dim iSeason As Integer = 0
+                If Integer.TryParse(tSeason, iSeason) Then
+                    eItem.Season = iSeason
+                    Dim Episode As Match = Regex.Match(tEpisode, "(\d*)(.*)")
+                    Dim iEpisode As Integer = 0
+                    If Integer.TryParse(Episode.Groups(1).Value, iEpisode) Then
+                        eItem.Episode = iEpisode
+                        If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
+                    Else
+                        Return False
+                    End If
+                Else
+                    Return False
+                End If
             End If
             eItem.byDate = False
 
@@ -1196,7 +1216,10 @@ Public Class Scanner
                     retEpisodeItemsList.Add(eItem)
                     logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found date based match {0} ({1}) [{2}]", sPath, eItem.Aired, rShow.Regexp))
                 Else
-                    If Not RegexGetSeasonAndEpisodeNumber(sMatch, eItem, defaultSeason) Then Continue For
+                    If Not RegexGetSeasonAndEpisodeNumber(sMatch, eItem, defaultSeason) Then
+                        logger.Warn(String.Format("[Scanner] [RegexGetTVEpisode] Can't get a proper season and episode number for file {0} [{1}]", sPath, rShow.Regexp))
+                        Continue For
+                    End If
                     retEpisodeItemsList.Add(eItem)
                     logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found episode match {0} (s{1}e{2}{3}) [{4}]", sPath, eItem.Season, eItem.Episode, If(Not eItem.SubEpisode = -1, String.Concat(".", eItem.SubEpisode), String.Empty), rShow.Regexp))
                 End If
@@ -1934,7 +1957,7 @@ Public Class Scanner
             _bydate = False
             _episode = -1
             _idepisode = -1
-            _season = -1
+            _season = -2
             _subepisode = -1
         End Sub
 
