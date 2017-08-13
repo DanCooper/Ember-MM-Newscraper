@@ -119,10 +119,10 @@ Public Class AdvancedSettings
 
             If cContent = Enums.ContentType.None Then
                 Dim v = From e In _AdvancedSettings.Setting.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-                Return If(v(0) Is Nothing OrElse v(0).Value Is Nothing, defvalue, v(0).Value.ToString)
+                Return If(v(0) Is Nothing, defvalue, If(v(0).Value Is Nothing, String.Empty, v(0).Value.ToString))
             Else
                 Dim v = From e In _AdvancedSettings.Setting.Where(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent)
-                Return If(v(0) Is Nothing OrElse v(0).Value Is Nothing, defvalue, v(0).Value.ToString)
+                Return If(v(0) Is Nothing, defvalue, If(v(0).Value Is Nothing, String.Empty, v(0).Value.ToString))
             End If
 
         Catch ex As Exception
