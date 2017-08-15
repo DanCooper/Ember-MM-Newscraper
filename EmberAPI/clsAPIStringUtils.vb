@@ -750,12 +750,26 @@ Public Class StringUtils
 
         Return String.Concat(nOutline.Substring(0, lastPeriod + 1), "..") 'Note only 2 periods required, since one is already there
     End Function
+
+    Private Shared Function SortTokens(ByVal strTitle As String, ByVal lstTokenList As List(Of String)) As String
+        For Each strToken As String In lstTokenList
+            Try
+                Dim mToken As Match = Regex.Match(strTitle, String.Concat("(^", strToken, ")(.*)"), RegexOptions.IgnoreCase)
+                If mToken.Success AndAlso mToken.Groups.Count = 3 Then
+                    Return String.Format("{0}, {1}", mToken.Groups(2).Value.Trim, mToken.Groups(1).Value.Trim)
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & strTitle & " generated an error message")
+            End Try
+        Next
+        Return strTitle
+    End Function
     ''' <summary>
     ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
     ''' sort tokens (<c>Master.eSettings.MovieSortTokens"</c>) then remove it from the front
     ''' of the string and move it to the end after a comma.
     ''' </summary>
-    ''' <param name="sTitle"><c>String</c> to clean up</param>
+    ''' <param name="strTitle"><c>String</c> to clean up</param>
     ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
     ''' <remarks>This function will take a string such as "The Movie" and return "Movie, The".
     ''' The default tokens are:
@@ -765,45 +779,15 @@ Public Class StringUtils
     '''    <item>the</item>
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function SortTokens_Movie(ByVal sTitle As String) As String
-        If String.IsNullOrEmpty(sTitle) Then Return String.Empty
-        Dim newTitle As String = sTitle
-
-        If Master.eSettings.MovieSortTokens.Count > 0 Then
-            Dim tokenContents As String
-            Dim onlyTokenFromTitle As Match
-            Dim titleWithoutToken As String
-            For Each sToken As String In Master.eSettings.MovieSortTokens
-                Try
-                    If Regex.IsMatch(sTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
-                        tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)
-
-                        onlyTokenFromTitle = Regex.Match(sTitle, String.Concat("^", tokenContents), RegexOptions.IgnoreCase)
-
-                        'cocotus 20140207, Fix for movies like "A.C.O.D." -> check for tokenContents(="A","An","the"..) followed by whitespace at the start of title -> If no space -> don't do anyn filtering!
-                        If sTitle.ToLower.StartsWith(tokenContents.ToLower & " ") = False Then
-                            Exit For
-                        End If
-
-                        titleWithoutToken = Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim
-                        newTitle = String.Format("{0}, {1}", titleWithoutToken, onlyTokenFromTitle.Value).Trim
-
-                        'newTitle = String.Format("{0}, {1}", Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim, Regex.Match(sTitle, String.Concat("^", Regex.Replace(sToken, "\[(.*?)\]", String.Empty)), RegexOptions.IgnoreCase)).Trim
-                        Exit For
-                    End If
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message")
-                End Try
-            Next
-        End If
-        Return newTitle.Trim
+    Public Shared Function SortTokens_Movie(ByVal strTitle As String) As String
+        Return SortTokens(strTitle, Master.eSettings.MovieSortTokens)
     End Function
     ''' <summary>
     ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
     ''' sort tokens (<c>Master.eSettings.MovieSetSortTokens"</c>) then remove it from the front
     ''' of the string and move it to the end after a comma.
     ''' </summary>
-    ''' <param name="sTitle"><c>String</c> to clean up</param>
+    ''' <param name="strTitle"><c>String</c> to clean up</param>
     ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
     ''' <remarks>This function will take a string such as "The MovieSet" and return "MovieSet, The".
     ''' The default tokens are:
@@ -813,45 +797,15 @@ Public Class StringUtils
     '''    <item>the</item>
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function SortTokens_MovieSet(ByVal sTitle As String) As String
-        If String.IsNullOrEmpty(sTitle) Then Return String.Empty
-        Dim newTitle As String = sTitle
-
-        If Master.eSettings.MovieSetSortTokens.Count > 0 Then
-            Dim tokenContents As String
-            Dim onlyTokenFromTitle As Match
-            Dim titleWithoutToken As String
-            For Each sToken As String In Master.eSettings.MovieSetSortTokens
-                Try
-                    If Regex.IsMatch(sTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
-                        tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)
-
-                        onlyTokenFromTitle = Regex.Match(sTitle, String.Concat("^", tokenContents), RegexOptions.IgnoreCase)
-
-                        'cocotus 20140207, Fix for movies like "A.C.O.D." -> check for tokenContents(="A","An","the"..) followed by whitespace at the start of title -> If no space -> don't do anyn filtering!
-                        If sTitle.ToLower.StartsWith(tokenContents.ToLower & " ") = False Then
-                            Exit For
-                        End If
-
-                        titleWithoutToken = Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim
-                        newTitle = String.Format("{0}, {1}", titleWithoutToken, onlyTokenFromTitle.Value).Trim
-
-                        'newTitle = String.Format("{0}, {1}", Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim, Regex.Match(sTitle, String.Concat("^", Regex.Replace(sToken, "\[(.*?)\]", String.Empty)), RegexOptions.IgnoreCase)).Trim
-                        Exit For
-                    End If
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message")
-                End Try
-            Next
-        End If
-        Return newTitle.Trim
+    Public Shared Function SortTokens_MovieSet(ByVal strTitle As String) As String
+        Return SortTokens(strTitle, Master.eSettings.MovieSetSortTokens)
     End Function
     ''' <summary>
     ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
     ''' sort tokens (<c>Master.eSettings.SortTokens"</c>) then remove it from the front
     ''' of the string and move it to the end after a comma.
     ''' </summary>
-    ''' <param name="sTitle"><c>String</c> to clean up</param>
+    ''' <param name="strTitle"><c>String</c> to clean up</param>
     ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
     ''' <remarks>This function will take a string such as "The Show" and return "Show, The".
     ''' The default tokens are:
@@ -861,38 +815,8 @@ Public Class StringUtils
     '''    <item>the</item>
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function SortTokens_TV(ByVal sTitle As String) As String
-        If String.IsNullOrEmpty(sTitle) Then Return String.Empty
-        Dim newTitle As String = sTitle
-
-        If Master.eSettings.TVSortTokens.Count > 0 Then
-            Dim tokenContents As String
-            Dim onlyTokenFromTitle As Match
-            Dim titleWithoutToken As String
-            For Each sToken As String In Master.eSettings.TVSortTokens
-                Try
-                    If Regex.IsMatch(sTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
-                        tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)
-
-                        onlyTokenFromTitle = Regex.Match(sTitle, String.Concat("^", tokenContents), RegexOptions.IgnoreCase)
-
-                        'cocotus 20140207, Fix for movies like "A.C.O.D." -> check for tokenContents(="A","An","the"..) followed by whitespace at the start of title -> If no space -> don't do anyn filtering!
-                        If sTitle.ToLower.StartsWith(tokenContents.ToLower & " ") = False Then
-                            Exit For
-                        End If
-
-                        titleWithoutToken = Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim
-                        newTitle = String.Format("{0}, {1}", titleWithoutToken, onlyTokenFromTitle.Value).Trim
-
-                        'newTitle = String.Format("{0}, {1}", Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim, Regex.Match(sTitle, String.Concat("^", Regex.Replace(sToken, "\[(.*?)\]", String.Empty)), RegexOptions.IgnoreCase)).Trim
-                        Exit For
-                    End If
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message")
-                End Try
-            Next
-        End If
-        Return newTitle.Trim
+    Public Shared Function SortTokens_TV(ByVal strTitle As String) As String
+        Return SortTokens(strTitle, Master.eSettings.TVSortTokens)
     End Function
     ''' <summary>
     ''' Converts a string indicating a size into an actual <c>Size</c> object

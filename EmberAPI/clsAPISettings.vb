@@ -7539,32 +7539,32 @@ Public Class Settings
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSortTokensIsEmpty)) Then
             Master.eSettings.MovieSortTokens.Clear()
-            Master.eSettings.MovieSortTokens.Add("the[\W_]")
-            Master.eSettings.MovieSortTokens.Add("a[\W_]")
-            Master.eSettings.MovieSortTokens.Add("an[\W_]")
-            Master.eSettings.MovieSortTokens.Add("der[\W_]")
-            Master.eSettings.MovieSortTokens.Add("die[\W_]")
-            Master.eSettings.MovieSortTokens.Add("das[\W_]")
+            Master.eSettings.MovieSortTokens.Add("a\s")
+            Master.eSettings.MovieSortTokens.Add("an\s")
+            Master.eSettings.MovieSortTokens.Add("das\s")
+            Master.eSettings.MovieSortTokens.Add("der\s")
+            Master.eSettings.MovieSortTokens.Add("die\s")
+            Master.eSettings.MovieSortTokens.Add("the\s")
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty)) Then
             Master.eSettings.MovieSetSortTokens.Clear()
-            Master.eSettings.MovieSetSortTokens.Add("the[\W_]")
-            Master.eSettings.MovieSetSortTokens.Add("a[\W_]")
-            Master.eSettings.MovieSetSortTokens.Add("an[\W_]")
-            Master.eSettings.MovieSetSortTokens.Add("der[\W_]")
-            Master.eSettings.MovieSetSortTokens.Add("die[\W_]")
-            Master.eSettings.MovieSetSortTokens.Add("das[\W_]")
+            Master.eSettings.MovieSetSortTokens.Add("a\s")
+            Master.eSettings.MovieSetSortTokens.Add("an\s")
+            Master.eSettings.MovieSetSortTokens.Add("das\s")
+            Master.eSettings.MovieSetSortTokens.Add("der\s")
+            Master.eSettings.MovieSetSortTokens.Add("die\s")
+            Master.eSettings.MovieSetSortTokens.Add("the\s")
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSortTokens) AndAlso (Force OrElse (Master.eSettings.TVSortTokens.Count <= 0 AndAlso Not Master.eSettings.TVSortTokensIsEmpty)) Then
             Master.eSettings.TVSortTokens.Clear()
-            Master.eSettings.TVSortTokens.Add("the[\W_]")
-            Master.eSettings.TVSortTokens.Add("a[\W_]")
-            Master.eSettings.TVSortTokens.Add("an[\W_]")
-            Master.eSettings.TVSortTokens.Add("der[\W_]")
-            Master.eSettings.TVSortTokens.Add("die[\W_]")
-            Master.eSettings.TVSortTokens.Add("das[\W_]")
+            Master.eSettings.TVSortTokens.Add("a\s")
+            Master.eSettings.TVSortTokens.Add("an\s")
+            Master.eSettings.TVSortTokens.Add("das\s")
+            Master.eSettings.TVSortTokens.Add("der\s")
+            Master.eSettings.TVSortTokens.Add("die\s")
+            Master.eSettings.TVSortTokens.Add("the\s")
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
