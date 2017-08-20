@@ -47,7 +47,7 @@
   <string id="46">Or</string>
   <string id="47">New</string>
   <string id="48">Marked</string>
-  <string id="49"></string>
+  <string id="49">will be cleared</string>
   <string id="50">Source:</string>
   <string id="51">Genre:</string>
   <string id="52">Filters</string>
@@ -1176,7 +1176,7 @@
   <string id="1084">File already exists</string>
   <string id="1085">Directory already exists or is not empty</string>
   <string id="1086">The directory can not be renamed because the directory is specified as the source.</string>
-  <string id="1087">Edit Data Fields</string>
+  <string id="1087">Clear or Replace Data Fields</string>
   <string id="1088"></string>
   <string id="1089">Added TV Show</string>
   <string id="1090">Active</string>

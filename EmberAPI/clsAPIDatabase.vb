@@ -1352,7 +1352,7 @@ Public Class Database
         Return sEpisodeSorting
     End Function
 
-    Public Function GetMovieCountries() As String()
+    Public Function GetAllCountries_Movie() As String()
         Dim cList As New List(Of String)
 
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1360,6 +1360,22 @@ Public Class Database
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     cList.Add(SQLreader("strCountry").ToString)
+                End While
+            End Using
+        End Using
+
+        cList.Sort()
+        Return cList.ToArray
+    End Function
+
+    Public Function GetAllVideoSources_Movie() As String()
+        Dim cList As New List(Of String)
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT DISTINCT VideoSource FROM movie WHERE VideoSource <> '';"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    cList.Add(SQLreader("VideoSource").ToString)
                 End While
             End Using
         End Using

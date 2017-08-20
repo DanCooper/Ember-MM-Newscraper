@@ -909,14 +909,19 @@ Public Class Enums
     End Enum
 
     Public Enum TaskManagerType As Integer
-        CopyBackdrops = 0
-        DoTitleCheck = 1
-        GetMissingEpisodes = 2
-        Reload = 3
-        SetLanguage = 4
-        SetLockedState = 5
-        SetMarkedState = 6
-        SetWatchedState = 7
+        ''' <summary>
+        ''' only to set nothing after init
+        ''' </summary>
+        None
+        DataFields_ClearOrReplace
+        CopyBackdrops
+        DoTitleCheck
+        GetMissingEpisodes
+        Reload
+        SetLanguage
+        SetLockedState
+        SetMarkedState
+        SetWatchedState
     End Enum
 
     Public Enum TVBannerSize As Integer
@@ -1942,7 +1947,7 @@ Public Class Structures
     ''' Structure representing posible scrape fields
     ''' </summary>
     ''' <remarks></remarks>
-    <Serializable()> _
+    <Serializable()>
     Public Structure ScrapeOptions
         Dim bEpisodeActors As Boolean
         Dim bEpisodeAired As Boolean
@@ -1954,9 +1959,11 @@ Public Class Structures
         Dim bEpisodeRuntime As Boolean
         Dim bEpisodeTitle As Boolean
         Dim bEpisodeUserRating As Boolean
+        Dim bEpisodeVideoSource As Boolean
         Dim bMainActors As Boolean
         Dim bMainCertifications As Boolean
         Dim bMainCollectionID As Boolean
+        Dim bMainCountries As Boolean
         Dim bMainCreators As Boolean
         Dim bMainDirectors As Boolean
         Dim bMainEpisodeGuide As Boolean
@@ -1972,12 +1979,12 @@ Public Class Structures
         Dim bMainStatus As Boolean
         Dim bMainStudios As Boolean
         Dim bMainTagline As Boolean
+        Dim bMainTags As Boolean
         Dim bMainTitle As Boolean
         Dim bMainTop250 As Boolean
-        Dim bMainCountries As Boolean
-        Dim bMainTags As Boolean
         Dim bMainTrailer As Boolean
         Dim bMainUserRating As Boolean
+        Dim bMainVideoSource As Boolean
         Dim bMainWriters As Boolean
         Dim bMainYear As Boolean
         Dim bSeasonAired As Boolean

@@ -8078,6 +8078,68 @@ Public Class frmMain
         dRow.ItemArray = newRow.ItemArray
     End Sub
 
+    Private Sub EditDataFields_Click(sender As Object, e As EventArgs) Handles _
+        cmnuEpisodeEditDataFields.Click,
+        cmnuMovieEditDataFields.Click,
+        cmnuMovieSetEditDataFields.Click,
+        cmnuSeasonEditDataFields.Click,
+        cmnuShowEditDataFields.Click
+
+        Dim strContentType As String = DirectCast(sender, ToolStripMenuItem).Tag.ToString
+
+        If Not String.IsNullOrEmpty(strContentType) Then
+            Dim eContentType As Enums.ContentType
+
+            Select Case strContentType
+                Case "movie"
+                    eContentType = Enums.ContentType.Movie
+                Case "movieset"
+                    eContentType = Enums.ContentType.MovieSet
+                Case "tvepisode"
+                    eContentType = Enums.ContentType.TVEpisode
+                Case "tvseason"
+                    eContentType = Enums.ContentType.TVSeason
+                Case "tvshow"
+                    eContentType = Enums.ContentType.TVShow
+                Case Else
+                    eContentType = Enums.ContentType.None
+            End Select
+
+            If Not eContentType = Enums.ContentType.None Then
+                Using dEditDataField As New dlgClearOrReplace
+                    If dEditDataField.ShowDialog(eContentType) = DialogResult.OK Then
+                        Dim nTaskItem = dEditDataField.Result
+                        nTaskItem.ListOfID = New List(Of Long)
+                        Select Case eContentType
+                            Case Enums.ContentType.Movie
+                                For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                                    nTaskItem.ListOfID.Add(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                                Next
+                            Case Enums.ContentType.MovieSet
+                                For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
+                                    nTaskItem.ListOfID.Add(Convert.ToInt64(sRow.Cells("idSet").Value))
+                                Next
+                            Case Enums.ContentType.TVEpisode
+                                For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
+                                    nTaskItem.ListOfID.Add(Convert.ToInt64(sRow.Cells("idEpisode").Value))
+                                Next
+                            Case Enums.ContentType.TVSeason
+                                For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
+                                    nTaskItem.ListOfID.Add(Convert.ToInt64(sRow.Cells("idSeason").Value))
+                                Next
+                            Case Enums.ContentType.TVShow
+                                For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                                    nTaskItem.ListOfID.Add(Convert.ToInt64(sRow.Cells("idShow").Value))
+                                Next
+                        End Select
+
+                        fTaskManager.AddTask(nTaskItem)
+                    End If
+                End Using
+            End If
+        End If
+    End Sub
+
     Private Sub Edit_Movie(ByRef DBMovie As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_Movie)
         SetControlsEnabled(False)
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, True) Then
@@ -10595,59 +10657,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub mnuDataFieldTrailerURL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDataFieldTrailerURL.Click
-        Dim strNewValue As String = String.Empty
-
-        Using dEditDataField As New dlgEditDataField
-            If dEditDataField.ShowDialog(Master.eLang.GetString(227, "Trailer URL")) = DialogResult.OK Then
-                strNewValue = dEditDataField.Result
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Select Case _SelectedContentType
-                        Case "movie"
-                            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                                Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                                tmpDBElement.Movie.Trailer = strNewValue
-                                Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
-                                RefreshRow_Movie(tmpDBElement.ID)
-                            Next
-                    End Select
-                    SQLtransaction.Commit()
-                End Using
-            End If
-        End Using
-    End Sub
-
-    Private Sub mnuDataFieldVideosource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDataFieldVideosource.Click
-        Dim strNewValue As String = String.Empty
-
-        Using dEditDataField As New dlgEditDataField
-            If dEditDataField.ShowDialog(Master.eLang.GetString(824, "Video Source")) = DialogResult.OK Then
-                strNewValue = dEditDataField.Result
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Select Case _SelectedContentType
-                        Case "movie"
-                            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                                Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                                tmpDBElement.VideoSource = strNewValue
-                                tmpDBElement.Movie.VideoSource = strNewValue
-                                Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
-                                RefreshRow_Movie(tmpDBElement.ID)
-                            Next
-                        Case "tvepisode"
-                            For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                                Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
-                                tmpDBElement.VideoSource = strNewValue
-                                tmpDBElement.TVEpisode.VideoSource = strNewValue
-                                Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
-                                RefreshRow_TVEpisode(tmpDBElement.ID)
-                            Next
-                    End Select
-                    SQLtransaction.Commit()
-                End Using
-            End If
-        End Using
-    End Sub
-
     Private Sub mnuGenresSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuGenresSet.Click
         Dim strGenre As String = String.Empty
         If Not String.IsNullOrEmpty(mnuGenresNew.Text) Then
@@ -11150,26 +11159,6 @@ Public Class frmMain
         Else
             mnuScrapeTVShows.ShowDropDown()
         End If
-    End Sub
-
-    Private Sub mnuDataField_Opened(sender As Object, e As EventArgs) Handles mnuDataField.Opened
-        _SelectedContentType = mnuDataField.OwnerItem.Tag.ToString
-
-        Select Case _SelectedContentType
-            Case "movie"
-                mnuDataFieldTrailerURL.Enabled = True
-                mnuDataFieldTrailerURL.Visible = True
-                mnuDataFieldVideosource.Enabled = True
-                mnuDataFieldVideosource.Visible = True
-            Case "movieset"
-            Case "tvepisode"
-                mnuDataFieldTrailerURL.Enabled = False
-                mnuDataFieldTrailerURL.Visible = False
-                mnuDataFieldVideosource.Enabled = True
-                mnuDataFieldVideosource.Visible = True
-            Case "tvseason"
-            Case "tvshow"
-        End Select
     End Sub
 
     Private Sub mnuScrapeOption_Opened(sender As Object, e As EventArgs) Handles mnuScrapeOption.Opened
@@ -16355,6 +16344,7 @@ Public Class frmMain
 
             SetUp(True)
 
+            'TODO: make it more generic
             If dgvMovies.RowCount > 0 Then
                 dgvMovies.Columns("BannerPath").Visible = Not CheckColumnHide_Movies("BannerPath")
                 dgvMovies.Columns("ClearArtPath").Visible = Not CheckColumnHide_Movies("ClearArtPath")
@@ -16691,9 +16681,12 @@ Public Class frmMain
         mnuScrapeModifierDiscArt.Text = strDiscArtOnly
 
         'Edit Data Fields
-        Dim strEditDataField As String = Master.eLang.GetString(1087, "Edit Data Fields")
-        cmnuMovieEditDataField.Text = String.Concat(strEditDataField, "...")
-        cmnuEpisodeEditDataField.Text = String.Concat(strEditDataField, "...")
+        Dim strEditDataField As String = Master.eLang.GetString(1087, "Clear or Replace Data Fields")
+        cmnuEpisodeEditDataFields.Text = String.Concat(strEditDataField, "...")
+        cmnuMovieEditDataFields.Text = String.Concat(strEditDataField, "...")
+        cmnuMovieSetEditDataFields.Text = String.Concat(strEditDataField, "...")
+        cmnuSeasonEditDataFields.Text = String.Concat(strEditDataField, "...")
+        cmnuShowEditDataFields.Text = String.Concat(strEditDataField, "...")
 
         'Edit Genres
         Dim strEditGenres As String = Master.eLang.GetString(1051, "Edit Genres")
@@ -16919,10 +16912,6 @@ Public Class frmMain
         Dim strTrailerOnly As String = Master.eLang.GetString(75, "Trailer Only")
         mnuScrapeModifierTrailer.Text = strTrailerOnly
 
-        'Trailer URL
-        Dim strTrailerURL As String = Master.eLang.GetString(227, "Trailer URL")
-        mnuDataFieldTrailerURL.Text = strTrailerURL
-
         'Unlock
         Dim strUnlock As String = Master.eLang.GetString(108, "Unlock")
         cmnuEpisodeUnlock.Text = strUnlock
@@ -16946,10 +16935,6 @@ Public Class frmMain
         cmnuMovieSetScrapeSingleDataField.Text = strUpdateSingelDataField
         cmnuSeasonScrapeSingleDataField.Text = strUpdateSingelDataField
         cmnuShowScrapeSingleDataField.Text = strUpdateSingelDataField
-
-        'Video Source
-        Dim strVideoSource As String = Master.eLang.GetString(824, "Video Source")
-        mnuDataFieldVideosource.Text = strVideoSource
 
         ' others
         btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -17192,7 +17177,7 @@ Public Class frmMain
         lblFilterSource_Shows.Text = lblFilterSource_Movies.Text
         lblFilterSources_Movies.Text = Master.eLang.GetString(602, "Sources")
         lblFilterSources_Shows.Text = lblFilterSources_Movies.Text
-        lblFilterYear_Movies.Text = Master.eLang.GetString(49, "Year:")
+        lblFilterYear_Movies.Text = String.Concat(Master.eLang.GetString(278, "Year"), ":")
         lblFilterDataFields_Movies.Text = Master.eLang.GetString(1290, "Data Field")
         lblIMDBHeader.Text = Master.eLang.GetString(61, "IMDB ID")
         lblInfoPanelHeader.Text = Master.eLang.GetString(66, "Info")
@@ -17245,7 +17230,7 @@ Public Class frmMain
         mnuScrapeOptionPremiered.Text = Master.eLang.GetString(724, "Premiered")
         mnuScrapeOptionRating.Text = Master.eLang.GetString(400, "Rating")
         mnuScrapeOptionReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
-        mnuScrapeOptionRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        mnuScrapeOptionRuntime.Text = Master.eLang.GetString(238, "Runtime")
         mnuScrapeOptionStatus.Text = Master.eLang.GetString(215, "Status")
         mnuScrapeOptionStudios.Text = Master.eLang.GetString(226, "Studios")
         mnuScrapeOptionTagline.Text = Master.eLang.GetString(397, "Tagline")
@@ -17905,7 +17890,7 @@ Public Class frmMain
 
     Private Sub RefreshFilterCountry_Movies()
         clbFilterCountries_Movies.Items.Clear()
-        Dim mCountry() As Object = Master.DB.GetMovieCountries
+        Dim mCountry() As Object = Master.DB.GetAllCountries_Movie
         clbFilterCountries_Movies.Items.Add(Master.eLang.None)
         clbFilterCountries_Movies.Items.AddRange(mCountry)
 

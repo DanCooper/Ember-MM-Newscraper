@@ -215,10 +215,10 @@
     <Compile Include="dlgDeleteConfirm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgEditDataField.Designer.vb">
-      <DependentUpon>dlgEditDataField.vb</DependentUpon>
+    <Compile Include="dlgClearOrReplace.Designer.vb">
+      <DependentUpon>dlgClearOrReplace.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgEditDataField.vb">
+    <Compile Include="dlgClearOrReplace.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgEditTVEpisode.Designer.vb">
@@ -425,8 +425,8 @@
       <DependentUpon>dlgDeleteConfirm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditDataField.resx">
-      <DependentUpon>dlgEditDataField.vb</DependentUpon>
+    <EmbeddedResource Include="dlgClearOrReplace.resx">
+      <DependentUpon>dlgClearOrReplace.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgEditTVEpisode.resx">
       <DependentUpon>dlgEditTVEpisode.vb</DependentUpon>
