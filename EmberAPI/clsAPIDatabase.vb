@@ -1556,19 +1556,24 @@ Public Class Database
     Public Function GetViewMediaCount(ByVal ViewName As String, Optional EpisodesByView As Boolean = False) As Integer
         Dim mCount As Integer
         If Not String.IsNullOrEmpty(ViewName) Then
-            If Not EpisodesByView Then
-                Using SQLCommand As SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM '{0}'", ViewName)
-                    mCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
-                    Return mCount
-                End Using
-            Else
-                Using SQLCommand As SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM '{0}' INNER JOIN episode ON ('{0}'.idShow = episode.idShow) WHERE NOT episode.idFile = -1", ViewName)
-                    mCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
-                    Return mCount
-                End Using
-            End If
+            Try
+                If Not EpisodesByView Then
+                    Using SQLCommand As SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM '{0}'", ViewName)
+                        mCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+                        Return mCount
+                    End Using
+                Else
+                    Using SQLCommand As SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM '{0}' INNER JOIN episode ON ('{0}'.idShow = episode.idShow) WHERE NOT episode.idFile = -1", ViewName)
+                        mCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+                        Return mCount
+                    End Using
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+                Return -1
+            End Try
         Else
             Return mCount
         End If

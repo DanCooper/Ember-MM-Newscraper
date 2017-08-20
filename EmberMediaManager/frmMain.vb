@@ -16541,6 +16541,8 @@ Public Class frmMain
                 Case Enums.ContentType.Movie, Enums.ContentType.MovieSet
                     If mCount > 0 Then
                         mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, mCount)
+                    ElseIf mCount = -1 Then
+                        mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, "Error")
                     Else
                         mTabPage.Text = currTag.ContentName
                     End If
@@ -16548,6 +16550,8 @@ Public Class frmMain
                     If mCount > 0 Then
                         Dim epCount As Integer = Master.DB.GetViewMediaCount(currTag.DefaultList, True)
                         mTabPage.Text = String.Format("{0} ({1}/{2})", currTag.ContentName, mCount, epCount)
+                    ElseIf mCount = -1 Then
+                        mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, "Error")
                     Else
                         mTabPage.Text = currTag.ContentName
                     End If
