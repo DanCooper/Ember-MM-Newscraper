@@ -486,7 +486,7 @@ Namespace Kodi
                         Return New WatchedState With {.AlreadyInSync = True}
                     End If
                 Else
-                    logger.Error(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.Movie.Title))
+                    logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | Nothing to sync (not found on host)", _currenthost.Label, mDBElement.Movie.Title))
                     Return Nothing
                 End If
 
@@ -527,7 +527,7 @@ Namespace Kodi
                         Return New WatchedState With {.AlreadyInSync = True}
                     End If
                 Else
-                    logger.Error(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.TVEpisode.Title))
+                    logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | Nothing to sync (not found on host)", _currenthost.Label, mDBElement.TVEpisode.Title))
                     Return Nothing
                 End If
             Catch ex As Exception
