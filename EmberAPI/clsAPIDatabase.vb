@@ -1482,6 +1482,26 @@ Public Class Database
         End If
     End Function
 
+    Public Function GetTVSeasonIDFromShowIDAndSeasonNumber(ByVal lngTVShowID As Long, ByVal iSeason As Integer) As Long
+        Dim sID As Long = -1
+        If lngTVShowID > -1 AndAlso iSeason > -1 Then
+            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Format("SELECT idSeason FROM seasons WHERE idShow = {0} AND Season = {1};", lngTVShowID, iSeason)
+                Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If SQLreader.HasRows Then
+                        SQLreader.Read()
+                        sID = CLng(SQLreader.Item("idSeason"))
+                        Return sID
+                    Else
+                        Return sID
+                    End If
+                End Using
+            End Using
+        Else
+            Return sID
+        End If
+    End Function
+
     Public Function AddView(ByVal dbCommand As String) As Boolean
         Try
             Dim SQLtransaction As SQLiteTransaction = Nothing

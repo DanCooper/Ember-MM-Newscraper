@@ -591,7 +591,7 @@ Public Class TaskManager
         End If
     End Sub
 
-    Private Sub SetLockedState(ByVal tTaskItem As TaskItem)
+    Private Sub SetLockedState(ByVal tTaskItem As TaskItem, Optional ByVal bRegressiveSync As Boolean = False)
         Select Case tTaskItem.ContentType
 
             Case Enums.ContentType.Movie
@@ -659,6 +659,8 @@ Public Class TaskManager
                 Next
 
             Case Enums.ContentType.TVEpisode
+                Dim lstTVSeasonIDs As New List(Of Long)
+                Dim lstTVShowIDs As New List(Of Long)
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
                     Dim bHasChanged As Boolean = False
@@ -677,6 +679,8 @@ Public Class TaskManager
                     End If
 
                     If bHasChanged Then
+                        lstTVSeasonIDs.Add(Master.DB.GetTVSeasonIDFromEpisode(tmpDBElement))
+                        lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                      .Message = tmpDBElement.TVEpisode.Title})
@@ -690,7 +694,26 @@ Public Class TaskManager
                     End If
                 Next
 
+                If Not bRegressiveSync Then
+                    'refresh other rows if the seasons/tv show entries not will be refreshed by a higher task
+                    lstTVSeasonIDs = lstTVSeasonIDs.Distinct.ToList
+                    lstTVShowIDs = lstTVShowIDs.Distinct.ToList
+                    For Each nTVSeasonID In lstTVSeasonIDs
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVSeason,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = nTVSeasonID})
+                    Next
+                    For Each nTVShowID In lstTVShowIDs
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVShow,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = nTVShowID})
+                    Next
+                End If
+
             Case Enums.ContentType.TVSeason
+                Dim lstTVShowIDs As New List(Of Long)
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
                     Dim bHasChanged As Boolean = False
@@ -709,6 +732,7 @@ Public Class TaskManager
                     End If
 
                     If bHasChanged Then
+                        lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                      .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShow.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.TVSeason.Season.ToString)})
@@ -721,6 +745,17 @@ Public Class TaskManager
                                                      .ID = tmpDBElement.ID})
                     End If
                 Next
+
+                If Not bRegressiveSync Then
+                    'refresh other rows if the tv show entries not will be refreshed by a higher task
+                    lstTVShowIDs = lstTVShowIDs.Distinct.ToList
+                    For Each nTVShowID In lstTVShowIDs
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVShow,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = nTVShowID})
+                    Next
+                End If
 
             Case Enums.ContentType.TVShow
                 For Each tID In tTaskItem.ListOfID
@@ -752,7 +787,8 @@ Public Class TaskManager
                                        .CommonBooleanValue = tmpDBElement.IsLock,
                                        .ContentType = Enums.ContentType.TVSeason,
                                        .ListOfID = lstSeasonsIDs,
-                                       .TaskType = Enums.TaskManagerType.SetLockedState})
+                                       .TaskType = Enums.TaskManagerType.SetLockedState},
+                                       True)
                     End If
 
                     'Episode handling
@@ -765,7 +801,8 @@ Public Class TaskManager
                                        .CommonBooleanValue = tmpDBElement.IsLock,
                                        .ContentType = Enums.ContentType.TVEpisode,
                                        .ListOfID = lstEpisodeIDs,
-                                       .TaskType = Enums.TaskManagerType.SetLockedState})
+                                       .TaskType = Enums.TaskManagerType.SetLockedState},
+                                       True)
                     End If
 
                     If bHasChanged Then
@@ -781,11 +818,10 @@ Public Class TaskManager
                                                      .ID = tmpDBElement.ID})
                     End If
                 Next
-
         End Select
     End Sub
 
-    Private Sub SetMarkedState(ByVal tTaskItem As TaskItem)
+    Private Sub SetMarkedState(ByVal tTaskItem As TaskItem, Optional ByVal bRegressiveSync As Boolean = False)
         Select Case tTaskItem.ContentType
 
             Case Enums.ContentType.Movie
@@ -847,6 +883,8 @@ Public Class TaskManager
                 Next
 
             Case Enums.ContentType.TVEpisode
+                Dim lstTVSeasonIDs As New List(Of Long)
+                Dim lstTVShowIDs As New List(Of Long)
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
 
@@ -865,6 +903,8 @@ Public Class TaskManager
                                     par_ID.Value = tID
                                     par_Mark.Value = tTaskItem.CommonBooleanValue
                                     SQLCommand_Update.ExecuteNonQuery()
+                                    lstTVSeasonIDs.Add(Master.DB.GetTVSeasonIDFromShowIDAndSeasonNumber(CLng(SQLReader_Get("idShow")), CInt(SQLReader_Get("Season"))))
+                                    lstTVShowIDs.Add(CLng(SQLReader_Get("idShow")))
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                  .ContentType = tTaskItem.ContentType,
                                                                  .EventType = Enums.TaskManagerEventType.RefreshRow,
@@ -875,7 +915,26 @@ Public Class TaskManager
                     End Using
                 Next
 
+                If Not bRegressiveSync Then
+                    'refresh other rows if the seasons/tv show entries not will be refreshed by a higher task
+                    lstTVSeasonIDs = lstTVSeasonIDs.Distinct.ToList
+                    lstTVShowIDs = lstTVShowIDs.Distinct.ToList
+                    For Each nTVSeasonID In lstTVSeasonIDs
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVSeason,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = nTVSeasonID})
+                    Next
+                    For Each nTVShowID In lstTVShowIDs
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVShow,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = nTVShowID})
+                    Next
+                End If
+
             Case Enums.ContentType.TVSeason
+                Dim lstTVShowIDs As New List(Of Long)
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
 
@@ -907,7 +966,7 @@ Public Class TaskManager
                                 End While
                             End Using
                         End Using
-                        SetMarkedState(nTaskItem)
+                        SetMarkedState(nTaskItem, True)
                     End If
 
                     'now proceed the season
@@ -926,6 +985,7 @@ Public Class TaskManager
                                     par_ID.Value = tID
                                     par_Mark.Value = tTaskItem.CommonBooleanValue
                                     SQLCommand_Update.ExecuteNonQuery()
+                                    lstTVShowIDs.Add(CLng(SQLReader_Get("idShow")))
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                  .ContentType = tTaskItem.ContentType,
                                                                  .EventType = Enums.TaskManagerEventType.RefreshRow,
@@ -935,6 +995,17 @@ Public Class TaskManager
                         End Using
                     End Using
                 Next
+
+                If Not bRegressiveSync Then
+                    'refresh other rows if the tv show entries not will be refreshed by a higher task
+                    lstTVShowIDs = lstTVShowIDs.Distinct.ToList
+                    For Each nTVShowID In lstTVShowIDs
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVShow,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = nTVShowID})
+                    Next
+                End If
 
             Case Enums.ContentType.TVShow, Enums.ContentType.TV
                 For Each tID In tTaskItem.ListOfID
@@ -955,7 +1026,7 @@ Public Class TaskManager
                             End While
                         End Using
                     End Using
-                    SetMarkedState(nTaskItem)
+                    SetMarkedState(nTaskItem, True)
 
                     'now proceed the tv show
                     Using SQLCommand_Update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -982,11 +1053,10 @@ Public Class TaskManager
                         End Using
                     End Using
                 Next
-
         End Select
     End Sub
 
-    Private Sub SetWatchedState(ByVal tTaskItem As TaskItem)
+    Private Sub SetWatchedState(ByVal tTaskItem As TaskItem, Optional ByVal bRegressiveSync As Boolean = False)
         Select Case tTaskItem.ContentType
 
             Case Enums.ContentType.Movie
@@ -1024,6 +1094,8 @@ Public Class TaskManager
                 Next
 
             Case Enums.ContentType.TVEpisode
+                Dim lstTVSeasonIDs As New List(Of Long)
+                Dim lstTVShowIDs As New List(Of Long)
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
                     Dim bHasChanged As Boolean = False
@@ -1044,6 +1116,8 @@ Public Class TaskManager
                     End If
 
                     If bHasChanged Then
+                        lstTVSeasonIDs.Add(Master.DB.GetTVSeasonIDFromEpisode(tmpDBElement))
+                        lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                      .Message = tmpDBElement.TVEpisode.Title})
@@ -1056,6 +1130,24 @@ Public Class TaskManager
                                                      .ID = tmpDBElement.ID})
                     End If
                 Next
+
+                If Not bRegressiveSync Then
+                    'refresh other rows if the seasons/tv show entries not will be refreshed by a higher task
+                    lstTVSeasonIDs = lstTVSeasonIDs.Distinct.ToList
+                    lstTVShowIDs = lstTVShowIDs.Distinct.ToList
+                    For Each nTVSeasonID In lstTVSeasonIDs
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVSeason,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = nTVSeasonID})
+                    Next
+                    For Each nTVShowID In lstTVShowIDs
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVShow,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = nTVShowID})
+                    Next
+                End If
 
             Case Enums.ContentType.TVSeason
                 For Each tID In tTaskItem.ListOfID
@@ -1155,7 +1247,6 @@ Public Class TaskManager
                                                  .EventType = Enums.TaskManagerEventType.RefreshRow,
                                                  .ID = tmpDBElement_TVShow.ID})
                 Next
-
         End Select
     End Sub
 

@@ -16846,7 +16846,7 @@ Public Class frmMain
         btnFilterSortReleaseDate_Movies.Text = strReleaseDate
 
         'Reload All Movies
-        Dim strReloadAllMovies As String = Master.eLang.GetString(18, "Re&load All Movies")
+        Dim strReloadAllMovies As String = Master.eLang.GetString(18, "Reload All Movies")
         cmnuTrayToolsReloadMovies.Text = strReloadAllMovies
         mnuMainToolsReloadMovies.Text = strReloadAllMovies
 
@@ -17209,10 +17209,10 @@ Public Class frmMain
         mnuMainToolsExportMovies.Text = Master.eLang.GetString(36, "Movies")
         mnuMainToolsExportTvShows.Text = Master.eLang.GetString(653, "TV Shows")
         mnuMainTools.Text = Master.eLang.GetString(8, "&Tools")
-        mnuMainToolsBackdrops.Text = Master.eLang.GetString(11, "Copy Existing Fanart To &Backdrops Folder")
-        mnuMainToolsCleanDB.Text = Master.eLang.GetString(709, "Clean &Database")
+        mnuMainToolsBackdrops.Text = Master.eLang.GetString(11, "Copy Existing Fanart To Backdrops Folder")
+        mnuMainToolsCleanDB.Text = Master.eLang.GetString(709, "Clean Database")
         mnuMainToolsCleanFiles.Text = Master.eLang.GetString(9, "&Clean Files")
-        mnuMainToolsClearCache.Text = Master.eLang.GetString(17, "Clear &All Caches")
+        mnuMainToolsClearCache.Text = Master.eLang.GetString(17, "Clear All Caches")
         mnuMainToolsOfflineHolder.Text = Master.eLang.GetString(524, "&Offline Media Manager")
         mnuMainToolsRewriteContentMovie.Text = Master.eLang.GetString(1298, "Rewrite Movie Content")
         mnuMainToolsRewriteContentMovieSet.Text = Master.eLang.GetString(1094, "Rewrite MovieSet Content")
