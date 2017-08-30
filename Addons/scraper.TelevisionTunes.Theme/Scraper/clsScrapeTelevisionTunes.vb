@@ -73,7 +73,7 @@ Namespace TelevisionTunes
             Dim SearchURL As String
 
             If Not String.IsNullOrEmpty(originaltitle) Then
-                SearchTitle = HttpUtility.UrlEncode(originaltitle)
+                SearchTitle = Uri.EscapeDataString(originaltitle)
                 SearchURL = String.Concat(BaseURL, SearchTitle)
             Else
                 SearchURL = String.Empty
@@ -99,6 +99,10 @@ Namespace TelevisionTunes
                         Dim sResult As MatchCollection = Regex.Matches(Html, sPattern, RegexOptions.Singleline)
 
                         For ctr As Integer = 0 To sResult.Count - 1
+                            If _themelist.Count = 20 Then
+                                logger.Warn(String.Format("[TelevisionTunes] [GetThemes] Limit reached (20 themes of {0} has been added)", sResult.Count))
+                                Exit For
+                            End If
                             tWebURL = String.Concat("http://www.televisiontunes.com/", HttpUtility.HtmlDecode(sResult.Item(ctr).Groups("URL").Value).Trim)
                             tTitle = sResult.Item(ctr).Groups("TITLE").Value.Trim
                             tURL = GetDownloadURL(tWebURL)
