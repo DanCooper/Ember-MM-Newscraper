@@ -382,7 +382,7 @@ Namespace IMDB
 
                 'Plot
                 If FilteredOptions.bMainPlot AndAlso bIsScraperLanguage Then
-                    Dim selNode = htmldPlotSummary.DocumentNode.SelectSingleNode("//p[@class=""plotSummary""]")
+                    Dim selNode = htmldPlotSummary.DocumentNode.SelectSingleNode("//ul[@id=""plot-summaries-content""]/li/p")
                     If selNode IsNot Nothing Then
                         nMovie.Plot = HttpUtility.HtmlDecode(selNode.InnerText)
                     Else
