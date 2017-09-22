@@ -211,7 +211,7 @@ Namespace TVDBs
 
             nTVShow.Scrapersource = "TVDB"
             nTVShow.TVDB = CStr(TVShowInfo.Series.Id)
-            nTVShow.IMDB = CStr(TVShowInfo.Series.IMDBId)
+            nTVShow.IMDB = TVShowInfo.Series.IMDBId
 
             'Actors
             If FilteredOptions.bMainActors Then
@@ -343,7 +343,7 @@ Namespace TVDBs
 
         Public Function GetTVEpisodeInfo(ByVal tvdbID As Integer, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer, ByVal tEpisodeOrdering As Enums.EpisodeOrdering, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
             Try
-                Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbID)))
+                Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(tvdbID))
                 If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                     Return Nothing
                 End If
@@ -431,22 +431,22 @@ Namespace TVDBs
 
             'Season # AirsAfterSeason (DisplaySeason, DisplayEpisode; Special handling like in Kodi)
             If Not CDbl(EpisodeInfo.AirsAfterSeason) = -1 Then
-                nEpisode.DisplaySeason = CInt(EpisodeInfo.AirsAfterSeason)
+                nEpisode.DisplaySeason = EpisodeInfo.AirsAfterSeason
                 nEpisode.DisplayEpisode = 4096
             End If
 
             'Season # Combined
-            If Not CInt(EpisodeInfo.CombinedSeason) = -1 Then
+            If Not EpisodeInfo.CombinedSeason = -1 Then
                 nEpisode.SeasonCombined = EpisodeInfo.CombinedSeason
             End If
 
             'Season # DVD
-            If Not CInt(EpisodeInfo.DVDSeason) = -1 Then
+            If Not EpisodeInfo.DVDSeason = -1 Then
                 nEpisode.SeasonDVD = EpisodeInfo.DVDSeason
             End If
 
             'Season # Standard
-            If Not CInt(EpisodeInfo.SeasonNumber) = -1 Then
+            If Not EpisodeInfo.SeasonNumber = -1 Then
                 nEpisode.Season = EpisodeInfo.SeasonNumber
             End If
 
