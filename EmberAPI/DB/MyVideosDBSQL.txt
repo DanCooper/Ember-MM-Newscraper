@@ -788,7 +788,8 @@ CREATE VIEW setslist
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
-        COUNT(setlinkmovie.idMovie) AS 'Count'
+        COUNT(setlinkmovie.idMovie) AS 'Count',
+        GROUP_CONCAT(DISTINCT movies.Title) AS 'MovieTitles'
         FROM
         sets
         LEFT OUTER JOIN art AS banner ON (banner.media_id = sets.idSet)
@@ -812,7 +813,8 @@ CREATE VIEW setslist
         LEFT OUTER JOIN art AS poster ON (poster.media_id = sets.idSet)
         AND (poster.media_type = 'set')
         AND (poster.type = 'poster')
-        LEFT OUTER JOIN setlinkmovie ON sets.idSet = setlinkmovie.idSet
+        LEFT OUTER JOIN setlinkmovie AS setlink ON (setlink.idSet = sets.idSet)
+        LEFT OUTER JOIN movie AS movies ON (movies.idMovie = setlink.idMovie)
         GROUP BY sets.idSet;
 
 CREATE VIEW seasonslist

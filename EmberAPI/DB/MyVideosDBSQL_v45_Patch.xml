@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v45_to_v46">
+    <command type="DB">
+      <description>added MovieTitles to view setslist</description>
+      <execute>
+        DROP VIEW setslist;
+
+        CREATE VIEW setslist
+        AS
+        SELECT
+        sets.*,
+        banner.url AS BannerPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        discart.url AS DiscArtPath,
+        fanart.url AS FanartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath,
+        COUNT(setlink.idMovie) AS 'Count',
+        GROUP_CONCAT(DISTINCT movies.Title) AS 'MovieTitles'
+        FROM
+        sets
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = sets.idSet)
+        AND (banner.media_type = 'set')
+        AND (banner.type = 'banner')
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = sets.idSet)
+        AND (clearart.media_type = 'set')
+        AND (clearart.type = 'clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = sets.idSet)
+        AND (clearlogo.media_type = 'set')
+        AND (clearlogo.type = 'clearlogo')
+        LEFT OUTER JOIN art AS discart ON (discart.media_id = sets.idSet)
+        AND (discart.media_type = 'set')
+        AND (discart.type = 'discart')
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = sets.idSet)
+        AND (fanart.media_type = 'set')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = sets.idSet)
+        AND (landscape.media_type = 'set')
+        AND (landscape.type = 'landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = sets.idSet)
+        AND (poster.media_type = 'set')
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN setlinkmovie AS setlink ON (setlink.idSet = sets.idSet)
+        LEFT OUTER JOIN movie AS movies ON (movies.idMovie = setlink.idMovie)
+        GROUP BY sets.idSet;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

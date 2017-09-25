@@ -17310,7 +17310,7 @@ Public Class frmMain
 
         RemoveHandler cbSearchMovieSets.SelectedIndexChanged, AddressOf cbSearchMovieSets_SelectedIndexChanged
         cbSearchMovieSets.Items.Clear()
-        cbSearchMovieSets.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title")})
+        cbSearchMovieSets.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), String.Format("{0} ({1})", Master.eLang.GetString(21, "Title"), Master.eLang.GetString(1379, "Movie"))})
         If cbSearchMovieSets.Items.Count > 0 Then
             cbSearchMovieSets.SelectedIndex = 0
         End If
@@ -17768,6 +17768,9 @@ Public Class frmMain
             Select Case cbSearchMovieSets.Text
                 Case Master.eLang.GetString(21, "Title")
                     filSearch_MovieSets = String.Concat("SetName LIKE '%", strTextSearch, "%'")
+                    FilterArray_MovieSets.Add(filSearch_MovieSets)
+                Case String.Format("{0} ({1})", Master.eLang.GetString(21, "Title"), Master.eLang.GetString(1379, "Movie"))
+                    filSearch_MovieSets = String.Concat("MovieTitles LIKE '%", strTextSearch, "%'")
                     FilterArray_MovieSets.Add(filSearch_MovieSets)
             End Select
 
