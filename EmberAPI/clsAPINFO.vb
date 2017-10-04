@@ -408,6 +408,11 @@ Public Class NFO
             DBMovie.Movie.MPAA = Master.eSettings.MovieScraperMPAANotRated
         End If
 
+        'OriginalTitle as Title
+        If (Not DBMovie.Movie.TitleSpecified OrElse Not Master.eSettings.MovieLockTitle) AndAlso Master.eSettings.MovieScraperOriginalTitleAsTitle AndAlso DBMovie.Movie.OriginalTitleSpecified Then
+            DBMovie.Movie.Title = DBMovie.Movie.OriginalTitle
+        End If
+
         'Plot for Outline
         If ((Not DBMovie.Movie.OutlineSpecified OrElse Not Master.eSettings.MovieLockOutline) AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Not Master.eSettings.MovieScraperPlotForOutlineIfEmpty) OrElse
             (Not DBMovie.Movie.OutlineSpecified AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Master.eSettings.MovieScraperPlotForOutlineIfEmpty) Then

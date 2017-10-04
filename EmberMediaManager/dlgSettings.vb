@@ -2032,6 +2032,13 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkMovieScraperOriginalTitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperOriginalTitle.CheckedChanged
+        SetApplyButton(True)
+
+        chkMovieScraperOriginalTitleAsTitle.Enabled = chkMovieScraperOriginalTitle.Checked
+        If Not chkMovieScraperOriginalTitle.Checked Then chkMovieScraperOriginalTitleAsTitle.Checked = False
+    End Sub
+
     Private Sub chkMovieScraperPlot_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperPlot.CheckedChanged
         SetApplyButton(True)
 
@@ -3039,6 +3046,7 @@ Public Class dlgSettings
             chkMovieScraperMetaDataScan.Checked = .MovieScraperMetaDataScan
             chkMovieScraperMPAA.Checked = .MovieScraperMPAA
             chkMovieScraperOriginalTitle.Checked = .MovieScraperOriginalTitle
+            chkMovieScraperOriginalTitleAsTitle.Checked = .MovieScraperOriginalTitleAsTitle
             chkMovieScraperDetailView.Checked = .MovieScraperUseDetailView
             chkMovieScraperOutline.Checked = .MovieScraperOutline
             chkMovieScraperPlot.Checked = .MovieScraperPlot
@@ -5129,6 +5137,7 @@ Public Class dlgSettings
             .MovieScraperMPAA = chkMovieScraperMPAA.Checked
             .MovieScraperMPAANotRated = txtMovieScraperMPAANotRated.Text
             .MovieScraperOriginalTitle = chkMovieScraperOriginalTitle.Checked
+            .MovieScraperOriginalTitleAsTitle = chkMovieScraperOriginalTitleAsTitle.Checked
             .MovieScraperOutline = chkMovieScraperOutline.Checked
             If Not String.IsNullOrEmpty(txtMovieScraperOutlineLimit.Text) Then
                 .MovieScraperOutlineLimit = Convert.ToInt32(txtMovieScraperOutlineLimit.Text)
@@ -6793,6 +6802,10 @@ Public Class dlgSettings
         chkMovieScraperCertForMPAA.Text = strUseCertForMPAA
         chkTVScraperShowCertForMPAA.Text = strUseCertForMPAA
 
+        'Use Original Title as Title
+        Dim strUseOriginalTitleAsTitle As String = Master.eLang.GetString(240, "Use Original Title as Title")
+        chkMovieScraperOriginalTitleAsTitle.Text = strUseOriginalTitleAsTitle
+
         'Watched
         Dim strWatched As String = Master.eLang.GetString(981, "Watched")
 
@@ -8169,7 +8182,7 @@ Public Class dlgSettings
         chkMovieScraperMPAA.CheckedChanged,
         chkMovieScraperMetaDataIFOScan.CheckedChanged,
         chkMovieScraperMetaDataScan.CheckedChanged,
-        chkMovieScraperOriginalTitle.CheckedChanged,
+        chkMovieScraperOriginalTitleAsTitle.CheckedChanged,
         chkMovieScraperOutline.CheckedChanged,
         chkMovieScraperPlotForOutlineIfEmpty.CheckedChanged,
         chkMovieScraperRating.CheckedChanged,

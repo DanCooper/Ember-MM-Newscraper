@@ -895,6 +895,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieScraperOriginalTitleAsTitle() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperOriginalTitleAsTitle
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperOriginalTitleAsTitle = value
+        End Set
+    End Property
+
 
     Public Property MovieScraperOutline() As Boolean
         Get
@@ -7119,6 +7128,7 @@ Public Class Settings
         MovieScraperMPAA = True
         MovieScraperMPAANotRated = String.Empty
         MovieScraperOriginalTitle = True
+        MovieScraperOriginalTitleAsTitle = False
         MovieScraperCertOnlyValue = False
         MovieScraperOutline = True
         MovieScraperOutlineLimit = 350

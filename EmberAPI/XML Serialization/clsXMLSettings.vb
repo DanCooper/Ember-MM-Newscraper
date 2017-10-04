@@ -229,6 +229,7 @@ Partial Public Class clsXMLSettings
     Private _moviescrapermpaa As Boolean
     Private _moviescrapermpaanotrated As String
     Private _moviescraperoriginaltitle As Boolean
+    Private _moviescraperoriginaltitleastitle As Boolean
     Private _moviescrapercertonlyvalue As Boolean
     Private _moviescraperoutline As Boolean
     Private _moviescraperoutlinelimit As Integer
@@ -1872,6 +1873,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescraperoriginaltitle = value
+        End Set
+    End Property
+
+    Public Property MovieScraperOriginalTitleAsTitle() As Boolean
+        Get
+            Return Me._moviescraperoriginaltitleastitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescraperoriginaltitleastitle = value
         End Set
     End Property
 
