@@ -835,6 +835,11 @@ Public Class NFO
             DBTV.TVShow.MPAA = Master.eSettings.TVScraperShowMPAANotRated
         End If
 
+        'OriginalTitle as Title
+        If (Not DBTV.TVShow.TitleSpecified OrElse Not Master.eSettings.TVLockShowTitle) AndAlso Master.eSettings.TVScraperShowOriginalTitleAsTitle AndAlso DBTV.TVShow.OriginalTitleSpecified Then
+            DBTV.TVShow.Title = DBTV.TVShow.OriginalTitle
+        End If
+
         'set ListTitle at the end of merging
         If DBTV.TVShow.TitleSpecified Then
             DBTV.ListTitle = StringUtils.SortTokens_TV(DBTV.TVShow.Title)

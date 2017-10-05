@@ -2039,6 +2039,13 @@ Public Class dlgSettings
         If Not chkMovieScraperOriginalTitle.Checked Then chkMovieScraperOriginalTitleAsTitle.Checked = False
     End Sub
 
+    Private Sub chkTVScraperShowOriginalTitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVScraperShowOriginalTitle.CheckedChanged
+        SetApplyButton(True)
+
+        chkTVScraperShowOriginalTitleAsTitle.Enabled = chkTVScraperShowOriginalTitle.Checked
+        If Not chkTVScraperShowOriginalTitle.Checked Then chkTVScraperShowOriginalTitleAsTitle.Checked = False
+    End Sub
+
     Private Sub chkMovieScraperPlot_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperPlot.CheckedChanged
         SetApplyButton(True)
 
@@ -3173,6 +3180,7 @@ Public Class dlgSettings
             chkTVScraperShowGenre.Checked = .TVScraperShowGenre
             chkTVScraperShowMPAA.Checked = .TVScraperShowMPAA
             chkTVScraperShowOriginalTitle.Checked = .TVScraperShowOriginalTitle
+            chkTVScraperShowOriginalTitleAsTitle.Checked = .TVScraperShowOriginalTitleAsTitle
             chkTVScraperShowPlot.Checked = .TVScraperShowPlot
             chkTVScraperShowPremiered.Checked = .TVScraperShowPremiered
             chkTVScraperShowRating.Checked = .TVScraperShowRating
@@ -5315,6 +5323,7 @@ Public Class dlgSettings
             .TVScraperShowGenre = chkTVScraperShowGenre.Checked
             .TVScraperShowMPAA = chkTVScraperShowMPAA.Checked
             .TVScraperShowOriginalTitle = chkTVScraperShowOriginalTitle.Checked
+            .TVScraperShowOriginalTitleAsTitle = chkTVScraperShowOriginalTitleAsTitle.Checked
             .TVScraperShowMPAANotRated = txtTVScraperShowMPAANotRated.Text
             .TVScraperShowPlot = chkTVScraperShowPlot.Checked
             .TVScraperShowPremiered = chkTVScraperShowPremiered.Checked
@@ -6805,6 +6814,7 @@ Public Class dlgSettings
         'Use Original Title as Title
         Dim strUseOriginalTitleAsTitle As String = Master.eLang.GetString(240, "Use Original Title as Title")
         chkMovieScraperOriginalTitleAsTitle.Text = strUseOriginalTitleAsTitle
+        chkTVScraperShowOriginalTitleAsTitle.Text = strUseOriginalTitleAsTitle
 
         'Watched
         Dim strWatched As String = Master.eLang.GetString(981, "Watched")
@@ -8313,7 +8323,7 @@ Public Class dlgSettings
         chkTVScraperShowEpiGuideURL.CheckedChanged,
         chkTVScraperShowGenre.CheckedChanged,
         chkTVScraperShowMPAA.CheckedChanged,
-        chkTVScraperShowOriginalTitle.CheckedChanged,
+        chkTVScraperShowOriginalTitleAsTitle.CheckedChanged,
         chkTVScraperShowPlot.CheckedChanged,
         chkTVScraperShowPremiered.CheckedChanged,
         chkTVScraperShowRating.CheckedChanged,

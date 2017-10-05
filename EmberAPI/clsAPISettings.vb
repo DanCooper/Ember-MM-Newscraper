@@ -3473,6 +3473,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperShowOriginalTitleAsTitle() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowOriginalTitleAsTitle
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowOriginalTitleAsTitle = value
+        End Set
+    End Property
+
     Public Property TVScraperShowCert() As Boolean
         Get
             Return Settings._XMLSettings.TVScraperShowCert
@@ -7354,6 +7363,7 @@ Public Class Settings
         TVScraperShowMPAA = True
         TVScraperShowMPAANotRated = String.Empty
         TVScraperShowOriginalTitle = True
+        TVScraperShowOriginalTitleAsTitle = False
         TVScraperShowPlot = True
         TVScraperShowPremiered = True
         TVScraperShowRating = True

@@ -453,6 +453,7 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowmpaa As Boolean
     Private _tvscrapershowmpaanotrated As String
     Private _tvscrapershoworiginaltitle As Boolean
+    Private _tvscrapershoworiginaltitleastitle As Boolean
     Private _tvscrapershowplot As Boolean
     Private _tvscrapershowpremiered As Boolean
     Private _tvscrapershowrating As Boolean
@@ -4425,6 +4426,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscrapershoworiginaltitle = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowOriginalTitleAsTitle() As Boolean
+        Get
+            Return Me._tvscrapershoworiginaltitleastitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscrapershoworiginaltitleastitle = value
         End Set
     End Property
 
