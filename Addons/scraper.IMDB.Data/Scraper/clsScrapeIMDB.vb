@@ -237,7 +237,7 @@ Namespace IMDB
                 Dim ndOriginalTitle = htmldCombined.DocumentNode.SelectSingleNode("//head/title")
                 If ndOriginalTitle IsNot Nothing Then
                     'remove year in brakets
-                    strOriginalTitle = Regex.Match(ndOriginalTitle.InnerText, ".*(?=\s\(\d+.*?\))").ToString.Trim
+                    strOriginalTitle = HttpUtility.HtmlDecode(Regex.Match(ndOriginalTitle.InnerText, ".*(?=\s\(\d+.*?\))").ToString.Trim)
                 End If
 
                 'Actors
@@ -372,8 +372,11 @@ Namespace IMDB
                     Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Plot:']")
                     If selNode IsNot Nothing Then
                         Dim ndPlot = selNode.ParentNode.Descendants("div").FirstOrDefault
-                        If ndPlot IsNot Nothing AndAlso ndPlot.FirstChild IsNot Nothing Then
-                            nMovie.Outline = HttpUtility.HtmlDecode(ndPlot.FirstChild.InnerText)
+                        If ndPlot IsNot Nothing AndAlso ndPlot.InnerText IsNot Nothing AndAlso Not String.IsNullOrEmpty(ndPlot.InnerText) Then
+                            nMovie.Outline = HttpUtility.HtmlDecode(Regex.Replace(ndPlot.InnerText,
+                                                                                  "\|.*|full summary.*|full synopsis.*|add summary.*|add synopsis.*|see more&nbsp;&raquo;",
+                                                                                  String.Empty,
+                                                                                  RegexOptions.IgnoreCase).Trim)
                         End If
                     End If
                 End If
