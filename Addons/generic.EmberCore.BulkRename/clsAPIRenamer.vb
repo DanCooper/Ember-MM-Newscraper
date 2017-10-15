@@ -98,45 +98,7 @@ Public Class FileFolderRenamer
     Public Sub Add_TVEpisode(ByVal _episode As FileRename)
         _episodes.Add(_episode)
     End Sub
-
-    Private Shared Function ApplyPattern(ByVal pattern As String, ByVal flag As String, ByVal v As String) As String
-        pattern = pattern.Replace(String.Concat("$", flag), v)
-        If Not String.IsNullOrEmpty(v) Then
-            pattern = pattern.Replace(String.Concat("$-", flag), v)
-            pattern = pattern.Replace(String.Concat("$+", flag), v)
-            pattern = pattern.Replace(String.Concat("$^", flag), v)
-
-        Else
-            Dim pos = -1
-            Dim size = 3
-            Dim nextC = pattern.IndexOf(String.Concat("$+", flag))
-            If nextC >= 0 Then
-                If nextC + 3 < pattern.Length Then size += 1
-                pos = nextC
-            End If
-            Dim prevC = pattern.IndexOf(String.Concat("$-", flag))
-            If prevC >= 0 Then
-                If prevC + 3 < pattern.Length Then size += 1
-                If prevC > 0 Then
-                    prevC -= 1
-                End If
-                pos = prevC
-            End If
-            Dim bothC = pattern.IndexOf(String.Concat("$^", flag))
-            If bothC >= 0 Then
-                If bothC + 3 < pattern.Length Then size += 1
-                If bothC > 0 Then
-                    size += 1
-                    bothC -= 1
-                End If
-                pos = bothC
-            End If
-
-            If Not pos = -1 Then pattern = pattern.Remove(pos, size)
-        End If
-        Return pattern
-    End Function
-
+    
     Public Sub DoRename_Movies(Optional ByVal sfunction As ShowProgress = Nothing)
         Dim _movieDB As Database.DBElement = Nothing
         Dim iProg As Integer = 0
@@ -661,35 +623,8 @@ Public Class FileFolderRenamer
                 If tAud.CodecSpecified Then
                     MovieFile.AudioCodec = tAud.Codec
                 End If
-
-                Dim sbAllAudioChannels As New Text.StringBuilder
-                Dim sbAllAudioCodec As New Text.StringBuilder
-                Dim sbAllAudioLanguages As New Text.StringBuilder
-
-                Dim first As Boolean = True
-
-                MovieFile.FullAudioInfo = New List(Of Dictionary(Of String, String))()
-                For Each miAudio As MediaContainers.Audio In _DBElement.Movie.FileInfo.StreamDetails.Audio
-                    If Not first Then
-                        sbAllAudioChannels.Append(" / ")
-                        sbAllAudioCodec.Append(" / ")
-                        sbAllAudioLanguages.Append(" / ")
-                    End If
-                    first = False
-
-                    sbAllAudioChannels.Append(MediaInfo.FormatAudioChannel(miAudio.Channels))
-                    sbAllAudioCodec.Append(miAudio.Codec)
-                    sbAllAudioLanguages.Append(If(miAudio.LanguageSpecified, miAudio.Language, "und"))
-
-                    Dim fullAudioItem = New Dictionary(Of String, String)
-                    fullAudioItem("n") = miAudio.Channels
-                    fullAudioItem("c") = miAudio.Codec
-                    fullAudioItem("l") = miAudio.Language
-                    MovieFile.FullAudioInfo.Add(fullAudioItem)
-                Next
-                MovieFile.AllAudioChannels = sbAllAudioChannels.ToString()
-                MovieFile.AllAudioCodecs = sbAllAudioCodec.ToString()
-                MovieFile.AllAudioLanguages = sbAllAudioLanguages.ToString()
+                
+                MovieFile.FullAudioInfo = _DBElement.Movie.FileInfo.StreamDetails.Audio
             End If
 
             'MultiViewCount
@@ -905,35 +840,7 @@ Public Class FileFolderRenamer
                     EpisodeFile.AudioCodec = tAud.Codec
                 End If
 
-                Dim sbAllAudioChannels As New Text.StringBuilder
-                Dim sbAllAudioCodec As New Text.StringBuilder
-                Dim sbAllAudioLanguages As New Text.StringBuilder
-                
-                EpisodeFile.FullAudioInfo = New List(Of Dictionary(Of String, String))()
-
-                Dim first As Boolean = True
-                For Each miAudio As MediaContainers.Audio In _DBElement.TVEpisode.FileInfo.StreamDetails.Audio
-                    If Not first Then
-                        sbAllAudioChannels.Append(" / ")
-                        sbAllAudioCodec.Append(" / ")
-                        sbAllAudioLanguages.Append(" / ")
-                    End If
-                    first = False
-
-                    sbAllAudioChannels.Append(MediaInfo.FormatAudioChannel(miAudio.Channels))
-                    sbAllAudioCodec.Append(miAudio.Codec)
-                    sbAllAudioLanguages.Append(If(miAudio.LanguageSpecified, miAudio.Language, "und"))
-
-                    Dim fullAudioItem = New Dictionary(Of String, String)
-                    fullAudioItem("n") = miAudio.Channels
-                    fullAudioItem("c") = miAudio.Codec
-                    fullAudioItem("l") = miAudio.Language
-
-                    EpisodeFile.FullAudioInfo.add(fullAudioItem)
-                Next
-                EpisodeFile.AllAudioChannels = sbAllAudioChannels.ToString()
-                EpisodeFile.AllAudioCodecs = sbAllAudioCodec.ToString()
-                EpisodeFile.AllAudioLanguages = sbAllAudioLanguages.ToString()
+                EpisodeFile.FullAudioInfo = _DBElement.TVEpisode.FileInfo.StreamDetails.Audio
             End If
 
             'MultiViewCount
@@ -1148,16 +1055,16 @@ Public Class FileFolderRenamer
     Public Shared Sub Process_Movie(ByRef MovieFile As FileRename, ByVal folderPattern As String, ByVal filePattern As String)
         Try
             If HaveBase(folderPattern) Then
-                MovieFile.NewPath = ProccessPattern(MovieFile, If(MovieFile.IsSingle, folderPattern, "$D"), True).Trim
+                MovieFile.NewPath = ProcessPattern(MovieFile, If(MovieFile.IsSingle, folderPattern, "$D"), True).Trim
             Else
-                MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProccessPattern(MovieFile, If(MovieFile.IsSingle, folderPattern, "$D"), True).Trim)
+                MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProcessPattern(MovieFile, If(MovieFile.IsSingle, folderPattern, "$D"), True).Trim)
             End If
 
             If Not MovieFile.IsVideoTS AndAlso Not MovieFile.IsBDMV Then
                 If MovieFile.OldFileName.ToLower = "video_ts" Then
                     MovieFile.NewFileName = MovieFile.OldFileName
                 Else
-                    MovieFile.NewFileName = ProccessPattern(MovieFile, filePattern, False).Trim
+                    MovieFile.NewFileName = ProcessPattern(MovieFile, filePattern, False).Trim
                 End If
             ElseIf MovieFile.IsBDMV Then
                 MovieFile.NewFileName = MovieFile.OldFileName
@@ -1194,14 +1101,14 @@ Public Class FileFolderRenamer
 
     Public Shared Sub Process_TVEpisode(ByRef EpisodeFile As FileRename, ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String)
         Try
-            Dim pSeason As String = ProccessPattern(EpisodeFile, folderPatternSeasons, True).Trim
+            Dim pSeason As String = ProcessPattern(EpisodeFile, folderPatternSeasons, True).Trim
             EpisodeFile.NewPath = Path.Combine(EpisodeFile.ShowPath, pSeason)
 
             If Not EpisodeFile.IsVideoTS AndAlso Not EpisodeFile.IsBDMV Then
                 If EpisodeFile.OldFileName.ToLower = "video_ts" Then
                     EpisodeFile.NewFileName = EpisodeFile.OldFileName
                 Else
-                    EpisodeFile.NewFileName = ProccessPattern(EpisodeFile, filePatternEpisodes, False, EpisodeFile.IsMultiEpisode).Trim
+                    EpisodeFile.NewFileName = ProcessPattern(EpisodeFile, filePatternEpisodes, False, EpisodeFile.IsMultiEpisode).Trim
                 End If
             ElseIf EpisodeFile.IsBDMV Then
                 EpisodeFile.NewFileName = EpisodeFile.OldFileName
@@ -1236,9 +1143,9 @@ Public Class FileFolderRenamer
     Public Shared Sub Process_TVShow(ByRef ShowFile As FileRename, ByVal folderPatternShows As String)
         Try
             If HaveBase(folderPatternShows) Then
-                ShowFile.NewPath = ProccessPattern(ShowFile, folderPatternShows, True).Trim
+                ShowFile.NewPath = ProcessPattern(ShowFile, folderPatternShows, True).Trim
             Else
-                ShowFile.NewPath = Path.Combine(ShowFile.OldPath, ProccessPattern(ShowFile, folderPatternShows, True).Trim)
+                ShowFile.NewPath = Path.Combine(ShowFile.OldPath, ProcessPattern(ShowFile, folderPatternShows, True).Trim)
             End If
 
             ' removes all leading DirectorySeparatorChar (otherwise, Path.Combine later does not work)
@@ -1333,19 +1240,21 @@ Public Class FileFolderRenamer
             Dim arguments = SplitArguments(groups.Item(2).Value)
             Dim replacement As String = ""
             If TestReplace(name, arguments, replacement) Then
-                countReplacements += 1
+                If Not String.IsNullOrEmpty(replacement) Then
+                    countReplacements += 1
+                End If
                 opattern = opattern.Replace(groups.Item(0).Value, replacement)
             End If
         Next
         Return opattern
     End Function
 
-    Public Shared Function ProccessPatternNew(ByVal fileRename As FileRename, ByVal pattern As String, ByVal isPath As Boolean, Optional isMultiEpisode As Boolean = False) As String
+    Public Shared Function ProcessPattern(ByVal fileRename As FileRename, ByVal pattern As String, ByVal isPath As Boolean, Optional isMultiEpisode As Boolean = False) As String
         PatternImplementations.FileRename = fileRename
         Dim count = 0
 
         'Replace optional patterns
-        Dim mOptionals = Regex.Matches(pattern, "\({[^}]*)\}")
+        Dim mOptionals = Regex.Matches(pattern, "\{([^}]*)\}")
         For Each m As Match In mOptionals
             Dim groups As GroupCollection = m.Groups
             Dim tempString As String = DoReplacements(groups.Item(1).Value, count)
@@ -1376,17 +1285,17 @@ Public Class FileFolderRenamer
         End If
 
         'Lowercase all letters
-        Dim pos = pattern.IndexOf("$lowercase$", StringComparison.Ordinal)
+        Dim pos = pattern.IndexOf("$LOWERCASE$", StringComparison.Ordinal)
         If Not pos = -1 Then
             pattern = pattern.ToLower
-            pattern = pattern.Replace("$lowercase$", String.Empty)
+            pattern = pattern.Replace("$LOWERCASE$", String.Empty)
         End If
 
         'Uppercase first letter in each word
-        pos = pattern.IndexOf("$titlecase$", StringComparison.Ordinal)
+        pos = pattern.IndexOf("$TITLECASE$", StringComparison.Ordinal)
         If Not pos = -1 Then
             pattern = Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(pattern)
-            pattern = pattern.Replace("$titlecase$", String.Empty)
+            pattern = pattern.Replace("$TITLECASE$", String.Empty)
         End If
 
         'Cleaning
@@ -1401,526 +1310,7 @@ Public Class FileFolderRenamer
 
         Return pattern.Trim
     End Function
-
-    Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String, ByVal isPath As Boolean, Optional isMultiEpisode As Boolean = False) As String
-        Try
-            If Not String.IsNullOrEmpty(opattern) Then
-                Dim pattern As String = opattern
-                'Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
-
-                'pattern = "$T{($S.$S)}"
-                Dim joinIndex As Integer
-                Dim nextC = pattern.IndexOf("$")
-                Dim nextIB = pattern.IndexOf("{")
-                Dim nextEB = pattern.IndexOf("}")
-                Dim strCond As String
-                Dim strBase As String
-                Dim strNoFlags As String
-                Dim strJoin As String
-               
-                Dim regAllAudioLanguages As New Regex("\$5([ ,.-]?)")
-                Dim regAllAudioCodecs As New Regex("\$6([ ,.-]?)")
-                Dim regAllAudioChannels As New Regex("\$7([ ,.-]?)")
-
-                Dim matchAllAudioLanguages As Match
-                Dim matchAllAudioCodecs As Match
-                Dim matchAllAudioChannels As Match
-
-                While Not nextC = -1
-                    If nextC > nextIB AndAlso nextC < nextEB AndAlso Not nextC = -1 AndAlso Not nextIB = -1 AndAlso Not nextEB = -1 Then
-                        strCond = pattern.Substring(nextIB, nextEB - nextIB + 1)
-                        strNoFlags = strCond
-                        strBase = strCond
-
-                        ' Now process old syntax
-                        strCond = ApplyPattern(strCond, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
-                        strCond = ApplyPattern(strCond, "2", f.Aired)
-                        strCond = ApplyPattern(strCond, "3", f.ShortStereoMode)
-                        strCond = ApplyPattern(strCond, "4", f.StereoMode)
-                        '                                5   AllAudioLanguages
-                        '                                6   AllAudioCodecs
-                        '                                7   AllAudioChannels
-                        strCond = ApplyPattern(strCond, "A", f.AudioChannels)
-                        strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not needed here, Only to HaveBase
-                        strCond = ApplyPattern(strCond, "C", f.Director)
-                        strCond = ApplyPattern(strCond, "D", f.Parent)
-                        strCond = ApplyPattern(strCond, "E", f.SortTitle)
-                        strCond = ApplyPattern(strCond, "F", f.OldFileName.Replace("\", String.Empty))
-                        '                                _FA_ FullAudioInfo
-                        '                                G   Genres
-                        strCond = ApplyPattern(strCond, "H", f.VideoCodec)
-                        strCond = ApplyPattern(strCond, "I", f.IMDB)
-                        strCond = ApplyPattern(strCond, "J", f.AudioCodec)
-                        '                                K   Season
-                        strCond = ApplyPattern(strCond, "L", f.ListTitle)
-                        strCond = ApplyPattern(strCond, "M", f.MPAA)
-                        strCond = ApplyPattern(strCond, "N", f.Collection)
-                        '                                O   OriginalTitle
-                        '                                OO  OriginalTitle if different from the title
-                        strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", Double.Parse(f.Rating, Globalization.CultureInfo.InvariantCulture)), String.Empty))
-                        '                                Q   Episode
-                        strCond = ApplyPattern(strCond, "R", f.Resolution)
-                        strCond = ApplyPattern(strCond, "S", f.VideoSource)
-                        strCond = ApplyPattern(strCond, "T", f.Title)
-                        '                                U   Countries
-                        strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
-                        '                                W   SeasonEpisode
-                        '                                X   
-                        strCond = ApplyPattern(strCond, "Y", f.Year)
-                        strCond = ApplyPattern(strCond, "Z", f.ShowTitle)
-
-                        'AllAudioLanguages
-                        matchAllAudioLanguages = regAllAudioLanguages.Match(strCond)
-                        If matchAllAudioLanguages.Success Then
-                            strJoin = matchAllAudioLanguages.Groups(1).Value
-                            If String.IsNullOrEmpty(strJoin) Then
-                                strJoin = " "
-                            End If
-                            strCond = ApplyPattern(strCond, matchAllAudioLanguages.Groups(0).Value.Substring(1), f.AllAudioLanguages.Replace(" / ", strJoin))
-                        End If
-
-                        'AllAudioCodecs
-                        matchAllAudioCodecs = regAllAudioCodecs.Match(strCond)
-                        If matchAllAudioCodecs.Success Then
-                            strJoin = matchAllAudioCodecs.Groups(1).Value
-                            If String.IsNullOrEmpty(strJoin) Then
-                                strJoin = " "
-                            End If
-                            strCond = ApplyPattern(strCond, matchAllAudioCodecs.Groups(0).Value.Substring(1), f.AllAudioCodecs.Replace(" / ", strJoin))
-                        End If
-
-                        'AllAudioChannels
-                        matchAllAudioChannels = regAllAudioChannels.Match(strCond)
-                        If matchAllAudioChannels.Success Then
-                            strJoin = matchAllAudioChannels.Groups(1).Value
-                            If String.IsNullOrEmpty(strJoin) Then
-                                strJoin = " "
-                            End If
-                            strCond = ApplyPattern(strCond, matchAllAudioChannels.Groups(0).Value.Substring(1), f.AllAudioChannels.Replace(" / ", strJoin))
-                        End If
-
-                        'Genres
-                        joinIndex = strCond.IndexOf("$G")
-                        If Not joinIndex = -1 Then
-                            If strCond.Length > joinIndex + 2 Then
-                                strJoin = strCond.Substring(joinIndex + 2, 1)
-                                If Not ". -,".IndexOf(strJoin) = -1 Then
-                                    strCond = ApplyPattern(strCond, String.Concat("G", strJoin), f.Genre.Replace(" / ", strJoin))
-                                Else
-                                    strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
-                                End If
-                            Else
-                                strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
-                            End If
-                        End If
-
-                        'OriginalTitle
-                        joinIndex = strCond.IndexOf("$O")
-                        If Not joinIndex = -1 Then
-                            If strCond.Length > joinIndex + 2 Then
-                                strJoin = strCond.Substring(joinIndex + 2, 1)
-                                If strJoin = "O" Then
-                                    strCond = ApplyPattern(strCond, "OO", If(Not f.OriginalTitle = f.Title, f.OriginalTitle, String.Empty))
-                                Else
-                                    strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
-                                End If
-                            Else
-                                strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
-                            End If
-                        End If
-
-                        'Countries
-                        joinIndex = strCond.IndexOf("$U")
-                        If Not joinIndex = -1 Then
-                            If strCond.Length > joinIndex + 2 Then
-                                strJoin = strCond.Substring(joinIndex + 2, 1)
-                                If Not ". -,".IndexOf(strJoin) = -1 Then
-                                    strCond = ApplyPattern(strCond, String.Concat("U", strJoin), f.Country.Replace(" / ", strJoin))
-                                Else
-                                    strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
-                                End If
-                            Else
-                                strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
-                            End If
-                        End If
-
-                        strNoFlags = Regex.Replace(strNoFlags, "\$((?:OO|[12ABCDEFHIJKLMNOPQRSTVWY]|G[. -,]|U[. -,]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
-                        If strCond.Trim = strNoFlags.Trim Then
-                            strCond = String.Empty
-                        Else
-                            strCond = strCond.Substring(1, strCond.Length - 2)
-                        End If
-                        pattern = pattern.Replace(strBase, strCond)
-                        nextC = pattern.IndexOf("$")
-                    Else
-                        nextC = pattern.IndexOf("$", nextC + 1)
-                    End If
-                    nextIB = pattern.IndexOf("{")
-                    nextEB = pattern.IndexOf("}")
-                End While
-
-                pattern = ApplyPattern(pattern, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
-                pattern = ApplyPattern(pattern, "2", f.Aired)
-                pattern = ApplyPattern(pattern, "3", f.ShortStereoMode)
-                pattern = ApplyPattern(pattern, "4", f.StereoMode)
-                '                                5   AllAudioLanguages
-                '                                6   AllAudioCodecs
-                '                                7   AllAudioChannels
-                pattern = ApplyPattern(pattern, "A", f.AudioChannels)
-                pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
-                pattern = ApplyPattern(pattern, "C", f.Director)
-                pattern = ApplyPattern(pattern, "D", f.Parent) '.Replace("\", String.Empty))
-                pattern = ApplyPattern(pattern, "E", f.SortTitle)
-                pattern = ApplyPattern(pattern, "F", f.OldFileName.Replace("\", String.Empty))
-                '                                _FA_  FullAudioInfo
-                '                                G   Genres
-                pattern = ApplyPattern(pattern, "H", f.VideoCodec)
-                pattern = ApplyPattern(pattern, "I", f.IMDB)
-                pattern = ApplyPattern(pattern, "J", f.AudioCodec)
-                '                                K   Season
-                pattern = ApplyPattern(pattern, "L", f.ListTitle)
-                pattern = ApplyPattern(pattern, "M", f.MPAA)
-                pattern = ApplyPattern(pattern, "N", f.Collection)
-                '                                O   OriginalTitle
-                '                                OO  OriginalTitle if different from the title
-                pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", Double.Parse(f.Rating, Globalization.CultureInfo.InvariantCulture)), String.Empty))
-                '                                Q   Episode
-                pattern = ApplyPattern(pattern, "R", f.Resolution)
-                pattern = ApplyPattern(pattern, "S", f.VideoSource)
-                pattern = ApplyPattern(pattern, "T", f.Title)
-                '                                U   Countries
-                pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
-                '                                W   SeasonEpisode
-                '                                X   
-                pattern = ApplyPattern(pattern, "Y", f.Year)
-                pattern = ApplyPattern(pattern, "Z", f.ShowTitle)
-
-                'season and episode
-                nextC = pattern.IndexOf("$W")
-                If Not nextC = -1 Then
-                    If pattern.Length > nextC + 2 Then
-                        Dim ePattern As String = String.Empty
-                        Dim ePrefix As String = String.Empty
-                        Dim ePadding As Integer = 1
-                        Dim eFormat As String = "{0:0}"
-                        Dim eSeparator As String = String.Empty
-                        Dim fPattern As String = String.Empty
-                        Dim sPattern As String = String.Empty
-                        Dim sPrefix As String = String.Empty
-                        Dim sSeparator As String = String.Empty
-                        Dim seString As String = String.Empty
-                        Dim sPadding As Integer = 1
-                        Dim sFormat As String = "{0:0}"
-
-                        strBase = pattern.Substring(nextC)
-                        nextIB = strBase.IndexOf("?")
-                        If nextIB > -1 Then
-                            nextEB = strBase.IndexOf("?", nextIB + 1)
-                            If nextEB > -1 Then
-                                sPattern = strBase.Substring(2, nextIB - 2)
-                                If Not String.IsNullOrEmpty(sPattern) AndAlso Integer.TryParse(sPattern.Substring(0, 1), 0) Then
-                                    sPadding = CInt(sPattern.Substring(0, 1))
-                                    sPattern = sPattern.Substring(1)
-                                    If Not sPadding > 0 Then
-                                        sPadding = 1
-                                    End If
-                                End If
-                                ePattern = strBase.Substring(nextIB + 1, nextEB - nextIB - 1)
-                                If Not String.IsNullOrEmpty(ePattern) AndAlso Integer.TryParse(ePattern.Substring(0, 1), 0) Then
-                                    ePadding = CInt(ePattern.Substring(0, 1))
-                                    ePattern = ePattern.Substring(1)
-                                    If Not ePadding > 0 Then
-                                        ePadding = 1
-                                    End If
-                                End If
-                                fPattern = strBase.Substring(0, nextEB + 1)
-                            End If
-                        End If
-
-                        If sPattern.StartsWith(".") OrElse sPattern.StartsWith("_") Then
-                            sSeparator = sPattern.Substring(0, 1)
-                            sPrefix = sPattern.Remove(0, 1)
-                        Else
-                            sPrefix = sPattern
-                        End If
-
-                        For i As Integer = 1 To sPadding - 1
-                            sFormat = sFormat.Insert(sFormat.Length - 1, "0")
-                        Next
-
-                        If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
-                            eSeparator = ePattern.Substring(0, 1)
-                            ePrefix = ePattern.Remove(0, 1)
-                        Else
-                            ePrefix = ePattern
-                        End If
-
-                        For i As Integer = 1 To ePadding - 1
-                            eFormat = eFormat.Insert(eFormat.Length - 1, "0")
-                        Next
-
-                        For Each season As SeasonsEpisodes In f.SeasonsEpisodes
-                            seString = String.Concat(seString, sSeparator, sPrefix, String.Format(sFormat, season.Season))
-                            For Each episode In season.Episodes
-                                If Not episode.SubEpisode = -1 Then
-                                    seString = String.Concat(seString, eSeparator, ePrefix, String.Concat(String.Format(eFormat, episode.Episode), ".", episode.SubEpisode))
-                                Else
-                                    seString = String.Concat(seString, eSeparator, ePrefix, String.Format(eFormat, episode.Episode))
-                                End If
-                            Next
-                        Next
-
-                        If Not String.IsNullOrEmpty(sSeparator) AndAlso seString.StartsWith(sSeparator) Then seString = seString.Remove(0, 1)
-
-                        pattern = pattern.Replace(fPattern, seString)
-                    End If
-                End If
-
-                'season
-                nextC = pattern.IndexOf("$K")
-                If Not nextC = -1 Then
-                    If pattern.Length > nextC + 1 Then
-                        Dim sPattern As String = String.Empty
-                        Dim sPrefix As String = String.Empty
-                        Dim sSeparator As String = String.Empty
-                        Dim fPattern As String = String.Empty
-                        Dim sString As String = String.Empty
-                        Dim sPadding As Integer = 1
-                        Dim sFormat As String = "{0:0}"
-
-                        strBase = pattern.Substring(nextC)
-                        nextIB = strBase.IndexOf("?")
-                        If nextIB > -1 Then
-                            sPattern = strBase.Substring(2, nextIB - 2)
-                            If Not String.IsNullOrEmpty(sPattern) AndAlso Integer.TryParse(sPattern.Substring(0, 1), 0) Then
-                                sPadding = CInt(sPattern.Substring(0, 1))
-                                sPattern = sPattern.Substring(1)
-                                If Not sPadding > 0 Then
-                                    sPadding = 1
-                                End If
-                            End If
-                            fPattern = strBase.Substring(0, nextIB + 1)
-                        End If
-
-                        If sPattern.StartsWith(".") OrElse sPattern.StartsWith("_") OrElse sPattern.StartsWith("x") Then
-                            sSeparator = sPattern.Substring(0, 1)
-                            sPrefix = sPattern.Remove(0, 1)
-                        Else
-                            sPrefix = sPattern
-                        End If
-
-                        For i As Integer = 1 To sPadding - 1
-                            sFormat = sFormat.Insert(sFormat.Length - 1, "0")
-                        Next
-
-                        For Each season As SeasonsEpisodes In f.SeasonsEpisodes
-                            sString = String.Concat(sString, sSeparator, sPrefix, String.Format(sFormat, season.Season))
-                        Next
-
-                        If Not String.IsNullOrEmpty(sSeparator) AndAlso sString.StartsWith(sSeparator) Then sString = sString.Remove(0, 1)
-
-                        pattern = pattern.Replace(fPattern, sString)
-                    End If
-                End If
-
-                'episode
-                nextC = pattern.IndexOf("$Q")
-                If Not nextC = -1 Then
-                    If pattern.Length > nextC + 2 Then
-                        Dim ePattern As String = String.Empty
-                        Dim ePrefix As String = String.Empty
-                        Dim eSeparator As String = String.Empty
-                        Dim fPattern As String = String.Empty
-                        Dim eString As String = String.Empty
-                        Dim ePadding As Integer = 1
-                        Dim eFormat As String = "{0:0}"
-
-                        strBase = pattern.Substring(nextC)
-                        nextIB = strBase.IndexOf("?")
-                        If nextIB > -1 Then
-                            ePattern = strBase.Substring(2, nextIB - 2)
-                            If Not String.IsNullOrEmpty(ePattern) AndAlso Integer.TryParse(ePattern.Substring(0, 1), 0) Then
-                                ePadding = CInt(ePattern.Substring(0, 1))
-                                ePattern = ePattern.Substring(1)
-                                If Not ePadding > 0 Then
-                                    ePadding = 1
-                                End If
-                            End If
-                            fPattern = strBase.Substring(0, nextIB + 1)
-                        End If
-
-                        If ePattern.StartsWith(".") OrElse ePattern.StartsWith("_") OrElse ePattern.StartsWith("x") Then
-                            eSeparator = ePattern.Substring(0, 1)
-                            ePrefix = ePattern.Remove(0, 1)
-                        Else
-                            ePrefix = ePattern
-                        End If
-
-                        For i As Integer = 1 To ePadding - 1
-                            eFormat = eFormat.Insert(eFormat.Length - 1, "0")
-                        Next
-
-                        For Each season As SeasonsEpisodes In f.SeasonsEpisodes
-                            For Each episode In season.Episodes
-                                If Not episode.SubEpisode = -1 Then
-                                    eString = String.Concat(eString, eSeparator, ePrefix, String.Concat(String.Format(eFormat, episode.Episode), ".", episode.SubEpisode))
-                                Else
-                                    eString = String.Concat(eString, eSeparator, ePrefix, String.Format(eFormat, episode.Episode))
-                                End If
-                            Next
-                        Next
-
-                        If Not String.IsNullOrEmpty(eSeparator) AndAlso eString.StartsWith(eSeparator) Then eString = eString.Remove(0, 1)
-
-                        pattern = pattern.Replace(fPattern, eString)
-                    End If
-                End If
-
-                'OriginalTitle
-                nextC = pattern.IndexOf("$O")
-                If Not nextC = -1 Then
-                    If pattern.Length > nextC + 2 Then
-                        strCond = pattern.Substring(nextC + 2, 1)
-                        If strCond = "O" Then
-                            pattern = ApplyPattern(pattern, "OO", If(Not f.OriginalTitle = f.Title, f.OriginalTitle, String.Empty))
-                        Else
-                            pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
-                        End If
-                    Else
-                        pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
-                    End If
-                End If
-
-                'AllAudioLanguages
-                matchAllAudioLanguages = regAllAudioLanguages.Match(pattern)
-                If matchAllAudioLanguages.Success Then
-                    strJoin = matchAllAudioLanguages.Groups(1).Value
-                    If String.IsNullOrEmpty(strJoin) Then
-                        strJoin = " "
-                    End If
-                    pattern = ApplyPattern(pattern, matchAllAudioLanguages.Groups(0).Value.Substring(1), f.AllAudioLanguages.Replace(" / ", strJoin))
-                End If
-
-                'AllAudioCodecs
-                matchAllAudioCodecs = regAllAudioCodecs.Match(pattern)
-                If matchAllAudioCodecs.Success Then
-                    strJoin = matchAllAudioCodecs.Groups(1).Value
-                    If String.IsNullOrEmpty(strJoin) Then
-                        strJoin = " "
-                    End If
-                    pattern = ApplyPattern(pattern, matchAllAudioCodecs.Groups(0).Value.Substring(1), f.AllAudioCodecs.Replace(" / ", strJoin))
-                End If
-
-                'AllAudioChannels
-                matchAllAudioChannels = regAllAudioChannels.Match(pattern)
-                If matchAllAudioChannels.Success Then
-                    strJoin = matchAllAudioChannels.Groups(1).Value
-                    If String.IsNullOrEmpty(strJoin) Then
-                        strJoin = " "
-                    End If
-                    pattern = ApplyPattern(pattern, matchAllAudioChannels.Groups(0).Value.Substring(1), f.AllAudioChannels.Replace(" / ", strJoin))
-                End If
-
-                'Genres
-                nextC = pattern.IndexOf("$G")
-                If Not nextC = -1 Then
-                    If pattern.Length > nextC + 2 Then
-                        strCond = pattern.Substring(nextC + 2, 1)
-                        If Not ". -,".IndexOf(strCond) = -1 Then
-                            pattern = ApplyPattern(pattern, String.Concat("G", strCond), f.Genre.Replace(" / ", strCond))
-                        Else
-                            pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
-                        End If
-                    Else
-                        pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
-                    End If
-                End If
-
-                'Countries
-                nextC = pattern.IndexOf("$U")
-                If Not nextC = -1 Then
-                    If pattern.Length > nextC + 2 Then
-                        strCond = pattern.Substring(nextC + 2, 1)
-                        If Not ". -,".IndexOf(strCond) = -1 Then
-                            pattern = ApplyPattern(pattern, String.Concat("U", strCond), f.Country.Replace(" / ", strCond))
-                        Else
-                            pattern = ApplyPattern(pattern, "U", f.Country.Replace(" / ", " "))
-                        End If
-                    Else
-                        pattern = ApplyPattern(pattern, "U", f.Country.Replace(" / ", " "))
-                    End If
-                End If
-
-                'Replace all spaces with character
-                nextC = pattern.IndexOf("$X")
-                If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
-                    strCond = pattern.Substring(nextC + 2, 1)
-                    pattern = pattern.Replace(String.Concat("$X", strCond), String.Empty)
-                    pattern = pattern.Replace(" ", strCond)
-                End If
-
-                'Replace character(s) with another character(s)
-                nextC = pattern.IndexOf("$?")
-                Dim strmore As String = String.Empty
-                While nextC > -1
-                    'If nextC > -1 Then
-                    strBase = pattern.Substring(nextC + 2)
-                    pattern = pattern.Substring(0, nextC)
-                    If Not strBase = String.Empty Then
-                        nextIB = strBase.IndexOf("?")
-                        If nextIB > -1 Then
-                            nextEB = strBase.Substring(nextIB + 1).IndexOf("?")
-                            If nextEB > -1 Then
-                                strCond = strBase.Substring(nextIB + 1, nextEB)
-                                strmore = strBase.Substring(nextIB + nextEB + 2)
-                                strBase = strBase.Substring(0, nextIB)
-                                If Not strBase = String.Empty Then pattern = pattern.Replace(strBase, strCond)
-                            End If
-                        End If
-                    End If
-                    'End If
-                    pattern = String.Concat(pattern, strmore)
-                    nextC = pattern.IndexOf("$?")
-                End While
-
-                'Lowercase all letters
-                nextC = pattern.IndexOf("$;")
-                If Not nextC = -1 Then
-                    pattern = pattern.ToLower
-                    pattern = pattern.Replace("$;", String.Empty)
-                End If
-
-                'Uppercase first letter in each word
-                nextC = pattern.IndexOf("$!")
-                If Not nextC = -1 Then
-                    pattern = Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(pattern)
-                    pattern = pattern.Replace("$!", String.Empty)
-                End If
-
-                'Cleaning
-                If isPath Then
-                    pattern = StringUtils.CleanPath(pattern)
-                Else
-                    pattern = StringUtils.CleanFileName(pattern)
-                End If
-
-                ' removes all dots at the end of the name (dots are not allowed)
-                If Not String.IsNullOrEmpty(pattern) Then
-                    While pattern.Last = "."
-                        pattern = pattern.Remove(pattern.Length - 1)
-                    End While
-                End If
-
-                Return pattern.Trim
-            Else
-                Return String.Empty
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-            Return String.Empty
-        End Try
-    End Function
-
+    
     Public Shared Sub RenameSingle_Movie(ByRef _tmpMovie As Database.DBElement, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim MovieFile As New FileRename
 
@@ -2101,9 +1491,6 @@ Public Class FileFolderRenamer
 #Region "Fields"
 
         Private _aired As String
-        Private _allaudiochannels As String
-        Private _allaudiocodecs As String
-        Private _allaudiolanguages As String
         Private _audiochannels As String
         Private _audiocodec As String
         Private _basepath As String
@@ -2114,7 +1501,7 @@ Public Class FileFolderRenamer
         Private _dorename As Boolean
         Private _extension As String
         Private _fileexist As Boolean
-        Private _fullaudioinfo As List(Of Dictionary(Of String, String))
+        Private _fullaudioinfo As List(Of MediaContainers.Audio)
         Private _genre As String
         Private _id As Long
         Private _imdb As String
@@ -2163,34 +1550,7 @@ Public Class FileFolderRenamer
                 _aired = value
             End Set
         End Property
-
-        Public Property AllAudioChannels() As String
-            Get
-                Return _allaudiochannels
-            End Get
-            Set(ByVal value As String)
-                _allaudiochannels = value
-            End Set
-        End Property
-
-        Public Property AllAudioCodecs() As String
-            Get
-                Return _allaudiocodecs
-            End Get
-            Set(ByVal value As String)
-                _allaudiocodecs = value
-            End Set
-        End Property
-
-        Public Property AllAudioLanguages() As String
-            Get
-                Return _allaudiolanguages
-            End Get
-            Set(ByVal value As String)
-                _allaudiolanguages = value
-            End Set
-        End Property
-
+        
         Public Property AudioChannels() As String
             Get
                 Return _audiochannels
@@ -2263,11 +1623,11 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property FullAudioInfo() As List(Of Dictionary(Of String, String))
+        Public Property FullAudioInfo() As List(Of MediaContainers.Audio)
             Get
                 Return _fullaudioinfo
             End Get
-            Set(ByVal value As List(Of Dictionary(Of String, String)))
+            Set(ByVal value As List(Of MediaContainers.Audio))
                 _fullaudioinfo = value
             End Set
         End Property

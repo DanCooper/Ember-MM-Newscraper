@@ -43,9 +43,6 @@ Public Class frmSettingsHolder
 
     Private Sub CreateDummies()
         _fDummyMultiEpisode.Clear()
-        _fDummyMultiEpisode.AllAudioChannels = "6 / 2"
-        _fDummyMultiEpisode.AllAudioCodecs = "dts / ac3"
-        _fDummyMultiEpisode.AllAudioLanguages = "eng / deu"
         _fDummyMultiEpisode.AudioChannels = "2"
         _fDummyMultiEpisode.AudioCodec = "mp3"
         _fDummyMultiEpisode.BasePath = ""
@@ -54,7 +51,11 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.Director = ""
         _fDummyMultiEpisode.DirExist = False
         _fDummyMultiEpisode.FileExist = False
-        _fDummyMultiEpisode.FullAudioInfo = "eng | 6ch | dts / deu | 2ch | ac3"
+        _fDummyMultiEpisode.FullAudioInfo = New List(Of MediaContainers.Audio) From {
+            New MediaContainers.Audio With {.Language = "eng", .Channels = "6", .Codec = "dts"},
+            New MediaContainers.Audio With {.Language = "deu", .Channels = "2", .Codec = "ac3"},
+            New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
+        }
         _fDummyMultiEpisode.OldFileName = "OldFileName"
         _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
         _fDummyMultiEpisode.ID = -1
@@ -94,9 +95,6 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dMEpisodeList})
 
         _fDummyMultiSeason.Clear()
-        _fDummyMultiSeason.AllAudioChannels = "6 / 2"
-        _fDummyMultiSeason.AllAudioCodecs = "dts / ac3"
-        _fDummyMultiSeason.AllAudioLanguages = "eng / deu"
         _fDummyMultiSeason.AudioChannels = "2"
         _fDummyMultiSeason.AudioCodec = "mp3"
         _fDummyMultiSeason.BasePath = ""
@@ -105,7 +103,11 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.Director = ""
         _fDummyMultiSeason.DirExist = False
         _fDummyMultiSeason.FileExist = False
-        _fDummyMultiSeason.FullAudioInfo = "eng | 6ch | dts / deu | 2ch | ac3"
+        _fDummyMultiSeason.FullAudioInfo = New List(Of MediaContainers.Audio) From {
+            New MediaContainers.Audio With {.Language = "eng", .Channels = "6", .Codec = "dts"},
+            New MediaContainers.Audio With {.Language = "deu", .Channels = "2", .Codec = "ac3"},
+            New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
+        }
         _fDummyMultiSeason.OldFileName = "OldFileName"
         _fDummyMultiSeason.Genre = "Comedy / Lovestory"
         _fDummyMultiSeason.ID = -1
@@ -151,9 +153,6 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 2, .Episodes = dMSEpisodeList2})
 
         _fDummySingleEpisode.Clear()
-        _fDummySingleEpisode.AllAudioChannels = "6 / 2"
-        _fDummySingleEpisode.AllAudioCodecs = "dts / ac3"
-        _fDummySingleEpisode.AllAudioLanguages = "eng / deu"
         _fDummySingleEpisode.AudioChannels = "2"
         _fDummySingleEpisode.AudioCodec = "mp3"
         _fDummySingleEpisode.BasePath = ""
@@ -162,7 +161,11 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.Director = ""
         _fDummySingleEpisode.DirExist = False
         _fDummySingleEpisode.FileExist = False
-        _fDummySingleEpisode.FullAudioInfo = "eng | 6ch | dts / deu | 2ch | ac3"
+        _fDummySingleEpisode.FullAudioInfo = New List(Of MediaContainers.Audio) From {
+            New MediaContainers.Audio With {.Language = "eng", .Channels = "6", .Codec = "dts"},
+            New MediaContainers.Audio With {.Language = "deu", .Channels = "2", .Codec = "ac3"},
+            New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
+        }
         _fDummySingleEpisode.OldFileName = "OldFileName"
         _fDummySingleEpisode.Genre = "Comedy / Lovestory"
         _fDummySingleEpisode.ID = -1
@@ -200,9 +203,6 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dSEpisodeList})
 
         _fDummySingleMovie.Clear()
-        _fDummySingleMovie.AllAudioChannels = "6 / 2"
-        _fDummySingleMovie.AllAudioCodecs = "dts / ac3"
-        _fDummySingleMovie.AllAudioLanguages = "eng / deu"
         _fDummySingleMovie.AudioChannels = "6"
         _fDummySingleMovie.AudioCodec = "dts"
         _fDummySingleMovie.BasePath = "D:\Movies"
@@ -211,7 +211,11 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.Director = "Joss Whedon"
         _fDummySingleMovie.DirExist = False
         _fDummySingleMovie.FileExist = False
-        _fDummySingleMovie.FullAudioInfo = "eng | 6ch | dts / deu | 2ch | ac3"
+        _fDummySingleMovie.FullAudioInfo = New List(Of MediaContainers.Audio) From {
+            New MediaContainers.Audio With {.Language = "eng", .Channels = "6", .Codec = "dts"},
+            New MediaContainers.Audio With {.Language = "deu", .Channels = "2", .Codec = "ac3"},
+            New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
+            }
         _fDummySingleMovie.OldFileName = "OldFileName"
         _fDummySingleMovie.Genre = "Action / Sci-Fi"
         _fDummySingleMovie.ID = -1
@@ -247,9 +251,9 @@ Public Class frmSettingsHolder
 
     Private Sub CreatePreview_MultiEpisode()
         If Not String.IsNullOrEmpty(txtFilePatternEpisodes.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternShows.Text) Then
-            Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummyMultiEpisode, txtFilePatternEpisodes.Text, False, False)
-            Dim dSeasonPath As String = FileFolderRenamer.ProccessPattern(_fDummyMultiEpisode, txtFolderPatternSeasons.Text, True, False)
-            Dim dShowPath As String = FileFolderRenamer.ProccessPattern(_fDummyMultiEpisode, txtFolderPatternShows.Text, True, False)
+            Dim dFilename As String = FileFolderRenamer.ProcessPattern(_fDummyMultiEpisode, txtFilePatternEpisodes.Text, False, False)
+            Dim dSeasonPath As String = FileFolderRenamer.ProcessPattern(_fDummyMultiEpisode, txtFolderPatternSeasons.Text, True, False)
+            Dim dShowPath As String = FileFolderRenamer.ProcessPattern(_fDummyMultiEpisode, txtFolderPatternShows.Text, True, False)
 
             txtMultiEpisodeFile.Text = Path.Combine(dShowPath, dSeasonPath, dFilename)
         Else
@@ -259,9 +263,9 @@ Public Class frmSettingsHolder
 
     Private Sub CreatePreview_MultiSeason()
         If Not String.IsNullOrEmpty(txtFilePatternEpisodes.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternShows.Text) Then
-            Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummyMultiSeason, txtFilePatternEpisodes.Text, False, False)
-            Dim dSeasonPath As String = FileFolderRenamer.ProccessPattern(_fDummyMultiSeason, txtFolderPatternSeasons.Text, True, False)
-            Dim dShowPath As String = FileFolderRenamer.ProccessPattern(_fDummyMultiSeason, txtFolderPatternShows.Text, True, False)
+            Dim dFilename As String = FileFolderRenamer.ProcessPattern(_fDummyMultiSeason, txtFilePatternEpisodes.Text, False, False)
+            Dim dSeasonPath As String = FileFolderRenamer.ProcessPattern(_fDummyMultiSeason, txtFolderPatternSeasons.Text, True, False)
+            Dim dShowPath As String = FileFolderRenamer.ProcessPattern(_fDummyMultiSeason, txtFolderPatternShows.Text, True, False)
 
             txtMultiSeasonFile.Text = Path.Combine(dShowPath, dSeasonPath, dFilename)
         Else
@@ -271,9 +275,9 @@ Public Class frmSettingsHolder
 
     Private Sub CreatePreview_SingleEpisode()
         If Not String.IsNullOrEmpty(txtFilePatternEpisodes.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternShows.Text) Then
-            Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFilePatternEpisodes.Text, False, False)
-            Dim dSeasonPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFolderPatternSeasons.Text, True, False)
-            Dim dShowPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFolderPatternShows.Text, True, False)
+            Dim dFilename As String = FileFolderRenamer.ProcessPattern(_fDummySingleEpisode, txtFilePatternEpisodes.Text, False, False)
+            Dim dSeasonPath As String = FileFolderRenamer.ProcessPattern(_fDummySingleEpisode, txtFolderPatternSeasons.Text, True, False)
+            Dim dShowPath As String = FileFolderRenamer.ProcessPattern(_fDummySingleEpisode, txtFolderPatternShows.Text, True, False)
 
             txtSingleEpisodeFile.Text = Path.Combine(dShowPath, dSeasonPath, dFilename)
         Else
@@ -283,8 +287,8 @@ Public Class frmSettingsHolder
 
     Private Sub CreatePreview_SingleMovie()
         If Not String.IsNullOrEmpty(txtFilePatternMovies.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternMovies.Text) Then
-            Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummySingleMovie, txtFilePatternMovies.Text, False, False)
-            Dim dPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleMovie, txtFolderPatternMovies.Text, True, False)
+            Dim dFilename As String = FileFolderRenamer.ProcessPattern(_fDummySingleMovie, txtFilePatternMovies.Text, False, False)
+            Dim dPath As String = FileFolderRenamer.ProcessPattern(_fDummySingleMovie, txtFolderPatternMovies.Text, True, False)
 
             txtSingleMovieFile.Text = Path.Combine(dPath, dFilename)
         Else

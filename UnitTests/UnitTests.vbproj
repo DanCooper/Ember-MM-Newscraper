@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="Template.vb" />
     <Compile Include="TestTypeAttribute.vb" />
+    <Compile Include="TestBulkRenamer.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -142,6 +143,16 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Addons\generic.EmberCore.BulkRename\generic.EmberCore.BulkRename.vbproj">
+      <Project>{EAAB0601-6478-44D2-A39C-89B0850D7833}</Project>
+      <Name>generic.EmberCore.BulkRename</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmberAPI\EmberAPI.vbproj">
+      <Project>{208aa35e-c6ae-4d2d-a9dd-b6efd19a4279}</Project>
+      <Name>EmberAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
