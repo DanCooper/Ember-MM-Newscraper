@@ -167,6 +167,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsPatternImplementations.vb" />
     <Compile Include="clsAPIRenamer.vb" />
     <Compile Include="dlgBulkRename_Movie.designer.vb">
       <DependentUpon>dlgBulkRename_Movie.vb</DependentUpon>

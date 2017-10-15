@@ -43,6 +43,9 @@ Public Class frmSettingsHolder
 
     Private Sub CreateDummies()
         _fDummyMultiEpisode.Clear()
+        _fDummyMultiEpisode.AllAudioChannels = "6 / 2"
+        _fDummyMultiEpisode.AllAudioCodecs = "dts / ac3"
+        _fDummyMultiEpisode.AllAudioLanguages = "eng / deu"
         _fDummyMultiEpisode.AudioChannels = "2"
         _fDummyMultiEpisode.AudioCodec = "mp3"
         _fDummyMultiEpisode.BasePath = ""
@@ -51,6 +54,7 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.Director = ""
         _fDummyMultiEpisode.DirExist = False
         _fDummyMultiEpisode.FileExist = False
+        _fDummyMultiEpisode.FullAudioInfo = "eng | 6ch | dts / deu | 2ch | ac3"
         _fDummyMultiEpisode.OldFileName = "OldFileName"
         _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
         _fDummyMultiEpisode.ID = -1
@@ -90,6 +94,9 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dMEpisodeList})
 
         _fDummyMultiSeason.Clear()
+        _fDummyMultiSeason.AllAudioChannels = "6 / 2"
+        _fDummyMultiSeason.AllAudioCodecs = "dts / ac3"
+        _fDummyMultiSeason.AllAudioLanguages = "eng / deu"
         _fDummyMultiSeason.AudioChannels = "2"
         _fDummyMultiSeason.AudioCodec = "mp3"
         _fDummyMultiSeason.BasePath = ""
@@ -98,6 +105,7 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.Director = ""
         _fDummyMultiSeason.DirExist = False
         _fDummyMultiSeason.FileExist = False
+        _fDummyMultiSeason.FullAudioInfo = "eng | 6ch | dts / deu | 2ch | ac3"
         _fDummyMultiSeason.OldFileName = "OldFileName"
         _fDummyMultiSeason.Genre = "Comedy / Lovestory"
         _fDummyMultiSeason.ID = -1
@@ -143,6 +151,9 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 2, .Episodes = dMSEpisodeList2})
 
         _fDummySingleEpisode.Clear()
+        _fDummySingleEpisode.AllAudioChannels = "6 / 2"
+        _fDummySingleEpisode.AllAudioCodecs = "dts / ac3"
+        _fDummySingleEpisode.AllAudioLanguages = "eng / deu"
         _fDummySingleEpisode.AudioChannels = "2"
         _fDummySingleEpisode.AudioCodec = "mp3"
         _fDummySingleEpisode.BasePath = ""
@@ -151,6 +162,7 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.Director = ""
         _fDummySingleEpisode.DirExist = False
         _fDummySingleEpisode.FileExist = False
+        _fDummySingleEpisode.FullAudioInfo = "eng | 6ch | dts / deu | 2ch | ac3"
         _fDummySingleEpisode.OldFileName = "OldFileName"
         _fDummySingleEpisode.Genre = "Comedy / Lovestory"
         _fDummySingleEpisode.ID = -1
@@ -188,6 +200,9 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dSEpisodeList})
 
         _fDummySingleMovie.Clear()
+        _fDummySingleMovie.AllAudioChannels = "6 / 2"
+        _fDummySingleMovie.AllAudioCodecs = "dts / ac3"
+        _fDummySingleMovie.AllAudioLanguages = "eng / deu"
         _fDummySingleMovie.AudioChannels = "6"
         _fDummySingleMovie.AudioCodec = "dts"
         _fDummySingleMovie.BasePath = "D:\Movies"
@@ -196,6 +211,7 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.Director = "Joss Whedon"
         _fDummySingleMovie.DirExist = False
         _fDummySingleMovie.FileExist = False
+        _fDummySingleMovie.FullAudioInfo = "eng | 6ch | dts / deu | 2ch | ac3"
         _fDummySingleMovie.OldFileName = "OldFileName"
         _fDummySingleMovie.Genre = "Action / Sci-Fi"
         _fDummySingleMovie.ID = -1
@@ -340,7 +356,7 @@ Public Class frmSettingsHolder
         lblFilePatternMovies.Text = Master.eLang.GetString(286, "Files Pattern")
         lblFolderPatternMovies.Text = Master.eLang.GetString(287, "Folders Pattern")
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen, comma to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
+        lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$5 = All audio languages (append a space, dot, hyphen or comma to change separator){0}$6 = All audio codecs (append a space, dot, hyphen or comma to change separator){0}$7 = All audio channels (append a space, dot, hyphen or comma to change separator){0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$_FA#_ = Full audio info (languages, channels & codecs, grouped by track). # is either one or two of the following to change separators: space, dot, hyphen or comma{0}$G = Genre (append a space, dot, hyphen or comma to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
     End Sub
 
     Private Sub txtFilePatternMovies_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFilePatternMovies.TextChanged

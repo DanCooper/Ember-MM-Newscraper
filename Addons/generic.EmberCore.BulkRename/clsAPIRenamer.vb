@@ -19,6 +19,7 @@
 ' ################################################################################
 
 Imports System.IO
+Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
@@ -33,6 +34,9 @@ Public Class FileFolderRenamer
 
     Private _episodes As New List(Of FileRename)
     Private _movies As New List(Of FileRename)
+
+    Private Shared ReadOnly PatternImplementations As New PatternImplementations
+    Private Shared ReadOnly PatternImplementationsType As Type = PatternImplementations.GetType()
 
 #End Region 'Fields
 
@@ -657,6 +661,35 @@ Public Class FileFolderRenamer
                 If tAud.CodecSpecified Then
                     MovieFile.AudioCodec = tAud.Codec
                 End If
+
+                Dim sbAllAudioChannels As New Text.StringBuilder
+                Dim sbAllAudioCodec As New Text.StringBuilder
+                Dim sbAllAudioLanguages As New Text.StringBuilder
+
+                Dim first As Boolean = True
+
+                MovieFile.FullAudioInfo = New List(Of Dictionary(Of String, String))()
+                For Each miAudio As MediaContainers.Audio In _DBElement.Movie.FileInfo.StreamDetails.Audio
+                    If Not first Then
+                        sbAllAudioChannels.Append(" / ")
+                        sbAllAudioCodec.Append(" / ")
+                        sbAllAudioLanguages.Append(" / ")
+                    End If
+                    first = False
+
+                    sbAllAudioChannels.Append(MediaInfo.FormatAudioChannel(miAudio.Channels))
+                    sbAllAudioCodec.Append(miAudio.Codec)
+                    sbAllAudioLanguages.Append(If(miAudio.LanguageSpecified, miAudio.Language, "und"))
+
+                    Dim fullAudioItem = New Dictionary(Of String, String)
+                    fullAudioItem("n") = miAudio.Channels
+                    fullAudioItem("c") = miAudio.Codec
+                    fullAudioItem("l") = miAudio.Language
+                    MovieFile.FullAudioInfo.Add(fullAudioItem)
+                Next
+                MovieFile.AllAudioChannels = sbAllAudioChannels.ToString()
+                MovieFile.AllAudioCodecs = sbAllAudioCodec.ToString()
+                MovieFile.AllAudioLanguages = sbAllAudioLanguages.ToString()
             End If
 
             'MultiViewCount
@@ -871,6 +904,36 @@ Public Class FileFolderRenamer
                 If tAud.CodecSpecified Then
                     EpisodeFile.AudioCodec = tAud.Codec
                 End If
+
+                Dim sbAllAudioChannels As New Text.StringBuilder
+                Dim sbAllAudioCodec As New Text.StringBuilder
+                Dim sbAllAudioLanguages As New Text.StringBuilder
+                
+                EpisodeFile.FullAudioInfo = New List(Of Dictionary(Of String, String))()
+
+                Dim first As Boolean = True
+                For Each miAudio As MediaContainers.Audio In _DBElement.TVEpisode.FileInfo.StreamDetails.Audio
+                    If Not first Then
+                        sbAllAudioChannels.Append(" / ")
+                        sbAllAudioCodec.Append(" / ")
+                        sbAllAudioLanguages.Append(" / ")
+                    End If
+                    first = False
+
+                    sbAllAudioChannels.Append(MediaInfo.FormatAudioChannel(miAudio.Channels))
+                    sbAllAudioCodec.Append(miAudio.Codec)
+                    sbAllAudioLanguages.Append(If(miAudio.LanguageSpecified, miAudio.Language, "und"))
+
+                    Dim fullAudioItem = New Dictionary(Of String, String)
+                    fullAudioItem("n") = miAudio.Channels
+                    fullAudioItem("c") = miAudio.Codec
+                    fullAudioItem("l") = miAudio.Language
+
+                    EpisodeFile.FullAudioInfo.add(fullAudioItem)
+                Next
+                EpisodeFile.AllAudioChannels = sbAllAudioChannels.ToString()
+                EpisodeFile.AllAudioCodecs = sbAllAudioCodec.ToString()
+                EpisodeFile.AllAudioLanguages = sbAllAudioLanguages.ToString()
             End If
 
             'MultiViewCount
@@ -1218,6 +1281,127 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
+    Private Shared Function TestReplace(ByVal name As String, ByVal arguments As List(Of String), ByRef replacement As String) As Boolean
+        Dim method = PatternImplementationsType.GetMethod("_Pattern_" + name)
+        If method Is Nothing Then
+            Return False
+        End If
+        PatternImplementations.Arguments = arguments
+        replacement = method.Invoke(PatternImplementations, New Object() {}).ToString()
+        Return True
+    End Function
+
+    Private Shared Function SplitArguments(ByVal arguments As String) As List(Of String)
+        Dim chars = New Globalization.StringInfo With {
+            .String = arguments
+        }
+
+        Dim i = 0
+        Dim list As New List(Of String)
+        Dim escaped = False
+        Dim buffer = String.Empty
+        For i = 0 To chars.LengthInTextElements
+            Dim s = Globalization.StringInfo.GetNextTextElement(arguments, i)
+
+            If s <> ";" And s <> "\" Or escaped Then
+                buffer += s
+                Continue For
+            End If
+
+            If s = "\" Then
+                escaped = True
+                Continue For
+            End If
+
+            list.Add(buffer)
+            buffer = String.Empty
+        Next i
+
+        If Not String.IsNullOrEmpty(buffer) Then
+            list.Add(buffer)
+        End If
+
+        Return list
+    End Function
+
+    Private Shared Function DoReplacements(ByVal opattern As String, ByRef countReplacements As Integer) As String
+        Dim mPatterns = Regex.Matches(opattern, "\$([A-Z]+)(?:%([^$]+))?\$")
+        countReplacements = 0
+        For Each match As Match In mPatterns
+            Dim groups As GroupCollection = match.Groups
+            Dim name As String = groups.Item(1).Value
+            Dim arguments = SplitArguments(groups.Item(2).Value)
+            Dim replacement As String = ""
+            If TestReplace(name, arguments, replacement) Then
+                countReplacements += 1
+                opattern = opattern.Replace(groups.Item(0).Value, replacement)
+            End If
+        Next
+        Return opattern
+    End Function
+
+    Public Shared Function ProccessPatternNew(ByVal fileRename As FileRename, ByVal pattern As String, ByVal isPath As Boolean, Optional isMultiEpisode As Boolean = False) As String
+        PatternImplementations.FileRename = fileRename
+        Dim count = 0
+
+        'Replace optional patterns
+        Dim mOptionals = Regex.Matches(pattern, "\({[^}]*)\}")
+        For Each m As Match In mOptionals
+            Dim groups As GroupCollection = m.Groups
+            Dim tempString As String = DoReplacements(groups.Item(1).Value, count)
+            If count = 0 Then
+                tempString = String.Empty
+            End If
+            pattern = pattern.Replace(groups.Item(0).Value, tempString)
+        Next
+
+        'Replace normal patterns
+        pattern = DoReplacements(pattern, count)
+
+        'Replace all spaces with character
+        Dim match = Regex.Match(pattern, "\$X%([^$]*)\$")
+        If match.Success Then
+            pattern = pattern.Replace(match.Groups.Item(0).Value, String.Empty)
+            pattern = pattern.Replace(" ", match.Groups.Item(1).Value)
+        End If
+
+        'Replace character(s) with another character(s)
+        match = Regex.Match(pattern, "\$REPL%([^$]+)\$")
+        If match.Success Then
+            pattern = pattern.Replace(match.Groups.Item(0).Value, String.Empty)
+            Dim arguments = SplitArguments(match.Groups.Item(1).Value)
+            If arguments.Count = 2 Then
+                pattern = pattern.Replace(arguments.Item(0), arguments.Item(1))
+            End If
+        End If
+
+        'Lowercase all letters
+        Dim pos = pattern.IndexOf("$lowercase$", StringComparison.Ordinal)
+        If Not pos = -1 Then
+            pattern = pattern.ToLower
+            pattern = pattern.Replace("$lowercase$", String.Empty)
+        End If
+
+        'Uppercase first letter in each word
+        pos = pattern.IndexOf("$titlecase$", StringComparison.Ordinal)
+        If Not pos = -1 Then
+            pattern = Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(pattern)
+            pattern = pattern.Replace("$titlecase$", String.Empty)
+        End If
+
+        'Cleaning
+        If isPath Then
+            pattern = StringUtils.CleanPath(pattern)
+        Else
+            pattern = StringUtils.CleanFileName(pattern)
+        End If
+
+        ' removes all dots at the end of the name (dots are not allowed)
+        pattern = Regex.Replace(pattern, "\.+$", String.Empty)
+
+        Return pattern.Trim
+    End Function
+
     Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String, ByVal isPath As Boolean, Optional isMultiEpisode As Boolean = False) As String
         Try
             If Not String.IsNullOrEmpty(opattern) Then
@@ -1233,21 +1417,36 @@ Public Class FileFolderRenamer
                 Dim strBase As String
                 Dim strNoFlags As String
                 Dim strJoin As String
+               
+                Dim regAllAudioLanguages As New Regex("\$5([ ,.-]?)")
+                Dim regAllAudioCodecs As New Regex("\$6([ ,.-]?)")
+                Dim regAllAudioChannels As New Regex("\$7([ ,.-]?)")
+
+                Dim matchAllAudioLanguages As Match
+                Dim matchAllAudioCodecs As Match
+                Dim matchAllAudioChannels As Match
+
                 While Not nextC = -1
                     If nextC > nextIB AndAlso nextC < nextEB AndAlso Not nextC = -1 AndAlso Not nextIB = -1 AndAlso Not nextEB = -1 Then
                         strCond = pattern.Substring(nextIB, nextEB - nextIB + 1)
                         strNoFlags = strCond
                         strBase = strCond
+
+                        ' Now process old syntax
                         strCond = ApplyPattern(strCond, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
                         strCond = ApplyPattern(strCond, "2", f.Aired)
                         strCond = ApplyPattern(strCond, "3", f.ShortStereoMode)
                         strCond = ApplyPattern(strCond, "4", f.StereoMode)
+                        '                                5   AllAudioLanguages
+                        '                                6   AllAudioCodecs
+                        '                                7   AllAudioChannels
                         strCond = ApplyPattern(strCond, "A", f.AudioChannels)
                         strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not needed here, Only to HaveBase
                         strCond = ApplyPattern(strCond, "C", f.Director)
                         strCond = ApplyPattern(strCond, "D", f.Parent)
                         strCond = ApplyPattern(strCond, "E", f.SortTitle)
                         strCond = ApplyPattern(strCond, "F", f.OldFileName.Replace("\", String.Empty))
+                        '                                _FA_ FullAudioInfo
                         '                                G   Genres
                         strCond = ApplyPattern(strCond, "H", f.VideoCodec)
                         strCond = ApplyPattern(strCond, "I", f.IMDB)
@@ -1269,6 +1468,36 @@ Public Class FileFolderRenamer
                         '                                X   
                         strCond = ApplyPattern(strCond, "Y", f.Year)
                         strCond = ApplyPattern(strCond, "Z", f.ShowTitle)
+
+                        'AllAudioLanguages
+                        matchAllAudioLanguages = regAllAudioLanguages.Match(strCond)
+                        If matchAllAudioLanguages.Success Then
+                            strJoin = matchAllAudioLanguages.Groups(1).Value
+                            If String.IsNullOrEmpty(strJoin) Then
+                                strJoin = " "
+                            End If
+                            strCond = ApplyPattern(strCond, matchAllAudioLanguages.Groups(0).Value.Substring(1), f.AllAudioLanguages.Replace(" / ", strJoin))
+                        End If
+
+                        'AllAudioCodecs
+                        matchAllAudioCodecs = regAllAudioCodecs.Match(strCond)
+                        If matchAllAudioCodecs.Success Then
+                            strJoin = matchAllAudioCodecs.Groups(1).Value
+                            If String.IsNullOrEmpty(strJoin) Then
+                                strJoin = " "
+                            End If
+                            strCond = ApplyPattern(strCond, matchAllAudioCodecs.Groups(0).Value.Substring(1), f.AllAudioCodecs.Replace(" / ", strJoin))
+                        End If
+
+                        'AllAudioChannels
+                        matchAllAudioChannels = regAllAudioChannels.Match(strCond)
+                        If matchAllAudioChannels.Success Then
+                            strJoin = matchAllAudioChannels.Groups(1).Value
+                            If String.IsNullOrEmpty(strJoin) Then
+                                strJoin = " "
+                            End If
+                            strCond = ApplyPattern(strCond, matchAllAudioChannels.Groups(0).Value.Substring(1), f.AllAudioChannels.Replace(" / ", strJoin))
+                        End If
 
                         'Genres
                         joinIndex = strCond.IndexOf("$G")
@@ -1334,12 +1563,16 @@ Public Class FileFolderRenamer
                 pattern = ApplyPattern(pattern, "2", f.Aired)
                 pattern = ApplyPattern(pattern, "3", f.ShortStereoMode)
                 pattern = ApplyPattern(pattern, "4", f.StereoMode)
+                '                                5   AllAudioLanguages
+                '                                6   AllAudioCodecs
+                '                                7   AllAudioChannels
                 pattern = ApplyPattern(pattern, "A", f.AudioChannels)
                 pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
                 pattern = ApplyPattern(pattern, "C", f.Director)
                 pattern = ApplyPattern(pattern, "D", f.Parent) '.Replace("\", String.Empty))
                 pattern = ApplyPattern(pattern, "E", f.SortTitle)
                 pattern = ApplyPattern(pattern, "F", f.OldFileName.Replace("\", String.Empty))
+                '                                _FA_  FullAudioInfo
                 '                                G   Genres
                 pattern = ApplyPattern(pattern, "H", f.VideoCodec)
                 pattern = ApplyPattern(pattern, "I", f.IMDB)
@@ -1556,6 +1789,36 @@ Public Class FileFolderRenamer
                     Else
                         pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
                     End If
+                End If
+
+                'AllAudioLanguages
+                matchAllAudioLanguages = regAllAudioLanguages.Match(pattern)
+                If matchAllAudioLanguages.Success Then
+                    strJoin = matchAllAudioLanguages.Groups(1).Value
+                    If String.IsNullOrEmpty(strJoin) Then
+                        strJoin = " "
+                    End If
+                    pattern = ApplyPattern(pattern, matchAllAudioLanguages.Groups(0).Value.Substring(1), f.AllAudioLanguages.Replace(" / ", strJoin))
+                End If
+
+                'AllAudioCodecs
+                matchAllAudioCodecs = regAllAudioCodecs.Match(pattern)
+                If matchAllAudioCodecs.Success Then
+                    strJoin = matchAllAudioCodecs.Groups(1).Value
+                    If String.IsNullOrEmpty(strJoin) Then
+                        strJoin = " "
+                    End If
+                    pattern = ApplyPattern(pattern, matchAllAudioCodecs.Groups(0).Value.Substring(1), f.AllAudioCodecs.Replace(" / ", strJoin))
+                End If
+
+                'AllAudioChannels
+                matchAllAudioChannels = regAllAudioChannels.Match(pattern)
+                If matchAllAudioChannels.Success Then
+                    strJoin = matchAllAudioChannels.Groups(1).Value
+                    If String.IsNullOrEmpty(strJoin) Then
+                        strJoin = " "
+                    End If
+                    pattern = ApplyPattern(pattern, matchAllAudioChannels.Groups(0).Value.Substring(1), f.AllAudioChannels.Replace(" / ", strJoin))
                 End If
 
                 'Genres
@@ -1838,6 +2101,9 @@ Public Class FileFolderRenamer
 #Region "Fields"
 
         Private _aired As String
+        Private _allaudiochannels As String
+        Private _allaudiocodecs As String
+        Private _allaudiolanguages As String
         Private _audiochannels As String
         Private _audiocodec As String
         Private _basepath As String
@@ -1848,6 +2114,7 @@ Public Class FileFolderRenamer
         Private _dorename As Boolean
         Private _extension As String
         Private _fileexist As Boolean
+        Private _fullaudioinfo As List(Of Dictionary(Of String, String))
         Private _genre As String
         Private _id As Long
         Private _imdb As String
@@ -1894,6 +2161,33 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As String)
                 _aired = value
+            End Set
+        End Property
+
+        Public Property AllAudioChannels() As String
+            Get
+                Return _allaudiochannels
+            End Get
+            Set(ByVal value As String)
+                _allaudiochannels = value
+            End Set
+        End Property
+
+        Public Property AllAudioCodecs() As String
+            Get
+                Return _allaudiocodecs
+            End Get
+            Set(ByVal value As String)
+                _allaudiocodecs = value
+            End Set
+        End Property
+
+        Public Property AllAudioLanguages() As String
+            Get
+                Return _allaudiolanguages
+            End Get
+            Set(ByVal value As String)
+                _allaudiolanguages = value
             End Set
         End Property
 
@@ -1966,6 +2260,15 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As Boolean)
                 _fileexist = value
+            End Set
+        End Property
+
+        Public Property FullAudioInfo() As List(Of Dictionary(Of String, String))
+            Get
+                Return _fullaudioinfo
+            End Get
+            Set(ByVal value As List(Of Dictionary(Of String, String)))
+                _fullaudioinfo = value
             End Set
         End Property
 
@@ -2486,5 +2789,4 @@ Public Class FileFolderRenamer
     End Class
 
 #End Region 'Nested Types
-
 End Class
