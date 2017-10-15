@@ -214,7 +214,7 @@ CREATE TABLE episode (
         DELETE FROM TVSubs WHERE TVEpID=old.idEpisode;
         END;
 
-CREATE TABLE files(
+CREATE TABLE files (
 	idFile INTEGER PRIMARY KEY AUTOINCREMENT,
 	strFilename TEXT NOT NULL
 	);
@@ -522,14 +522,14 @@ CREATE TABLE writerlinkmovie (
         ON writerlinkmovie
         (idMovie, idWriter);
 
-CREATE TABLE setlinkmovie(
+CREATE TABLE setlinkmovie (
 		idSet INTEGER NOT NULL,
 		idMovie INTEGER NOT NULL,
 		iOrder INTEGER NOT NULL DEFAULT -1,
 		PRIMARY KEY (idSet, idMovie)
 		);
 
-CREATE TABLE MoviesVStreams(
+CREATE TABLE MoviesVStreams (
 		MovieID INTEGER NOT NULL,
 		StreamID INTEGER NOT NULL,
 		Video_Width TEXT,
@@ -548,7 +548,7 @@ CREATE TABLE MoviesVStreams(
 		PRIMARY KEY (MovieID,StreamID)
 		);
 
-CREATE TABLE MoviesAStreams(
+CREATE TABLE MoviesAStreams (
 		MovieID INTEGER NOT NULL,
 		StreamID INTEGER NOT NULL,
 		Audio_Language TEXT,
@@ -559,7 +559,7 @@ CREATE TABLE MoviesAStreams(
 		PRIMARY KEY (MovieID,StreamID)
 		);
 
-CREATE TABLE MoviesSubs(
+CREATE TABLE MoviesSubs (
 		MovieID INTEGER NOT NULL,
 		StreamID INTEGER NOT NULL,
 		Subs_Language TEXT,
@@ -570,7 +570,7 @@ CREATE TABLE MoviesSubs(
 		PRIMARY KEY (MovieID,StreamID)
 		);
 
-CREATE TABLE moviesource(
+CREATE TABLE moviesource (
 		idSource		INTEGER PRIMARY KEY AUTOINCREMENT,
 		strName			TEXT NOT NULL,
 		strPath			TEXT NOT NULL,
@@ -594,7 +594,7 @@ BEGIN
 		DELETE FROM movie WHERE idSource=old.idSource;
 END;
 
-CREATE TABLE TVVStreams(
+CREATE TABLE TVVStreams (
 		TVEpID INTEGER NOT NULL,
 		StreamID INTEGER NOT NULL,
 		Video_Width TEXT,
@@ -613,7 +613,7 @@ CREATE TABLE TVVStreams(
 		PRIMARY KEY (TVEpID,StreamID)
 		);
 
-CREATE TABLE TVAStreams(
+CREATE TABLE TVAStreams (
 		TVEpID INTEGER NOT NULL,
 		StreamID INTEGER NOT NULL,
 		Audio_Language TEXT,
@@ -624,7 +624,7 @@ CREATE TABLE TVAStreams(
 		PRIMARY KEY (TVEpID,StreamID)
 		);
 
-CREATE TABLE TVSubs(
+CREATE TABLE TVSubs (
 		TVEpID INTEGER NOT NULL,
 		StreamID INTEGER NOT NULL,
 		Subs_Language TEXT,
@@ -635,7 +635,7 @@ CREATE TABLE TVSubs(
 		PRIMARY KEY (TVEpID,StreamID)
 		);
 
-CREATE TABLE tvshowsource(
+CREATE TABLE tvshowsource (
 		idSource			INTEGER PRIMARY KEY AUTOINCREMENT,
 		strName				TEXT NOT NULL,
 		strPath				TEXT NOT NULL,
@@ -658,7 +658,7 @@ BEGIN
 		DELETE FROM tvshow WHERE idSource=old.idSource;
 END;
 
-CREATE TABLE OrigPaths(
+CREATE TABLE OrigPaths (
 	OrigPath TEXT NOT NULL,
 	EmberPath TEXT NOT NULL,
 	Platform TEXT NOT NULL,
@@ -666,7 +666,7 @@ CREATE TABLE OrigPaths(
 	PRIMARY KEY (OrigPath,Platform)
 	);
 
-CREATE TABLE EmberFiles(
+CREATE TABLE EmberFiles (
 		OrigPath TEXT NOT NULL,
 		EmberPath TEXT NOT NULL,
 		Filename TEXT NOT NULL,
@@ -676,17 +676,17 @@ CREATE TABLE EmberFiles(
 		PRIMARY KEY (OrigPath,Filename)
 		);
 
-CREATE TABLE ExcludeFiles(
+CREATE TABLE ExcludeFiles (
 		Filename TEXT NOT NULL,
 		PRIMARY KEY (Filename)
 		);
 
-CREATE TABLE ExcludeDir(
+CREATE TABLE ExcludeDir (
 		Dirname TEXT NOT NULL,
 		PRIMARY KEY (Dirname)
 		);
 
-CREATE TABLE ExcludeFilesInFolders(
+CREATE TABLE ExcludeFilesInFolders (
 		Filename TEXT NOT NULL,
 		EmberPath TEXT NOT NULL,
 		PRIMARY KEY (Filename,EmberPath)
@@ -788,7 +788,7 @@ CREATE VIEW setslist
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
-        COUNT(setlinkmovie.idMovie) AS 'Count',
+        COUNT(setlink.idMovie) AS 'Count',
         GROUP_CONCAT(DISTINCT movies.Title) AS 'MovieTitles'
         FROM
         sets

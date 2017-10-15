@@ -218,11 +218,11 @@ Public Class CommandLine
                             Case "newauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
                             Case "newskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
                             Case Else
                                 logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemoviesets""")
                         End Select
