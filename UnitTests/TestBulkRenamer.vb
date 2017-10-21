@@ -226,6 +226,8 @@ Imports EmberAPI
                 {"$TITLE${ ($YEAR$)}{.$TVDBID$}{.$IMDB$}", "The Avengers (2012).tt0848228"},
                 {"$TITLE${ ($YEAR$)}{.$TVDBID$.$IMDB$}", "The Avengers (2012)..tt0848228"},
                 {"$AINFO%l-c-n;,;ch;0;und$", "eng-dts-6ch,deu-ac3-2ch,und-mp3-1ch"},
+                {"$AINFO%l,c,n;\;;ch;2;und$", "eng,dts,6ch;deu,ac3,2ch"},
+                {"$AINFO%l\$c\$n;\;;ch;2;und$", "eng$dts$6ch;deu$ac3$2ch"},
                 {"$AINFO%l,c,n;.;ch;0;SKIP$", "eng,dts,6ch.deu,ac3,2ch"},
                 {"$AINFO%l,c,n;.;CH;1;und$", "eng,dts,6CH"},
                 {"$AINFO%l|c|n;.;Kanäle;1;und$", "engdts6Kanäle"}

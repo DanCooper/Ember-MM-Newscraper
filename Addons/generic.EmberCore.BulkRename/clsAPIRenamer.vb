@@ -38,6 +38,8 @@ Public Class FileFolderRenamer
     Private Shared ReadOnly PatternImplementations As New PatternImplementations
     Private Shared ReadOnly PatternImplementationsType As Type = PatternImplementations.GetType()
 
+    Private Const ArgumentSeparator As Char = ";"c
+
 #End Region 'Fields
 
 #Region "Constructors"
@@ -98,7 +100,7 @@ Public Class FileFolderRenamer
     Public Sub Add_TVEpisode(ByVal _episode As FileRename)
         _episodes.Add(_episode)
     End Sub
-    
+
     Public Sub DoRename_Movies(Optional ByVal sfunction As ShowProgress = Nothing)
         Dim _movieDB As Database.DBElement = Nothing
         Dim iProg As Integer = 0
@@ -623,7 +625,7 @@ Public Class FileFolderRenamer
                 If tAud.CodecSpecified Then
                     MovieFile.AudioCodec = tAud.Codec
                 End If
-                
+
                 MovieFile.FullAudioInfo = _DBElement.Movie.FileInfo.StreamDetails.Audio
             End If
 
@@ -1207,15 +1209,19 @@ Public Class FileFolderRenamer
         Dim list As New List(Of String)
         Dim escaped = False
         Dim buffer = String.Empty
-        For i = 0 To chars.LengthInTextElements
+        For i = 0 To chars.LengthInTextElements - 1
             Dim s = Globalization.StringInfo.GetNextTextElement(arguments, i)
 
-            If s <> ";" And s <> "\" Or escaped Then
+            If s <> ArgumentSeparator And s <> "\"c Or escaped Then
+                If escaped and s <> ArgumentSeparator And s <> "$"c Then
+                    buffer += "\"c
+                End If
                 buffer += s
+                escaped = False
                 Continue For
             End If
 
-            If s = "\" Then
+            If s = "\"c Then
                 escaped = True
                 Continue For
             End If
@@ -1232,7 +1238,7 @@ Public Class FileFolderRenamer
     End Function
 
     Private Shared Function DoReplacements(ByVal opattern As String, ByRef countReplacements As Integer) As String
-        Dim mPatterns = Regex.Matches(opattern, "\$([A-Z]+)(?:%([^$]+))?\$")
+        Dim mPatterns = Regex.Matches(opattern, "\$ ([A-Z]+) (?: % ( (?: [^$] | (?<=\\)\$ )+ ) )? \$", RegexOptions.IgnorePatternWhitespace)
         countReplacements = 0
         For Each match As Match In mPatterns
             Dim groups As GroupCollection = match.Groups
@@ -1310,7 +1316,7 @@ Public Class FileFolderRenamer
 
         Return pattern.Trim
     End Function
-    
+
     Public Shared Sub RenameSingle_Movie(ByRef _tmpMovie As Database.DBElement, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim MovieFile As New FileRename
 
@@ -1550,7 +1556,7 @@ Public Class FileFolderRenamer
                 _aired = value
             End Set
         End Property
-        
+
         Public Property AudioChannels() As String
             Get
                 Return _audiochannels
