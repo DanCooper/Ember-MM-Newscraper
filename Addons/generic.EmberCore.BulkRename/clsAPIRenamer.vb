@@ -1170,7 +1170,7 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Public Sub ProccessFiles_Movies(ByVal folderPattern As String, ByVal filePattern As String, Optional ByVal folderPatternIsNotSingle As String = "$D")
+    Public Sub ProcessFiles_Movies(ByVal folderPattern As String, ByVal filePattern As String, Optional ByVal folderPatternIsNotSingle As String = "$D")
         Try
             For Each f As FileRename In _movies
                 Process_Movie(f, If(f.IsSingle, folderPattern, folderPatternIsNotSingle), filePattern)
@@ -1180,7 +1180,7 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Public Sub ProccessFiles_TVEpisodes(ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String)
+    Public Sub ProcessFiles_TVEpisodes(ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String)
         Try
             For Each f As FileRename In _episodes
                 Process_TVEpisode(f, folderPatternSeasons, filePatternEpisodes)
@@ -1244,7 +1244,7 @@ Public Class FileFolderRenamer
             Dim groups As GroupCollection = match.Groups
             Dim name As String = groups.Item(1).Value
             Dim arguments = SplitArguments(groups.Item(2).Value)
-            Dim replacement As String = ""
+            Dim replacement As String = String.Empty
             If TestReplace(name, arguments, replacement) Then
                 If Not String.IsNullOrEmpty(replacement) Then
                     countReplacements += 1
@@ -1293,15 +1293,22 @@ Public Class FileFolderRenamer
         'Lowercase all letters
         Dim pos = pattern.IndexOf("$LOWERCASE$", StringComparison.Ordinal)
         If Not pos = -1 Then
-            pattern = pattern.ToLower
             pattern = pattern.Replace("$LOWERCASE$", String.Empty)
+            pattern = pattern.ToLower
+        End If
+
+        'Uppercase all letters
+        pos = pattern.IndexOf("$UPPERCASE$", StringComparison.Ordinal)
+        If Not pos = -1 Then
+            pattern = pattern.Replace("$UPPERCASE$", String.Empty)
+            pattern = pattern.ToUpper
         End If
 
         'Uppercase first letter in each word
         pos = pattern.IndexOf("$TITLECASE$", StringComparison.Ordinal)
         If Not pos = -1 Then
-            pattern = Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(pattern)
             pattern = pattern.Replace("$TITLECASE$", String.Empty)
+            pattern = Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(pattern)
         End If
 
         'Cleaning
@@ -1502,19 +1509,19 @@ Public Class FileFolderRenamer
         Private _basepath As String
         Private _collection As String
         Private _country As String
-        Private _direxist As Boolean
         Private _director As String
+        Private _direxist As Boolean
         Private _dorename As Boolean
         Private _extension As String
         Private _fileexist As Boolean
-        Private _fullaudioinfo As List(Of MediaContainers.Audio)
+        Private _fullaudioinfo As New List(Of MediaContainers.Audio)
         Private _genre As String
         Private _id As Long
         Private _imdb As String
-        Private _ismultiepisode As Boolean
-        Private _issingle As Boolean
         Private _isbdmv As Boolean
         Private _islock As Boolean
+        Private _ismultiepisode As Boolean
+        Private _issingle As Boolean
         Private _isvideots As Boolean
         Private _listtitle As String
         Private _mpaa As String
@@ -1986,19 +1993,19 @@ Public Class FileFolderRenamer
             _basepath = String.Empty
             _collection = String.Empty
             _country = String.Empty
-            _direxist = False
             _director = String.Empty
+            _direxist = False
             _dorename = False
             _extension = String.Empty
             _fileexist = False
-            _videosource = String.Empty
+            _fullaudioinfo.Clear()
             _genre = String.Empty
             _id = -1
             _imdb = String.Empty
-            _ismultiepisode = False
-            _issingle = False
             _isbdmv = False
             _islock = False
+            _ismultiepisode = False
+            _issingle = False
             _isvideots = False
             _listtitle = String.Empty
             _mpaa = String.Empty
@@ -2016,6 +2023,7 @@ Public Class FileFolderRenamer
             _rating = String.Empty
             _resolution = String.Empty
             _seasonsepisodes.Clear()
+            _shortstereomode = String.Empty
             _showpath = String.Empty
             _showtitle = String.Empty
             _sorttitle = String.Empty
@@ -2024,6 +2032,7 @@ Public Class FileFolderRenamer
             _title = String.Empty
             _tvdbid = String.Empty
             _videocodec = String.Empty
+            _videosource = String.Empty
             _year = String.Empty
         End Sub
 
@@ -2155,4 +2164,5 @@ Public Class FileFolderRenamer
     End Class
 
 #End Region 'Nested Types
+
 End Class

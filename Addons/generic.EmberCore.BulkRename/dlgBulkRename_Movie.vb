@@ -339,7 +339,7 @@ Public Class dlgBulkRenamer_Movie
         Dim Sta As MyStart = New MyStart(AddressOf Start)
         Dim Fin As MyFinish = New MyFinish(AddressOf Finish)
         Invoke(Sta)
-        FFRenamer.ProccessFiles_Movies(txtFolderPattern.Text, txtFilePattern.Text, txtFolderPatternNotSingle.Text)
+        FFRenamer.ProcessFiles_Movies(txtFolderPattern.Text, txtFilePattern.Text, txtFolderPatternNotSingle.Text)
         Invoke(Fin)
     End Sub
 

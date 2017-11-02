@@ -1,4 +1,24 @@
-﻿Public Class PatternImplementations
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
+
+Public Class PatternImplementations
 
     ' ### IMPORTANT NOTICE ###
     ' There must not be any function in this class that
@@ -29,7 +49,8 @@
         Dim order = Argument(0, "l-n-c")
         Dim separator = Argument(1, ".")
         Dim chSuffix = Argument(2, "ch")
-        Dim maxCount = Integer.Parse(Argument(3, "0"))
+        Dim maxCount = 0
+        Integer.TryParse(Argument(3, "0"), maxCount)
         Dim unknownLanguages = Argument(4, "und")
 
         Dim result = String.Empty
@@ -187,7 +208,7 @@
             eFormat = eFormat.Insert(eFormat.Length - 1, "0")
         Next
 
-        Dim result = ""
+        Dim result = String.Empty
         For Each season In FileRename.SeasonsEpisodes
             For Each episode In season.Episodes
                 If Not String.IsNullOrEmpty(result) Then
@@ -212,7 +233,7 @@
             sFormat = sFormat.Insert(sFormat.Length - 1, "0")
         Next
 
-        Dim result = ""
+        Dim result = String.Empty
         For Each season In FileRename.SeasonsEpisodes
             If Not String.IsNullOrEmpty(result) Then
                 result += separator
@@ -240,14 +261,14 @@
             eFormat = sFormat.Insert(sFormat.Length - 1, "0")
         Next
 
-        Dim result = ""
+        Dim result = String.Empty
         For Each season In FileRename.SeasonsEpisodes
             If Not String.IsNullOrEmpty(result) Then
                 result += sSeparator
             End If
             result += result + sPrefix + String.Format(sFormat, season.Season)
 
-            Dim sTemp = ""
+            Dim sTemp = String.Empty
             For Each episode In season.Episodes
                 If Not String.IsNullOrEmpty(sTemp) Then
                     sTemp += eSeparator
@@ -267,7 +288,7 @@
         Dim separator = Argument(0, " ")
         Dim maxCount = Integer.Parse(Argument(1, "0"))
         Dim count = 0
-        Dim result = ""
+        Dim result = String.Empty
         For Each item In FileRename.FullAudioInfo
             If Not String.IsNullOrEmpty(result) Then
                 result += separator
@@ -287,7 +308,7 @@
         Dim suffix = Argument(1, "ch")
         Dim maxCount = Integer.Parse(Argument(2, "0"))
         Dim count = 0
-        Dim result = ""
+        Dim result = String.Empty
         For Each item In FileRename.FullAudioInfo
             If Not String.IsNullOrEmpty(result) Then
                 result += separator
@@ -307,7 +328,7 @@
         Dim unknown = Argument(1, "SKIP")
         Dim maxCount = Integer.Parse(Argument(2, "0"))
         Dim count = 0
-        Dim result = ""
+        Dim result = String.Empty
         For Each item In FileRename.FullAudioInfo
             If unknown = "SKIP" AndAlso String.IsNullOrEmpty(item.Language) Then
                 Continue For
