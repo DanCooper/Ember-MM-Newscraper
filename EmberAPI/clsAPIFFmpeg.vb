@@ -104,8 +104,10 @@ Namespace FFmpeg
                 If s.Contains("Duration: ") Then
                     Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
                     If Not sTime = "N/A" Then
-                        Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
-                        VideoFileDuration = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
+                        Dim ts As TimeSpan
+                        If TimeSpan.TryParse(sTime, ts) Then
+                            VideoFileDuration = CInt(Fix(ts.TotalSeconds))
+                        End If
                     End If
                 End If
                 'using ffprobe...
@@ -141,7 +143,7 @@ Namespace FFmpeg
             End If
 
             'Step 3: (Optional) Analyze video and retrieve real screensize without black bars
-            Dim cropsize As String = ""
+            Dim cropsize As String = String.Empty
             If Master.eSettings.MovieExtrathumbsCreatorNoBlackBars Then
                 cropsize = GetScreenSizeWithoutBars(DBElement, VideoFileDuration, ScanPath, Timeout)
             End If
