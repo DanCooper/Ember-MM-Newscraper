@@ -92,27 +92,18 @@ Public Class NFO
                 scrapedmovie.ActorsSpecified AndAlso Master.eSettings.MovieScraperCast AndAlso Not new_Actors Then
 
                 If Master.eSettings.MovieScraperCastWithImgOnly Then
-                    For i = scrapedmovie.Actors.Count - 1 To 0 Step -1
-                        If Not scrapedmovie.Actors(i).URLOriginalSpecified Then
-                            scrapedmovie.Actors.RemoveAt(i)
-                        End If
-                    Next
+                    FilterOnlyPersonsWithImage(scrapedmovie.Actors)
                 End If
 
                 If Master.eSettings.MovieScraperCastLimit > 0 AndAlso scrapedmovie.Actors.Count > Master.eSettings.MovieScraperCastLimit Then
                     scrapedmovie.Actors.RemoveRange(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors.Count - Master.eSettings.MovieScraperCastLimit)
                 End If
 
-                DBMovie.Movie.Actors = scrapedmovie.Actors
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedmovie.ActorsSpecified Then
+                    ReorderPersons(scrapedmovie.Actors)
+                    DBMovie.Movie.Actors = scrapedmovie.Actors
                     new_Actors = True
-                    'add numbers for ordering
-                    Dim iOrder As Integer = 0
-                    For Each actor In scrapedmovie.Actors
-                        actor.Order = iOrder
-                        iOrder += 1
-                    Next
                 End If
 
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCast AndAlso Not Master.eSettings.MovieLockActors Then
@@ -553,27 +544,14 @@ Public Class NFO
                 scrapedshow.ActorsSpecified AndAlso Master.eSettings.TVScraperShowActors AndAlso Not new_Actors Then
 
                 If Master.eSettings.TVScraperCastWithImgOnly Then
-                    For i = scrapedshow.Actors.Count - 1 To 0 Step -1
-                        If Not scrapedshow.Actors(i).URLOriginalSpecified Then
-                            scrapedshow.Actors.RemoveAt(i)
-                        End If
-                    Next
+                    FilterOnlyPersonsWithImage(scrapedshow.Actors)
                 End If
 
-                'If Master.eSettings.MovieScraperCastLimit > 0 AndAlso scrapedmovie.Actors.Count > Master.eSettings.MovieScraperCastLimit Then
-                '    scrapedmovie.Actors.RemoveRange(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors.Count - Master.eSettings.MovieScraperCastLimit)
-                'End If
-
-                DBTV.TVShow.Actors = scrapedshow.Actors
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedshow.ActorsSpecified Then
+                    ReorderPersons(scrapedshow.Actors)
+                    DBTV.TVShow.Actors = scrapedshow.Actors
                     new_Actors = True
-                    'add numbers for ordering
-                    Dim iOrder As Integer = 0
-                    For Each actor In scrapedshow.Actors
-                        actor.Order = iOrder
-                        iOrder += 1
-                    Next
                 End If
 
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowActors AndAlso Not Master.eSettings.TVLockShowActors Then
@@ -609,6 +587,7 @@ Public Class NFO
             If (Not DBTV.TVShow.CreatorsSpecified OrElse Not Master.eSettings.TVLockShowCreators) AndAlso ScrapeOptions.bMainCreators AndAlso
                 scrapedshow.CreatorsSpecified AndAlso Master.eSettings.TVScraperShowCreators AndAlso Not new_Creators Then
                 DBTV.TVShow.Creators = scrapedshow.Creators
+                new_Creators = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCreators AndAlso Not Master.eSettings.TVLockShowCreators Then
                 DBTV.TVShow.Creators.Clear()
             End If
@@ -721,12 +700,11 @@ Public Class NFO
                 'End If
 
 
-                DBTV.TVShow.Studios.AddRange(_studios)
                 'added check if there's any studios left to add, if not then try with results of following scraper...
                 If _studios.Count > 0 Then
+                    DBTV.TVShow.Studios.AddRange(_studios)
                     new_Studio = True
                 End If
-
 
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStudio AndAlso Not Master.eSettings.TVLockShowStudio Then
                 DBTV.TVShow.Studios.Clear()
@@ -740,16 +718,6 @@ Public Class NFO
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowTitle AndAlso Not Master.eSettings.TVLockShowTitle Then
                 DBTV.TVShow.Title = String.Empty
             End If
-
-            '    'Credits
-            '    If (DBTV.Movie.Credits.Count < 1 OrElse Not Master.eSettings.MovieLockCredits) AndAlso _
-            '        scrapedmovie.Credits.Count > 0 AndAlso Master.eSettings.MovieScraperCredits AndAlso Not new_Credits Then
-            '        DBTV.Movie.Credits.Clear()
-            '        DBTV.Movie.Credits.AddRange(scrapedmovie.Credits)
-            '        new_Credits = True
-            '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCredits AndAlso Not Master.eSettings.MovieLockCredits Then
-            '        DBTV.Movie.Credits.Clear()
-            '    End If
 
             'User Rating
             If (Not DBTV.TVShow.UserRatingSpecified OrElse Not Master.eSettings.TVLockShowUserRating) AndAlso ScrapeOptions.bMainUserRating AndAlso
@@ -1087,27 +1055,18 @@ Public Class NFO
                 scrapedepisode.ActorsSpecified AndAlso Master.eSettings.TVScraperEpisodeActors AndAlso Not new_Actors Then
 
                 If Master.eSettings.TVScraperCastWithImgOnly Then
-                    For i = scrapedepisode.Actors.Count - 1 To 0 Step -1
-                        If Not scrapedepisode.Actors(i).URLOriginalSpecified Then
-                            scrapedepisode.Actors.RemoveAt(i)
-                        End If
-                    Next
+                    FilterOnlyPersonsWithImage(scrapedepisode.Actors)
                 End If
 
                 'If Master.eSettings.TVScraperEpisodeCastLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeCastLimit Then
                 '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
                 'End If
 
-                DBTVEpisode.TVEpisode.Actors = scrapedepisode.Actors
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedepisode.ActorsSpecified Then
+                    ReorderPersons(scrapedepisode.Actors)
+                    DBTVEpisode.TVEpisode.Actors = scrapedepisode.Actors
                     new_Actors = True
-                    'add numbers for ordering
-                    Dim iOrder As Integer = 0
-                    For Each actor In scrapedepisode.Actors
-                        actor.Order = iOrder
-                        iOrder += 1
-                    Next
                 End If
 
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
@@ -1145,28 +1104,19 @@ Public Class NFO
             If (Not DBTVEpisode.TVEpisode.GuestStarsSpecified OrElse Not Master.eSettings.TVLockEpisodeGuestStars) AndAlso ScrapeOptions.bEpisodeGuestStars AndAlso
                 scrapedepisode.GuestStarsSpecified AndAlso Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not new_GuestStars Then
 
-                'If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
-                '    For i = scrapedepisode.Actors.Count - 1 To 0 Step -1
-                '        If String.IsNullOrEmpty(scrapedepisode.Actors(i).ThumbURL) Then
-                '            scrapedepisode.Actors.RemoveAt(i)
-                '        End If
-                '    Next
-                'End If
+                If Master.eSettings.TVScraperCastWithImgOnly Then
+                    FilterOnlyPersonsWithImage(scrapedepisode.GuestStars)
+                End If
 
                 'If Master.eSettings.TVScraperEpisodeCastLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeCastLimit Then
                 '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
                 'End If
 
-                DBTVEpisode.TVEpisode.GuestStars = scrapedepisode.GuestStars
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedepisode.GuestStarsSpecified Then
+                    ReorderPersons(scrapedepisode.GuestStars)
+                    DBTVEpisode.TVEpisode.GuestStars = scrapedepisode.GuestStars
                     new_GuestStars = True
-                    'add numbers for ordering
-                    Dim iOrder As Integer = 0
-                    For Each aGuestStar In scrapedepisode.GuestStars
-                        aGuestStar.Order = iOrder
-                        iOrder += 1
-                    Next
                 End If
 
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not Master.eSettings.TVLockEpisodeGuestStars Then
@@ -1476,6 +1426,12 @@ Public Class NFO
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.Filename & ">")
         End Try
+    End Sub
+
+    Private Shared Sub FilterOnlyPersonsWithImage(ByRef lstPerson As List(Of MediaContainers.Person))
+        If lstPerson IsNot Nothing Then
+            lstPerson = lstPerson.Where(Function(f) f.URLOriginalSpecified).ToList
+        End If
     End Sub
 
     Public Shared Function FIToString(ByVal miFI As MediaContainers.Fileinfo, ByVal isTV As Boolean) As String
@@ -2353,6 +2309,14 @@ Public Class NFO
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
+    End Sub
+
+    Private Shared Sub ReorderPersons(ByRef lstPerson As List(Of MediaContainers.Person))
+        Dim iOrder As Integer = 0
+        For Each nPerson In lstPerson
+            nPerson.Order = iOrder
+            iOrder += 1
+        Next
     End Sub
 
     Public Shared Sub SaveToNFO_Movie(ByRef tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
