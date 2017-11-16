@@ -220,6 +220,7 @@ Partial Public Class clsXMLSettings
     Private _moviescrapercollectionsextendedinfo As Boolean
     Private _moviescrapercollectionsyamjcompatiblesets As Boolean
     Private _moviescrapercountry As Boolean
+    Private _moviescrapercountrylimit As Integer
     Private _moviescraperdirector As Boolean
     Private _moviescraperdurationruntimeformat As String
     Private _moviescrapergenre As Boolean
@@ -451,8 +452,10 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowcertonlyvalue As Boolean
     Private _tvscrapershowcreators As Boolean
     Private _tvscrapershowcountry As Boolean
+    Private _tvscrapershowcountrylimit As Integer
     Private _tvscrapershowepiguideurl As Boolean
     Private _tvscrapershowgenre As Boolean
+    Private _tvscrapershowgenrelimit As Integer
     Private _tvscrapershowmpaa As Boolean
     Private _tvscrapershowmpaanotrated As String
     Private _tvscrapershoworiginaltitle As Boolean
@@ -463,6 +466,7 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowruntime As Boolean
     Private _tvscrapershowstatus As Boolean
     Private _tvscrapershowstudio As Boolean
+    Private _tvscrapershowstudiolimit As Integer
     Private _tvscrapershowtitle As Boolean
     Private _tvscrapershowuserrating As Boolean
     Private _tvscraperusedisplayseasonepisode As Boolean
@@ -1979,6 +1983,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieScraperCountryLimit() As Integer
+        Get
+            Return Me._moviescrapercountrylimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._moviescrapercountrylimit = value
+        End Set
+    End Property
+
     Public Property MovieScraperStudioWithImgOnly() As Boolean
         Get
             Return Me._moviescraperstudiowithimgonly
@@ -2191,6 +2204,24 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._moviescrapergenrelimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowGenreLimit() As Integer
+        Get
+            Return Me._tvscrapershowgenrelimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscrapershowgenrelimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowStudioLimit() As Integer
+        Get
+            Return Me._tvscrapershowstudiolimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscrapershowstudiolimit = value
         End Set
     End Property
 
@@ -4420,6 +4451,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscrapershowcountry = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCountryLimit() As Integer
+        Get
+            Return Me._tvscrapershowcountrylimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscrapershowcountrylimit = value
         End Set
     End Property
 

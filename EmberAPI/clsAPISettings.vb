@@ -986,12 +986,22 @@ Public Class Settings
             Settings._XMLSettings.MovieScraperStudio = value
         End Set
     End Property
+
     Public Property MovieScraperStudioLimit() As Integer
         Get
             Return Settings._XMLSettings.MovieScraperStudioLimit
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.MovieScraperStudioLimit = value
+        End Set
+    End Property
+
+    Public Property MovieScraperCountryLimit() As Integer
+        Get
+            Return Settings._XMLSettings.MovieScraperCountryLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.MovieScraperCountryLimit = value
         End Set
     End Property
 
@@ -1136,6 +1146,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.MovieScraperGenreLimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowGenreLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperShowGenreLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperShowGenreLimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowStudioLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperShowStudioLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperShowStudioLimit = value
         End Set
     End Property
 
@@ -3461,6 +3489,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVScraperShowCountry = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCountryLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperShowCountryLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperShowCountryLimit = value
         End Set
     End Property
 
@@ -7155,6 +7192,7 @@ Public Class Settings
         MovieScraperCollectionsExtendedInfo = False
         MovieScraperCollectionsYAMJCompatibleSets = False
         MovieScraperCountry = True
+        MovieScraperCountryLimit = 0
         MovieScraperDirector = True
         MovieScraperDurationRuntimeFormat = "<m>"
         MovieScraperGenre = True
@@ -7388,8 +7426,10 @@ Public Class Settings
         TVScraperShowCertOnlyValue = False
         TVScraperShowCreators = True
         TVScraperShowCountry = True
+        TVScraperShowCountryLimit = 0
         TVScraperShowEpiGuideURL = False
         TVScraperShowGenre = True
+        TVScraperShowGenreLimit = 0
         TVScraperShowMPAA = True
         TVScraperShowMPAANotRated = String.Empty
         TVScraperShowOriginalTitle = True
@@ -7400,6 +7440,7 @@ Public Class Settings
         TVScraperShowRuntime = True
         TVScraperShowStatus = True
         TVScraperShowStudio = True
+        TVScraperShowStudioLimit = 0
         TVScraperShowTitle = True
         TVScraperShowUserRating = True
         TVScraperUseDisplaySeasonEpisode = True

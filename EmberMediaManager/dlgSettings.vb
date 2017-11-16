@@ -1825,6 +1825,19 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkTVScraperShowStudio_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperShowStudio.CheckedChanged
+        SetApplyButton(True)
+        txtTVScraperShowStudioLimit.Enabled = chkTVScraperShowStudio.Checked
+        If Not chkTVScraperShowStudio.Checked Then txtTVScraperShowStudioLimit.Text = "0"
+    End Sub
+
+
+    Private Sub chkMovieScraperCountry_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCountry.CheckedChanged
+        SetApplyButton(True)
+        txtMovieScraperCountryLimit.Enabled = chkMovieScraperCountry.Checked
+        If Not chkMovieScraperCountry.Checked Then txtMovieScraperCountryLimit.Text = "0"
+    End Sub
+
     Private Sub chkMovieScraperCast_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCast.CheckedChanged
         SetApplyButton(True)
 
@@ -1844,21 +1857,15 @@ Public Class dlgSettings
         txtTVScraperEpisodeGuestStarsLimit.Enabled = chkTVScraperEpisodeGuestStars.Checked
         txtTVScraperShowActorsLimit.Enabled = chkTVScraperShowActors.Checked
 
-        If Not chkTVScraperEpisodeActors.Checked AndAlso Not chkTVScraperEpisodeGuestStars.Checked AndAlso Not chkTVScraperShowActors.Checked Then
+        If Not chkTVScraperEpisodeActors.Checked AndAlso
+            Not chkTVScraperEpisodeGuestStars.Checked AndAlso
+            Not chkTVScraperShowActors.Checked Then
             chkTVScraperCastWithImg.Checked = False
         End If
 
-        If Not chkTVScraperEpisodeActors.Checked Then
-            txtTVScraperEpisodeActorsLimit.Text = "0"
-        End If
-
-        If Not chkTVScraperEpisodeGuestStars.Checked Then
-            txtTVScraperEpisodeGuestStarsLimit.Text = "0"
-        End If
-
-        If Not chkTVScraperShowActors.Checked Then
-            txtTVScraperShowActorsLimit.Text = "0"
-        End If
+        If Not chkTVScraperEpisodeActors.Checked Then txtTVScraperEpisodeActorsLimit.Text = "0"
+        If Not chkTVScraperEpisodeGuestStars.Checked Then txtTVScraperEpisodeGuestStarsLimit.Text = "0"
+        If Not chkTVScraperShowActors.Checked Then txtTVScraperShowActorsLimit.Text = "0"
     End Sub
 
     Private Sub chkMovieScraperCert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCert.CheckedChanged
@@ -1972,10 +1979,15 @@ Public Class dlgSettings
 
     Private Sub chkMovieScraperGenre_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperGenre.CheckedChanged
         SetApplyButton(True)
-
         txtMovieScraperGenreLimit.Enabled = chkMovieScraperGenre.Checked
-
         If Not chkMovieScraperGenre.Checked Then txtMovieScraperGenreLimit.Text = "0"
+    End Sub
+
+
+    Private Sub chkTVScraperShowGenre_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperShowGenre.CheckedChanged
+        SetApplyButton(True)
+        txtTVScraperShowGenreLimit.Enabled = chkTVScraperShowGenre.Checked
+        If Not chkTVScraperShowGenre.Checked Then txtTVScraperShowGenreLimit.Text = "0"
     End Sub
 
     Private Sub chkGeneralDisplayBanner_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGeneralDisplayBanner.CheckedChanged
@@ -3294,6 +3306,7 @@ Public Class dlgSettings
             txtMovieGeneralCustomMarker4.Text = .MovieGeneralCustomMarker4Name
             txtMovieIMDBURL.Text = .MovieIMDBURL
             txtMovieScraperCastLimit.Text = .MovieScraperCastLimit.ToString
+            txtMovieScraperCountryLimit.Text = .MovieScraperCountryLimit.ToString
             txtMovieScraperDurationRuntimeFormat.Text = .MovieScraperDurationRuntimeFormat
             txtMovieScraperGenreLimit.Text = .MovieScraperGenreLimit.ToString
             txtMovieScraperMPAANotRated.Text = .MovieScraperMPAANotRated
@@ -3306,6 +3319,8 @@ Public Class dlgSettings
             txtTVScraperEpisodeGuestStarsLimit.Text = .TVScraperEpisodeGuestStarsLimit.ToString
             txtTVScraperShowActorsLimit.Text = .TVScraperShowActorsLimit.ToString
             txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
+            txtTVScraperShowGenreLimit.Text = .TVScraperShowGenreLimit.ToString
+            txtTVScraperShowStudioLimit.Text = .TVScraperShowStudioLimit.ToString
             txtTVShowExtrafanartsLimit.Text = .TVShowExtrafanartsLimit.ToString
             txtTVSourcesRegexMultiPartMatching.Text = .TVMultiPartMatching
             txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
@@ -5146,14 +5161,11 @@ Public Class dlgSettings
             .MovieScraperCollectionsExtendedInfo = chkMovieScraperCollectionsExtendedInfo.Checked
             .MovieScraperCollectionsYAMJCompatibleSets = chkMovieScraperCollectionsYAMJCompatibleSets.Checked
             .MovieScraperCountry = chkMovieScraperCountry.Checked
+            Integer.TryParse(txtMovieScraperCountryLimit.Text, .MovieScraperCountryLimit)
             .MovieScraperDirector = chkMovieScraperDirector.Checked
             .MovieScraperDurationRuntimeFormat = txtMovieScraperDurationRuntimeFormat.Text
             .MovieScraperGenre = chkMovieScraperGenre.Checked
-            If Not String.IsNullOrEmpty(txtMovieScraperGenreLimit.Text) Then
-                .MovieScraperGenreLimit = Convert.ToInt32(txtMovieScraperGenreLimit.Text)
-            Else
-                .MovieScraperGenreLimit = 0
-            End If
+            Integer.TryParse(txtMovieScraperGenreLimit.Text, .MovieScraperGenreLimit)
             .MovieScraperMetaDataIFOScan = chkMovieScraperMetaDataIFOScan.Checked
             .MovieScraperMetaDataScan = chkMovieScraperMetaDataScan.Checked
             .MovieScraperMPAA = chkMovieScraperMPAA.Checked
@@ -5174,11 +5186,7 @@ Public Class dlgSettings
             .MovieScraperRuntime = chkMovieScraperRuntime.Checked
             .MovieScraperStudio = chkMovieScraperStudio.Checked
             .MovieScraperStudioWithImgOnly = chkMovieScraperStudioWithImg.Checked
-            If Not String.IsNullOrEmpty(txtMovieScraperStudioLimit.Text) Then
-                .MovieScraperStudioLimit = Convert.ToInt32(txtMovieScraperStudioLimit.Text)
-            Else
-                .MovieScraperStudioLimit = 0
-            End If
+            Integer.TryParse(txtMovieScraperStudioLimit.Text, .MovieScraperStudioLimit)
             .MovieScraperTagline = chkMovieScraperTagline.Checked
             .MovieScraperTitle = chkMovieScraperTitle.Checked
             .MovieScraperTop250 = chkMovieScraperTop250.Checked
@@ -5338,6 +5346,7 @@ Public Class dlgSettings
             End If
             .TVScraperShowEpiGuideURL = chkTVScraperShowEpiGuideURL.Checked
             .TVScraperShowGenre = chkTVScraperShowGenre.Checked
+            Integer.TryParse(txtTVScraperShowGenreLimit.Text, .TVScraperShowGenreLimit)
             .TVScraperShowMPAA = chkTVScraperShowMPAA.Checked
             .TVScraperShowOriginalTitle = chkTVScraperShowOriginalTitle.Checked
             .TVScraperShowOriginalTitleAsTitle = chkTVScraperShowOriginalTitleAsTitle.Checked
@@ -5348,6 +5357,7 @@ Public Class dlgSettings
             .TVScraperShowRuntime = chkTVScraperShowRuntime.Checked
             .TVScraperShowStatus = chkTVScraperShowStatus.Checked
             .TVScraperShowStudio = chkTVScraperShowStudio.Checked
+            Integer.TryParse(txtTVScraperShowStudioLimit.Text, .TVScraperShowStudioLimit)
             .TVScraperShowTitle = chkTVScraperShowTitle.Checked
             .TVScraperShowUserRating = chkTVScraperShowUserRating.Checked
             .TVScraperUseDisplaySeasonEpisode = chkTVScraperUseDisplaySeasonEpisode.Checked
@@ -7228,6 +7238,34 @@ Public Class dlgSettings
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
+    Private Sub txtMovieScraperCountryLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperCountryLimit.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtMovieScraperStudioLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperStudioLimit.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtTVScraperEpisodeActorsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVScraperEpisodeActorsLimit.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtTVScraperEpisodeGuestStarsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVScraperEpisodeGuestStarsLimit.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtTVScraperShowActorsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVScraperShowActorsLimit.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtTVScraperShowGenreLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVScraperShowGenreLimit.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtTVScraperShowStudioLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVScraperShowStudioLimit.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
     Private Sub txtTVSourcesRegexTVShowMatchingRegex_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTVSourcesRegexTVShowMatchingRegex.TextChanged
         ValidateTVShowMatching()
     End Sub
@@ -8204,7 +8242,6 @@ Public Class dlgSettings
         chkMovieScraperCollectionsAuto.CheckedChanged,
         chkMovieScraperCollectionsExtendedInfo.CheckedChanged,
         chkMovieScraperCollectionsYAMJCompatibleSets.CheckedChanged,
-        chkMovieScraperCountry.CheckedChanged,
         chkMovieScraperCredits.CheckedChanged,
         chkMovieScraperDetailView.CheckedChanged,
         chkMovieScraperDirector.CheckedChanged,
@@ -8339,14 +8376,12 @@ Public Class dlgSettings
         chkTVScraperSeasonTitle.CheckedChanged,
         chkTVScraperShowCreators.CheckedChanged,
         chkTVScraperShowEpiGuideURL.CheckedChanged,
-        chkTVScraperShowGenre.CheckedChanged,
         chkTVScraperShowMPAA.CheckedChanged,
         chkTVScraperShowOriginalTitleAsTitle.CheckedChanged,
         chkTVScraperShowPlot.CheckedChanged,
         chkTVScraperShowPremiered.CheckedChanged,
         chkTVScraperShowRating.CheckedChanged,
         chkTVScraperShowStatus.CheckedChanged,
-        chkTVScraperShowStudio.CheckedChanged,
         chkTVScraperShowTitle.CheckedChanged,
         chkTVScraperShowUserRating.CheckedChanged,
         chkTVScraperUseDisplaySeasonEpisode.CheckedChanged,
@@ -8463,6 +8498,7 @@ Public Class dlgSettings
         txtMoviePosterHeight.TextChanged,
         txtMoviePosterWidth.TextChanged,
         txtMovieScraperCastLimit.TextChanged,
+        txtMovieScraperCountryLimit.TextChanged,
         txtMovieScraperDurationRuntimeFormat.TextChanged,
         txtMovieScraperGenreLimit.TextChanged,
         txtMovieScraperMPAANotRated.TextChanged,
@@ -8513,6 +8549,10 @@ Public Class dlgSettings
         txtTVEpisodePosterHeight.TextChanged,
         txtTVEpisodePosterWidth.TextChanged,
         txtTVScraperDurationRuntimeFormat.TextChanged,
+        txtTVScraperEpisodeActorsLimit.TextChanged,
+        txtTVScraperEpisodeGuestStarsLimit.TextChanged,
+        txtTVScraperShowActorsLimit.TextChanged,
+        txtTVScraperShowStudioLimit.TextChanged,
         txtTVSeasonBannerHeight.TextChanged,
         txtTVSeasonBannerWidth.TextChanged,
         txtTVSeasonFanartHeight.TextChanged,

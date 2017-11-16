@@ -95,9 +95,7 @@ Public Class NFO
                     FilterOnlyPersonsWithImage(scrapedmovie.Actors)
                 End If
 
-                If Master.eSettings.MovieScraperCastLimit > 0 AndAlso scrapedmovie.Actors.Count > Master.eSettings.MovieScraperCastLimit Then
-                    scrapedmovie.Actors.RemoveRange(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors.Count - Master.eSettings.MovieScraperCastLimit)
-                End If
+                FilterCountLimit(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors)
 
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedmovie.ActorsSpecified Then
@@ -171,6 +169,9 @@ Public Class NFO
             'Countries
             If (Not DBMovie.Movie.CountriesSpecified OrElse Not Master.eSettings.MovieLockCountry) AndAlso ScrapeOptions.bMainCountries AndAlso
                 scrapedmovie.CountriesSpecified AndAlso Master.eSettings.MovieScraperCountry AndAlso Not new_Countries Then
+
+                FilterCountLimit(Master.eSettings.MovieScraperCountryLimit, scrapedmovie.Countries)
+
                 DBMovie.Movie.Countries = scrapedmovie.Countries
                 new_Countries = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCountry AndAlso Not Master.eSettings.MovieLockCountry Then
@@ -192,9 +193,8 @@ Public Class NFO
 
                 StringUtils.GenreFilter(scrapedmovie.Genres)
 
-                If Master.eSettings.MovieScraperGenreLimit > 0 AndAlso Master.eSettings.MovieScraperGenreLimit < scrapedmovie.Genres.Count AndAlso scrapedmovie.Genres.Count > 0 Then
-                    scrapedmovie.Genres.RemoveRange(Master.eSettings.MovieScraperGenreLimit, scrapedmovie.Genres.Count - Master.eSettings.MovieScraperGenreLimit)
-                End If
+                FilterCountLimit(Master.eSettings.MovieScraperGenreLimit, scrapedmovie.Genres)
+
                 DBMovie.Movie.Genres = scrapedmovie.Genres
                 new_Genres = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperGenre AndAlso Not Master.eSettings.MovieLockGenre Then
@@ -281,17 +281,13 @@ Public Class NFO
                     Next
                 End If
 
-                If Master.eSettings.MovieScraperStudioLimit > 0 AndAlso Master.eSettings.MovieScraperStudioLimit < _studios.Count AndAlso _studios.Count > 0 Then
-                    _studios.RemoveRange(Master.eSettings.MovieScraperStudioLimit, _studios.Count - Master.eSettings.MovieScraperStudioLimit)
-                End If
-
+                FilterCountLimit(Master.eSettings.MovieScraperStudioLimit, _studios)
 
                 DBMovie.Movie.Studios.AddRange(_studios)
                 'added check if there's any studios left to add, if not then try with results of following scraper...
                 If _studios.Count > 0 Then
                     new_Studio = True
                 End If
-
 
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperStudio AndAlso Not Master.eSettings.MovieLockStudio Then
                 DBMovie.Movie.Studios.Clear()
@@ -546,18 +542,13 @@ Public Class NFO
                 If Master.eSettings.TVScraperCastWithImgOnly Then
                     FilterOnlyPersonsWithImage(scrapedshow.Actors)
                 End If
-
-                If Master.eSettings.TVScraperShowActorsLimit > 0 AndAlso scrapedshow.Actors.Count > Master.eSettings.TVScraperShowActorsLimit Then
-                    scrapedshow.Actors.RemoveRange(Master.eSettings.TVScraperShowActorsLimit, scrapedshow.Actors.Count - Master.eSettings.TVScraperShowActorsLimit)
-                End If
-
+                FilterCountLimit(Master.eSettings.TVScraperShowActorsLimit, scrapedshow.Actors)
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedshow.ActorsSpecified Then
                     ReorderPersons(scrapedshow.Actors)
                     DBTV.TVShow.Actors = scrapedshow.Actors
                     new_Actors = True
                 End If
-
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowActors AndAlso Not Master.eSettings.TVLockShowActors Then
                 DBTV.TVShow.Actors.Clear()
             End If
@@ -599,6 +590,8 @@ Public Class NFO
             'Countries
             If (Not DBTV.TVShow.CountriesSpecified OrElse Not Master.eSettings.TVLockShowCountry) AndAlso ScrapeOptions.bMainCountries AndAlso
                 scrapedshow.CountriesSpecified AndAlso Master.eSettings.TVScraperShowCountry AndAlso Not new_ShowCountries Then
+
+                FilterCountLimit(Master.eSettings.TVScraperShowCountryLimit, scrapedshow.Countries)
                 DBTV.TVShow.Countries = scrapedshow.Countries
                 new_ShowCountries = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCountry AndAlso Not Master.eSettings.TVLockShowCountry Then
@@ -617,10 +610,7 @@ Public Class NFO
                 scrapedshow.GenresSpecified AndAlso Master.eSettings.TVScraperShowGenre AndAlso Not new_Genres Then
 
                 StringUtils.GenreFilter(scrapedshow.Genres)
-
-                'If Master.eSettings.TVScraperShowGenreLimit > 0 AndAlso Master.eSettings.TVScraperShowGenreLimit < _genres.Count AndAlso _genres.Count > 0 Then
-                '    _genres.RemoveRange(Master.eSettings.TVScraperShowGenreLimit, _genres.Count - Master.eSettings.TVScraperShowGenreLimit)
-                'End If
+                FilterCountLimit(Master.eSettings.TVScraperShowGenreLimit, scrapedshow.Genres)
                 DBTV.TVShow.Genres = scrapedshow.Genres
                 new_Genres = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowGenre AndAlso Not Master.eSettings.TVLockShowGenre Then
@@ -686,30 +676,10 @@ Public Class NFO
             'Studios
             If (Not DBTV.TVShow.StudiosSpecified OrElse Not Master.eSettings.TVLockShowStudio) AndAlso ScrapeOptions.bMainStudios AndAlso
                 scrapedshow.StudiosSpecified AndAlso Master.eSettings.TVScraperShowStudio AndAlso Not new_Studio Then
-                DBTV.TVShow.Studios.Clear()
 
-                Dim _studios As New List(Of String)
-                _studios.AddRange(scrapedshow.Studios)
-
-                'If Master.eSettings.TVScraperShowStudioWithImgOnly Then
-                '    For i = _studios.Count - 1 To 0 Step -1
-                '        If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
-                '            _studios.RemoveAt(i)
-                '        End If
-                '    Next
-                'End If
-
-                'If Master.eSettings.tvScraperStudioLimit > 0 AndAlso Master.eSettings.MovieScraperStudioLimit < _studios.Count AndAlso _studios.Count > 0 Then
-                '    _studios.RemoveRange(Master.eSettings.MovieScraperStudioLimit, _studios.Count - Master.eSettings.MovieScraperStudioLimit)
-                'End If
-
-
-                'added check if there's any studios left to add, if not then try with results of following scraper...
-                If _studios.Count > 0 Then
-                    DBTV.TVShow.Studios.AddRange(_studios)
-                    new_Studio = True
-                End If
-
+                FilterCountLimit(Master.eSettings.TVScraperShowStudioLimit, scrapedshow.Studios)
+                DBTV.TVShow.Studios = scrapedshow.Studios
+                new_Studio = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStudio AndAlso Not Master.eSettings.TVLockShowStudio Then
                 DBTV.TVShow.Studios.Clear()
             End If
@@ -1061,11 +1031,7 @@ Public Class NFO
                 If Master.eSettings.TVScraperCastWithImgOnly Then
                     FilterOnlyPersonsWithImage(scrapedepisode.Actors)
                 End If
-
-                If Master.eSettings.TVScraperEpisodeActorsLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeActorsLimit Then
-                    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeActorsLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeActorsLimit)
-                End If
-
+                FilterCountLimit(Master.eSettings.TVScraperEpisodeActorsLimit, scrapedepisode.Actors)
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedepisode.ActorsSpecified Then
                     ReorderPersons(scrapedepisode.Actors)
@@ -1111,18 +1077,13 @@ Public Class NFO
                 If Master.eSettings.TVScraperCastWithImgOnly Then
                     FilterOnlyPersonsWithImage(scrapedepisode.GuestStars)
                 End If
-
-                If Master.eSettings.TVScraperEpisodeGuestStarsLimit > 0 AndAlso scrapedepisode.GuestStars.Count > Master.eSettings.TVScraperEpisodeGuestStarsLimit Then
-                    scrapedepisode.GuestStars.RemoveRange(Master.eSettings.TVScraperEpisodeGuestStarsLimit, scrapedepisode.GuestStars.Count - Master.eSettings.TVScraperEpisodeGuestStarsLimit)
-                End If
-
+                FilterCountLimit(Master.eSettings.TVScraperEpisodeGuestStarsLimit, scrapedepisode.GuestStars)
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedepisode.GuestStarsSpecified Then
                     ReorderPersons(scrapedepisode.GuestStars)
                     DBTVEpisode.TVEpisode.GuestStars = scrapedepisode.GuestStars
                     new_GuestStars = True
                 End If
-
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not Master.eSettings.TVLockEpisodeGuestStars Then
                 DBTVEpisode.TVEpisode.GuestStars.Clear()
             End If
@@ -1207,9 +1168,7 @@ Public Class NFO
             DBTVEpisode.TVEpisode.Actors.AddRange(DBTVEpisode.TVEpisode.GuestStars)
 
             'run the limit filter again
-            If Master.eSettings.TVScraperEpisodeActorsLimit > 0 AndAlso DBTVEpisode.TVEpisode.Actors.Count > Master.eSettings.TVScraperEpisodeActorsLimit Then
-                DBTVEpisode.TVEpisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeActorsLimit, DBTVEpisode.TVEpisode.Actors.Count - Master.eSettings.TVScraperEpisodeActorsLimit)
-            End If
+            FilterCountLimit(Master.eSettings.TVScraperEpisodeActorsLimit, DBTVEpisode.TVEpisode.Actors)
 
             'reorder again
             ReorderPersons(DBTVEpisode.TVEpisode.Actors)
@@ -1443,6 +1402,18 @@ Public Class NFO
     Private Shared Sub FilterOnlyPersonsWithImage(ByRef lstPerson As List(Of MediaContainers.Person))
         If lstPerson IsNot Nothing Then
             lstPerson = lstPerson.Where(Function(f) f.URLOriginalSpecified).ToList
+        End If
+    End Sub
+
+    Private Shared Sub FilterCountLimit(ByVal iLimit As Integer, ByRef lstPerson As List(Of MediaContainers.Person))
+        If Not iLimit = 0 AndAlso iLimit < lstPerson.Count Then
+            lstPerson.RemoveRange(iLimit, lstPerson.Count - iLimit)
+        End If
+    End Sub
+
+    Private Shared Sub FilterCountLimit(ByVal iLimit As Integer, ByRef lstString As List(Of String))
+        If Not iLimit = 0 AndAlso iLimit < lstString.Count Then
+            lstString.RemoveRange(iLimit, lstString.Count - iLimit)
         End If
     End Sub
 
