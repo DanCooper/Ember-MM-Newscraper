@@ -547,6 +547,10 @@ Public Class NFO
                     FilterOnlyPersonsWithImage(scrapedshow.Actors)
                 End If
 
+                If Master.eSettings.TVScraperShowActorsLimit > 0 AndAlso scrapedshow.Actors.Count > Master.eSettings.TVScraperShowActorsLimit Then
+                    scrapedshow.Actors.RemoveRange(Master.eSettings.TVScraperShowActorsLimit, scrapedshow.Actors.Count - Master.eSettings.TVScraperShowActorsLimit)
+                End If
+
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedshow.ActorsSpecified Then
                     ReorderPersons(scrapedshow.Actors)
@@ -1058,9 +1062,9 @@ Public Class NFO
                     FilterOnlyPersonsWithImage(scrapedepisode.Actors)
                 End If
 
-                'If Master.eSettings.TVScraperEpisodeCastLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeCastLimit Then
-                '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
-                'End If
+                If Master.eSettings.TVScraperEpisodeActorsLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeActorsLimit Then
+                    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeActorsLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeActorsLimit)
+                End If
 
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedepisode.ActorsSpecified Then
@@ -1108,9 +1112,9 @@ Public Class NFO
                     FilterOnlyPersonsWithImage(scrapedepisode.GuestStars)
                 End If
 
-                'If Master.eSettings.TVScraperEpisodeCastLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeCastLimit Then
-                '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
-                'End If
+                If Master.eSettings.TVScraperEpisodeGuestStarsLimit > 0 AndAlso scrapedepisode.GuestStars.Count > Master.eSettings.TVScraperEpisodeGuestStarsLimit Then
+                    scrapedepisode.GuestStars.RemoveRange(Master.eSettings.TVScraperEpisodeGuestStarsLimit, scrapedepisode.GuestStars.Count - Master.eSettings.TVScraperEpisodeGuestStarsLimit)
+                End If
 
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedepisode.GuestStarsSpecified Then
@@ -1201,6 +1205,14 @@ Public Class NFO
         'Add GuestStars to Actors
         If DBTVEpisode.TVEpisode.GuestStarsSpecified AndAlso Master.eSettings.TVScraperEpisodeGuestStarsToActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
             DBTVEpisode.TVEpisode.Actors.AddRange(DBTVEpisode.TVEpisode.GuestStars)
+
+            'run the limit filter again
+            If Master.eSettings.TVScraperEpisodeActorsLimit > 0 AndAlso DBTVEpisode.TVEpisode.Actors.Count > Master.eSettings.TVScraperEpisodeActorsLimit Then
+                DBTVEpisode.TVEpisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeActorsLimit, DBTVEpisode.TVEpisode.Actors.Count - Master.eSettings.TVScraperEpisodeActorsLimit)
+            End If
+
+            'reorder again
+            ReorderPersons(DBTVEpisode.TVEpisode.Actors)
         End If
 
         'TV Show Runtime for Episode Runtime

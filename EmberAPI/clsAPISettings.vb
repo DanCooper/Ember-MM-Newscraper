@@ -57,6 +57,33 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeActorsLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperEpisodeActorsLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperEpisodeActorsLimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperEpisodeGuestStarsLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperEpisodeGuestStarsLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperEpisodeGuestStarsLimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowActorsLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperShowActorsLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperShowActorsLimit = value
+        End Set
+    End Property
+
     Public Property MovieActorThumbsKeepExisting() As Boolean
         Get
             Return Settings._XMLSettings.MovieActorThumbsKeepExisting
@@ -7335,10 +7362,12 @@ Public Class Settings
         TVScraperCleanFields = False
         TVScraperDurationRuntimeFormat = "<m>"
         TVScraperEpisodeActors = True
+        TVScraperEpisodeActorsLimit = 0
         TVScraperEpisodeAired = True
         TVScraperEpisodeCredits = True
         TVScraperEpisodeDirector = True
         TVScraperEpisodeGuestStars = True
+        TVScraperEpisodeGuestStarsLimit = 0
         TVScraperEpisodeGuestStarsToActors = False
         TVScraperEpisodePlot = True
         TVScraperEpisodeRating = True
@@ -7351,6 +7380,7 @@ Public Class Settings
         TVScraperSeasonPlot = True
         TVScraperSeasonTitle = False
         TVScraperShowActors = True
+        TVScraperShowActorsLimit = 0
         TVScraperShowCert = False
         TVScraperShowCertForMPAA = False
         TVScraperShowCertForMPAAFallback = False

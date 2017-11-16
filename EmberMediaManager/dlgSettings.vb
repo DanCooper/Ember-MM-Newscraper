@@ -1836,13 +1836,28 @@ Public Class dlgSettings
             txtMovieScraperCastLimit.Text = "0"
         End If
     End Sub
-    Private Sub TVScraperActors_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperEpisodeActors.CheckedChanged, chkTVScraperShowActors.CheckedChanged
+    Private Sub TVScraperActors_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperEpisodeActors.CheckedChanged, chkTVScraperEpisodeGuestStars.CheckedChanged, chkTVScraperShowActors.CheckedChanged
         SetApplyButton(True)
 
-        chkTVScraperCastWithImg.Enabled = chkTVScraperEpisodeActors.Checked OrElse chkTVScraperShowActors.Checked
+        chkTVScraperCastWithImg.Enabled = chkTVScraperEpisodeActors.Checked OrElse chkTVScraperEpisodeGuestStars.Checked OrElse chkTVScraperShowActors.Checked
+        txtTVScraperEpisodeActorsLimit.Enabled = chkTVScraperEpisodeActors.Checked
+        txtTVScraperEpisodeGuestStarsLimit.Enabled = chkTVScraperEpisodeGuestStars.Checked
+        txtTVScraperShowActorsLimit.Enabled = chkTVScraperShowActors.Checked
 
-        If Not chkTVScraperEpisodeActors.Checked AndAlso Not chkTVScraperShowActors.Checked Then
+        If Not chkTVScraperEpisodeActors.Checked AndAlso Not chkTVScraperEpisodeGuestStars.Checked AndAlso Not chkTVScraperShowActors.Checked Then
             chkTVScraperCastWithImg.Checked = False
+        End If
+
+        If Not chkTVScraperEpisodeActors.Checked Then
+            txtTVScraperEpisodeActorsLimit.Text = "0"
+        End If
+
+        If Not chkTVScraperEpisodeGuestStars.Checked Then
+            txtTVScraperEpisodeGuestStarsLimit.Text = "0"
+        End If
+
+        If Not chkTVScraperShowActors.Checked Then
+            txtTVScraperShowActorsLimit.Text = "0"
         End If
     End Sub
 
@@ -3269,15 +3284,15 @@ Public Class dlgSettings
             tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, tpFileSystemCleanerExpert, tpFileSystemCleanerStandard)
             txtGeneralImageFilterPosterMatchRate.Text = .GeneralImageFilterPosterMatchTolerance.ToString
             txtGeneralImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
-            txtGeneralDaemonPath.Text = .GeneralDaemonPath.ToString
-            txtMovieSourcesBackdropsFolderPath.Text = .MovieBackdropsPath.ToString
+            txtGeneralDaemonPath.Text = .GeneralDaemonPath
+            txtMovieSourcesBackdropsFolderPath.Text = .MovieBackdropsPath
             txtMovieExtrafanartsLimit.Text = .MovieExtrafanartsLimit.ToString
             txtMovieExtrathumbsLimit.Text = .MovieExtrathumbsLimit.ToString
-            txtMovieGeneralCustomMarker1.Text = .MovieGeneralCustomMarker1Name.ToString
-            txtMovieGeneralCustomMarker2.Text = .MovieGeneralCustomMarker2Name.ToString
-            txtMovieGeneralCustomMarker3.Text = .MovieGeneralCustomMarker3Name.ToString
-            txtMovieGeneralCustomMarker4.Text = .MovieGeneralCustomMarker4Name.ToString
-            txtMovieIMDBURL.Text = .MovieIMDBURL.ToString
+            txtMovieGeneralCustomMarker1.Text = .MovieGeneralCustomMarker1Name
+            txtMovieGeneralCustomMarker2.Text = .MovieGeneralCustomMarker2Name
+            txtMovieGeneralCustomMarker3.Text = .MovieGeneralCustomMarker3Name
+            txtMovieGeneralCustomMarker4.Text = .MovieGeneralCustomMarker4Name
+            txtMovieIMDBURL.Text = .MovieIMDBURL
             txtMovieScraperCastLimit.Text = .MovieScraperCastLimit.ToString
             txtMovieScraperDurationRuntimeFormat.Text = .MovieScraperDurationRuntimeFormat
             txtMovieScraperGenreLimit.Text = .MovieScraperGenreLimit.ToString
@@ -3285,8 +3300,11 @@ Public Class dlgSettings
             txtMovieScraperOutlineLimit.Text = .MovieScraperOutlineLimit.ToString
             txtMovieScraperStudioLimit.Text = .MovieScraperStudioLimit.ToString
             txtMovieSkipLessThan.Text = .MovieSkipLessThan.ToString
-            txtMovieTrailerDefaultSearch.Text = .MovieTrailerDefaultSearch.ToString
-            txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat.ToString
+            txtMovieTrailerDefaultSearch.Text = .MovieTrailerDefaultSearch
+            txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat
+            txtTVScraperEpisodeActorsLimit.Text = .TVScraperEpisodeActorsLimit.ToString
+            txtTVScraperEpisodeGuestStarsLimit.Text = .TVScraperEpisodeGuestStarsLimit.ToString
+            txtTVScraperShowActorsLimit.Text = .TVScraperShowActorsLimit.ToString
             txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
             txtTVShowExtrafanartsLimit.Text = .TVShowExtrafanartsLimit.ToString
             txtTVSourcesRegexMultiPartMatching.Text = .TVMultiPartMatching
@@ -5108,11 +5126,7 @@ Public Class dlgSettings
             .MovieSetScraperTitle = chkMovieSetScraperTitle.Checked
             .MovieScanOrderModify = chkMovieScanOrderModify.Checked
             .MovieScraperCast = chkMovieScraperCast.Checked
-            If Not String.IsNullOrEmpty(txtMovieScraperCastLimit.Text) Then
-                .MovieScraperCastLimit = Convert.ToInt32(txtMovieScraperCastLimit.Text)
-            Else
-                .MovieScraperCastLimit = 0
-            End If
+            Integer.TryParse(txtMovieScraperCastLimit.Text, .MovieScraperCastLimit)
             .MovieScraperCastWithImgOnly = chkMovieScraperCastWithImg.Checked
             .MovieScraperCert = chkMovieScraperCert.Checked
             .MovieScraperCertForMPAA = chkMovieScraperCertForMPAA.Checked
@@ -5291,10 +5305,12 @@ Public Class dlgSettings
             .TVScraperCleanFields = chkTVScraperCleanFields.Checked
             .TVScraperDurationRuntimeFormat = txtTVScraperDurationRuntimeFormat.Text
             .TVScraperEpisodeActors = chkTVScraperEpisodeActors.Checked
+            Integer.TryParse(txtTVScraperEpisodeActorsLimit.Text, .TVScraperEpisodeActorsLimit)
             .TVScraperEpisodeAired = chkTVScraperEpisodeAired.Checked
             .TVScraperEpisodeCredits = chkTVScraperEpisodeCredits.Checked
             .TVScraperEpisodeDirector = chkTVScraperEpisodeDirector.Checked
             .TVScraperEpisodeGuestStars = chkTVScraperEpisodeGuestStars.Checked
+            Integer.TryParse(txtTVScraperEpisodeGuestStarsLimit.Text, .TVScraperEpisodeGuestStarsLimit)
             .TVScraperEpisodeGuestStarsToActors = chkTVScraperEpisodeGuestStarsToActors.Checked
             .TVScraperEpisodePlot = chkTVScraperEpisodePlot.Checked
             .TVScraperEpisodeRating = chkTVScraperEpisodeRating.Checked
@@ -5307,6 +5323,7 @@ Public Class dlgSettings
             .TVScraperSeasonPlot = chkTVScraperSeasonPlot.Checked
             .TVScraperSeasonTitle = chkTVScraperSeasonTitle.Checked
             .TVScraperShowActors = chkTVScraperShowActors.Checked
+            Integer.TryParse(txtTVScraperShowActorsLimit.Text, .TVScraperShowActorsLimit)
             .TVScraperShowCert = chkTVScraperShowCert.Checked
             .TVScraperShowCreators = chkTVScraperShowCreators.Checked
             .TVScraperShowCertForMPAA = chkTVScraperShowCertForMPAA.Checked
@@ -6371,6 +6388,8 @@ Public Class dlgSettings
         lblMovieExtrathumbsLimit.Text = String.Concat(strLimit, ":")
         lblMovieScraperGlobalHeaderLimit.Text = strLimit
         lblMovieScraperOutlineLimit.Text = String.Concat(strLimit, ":")
+        lblTVScraperGlobalHeaderEpisodesLimit.Text = strLimit
+        lblTVScraperGlobalHeaderShowsLimit.Text = strLimit
         lblTVShowExtrafanartsLimit.Text = String.Concat(strLimit, ":")
 
         'Lock
@@ -8309,7 +8328,6 @@ Public Class dlgSettings
         chkTVScraperEpisodeAired.CheckedChanged,
         chkTVScraperEpisodeCredits.CheckedChanged,
         chkTVScraperEpisodeDirector.CheckedChanged,
-        chkTVScraperEpisodeGuestStars.CheckedChanged,
         chkTVScraperEpisodeGuestStarsToActors.CheckedChanged,
         chkTVScraperEpisodePlot.CheckedChanged,
         chkTVScraperEpisodeRating.CheckedChanged,

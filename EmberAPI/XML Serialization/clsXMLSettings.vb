@@ -425,10 +425,12 @@ Partial Public Class clsXMLSettings
     Private _tvscrapercleanfields As Boolean
     Private _tvscraperdurationruntimeformat As String
     Private _tvscraperepisodeactors As Boolean
+    Private _tvscraperepisodeactorslimit As Integer
     Private _tvscraperepisodeaired As Boolean
     Private _tvscraperepisodecredits As Boolean
     Private _tvscraperepisodedirector As Boolean
     Private _tvscraperepisodegueststars As Boolean
+    Private _tvscraperepisodegueststarslimit As Integer
     Private _tvscraperepisodegueststarstoactors As Boolean
     Private _tvscraperepisodeplot As Boolean
     Private _tvscraperepisoderating As Boolean
@@ -441,6 +443,7 @@ Partial Public Class clsXMLSettings
     Private _tvscraperseasonplot As Boolean
     Private _tvscraperseasontitle As Boolean
     Private _tvscrapershowactors As Boolean
+    Private _tvscrapershowactorslimit As Integer
     Private _tvscrapershowcert As Boolean
     Private _tvscrapershowcertformpaa As Boolean
     Private _tvscrapershowcertformpaafallback As Boolean
@@ -1008,6 +1011,33 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._moviescrapercastlimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperEpisodeActorsLimit() As Integer
+        Get
+            Return Me._tvscraperepisodeactorslimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscraperepisodeactorslimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperEpisodeGuestStarsLimit() As Integer
+        Get
+            Return Me._tvscraperepisodegueststarslimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscraperepisodegueststarslimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowActorsLimit() As Integer
+        Get
+            Return Me._tvscrapershowactorslimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscrapershowactorslimit = value
         End Set
     End Property
 
