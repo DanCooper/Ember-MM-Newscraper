@@ -2383,7 +2383,7 @@ Public Class Database
                     person.Role = SQLreader("strRole").ToString
                     person.LocalFilePath = SQLreader("url").ToString
                     person.URLOriginal = SQLreader("strThumb").ToString
-                    _TVDB.TVEpisode.Actors.Add(person)
+                    _TVDB.TVEpisode.GuestStars.Add(person)
                 End While
             End Using
         End Using
