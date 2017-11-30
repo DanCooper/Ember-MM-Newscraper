@@ -34,46 +34,62 @@ or a "32-bit ARGB value"
   <images>
     <bannerbackcolor>black</bannerbackcolor>
     <bannerbottombackcolor>black</bannerbottombackcolor>
-    <bannertopbackcolor>FireBrick</bannertopbackcolor>
-	<bannermaxheight>160</bannermaxheight>
+    <bannermaxheight>160</bannermaxheight>
     <bannermaxwidth>285</bannermaxwidth>
+    <bannerposleft>124</bannerposleft>
+    <bannerpostop>327</bannerpostop>
+    <bannertopbackcolor>FireBrick</bannertopbackcolor>
     <characterartbackcolor>black</characterartbackcolor>
     <characterartbottombackcolor>black</characterartbottombackcolor>
-    <characterarttopbackcolor>FireBrick</characterarttopbackcolor>
-	<characterartmaxheight>160</characterartmaxheight>
+    <characterartmaxheight>160</characterartmaxheight>
     <characterartmaxwidth>160</characterartmaxwidth>
+    <characterartposleft>1011</characterartposleft>
+    <characterartpostop>130</characterartpostop>
+    <characterarttopbackcolor>FireBrick</characterarttopbackcolor>
     <clearartbackcolor>black</clearartbackcolor>
     <clearartbottombackcolor>black</clearartbottombackcolor>
-    <cleararttopbackcolor>FireBrick</cleararttopbackcolor>
-	<clearartmaxheight>160</clearartmaxheight>
+    <clearartmaxheight>160</clearartmaxheight>
     <clearartmaxwidth>285</clearartmaxwidth>
+    <clearartposleft>715</clearartposleft>
+    <clearartpostop>130</clearartpostop>
+    <cleararttopbackcolor>FireBrick</cleararttopbackcolor>
     <clearlogobackcolor>black</clearlogobackcolor>
     <clearlogobottombackcolor>black</clearlogobottombackcolor>
-    <clearlogotopbackcolor>FireBrick</clearlogotopbackcolor>
-	<clearlogomaxheight>160</clearlogomaxheight>
+    <clearlogomaxheight>160</clearlogomaxheight>
     <clearlogomaxwidth>285</clearlogomaxwidth>
+    <clearlogoposleft>419</clearlogoposleft>
+    <clearlogopostop>327</clearlogopostop>
+    <clearlogotopbackcolor>FireBrick</clearlogotopbackcolor>
     <discartbackcolor>black</discartbackcolor>
     <discartbottombackcolor>black</discartbottombackcolor>
-    <discarttopbackcolor>FireBrick</discarttopbackcolor>
-	<discartmaxheight>160</discartmaxheight>
+    <discartmaxheight>160</discartmaxheight>
     <discartmaxwidth>160</discartmaxwidth>
+    <discartposleft>1011</discartposleft>
+    <discartpostop>130</discartpostop>
+    <discarttopbackcolor>FireBrick</discarttopbackcolor>
     <fanartbackcolor>black</fanartbackcolor>
     <fanartsmallbackcolor>black</fanartsmallbackcolor>
     <fanartsmallbottombackcolor>black</fanartsmallbottombackcolor>
     <fanartsmallmaxheight>160</fanartsmallmaxheight>
     <fanartsmallmaxwidth>285</fanartsmallmaxwidth>
+    <fanartsmallposleft>124</fanartsmallposleft>
+    <fanartsmallpostop>130</fanartsmallpostop>
     <fanartsmalltopbackcolor>FireBrick</fanartsmalltopbackcolor>
     <genrebackcolor>white</genrebackcolor>
     <landscapebackcolor>black</landscapebackcolor>
     <landscapebottombackcolor>black</landscapebottombackcolor>
-    <landscapetopbackcolor>FireBrick</landscapetopbackcolor>
-	<landscapemaxheight>160</landscapemaxheight>
+    <landscapemaxheight>160</landscapemaxheight>
     <landscapemaxwidth>285</landscapemaxwidth>
+    <landscapeposleft>419</landscapeposleft>
+    <landscapepostop>130</landscapepostop>
+    <landscapetopbackcolor>FireBrick</landscapetopbackcolor>
     <mpaabackcolor>#FEFCFF</mpaabackcolor>
     <posterbackcolor>black</posterbackcolor>
     <posterbottombackcolor>black</posterbottombackcolor>
     <postermaxheight>160</postermaxheight>
     <postermaxwidth>160</postermaxwidth>
+    <posterposleft>4</posterposleft>
+    <posterpostop>130</posterpostop>
     <postertopbackcolor>FireBrick</postertopbackcolor>
   </images>
    

@@ -172,23 +172,39 @@ Public Class Theming
 
         frmMain.BannerMaxWidth = xTheme.BannerMaxWidth
         frmMain.BannerMaxHeight = xTheme.BannerMaxHeight
+        frmMain.BannerPosLeft = xTheme.BannerPosLeft
+        frmMain.BannerPosTop = xTheme.BannerPosTop
         frmMain.CharacterArtMaxWidth = xTheme.CharacterArtMaxWidth
         frmMain.CharacterArtMaxHeight = xTheme.CharacterArtMaxHeight
+        frmMain.CharacterArtPosLeft = xTheme.CharacterArtPosLeft
+        frmMain.CharacterArtPosTop = xTheme.CharacterArtPosTop
         frmMain.ClearArtMaxWidth = xTheme.ClearArtMaxWidth
         frmMain.ClearArtMaxHeight = xTheme.ClearArtMaxHeight
+        frmMain.ClearArtPosLeft = xTheme.ClearArtPosLeft
+        frmMain.ClearArtPosTop = xTheme.ClearArtPosTop
         frmMain.ClearLogoMaxWidth = xTheme.ClearLogoMaxWidth
         frmMain.ClearLogoMaxHeight = xTheme.ClearLogoMaxHeight
+        frmMain.ClearLogoPosLeft = xTheme.ClearLogoPosLeft
+        frmMain.ClearLogoPosTop = xTheme.ClearLogoPosTop
         frmMain.DiscArtMaxWidth = xTheme.DiscArtMaxWidth
         frmMain.DiscArtMaxHeight = xTheme.DiscArtMaxHeight
+        frmMain.DiscArtPosLeft = xTheme.DiscArtPosLeft
+        frmMain.DiscArtPosTop = xTheme.DiscArtPosTop
         frmMain.FanartSmallMaxWidth = xTheme.FanartSmallMaxWidth
         frmMain.FanartSmallMaxHeight = xTheme.FanartSmallMaxHeight
+        frmMain.FanartSmallPosLeft = xTheme.FanartSmallPosLeft
+        frmMain.FanartSmallPosTop = xTheme.FanartSmallPosTop
         frmMain.GenrePanelColor = xTheme.GenreBackColor
         frmMain.IPMid = xTheme.IPMid
         frmMain.IPUp = xTheme.IPUp
         frmMain.LandscapeMaxWidth = xTheme.LandscapeMaxWidth
         frmMain.LandscapeMaxHeight = xTheme.LandscapeMaxHeight
+        frmMain.LandscapePosLeft = xTheme.LandscapePosLeft
+        frmMain.LandscapePosTop = xTheme.LandscapePosTop
         frmMain.PosterMaxWidth = xTheme.PosterMaxWidth
         frmMain.PosterMaxHeight = xTheme.PosterMaxHeight
+        frmMain.PosterPosLeft = xTheme.PosterPosLeft
+        frmMain.PosterPosTop = xTheme.PosterPosTop
 
         For Each xCon As Controls In xTheme.Controls
             Select Case xCon.Control
@@ -375,6 +391,16 @@ Public Class Theming
                         tTheme.BannerMaxWidth = Convert.ToInt32(xImages.<bannermaxwidth>.Value)
                     End If
                 End If
+                If Not String.IsNullOrEmpty(xImages.<bannerposleft>.Value) Then
+                    If Integer.TryParse(xImages.<bannerposleft>.Value, 0) Then
+                        tTheme.BannerPosLeft = Convert.ToInt32(xImages.<bannerposleft>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<bannerpostop>.Value) Then
+                    If Integer.TryParse(xImages.<bannerpostop>.Value, 0) Then
+                        tTheme.BannerPosTop = Convert.ToInt32(xImages.<bannerpostop>.Value)
+                    End If
+                End If
                 If Not String.IsNullOrEmpty(xImages.<bannertopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<bannertopbackcolor>.Value, 0) Then
                         tTheme.BannerTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<bannertopbackcolor>.Value))
@@ -412,6 +438,16 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<characterartmaxwidth>.Value) Then
                     If Integer.TryParse(xImages.<characterartmaxwidth>.Value, 0) Then
                         tTheme.CharacterArtMaxWidth = Convert.ToInt32(xImages.<characterartmaxwidth>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<characterartposleft>.Value) Then
+                    If Integer.TryParse(xImages.<characterartposleft>.Value, 0) Then
+                        tTheme.CharacterArtPosLeft = Convert.ToInt32(xImages.<characterartposleft>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<characterartpostop>.Value) Then
+                    If Integer.TryParse(xImages.<characterartpostop>.Value, 0) Then
+                        tTheme.CharacterArtPosTop = Convert.ToInt32(xImages.<characterartpostop>.Value)
                     End If
                 End If
                 If Not String.IsNullOrEmpty(xImages.<characterarttopbackcolor>.Value) Then
@@ -453,6 +489,16 @@ Public Class Theming
                         tTheme.ClearArtMaxWidth = Convert.ToInt32(xImages.<clearartmaxwidth>.Value)
                     End If
                 End If
+                If Not String.IsNullOrEmpty(xImages.<clearartposleft>.Value) Then
+                    If Integer.TryParse(xImages.<clearartposleft>.Value, 0) Then
+                        tTheme.ClearArtPosLeft = Convert.ToInt32(xImages.<clearartposleft>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<clearartpostop>.Value) Then
+                    If Integer.TryParse(xImages.<clearartpostop>.Value, 0) Then
+                        tTheme.ClearArtPosTop = Convert.ToInt32(xImages.<clearartpostop>.Value)
+                    End If
+                End If
                 If Not String.IsNullOrEmpty(xImages.<cleararttopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<cleararttopbackcolor>.Value, 0) Then
                         tTheme.ClearArtTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<cleararttopbackcolor>.Value))
@@ -492,6 +538,16 @@ Public Class Theming
                         tTheme.ClearLogoMaxWidth = Convert.ToInt32(xImages.<clearlogomaxwidth>.Value)
                     End If
                 End If
+                If Not String.IsNullOrEmpty(xImages.<clearlogoposleft>.Value) Then
+                    If Integer.TryParse(xImages.<clearlogoposleft>.Value, 0) Then
+                        tTheme.ClearLogoPosLeft = Convert.ToInt32(xImages.<clearlogoposleft>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<clearlogopostop>.Value) Then
+                    If Integer.TryParse(xImages.<clearlogopostop>.Value, 0) Then
+                        tTheme.ClearLogoPosTop = Convert.ToInt32(xImages.<clearlogopostop>.Value)
+                    End If
+                End If
                 If Not String.IsNullOrEmpty(xImages.<clearlogotopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<clearlogotopbackcolor>.Value, 0) Then
                         tTheme.ClearLogoTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearlogotopbackcolor>.Value))
@@ -529,6 +585,16 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<discartmaxwidth>.Value) Then
                     If Integer.TryParse(xImages.<discartmaxwidth>.Value, 0) Then
                         tTheme.DiscArtMaxWidth = Convert.ToInt32(xImages.<discartmaxwidth>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<discartposleft>.Value) Then
+                    If Integer.TryParse(xImages.<discartposleft>.Value, 0) Then
+                        tTheme.DiscArtPosLeft = Convert.ToInt32(xImages.<discartposleft>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<discartpostop>.Value) Then
+                    If Integer.TryParse(xImages.<discartpostop>.Value, 0) Then
+                        tTheme.DiscArtPosTop = Convert.ToInt32(xImages.<discartpostop>.Value)
                     End If
                 End If
                 If Not String.IsNullOrEmpty(xImages.<discarttopbackcolor>.Value) Then
@@ -581,6 +647,16 @@ Public Class Theming
                         tTheme.FanartSmallMaxWidth = Convert.ToInt32(xImages.<fanartsmallmaxwidth>.Value)
                     End If
                 End If
+                If Not String.IsNullOrEmpty(xImages.<fanartsmallposleft>.Value) Then
+                    If Integer.TryParse(xImages.<fanartsmallposleft>.Value, 0) Then
+                        tTheme.FanartSmallPosLeft = Convert.ToInt32(xImages.<fanartsmallposleft>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<fanartsmallpostop>.Value) Then
+                    If Integer.TryParse(xImages.<fanartsmallpostop>.Value, 0) Then
+                        tTheme.FanartSmallPosTop = Convert.ToInt32(xImages.<fanartsmallpostop>.Value)
+                    End If
+                End If
                 If Not String.IsNullOrEmpty(xImages.<fanartsmalltopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<fanartsmalltopbackcolor>.Value, 0) Then
                         tTheme.FanartSmallTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartsmalltopbackcolor>.Value))
@@ -620,6 +696,16 @@ Public Class Theming
                         tTheme.LandscapeMaxWidth = Convert.ToInt32(xImages.<landscapemaxwidth>.Value)
                     End If
                 End If
+                If Not String.IsNullOrEmpty(xImages.<landscapeposleft>.Value) Then
+                    If Integer.TryParse(xImages.<landscapeposleft>.Value, 0) Then
+                        tTheme.LandscapePosLeft = Convert.ToInt32(xImages.<landscapeposleft>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<landscapepostop>.Value) Then
+                    If Integer.TryParse(xImages.<landscapepostop>.Value, 0) Then
+                        tTheme.LandscapePosTop = Convert.ToInt32(xImages.<landscapepostop>.Value)
+                    End If
+                End If
                 If Not String.IsNullOrEmpty(xImages.<landscapetopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<landscapetopbackcolor>.Value, 0) Then
                         tTheme.LandscapeTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<landscapetopbackcolor>.Value))
@@ -657,6 +743,16 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<postermaxwidth>.Value) Then
                     If Integer.TryParse(xImages.<postermaxwidth>.Value, 0) Then
                         tTheme.PosterMaxWidth = Convert.ToInt32(xImages.<postermaxwidth>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<posterposleft>.Value) Then
+                    If Integer.TryParse(xImages.<posterposleft>.Value, 0) Then
+                        tTheme.PosterPosLeft = Convert.ToInt32(xImages.<posterposleft>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<posterpostop>.Value) Then
+                    If Integer.TryParse(xImages.<posterpostop>.Value, 0) Then
+                        tTheme.PosterPosTop = Convert.ToInt32(xImages.<posterpostop>.Value)
                     End If
                 End If
                 If Not String.IsNullOrEmpty(xImages.<postertopbackcolor>.Value) Then
@@ -958,32 +1054,44 @@ Public Class Theming
         Dim _bannerbottombackcolor As Color
         Dim _bannermaxheight As Integer
         Dim _bannermaxwidth As Integer
+        Dim _bannerposleft As Integer
+        Dim _bannerpostop As Integer
         Dim _bannertopbackcolor As Color
         Dim _characterartbackcolor As Color
         Dim _characterartbottombackcolor As Color
         Dim _characterartmaxheight As Integer
         Dim _characterartmaxwidth As Integer
+        Dim _characterartposleft As Integer
+        Dim _characterartpostop As Integer
         Dim _characterarttopbackcolor As Color
         Dim _clearartbackcolor As Color
         Dim _clearartbottombackcolor As Color
         Dim _clearartmaxheight As Integer
         Dim _clearartmaxwidth As Integer
+        Dim _clearartposleft As Integer
+        Dim _clearartpostop As Integer
         Dim _cleararttopbackcolor As Color
         Dim _clearlogobackcolor As Color
         Dim _clearlogobottombackcolor As Color
         Dim _clearlogomaxheight As Integer
         Dim _clearlogomaxwidth As Integer
+        Dim _clearlogoposleft As Integer
+        Dim _clearlogopostop As Integer
         Dim _clearlogotopbackcolor As Color
         Dim _discartbackcolor As Color
         Dim _discartbottombackcolor As Color
         Dim _discartmaxheight As Integer
         Dim _discartmaxwidth As Integer
+        Dim _discartposleft As Integer
+        Dim _discartpostop As Integer
         Dim _discarttopbackcolor As Color
         Dim _fanartbackcolor As Color
         Dim _fanartsmallbackcolor As Color
         Dim _fanartsmallbottombackcolor As Color
         Dim _fanartsmallmaxheight As Integer
         Dim _fanartsmallmaxwidth As Integer
+        Dim _fanartsmallposleft As Integer
+        Dim _fanartsmallpostop As Integer
         Dim _fanartsmalltopbackcolor As Color
         Dim _genrebackcolor As Color
         Dim _infopanelbackcolor As Color
@@ -993,12 +1101,16 @@ Public Class Theming
         Dim _landscapebottombackcolor As Color
         Dim _landscapemaxheight As Integer
         Dim _landscapemaxwidth As Integer
+        Dim _landscapeposleft As Integer
+        Dim _landscapepostop As Integer
         Dim _landscapetopbackcolor As Color
         Dim _mpaabackcolor As Color
         Dim _posterbackcolor As Color
         Dim _posterbottombackcolor As Color
         Dim _postermaxheight As Integer
         Dim _postermaxwidth As Integer
+        Dim _posterposleft As Integer
+        Dim _posterpostop As Integer
         Dim _postertopbackcolor As Color
         Dim _toppanelbackcolor As Color
         Dim _toppanelforecolor As Color
@@ -1042,6 +1154,24 @@ Public Class Theming
             End Set
         End Property
 
+        Public Property BannerPosLeft() As Integer
+            Get
+                Return _bannerposleft
+            End Get
+            Set(ByVal value As Integer)
+                _bannerposleft = value
+            End Set
+        End Property
+
+        Public Property BannerPosTop() As Integer
+            Get
+                Return _bannerpostop
+            End Get
+            Set(ByVal value As Integer)
+                _bannerpostop = value
+            End Set
+        End Property
+
         Public Property CharacterArtMaxHeight() As Integer
             Get
                 Return _characterartmaxheight
@@ -1057,6 +1187,24 @@ Public Class Theming
             End Get
             Set(ByVal value As Integer)
                 _characterartmaxwidth = value
+            End Set
+        End Property
+
+        Public Property CharacterArtPosLeft() As Integer
+            Get
+                Return _characterartposleft
+            End Get
+            Set(ByVal value As Integer)
+                _characterartposleft = value
+            End Set
+        End Property
+
+        Public Property CharacterArtPosTop() As Integer
+            Get
+                Return _characterartpostop
+            End Get
+            Set(ByVal value As Integer)
+                _characterartpostop = value
             End Set
         End Property
 
@@ -1078,6 +1226,24 @@ Public Class Theming
             End Set
         End Property
 
+        Public Property ClearArtPosLeft() As Integer
+            Get
+                Return _clearartposleft
+            End Get
+            Set(ByVal value As Integer)
+                _clearartposleft = value
+            End Set
+        End Property
+
+        Public Property ClearArtPosTop() As Integer
+            Get
+                Return _clearartpostop
+            End Get
+            Set(ByVal value As Integer)
+                _clearartpostop = value
+            End Set
+        End Property
+
         Public Property ClearLogoMaxHeight() As Integer
             Get
                 Return _clearlogomaxheight
@@ -1093,6 +1259,24 @@ Public Class Theming
             End Get
             Set(ByVal value As Integer)
                 _clearlogomaxwidth = value
+            End Set
+        End Property
+
+        Public Property ClearLogoPosLeft() As Integer
+            Get
+                Return _clearlogoposleft
+            End Get
+            Set(ByVal value As Integer)
+                _clearlogoposleft = value
+            End Set
+        End Property
+
+        Public Property ClearLogoPosTop() As Integer
+            Get
+                Return _clearlogopostop
+            End Get
+            Set(ByVal value As Integer)
+                _clearlogopostop = value
             End Set
         End Property
 
@@ -1114,6 +1298,24 @@ Public Class Theming
             End Set
         End Property
 
+        Public Property DiscArtPosLeft() As Integer
+            Get
+                Return _discartposleft
+            End Get
+            Set(ByVal value As Integer)
+                _discartposleft = value
+            End Set
+        End Property
+
+        Public Property DiscArtPosTop() As Integer
+            Get
+                Return _discartpostop
+            End Get
+            Set(ByVal value As Integer)
+                _discartpostop = value
+            End Set
+        End Property
+
         Public Property FanartSmallMaxHeight() As Integer
             Get
                 Return _fanartsmallmaxheight
@@ -1129,6 +1331,24 @@ Public Class Theming
             End Get
             Set(ByVal value As Integer)
                 _fanartsmallmaxwidth = value
+            End Set
+        End Property
+
+        Public Property FanartSmallPosLeft() As Integer
+            Get
+                Return _fanartsmallposleft
+            End Get
+            Set(ByVal value As Integer)
+                _fanartsmallposleft = value
+            End Set
+        End Property
+
+        Public Property FanartSmallPosTop() As Integer
+            Get
+                Return _fanartsmallpostop
+            End Get
+            Set(ByVal value As Integer)
+                _fanartsmallpostop = value
             End Set
         End Property
 
@@ -1150,6 +1370,24 @@ Public Class Theming
             End Set
         End Property
 
+        Public Property LandscapePosLeft() As Integer
+            Get
+                Return _landscapeposleft
+            End Get
+            Set(ByVal value As Integer)
+                _landscapeposleft = value
+            End Set
+        End Property
+
+        Public Property LandscapePosTop() As Integer
+            Get
+                Return _landscapepostop
+            End Get
+            Set(ByVal value As Integer)
+                _landscapepostop = value
+            End Set
+        End Property
+
         Public Property PosterMaxHeight() As Integer
             Get
                 Return _postermaxheight
@@ -1165,6 +1403,24 @@ Public Class Theming
             End Get
             Set(ByVal value As Integer)
                 _postermaxwidth = value
+            End Set
+        End Property
+
+        Public Property PosterPosLeft() As Integer
+            Get
+                Return _posterposleft
+            End Get
+            Set(ByVal value As Integer)
+                _posterposleft = value
+            End Set
+        End Property
+
+        Public Property PosterPosTop() As Integer
+            Get
+                Return _posterpostop
+            End Get
+            Set(ByVal value As Integer)
+                _posterpostop = value
             End Set
         End Property
 
@@ -1474,33 +1730,45 @@ Public Class Theming
             _bannerbottombackcolor = Color.DimGray
             _bannermaxheight = 160
             _bannermaxwidth = 285
+            _bannerposleft = 124
+            _bannerpostop = 327
             _bannertopbackcolor = Color.DimGray
             _characterartbackcolor = Color.Gainsboro
             _characterartbottombackcolor = Color.DimGray
             _characterartmaxheight = 160
             _characterartmaxwidth = 160
+            _characterartposleft = 1011
+            _characterartpostop = 130
             _characterarttopbackcolor = Color.DimGray
             _clearartbackcolor = Color.Gainsboro
             _clearartbottombackcolor = Color.DimGray
             _clearartmaxheight = 160
             _clearartmaxwidth = 285
+            _clearartposleft = 715
+            _clearartpostop = 130
             _cleararttopbackcolor = Color.DimGray
             _clearlogobackcolor = Color.Gainsboro
             _clearlogobottombackcolor = Color.DimGray
             _clearlogomaxheight = 160
             _clearlogomaxwidth = 285
+            _clearlogoposleft = 419
+            _clearlogopostop = 327
             _clearlogotopbackcolor = Color.DimGray
             _controls = New List(Of Controls)
             _discartbackcolor = Color.Gainsboro
             _discartbottombackcolor = Color.DimGray
             _discartmaxheight = 160
             _discartmaxwidth = 160
+            _discartposleft = 1011
+            _discartpostop = 130
             _discarttopbackcolor = Color.DimGray
             _fanartbackcolor = Color.Gray
             _fanartsmallbackcolor = Color.Gainsboro
             _fanartsmallbottombackcolor = Color.DimGray
             _fanartsmallmaxheight = 160
             _fanartsmallmaxwidth = 285
+            _fanartsmallposleft = 124
+            _fanartsmallpostop = 130
             _fanartsmalltopbackcolor = Color.DimGray
             _genrebackcolor = Color.Gainsboro
             _infopanelbackcolor = Color.Gainsboro
@@ -1510,12 +1778,16 @@ Public Class Theming
             _landscapebottombackcolor = Color.DimGray
             _landscapemaxheight = 160
             _landscapemaxwidth = 285
+            _landscapeposleft = 419
+            _landscapepostop = 130
             _landscapetopbackcolor = Color.DimGray
             _mpaabackcolor = Color.Gainsboro
             _posterbackcolor = Color.Gainsboro
             _posterbottombackcolor = Color.DimGray
             _postermaxheight = 160
             _postermaxwidth = 160
+            _posterposleft = 4
+            _posterpostop = 130
             _postertopbackcolor = Color.DimGray
             _toppanelbackcolor = Color.Gainsboro
             _toppanelforecolor = Color.Black

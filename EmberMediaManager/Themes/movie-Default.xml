@@ -36,44 +36,60 @@ or a "32-bit ARGB value"
     <bannerbottombackcolor>DimGray</bannerbottombackcolor>
     <bannermaxheight>160</bannermaxheight>
     <bannermaxwidth>285</bannermaxwidth>
+    <bannerposleft>124</bannerposleft>
+    <bannerpostop>327</bannerpostop>
     <bannertopbackcolor>DimGray</bannertopbackcolor>
     <characterartbackcolor>Gainsboro</characterartbackcolor>
     <characterartbottombackcolor>DimGray</characterartbottombackcolor>
     <characterartmaxheight>160</characterartmaxheight>
     <characterartmaxwidth>160</characterartmaxwidth>
+    <characterartposleft>1011</characterartposleft>
+    <characterartpostop>130</characterartpostop>
     <characterarttopbackcolor>DimGray</characterarttopbackcolor>
     <clearartbackcolor>Gainsboro</clearartbackcolor>
     <clearartbottombackcolor>DimGray</clearartbottombackcolor>
     <clearartmaxheight>160</clearartmaxheight>
     <clearartmaxwidth>285</clearartmaxwidth>
+    <clearartposleft>715</clearartposleft>
+    <clearartpostop>130</clearartpostop>
     <cleararttopbackcolor>DimGray</cleararttopbackcolor>
     <clearlogobackcolor>Gainsboro</clearlogobackcolor>
     <clearlogobottombackcolor>DimGray</clearlogobottombackcolor>
     <clearlogomaxheight>160</clearlogomaxheight>
     <clearlogomaxwidth>285</clearlogomaxwidth>
+    <clearlogoposleft>419</clearlogoposleft>
+    <clearlogopostop>327</clearlogopostop>
     <clearlogotopbackcolor>DimGray</clearlogotopbackcolor>
     <discartbackcolor>Gainsboro</discartbackcolor>
     <discartbottombackcolor>DimGray</discartbottombackcolor>
     <discartmaxheight>160</discartmaxheight>
     <discartmaxwidth>160</discartmaxwidth>
+    <discartposleft>1011</discartposleft>
+    <discartpostop>130</discartpostop>
     <discarttopbackcolor>DimGray</discarttopbackcolor>
     <fanartbackcolor>Gray</fanartbackcolor>
     <fanartsmallbackcolor>Gainsboro</fanartsmallbackcolor>
     <fanartsmallbottombackcolor>DimGray</fanartsmallbottombackcolor>
     <fanartsmallmaxheight>160</fanartsmallmaxheight>
     <fanartsmallmaxwidth>285</fanartsmallmaxwidth>
+    <fanartsmallposleft>124</fanartsmallposleft>
+    <fanartsmallpostop>130</fanartsmallpostop>
     <fanartsmalltopbackcolor>DimGray</fanartsmalltopbackcolor>
     <genrebackcolor>Gainsboro</genrebackcolor>
     <landscapebackcolor>Gainsboro</landscapebackcolor>
     <landscapebottombackcolor>DimGray</landscapebottombackcolor>
     <landscapemaxheight>160</landscapemaxheight>
     <landscapemaxwidth>285</landscapemaxwidth>
+    <landscapeposleft>419</landscapeposleft>
+    <landscapepostop>130</landscapepostop>
     <landscapetopbackcolor>DimGray</landscapetopbackcolor>
     <mpaabackcolor>Gainsboro</mpaabackcolor>
     <posterbackcolor>Gainsboro</posterbackcolor>
     <posterbottombackcolor>DimGray</posterbottombackcolor>
     <postermaxheight>160</postermaxheight>
     <postermaxwidth>160</postermaxwidth>
+    <posterposleft>4</posterposleft>
+    <posterpostop>130</posterpostop>
     <postertopbackcolor>DimGray</postertopbackcolor>
   </images>
    
