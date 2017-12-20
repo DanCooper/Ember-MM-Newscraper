@@ -44,7 +44,6 @@ Public Class XMLViewer
             _settings = value
         End Set
     End Property
-
     ''' <summary>
     ''' Convert the Xml to Rtf with some formats specified in the XMLViewerSettings,
     ''' and then set the Rtf property to the value.
@@ -62,7 +61,7 @@ Public Class XMLViewer
                                       & "\viewkind4\uc1\pard\lang1033\f0 {1}}}"
 
             ' Get the XDocument from the Text property.
-            Dim xmlDoc = XDocument.Parse(Me.Text, LoadOptions.None)
+            Dim xmlDoc = XDocument.Parse(Text, LoadOptions.None)
 
             Dim xmlRtfContent As New StringBuilder()
 
@@ -89,11 +88,11 @@ Public Class XMLViewer
             xmlRtfContent.Append(rootRtfContent)
 
             ' Construct the completed Rtf, and set the Rtf property to this value.
-            Me.Rtf = String.Format(rtfFormat, Settings.ToRtfFormatString(),
+            Rtf = String.Format(rtfFormat, Settings.ToRtfFormatString(),
                                    xmlRtfContent.ToString())
 
 
-        Catch xmlException As System.Xml.XmlException
+        Catch xmlException As Xml.XmlException
             Throw New ApplicationException("Please check the input Xml. Error:" _
                                            & xmlException.Message, xmlException)
         Catch
