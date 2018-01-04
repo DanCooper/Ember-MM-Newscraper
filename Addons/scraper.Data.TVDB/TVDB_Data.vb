@@ -180,7 +180,7 @@ Public Class TVDB_Data
             settings.SetBooleanSetting("DoDirector", ConfigScrapeOptions.bEpisodeDirectors, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoGuestStars", ConfigScrapeOptions.bEpisodeGuestStars, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions.bEpisodePlot, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoRating", ConfigScrapeOptions.bMainRating, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoRating", ConfigScrapeOptions.bEpisodeRating, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions.bEpisodeTitle, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoActors", ConfigScrapeOptions.bMainActors, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoEpisodeGuide", ConfigScrapeOptions.bMainEpisodeGuide, , , Enums.ContentType.TVShow)
