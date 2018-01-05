@@ -51,6 +51,11 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.Director = ""
         _fDummyMultiEpisode.DirExist = False
         _fDummyMultiEpisode.FileExist = False
+        _fDummyMultiEpisode.FullAudioInfo = New List(Of MediaContainers.Audio) From {
+            New MediaContainers.Audio With {.Language = "eng", .Channels = "6", .Codec = "dts"},
+            New MediaContainers.Audio With {.Language = "deu", .Channels = "2", .Codec = "ac3"},
+            New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
+        }
         _fDummyMultiEpisode.OldFileName = "OldFileName"
         _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
         _fDummyMultiEpisode.ID = -1
@@ -98,6 +103,11 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.Director = ""
         _fDummyMultiSeason.DirExist = False
         _fDummyMultiSeason.FileExist = False
+        _fDummyMultiSeason.FullAudioInfo = New List(Of MediaContainers.Audio) From {
+            New MediaContainers.Audio With {.Language = "eng", .Channels = "6", .Codec = "dts"},
+            New MediaContainers.Audio With {.Language = "deu", .Channels = "2", .Codec = "ac3"},
+            New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
+        }
         _fDummyMultiSeason.OldFileName = "OldFileName"
         _fDummyMultiSeason.Genre = "Comedy / Lovestory"
         _fDummyMultiSeason.ID = -1
@@ -151,6 +161,11 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.Director = ""
         _fDummySingleEpisode.DirExist = False
         _fDummySingleEpisode.FileExist = False
+        _fDummySingleEpisode.FullAudioInfo = New List(Of MediaContainers.Audio) From {
+            New MediaContainers.Audio With {.Language = "eng", .Channels = "6", .Codec = "dts"},
+            New MediaContainers.Audio With {.Language = "deu", .Channels = "2", .Codec = "ac3"},
+            New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
+        }
         _fDummySingleEpisode.OldFileName = "OldFileName"
         _fDummySingleEpisode.Genre = "Comedy / Lovestory"
         _fDummySingleEpisode.ID = -1
@@ -196,6 +211,11 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.Director = "Joss Whedon"
         _fDummySingleMovie.DirExist = False
         _fDummySingleMovie.FileExist = False
+        _fDummySingleMovie.FullAudioInfo = New List(Of MediaContainers.Audio) From {
+            New MediaContainers.Audio With {.Language = "eng", .Channels = "6", .Codec = "dts"},
+            New MediaContainers.Audio With {.Language = "deu", .Channels = "2", .Codec = "ac3"},
+            New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
+            }
         _fDummySingleMovie.OldFileName = "OldFileName"
         _fDummySingleMovie.Genre = "Action / Sci-Fi"
         _fDummySingleMovie.ID = -1
@@ -231,9 +251,9 @@ Public Class frmSettingsHolder
 
     Private Sub CreatePreview_MultiEpisode()
         If Not String.IsNullOrEmpty(txtFilePatternEpisodes.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternShows.Text) Then
-            Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummyMultiEpisode, txtFilePatternEpisodes.Text, False, False)
-            Dim dSeasonPath As String = FileFolderRenamer.ProccessPattern(_fDummyMultiEpisode, txtFolderPatternSeasons.Text, True, False)
-            Dim dShowPath As String = FileFolderRenamer.ProccessPattern(_fDummyMultiEpisode, txtFolderPatternShows.Text, True, False)
+            Dim dFilename As String = FileFolderRenamer.ProcessPattern(_fDummyMultiEpisode, txtFilePatternEpisodes.Text, False, False)
+            Dim dSeasonPath As String = FileFolderRenamer.ProcessPattern(_fDummyMultiEpisode, txtFolderPatternSeasons.Text, True, False)
+            Dim dShowPath As String = FileFolderRenamer.ProcessPattern(_fDummyMultiEpisode, txtFolderPatternShows.Text, True, False)
 
             txtMultiEpisodeFile.Text = Path.Combine(dShowPath, dSeasonPath, dFilename)
         Else
@@ -243,9 +263,9 @@ Public Class frmSettingsHolder
 
     Private Sub CreatePreview_MultiSeason()
         If Not String.IsNullOrEmpty(txtFilePatternEpisodes.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternShows.Text) Then
-            Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummyMultiSeason, txtFilePatternEpisodes.Text, False, False)
-            Dim dSeasonPath As String = FileFolderRenamer.ProccessPattern(_fDummyMultiSeason, txtFolderPatternSeasons.Text, True, False)
-            Dim dShowPath As String = FileFolderRenamer.ProccessPattern(_fDummyMultiSeason, txtFolderPatternShows.Text, True, False)
+            Dim dFilename As String = FileFolderRenamer.ProcessPattern(_fDummyMultiSeason, txtFilePatternEpisodes.Text, False, False)
+            Dim dSeasonPath As String = FileFolderRenamer.ProcessPattern(_fDummyMultiSeason, txtFolderPatternSeasons.Text, True, False)
+            Dim dShowPath As String = FileFolderRenamer.ProcessPattern(_fDummyMultiSeason, txtFolderPatternShows.Text, True, False)
 
             txtMultiSeasonFile.Text = Path.Combine(dShowPath, dSeasonPath, dFilename)
         Else
@@ -255,9 +275,9 @@ Public Class frmSettingsHolder
 
     Private Sub CreatePreview_SingleEpisode()
         If Not String.IsNullOrEmpty(txtFilePatternEpisodes.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternShows.Text) Then
-            Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFilePatternEpisodes.Text, False, False)
-            Dim dSeasonPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFolderPatternSeasons.Text, True, False)
-            Dim dShowPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleEpisode, txtFolderPatternShows.Text, True, False)
+            Dim dFilename As String = FileFolderRenamer.ProcessPattern(_fDummySingleEpisode, txtFilePatternEpisodes.Text, False, False)
+            Dim dSeasonPath As String = FileFolderRenamer.ProcessPattern(_fDummySingleEpisode, txtFolderPatternSeasons.Text, True, False)
+            Dim dShowPath As String = FileFolderRenamer.ProcessPattern(_fDummySingleEpisode, txtFolderPatternShows.Text, True, False)
 
             txtSingleEpisodeFile.Text = Path.Combine(dShowPath, dSeasonPath, dFilename)
         Else
@@ -267,8 +287,8 @@ Public Class frmSettingsHolder
 
     Private Sub CreatePreview_SingleMovie()
         If Not String.IsNullOrEmpty(txtFilePatternMovies.Text) AndAlso Not String.IsNullOrEmpty(txtFolderPatternMovies.Text) Then
-            Dim dFilename As String = FileFolderRenamer.ProccessPattern(_fDummySingleMovie, txtFilePatternMovies.Text, False, False)
-            Dim dPath As String = FileFolderRenamer.ProccessPattern(_fDummySingleMovie, txtFolderPatternMovies.Text, True, False)
+            Dim dFilename As String = FileFolderRenamer.ProcessPattern(_fDummySingleMovie, txtFilePatternMovies.Text, False, False)
+            Dim dPath As String = FileFolderRenamer.ProcessPattern(_fDummySingleMovie, txtFolderPatternMovies.Text, True, False)
 
             txtSingleMovieFile.Text = Path.Combine(dPath, dFilename)
         Else
@@ -340,7 +360,7 @@ Public Class frmSettingsHolder
         lblFilePatternMovies.Text = Master.eLang.GetString(286, "Files Pattern")
         lblFolderPatternMovies.Text = Master.eLang.GetString(287, "Folders Pattern")
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen, comma to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
+        lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$5 = All audio languages (append a space, dot, hyphen or comma to change separator){0}$6 = All audio codecs (append a space, dot, hyphen or comma to change separator){0}$7 = All audio channels (append a space, dot, hyphen or comma to change separator){0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$_FA#_ = Full audio info (languages, channels & codecs, grouped by track). # is either one or two of the following to change separators: space, dot, hyphen or comma{0}$G = Genre (append a space, dot, hyphen or comma to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
     End Sub
 
     Private Sub txtFilePatternMovies_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFilePatternMovies.TextChanged
