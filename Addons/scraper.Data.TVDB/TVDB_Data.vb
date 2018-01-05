@@ -189,6 +189,7 @@ Public Class TVDB_Data
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions.bMainPlot, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoPremiered", ConfigScrapeOptions.bMainPremiered, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions.bMainRating, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoRuntime", ConfigScrapeOptions.bMainRuntime, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoStatus", ConfigScrapeOptions.bMainStatus, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoStudio", ConfigScrapeOptions.bMainStudios, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions.bMainTitle, , , Enums.ContentType.TVShow)
