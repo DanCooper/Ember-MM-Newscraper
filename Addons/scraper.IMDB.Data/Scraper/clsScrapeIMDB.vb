@@ -333,7 +333,7 @@ Namespace IMDB
 
                 'Director
                 If FilteredOptions.bMainDirectors Then
-                    Dim selNode = htmldReference.DocumentNode.SelectNodes("//div[@class=""titlereference-overview-section""]").Where(Function(f) f.InnerText.Contains("Director:")).FirstOrDefault
+                    Dim selNode = htmldReference.DocumentNode.SelectNodes("//div[@class=""titlereference-overview-section""]").Where(Function(f) f.InnerText.Trim.StartsWith("Director")).FirstOrDefault
                     If selNode IsNot Nothing Then
                         Dim nDirectors = selNode.Descendants("a")
                         If nDirectors IsNot Nothing Then
@@ -598,7 +598,7 @@ Namespace IMDB
 
                 'Writers
                 If FilteredOptions.bMainWriters Then
-                    Dim selNode = htmldReference.DocumentNode.SelectNodes("//div[@class=""titlereference-overview-section""]").Where(Function(f) f.InnerText.Contains("Writers:")).FirstOrDefault
+                    Dim selNode = htmldReference.DocumentNode.SelectNodes("//div[@class=""titlereference-overview-section""]").Where(Function(f) f.InnerText.Trim.StartsWith("Writer")).FirstOrDefault
                     If selNode IsNot Nothing Then
                         Dim nDirectors = selNode.Descendants("a")
                         If nDirectors IsNot Nothing Then
