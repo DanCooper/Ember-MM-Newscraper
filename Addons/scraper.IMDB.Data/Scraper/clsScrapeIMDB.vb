@@ -478,7 +478,7 @@ Namespace IMDB
                     Dim selNodeVotes = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""ipl-rating-star__total-votes""]")
                     If selNodeRating IsNot Nothing AndAlso
                         selNodeVotes IsNot Nothing Then
-                        nMovie.Rating = selNodeRating.InnerText.Trim
+                        nMovie.Rating = Regex.Match(selNodeRating.InnerText.Trim, "\d\.\d").Value
                         nMovie.Votes = Regex.Match(selNodeVotes.InnerText.Trim, "[0-9,.]+").Value
                     Else
                         logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Rating", strID))

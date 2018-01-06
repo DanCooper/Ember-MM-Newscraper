@@ -55,7 +55,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkMPAADescription = New System.Windows.Forms.CheckBox()
-        Me.lblInfoParsing = New System.Windows.Forms.Label()
+        Me.lblInfo = New System.Windows.Forms.Label()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkCountryAbbreviation = New System.Windows.Forms.CheckBox()
@@ -245,7 +245,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkOriginalTitle, 1, 2)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkMPAA, 1, 0)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkMPAADescription, 1, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.lblInfoParsing, 0, 7)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.lblInfo, 0, 7)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
@@ -518,17 +518,17 @@ Partial Class frmSettingsHolder_Movie
         Me.chkMPAADescription.Text = "include Description *"
         Me.chkMPAADescription.UseVisualStyleBackColor = True
         '
-        'lblInfoParsing
+        'lblInfo
         '
-        Me.lblInfoParsing.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblInfoParsing.AutoSize = True
-        Me.tblScraperFieldsOpts.SetColumnSpan(Me.lblInfoParsing, 4)
-        Me.lblInfoParsing.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblInfoParsing.Location = New System.Drawing.Point(3, 161)
-        Me.lblInfoParsing.Name = "lblInfoParsing"
-        Me.lblInfoParsing.Size = New System.Drawing.Size(251, 13)
-        Me.lblInfoParsing.TabIndex = 83
-        Me.lblInfoParsing.Text = "* additional page(s) to parse, needs longer to scrape"
+        Me.lblInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblInfo.AutoSize = True
+        Me.tblScraperFieldsOpts.SetColumnSpan(Me.lblInfo, 4)
+        Me.lblInfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblInfo.Location = New System.Drawing.Point(3, 161)
+        Me.lblInfo.Name = "lblInfo"
+        Me.lblInfo.Size = New System.Drawing.Size(251, 13)
+        Me.lblInfo.TabIndex = 83
+        Me.lblInfo.Text = "* additional page(s) to parse, needs longer to scrape"
         '
         'gbScraperOpts
         '
@@ -828,5 +828,5 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents chkStudiowithDistributors As System.Windows.Forms.CheckBox
     Friend WithEvents chkMPAADescription As CheckBox
-    Friend WithEvents lblInfoParsing As Label
+    Friend WithEvents lblInfo As Label
 End Class
