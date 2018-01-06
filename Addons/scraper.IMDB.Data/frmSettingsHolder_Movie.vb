@@ -216,7 +216,7 @@ Public Class frmSettingsHolder_Movie
         chkFallBackworldwide.Text = Master.eLang.GetString(984, "Worldwide title as fallback")
         chkGenres.Text = Master.eLang.GetString(725, "Genres")
         chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
-        chkMPAADescription.Text = String.Format("* {0}", Master.eLang.GetString(1380, "additional page(s) to parse, needs longer to scrape"))
+        chkMPAADescription.Text = String.Format("{0} *", Master.eLang.GetString(1088, "include Description"))
         chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         chkPlot.Text = Master.eLang.GetString(65, "Plot")
@@ -239,6 +239,7 @@ Public Class frmSettingsHolder_Movie
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")
         lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
+        lblInfoParsing.Text = String.Format("* {0}", Master.eLang.GetString(1380, "additional page(s) to parse, needs longer to scrape"))
         lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         chkStudiowithDistributors.Text = Master.eLang.GetString(1456, "Include Distributors")
     End Sub
