@@ -1469,7 +1469,7 @@
   <string id="1377">Query</string>
   <string id="1378">Type</string>
   <string id="1379">Movie</string>
-  <string id="1380"></string>
+  <string id="1380">additional page(s) to parse, needs longer to scrape</string>
   <string id="1381">Movieset</string>
   <string id="1382">Result of query must contain either field idMovie (Movie-Filter), idSet(Set-Filter) or idShow(Show-Filter) or/and idMedia!</string>
   <string id="1383">Complete overview of Ember datatables:</string>

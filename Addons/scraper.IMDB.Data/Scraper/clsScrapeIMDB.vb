@@ -222,8 +222,7 @@ Namespace IMDB
                 Dim nMovie As New MediaContainers.Movie
 
                 Dim webParsing As New HtmlWeb
-                Dim htmldCombined As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/combined"))
-                Dim htmldPlotSummary As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/plotsummary"))
+                Dim htmldReference As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/reference"))
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
@@ -234,32 +233,47 @@ Namespace IMDB
 
                 'get clean OriginalTitle
                 Dim strOriginalTitle As String = String.Empty
-                Dim ndOriginalTitle = htmldCombined.DocumentNode.SelectSingleNode("//head/title")
+                Dim ndOriginalTitle = htmldReference.DocumentNode.SelectSingleNode("//h3[@itemprop=""name""]/text()")
                 If ndOriginalTitle IsNot Nothing Then
                     'remove year in brakets
-                    strOriginalTitle = HttpUtility.HtmlDecode(Regex.Match(ndOriginalTitle.InnerText, ".*(?=\s\(\d+.*?\))").ToString.Trim)
+                    strOriginalTitle = HttpUtility.HtmlDecode(ndOriginalTitle.InnerText.Trim)
+                Else
+                    logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Originaltitle", strID))
                 End If
 
                 'Actors
                 If FilteredOptions.bMainActors Then
-                    Dim ThumbsSize = AdvancedSettings.GetSetting("ActorThumbsSize", "SX1000_SY1000")
-                    Dim ncCast = htmldCombined.DocumentNode.SelectNodes("//table[@class=""cast""]/tr[@class]")
-                    If ncCast IsNot Nothing Then
-                        For Each nCast In ncCast
-                            Dim nActor As New MediaContainers.Person
-                            Dim ndActorthumb = nCast.Descendants("img").FirstOrDefault
-                            If ndActorthumb IsNot Nothing AndAlso
-                                ndActorthumb.Attributes("src") IsNot Nothing AndAlso
-                                Not String.IsNullOrEmpty(ndActorthumb.Attributes("src").Value) AndAlso
-                                Not ndActorthumb.Attributes("src").Value.Contains("no_photo") AndAlso
-                                Not ndActorthumb.Attributes("src").Value.Contains("thumb") AndAlso
-                                Not ndActorthumb.Attributes("src").Value.Contains("addtiny") Then
-                                nActor.Thumb.URLOriginal = ndActorthumb.Attributes("src").Value.Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg"))
-                            End If
-                            If Not String.IsNullOrEmpty(nCast.ChildNodes(1).InnerText) Then nActor.Name = HttpUtility.HtmlDecode(nCast.ChildNodes(1).InnerText)
-                            If Not String.IsNullOrEmpty(nCast.ChildNodes(3).InnerText) Then nActor.Role = HttpUtility.HtmlDecode(nCast.ChildNodes(3).InnerText)
-                            nMovie.Actors.Add(nActor)
-                        Next
+                    Dim strThumbsSize = AdvancedSettings.GetSetting("ActorThumbsSize", "SX1000_SY1000")
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//table[@class=""cast_list""]")
+                    If selNode IsNot Nothing Then
+                        Dim ncCast = selNode.Descendants("tr")
+                        If ncCast IsNot Nothing Then
+                            For Each nCast In ncCast.Where(Function(f) f.Attributes.Where(Function(a) a.Name = "class" AndAlso a.Value = "odd" OrElse a.Value = "even").Any)
+                                Dim nActor As New MediaContainers.Person
+                                'get actor thumb
+                                Dim ndActorthumb = nCast.Descendants("img").FirstOrDefault
+                                If ndActorthumb IsNot Nothing AndAlso
+                                ndActorthumb.Attributes("loadlate") IsNot Nothing AndAlso
+                                Not String.IsNullOrEmpty(ndActorthumb.Attributes("loadlate").Value) AndAlso
+                                Not ndActorthumb.Attributes("loadlate").Value.Contains("no_image") AndAlso
+                                Not ndActorthumb.Attributes("loadlate").Value.Contains("no_photo") AndAlso
+                                Not ndActorthumb.Attributes("loadlate").Value.Contains("thumb") AndAlso
+                                Not ndActorthumb.Attributes("loadlate").Value.Contains("addtiny") Then
+                                    nActor.Thumb.URLOriginal = Regex.Replace(ndActorthumb.Attributes("loadlate").Value, "(?<=\._V1_).*?(?=_\.jpg)", strThumbsSize)
+                                End If
+                                'get actor name
+                                Dim ndName = nCast.Descendants("td").Where(Function(f) f.Attributes.Where(Function(a) a.Name = "itemprop" AndAlso a.Value = "actor").Any).FirstOrDefault
+                                'get character name
+                                Dim ndCharacter = nCast.Descendants("td").Where(Function(f) f.Attributes.Where(Function(a) a.Name = "class" AndAlso a.Value = "character").Any).FirstOrDefault
+                                If ndName IsNot Nothing AndAlso ndCharacter IsNot Nothing Then
+                                    nActor.Name = HttpUtility.HtmlDecode(ndName.InnerText.Trim)
+                                    nActor.Role = HttpUtility.HtmlDecode(ndCharacter.InnerText.Trim)
+                                    nMovie.Actors.Add(nActor)
+                                End If
+                            Next
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Actors", strID))
+                        End If
                     Else
                         logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Actors", strID))
                     End If
@@ -269,14 +283,21 @@ Namespace IMDB
 
                 'Certifications
                 If FilteredOptions.bMainCertifications Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Certification:']")
-                    If selNode IsNot Nothing AndAlso selNode.NextSibling IsNot Nothing Then
-                        Dim rCert As MatchCollection = Regex.Matches(selNode.NextSibling.InnerHtml, HREF_PATTERN_3)
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//tr[@class=""ipl-zebra-list__item""]/td[@class=""ipl-zebra-list__label""][.='Certification']")
+                    If selNode IsNot Nothing AndAlso selNode.ParentNode IsNot Nothing Then
+                        Dim rCert As MatchCollection = Regex.Matches(selNode.ParentNode.InnerHtml, HREF_PATTERN_3)
                         If rCert.Count > 0 Then
                             Dim Certs = From M In rCert Select N = String.Format("{0}:{1}", DirectCast(M, Match).Groups(1).ToString.Trim, DirectCast(M, Match).Groups(2).ToString.Trim) Order By N Ascending
+                            Dim lstCertifications As New List(Of String)
                             For Each tCert In Certs
-                                nMovie.Certifications.Add(tCert.ToString.Replace("West", String.Empty).Trim)
+                                tCert = tCert.Replace("United Kingdom", "UK")
+                                tCert = tCert.Replace("United States", "USA")
+                                tCert = tCert.Replace("West", String.Empty)
+                                lstCertifications.Add(HttpUtility.HtmlDecode(tCert).Trim)
                             Next
+                            lstCertifications = lstCertifications.Distinct.ToList
+                            lstCertifications.Sort()
+                            nMovie.Certifications = lstCertifications
                         End If
                     Else
                         logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Certifications", strID))
@@ -287,19 +308,24 @@ Namespace IMDB
 
                 'Countries
                 If FilteredOptions.bMainCountries Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Country:']")
-                    If selNode IsNot Nothing Then
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//tr[@class=""ipl-zebra-list__item""]/td[@class=""ipl-zebra-list__label""][.='Country']")
+                    If selNode IsNot Nothing AndAlso selNode.ParentNode IsNot Nothing Then
                         Dim ncCountries = selNode.ParentNode.Descendants("a")
                         If ncCountries IsNot Nothing Then
                             Dim lstCountries = ncCountries.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList
                             If Not _SpecialSettings.CountryAbbreviation Then
                                 For i As Integer = 0 To lstCountries.Count - 1
+                                    lstCountries(i) = lstCountries(i).Replace("United States", "United States of America")
                                     lstCountries(i) = lstCountries(i).Replace("USA", "United States of America")
                                     lstCountries(i) = lstCountries(i).Replace("UK", "United Kingdom")
                                 Next
                             End If
                             nMovie.Countries.AddRange(lstCountries)
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Countries", strID))
                         End If
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Countries", strID))
                     End If
                 End If
 
@@ -307,16 +333,13 @@ Namespace IMDB
 
                 'Director
                 If FilteredOptions.bMainDirectors Then
-                    Dim ncCast = htmldCombined.DocumentNode.SelectSingleNode("//a[@class=""glossary""][@name=""directors""]")
-                    If ncCast IsNot Nothing Then
-                        Dim nTable = ncCast.Ancestors("table").FirstOrDefault
-                        If nTable IsNot Nothing Then
-                            Dim nDirectors = nTable.Descendants("a").Where(
-                                Function(f) f.Attributes.Contains("href") AndAlso
-                                Not f.Attributes.Contains("class"))
-                            If nDirectors IsNot Nothing Then
-                                nMovie.Directors.AddRange(nDirectors.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
-                            End If
+                    Dim selNode = htmldReference.DocumentNode.SelectNodes("//div[@class=""titlereference-overview-section""]").Where(Function(f) f.InnerText.Contains("Director:")).FirstOrDefault
+                    If selNode IsNot Nothing Then
+                        Dim nDirectors = selNode.Descendants("a")
+                        If nDirectors IsNot Nothing Then
+                            nMovie.Directors.AddRange(nDirectors.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Directors", strID))
                         End If
                     Else
                         logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Directors", strID))
@@ -327,9 +350,16 @@ Namespace IMDB
 
                 'Duration
                 If FilteredOptions.bMainRuntime Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Runtime:']")
-                    If selNode IsNot Nothing AndAlso selNode.NextSibling IsNot Nothing Then
-                        nMovie.Runtime = HttpUtility.HtmlDecode(selNode.NextSibling.InnerText)
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//tr[@class=""ipl-zebra-list__item""]/td[@class=""ipl-zebra-list__label""][.='Runtime']")
+                    If selNode IsNot Nothing AndAlso selNode.ParentNode IsNot Nothing Then
+                        Dim ncDuration = selNode.ParentNode.Descendants("td").Where(Function(f) Not f.InnerText = "Runtime").FirstOrDefault
+                        If ncDuration IsNot Nothing Then
+                            nMovie.Runtime = ncDuration.InnerText.Trim
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Runtime", strID))
+                        End If
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Runtime", strID))
                     End If
                 End If
 
@@ -337,12 +367,16 @@ Namespace IMDB
 
                 'Genres
                 If FilteredOptions.bMainGenres Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Genre:']")
-                    If selNode IsNot Nothing Then
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//tr[@class=""ipl-zebra-list__item""]/td[@class=""ipl-zebra-list__label""][.='Genres']")
+                    If selNode IsNot Nothing AndAlso selNode.ParentNode IsNot Nothing Then
                         Dim ncGenres = selNode.ParentNode.Descendants("a").Where(Function(f) Not f.InnerText.ToLower = "see more")
                         If ncGenres IsNot Nothing Then
                             nMovie.Genres.AddRange(ncGenres.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Genres", strID))
                         End If
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Genres", strID))
                     End If
                 End If
 
@@ -350,11 +384,36 @@ Namespace IMDB
 
                 'MPAA
                 If FilteredOptions.bMainMPAA Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='MPAA:']")
-                    If selNode IsNot Nothing AndAlso selNode.NextSibling IsNot Nothing Then
-                        nMovie.MPAA = HttpUtility.HtmlDecode(selNode.NextSibling.InnerText)
-                    Else
-                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse MPAA", strID))
+                    'try to get the full MPAA from "Parents Guide" page
+                    If _SpecialSettings.MPAADescription Then
+                        Dim htmldParentsGuide As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/parentalguide"))
+                        Dim selNode = htmldParentsGuide.DocumentNode.SelectSingleNode("//tr[@class=""ipl-zebra-list__item""]/td[@class=""ipl-zebra-list__label""][.='MPAA']")
+                        If selNode IsNot Nothing AndAlso selNode.ParentNode IsNot Nothing Then
+                            Dim ncMPAA = selNode.ParentNode.Descendants("td").Where(Function(f) Not f.InnerText = "MPAA").FirstOrDefault
+                            If ncMPAA IsNot Nothing Then
+                                nMovie.MPAA = ncMPAA.InnerText.Trim
+                            End If
+                        End If
+                    End If
+                    If Not nMovie.MPAASpecified Then
+                        If _SpecialSettings.MPAADescription Then logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse full MPAA, try to parse the short rating", strID))
+                        'try to get short Rating from "reference" page
+                        Dim selNodeTitleHeader = htmldReference.DocumentNode.SelectSingleNode("//div[@class=""titlereference-header""]")
+                        If selNodeTitleHeader IsNot Nothing Then
+                            Dim selNode = selNodeTitleHeader.Descendants("li").FirstOrDefault
+                            If selNode IsNot Nothing AndAlso
+                                selNode.InnerText.Trim = "G" OrElse
+                                selNode.InnerText.Trim = "PG" OrElse
+                                selNode.InnerText.Trim = "PG-13" OrElse
+                                selNode.InnerText.Trim = "R" OrElse
+                                selNode.InnerText.Trim = "NC-17" Then
+                                nMovie.MPAA = String.Format("Rated {0}", HttpUtility.HtmlDecode(selNode.InnerText.Trim))
+                            Else
+                                logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse short MPAA", strID))
+                            End If
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse short MPAA", strID))
+                        End If
                     End If
                 End If
 
@@ -369,15 +428,15 @@ Namespace IMDB
 
                 'Outline
                 If FilteredOptions.bMainOutline AndAlso bIsScraperLanguage Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Plot:']")
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//section[@class=""titlereference-section-overview""]/div/text()")
                     If selNode IsNot Nothing Then
-                        Dim ndPlot = selNode.ParentNode.Descendants("div").FirstOrDefault
-                        If ndPlot IsNot Nothing AndAlso ndPlot.InnerText IsNot Nothing AndAlso Not String.IsNullOrEmpty(ndPlot.InnerText) Then
-                            nMovie.Outline = HttpUtility.HtmlDecode(Regex.Replace(ndPlot.InnerText,
-                                                                                  "\|.*|full summary.*|full synopsis.*|add summary.*|add synopsis.*|see more&nbsp;&raquo;",
-                                                                                  String.Empty,
-                                                                                  RegexOptions.IgnoreCase).Trim)
+                        If selNode IsNot Nothing AndAlso selNode.InnerText IsNot Nothing AndAlso Not String.IsNullOrEmpty(selNode.InnerText.Trim) Then
+                            nMovie.Outline = HttpUtility.HtmlDecode(selNode.InnerText.Trim)
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Outline", strID))
                         End If
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Outline", strID))
                     End If
                 End If
 
@@ -385,9 +444,14 @@ Namespace IMDB
 
                 'Plot
                 If FilteredOptions.bMainPlot AndAlso bIsScraperLanguage Then
-                    Dim selNode = htmldPlotSummary.DocumentNode.SelectSingleNode("//ul[@id=""plot-summaries-content""]/li/p")
-                    If selNode IsNot Nothing Then
-                        nMovie.Plot = HttpUtility.HtmlDecode(selNode.InnerText)
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//tr[@class=""ipl-zebra-list__item""]/td[@class=""ipl-zebra-list__label""][.='Plot Summary']")
+                    If selNode IsNot Nothing AndAlso selNode.ParentNode IsNot Nothing Then
+                        Dim ndPlot = selNode.ParentNode.Descendants("p").FirstOrDefault
+                        If ndPlot IsNot Nothing AndAlso ndPlot.FirstChild IsNot Nothing Then
+                            nMovie.Plot = HttpUtility.HtmlDecode(ndPlot.FirstChild.InnerText.Trim)
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Plot", strID))
+                        End If
                     Else
                         logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Plot", strID))
                     End If
@@ -397,7 +461,7 @@ Namespace IMDB
 
                 'Poster for search result
                 If GetPoster Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//a[@name=""poster""]/img")
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//img[@class=""titlereference-primary-image""]")
                     If selNode IsNot Nothing Then
                         Dim attSource = selNode.Attributes("src")
                         If attSource IsNot Nothing Then
@@ -410,12 +474,12 @@ Namespace IMDB
 
                 'Rating
                 If FilteredOptions.bMainRating Then
-                    Dim selNodeRating = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""starbar-meta""]/b")
-                    Dim selNodeVotes = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""starbar-meta""]/a")
+                    Dim selNodeRating = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""ipl-rating-star__rating""]")
+                    Dim selNodeVotes = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""ipl-rating-star__total-votes""]")
                     If selNodeRating IsNot Nothing AndAlso
                         selNodeVotes IsNot Nothing Then
                         nMovie.Rating = Regex.Match(selNodeRating.InnerText.Trim, "\d\.\d").Value
-                        nMovie.Votes = Regex.Match(selNodeVotes.InnerText.Trim, "[0-9,]+").Value
+                        nMovie.Votes = Regex.Match(selNodeVotes.InnerText.Trim, "[0-9,.]+").Value
                     Else
                         logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Rating", strID))
                     End If
@@ -425,17 +489,24 @@ Namespace IMDB
 
                 'ReleaseDate / Year
                 If FilteredOptions.bMainRelease OrElse FilteredOptions.bMainYear Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Release Date:']")
-                    If selNode IsNot Nothing AndAlso selNode.NextSibling IsNot Nothing AndAlso selNode.NextSibling.NextSibling IsNot Nothing Then
-                        Dim RelDate As Date
-                        Dim sRelDate = Regex.Match(selNode.NextSibling.NextSibling.InnerText,
-                                                   "\d+\s\w+\s\d\d\d\d\s",
-                                                   RegexOptions.Singleline)
-                        If sRelDate.Success Then
-                            If Date.TryParse(sRelDate.Value, RelDate) Then
-                                If FilteredOptions.bMainRelease Then nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
-                                If FilteredOptions.bMainYear Then nMovie.Year = RelDate.Year.ToString
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//div[@class=""titlereference-header""]")
+                    If selNode IsNot Nothing Then
+                        Dim nReleaseNode = selNode.Descendants("a").Where(Function(f) f.Attributes.Where(Function(a) a.Value.Contains("releaseinfo")).Any).FirstOrDefault
+                        If nReleaseNode IsNot Nothing Then
+                            Dim RelDate As Date
+                            Dim sRelDate = Regex.Match(nReleaseNode.InnerText,
+                                                       "\d+\s\w+\s\d\d\d\d\s",
+                                                       RegexOptions.Singleline)
+                            If sRelDate.Success Then
+                                If Date.TryParse(sRelDate.Value, RelDate) Then
+                                    If FilteredOptions.bMainRelease Then nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
+                                    If FilteredOptions.bMainYear Then nMovie.Year = RelDate.Year.ToString
+                                End If
+                            Else
+                                logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse ReleaseDate/Year", strID))
                             End If
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse ReleaseDate/Year", strID))
                         End If
                     Else
                         logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse ReleaseDate/Year", strID))
@@ -446,18 +517,20 @@ Namespace IMDB
 
                 'Studios
                 If FilteredOptions.bMainStudios Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//b[@class=""blackcatheader""][.='Production Companies']")
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//h4[@class=""ipl-header__content ipl-list-title""][.='Production Companies']")
                     If selNode IsNot Nothing Then
-                        nMovie.Studios.AddRange(selNode.NextSibling.Descendants("a").Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
+                        nMovie.Studios.AddRange(selNode.ParentNode.ParentNode.NextSibling.NextSibling.Descendants("a").Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
                     Else
                         logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Studios", strID))
                     End If
 
                     If _SpecialSettings.StudiowithDistributors Then
-                        Dim selNodeD = htmldCombined.DocumentNode.SelectSingleNode("//b[@class=""blackcatheader""][.='Distributors']")
+                        Dim selNodeD = htmldReference.DocumentNode.SelectSingleNode("//h4[@class=""ipl-header__content ipl-list-title""][.='Distributors']")
                         If selNodeD IsNot Nothing Then
-                            nMovie.Studios.AddRange(selNodeD.NextSibling.Descendants("a").Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
+                            nMovie.Studios.AddRange(selNodeD.ParentNode.ParentNode.NextSibling.NextSibling.Descendants("a").Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
                             nMovie.Studios = nMovie.Studios.Distinct.ToList
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Distributors", strID))
                         End If
                     End If
                 End If
@@ -466,12 +539,16 @@ Namespace IMDB
 
                 'Tagline
                 If FilteredOptions.bMainTagline AndAlso bIsScraperLanguage Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Tagline:']")
-                    If selNode IsNot Nothing Then
-                        Dim ndTagline = selNode.ParentNode.Descendants("div").FirstOrDefault
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//tr[@class=""ipl-zebra-list__item""]/td[@class=""ipl-zebra-list__label""][.='Taglines']")
+                    If selNode IsNot Nothing AndAlso selNode.ParentNode IsNot Nothing Then
+                        Dim ndTagline = selNode.ParentNode.Descendants("td").Where(Function(f) Not f.InnerText = "Taglines").FirstOrDefault
                         If ndTagline IsNot Nothing AndAlso ndTagline.FirstChild IsNot Nothing Then
-                            nMovie.Tagline = HttpUtility.HtmlDecode(ndTagline.FirstChild.InnerText)
+                            nMovie.Tagline = HttpUtility.HtmlDecode(ndTagline.FirstChild.InnerText.Trim)
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Tagline", strID))
                         End If
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Tagline", strID))
                     End If
                 End If
 
@@ -490,12 +567,14 @@ Namespace IMDB
 
                 'Top250
                 If FilteredOptions.bMainTop250 Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""starbar-special""]/a")
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//a[@href=""/chart/top""]")
                     If selNode IsNot Nothing Then
                         Dim strTop250 As String = Regex.Match(selNode.InnerText.Trim, "#([0-9]+)").Groups(1).Value
                         Dim iTop250 As Integer = 0
                         If Integer.TryParse(strTop250, iTop250) Then
                             nMovie.Top250 = iTop250
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Top250", strID))
                         End If
                     End If
                 End If
@@ -519,23 +598,27 @@ Namespace IMDB
 
                 'Writers
                 If FilteredOptions.bMainWriters Then
-                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//a[@class=""glossary""][@name=""writers""]")
+                    Dim selNode = htmldReference.DocumentNode.SelectNodes("//div[@class=""titlereference-overview-section""]").Where(Function(f) f.InnerText.Contains("Writers:")).FirstOrDefault
                     If selNode IsNot Nothing Then
-                        Dim nTable = selNode.Ancestors("table").FirstOrDefault
-                        If nTable IsNot Nothing Then
-                            Dim nWriters = nTable.Descendants("a").Where(
-                                Function(f) f.Attributes.Contains("href") AndAlso
-                                Not f.Attributes.Contains("class"))
-                            If nWriters IsNot Nothing Then
-                                nMovie.Credits.AddRange(nWriters.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
-                            End If
+                        Dim nDirectors = selNode.Descendants("a")
+                        If nDirectors IsNot Nothing Then
+                            nMovie.Credits.AddRange(nDirectors.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
+                        Else
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Writers", strID))
                         End If
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Writers", strID))
                     End If
                 End If
 
                 'Year (fallback if ReleaseDate can't be parsed)
-                If FilteredOptions.bMainYear AndAlso Not nMovie.YearSpecified AndAlso ndOriginalTitle IsNot Nothing Then
-                    nMovie.Year = Regex.Match(ndOriginalTitle.InnerText, "\((\d{4})").Groups(1).ToString.Trim
+                If FilteredOptions.bMainYear AndAlso Not nMovie.YearSpecified Then
+                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""titlereference-title-year""]/a")
+                    If selNode IsNot Nothing Then
+                        nMovie.Year = selNode.InnerText
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Year (fallback)", strID))
+                    End If
                 End If
 
                 Return nMovie
