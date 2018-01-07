@@ -151,8 +151,9 @@ Namespace IMDB
         Private Const TVEPISODE_SEASON_EPISODE As String = "<h5>Original Air Date:<\/h5>.*?\(Season (?<SEASON>\d+), Episode (?<EPISODE>\d+)\).*?<\/div>"
         Private Const TVEPISODE_CREDITS As String = "<a.*?href=[""'](?<URL>.*?)[""'].*?>(?<NAME>.*?).?<\/a>.*?<td class=""credit"">.*?\((?<CLASS>.*?)\).*?<\/td>"
 
-        Private strPosterURL As String = String.Empty
+        Private htmldPlotSummary As HtmlDocument = Nothing
         Private intHTTP As HTTP = Nothing
+        Private strPosterURL As String = String.Empty
 
         Private _SpecialSettings As IMDB_Data.SpecialSettings
 
@@ -223,6 +224,7 @@ Namespace IMDB
 
                 Dim webParsing As New HtmlWeb
                 Dim htmldReference As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/reference"))
+                htmldPlotSummary = Nothing
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
@@ -429,11 +431,19 @@ Namespace IMDB
                 'Outline
                 If FilteredOptions.bMainOutline AndAlso bIsScraperLanguage Then
                     Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//section[@class=""titlereference-section-overview""]/div/text()")
-                    If selNode IsNot Nothing Then
-                        If selNode IsNot Nothing AndAlso selNode.InnerText IsNot Nothing AndAlso Not String.IsNullOrEmpty(selNode.InnerText.Trim) Then
-                            nMovie.Outline = HttpUtility.HtmlDecode(selNode.InnerText.Trim)
-                        Else
-                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Outline", strID))
+                    If selNode IsNot Nothing AndAlso selNode.InnerText IsNot Nothing Then
+                        'get the outline, even if only a part of the outline is available
+                        nMovie.Outline = HttpUtility.HtmlDecode(selNode.InnerText.Trim)
+                        'remove the three dots to search the same text on the "plotsummary" page
+                        Dim strOutline As String = Regex.Replace(nMovie.Outline, "\.\.\.", String.Empty)
+                        If selNode.NextSibling IsNot Nothing AndAlso selNode.NextSibling.InnerText.Trim.StartsWith("See more") Then
+                            'parse the "plotsummary" page for full outline text
+                            strOutline = GetPlotFromSummaryPage(strID, strOutline)
+                            If Not String.IsNullOrEmpty(strOutline) Then
+                                nMovie.Outline = strOutline
+                            Else
+                                logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] no result from ""plotsummary"" page for Outline", strID))
+                            End If
                         End If
                     Else
                         logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Outline", strID))
@@ -453,7 +463,17 @@ Namespace IMDB
                             logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Plot", strID))
                         End If
                     Else
-                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Plot", strID))
+                        'if "plot" isn't available then the "outline" will be used as plot
+                        If nMovie.OutlineSpecified Then
+                            nMovie.Plot = nMovie.Outline
+                        Else
+                            Dim strPlot As String = GetPlotFromSummaryPage(strID)
+                            If Not String.IsNullOrEmpty(strPlot) Then
+                                nMovie.Plot = strPlot
+                            Else
+                                logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] no result from ""plotsummary"" page for Plot", strID))
+                            End If
+                        End If
                     End If
                 End If
 
@@ -1495,6 +1515,30 @@ Namespace IMDB
 
         Private Function GetMovieID(ByVal strObj As String) As String
             Return Regex.Match(strObj, IMDB_ID_REGEX).ToString
+        End Function
+
+        Private Function GetPlotFromSummaryPage(ByVal strID As String, Optional ByVal strOutline As String = "") As String
+            If htmldPlotSummary Is Nothing Then
+                Dim webParsing As New HtmlWeb
+                htmldPlotSummary = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/plotsummary"))
+            End If
+            If htmldPlotSummary IsNot Nothing Then
+                Dim selNode As HtmlNode = Nothing
+                If Not String.IsNullOrEmpty(strOutline) Then
+                    selNode = htmldPlotSummary.DocumentNode.SelectNodes("//p").Where(Function(f) f.InnerText IsNot Nothing AndAlso
+                                                                                           HttpUtility.HtmlDecode(f.InnerText.Trim).StartsWith(strOutline)).FirstOrDefault
+                Else
+                    selNode = htmldPlotSummary.DocumentNode.SelectNodes("//ul[@id=""plot-summaries-content""]").FirstOrDefault
+                End If
+                If selNode IsNot Nothing Then
+                    Return HttpUtility.HtmlDecode(selNode.InnerText.Trim)
+                Else
+                    logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] no proper result from the ""plotsummary"" page for Outline", strID))
+                End If
+            Else
+                logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse the ""plotsummary"" page", strID))
+            End If
+            Return String.Empty
         End Function
 
         Private Function SearchMovie(ByVal sMovieTitle As String, ByVal sMovieYear As String) As SearchResults_Movie
