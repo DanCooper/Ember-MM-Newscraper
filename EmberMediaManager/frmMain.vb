@@ -5591,7 +5591,10 @@ Public Class frmMain
     ''' the remaining genres are still processed, however the placement/spacing
     ''' of the remaining genres may show gaps where the erronious genres should have been</remarks>
     Private Sub createGenreThumbs(ByVal genres As List(Of String))
-        If ((genres Is Nothing) OrElse (genres.Count = 0)) Then Return
+        If genres Is Nothing OrElse genres.Count = 0 Then Return
+
+        genres.Sort()
+        genres.Reverse()
 
         For i As Integer = 0 To genres.Count - 1
             Try
