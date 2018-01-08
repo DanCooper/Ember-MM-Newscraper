@@ -596,6 +596,7 @@ Public Class FileFolderRenamer
         'MovieSets
         If _DBElement.Movie.SetsSpecified Then
             MovieFile.Collection = _DBElement.Movie.Sets.Item(0).Title
+            MovieFile.CollectionListTitle = StringUtils.SortTokens_MovieSet(_DBElement.Movie.Sets.Item(0).Title)
         End If
 
         'MPAA
@@ -1242,6 +1243,7 @@ Public Class FileFolderRenamer
                         strCond = ApplyPattern(strCond, "2", f.Aired)
                         strCond = ApplyPattern(strCond, "3", f.ShortStereoMode)
                         strCond = ApplyPattern(strCond, "4", f.StereoMode)
+                        strCond = ApplyPattern(strCond, "5", f.CollectionListTitle)
                         strCond = ApplyPattern(strCond, "A", f.AudioChannels)
                         strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not needed here, Only to HaveBase
                         strCond = ApplyPattern(strCond, "C", f.Director)
@@ -1315,7 +1317,7 @@ Public Class FileFolderRenamer
                             End If
                         End If
 
-                        strNoFlags = Regex.Replace(strNoFlags, "\$((?:OO|[12ABCDEFHIJKLMNOPQRSTVWY]|G[. -,]|U[. -,]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                        strNoFlags = Regex.Replace(strNoFlags, "\$((?:OO|[12345ABCDEFHIJKLMNOPQRSTVWY]|G[. -,]|U[. -,]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                         If strCond.Trim = strNoFlags.Trim Then
                             strCond = String.Empty
                         Else
@@ -1334,6 +1336,7 @@ Public Class FileFolderRenamer
                 pattern = ApplyPattern(pattern, "2", f.Aired)
                 pattern = ApplyPattern(pattern, "3", f.ShortStereoMode)
                 pattern = ApplyPattern(pattern, "4", f.StereoMode)
+                pattern = ApplyPattern(pattern, "5", f.CollectionListTitle)
                 pattern = ApplyPattern(pattern, "A", f.AudioChannels)
                 pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
                 pattern = ApplyPattern(pattern, "C", f.Director)
@@ -1842,6 +1845,7 @@ Public Class FileFolderRenamer
         Private _audiocodec As String
         Private _basepath As String
         Private _collection As String
+        Private _collectionlisttitle As String
         Private _country As String
         Private _direxist As Boolean
         Private _director As String
@@ -1930,6 +1934,15 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As String)
                 _collection = value
+            End Set
+        End Property
+
+        Public Property CollectionListTitle() As String
+            Get
+                Return _collectionlisttitle
+            End Get
+            Set(ByVal value As String)
+                _collectionlisttitle = value
             End Set
         End Property
 
@@ -2316,6 +2329,7 @@ Public Class FileFolderRenamer
             _audiocodec = String.Empty
             _basepath = String.Empty
             _collection = String.Empty
+            _collectionlisttitle = String.Empty
             _country = String.Empty
             _direxist = False
             _director = String.Empty
