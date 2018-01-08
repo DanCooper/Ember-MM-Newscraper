@@ -837,8 +837,8 @@ Public Class FileFolderRenamer
         End If
 
         'Show ListTitle
-        If _DBElement.ListTitle IsNot Nothing Then
-            EpisodeFile.ListTitle = _DBElement.ListTitle
+        If _DBElement.TVShow.TitleSpecified Then
+            EpisodeFile.ListTitle = StringUtils.SortTokens_TV(_DBElement.TVShow.Title)
         End If
 
         'Show Title
