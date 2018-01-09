@@ -236,7 +236,13 @@ Namespace IMDB
                 'get clean OriginalTitle
                 Dim strOriginalTitle As String = String.Empty
                 Dim ndOriginalTitle = htmldReference.DocumentNode.SelectSingleNode("//h3[@itemprop=""name""]/text()")
-                If ndOriginalTitle IsNot Nothing Then
+                Dim ndOriginalTitleLbl = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""titlereference-original-title-label""]")
+
+                'first check if Original Title is country localized
+                If ndOriginalTitleLbl IsNot Nothing Then
+                    'get text before span object for Original Title
+                    strOriginalTitle = HttpUtility.HtmlDecode(ndOriginalTitleLbl.PreviousSibling.InnerText.Trim)
+                ElseIf ndOriginalTitle IsNot Nothing Then
                     'remove year in brakets
                     strOriginalTitle = HttpUtility.HtmlDecode(ndOriginalTitle.InnerText.Trim)
                 Else
