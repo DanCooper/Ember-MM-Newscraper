@@ -630,12 +630,10 @@ Namespace TMDB
             If FilteredOptions.bMainPlot Then
                 If Result.Overview Is Nothing OrElse (Result.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Overview)) Then
                     If _SpecialSettings.FallBackEng AndAlso ResultE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Overview) Then
-                        'nMovieSet.Plot = MovieSetE.Overview
-                        nMovieSet.Plot = ResultE.Overview
+                        nMovieSet.Plot = HttpUtility.HtmlDecode(ResultE.Overview)
                     End If
                 Else
-                    'nMovieSet.Plot = MovieSet.Overview
-                    nMovieSet.Plot = Result.Overview
+                    nMovieSet.Plot = HttpUtility.HtmlDecode(Result.Overview)
                 End If
             End If
 
