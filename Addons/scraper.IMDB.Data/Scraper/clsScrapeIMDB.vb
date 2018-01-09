@@ -235,10 +235,10 @@ Namespace IMDB
                 Dim strOriginalTitle As String = String.Empty
                 Dim ndOriginalTitle = htmldReference.DocumentNode.SelectSingleNode("//h3[@itemprop=""name""]/text()")
                 Dim ndOriginalTitleLbl = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""titlereference-original-title-label""]")
-                Dim strLangTitle As String = String.Empty
 
+                'first check if Original Title is country localized
                 If ndOriginalTitleLbl IsNot Nothing Then
-                    'get text before span object
+                    'get text before span object for Original Title
                     strOriginalTitle = HttpUtility.HtmlDecode(ndOriginalTitleLbl.PreviousSibling.InnerText.Trim)
                 ElseIf ndOriginalTitle IsNot Nothing Then
                     'remove year in brakets
