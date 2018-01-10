@@ -15855,6 +15855,8 @@ Public Class frmMain
                 AddRow_TVShow(eProgressValue.ID)
             Case Enums.ScannerEventType.CleaningDatabase
                 SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
+            Case Enums.ScannerEventType.CurrentSource
+                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(1131, "Scanning Source"), ":"), " ", eProgressValue.Message))
             Case Enums.ScannerEventType.PreliminaryTasks
                 SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Case Enums.ScannerEventType.Refresh_TVShow
