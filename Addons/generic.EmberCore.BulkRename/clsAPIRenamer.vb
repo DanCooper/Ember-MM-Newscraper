@@ -265,28 +265,13 @@ Public Class FileFolderRenamer
                         Master.DB.Save_Movie(_movie, BatchMode, False, False, True, False)
                     End If
 
-                    If Not _frename.IsSingle Then
-                        Dim fileCount As Integer = 0
-                        Dim dirCount As Integer = 0
-
-                        If Directory.Exists(srcDir) Then
-                            Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
-
-                            Try
-                                fileCount = di.GetFiles().Count
-                            Catch
-                            End Try
-
-                            Try
-                                dirCount = di.GetDirectories().Count
-                            Catch
-                            End Try
-
-                            If fileCount = 0 AndAlso dirCount = 0 Then
-                                di.Delete()
-                            End If
-                        End If
-                    End If
+                    'remove empty folders
+                    Dim strBasePath As String = _frename.BasePath
+                    Dim currPath As DirectoryInfo = New DirectoryInfo(_frename.OldFullPath)
+                    While Not currPath.FullName.ToLower = strBasePath.ToLower
+                        If currPath.Exists AndAlso currPath.GetFiles.Count = 0 AndAlso currPath.GetDirectories.Count = 0 Then currPath.Delete()
+                        currPath = currPath.Parent
+                    End While
                 End If
             Else
                 Dim strErrorMessage As String = String.Format("{0}{2}{2}{1}{2}{2}{3}: {4}{2}{5}: {6}{2}{7}: {8}",
@@ -404,27 +389,16 @@ Public Class FileFolderRenamer
                         Master.DB.Save_TVEpisode(_tv, BatchMode, False, False, False, True)
                     End If
 
-                    Dim fileCount As Integer = 0
-                    Dim dirCount As Integer = 0
-
-                    If Directory.Exists(srcDir) Then
-                        Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
-
-                        Try
-                            fileCount = di.GetFiles().Count
-                        Catch
-                        End Try
-
-                        Try
-                            dirCount = di.GetDirectories().Count
-                        Catch
-                        End Try
-
-                        If fileCount = 0 AndAlso dirCount = 0 OrElse
-                            fileCount = 0 AndAlso dirCount = 1 AndAlso di.GetDirectories.First.Name = ".actors" Then
-                            di.Delete(True)
-                        End If
-                    End If
+                    'remove empty folders
+                    Dim strBasePath As String = _frename.ShowFullPath
+                    Dim currPath As DirectoryInfo = New DirectoryInfo(_frename.OldFullPath)
+                    While Not currPath.FullName.ToLower = strBasePath.ToLower
+                        If currPath.Exists AndAlso
+                            ((currPath.GetFiles.Count = 0 AndAlso currPath.GetDirectories.Count = 0) OrElse
+                            (currPath.GetFiles.Count = 0 AndAlso currPath.GetDirectories.Count = 1 AndAlso
+                            currPath.GetDirectories.First.Name.ToLower = ".actors")) Then currPath.Delete(True)
+                        currPath = currPath.Parent
+                    End While
                 End If
             Else
                 Dim strErrorMessage As String = String.Format("{0}{2}{2}{1}{2}{2}{3}: {4}{2}{5}: {6}",
@@ -450,7 +424,7 @@ Public Class FileFolderRenamer
         Try
             If Not _tv.IsLock AndAlso Not _frename.DirExist Then
                 Dim getError As Boolean = False
-                Dim srcDir As String = Path.Combine(_frename.BasePath, _frename.Path)
+                Dim srcDir As String = _frename.OldFullPath
                 Dim destDir As String = Path.Combine(_frename.BasePath, _frename.NewPath)
 
                 'Rename Directory
@@ -491,26 +465,13 @@ Public Class FileFolderRenamer
                         Master.DB.Save_TVShow(_tv, BatchMode, False, False, True)
                     End If
 
-                    Dim fileCount As Integer = 0
-                    Dim dirCount As Integer = 0
-
-                    If Directory.Exists(srcDir) Then
-                        Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
-
-                        Try
-                            fileCount = di.GetFiles().Count
-                        Catch
-                        End Try
-
-                        Try
-                            dirCount = di.GetDirectories().Count
-                        Catch
-                        End Try
-
-                        If fileCount = 0 AndAlso dirCount = 0 Then
-                            di.Delete()
-                        End If
-                    End If
+                    'remove empty folders
+                    Dim strBasePath As String = _frename.BasePath
+                    Dim currPath As DirectoryInfo = New DirectoryInfo(_frename.OldFullPath)
+                    While Not currPath.FullName.ToLower = strBasePath.ToLower
+                        If currPath.Exists AndAlso currPath.GetFiles.Count = 0 AndAlso currPath.GetDirectories.Count = 0 Then currPath.Delete()
+                        currPath = currPath.Parent
+                    End While
                 End If
             Else
                 If ShowError Then
@@ -907,6 +868,7 @@ Public Class FileFolderRenamer
         'Path
         EpisodeFile.BasePath = _DBElement.Source.Path
         EpisodeFile.OldFullPath = FileUtils.Common.GetMainPath(_DBElement.Filename).FullName
+        EpisodeFile.ShowFullPath = _DBElement.ShowPath
         EpisodeFile.ShowPath = _DBElement.ShowPath.Replace(_DBElement.Source.Path, String.Empty)
         EpisodeFile.ShowPath = If(EpisodeFile.ShowPath.StartsWith(Path.DirectorySeparatorChar), EpisodeFile.ShowPath.Substring(1), EpisodeFile.ShowPath)
         If FileUtils.Common.isVideoTS(_DBElement.Filename) Then
@@ -1877,6 +1839,7 @@ Public Class FileFolderRenamer
         Private _resolution As String
         Private _seasonsepisodes As New List(Of SeasonsEpisodes)
         Private _shortstereomode As String
+        Private _showfullpath As String
         Private _showpath As String
         Private _showtitle As String
         Private _sorttitle As String
@@ -2216,6 +2179,15 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property ShowFullPath() As String
+            Get
+                Return _showfullpath
+            End Get
+            Set(ByVal value As String)
+                _showfullpath = value.Trim
+            End Set
+        End Property
+
         Public Property ShowPath() As String
             Get
                 Return _showpath
@@ -2361,6 +2333,7 @@ Public Class FileFolderRenamer
             _rating = String.Empty
             _resolution = String.Empty
             _seasonsepisodes.Clear()
+            _showfullpath = String.Empty
             _showpath = String.Empty
             _showtitle = String.Empty
             _sorttitle = String.Empty
