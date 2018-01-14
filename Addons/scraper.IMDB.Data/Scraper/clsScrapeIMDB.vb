@@ -136,15 +136,11 @@ Namespace IMDB
         Private Const IMDB_ID_REGEX As String = "tt\d\d\d\d\d\d\d"
         Private Const IMG_PATTERN As String = "<img src=""(?<thumb>.*?)"" width=""\d{1,3}"" height=""\d{1,3}"" border="".{1,3}"">"
         Private Const MOVIE_TITLE_PATTERN As String = "(?<=<(title)>).*(?=<\/\1>)"
-        Private Const TABLE_PATTERN As String = "<table.*?>\n?(.*?)</table>"
         Private Const TABLE_PATTERN_TV As String = "<table class=""results"">(.*?)</table>"
         Private Const TD_PATTERN_1 As String = "<td\sclass=""nm"">(.*?)</td>"
         Private Const TD_PATTERN_2 As String = "(?<=<td\sclass=""char"">)(?<name>.*?)(?=</td>)(\s\(.*?\))?"
         Private Const TD_PATTERN_3 As String = "<td\sclass=""hs"">(.*?)</td>"
-        Private Const TD_PATTERN_4 As String = "<td>(?<title>.*?)</td>"
-        Private Const TITLE_PATTERN As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>((\s)+?(\((?<year>\d{4})(\/.*?)?\)))?((\s)+?(\((?<type>.*?)\)))?"
         Private Const TR_PATTERN As String = "<tr\sclass="".*?"">(.*?)</tr>"
-        Private Const TvTITLE_PATTERN As String = "<a\shref=[""'](?<url>.*?)[""']\stitle=[""'](?<name>.*?)((\s)+?(\((?<year>\d{4})))"
         Private Const TVSHOWTITLE_PATTERN As String = "<tr class.*?>.*?<a href=""\/title\/(?<IMDB>tt\d*)\/"">(?<TITLE>.*?)<\/a>.*?year_type"">\((?<YEAR>\d*).*?<\/tr>"
         Private Const TVEPISODE_PATTERN As String = "<div class=""list_item (?:odd|even)"">.*?<a href=""\/title\/(?<IMDB>tt\d*)\/.*?title=""(?<TITLE>.*?)"" itemprop=""url"">.*?content=""(?<EPISODE>\d*)"""
         Private Const TVEPISODE_TITLE_PATTERN As String = "<title>&#x22;.*?&#x22;(?<TITLE>.*?)<\/title>"
@@ -275,7 +271,7 @@ Namespace IMDB
                                 Dim ndCharacter = nCast.Descendants("td").Where(Function(f) f.Attributes.Where(Function(a) a.Name = "class" AndAlso a.Value = "character").Any).FirstOrDefault
                                 If ndName IsNot Nothing AndAlso ndCharacter IsNot Nothing Then
                                     nActor.Name = HttpUtility.HtmlDecode(ndName.InnerText.Trim)
-                                    nActor.Role = HttpUtility.HtmlDecode(ndCharacter.InnerText.Trim)
+                                    nActor.Role = HttpUtility.HtmlDecode(Regex.Replace(ndCharacter.InnerText.Trim, "\s{2,}", " "))
                                     nMovie.Actors.Add(nActor)
                                 End If
                             Next
@@ -442,7 +438,7 @@ Namespace IMDB
                         nMovie.Outline = HttpUtility.HtmlDecode(selNode.InnerText.Trim)
                         'remove the three dots to search the same text on the "plotsummary" page
                         Dim strOutline As String = Regex.Replace(nMovie.Outline, "\.\.\.", String.Empty)
-                        If selNode.NextSibling IsNot Nothing AndAlso selNode.NextSibling.InnerText.Trim.StartsWith("See more") Then
+                        If selNode.NextSibling IsNot Nothing AndAlso selNode.NextSibling.InnerText.Trim.ToLower.StartsWith("see more") Then
                             'parse the "plotsummary" page for full outline text
                             strOutline = GetPlotFromSummaryPage(strID, strOutline)
                             If Not String.IsNullOrEmpty(strOutline) Then
@@ -628,12 +624,12 @@ Namespace IMDB
                     If selNode IsNot Nothing Then
                         Dim nDirectors = selNode.Descendants("a")
                         If nDirectors IsNot Nothing Then
-                            nMovie.Credits.AddRange(nDirectors.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
+                            nMovie.Credits = nDirectors.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText.Trim)).Distinct.ToList.Where(Function(f) Not f.ToLower.StartsWith("see more")).ToList
                         Else
-                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Writers", strID))
+                            logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Writers (Credits)", strID))
                         End If
                     Else
-                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Writers", strID))
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Writers (Credits)", strID))
                     End If
                 End If
 
