@@ -664,6 +664,16 @@ Public Class NFO
                 DBTV.TVShow.Votes = String.Empty
             End If
 
+            'Runtime
+            If (Not DBTV.TVShow.RuntimeSpecified OrElse Not Master.eSettings.TVLockShowRuntime) AndAlso ScrapeOptions.bMainRuntime AndAlso
+                scrapedshow.RuntimeSpecified AndAlso Master.eSettings.TVScraperShowRuntime AndAlso Not new_Runtime Then
+                DBTV.TVShow.Runtime = scrapedshow.Runtime
+                new_Runtime = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRuntime AndAlso Not Master.eSettings.TVLockShowRuntime Then
+                DBTV.TVShow.Runtime = String.Empty
+            End If
+
+
             'Status
             If (DBTV.TVShow.StatusSpecified OrElse Not Master.eSettings.TVLockShowStatus) AndAlso ScrapeOptions.bMainStatus AndAlso
                 scrapedshow.StatusSpecified AndAlso Master.eSettings.TVScraperShowStatus AndAlso Not new_Status Then
