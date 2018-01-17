@@ -506,6 +506,7 @@ Public Class IMDB_Data
         LoadSettings_TV()
 
         Dim nTVShow As MediaContainers.TVShow = Nothing
+        _SpecialSettings_TV.PrefLanguage = oDBElement.Language
         Dim _scraper As New IMDB.Scraper(_SpecialSettings_TV)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
@@ -554,6 +555,7 @@ Public Class IMDB_Data
         LoadSettings_TV()
 
         Dim nTVEpisode As New MediaContainers.EpisodeDetails
+        _SpecialSettings_TV.PrefLanguage = oDBTVEpisode.Language
         Dim _scraper As New IMDB.Scraper(_SpecialSettings_TV)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 

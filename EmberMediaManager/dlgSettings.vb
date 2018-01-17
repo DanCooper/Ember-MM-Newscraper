@@ -3304,7 +3304,6 @@ Public Class dlgSettings
             txtMovieGeneralCustomMarker2.Text = .MovieGeneralCustomMarker2Name
             txtMovieGeneralCustomMarker3.Text = .MovieGeneralCustomMarker3Name
             txtMovieGeneralCustomMarker4.Text = .MovieGeneralCustomMarker4Name
-            txtMovieIMDBURL.Text = .MovieIMDBURL
             txtMovieScraperCastLimit.Text = .MovieScraperCastLimit.ToString
             txtMovieScraperCountryLimit.Text = .MovieScraperCountryLimit.ToString
             txtMovieScraperDurationRuntimeFormat.Text = .MovieScraperDurationRuntimeFormat
@@ -5053,11 +5052,6 @@ Public Class dlgSettings
             .MovieImagesGetEnglishImages = chkMovieImagesGetEnglishImages.Checked
             .MovieImagesMediaLanguageOnly = chkMovieImagesMediaLanguageOnly.Checked
             .MovieImagesNotSaveURLToNfo = chkMovieImagesNotSaveURLToNfo.Checked
-            If Not String.IsNullOrEmpty(txtMovieIMDBURL.Text) Then
-                .MovieIMDBURL = txtMovieIMDBURL.Text.Replace("http://", String.Empty).Trim
-            Else
-                .MovieIMDBURL = "akas.imdb.com"
-            End If
             .MovieLandscapeKeepExisting = chkMovieLandscapeKeepExisting.Checked
             .MovieLevTolerance = If(Not String.IsNullOrEmpty(txtMovieLevTolerance.Text), Convert.ToInt32(txtMovieLevTolerance.Text), 0)
             .MovieLockActors = chkMovieLockActors.Checked
@@ -6997,7 +6991,6 @@ Public Class dlgSettings
         lblMovieGeneralCustomMarker2.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #2")
         lblMovieGeneralCustomMarker3.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #3")
         lblMovieGeneralCustomMarker4.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #4")
-        lblMovieIMDBMirror.Text = Master.eLang.GetString(884, "IMDB Mirror:")
         lblMovieLevTolerance.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
         lblMovieScraperDurationRuntimeFormat.Text = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), Environment.NewLine)
         lblMovieScraperMPAANotRated.Text = String.Concat(Master.eLang.GetString(832, "MPAA value if no rating is available"), ":")

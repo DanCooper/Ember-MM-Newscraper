@@ -165,15 +165,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieIMDBURL() As String
-        Get
-            Return Settings._XMLSettings.MovieIMDBURL
-        End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.MovieIMDBURL = value
-        End Set
-    End Property
-
     Public Property MovieBackdropsPath() As String
         Get
             Return Settings._XMLSettings.MovieBackdropsPath
@@ -7128,7 +7119,6 @@ Public Class Settings
         MovieImagesGetEnglishImages = False
         MovieImagesMediaLanguageOnly = False
         MovieImagesNotSaveURLToNfo = False
-        MovieIMDBURL = String.Empty
         MovieLandscapeKeepExisting = False
         MovieLevTolerance = 0
         MovieLockActors = False

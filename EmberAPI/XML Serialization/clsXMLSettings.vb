@@ -155,7 +155,6 @@ Partial Public Class clsXMLSettings
     Private _movieimagesgetblankimages As Boolean
     Private _movieimagesgetenglishimages As Boolean
     Private _movieimagesmedialanguageonly As Boolean
-    Private _movieimdburl As String
     Private _movielandscapekeepexisting As Boolean
     Private _movielevtolerance As Integer
     Private _movielockactors As Boolean
@@ -1123,15 +1122,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviebackdropsauto = value
-        End Set
-    End Property
-
-    Public Property MovieIMDBURL() As String
-        Get
-            Return Me._movieimdburl
-        End Get
-        Set(ByVal value As String)
-            Me._movieimdburl = value
         End Set
     End Property
 
