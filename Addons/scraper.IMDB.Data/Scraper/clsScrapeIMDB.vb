@@ -654,11 +654,9 @@ Namespace IMDB
         End Function
 
         Public Function GetTVEpisodeInfo(ByVal strIMDBID As String, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
-            If String.IsNullOrEmpty(strID) Then Return Nothing
+            If String.IsNullOrEmpty(strIMDBID) Then Return Nothing
 
-            Try
-
-                If bwIMDB.CancellationPending Then Return Nothing
+            If bwIMDB.CancellationPending Then Return Nothing
 
             strPosterURL = String.Empty
             Dim nTVEpisode As New MediaContainers.EpisodeDetails
