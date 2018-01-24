@@ -164,6 +164,7 @@ Public Class IMDB_Data
         _setup_Movie.cbForceTitleLanguage.Text = _SpecialSettings_Movie.ForceTitleLanguage
         _setup_Movie.chkCountryAbbreviation.Checked = _SpecialSettings_Movie.CountryAbbreviation
         _setup_Movie.chkFallBackworldwide.Checked = _SpecialSettings_Movie.FallBackWorldwide
+        _setup_Movie.chkMPAADescription.Checked = _SpecialSettings_Movie.MPAADescription
         _setup_Movie.chkPartialTitles.Checked = _SpecialSettings_Movie.SearchPartialTitles
         _setup_Movie.chkPopularTitles.Checked = _SpecialSettings_Movie.SearchPopularTitles
         _setup_Movie.chkTvTitles.Checked = _SpecialSettings_Movie.SearchTvTitles
