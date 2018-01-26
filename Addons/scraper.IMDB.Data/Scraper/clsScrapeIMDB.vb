@@ -1187,7 +1187,7 @@ Namespace IMDB
                 If selNodes IsNot Nothing Then
                     Dim filteredTitles = selNodes.Where(Function(f) Not HttpUtility.HtmlDecode(f.InnerText).ToLower.Contains("working title") AndAlso
                                                             Not HttpUtility.HtmlDecode(f.InnerText).ToLower.Contains("fake working title"))
-                    If filteredTitles IsNot Nothing Then
+                    If filteredTitles IsNot Nothing AndAlso filteredTitles.Count > 0 Then
                         Return HttpUtility.HtmlDecode(filteredTitles(0).NextSibling.NextSibling.InnerText)
                     End If
                 End If
