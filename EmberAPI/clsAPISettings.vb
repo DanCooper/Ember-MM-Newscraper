@@ -6930,8 +6930,6 @@ Public Class Settings
             Master.eSettings.MovieFanartFrodo = True
             Master.eSettings.MovieNFOFrodo = True
             Master.eSettings.MoviePosterFrodo = True
-            Master.eSettings.MovieThemeTvTunesEnable = True
-            Master.eSettings.MovieThemeTvTunesMoviePath = True
             Master.eSettings.MovieTrailerFrodo = True
             Master.eSettings.MovieScraperXBMCTrailerFormat = True
         End If

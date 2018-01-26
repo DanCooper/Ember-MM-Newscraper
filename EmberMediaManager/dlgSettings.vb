@@ -5781,29 +5781,6 @@ Public Class dlgSettings
             .TVShowLandscapeExpert = txtTVShowLandscapeExpert.Text
             .TVShowNFOExpert = txtTVShowNFOExpert.Text
             .TVShowPosterExpert = txtTVShowPosterExpert.Text
-
-
-            'Default to Frodo for movies
-            If Not (.MovieUseBoxee OrElse .MovieUseEden OrElse .MovieUseExpert OrElse .MovieUseFrodo OrElse .MovieUseNMJ OrElse .MovieUseYAMJ) Then
-                .MovieUseFrodo = True
-                .MovieActorThumbsFrodo = True
-                .MovieExtrafanartsFrodo = True
-                .MovieExtrathumbsFrodo = True
-                .MovieFanartFrodo = True
-                .MovieNFOFrodo = True
-                .MoviePosterFrodo = True
-                .MovieTrailerFrodo = True
-                .MovieUseExtended = True
-                .MovieBannerExtended = True
-                .MovieClearArtExtended = True
-                .MovieClearLogoExtended = True
-                .MovieDiscArtExtended = True
-                .MovieLandscapeExtended = True
-            End If
-
-            'Default to Frodo for tvshows
-            'TODO
-
         End With
 
         For Each s As ModulesManager._externalScraperModuleClass_Data_Movie In ModulesManager.Instance.externalScrapersModules_Data_Movie
