@@ -387,12 +387,6 @@ Public Class StringUtils
         Next
         Return Result
     End Function
-
-    Public Shared Function FilterIMDBIDFromPath(ByVal strPath As String, Optional ByVal bRightToLeft As Boolean = False) As String
-        If String.IsNullOrEmpty(strPath) Then Return String.Empty
-
-        Return Regex.Match(strPath, "tt\d{6}\d*", If(bRightToLeft, RegexOptions.RightToLeft, RegexOptions.None)).Value.Trim
-    End Function
     ''' <summary>
     ''' Cleans up a movie path by stripping it down to the basic title with no additional decorations.
     ''' </summary>
@@ -544,6 +538,11 @@ Public Class StringUtils
         Else
             Return Master.eLang.GetString(138, "Unknown")
         End If
+    End Function
+
+    Public Shared Function GetIMDBIDFromString(ByVal text As String, Optional ByVal searchrighttoleft As Boolean = False) As String
+        If String.IsNullOrEmpty(text) Then Return String.Empty
+        Return Regex.Match(text, "tt\d{6}\d*", If(searchrighttoleft, RegexOptions.RightToLeft, RegexOptions.None)).Value.Trim
     End Function
     ''' <summary>
     ''' Converts a string to an HTML-encoded string.

@@ -155,7 +155,6 @@ Partial Public Class clsXMLSettings
     Private _movieimagesgetblankimages As Boolean
     Private _movieimagesgetenglishimages As Boolean
     Private _movieimagesmedialanguageonly As Boolean
-    Private _movieimdburl As String
     Private _movielandscapekeepexisting As Boolean
     Private _movielevtolerance As Integer
     Private _movielockactors As Boolean
@@ -220,6 +219,7 @@ Partial Public Class clsXMLSettings
     Private _moviescrapercollectionsextendedinfo As Boolean
     Private _moviescrapercollectionsyamjcompatiblesets As Boolean
     Private _moviescrapercountry As Boolean
+    Private _moviescrapercountrylimit As Integer
     Private _moviescraperdirector As Boolean
     Private _moviescraperdurationruntimeformat As String
     Private _moviescrapergenre As Boolean
@@ -425,10 +425,12 @@ Partial Public Class clsXMLSettings
     Private _tvscrapercleanfields As Boolean
     Private _tvscraperdurationruntimeformat As String
     Private _tvscraperepisodeactors As Boolean
+    Private _tvscraperepisodeactorslimit As Integer
     Private _tvscraperepisodeaired As Boolean
     Private _tvscraperepisodecredits As Boolean
     Private _tvscraperepisodedirector As Boolean
     Private _tvscraperepisodegueststars As Boolean
+    Private _tvscraperepisodegueststarslimit As Integer
     Private _tvscraperepisodegueststarstoactors As Boolean
     Private _tvscraperepisodeplot As Boolean
     Private _tvscraperepisoderating As Boolean
@@ -441,6 +443,7 @@ Partial Public Class clsXMLSettings
     Private _tvscraperseasonplot As Boolean
     Private _tvscraperseasontitle As Boolean
     Private _tvscrapershowactors As Boolean
+    Private _tvscrapershowactorslimit As Integer
     Private _tvscrapershowcert As Boolean
     Private _tvscrapershowcertformpaa As Boolean
     Private _tvscrapershowcertformpaafallback As Boolean
@@ -448,8 +451,10 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowcertonlyvalue As Boolean
     Private _tvscrapershowcreators As Boolean
     Private _tvscrapershowcountry As Boolean
+    Private _tvscrapershowcountrylimit As Integer
     Private _tvscrapershowepiguideurl As Boolean
     Private _tvscrapershowgenre As Boolean
+    Private _tvscrapershowgenrelimit As Integer
     Private _tvscrapershowmpaa As Boolean
     Private _tvscrapershowmpaanotrated As String
     Private _tvscrapershoworiginaltitle As Boolean
@@ -460,6 +465,7 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowruntime As Boolean
     Private _tvscrapershowstatus As Boolean
     Private _tvscrapershowstudio As Boolean
+    Private _tvscrapershowstudiolimit As Integer
     Private _tvscrapershowtitle As Boolean
     Private _tvscrapershowuserrating As Boolean
     Private _tvscraperusedisplayseasonepisode As Boolean
@@ -1011,6 +1017,33 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeActorsLimit() As Integer
+        Get
+            Return Me._tvscraperepisodeactorslimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscraperepisodeactorslimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperEpisodeGuestStarsLimit() As Integer
+        Get
+            Return Me._tvscraperepisodegueststarslimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscraperepisodegueststarslimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowActorsLimit() As Integer
+        Get
+            Return Me._tvscrapershowactorslimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscrapershowactorslimit = value
+        End Set
+    End Property
+
     Public Property MovieActorThumbsKeepExisting() As Boolean
         Get
             Return Me._movieactorthumbskeepexisting
@@ -1089,15 +1122,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviebackdropsauto = value
-        End Set
-    End Property
-
-    Public Property MovieIMDBURL() As String
-        Get
-            Return Me._movieimdburl
-        End Get
-        Set(ByVal value As String)
-            Me._movieimdburl = value
         End Set
     End Property
 
@@ -1949,6 +1973,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieScraperCountryLimit() As Integer
+        Get
+            Return Me._moviescrapercountrylimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._moviescrapercountrylimit = value
+        End Set
+    End Property
+
     Public Property MovieScraperStudioWithImgOnly() As Boolean
         Get
             Return Me._moviescraperstudiowithimgonly
@@ -2161,6 +2194,24 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._moviescrapergenrelimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowGenreLimit() As Integer
+        Get
+            Return Me._tvscrapershowgenrelimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscrapershowgenrelimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowStudioLimit() As Integer
+        Get
+            Return Me._tvscrapershowstudiolimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscrapershowstudiolimit = value
         End Set
     End Property
 
@@ -4390,6 +4441,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscrapershowcountry = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCountryLimit() As Integer
+        Get
+            Return Me._tvscrapershowcountrylimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvscrapershowcountrylimit = value
         End Set
     End Property
 

@@ -269,6 +269,8 @@ Public Class dlgClearOrReplace
                     .bEpisodeActors = chkActors.Checked
                     .bEpisodeAired = chkAired.Checked
                     nInfo.Aired = txtAired.Text.Trim
+                    .bEpisodeCredits = chkWriters.Checked
+                    nInfo.Credits = DoSplit(txtWriters)
                     .bEpisodeDirectors = chkDirectors.Checked
                     nInfo.Directors = DoSplit(txtDirectors)
                     .bEpisodeGuestStars = chkGuestStars.Checked

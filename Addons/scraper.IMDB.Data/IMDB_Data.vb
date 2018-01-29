@@ -164,6 +164,7 @@ Public Class IMDB_Data
         _setup_Movie.cbForceTitleLanguage.Text = _SpecialSettings_Movie.ForceTitleLanguage
         _setup_Movie.chkCountryAbbreviation.Checked = _SpecialSettings_Movie.CountryAbbreviation
         _setup_Movie.chkFallBackworldwide.Checked = _SpecialSettings_Movie.FallBackWorldwide
+        _setup_Movie.chkMPAADescription.Checked = _SpecialSettings_Movie.MPAADescription
         _setup_Movie.chkPartialTitles.Checked = _SpecialSettings_Movie.SearchPartialTitles
         _setup_Movie.chkPopularTitles.Checked = _SpecialSettings_Movie.SearchPopularTitles
         _setup_Movie.chkTvTitles.Checked = _SpecialSettings_Movie.SearchTvTitles
@@ -256,6 +257,7 @@ Public Class IMDB_Data
         _SpecialSettings_Movie.CountryAbbreviation = AdvancedSettings.GetBooleanSetting("CountryAbbreviation", False, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.FallBackWorldwide = AdvancedSettings.GetBooleanSetting("FallBackWorldwide", False, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.ForceTitleLanguage = AdvancedSettings.GetSetting("ForceTitleLanguage", String.Empty, , Enums.ContentType.Movie)
+        _SpecialSettings_Movie.MPAADescription = AdvancedSettings.GetBooleanSetting("MPAADescription", False, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.SearchPartialTitles = AdvancedSettings.GetBooleanSetting("SearchPartialTitles", True, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.SearchPopularTitles = AdvancedSettings.GetBooleanSetting("SearchPopularTitles", True, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.SearchTvTitles = AdvancedSettings.GetBooleanSetting("SearchTvTitles", False, , Enums.ContentType.Movie)
@@ -312,6 +314,7 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("DoYear", ConfigScrapeOptions_Movie.bMainYear, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("CountryAbbreviation", _SpecialSettings_Movie.CountryAbbreviation, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("FallBackWorldwide", _SpecialSettings_Movie.FallBackWorldwide, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("MPAADescription", _SpecialSettings_Movie.MPAADescription, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("SearchPartialTitles", _SpecialSettings_Movie.SearchPartialTitles, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("SearchPopularTitles", _SpecialSettings_Movie.SearchPopularTitles, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("SearchTvTitles", _SpecialSettings_Movie.SearchTvTitles, , , Enums.ContentType.Movie)
@@ -372,6 +375,7 @@ Public Class IMDB_Data
         _SpecialSettings_Movie.CountryAbbreviation = _setup_Movie.chkCountryAbbreviation.Checked
         _SpecialSettings_Movie.FallBackWorldwide = _setup_Movie.chkFallBackworldwide.Checked
         _SpecialSettings_Movie.ForceTitleLanguage = _setup_Movie.cbForceTitleLanguage.Text
+        _SpecialSettings_Movie.MPAADescription = _setup_Movie.chkMPAADescription.Checked
         _SpecialSettings_Movie.SearchPartialTitles = _setup_Movie.chkPartialTitles.Checked
         _SpecialSettings_Movie.SearchPopularTitles = _setup_Movie.chkPopularTitles.Checked
         _SpecialSettings_Movie.SearchTvTitles = _setup_Movie.chkTvTitles.Checked
@@ -503,6 +507,7 @@ Public Class IMDB_Data
         LoadSettings_TV()
 
         Dim nTVShow As MediaContainers.TVShow = Nothing
+        _SpecialSettings_TV.PrefLanguage = oDBElement.Language
         Dim _scraper As New IMDB.Scraper(_SpecialSettings_TV)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
@@ -551,6 +556,7 @@ Public Class IMDB_Data
         LoadSettings_TV()
 
         Dim nTVEpisode As New MediaContainers.EpisodeDetails
+        _SpecialSettings_TV.PrefLanguage = oDBTVEpisode.Language
         Dim _scraper As New IMDB.Scraper(_SpecialSettings_TV)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
@@ -587,15 +593,16 @@ Public Class IMDB_Data
 
 #Region "Fields"
 
+        Dim CountryAbbreviation As Boolean
         Dim FallBackWorldwide As Boolean
         Dim ForceTitleLanguage As String
+        Dim MPAADescription As Boolean
         Dim PrefLanguage As String
         Dim SearchPartialTitles As Boolean
         Dim SearchPopularTitles As Boolean
         Dim SearchTvTitles As Boolean
         Dim SearchVideoTitles As Boolean
         Dim SearchShortTitles As Boolean
-        Dim CountryAbbreviation As Boolean
         Dim StudiowithDistributors As Boolean
 
 #End Region 'Fields

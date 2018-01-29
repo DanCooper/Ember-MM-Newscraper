@@ -57,6 +57,33 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeActorsLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperEpisodeActorsLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperEpisodeActorsLimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperEpisodeGuestStarsLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperEpisodeGuestStarsLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperEpisodeGuestStarsLimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowActorsLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperShowActorsLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperShowActorsLimit = value
+        End Set
+    End Property
+
     Public Property MovieActorThumbsKeepExisting() As Boolean
         Get
             Return Settings._XMLSettings.MovieActorThumbsKeepExisting
@@ -135,15 +162,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieBackdropsAuto = value
-        End Set
-    End Property
-
-    Public Property MovieIMDBURL() As String
-        Get
-            Return Settings._XMLSettings.MovieIMDBURL
-        End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.MovieIMDBURL = value
         End Set
     End Property
 
@@ -959,12 +977,22 @@ Public Class Settings
             Settings._XMLSettings.MovieScraperStudio = value
         End Set
     End Property
+
     Public Property MovieScraperStudioLimit() As Integer
         Get
             Return Settings._XMLSettings.MovieScraperStudioLimit
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.MovieScraperStudioLimit = value
+        End Set
+    End Property
+
+    Public Property MovieScraperCountryLimit() As Integer
+        Get
+            Return Settings._XMLSettings.MovieScraperCountryLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.MovieScraperCountryLimit = value
         End Set
     End Property
 
@@ -1109,6 +1137,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.MovieScraperGenreLimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowGenreLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperShowGenreLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperShowGenreLimit = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowStudioLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperShowStudioLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperShowStudioLimit = value
         End Set
     End Property
 
@@ -3434,6 +3480,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVScraperShowCountry = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCountryLimit() As Integer
+        Get
+            Return Settings._XMLSettings.TVScraperShowCountryLimit
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.TVScraperShowCountryLimit = value
         End Set
     End Property
 
@@ -6875,8 +6930,6 @@ Public Class Settings
             Master.eSettings.MovieFanartFrodo = True
             Master.eSettings.MovieNFOFrodo = True
             Master.eSettings.MoviePosterFrodo = True
-            Master.eSettings.MovieThemeTvTunesEnable = True
-            Master.eSettings.MovieThemeTvTunesMoviePath = True
             Master.eSettings.MovieTrailerFrodo = True
             Master.eSettings.MovieScraperXBMCTrailerFormat = True
         End If
@@ -7064,7 +7117,6 @@ Public Class Settings
         MovieImagesGetEnglishImages = False
         MovieImagesMediaLanguageOnly = False
         MovieImagesNotSaveURLToNfo = False
-        MovieIMDBURL = String.Empty
         MovieLandscapeKeepExisting = False
         MovieLevTolerance = 0
         MovieLockActors = False
@@ -7128,6 +7180,7 @@ Public Class Settings
         MovieScraperCollectionsExtendedInfo = False
         MovieScraperCollectionsYAMJCompatibleSets = False
         MovieScraperCountry = True
+        MovieScraperCountryLimit = 0
         MovieScraperDirector = True
         MovieScraperDurationRuntimeFormat = "<m>"
         MovieScraperGenre = True
@@ -7335,10 +7388,12 @@ Public Class Settings
         TVScraperCleanFields = False
         TVScraperDurationRuntimeFormat = "<m>"
         TVScraperEpisodeActors = True
+        TVScraperEpisodeActorsLimit = 0
         TVScraperEpisodeAired = True
         TVScraperEpisodeCredits = True
         TVScraperEpisodeDirector = True
         TVScraperEpisodeGuestStars = True
+        TVScraperEpisodeGuestStarsLimit = 0
         TVScraperEpisodeGuestStarsToActors = False
         TVScraperEpisodePlot = True
         TVScraperEpisodeRating = True
@@ -7351,6 +7406,7 @@ Public Class Settings
         TVScraperSeasonPlot = True
         TVScraperSeasonTitle = False
         TVScraperShowActors = True
+        TVScraperShowActorsLimit = 0
         TVScraperShowCert = False
         TVScraperShowCertForMPAA = False
         TVScraperShowCertForMPAAFallback = False
@@ -7358,8 +7414,10 @@ Public Class Settings
         TVScraperShowCertOnlyValue = False
         TVScraperShowCreators = True
         TVScraperShowCountry = True
+        TVScraperShowCountryLimit = 0
         TVScraperShowEpiGuideURL = False
         TVScraperShowGenre = True
+        TVScraperShowGenreLimit = 0
         TVScraperShowMPAA = True
         TVScraperShowMPAANotRated = String.Empty
         TVScraperShowOriginalTitle = True
@@ -7370,6 +7428,7 @@ Public Class Settings
         TVScraperShowRuntime = True
         TVScraperShowStatus = True
         TVScraperShowStudio = True
+        TVScraperShowStudioLimit = 0
         TVScraperShowTitle = True
         TVScraperShowUserRating = True
         TVScraperUseDisplaySeasonEpisode = True

@@ -267,7 +267,13 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub LoadFromFile(ByVal strPath As String, Optional bLoadBitmap As Boolean = False)
         If Not String.IsNullOrEmpty(strPath) Then
-            Dim fiImage = New FileInfo(strPath)
+            Dim fiImage As FileInfo = Nothing
+            Try
+                fiImage = New FileInfo(strPath)
+            Catch ex As Exception
+                logger.Error(String.Format("[APIImages] [LoadFromFile]: (0) ""(1)""", ex.Message, strPath))
+                Return
+            End Try
 
             If Not fiImage.Exists Then
                 logger.Error(String.Format("[APIImages] [LoadFromFile]: File ""{0}"" not found", strPath))

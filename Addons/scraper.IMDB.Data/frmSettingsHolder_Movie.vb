@@ -65,6 +65,16 @@ Public Class frmSettingsHolder_Movie
 
     Private Sub chkMPAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMPAA.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
+        If chkMPAA.Checked Then
+            chkMPAADescription.Enabled = True
+        Else
+            chkMPAADescription.Checked = False
+            chkMPAADescription.Enabled = False
+        End If
+    End Sub
+
+    Private Sub chkMPAADescription_CheckedChanged(sender As Object, e As EventArgs) Handles chkMPAADescription.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub chkWriters_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkWriters.CheckedChanged
@@ -109,11 +119,11 @@ Public Class frmSettingsHolder_Movie
 
     Private Sub chkStudio_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkStudios.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
-        If chkStudios.Checked = False Then
+        If chkStudios.Checked Then
+            chkStudiowithDistributors.Enabled = True
+        Else
             chkStudiowithDistributors.Checked = False
             chkStudiowithDistributors.Enabled = False
-        Else
-            chkStudiowithDistributors.Enabled = True
         End If
     End Sub
 
@@ -166,7 +176,7 @@ Public Class frmSettingsHolder_Movie
     End Sub
 
     Private Sub cbForceTitleLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbForceTitleLanguage.SelectedIndexChanged
-        If cbForceTitleLanguage.SelectedIndex = -1 OrElse cbForceTitleLanguage.Text = "" Then
+        If cbForceTitleLanguage.SelectedIndex = -1 OrElse cbForceTitleLanguage.Text = String.Empty Then
             chkFallBackworldwide.Checked = False
             chkFallBackworldwide.Enabled = False
         Else
@@ -206,6 +216,7 @@ Public Class frmSettingsHolder_Movie
         chkFallBackworldwide.Text = Master.eLang.GetString(984, "Worldwide title as fallback")
         chkGenres.Text = Master.eLang.GetString(725, "Genres")
         chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
+        chkMPAADescription.Text = String.Format("{0} *", Master.eLang.GetString(1088, "include Description"))
         chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         chkPlot.Text = Master.eLang.GetString(65, "Plot")
@@ -228,6 +239,7 @@ Public Class frmSettingsHolder_Movie
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")
         lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
+        lblInfoParsing.Text = String.Format("* {0}", Master.eLang.GetString(1380, "additional page(s) to parse, needs longer to scrape"))
         lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         chkStudiowithDistributors.Text = Master.eLang.GetString(1456, "Include Distributors")
     End Sub

@@ -643,7 +643,7 @@ Public Class Scanner
 
         'IMDB ID
         If Not DBMovie.Movie.IMDBSpecified Then
-            DBMovie.Movie.IMDB = StringUtils.FilterIMDBIDFromPath(DBMovie.Filename, True)
+            DBMovie.Movie.IMDB = StringUtils.GetIMDBIDFromString(DBMovie.Filename, True)
         End If
 
         'Title
@@ -950,7 +950,7 @@ Public Class Scanner
 
                 'IMDB ID
                 If Not DBTVShow.TVShow.IMDBSpecified Then
-                    DBTVShow.TVShow.IMDB = StringUtils.FilterIMDBIDFromPath(DBTVShow.ShowPath, True)
+                    DBTVShow.TVShow.IMDB = StringUtils.GetIMDBIDFromString(DBTVShow.ShowPath, True)
                 End If
 
                 'Title
@@ -1648,7 +1648,6 @@ Public Class Scanner
         Master.DB.ClearNew()
 
         If Args.Scan.SpecificFolder AndAlso Not String.IsNullOrEmpty(Args.Folder) AndAlso Directory.Exists(Args.Folder) Then
-
             For Each eSource In Master.MovieSources
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
@@ -1750,6 +1749,7 @@ Public Class Scanner
                                     Catch ex As Exception
                                         logger.Error(ex, New StackFrame().GetMethod().Name)
                                     End Try
+                                    bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.CurrentSource, .Message = String.Format("{0} ({1})", sSource.Name, sSource.Path)})
                                     ScanSourceDirectory_Movie(sSource, True)
                                 End If
                                 If bwPrelim.CancellationPending Then

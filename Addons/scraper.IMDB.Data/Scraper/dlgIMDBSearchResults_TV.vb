@@ -205,7 +205,6 @@ Public Class dlgIMDBSearchResults_TV
         ControlsVisible(False)
         lblTitle.Text = String.Empty
         lblTagline.Text = String.Empty
-        lblPremiered.Text = String.Empty
         lblCreators.Text = String.Empty
         lblGenre.Text = String.Empty
         txtPlot.Text = String.Empty
@@ -218,13 +217,11 @@ Public Class dlgIMDBSearchResults_TV
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
-        lblPremieredHeader.Visible = areVisible
         lblCreatorsHeader.Visible = areVisible
         lblGenreHeader.Visible = areVisible
         lblPlotHeader.Visible = areVisible
         lblIMDBHeader.Visible = areVisible
         txtPlot.Visible = areVisible
-        lblPremiered.Visible = areVisible
         lblTagline.Visible = areVisible
         lblTitle.Visible = areVisible
         lblCreators.Visible = areVisible
@@ -285,7 +282,6 @@ Public Class dlgIMDBSearchResults_TV
             _tmpTVShow = sInfo
             lblTitle.Text = _tmpTVShow.Title
             lblTagline.Text = String.Empty
-            lblPremiered.Text = _tmpTVShow.Premiered
             lblCreators.Text = String.Join(" / ", _tmpTVShow.Creators)
             lblGenre.Text = String.Join(" / ", _tmpTVShow.Genres.ToArray)
             txtPlot.Text = _tmpTVShow.Plot
@@ -347,7 +343,6 @@ Public Class dlgIMDBSearchResults_TV
         aOpt.bMainCreators = True
         aOpt.bMainGenres = True
         aOpt.bMainPlot = True
-        aOpt.bMainPremiered = True
         aOpt.bMainTitle = True
 
         Return aOpt
@@ -356,12 +351,11 @@ Public Class dlgIMDBSearchResults_TV
     Private Sub SetUp()
         OK_Button.Text = Master.eLang.GetString(179, "OK")
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
+        Label2.Text = Master.eLang.GetString(951, "View details of each result to find the proper TV show.")
         Label1.Text = Master.eLang.GetString(948, "TV Search Results")
         chkManual.Text = Master.eLang.GetString(847, "Manual IMDB Entry:")
         btnVerify.Text = Master.eLang.GetString(848, "Verify")
         lblCreatorsHeader.Text = String.Concat(Master.eLang.GetString(744, "Creators"), ":")
-        lblPremieredHeader.Text = String.Concat(Master.eLang.GetString(724, "Premiered"), ":")
         lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
         lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
         lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")

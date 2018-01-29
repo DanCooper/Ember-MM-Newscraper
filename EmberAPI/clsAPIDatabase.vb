@@ -997,7 +997,10 @@ Public Class Database
             If moviesToSave.Count > 0 Then
                 For Each movie In moviesToSave
                     movie.Movie.RemoveSet(ID)
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, movie)
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, movie)
                     Save_Movie(movie, BatchMode, True, False, True, False)
+                    RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {movie.ID}))
                 Next
             End If
 
@@ -1012,18 +1015,6 @@ Public Class Database
                 Images.Delete_MovieSet(MovieSet, Enums.ModifierType.MainLandscape)
                 Images.Delete_MovieSet(MovieSet, Enums.ModifierType.MainPoster)
             End If
-
-            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idMovie FROM setlinkmovie ",
-                                                       "WHERE idSet = ", ID, ";")
-                Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        If Not DBNull.Value.Equals(SQLreader("idMovie")) Then
-                            moviesToSave.Add(Load_Movie(Convert.ToInt64(SQLreader("idMovie"))))
-                        End If
-                    End While
-                End Using
-            End Using
 
             'remove the movieset and still existing setlinkmovie entries
             Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -2383,7 +2374,7 @@ Public Class Database
                     person.Role = SQLreader("strRole").ToString
                     person.LocalFilePath = SQLreader("url").ToString
                     person.URLOriginal = SQLreader("strThumb").ToString
-                    _TVDB.TVEpisode.Actors.Add(person)
+                    _TVDB.TVEpisode.GuestStars.Add(person)
                 End While
             End Using
         End Using

@@ -188,7 +188,7 @@
   <string id="187">&amp;Format / Indent</string>
   <string id="188">&amp;Parse</string>
   <string id="189">&amp;Save</string>
-  <string id="190">Manual NFO Editor |</string>
+  <string id="190">Manual NFO Editor</string>
   <string id="191">This is not a proper XML document</string>
   <string id="192">File is not valid.</string>
   <string id="193">File is valid.</string>
@@ -260,7 +260,7 @@
   <string id="259">File Pattern</string>
   <string id="260">Folder Pattern (for Multiple movies in Folder)</string>
   <string id="261">Display Only Movies That Will Be Renamed</string>
-  <string id="262">$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot, comma or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value</string>
+  <string id="262">$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$5 = Collection List Title{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot, comma or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value</string>
   <string id="263">Manual Rename</string>
   <string id="264">Exclude</string>
   <string id="265">Scraping Episode Images</string>
@@ -882,7 +882,7 @@
   <string id="881">Added</string>
   <string id="882">comma separated</string>
   <string id="883">Episode Scraped</string>
-  <string id="884">IMDB Mirror:</string>
+  <string id="884"></string>
   <string id="885">Change Watched Status</string>
   <string id="886">Downloading {0}</string>
   <string id="887">Preparing images...</string>
@@ -1177,7 +1177,7 @@
   <string id="1085">Directory already exists or is not empty</string>
   <string id="1086">The directory can not be renamed because the directory is specified as the source.</string>
   <string id="1087">Clear or Replace Data Fields</string>
-  <string id="1088"></string>
+  <string id="1088">include Description</string>
   <string id="1089">Added TV Show</string>
   <string id="1090">Active</string>
   <string id="1091">Inactive</string>
@@ -1220,7 +1220,7 @@
   <string id="1128">Scraping Media (Selected Movies - Ask):</string>
   <string id="1129">Scraping Media (Selected Movies - Auto):</string>
   <string id="1130">Scraping Media (Selected Movies - Skip):</string>
-  <string id="1131"></string>
+  <string id="1131">Scanning Source</string>
   <string id="1132">Edit the details for the selected movieset.</string>
   <string id="1133">You need your own API key for that</string>
   <string id="1134">Error</string>
@@ -1469,7 +1469,7 @@
   <string id="1377">Query</string>
   <string id="1378">Type</string>
   <string id="1379">Movie</string>
-  <string id="1380"></string>
+  <string id="1380">additional page(s) to parse, needs longer to scrape</string>
   <string id="1381">Movieset</string>
   <string id="1382">Result of query must contain either field idMovie (Movie-Filter), idSet(Set-Filter) or idShow(Show-Filter) or/and idMedia!</string>
   <string id="1383">Complete overview of Ember datatables:</string>

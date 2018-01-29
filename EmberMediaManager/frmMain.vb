@@ -156,20 +156,36 @@ Public Class frmMain
     'Theme Information
     Private _bannermaxheight As Integer = 160
     Private _bannermaxwidth As Integer = 285
+    Private _bannerposleft As Integer = 124
+    Private _bannerpostop As Integer = 327
     Private _characterartmaxheight As Integer = 160
     Private _characterartmaxwidth As Integer = 160
+    Private _characterartposleft As Integer = 1011
+    Private _characterartpostop As Integer = 130
     Private _clearartmaxheight As Integer = 160
     Private _clearartmaxwidth As Integer = 285
+    Private _clearartposleft As Integer = 715
+    Private _clearartpostop As Integer = 130
     Private _clearlogomaxheight As Integer = 160
     Private _clearlogomaxwidth As Integer = 285
+    Private _clearlogoposleft As Integer = 419
+    Private _clearlogopostop As Integer = 327
     Private _discartmaxheight As Integer = 160
     Private _discartmaxwidth As Integer = 160
-    Private _postermaxheight As Integer = 160
-    Private _postermaxwidth As Integer = 160
+    Private _discartposleft As Integer = 1011
+    Private _discartpostop As Integer = 130
     Private _fanartsmallmaxheight As Integer = 160
     Private _fanartsmallmaxwidth As Integer = 285
+    Private _fanartsmallposleft As Integer = 124
+    Private _fanartsmallpostop As Integer = 130
     Private _landscapemaxheight As Integer = 160
     Private _landscapemaxwidth As Integer = 285
+    Private _landscapeposleft As Integer = 419
+    Private _landscapepostop As Integer = 130
+    Private _postermaxheight As Integer = 160
+    Private _postermaxwidth As Integer = 160
+    Private _posterposleft As Integer = 4
+    Private _posterpostop As Integer = 130
     Private tTheme As New Theming
     Private _genrepanelcolor As Color = Color.Gainsboro
     Private _ipmid As Integer = 280
@@ -261,6 +277,24 @@ Public Class frmMain
         End Set
     End Property
 
+    Public Property BannerPosLeft() As Integer
+        Get
+            Return _bannerposleft
+        End Get
+        Set(ByVal value As Integer)
+            _bannerposleft = value
+        End Set
+    End Property
+
+    Public Property BannerPosTop() As Integer
+        Get
+            Return _bannerpostop
+        End Get
+        Set(ByVal value As Integer)
+            _bannerpostop = value
+        End Set
+    End Property
+
     Public Property CharacterArtMaxHeight() As Integer
         Get
             Return _characterartmaxheight
@@ -276,6 +310,24 @@ Public Class frmMain
         End Get
         Set(ByVal value As Integer)
             _characterartmaxwidth = value
+        End Set
+    End Property
+
+    Public Property CharacterArtPosLeft() As Integer
+        Get
+            Return _characterartposleft
+        End Get
+        Set(ByVal value As Integer)
+            _characterartposleft = value
+        End Set
+    End Property
+
+    Public Property CharacterArtPosTop() As Integer
+        Get
+            Return _characterartpostop
+        End Get
+        Set(ByVal value As Integer)
+            _characterartpostop = value
         End Set
     End Property
 
@@ -297,6 +349,24 @@ Public Class frmMain
         End Set
     End Property
 
+    Public Property ClearArtPosLeft() As Integer
+        Get
+            Return _clearartposleft
+        End Get
+        Set(ByVal value As Integer)
+            _clearartposleft = value
+        End Set
+    End Property
+
+    Public Property ClearArtPosTop() As Integer
+        Get
+            Return _clearartpostop
+        End Get
+        Set(ByVal value As Integer)
+            _clearartpostop = value
+        End Set
+    End Property
+
     Public Property ClearLogoMaxHeight() As Integer
         Get
             Return _clearlogomaxheight
@@ -312,6 +382,24 @@ Public Class frmMain
         End Get
         Set(ByVal value As Integer)
             _clearlogomaxwidth = value
+        End Set
+    End Property
+
+    Public Property ClearLogoPosLeft() As Integer
+        Get
+            Return _clearlogoposleft
+        End Get
+        Set(ByVal value As Integer)
+            _clearlogoposleft = value
+        End Set
+    End Property
+
+    Public Property ClearLogoPosTop() As Integer
+        Get
+            Return _clearlogopostop
+        End Get
+        Set(ByVal value As Integer)
+            _clearlogopostop = value
         End Set
     End Property
 
@@ -333,6 +421,24 @@ Public Class frmMain
         End Set
     End Property
 
+    Public Property DiscArtPosLeft() As Integer
+        Get
+            Return _discartposleft
+        End Get
+        Set(ByVal value As Integer)
+            _discartposleft = value
+        End Set
+    End Property
+
+    Public Property DiscArtPosTop() As Integer
+        Get
+            Return _discartpostop
+        End Get
+        Set(ByVal value As Integer)
+            _discartpostop = value
+        End Set
+    End Property
+
     Public Property PosterMaxHeight() As Integer
         Get
             Return _postermaxheight
@@ -348,6 +454,24 @@ Public Class frmMain
         End Get
         Set(ByVal value As Integer)
             _postermaxwidth = value
+        End Set
+    End Property
+
+    Public Property PosterPosLeft() As Integer
+        Get
+            Return _posterposleft
+        End Get
+        Set(ByVal value As Integer)
+            _posterposleft = value
+        End Set
+    End Property
+
+    Public Property PosterPosTop() As Integer
+        Get
+            Return _posterpostop
+        End Get
+        Set(ByVal value As Integer)
+            _posterpostop = value
         End Set
     End Property
 
@@ -369,6 +493,24 @@ Public Class frmMain
         End Set
     End Property
 
+    Public Property FanartSmallPosLeft() As Integer
+        Get
+            Return _fanartsmallposleft
+        End Get
+        Set(ByVal value As Integer)
+            _fanartsmallposleft = value
+        End Set
+    End Property
+
+    Public Property FanartSmallPosTop() As Integer
+        Get
+            Return _fanartsmallpostop
+        End Get
+        Set(ByVal value As Integer)
+            _fanartsmallpostop = value
+        End Set
+    End Property
+
     Public Property LandscapeMaxHeight() As Integer
         Get
             Return _landscapemaxheight
@@ -384,6 +526,24 @@ Public Class frmMain
         End Get
         Set(ByVal value As Integer)
             _landscapemaxwidth = value
+        End Set
+    End Property
+
+    Public Property LandscapePosLeft() As Integer
+        Get
+            Return _landscapeposleft
+        End Get
+        Set(ByVal value As Integer)
+            _landscapeposleft = value
+        End Set
+    End Property
+
+    Public Property LandscapePosTop() As Integer
+        Get
+            Return _landscapepostop
+        End Get
+        Set(ByVal value As Integer)
+            _landscapepostop = value
         End Set
     End Property
 
@@ -902,7 +1062,7 @@ Public Class frmMain
                 CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_Movie, ScrapeModifiers)
             End If
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            If dgvMovies.SelectedRows.Count = 1 AndAlso Not String.IsNullOrEmpty(currTV.Filename) Then
+            If dgvTVEpisodes.SelectedRows.Count = 1 AndAlso currTV.FilenameSpecified Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
                 CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
@@ -5431,7 +5591,10 @@ Public Class frmMain
     ''' the remaining genres are still processed, however the placement/spacing
     ''' of the remaining genres may show gaps where the erronious genres should have been</remarks>
     Private Sub createGenreThumbs(ByVal genres As List(Of String))
-        If ((genres Is Nothing) OrElse (genres.Count = 0)) Then Return
+        If genres Is Nothing OrElse genres.Count = 0 Then Return
+
+        genres.Sort()
+        genres.Reverse()
 
         For i As Integer = 0 To genres.Count - 1
             Try
@@ -9188,6 +9351,7 @@ Public Class frmMain
             pbPosterCache.Image = MainPoster.Image
             ImageUtils.ResizePB(pbPoster, pbPosterCache, PosterMaxHeight, PosterMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbPoster)
+            pnlPoster.Location = New Point(PosterPosLeft, PosterPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblPosterSize.Visible = True
@@ -9212,8 +9376,7 @@ Public Class frmMain
             pbFanartSmallCache.Image = MainFanartSmall.Image
             ImageUtils.ResizePB(pbFanartSmall, pbFanartSmallCache, FanartSmallMaxHeight, FanartSmallMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbFanartSmall)
-            'Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)    TODO: move the Location to theme settings
-            pnlFanartSmall.Location = New Point(124, 130)
+            pnlFanartSmall.Location = New Point(FanartSmallPosLeft, FanartSmallPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblFanartSmallSize.Visible = True
@@ -9238,8 +9401,7 @@ Public Class frmMain
             pbLandscapeCache.Image = MainLandscape.Image
             ImageUtils.ResizePB(pbLandscape, pbLandscapeCache, LandscapeMaxHeight, LandscapeMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbLandscape)
-            'Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
-            pnlLandscape.Location = New Point(419, 130)
+            pnlLandscape.Location = New Point(LandscapePosLeft, LandscapePosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblLandscapeSize.Visible = True
@@ -9264,8 +9426,7 @@ Public Class frmMain
             pbClearArtCache.Image = MainClearArt.Image
             ImageUtils.ResizePB(pbClearArt, pbClearArtCache, ClearArtMaxHeight, ClearArtMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbClearArt)
-            'Me.pnlClearArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 5, Me.pnlLandscape.Location.Y)
-            pnlClearArt.Location = New Point(715, 130)
+            pnlClearArt.Location = New Point(ClearArtPosLeft, ClearArtPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblClearArtSize.Visible = True
@@ -9290,8 +9451,7 @@ Public Class frmMain
             pbCharacterArtCache.Image = MainCharacterArt.Image
             ImageUtils.ResizePB(pbCharacterArt, pbCharacterArtCache, CharacterArtMaxHeight, CharacterArtMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbCharacterArt)
-            'Me.pnlCharacterArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
-            pnlCharacterArt.Location = New Point(1011, 130)
+            pnlCharacterArt.Location = New Point(CharacterArtPosLeft, CharacterArtPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblCharacterArtSize.Visible = True
@@ -9316,8 +9476,7 @@ Public Class frmMain
             pbDiscArtCache.Image = MainDiscArt.Image
             ImageUtils.ResizePB(pbDiscArt, pbDiscArtCache, DiscArtMaxHeight, DiscArtMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbDiscArt)
-            'Me.pnlDiscArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
-            pnlDiscArt.Location = New Point(1011, 130)
+            pnlDiscArt.Location = New Point(DiscArtPosLeft, DiscArtPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblDiscArtSize.Visible = True
@@ -9342,8 +9501,7 @@ Public Class frmMain
             pbBannerCache.Image = MainBanner.Image
             ImageUtils.ResizePB(pbBanner, pbBannerCache, BannerMaxHeight, BannerMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbBanner)
-            'Me.pnlBanner.Location = New Point(Me.pnlFanartSmall.Location.X, Me.pnlFanartSmall.Location.Y + Me.pnlFanartSmall.Height + 5)
-            pnlBanner.Location = New Point(124, 327)
+            pnlBanner.Location = New Point(BannerPosLeft, BannerPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblBannerSize.Visible = True
@@ -9368,8 +9526,7 @@ Public Class frmMain
             pbClearLogoCache.Image = MainClearLogo.Image
             ImageUtils.ResizePB(pbClearLogo, pbClearLogoCache, ClearLogoMaxHeight, ClearLogoMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbClearLogo)
-            'Me.pnlClearLogo.Location = New Point(Me.pnlLandscape.Location.X, Me.pnlLandscape.Location.Y + Me.pnlLandscape.Height + 5)
-            pnlClearLogo.Location = New Point(419, 327)
+            pnlClearLogo.Location = New Point(ClearLogoPosLeft, ClearLogoPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblClearLogoSize.Visible = True
@@ -15698,6 +15855,8 @@ Public Class frmMain
                 AddRow_TVShow(eProgressValue.ID)
             Case Enums.ScannerEventType.CleaningDatabase
                 SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
+            Case Enums.ScannerEventType.CurrentSource
+                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(1131, "Scanning Source"), ":"), " ", eProgressValue.Message))
             Case Enums.ScannerEventType.PreliminaryTasks
                 SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Case Enums.ScannerEventType.Refresh_TVShow

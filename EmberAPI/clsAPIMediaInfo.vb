@@ -747,6 +747,15 @@ Public Class MediaInfo
                                                                               """"), False, True)
                             End If
 
+                            'timeout enabled to wait for virtual drive
+                            Dim strTimeout = AdvancedSettings.GetSetting("GeneralDaemonTimeout", String.Empty)
+                            If Not String.IsNullOrEmpty(strTimeout) Then
+                                Dim iTimeout As Integer
+                                If Integer.TryParse(strTimeout, iTimeout) Then
+                                    Threading.Thread.Sleep(iTimeout)
+                                End If
+                            End If
+
                             'now check if it's bluray or dvd image/VIDEO_TS/BMDV Folder-Scanning!
                             If Directory.Exists(String.Concat(driveletter, ":\VIDEO_TS")) Then
                                 sPath = String.Concat(driveletter, ":\VIDEO_TS")

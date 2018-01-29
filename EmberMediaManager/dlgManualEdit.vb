@@ -52,60 +52,25 @@ Public Class dlgManualEdit
         StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal nfoPath As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal nfoPath As String) As DialogResult
         currFile = nfoPath
-
         Return ShowDialog()
     End Function
 
-    Private Function ConstructTag(ByVal ElementNameParam As String) As String
-        Dim ElementName As String
-        ElementName = ElementNameParam
-        Dim myRow As DataRow
-
-        Try
-
-            Dim currRows() As DataRow = DtdDt.Select(Nothing, Nothing, DataViewRowState.CurrentRows)
-
-            If (currRows.Length < 1) Then
-                XmlViewer.Text += "No Current Rows Found"
-            Else
-
-                For Each myRow In currRows
-                    If myRow(2).ToString = "Att" Then
-
-                        If myRow(0).ToString = ElementNameParam.Trim Then
-                            ElementName = ElementName + " " + myRow(1).ToString + "="" """
-                        End If
-                    End If
-
-                Next
-            End If
-
-            ElementName += ">"
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        Return ElementName
-    End Function
-
     Private Sub Editor_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Activated
-        XmlViewer.Focus()
+        xmlvNFO.Focus()
     End Sub
 
     Private Sub Editor_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
-        If Changed = True Then
+        If Changed Then
             If MessageBox.Show(Master.eLang.GetString(196, "Do you want to save changes?"), Master.eLang.GetString(197, "Save?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-                File.WriteAllText(currFile, XmlViewer.Text, Encoding.UTF8)
-                'RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
-                DialogResult = Windows.Forms.DialogResult.OK
+                File.WriteAllText(currFile, xmlvNFO.Text, Encoding.UTF8)
+                DialogResult = DialogResult.OK
             Else
                 e.Cancel = True
             End If
         Else
-            If ReturnOK Then DialogResult = Windows.Forms.DialogResult.OK
+            If ReturnOK Then DialogResult = DialogResult.OK
         End If
     End Sub
 
@@ -114,186 +79,37 @@ Public Class dlgManualEdit
 
         If Not String.IsNullOrEmpty(currFile) Then
             If File.Exists(currFile) Then
-                Cursor = System.Windows.Forms.Cursors.WaitCursor
-                XmlViewer.Text = File.ReadAllText(currFile, Encoding.UTF8)
-                'RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
+                Cursor = Cursors.WaitCursor
+                xmlvNFO.Text = File.ReadAllText(currFile, Encoding.UTF8)
                 Try
                     'Let's remove the xmlns
-                    Dim aI As Integer = XmlViewer.Find("xmlns")
+                    Dim aI As Integer = xmlvNFO.Find(" xmlns")
                     If aI > 0 Then
-                        Dim aJ As Integer = XmlViewer.Find(">", aI + 1, RichTextBoxFinds.None)
-                        Dim aS1 As String = XmlViewer.Text.Substring(0, aI)
-                        Dim aS2 As String = XmlViewer.Text.Substring(aI, aJ - aI)
-                        Dim aS3 As String = XmlViewer.Text.Substring(aJ, XmlViewer.Text.Length - aJ)
-                        XmlViewer.Text = aS1 & aS3
+                        Dim aJ As Integer = xmlvNFO.Find(">", aI + 1, RichTextBoxFinds.None)
+                        Dim aS1 As String = xmlvNFO.Text.Substring(0, aI)
+                        Dim aS2 As String = xmlvNFO.Text.Substring(aI, aJ - aI)
+                        Dim aS3 As String = xmlvNFO.Text.Substring(aJ, xmlvNFO.Text.Length - aJ)
+                        xmlvNFO.Text = aS1 & aS3
                     End If
-                    XmlViewer.Process(True)
+                    xmlvNFO.Process(True)
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
                 ParseFile(True)
-                Cursor = System.Windows.Forms.Cursors.Default
+                Cursor = Cursors.Default
             End If
 
-            Text = String.Concat(Master.eLang.GetString(190, "Manual NFO Editor | "), currFile.Substring(currFile.LastIndexOf(Path.DirectorySeparatorChar) + 1))
+            Text = String.Format("{0} | {1}", Master.eLang.GetString(190, "Manual NFO Editor"), currFile.Substring(currFile.LastIndexOf(Path.DirectorySeparatorChar) + 1))
         End If
-
-        Changed = False
 
         Activate()
     End Sub
 
-    'Private Sub IndentFormat()
-    '    Try
-    '        Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
-
-    '        Dim tempfile As String = Path.GetTempPath + "nfo-uf.tmp"
-    '        File.WriteAllText(tempfile, XmlViewer.Text, Encoding.UTF8)
-    '        'RichTextBox1.SaveFile(tempfile, RichTextBoxStreamType.PlainText)
-
-    '        Dim IfErr As Boolean = False
-    '        Dim StrR As New StreamReader(tempfile)
-    '        Dim StrW As New StreamWriter(Path.GetTempPath + "nfo.tmp", False)
-    '        Dim AllData As String = StrR.ReadToEnd
-    '        Dim m As Match
-
-    '        Dim TagS As String, i As Integer
-
-    '        'Converting entire file to a single line
-
-    '        AllData = AllData.Replace(Environment.NewLine, String.Empty)
-    '        AllData = AllData.Replace(vbCrLf, String.Empty)
-    '        AllData = AllData.Replace(vbLf, String.Empty)
-    '        AllData = AllData.Replace(vbCr, String.Empty)
-    '        AllData = AllData.Replace(vbTab, String.Empty).Trim
-
-    '        'Looking for Processing Instruction and DTD declaration
-
-    '        For i = 0 To 3 'We assume only first 4 lines have Processing Instruction and DTD declaration
-    '            m = Regex.Match(AllData, "^\<\?([^>]+)\>", RegexOptions.IgnoreCase) 'go to MSDN for RegularExpression Help
-    '            TagS = String.Empty
-    '            If m.Success Then
-    '                TagS = Regex.Replace(AllData, "^\<\?([^>]+)\>(.*)", "<?$1>", RegexOptions.IgnoreCase)
-    '                AllData = Regex.Replace(AllData, "^\<\?([^>]+)\>(.*)", "$2", RegexOptions.IgnoreCase)
-    '                StrW.WriteLine(TagS)
-    '            Else
-    '                m = Regex.Match(AllData, "^\<\!DOCTYPE([^>]+)\>", RegexOptions.IgnoreCase)
-    '                If m.Success Then
-    '                    TagS = Regex.Replace(AllData, "^\<\!DOCTYPE([^>]+)\>(.*)", "<!DOCTYPE$1>", RegexOptions.IgnoreCase)
-    '                    AllData = Regex.Replace(AllData, "^\<\!DOCTYPE([^>]+)\>(.*)", "$2", RegexOptions.IgnoreCase)
-    '                    StrW.WriteLine(TagS)
-    '                End If
-
-    '            End If
-
-    '        Next
-
-    '        Dim LevelX, j As Integer, TabC As String
-
-    '        Do
-    '            TagS = String.Empty
-    '            TabC = String.Empty
-
-    '            m = Regex.Match(AllData, "^\<([^>]+) \/\>") 'Single Tag
-    '            If m.Success Then
-
-    '                TagS = Regex.Replace(AllData, "^\<([^>]+) \/\>(.*)", "<$1 />").Trim
-    '                AllData = Regex.Replace(AllData, "^\<([^>]+) \/\>(.*)", "$2").Trim
-
-    '                For j = 1 To LevelX
-    '                    TabC += vbTab
-    '                Next
-    '                StrW.WriteLine(String.Concat(TabC, TagS))
-    '            Else
-    '                m = Regex.Match(AllData, "^\<([^>/]+)\>([^<]+)\<\/([^>/]+)\>") 'Opening Tag
-    '                If m.Success Then
-    '                    TagS = Regex.Replace(AllData, "^\<([^>/]+)\>([^<]+)\<\/([^>/]+)\>(.*)", "<$1>$2</$3>").Trim
-
-    '                    AllData = Regex.Replace(AllData, "^\<([^>/]+)\>([^<]+)\<\/([^>/]+)\>(.*)", "$4").Trim
-
-    '                    For j = 1 To LevelX 'Calculating depth of tag
-    '                        TabC += vbTab
-    '                    Next
-    '                    StrW.WriteLine(String.Concat(TabC, TagS))
-    '                Else
-    '                    m = Regex.Match(AllData, "^\<\/([^>]+)\>(.*)") 'Closing Tag
-    '                    If m.Success Then
-
-    '                        TagS = Regex.Replace(AllData, "^\<\/([^>]+)\>(.*)", "</$1>").Trim
-    '                        AllData = Regex.Replace(AllData, "^\<\/([^>]+)\>(.*)", "$2").Trim
-    '                        LevelX -= 1
-
-    '                        For j = 1 To LevelX
-    '                            TabC += vbTab
-    '                        Next
-
-    '                        StrW.WriteLine(String.Concat(TabC, TagS))
-
-    '                    Else
-    '                        m = Regex.Match(AllData, "^\<([^>]+)\>(.*)")
-    '                        If m.Success Then
-    '                            TagS = Regex.Replace(AllData, "^\<([^>]+)\>(.*)", "<$1>").Trim
-    '                            AllData = Regex.Replace(AllData, "^\<([^>]+)\>(.*)", "$2").Trim
-    '                            LevelX += 1
-    '                            For j = 1 To LevelX - 1
-    '                                TabC += vbTab
-    '                            Next
-
-    '                            StrW.WriteLine(String.Concat(TabC, TagS))
-
-    '                        Else
-    '                            m = Regex.Match(AllData, "^([^<]+)\<")
-    '                            If m.Success Then
-    '                                TagS = Regex.Replace(AllData, "^([^<]+)\<(.*)", "$1").Trim
-
-    '                                AllData = Regex.Replace(AllData, "^([^<]+)\<(.*)", "<$2").Trim
-
-    '                                For j = 0 To LevelX - 1
-    '                                    TabC += vbTab
-    '                                Next
-
-    '                                StrW.WriteLine(String.Concat(TabC, TagS))
-
-    '                            Else
-    '                                MsgBox(Master.eLang.GetString(191, "This is not a proper XML document"), MsgBoxStyle.Information)
-    '                                IfErr = True
-    '                                Exit Do
-
-    '                            End If
-
-    '                        End If
-
-    '                    End If
-
-    '                End If
-
-    '            End If
-
-    '            If AllData.Length < 2 Then
-    '                Exit Do
-    '            End If
-
-    '        Loop While True
-
-    '        StrR.Close()
-    '        StrW.Close()
-
-    '        If IfErr = False Then
-    '            XmlViewer.LoadFile(Path.GetTempPath + "nfo.tmp", RichTextBoxStreamType.PlainText)
-    '        End If
-
-    '    Catch ex As Exception
-    '        logger.Error(New StackFrame().GetMethod().Name,ex)
-    '    End Try
-
-    '    Me.Cursor = System.Windows.Forms.Cursors.Default
-    'End Sub
-
-    Private Sub ListBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBox1.SelectedIndexChanged
+    Private Sub lbErrorLog_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbErrorLog.SelectedIndexChanged
         Dim SelItem As String
         Dim linN, colN As Integer
 
-        SelItem = ListBox1.SelectedItem.ToString
+        SelItem = lbErrorLog.SelectedItem.ToString
 
         If Not String.IsNullOrEmpty(SelItem) Then
 
@@ -303,15 +119,15 @@ Public Class dlgManualEdit
             Dim mc As MatchCollection
             Dim i As Integer = 0
 
-            mc = Regex.Matches(XmlViewer.Text, "\n", RegexOptions.Singleline)
+            mc = Regex.Matches(xmlvNFO.Text, "\n", RegexOptions.Singleline)
 
             Try
-                XmlViewer.Select(mc(linN - 2).Index + colN, 2)
-                XmlViewer.SelectionColor = Color.Blue
-                XmlViewer.Focus()
+                xmlvNFO.Select(mc(linN - 2).Index + colN, 2)
+                xmlvNFO.SelectionColor = Color.Blue
+                xmlvNFO.Focus()
 
             Catch ex As Exception
-                XmlViewer.Focus()
+                xmlvNFO.Focus()
             End Try
         End If
     End Sub
@@ -322,9 +138,9 @@ Public Class dlgManualEdit
 
     Private Sub mnuFormat_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFormat.Click
         Try
-            Cursor = System.Windows.Forms.Cursors.WaitCursor
-            XmlViewer.Process(True)
-            Cursor = System.Windows.Forms.Cursors.Default
+            Cursor = Cursors.WaitCursor
+            xmlvNFO.Process(True)
+            Cursor = Cursors.Default
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
@@ -335,8 +151,7 @@ Public Class dlgManualEdit
     End Sub
 
     Private Sub mnuSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSave.Click
-        File.WriteAllText(currFile, XmlViewer.Text, Encoding.UTF8)
-        'RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
+        File.WriteAllText(currFile, xmlvNFO.Text, Encoding.UTF8)
         ReturnOK = True
         Changed = False
     End Sub
@@ -346,11 +161,10 @@ Public Class dlgManualEdit
             Exit Sub
         End If
 
-        Cursor = System.Windows.Forms.Cursors.WaitCursor
+        Cursor = Cursors.WaitCursor
 
         Dim tempFile As String = Path.GetTempPath + "nfo.tmp"
-        File.WriteAllText(tempFile, XmlViewer.Text, Encoding.UTF8)
-        'RichTextBox1.SaveFile(tempFile, RichTextBoxStreamType.PlainText)
+        File.WriteAllText(tempFile, xmlvNFO.Text, Encoding.UTF8)
 
         Dim xmlP As New XmlTextReader(tempFile)
         ' Set the validation settings.
@@ -361,7 +175,7 @@ Public Class dlgManualEdit
 
         Dim xmlV As XmlReader = XmlReader.Create(xmlP, settings)
         ErrStr = String.Empty
-        ListBox1.Items.Clear()
+        lbErrorLog.Items.Clear()
 
         IsValid = True
 
@@ -378,14 +192,14 @@ Public Class dlgManualEdit
                     IsValid = False
 
                     If lineInf.HasLineInfo Then
-                        ErrStr = lineInf.LineNumber.ToString + ": " + lineInf.LinePosition.ToString + " " + exx.Message
+                        ErrStr = lineInf.LineNumber.ToString + ":" + lineInf.LinePosition.ToString + " ==> " + exx.Message
                     End If
 
                     If exx.Message.IndexOf("EndElement") > 1 Then
                         Exit Do
                     End If
 
-                    ListBox1.Items.Add(ErrStr)
+                    lbErrorLog.Items.Add(ErrStr)
 
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -399,7 +213,7 @@ Public Class dlgManualEdit
         xmlV.Close()
         xmlP.Close()
 
-        Cursor = System.Windows.Forms.Cursors.Default
+        Cursor = Cursors.Default
         If OnLoad Then
             If IsValid = False Then
                 MessageBox.Show(Master.eLang.GetString(192, "File is not valid."), Master.eLang.GetString(194, "Not Valid"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -409,23 +223,13 @@ Public Class dlgManualEdit
         End If
     End Sub
 
-    Private Sub RichTextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Changed = True
-    End Sub
-
     Private Sub SetUp()
         mnuFormat.Text = Master.eLang.GetString(187, "&Format / Indent")
         mnuParse.Text = Master.eLang.GetString(188, "&Parse")
-        MenuItem19.Text = Master.eLang.GetString(8, "&Tools")
+        mnuTools.Text = Master.eLang.GetString(8, "&Tools")
         mnuFile.Text = Master.eLang.GetString(1, "&File")
         mnuSave.Text = Master.eLang.GetString(189, "&Save")
         mnuExit.Text = Master.eLang.GetString(2, "E&xit")
-    End Sub
-
-    Private Sub WriteErrorLog(ByVal sender As Object, ByVal args As ValidationEventArgs)
-        IsValid = False
-        ErrStr = lineInf.LineNumber.ToString + ": " + lineInf.LinePosition.ToString + " " + args.Message
-        ListBox1.Items.Add(ErrStr)
     End Sub
 
 #End Region 'Methods

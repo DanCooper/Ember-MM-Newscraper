@@ -23,24 +23,24 @@ Partial Class dlgManualEdit
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim XmlViewerSettings1 As Ember_Media_Manager.XMLViewerSettings = New Ember_Media_Manager.XMLViewerSettings()
+        Dim XmlViewerSettings2 As Ember_Media_Manager.XMLViewerSettings = New Ember_Media_Manager.XMLViewerSettings()
         Me.mnuFormat = New System.Windows.Forms.MenuItem()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.XmlViewer = New Ember_Media_Manager.XMLViewer()
-        Me.Splitter1 = New System.Windows.Forms.Splitter()
-        Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.ListBox1 = New System.Windows.Forms.ListBox()
+        Me.pnlManualEdit = New System.Windows.Forms.Panel()
+        Me.pnlMain = New System.Windows.Forms.Panel()
+        Me.xmlvNFO = New Ember_Media_Manager.XMLViewer()
+        Me.splMain = New System.Windows.Forms.Splitter()
+        Me.pnlBottom = New System.Windows.Forms.Panel()
+        Me.lbErrorLog = New System.Windows.Forms.ListBox()
         Me.mnuParse = New System.Windows.Forms.MenuItem()
-        Me.MenuItem19 = New System.Windows.Forms.MenuItem()
-        Me.MainMenu1 = New System.Windows.Forms.MainMenu(Me.components)
+        Me.mnuTools = New System.Windows.Forms.MenuItem()
+        Me.mmManualEdit = New System.Windows.Forms.MainMenu(Me.components)
         Me.mnuFile = New System.Windows.Forms.MenuItem()
         Me.mnuSave = New System.Windows.Forms.MenuItem()
-        Me.MenuItem9 = New System.Windows.Forms.MenuItem()
+        Me.mnuSplitter = New System.Windows.Forms.MenuItem()
         Me.mnuExit = New System.Windows.Forms.MenuItem()
-        Me.Panel1.SuspendLayout()
-        Me.Panel3.SuspendLayout()
-        Me.Panel2.SuspendLayout()
+        Me.pnlManualEdit.SuspendLayout()
+        Me.pnlMain.SuspendLayout()
+        Me.pnlBottom.SuspendLayout()
         Me.SuspendLayout()
         '
         'mnuFormat
@@ -49,70 +49,70 @@ Partial Class dlgManualEdit
         Me.mnuFormat.Shortcut = System.Windows.Forms.Shortcut.CtrlShiftF
         Me.mnuFormat.Text = "&Format / Indent"
         '
-        'Panel1
+        'pnlManualEdit
         '
-        Me.Panel1.Controls.Add(Me.Panel3)
-        Me.Panel1.Controls.Add(Me.Splitter1)
-        Me.Panel1.Controls.Add(Me.Panel2)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel1.Location = New System.Drawing.Point(0, 0)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(853, 426)
-        Me.Panel1.TabIndex = 1
+        Me.pnlManualEdit.Controls.Add(Me.pnlMain)
+        Me.pnlManualEdit.Controls.Add(Me.splMain)
+        Me.pnlManualEdit.Controls.Add(Me.pnlBottom)
+        Me.pnlManualEdit.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlManualEdit.Location = New System.Drawing.Point(0, 0)
+        Me.pnlManualEdit.Name = "pnlManualEdit"
+        Me.pnlManualEdit.Size = New System.Drawing.Size(853, 426)
+        Me.pnlManualEdit.TabIndex = 1
         '
-        'Panel3
+        'pnlMain
         '
-        Me.Panel3.Controls.Add(Me.XmlViewer)
-        Me.Panel3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel3.Location = New System.Drawing.Point(0, 0)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(853, 322)
-        Me.Panel3.TabIndex = 2
+        Me.pnlMain.Controls.Add(Me.xmlvNFO)
+        Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlMain.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMain.Name = "pnlMain"
+        Me.pnlMain.Size = New System.Drawing.Size(853, 322)
+        Me.pnlMain.TabIndex = 2
         '
-        'XmlViewer
+        'xmlvNFO
         '
-        Me.XmlViewer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.XmlViewer.Location = New System.Drawing.Point(0, 0)
-        Me.XmlViewer.Name = "XmlViewer"
-        XmlViewerSettings1.AttributeKey = System.Drawing.Color.Red
-        XmlViewerSettings1.AttributeValue = System.Drawing.Color.Blue
-        XmlViewerSettings1.Element = System.Drawing.Color.DarkRed
-        XmlViewerSettings1.Tag = System.Drawing.Color.Blue
-        XmlViewerSettings1.Value = System.Drawing.Color.Black
-        Me.XmlViewer.Settings = XmlViewerSettings1
-        Me.XmlViewer.Size = New System.Drawing.Size(853, 322)
-        Me.XmlViewer.TabIndex = 0
-        Me.XmlViewer.Text = ""
+        Me.xmlvNFO.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.xmlvNFO.Location = New System.Drawing.Point(0, 0)
+        Me.xmlvNFO.Name = "xmlvNFO"
+        XmlViewerSettings2.AttributeKey = System.Drawing.Color.Red
+        XmlViewerSettings2.AttributeValue = System.Drawing.Color.Blue
+        XmlViewerSettings2.Element = System.Drawing.Color.DarkRed
+        XmlViewerSettings2.Tag = System.Drawing.Color.Blue
+        XmlViewerSettings2.Value = System.Drawing.Color.Black
+        Me.xmlvNFO.Settings = XmlViewerSettings2
+        Me.xmlvNFO.Size = New System.Drawing.Size(853, 322)
+        Me.xmlvNFO.TabIndex = 0
+        Me.xmlvNFO.Text = ""
         '
-        'Splitter1
+        'splMain
         '
-        Me.Splitter1.BackColor = System.Drawing.Color.DimGray
-        Me.Splitter1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.Splitter1.Location = New System.Drawing.Point(0, 322)
-        Me.Splitter1.Name = "Splitter1"
-        Me.Splitter1.Size = New System.Drawing.Size(853, 4)
-        Me.Splitter1.TabIndex = 0
-        Me.Splitter1.TabStop = False
+        Me.splMain.BackColor = System.Drawing.Color.DimGray
+        Me.splMain.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.splMain.Location = New System.Drawing.Point(0, 322)
+        Me.splMain.Name = "splMain"
+        Me.splMain.Size = New System.Drawing.Size(853, 4)
+        Me.splMain.TabIndex = 0
+        Me.splMain.TabStop = False
         '
-        'Panel2
+        'pnlBottom
         '
-        Me.Panel2.Controls.Add(Me.ListBox1)
-        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.Panel2.Location = New System.Drawing.Point(0, 326)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(853, 100)
-        Me.Panel2.TabIndex = 0
+        Me.pnlBottom.Controls.Add(Me.lbErrorLog)
+        Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlBottom.Location = New System.Drawing.Point(0, 326)
+        Me.pnlBottom.Name = "pnlBottom"
+        Me.pnlBottom.Size = New System.Drawing.Size(853, 100)
+        Me.pnlBottom.TabIndex = 0
         '
-        'ListBox1
+        'lbErrorLog
         '
-        Me.ListBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ListBox1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListBox1.HorizontalScrollbar = True
-        Me.ListBox1.ItemHeight = 21
-        Me.ListBox1.Location = New System.Drawing.Point(0, 0)
-        Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(853, 100)
-        Me.ListBox1.TabIndex = 0
+        Me.lbErrorLog.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lbErrorLog.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbErrorLog.HorizontalScrollbar = True
+        Me.lbErrorLog.ItemHeight = 21
+        Me.lbErrorLog.Location = New System.Drawing.Point(0, 0)
+        Me.lbErrorLog.Name = "lbErrorLog"
+        Me.lbErrorLog.Size = New System.Drawing.Size(853, 100)
+        Me.lbErrorLog.TabIndex = 0
         '
         'mnuParse
         '
@@ -120,20 +120,20 @@ Partial Class dlgManualEdit
         Me.mnuParse.Shortcut = System.Windows.Forms.Shortcut.CtrlShiftP
         Me.mnuParse.Text = "&Parse"
         '
-        'MenuItem19
+        'mnuTools
         '
-        Me.MenuItem19.Index = 1
-        Me.MenuItem19.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuParse, Me.mnuFormat})
-        Me.MenuItem19.Text = "&Tools"
+        Me.mnuTools.Index = 1
+        Me.mnuTools.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuParse, Me.mnuFormat})
+        Me.mnuTools.Text = "&Tools"
         '
-        'MainMenu1
+        'mmManualEdit
         '
-        Me.MainMenu1.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuFile, Me.MenuItem19})
+        Me.mmManualEdit.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuFile, Me.mnuTools})
         '
         'mnuFile
         '
         Me.mnuFile.Index = 0
-        Me.mnuFile.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuSave, Me.MenuItem9, Me.mnuExit})
+        Me.mnuFile.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuSave, Me.mnuSplitter, Me.mnuExit})
         Me.mnuFile.Text = "&File"
         '
         'mnuSave
@@ -142,10 +142,10 @@ Partial Class dlgManualEdit
         Me.mnuSave.Shortcut = System.Windows.Forms.Shortcut.CtrlS
         Me.mnuSave.Text = "&Save"
         '
-        'MenuItem9
+        'mnuSplitter
         '
-        Me.MenuItem9.Index = 1
-        Me.MenuItem9.Text = "-"
+        Me.mnuSplitter.Index = 1
+        Me.mnuSplitter.Text = "-"
         '
         'mnuExit
         '
@@ -158,33 +158,33 @@ Partial Class dlgManualEdit
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(853, 426)
-        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.pnlManualEdit)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
-        Me.Menu = Me.MainMenu1
+        Me.Menu = Me.mmManualEdit
         Me.MinimizeBox = False
         Me.Name = "dlgManualEdit"
         Me.Text = "Manual NFO Editor"
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel3.ResumeLayout(False)
-        Me.Panel2.ResumeLayout(False)
+        Me.pnlManualEdit.ResumeLayout(False)
+        Me.pnlMain.ResumeLayout(False)
+        Me.pnlBottom.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents mnuFormat As System.Windows.Forms.MenuItem
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
-    Friend WithEvents Panel3 As System.Windows.Forms.Panel
-    Friend WithEvents Splitter1 As System.Windows.Forms.Splitter
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
-    Friend WithEvents ListBox1 As System.Windows.Forms.ListBox
+    Friend WithEvents pnlManualEdit As System.Windows.Forms.Panel
+    Friend WithEvents pnlMain As System.Windows.Forms.Panel
+    Friend WithEvents splMain As System.Windows.Forms.Splitter
+    Friend WithEvents pnlBottom As System.Windows.Forms.Panel
+    Friend WithEvents lbErrorLog As System.Windows.Forms.ListBox
     Friend WithEvents mnuParse As System.Windows.Forms.MenuItem
-    Friend WithEvents MenuItem19 As System.Windows.Forms.MenuItem
-    Friend WithEvents MainMenu1 As System.Windows.Forms.MainMenu
+    Friend WithEvents mnuTools As System.Windows.Forms.MenuItem
+    Friend WithEvents mmManualEdit As System.Windows.Forms.MainMenu
     Friend WithEvents mnuFile As System.Windows.Forms.MenuItem
     Friend WithEvents mnuSave As System.Windows.Forms.MenuItem
-    Friend WithEvents MenuItem9 As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuSplitter As System.Windows.Forms.MenuItem
     Friend WithEvents mnuExit As System.Windows.Forms.MenuItem
-    Friend WithEvents XmlViewer As Ember_Media_Manager.XMLViewer
+    Friend WithEvents xmlvNFO As Ember_Media_Manager.XMLViewer
 
 End Class
