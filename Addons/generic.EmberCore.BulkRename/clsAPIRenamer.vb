@@ -19,7 +19,6 @@
 ' ################################################################################
 
 Imports System.IO
-Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
@@ -27,7 +26,7 @@ Imports NLog
 Public Class FileFolderRenamer
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public MovieFolders As New List(Of String)
     Public TVShowFolders As New List(Of String)
@@ -105,7 +104,7 @@ Public Class FileFolderRenamer
         Dim _movieDB As Database.DBElement = Nothing
         Dim iProg As Integer = 0
         Try
-            For Each f As FileFolderRenamer.FileRename In _movies.Where(Function(s) s.DoRename AndAlso Not s.FileExist AndAlso Not s.IsLock)
+            For Each f As FileRename In _movies.Where(Function(s) s.DoRename AndAlso Not s.FileExist AndAlso Not s.IsLock)
                 iProg += 1
                 If Not f.ID = -1 Then
                     _movieDB = Master.DB.Load_Movie(f.ID)
@@ -122,7 +121,7 @@ Public Class FileFolderRenamer
         Dim iProg As Integer = 0
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                For Each f As FileFolderRenamer.FileRename In _episodes.Where(Function(s) s.DoRename AndAlso Not s.FileExist AndAlso Not s.IsLock)
+                For Each f As FileRename In _episodes.Where(Function(s) s.DoRename AndAlso Not s.FileExist AndAlso Not s.IsLock)
                     iProg += 1
                     If Not f.ID = -1 Then
                         _tvDB = Master.DB.Load_TVEpisode(f.ID, True)
@@ -253,7 +252,6 @@ Public Class FileFolderRenamer
                                                               Master.eLang.GetString(1085, "Directory already exists or is not empty"),
                                                               _frename.DirExist.ToString)
                 If ShowError Then
-                    'MessageBox.Show(Master.eLang.GetString(171, "Unable to Rename File"), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     MessageBox.Show(strErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
                 logger.Error(String.Format("[{0}] [{1}] [{2}]", Reflection.MethodBase.GetCurrentMethod.ReflectedType, Reflection.MethodBase.GetCurrentMethod.Name, strErrorMessage.Replace(Environment.NewLine, "; ").Replace("; ;", ";")))
@@ -378,7 +376,6 @@ Public Class FileFolderRenamer
                                                               Master.eLang.GetString(1084, "File already exists"),
                                                               _frename.FileExist.ToString)
                 If ShowError Then
-                    'MessageBox.Show(Master.eLang.GetString(171, "Unable to Rename File"), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     MessageBox.Show(strErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
                 logger.Error(strErrorMessage.Replace(Environment.NewLine, "; ").Replace("; ;", ";"))
@@ -493,17 +490,17 @@ Public Class FileFolderRenamer
 
         'Countries
         If _DBElement.Movie.CountriesSpecified Then
-            MovieFile.Country = String.Join(" / ", _DBElement.Movie.Countries.ToArray)
+            MovieFile.Country = _DBElement.Movie.Countries
         End If
 
         'Director
         If _DBElement.Movie.DirectorsSpecified Then
-            MovieFile.Director = String.Join(" / ", _DBElement.Movie.Directors.ToArray)
+            MovieFile.Director = _DBElement.Movie.Directors
         End If
 
         'Genres
         If _DBElement.Movie.GenresSpecified Then
-            MovieFile.Genre = String.Join(" / ", _DBElement.Movie.Genres.ToArray)
+            MovieFile.Genre = _DBElement.Movie.Genres
         End If
 
         'IMDB
@@ -899,7 +896,7 @@ Public Class FileFolderRenamer
 
         'Genres
         If _DBElement.TVShow.GenresSpecified Then
-            ShowFile.Genre = String.Join(" / ", _DBElement.TVShow.Genres.ToArray)
+            ShowFile.Genre = _DBElement.TVShow.Genres
         End If
 
         'IsLock
@@ -1043,12 +1040,12 @@ Public Class FileFolderRenamer
             End While
 
             ' removes all dots at the end of the foldername (dots are not allowed)
-            While MovieFile.NewPath.Last = "."
+            While MovieFile.NewPath.EndsWith(".")
                 MovieFile.NewPath = MovieFile.NewPath.Remove(MovieFile.NewPath.Length - 1)
             End While
 
             ' removes all dots at the end of the filename (for accord with foldername)
-            While MovieFile.NewFileName.Last = "."
+            While MovieFile.NewFileName.EndsWith(".")
                 MovieFile.NewFileName = MovieFile.NewFileName.Remove(MovieFile.NewFileName.Length - 1)
             End While
 
@@ -1472,14 +1469,14 @@ Public Class FileFolderRenamer
         Private _basepath As String
         Private _collection As String
         Private _collectionlisttitle As String
-        Private _country As String
-        Private _director As String
+        Private _country As New List(Of String)
+        Private _director As New List(Of String)
         Private _direxist As Boolean
         Private _dorename As Boolean
         Private _extension As String
         Private _fileexist As Boolean
         Private _fullaudioinfo As New List(Of MediaContainers.Audio)
-        Private _genre As String
+        Private _genre As New List(Of String)
         Private _id As Long
         Private _imdb As String
         Private _isbdmv As Boolean
@@ -1808,12 +1805,12 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property Country() As String
+        Public Property Country() As List(Of String)
             Get
                 Return _country
             End Get
-            Set(ByVal value As String)
-                _country = value.Trim
+            Set(ByVal value As List(Of String))
+                _country = value
             End Set
         End Property
 
@@ -1934,21 +1931,21 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property Genre() As String
+        Public Property Genre() As List(Of String)
             Get
                 Return _genre
             End Get
-            Set(ByVal value As String)
-                _genre = value.Trim
+            Set(ByVal value As List(Of String))
+                _genre = value
             End Set
         End Property
 
-        Public Property Director() As String
+        Public Property Director() As List(Of String)
             Get
                 Return _director
             End Get
-            Set(ByVal value As String)
-                _director = value.Trim
+            Set(ByVal value As List(Of String))
+                _director = value
             End Set
         End Property
 
@@ -1976,14 +1973,14 @@ Public Class FileFolderRenamer
             _basepath = String.Empty
             _collection = String.Empty
             _collectionlisttitle = String.Empty
-            _country = String.Empty
-            _director = String.Empty
+            _country.Clear()
+            _director.Clear()
             _direxist = False
             _dorename = False
             _extension = String.Empty
             _fileexist = False
             _fullaudioinfo.Clear()
-            _genre = String.Empty
+            _genre.Clear()
             _id = -1
             _imdb = String.Empty
             _isbdmv = False

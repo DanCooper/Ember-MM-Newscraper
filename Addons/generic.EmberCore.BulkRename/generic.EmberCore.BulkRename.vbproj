@@ -205,6 +205,12 @@
     <Compile Include="dlgBulkRename_TV.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmInfoPanel.Designer.vb">
+      <DependentUpon>frmInfoPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmInfoPanel.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSettingsHolder.Designer.vb">
       <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </Compile>
@@ -252,6 +258,9 @@
     <EmbeddedResource Include="dlgBulkRename_TV.resx">
       <DependentUpon>dlgBulkRename_TV.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInfoPanel.resx">
+      <DependentUpon>frmInfoPanel.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsHolder.resx">
       <DependentUpon>frmSettingsHolder.vb</DependentUpon>

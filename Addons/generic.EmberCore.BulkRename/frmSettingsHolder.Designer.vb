@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmSettingsHolder
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class frmSettingsHolder
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel()
@@ -28,8 +28,6 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
         Me.gbRenamerPatternsTV = New System.Windows.Forms.GroupBox()
         Me.tblRenamerPatternsTV = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnFolderPatternSeasonsReset = New System.Windows.Forms.Button()
-        Me.btnFolderPatternShowsReset = New System.Windows.Forms.Button()
         Me.chkRenameSingleShows = New System.Windows.Forms.CheckBox()
         Me.lblFolderPatternShows = New System.Windows.Forms.Label()
         Me.chkRenameMultiShows = New System.Windows.Forms.CheckBox()
@@ -40,18 +38,15 @@ Partial Class frmSettingsHolder
         Me.txtFolderPatternSeasons = New System.Windows.Forms.TextBox()
         Me.chkRenameEditEpisodes = New System.Windows.Forms.CheckBox()
         Me.chkRenameUpdateEpisodes = New System.Windows.Forms.CheckBox()
-        Me.btnFilePatternEpisodesReset = New System.Windows.Forms.Button()
         Me.gbRenamerPatternsMovie = New System.Windows.Forms.GroupBox()
         Me.tblRenamerPatternsMovie = New System.Windows.Forms.TableLayoutPanel()
         Me.chkRenameSingleMovies = New System.Windows.Forms.CheckBox()
-        Me.btnFolderPatternMoviesReset = New System.Windows.Forms.Button()
         Me.lblFolderPatternMovies = New System.Windows.Forms.Label()
         Me.chkRenameMultiMovies = New System.Windows.Forms.CheckBox()
         Me.txtFolderPatternMovies = New System.Windows.Forms.TextBox()
         Me.txtFilePatternMovies = New System.Windows.Forms.TextBox()
         Me.lblFilePatternMovies = New System.Windows.Forms.Label()
         Me.chkRenameEditMovies = New System.Windows.Forms.CheckBox()
-        Me.btnFilePatternMoviesReset = New System.Windows.Forms.Button()
         Me.gbPreview = New System.Windows.Forms.GroupBox()
         Me.tblPreview = New System.Windows.Forms.TableLayoutPanel()
         Me.lblSingleEpisodeFile = New System.Windows.Forms.Label()
@@ -62,12 +57,16 @@ Partial Class frmSettingsHolder
         Me.txtSingleMovieFile = New System.Windows.Forms.TextBox()
         Me.lblMultiSeasonFile = New System.Windows.Forms.Label()
         Me.txtMultiSeasonFile = New System.Windows.Forms.TextBox()
+        Me.pnlTips = New System.Windows.Forms.Panel()
+        Me.tblTips = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
-        Me.tblTips = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblTips = New System.Windows.Forms.Label()
-        Me.pnlTips = New System.Windows.Forms.Panel()
+        Me.btnFolderPatternSeasonsReset = New System.Windows.Forms.Button()
+        Me.btnFolderPatternShowsReset = New System.Windows.Forms.Button()
+        Me.btnFilePatternEpisodesReset = New System.Windows.Forms.Button()
+        Me.btnFolderPatternMoviesReset = New System.Windows.Forms.Button()
+        Me.btnFilePatternMoviesReset = New System.Windows.Forms.Button()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.tblSettingsMain.SuspendLayout()
@@ -77,10 +76,9 @@ Partial Class frmSettingsHolder
         Me.tblRenamerPatternsMovie.SuspendLayout()
         Me.gbPreview.SuspendLayout()
         Me.tblPreview.SuspendLayout()
+        Me.pnlTips.SuspendLayout()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
-        Me.tblTips.SuspendLayout()
-        Me.pnlTips.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -179,26 +177,6 @@ Partial Class frmSettingsHolder
         Me.tblRenamerPatternsTV.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblRenamerPatternsTV.Size = New System.Drawing.Size(316, 239)
         Me.tblRenamerPatternsTV.TabIndex = 7
-        '
-        'btnFolderPatternSeasonsReset
-        '
-        Me.btnFolderPatternSeasonsReset.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnFolderPatternSeasonsReset.Image = CType(resources.GetObject("btnFolderPatternSeasonsReset.Image"), System.Drawing.Image)
-        Me.btnFolderPatternSeasonsReset.Location = New System.Drawing.Point(289, 72)
-        Me.btnFolderPatternSeasonsReset.Name = "btnFolderPatternSeasonsReset"
-        Me.btnFolderPatternSeasonsReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnFolderPatternSeasonsReset.TabIndex = 7
-        Me.btnFolderPatternSeasonsReset.UseVisualStyleBackColor = True
-        '
-        'btnFolderPatternShowsReset
-        '
-        Me.btnFolderPatternShowsReset.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnFolderPatternShowsReset.Image = CType(resources.GetObject("btnFolderPatternShowsReset.Image"), System.Drawing.Image)
-        Me.btnFolderPatternShowsReset.Location = New System.Drawing.Point(289, 23)
-        Me.btnFolderPatternShowsReset.Name = "btnFolderPatternShowsReset"
-        Me.btnFolderPatternShowsReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnFolderPatternShowsReset.TabIndex = 6
-        Me.btnFolderPatternShowsReset.UseVisualStyleBackColor = True
         '
         'chkRenameSingleShows
         '
@@ -314,21 +292,11 @@ Partial Class frmSettingsHolder
         Me.chkRenameUpdateEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkRenameUpdateEpisodes.Location = New System.Drawing.Point(3, 196)
         Me.chkRenameUpdateEpisodes.Name = "chkRenameUpdateEpisodes"
-        Me.chkRenameUpdateEpisodes.Size = New System.Drawing.Size(252, 17)
+        Me.chkRenameUpdateEpisodes.Size = New System.Drawing.Size(263, 17)
         Me.chkRenameUpdateEpisodes.TabIndex = 5
         Me.chkRenameUpdateEpisodes.Text = "Automatically Rename Files During DB Update"
         Me.chkRenameUpdateEpisodes.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkRenameUpdateEpisodes.UseVisualStyleBackColor = True
-        '
-        'btnFilePatternEpisodesReset
-        '
-        Me.btnFilePatternEpisodesReset.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnFilePatternEpisodesReset.Image = CType(resources.GetObject("btnFilePatternEpisodesReset.Image"), System.Drawing.Image)
-        Me.btnFilePatternEpisodesReset.Location = New System.Drawing.Point(289, 121)
-        Me.btnFilePatternEpisodesReset.Name = "btnFilePatternEpisodesReset"
-        Me.btnFilePatternEpisodesReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnFilePatternEpisodesReset.TabIndex = 7
-        Me.btnFilePatternEpisodesReset.UseVisualStyleBackColor = True
         '
         'gbRenamerPatternsMovie
         '
@@ -387,16 +355,6 @@ Partial Class frmSettingsHolder
         Me.chkRenameSingleMovies.Text = "Automatically Rename Files During Single-Scraper"
         Me.chkRenameSingleMovies.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkRenameSingleMovies.UseVisualStyleBackColor = True
-        '
-        'btnFolderPatternMoviesReset
-        '
-        Me.btnFolderPatternMoviesReset.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnFolderPatternMoviesReset.Image = CType(resources.GetObject("btnFolderPatternMoviesReset.Image"), System.Drawing.Image)
-        Me.btnFolderPatternMoviesReset.Location = New System.Drawing.Point(290, 23)
-        Me.btnFolderPatternMoviesReset.Name = "btnFolderPatternMoviesReset"
-        Me.btnFolderPatternMoviesReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnFolderPatternMoviesReset.TabIndex = 6
-        Me.btnFolderPatternMoviesReset.UseVisualStyleBackColor = True
         '
         'lblFolderPatternMovies
         '
@@ -465,16 +423,6 @@ Partial Class frmSettingsHolder
         Me.chkRenameEditMovies.Text = "Automatically Rename Files After Edit"
         Me.chkRenameEditMovies.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkRenameEditMovies.UseVisualStyleBackColor = True
-        '
-        'btnFilePatternMoviesReset
-        '
-        Me.btnFilePatternMoviesReset.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnFilePatternMoviesReset.Image = CType(resources.GetObject("btnFilePatternMoviesReset.Image"), System.Drawing.Image)
-        Me.btnFilePatternMoviesReset.Location = New System.Drawing.Point(290, 72)
-        Me.btnFilePatternMoviesReset.Name = "btnFilePatternMoviesReset"
-        Me.btnFilePatternMoviesReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnFilePatternMoviesReset.TabIndex = 6
-        Me.btnFilePatternMoviesReset.UseVisualStyleBackColor = True
         '
         'gbPreview
         '
@@ -598,6 +546,35 @@ Partial Class frmSettingsHolder
         Me.txtMultiSeasonFile.Size = New System.Drawing.Size(400, 22)
         Me.txtMultiSeasonFile.TabIndex = 3
         '
+        'pnlTips
+        '
+        Me.pnlTips.AutoSize = True
+        Me.pnlTips.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTips.Controls.Add(Me.tblTips)
+        Me.pnlTips.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlTips.Location = New System.Drawing.Point(331, 3)
+        Me.pnlTips.MaximumSize = New System.Drawing.Size(475, 360)
+        Me.pnlTips.Name = "pnlTips"
+        Me.tblSettingsMain.SetRowSpan(Me.pnlTips, 2)
+        Me.pnlTips.Size = New System.Drawing.Size(412, 235)
+        Me.pnlTips.TabIndex = 7
+        '
+        'tblTips
+        '
+        Me.tblTips.AutoScroll = True
+        Me.tblTips.AutoSize = True
+        Me.tblTips.ColumnCount = 1
+        Me.tblTips.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTips.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblTips.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTips.Location = New System.Drawing.Point(0, 0)
+        Me.tblTips.Name = "tblTips"
+        Me.tblTips.RowCount = 1
+        Me.tblTips.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTips.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 233.0!))
+        Me.tblTips.Size = New System.Drawing.Size(410, 233)
+        Me.tblTips.TabIndex = 5
+        '
         'pnlSettingsTop
         '
         Me.pnlSettingsTop.AutoSize = True
@@ -636,45 +613,55 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
-        'tblTips
+        'btnFolderPatternSeasonsReset
         '
-        Me.tblTips.AutoScroll = True
-        Me.tblTips.AutoSize = True
-        Me.tblTips.ColumnCount = 1
-        Me.tblTips.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTips.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTips.Controls.Add(Me.lblTips, 0, 0)
-        Me.tblTips.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTips.Location = New System.Drawing.Point(0, 0)
-        Me.tblTips.Name = "tblTips"
-        Me.tblTips.RowCount = 1
-        Me.tblTips.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTips.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 279.0!))
-        Me.tblTips.Size = New System.Drawing.Size(410, 233)
-        Me.tblTips.TabIndex = 5
+        Me.btnFolderPatternSeasonsReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFolderPatternSeasonsReset.Image = CType(resources.GetObject("btnFolderPatternSeasonsReset.Image"), System.Drawing.Image)
+        Me.btnFolderPatternSeasonsReset.Location = New System.Drawing.Point(289, 72)
+        Me.btnFolderPatternSeasonsReset.Name = "btnFolderPatternSeasonsReset"
+        Me.btnFolderPatternSeasonsReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnFolderPatternSeasonsReset.TabIndex = 7
+        Me.btnFolderPatternSeasonsReset.UseVisualStyleBackColor = True
         '
-        'lblTips
+        'btnFolderPatternShowsReset
         '
-        Me.lblTips.AutoSize = True
-        Me.lblTips.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblTips.Location = New System.Drawing.Point(3, 0)
-        Me.lblTips.Name = "lblTips"
-        Me.lblTips.Size = New System.Drawing.Size(404, 233)
-        Me.lblTips.TabIndex = 4
-        Me.lblTips.Text = "Tips List"
+        Me.btnFolderPatternShowsReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFolderPatternShowsReset.Image = CType(resources.GetObject("btnFolderPatternShowsReset.Image"), System.Drawing.Image)
+        Me.btnFolderPatternShowsReset.Location = New System.Drawing.Point(289, 23)
+        Me.btnFolderPatternShowsReset.Name = "btnFolderPatternShowsReset"
+        Me.btnFolderPatternShowsReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnFolderPatternShowsReset.TabIndex = 6
+        Me.btnFolderPatternShowsReset.UseVisualStyleBackColor = True
         '
-        'pnlTips
+        'btnFilePatternEpisodesReset
         '
-        Me.pnlTips.AutoSize = True
-        Me.pnlTips.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTips.Controls.Add(Me.tblTips)
-        Me.pnlTips.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlTips.Location = New System.Drawing.Point(331, 3)
-        Me.pnlTips.MaximumSize = New System.Drawing.Size(475, 360)
-        Me.pnlTips.Name = "pnlTips"
-        Me.tblSettingsMain.SetRowSpan(Me.pnlTips, 2)
-        Me.pnlTips.Size = New System.Drawing.Size(412, 235)
-        Me.pnlTips.TabIndex = 7
+        Me.btnFilePatternEpisodesReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFilePatternEpisodesReset.Image = CType(resources.GetObject("btnFilePatternEpisodesReset.Image"), System.Drawing.Image)
+        Me.btnFilePatternEpisodesReset.Location = New System.Drawing.Point(289, 121)
+        Me.btnFilePatternEpisodesReset.Name = "btnFilePatternEpisodesReset"
+        Me.btnFilePatternEpisodesReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnFilePatternEpisodesReset.TabIndex = 7
+        Me.btnFilePatternEpisodesReset.UseVisualStyleBackColor = True
+        '
+        'btnFolderPatternMoviesReset
+        '
+        Me.btnFolderPatternMoviesReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFolderPatternMoviesReset.Image = CType(resources.GetObject("btnFolderPatternMoviesReset.Image"), System.Drawing.Image)
+        Me.btnFolderPatternMoviesReset.Location = New System.Drawing.Point(290, 23)
+        Me.btnFolderPatternMoviesReset.Name = "btnFolderPatternMoviesReset"
+        Me.btnFolderPatternMoviesReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnFolderPatternMoviesReset.TabIndex = 6
+        Me.btnFolderPatternMoviesReset.UseVisualStyleBackColor = True
+        '
+        'btnFilePatternMoviesReset
+        '
+        Me.btnFilePatternMoviesReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFilePatternMoviesReset.Image = CType(resources.GetObject("btnFilePatternMoviesReset.Image"), System.Drawing.Image)
+        Me.btnFilePatternMoviesReset.Location = New System.Drawing.Point(290, 72)
+        Me.btnFilePatternMoviesReset.Name = "btnFilePatternMoviesReset"
+        Me.btnFilePatternMoviesReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnFilePatternMoviesReset.TabIndex = 6
+        Me.btnFilePatternMoviesReset.UseVisualStyleBackColor = True
         '
         'frmSettingsHolder
         '
@@ -704,14 +691,12 @@ Partial Class frmSettingsHolder
         Me.gbPreview.PerformLayout()
         Me.tblPreview.ResumeLayout(False)
         Me.tblPreview.PerformLayout()
+        Me.pnlTips.ResumeLayout(False)
+        Me.pnlTips.PerformLayout()
         Me.pnlSettingsTop.ResumeLayout(False)
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)
         Me.tblSettingsTop.PerformLayout()
-        Me.tblTips.ResumeLayout(False)
-        Me.tblTips.PerformLayout()
-        Me.pnlTips.ResumeLayout(False)
-        Me.pnlTips.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -760,5 +745,4 @@ Partial Class frmSettingsHolder
     Friend WithEvents btnFilePatternMoviesReset As System.Windows.Forms.Button
     Friend WithEvents pnlTips As System.Windows.Forms.Panel
     Friend WithEvents tblTips As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents lblTips As System.Windows.Forms.Label
 End Class

@@ -1,7 +1,4 @@
-﻿Imports EmberAPI
-Imports System.IO
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -20,6 +17,9 @@ Imports System.IO
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+
+Imports EmberAPI
+Imports System.IO
 
 Public Class frmSettingsHolder
 
@@ -47,8 +47,8 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.AudioCodec = "mp3"
         _fDummyMultiEpisode.BasePath = ""
         _fDummyMultiEpisode.Collection = ""
-        _fDummyMultiEpisode.Country = ""
-        _fDummyMultiEpisode.Director = ""
+        _fDummyMultiEpisode.Country = New List(Of String)
+        _fDummyMultiEpisode.Director = New List(Of String)
         _fDummyMultiEpisode.DirExist = False
         _fDummyMultiEpisode.FileExist = False
         _fDummyMultiEpisode.FullAudioInfo = New List(Of MediaContainers.Audio) From {
@@ -57,7 +57,7 @@ Public Class frmSettingsHolder
             New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
         }
         _fDummyMultiEpisode.OldFileName = "OldFileName"
-        _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
+        _fDummyMultiEpisode.Genre = New List(Of String)(New String() {"Comedy", "Lovestory"})
         _fDummyMultiEpisode.ID = -1
         _fDummyMultiEpisode.IMDB = ""
         _fDummyMultiEpisode.IsBDMV = False
@@ -99,8 +99,8 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.AudioCodec = "mp3"
         _fDummyMultiSeason.BasePath = ""
         _fDummyMultiSeason.Collection = ""
-        _fDummyMultiSeason.Country = ""
-        _fDummyMultiSeason.Director = ""
+        _fDummyMultiSeason.Country = New List(Of String)
+        _fDummyMultiSeason.Director = New List(Of String)
         _fDummyMultiSeason.DirExist = False
         _fDummyMultiSeason.FileExist = False
         _fDummyMultiSeason.FullAudioInfo = New List(Of MediaContainers.Audio) From {
@@ -109,7 +109,7 @@ Public Class frmSettingsHolder
             New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
         }
         _fDummyMultiSeason.OldFileName = "OldFileName"
-        _fDummyMultiSeason.Genre = "Comedy / Lovestory"
+        _fDummyMultiSeason.Genre = New List(Of String)(New String() {"Comedy", "Lovestory"})
         _fDummyMultiSeason.ID = -1
         _fDummyMultiSeason.IMDB = ""
         _fDummyMultiSeason.IsBDMV = False
@@ -157,8 +157,8 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.AudioCodec = "mp3"
         _fDummySingleEpisode.BasePath = ""
         _fDummySingleEpisode.Collection = ""
-        _fDummySingleEpisode.Country = ""
-        _fDummySingleEpisode.Director = ""
+        _fDummySingleEpisode.Country = New List(Of String)
+        _fDummySingleEpisode.Director = New List(Of String)
         _fDummySingleEpisode.DirExist = False
         _fDummySingleEpisode.FileExist = False
         _fDummySingleEpisode.FullAudioInfo = New List(Of MediaContainers.Audio) From {
@@ -167,7 +167,7 @@ Public Class frmSettingsHolder
             New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
         }
         _fDummySingleEpisode.OldFileName = "OldFileName"
-        _fDummySingleEpisode.Genre = "Comedy / Lovestory"
+        _fDummySingleEpisode.Genre = New List(Of String)(New String() {"Comedy", "Lovestory"})
         _fDummySingleEpisode.ID = -1
         _fDummySingleEpisode.IMDB = ""
         _fDummySingleEpisode.IsBDMV = False
@@ -208,8 +208,8 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.BasePath = "D:\Movies"
         _fDummySingleMovie.Collection = "The Avengers Collection"
         _fDummySingleMovie.CollectionListTitle = "Avengers Collection, The"
-        _fDummySingleMovie.Country = "United States of America / Japan"
-        _fDummySingleMovie.Director = "Joss Whedon"
+        _fDummySingleMovie.Country = New List(Of String)(New String() {"United States of America", "Japan"})
+        _fDummySingleMovie.Director = New List(Of String)(New String() {"Joss Whedon", "Hans Muster"})
         _fDummySingleMovie.DirExist = False
         _fDummySingleMovie.FileExist = False
         _fDummySingleMovie.FullAudioInfo = New List(Of MediaContainers.Audio) From {
@@ -218,7 +218,7 @@ Public Class frmSettingsHolder
             New MediaContainers.Audio With {.Language = "", .Channels = "1", .Codec = "mp3"}
             }
         _fDummySingleMovie.OldFileName = "OldFileName"
-        _fDummySingleMovie.Genre = "Action / Sci-Fi"
+        _fDummySingleMovie.Genre = New List(Of String)(New String() {"Action", "Sci-Fi"})
         _fDummySingleMovie.ID = -1
         _fDummySingleMovie.IMDB = "tt0848228"
         _fDummySingleMovie.IsBDMV = False
@@ -361,7 +361,8 @@ Public Class frmSettingsHolder
         lblFilePatternMovies.Text = Master.eLang.GetString(286, "Files Pattern")
         lblFolderPatternMovies.Text = Master.eLang.GetString(287, "Folders Pattern")
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$5 = Collection List Title{0}$6 = All audio languages (append a space, dot, hyphen or comma to change separator){0}$7 = All audio codecs (append a space, dot, hyphen or comma to change separator){0}$8 = All audio channels (append a space, dot, hyphen or comma to change separator){0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$_FA#_ = Full audio info (languages, channels & codecs, grouped by track). # is either one or two of the following to change separators: space, dot, hyphen or comma{0}$G = Genre (append a space, dot or hyphen, comma to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (append a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
+        Dim Tips = New frmInfoPanel
+        tblTips.Controls.Add(Tips.InfoPanel)
     End Sub
 
     Private Sub txtFilePatternMovies_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFilePatternMovies.TextChanged

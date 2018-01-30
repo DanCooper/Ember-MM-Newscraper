@@ -38,6 +38,7 @@ Public Class BulkRenamerModule
     Private _enabled As Boolean = False
     Private _Name As String = "Renamer"
     Private _setup As frmSettingsHolder
+    Public Shared _infoPanel As New frmInfoPanel
     Private cmnuRenamer_Movies As New ToolStripMenuItem
     Private cmnuRenamer_Episodes As New ToolStripMenuItem
     Private cmnuRenamer_Shows As New ToolStripMenuItem
