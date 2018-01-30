@@ -894,7 +894,10 @@ Public Class MediaInfo
                     miAudio = New MediaContainers.Audio
                     miAudio.Codec = ConvertAFormat(Get_(StreamKind.Audio, a, "CodecID"), Get_(StreamKind.Audio, a, "Format"),
                                                    Get_(StreamKind.Audio, a, "CodecID/Hint"), Get_(StreamKind.Audio, a, "Format_Profile"))
-                    miAudio.Channels = FormatAudioChannel(Get_(StreamKind.Audio, a, "Channel(s)"))
+                    miAudio.Channels = FormatAudioChannel(Get_(StreamKind.Audio, a, "Channel(s)_Original"))
+                    If String.IsNullOrEmpty(miAudio.Channels) Then
+                        miAudio.Channels = FormatAudioChannel(Get_(StreamKind.Audio, a, "Channel(s)"))
+                    End If
 
                     'cocotus, 2013/02 Added support for new MediaInfo-fields
                     'Audio-Bitrate
