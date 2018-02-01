@@ -131,6 +131,7 @@ Public Class frmMain
     Private filCountry_Movies As String = String.Empty
     Private filMissing_Movies As String = String.Empty
     Private filTag_Movies As String = String.Empty
+    Private filVideoSource_Movies As String = String.Empty
     Private currTextSearch_Movies As String = String.Empty
     Private prevTextSearch_Movies As String = String.Empty
 
@@ -3004,20 +3005,6 @@ Public Class frmMain
         FillList_Main(True, True, True)
     End Sub
 
-    Private Sub cbFilterVideoSource_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterVideoSource_Movies.SelectedIndexChanged
-        For i As Integer = FilterArray_Movies.Count - 1 To 0 Step -1
-            If FilterArray_Movies(i).ToString.StartsWith("VideoSource =") Then
-                FilterArray_Movies.RemoveAt(i)
-            End If
-        Next
-
-        If Not cbFilterVideoSource_Movies.Text = Master.eLang.All Then
-            FilterArray_Movies.Add(String.Format("VideoSource = '{0}'", If(cbFilterVideoSource_Movies.Text = Master.eLang.None, String.Empty, StringUtils.ConvertToValidFilterString(cbFilterVideoSource_Movies.Text))))
-        End If
-
-        RunFilter_Movies()
-    End Sub
-
     Private Sub cbFilterLists_Movies_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbFilterLists_Movies.SelectedIndexChanged
         If Not currList_Movies = CType(cbFilterLists_Movies.SelectedItem, KeyValuePair(Of String, String)).Value Then
             currList_Movies = CType(cbFilterLists_Movies.SelectedItem, KeyValuePair(Of String, String)).Value
@@ -3318,7 +3305,7 @@ Public Class frmMain
         RunFilter_Shows()
     End Sub
 
-    Private Sub chkFilterMarkEpisodes_Shows_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterMarkEpisodes_Shows.Click
+    Private Sub chkFilterMarkEpisodes_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterMarkEpisodes_Shows.Click
         If chkFilterMarkEpisodes_Shows.Checked Then
             FilterArray_TVShows.Add("MarkedEpisodes > 0")
         Else
@@ -3985,6 +3972,49 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub clbFilterVideoSources_Movies_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterVideoSources_Movies.LostFocus
+        pnlFilterVideoSources_Movies.Visible = False
+        pnlFilterVideoSources_Movies.Tag = "NO"
+
+        If clbFilterVideoSources_Movies.CheckedItems.Count > 0 Then
+            txtFilterVideoSource_Movies.Text = String.Empty
+            FilterArray_Movies.Remove(filVideoSource_Movies)
+
+            Dim lstVideoSources As New List(Of String)
+            lstVideoSources.AddRange(clbFilterVideoSources_Movies.CheckedItems.OfType(Of String).ToList)
+
+            If rbFilterAnd_Movies.Checked Then
+                txtFilterVideoSource_Movies.Text = String.Join(" AND ", lstVideoSources.ToArray)
+            Else
+                txtFilterVideoSource_Movies.Text = String.Join(" OR ", lstVideoSources.ToArray)
+            End If
+
+            For i As Integer = 0 To lstVideoSources.Count - 1
+                If lstVideoSources.Item(i) = Master.eLang.None Then
+                    lstVideoSources.Item(i) = "VideoSource IS NULL OR VideoSource = ''"
+                Else
+                    lstVideoSources.Item(i) = String.Format("VideoSource LIKE '%{0}%'", StringUtils.ConvertToValidFilterString(lstVideoSources.Item(i)))
+                End If
+            Next
+
+            If rbFilterAnd_Movies.Checked Then
+                filVideoSource_Movies = String.Format("({0})", String.Join(" AND ", lstVideoSources.ToArray))
+            Else
+                filVideoSource_Movies = String.Format("({0})", String.Join(" OR ", lstVideoSources.ToArray))
+            End If
+
+            FilterArray_Movies.Add(filVideoSource_Movies)
+            RunFilter_Movies()
+        Else
+            If Not String.IsNullOrEmpty(filVideoSource_Movies) Then
+                txtFilterVideoSource_Movies.Text = String.Empty
+                FilterArray_Movies.Remove(filVideoSource_Movies)
+                filVideoSource_Movies = String.Empty
+                RunFilter_Movies()
+            End If
+        End If
+    End Sub
+
     Private Sub clbFilterSource_Shows_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterSource_Shows.LostFocus
         pnlFilterSources_Shows.Visible = False
         pnlFilterSources_Shows.Tag = "NO"
@@ -4133,6 +4163,12 @@ Public Class frmMain
         For i As Integer = 0 To clbFilterTags_Movies.Items.Count - 1
             clbFilterTags_Movies.SetItemChecked(i, False)
         Next
+        'VideoSource
+        filVideoSource_Movies = String.Empty
+        txtFilterVideoSource_Movies.Text = String.Empty
+        For i As Integer = 0 To clbFilterVideoSources_Movies.Items.Count - 1
+            clbFilterVideoSources_Movies.SetItemChecked(i, False)
+        Next
 
         RemoveHandler cbFilterDataField_Movies.SelectedIndexChanged, AddressOf clbFilterDataFields_Movies_LostFocus
         If cbFilterDataField_Movies.Items.Count > 0 Then
@@ -4165,12 +4201,6 @@ Public Class frmMain
         End If
         cbFilterYearModTo_Movies.Enabled = False
         AddHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
-
-        RemoveHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
-        If cbFilterVideoSource_Movies.Items.Count > 0 Then
-            cbFilterVideoSource_Movies.SelectedIndex = 0
-        End If
-        AddHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
 
         If Reload Then FillList_Main(True, False, False)
 
@@ -8447,7 +8477,6 @@ Public Class frmMain
         btnFilterSortTitle_Movies.Enabled = isEnabled
         btnFilterSortYear_Movies.Enabled = isEnabled
         cbFilterDataField_Movies.Enabled = isEnabled
-        cbFilterVideoSource_Movies.Enabled = isEnabled
         cbFilterLists_Movies.Enabled = isEnabled
         cbFilterLists_MovieSets.Enabled = isEnabled
         cbFilterLists_Shows.Enabled = isEnabled
@@ -8471,6 +8500,7 @@ Public Class frmMain
         txtFilterGenre_Movies.Enabled = isEnabled
         txtFilterDataField_Movies.Enabled = isEnabled
         txtFilterSource_Movies.Enabled = isEnabled
+        txtFilterVideoSource_Movies.Enabled = isEnabled
     End Sub
 
     Private Sub EnableFilters_MovieSets(ByVal isEnabled As Boolean)
@@ -10494,6 +10524,8 @@ Public Class frmMain
                                                            (pnlFilter_Shows.Top + tblFilter_Shows.Top + gbFilterSpecific_Shows.Top + tblFilterSpecific_Shows.Top + tblFilterSpecificData_Shows.Top + txtFilterSource_Shows.Top) - pnlFilterSources_Shows.Height)
             pnlFilterTags_Movies.Location = New Point(pnlFilter_Movies.Left + tblFilter_Movies.Left + gbFilterSpecific_Movies.Left + tblFilterSpecific_Movies.Left + tblFilterSpecificData_Movies.Left + txtFilterTag_Movies.Left + 1,
                                                            (pnlFilter_Movies.Top + tblFilter_Movies.Top + gbFilterSpecific_Movies.Top + tblFilterSpecific_Movies.Top + tblFilterSpecificData_Movies.Top + txtFilterTag_Movies.Top) - pnlFilterTags_Movies.Height)
+            pnlFilterVideoSources_Movies.Location = New Point(pnlFilter_Movies.Left + tblFilter_Movies.Left + gbFilterSpecific_Movies.Left + tblFilterSpecific_Movies.Left + tblFilterSpecificData_Movies.Left + txtFilterVideoSource_Movies.Left + 1,
+                                                              (pnlFilter_Movies.Top + tblFilter_Movies.Top + gbFilterSpecific_Movies.Top + tblFilterSpecific_Movies.Top + tblFilterSpecificData_Movies.Top + txtFilterVideoSource_Movies.Top) - pnlFilterVideoSources_Movies.Height)
             pnlLoadSettings.Location = New Point(Convert.ToInt32((Width - pnlLoadSettings.Width) / 2), Convert.ToInt32((Height - pnlLoadSettings.Height) / 2))
         End If
     End Sub
@@ -11131,6 +11163,11 @@ Public Class frmMain
     Private Sub lblFilterSourceClose_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterSourcesClose_Shows.Click
         txtFilterSource_Shows.Focus()
         pnlFilterSources_Shows.Tag = String.Empty
+    End Sub
+
+    Private Sub lblFilterVideSourceClose_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterVideoSourcesClose_Movies.Click
+        txtFilterVideoSource_Movies.Focus()
+        pnlFilterVideoSources_Movies.Tag = String.Empty
     End Sub
 
     Private Sub LoadInfo_Movie(ByVal ID As Long)
@@ -14515,6 +14552,29 @@ Public Class frmMain
             FilterArray_Movies.Add(filTag_Movies)
         End If
 
+        'VideoSources
+        If clbFilterVideoSources_Movies.CheckedItems.Count > 0 Then
+            txtFilterVideoSource_Movies.Text = String.Empty
+            FilterArray_Movies.Remove(filVideoSource_Movies)
+
+            Dim lstVideoSources As New List(Of String)
+            lstVideoSources.AddRange(clbFilterVideoSources_Movies.CheckedItems.OfType(Of String).ToList)
+
+            txtFilterVideoSource_Movies.Text = String.Join(" AND ", lstVideoSources.ToArray)
+
+            For i As Integer = 0 To lstVideoSources.Count - 1
+                If lstVideoSources.Item(i) = Master.eLang.None Then
+                    lstVideoSources.Item(i) = "VideoSource IS NULL OR VideoSource = ''"
+                Else
+                    lstVideoSources.Item(i) = String.Format("VideoSource LIKE '%{0}%'", StringUtils.ConvertToValidFilterString(lstVideoSources.Item(i)))
+                End If
+            Next
+
+            filVideoSource_Movies = String.Join(" AND ", lstVideoSources.ToArray)
+
+            FilterArray_Movies.Add(filVideoSource_Movies)
+        End If
+
         If (Not String.IsNullOrEmpty(cbFilterYearFrom_Movies.Text) AndAlso Not cbFilterYearFrom_Movies.Text = Master.eLang.All) OrElse
             (Not String.IsNullOrEmpty(cbFilterYearTo_Movies.Text) AndAlso Not cbFilterYearTo_Movies.Text = Master.eLang.All) OrElse
             clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse
@@ -14531,7 +14591,7 @@ Public Class frmMain
             Not clbFilterSources_Movies.CheckedItems.Count > 0 OrElse
             clbFilterTags_Movies.CheckedItems.Count > 0 OrElse
             chkFilterTolerance_Movies.Checked OrElse
-            Not cbFilterVideoSource_Movies.Text = Master.eLang.All Then
+            clbFilterVideoSources_Movies.CheckedItems.Count > 0 Then
             RunFilter_Movies()
         End If
     End Sub
@@ -14709,6 +14769,29 @@ Public Class frmMain
             FilterArray_Movies.Add(filTag_Movies)
         End If
 
+        'VideoSources
+        If clbFilterVideoSources_Movies.CheckedItems.Count > 0 Then
+            txtFilterVideoSource_Movies.Text = String.Empty
+            FilterArray_Movies.Remove(filVideoSource_Movies)
+
+            Dim lstVideoSources As New List(Of String)
+            lstVideoSources.AddRange(clbFilterVideoSources_Movies.CheckedItems.OfType(Of String).ToList)
+
+            txtFilterVideoSource_Movies.Text = String.Join(" OR ", lstVideoSources.ToArray)
+
+            For i As Integer = 0 To lstVideoSources.Count - 1
+                If lstVideoSources.Item(i) = Master.eLang.None Then
+                    lstVideoSources.Item(i) = "VideoSource IS NULL OR VideoSource = ''"
+                Else
+                    lstVideoSources.Item(i) = String.Format("VideoSource LIKE '%{0}%'", StringUtils.ConvertToValidFilterString(lstVideoSources.Item(i)))
+                End If
+            Next
+
+            filVideoSource_Movies = String.Join(" OR ", lstVideoSources.ToArray)
+
+            FilterArray_Movies.Add(filVideoSource_Movies)
+        End If
+
         If (Not String.IsNullOrEmpty(cbFilterYearFrom_Movies.Text) AndAlso Not cbFilterYearFrom_Movies.Text = Master.eLang.All) OrElse
             (Not String.IsNullOrEmpty(cbFilterYearTo_Movies.Text) AndAlso Not cbFilterYearTo_Movies.Text = Master.eLang.All) OrElse
             clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse
@@ -14725,7 +14808,7 @@ Public Class frmMain
             Not clbFilterSources_Movies.CheckedItems.Count > 0 OrElse
             clbFilterTags_Movies.CheckedItems.Count > 0 OrElse
             chkFilterTolerance_Movies.Checked OrElse
-            Not cbFilterVideoSource_Movies.Text = Master.eLang.All Then
+            clbFilterVideoSources_Movies.CheckedItems.Count > 0 Then
             RunFilter_Movies()
         End If
     End Sub
@@ -15908,6 +15991,8 @@ Public Class frmMain
                                                                (pnlFilter_Movies.Top + tblFilter_Movies.Top + gbFilterSpecific_Movies.Top + tblFilterSpecific_Movies.Top + tblFilterSpecificData_Movies.Top + txtFilterTag_Movies.Top) - pnlFilterTags_Movies.Height)
                 pnlFilterTags_Shows.Location = New Point(pnlFilter_Shows.Left + tblFilter_Shows.Left + gbFilterSpecific_Shows.Left + tblFilterSpecific_Shows.Left + tblFilterSpecificData_Shows.Left + txtFilterTag_Shows.Left + 1,
                                                               (pnlFilter_Shows.Top + tblFilter_Shows.Top + gbFilterSpecific_Shows.Top + tblFilterSpecific_Shows.Top + tblFilterSpecificData_Shows.Top + txtFilterTag_Shows.Top) - pnlFilterTags_Shows.Height)
+                pnlFilterVideoSources_Movies.Location = New Point(pnlFilter_Movies.Left + tblFilter_Movies.Left + gbFilterSpecific_Movies.Left + tblFilterSpecific_Movies.Left + tblFilterSpecificData_Movies.Left + txtFilterVideoSource_Movies.Left + 1,
+                                                                  (pnlFilter_Movies.Top + tblFilter_Movies.Top + gbFilterSpecific_Movies.Top + tblFilterSpecific_Movies.Top + tblFilterSpecificData_Movies.Top + txtFilterVideoSource_Movies.Top) - pnlFilterVideoSources_Movies.Height)
 
                 Select Case tcMain.SelectedIndex
                     Case 0
@@ -16425,25 +16510,6 @@ Public Class frmMain
                 RemoveHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
                 cbFilterYearModTo_Movies.SelectedIndex = 0
                 AddHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
-
-                RemoveHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
-                cbFilterVideoSource_Movies.Items.Clear()
-                cbFilterVideoSource_Movies.Items.Add(Master.eLang.All)
-                'Cocotus 2014/10/11 Automatically populate available videosources from user settings to sourcefilter instead of using hardcoded list here!
-                Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
-                mySources = AdvancedSettings.GetComplexSetting("VideoSources")
-                If Not mySources Is Nothing Then
-                    For Each k In mySources
-                        If cbFilterVideoSource_Movies.Items.Contains(k.Value) = False Then
-                            cbFilterVideoSource_Movies.Items.Add(k.Value)
-                        End If
-                    Next
-                Else
-                    cbFilterVideoSource_Movies.Items.AddRange(APIXML.SourceList.ToArray)
-                End If
-                cbFilterVideoSource_Movies.Items.Add(Master.eLang.None)
-                cbFilterVideoSource_Movies.SelectedIndex = 0
-                AddHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
             End If
 
         End With
@@ -17331,6 +17397,8 @@ Public Class frmMain
         lblFilterCountries_Movies.Text = Master.eLang.GetString(237, "Countries")
         lblFilterCountriesClose_Movies.Text = Master.eLang.GetString(19, "Close")
         lblFilterCountry_Movies.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
+        lblFilterVideoSourcesClose_Movies.Text = Master.eLang.GetString(19, "Close")
+        lblFilterVideoSources_Movies.Text = Master.eLang.GetString(246, "Video Sources")
         lblFilterVideoSource_Movies.Text = String.Concat(Master.eLang.GetString(824, "Video Source"), ":")
         lblFilterGenre_Movies.Text = String.Concat(Master.eLang.GetString(725, "Genres"), ":")
         lblFilterGenre_Shows.Text = lblFilterGenre_Movies.Text
@@ -17414,6 +17482,7 @@ Public Class frmMain
         pnlFilterSources_Shows.Tag = String.Empty
         pnlFilterTags_Movies.Tag = String.Empty
         pnlFilterTags_Shows.Tag = String.Empty
+        pnlFilterVideoSources_Movies.Tag = String.Empty
         rbFilterAnd_Movies.Text = Master.eLang.GetString(45, "And")
         rbFilterAnd_MovieSets.Text = rbFilterAnd_Movies.Text
         rbFilterAnd_Shows.Text = rbFilterAnd_Movies.Text
@@ -17456,7 +17525,6 @@ Public Class frmMain
         TT.SetToolTip(chkFilterLock_Movies, Master.eLang.GetString(96, "Display only locked movies."))
         TT.SetToolTip(chkFilterLock_MovieSets, Master.eLang.GetString(1271, "Display only locked moviesets."))
         TT.SetToolTip(txtFilterSource_Movies, Master.eLang.GetString(97, "Display only movies from the selected source."))
-        TT.SetToolTip(cbFilterVideoSource_Movies, Master.eLang.GetString(580, "Display only movies from the selected video source."))
         TT.Active = True
 
         RemoveHandler cbSearchMovies.SelectedIndexChanged, AddressOf cbSearchMovies_SelectedIndexChanged
@@ -18174,6 +18242,30 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub RefreshFilterVideoSource_Movies()
+        clbFilterVideoSources_Movies.Items.Clear()
+        Dim mVideoSource() As Object = Master.DB.GetAllVideoSources_Movie
+        clbFilterVideoSources_Movies.Items.Add(Master.eLang.None)
+        clbFilterVideoSources_Movies.Items.AddRange(mVideoSource)
+
+        If filVideoSource_Movies = "(VideoSource IS NULL OR VideoSource = '')" Then
+            clbFilterVideoSources_Movies.SetItemChecked(0, True)
+        Else
+            Dim rVideoSources As MatchCollection = Regex.Matches(filVideoSource_Movies, "VideoSource LIKE '%(?<FILTER>.*?)%'")
+            If rVideoSources.Count > 0 Then
+                Dim lstCurrentVideoSources As New List(Of String)
+                For Each nVideoSource As Match In rVideoSources
+                    lstCurrentVideoSources.Add(nVideoSource.Groups("FILTER").Value)
+                Next
+                For i As Integer = 0 To lstCurrentVideoSources.Count - 1
+                    If clbFilterVideoSources_Movies.FindString(lstCurrentVideoSources(i).Trim) > 0 Then
+                        clbFilterVideoSources_Movies.SetItemChecked(clbFilterVideoSources_Movies.FindString(lstCurrentVideoSources(i).Trim), True)
+                    End If
+                Next
+            End If
+        End If
+    End Sub
+
     Private Sub txtFilterTag_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterTag_Movies.Click
         pnlFilterTags_Movies.Location = New Point(pnlFilter_Movies.Left + tblFilter_Movies.Left + gbFilterSpecific_Movies.Left + tblFilterSpecific_Movies.Left + tblFilterSpecificData_Movies.Left + txtFilterTag_Movies.Left + 1,
                                                        (pnlFilter_Movies.Top + tblFilter_Movies.Top + gbFilterSpecific_Movies.Top + tblFilterSpecific_Movies.Top + tblFilterSpecificData_Movies.Top + txtFilterTag_Movies.Top) - pnlFilterTags_Movies.Height)
@@ -18299,7 +18391,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub txtFilterSource_Movies_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource_Movies.Click
+    Private Sub txtFilterSource_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource_Movies.Click
         pnlFilterSources_Movies.Location = New Point(pnlFilter_Movies.Left + tblFilter_Movies.Left + gbFilterSpecific_Movies.Left + tblFilterSpecific_Movies.Left + tblFilterSpecificData_Movies.Left + txtFilterSource_Movies.Left + 1,
                                                        (pnlFilter_Movies.Top + tblFilter_Movies.Top + gbFilterSpecific_Movies.Top + tblFilterSpecific_Movies.Top + tblFilterSpecificData_Movies.Top + txtFilterSource_Movies.Top) - pnlFilterSources_Movies.Height)
         pnlFilterSources_Movies.Width = txtFilterSource_Movies.Width
@@ -18314,7 +18406,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub txtFilterSource_Shows_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource_Shows.Click
+    Private Sub txtFilterSource_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource_Shows.Click
         pnlFilterSources_Shows.Location = New Point(pnlFilter_Shows.Left + tblFilter_Shows.Left + gbFilterSpecific_Shows.Left + tblFilterSpecific_Shows.Left + tblFilterSpecificData_Shows.Left + txtFilterSource_Shows.Left + 1,
                                                        (pnlFilter_Shows.Top + tblFilter_Shows.Top + gbFilterSpecific_Shows.Top + tblFilterSpecific_Shows.Top + tblFilterSpecificData_Shows.Top + txtFilterSource_Shows.Top) - pnlFilterSources_Shows.Height)
         pnlFilterSources_Shows.Width = txtFilterSource_Shows.Width
@@ -18326,6 +18418,22 @@ Public Class frmMain
             clbFilterSource_Shows.Focus()
         Else
             pnlFilterSources_Shows.Tag = String.Empty
+        End If
+    End Sub
+
+    Private Sub txtFilterVideoSource_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterVideoSource_Movies.Click
+        pnlFilterVideoSources_Movies.Location = New Point(pnlFilter_Movies.Left + tblFilter_Movies.Left + gbFilterSpecific_Movies.Left + tblFilterSpecific_Movies.Left + tblFilterSpecificData_Movies.Left + txtFilterVideoSource_Movies.Left + 1,
+                                                       (pnlFilter_Movies.Top + tblFilter_Movies.Top + gbFilterSpecific_Movies.Top + tblFilterSpecific_Movies.Top + tblFilterSpecificData_Movies.Top + txtFilterVideoSource_Movies.Top) - pnlFilterVideoSources_Movies.Height)
+        pnlFilterVideoSources_Movies.Width = txtFilterVideoSource_Movies.Width
+        RefreshFilterVideoSource_Movies()
+        If pnlFilterVideoSources_Movies.Visible Then
+            pnlFilterVideoSources_Movies.Visible = False
+        ElseIf Not pnlFilterVideoSources_Movies.Tag.ToString = "NO" Then
+            pnlFilterVideoSources_Movies.Tag = String.Empty
+            pnlFilterVideoSources_Movies.Visible = True
+            clbFilterVideoSources_Movies.Focus()
+        Else
+            pnlFilterVideoSources_Movies.Tag = String.Empty
         End If
     End Sub
 
