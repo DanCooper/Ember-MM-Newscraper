@@ -656,7 +656,7 @@ Namespace FileUtils
             'Don't do anything if DisableMultiPartMedia is True or strPath is String.Empty
             If AdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) OrElse String.IsNullOrEmpty(strPath) Then Return strPath
 
-            Dim FilePattern As String = AdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")
+            Dim FilePattern As String = AdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[0-9]+)(.*?)(\.[^.]+)$")
             Dim FolderPattern As String = AdvancedSettings.GetSetting("FolderStacking", "((cd|dvd|dis[ck])[0-9]+)$")
 
             Dim FileStacking = Regex.Match(strPath, FilePattern, RegexOptions.IgnoreCase)
