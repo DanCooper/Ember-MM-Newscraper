@@ -14,6 +14,7 @@
       <Item Name="atmos / truehd / ac-3">truehd_atmos</Item>
       <Item Name="atmos / truehd">truehd_atmos</Item>
       <Item Name="e-ac-3">eac3</Item>
+      <Item Name="e-ac-3+atmos">eac3_atmos</Item>
       <Item Name="hra / core">dtshd_hra</Item>
       <Item Name="ma / core">dtshd_ma</Item>
       <Item Name="truehd / ac-3">truehd</Item>
