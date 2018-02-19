@@ -104,13 +104,12 @@ Public Class dlgHost
     ''' 2015/06/26 Cocotus - First implementation
     ''' </remarks>
     Private Sub Setup()
-        lblLoading.Text = Master.eLang.GetString(326, "Loading. Please wait...")
         Text = Master.eLang.GetString(1422, "Kodi Interface")
         btnOK.Text = Master.eLang.GetString(179, "OK")
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         btnCustomRemotePath.Text = Master.eLang.GetString(28, "Add")
         btnHostConnectionCheck.Text = Master.eLang.GetString(1423, "Check Connection")
-        btnHostPopulateSources.Text = Master.eLang.GetString(1424, "Populate Sources")
+        btnHostPopulateSources.Text = Master.eLang.GetString(1424, "Read Sources from Kodi")
 
         gbHostDetails.Text = Master.eLang.GetString(1425, "Kodi Host")
         gbHostMoviesetPath.Text = "Kodi " & Master.eLang.GetString(986, "MovieSet Artwork Folder")
@@ -219,7 +218,7 @@ Public Class dlgHost
     ''' Send JSON API request to Kodi to check if entered host data is correct
     ''' </remarks>
     Private Sub btnHostConnectionCheck_Click(sender As Object, e As EventArgs) Handles btnHostConnectionCheck.Click
-        lblLoading.Text = String.Concat(Master.eLang.GetString(1423, "Check Connection"), " ...")
+        'lblLoading.Text = String.Concat(Master.eLang.GetString(1423, "Check Connection"), " ...")
         SetControlsEnabled(False)
         SetInfo()
 
@@ -249,7 +248,6 @@ Public Class dlgHost
     ''' request will be executed in backgroundworker
     ''' </remarks>
     Private Sub btnHostPopulateSources_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnHostPopulateSources.Click
-        lblLoading.Text = Master.eLang.GetString(326, "Loading. Please wait...")
         SetControlsEnabled(False)
         SetInfo()
 
@@ -293,11 +291,11 @@ Public Class dlgHost
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
-        pnlLoading.Visible = Not isEnabled
         gbHostDetails.Enabled = isEnabled
         btnHostPopulateSources.Enabled = isEnabled
         btnOK.Enabled = isEnabled
         btnCancel.Enabled = isEnabled
+        prgLoading.Visible = Not isEnabled
         txtHostIP.Enabled = isEnabled
         txtLabel.Enabled = isEnabled
         txtPassword.Enabled = isEnabled
