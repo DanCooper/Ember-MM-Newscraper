@@ -16467,7 +16467,7 @@ Public Class frmMain
 
                 clbFilterSources_Movies.Items.Clear()
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT strName FROM moviesource;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT strName FROM moviesource ORDER BY strName;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
                             clbFilterSources_Movies.Items.Add(SQLReader("strName"))
@@ -16477,7 +16477,7 @@ Public Class frmMain
 
                 clbFilterSource_Shows.Items.Clear()
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT strName FROM tvshowsource;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT strName FROM tvshowsource ORDER BY strName;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
                             clbFilterSource_Shows.Items.Add(SQLReader("strName"))

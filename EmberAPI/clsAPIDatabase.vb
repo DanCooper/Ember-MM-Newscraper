@@ -2064,7 +2064,7 @@ Public Class Database
     Public Sub Load_Sources_Movie()
         Master.MovieSources.Clear()
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT * FROM moviesource;"
+            SQLcommand.CommandText = "SELECT * FROM moviesource ORDER BY strName;"
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
@@ -2820,7 +2820,7 @@ Public Class Database
     Public Sub Load_Sources_TVShow()
         Master.TVShowSources.Clear()
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT * FROM tvshowsource;"
+            SQLcommand.CommandText = "SELECT * FROM tvshowsource ORDER BY strName;"
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
