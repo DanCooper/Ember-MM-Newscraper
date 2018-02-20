@@ -89,7 +89,7 @@ Namespace TVDBs
 
                     'EpisodePoster
                     If FilteredModifiers.EpisodePoster AndAlso Results.Series.Episodes IsNot Nothing Then
-                        For Each tEpisode As TVDB.Model.Episode In Results.Series.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.PictureFilename))
+                        For Each tEpisode As TVDB.Model.Episode In Results.Series.Episodes.Where(Function(f) f.PictureFilename IsNot Nothing)
                             Dim img As New MediaContainers.Image With {
                             .Episode = tEpisode.Number,
                             .Height = CStr(tEpisode.ThumbHeight),
@@ -212,18 +212,18 @@ Namespace TVDBs
 
                 'EpisodePoster
                 If FilteredModifiers.EpisodePoster AndAlso Results.Series.Episodes IsNot Nothing Then
-                    Dim EpisodeImages As IEnumerable(Of TVDB.Model.Episode) = Nothing
+                    Dim ieEpisodes As IEnumerable(Of TVDB.Model.Episode) = Nothing
                     Select Case tEpisodeOrdering
                         Case Enums.EpisodeOrdering.Absolute
-                            EpisodeImages = Results.Series.Episodes.Where(Function(f) f.AbsoluteNumber = iEpisode)
+                            ieEpisodes = Results.Series.Episodes.Where(Function(f) f.AbsoluteNumber = iEpisode)
                         Case Enums.EpisodeOrdering.DVD
-                            EpisodeImages = Results.Series.Episodes.Where(Function(f) f.DVDSeason = iSeason And f.DVDEpisodeNumber = iEpisode)
+                            ieEpisodes = Results.Series.Episodes.Where(Function(f) f.DVDSeason = iSeason And f.DVDEpisodeNumber = iEpisode)
                         Case Enums.EpisodeOrdering.Standard
-                            EpisodeImages = Results.Series.Episodes.Where(Function(f) f.SeasonNumber = iSeason And f.Number = iEpisode)
+                            ieEpisodes = Results.Series.Episodes.Where(Function(f) f.SeasonNumber = iSeason And f.Number = iEpisode)
                     End Select
 
-                    If EpisodeImages IsNot Nothing Then
-                        For Each tEpisode As TVDB.Model.Episode In EpisodeImages
+                    If ieEpisodes IsNot Nothing Then
+                        For Each tEpisode As TVDB.Model.Episode In ieEpisodes.Where(Function(f) f.PictureFilename IsNot Nothing)
                             Dim img As New MediaContainers.Image With {
                                 .Episode = iEpisode,
                                 .Height = CStr(tEpisode.ThumbHeight),
