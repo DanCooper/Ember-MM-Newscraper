@@ -74,16 +74,16 @@ Namespace TVDBs
         End Function
 
         Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
-            Dim alContainer As New MediaContainers.SearchResultsContainer
+            Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             Try
                 Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbID)))
                 If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
-                    Return Nothing
+                    Return alImagesContainer
                 End If
                 Dim Results = APIResult.Result
 
-                If bwTVDB.CancellationPending Then Return Nothing
+                If bwTVDB.CancellationPending Then Return alImagesContainer
 
                 If Results.Banners IsNot Nothing Then
 
@@ -101,7 +101,7 @@ Namespace TVDBs
                             .URLThumb = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(_TVDBMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty),
                             .Width = CStr(tEpisode.ThumbWidth)}
 
-                            alContainer.EpisodePosters.Add(img)
+                            alImagesContainer.EpisodePosters.Add(img)
                         Next
                     End If
 
@@ -118,7 +118,7 @@ Namespace TVDBs
                                                                        .VoteAverage = CStr(image.Rating),
                                                                        .VoteCount = image.RatingCount,
                                                                        .Width = "758"}
-                            alContainer.MainBanners.Add(img)
+                            alImagesContainer.MainBanners.Add(img)
                         Next
                     End If
 
@@ -135,14 +135,14 @@ Namespace TVDBs
                                                                        .VoteAverage = CStr(image.Rating),
                                                                        .VoteCount = image.RatingCount,
                                                                        .Width = "758"}
-                            alContainer.SeasonBanners.Add(img)
+                            alImagesContainer.SeasonBanners.Add(img)
                         Next
                     End If
 
                     'MainFanart
                     If FilteredModifiers.MainFanart Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.fanart)
-                            alContainer.MainFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString,
+                            alImagesContainer.MainFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString,
                                                                                         .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                                         .Scraper = "TVDB",
                                                                                         .Season = image.Season,
@@ -168,7 +168,7 @@ Namespace TVDBs
                                                                        .VoteAverage = CStr(image.Rating),
                                                                        .VoteCount = image.RatingCount,
                                                                        .Width = StringUtils.StringToSize(image.Dimension).Width.ToString}
-                            alContainer.MainPosters.Add(img)
+                            alImagesContainer.MainPosters.Add(img)
                         Next
                     End If
 
@@ -185,7 +185,7 @@ Namespace TVDBs
                                                                        .VoteAverage = CStr(image.Rating),
                                                                        .VoteCount = image.RatingCount,
                                                                        .Width = "400"}
-                            alContainer.SeasonPosters.Add(img)
+                            alImagesContainer.SeasonPosters.Add(img)
                         Next
                     End If
 
@@ -195,20 +195,20 @@ Namespace TVDBs
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            Return alContainer
+            Return alImagesContainer
         End Function
 
         Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal tEpisodeOrdering As Enums.EpisodeOrdering, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
-            Dim alContainer As New MediaContainers.SearchResultsContainer
+            Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             Try
                 Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbID)))
                 If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
-                    Return Nothing
+                    Return alImagesContainer
                 End If
                 Dim Results = APIResult.Result
 
-                If bwTVDB.CancellationPending Then Return Nothing
+                If bwTVDB.CancellationPending Then Return alImagesContainer
 
                 'EpisodePoster
                 If FilteredModifiers.EpisodePoster AndAlso Results.Series.Episodes IsNot Nothing Then
@@ -235,7 +235,7 @@ Namespace TVDBs
                                 .URLThumb = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(_TVDBMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty),
                                 .Width = CStr(tEpisode.ThumbWidth)}
 
-                            alContainer.EpisodePosters.Add(img)
+                            alImagesContainer.EpisodePosters.Add(img)
                         Next
                     End If
                 End If
@@ -244,7 +244,7 @@ Namespace TVDBs
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            Return alContainer
+            Return alImagesContainer
         End Function
 
 

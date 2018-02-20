@@ -81,9 +81,9 @@ Namespace FanartTVs
                     If FanartTv.API.ErrorMessage IsNot Nothing Then
                         logger.Error(FanartTv.API.ErrorMessage)
                     End If
-                    Return Nothing
+                    Return alImagesContainer
                 End If
-                If bwFANARTTV.CancellationPending Then Return Nothing
+                If bwFANARTTV.CancellationPending Then Return alImagesContainer
 
                 'Banner
                 If FilteredModifiers.MainBanner AndAlso Results.List.Moviebanner IsNot Nothing Then
@@ -247,9 +247,9 @@ Namespace FanartTVs
                     If FanartTv.API.ErrorMessage IsNot Nothing Then
                         logger.Error(FanartTv.API.ErrorMessage)
                     End If
-                    Return Nothing
+                    Return alImagesContainer
                 End If
-                If bwFANARTTV.CancellationPending Then Return Nothing
+                If bwFANARTTV.CancellationPending Then Return alImagesContainer
 
                 'MainBanner
                 If FilteredModifiers.MainBanner AndAlso Results.List.Tvbanner IsNot Nothing Then
