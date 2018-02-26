@@ -10242,7 +10242,6 @@ Public Class frmMain
         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
         Master.DB.Connect_MyVideos()
         Master.DB.LoadAllGenres()
-        Master.DB.Load_ExcludeDirs()
 
         tpMovies.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.ContentType.Movie, .DefaultList = "movielist"}
         tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist"}
