@@ -1014,7 +1014,6 @@ Public Class dlgSettings
 
     Private Sub btnMovieSourceRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourceRemove.Click
         RemoveMovieSource()
-        Master.DB.Load_Sources_Movie()
     End Sub
 
     Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtAdd.Click
@@ -1724,7 +1723,6 @@ Public Class dlgSettings
 
     Private Sub btnRemTVSource_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemTVSource.Click
         RemoveTVSource()
-        Master.DB.Load_Sources_TVShow()
     End Sub
 
     Private Sub btnTVShowFilterDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterDown.Click
@@ -4627,8 +4625,7 @@ Public Class dlgSettings
     Private Sub RefreshMovieSources()
         Dim lvItem As ListViewItem
         lvMovieSources.Items.Clear()
-        Master.DB.Load_Sources_Movie()
-        For Each s As Database.DBSource In Master.MovieSources
+        For Each s As Database.DBSource In Master.DB.GetSources_Movie
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
@@ -4645,8 +4642,7 @@ Public Class dlgSettings
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
         lvTVSources.Items.Clear()
-        Master.DB.Load_Sources_TVShow()
-        For Each s As Database.DBSource In Master.TVShowSources
+        For Each s As Database.DBSource In Master.DB.GetSources_TVShow
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)

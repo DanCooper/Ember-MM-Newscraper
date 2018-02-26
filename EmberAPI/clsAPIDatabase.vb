@@ -32,7 +32,7 @@ Imports System.Text.RegularExpressions
 Public Class Database
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwPatchDB As New System.ComponentModel.BackgroundWorker
 
@@ -1309,23 +1309,19 @@ Public Class Database
     End Function
 
     Public Function GetAllTags() As String()
-        Dim tList As New List(Of String)
+        Dim nList As New List(Of String)
 
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = "SELECT strTag FROM tag;"
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    If Not String.IsNullOrEmpty(SQLreader("strTag").ToString) Then
-                        If Not tList.Contains(SQLreader("strTag").ToString) Then
-                            tList.Add(SQLreader("strTag").ToString.Trim)
-                        End If
-                    End If
+                    nList.Add(SQLreader("strTag").ToString.Trim)
                 End While
             End Using
         End Using
 
-        tList.Sort()
-        Return tList.ToArray
+        nList.Sort()
+        Return nList.ToArray
     End Function
 
     Public Function GetTVShowEpisodeSorting(ByVal ShowID As Long) As Enums.EpisodeSorting
@@ -1344,35 +1340,57 @@ Public Class Database
     End Function
 
     Public Function GetAllCountries_Movie() As String()
-        Dim cList As New List(Of String)
+        Dim nList As New List(Of String)
 
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = "SELECT strCountry FROM country;"
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    cList.Add(SQLreader("strCountry").ToString)
+                    nList.Add(SQLreader("strCountry").ToString)
                 End While
             End Using
         End Using
 
-        cList.Sort()
-        Return cList.ToArray
+        nList.Sort()
+        Return nList.ToArray
+    End Function
+
+    Public Function GetAllSources_Movie() As String()
+        Dim nList As New List(Of String)
+
+        For Each nSource In Master.DB.GetSources_Movie
+            nList.Add(nSource.Name)
+        Next
+
+        nList.Sort()
+        Return nList.ToArray
+    End Function
+
+    Public Function GetAllSources_TVShow() As String()
+        Dim nList As New List(Of String)
+
+        For Each nSource In Master.DB.GetSources_TVShow
+            nList.Add(nSource.Name)
+        Next
+
+        nList.Sort()
+        Return nList.ToArray
     End Function
 
     Public Function GetAllVideoSources_Movie() As String()
-        Dim cList As New List(Of String)
+        Dim nList As New List(Of String)
 
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = "SELECT DISTINCT VideoSource FROM movie WHERE VideoSource <> '';"
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    cList.Add(SQLreader("VideoSource").ToString)
+                    nList.Add(SQLreader("VideoSource").ToString)
                 End While
             End Using
         End Using
 
-        cList.Sort()
-        Return cList.ToArray
+        nList.Sort()
+        Return nList.ToArray
     End Function
 
     Public Sub LoadAllGenres()
@@ -1451,6 +1469,59 @@ Public Class Database
         End Using
 
         Return tList
+    End Function
+    ''' <summary>
+    ''' Get all movie sources from DB
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Function GetSources_Movie() As List(Of DBSource)
+        Dim lstSources As New List(Of DBSource)
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT * FROM moviesource ORDER BY strName;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim msource As New DBSource
+                    msource.ID = Convert.ToInt64(SQLreader("idSource"))
+                    msource.Name = SQLreader("strName").ToString
+                    msource.Path = SQLreader("strPath").ToString
+                    msource.Recursive = Convert.ToBoolean(SQLreader("bRecursive"))
+                    msource.UseFolderName = Convert.ToBoolean(SQLreader("bFoldername"))
+                    msource.IsSingle = Convert.ToBoolean(SQLreader("bSingle"))
+                    msource.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
+                    msource.GetYear = Convert.ToBoolean(SQLreader("bGetYear"))
+                    msource.Language = SQLreader("strLanguage").ToString
+                    msource.LastScan = SQLreader("strLastScan").ToString
+                    lstSources.Add(msource)
+                End While
+            End Using
+        End Using
+        Return lstSources
+    End Function
+    ''' <summary>
+    ''' Get all tv show sources from DB
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Function GetSources_TVShow() As List(Of DBSource)
+        Dim lstSources As New List(Of DBSource)
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT * FROM tvshowsource ORDER BY strName;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim tvsource As New DBSource
+                    tvsource.ID = Convert.ToInt64(SQLreader("idSource"))
+                    tvsource.Name = SQLreader("strName").ToString
+                    tvsource.Path = SQLreader("strPath").ToString
+                    tvsource.Language = SQLreader("strLanguage").ToString
+                    tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.EpisodeOrdering)
+                    tvsource.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
+                    tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting)
+                    tvsource.LastScan = SQLreader("strLastScan").ToString
+                    tvsource.IsSingle = Convert.ToBoolean(SQLreader("bSingle"))
+                    lstSources.Add(tvsource)
+                End While
+            End Using
+        End Using
+        Return lstSources
     End Function
 
     Public Function GetTVSeasonIDFromEpisode(ByVal DBElement As DBElement) As Long
@@ -2057,36 +2128,6 @@ Public Class Database
 
         Return _source
     End Function
-    ''' <summary>
-    ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of movie Sources
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub Load_Sources_Movie()
-        Master.MovieSources.Clear()
-        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT * FROM moviesource ORDER BY strName;"
-            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
-                        Dim msource As New DBSource
-                        msource.ID = Convert.ToInt64(SQLreader("idSource"))
-                        msource.Name = SQLreader("strName").ToString
-                        msource.Path = SQLreader("strPath").ToString
-                        msource.Recursive = Convert.ToBoolean(SQLreader("bRecursive"))
-                        msource.UseFolderName = Convert.ToBoolean(SQLreader("bFoldername"))
-                        msource.IsSingle = Convert.ToBoolean(SQLreader("bSingle"))
-                        msource.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
-                        msource.GetYear = Convert.ToBoolean(SQLreader("bGetYear"))
-                        msource.Language = SQLreader("strLanguage").ToString
-                        msource.LastScan = SQLreader("strLastScan").ToString
-                        Master.MovieSources.Add(msource)
-                    Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name)
-                    End Try
-                End While
-            End Using
-        End Using
-    End Sub
 
     ''' <summary>
     ''' Load all the information for a movietag.
@@ -2813,35 +2854,6 @@ Public Class Database
 
         Return _source
     End Function
-    ''' <summary>
-    ''' Load TV Sources from the DB. This populates the Master.TVSources list of TV Sources
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub Load_Sources_TVShow()
-        Master.TVShowSources.Clear()
-        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT * FROM tvshowsource ORDER BY strName;"
-            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
-                        Dim tvsource As New DBSource
-                        tvsource.ID = Convert.ToInt64(SQLreader("idSource"))
-                        tvsource.Name = SQLreader("strName").ToString
-                        tvsource.Path = SQLreader("strPath").ToString
-                        tvsource.Language = SQLreader("strLanguage").ToString
-                        tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.EpisodeOrdering)
-                        tvsource.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
-                        tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting)
-                        tvsource.LastScan = SQLreader("strLastScan").ToString
-                        tvsource.IsSingle = Convert.ToBoolean(SQLreader("bSingle"))
-                        Master.TVShowSources.Add(tvsource)
-                    Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name)
-                    End Try
-                End While
-            End Using
-        End Using
-    End Sub
 
     Private Sub bwPatchDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPatchDB.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)

@@ -37,10 +37,8 @@ Public Class Master
     Public Shared DefaultOptions_MovieSet As New Structures.ScrapeOptions
     Public Shared DefaultOptions_TV As New Structures.ScrapeOptions
     Public Shared ExcludeDirs As New List(Of String)
-    Public Shared MovieSources As New List(Of Database.DBSource)
     Public Shared SettingsPath As String = Path.Combine(Functions.AppPath, "Profiles\Default")
     Public Shared SourcesList As New List(Of String)
-    Public Shared TVShowSources As New List(Of Database.DBSource)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared eLang As New Localization
     Public Shared eProfiles As New Profiles

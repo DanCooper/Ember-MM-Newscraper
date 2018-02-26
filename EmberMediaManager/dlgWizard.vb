@@ -65,7 +65,7 @@ Public Class dlgWizard
     Private Sub btnMovieAddFolders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFolder.Click
         Using dSource As New dlgSourceMovie()
             If dSource.ShowDialog(tmppath) = DialogResult.OK Then
-                RefreshSources()
+                RefreshSources_Movie()
             End If
         End Using
     End Sub
@@ -103,7 +103,7 @@ Public Class dlgWizard
     Private Sub btnTVAddSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVAddSource.Click
         Using dSource As New dlgSourceTVShow
             If dSource.ShowDialog(tmppath) = DialogResult.OK Then
-                RefreshTVSources()
+                RefreshSources_TVShow()
             End If
         End Using
     End Sub
@@ -659,8 +659,8 @@ Public Class dlgWizard
     End Sub
 
     Private Sub FillSettings()
-        RefreshSources()
-        RefreshTVSources()
+        RefreshSources_Movie()
+        RefreshSources_TVShow()
 
         With Master.eSettings
 
@@ -923,7 +923,7 @@ Public Class dlgWizard
         If lvMovies.SelectedItems.Count > 0 Then
             Using dMovieSource As New dlgSourceMovie
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = DialogResult.OK Then
-                    RefreshSources()
+                    RefreshSources_Movie()
                 End If
             End Using
         End If
@@ -937,7 +937,7 @@ Public Class dlgWizard
         If lvTVSources.SelectedItems.Count > 0 Then
             Using dTVSource As New dlgSourceTVShow
                 If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = DialogResult.OK Then
-                    RefreshTVSources()
+                    RefreshSources_TVShow()
                 End If
             End Using
         End If
@@ -952,45 +952,37 @@ Public Class dlgWizard
         DialogResult = DialogResult.OK
     End Sub
 
-    Private Sub RefreshSources()
+    Private Sub RefreshSources_Movie()
         Dim lvItem As ListViewItem
-
         lvMovies.Items.Clear()
-        Master.DB.Load_Sources_Movie()
-        For Each s As Database.DBSource In Master.MovieSources
+        For Each s As Database.DBSource In Master.DB.GetSources_Movie
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
-            tmppath = s.Path
-            lvItem.SubItems.Add(If(s.Recursive, "Yes", "No"))
-            lvItem.SubItems.Add(If(s.UseFolderName, "Yes", "No"))
-            lvItem.SubItems.Add(If(s.IsSingle, "Yes", "No"))
-            lvItem.SubItems.Add(If(s.Exclude, "Yes", "No"))
-            lvItem.SubItems.Add(If(s.GetYear, "Yes", "No"))
+            lvItem.SubItems.Add(If(s.Recursive, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(If(s.UseFolderName, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(If(s.IsSingle, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(If(s.Exclude, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(If(s.GetYear, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvMovies.Items.Add(lvItem)
+            tmppath = s.Path
         Next
     End Sub
 
-    Private Sub RefreshTVSources()
+    Private Sub RefreshSources_TVShow()
         Dim lvItem As ListViewItem
-        Master.DB.Load_Sources_TVShow()
         lvTVSources.Items.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT * FROM tvshowsource;"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    lvItem = New ListViewItem(SQLreader("idSource").ToString)
-                    lvItem.SubItems.Add(SQLreader("strName").ToString)
-                    lvItem.SubItems.Add(SQLreader("strPath").ToString)
-                    lvItem.SubItems.Add(APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = SQLreader("strLanguage").ToString).Description)
-                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.EpisodeOrdering).ToString)
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("bExclude")), Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting).ToString)
-                    tmppath = SQLreader("strPath").ToString
-                    lvTVSources.Items.Add(lvItem)
-                End While
-            End Using
-        End Using
+        For Each s As Database.DBSource In Master.DB.GetSources_TVShow
+            lvItem = New ListViewItem(CStr(s.ID))
+            lvItem.SubItems.Add(s.Name)
+            lvItem.SubItems.Add(s.Path)
+            lvItem.SubItems.Add(APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language).Description)
+            lvItem.SubItems.Add(s.Ordering.ToString)
+            lvItem.SubItems.Add(If(s.Exclude, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(s.EpisodeSorting.ToString)
+            lvMovies.Items.Add(lvItem)
+            tmppath = s.Path
+        Next
     End Sub
 
     Private Sub RemoveSource()
