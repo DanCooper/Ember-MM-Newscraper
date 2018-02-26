@@ -263,8 +263,6 @@ Public Class dlgSourceMovie
             SQLtransaction.Commit()
         End Using
 
-        Functions.GetListOfSources()
-
         DialogResult = DialogResult.OK
     End Sub
 

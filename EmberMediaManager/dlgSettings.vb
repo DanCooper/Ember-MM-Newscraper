@@ -4769,8 +4769,6 @@ Public Class dlgSettings
                 lvMovieSources.EndUpdate()
                 lvMovieSources.Refresh()
 
-                Functions.GetListOfSources()
-
                 SetApplyButton(True)
             End If
         End If

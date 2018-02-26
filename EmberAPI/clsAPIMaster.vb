@@ -38,7 +38,6 @@ Public Class Master
     Public Shared DefaultOptions_TV As New Structures.ScrapeOptions
     Public Shared ExcludeDirs As New List(Of String)
     Public Shared SettingsPath As String = Path.Combine(Functions.AppPath, "Profiles\Default")
-    Public Shared SourcesList As New List(Of String)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared eLang As New Localization
     Public Shared eProfiles As New Profiles

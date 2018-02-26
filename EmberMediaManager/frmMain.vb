@@ -10470,7 +10470,6 @@ Public Class frmMain
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
                 SetMenus(True)
-                Functions.GetListOfSources()
                 cmnuTrayExit.Enabled = True
                 cmnuTraySettings.Enabled = True
                 mnuMainEdit.Enabled = True

@@ -62,7 +62,7 @@ Public Class dlgDeleteConfirm
         NewNode.ImageKey = "FOLDER"
         NewNode.SelectedImageKey = "FOLDER"
 
-        If Not Master.SourcesList.Contains(tDirectoryInfo.FullName) Then
+        If Master.DB.GetSources_Movie.FirstOrDefault(Function(f) f.Path = tDirectoryInfo.FullName) Is Nothing Then
             'populate all the sub-folders in the folder
             For Each nDirectoryInfo As DirectoryInfo In tDirectoryInfo.GetDirectories
                 AddFolderNode(NewNode, nDirectoryInfo)
