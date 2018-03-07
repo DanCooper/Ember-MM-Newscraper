@@ -1416,7 +1416,6 @@ Public Class Database
                 APIXML.GenreXML.Mappings.Add(New genreMapping With {.isNew = False, .MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
             End If
         Next
-        APIXML.GenreXML.Save()
     End Sub
 
     Public Function GetAllMoviePaths() As List(Of String)
