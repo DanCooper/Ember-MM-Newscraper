@@ -106,11 +106,16 @@ Section "Ember Media Manager" SecEmberMediaManager
   SectionIn RO
   SectionIn 1 2 3 #section is in install type Portable/UserFolder/Minimal
   
-  ;Cleanup old defaults folder
+  ;Cleanup old folders
+  RMDir /r "$INSTDIR\Bin"
+  RMDir /r "$INSTDIR\DB"
   RMDir /r "$INSTDIR\Defaults"
-  
-  ;Cleanup old modules folder
+  RMDir /r "$INSTDIR\Images"
+  RMDir /r "$INSTDIR\Langs"
   RMDir /r "$INSTDIR\Modules"
+  RMDir /r "$INSTDIR\Themes"
+  RMDir /r "$INSTDIR\x64"
+  RMDir /r "$INSTDIR\x86"
   
   ;Cleanup old files
   Delete "$INSTDIR\*.*"
@@ -135,14 +140,7 @@ Section "Ember Media Manager" SecEmberMediaManager
   SetOutPath "$INSTDIR\Langs"
   File /r /x *.so "${emm_root}\${emm_folder}\Langs\*.*"
   SetOutPath "$INSTDIR\Modules"
-  File /r /x *.so "${emm_root}\${emm_folder}\Modules\*.dll"
-  File /r /x *.so "${emm_root}\${emm_folder}\Modules\*.xml"
-  SetOutPath "$INSTDIR\Modules\Templates"
-  File /r /x *.so "${emm_root}\${emm_folder}\Modules\Templates\*.*"
-  SetOutPath "$INSTDIR\Modules\x64"
-  File /r /x *.so "${emm_root}\${emm_folder}\Modules\x64\*.*"
-  SetOutPath "$INSTDIR\Modules\x86"
-  File /r /x *.so "${emm_root}\${emm_folder}\Modules\x86\*.*"
+  File /r /x *.so "${emm_root}\${emm_folder}\Modules\*.*"
   SetOutPath "$INSTDIR\Themes"
   File /r /x *.so "${emm_root}\${emm_folder}\Themes\*.*"
   SetOutPath "$INSTDIR\x64"
@@ -247,7 +245,7 @@ Var UnPageSettingsCheckbox_State
 Var UnPageSettingsEditBox
 
 Function un.UnPageSettings
-    !insertmacro MUI_HEADER_TEXT "Uninstall ${emm_appname}" "Remove ${emm_appname}'s settings folder from your computer."
+    !insertmacro MUI_HEADER_TEXT "Uninstall ${emm_appname}" "Remove ${emm_appname}'s Profiles folder from your computer."
   nsDialogs::Create /NOUNLOAD 1018
   Pop $UnPageSettingsDialog
 
@@ -255,17 +253,17 @@ Function un.UnPageSettings
     Abort
   ${EndIf}
 
-  ${NSD_CreateLabel} 0 0 100% 12u "Do you want to delete the settings folder?"
+  ${NSD_CreateLabel} 0 0 100% 12u "Do you want to delete the Profiles folder?"
   Pop $0
 
-  ${NSD_CreateText} 0 13u 100% 12u "$INSTDIR\Settings\"
+  ${NSD_CreateText} 0 13u 100% 12u "$INSTDIR\Profiles\"
   Pop $UnPageSettingsEditBox
     SendMessage $UnPageSettingsEditBox ${EM_SETREADONLY} 1 0
 
-  ${NSD_CreateLabel} 0 46u 100% 24u "Leave unchecked to keep the settings folder for later use or check to delete the settings folder."
+  ${NSD_CreateLabel} 0 46u 100% 24u "Leave unchecked to keep the Profiles folder for later use or check to delete the Profiles folder."
   Pop $0
 
-  ${NSD_CreateCheckbox} 0 71u 100% 8u "Yes, also delete the settings folder."
+  ${NSD_CreateCheckbox} 0 71u 100% 8u "Yes, also delete the Profiles folder."
   Pop $UnPageSettingsCheckbox
 
 
@@ -282,7 +280,7 @@ Var UnPageTempCheckbox_State
 Var UnPageTempEditBox
 
 Function un.UnPageTemp
-    !insertmacro MUI_HEADER_TEXT "Uninstall ${emm_appname}" "Remove ${emm_appname}'s temp folder from your computer."
+    !insertmacro MUI_HEADER_TEXT "Uninstall ${emm_appname}" "Remove ${emm_appname}'s Temp folder from your computer."
   nsDialogs::Create /NOUNLOAD 1018
   Pop $UnPageTempDialog
 
@@ -290,17 +288,17 @@ Function un.UnPageTemp
     Abort
   ${EndIf}
 
-  ${NSD_CreateLabel} 0 0 100% 12u "Do you want to delete the temp folder?"
+  ${NSD_CreateLabel} 0 0 100% 12u "Do you want to delete the Temp folder?"
   Pop $0
 
   ${NSD_CreateText} 0 13u 100% 12u "$INSTDIR\Temp\"
   Pop $UnPageTempEditBox
     SendMessage $UnPageTempEditBox ${EM_SETREADONLY} 1 0
 
-  ${NSD_CreateLabel} 0 46u 100% 24u "Leave unchecked to keep the temp folder for later use or check to delete the temp folder."
+  ${NSD_CreateLabel} 0 46u 100% 24u "Leave unchecked to keep the Temp folder for later use or check to delete the temp folder."
   Pop $0
 
-  ${NSD_CreateCheckbox} 0 71u 100% 8u "Yes, also delete the temp folder."
+  ${NSD_CreateCheckbox} 0 71u 100% 8u "Yes, also delete the Temp folder."
   Pop $UnPageTempCheckbox
 
 
@@ -333,9 +331,9 @@ Section "Uninstall"
 
   Delete "$INSTDIR\Uninstall.exe"
 
-;Uninstall Settings folder if option is checked, otherwise skip
+;Uninstall Profiles folder if option is checked, otherwise skip
   ${If} $UnPageSettingsCheckbox_State == ${BST_CHECKED}
-    RMDir /r "$INSTDIR\Settings"
+    RMDir /r "$INSTDIR\Profiles"
   ${EndIf}
   
 ;Uninstall Temp folder if option is checked, otherwise skip
@@ -343,8 +341,8 @@ Section "Uninstall"
     RMDir /r "$INSTDIR\Temp"
   ${EndIf}
   
-;Uninstall install folder if no settings and no temp folder existing
-  ${If} ${FileExists} '$INSTDIR\Settings'
+;Uninstall install folder if no Profiles and no Temp folder existing
+  ${If} ${FileExists} '$INSTDIR\Profiles'
   ${ElseIf} ${FileExists} '$INSTDIR\Temp'
   ${Else}
       RMDir "$INSTDIR"
