@@ -605,15 +605,15 @@ Public Class FanartTV_Image
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.ScraperModule_Image_Movie.ScraperOrderChanged
+    Public Sub ScraperOrderChanged_Movie() Implements Interfaces.ScraperModule_Image_Movie.ScraperOrderChanged
         _setup_Movie.orderChanged()
     End Sub
 
-    Public Sub ScraperOrderChanged_MovieSet() Implements EmberAPI.Interfaces.ScraperModule_Image_MovieSet.ScraperOrderChanged
+    Public Sub ScraperOrderChanged_MovieSet() Implements Interfaces.ScraperModule_Image_MovieSet.ScraperOrderChanged
         _setup_MovieSet.orderChanged()
     End Sub
 
-    Public Sub ScraperOrderChanged_TV() Implements EmberAPI.Interfaces.ScraperModule_Image_TV.ScraperOrderChanged
+    Public Sub ScraperOrderChanged_TV() Implements Interfaces.ScraperModule_Image_TV.ScraperOrderChanged
         _setup_TV.orderChanged()
     End Sub
 

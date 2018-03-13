@@ -589,6 +589,16 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub btnFileSystemExcludedDirsBrowse_Click(sender As Object, e As EventArgs) Handles btnFileSystemExcludedDirsBrowse.Click
+        With fbdBrowse
+            If .ShowDialog = DialogResult.OK Then
+                If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                    txtFileSystemExcludedDirs.Text = .SelectedPath.ToString
+                End If
+            End If
+        End With
+    End Sub
+
     Private Sub btnFileSystemExcludedDirsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemExcludedDirsRemove.Click
         RemoveExcludeDir()
         RefreshFileSystemExcludeDirs()
@@ -602,59 +612,47 @@ Public Class dlgSettings
     End Sub
 
     Private Sub AddExcludedDir(ByVal Path As String)
-        Try
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = "INSERT OR REPLACE INTO ExcludeDir (Dirname) VALUES (?);"
+
+                Dim parDirname As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirname", DbType.String, 0, "Dirname")
+                parDirname.Value = Path
+
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
+        End Using
+
+        SetApplyButton(True)
+        sResult.NeedsDBClean_Movie = True
+        sResult.NeedsDBClean_TV = True
+    End Sub
+
+    Private Sub RemoveExcludeDir()
+        If lstFileSystemExcludedDirs.SelectedItems.Count > 0 Then
+            lstFileSystemExcludedDirs.BeginUpdate()
+
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = "INSERT OR REPLACE INTO ExcludeDir (Dirname) VALUES (?);"
-
                     Dim parDirname As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirname", DbType.String, 0, "Dirname")
-                    parDirname.Value = Path
-
-                    SQLcommand.ExecuteNonQuery()
+                    While lstFileSystemExcludedDirs.SelectedItems.Count > 0
+                        parDirname.Value = lstFileSystemExcludedDirs.SelectedItems(0).ToString
+                        SQLcommand.CommandText = String.Concat("DELETE FROM ExcludeDir WHERE Dirname = (?);")
+                        SQLcommand.ExecuteNonQuery()
+                        lstFileSystemExcludedDirs.Items.Remove(lstFileSystemExcludedDirs.SelectedItems(0))
+                    End While
                 End Using
                 SQLtransaction.Commit()
             End Using
 
+            lstFileSystemExcludedDirs.EndUpdate()
+            lstFileSystemExcludedDirs.Refresh()
+
             SetApplyButton(True)
-            sResult.NeedsDBClean_Movie = True
-            sResult.NeedsDBClean_TV = True
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        Finally
-            Master.DB.Load_ExcludeDirs()
-        End Try
-    End Sub
-
-    Private Sub RemoveExcludeDir()
-        Try
-            If lstFileSystemExcludedDirs.SelectedItems.Count > 0 Then
-                lstFileSystemExcludedDirs.BeginUpdate()
-
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parDirname As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirname", DbType.String, 0, "Dirname")
-                        While lstFileSystemExcludedDirs.SelectedItems.Count > 0
-                            parDirname.Value = lstFileSystemExcludedDirs.SelectedItems(0).ToString
-                            SQLcommand.CommandText = String.Concat("DELETE FROM ExcludeDir WHERE Dirname = (?);")
-                            SQLcommand.ExecuteNonQuery()
-                            lstFileSystemExcludedDirs.Items.Remove(lstFileSystemExcludedDirs.SelectedItems(0))
-                        End While
-                    End Using
-                    SQLtransaction.Commit()
-                End Using
-
-                lstFileSystemExcludedDirs.EndUpdate()
-                lstFileSystemExcludedDirs.Refresh()
-
-                SetApplyButton(True)
-                sResult.NeedsDBUpdate_Movie = True
-                sResult.NeedsDBUpdate_TV = True
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        Finally
-            Master.DB.Load_ExcludeDirs()
-        End Try
+            sResult.NeedsDBUpdate_Movie = True
+            sResult.NeedsDBUpdate_TV = True
+        End If
     End Sub
 
     Private Sub btnFileSystemValidVideoExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsAdd.Click
@@ -1014,7 +1012,6 @@ Public Class dlgSettings
 
     Private Sub btnMovieSourceRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourceRemove.Click
         RemoveMovieSource()
-        Master.DB.Load_Sources_Movie()
     End Sub
 
     Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtAdd.Click
@@ -1724,7 +1721,6 @@ Public Class dlgSettings
 
     Private Sub btnRemTVSource_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemTVSource.Click
         RemoveTVSource()
-        Master.DB.Load_Sources_TVShow()
     End Sub
 
     Private Sub btnTVShowFilterDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterDown.Click
@@ -4627,8 +4623,7 @@ Public Class dlgSettings
     Private Sub RefreshMovieSources()
         Dim lvItem As ListViewItem
         lvMovieSources.Items.Clear()
-        Master.DB.Load_Sources_Movie()
-        For Each s As Database.DBSource In Master.MovieSources
+        For Each s As Database.DBSource In Master.DB.GetSources_Movie
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
@@ -4645,8 +4640,7 @@ Public Class dlgSettings
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
         lvTVSources.Items.Clear()
-        Master.DB.Load_Sources_TVShow()
-        For Each s As Database.DBSource In Master.TVShowSources
+        For Each s As Database.DBSource In Master.DB.GetSources_TVShow
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
@@ -4661,7 +4655,7 @@ Public Class dlgSettings
 
     Private Sub RefreshFileSystemExcludeDirs()
         lstFileSystemExcludedDirs.Items.Clear()
-        lstFileSystemExcludedDirs.Items.AddRange(Master.ExcludeDirs.ToArray)
+        lstFileSystemExcludedDirs.Items.AddRange(Master.DB.GetExcludedDirs.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemValidExts()
@@ -4772,8 +4766,6 @@ Public Class dlgSettings
                 lvMovieSources.Sort()
                 lvMovieSources.EndUpdate()
                 lvMovieSources.Refresh()
-
-                Functions.GetListOfSources()
 
                 SetApplyButton(True)
             End If

@@ -1369,21 +1369,6 @@ Public Class Functions
             Return "ffprobe"
         End If
     End Function
-
-    ''' <summary>
-    ''' Populate Master.SourcesList with a list of paths to all (media?) sources stored in the database
-    ''' </summary>
-    Public Shared Sub GetListOfSources()
-        Master.SourcesList.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT strPath FROM moviesource;"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Master.SourcesList.Add(SQLreader("strPath").ToString)
-                End While
-            End Using
-        End Using
-    End Sub
     ''' <summary>
     ''' Determines the path to the desired season of a given show
     ''' </summary>

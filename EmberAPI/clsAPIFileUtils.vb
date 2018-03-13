@@ -858,7 +858,7 @@ Namespace FileUtils
                         End If
                     End If
 
-                    If Not isCleaner AndAlso mMovie.IsSingle AndAlso Not Master.SourcesList.Contains(MovieDir.Parent.ToString) Then
+                    If Not isCleaner AndAlso mMovie.IsSingle AndAlso Master.DB.GetSources_Movie.FirstOrDefault(Function(f) f.Path = MovieDir.Parent.FullName) Is Nothing Then
                         If Common.isVideoTS(MovieDir.FullName) Then
                             ItemsToDelete.Add(MovieDir.Parent)
                         ElseIf Common.isBDRip(MovieDir.FullName) Then

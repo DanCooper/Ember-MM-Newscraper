@@ -589,7 +589,7 @@ Public Class Scanner
     ''' <returns>True if directory is valid, false if not.</returns>
     Public Function IsValidDir(ByVal dInfo As DirectoryInfo, ByVal bIsTV As Boolean) As Boolean
         Try
-            For Each s As String In Master.ExcludeDirs
+            For Each s As String In Master.DB.GetExcludedDirs
                 If dInfo.FullName.ToLower = s.ToLower Then
                     logger.Info(String.Format("[Sanner] [IsValidDir] [ExcludeDirs] Path ""{0}"" has been skipped (path is in ""exclude directory"" list)", dInfo.FullName, s))
                     Return False
@@ -611,7 +611,6 @@ Public Class Scanner
                     Return False
                 End If
             Next
-
         Catch ex As Exception
             logger.Error(String.Format("[Sanner] [IsValidDir] Path ""{0}"" has been skipped ({1})", dInfo.Name, ex.Message))
             Return False
@@ -1648,7 +1647,7 @@ Public Class Scanner
         Master.DB.ClearNew()
 
         If Args.Scan.SpecificFolder AndAlso Not String.IsNullOrEmpty(Args.Folder) AndAlso Directory.Exists(Args.Folder) Then
-            For Each eSource In Master.MovieSources
+            For Each eSource In Master.DB.GetSources_Movie
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
 
@@ -1665,7 +1664,7 @@ Public Class Scanner
                 End If
             Next
 
-            For Each eSource In Master.TVShowSources
+            For Each eSource In Master.DB.GetSources_TVShow
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
 

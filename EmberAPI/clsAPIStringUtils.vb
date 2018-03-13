@@ -130,7 +130,6 @@ Public Class StringUtils
                     'add a new mapping if tGenre is not in the Mappings list
                     APIXML.GenreXML.Mappings.Add(New genreMapping With {.MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
                     nGernes.Add(tGenre)
-                    APIXML.GenreXML.Save()
                 End If
             Next
         End If
