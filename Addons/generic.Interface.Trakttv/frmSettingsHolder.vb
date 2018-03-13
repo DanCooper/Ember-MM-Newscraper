@@ -26,7 +26,6 @@ Public Class frmSettingsHolder
 
     Public Event ModuleEnabledChanged(ByVal State As Boolean)
     Public Event ModuleSettingsChanged()
-    Public Event AccountSettingsChanged()
 
 #End Region 'Events
 
@@ -43,40 +42,18 @@ Public Class frmSettingsHolder
 
     Private Sub SetUp()
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        chkGetShowProgress.Text = Master.eLang.GetString(1388, "Display watched progress for shows (Time consuming!)")
-        chkGetWatchedState.Text = Master.eLang.GetString(1070, "Get Watched State")
         chkGetWatchedStateBeforeEdit_Movie.Text = Master.eLang.GetString(1055, "Before Edit")
         chkGetWatchedStateBeforeEdit_TVEpisode.Text = Master.eLang.GetString(1055, "Before Edit")
         chkGetWatchedStateScraperMulti_Movie.Text = Master.eLang.GetString(1056, "During Multi-Scraping")
         chkGetWatchedStateScraperMulti_TVEpisode.Text = Master.eLang.GetString(1056, "During Multi-Scraping")
         chkGetWatchedStateScraperSingle_Movie.Text = Master.eLang.GetString(1057, "During Single-Scraping")
         chkGetWatchedStateScraperSingle_TVEpisode.Text = Master.eLang.GetString(1057, "During Single-Scraping")
-        gbGetWatchedState.Text = Master.eLang.GetString(1071, "Watched State")
+        gbGetWatchedState.Text = Master.eLang.GetString(1070, "Get Watched State")
         gbGetWatchedStateMovies.Text = Master.eLang.GetString(36, "Movies")
         gbGetWatchedStateTVEpisodes.Text = Master.eLang.GetString(682, "Episodes")
-        gbSettingsGeneral.Text = Master.eLang.GetString(38, "General Settings")
-        lblPassword.Text = Master.eLang.GetString(426, "Password")
-        lblUsername.Text = Master.eLang.GetString(425, "Username")
-        txtPassword.PasswordChar = "*"c
     End Sub
 
-    Private Sub txtUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtUsername.TextChanged
-        RaiseEvent ModuleSettingsChanged()
-        RaiseEvent AccountSettingsChanged()
-    End Sub
-
-    Private Sub txtPassword_TextChanged(sender As Object, e As EventArgs) Handles txtPassword.TextChanged
-        RaiseEvent ModuleSettingsChanged()
-        RaiseEvent AccountSettingsChanged()
-    End Sub
-
-    Private Sub chkGetWatchedState_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetWatchedState.CheckedChanged
-        gbGetWatchedStateMovies.Enabled = chkGetWatchedState.Checked
-        gbGetWatchedStateTVEpisodes.Enabled = chkGetWatchedState.Checked
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub EnableApplyButton() Handles chkGetShowProgress.CheckedChanged,
+    Private Sub EnableApplyButton() Handles _
         chkGetWatchedStateBeforeEdit_Movie.CheckedChanged,
         chkGetWatchedStateBeforeEdit_TVEpisode.CheckedChanged,
         chkGetWatchedStateScraperMulti_Movie.CheckedChanged,

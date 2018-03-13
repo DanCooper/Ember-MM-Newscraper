@@ -30,7 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Debug - x86\Modules\generic.interface.trakttv\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -47,7 +47,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Release - x86\Modules\generic.interface.trakttv\</OutputPath>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>None</DebugType>
@@ -68,7 +68,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Debug - x64\Modules\generic.interface.trakttv\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -77,7 +77,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Release - x64\Modules\generic.interface.trakttv\</OutputPath>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>None</DebugType>
@@ -90,7 +90,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - Debug - AnyCPU\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Debug - AnyCPU\Modules\generic.interface.trakttv\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -99,7 +99,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - Release - AnyCPU\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Release - AnyCPU\Modules\generic.interface.trakttv\</OutputPath>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>None</DebugType>
@@ -117,6 +117,10 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -125,22 +129,11 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.105.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Data.SQLite.Core.1.0.105.0\lib\net45\System.Data.SQLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.105.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Data.SQLite.EF6.1.0.105.0\lib\net45\System.Data.SQLite.EF6.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.105.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Data.SQLite.Linq.1.0.105.0\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core">
@@ -148,6 +141,10 @@
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="TraktApiSharp, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TraktApiSharp.0.11.0\lib\portable-net45+netcore45+wpa81\TraktApiSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -157,14 +154,21 @@
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
+    <Import Include="System.Windows.Forms" />
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsAPITrakt.vb" />
-    <Compile Include="dlgTrakttvManager.Designer.vb">
-      <DependentUpon>dlgTrakttvManager.vb</DependentUpon>
+    <Compile Include="dlgWorker.Designer.vb">
+      <DependentUpon>dlgWorker.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgTrakttvManager.vb">
+    <Compile Include="dlgWorker.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAuthorize.Designer.vb">
+      <DependentUpon>frmAuthorize.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAuthorize.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSettingsHolder.Designer.vb">
@@ -191,8 +195,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="dlgTrakttvManager.resx">
-      <DependentUpon>dlgTrakttvManager.vb</DependentUpon>
+    <EmbeddedResource Include="dlgWorker.resx">
+      <DependentUpon>dlgWorker.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAuthorize.resx">
+      <DependentUpon>frmAuthorize.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsHolder.resx">
       <DependentUpon>frmSettingsHolder.vb</DependentUpon>
@@ -223,14 +230,27 @@
       <Name>EmberAPI</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Trakttv\Trakttv.csproj">
-      <Project>{857e14f3-060a-467e-9195-6165996d7ba3}</Project>
-      <Name>Trakttv</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\trakt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menuWatchedState.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menuAdd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menuRemove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menuSync.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -250,7 +270,5 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\..\packages\System.Data.SQLite.Core.1.0.105.0\build\net45\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Data.SQLite.Core.1.0.105.0\build\net45\System.Data.SQLite.Core.targets'))" />
   </Target>
-  <Import Project="..\..\packages\System.Data.SQLite.Core.1.0.105.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\..\packages\System.Data.SQLite.Core.1.0.105.0\build\net45\System.Data.SQLite.Core.targets')" />
 </Project>

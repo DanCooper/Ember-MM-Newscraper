@@ -12995,8 +12995,14 @@ Public Class frmMain
     End Sub
 
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
+        Dim asm As Assembly = Nothing
         Dim name As String = args.Name.Split(Convert.ToChar(","))(0)
-        Dim asm As Assembly = ModulesManager.AssemblyList.FirstOrDefault(Function(y) y.AssemblyName = name).Assembly
+        Dim version As Match = Regex.Match(args.Name.ToLower, "version=(.*?),")
+        If version.Success Then
+            asm = ModulesManager.AssemblyList.FirstOrDefault(Function(y) y.AssemblyName = name AndAlso y.AssemblyVersion.ToString = version.Groups(1).Value).Assembly
+        Else
+            asm = ModulesManager.AssemblyList.FirstOrDefault(Function(y) y.AssemblyName = name).Assembly
+        End If
         If asm Is Nothing Then
             asm = ModulesManager.AssemblyList.FirstOrDefault(Function(y) y.AssemblyName = name.Split(Convert.ToChar("."))(0)).Assembly
         End If

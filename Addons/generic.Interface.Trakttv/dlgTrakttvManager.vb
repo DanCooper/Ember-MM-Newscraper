@@ -80,7 +80,7 @@ Public Class dlgTrakttvManager
     'binding for movie datagridview
     Private bsMovies As New BindingSource
 
-    Private _SpecialSettings As New TraktInterface.KodiSettings
+    Private _SpecialSettings As New Addon.KodiSettings
 
 #End Region 'Fields
 
@@ -289,8 +289,8 @@ Public Class dlgTrakttvManager
             If File.Exists(Path.Combine(Master.SettingsPath, "Interface.Kodi.xml")) Then
                 Dim xmlSer As Xml.Serialization.XmlSerializer = Nothing
                 Using xmlSR As StreamReader = New StreamReader(Path.Combine(Master.SettingsPath, "Interface.Kodi.xml"))
-                    xmlSer = New Xml.Serialization.XmlSerializer(GetType(TraktInterface.KodiSettings))
-                    _SpecialSettings = DirectCast(xmlSer.Deserialize(xmlSR), TraktInterface.KodiSettings)
+                    xmlSer = New Xml.Serialization.XmlSerializer(GetType(Addon.KodiSettings))
+                    _SpecialSettings = DirectCast(xmlSer.Deserialize(xmlSR), Addon.KodiSettings)
                 End Using
             End If
 

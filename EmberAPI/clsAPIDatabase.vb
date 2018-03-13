@@ -1627,10 +1627,39 @@ Public Class Database
 
         Return ViewList
     End Function
+
+    Public Function GetMovies() As List(Of DBElement)
+        Dim lstDBELement As New List(Of DBElement)
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT idMovie FROM movie ORDER BY ListTitle;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    While SQLreader.Read()
+                        lstDBELement.Add(Master.DB.Load_Movie(Convert.ToInt64(SQLreader("idMovie"))))
+                    End While
+                End If
+            End Using
+        End Using
+        Return lstDBELement
+    End Function
+
+    Public Function GetTVShows(ByVal withseasons As Boolean, ByVal withepisodes As Boolean, Optional ByVal withmissingepisodes As Boolean = False) As List(Of DBElement)
+        Dim lstDBELement As New List(Of DBElement)
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT idShow FROM tvshow;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    While SQLreader.Read()
+                        lstDBELement.Add(Master.DB.Load_TVShow(Convert.ToInt64(SQLreader("idShow")), withseasons, withepisodes, withmissingepisodes))
+                    End While
+                End If
+            End Using
+        End Using
+        Return lstDBELement
+    End Function
     ''' <summary>
     ''' Load excluded directories from the DB. This populates the Master.ExcludeDirs list
     ''' </summary>
-    ''' <remarks></remarks>
     Public Sub Load_ExcludeDirs()
         Master.ExcludeDirs.Clear()
         Try
@@ -2519,17 +2548,17 @@ Public Class Database
         _TVDB.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "landscape")
         _TVDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "poster")
 
+        'Show container
+        If withShow Then
+            _TVDB = Master.DB.AddTVShowInfoToDBElement(_TVDB)
+        End If
+
         'Episodes
         If withEpisodes Then
             For Each tEpisode As DBElement In Load_AllTVEpisodes(_TVDB.ShowID, withShow, _TVDB.TVSeason.Season)
                 tEpisode = AddTVShowInfoToDBElement(tEpisode, _TVDB)
                 _TVDB.Episodes.Add(tEpisode)
             Next
-        End If
-
-        'Show container
-        If withShow Then
-            _TVDB = Master.DB.AddTVShowInfoToDBElement(_TVDB)
         End If
 
         Return _TVDB
@@ -3057,6 +3086,7 @@ Public Class Database
 
     Private Sub bwPatchDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwPatchDB.ProgressChanged
         If e.ProgressPercentage = -1 Then
+            logger.Info(e.UserState.ToString)
             Master.fLoading.SetLoadingMesg(e.UserState.ToString)
         End If
     End Sub

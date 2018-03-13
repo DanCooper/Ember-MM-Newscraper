@@ -1333,8 +1333,8 @@ Public Class KodiInterface
         cmnuKodi_Movies.Image = New Bitmap(My.Resources.icon)
         cmnuKodi_Movies.Text = "Kodi Interface"
         CreateContextMenu(cmnuKodi_Movies, Enums.ContentType.Movie)
-        SetToolStripItem_Movies(cmnuSep_Movies)
-        SetToolStripItem_Movies(cmnuKodi_Movies)
+        AddToolStripItem_Movies(cmnuSep_Movies)
+        AddToolStripItem_Movies(cmnuKodi_Movies)
 
         'cmnuMovieSets
         cmnuKodi_MovieSets.DropDownItems.Clear()
@@ -1426,7 +1426,7 @@ Public Class KodiInterface
         RemoveToolStripItem_MovieSets(cmnuKodi_MovieSets)
 
         'Task Manager
-        Dim ts As ToolStrip = DirectCast(ModulesManager.Instance.RuntimeObjects.MainToolStrip, ToolStrip)
+        Dim ts As ToolStrip = ModulesManager.Instance.RuntimeObjects.MainToolStrip
         ts.Items.Remove(lblTaskManagerStatus)
         ts.Items.Remove(lblTaskManagerTitle)
         ts.Items.Remove(tspTaskManager)
@@ -2001,9 +2001,9 @@ Public Class KodiInterface
         End If
     End Sub
 
-    Public Sub SetToolStripItem_Movies(value As ToolStripItem)
+    Public Sub AddToolStripItem_Movies(value As ToolStripItem)
         If ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList.InvokeRequired Then
-            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList.Invoke(New Delegate_AddToolStripItem(AddressOf SetToolStripItem_Movies), New Object() {value})
+            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList.Invoke(New Delegate_AddToolStripItem(AddressOf AddToolStripItem_Movies), New Object() {value})
         Else
             ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList.Items.Add(value)
         End If

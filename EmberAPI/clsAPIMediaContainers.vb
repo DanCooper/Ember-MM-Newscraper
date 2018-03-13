@@ -1580,7 +1580,7 @@ Namespace MediaContainers
                 Return _lastplayed
             End Get
             Set(ByVal value As String)
-                _lastplayed = value
+                _lastplayed = Functions.ConvertToProperDateTime(value)
             End Set
         End Property
 

@@ -1152,16 +1152,16 @@ Public Class Functions
     ''' <returns>A value representing the DateTime as a unix-style timestamp <c>Double</c></returns>
     ''' <remarks></remarks>
     Public Shared Function ConvertToUnixTimestamp(ByVal data As DateTime) As Double
-        Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
-        Dim diff As System.TimeSpan = data - origin
+        Dim origin As Date = New DateTime(1970, 1, 1, 0, 0, 0, 0)
+        Dim diff As TimeSpan = data - origin
         Return Math.Floor(diff.TotalSeconds)
     End Function
 
     Public Shared Function ConvertToProperDateTime(ByVal strDateTime As String) As String
         If String.IsNullOrEmpty(strDateTime) Then Return String.Empty
 
-        Dim parsedDateTime As DateTime
-        If DateTime.TryParse(strDateTime, parsedDateTime) Then
+        Dim parsedDateTime As Date
+        If Date.TryParse(strDateTime, parsedDateTime) Then
             Return parsedDateTime.ToString("yyyy-MM-dd HH:mm:ss")
         Else
             Return String.Empty
@@ -1174,7 +1174,6 @@ Public Class Functions
     ''' </summary>
     ''' <remarks></remarks>
     Public Shared Sub CreateDefaultOptions()
-        'TODO need proper unit test
         With Master.DefaultOptions_Movie
             .bMainActors = Master.eSettings.MovieScraperCast
             .bMainCertifications = Master.eSettings.MovieScraperCert

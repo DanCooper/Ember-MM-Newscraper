@@ -394,7 +394,7 @@
   <string id="393">Producers</string>
   <string id="394">Credits (Writers)</string>
   <string id="395">Studio</string>
-  <string id="396"></string>
+  <string id="396">Cancelled</string>
   <string id="397">Tagline</string>
   <string id="398">TeraCopy.exe not found</string>
   <string id="399">Downloading and Saving Contents into Database</string>
@@ -1230,8 +1230,8 @@
   <string id="1138">Quality</string>
   <string id="1139">Select None</string>
   <string id="1140">CharacterArt</string>
-  <string id="1141"></string>
-  <string id="1142"></string>
+  <string id="1141">The Trakt addon CAN NOT be used without authorizing it to access your trakt.tv account.</string>
+  <string id="1142">PIN Code</string>
   <string id="1143"></string>
   <string id="1144"></string>
   <string id="1145"></string>
@@ -1477,7 +1477,7 @@
   <string id="1385">Media List Editor</string>
   <string id="1386">Invalid SQL!</string>
   <string id="1387">Use digit grouping symbol for Votes count</string>
-  <string id="1388">Display watched progress for shows (Time consuming!)</string>
+  <string id="1388"></string>
   <string id="1389">Short Titles ({0})</string>
   <string id="1390">Custom Media Lists</string>
   <string id="1391">Prefix</string>

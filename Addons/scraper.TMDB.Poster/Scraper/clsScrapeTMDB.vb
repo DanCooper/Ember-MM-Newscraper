@@ -43,7 +43,7 @@ Namespace TMDB
             Try
 
                 _TMDBApi = New TMDbLib.Client.TMDbClient(SpecialSettings.APIKey)
-                _TMDBApi.GetConfig()
+                _TMDBApi.GetConfigAsync()
 
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)

@@ -43,7 +43,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Debug - x86\Modules\scraper.data.trakttv\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -60,10 +60,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Release - x86\Modules\scraper.data.trakttv\</OutputPath>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>None</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
     <CodeAnalysisLogFile>..\..\EmberMM\Modules\scraper.EmberCore.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
@@ -80,7 +80,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Debug - x64\Modules\scraper.data.trakttv\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -89,10 +89,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Release - x64\Modules\scraper.data.trakttv\</OutputPath>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>None</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -101,7 +101,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - Debug - AnyCPU\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Debug - AnyCPU\Modules\scraper.data.trakttv\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -110,15 +110,19 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - Release - AnyCPU\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - Release - AnyCPU\Modules\scraper.data.trakttv\</OutputPath>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>None</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -134,6 +138,10 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="TraktApiSharp, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TraktApiSharp.0.11.0\lib\portable-net45+netcore45+wpa81\TraktApiSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="System" />
@@ -147,6 +155,12 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmAuthorize.Designer.vb">
+      <DependentUpon>frmAuthorize.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAuthorize.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSettingsHolder_Movie.Designer.vb">
       <DependentUpon>frmSettingsHolder_Movie.vb</DependentUpon>
     </Compile>
@@ -160,7 +174,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Trakttv_Data.vb" />
-    <Compile Include="Scraper\clsScrapeTrakttv.vb" />
+    <Compile Include="clsAPITrakt.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -178,6 +192,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmAuthorize.resx">
+      <DependentUpon>frmAuthorize.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsHolder_Movie.resx">
       <DependentUpon>frmSettingsHolder_Movie.vb</DependentUpon>
     </EmbeddedResource>
@@ -227,10 +244,12 @@
       <Name>EmberAPI</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Trakttv\Trakttv.csproj">
-      <Project>{857e14f3-060a-467e-9195-6165996d7ba3}</Project>
-      <Name>Trakttv</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

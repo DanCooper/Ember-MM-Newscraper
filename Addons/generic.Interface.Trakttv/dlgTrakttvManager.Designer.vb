@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class dlgTrakttvManager
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,16 +20,16 @@ Partial Class dlgTrakttvManager
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrakttvManager))
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -56,6 +56,12 @@ Partial Class dlgTrakttvManager
         Me.btnPlaycountSyncWatched_TVShows = New System.Windows.Forms.Button()
         Me.btnPlaycountGetList_Movies = New System.Windows.Forms.Button()
         Me.dgvPlaycount = New System.Windows.Forms.DataGridView()
+        Me.colPlaycountTraktID = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colPlaycountTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colPlaycountPlayed = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colPlaycountLastWatched = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colPlaycountProgress = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colPlaycountRating = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.lblPlaycountDone = New System.Windows.Forms.Label()
         Me.prgPlaycount = New System.Windows.Forms.ProgressBar()
         Me.lblPlaycountMessage = New System.Windows.Forms.Label()
@@ -192,12 +198,6 @@ Partial Class dlgTrakttvManager
         Me.btntraktCleaningHistoryTimestamp = New System.Windows.Forms.Button()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
-        Me.colPlaycountTraktID = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colPlaycountTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colPlaycountPlayed = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colPlaycountLastWatched = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colPlaycountProgress = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colPlaycountRating = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlTop.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlSaving.SuspendLayout()
@@ -284,7 +284,7 @@ Partial Class dlgTrakttvManager
         Me.lblTopTitle.BackColor = System.Drawing.Color.Transparent
         Me.lblTopTitle.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTopTitle.ForeColor = System.Drawing.Color.White
-        Me.lblTopTitle.Location = New System.Drawing.Point(58, 3)
+        Me.lblTopTitle.Location = New System.Drawing.Point(62, 3)
         Me.lblTopTitle.Name = "lblTopTitle"
         Me.lblTopTitle.Size = New System.Drawing.Size(210, 32)
         Me.lblTopTitle.TabIndex = 0
@@ -393,7 +393,7 @@ Partial Class dlgTrakttvManager
         'pbTopLogo
         '
         Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
-        Me.pbTopLogo.Image = Global.generic.EmberCore.Trakt.My.Resources.Resources.icon
+        Me.pbTopLogo.Image = Global.generic.EmberCore.Trakt.My.Resources.Resources.logo
         Me.pbTopLogo.Location = New System.Drawing.Point(12, 7)
         Me.pbTopLogo.Name = "pbTopLogo"
         Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
@@ -526,11 +526,11 @@ Partial Class dlgTrakttvManager
         Me.btnPlaycountSyncWatched_TVShows.Text = "Submit watched episodes to trakt.tv history"
         Me.btnPlaycountSyncWatched_TVShows.UseVisualStyleBackColor = False
         '
-        'btnGetPlaycount_Movies
+        'btnPlaycountGetList_Movies
         '
         Me.btnPlaycountGetList_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnPlaycountGetList_Movies.Location = New System.Drawing.Point(6, 23)
-        Me.btnPlaycountGetList_Movies.Name = "btnGetPlaycount_Movies"
+        Me.btnPlaycountGetList_Movies.Name = "btnPlaycountGetList_Movies"
         Me.btnPlaycountGetList_Movies.Size = New System.Drawing.Size(105, 66)
         Me.btnPlaycountGetList_Movies.TabIndex = 4
         Me.btnPlaycountGetList_Movies.Text = "Get watched movies"
@@ -556,6 +556,61 @@ Partial Class dlgTrakttvManager
         Me.dgvPlaycount.ShowRowErrors = False
         Me.dgvPlaycount.Size = New System.Drawing.Size(612, 454)
         Me.dgvPlaycount.TabIndex = 32
+        '
+        'colPlaycountTraktID
+        '
+        Me.colPlaycountTraktID.Frozen = True
+        Me.colPlaycountTraktID.HeaderText = "TraktID"
+        Me.colPlaycountTraktID.Name = "colPlaycountTraktID"
+        Me.colPlaycountTraktID.ReadOnly = True
+        Me.colPlaycountTraktID.Visible = False
+        '
+        'colPlaycountTitle
+        '
+        Me.colPlaycountTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colPlaycountTitle.HeaderText = "Title"
+        Me.colPlaycountTitle.Name = "colPlaycountTitle"
+        Me.colPlaycountTitle.ReadOnly = True
+        '
+        'colPlaycountPlayed
+        '
+        Me.colPlaycountPlayed.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.colPlaycountPlayed.DefaultCellStyle = DataGridViewCellStyle1
+        Me.colPlaycountPlayed.HeaderText = "Played"
+        Me.colPlaycountPlayed.Name = "colPlaycountPlayed"
+        Me.colPlaycountPlayed.ReadOnly = True
+        Me.colPlaycountPlayed.Width = 67
+        '
+        'colPlaycountLastWatched
+        '
+        Me.colPlaycountLastWatched.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.colPlaycountLastWatched.HeaderText = "Last watched"
+        Me.colPlaycountLastWatched.Name = "colPlaycountLastWatched"
+        Me.colPlaycountLastWatched.ReadOnly = True
+        '
+        'colPlaycountProgress
+        '
+        Me.colPlaycountProgress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.colPlaycountProgress.DefaultCellStyle = DataGridViewCellStyle2
+        Me.colPlaycountProgress.HeaderText = "Progress"
+        Me.colPlaycountProgress.Name = "colPlaycountProgress"
+        Me.colPlaycountProgress.ReadOnly = True
+        Me.colPlaycountProgress.Width = 77
+        '
+        'colPlaycountRating
+        '
+        Me.colPlaycountRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.Format = "N0"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.colPlaycountRating.DefaultCellStyle = DataGridViewCellStyle3
+        Me.colPlaycountRating.HeaderText = "Rating"
+        Me.colPlaycountRating.Name = "colPlaycountRating"
+        Me.colPlaycountRating.Width = 66
         '
         'lblPlaycountDone
         '
@@ -596,11 +651,11 @@ Partial Class dlgTrakttvManager
         Me.btnSaveWatchedStateToEmber.Text = "Save playcount to database/Nfo"
         Me.btnSaveWatchedStateToEmber.UseVisualStyleBackColor = True
         '
-        'btnGetPlaycount_TVShows
+        'btnPlaycountGetList_TVShows
         '
         Me.btnPlaycountGetList_TVShows.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnPlaycountGetList_TVShows.Location = New System.Drawing.Point(124, 23)
-        Me.btnPlaycountGetList_TVShows.Name = "btnGetPlaycount_TVShows"
+        Me.btnPlaycountGetList_TVShows.Name = "btnPlaycountGetList_TVShows"
         Me.btnPlaycountGetList_TVShows.Size = New System.Drawing.Size(105, 66)
         Me.btnPlaycountGetList_TVShows.TabIndex = 39
         Me.btnPlaycountGetList_TVShows.Text = "Get watched episodes"
@@ -2060,61 +2115,6 @@ Partial Class dlgTrakttvManager
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblBottom.Size = New System.Drawing.Size(1107, 38)
         Me.tblBottom.TabIndex = 0
-        '
-        'colPlaycountTraktID
-        '
-        Me.colPlaycountTraktID.Frozen = True
-        Me.colPlaycountTraktID.HeaderText = "TraktID"
-        Me.colPlaycountTraktID.Name = "colPlaycountTraktID"
-        Me.colPlaycountTraktID.ReadOnly = True
-        Me.colPlaycountTraktID.Visible = False
-        '
-        'colPlaycountTitle
-        '
-        Me.colPlaycountTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.colPlaycountTitle.HeaderText = "Title"
-        Me.colPlaycountTitle.Name = "colPlaycountTitle"
-        Me.colPlaycountTitle.ReadOnly = True
-        '
-        'colPlaycountPlayed
-        '
-        Me.colPlaycountPlayed.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.colPlaycountPlayed.DefaultCellStyle = DataGridViewCellStyle1
-        Me.colPlaycountPlayed.HeaderText = "Played"
-        Me.colPlaycountPlayed.Name = "colPlaycountPlayed"
-        Me.colPlaycountPlayed.ReadOnly = True
-        Me.colPlaycountPlayed.Width = 67
-        '
-        'colPlaycountLastWatched
-        '
-        Me.colPlaycountLastWatched.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.colPlaycountLastWatched.HeaderText = "Last watched"
-        Me.colPlaycountLastWatched.Name = "colPlaycountLastWatched"
-        Me.colPlaycountLastWatched.ReadOnly = True
-        '
-        'colPlaycountProgress
-        '
-        Me.colPlaycountProgress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.colPlaycountProgress.DefaultCellStyle = DataGridViewCellStyle2
-        Me.colPlaycountProgress.HeaderText = "Progress"
-        Me.colPlaycountProgress.Name = "colPlaycountProgress"
-        Me.colPlaycountProgress.ReadOnly = True
-        Me.colPlaycountProgress.Width = 77
-        '
-        'colPlaycountRating
-        '
-        Me.colPlaycountRating.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.Format = "N0"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.colPlaycountRating.DefaultCellStyle = DataGridViewCellStyle3
-        Me.colPlaycountRating.HeaderText = "Rating"
-        Me.colPlaycountRating.Name = "colPlaycountRating"
-        Me.colPlaycountRating.Width = 66
         '
         'dlgTrakttvManager
         '

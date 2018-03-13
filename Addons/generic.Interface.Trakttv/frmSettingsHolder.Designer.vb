@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmSettingsHolder
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class frmSettingsHolder
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
@@ -28,7 +28,6 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
         Me.gbGetWatchedState = New System.Windows.Forms.GroupBox()
         Me.tblGetWatchedState = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkGetWatchedState = New System.Windows.Forms.CheckBox()
         Me.gbGetWatchedStateTVEpisodes = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.chkGetWatchedStateBeforeEdit_TVEpisode = New System.Windows.Forms.CheckBox()
@@ -39,13 +38,6 @@ Partial Class frmSettingsHolder
         Me.chkGetWatchedStateBeforeEdit_Movie = New System.Windows.Forms.CheckBox()
         Me.chkGetWatchedStateScraperMulti_Movie = New System.Windows.Forms.CheckBox()
         Me.chkGetWatchedStateScraperSingle_Movie = New System.Windows.Forms.CheckBox()
-        Me.gbSettingsGeneral = New System.Windows.Forms.GroupBox()
-        Me.tblSettingsGeneral = New System.Windows.Forms.TableLayoutPanel()
-        Me.txtPassword = New System.Windows.Forms.TextBox()
-        Me.lblPassword = New System.Windows.Forms.Label()
-        Me.txtUsername = New System.Windows.Forms.TextBox()
-        Me.lblUsername = New System.Windows.Forms.Label()
-        Me.chkGetShowProgress = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.pnlSettingsTop.SuspendLayout()
@@ -57,8 +49,6 @@ Partial Class frmSettingsHolder
         Me.TableLayoutPanel3.SuspendLayout()
         Me.gbGetWatchedStateMovies.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        Me.gbSettingsGeneral.SuspendLayout()
-        Me.tblSettingsGeneral.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.SuspendLayout()
@@ -109,13 +99,11 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.ColumnCount = 2
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsMain.Controls.Add(Me.gbGetWatchedState, 0, 3)
-        Me.tblSettingsMain.Controls.Add(Me.gbSettingsGeneral, 0, 0)
+        Me.tblSettingsMain.Controls.Add(Me.gbGetWatchedState, 0, 2)
         Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsMain.Name = "tblSettingsMain"
-        Me.tblSettingsMain.RowCount = 5
-        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsMain.RowCount = 4
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -129,12 +117,12 @@ Partial Class frmSettingsHolder
         Me.gbGetWatchedState.Controls.Add(Me.tblGetWatchedState)
         Me.gbGetWatchedState.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbGetWatchedState.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbGetWatchedState.Location = New System.Drawing.Point(3, 109)
+        Me.gbGetWatchedState.Location = New System.Drawing.Point(3, 3)
         Me.gbGetWatchedState.Name = "gbGetWatchedState"
-        Me.gbGetWatchedState.Size = New System.Drawing.Size(383, 140)
+        Me.gbGetWatchedState.Size = New System.Drawing.Size(334, 117)
         Me.gbGetWatchedState.TabIndex = 55
         Me.gbGetWatchedState.TabStop = False
-        Me.gbGetWatchedState.Text = "Watched State"
+        Me.gbGetWatchedState.Text = "Get Watched State"
         '
         'tblGetWatchedState
         '
@@ -143,39 +131,24 @@ Partial Class frmSettingsHolder
         Me.tblGetWatchedState.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGetWatchedState.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGetWatchedState.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGetWatchedState.Controls.Add(Me.chkGetWatchedState, 0, 0)
-        Me.tblGetWatchedState.Controls.Add(Me.gbGetWatchedStateTVEpisodes, 1, 1)
-        Me.tblGetWatchedState.Controls.Add(Me.gbGetWatchedStateMovies, 0, 1)
+        Me.tblGetWatchedState.Controls.Add(Me.gbGetWatchedStateTVEpisodes, 1, 0)
+        Me.tblGetWatchedState.Controls.Add(Me.gbGetWatchedStateMovies, 0, 0)
         Me.tblGetWatchedState.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGetWatchedState.Location = New System.Drawing.Point(3, 18)
         Me.tblGetWatchedState.Name = "tblGetWatchedState"
-        Me.tblGetWatchedState.RowCount = 3
+        Me.tblGetWatchedState.RowCount = 2
         Me.tblGetWatchedState.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGetWatchedState.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGetWatchedState.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGetWatchedState.Size = New System.Drawing.Size(377, 119)
+        Me.tblGetWatchedState.Size = New System.Drawing.Size(328, 96)
         Me.tblGetWatchedState.TabIndex = 7
-        '
-        'chkGetWatchedState
-        '
-        Me.chkGetWatchedState.AutoSize = True
-        Me.tblGetWatchedState.SetColumnSpan(Me.chkGetWatchedState, 2)
-        Me.chkGetWatchedState.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetWatchedState.Location = New System.Drawing.Point(3, 3)
-        Me.chkGetWatchedState.Name = "chkGetWatchedState"
-        Me.chkGetWatchedState.Size = New System.Drawing.Size(122, 17)
-        Me.chkGetWatchedState.TabIndex = 87
-        Me.chkGetWatchedState.Text = "Get Watched State"
-        Me.chkGetWatchedState.UseVisualStyleBackColor = True
         '
         'gbGetWatchedStateTVEpisodes
         '
         Me.gbGetWatchedStateTVEpisodes.AutoSize = True
         Me.gbGetWatchedStateTVEpisodes.Controls.Add(Me.TableLayoutPanel3)
         Me.gbGetWatchedStateTVEpisodes.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbGetWatchedStateTVEpisodes.Enabled = False
         Me.gbGetWatchedStateTVEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbGetWatchedStateTVEpisodes.Location = New System.Drawing.Point(167, 26)
+        Me.gbGetWatchedStateTVEpisodes.Location = New System.Drawing.Point(167, 3)
         Me.gbGetWatchedStateTVEpisodes.Name = "gbGetWatchedStateTVEpisodes"
         Me.gbGetWatchedStateTVEpisodes.Size = New System.Drawing.Size(158, 90)
         Me.gbGetWatchedStateTVEpisodes.TabIndex = 90
@@ -240,9 +213,8 @@ Partial Class frmSettingsHolder
         Me.gbGetWatchedStateMovies.AutoSize = True
         Me.gbGetWatchedStateMovies.Controls.Add(Me.TableLayoutPanel2)
         Me.gbGetWatchedStateMovies.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbGetWatchedStateMovies.Enabled = False
         Me.gbGetWatchedStateMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbGetWatchedStateMovies.Location = New System.Drawing.Point(3, 26)
+        Me.gbGetWatchedStateMovies.Location = New System.Drawing.Point(3, 3)
         Me.gbGetWatchedStateMovies.Name = "gbGetWatchedStateMovies"
         Me.gbGetWatchedStateMovies.Size = New System.Drawing.Size(158, 90)
         Me.gbGetWatchedStateMovies.TabIndex = 89
@@ -302,99 +274,6 @@ Partial Class frmSettingsHolder
         Me.chkGetWatchedStateScraperSingle_Movie.Text = "During Single-Scraping"
         Me.chkGetWatchedStateScraperSingle_Movie.UseVisualStyleBackColor = True
         '
-        'gbSettingsGeneral
-        '
-        Me.gbSettingsGeneral.AutoSize = True
-        Me.gbSettingsGeneral.Controls.Add(Me.tblSettingsGeneral)
-        Me.gbSettingsGeneral.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbSettingsGeneral.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbSettingsGeneral.Location = New System.Drawing.Point(3, 3)
-        Me.gbSettingsGeneral.Name = "gbSettingsGeneral"
-        Me.gbSettingsGeneral.Size = New System.Drawing.Size(383, 100)
-        Me.gbSettingsGeneral.TabIndex = 20
-        Me.gbSettingsGeneral.TabStop = False
-        Me.gbSettingsGeneral.Text = "General Settings"
-        '
-        'tblSettingsGeneral
-        '
-        Me.tblSettingsGeneral.AutoSize = True
-        Me.tblSettingsGeneral.ColumnCount = 3
-        Me.tblSettingsGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsGeneral.Controls.Add(Me.txtPassword, 1, 1)
-        Me.tblSettingsGeneral.Controls.Add(Me.lblPassword, 0, 1)
-        Me.tblSettingsGeneral.Controls.Add(Me.txtUsername, 1, 0)
-        Me.tblSettingsGeneral.Controls.Add(Me.lblUsername, 0, 0)
-        Me.tblSettingsGeneral.Controls.Add(Me.chkGetShowProgress, 1, 2)
-        Me.tblSettingsGeneral.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblSettingsGeneral.Location = New System.Drawing.Point(3, 18)
-        Me.tblSettingsGeneral.Name = "tblSettingsGeneral"
-        Me.tblSettingsGeneral.RowCount = 3
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsGeneral.Size = New System.Drawing.Size(377, 79)
-        Me.tblSettingsGeneral.TabIndex = 21
-        '
-        'txtPassword
-        '
-        Me.txtPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPassword.Location = New System.Drawing.Point(67, 31)
-        Me.txtPassword.Name = "txtPassword"
-        Me.txtPassword.Size = New System.Drawing.Size(200, 22)
-        Me.txtPassword.TabIndex = 41
-        '
-        'lblPassword
-        '
-        Me.lblPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblPassword.AutoSize = True
-        Me.lblPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPassword.Location = New System.Drawing.Point(3, 35)
-        Me.lblPassword.Name = "lblPassword"
-        Me.lblPassword.Size = New System.Drawing.Size(56, 13)
-        Me.lblPassword.TabIndex = 42
-        Me.lblPassword.Text = "Password"
-        '
-        'txtUsername
-        '
-        Me.txtUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtUsername.Location = New System.Drawing.Point(67, 3)
-        Me.txtUsername.Name = "txtUsername"
-        Me.txtUsername.Size = New System.Drawing.Size(200, 22)
-        Me.txtUsername.TabIndex = 39
-        '
-        'lblUsername
-        '
-        Me.lblUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblUsername.AutoSize = True
-        Me.lblUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblUsername.Location = New System.Drawing.Point(3, 7)
-        Me.lblUsername.Name = "lblUsername"
-        Me.lblUsername.Size = New System.Drawing.Size(58, 13)
-        Me.lblUsername.TabIndex = 40
-        Me.lblUsername.Text = "Username"
-        '
-        'chkGetShowProgress
-        '
-        Me.chkGetShowProgress.AutoSize = True
-        Me.chkGetShowProgress.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetShowProgress.Location = New System.Drawing.Point(67, 59)
-        Me.chkGetShowProgress.Name = "chkGetShowProgress"
-        Me.chkGetShowProgress.Size = New System.Drawing.Size(307, 17)
-        Me.chkGetShowProgress.TabIndex = 44
-        Me.chkGetShowProgress.Text = "Display watched progress for shows (Time consuming!)"
-        Me.chkGetShowProgress.UseVisualStyleBackColor = True
-        '
         'pnlSettingsMain
         '
         Me.pnlSettingsMain.AutoSize = True
@@ -450,10 +329,6 @@ Partial Class frmSettingsHolder
         Me.gbGetWatchedStateMovies.PerformLayout()
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel2.PerformLayout()
-        Me.gbSettingsGeneral.ResumeLayout(False)
-        Me.gbSettingsGeneral.PerformLayout()
-        Me.tblSettingsGeneral.ResumeLayout(False)
-        Me.tblSettingsGeneral.PerformLayout()
         Me.pnlSettingsMain.ResumeLayout(False)
         Me.pnlSettingsMain.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
@@ -468,13 +343,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
-    Friend WithEvents gbSettingsGeneral As System.Windows.Forms.GroupBox
-    Friend WithEvents tblSettingsGeneral As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents txtPassword As System.Windows.Forms.TextBox
-    Friend WithEvents lblPassword As System.Windows.Forms.Label
-    Friend WithEvents txtUsername As System.Windows.Forms.TextBox
-    Friend WithEvents lblUsername As System.Windows.Forms.Label
-    Friend WithEvents chkGetShowProgress As System.Windows.Forms.CheckBox
     Friend WithEvents gbGetWatchedState As System.Windows.Forms.GroupBox
     Friend WithEvents tblGetWatchedState As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents gbGetWatchedStateMovies As Windows.Forms.GroupBox
@@ -487,5 +355,4 @@ Partial Class frmSettingsHolder
     Friend WithEvents chkGetWatchedStateBeforeEdit_TVEpisode As Windows.Forms.CheckBox
     Friend WithEvents chkGetWatchedStateScraperMulti_TVEpisode As Windows.Forms.CheckBox
     Friend WithEvents chkGetWatchedStateScraperSingle_TVEpisode As Windows.Forms.CheckBox
-    Friend WithEvents chkGetWatchedState As Windows.Forms.CheckBox
 End Class
