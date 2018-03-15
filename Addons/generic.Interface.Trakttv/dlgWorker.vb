@@ -162,7 +162,7 @@ Public Class dlgWorker
                                                     If tDBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tDBTVEpisode, False) Then
                                                         tDBTVEpisode.TVEpisode.LastPlayed = strLastPlayed
                                                         tDBTVEpisode.TVEpisode.Playcount = iPlayCount
-                                                        Master.DB.Save_TVEpisode(tDBTVEpisode, True, False, False, True, False)
+                                                        Master.DB.Save_TVEpisode(tDBTVEpisode, False, True, False, False, True, False)
                                                         bwGetWatchedState.ReportProgress(4, tDBTVEpisode.ID)
                                                         lstTVShowIDsToRefresh.Add(nTVShow.ID)
                                                         iItemsSynced += 1
