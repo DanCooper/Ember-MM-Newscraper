@@ -15193,34 +15193,36 @@ Public Class frmMain
     ''' <param name="EpisodeID"></param>
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVEpisode(ByVal EpisodeID As Long)
-        Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
-        Dim newDRow As DataRow = Nothing
-        Dim newTable As New DataTable
+        If dtTVEpisodes.Rows.Count > 0 Then
+            Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
+            Dim newDRow As DataRow = Nothing
+            Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM episodelist WHERE idEpisode={0}", EpisodeID))
-        If newTable.Rows.Count > 0 Then
-            newDRow = newTable.Rows.Item(0)
+            Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM episodelist WHERE idEpisode={0}", EpisodeID))
+            If newTable.Rows.Count > 0 Then
+                newDRow = newTable.Rows.Item(0)
+            End If
+
+            Dim oldDRow As DataRow = dtTVEpisodes.Select(String.Format("idEpisode = {0}", EpisodeID.ToString)).FirstOrDefault()
+
+            If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
+                Try
+                    If InvokeRequired Then
+                        Invoke(myDelegate, New Object() {oldDRow, newDRow})
+                    Else
+                        oldDRow.ItemArray = newDRow.ItemArray
+                    End If
+                Catch ex As Exception
+                    'catch the situation in which the tvshow row has been removed at the same time we try to refresh the episode row (it's nothing to do)
+                End Try
+            End If
+
+            If dgvTVEpisodes.Visible AndAlso dgvTVEpisodes.SelectedRows.Count > 0 AndAlso CInt(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value) = EpisodeID AndAlso currList = 2 Then
+                SelectRow_TVEpisode(dgvTVEpisodes.SelectedRows(0).Index)
+            End If
+
+            dgvTVEpisodes.Invalidate()
         End If
-
-        Dim oldDRow As DataRow = dtTVEpisodes.Select(String.Format("idEpisode = {0}", EpisodeID.ToString)).FirstOrDefault()
-
-        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
-            Try
-                If InvokeRequired Then
-                    Invoke(myDelegate, New Object() {oldDRow, newDRow})
-                Else
-                    oldDRow.ItemArray = newDRow.ItemArray
-                End If
-            Catch ex As Exception
-                'catch the situation in which the tvshow row has been removed at the same time we try to refresh the episode row (it's nothing to do)
-            End Try
-        End If
-
-        If dgvTVEpisodes.Visible AndAlso dgvTVEpisodes.SelectedRows.Count > 0 AndAlso CInt(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value) = EpisodeID AndAlso currList = 2 Then
-            SelectRow_TVEpisode(dgvTVEpisodes.SelectedRows(0).Index)
-        End If
-
-        dgvTVEpisodes.Invalidate()
     End Sub
     ''' <summary>
     ''' Refresh a single TVSeason row with informations from DB
@@ -15228,34 +15230,36 @@ Public Class frmMain
     ''' <param name="SeasonID"></param>
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVSeason(ByVal SeasonID As Long)
-        Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
-        Dim newDRow As DataRow = Nothing
-        Dim newTable As New DataTable
+        If dtTVSeasons.Rows.Count > 0 Then
+            Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
+            Dim newDRow As DataRow = Nothing
+            Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM seasonslist WHERE idSeason={0}", SeasonID))
-        If newTable.Rows.Count > 0 Then
-            newDRow = newTable.Rows.Item(0)
+            Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM seasonslist WHERE idSeason={0}", SeasonID))
+            If newTable.Rows.Count > 0 Then
+                newDRow = newTable.Rows.Item(0)
+            End If
+
+            Dim oldDRow As DataRow = dtTVSeasons.Select(String.Format("idSeason = {0}", SeasonID.ToString)).FirstOrDefault()
+
+            If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
+                Try
+                    If InvokeRequired Then
+                        Invoke(myDelegate, New Object() {oldDRow, newDRow})
+                    Else
+                        oldDRow.ItemArray = newDRow.ItemArray
+                    End If
+                Catch ex As Exception
+                    'catch the situation in which the tvshow row has been removed at the same time we try to refresh the season row (it's nothing to do)
+                End Try
+            End If
+
+            If dgvTVSeasons.Visible AndAlso dgvTVSeasons.SelectedRows.Count > 0 AndAlso CInt(dgvTVSeasons.SelectedRows(0).Cells("idSeason").Value) = SeasonID AndAlso currList = 1 Then
+                SelectRow_TVSeason(dgvTVSeasons.SelectedRows(0).Index)
+            End If
+
+            dgvTVSeasons.Invalidate()
         End If
-
-        Dim oldDRow As DataRow = dtTVSeasons.Select(String.Format("idSeason = {0}", SeasonID.ToString)).FirstOrDefault()
-
-        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
-            Try
-                If InvokeRequired Then
-                    Invoke(myDelegate, New Object() {oldDRow, newDRow})
-                Else
-                    oldDRow.ItemArray = newDRow.ItemArray
-                End If
-            Catch ex As Exception
-                'catch the situation in which the tvshow row has been removed at the same time we try to refresh the season row (it's nothing to do)
-            End Try
-        End If
-
-        If dgvTVSeasons.Visible AndAlso dgvTVSeasons.SelectedRows.Count > 0 AndAlso CInt(dgvTVSeasons.SelectedRows(0).Cells("idSeason").Value) = SeasonID AndAlso currList = 1 Then
-            SelectRow_TVSeason(dgvTVSeasons.SelectedRows(0).Index)
-        End If
-
-        dgvTVSeasons.Invalidate()
     End Sub
 
     Private Sub RefreshRow_TVSeason(ByVal ShowID As Long, ByVal iSeason As Integer)
@@ -16219,14 +16223,6 @@ Public Class frmMain
             End If
         Next
         With Master.eSettings
-            If (Not .FileSystemExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse
-            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse
-            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtrathumbs)) OrElse
-            (.FileSystemExpertCleaner AndAlso (.FileSystemCleanerWhitelist OrElse .FileSystemCleanerWhitelistExts.Count > 0)) Then
-                mnuMainToolsCleanFiles.Enabled = isEnabled AndAlso dgvMovies.RowCount > 0 AndAlso tcMain.SelectedIndex = 0
-            Else
-                mnuMainToolsCleanFiles.Enabled = True  'False
-            End If
             If Not String.IsNullOrEmpty(.MovieBackdropsPath) AndAlso dgvMovies.RowCount > 0 Then
                 mnuMainToolsBackdrops.Enabled = True
             Else
@@ -16356,15 +16352,6 @@ Public Class frmMain
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
         With Master.eSettings
-            If (Not .FileSystemExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse
-            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse
-            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtrathumbs)) OrElse
-            (.FileSystemExpertCleaner AndAlso (.FileSystemCleanerWhitelist OrElse .FileSystemCleanerWhitelistExts.Count > 0)) Then
-                mnuMainToolsCleanFiles.Enabled = True AndAlso dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie
-            Else
-                mnuMainToolsCleanFiles.Enabled = True 'False
-            End If
-
             mnuMainToolsBackdrops.Enabled = Not String.IsNullOrEmpty(.MovieBackdropsPath)
 
             ' for future use

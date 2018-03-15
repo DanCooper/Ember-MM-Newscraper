@@ -139,6 +139,7 @@ Public Class dlgWorker
                             Return
                         End If
                         For Each nWatchedShow In lstWatchedShows
+                            Dim lstTVShowIDsToRefresh As New List(Of Long)
                             bwGetWatchedState.ReportProgress(3, nWatchedShow.Show.Title)
                             Dim lstDBTVShow = lstTVShowsInDB.Where(Function(f) (nWatchedShow.Show.Ids.Imdb IsNot Nothing AndAlso f.TVShow.IMDB = nWatchedShow.Show.Ids.Imdb) OrElse
                                                                        (nWatchedShow.Show.Ids.Tmdb IsNot Nothing AndAlso f.TVShow.TMDB = nWatchedShow.Show.Ids.Tmdb.ToString) OrElse
@@ -153,7 +154,6 @@ Public Class dlgWorker
                                         Dim strLastPlayed = Functions.ConvertToProperDateTime(nWatchedEpisode.LastWatchedAt.Value.ToLocalTime.ToString)
                                         Dim iPlayCount = nWatchedEpisode.Plays.Value
                                         For Each nTVShow In lstDBTVShow
-                                            Dim bRefreshTVShow As Boolean
                                             For Each tDBTVEpisode In nTVShow.Episodes.Where(Function(f) (Not f.TVEpisode.LastPlayed = strLastPlayed OrElse
                                                                                                 Not f.TVEpisode.Playcount = iPlayCount) AndAlso
                                                                                                 (nWatchedSeason.Number IsNot Nothing AndAlso f.TVEpisode.Season = CInt(nWatchedSeason.Number)) AndAlso
@@ -163,7 +163,7 @@ Public Class dlgWorker
                                                     tDBTVEpisode.TVEpisode.Playcount = iPlayCount
                                                     Master.DB.Save_TVEpisode(tDBTVEpisode, True, False, False, True, False)
                                                     bwGetWatchedState.ReportProgress(4, tDBTVEpisode.ID)
-                                                    bRefreshTVShow = True
+                                                    lstTVShowIDsToRefresh.Add(nTVShow.ID)
                                                     iItemsSynced += 1
                                                     logger.Trace(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",
                                                                                tDBTVEpisode.TVShow.Title,
@@ -178,12 +178,12 @@ Public Class dlgWorker
                                                                                tDBTVEpisode.TVEpisode.Title))
                                                 End If
                                             Next
-                                            If bRefreshTVShow Then
-                                                bwGetWatchedState.ReportProgress(5, nTVShow.ID)
-                                            End If
                                         Next
                                     Next
                                 Next
+                            End If
+                            If lstTVShowIDsToRefresh.Count > 0 Then
+                                bwGetWatchedState.ReportProgress(5, lstTVShowIDsToRefresh.Distinct.ToList)
                             End If
                         Next
                         bwGetWatchedState.ReportProgress(6, iItemsSynced)
@@ -229,8 +229,10 @@ Public Class dlgWorker
                 End Select
             Case 5
                 'update tv show entry in media list
-                'e.UserState = media ID
-                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {CLng(e.UserState)}))
+                'e.UserState = tv show IDs as "List(Of Long)"
+                For Each nID In CType(e.UserState, List(Of Long))
+                    RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {nID}))
+                Next
             Case 6
                 'State 5: finished
                 lblCurrentItemInfo.Text = String.Format("{0}: {1} item(s) synced", Master.eLang.GetString(362, "Done"), CInt(e.UserState))
