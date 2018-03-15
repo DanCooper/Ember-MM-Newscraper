@@ -102,7 +102,7 @@ Public Class dlgWorker
                                 Dim iPlayCount = nWatchedMovie.Plays.Value
                                 For Each tDBElement In lstDBElement.Where(Function(f) Not f.Movie.LastPlayed = strLastPlayed OrElse
                                                                               Not f.Movie.PlayCount = iPlayCount)
-                                    If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tDBElement, True) Then
+                                    If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tDBElement, False) Then
                                         tDBElement.Movie.LastPlayed = strLastPlayed
                                         tDBElement.Movie.PlayCount = iPlayCount
                                         Master.DB.Save_Movie(tDBElement, False, True, False, True, False)
@@ -154,30 +154,34 @@ Public Class dlgWorker
                                         Dim strLastPlayed = Functions.ConvertToProperDateTime(nWatchedEpisode.LastWatchedAt.Value.ToLocalTime.ToString)
                                         Dim iPlayCount = nWatchedEpisode.Plays.Value
                                         For Each nTVShow In lstDBTVShow
-                                            For Each tDBTVEpisode In nTVShow.Episodes.Where(Function(f) (Not f.TVEpisode.LastPlayed = strLastPlayed OrElse
-                                                                                                Not f.TVEpisode.Playcount = iPlayCount) AndAlso
-                                                                                                (nWatchedSeason.Number IsNot Nothing AndAlso f.TVEpisode.Season = CInt(nWatchedSeason.Number)) AndAlso
-                                                                                                (nWatchedEpisode.Number IsNot Nothing AndAlso f.TVEpisode.Episode = CInt(nWatchedEpisode.Number)))
-                                                If tDBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tDBTVEpisode, True) Then
-                                                    tDBTVEpisode.TVEpisode.LastPlayed = strLastPlayed
-                                                    tDBTVEpisode.TVEpisode.Playcount = iPlayCount
-                                                    Master.DB.Save_TVEpisode(tDBTVEpisode, True, False, False, True, False)
-                                                    bwGetWatchedState.ReportProgress(4, tDBTVEpisode.ID)
-                                                    lstTVShowIDsToRefresh.Add(nTVShow.ID)
-                                                    iItemsSynced += 1
-                                                    logger.Trace(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",
-                                                                               tDBTVEpisode.TVShow.Title,
-                                                                               tDBTVEpisode.TVEpisode.Season,
-                                                                               tDBTVEpisode.TVEpisode.Episode,
-                                                                               tDBTVEpisode.TVEpisode.Title))
-                                                Else
-                                                    logger.Warn(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}: S{1}E{2} - {3}"" | NOT Synced to Ember, media was offline",
-                                                                               tDBTVEpisode.TVShow.Title,
-                                                                               tDBTVEpisode.TVEpisode.Season,
-                                                                               tDBTVEpisode.TVEpisode.Episode,
-                                                                               tDBTVEpisode.TVEpisode.Title))
-                                                End If
-                                            Next
+                                            If nTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(nTVShow, False) Then
+                                                For Each tDBTVEpisode In nTVShow.Episodes.Where(Function(f) (Not f.TVEpisode.LastPlayed = strLastPlayed OrElse
+                                                                                                    Not f.TVEpisode.Playcount = iPlayCount) AndAlso
+                                                                                                    (nWatchedSeason.Number IsNot Nothing AndAlso f.TVEpisode.Season = CInt(nWatchedSeason.Number)) AndAlso
+                                                                                                    (nWatchedEpisode.Number IsNot Nothing AndAlso f.TVEpisode.Episode = CInt(nWatchedEpisode.Number)))
+                                                    If tDBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tDBTVEpisode, False) Then
+                                                        tDBTVEpisode.TVEpisode.LastPlayed = strLastPlayed
+                                                        tDBTVEpisode.TVEpisode.Playcount = iPlayCount
+                                                        Master.DB.Save_TVEpisode(tDBTVEpisode, True, False, False, True, False)
+                                                        bwGetWatchedState.ReportProgress(4, tDBTVEpisode.ID)
+                                                        lstTVShowIDsToRefresh.Add(nTVShow.ID)
+                                                        iItemsSynced += 1
+                                                        logger.Trace(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",
+                                                                                   tDBTVEpisode.TVShow.Title,
+                                                                                   tDBTVEpisode.TVEpisode.Season,
+                                                                                   tDBTVEpisode.TVEpisode.Episode,
+                                                                                   tDBTVEpisode.TVEpisode.Title))
+                                                    Else
+                                                        logger.Warn(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}: S{1}E{2} - {3}"" | NOT Synced to Ember, media was offline",
+                                                                                   tDBTVEpisode.TVShow.Title,
+                                                                                   tDBTVEpisode.TVEpisode.Season,
+                                                                                   tDBTVEpisode.TVEpisode.Episode,
+                                                                                   tDBTVEpisode.TVEpisode.Title))
+                                                    End If
+                                                Next
+                                            Else
+                                                logger.Warn(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}"" | NOT Synced to Ember, tv show was offline", nTVShow.TVShow.Title))
+                                            End If
                                         Next
                                     Next
                                 Next
