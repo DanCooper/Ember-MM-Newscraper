@@ -2498,7 +2498,7 @@ Public Class Images
 
         Dim DoCalculateDuplicaImages As Boolean = False
 
-        If Master.eSettings.GeneralImageFilter = True AndAlso Master.eSettings.GeneralImageFilterFanart = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
+        If Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterFanart AndAlso ((IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterAutoscraper) OrElse (Not IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterImagedialog)) Then
             DoCalculateDuplicaImages = True
         End If
 

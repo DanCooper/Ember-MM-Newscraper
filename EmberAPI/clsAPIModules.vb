@@ -278,7 +278,7 @@ Public Class ModulesManager
                         Dim bFound As Boolean = False
                         For Each i In Master.eSettings.EmberModules
                             If i.AssemblyName = GenericModule.AssemblyName Then
-                                GenericModule.ProcessorModule.Enabled = i.GenericEnabled
+                                GenericModule.ProcessorModule.Enabled = i.ModuleEnabled
                                 bFound = True
                             End If
                         Next
@@ -772,7 +772,7 @@ Public Class ModulesManager
         Try
             Dim modules As IEnumerable(Of _externalGenericModuleClass) = externalGenericModules.Where(Function(e) e.ProcessorModule.ModuleType.Contains(mType) AndAlso e.ProcessorModule.Enabled)
             If (modules.Count() <= 0) Then
-                logger.Warn("[ModulesManager] [RunGeneric] No generic modules defined <{0}>", mType.ToString)
+                logger.Info("[ModulesManager] [RunGeneric] No generic modules defined <{0}>", mType.ToString)
             Else
                 For Each _externalGenericModule As _externalGenericModuleClass In modules
                     Try
@@ -803,7 +803,7 @@ Public Class ModulesManager
             Dim t As New _XMLEmberModuleClass
             t.AssemblyName = _externalProcessorModule.AssemblyName
             t.AssemblyFileName = _externalProcessorModule.AssemblyFileName
-            t.GenericEnabled = _externalProcessorModule.ProcessorModule.Enabled
+            t.ModuleEnabled = _externalProcessorModule.ProcessorModule.Enabled
             t.ContentType = _externalProcessorModule.ContentType
             tmpForXML.Add(t)
         Next
@@ -925,7 +925,7 @@ Public Class ModulesManager
             Dim oDBMovie As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
 
             If (modules.Count() <= 0) Then
-                logger.Warn("[ModulesManager] [ScrapeData_Movie] [Abort] No scrapers enabled")
+                logger.Info("[ModulesManager] [ScrapeData_Movie] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_Movie In modules
                     logger.Trace(String.Format("[ModulesManager] [ScrapeData_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1011,7 +1011,7 @@ Public Class ModulesManager
         Dim oDBMovieSet As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
 
         If (modules.Count() <= 0) Then
-            logger.Warn("[ModulesManager] [ScrapeData_MovieSet] [Abort] No scrapers enabled")
+            logger.Info("[ModulesManager] [ScrapeData_MovieSet] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data_MovieSet In modules
                 logger.Trace(String.Format("[ModulesManager] [ScrapeData_MovieSet] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1070,7 +1070,7 @@ Public Class ModulesManager
             Dim oEpisode As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
 
             If (modules.Count() <= 0) Then
-                logger.Warn("[ModulesManager] [ScrapeData_TVEpisode] [Abort] No scrapers enabled")
+                logger.Info("[ModulesManager] [ScrapeData_TVEpisode] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
                     logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVEpisode] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1145,7 +1145,7 @@ Public Class ModulesManager
             Dim oSeason As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
 
             If (modules.Count() <= 0) Then
-                logger.Warn("[ModulesManager] [ScrapeData_TVSeason] [Abort] No scrapers enabled")
+                logger.Info("[ModulesManager] [ScrapeData_TVSeason] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
                     logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1231,7 +1231,7 @@ Public Class ModulesManager
             Dim oShow As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
 
             If (modules.Count() <= 0) Then
-                logger.Warn("[ModulesManager] [ScrapeData_TVShow] [Abort] No scrapers enabled")
+                logger.Info("[ModulesManager] [ScrapeData_TVShow] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
                     logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVShow] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1307,7 +1307,7 @@ Public Class ModulesManager
             End While
 
             If (modules.Count() <= 0) Then
-                logger.Warn("[ModulesManager] [ScrapeImage_Movie] [Abort] No scrapers enabled")
+                logger.Info("[ModulesManager] [ScrapeImage_Movie] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Image_Movie In modules
                     logger.Trace(String.Format("[ModulesManager] [ScrapeImage_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1361,7 +1361,7 @@ Public Class ModulesManager
         End While
 
         If (modules.Count() <= 0) Then
-            logger.Warn("[ModulesManager] [ScrapeImage_MovieSet] [Abort] No scrapers enabled")
+            logger.Info("[ModulesManager] [ScrapeImage_MovieSet] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Image_MovieSet In modules
                 logger.Trace(String.Format("[ModulesManager] [ScrapeImage_MovieSet] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1444,7 +1444,7 @@ Public Class ModulesManager
             End If
 
             If (modules.Count() <= 0) Then
-                logger.Warn("[ModulesManager] [ScrapeImage_TV] [Abort] No scrapers enabled")
+                logger.Info("[ModulesManager] [ScrapeImage_TV] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Image_TV In modules
                     logger.Trace(String.Format("[ModulesManager] [ScrapeImage_TV] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1504,7 +1504,7 @@ Public Class ModulesManager
         End While
 
         If (modules.Count() <= 0) Then
-            logger.Warn("[ModulesManager] [ScrapeTheme_Movie] [Abort] No scrapers enabled")
+            logger.Info("[ModulesManager] [ScrapeTheme_Movie] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Theme_Movie In modules
                 logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1539,7 +1539,7 @@ Public Class ModulesManager
         End While
 
         If (modules.Count() <= 0) Then
-            logger.Warn("[ModulesManager] [ScrapeTheme_TVShow] [Abort] No scrapers enabled")
+            logger.Info("[ModulesManager] [ScrapeTheme_TVShow] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Theme_TV In modules
                 logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_TVShow] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1575,7 +1575,7 @@ Public Class ModulesManager
         End While
 
         If (modules.Count() <= 0) Then
-            logger.Warn("[ModulesManager] [ScrapeTrailer_Movie] [Abort] No scrapers enabled")
+            logger.Info("[ModulesManager] [ScrapeTrailer_Movie] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Trailer_Movie In modules
                 logger.Trace(String.Format("[ModulesManager] [ScrapeTrailer_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
@@ -1697,7 +1697,7 @@ Public Class ModulesManager
 
         Dim modules As IEnumerable(Of _externalGenericModuleClass) = externalGenericModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn("[ModulesManager] [SetModuleEnable_Generic] No modules of type <{0}> were found", ModuleAssembly)
+            logger.Info("[ModulesManager] [SetModuleEnable_Generic] No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalProcessorModule As _externalGenericModuleClass In modules
                 Try
@@ -1717,7 +1717,7 @@ Public Class ModulesManager
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn("[ModulesManager] [SetScraperEnable_Data_Movie]  modules of type <{0}> were found", ModuleAssembly)
+            logger.Info("[ModulesManager] [SetScraperEnable_Data_Movie]  modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data_Movie In modules
                 Try
@@ -1737,7 +1737,7 @@ Public Class ModulesManager
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn("[ModulesManager] [SetScraperEnable_Data_MovieSet] No modules of type <{0}> were found", ModuleAssembly)
+            logger.Info("[ModulesManager] [SetScraperEnable_Data_MovieSet] No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data_MovieSet In modules
                 Try
@@ -1757,7 +1757,7 @@ Public Class ModulesManager
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn("[ModulesManager] [SetScraperEnable_Data_TV] No modules of type <{0}> were found", ModuleAssembly)
+            logger.Info("[ModulesManager] [SetScraperEnable_Data_TV] No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
                 Try
@@ -1777,7 +1777,7 @@ Public Class ModulesManager
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_Movie) = externalScrapersModules_Image_Movie.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn("[ModulesManager] [SetScraperEnable_Image_Movie] No modules of type <{0}> were found", ModuleAssembly)
+            logger.Info("[ModulesManager] [SetScraperEnable_Image_Movie] No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Image_Movie In modules
                 Try
@@ -1797,7 +1797,7 @@ Public Class ModulesManager
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_MovieSet) = externalScrapersModules_Image_MovieSet.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn("[ModulesManager] [SetScraperEnable_Image_MovieSet] No modules of type <{0}> were found", ModuleAssembly)
+            logger.Info("[ModulesManager] [SetScraperEnable_Image_MovieSet] No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Image_MovieSet In modules
                 Try
@@ -1817,7 +1817,7 @@ Public Class ModulesManager
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_TV) = externalScrapersModules_Image_TV.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn("[ModulesManager] [SetScraperEnable_Image_TV] No modules of type <{0}> were found", ModuleAssembly)
+            logger.Info("[ModulesManager] [SetScraperEnable_Image_TV] No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Image_TV In externalScrapersModules_Image_TV.Where(Function(p) p.AssemblyName = ModuleAssembly)
                 Try
@@ -1844,7 +1844,7 @@ Public Class ModulesManager
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_Movie) = externalScrapersModules_Theme_Movie.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn("[ModulesManager] [SetScraperEnable_Theme_Movie] No modules of type <{0}> were found", ModuleAssembly)
+            logger.Info("[ModulesManager] [SetScraperEnable_Theme_Movie] No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Theme_Movie In modules
                 Try
@@ -1864,7 +1864,7 @@ Public Class ModulesManager
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_TV) = externalScrapersModules_Theme_TV.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn("[ModulesManager] [SetScraperEnable_Theme_TV] No modules of type <{0}> were found", ModuleAssembly)
+            logger.Info("[ModulesManager] [SetScraperEnable_Theme_TV] No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Theme_TV In modules
                 Try
@@ -1890,7 +1890,7 @@ Public Class ModulesManager
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer_Movie) = externalScrapersModules_Trailer_Movie.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn("[ModulesManager] [SetScraperEnable_Trailer_Movie] No modules of type <{0}> were found", ModuleAssembly)
+            logger.Info("[ModulesManager] [SetScraperEnable_Trailer_Movie] No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Trailer_Movie In modules
                 Try
@@ -1939,40 +1939,17 @@ Public Class ModulesManager
 
 #Region "Fields"
 
-        Private _ContextMenuMovieList As ContextMenuStrip
-        Private _ContextMenuMovieSetList As ContextMenuStrip
-        Private _ContextMenuTVEpisodeList As ContextMenuStrip
-        Private _ContextMenuTVSeasonList As ContextMenuStrip
-        Private _ContextMenuTVShowList As ContextMenuStrip
-        Private _FilterMovies As String
-        Private _FilterMoviesSearch As String
-        Private _FilterMoviesType As String
-        Private _FilterTVShows As String
-        Private _FilterTVShowsSearch As String
-        Private _FilterTVShowsType As String
         Private _ListMovieSets As String
         Private _ListMovies As String
         Private _ListTVShows As String
         Private _LoadMedia As LoadMedia
-        Private _MainMenu As MenuStrip
-        Private _MainTabControl As TabControl
-        Private _MainToolStrip As ToolStrip
-        Private _MediaListMovieSets As DataGridView
-        Private _MediaListMovies As DataGridView
-        Private _MediaListTVEpisodes As DataGridView
-        Private _MediaListTVSeasons As DataGridView
-        Private _MediaListTVShows As DataGridView
-        Private _MediaTabSelected As Structures.MainTabType
         Private _OpenImageViewer As OpenImageViewer
-        Private _TrayMenu As ContextMenuStrip
-
 
 #End Region 'Fields
 
 #Region "Delegates"
 
         Delegate Sub LoadMedia(ByVal Scan As Structures.ScanOrClean, ByVal SourceID As Long)
-
         'all runtime object including Function (delegate) that need to be exposed to Modules
         Delegate Sub OpenImageViewer(ByVal _Image As Image)
 
@@ -2007,193 +1984,27 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property FilterMovies() As String
-            Get
-                Return _FilterMovies
-            End Get
-            Set(ByVal value As String)
-                _FilterMovies = value
-            End Set
-        End Property
-
-        Public Property FilterMoviesSearch() As String
-            Get
-                Return _FilterMoviesSearch
-            End Get
-            Set(ByVal value As String)
-                _FilterMoviesSearch = value
-            End Set
-        End Property
-
-        Public Property FilterMoviesType() As String
-            Get
-                Return _FilterMoviesType
-            End Get
-            Set(ByVal value As String)
-                _FilterMoviesType = value
-            End Set
-        End Property
-        Public Property FilterTVShows() As String
-            Get
-                Return _FilterTVShows
-            End Get
-            Set(ByVal value As String)
-                _FilterTVShows = value
-            End Set
-        End Property
-
-        Public Property FilterTVShowsSearch() As String
-            Get
-                Return _FilterTVShowsSearch
-            End Get
-            Set(ByVal value As String)
-                _FilterTVShowsSearch = value
-            End Set
-        End Property
-
-        Public Property FilterTVShowsType() As String
-            Get
-                Return _FilterTVShowsType
-            End Get
-            Set(ByVal value As String)
-                _FilterTVShowsType = value
-            End Set
-        End Property
-
-        Public Property MediaTabSelected() As Structures.MainTabType
-            Get
-                Return _MediaTabSelected
-            End Get
-            Set(ByVal value As Structures.MainTabType)
-                _MediaTabSelected = value
-            End Set
-        End Property
-
-        Public Property MainToolStrip() As ToolStrip
-            Get
-                Return _MainToolStrip
-            End Get
-            Set(ByVal value As ToolStrip)
-                _MainToolStrip = value
-            End Set
-        End Property
-
-        Public Property MediaListMovies() As DataGridView
-            Get
-                Return _MediaListMovies
-            End Get
-            Set(ByVal value As DataGridView)
-                _MediaListMovies = value
-            End Set
-        End Property
-
-        Public Property MediaListMovieSets() As DataGridView
-            Get
-                Return _MediaListMovieSets
-            End Get
-            Set(ByVal value As DataGridView)
-                _MediaListMovieSets = value
-            End Set
-        End Property
-
-        Public Property MediaListTVEpisodes() As DataGridView
-            Get
-                Return _MediaListTVEpisodes
-            End Get
-            Set(ByVal value As DataGridView)
-                _MediaListTVEpisodes = value
-            End Set
-        End Property
-
-        Public Property MediaListTVSeasons() As DataGridView
-            Get
-                Return _MediaListTVSeasons
-            End Get
-            Set(ByVal value As DataGridView)
-                _MediaListTVSeasons = value
-            End Set
-        End Property
-
-        Public Property MediaListTVShows() As DataGridView
-            Get
-                Return _MediaListTVShows
-            End Get
-            Set(ByVal value As DataGridView)
-                _MediaListTVShows = value
-            End Set
-        End Property
-
         Public Property ContextMenuMovieList() As ContextMenuStrip
-            Get
-                Return _ContextMenuMovieList
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _ContextMenuMovieList = value
-            End Set
-        End Property
-
         Public Property ContextMenuMovieSetList() As ContextMenuStrip
-            Get
-                Return _ContextMenuMovieSetList
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _ContextMenuMovieSetList = value
-            End Set
-        End Property
-
         Public Property ContextMenuTVEpisodeList() As ContextMenuStrip
-            Get
-                Return _ContextMenuTVEpisodeList
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _ContextMenuTVEpisodeList = value
-            End Set
-        End Property
-
         Public Property ContextMenuTVSeasonList() As ContextMenuStrip
-            Get
-                Return _ContextMenuTVSeasonList
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _ContextMenuTVSeasonList = value
-            End Set
-        End Property
-
         Public Property ContextMenuTVShowList() As ContextMenuStrip
-            Get
-                Return _ContextMenuTVShowList
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _ContextMenuTVShowList = value
-            End Set
-        End Property
-
+        Public Property FilterMovies() As String
+        Public Property FilterMoviesSearch() As String
+        Public Property FilterMoviesType() As String
+        Public Property FilterTVShows() As String
+        Public Property FilterTVShowsSearch() As String
+        Public Property FilterTVShowsType() As String
         Public Property MainMenu() As MenuStrip
-            Get
-                Return _MainMenu
-            End Get
-            Set(ByVal value As MenuStrip)
-                _MainMenu = value
-            End Set
-        End Property
-
-        Public Property TrayMenu() As ContextMenuStrip
-            Get
-                Return _TrayMenu
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _TrayMenu = value
-            End Set
-        End Property
-
         Public Property MainTabControl() As TabControl
-            Get
-                Return _MainTabControl
-            End Get
-            Set(ByVal value As TabControl)
-                _MainTabControl = value
-            End Set
-        End Property
+        Public Property MainToolStrip() As ToolStrip
+        Public Property MediaListMovieSets() As DataGridView
+        Public Property MediaListMovies() As DataGridView
+        Public Property MediaListTVEpisodes() As DataGridView
+        Public Property MediaListTVSeasons() As DataGridView
+        Public Property MediaListTVShows() As DataGridView
+        Public Property MediaTabSelected() As Structures.MainTabType
+        Public Property TrayMenu() As ContextMenuStrip
 
 #End Region 'Properties
 
@@ -2226,8 +2037,6 @@ Public Class ModulesManager
 #Region "Fields"
 
         Public AssemblyFileName As String
-
-        'Public Enabled As Boolean
         Public AssemblyName As String
         Public ModuleOrder As Integer 'TODO: not important at this point.. for 1.5
         Public ProcessorModule As Interfaces.GenericModule 'Object
@@ -2364,7 +2173,7 @@ Public Class ModulesManager
 
     End Class
 
-    <XmlRoot("EmberModule")> _
+    <XmlRoot("Module")>
     Class _XMLEmberModuleClass
 
 #Region "Fields"
@@ -2372,9 +2181,6 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public AssemblyName As String
         Public ContentType As Enums.ContentType
-        Public GenericEnabled As Boolean
-        Public PostScraperEnabled As Boolean    'only for TV
-        Public PostScraperOrder As Integer      'only for TV
         Public ModuleEnabled As Boolean
         Public ModuleOrder As Integer
 

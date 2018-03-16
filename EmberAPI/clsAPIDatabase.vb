@@ -1281,7 +1281,11 @@ Public Class Database
     Public Sub FillDataTable(ByRef dTable As DataTable, ByVal Command As String)
         dTable.Clear()
         Dim sqlDA As New SQLiteDataAdapter(Command, _myvideosDBConn)
-        sqlDA.Fill(dTable)
+        Try
+            sqlDA.Fill(dTable)
+        Catch ex As Exception
+            logger.Error(String.Format("Get error: ""{0}"" with SQLCommand: ""{1}""", ex.Message, Command))
+        End Try
     End Sub
     ''' <summary>
     ''' Adds TVShow informations to a Database.DBElement
@@ -1628,28 +1632,28 @@ Public Class Database
     End Function
 
     Public Function GetViewMediaCount(ByVal ViewName As String, Optional EpisodesByView As Boolean = False) As Integer
-        Dim mCount As Integer
+        Dim iCount As Integer
         If Not String.IsNullOrEmpty(ViewName) Then
             Try
                 If Not EpisodesByView Then
                     Using SQLCommand As SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM '{0}'", ViewName)
-                        mCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
-                        Return mCount
+                        iCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+                        Return iCount
                     End Using
                 Else
                     Using SQLCommand As SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM '{0}' INNER JOIN episode ON ('{0}'.idShow = episode.idShow) WHERE NOT episode.idFile = -1", ViewName)
-                        mCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
-                        Return mCount
+                        iCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+                        Return iCount
                     End Using
                 End If
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                logger.Error(String.Format("SQL error in ""{0}"": {1}", ViewName, ex.Message))
                 Return -1
             End Try
         Else
-            Return mCount
+            Return iCount
         End If
     End Function
 

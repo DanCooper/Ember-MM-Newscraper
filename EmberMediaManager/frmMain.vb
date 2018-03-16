@@ -154,43 +154,7 @@ Public Class frmMain
     Private currTextSearch_TVShows As String = String.Empty
     Private prevTextSearch_TVShows As String = String.Empty
 
-    'Theme Information
-    Private _bannermaxheight As Integer = 160
-    Private _bannermaxwidth As Integer = 285
-    Private _bannerposleft As Integer = 124
-    Private _bannerpostop As Integer = 327
-    Private _characterartmaxheight As Integer = 160
-    Private _characterartmaxwidth As Integer = 160
-    Private _characterartposleft As Integer = 1011
-    Private _characterartpostop As Integer = 130
-    Private _clearartmaxheight As Integer = 160
-    Private _clearartmaxwidth As Integer = 285
-    Private _clearartposleft As Integer = 715
-    Private _clearartpostop As Integer = 130
-    Private _clearlogomaxheight As Integer = 160
-    Private _clearlogomaxwidth As Integer = 285
-    Private _clearlogoposleft As Integer = 419
-    Private _clearlogopostop As Integer = 327
-    Private _discartmaxheight As Integer = 160
-    Private _discartmaxwidth As Integer = 160
-    Private _discartposleft As Integer = 1011
-    Private _discartpostop As Integer = 130
-    Private _fanartsmallmaxheight As Integer = 160
-    Private _fanartsmallmaxwidth As Integer = 285
-    Private _fanartsmallposleft As Integer = 124
-    Private _fanartsmallpostop As Integer = 130
-    Private _landscapemaxheight As Integer = 160
-    Private _landscapemaxwidth As Integer = 285
-    Private _landscapeposleft As Integer = 419
-    Private _landscapepostop As Integer = 130
-    Private _postermaxheight As Integer = 160
-    Private _postermaxwidth As Integer = 160
-    Private _posterposleft As Integer = 4
-    Private _posterpostop As Integer = 130
     Private tTheme As New Theming
-    Private _genrepanelcolor As Color = Color.Gainsboro
-    Private _ipmid As Integer = 280
-    Private _ipup As Integer = 500
     Private CloseApp As Boolean = False
 
     Private _SelectedScrapeType As String = String.Empty
@@ -233,320 +197,42 @@ Public Class frmMain
 
 #Region "Properties"
 
-    Public Property GenrePanelColor() As Color
-        Get
-            Return _genrepanelcolor
-        End Get
-        Set(ByVal value As Color)
-            _genrepanelcolor = value
-        End Set
-    End Property
+    Public Property GenrePanelColor() As Color = Color.Gainsboro
+    Public Property IPMid() As Integer = 280
+    Public Property IPUp() As Integer = 500
 
-    Public Property IPMid() As Integer
-        Get
-            Return _ipmid
-        End Get
-        Set(ByVal value As Integer)
-            _ipmid = value
-        End Set
-    End Property
-
-    Public Property IPUp() As Integer
-        Get
-            Return _ipup
-        End Get
-        Set(ByVal value As Integer)
-            _ipup = value
-        End Set
-    End Property
-
-    Public Property BannerMaxHeight() As Integer
-        Get
-            Return _bannermaxheight
-        End Get
-        Set(ByVal value As Integer)
-            _bannermaxheight = value
-        End Set
-    End Property
-
-    Public Property BannerMaxWidth() As Integer
-        Get
-            Return _bannermaxwidth
-        End Get
-        Set(ByVal value As Integer)
-            _bannermaxwidth = value
-        End Set
-    End Property
-
-    Public Property BannerPosLeft() As Integer
-        Get
-            Return _bannerposleft
-        End Get
-        Set(ByVal value As Integer)
-            _bannerposleft = value
-        End Set
-    End Property
-
-    Public Property BannerPosTop() As Integer
-        Get
-            Return _bannerpostop
-        End Get
-        Set(ByVal value As Integer)
-            _bannerpostop = value
-        End Set
-    End Property
-
-    Public Property CharacterArtMaxHeight() As Integer
-        Get
-            Return _characterartmaxheight
-        End Get
-        Set(ByVal value As Integer)
-            _characterartmaxheight = value
-        End Set
-    End Property
-
-    Public Property CharacterArtMaxWidth() As Integer
-        Get
-            Return _characterartmaxwidth
-        End Get
-        Set(ByVal value As Integer)
-            _characterartmaxwidth = value
-        End Set
-    End Property
-
-    Public Property CharacterArtPosLeft() As Integer
-        Get
-            Return _characterartposleft
-        End Get
-        Set(ByVal value As Integer)
-            _characterartposleft = value
-        End Set
-    End Property
-
-    Public Property CharacterArtPosTop() As Integer
-        Get
-            Return _characterartpostop
-        End Get
-        Set(ByVal value As Integer)
-            _characterartpostop = value
-        End Set
-    End Property
-
-    Public Property ClearArtMaxHeight() As Integer
-        Get
-            Return _clearartmaxheight
-        End Get
-        Set(ByVal value As Integer)
-            _clearartmaxheight = value
-        End Set
-    End Property
-
-    Public Property ClearArtMaxWidth() As Integer
-        Get
-            Return _clearartmaxwidth
-        End Get
-        Set(ByVal value As Integer)
-            _clearartmaxwidth = value
-        End Set
-    End Property
-
-    Public Property ClearArtPosLeft() As Integer
-        Get
-            Return _clearartposleft
-        End Get
-        Set(ByVal value As Integer)
-            _clearartposleft = value
-        End Set
-    End Property
-
-    Public Property ClearArtPosTop() As Integer
-        Get
-            Return _clearartpostop
-        End Get
-        Set(ByVal value As Integer)
-            _clearartpostop = value
-        End Set
-    End Property
-
-    Public Property ClearLogoMaxHeight() As Integer
-        Get
-            Return _clearlogomaxheight
-        End Get
-        Set(ByVal value As Integer)
-            _clearlogomaxheight = value
-        End Set
-    End Property
-
-    Public Property ClearLogoMaxWidth() As Integer
-        Get
-            Return _clearlogomaxwidth
-        End Get
-        Set(ByVal value As Integer)
-            _clearlogomaxwidth = value
-        End Set
-    End Property
-
-    Public Property ClearLogoPosLeft() As Integer
-        Get
-            Return _clearlogoposleft
-        End Get
-        Set(ByVal value As Integer)
-            _clearlogoposleft = value
-        End Set
-    End Property
-
-    Public Property ClearLogoPosTop() As Integer
-        Get
-            Return _clearlogopostop
-        End Get
-        Set(ByVal value As Integer)
-            _clearlogopostop = value
-        End Set
-    End Property
-
-    Public Property DiscArtMaxHeight() As Integer
-        Get
-            Return _discartmaxheight
-        End Get
-        Set(ByVal value As Integer)
-            _discartmaxheight = value
-        End Set
-    End Property
-
-    Public Property DiscArtMaxWidth() As Integer
-        Get
-            Return _discartmaxwidth
-        End Get
-        Set(ByVal value As Integer)
-            _discartmaxwidth = value
-        End Set
-    End Property
-
-    Public Property DiscArtPosLeft() As Integer
-        Get
-            Return _discartposleft
-        End Get
-        Set(ByVal value As Integer)
-            _discartposleft = value
-        End Set
-    End Property
-
-    Public Property DiscArtPosTop() As Integer
-        Get
-            Return _discartpostop
-        End Get
-        Set(ByVal value As Integer)
-            _discartpostop = value
-        End Set
-    End Property
-
-    Public Property PosterMaxHeight() As Integer
-        Get
-            Return _postermaxheight
-        End Get
-        Set(ByVal value As Integer)
-            _postermaxheight = value
-        End Set
-    End Property
-
-    Public Property PosterMaxWidth() As Integer
-        Get
-            Return _postermaxwidth
-        End Get
-        Set(ByVal value As Integer)
-            _postermaxwidth = value
-        End Set
-    End Property
-
-    Public Property PosterPosLeft() As Integer
-        Get
-            Return _posterposleft
-        End Get
-        Set(ByVal value As Integer)
-            _posterposleft = value
-        End Set
-    End Property
-
-    Public Property PosterPosTop() As Integer
-        Get
-            Return _posterpostop
-        End Get
-        Set(ByVal value As Integer)
-            _posterpostop = value
-        End Set
-    End Property
-
-    Public Property FanartSmallMaxHeight() As Integer
-        Get
-            Return _fanartsmallmaxheight
-        End Get
-        Set(ByVal value As Integer)
-            _fanartsmallmaxheight = value
-        End Set
-    End Property
-
-    Public Property FanartSmallMaxWidth() As Integer
-        Get
-            Return _fanartsmallmaxwidth
-        End Get
-        Set(ByVal value As Integer)
-            _fanartsmallmaxwidth = value
-        End Set
-    End Property
-
-    Public Property FanartSmallPosLeft() As Integer
-        Get
-            Return _fanartsmallposleft
-        End Get
-        Set(ByVal value As Integer)
-            _fanartsmallposleft = value
-        End Set
-    End Property
-
-    Public Property FanartSmallPosTop() As Integer
-        Get
-            Return _fanartsmallpostop
-        End Get
-        Set(ByVal value As Integer)
-            _fanartsmallpostop = value
-        End Set
-    End Property
-
-    Public Property LandscapeMaxHeight() As Integer
-        Get
-            Return _landscapemaxheight
-        End Get
-        Set(ByVal value As Integer)
-            _landscapemaxheight = value
-        End Set
-    End Property
-
-    Public Property LandscapeMaxWidth() As Integer
-        Get
-            Return _landscapemaxwidth
-        End Get
-        Set(ByVal value As Integer)
-            _landscapemaxwidth = value
-        End Set
-    End Property
-
-    Public Property LandscapePosLeft() As Integer
-        Get
-            Return _landscapeposleft
-        End Get
-        Set(ByVal value As Integer)
-            _landscapeposleft = value
-        End Set
-    End Property
-
-    Public Property LandscapePosTop() As Integer
-        Get
-            Return _landscapepostop
-        End Get
-        Set(ByVal value As Integer)
-            _landscapepostop = value
-        End Set
-    End Property
+    Public Property BannerMaxHeight() As Integer = 160
+    Public Property BannerMaxWidth() As Integer = 285
+    Public Property BannerPosLeft() As Integer = 124
+    Public Property BannerPosTop() As Integer = 327
+    Public Property CharacterArtMaxHeight() As Integer = 160
+    Public Property CharacterArtMaxWidth() As Integer = 160
+    Public Property CharacterArtPosLeft() As Integer = 1011
+    Public Property CharacterArtPosTop() As Integer = 130
+    Public Property ClearArtMaxHeight() As Integer = 160
+    Public Property ClearArtMaxWidth() As Integer = 285
+    Public Property ClearArtPosLeft() As Integer = 715
+    Public Property ClearArtPosTop() As Integer = 130
+    Public Property ClearLogoMaxHeight() As Integer = 160
+    Public Property ClearLogoMaxWidth() As Integer = 285
+    Public Property ClearLogoPosLeft() As Integer = 419
+    Public Property ClearLogoPosTop() As Integer = 327
+    Public Property DiscArtMaxHeight() As Integer = 160
+    Public Property DiscArtMaxWidth() As Integer = 160
+    Public Property DiscArtPosLeft() As Integer = 1011
+    Public Property DiscArtPosTop() As Integer = 130
+    Public Property FanartSmallMaxHeight() As Integer = 160
+    Public Property FanartSmallMaxWidth() As Integer = 285
+    Public Property FanartSmallPosLeft() As Integer = 124
+    Public Property FanartSmallPosTop() As Integer = 130
+    Public Property LandscapeMaxHeight() As Integer = 160
+    Public Property LandscapeMaxWidth() As Integer = 285
+    Public Property LandscapePosLeft() As Integer = 419
+    Public Property LandscapePosTop() As Integer = 130
+    Public Property PosterMaxHeight() As Integer = 160
+    Public Property PosterMaxWidth() As Integer = 160
+    Public Property PosterPosLeft() As Integer = 4
+    Public Property PosterPosTop() As Integer = 130
 
 #End Region 'Properties
 
@@ -868,12 +554,12 @@ Public Class frmMain
         Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
             Case 1
                 If btnMid.Visible Then
-                    pnlInfoPanel.Height = _ipmid
+                    pnlInfoPanel.Height = IPMid
                     btnUp.Enabled = True
                     btnMid.Enabled = False
                     btnDown.Enabled = True
                 ElseIf btnUp.Visible Then
-                    pnlInfoPanel.Height = _ipup
+                    pnlInfoPanel.Height = IPUp
                     If currMainTabTag.ContentType = Enums.ContentType.Movie Then
                         InfoPanelState_Movie = 2
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
@@ -899,12 +585,12 @@ Public Class frmMain
                 End If
             Case 2
                 If btnUp.Visible Then
-                    pnlInfoPanel.Height = _ipup
+                    pnlInfoPanel.Height = IPUp
                     btnUp.Enabled = False
                     btnMid.Enabled = True
                     btnDown.Enabled = True
                 ElseIf btnMid.Visible Then
-                    pnlInfoPanel.Height = _ipmid
+                    pnlInfoPanel.Height = IPMid
 
                     If currMainTabTag.ContentType = Enums.ContentType.Movie Then
                         InfoPanelState_Movie = 1
@@ -10243,9 +9929,7 @@ Public Class frmMain
         Master.DB.Connect_MyVideos()
         Master.DB.LoadAllGenres()
 
-        tpMovies.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.ContentType.Movie, .DefaultList = "movielist"}
-        tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist"}
-        tpTVShows.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(653, "TV Shows"), .ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist"}
+        SetMainTabs()
         ModulesManager.Instance.RuntimeObjects.MediaTabSelected = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
         ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
@@ -16357,11 +16041,14 @@ Public Class frmMain
             ' for future use
             mnuMainToolsClearCache.Enabled = False
 
+            'MainTabs
+            SetMainTabs()
+
             mnuUpdateMovies.DropDownItems.Clear()
             cmnuTrayUpdateMovies.DropDownItems.Clear()
             If Master.DB.GetSources_Movie.Count > 1 Then
-                mnuItem = mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
-                mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
+                mnuItem = mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
+                mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
             End If
             For Each nSource In Master.DB.GetSources_Movie
                 mnuItem = mnuUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
@@ -16375,8 +16062,8 @@ Public Class frmMain
             mnuUpdateShows.DropDownItems.Clear()
             cmnuTrayUpdateShows.DropDownItems.Clear()
             If Master.DB.GetSources_TVShow.Count > 1 Then
-                mnuItem = mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
-                mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
+                mnuItem = mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
+                mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
             End If
             For Each nSource In Master.DB.GetSources_TVShow
                 mnuItem = mnuUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
@@ -16492,6 +16179,44 @@ Public Class frmMain
         'End Using
         LoadMedia(New Structures.ScanOrClean With {.Movies = True, .TV = False})
         SetControlsEnabled(True)
+    End Sub
+
+    Private Sub SetMainTabs()
+        'cleanup tabs
+        RemoveHandler tcMain.SelectedIndexChanged, AddressOf tcMain_SelectedIndexChanged
+        tcMain.TabPages.Clear()
+        AddHandler tcMain.SelectedIndexChanged, AddressOf tcMain_SelectedIndexChanged
+
+        'add default tabs if enabled
+        If Master.eSettings.GeneralDisplayTabMoviesDefaultList Then tcMain.TabPages.Add(New TabPage With {.Text = Master.eLang.GetString(36, "Movies"), .Tag = (New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.ContentType.Movie, .DefaultList = "movielist"})})
+        If Master.eSettings.GeneralDisplayTabMoviesetsDefaultList Then tcMain.TabPages.Add(New TabPage With {.Text = Master.eLang.GetString(366, "Sets"), .Tag = (New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist"})})
+        If Master.eSettings.GeneralDisplayTabTVShowsDefaultList Then tcMain.TabPages.Add(New TabPage With {.Text = Master.eLang.GetString(653, "TV Shows"), .Tag = (New Structures.MainTabType With {.ContentName = Master.eLang.GetString(653, "TV Shows"), .ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist"})})
+
+        'add custom tabs
+        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
+        If CustomTabs IsNot Nothing Then
+            Dim NewCustomTabs As New List(Of TabPage)
+            For Each nCustomTab In CustomTabs
+                If Master.DB.ViewExists(nCustomTab.Value) Then
+                    Dim cTabType As Enums.ContentType = Enums.ContentType.None
+                    If nCustomTab.Value.StartsWith("movie-") Then
+                        cTabType = Enums.ContentType.Movie
+                    ElseIf nCustomTab.Value.StartsWith("sets-") Then
+                        cTabType = Enums.ContentType.MovieSet
+                    ElseIf nCustomTab.Value.StartsWith("tvshow-") Then
+                        cTabType = Enums.ContentType.TV
+                    End If
+                    If Not cTabType = Enums.ContentType.None AndAlso Not String.IsNullOrEmpty(nCustomTab.Name) Then
+                        Dim NewTabPage As New TabPage
+                        NewTabPage.Text = nCustomTab.Name
+                        NewTabPage.Tag = New Structures.MainTabType With {.ContentName = nCustomTab.Name, .ContentType = cTabType, .DefaultList = nCustomTab.Value}
+                        NewCustomTabs.Add(NewTabPage)
+                    End If
+                End If
+            Next
+            tcMain.TabPages.AddRange(NewCustomTabs.ToArray)
+        End If
+        UpdateMainTabCounts()
     End Sub
 
     Private Sub SetStatus(ByVal sText As String)
@@ -16727,19 +16452,25 @@ Public Class frmMain
                 Case Enums.ContentType.Movie, Enums.ContentType.MovieSet
                     If mCount > 0 Then
                         mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, mCount)
+                        mTabPage.Enabled = True
                     ElseIf mCount = -1 Then
-                        mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, "Error")
+                        mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, "SQL Error")
+                        mTabPage.Enabled = False
                     Else
                         mTabPage.Text = currTag.ContentName
+                        mTabPage.Enabled = True
                     End If
                 Case Enums.ContentType.TV
                     If mCount > 0 Then
                         Dim epCount As Integer = Master.DB.GetViewMediaCount(currTag.DefaultList, True)
                         mTabPage.Text = String.Format("{0} ({1}/{2})", currTag.ContentName, mCount, epCount)
+                        mTabPage.Enabled = True
                     ElseIf mCount = -1 Then
-                        mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, "Error")
+                        mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, "SQL Error")
+                        mTabPage.Enabled = False
                     Else
                         mTabPage.Text = currTag.ContentName
+                        mTabPage.Enabled = True
                     End If
             End Select
         Next

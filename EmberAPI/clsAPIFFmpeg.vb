@@ -633,42 +633,23 @@ Namespace FFmpeg
                     ElseIf FileUtils.Common.isVideoTS(DBElement.Filename) Then
                         'filename points to largest VOB  file
                         videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.Filename)
-                    ElseIf videofileExt = ".iso" OrElse videofileExt = ".bin" Then
-                        Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F:\"
-                        'Toolpath either VCDMOUNT.exe or DTLite.exe!
-                        Dim ToolPath As String = Master.eSettings.GeneralDaemonPath
-                        'Now only use DAEMON Tools to mount ISO if installed on user system
-                        If Not String.IsNullOrEmpty(driveletter) AndAlso Not String.IsNullOrEmpty(ToolPath) Then
-                            'Either DAEMONToolsLite or VirtualCloneDrive (http://www.slysoft.com/en/virtual-clonedrive.html)
-                            If ToolPath.ToUpper.Contains("VCDMOUNT") Then
-                                'First unmount, i.e "C:\Program Files\Elaborate Bytes\VirtualCloneDrive\VCDMount.exe" /u
-                                '  Run_Process(ToolPath, " /u", False, True)
-                                'Mount ISO on virtual drive, i.e c:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe U:\isotest\test2iso.ISO
-                                Functions.Run_Process(ToolPath, """" & videofilepath & """", False, True)
-                                System.Threading.Thread.Sleep(8000)
-                                'Toolpath doesn't contain virtualclonedrive.exe -> assume daemon tools with DS type drive!
-                            Else
-                                'Unmount
-                                '   Run_Process(ToolPath, " -unmount 0", False, True)
-                                'Mount
-                                Functions.Run_Process(ToolPath, " -mount 0, " & """" & videofilepath & """", False, True)
-                                System.Threading.Thread.Sleep(8000)
-                            End If
-                            'now check if it's bluray or dvd image/VIDEO_TS/BMDV Folder-Scanning!
-                            If Directory.Exists(driveletter & "VIDEO_TS") Then
+                    ElseIf FileUtils.Common.isDiscImage(DBElement.filename) Then
+                        Dim nVirtualDrive = New FileUtils.VirtualDrive(DBElement.Filename)
+                        If nVirtualDrive.IsLoaded Then
+                            If Directory.Exists(String.Concat(nVirtualDrive.Path, "VIDEO_TS")) Then
                                 'get biggest VOB file for thumbscraping
                                 Dim lFileList As New List(Of FileInfo)
-                                lFileList.AddRange(New DirectoryInfo(driveletter & "VIDEO_TS").GetFiles("*.vob"))
+                                lFileList.AddRange(New DirectoryInfo(String.Concat(nVirtualDrive.Path, "VIDEO_TS")).GetFiles("*.vob"))
                                 videofilepath = lFileList.OrderByDescending(Function(a) a.Length).Select(Function(a) a.FullName).FirstOrDefault()
-                            ElseIf Directory.Exists(driveletter & "BDMV\STREAM") Then
+                            ElseIf Directory.Exists(String.Concat(nVirtualDrive.Path, "BDMV\STREAM")) Then
                                 'get biggest m2ts file for thumbscraping
                                 Dim lFileList As New List(Of FileInfo)
-                                lFileList.AddRange(New DirectoryInfo(driveletter & "BDMV\STREAM").GetFiles("*.m2ts"))
+                                lFileList.AddRange(New DirectoryInfo(String.Concat(nVirtualDrive.Path, "BDMV\STREAM")).GetFiles("*.m2ts"))
                                 videofilepath = lFileList.OrderByDescending(Function(b) b.Length).Select(Function(b) b.FullName).FirstOrDefault()
                             End If
                         End If
-                        'default case
                     Else
+                        'default case
                         videofilepath = DBElement.Filename
                     End If
                 Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow

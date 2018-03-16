@@ -250,7 +250,6 @@
     <Compile Include="XML Serialization\clsXMLLanguageHelp.vb" />
     <Compile Include="XML Serialization\clsXMLLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLRatings.vb" />
-    <Compile Include="XML Serialization\clsXMLSettings.vb" />
     <Compile Include="XML Serialization\clsXMLMovieCertLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLScraperLanguages.vb" />
   </ItemGroup>

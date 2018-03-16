@@ -24,6 +24,9 @@ Partial Class frmSettingsHolder
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlMediaListEditor = New System.Windows.Forms.Panel()
         Me.tblMediaListEditor = New System.Windows.Forms.TableLayoutPanel()
         Me.gbCustomMediaList = New System.Windows.Forms.GroupBox()
@@ -387,9 +390,25 @@ Partial Class frmSettingsHolder
         Me.dgvCustomTab.AllowUserToResizeColumns = False
         Me.dgvCustomTab.AllowUserToResizeRows = False
         Me.dgvCustomTab.BackgroundColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvCustomTab.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvCustomTab.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCustomTab.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colCustomTabName, Me.colCustomTabList})
         Me.tblCustomTabs.SetColumnSpan(Me.dgvCustomTab, 4)
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvCustomTab.DefaultCellStyle = DataGridViewCellStyle4
         Me.dgvCustomTab.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvCustomTab.Location = New System.Drawing.Point(3, 3)
         Me.dgvCustomTab.MultiSelect = False
@@ -405,6 +424,8 @@ Partial Class frmSettingsHolder
         '
         'colCustomTabName
         '
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colCustomTabName.DefaultCellStyle = DataGridViewCellStyle2
         Me.colCustomTabName.FillWeight = 190.0!
         Me.colCustomTabName.HeaderText = "Name"
         Me.colCustomTabName.Name = "colCustomTabName"
@@ -412,15 +433,16 @@ Partial Class frmSettingsHolder
         '
         'colCustomTabList
         '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.colCustomTabList.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colCustomTabList.DefaultCellStyle = DataGridViewCellStyle3
         Me.colCustomTabList.HeaderText = "List"
         Me.colCustomTabList.Name = "colCustomTabList"
         Me.colCustomTabList.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.colCustomTabList.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
         Me.colCustomTabList.Width = 360
         '
-        'frmMediaListEditor
+        'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -429,7 +451,7 @@ Partial Class frmSettingsHolder
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmMediaListEditor"
+        Me.Name = "frmSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "frmFilterEditor"
@@ -473,7 +495,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents dgvCustomTab As System.Windows.Forms.DataGridView
     Friend WithEvents btnCustomTabRemove As System.Windows.Forms.Button
     Friend WithEvents btnCustomTabAdd As System.Windows.Forms.Button
-    Friend WithEvents colCustomTabName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents colCustomTabList As System.Windows.Forms.DataGridViewComboBoxColumn
-
+    Friend WithEvents colCustomTabName As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colCustomTabList As Windows.Forms.DataGridViewComboBoxColumn
 End Class

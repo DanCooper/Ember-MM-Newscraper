@@ -64,32 +64,8 @@ Partial Class dlgSettings
         Me.lblGeneralMovieSetTheme = New System.Windows.Forms.Label()
         Me.lblGeneralTVShowTheme = New System.Windows.Forms.Label()
         Me.cbGeneralMovieTheme = New System.Windows.Forms.ComboBox()
-        Me.lblGeneralntLang = New System.Windows.Forms.Label()
+        Me.lblGeneralIntLang = New System.Windows.Forms.Label()
         Me.cbGeneralLanguage = New System.Windows.Forms.ComboBox()
-        Me.gbFileSystemCleanFiles = New System.Windows.Forms.GroupBox()
-        Me.tcFileSystemCleaner = New System.Windows.Forms.TabControl()
-        Me.tpFileSystemCleanerStandard = New System.Windows.Forms.TabPage()
-        Me.chkCleanFolderJPG = New System.Windows.Forms.CheckBox()
-        Me.chkCleanExtrathumbs = New System.Windows.Forms.CheckBox()
-        Me.chkCleanMovieTBN = New System.Windows.Forms.CheckBox()
-        Me.chkCleanMovieNameJPG = New System.Windows.Forms.CheckBox()
-        Me.chkCleanMovieTBNb = New System.Windows.Forms.CheckBox()
-        Me.chkCleanMovieJPG = New System.Windows.Forms.CheckBox()
-        Me.chkCleanFanartJPG = New System.Windows.Forms.CheckBox()
-        Me.chkCleanPosterJPG = New System.Windows.Forms.CheckBox()
-        Me.chkCleanMovieFanartJPG = New System.Windows.Forms.CheckBox()
-        Me.chkCleanPosterTBN = New System.Windows.Forms.CheckBox()
-        Me.chkCleanMovieNFO = New System.Windows.Forms.CheckBox()
-        Me.chkCleanDotFanartJPG = New System.Windows.Forms.CheckBox()
-        Me.chkCleanMovieNFOb = New System.Windows.Forms.CheckBox()
-        Me.tpFileSystemCleanerExpert = New System.Windows.Forms.TabPage()
-        Me.chkFileSystemCleanerWhitelist = New System.Windows.Forms.CheckBox()
-        Me.lblFileSystemCleanerWhitelist = New System.Windows.Forms.Label()
-        Me.btnFileSystemCleanerWhitelistRemove = New System.Windows.Forms.Button()
-        Me.btnFileSystemCleanerWhitelistAdd = New System.Windows.Forms.Button()
-        Me.txtFileSystemCleanerWhitelist = New System.Windows.Forms.TextBox()
-        Me.lstFileSystemCleanerWhitelist = New System.Windows.Forms.ListBox()
-        Me.lblFileSystemCleanerWarning = New System.Windows.Forms.Label()
         Me.gbMovieGeneralMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieGeneralMiscOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieClickScrapeAsk = New System.Windows.Forms.CheckBox()
@@ -214,13 +190,15 @@ Partial Class dlgSettings
         Me.tvSettingsList = New System.Windows.Forms.TreeView()
         Me.pnlGeneral = New System.Windows.Forms.Panel()
         Me.tblGeneral = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbGeneralDaemon = New System.Windows.Forms.GroupBox()
-        Me.tblGeneralDaemon = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnGeneralDaemonPathBrowse = New System.Windows.Forms.Button()
-        Me.lblGeneralDaemonDrive = New System.Windows.Forms.Label()
-        Me.txtGeneralDaemonPath = New System.Windows.Forms.TextBox()
-        Me.cbGeneralDaemonDrive = New System.Windows.Forms.ComboBox()
-        Me.lblGeneralDaemonPath = New System.Windows.Forms.Label()
+        Me.gbGeneralVirtualDrive = New System.Windows.Forms.GroupBox()
+        Me.tblGeneralVirtualDrive = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnGeneralVirtualDriveBinPathBrowse = New System.Windows.Forms.Button()
+        Me.lblGeneralVirtualDriveLetter = New System.Windows.Forms.Label()
+        Me.txtGeneralVirtualDriveBinPath = New System.Windows.Forms.TextBox()
+        Me.cbGeneralVirtualDriveLetter = New System.Windows.Forms.ComboBox()
+        Me.lblGeneralVirtualDrivePath = New System.Windows.Forms.Label()
+        Me.lblGeneralVirtualDriveTimeout = New System.Windows.Forms.Label()
+        Me.txtGeneralVirtualDriveTimeout = New System.Windows.Forms.TextBox()
         Me.gbGeneralInterface = New System.Windows.Forms.GroupBox()
         Me.tblGeneralInterface = New System.Windows.Forms.TableLayoutPanel()
         Me.gbGeneralDateAdded = New System.Windows.Forms.GroupBox()
@@ -1637,10 +1615,6 @@ Partial Class dlgSettings
         Me.tblGeneralMisc.SuspendLayout()
         Me.gbGeneralThemes.SuspendLayout()
         Me.tblGeneralThemes.SuspendLayout()
-        Me.gbFileSystemCleanFiles.SuspendLayout()
-        Me.tcFileSystemCleaner.SuspendLayout()
-        Me.tpFileSystemCleanerStandard.SuspendLayout()
-        Me.tpFileSystemCleanerExpert.SuspendLayout()
         Me.gbMovieGeneralMiscOpts.SuspendLayout()
         Me.tblMovieGeneralMiscOpts.SuspendLayout()
         Me.pnlMovieImages.SuspendLayout()
@@ -1675,8 +1649,8 @@ Partial Class dlgSettings
         CType(Me.pbSettingsTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlGeneral.SuspendLayout()
         Me.tblGeneral.SuspendLayout()
-        Me.gbGeneralDaemon.SuspendLayout()
-        Me.tblGeneralDaemon.SuspendLayout()
+        Me.gbGeneralVirtualDrive.SuspendLayout()
+        Me.tblGeneralVirtualDrive.SuspendLayout()
         Me.gbGeneralInterface.SuspendLayout()
         Me.tblGeneralInterface.SuspendLayout()
         Me.gbGeneralDateAdded.SuspendLayout()
@@ -2505,16 +2479,16 @@ Partial Class dlgSettings
         Me.cbGeneralMovieTheme.Size = New System.Drawing.Size(208, 21)
         Me.cbGeneralMovieTheme.TabIndex = 1
         '
-        'lblGeneralntLang
+        'lblGeneralIntLang
         '
-        Me.lblGeneralntLang.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralntLang.AutoSize = True
-        Me.lblGeneralntLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralntLang.Location = New System.Drawing.Point(3, 3)
-        Me.lblGeneralntLang.Name = "lblGeneralntLang"
-        Me.lblGeneralntLang.Size = New System.Drawing.Size(109, 13)
-        Me.lblGeneralntLang.TabIndex = 0
-        Me.lblGeneralntLang.Text = "Interface Language:"
+        Me.lblGeneralIntLang.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblGeneralIntLang.AutoSize = True
+        Me.lblGeneralIntLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblGeneralIntLang.Location = New System.Drawing.Point(3, 3)
+        Me.lblGeneralIntLang.Name = "lblGeneralIntLang"
+        Me.lblGeneralIntLang.Size = New System.Drawing.Size(109, 13)
+        Me.lblGeneralIntLang.TabIndex = 0
+        Me.lblGeneralIntLang.Text = "Interface Language:"
         '
         'cbGeneralLanguage
         '
@@ -2526,287 +2500,6 @@ Partial Class dlgSettings
         Me.cbGeneralLanguage.Name = "cbGeneralLanguage"
         Me.cbGeneralLanguage.Size = New System.Drawing.Size(216, 21)
         Me.cbGeneralLanguage.TabIndex = 1
-        '
-        'gbFileSystemCleanFiles
-        '
-        Me.gbFileSystemCleanFiles.AutoSize = True
-        Me.gbFileSystemCleanFiles.Controls.Add(Me.tcFileSystemCleaner)
-        Me.gbFileSystemCleanFiles.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbFileSystemCleanFiles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbFileSystemCleanFiles.Location = New System.Drawing.Point(339, 134)
-        Me.gbFileSystemCleanFiles.Name = "gbFileSystemCleanFiles"
-        Me.tblFileSystem.SetRowSpan(Me.gbFileSystemCleanFiles, 2)
-        Me.gbFileSystemCleanFiles.Size = New System.Drawing.Size(192, 215)
-        Me.gbFileSystemCleanFiles.TabIndex = 2
-        Me.gbFileSystemCleanFiles.TabStop = False
-        Me.gbFileSystemCleanFiles.Text = "Clean Files"
-        Me.gbFileSystemCleanFiles.Visible = False
-        '
-        'tcFileSystemCleaner
-        '
-        Me.tcFileSystemCleaner.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
-        Me.tcFileSystemCleaner.Controls.Add(Me.tpFileSystemCleanerStandard)
-        Me.tcFileSystemCleaner.Controls.Add(Me.tpFileSystemCleanerExpert)
-        Me.tcFileSystemCleaner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.tcFileSystemCleaner.Location = New System.Drawing.Point(6, 19)
-        Me.tcFileSystemCleaner.Name = "tcFileSystemCleaner"
-        Me.tcFileSystemCleaner.SelectedIndex = 0
-        Me.tcFileSystemCleaner.Size = New System.Drawing.Size(180, 161)
-        Me.tcFileSystemCleaner.TabIndex = 0
-        '
-        'tpFileSystemCleanerStandard
-        '
-        Me.tpFileSystemCleanerStandard.BackColor = System.Drawing.Color.White
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanFolderJPG)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanExtrathumbs)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanMovieTBN)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanMovieNameJPG)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanMovieTBNb)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanMovieJPG)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanFanartJPG)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanPosterJPG)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanMovieFanartJPG)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanPosterTBN)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanMovieNFO)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanDotFanartJPG)
-        Me.tpFileSystemCleanerStandard.Controls.Add(Me.chkCleanMovieNFOb)
-        Me.tpFileSystemCleanerStandard.Location = New System.Drawing.Point(4, 25)
-        Me.tpFileSystemCleanerStandard.Name = "tpFileSystemCleanerStandard"
-        Me.tpFileSystemCleanerStandard.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpFileSystemCleanerStandard.Size = New System.Drawing.Size(172, 132)
-        Me.tpFileSystemCleanerStandard.TabIndex = 0
-        Me.tpFileSystemCleanerStandard.Text = "Standard"
-        Me.tpFileSystemCleanerStandard.UseVisualStyleBackColor = True
-        '
-        'chkCleanFolderJPG
-        '
-        Me.chkCleanFolderJPG.AutoSize = True
-        Me.chkCleanFolderJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanFolderJPG.Location = New System.Drawing.Point(7, 10)
-        Me.chkCleanFolderJPG.Name = "chkCleanFolderJPG"
-        Me.chkCleanFolderJPG.Size = New System.Drawing.Size(81, 17)
-        Me.chkCleanFolderJPG.TabIndex = 0
-        Me.chkCleanFolderJPG.Text = "/folder.jpg"
-        Me.chkCleanFolderJPG.UseVisualStyleBackColor = True
-        '
-        'chkCleanExtrathumbs
-        '
-        Me.chkCleanExtrathumbs.AutoSize = True
-        Me.chkCleanExtrathumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanExtrathumbs.Location = New System.Drawing.Point(7, 238)
-        Me.chkCleanExtrathumbs.Name = "chkCleanExtrathumbs"
-        Me.chkCleanExtrathumbs.Size = New System.Drawing.Size(98, 17)
-        Me.chkCleanExtrathumbs.TabIndex = 12
-        Me.chkCleanExtrathumbs.Text = "/extrathumbs/"
-        Me.chkCleanExtrathumbs.UseVisualStyleBackColor = True
-        '
-        'chkCleanMovieTBN
-        '
-        Me.chkCleanMovieTBN.AutoSize = True
-        Me.chkCleanMovieTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanMovieTBN.Location = New System.Drawing.Point(7, 29)
-        Me.chkCleanMovieTBN.Name = "chkCleanMovieTBN"
-        Me.chkCleanMovieTBN.Size = New System.Drawing.Size(81, 17)
-        Me.chkCleanMovieTBN.TabIndex = 1
-        Me.chkCleanMovieTBN.Text = "/movie.tbn"
-        Me.chkCleanMovieTBN.UseVisualStyleBackColor = True
-        '
-        'chkCleanMovieNameJPG
-        '
-        Me.chkCleanMovieNameJPG.AutoSize = True
-        Me.chkCleanMovieNameJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanMovieNameJPG.Location = New System.Drawing.Point(7, 124)
-        Me.chkCleanMovieNameJPG.Name = "chkCleanMovieNameJPG"
-        Me.chkCleanMovieNameJPG.Size = New System.Drawing.Size(96, 17)
-        Me.chkCleanMovieNameJPG.TabIndex = 6
-        Me.chkCleanMovieNameJPG.Text = "/<movie>.jpg"
-        Me.chkCleanMovieNameJPG.UseVisualStyleBackColor = True
-        '
-        'chkCleanMovieTBNb
-        '
-        Me.chkCleanMovieTBNb.AutoSize = True
-        Me.chkCleanMovieTBNb.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanMovieTBNb.Location = New System.Drawing.Point(7, 48)
-        Me.chkCleanMovieTBNb.Name = "chkCleanMovieTBNb"
-        Me.chkCleanMovieTBNb.Size = New System.Drawing.Size(97, 17)
-        Me.chkCleanMovieTBNb.TabIndex = 2
-        Me.chkCleanMovieTBNb.Text = "/<movie>.tbn"
-        Me.chkCleanMovieTBNb.UseVisualStyleBackColor = True
-        '
-        'chkCleanMovieJPG
-        '
-        Me.chkCleanMovieJPG.AutoSize = True
-        Me.chkCleanMovieJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanMovieJPG.Location = New System.Drawing.Point(7, 105)
-        Me.chkCleanMovieJPG.Name = "chkCleanMovieJPG"
-        Me.chkCleanMovieJPG.Size = New System.Drawing.Size(80, 17)
-        Me.chkCleanMovieJPG.TabIndex = 5
-        Me.chkCleanMovieJPG.Text = "/movie.jpg"
-        Me.chkCleanMovieJPG.UseVisualStyleBackColor = True
-        '
-        'chkCleanFanartJPG
-        '
-        Me.chkCleanFanartJPG.AutoSize = True
-        Me.chkCleanFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanFanartJPG.Location = New System.Drawing.Point(7, 143)
-        Me.chkCleanFanartJPG.Name = "chkCleanFanartJPG"
-        Me.chkCleanFanartJPG.Size = New System.Drawing.Size(81, 17)
-        Me.chkCleanFanartJPG.TabIndex = 7
-        Me.chkCleanFanartJPG.Text = "/fanart.jpg"
-        Me.chkCleanFanartJPG.UseVisualStyleBackColor = True
-        '
-        'chkCleanPosterJPG
-        '
-        Me.chkCleanPosterJPG.AutoSize = True
-        Me.chkCleanPosterJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanPosterJPG.Location = New System.Drawing.Point(7, 86)
-        Me.chkCleanPosterJPG.Name = "chkCleanPosterJPG"
-        Me.chkCleanPosterJPG.Size = New System.Drawing.Size(83, 17)
-        Me.chkCleanPosterJPG.TabIndex = 4
-        Me.chkCleanPosterJPG.Text = "/poster.jpg"
-        Me.chkCleanPosterJPG.UseVisualStyleBackColor = True
-        '
-        'chkCleanMovieFanartJPG
-        '
-        Me.chkCleanMovieFanartJPG.AutoSize = True
-        Me.chkCleanMovieFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanMovieFanartJPG.Location = New System.Drawing.Point(7, 162)
-        Me.chkCleanMovieFanartJPG.Name = "chkCleanMovieFanartJPG"
-        Me.chkCleanMovieFanartJPG.Size = New System.Drawing.Size(131, 17)
-        Me.chkCleanMovieFanartJPG.TabIndex = 8
-        Me.chkCleanMovieFanartJPG.Text = "/<movie>-fanart.jpg"
-        Me.chkCleanMovieFanartJPG.UseVisualStyleBackColor = True
-        '
-        'chkCleanPosterTBN
-        '
-        Me.chkCleanPosterTBN.AutoSize = True
-        Me.chkCleanPosterTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanPosterTBN.Location = New System.Drawing.Point(7, 67)
-        Me.chkCleanPosterTBN.Name = "chkCleanPosterTBN"
-        Me.chkCleanPosterTBN.Size = New System.Drawing.Size(84, 17)
-        Me.chkCleanPosterTBN.TabIndex = 3
-        Me.chkCleanPosterTBN.Text = "/poster.tbn"
-        Me.chkCleanPosterTBN.UseVisualStyleBackColor = True
-        '
-        'chkCleanMovieNFO
-        '
-        Me.chkCleanMovieNFO.AutoSize = True
-        Me.chkCleanMovieNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanMovieNFO.Location = New System.Drawing.Point(7, 200)
-        Me.chkCleanMovieNFO.Name = "chkCleanMovieNFO"
-        Me.chkCleanMovieNFO.Size = New System.Drawing.Size(81, 17)
-        Me.chkCleanMovieNFO.TabIndex = 10
-        Me.chkCleanMovieNFO.Text = "/movie.nfo"
-        Me.chkCleanMovieNFO.UseVisualStyleBackColor = True
-        '
-        'chkCleanDotFanartJPG
-        '
-        Me.chkCleanDotFanartJPG.AutoSize = True
-        Me.chkCleanDotFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanDotFanartJPG.Location = New System.Drawing.Point(7, 181)
-        Me.chkCleanDotFanartJPG.Name = "chkCleanDotFanartJPG"
-        Me.chkCleanDotFanartJPG.Size = New System.Drawing.Size(130, 17)
-        Me.chkCleanDotFanartJPG.TabIndex = 9
-        Me.chkCleanDotFanartJPG.Text = "/<movie>.fanart.jpg"
-        Me.chkCleanDotFanartJPG.UseVisualStyleBackColor = True
-        '
-        'chkCleanMovieNFOb
-        '
-        Me.chkCleanMovieNFOb.AutoSize = True
-        Me.chkCleanMovieNFOb.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanMovieNFOb.Location = New System.Drawing.Point(7, 219)
-        Me.chkCleanMovieNFOb.Name = "chkCleanMovieNFOb"
-        Me.chkCleanMovieNFOb.Size = New System.Drawing.Size(97, 17)
-        Me.chkCleanMovieNFOb.TabIndex = 11
-        Me.chkCleanMovieNFOb.Text = "/<movie>.nfo"
-        Me.chkCleanMovieNFOb.UseVisualStyleBackColor = True
-        '
-        'tpFileSystemCleanerExpert
-        '
-        Me.tpFileSystemCleanerExpert.BackColor = System.Drawing.Color.White
-        Me.tpFileSystemCleanerExpert.Controls.Add(Me.chkFileSystemCleanerWhitelist)
-        Me.tpFileSystemCleanerExpert.Controls.Add(Me.lblFileSystemCleanerWhitelist)
-        Me.tpFileSystemCleanerExpert.Controls.Add(Me.btnFileSystemCleanerWhitelistRemove)
-        Me.tpFileSystemCleanerExpert.Controls.Add(Me.btnFileSystemCleanerWhitelistAdd)
-        Me.tpFileSystemCleanerExpert.Controls.Add(Me.txtFileSystemCleanerWhitelist)
-        Me.tpFileSystemCleanerExpert.Controls.Add(Me.lstFileSystemCleanerWhitelist)
-        Me.tpFileSystemCleanerExpert.Controls.Add(Me.lblFileSystemCleanerWarning)
-        Me.tpFileSystemCleanerExpert.Location = New System.Drawing.Point(4, 25)
-        Me.tpFileSystemCleanerExpert.Name = "tpFileSystemCleanerExpert"
-        Me.tpFileSystemCleanerExpert.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpFileSystemCleanerExpert.Size = New System.Drawing.Size(172, 132)
-        Me.tpFileSystemCleanerExpert.TabIndex = 1
-        Me.tpFileSystemCleanerExpert.Text = "Expert"
-        Me.tpFileSystemCleanerExpert.UseVisualStyleBackColor = True
-        '
-        'chkFileSystemCleanerWhitelist
-        '
-        Me.chkFileSystemCleanerWhitelist.AutoSize = True
-        Me.chkFileSystemCleanerWhitelist.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFileSystemCleanerWhitelist.Location = New System.Drawing.Point(4, 85)
-        Me.chkFileSystemCleanerWhitelist.Name = "chkFileSystemCleanerWhitelist"
-        Me.chkFileSystemCleanerWhitelist.Size = New System.Drawing.Size(163, 17)
-        Me.chkFileSystemCleanerWhitelist.TabIndex = 1
-        Me.chkFileSystemCleanerWhitelist.Text = "Whitelist Video Extensions"
-        Me.chkFileSystemCleanerWhitelist.UseVisualStyleBackColor = True
-        '
-        'lblFileSystemCleanerWhitelist
-        '
-        Me.lblFileSystemCleanerWhitelist.AutoSize = True
-        Me.lblFileSystemCleanerWhitelist.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFileSystemCleanerWhitelist.Location = New System.Drawing.Point(19, 107)
-        Me.lblFileSystemCleanerWhitelist.Name = "lblFileSystemCleanerWhitelist"
-        Me.lblFileSystemCleanerWhitelist.Size = New System.Drawing.Size(127, 13)
-        Me.lblFileSystemCleanerWhitelist.TabIndex = 2
-        Me.lblFileSystemCleanerWhitelist.Text = "Whitelisted Extensions:"
-        '
-        'btnFileSystemCleanerWhitelistRemove
-        '
-        Me.btnFileSystemCleanerWhitelistRemove.Image = CType(resources.GetObject("btnFileSystemCleanerWhitelistRemove.Image"), System.Drawing.Image)
-        Me.btnFileSystemCleanerWhitelistRemove.Location = New System.Drawing.Point(134, 251)
-        Me.btnFileSystemCleanerWhitelistRemove.Name = "btnFileSystemCleanerWhitelistRemove"
-        Me.btnFileSystemCleanerWhitelistRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnFileSystemCleanerWhitelistRemove.TabIndex = 6
-        Me.btnFileSystemCleanerWhitelistRemove.UseVisualStyleBackColor = True
-        '
-        'btnFileSystemCleanerWhitelistAdd
-        '
-        Me.btnFileSystemCleanerWhitelistAdd.Image = CType(resources.GetObject("btnFileSystemCleanerWhitelistAdd.Image"), System.Drawing.Image)
-        Me.btnFileSystemCleanerWhitelistAdd.Location = New System.Drawing.Point(82, 251)
-        Me.btnFileSystemCleanerWhitelistAdd.Name = "btnFileSystemCleanerWhitelistAdd"
-        Me.btnFileSystemCleanerWhitelistAdd.Size = New System.Drawing.Size(23, 23)
-        Me.btnFileSystemCleanerWhitelistAdd.TabIndex = 5
-        Me.btnFileSystemCleanerWhitelistAdd.UseVisualStyleBackColor = True
-        '
-        'txtFileSystemCleanerWhitelist
-        '
-        Me.txtFileSystemCleanerWhitelist.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFileSystemCleanerWhitelist.Location = New System.Drawing.Point(20, 252)
-        Me.txtFileSystemCleanerWhitelist.Name = "txtFileSystemCleanerWhitelist"
-        Me.txtFileSystemCleanerWhitelist.Size = New System.Drawing.Size(61, 22)
-        Me.txtFileSystemCleanerWhitelist.TabIndex = 4
-        '
-        'lstFileSystemCleanerWhitelist
-        '
-        Me.lstFileSystemCleanerWhitelist.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lstFileSystemCleanerWhitelist.FormattingEnabled = True
-        Me.lstFileSystemCleanerWhitelist.Location = New System.Drawing.Point(19, 126)
-        Me.lstFileSystemCleanerWhitelist.Name = "lstFileSystemCleanerWhitelist"
-        Me.lstFileSystemCleanerWhitelist.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstFileSystemCleanerWhitelist.Size = New System.Drawing.Size(138, 108)
-        Me.lstFileSystemCleanerWhitelist.TabIndex = 3
-        '
-        'lblFileSystemCleanerWarning
-        '
-        Me.lblFileSystemCleanerWarning.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFileSystemCleanerWarning.ForeColor = System.Drawing.Color.Red
-        Me.lblFileSystemCleanerWarning.Location = New System.Drawing.Point(6, 10)
-        Me.lblFileSystemCleanerWarning.Name = "lblFileSystemCleanerWarning"
-        Me.lblFileSystemCleanerWarning.Size = New System.Drawing.Size(160, 68)
-        Me.lblFileSystemCleanerWarning.TabIndex = 0
-        Me.lblFileSystemCleanerWarning.Text = "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Tak" &
-    "e care when using this tool."
-        Me.lblFileSystemCleanerWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'gbMovieGeneralMiscOpts
         '
@@ -4453,7 +4146,7 @@ Partial Class dlgSettings
         Me.tblGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneral.Controls.Add(Me.gbGeneralDaemon, 0, 3)
+        Me.tblGeneral.Controls.Add(Me.gbGeneralVirtualDrive, 0, 3)
         Me.tblGeneral.Controls.Add(Me.gbGeneralInterface, 0, 0)
         Me.tblGeneral.Controls.Add(Me.gbGeneralDateAdded, 0, 1)
         Me.tblGeneral.Controls.Add(Me.gbGeneralMainWindowOpts, 1, 0)
@@ -4470,96 +4163,120 @@ Partial Class dlgSettings
         Me.tblGeneral.Size = New System.Drawing.Size(636, 642)
         Me.tblGeneral.TabIndex = 17
         '
-        'gbGeneralDaemon
+        'gbGeneralVirtualDrive
         '
-        Me.gbGeneralDaemon.AutoSize = True
-        Me.tblGeneral.SetColumnSpan(Me.gbGeneralDaemon, 2)
-        Me.gbGeneralDaemon.Controls.Add(Me.tblGeneralDaemon)
-        Me.gbGeneralDaemon.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbGeneralDaemon.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbGeneralDaemon.Location = New System.Drawing.Point(3, 554)
-        Me.gbGeneralDaemon.Name = "gbGeneralDaemon"
-        Me.gbGeneralDaemon.Size = New System.Drawing.Size(611, 70)
-        Me.gbGeneralDaemon.TabIndex = 17
-        Me.gbGeneralDaemon.TabStop = False
-        Me.gbGeneralDaemon.Text = "Configuration ISO Filescanning"
+        Me.gbGeneralVirtualDrive.AutoSize = True
+        Me.tblGeneral.SetColumnSpan(Me.gbGeneralVirtualDrive, 2)
+        Me.gbGeneralVirtualDrive.Controls.Add(Me.tblGeneralVirtualDrive)
+        Me.gbGeneralVirtualDrive.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGeneralVirtualDrive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbGeneralVirtualDrive.Location = New System.Drawing.Point(3, 554)
+        Me.gbGeneralVirtualDrive.Name = "gbGeneralVirtualDrive"
+        Me.gbGeneralVirtualDrive.Size = New System.Drawing.Size(611, 70)
+        Me.gbGeneralVirtualDrive.TabIndex = 17
+        Me.gbGeneralVirtualDrive.TabStop = False
+        Me.gbGeneralVirtualDrive.Text = "Configuration ISO Filescanning"
         '
-        'tblGeneralDaemon
+        'tblGeneralVirtualDrive
         '
-        Me.tblGeneralDaemon.AutoSize = True
-        Me.tblGeneralDaemon.ColumnCount = 3
-        Me.tblGeneralDaemon.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralDaemon.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralDaemon.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralDaemon.Controls.Add(Me.btnGeneralDaemonPathBrowse, 2, 1)
-        Me.tblGeneralDaemon.Controls.Add(Me.lblGeneralDaemonDrive, 0, 0)
-        Me.tblGeneralDaemon.Controls.Add(Me.txtGeneralDaemonPath, 1, 1)
-        Me.tblGeneralDaemon.Controls.Add(Me.cbGeneralDaemonDrive, 0, 1)
-        Me.tblGeneralDaemon.Controls.Add(Me.lblGeneralDaemonPath, 1, 0)
-        Me.tblGeneralDaemon.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblGeneralDaemon.Location = New System.Drawing.Point(3, 18)
-        Me.tblGeneralDaemon.Name = "tblGeneralDaemon"
-        Me.tblGeneralDaemon.RowCount = 3
-        Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralDaemon.Size = New System.Drawing.Size(605, 49)
-        Me.tblGeneralDaemon.TabIndex = 17
+        Me.tblGeneralVirtualDrive.AutoSize = True
+        Me.tblGeneralVirtualDrive.ColumnCount = 4
+        Me.tblGeneralVirtualDrive.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralVirtualDrive.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralVirtualDrive.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralVirtualDrive.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralVirtualDrive.Controls.Add(Me.btnGeneralVirtualDriveBinPathBrowse, 3, 1)
+        Me.tblGeneralVirtualDrive.Controls.Add(Me.lblGeneralVirtualDriveLetter, 0, 0)
+        Me.tblGeneralVirtualDrive.Controls.Add(Me.txtGeneralVirtualDriveBinPath, 2, 1)
+        Me.tblGeneralVirtualDrive.Controls.Add(Me.cbGeneralVirtualDriveLetter, 0, 1)
+        Me.tblGeneralVirtualDrive.Controls.Add(Me.lblGeneralVirtualDrivePath, 2, 0)
+        Me.tblGeneralVirtualDrive.Controls.Add(Me.lblGeneralVirtualDriveTimeout, 1, 0)
+        Me.tblGeneralVirtualDrive.Controls.Add(Me.txtGeneralVirtualDriveTimeout, 1, 1)
+        Me.tblGeneralVirtualDrive.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblGeneralVirtualDrive.Location = New System.Drawing.Point(3, 18)
+        Me.tblGeneralVirtualDrive.Name = "tblGeneralVirtualDrive"
+        Me.tblGeneralVirtualDrive.RowCount = 3
+        Me.tblGeneralVirtualDrive.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblGeneralVirtualDrive.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralVirtualDrive.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralVirtualDrive.Size = New System.Drawing.Size(605, 49)
+        Me.tblGeneralVirtualDrive.TabIndex = 17
         '
-        'btnGeneralDaemonPathBrowse
+        'btnGeneralVirtualDriveBinPathBrowse
         '
-        Me.btnGeneralDaemonPathBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnGeneralDaemonPathBrowse.Location = New System.Drawing.Point(568, 23)
-        Me.btnGeneralDaemonPathBrowse.Name = "btnGeneralDaemonPathBrowse"
-        Me.btnGeneralDaemonPathBrowse.Size = New System.Drawing.Size(25, 23)
-        Me.btnGeneralDaemonPathBrowse.TabIndex = 4
-        Me.btnGeneralDaemonPathBrowse.Text = "..."
-        Me.btnGeneralDaemonPathBrowse.UseVisualStyleBackColor = True
+        Me.btnGeneralVirtualDriveBinPathBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnGeneralVirtualDriveBinPathBrowse.Location = New System.Drawing.Point(577, 23)
+        Me.btnGeneralVirtualDriveBinPathBrowse.Name = "btnGeneralVirtualDriveBinPathBrowse"
+        Me.btnGeneralVirtualDriveBinPathBrowse.Size = New System.Drawing.Size(25, 23)
+        Me.btnGeneralVirtualDriveBinPathBrowse.TabIndex = 4
+        Me.btnGeneralVirtualDriveBinPathBrowse.Text = "..."
+        Me.btnGeneralVirtualDriveBinPathBrowse.UseVisualStyleBackColor = True
         '
-        'lblGeneralDaemonDrive
+        'lblGeneralVirtualDriveLetter
         '
-        Me.lblGeneralDaemonDrive.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralDaemonDrive.AutoSize = True
-        Me.lblGeneralDaemonDrive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGeneralDaemonDrive.Location = New System.Drawing.Point(3, 3)
-        Me.lblGeneralDaemonDrive.Name = "lblGeneralDaemonDrive"
-        Me.lblGeneralDaemonDrive.Size = New System.Drawing.Size(63, 13)
-        Me.lblGeneralDaemonDrive.TabIndex = 6
-        Me.lblGeneralDaemonDrive.Text = "Driveletter:"
+        Me.lblGeneralVirtualDriveLetter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblGeneralVirtualDriveLetter.AutoSize = True
+        Me.lblGeneralVirtualDriveLetter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblGeneralVirtualDriveLetter.Location = New System.Drawing.Point(3, 3)
+        Me.lblGeneralVirtualDriveLetter.Name = "lblGeneralVirtualDriveLetter"
+        Me.lblGeneralVirtualDriveLetter.Size = New System.Drawing.Size(60, 13)
+        Me.lblGeneralVirtualDriveLetter.TabIndex = 6
+        Me.lblGeneralVirtualDriveLetter.Text = "Driveletter"
         '
-        'txtGeneralDaemonPath
+        'txtGeneralVirtualDriveBinPath
         '
-        Me.txtGeneralDaemonPath.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtGeneralDaemonPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtGeneralDaemonPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtGeneralDaemonPath.Location = New System.Drawing.Point(82, 23)
-        Me.txtGeneralDaemonPath.Name = "txtGeneralDaemonPath"
-        Me.txtGeneralDaemonPath.Size = New System.Drawing.Size(480, 22)
-        Me.txtGeneralDaemonPath.TabIndex = 3
+        Me.txtGeneralVirtualDriveBinPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtGeneralVirtualDriveBinPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtGeneralVirtualDriveBinPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtGeneralVirtualDriveBinPath.Location = New System.Drawing.Point(139, 23)
+        Me.txtGeneralVirtualDriveBinPath.Name = "txtGeneralVirtualDriveBinPath"
+        Me.txtGeneralVirtualDriveBinPath.Size = New System.Drawing.Size(432, 22)
+        Me.txtGeneralVirtualDriveBinPath.TabIndex = 3
         '
-        'cbGeneralDaemonDrive
+        'cbGeneralVirtualDriveLetter
         '
-        Me.cbGeneralDaemonDrive.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbGeneralDaemonDrive.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbGeneralDaemonDrive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbGeneralDaemonDrive.FormattingEnabled = True
-        Me.cbGeneralDaemonDrive.Items.AddRange(New Object() {"", "A", "B", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"})
-        Me.cbGeneralDaemonDrive.Location = New System.Drawing.Point(3, 24)
-        Me.cbGeneralDaemonDrive.Name = "cbGeneralDaemonDrive"
-        Me.cbGeneralDaemonDrive.Size = New System.Drawing.Size(73, 21)
-        Me.cbGeneralDaemonDrive.TabIndex = 7
+        Me.cbGeneralVirtualDriveLetter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbGeneralVirtualDriveLetter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbGeneralVirtualDriveLetter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbGeneralVirtualDriveLetter.FormattingEnabled = True
+        Me.cbGeneralVirtualDriveLetter.Items.AddRange(New Object() {"", "A", "B", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"})
+        Me.cbGeneralVirtualDriveLetter.Location = New System.Drawing.Point(3, 24)
+        Me.cbGeneralVirtualDriveLetter.Name = "cbGeneralVirtualDriveLetter"
+        Me.cbGeneralVirtualDriveLetter.Size = New System.Drawing.Size(73, 21)
+        Me.cbGeneralVirtualDriveLetter.TabIndex = 7
         '
-        'lblGeneralDaemonPath
+        'lblGeneralVirtualDrivePath
         '
-        Me.lblGeneralDaemonPath.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralDaemonPath.AutoSize = True
-        Me.tblGeneralDaemon.SetColumnSpan(Me.lblGeneralDaemonPath, 2)
-        Me.lblGeneralDaemonPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralDaemonPath.Location = New System.Drawing.Point(82, 3)
-        Me.lblGeneralDaemonPath.Name = "lblGeneralDaemonPath"
-        Me.lblGeneralDaemonPath.Size = New System.Drawing.Size(191, 13)
-        Me.lblGeneralDaemonPath.TabIndex = 2
-        Me.lblGeneralDaemonPath.Text = "Path to DTAgent.exe/VCDMount.exe"
+        Me.lblGeneralVirtualDrivePath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblGeneralVirtualDrivePath.AutoSize = True
+        Me.tblGeneralVirtualDrive.SetColumnSpan(Me.lblGeneralVirtualDrivePath, 2)
+        Me.lblGeneralVirtualDrivePath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblGeneralVirtualDrivePath.Location = New System.Drawing.Point(139, 3)
+        Me.lblGeneralVirtualDrivePath.Name = "lblGeneralVirtualDrivePath"
+        Me.lblGeneralVirtualDrivePath.Size = New System.Drawing.Size(226, 13)
+        Me.lblGeneralVirtualDrivePath.TabIndex = 2
+        Me.lblGeneralVirtualDrivePath.Text = "Path to VCDMount.exe (Virtual CloneDrive)"
+        '
+        'lblGeneralVirtualDriveTimeout
+        '
+        Me.lblGeneralVirtualDriveTimeout.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblGeneralVirtualDriveTimeout.AutoSize = True
+        Me.lblGeneralVirtualDriveTimeout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblGeneralVirtualDriveTimeout.Location = New System.Drawing.Point(82, 3)
+        Me.lblGeneralVirtualDriveTimeout.Name = "lblGeneralVirtualDriveTimeout"
+        Me.lblGeneralVirtualDriveTimeout.Size = New System.Drawing.Size(48, 13)
+        Me.lblGeneralVirtualDriveTimeout.TabIndex = 6
+        Me.lblGeneralVirtualDriveTimeout.Text = "Timeout"
+        '
+        'txtGeneralVirtualDriveTimeout
+        '
+        Me.txtGeneralVirtualDriveTimeout.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtGeneralVirtualDriveTimeout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtGeneralVirtualDriveTimeout.Location = New System.Drawing.Point(82, 23)
+        Me.txtGeneralVirtualDriveTimeout.Name = "txtGeneralVirtualDriveTimeout"
+        Me.txtGeneralVirtualDriveTimeout.Size = New System.Drawing.Size(51, 22)
+        Me.txtGeneralVirtualDriveTimeout.TabIndex = 15
+        Me.ToolTips.SetToolTip(Me.txtGeneralVirtualDriveTimeout, "Timeout after mounting in milliseconds")
         '
         'gbGeneralInterface
         '
@@ -4581,7 +4298,7 @@ Partial Class dlgSettings
         Me.tblGeneralInterface.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneralInterface.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneralInterface.Controls.Add(Me.gbGeneralThemes, 0, 2)
-        Me.tblGeneralInterface.Controls.Add(Me.lblGeneralntLang, 0, 0)
+        Me.tblGeneralInterface.Controls.Add(Me.lblGeneralIntLang, 0, 0)
         Me.tblGeneralInterface.Controls.Add(Me.cbGeneralLanguage, 0, 1)
         Me.tblGeneralInterface.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGeneralInterface.Location = New System.Drawing.Point(3, 18)
@@ -5620,15 +5337,13 @@ Partial Class dlgSettings
         Me.tblFileSystem.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFileSystem.Controls.Add(Me.gbFileSystemValidVideoExts, 0, 0)
         Me.tblFileSystem.Controls.Add(Me.gbFileSystemNoStackExts, 2, 0)
-        Me.tblFileSystem.Controls.Add(Me.gbFileSystemExcludedDirs, 0, 3)
+        Me.tblFileSystem.Controls.Add(Me.gbFileSystemExcludedDirs, 0, 2)
         Me.tblFileSystem.Controls.Add(Me.gbFileSystemValidSubtitlesExts, 1, 0)
-        Me.tblFileSystem.Controls.Add(Me.gbFileSystemValidThemeExts, 1, 2)
-        Me.tblFileSystem.Controls.Add(Me.gbFileSystemCleanFiles, 2, 1)
+        Me.tblFileSystem.Controls.Add(Me.gbFileSystemValidThemeExts, 1, 1)
         Me.tblFileSystem.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblFileSystem.Location = New System.Drawing.Point(0, 0)
         Me.tblFileSystem.Name = "tblFileSystem"
-        Me.tblFileSystem.RowCount = 5
-        Me.tblFileSystem.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFileSystem.RowCount = 4
         Me.tblFileSystem.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFileSystem.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFileSystem.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -5644,7 +5359,7 @@ Partial Class dlgSettings
         Me.gbFileSystemValidVideoExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFileSystemValidVideoExts.Location = New System.Drawing.Point(3, 3)
         Me.gbFileSystemValidVideoExts.Name = "gbFileSystemValidVideoExts"
-        Me.tblFileSystem.SetRowSpan(Me.gbFileSystemValidVideoExts, 3)
+        Me.tblFileSystem.SetRowSpan(Me.gbFileSystemValidVideoExts, 2)
         Me.gbFileSystemValidVideoExts.Size = New System.Drawing.Size(162, 346)
         Me.gbFileSystemValidVideoExts.TabIndex = 0
         Me.gbFileSystemValidVideoExts.TabStop = False
@@ -5734,7 +5449,7 @@ Partial Class dlgSettings
         Me.gbFileSystemNoStackExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFileSystemNoStackExts.Location = New System.Drawing.Point(339, 3)
         Me.gbFileSystemNoStackExts.Name = "gbFileSystemNoStackExts"
-        Me.gbFileSystemNoStackExts.Size = New System.Drawing.Size(192, 125)
+        Me.gbFileSystemNoStackExts.Size = New System.Drawing.Size(192, 170)
         Me.gbFileSystemNoStackExts.TabIndex = 1
         Me.gbFileSystemNoStackExts.TabStop = False
         Me.gbFileSystemNoStackExts.Text = "No Stack Extensions"
@@ -5758,14 +5473,14 @@ Partial Class dlgSettings
         Me.tblFileSystemNoStackExts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFileSystemNoStackExts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFileSystemNoStackExts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFileSystemNoStackExts.Size = New System.Drawing.Size(186, 104)
+        Me.tblFileSystemNoStackExts.Size = New System.Drawing.Size(186, 149)
         Me.tblFileSystemNoStackExts.TabIndex = 9
         '
         'btnFileSystemNoStackExtsRemove
         '
         Me.btnFileSystemNoStackExtsRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnFileSystemNoStackExtsRemove.Image = CType(resources.GetObject("btnFileSystemNoStackExtsRemove.Image"), System.Drawing.Image)
-        Me.btnFileSystemNoStackExtsRemove.Location = New System.Drawing.Point(160, 78)
+        Me.btnFileSystemNoStackExtsRemove.Location = New System.Drawing.Point(160, 122)
         Me.btnFileSystemNoStackExtsRemove.Name = "btnFileSystemNoStackExtsRemove"
         Me.btnFileSystemNoStackExtsRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnFileSystemNoStackExtsRemove.TabIndex = 3
@@ -5780,7 +5495,7 @@ Partial Class dlgSettings
         Me.lstFileSystemNoStackExts.Location = New System.Drawing.Point(3, 3)
         Me.lstFileSystemNoStackExts.Name = "lstFileSystemNoStackExts"
         Me.lstFileSystemNoStackExts.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstFileSystemNoStackExts.Size = New System.Drawing.Size(180, 69)
+        Me.lstFileSystemNoStackExts.Size = New System.Drawing.Size(180, 113)
         Me.lstFileSystemNoStackExts.Sorted = True
         Me.lstFileSystemNoStackExts.TabIndex = 0
         '
@@ -5788,7 +5503,7 @@ Partial Class dlgSettings
         '
         Me.btnFileSystemNoStackExtsAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.btnFileSystemNoStackExtsAdd.Image = CType(resources.GetObject("btnFileSystemNoStackExtsAdd.Image"), System.Drawing.Image)
-        Me.btnFileSystemNoStackExtsAdd.Location = New System.Drawing.Point(59, 78)
+        Me.btnFileSystemNoStackExtsAdd.Location = New System.Drawing.Point(59, 122)
         Me.btnFileSystemNoStackExtsAdd.Name = "btnFileSystemNoStackExtsAdd"
         Me.btnFileSystemNoStackExtsAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnFileSystemNoStackExtsAdd.TabIndex = 2
@@ -5798,7 +5513,7 @@ Partial Class dlgSettings
         '
         Me.txtFileSystemNoStackExts.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtFileSystemNoStackExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFileSystemNoStackExts.Location = New System.Drawing.Point(3, 78)
+        Me.txtFileSystemNoStackExts.Location = New System.Drawing.Point(3, 122)
         Me.txtFileSystemNoStackExts.Name = "txtFileSystemNoStackExts"
         Me.txtFileSystemNoStackExts.Size = New System.Drawing.Size(50, 22)
         Me.txtFileSystemNoStackExts.TabIndex = 1
@@ -5901,7 +5616,6 @@ Partial Class dlgSettings
         Me.gbFileSystemValidSubtitlesExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFileSystemValidSubtitlesExts.Location = New System.Drawing.Point(171, 3)
         Me.gbFileSystemValidSubtitlesExts.Name = "gbFileSystemValidSubtitlesExts"
-        Me.tblFileSystem.SetRowSpan(Me.gbFileSystemValidSubtitlesExts, 2)
         Me.gbFileSystemValidSubtitlesExts.Size = New System.Drawing.Size(162, 170)
         Me.gbFileSystemValidSubtitlesExts.TabIndex = 5
         Me.gbFileSystemValidSubtitlesExts.TabStop = False
@@ -22903,12 +22617,6 @@ Partial Class dlgSettings
         Me.gbGeneralThemes.PerformLayout()
         Me.tblGeneralThemes.ResumeLayout(False)
         Me.tblGeneralThemes.PerformLayout()
-        Me.gbFileSystemCleanFiles.ResumeLayout(False)
-        Me.tcFileSystemCleaner.ResumeLayout(False)
-        Me.tpFileSystemCleanerStandard.ResumeLayout(False)
-        Me.tpFileSystemCleanerStandard.PerformLayout()
-        Me.tpFileSystemCleanerExpert.ResumeLayout(False)
-        Me.tpFileSystemCleanerExpert.PerformLayout()
         Me.gbMovieGeneralMiscOpts.ResumeLayout(False)
         Me.gbMovieGeneralMiscOpts.PerformLayout()
         Me.tblMovieGeneralMiscOpts.ResumeLayout(False)
@@ -22976,10 +22684,10 @@ Partial Class dlgSettings
         Me.pnlGeneral.PerformLayout()
         Me.tblGeneral.ResumeLayout(False)
         Me.tblGeneral.PerformLayout()
-        Me.gbGeneralDaemon.ResumeLayout(False)
-        Me.gbGeneralDaemon.PerformLayout()
-        Me.tblGeneralDaemon.ResumeLayout(False)
-        Me.tblGeneralDaemon.PerformLayout()
+        Me.gbGeneralVirtualDrive.ResumeLayout(False)
+        Me.gbGeneralVirtualDrive.PerformLayout()
+        Me.tblGeneralVirtualDrive.ResumeLayout(False)
+        Me.tblGeneralVirtualDrive.PerformLayout()
         Me.gbGeneralInterface.ResumeLayout(False)
         Me.gbGeneralInterface.PerformLayout()
         Me.tblGeneralInterface.ResumeLayout(False)
@@ -23688,14 +23396,6 @@ End Sub
     Friend WithEvents lblSettingsTopDetails As System.Windows.Forms.Label
     Friend WithEvents lblSettingsTopTitle As System.Windows.Forms.Label
     Friend WithEvents pbSettingsTopLogo As System.Windows.Forms.PictureBox
-    Friend WithEvents gbFileSystemCleanFiles As System.Windows.Forms.GroupBox
-    Friend WithEvents chkCleanFolderJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCleanFanartJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCleanMovieTBNb As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCleanMovieTBN As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCleanMovieNFOb As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCleanMovieNFO As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCleanMovieFanartJPG As System.Windows.Forms.CheckBox
     Friend WithEvents gbGeneralMiscOpts As System.Windows.Forms.GroupBox
     Friend WithEvents lblGeneralOverwriteNfo As System.Windows.Forms.Label
     Friend WithEvents chkGeneralOverwriteNfo As System.Windows.Forms.CheckBox
@@ -23711,11 +23411,6 @@ End Sub
     Friend WithEvents btnMovieSourceRemove As System.Windows.Forms.Button
     Friend WithEvents btnMovieSourceAdd As System.Windows.Forms.Button
     Friend WithEvents gbMovieImagesOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents chkCleanMovieNameJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCleanMovieJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCleanPosterJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCleanPosterTBN As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCleanDotFanartJPG As System.Windows.Forms.CheckBox
     Friend WithEvents gbMovieGeneralMiscOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieGeneralMarkNew As System.Windows.Forms.CheckBox
     Friend WithEvents gbMovieImagesFanartOpts As System.Windows.Forms.GroupBox
@@ -23737,7 +23432,6 @@ End Sub
     Friend WithEvents pnlMovieGeneral As System.Windows.Forms.Panel
     Friend WithEvents lblSettingsCurrent As System.Windows.Forms.Label
     Friend WithEvents pnlSettingsCurrent As System.Windows.Forms.Panel
-    Friend WithEvents chkCleanExtrathumbs As System.Windows.Forms.CheckBox
     Friend WithEvents pnlFileSystem As System.Windows.Forms.Panel
     Friend WithEvents gbFileSystemValidVideoExts As System.Windows.Forms.GroupBox
     Friend WithEvents btnFileSystemValidVideoExtsRemove As System.Windows.Forms.Button
@@ -23758,16 +23452,6 @@ End Sub
     Friend WithEvents chkMovieSkipStackedSizeCheck As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieFanartPrefOnly As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieImagesNotSaveURLToNfo As System.Windows.Forms.CheckBox
-    Friend WithEvents tcFileSystemCleaner As System.Windows.Forms.TabControl
-    Friend WithEvents tpFileSystemCleanerStandard As System.Windows.Forms.TabPage
-    Friend WithEvents tpFileSystemCleanerExpert As System.Windows.Forms.TabPage
-    Friend WithEvents lblFileSystemCleanerWarning As System.Windows.Forms.Label
-    Friend WithEvents btnFileSystemCleanerWhitelistRemove As System.Windows.Forms.Button
-    Friend WithEvents btnFileSystemCleanerWhitelistAdd As System.Windows.Forms.Button
-    Friend WithEvents txtFileSystemCleanerWhitelist As System.Windows.Forms.TextBox
-    Friend WithEvents lstFileSystemCleanerWhitelist As System.Windows.Forms.ListBox
-    Friend WithEvents lblFileSystemCleanerWhitelist As System.Windows.Forms.Label
-    Friend WithEvents chkFileSystemCleanerWhitelist As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayImgDims As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayPoster As System.Windows.Forms.CheckBox
@@ -23783,7 +23467,7 @@ End Sub
     Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents btnMovieSourceEdit As System.Windows.Forms.Button
     Friend WithEvents chkGeneralDisplayGenresText As System.Windows.Forms.CheckBox
-    Friend WithEvents lblGeneralntLang As System.Windows.Forms.Label
+    Friend WithEvents lblGeneralIntLang As System.Windows.Forms.Label
     Friend WithEvents cbGeneralLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblGeneralMovieTheme As System.Windows.Forms.Label
     Friend WithEvents cbGeneralMovieTheme As System.Windows.Forms.ComboBox
@@ -25174,13 +24858,13 @@ End Sub
     Friend WithEvents tblMovieGeneralMainWindow As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents gbTVGeneralMainWindowOpts As System.Windows.Forms.GroupBox
     Friend WithEvents TableLayoutPanel4 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents gbGeneralDaemon As System.Windows.Forms.GroupBox
-    Friend WithEvents tblGeneralDaemon As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents btnGeneralDaemonPathBrowse As System.Windows.Forms.Button
-    Friend WithEvents lblGeneralDaemonDrive As System.Windows.Forms.Label
-    Friend WithEvents txtGeneralDaemonPath As System.Windows.Forms.TextBox
-    Friend WithEvents cbGeneralDaemonDrive As System.Windows.Forms.ComboBox
-    Friend WithEvents lblGeneralDaemonPath As System.Windows.Forms.Label
+    Friend WithEvents gbGeneralVirtualDrive As System.Windows.Forms.GroupBox
+    Friend WithEvents tblGeneralVirtualDrive As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents btnGeneralVirtualDriveBinPathBrowse As System.Windows.Forms.Button
+    Friend WithEvents lblGeneralVirtualDriveLetter As System.Windows.Forms.Label
+    Friend WithEvents txtGeneralVirtualDriveBinPath As System.Windows.Forms.TextBox
+    Friend WithEvents cbGeneralVirtualDriveLetter As System.Windows.Forms.ComboBox
+    Friend WithEvents lblGeneralVirtualDrivePath As System.Windows.Forms.Label
     Friend WithEvents chkGeneralImageFilter As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralImageFilterAutoscraper As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralImageFilterImagedialog As System.Windows.Forms.CheckBox
@@ -25286,4 +24970,6 @@ End Sub
     Friend WithEvents colMovieGeneralMediaListSortingHide As ColumnHeader
     Friend WithEvents btnMovieGeneralMediaListSortingReset As Button
     Friend WithEvents btnFileSystemExcludedDirsBrowse As Button
+    Friend WithEvents lblGeneralVirtualDriveTimeout As Label
+    Friend WithEvents txtGeneralVirtualDriveTimeout As TextBox
 End Class

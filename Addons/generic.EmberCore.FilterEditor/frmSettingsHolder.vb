@@ -156,6 +156,8 @@ Public Class frmSettingsHolder
     End Sub
 
     Public Sub SaveChanges()
+        dgvCustomTab.ClearSelection()
+        ValidateTabs()
         Dim deleteitem As New List(Of String)
         For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("CustomTabs:"))
             deleteitem.Add(sett.Name)
@@ -167,7 +169,9 @@ Public Class frmSettingsHolder
 
             Dim CustomTabs As New List(Of AdvancedSettingsComplexSettingsTableItem)
             For Each r As DataGridViewRow In dgvCustomTab.Rows
-                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso (CustomTabs.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso
+                    Not String.IsNullOrEmpty(r.Cells(1).Value.ToString) AndAlso
+                    (CustomTabs.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
                     CustomTabs.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = r.Cells(0).Value.ToString, .Value = r.Cells(1).Value.ToString})
                 End If
             Next
@@ -196,20 +200,21 @@ Public Class frmSettingsHolder
         dgvCustomTab.CurrentCell = dgvCustomTab.Rows(i).Cells(0)
         dgvCustomTab.BeginEdit(True)
         RaiseEvent ModuleSettingsChanged()
-        RaiseEvent SetupNeedsRestart()
     End Sub
 
     Private Sub btnCustomTabRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCustomTabRemove.Click
         If dgvCustomTab.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvCustomTab.Rows(dgvCustomTab.SelectedCells(0).RowIndex).Tag) Then
             dgvCustomTab.Rows.RemoveAt(dgvCustomTab.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
-            RaiseEvent SetupNeedsRestart()
         End If
     End Sub
 
     Private Sub dgvCustomTab_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvCustomTab.CurrentCellDirtyStateChanged
         RaiseEvent ModuleSettingsChanged()
-        RaiseEvent SetupNeedsRestart()
+    End Sub
+
+    Private Sub dgvCustomTab_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvCustomTab.LostFocus
+        ValidateTabs()
     End Sub
 
     Private Sub dgvCustomTab_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvCustomTab.SelectionChanged
@@ -218,6 +223,16 @@ Public Class frmSettingsHolder
         Else
             btnCustomTabRemove.Enabled = False
         End If
+    End Sub
+
+    Private Sub ValidateTabs()
+        For Each r As DataGridViewRow In dgvCustomTab.Rows
+            If String.IsNullOrEmpty(r.Cells(0).Value.ToString) OrElse String.IsNullOrEmpty(r.Cells(1).Value.ToString) Then
+                r.DefaultCellStyle = New DataGridViewCellStyle With {.BackColor = Drawing.Color.Red}
+            Else
+                r.DefaultCellStyle = New DataGridViewCellStyle
+            End If
+        Next
     End Sub
 
 #End Region 'Methods

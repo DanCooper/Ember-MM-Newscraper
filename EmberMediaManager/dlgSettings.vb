@@ -790,18 +790,6 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub btnFileSystemCleanerWhitelistAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemCleanerWhitelistAdd.Click
-        If Not String.IsNullOrEmpty(txtFileSystemCleanerWhitelist.Text) Then
-            If Not txtFileSystemCleanerWhitelist.Text.Substring(0, 1) = "." Then txtFileSystemCleanerWhitelist.Text = String.Concat(".", txtFileSystemCleanerWhitelist.Text)
-            If Not lstFileSystemCleanerWhitelist.Items.Contains(txtFileSystemCleanerWhitelist.Text.ToLower) Then
-                lstFileSystemCleanerWhitelist.Items.Add(txtFileSystemCleanerWhitelist.Text.ToLower)
-                SetApplyButton(True)
-                txtFileSystemCleanerWhitelist.Text = String.Empty
-                txtFileSystemCleanerWhitelist.Focus()
-            End If
-        End If
-    End Sub
-
     Private Sub btnApply_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnApply.Click
         SaveSettings(True)
         SetApplyButton(False)
@@ -1708,15 +1696,6 @@ Public Class dlgSettings
 
     Private Sub btnTVScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtRemove.Click
         RemoveTVMetaData()
-    End Sub
-
-    Private Sub btnFileSystemCleanerWhitelistRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemCleanerWhitelistRemove.Click
-        If lstFileSystemCleanerWhitelist.Items.Count > 0 AndAlso lstFileSystemCleanerWhitelist.SelectedItems.Count > 0 Then
-            While lstFileSystemCleanerWhitelist.SelectedItems.Count > 0
-                lstFileSystemCleanerWhitelist.Items.Remove(lstFileSystemCleanerWhitelist.SelectedItems(0))
-            End While
-            SetApplyButton(True)
-        End If
     End Sub
 
     Private Sub btnRemTVSource_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemTVSource.Click
@@ -2844,13 +2823,13 @@ Public Class dlgSettings
             btnMovieGeneralCustomMarker2.BackColor = Color.FromArgb(.MovieGeneralCustomMarker2Color)
             btnMovieGeneralCustomMarker3.BackColor = Color.FromArgb(.MovieGeneralCustomMarker3Color)
             btnMovieGeneralCustomMarker4.BackColor = Color.FromArgb(.MovieGeneralCustomMarker4Color)
-            cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
             cbGeneralDateTime.SelectedValue = .GeneralDateTime
             cbGeneralLanguage.SelectedItem = .GeneralLanguage
             cbGeneralMovieTheme.SelectedItem = .GeneralMovieTheme
             cbGeneralMovieSetTheme.SelectedItem = .GeneralMovieSetTheme
             cbGeneralTVEpisodeTheme.SelectedItem = .GeneralTVEpisodeTheme
             cbGeneralTVShowTheme.SelectedItem = .GeneralTVShowTheme
+            cbGeneralVirtualDriveLetter.SelectedItem = .GeneralVirtualDriveLetter
             cbMovieBannerPrefSize.SelectedValue = .MovieBannerPrefSize
             cbMovieExtrafanartsPrefSize.SelectedValue = .MovieExtrafanartsPrefSize
             cbMovieExtrathumbsPrefSize.SelectedValue = .MovieExtrathumbsPrefSize
@@ -2885,20 +2864,6 @@ Public Class dlgSettings
             cbTVShowExtrafanartsPrefSize.SelectedValue = .TVShowExtrafanartsPrefSize
             cbTVShowFanartPrefSize.SelectedValue = .TVShowFanartPrefSize
             cbTVShowPosterPrefSize.SelectedValue = .TVShowPosterPrefSize
-            chkCleanDotFanartJPG.Checked = .CleanDotFanartJPG
-            chkCleanExtrathumbs.Checked = .CleanExtrathumbs
-            chkCleanFanartJPG.Checked = .CleanFanartJPG
-            chkCleanFolderJPG.Checked = .CleanFolderJPG
-            chkCleanMovieFanartJPG.Checked = .CleanMovieFanartJPG
-            chkCleanMovieJPG.Checked = .CleanMovieJPG
-            chkCleanMovieNFO.Checked = .CleanMovieNFO
-            chkCleanMovieNFOb.Checked = .CleanMovieNFOB
-            chkCleanMovieNameJPG.Checked = .CleanMovieNameJPG
-            chkCleanMovieTBN.Checked = .CleanMovieTBN
-            chkCleanMovieTBNb.Checked = .CleanMovieTBNB
-            chkCleanPosterJPG.Checked = .CleanPosterJPG
-            chkCleanPosterTBN.Checked = .CleanPosterTBN
-            chkFileSystemCleanerWhitelist.Checked = .FileSystemCleanerWhitelist
             chkGeneralCheckUpdates.Checked = .GeneralCheckUpdates
             chkGeneralDateAddedIgnoreNFO.Checked = .GeneralDateAddedIgnoreNFO
             chkGeneralDigitGrpSymbolVotes.Checked = .GeneralDigitGrpSymbolVotes
@@ -3272,7 +3237,6 @@ Public Class dlgSettings
             End If
             chkTVShowProperCase.Checked = .TVShowProperCase
             chkTVShowThemeKeepExisting.Checked = .TVShowThemeKeepExisting
-            lstFileSystemCleanerWhitelist.Items.AddRange(.FileSystemCleanerWhitelistExts.ToArray)
             lstFileSystemNoStackExts.Items.AddRange(.FileSystemNoStackExts.ToArray)
             If .MovieGeneralCustomScrapeButtonEnabled Then
                 rbMovieGeneralCustomScrapeButtonEnabled.Checked = True
@@ -3289,10 +3253,10 @@ Public Class dlgSettings
             Else
                 rbTVGeneralCustomScrapeButtonDisabled.Checked = True
             End If
-            tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, tpFileSystemCleanerExpert, tpFileSystemCleanerStandard)
             txtGeneralImageFilterPosterMatchRate.Text = .GeneralImageFilterPosterMatchTolerance.ToString
             txtGeneralImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
-            txtGeneralDaemonPath.Text = .GeneralDaemonPath
+            txtGeneralVirtualDriveBinPath.Text = .GeneralVirtualDriveBinPath
+            txtGeneralVirtualDriveTimeout.Text = .GeneralVirtualDriveTimeout.ToString
             txtMovieSourcesBackdropsFolderPath.Text = .MovieBackdropsPath
             txtMovieExtrafanartsLimit.Text = .MovieExtrafanartsLimit.ToString
             txtMovieExtrathumbsLimit.Text = .MovieExtrathumbsLimit.ToString
@@ -4106,22 +4070,26 @@ Public Class dlgSettings
             Dim eT As New List(Of String)
             Try
                 mT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "movie-*.xml"))
-            Catch
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
             cbGeneralMovieTheme.Items.AddRange(mT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movie-", String.Empty)).ToArray)
             Try
                 msT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "movieset-*.xml"))
-            Catch
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
             cbGeneralMovieSetTheme.Items.AddRange(msT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movieset-", String.Empty)).ToArray)
             Try
                 sT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "tvshow-*.xml"))
-            Catch
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
             cbGeneralTVShowTheme.Items.AddRange(sT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvshow-", String.Empty)).ToArray)
             Try
                 eT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "tvep-*.xml"))
-            Catch
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
             cbGeneralTVEpisodeTheme.Items.AddRange(eT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvep-", String.Empty)).ToArray)
         End If
@@ -4927,8 +4895,13 @@ Public Class dlgSettings
             .GeneralDigitGrpSymbolVotes = chkGeneralDigitGrpSymbolVotes.Checked
             .GeneralDateTime = CType(cbGeneralDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTime)).Value
             .GeneralDoubleClickScrape = chkGeneralDoubleClickScrape.Checked
-            .GeneralDaemonDrive = cbGeneralDaemonDrive.Text
-            .GeneralDaemonPath = txtGeneralDaemonPath.Text
+            .GeneralVirtualDriveLetter = cbGeneralVirtualDriveLetter.Text
+            .GeneralVirtualDriveBinPath = txtGeneralVirtualDriveBinPath.Text
+            If Integer.TryParse(txtGeneralVirtualDriveTimeout.Text, 0) Then
+                .GeneralVirtualDriveTimeout = CInt(txtGeneralVirtualDriveTimeout.Text)
+            Else
+                .GeneralVirtualDriveTimeout = 0
+            End If
             .GeneralDisplayBanner = chkGeneralDisplayBanner.Checked
             .GeneralDisplayCharacterArt = chkGeneralDisplayCharacterArt.Checked
             .GeneralDisplayClearArt = chkGeneralDisplayClearArt.Checked
@@ -5415,43 +5388,6 @@ Public Class dlgSettings
             .TVSortTokens.Clear()
             .TVSortTokens.AddRange(lstTVSortTokens.Items.OfType(Of String).ToList)
             If .TVSortTokens.Count <= 0 Then .TVSortTokensIsEmpty = True
-
-            If tcFileSystemCleaner.SelectedTab.Name = "tpFileSystemCleanerExpert" Then
-                .FileSystemExpertCleaner = True
-                .CleanFolderJPG = False
-                .CleanMovieTBN = False
-                .CleanMovieTBNB = False
-                .CleanFanartJPG = False
-                .CleanMovieFanartJPG = False
-                .CleanMovieNFO = False
-                .CleanMovieNFOB = False
-                .CleanPosterTBN = False
-                .CleanPosterJPG = False
-                .CleanMovieJPG = False
-                .CleanMovieNameJPG = False
-                .CleanDotFanartJPG = False
-                .CleanExtrathumbs = False
-                .FileSystemCleanerWhitelist = chkFileSystemCleanerWhitelist.Checked
-                .FileSystemCleanerWhitelistExts.Clear()
-                .FileSystemCleanerWhitelistExts.AddRange(lstFileSystemCleanerWhitelist.Items.OfType(Of String).ToList)
-            Else
-                .FileSystemExpertCleaner = False
-                .CleanFolderJPG = chkCleanFolderJPG.Checked
-                .CleanMovieTBN = chkCleanMovieTBN.Checked
-                .CleanMovieTBNB = chkCleanMovieTBNb.Checked
-                .CleanFanartJPG = chkCleanFanartJPG.Checked
-                .CleanMovieFanartJPG = chkCleanMovieFanartJPG.Checked
-                .CleanMovieNFO = chkCleanMovieNFO.Checked
-                .CleanMovieNFOB = chkCleanMovieNFOb.Checked
-                .CleanPosterTBN = chkCleanPosterTBN.Checked
-                .CleanPosterJPG = chkCleanPosterJPG.Checked
-                .CleanMovieJPG = chkCleanMovieJPG.Checked
-                .CleanMovieNameJPG = chkCleanMovieNameJPG.Checked
-                .CleanDotFanartJPG = chkCleanDotFanartJPG.Checked
-                .CleanExtrathumbs = chkCleanExtrathumbs.Checked
-                .FileSystemCleanerWhitelist = False
-                .FileSystemCleanerWhitelistExts.Clear()
-            End If
 
             SaveMovieSetScraperTitleRenamer()
 
@@ -6846,7 +6782,6 @@ Public Class dlgSettings
         btnTVSourcesRegexTVShowMatchingEdit.Text = Master.eLang.GetString(690, "Edit Regex")
         btnTVSourcesRegexTVShowMatchingRemove.Text = Master.eLang.GetString(30, "Remove")
         btnTVSourceEdit.Text = Master.eLang.GetString(535, "Edit Source")
-        chkFileSystemCleanerWhitelist.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
         chkGeneralCheckUpdates.Text = Master.eLang.GetString(432, "Check for Updates")
         chkGeneralDateAddedIgnoreNFO.Text = Master.eLang.GetString(1209, "Ignore <dateadded> from NFO")
         chkGeneralDigitGrpSymbolVotes.Text = Master.eLang.GetString(1387, "Use digit grouping symbol for Votes count")
@@ -6918,15 +6853,14 @@ Public Class dlgSettings
         dgvMovieSetScraperTitleRenamer.Columns(0).HeaderText = Master.eLang.GetString(1277, "From")
         dgvMovieSetScraperTitleRenamer.Columns(1).HeaderText = Master.eLang.GetString(1278, "To")
         gbFileSystemExcludedDirs.Text = Master.eLang.GetString(1273, "Excluded Directories")
-        gbFileSystemCleanFiles.Text = Master.eLang.GetString(437, "Clean Files")
         gbFileSystemNoStackExts.Text = Master.eLang.GetString(530, "No Stack Extensions")
         gbFileSystemValidVideoExts.Text = Master.eLang.GetString(534, "Valid Video Extensions")
         gbFileSystemValidSubtitlesExts.Text = Master.eLang.GetString(1284, "Valid Subtitles Extensions")
         gbFileSystemValidThemeExts.Text = Master.eLang.GetString(1081, "Valid Theme Extensions")
-        gbGeneralDaemon.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
         gbGeneralDateAdded.Text = Master.eLang.GetString(792, "Adding Date")
         gbGeneralInterface.Text = Master.eLang.GetString(795, "Interface")
         gbGeneralThemes.Text = Master.eLang.GetString(629, "GUI Themes")
+        gbGeneralVirtualDrive.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
         gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         gbMovieSourcesBackdropsFolderOpts.Text = Master.eLang.GetString(520, "Backdrops Folder")
         gbMovieImagesFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
@@ -6944,10 +6878,6 @@ Public Class dlgSettings
         gbTVScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
         gbTVShowFilterOpts.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
         gbTVSourcesRegexTVShowMatching.Text = Master.eLang.GetString(691, "Show Match Regex")
-        lblFileSystemCleanerWarning.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
-        lblFileSystemCleanerWhitelist.Text = Master.eLang.GetString(441, "Whitelisted Extensions:")
-        lblGeneralDaemonDrive.Text = Master.eLang.GetString(989, "Driveletter")
-        lblGeneralDaemonPath.Text = Master.eLang.GetString(990, "Path to DTAgent.exe/VCDMount.exe")
         lblGeneralImageFilterPosterMatchRate.Text = Master.eLang.GetString(148, "Poster") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
         lblGeneralImageFilterFanartMatchRate.Text = Master.eLang.GetString(149, "Fanart") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
         lblGeneralMovieSetTheme.Text = String.Concat(Master.eLang.GetString(1155, "MovieSet Theme"), ":")
@@ -6955,7 +6885,10 @@ Public Class dlgSettings
         lblGeneralOverwriteNfo.Text = Master.eLang.GetString(434, "(If unchecked, non-conforming nfos will be renamed to <filename>.info)")
         lblGeneralTVEpisodeTheme.Text = String.Concat(Master.eLang.GetString(667, "Episode Theme"), ":")
         lblGeneralTVShowTheme.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
-        lblGeneralntLang.Text = Master.eLang.GetString(430, "Interface Language:")
+        lblGeneralIntLang.Text = Master.eLang.GetString(430, "Interface Language:")
+        lblGeneralVirtualDriveLetter.Text = Master.eLang.GetString(989, "Driveletter")
+        lblGeneralVirtualDrivePath.Text = Master.eLang.GetString(990, "Path to VCDMount.exe (Virtual CloneDrive)")
+        lblGeneralVirtualDriveTimeout.Text = Master.eLang.GetString(440, "Timeout")
         lblMovieGeneralCustomMarker1.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #1")
         lblMovieGeneralCustomMarker2.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #2")
         lblMovieGeneralCustomMarker3.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #3")
@@ -6978,12 +6911,13 @@ Public Class dlgSettings
         lblTVSourcesRegexTVShowMatchingByDate.Text = Master.eLang.GetString(698, "by Date")
         lblTVSourcesRegexTVShowMatchingRegex.Text = Master.eLang.GetString(699, "Regex")
         lblTVSourcesRegexTVShowMatchingDefaultSeason.Text = Master.eLang.GetString(695, "Default Season")
-        tpFileSystemCleanerExpert.Text = Master.eLang.GetString(439, "Expert")
-        tpFileSystemCleanerStandard.Text = Master.eLang.GetString(438, "Standard")
         tpMovieSetFilenamingExpertParent.Text = Master.eLang.GetString(880, "Parent Folder")
         tpMovieSetFilenamingExpertSingle.Text = Master.eLang.GetString(879, "Single Folder")
         tpTVSourcesGeneral.Text = Master.eLang.GetString(38, "General")
         tpTVSourcesRegex.Text = Master.eLang.GetString(699, "Regex")
+
+        Dim tTip As New ToolTip
+        tTip.SetToolTip(txtGeneralVirtualDriveTimeout, Master.eLang.GetString(441, "Timeout after mounting in milliseconds"))
 
         'items with text from other items
         btnTVSourceAdd.Text = btnMovieSourceAdd.Text
@@ -7078,6 +7012,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtMovieLevTolerance_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieLevTolerance.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtGeneralVirtualDriveTimeout_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtGeneralVirtualDriveTimeout.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
@@ -7406,13 +7344,13 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnGeneralDaemonPathBrowse_Click(sender As Object, e As EventArgs) Handles btnGeneralDaemonPathBrowse.Click
+    Private Sub btnGeneralDaemonPathBrowse_Click(sender As Object, e As EventArgs) Handles btnGeneralVirtualDriveBinPathBrowse.Click
         Try
             With fileBrowse
-                .Filter = "Virtual Drive|DTAgent.exe;VCDMount.exe"
+                .Filter = "Virtual CloneDrive|VCDMount.exe"
                 If .ShowDialog = DialogResult.OK Then
-                    If Not String.IsNullOrEmpty(.FileName) Then
-                        txtGeneralDaemonPath.Text = .FileName
+                    If Not String.IsNullOrEmpty(.FileName) AndAlso File.Exists(.FileName) Then
+                        txtGeneralVirtualDriveBinPath.Text = .FileName
                         SetApplyButton(True)
                     End If
                 End If
@@ -7423,11 +7361,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnGeneralDigitGrpSymbolSettings_Click(sender As Object, e As EventArgs) Handles btnGeneralDigitGrpSymbolSettings.Click
-        Try
-            Process.Start("INTL.CPL")
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        Process.Start("INTL.CPL")
     End Sub
 
     Private Sub chkMovieUseExpert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseExpert.CheckedChanged
@@ -8033,6 +7967,7 @@ Public Class dlgSettings
         cbGeneralMovieTheme.SelectedIndexChanged,
         cbGeneralTVEpisodeTheme.SelectedIndexChanged,
         cbGeneralTVShowTheme.SelectedIndexChanged,
+        cbGeneralVirtualDriveLetter.SelectedIndexChanged,
         cbMovieBannerPrefSize.SelectedIndexChanged,
         cbMovieExtrafanartsPrefSize.SelectedIndexChanged,
         cbMovieExtrathumbsPrefSize.SelectedIndexChanged,
@@ -8069,20 +8004,6 @@ Public Class dlgSettings
         cbTVShowExtrafanartsPrefSize.SelectedIndexChanged,
         cbTVShowFanartPrefSize.SelectedIndexChanged,
         cbTVShowPosterPrefSize.SelectedIndexChanged,
-        chkCleanDotFanartJPG.CheckedChanged,
-        chkCleanExtrathumbs.CheckedChanged,
-        chkCleanFanartJPG.CheckedChanged,
-        chkCleanFolderJPG.CheckedChanged,
-        chkCleanMovieFanartJPG.CheckedChanged,
-        chkCleanMovieJPG.CheckedChanged,
-        chkCleanMovieNFO.CheckedChanged,
-        chkCleanMovieNFOb.CheckedChanged,
-        chkCleanMovieNameJPG.CheckedChanged,
-        chkCleanMovieTBN.CheckedChanged,
-        chkCleanMovieTBNb.CheckedChanged,
-        chkCleanPosterJPG.CheckedChanged,
-        chkCleanPosterTBN.CheckedChanged,
-        chkFileSystemCleanerWhitelist.CheckedChanged,
         chkGeneralCheckUpdates.CheckedChanged,
         chkGeneralDateAddedIgnoreNFO.CheckedChanged,
         chkGeneralDigitGrpSymbolVotes.CheckedChanged,
@@ -8403,9 +8324,10 @@ Public Class dlgSettings
         chkTVShowPosterPrefSizeOnly.CheckedChanged,
         chkTVShowPosterYAMJ.CheckedChanged,
         chkTVShowThemeKeepExisting.CheckedChanged,
-        tcFileSystemCleaner.SelectedIndexChanged,
         txtGeneralImageFilterFanartMatchRate.TextChanged,
         txtGeneralImageFilterPosterMatchRate.TextChanged,
+        txtGeneralVirtualDriveBinPath.TextChanged,
+        txtGeneralVirtualDriveTimeout.TextChanged,
         txtMovieActorThumbsExtExpertBDMV.TextChanged,
         txtMovieActorThumbsExtExpertMulti.TextChanged,
         txtMovieActorThumbsExtExpertSingle.TextChanged,

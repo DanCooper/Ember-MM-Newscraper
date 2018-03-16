@@ -438,9 +438,9 @@
   <string id="437">Clean Files</string>
   <string id="438">Standard</string>
   <string id="439">Expert</string>
-  <string id="440">Whitelist Video Extensions</string>
-  <string id="441">Whitelisted Extensions:</string>
-  <string id="442">WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.</string>
+  <string id="440">Timeout</string>
+  <string id="441">Timeout after mounting in milliseconds</string>
+  <string id="442"></string>
   <string id="443">Use embedded API Key</string>
   <string id="444">Removing Template can not be undone. Are you sure?</string>
   <string id="445">Remove Template</string>
@@ -1077,9 +1077,9 @@
   <string id="985">Clean Plot/Outline</string>
   <string id="986">MovieSet Artwork Folder</string>
   <string id="987">Confirm</string>
-  <string id="988">DAEMON Tools settings (only used for scanning image files (.iso))</string>
+  <string id="988"></string>
   <string id="989">Driveletter</string>
-  <string id="990">Path to DTAgent.exe/VCDMount.exe</string>
+  <string id="990">Path to VCDMount.exe (Virtual CloneDrive)</string>
   <string id="991">Actor Thumbs</string>
   <string id="992">Extrafanarts</string>
   <string id="993">Confirm All</string>

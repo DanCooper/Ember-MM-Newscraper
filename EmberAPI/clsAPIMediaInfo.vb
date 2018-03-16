@@ -699,6 +699,7 @@ Public Class MediaInfo
         Dim fiIFO As New MediaContainers.Fileinfo
         Try
             If Not String.IsNullOrEmpty(sPath) Then
+                Dim nVirtualDrive As FileUtils.VirtualDrive = Nothing
                 Dim miVideo As New MediaContainers.Video
                 Dim miAudio As New MediaContainers.Audio
                 Dim miSubtitle As New MediaContainers.Subtitle
@@ -711,66 +712,27 @@ Public Class MediaInfo
                 Dim a_Profile As String = String.Empty
                 Dim sExt As String = Path.GetExtension(sPath).ToLower
                 Dim alternativeIFOFile As String = String.Empty
-                Dim strCommandUnmount As String = String.Empty
 
-                'New ISO Handling -> Use either DAEMON Tools or VitualCloneDrive to mount ISO!
-                If sExt = ".iso" OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
-
-                    'ISO-File Scanning using either DAIMON Tools / VCDMount.exe to mount and read file!
-                    If sExt = ".iso" Then
-
-                        Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F"
-                        'Toolpath either VCDMOUNT.exe or DTLite.exe!
-                        Dim ToolPath As String = Master.eSettings.GeneralDaemonPath
-
-                        'Now only use DAEMON Tools to mount ISO if installed on user system
-                        If Not String.IsNullOrEmpty(driveletter) AndAlso Not String.IsNullOrEmpty(ToolPath) Then
-
-                            'Either DAEMONToolsLite or VirtualCloneDrive (http://www.slysoft.com/en/virtual-clonedrive.html)
-                            If ToolPath.ToLower.Contains("vcdmount") Then
-                                'Unmount, i.e "C:\Program Files\Elaborate Bytes\VirtualCloneDrive\VCDMount.exe" /u
-                                strCommandUnmount = String.Concat("/u")
-                                Functions.Run_Process(ToolPath, strCommandUnmount, False, True)
-                                'Mount
-                                'Mount ISO on virtual drive, i.e c:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe U:\isotest\test2iso.ISO
-                                Functions.Run_Process(ToolPath, """" & sPath & """", False, True)
-
-                                'Toolpath doesn't contain vcdmount.exe -> assume daemon tools with DS type drive!
-                            Else
-                                'Unmount
-                                strCommandUnmount = String.Concat("-unmount ", Regex.Replace(driveletter, ":\\", String.Empty))
-                                Functions.Run_Process(ToolPath, strCommandUnmount, False, True)
-                                'Mount
-                                'Mount ISO on Daemon Tools (Lite), i.e. C:\Program Files\DAEMON Tools Lite\DTAgent.exe -mount dt, E, "U:\isotest\test2iso.ISO"
-                                Functions.Run_Process(ToolPath, String.Concat("-mount dt, ",
-                                                                              Regex.Replace(driveletter, ":\\", String.Empty),
-                                                                              ", """,
-                                                                              sPath,
-                                                                              """"), False, True)
-                            End If
-
-                            'timeout enabled to wait for virtual drive
-                            Dim strTimeout = AdvancedSettings.GetSetting("GeneralDaemonTimeout", String.Empty)
-                            If Not String.IsNullOrEmpty(strTimeout) Then
-                                Dim iTimeout As Integer
-                                If Integer.TryParse(strTimeout, iTimeout) Then
-                                    Threading.Thread.Sleep(iTimeout)
-                                End If
-                            End If
-
+                'New ISO Handling -> Use VitualCloneDrive to mount ISO!
+                If FileUtils.Common.isDiscImage(sPath) OrElse
+                    FileUtils.Common.isVideoTS(sPath) OrElse
+                    FileUtils.Common.isBDRip(sPath) Then
+                    'ISO-File Scanning using VCDMount.exe to mount and read file!
+                    If FileUtils.Common.isDiscImage(sPath) Then
+                        nVirtualDrive = New FileUtils.VirtualDrive(sPath)
+                        If nVirtualDrive.IsLoaded Then
                             'now check if it's bluray or dvd image/VIDEO_TS/BMDV Folder-Scanning!
-                            If Directory.Exists(String.Concat(driveletter, ":\VIDEO_TS")) Then
-                                sPath = String.Concat(driveletter, ":\VIDEO_TS")
+                            If Directory.Exists(String.Concat(nVirtualDrive.Path, "VIDEO_TS")) Then
+                                sPath = String.Concat(nVirtualDrive.Path, "VIDEO_TS")
                                 SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, True)
                                 'get foldersize information
-                            ElseIf Directory.Exists(driveletter & ":\BDMV\STREAM") Then
-                                sPath = driveletter & ":\BDMV\STREAM"
+                            ElseIf Directory.Exists(nVirtualDrive.Path & "BDMV\STREAM") Then
+                                sPath = nVirtualDrive.Path & "BDMV\STREAM"
                                 SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, True)
                             End If
                         End If
-
-                        'VIDEO_TS/BMDV Folder-Scanning!
                     Else
+                        'VIDEO_TS/BMDV Folder-Scanning!
                         If Directory.Exists(Directory.GetParent(sPath).FullName) Then
                             SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, False)
                         End If
@@ -876,7 +838,7 @@ Public Class MediaInfo
                         End If
                     End If
 
-                    If sExt = ".iso" OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
+                    If FileUtils.Common.isDiscImage(sPath) OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
                         miVideo.Filesize = FileUtils.Common.GetFolderSize(Directory.GetParent(sPath).FullName)
                     Else
                         miVideo.Filesize = If(Double.TryParse(Get_(StreamKind.General, 0, "FileSize"), 0), CDbl(Get_(StreamKind.General, 0, "FileSize")), 0)
@@ -956,8 +918,8 @@ Public Class MediaInfo
                     End If
                 Next
 
-                If Not String.IsNullOrEmpty(strCommandUnmount) Then
-                    Functions.Run_Process(Master.eSettings.GeneralDaemonPath, strCommandUnmount, False, True)
+                If nVirtualDrive IsNot Nothing AndAlso nVirtualDrive.IsLoaded Then
+                    nVirtualDrive.UnmountDiscImage()
                 End If
 
                 Close()
