@@ -57,9 +57,6 @@ Public Class Settings
     Public Property GeneralDisplayFanartSmall() As Boolean = True
     Public Property GeneralDisplayLandscape() As Boolean = True
     Public Property GeneralDisplayPoster() As Boolean = True
-    Public Property GeneralDisplayTabMoviesDefaultList() As Boolean = True
-    Public Property GeneralDisplayTabMoviesetsDefaultList() As Boolean = True
-    Public Property GeneralDisplayTabTVShowsDefaultList() As Boolean = True
     Public Property GeneralDoubleClickScrape() As Boolean = False
     Public Property GeneralFilterPanelIsRaisedMovie() As Boolean = False
     Public Property GeneralFilterPanelIsRaisedMovieSet() As Boolean = False
@@ -86,6 +83,7 @@ Public Class Settings
     Public Property GeneralMainFilterSortOrder_Movies() As Integer = 0
     Public Property GeneralMainFilterSortOrder_Seasons() As Integer = 0
     Public Property GeneralMainFilterSortOrder_Shows() As Integer = 0
+    Public Property GeneralMainTabSorting As List(Of MainTabSorting) = New List(Of MainTabSorting)
     Public Property GeneralMovieSetTheme() As String = "Default"
     Public Property GeneralMovieTheme() As String = "Default"
     Public Property GeneralOverwriteNfo() As Boolean = False
@@ -878,6 +876,13 @@ Public Class Settings
     End Sub
 
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MainTabSorting) AndAlso (Force OrElse Master.eSettings.GeneralMainTabSorting.Count = 0) Then
+            Master.eSettings.GeneralMainTabSorting.Clear()
+            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.Movie, .DefaultList = "movielist", .Enabled = True, .Order = 0, .Title = Master.eLang.GetString(36, "Movies")})
+            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist", .Enabled = True, .Order = 1, .Title = Master.eLang.GetString(366, "Sets")})
+            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.TVShow, .DefaultList = "tvshowlist", .Enabled = True, .Order = 2, .Title = Master.eLang.GetString(653, "TV Shows")})
+        End If
+
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
             Master.eSettings.MovieFilterCustom.Clear()
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]\(?\d{4}\)?.*")    'year in brakets
@@ -1527,6 +1532,20 @@ Public Class Settings
         End Sub
 
 #End Region 'Methods
+
+    End Class
+
+    Public Class MainTabSorting
+
+#Region "Properties"
+
+        Public Property ContentType As Enums.ContentType = Enums.ContentType.None
+        Public Property DefaultList As String = String.Empty
+        Public Property Enabled As Boolean = True
+        Public Property Order As Integer = -1
+        Public Property Title As String = String.Empty
+
+#End Region 'Properties
 
     End Class
 

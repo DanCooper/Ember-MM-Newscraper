@@ -302,7 +302,11 @@ Public Class Localization
 
             LoadHelpStrings(lhPath)
 
-            htStrings.string.Clear()
+            If htStrings Is Nothing Then
+                htStrings = New clsXMLLanguage
+            Else
+                htStrings.string.Clear()
+            End If
 
             If File.Exists(lPath) Then
                 Dim objStreamReader As New StreamReader(lPath)

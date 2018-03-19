@@ -2003,7 +2003,7 @@ Public Class ModulesManager
         Public Property MediaListTVEpisodes() As DataGridView
         Public Property MediaListTVSeasons() As DataGridView
         Public Property MediaListTVShows() As DataGridView
-        Public Property MediaTabSelected() As Structures.MainTabType
+        Public Property MediaTabSelected() As Settings.MainTabSorting
         Public Property TrayMenu() As ContextMenuStrip
 
 #End Region 'Properties

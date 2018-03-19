@@ -588,6 +588,7 @@ Public Class Enums
         MovieSortTokens = 14
         MovieSetSortTokens = 15
         TVSortTokens = 16
+        MainTabSorting = 17
     End Enum
     ''' <summary>
     ''' 0 results in using the current datetime when adding a video
@@ -2000,12 +2001,6 @@ Public Class Structures
         Dim IfNoMovies As Boolean       'Show also if the Movies list is empty
         Dim IfNoMovieSets As Boolean    'Show also if the MovieSets list is empty
         Dim IfNoTVShows As Boolean      'Show also if the TV Shows list is empty
-    End Structure
-
-    Public Structure MainTabType
-        Dim ContentName As String
-        Dim ContentType As Enums.ContentType
-        Dim DefaultList As String
     End Structure
 
 #End Region 'Nested Types

@@ -549,7 +549,7 @@ Public Class frmMain
 
         tTheme.ApplyTheme(tType)
 
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
 
         Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
             Case 1
@@ -673,7 +673,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             InfoPanelState_Movie = 0
@@ -727,7 +727,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnMid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMid.Click
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             InfoPanelState_Movie = 1
@@ -740,7 +740,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnMIRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
 
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             If dgvMovies.SelectedRows.Count = 1 Then
@@ -1013,7 +1013,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             InfoPanelState_Movie = 2
@@ -5455,7 +5455,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMovies_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellEnter
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
         If Not currMainTabTag.ContentType = Enums.ContentType.Movie Then Return
 
         tmrWait_TVShow.Stop()
@@ -6072,7 +6072,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMovieSets_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellEnter
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
         If Not currMainTabTag.ContentType = Enums.ContentType.MovieSet Then Return
 
         tmrWait_TVShow.Stop()
@@ -6523,8 +6523,8 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
-        Dim currTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        If Not currTag.ContentType = Enums.ContentType.TV OrElse Not currList = 2 Then Return
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        If Not currMainTabTag.ContentType = Enums.ContentType.TV OrElse Not currList = 2 Then Return
 
         tmrWait_TVShow.Stop()
         tmrWait_TVSeason.Stop()
@@ -6999,8 +6999,8 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvTVSeasons_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellEnter
-        Dim currTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        If Not currTag.ContentType = Enums.ContentType.TV OrElse Not currList = 1 Then Return
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        If Not currMainTabTag.ContentType = Enums.ContentType.TV OrElse Not currList = 1 Then Return
 
         tmrWait_TVShow.Stop()
         tmrWait_Movie.Stop()
@@ -7411,8 +7411,8 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvTVShows_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
-        Dim currTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        If Not currTag.ContentType = Enums.ContentType.TV OrElse Not currList = 0 Then Return
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        If Not currMainTabTag.ContentType = Enums.ContentType.TV OrElse Not currList = 0 Then Return
 
         tmrWait_Movie.Stop()
         tmrWait_MovieSet.Stop()
@@ -9930,7 +9930,7 @@ Public Class frmMain
         Master.DB.LoadAllGenres()
 
         SetMainTabs()
-        ModulesManager.Instance.RuntimeObjects.MediaTabSelected = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        ModulesManager.Instance.RuntimeObjects.MediaTabSelected = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
 
         ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
         ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
@@ -13210,7 +13210,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13342,7 +13342,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
                     Case Enums.ContentType.Movie
                         Return
                     Case Enums.ContentType.MovieSet
@@ -13401,7 +13401,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13506,7 +13506,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13611,7 +13611,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13702,7 +13702,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13857,7 +13857,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13989,7 +13989,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -15884,7 +15884,7 @@ Public Class frmMain
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False, Optional ByVal withTools As Boolean = True)
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
         For Each i As Object In mnuMainTools.DropDownItems
             If TypeOf i Is ToolStripMenuItem Then
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
@@ -16033,7 +16033,7 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub SetMenus(ByVal ReloadFilters As Boolean)
         Dim mnuItem As ToolStripItem
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
 
         With Master.eSettings
             mnuMainToolsBackdrops.Enabled = Not String.IsNullOrEmpty(.MovieBackdropsPath)
@@ -16187,35 +16187,11 @@ Public Class frmMain
         tcMain.TabPages.Clear()
         AddHandler tcMain.SelectedIndexChanged, AddressOf tcMain_SelectedIndexChanged
 
-        'add default tabs if enabled
-        If Master.eSettings.GeneralDisplayTabMoviesDefaultList Then tcMain.TabPages.Add(New TabPage With {.Text = Master.eLang.GetString(36, "Movies"), .Tag = (New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.ContentType.Movie, .DefaultList = "movielist"})})
-        If Master.eSettings.GeneralDisplayTabMoviesetsDefaultList Then tcMain.TabPages.Add(New TabPage With {.Text = Master.eLang.GetString(366, "Sets"), .Tag = (New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist"})})
-        If Master.eSettings.GeneralDisplayTabTVShowsDefaultList Then tcMain.TabPages.Add(New TabPage With {.Text = Master.eLang.GetString(653, "TV Shows"), .Tag = (New Structures.MainTabType With {.ContentName = Master.eLang.GetString(653, "TV Shows"), .ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist"})})
+        'add tabs
+        For Each nTab In Master.eSettings.GeneralMainTabSorting.OrderBy(Function(f) f.Order)
+            tcMain.TabPages.Add(New TabPage With {.Text = nTab.Title, .Tag = nTab})
+        Next
 
-        'add custom tabs
-        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
-        If CustomTabs IsNot Nothing Then
-            Dim NewCustomTabs As New List(Of TabPage)
-            For Each nCustomTab In CustomTabs
-                If Master.DB.ViewExists(nCustomTab.Value) Then
-                    Dim cTabType As Enums.ContentType = Enums.ContentType.None
-                    If nCustomTab.Value.StartsWith("movie-") Then
-                        cTabType = Enums.ContentType.Movie
-                    ElseIf nCustomTab.Value.StartsWith("sets-") Then
-                        cTabType = Enums.ContentType.MovieSet
-                    ElseIf nCustomTab.Value.StartsWith("tvshow-") Then
-                        cTabType = Enums.ContentType.TV
-                    End If
-                    If Not cTabType = Enums.ContentType.None AndAlso Not String.IsNullOrEmpty(nCustomTab.Name) Then
-                        Dim NewTabPage As New TabPage
-                        NewTabPage.Text = nCustomTab.Name
-                        NewTabPage.Tag = New Structures.MainTabType With {.ContentName = nCustomTab.Name, .ContentType = cTabType, .DefaultList = nCustomTab.Value}
-                        NewCustomTabs.Add(NewTabPage)
-                    End If
-                End If
-            Next
-            tcMain.TabPages.AddRange(NewCustomTabs.ToArray)
-        End If
         UpdateMainTabCounts()
     End Sub
 
@@ -16446,30 +16422,30 @@ Public Class frmMain
 
     Private Sub UpdateMainTabCounts()
         For Each mTabPage As TabPage In tcMain.Controls
-            Dim currTag As Structures.MainTabType = DirectCast(mTabPage.Tag, Structures.MainTabType)
-            Dim mCount As Integer = Master.DB.GetViewMediaCount(currTag.DefaultList)
-            Select Case currTag.ContentType
+            Dim currMainTabTag = DirectCast(mTabPage.Tag, Settings.MainTabSorting)
+            Dim mCount As Integer = Master.DB.GetViewMediaCount(currMainTabTag.DefaultList)
+            Select Case currMainTabTag.ContentType
                 Case Enums.ContentType.Movie, Enums.ContentType.MovieSet
                     If mCount > 0 Then
-                        mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, mCount)
+                        mTabPage.Text = String.Format("{0} ({1})", currMainTabTag.Title, mCount)
                         mTabPage.Enabled = True
                     ElseIf mCount = -1 Then
-                        mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, "SQL Error")
+                        mTabPage.Text = String.Format("{0} ({1})", currMainTabTag.Title, "SQL Error")
                         mTabPage.Enabled = False
                     Else
-                        mTabPage.Text = currTag.ContentName
+                        mTabPage.Text = currMainTabTag.Title
                         mTabPage.Enabled = True
                     End If
                 Case Enums.ContentType.TV
                     If mCount > 0 Then
-                        Dim epCount As Integer = Master.DB.GetViewMediaCount(currTag.DefaultList, True)
-                        mTabPage.Text = String.Format("{0} ({1}/{2})", currTag.ContentName, mCount, epCount)
+                        Dim epCount As Integer = Master.DB.GetViewMediaCount(currMainTabTag.DefaultList, True)
+                        mTabPage.Text = String.Format("{0} ({1}/{2})", currMainTabTag.Title, mCount, epCount)
                         mTabPage.Enabled = True
                     ElseIf mCount = -1 Then
-                        mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, "SQL Error")
+                        mTabPage.Text = String.Format("{0} ({1})", currMainTabTag.Title, "SQL Error")
                         mTabPage.Enabled = False
                     Else
-                        mTabPage.Text = currTag.ContentName
+                        mTabPage.Text = currMainTabTag.Title
                         mTabPage.Enabled = True
                     End If
             End Select
@@ -16480,12 +16456,12 @@ Public Class frmMain
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub SetMovieCount()
-        Dim currTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        If currTag.ContentType = Enums.ContentType.Movie Then
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             If dgvMovies.RowCount > 0 Then
-                tcMain.SelectedTab.Text = String.Format("{0} ({1})", currTag.ContentName, dgvMovies.RowCount)
+                tcMain.SelectedTab.Text = String.Format("{0} ({1})", currMainTabTag.Title, dgvMovies.RowCount)
             Else
-                tcMain.SelectedTab.Text = currTag.ContentName
+                tcMain.SelectedTab.Text = currMainTabTag.Title
             End If
         End If
     End Sub
@@ -16494,12 +16470,12 @@ Public Class frmMain
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub SetMovieSetCount()
-        Dim currTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        If currTag.ContentType = Enums.ContentType.MovieSet Then
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        If currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
             If dgvMovieSets.RowCount > 0 Then
-                tcMain.SelectedTab.Text = String.Format("{0} ({1})", currTag.ContentName, dgvMovieSets.RowCount)
+                tcMain.SelectedTab.Text = String.Format("{0} ({1})", currMainTabTag.Title, dgvMovieSets.RowCount)
             Else
-                tcMain.SelectedTab.Text = currTag.ContentName
+                tcMain.SelectedTab.Text = currMainTabTag.Title
             End If
         End If
     End Sub
@@ -16508,16 +16484,16 @@ Public Class frmMain
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub SetTVCount()
-        Dim currTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        If currTag.ContentType = Enums.ContentType.TV Then
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        If currMainTabTag.ContentType = Enums.ContentType.TV Then
             If dgvTVShows.RowCount > 0 Then
                 Dim epCount As Integer = 0
                 For i As Integer = 0 To dgvTVShows.Rows.Count - 1
                     epCount += CInt(dgvTVShows.Rows(i).Cells("Episodes").Value)
                 Next
-                tcMain.SelectedTab.Text = String.Format("{0} ({1}/{2})", currTag.ContentName, dgvTVShows.RowCount, epCount)
+                tcMain.SelectedTab.Text = String.Format("{0} ({1}/{2})", currMainTabTag.Title, dgvTVShows.RowCount, epCount)
             Else
-                tcMain.SelectedTab.Text = currTag.ContentName
+                tcMain.SelectedTab.Text = currMainTabTag.Title
             End If
         End If
     End Sub
@@ -17245,7 +17221,7 @@ Public Class frmMain
 
         If doTheme Then
             tTheme = New Theming
-            Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+            Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
             ApplyTheme(If(currMainTabTag.ContentType = Enums.ContentType.Movie, Theming.ThemeType.Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, Theming.ThemeType.MovieSet, Theming.ThemeType.Show)))
         End If
     End Sub
@@ -17318,7 +17294,7 @@ Public Class frmMain
     Private Sub tcMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcMain.SelectedIndexChanged
         ClearInfo()
         ShowNoInfo(False)
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
         ModulesManager.Instance.RuntimeObjects.MediaTabSelected = currMainTabTag
         Select Case currMainTabTag.ContentType
             Case Enums.ContentType.Movie
@@ -17470,7 +17446,7 @@ Public Class frmMain
     End Sub
 
     Private Sub MoveInfoPanel()
-        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
         Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
             Case 0
                 pnlInfoPanel.Height = 25
