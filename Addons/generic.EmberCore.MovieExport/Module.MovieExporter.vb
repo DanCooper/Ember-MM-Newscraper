@@ -120,7 +120,7 @@ Public Class MovieExporterModule
 
                             If String.IsNullOrEmpty(strTemplatePath) Then
                                 'search in Ember default templates
-                                Dim diDefault As DirectoryInfo = New DirectoryInfo(Path.Combine(Functions.AppPath, "Modules", "Templates"))
+                                Dim diDefault As DirectoryInfo = New DirectoryInfo(Path.Combine(Functions.AppPath, "Modules\generic.embercore.movieexporter", "Templates"))
                                 If diDefault.Exists Then
                                     For Each i As DirectoryInfo In diDefault.GetDirectories
                                         If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden AndAlso i.Name = tParameter.ToString Then
