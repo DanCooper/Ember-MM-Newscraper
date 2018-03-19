@@ -272,6 +272,7 @@ Public Class TVDB_Data
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End Select
         Else
+            logger.Trace("[TVDB_Data] [Scraper_TV] [Done]")
             Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
         End If
 

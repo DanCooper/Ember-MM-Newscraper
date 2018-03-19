@@ -631,6 +631,7 @@ Public Class TMDB_Data
                     Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
             End Select
         Else
+            logger.Trace("[TMDB_Data] [Scraper_Movie] [Done]")
             Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
         End If
 
@@ -688,6 +689,7 @@ Public Class TMDB_Data
                     Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
             End Select
         Else
+            logger.Trace("[TMDB_Data] [Scraper_MovieSet] [Done]")
             Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = nMovieSet}
         End If
 
@@ -759,6 +761,7 @@ Public Class TMDB_Data
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End Select
         Else
+            logger.Trace("[TMDB_Data] [Scraper_TV] [Done]")
             Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
         End If
 

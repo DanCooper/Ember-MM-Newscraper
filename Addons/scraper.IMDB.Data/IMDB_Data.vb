@@ -464,6 +464,7 @@ Public Class IMDB_Data
                 'no IMDB-ID for movie --> search first!
                 nMovie = _scraper.GetSearchMovieInfo(oDBElement.Movie.Title, oDBElement.Movie.Year, oDBElement, ScrapeType, FilteredOptions)
                 'if still no search result -> exit
+                logger.Trace(String.Format("[IMDB_Data] [Scraper_Movie] [Abort] No search result found"))
                 If nMovie Is Nothing Then Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
             End If
         End If
@@ -471,9 +472,11 @@ Public Class IMDB_Data
         If nMovie Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
+                    logger.Trace(String.Format("[IMDB_Data] [Scraper_Movie] [Abort] No search result found"))
                     Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
             End Select
         Else
+            logger.Trace("[IMDB_Data] [Scraper_Movie] [Done]")
             Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
         End If
 
@@ -485,6 +488,7 @@ Public Class IMDB_Data
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
+                        logger.Trace(String.Format("[IMDB_Data] [Scraper_Movie] [Cancelled] Cancelled by user"))
                         Return New Interfaces.ModuleResult_Data_Movie With {.Cancelled = True, .Result = Nothing}
                     End If
                 End Using
@@ -519,6 +523,7 @@ Public Class IMDB_Data
                 'no IMDB-ID for tvshow --> search first!
                 nTVShow = _scraper.GetSearchTVShowInfo(oDBElement.TVShow.Title, oDBElement, ScrapeType, ScrapeModifiers, FilteredOptions)
                 'if still no search result -> exit
+                logger.Trace(String.Format("[IMDB_Data] [Scraper_TV] [Abort] No search result found"))
                 If nTVShow Is Nothing Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End If
         End If
@@ -526,9 +531,11 @@ Public Class IMDB_Data
         If nTVShow Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
+                    logger.Trace(String.Format("[IMDB_Data] [Scraper_TV] [Abort] No search result found"))
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End Select
         Else
+            logger.Trace("[IMDB_Data] [Scraper_TV] [Done]")
             Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
         End If
 
@@ -540,6 +547,7 @@ Public Class IMDB_Data
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
+                        logger.Trace(String.Format("[IMDB_Data] [Scraper_TV] [Cancelled] Cancelled by user"))
                         Return New Interfaces.ModuleResult_Data_TVShow With {.Cancelled = True, .Result = Nothing}
                     End If
                 End Using
