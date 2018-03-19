@@ -44,6 +44,7 @@ Namespace TMDB
 
                 _TMDBApi = New TMDbLib.Client.TMDbClient(SpecialSettings.APIKey)
                 _TMDBApi.GetConfigAsync()
+                _TMDBApi.MaxRetryCount = 2
 
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)

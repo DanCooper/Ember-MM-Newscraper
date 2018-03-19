@@ -147,11 +147,13 @@ Namespace TMDB
                 _TMDBApi = New TMDbLib.Client.TMDbClient(_SpecialSettings.APIKey)
                 _TMDBApi.GetConfigAsync()
                 _TMDBApi.DefaultLanguage = _SpecialSettings.PrefLanguage
+                _TMDBApi.MaxRetryCount = 2
 
                 If _SpecialSettings.FallBackEng Then
                     _TMDBApiE = New TMDbLib.Client.TMDbClient(_SpecialSettings.APIKey)
                     _TMDBApiE.GetConfigAsync()
                     _TMDBApiE.DefaultLanguage = "en-US"
+                    _TMDBApiE.MaxRetryCount = 2
                 Else
                     _TMDBApiE = _TMDBApi
                 End If
