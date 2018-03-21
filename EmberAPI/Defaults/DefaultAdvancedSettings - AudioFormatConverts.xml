@@ -3,6 +3,7 @@
   <ComplexSettings>
     <Table Section="*EmberAPP" Name="AudioFormatConverts">
       <Item Name="a_aac">aac</Item>
+      <Item Name="a_aac-2">aac</Item>
       <Item Name="a_ac3">ac3</Item>
       <Item Name="a_dts">dca</Item>
       <Item Name="a_eac3">eac3</Item>
