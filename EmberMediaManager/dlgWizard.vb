@@ -1439,7 +1439,7 @@ Public Class dlgWizard
         lblMovieSourcesFileNamingXBMCDefaultsTrailer.Text = strTrailer
 
 
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Cancel_Button.Text = Master.eLang.Cancel
         Label1.Text = Master.eLang.GetString(405, "Welcome to Ember Media Manager")
         Label10.Text = Master.eLang.GetString(113, "Now select the default language you would like Ember to look for when scraping TV Show items.")
         Label11.Text = Master.eLang.GetString(804, "And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
@@ -1452,7 +1452,7 @@ Public Class dlgWizard
         Label7.Text = String.Format(Master.eLang.GetString(409, "That's it!{0}Ember Media Manager is Ready!"), Environment.NewLine)
         Label8.Text = String.Format(Master.eLang.GetString(417, "Some options you may be interested in:{0}{0}Custom Filters - If your movie files have things like ""DVDRip"", ""BluRay"", ""x264"", etc in their folder or file name and you wish to filter the names when loading into the media list, you can utilize the Custom Filter option.  The custom filter is RegEx compatible for maximum usability.{0}{0}Images - This section allows you to select which websites to ""scrape"" images from as well as select a preferred size for the images Ember Media Manager selects.{0}{0}Locks - This section allows you to ""lock"" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes."), Environment.NewLine)
         Label9.Text = Master.eLang.GetString(803, "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        OK_Button.Text = Master.eLang.OK
         Text = Master.eLang.GetString(402, "Ember Startup Wizard")
         btnBack.Text = Master.eLang.GetString(403, "< Back")
         btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")

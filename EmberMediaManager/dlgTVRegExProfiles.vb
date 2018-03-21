@@ -97,8 +97,8 @@ Public Class dlgTVRegExProfiles
 
     Sub SetUp()
         Text = Master.eLang.GetString(819, "TV RegEx Profiles")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        OK_Button.Text = Master.eLang.OK
+        Cancel_Button.Text = Master.eLang.Cancel
         lvProfiles.Columns(0).Text = Master.eLang.GetString(820, "RegEx Profile")
         lblDescription.Text = Master.eLang.GetString(172, "Description:")
     End Sub

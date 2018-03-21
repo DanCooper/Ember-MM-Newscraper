@@ -69,7 +69,7 @@ Public Class dlgSortFiles
         End If
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
         DialogResult = If(_hitgo, System.Windows.Forms.DialogResult.OK, System.Windows.Forms.DialogResult.Cancel)
         Close()
     End Sub
@@ -87,7 +87,7 @@ Public Class dlgSortFiles
 
     Private Sub SetUp()
         Text = Master.eLang.GetString(213, "Sort Files Into Folders")
-        Cancel_Button.Text = Master.eLang.GetString(19, "Close")
+        btnClose.Text = Master.eLang.Close
         btnGo.Text = Master.eLang.GetString(214, "Go")
         gbStatus.Text = Master.eLang.GetString(215, "Status")
         lblStatus.Text = Master.eLang.GetString(216, "Enter Path and Press ""Go"" to Begin.")

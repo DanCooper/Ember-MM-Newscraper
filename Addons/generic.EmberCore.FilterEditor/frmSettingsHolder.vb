@@ -47,7 +47,7 @@ Public Class frmSettingsHolder
         SetUp()
         LoadCustomMediaList()
         LoadMainTabDefaultList()
-        LoadTabs()
+        LoadMainTabs()
     End Sub
 
     Private Sub SetUp()
@@ -206,7 +206,7 @@ Public Class frmSettingsHolder
         Next
     End Sub
 
-    Private Sub LoadTabs()
+    Private Sub LoadMainTabs()
         dgvMainTab.Rows.Clear()
         For Each nMainTab In Master.eSettings.GeneralMainTabSorting.OrderBy(Function(f) f.Order)
             dgvMainTab.Rows.Add(New Object() {nMainTab.Title, nMainTab.DefaultList})

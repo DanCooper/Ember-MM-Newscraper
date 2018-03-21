@@ -144,7 +144,7 @@ Public Class dlgErrorViewer
         lblInfo.Text = Master.eLang.GetString(809, "Before submitting bug reports, please verify that the bug has not already been reported. You can view a listing of all known bugs here:")
         llblURL.Text = Master.eLang.GetString(810, "https://sourceforge.net/apps/trac/emm-r/")
         lblPastebinURL.Text = Master.eLang.GetString(811, "PasteBin URL:")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        OK_Button.Text = Master.eLang.OK
     End Sub
 
 #End Region 'Methods

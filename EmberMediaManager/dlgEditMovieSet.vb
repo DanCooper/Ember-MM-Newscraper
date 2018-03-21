@@ -833,7 +833,7 @@ Public Class dlgEditMovieSet
         btnMovieRemove.Enabled = False
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         DialogResult = DialogResult.Cancel
     End Sub
 
@@ -1001,7 +1001,7 @@ Public Class dlgEditMovieSet
         End With
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         SetInfo()
         DialogResult = DialogResult.OK
     End Sub
@@ -1140,7 +1140,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
-        OK_Button.Enabled = isEnabled
+        btnOK.Enabled = isEnabled
         btnSearchMovie.Enabled = isEnabled
         btnMovieAdd.Enabled = isEnabled
         btnMovieDown.Enabled = isEnabled
@@ -1154,8 +1154,8 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub SetInfo()
-        OK_Button.Enabled = False
-        Cancel_Button.Enabled = False
+        btnOK.Enabled = False
+        btnCancel.Enabled = False
         btnSearchMovie.Enabled = False
         btnRescrape.Enabled = False
 
@@ -1215,8 +1215,8 @@ Public Class dlgEditMovieSet
         Dim mTitle As String = tmpDBElement.MovieSet.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(207, "Edit MovieSet"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        btnCancel.Text = Master.eLang.Cancel
+        btnOK.Text = Master.eLang.OK
         btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
         btnSearchMovie.Text = Master.eLang.GetString(528, "Search Movie")
         chkMark.Text = Master.eLang.GetString(23, "Mark")
@@ -1240,7 +1240,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub txtTitle_TextChanged(sender As Object, e As EventArgs) Handles txtTitle.TextChanged
-        OK_Button.Enabled = Not String.IsNullOrEmpty(txtTitle.Text)
+        btnOK.Enabled = Not String.IsNullOrEmpty(txtTitle.Text)
     End Sub
 
     Private Sub FillList()

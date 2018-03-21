@@ -22,7 +22,7 @@ Partial Class dlgSortFiles
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
+        Me.btnClose = New System.Windows.Forms.Button()
         Me.btnBrowse = New System.Windows.Forms.Button()
         Me.txtPath = New System.Windows.Forms.TextBox()
         Me.btnGo = New System.Windows.Forms.Button()
@@ -38,13 +38,13 @@ Partial Class dlgSortFiles
         '
         'Cancel_Button
         '
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(351, 143)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(72, 23)
-        Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Close"
+        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnClose.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnClose.Location = New System.Drawing.Point(351, 143)
+        Me.btnClose.Name = "Cancel_Button"
+        Me.btnClose.Size = New System.Drawing.Size(72, 23)
+        Me.btnClose.TabIndex = 1
+        Me.btnClose.Text = "Close"
         '
         'btnBrowse
         '
@@ -135,11 +135,11 @@ Partial Class dlgSortFiles
         Me.AcceptButton = Me.btnGo
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.CancelButton = Me.Cancel_Button
+        Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(435, 169)
         Me.Controls.Add(Me.pnlSortFiles)
         Me.Controls.Add(Me.btnGo)
-        Me.Controls.Add(Me.Cancel_Button)
+        Me.Controls.Add(Me.btnClose)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -154,7 +154,7 @@ Partial Class dlgSortFiles
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
+    Friend WithEvents btnClose As System.Windows.Forms.Button
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
     Friend WithEvents txtPath As System.Windows.Forms.TextBox
     Friend WithEvents btnGo As System.Windows.Forms.Button

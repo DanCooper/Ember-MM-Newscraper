@@ -475,8 +475,8 @@ Public Class dlgIMDBSearchResults_Movie
     End Function
 
     Private Sub SetUp()
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        OK_Button.Text = Master.eLang.OK
+        Cancel_Button.Text = Master.eLang.Cancel
         Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
         Label1.Text = Master.eLang.GetString(846, "Movie Search Results")
         chkManual.Text = Master.eLang.GetString(847, "Manual IMDB Entry:")

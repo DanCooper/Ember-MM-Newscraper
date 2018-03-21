@@ -10,10 +10,10 @@ Partial Public Class clsXMLLanguage
     <System.Xml.Serialization.XmlElementAttribute("string")> _
     Public Property [string]() As List(Of LanguageString)
         Get
-            Return Me._stringField
+            Return _stringField
         End Get
         Set(value As List(Of LanguageString))
-            Me._stringField = value
+            _stringField = value
         End Set
     End Property
 End Class
@@ -30,10 +30,10 @@ Partial Public Class LanguageString
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property id() As UShort
         Get
-            Return Me._idField
+            Return _idField
         End Get
         Set(value As UShort)
-            Me._idField = Value
+            _idField = Value
         End Set
     End Property
 
@@ -41,10 +41,10 @@ Partial Public Class LanguageString
     <System.Xml.Serialization.XmlTextAttribute()> _
     Public Property Value() As String
         Get
-            Return Me._valueField
+            Return _valueField
         End Get
         Set(value As String)
-            Me._valueField = Value
+            _valueField = Value
         End Set
     End Property
 End Class

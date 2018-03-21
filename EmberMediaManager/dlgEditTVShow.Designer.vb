@@ -27,8 +27,8 @@ Partial Class dlgEditTVShow
         Me.lblTopDetails = New System.Windows.Forms.Label()
         Me.lblTopTitle = New System.Windows.Forms.Label()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.btnOK = New System.Windows.Forms.Button()
         Me.ofdLocalFiles = New System.Windows.Forms.OpenFileDialog()
         Me.cbOrdering = New System.Windows.Forms.ComboBox()
         Me.lblOrdering = New System.Windows.Forms.Label()
@@ -241,22 +241,22 @@ Partial Class dlgEditTVShow
         '
         'Cancel_Button
         '
-        Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(781, 592)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Cancel"
+        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnCancel.Location = New System.Drawing.Point(781, 592)
+        Me.btnCancel.Name = "Cancel_Button"
+        Me.btnCancel.Size = New System.Drawing.Size(67, 23)
+        Me.btnCancel.TabIndex = 1
+        Me.btnCancel.Text = "Cancel"
         '
         'OK_Button
         '
-        Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.OK_Button.Location = New System.Drawing.Point(708, 592)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
+        Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnOK.Location = New System.Drawing.Point(708, 592)
+        Me.btnOK.Name = "OK_Button"
+        Me.btnOK.Size = New System.Drawing.Size(67, 23)
+        Me.btnOK.TabIndex = 0
+        Me.btnOK.Text = "OK"
         '
         'cbOrdering
         '
@@ -1662,10 +1662,10 @@ Partial Class dlgEditTVShow
         '
         'dlgEditTVShow
         '
-        Me.AcceptButton = Me.OK_Button
+        Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.CancelButton = Me.Cancel_Button
+        Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(853, 648)
         Me.Controls.Add(Me.cbSourceLanguage)
         Me.Controls.Add(Me.lblEpisodeSorting)
@@ -1674,8 +1674,8 @@ Partial Class dlgEditTVShow
         Me.Controls.Add(Me.lblOrdering)
         Me.Controls.Add(Me.cbOrdering)
         Me.Controls.Add(Me.tcEdit)
-        Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.pnlTop)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -1732,8 +1732,8 @@ Partial Class dlgEditTVShow
     Friend WithEvents lblTopDetails As System.Windows.Forms.Label
     Friend WithEvents lblTopTitle As System.Windows.Forms.Label
     Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
-    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents btnOK As System.Windows.Forms.Button
     Friend WithEvents ofdLocalFiles As System.Windows.Forms.OpenFileDialog
     Friend WithEvents cbOrdering As System.Windows.Forms.ComboBox
     Friend WithEvents lblOrdering As System.Windows.Forms.Label

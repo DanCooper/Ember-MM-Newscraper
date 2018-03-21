@@ -10,10 +10,10 @@ Partial Public Class clsXMLLanguages
     <System.Xml.Serialization.XmlElementAttribute("Language")> _
     Public Property Language() As List(Of LanguagesLanguage)
         Get
-            Return Me.languageField
+            Return languageField
         End Get
         Set(value As List(Of LanguagesLanguage))
-            Me.languageField = value
+            languageField = value
         End Set
     End Property
 End Class
@@ -31,30 +31,30 @@ Partial Public Class LanguagesLanguage
     '''<remarks/>
     Public Property Alpha2() As String
         Get
-            Return Me.alpha2Field
+            Return alpha2Field
         End Get
         Set(value As String)
-            Me.alpha2Field = Value
+            alpha2Field = Value
         End Set
     End Property
 
     '''<remarks/>
     Public Property Alpha3() As String
         Get
-            Return Me.alpha3Field
+            Return alpha3Field
         End Get
         Set(value As String)
-            Me.alpha3Field = Value
+            alpha3Field = Value
         End Set
     End Property
 
     '''<remarks/>
     Public Property Name() As String
         Get
-            Return Me.nameField
+            Return nameField
         End Get
         Set(value As String)
-            Me.nameField = Value
+            nameField = Value
         End Set
     End Property
 End Class

@@ -440,7 +440,7 @@
   <string id="439">Expert</string>
   <string id="440">Timeout</string>
   <string id="441">Timeout after mounting in milliseconds</string>
-  <string id="442"></string>
+  <string id="442">Abort</string>
   <string id="443">Use embedded API Key</string>
   <string id="444">Removing Template can not be undone. Are you sure?</string>
   <string id="445">Remove Template</string>

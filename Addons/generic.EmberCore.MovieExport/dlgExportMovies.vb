@@ -383,7 +383,7 @@ Public Class dlgExportMovies
             Threading.Thread.Sleep(50)
         End While
 
-        If btnClose.Text = Master.eLang.GetString(167, "Cancel") Then
+        If btnClose.Text = Master.eLang.Cancel Then
             ShowStatus(False)
             btnBuild.Enabled = True
         Else
@@ -411,7 +411,7 @@ Public Class dlgExportMovies
     Private Sub SetUp()
         Text = Master.eLang.GetString(328, "Export Movies")
         btnBuild.Text = Master.eLang.GetString(1004, "Generate HTML...")
-        btnClose.Text = Master.eLang.GetString(19, "Close")
+        btnClose.Text = Master.eLang.Close
         btnSave.Text = Master.eLang.GetString(273, "Save")
         lblExportPath.Text = Master.eLang.GetString(995, "Export Path")
         lblList_Movies.Text = Master.eLang.GetString(982, "Movie List")
@@ -421,7 +421,7 @@ Public Class dlgExportMovies
 
     Private Sub ShowStatus(ByVal bEnable As Boolean)
         If bEnable Then
-            btnClose.Text = Master.eLang.GetString(167, "Cancel")
+            btnClose.Text = Master.eLang.Cancel
             btnBuild.Enabled = False
             btnExportPath.Enabled = False
             btnSave.Enabled = False
@@ -434,7 +434,7 @@ Public Class dlgExportMovies
             tspbStatus.Visible = True
             txtExportPath.Enabled = False
         Else
-            btnClose.Text = Master.eLang.GetString(19, "Close")
+            btnClose.Text = Master.eLang.Close
             btnExportPath.Enabled = True
             cbList_Movies.Enabled = True
             cbList_TVShows.Enabled = True

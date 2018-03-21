@@ -80,10 +80,10 @@ Public Class dlgTagManager
     ''' </remarks>
     Sub SetUp()
         lblTopTitle.Text = Text
-        OK_Button.Text = Master.eLang.GetString(19, "Close")
+        OK_Button.Text = Master.eLang.Close
         lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
         lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        btnCancel.Text = Master.eLang.Cancel
         lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
         gbMovies.Text = Master.eLang.GetString(36, "Movies")
         lblTopDetails.Text = Master.eLang.GetString(1374, "Manage XBMC tags")

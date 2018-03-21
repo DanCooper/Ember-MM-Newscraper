@@ -197,7 +197,7 @@ Public Class DVD
 #Region "Methods"
 
     Public Sub Close()
-        Me.Finalize()
+        Finalize()
     End Sub
     ''' <summary>
     ''' Convenience function that accepts a Byte array and returns its Hexadecimal String representation.

@@ -1145,7 +1145,7 @@ Public Class dlgCustomScraper
         chkSeasonModifierBanner.Text = strBanner
 
         'Cancel
-        Dim strCancel As String = Master.eLang.GetString(167, "Cancel")
+        Dim strCancel As String = Master.eLang.Cancel
         btnCancel.Text = strCancel
 
         'CharacterArt

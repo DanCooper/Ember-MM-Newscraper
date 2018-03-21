@@ -139,12 +139,11 @@ Namespace My
                 End Using
             End If
 
+            Master.fLoading.SetLoadingMesg("Loading settings...")
             Master.eSettings.Load()
 
             ' Force initialization of languages for main
             Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
-
-            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(484, "Loading settings..."))
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
             APIXML.CacheXMLs()

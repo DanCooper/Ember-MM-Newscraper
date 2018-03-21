@@ -399,12 +399,12 @@ Public Class dlgBulkRenamer_Movie
 
     Private Sub SetUp()
         Text = Master.eLang.GetString(174, "Bulk Renamer")
-        Close_Button.Text = Master.eLang.GetString(19, "Close")
+        Close_Button.Text = Master.eLang.Close
         lblTopDetails.Text = Master.eLang.GetString(175, "Rename movies and files")
         lblTopTitle.Text = Text
         lblCompiling.Text = Master.eLang.GetString(177, "Compiling Movie List...")
         lblCanceling.Text = Master.eLang.GetString(178, "Canceling Compilation...")
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        btnCancel.Text = Master.eLang.Cancel
         Rename_Button.Text = Master.eLang.GetString(257, "Rename")
         tsmLockMovie.Text = Master.eLang.GetString(24, "Lock")
         tsmUnlockMovie.Text = Master.eLang.GetString(108, "Unlock")

@@ -2300,10 +2300,10 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub SetUp()
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        btnCancel.Text = Master.eLang.Cancel
         btnExtrafanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
         btnExtrathumbs.Text = Master.eLang.GetString(153, "Extrathumbs")
-        btnOK.Text = Master.eLang.GetString(179, "OK")
+        btnOK.Text = Master.eLang.OK
         btnSeasonBanner.Text = Master.eLang.GetString(1017, "Season Banner")
         btnSeasonFanart.Text = Master.eLang.GetString(686, "Season Fanart")
         btnSeasonLandscape.Text = Master.eLang.GetString(1018, "Season Landscape")

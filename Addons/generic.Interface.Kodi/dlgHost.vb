@@ -105,8 +105,8 @@ Public Class dlgHost
     ''' </remarks>
     Private Sub Setup()
         Text = Master.eLang.GetString(1422, "Kodi Interface")
-        btnOK.Text = Master.eLang.GetString(179, "OK")
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        btnOK.Text = Master.eLang.OK
+        btnCancel.Text = Master.eLang.Cancel
         btnCustomRemotePath.Text = Master.eLang.GetString(28, "Add")
         btnHostConnectionCheck.Text = Master.eLang.GetString(1423, "Check Connection")
         btnHostPopulateSources.Text = Master.eLang.GetString(1424, "Read Sources from Kodi")

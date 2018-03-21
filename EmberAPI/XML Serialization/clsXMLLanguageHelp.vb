@@ -10,10 +10,10 @@ Partial Public Class clsXMLLanguageHelp
     <System.Xml.Serialization.XmlElementAttribute("string")> _
     Public Property [string]() As List(Of HelpString)
         Get
-            Return Me._stringField
+            Return _stringField
         End Get
         Set(value As List(Of HelpString))
-            Me._stringField = value
+            _stringField = value
         End Set
     End Property
 End Class
@@ -30,10 +30,10 @@ Partial Public Class HelpString
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property control() As String
         Get
-            Return Me._controlField
+            Return _controlField
         End Get
         Set(value As String)
-            Me._controlField = value
+            _controlField = value
         End Set
     End Property
 
@@ -41,10 +41,10 @@ Partial Public Class HelpString
     <System.Xml.Serialization.XmlTextAttribute()> _
     Public Property Value() As String
         Get
-            Return Me._valueField
+            Return _valueField
         End Get
         Set(value As String)
-            Me._valueField = value
+            _valueField = value
         End Set
     End Property
 End Class

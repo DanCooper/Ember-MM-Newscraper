@@ -402,7 +402,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         CleanUp()
         DialogResult = DialogResult.Cancel
     End Sub
@@ -599,7 +599,7 @@ Public Class dlgEditTVEpisode
         ActorEdit()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         SetInfo()
         CleanUp()
         DialogResult = DialogResult.OK
@@ -1008,8 +1008,8 @@ Public Class dlgEditTVEpisode
         Dim sTitle As String = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
         tsFilename.Text = tmpDBElement.Filename
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        btnCancel.Text = Master.eLang.Cancel
+        btnOK.Text = Master.eLang.OK
         btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
         chkWatched.Text = Master.eLang.GetString(981, "Watched")
         colName.Text = Master.eLang.GetString(232, "Name")

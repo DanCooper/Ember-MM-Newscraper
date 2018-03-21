@@ -103,8 +103,8 @@ Public Class dlgRenameManual_Movie
         Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", _DBElement.Movie.Title)
         Label1.Text = Master.eLang.GetString(13, "Folder Name")
         Label2.Text = Master.eLang.GetString(15, "File Name")
-        btnOK.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(19, "Close")
+        btnOK.Text = Master.eLang.OK
+        Cancel_Button.Text = Master.eLang.Close
         lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
         Label3.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
         txtTitle.Text = _DBElement.Movie.Title

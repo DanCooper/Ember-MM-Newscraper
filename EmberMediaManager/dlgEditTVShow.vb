@@ -1081,7 +1081,7 @@ Public Class dlgEditTVShow
         End Try
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         DialogResult = DialogResult.Cancel
     End Sub
 
@@ -1413,7 +1413,7 @@ Public Class dlgEditTVShow
         'If e.KeyCode = Keys.Delete Then DeleteExtrafanarts()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         SetInfo()
 
         DialogResult = DialogResult.OK
@@ -1986,8 +1986,8 @@ Public Class dlgEditTVShow
 
         Dim mTitle As String = tmpDBElement.TVShow.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(663, "Edit Show"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        btnCancel.Text = Master.eLang.Cancel
+        btnOK.Text = Master.eLang.OK
         Text = sTitle
         btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
         btnExtrafanartsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")

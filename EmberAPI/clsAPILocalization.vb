@@ -18,15 +18,16 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-Imports System.Xml.Serialization
 Imports NLog
+Imports System.IO
 Imports System.Runtime.Serialization
 Imports System.Windows.Forms
+Imports System.Xml.Serialization
 
 Public Class Localization
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Shared help_logger As Logger = LogManager.GetLogger("HelpString")
     Shared lang_logger As Logger = LogManager.GetLogger("LanguageString")
@@ -36,27 +37,20 @@ Public Class Localization
     Private Shared htStrings As New clsXMLLanguage
     Private Shared _ISOLanguages As New clsXMLLanguages
 
+    Private _abort As String
     Private _all As String
+    Private _cancel As String
+    Private _close As String
     Private _disabled As String
     Private _none As String
-
-#If DEBUG Then
-    Private Shared _loggingString As New Object
-    Private Shared _loggingHelp As New Object
-#End If
+    Private _ok As String
 
 #End Region 'Fields
 
 #Region "Constructors"
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks>
-    ''' 2013/10/31 Dekker500 - Fixed bug with missing directory separator between AppPath and Langs
-    ''' </remarks>
     Public Sub New()
-        Me.Clear()
+        Clear()
         Dim lPath As String = FileUtils.Common.ReturnSettingsFile("Langs", "Languages.xml")
         If File.Exists(lPath) Then
             Dim objStreamReader As New StreamReader(lPath)
@@ -80,31 +74,46 @@ Public Class Localization
 
 #Region "Properties"
 
-    Public Property All() As String
+    Public ReadOnly Property Abort() As String
+        Get
+            Return _abort
+        End Get
+    End Property
+
+    Public ReadOnly Property All() As String
         Get
             Return _all
         End Get
-        Set(ByVal value As String)
-            _all = value
-        End Set
     End Property
 
-    Public Property Disabled() As String
+    Public ReadOnly Property Cancel() As String
+        Get
+            Return _cancel
+        End Get
+    End Property
+
+    Public ReadOnly Property Close() As String
+        Get
+            Return _close
+        End Get
+    End Property
+
+    Public ReadOnly Property Disabled() As String
         Get
             Return _disabled
         End Get
-        Set(ByVal value As String)
-            _disabled = value
-        End Set
     End Property
 
-    Public Property None() As String
+    Public ReadOnly Property None() As String
         Get
             Return _none
         End Get
-        Set(ByVal value As String)
-            _none = value
-        End Set
+    End Property
+
+    Public ReadOnly Property OK() As String
+        Get
+            Return _ok
+        End Get
     End Property
 
 #End Region 'Properties
@@ -202,14 +211,18 @@ Public Class Localization
 
     Public Sub Clear()
         _ISOLanguages.Language.Clear()
+        _abort = "Abort"
         _all = "All"
-        _none = "[none]"
+        _cancel = "Cancel"
+        _close = "Close"
         _disabled = "[Disabled]"
+        _none = "[none]"
+        _ok = "OK"
     End Sub
 
     Public Function GetHelpString(ByVal ctrlName As String) As String
         Dim aStr As String
-        Dim x1 As System.Collections.Generic.IEnumerable(Of HelpString)
+        Dim x1 As IEnumerable(Of HelpString)
 
         x1 = From x As HelpString In htHelpStrings.string Where (x.control = ctrlName)
         If x1.Count = 0 Then
@@ -271,7 +284,6 @@ Public Class Localization
     End Sub
 
     Public Sub LoadLanguage(ByVal Language As String, Optional ByVal rAssembly As String = "", Optional ByVal force As Boolean = False)
-        Dim _old_all As String = _all
         Dim Assembly As String
         Dim lPath As String = String.Empty
         Dim lhPath As String = String.Empty
@@ -317,9 +329,13 @@ Public Class Localization
 
                 htArrayStrings.Remove(htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly))
                 htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
+                _abort = GetString(442, Master.eLang.Abort)
                 _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
-                _none = GetString(570, Master.eLang.None)
+                _cancel = GetString(167, Master.eLang.Cancel)
+                _close = GetString(19, Master.eLang.Close)
                 _disabled = GetString(571, Master.eLang.Disabled)
+                _none = GetString(570, Master.eLang.None)
+                _ok = GetString(179, Master.eLang.OK)
             Else
                 Dim tLocs As Locs = htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly)
                 If tLocs.htStrings IsNot Nothing Then

@@ -448,8 +448,8 @@ Public Class dlgClearOrReplace
 
     Private Sub SetUp()
         Text = Master.eLang.GetString(1087, "Clear or Replace Data Fields")
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        btnOK.Text = Master.eLang.GetString(179, "OK")
+        btnCancel.Text = Master.eLang.Cancel
+        btnOK.Text = Master.eLang.OK
 
         chkActors.Text = Master.eLang.GetString(231, "Actors")
         chkAired.Text = Master.eLang.GetString(728, "Aired")

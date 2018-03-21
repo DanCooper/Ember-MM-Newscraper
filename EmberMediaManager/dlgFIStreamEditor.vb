@@ -142,7 +142,7 @@ Public Class dlgFIStreamEditor
         End Try
     End Function
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         DialogResult = DialogResult.Cancel
     End Sub
 
@@ -162,13 +162,13 @@ Public Class dlgFIStreamEditor
         SetUp()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         DialogResult = DialogResult.OK
     End Sub
 
     Private Sub SetUp()
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        btnCancel.Text = Master.eLang.Cancel
+        btnOK.Text = Master.eLang.OK
         Text = Master.eLang.GetString(613, "Stream Editor")
         chkSubtitleForced.Text = Master.eLang.GetString(1287, "Forced")
         gbAudioStreams.Text = Master.eLang.GetString(596, "Audio Streams")

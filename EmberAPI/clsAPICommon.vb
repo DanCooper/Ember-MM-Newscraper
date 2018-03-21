@@ -1884,6 +1884,7 @@ Public Class Structures
 
     Public Structure SettingsResult
         Dim DidCancel As Boolean
+        Dim IsLanguageChanged As Boolean
         Dim NeedsDBClean_Movie As Boolean
         Dim NeedsDBClean_TV As Boolean
         Dim NeedsDBUpdate_Movie As Boolean

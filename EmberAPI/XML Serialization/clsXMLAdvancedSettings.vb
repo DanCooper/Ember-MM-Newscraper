@@ -11,10 +11,10 @@ Partial Public Class clsXMLAdvancedSettings
     <System.Xml.Serialization.XmlElementAttribute("Setting")> _
     Public Property Setting As List(Of AdvancedSettingsSetting)
         Get
-            Return Me._settingField
+            Return _settingField
         End Get
         Set(value As List(Of AdvancedSettingsSetting))
-            Me._settingField = value
+            _settingField = value
         End Set
     End Property
 
@@ -22,10 +22,10 @@ Partial Public Class clsXMLAdvancedSettings
     <System.Xml.Serialization.XmlElementAttribute("ComplexSettings")> _
     Public Property ComplexSettings As List(Of AdvancedSettingsComplexSettings)
         Get
-            Return Me._complexSettingsField
+            Return _complexSettingsField
         End Get
         Set(value As List(Of AdvancedSettingsComplexSettings))
-            Me._complexSettingsField = value
+            _complexSettingsField = value
         End Set
     End Property
 End Class
@@ -48,10 +48,10 @@ Partial Public Class AdvancedSettingsSetting
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property Section() As String
         Get
-            Return Me._sectionField
+            Return _sectionField
         End Get
         Set(value As String)
-            Me._sectionField = Value
+            _sectionField = Value
         End Set
     End Property
 
@@ -59,10 +59,10 @@ Partial Public Class AdvancedSettingsSetting
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property Content() As Enums.ContentType
         Get
-            Return Me._contentField
+            Return _contentField
         End Get
         Set(value As Enums.ContentType)
-            Me._contentField = value
+            _contentField = value
         End Set
     End Property
 
@@ -70,10 +70,10 @@ Partial Public Class AdvancedSettingsSetting
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property Name() As String
         Get
-            Return Me._nameField
+            Return _nameField
         End Get
         Set(value As String)
-            Me._nameField = Value
+            _nameField = Value
         End Set
     End Property
 
@@ -81,10 +81,10 @@ Partial Public Class AdvancedSettingsSetting
     <System.Xml.Serialization.XmlTextAttribute()> _
     Public Property Value() As String
         Get
-            Return Me._valueField
+            Return _valueField
         End Get
         Set(value As String)
-            Me._valueField = Value
+            _valueField = Value
         End Set
     End Property
 
@@ -92,10 +92,10 @@ Partial Public Class AdvancedSettingsSetting
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property DefaultValue() As String
         Get
-            Return Me._defaultValueField
+            Return _defaultValueField
         End Get
         Set(value As String)
-            Me._defaultValueField = value
+            _defaultValueField = value
         End Set
     End Property
 End Class
@@ -109,10 +109,10 @@ Partial Public Class AdvancedSettingsComplexSettings
     '''<remarks/>
     Public Property Table() As AdvancedSettingsComplexSettingsTable
         Get
-            Return Me._tableField
+            Return _tableField
         End Get
         Set(value As AdvancedSettingsComplexSettingsTable)
-            Me._tableField = Value
+            _tableField = Value
         End Set
     End Property
 End Class
@@ -131,10 +131,10 @@ Partial Public Class AdvancedSettingsComplexSettingsTable
     <System.Xml.Serialization.XmlElementAttribute("Item")> _
     Public Property Item() As List(Of AdvancedSettingsComplexSettingsTableItem)
         Get
-            Return Me._itemField
+            Return _itemField
         End Get
         Set(value As List(Of AdvancedSettingsComplexSettingsTableItem))
-            Me._itemField = value
+            _itemField = value
         End Set
     End Property
 
@@ -142,10 +142,10 @@ Partial Public Class AdvancedSettingsComplexSettingsTable
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property Section() As String
         Get
-            Return Me._sectionField
+            Return _sectionField
         End Get
         Set(value As String)
-            Me._sectionField = Value
+            _sectionField = Value
         End Set
     End Property
 
@@ -153,10 +153,10 @@ Partial Public Class AdvancedSettingsComplexSettingsTable
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property Name() As String
         Get
-            Return Me._nameField
+            Return _nameField
         End Get
         Set(value As String)
-            Me._nameField = Value
+            _nameField = Value
         End Set
     End Property
 End Class
@@ -173,10 +173,10 @@ Partial Public Class AdvancedSettingsComplexSettingsTableItem
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property Name() As String
         Get
-            Return Me._nameField
+            Return _nameField
         End Get
         Set(value As String)
-            Me._nameField = Value
+            _nameField = Value
         End Set
     End Property
 
@@ -184,10 +184,10 @@ Partial Public Class AdvancedSettingsComplexSettingsTableItem
     <System.Xml.Serialization.XmlTextAttribute()> _
     Public Property Value() As String
         Get
-            Return Me._valueField
+            Return _valueField
         End Get
         Set(value As String)
-            Me._valueField = Value
+            _valueField = Value
         End Set
     End Property
 End Class

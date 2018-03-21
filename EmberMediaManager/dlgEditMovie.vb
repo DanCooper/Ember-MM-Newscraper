@@ -1411,7 +1411,7 @@ Public Class dlgEditMovie
         End With
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         ThemeStop()
         TrailerStop()
         CleanUp()
@@ -1883,7 +1883,7 @@ Public Class dlgEditMovie
         If e.KeyCode = Keys.Delete Then ActorRemove()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         ThemeStop()
         TrailerStop()
 
@@ -2303,8 +2303,8 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SetInfo()
-        OK_Button.Enabled = False
-        Cancel_Button.Enabled = False
+        btnOK.Enabled = False
+        btnCancel.Enabled = False
         btnRescrape.Enabled = False
         btnChangeMovie.Enabled = False
 
@@ -2469,8 +2469,8 @@ Public Class dlgEditMovie
         Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
         tsFilename.Text = tmpDBElement.Filename
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        btnCancel.Text = Master.eLang.Cancel
+        btnOK.Text = Master.eLang.OK
         btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
         btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
         btnExtrafanartsSetAsFanart.Text = btnExtrathumbsSetAsFanart.Text

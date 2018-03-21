@@ -10,10 +10,10 @@ Partial Public Class clsXMLCertLanguages
     <System.Xml.Serialization.XmlElementAttribute("Language")> _
     Public Property Language() As List(Of CertLanguages)
         Get
-            Return Me.languageField
+            Return languageField
         End Get
         Set(value As List(Of CertLanguages))
-            Me.languageField = value
+            languageField = value
         End Set
     End Property
 End Class
@@ -29,20 +29,20 @@ Partial Public Class CertLanguages
     '''<remarks/>
     Public Property name() As String
         Get
-            Return Me.nameField
+            Return nameField
         End Get
         Set(value As String)
-            Me.nameField = value
+            nameField = value
         End Set
     End Property
 
     '''<remarks/>
     Public Property abbreviation() As String
         Get
-            Return Me.abbreviationField
+            Return abbreviationField
         End Get
         Set(value As String)
-            Me.abbreviationField = value
+            abbreviationField = value
         End Set
     End Property
 End Class

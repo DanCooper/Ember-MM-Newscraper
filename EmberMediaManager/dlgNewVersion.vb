@@ -108,7 +108,7 @@ Public Class dlgNewVersion
     Private Sub SetUp()
         Text = Master.eLang.GetString(209, "A New Version Is Available")
         lblNew.Text = Text
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Cancel_Button.Text = Master.eLang.Cancel
         llblClick.Text = Master.eLang.GetString(211, "Click Here")
         lblVisit.Text = Master.eLang.GetString(212, "to visit embermm.com.")
         lblStart.Text = Master.eLang.GetString(717, "Preparing for upgrade ...")

@@ -242,7 +242,7 @@ Public Class dlgWorker
                 lblCurrentItemInfo.Text = String.Format("{0}: {1} item(s) synced", Master.eLang.GetString(362, "Done"), CInt(e.UserState))
                 lblOverallStateInfo.Text = Master.eLang.GetString(362, "Done")
                 prgbOverallState.Value = 4
-                btnCancel.Text = Master.eLang.GetString(19, "Close")
+                btnCancel.Text = Master.eLang.Close
             Case 7
                 'no watched media found in Trakt
                 lblCurrentItemInfo.Text = "No watched media found on Trakt"
@@ -268,7 +268,7 @@ Public Class dlgWorker
     End Sub
 
     Private Sub SetUp()
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        btnCancel.Text = Master.eLang.Cancel
         btnStart.Text = Master.eLang.GetString(1443, "Start Syncing")
         lblCurrentItemInfo.Text = String.Empty
         lblOverallStateInfo.Text = String.Empty

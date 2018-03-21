@@ -397,12 +397,12 @@ Public Class dlgBulkRenamer_TV
 
     Private Sub SetUp()
         Text = Master.eLang.GetString(274, "TV Bulk Renamer")
-        Close_Button.Text = Master.eLang.GetString(19, "Close")
+        Close_Button.Text = Master.eLang.Close
         lblTopDetails.Text = Master.eLang.GetString(275, "Rename TV Shows and files")
         lblTopTitle.Text = Text
         lblCompiling.Text = Master.eLang.GetString(277, "Compiling TV Show List...")
         lblCanceling.Text = Master.eLang.GetString(178, "Canceling Compilation...")
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        btnCancel.Text = Master.eLang.Cancel
         Rename_Button.Text = Master.eLang.GetString(257, "Rename")
         tsmLockEpisode.Text = Master.eLang.GetString(24, "Lock")
         tsmUnlockEpisode.Text = Master.eLang.GetString(108, "Unlock")

@@ -271,8 +271,8 @@ Public Class dlgSourceTVShow
 
     Private Sub SetUp()
         Text = Master.eLang.GetString(705, "TV Source")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        OK_Button.Text = Master.eLang.OK
+        Cancel_Button.Text = Master.eLang.Cancel
         chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
         chkSingle.Text = Master.eLang.GetString(1048, "Selected folder contains a single TV Show")
         gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")

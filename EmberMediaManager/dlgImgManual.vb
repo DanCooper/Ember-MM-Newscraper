@@ -97,8 +97,8 @@ Public Class dlgImgManual
     End Sub
 
     Private Sub SetUp()
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        OK_Button.Text = Master.eLang.OK
+        Cancel_Button.Text = Master.eLang.Cancel
         btnPreview.Text = Master.eLang.GetString(180, "Preview")
         lblURL.Text = Master.eLang.GetString(181, "Enter URL to Image:")
     End Sub

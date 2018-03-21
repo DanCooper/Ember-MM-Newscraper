@@ -56,8 +56,8 @@ Public Class dlgMovieDataScraperPreview
     ''' 2014/09/13 Cocotus - First implementation
     ''' </remarks>
     Private Sub SetUp()
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Cancel_Button.Text = Master.eLang.Cancel
+        OK_Button.Text = Master.eLang.OK
         colNameIMDB.Text = Master.eLang.GetString(232, "Name")
         colRoleIMDB.Text = Master.eLang.GetString(233, "Role")
         colThumbIMDB.Text = Master.eLang.GetString(234, "Thumb")

@@ -27,6 +27,7 @@ Imports NLog
 Public Class frmMain
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwCheckVersion As New ComponentModel.BackgroundWorker
@@ -194,6 +195,30 @@ Public Class frmMain
 #End Region 'Delegates
 
 #Region "Properties"
+
+    Private ReadOnly Property AnyBackgroundWorkerIsBusy As Boolean
+        Get
+            Return _
+                bwCheckVersion.IsBusy OrElse
+                bwCleanDB.IsBusy OrElse
+                bwDownloadPic.IsBusy OrElse
+                bwLoadImages_Movie.IsBusy OrElse
+                bwLoadImages_MovieSet.IsBusy OrElse
+                bwLoadImages_MovieSetMoviePosters.IsBusy OrElse
+                bwLoadImages_TVEpisode.IsBusy OrElse
+                bwLoadImages_TVSeason.IsBusy OrElse
+                bwLoadImages_TVShow.IsBusy OrElse
+                bwMovieScraper.IsBusy OrElse
+                bwMovieSetScraper.IsBusy OrElse
+                bwReload_Movies.IsBusy OrElse
+                bwReload_MovieSets.IsBusy OrElse
+                bwReload_TVShows.IsBusy OrElse
+                bwRewriteContent.IsBusy OrElse
+                bwTVScraper.IsBusy OrElse
+                bwTVEpisodeScraper.IsBusy OrElse
+                bwTVSeasonScraper.IsBusy
+        End Get
+    End Property
 
     Public Property GenrePanelColor() As Color = Color.Gainsboro
     Public Property IPMid() As Integer = 280
@@ -9961,7 +9986,7 @@ Public Class frmMain
     Private Sub LoadWithCommandLine(ByVal appArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs)
         logger.Trace("LoadWithCommandLine()")
 
-        'filtered media lists are not possible, so load the default list for all
+        'filtered media lists are not possible, so use the default list for all lists
         RemoveHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
         RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
         RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
@@ -16198,9 +16223,11 @@ Public Class frmMain
         cmnuTraySettings.Enabled = True
         cmnuTrayExit.Enabled = True
 
-        If Not dresult.DidCancel Then
-
+        If dresult.IsLanguageChanged Then
             SetUp(True)
+        End If
+
+        If Not dresult.DidCancel Then
 
             'TODO: make it more generic
             If dgvMovies.RowCount > 0 Then
@@ -16370,25 +16397,27 @@ Public Class frmMain
     End Sub
 
     Private Sub mnuMainEdit_DropDownOpening(sender As Object, e As EventArgs) Handles mnuMainEdit.DropDownOpening
-        mnuMainEditSettings.Enabled = Not ModulesManager.Instance.QueryAnyGenericIsBusy
+        mnuMainEditSettings.Enabled = Not ModulesManager.Instance.QueryAnyGenericIsBusy AndAlso Not AnyBackgroundWorkerIsBusy
     End Sub
 
     Private Sub cmnuTray_Opening(sender As Object, e As EventArgs) Handles cmnuTray.Opening
-        cmnuTraySettings.Enabled = Not ModulesManager.Instance.QueryAnyGenericIsBusy
+        cmnuTraySettings.Enabled = Not ModulesManager.Instance.QueryAnyGenericIsBusy AndAlso Not AnyBackgroundWorkerIsBusy
     End Sub
 
     Private Sub mnuMainEditSettings_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainEditSettings.Click, cmnuTraySettings.Click
-        Try
-            SetControlsEnabled(False)
-            pnlLoadSettings.Visible = True
+        If Not ModulesManager.Instance.QueryAnyGenericIsBusy AndAlso Not AnyBackgroundWorkerIsBusy Then
+            Try
+                SetControlsEnabled(False)
+                pnlLoadSettings.Visible = True
 
-            Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)
-            dThread.SetApartmentState(Threading.ApartmentState.STA)
-            dThread.Start()
-        Catch ex As Exception
-            mnuMainEditSettings.Enabled = True
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+                Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)
+                dThread.SetApartmentState(Threading.ApartmentState.STA)
+                dThread.Start()
+            Catch ex As Exception
+                mnuMainEditSettings.Enabled = True
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+        End If
     End Sub
 
     Private Sub UpdateMainTabCounts()
@@ -16526,13 +16555,15 @@ Public Class frmMain
         mnuScrapeModifierClearLogo.Text = strClearLogoOnly
 
         'Close
-        Dim strClose As String = Master.eLang.GetString(19, "Close")
+        Dim strClose As String = Master.eLang.Close
+        lblFilterCountriesClose_Movies.Text = strClose
         lblFilterDataFieldsClose_Movies.Text = strClose
         lblFilterGenresClose_Movies.Text = strClose
         lblFilterGenresClose_Shows.Text = strClose
         lblFilterSourcesClose_Movies.Text = strClose
         lblFilterSourcesClose_Shows.Text = strClose
         lblFilterTagsClose_Movies.Text = strClose
+        lblFilterVideoSourcesClose_Movies.Text = strClose
 
         'Current Filter
         Dim strCurrentFilter As String = Master.eLang.GetString(624, "Current Filter")
@@ -17028,9 +17059,7 @@ Public Class frmMain
         lblFanartSmallTitle.Text = Master.eLang.GetString(149, "Fanart")
         lblFilePathHeader.Text = Master.eLang.GetString(60, "File Path")
         lblFilterCountries_Movies.Text = Master.eLang.GetString(237, "Countries")
-        lblFilterCountriesClose_Movies.Text = Master.eLang.GetString(19, "Close")
         lblFilterCountry_Movies.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
-        lblFilterVideoSourcesClose_Movies.Text = Master.eLang.GetString(19, "Close")
         lblFilterVideoSources_Movies.Text = Master.eLang.GetString(246, "Video Sources")
         lblFilterVideoSource_Movies.Text = String.Concat(Master.eLang.GetString(824, "Video Source"), ":")
         lblFilterGenre_Movies.Text = String.Concat(Master.eLang.GetString(725, "Genres"), ":")

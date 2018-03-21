@@ -381,7 +381,7 @@ Public Class dlgFileInfo
         cbStreamType.Items.Add(Master.eLang.GetString(597, "Subtitle Streams"))
         Text = Master.eLang.GetString(594, "Meta Data Editor")
         lblStreamType.Text = Master.eLang.GetString(598, "Stream Type")
-        btnClose.Text = Master.eLang.GetString(19, "Close")
+        btnClose.Text = Master.eLang.Close
     End Sub
 
 #End Region 'Methods

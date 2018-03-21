@@ -119,8 +119,8 @@ Public Class dlgTVChangeEp
         lvEpisodes.Columns(0).Text = Master.eLang.GetString(727, "Episode")
         lvEpisodes.Columns(1).Text = Master.eLang.GetString(21, "Title")
 
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        OK_Button.Text = Master.eLang.OK
+        Cancel_Button.Text = Master.eLang.Cancel
     End Sub
 
 #End Region 'Methods

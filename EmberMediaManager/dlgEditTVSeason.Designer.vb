@@ -61,8 +61,8 @@ Partial Class dlgEditTVSeason
         Me.btnSetFanartScrape = New System.Windows.Forms.Button()
         Me.btnSetFanartLocal = New System.Windows.Forms.Button()
         Me.pbFanart = New System.Windows.Forms.PictureBox()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.btnOK = New System.Windows.Forms.Button()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.txtTitle = New System.Windows.Forms.TextBox()
@@ -557,20 +557,20 @@ Partial Class dlgEditTVSeason
         '
         'Cancel_Button
         '
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(781, 553)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Cancel"
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnCancel.Location = New System.Drawing.Point(781, 553)
+        Me.btnCancel.Name = "Cancel_Button"
+        Me.btnCancel.Size = New System.Drawing.Size(67, 23)
+        Me.btnCancel.TabIndex = 1
+        Me.btnCancel.Text = "Cancel"
         '
         'OK_Button
         '
-        Me.OK_Button.Location = New System.Drawing.Point(708, 553)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
+        Me.btnOK.Location = New System.Drawing.Point(708, 553)
+        Me.btnOK.Name = "OK_Button"
+        Me.btnOK.Size = New System.Drawing.Size(67, 23)
+        Me.btnOK.TabIndex = 0
+        Me.btnOK.Text = "OK"
         '
         'lblTitle
         '
@@ -593,14 +593,14 @@ Partial Class dlgEditTVSeason
         '
         'dlgEditTVSeason
         '
-        Me.AcceptButton = Me.OK_Button
+        Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.CancelButton = Me.Cancel_Button
+        Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(854, 582)
         Me.Controls.Add(Me.tcEdit)
-        Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.pnlTop)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -645,8 +645,8 @@ Partial Class dlgEditTVSeason
     Friend WithEvents btnSetFanartScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetFanartLocal As System.Windows.Forms.Button
     Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
-    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents btnOK As System.Windows.Forms.Button
     Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
     Friend WithEvents tpBanner As System.Windows.Forms.TabPage
     Friend WithEvents btnSetBannerDL As System.Windows.Forms.Button

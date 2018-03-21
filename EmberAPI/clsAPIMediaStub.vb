@@ -125,7 +125,7 @@ Public Class MediaStub
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -135,20 +135,20 @@ Public Class MediaStub
         <XmlElement("title")> _
         Public Property Title() As String
             Get
-                Return Me._title
+                Return _title
             End Get
             Set(ByVal Value As String)
-                Me._title = Value
+                _title = Value
             End Set
         End Property
 
         <XmlElement("message")> _
         Public Property Message() As String
             Get
-                Return Me._message
+                Return _message
             End Get
             Set(ByVal Value As String)
-                Me._message = Value
+                _message = Value
             End Set
         End Property
 
@@ -157,8 +157,8 @@ Public Class MediaStub
 #Region "Methods"
 
         Public Sub Clear()
-            Me._title = String.Empty
-            Me._message = String.Empty
+            _title = String.Empty
+            _message = String.Empty
         End Sub
 
 #End Region 'Methods

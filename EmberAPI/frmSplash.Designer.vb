@@ -68,13 +68,13 @@ Partial Class frmSplash
         Me.Controls.Add(Me.LoadingMesg)
         Me.Controls.Add(Me.VersionNumber)
         Me.Controls.Add(Me.LoadingBar)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmSplash"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = "Ember Media Manager"
         Me.ResumeLayout(False)
 
     End Sub

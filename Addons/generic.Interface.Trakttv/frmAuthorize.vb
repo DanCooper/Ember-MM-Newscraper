@@ -62,7 +62,7 @@ Public Class frmAuthorize
     End Sub
 
     Private Sub SetUp()
-        btnOK.Text = Master.eLang.GetString(179, "OK")
+        btnOK.Text = Master.eLang.OK
         btnOpen.Text = Master.eLang.GetString(931, "Open In Browser")
         lblInfo.Text = Master.eLang.GetString(1141, "The Trakt addon CAN NOT be used without authorizing it to access your trakt.tv account.")
         lblPIN.Text = Master.eLang.GetString(1142, "PIN Code")

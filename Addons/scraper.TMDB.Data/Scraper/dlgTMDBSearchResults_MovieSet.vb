@@ -298,8 +298,8 @@ Public Class dlgTMDBSearchResults_MovieSet
     End Function
 
     Private Sub SetUp()
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        OK_Button.Text = Master.eLang.OK
+        Cancel_Button.Text = Master.eLang.Cancel
         Label2.Text = Master.eLang.GetString(1231, "View details of each result to find the proper movieset.")
         Label1.Text = Master.eLang.GetString(1232, "MovieSet Search Results")
         chkManual.Text = Master.eLang.GetString(926, "Manual TMDB Entry:")

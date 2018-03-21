@@ -557,7 +557,7 @@ Public Class dlgTrailerSelect
         btnPlayLocalTrailer.Text = Master.eLang.GetString(919, "Preview Trailer")
         btnTrailerScrape.Text = Master.eLang.GetString(1171, "Scrape Trailers")
         btnYouTubeSearch.Text = Master.eLang.GetString(977, "Search")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Cancel_Button.Text = Master.eLang.Cancel
         gbPreview.Text = Master.eLang.GetString(180, "Preview")
         gbSelectTrailer.Text = Master.eLang.GetString(915, "Select Trailer to Download")
         gbManualTrailer.Text = Master.eLang.GetString(916, "Manual Trailer Entry")

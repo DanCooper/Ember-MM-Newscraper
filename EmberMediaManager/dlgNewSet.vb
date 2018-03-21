@@ -115,8 +115,8 @@ Public Class dlgNewSet
     End Sub
 
     Private Sub SetUp()
-        btnOK.Text = Master.eLang.GetString(179, "OK")
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        btnOK.Text = Master.eLang.OK
+        btnCancel.Text = Master.eLang.Cancel
         lblLanguage.Text = String.Concat(Master.eLang.GetString(610, "Language"), ":")
         lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
 

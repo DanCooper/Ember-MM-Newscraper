@@ -390,7 +390,7 @@ Public Class dlgGenreManager
 
     Private Sub SetUp()
         Text = Master.eLang.GetString(782, "Genre Manager")
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        btnCancel.Text = Master.eLang.Cancel
         btnGenreAdd.Text = Master.eLang.GetString(28, "Add")
         btnGenreConfirm.Text = Master.eLang.GetString(987, "Confirm")
         btnGenreConfirmAll.Text = Master.eLang.GetString(993, "Confirm All")
@@ -401,7 +401,7 @@ Public Class dlgGenreManager
         btnMappingConfirm.Text = Master.eLang.GetString(987, "Confirm")
         btnMappingConfirmAll.Text = Master.eLang.GetString(993, "Confirm All")
         btnMappingRemove.Text = Master.eLang.GetString(30, "Remove")
-        btnOK.Text = Master.eLang.GetString(179, "OK")
+        btnOK.Text = Master.eLang.OK
         dgvGenres.Columns(1).HeaderText = Master.eLang.GetString(20, "Genre")
         dgvMappings.Columns(0).HeaderText = Master.eLang.GetString(454, "Mapping")
         gbImage.Text = Master.eLang.GetString(497, "Images")

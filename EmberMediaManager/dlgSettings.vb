@@ -29,6 +29,7 @@ Imports NLog
 Public Class dlgSettings
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private currPanel As New Panel
@@ -45,7 +46,6 @@ Public Class dlgSettings
     Private SettingsPanels As New List(Of Containers.SettingsPanel)
     Private TVShowMatching As New List(Of Settings.regexp)
     Private sResult As New Structures.SettingsResult
-    'Private tLangList As New List(Of Containers.TVLanguage)
     Private TVMeta As New List(Of Settings.MetadataPerType)
     Public Event LoadEnd()
 
@@ -799,8 +799,9 @@ Public Class dlgSettings
             sResult.NeedsDBUpdate_TV OrElse
             sResult.NeedsReload_Movie OrElse
             sResult.NeedsReload_MovieSet OrElse
-            sResult.NeedsReload_TVShow Then _
+            sResult.NeedsReload_TVShow Then
             didApply = True
+        End If
     End Sub
 
     Private Sub btnMovieBackdropsPathBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourcesBackdropsFolderPathBrowse.Click
@@ -816,6 +817,7 @@ Public Class dlgSettings
 
     Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         If Not didApply Then sResult.DidCancel = True
+        Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage, True)
         RemoveScraperPanels()
         Close()
     End Sub
@@ -1752,10 +1754,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub cbGeneralLanguage_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbGeneralLanguage.SelectedIndexChanged
-        If Not cbGeneralLanguage.SelectedItem.ToString = Master.eSettings.GeneralLanguage Then
-            Handle_SetupNeedsRestart()
-        End If
-        SetApplyButton(True)
+        Cursor.Current = Cursors.WaitCursor
+        Master.eLang.LoadAllLanguage(cbGeneralLanguage.SelectedItem.ToString, True)
+        sResult.IsLanguageChanged = True
+        SetUp()
+        Cursor.Current = Cursors.Default
     End Sub
 
     Private Sub cbMovieTrailerPrefVideoQual_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbMovieTrailerPrefVideoQual.SelectedIndexChanged
@@ -2824,7 +2827,9 @@ Public Class dlgSettings
             btnMovieGeneralCustomMarker3.BackColor = Color.FromArgb(.MovieGeneralCustomMarker3Color)
             btnMovieGeneralCustomMarker4.BackColor = Color.FromArgb(.MovieGeneralCustomMarker4Color)
             cbGeneralDateTime.SelectedValue = .GeneralDateTime
+            RemoveHandler cbGeneralLanguage.SelectedIndexChanged, AddressOf cbGeneralLanguage_SelectedIndexChanged
             cbGeneralLanguage.SelectedItem = .GeneralLanguage
+            AddHandler cbGeneralLanguage.SelectedIndexChanged, AddressOf cbGeneralLanguage_SelectedIndexChanged
             cbGeneralMovieTheme.SelectedItem = .GeneralMovieTheme
             cbGeneralMovieSetTheme.SelectedItem = .GeneralMovieSetTheme
             cbGeneralTVEpisodeTheme.SelectedItem = .GeneralTVEpisodeTheme
@@ -3828,10 +3833,10 @@ Public Class dlgSettings
         Dim pWidth As Integer = CInt(Width)
         Dim pHeight As Integer = CInt(Height)
         If My.Computer.Screen.WorkingArea.Width < 1120 Then
-            pWidth = CInt(My.Computer.Screen.WorkingArea.Width)
+            pWidth = My.Computer.Screen.WorkingArea.Width
         End If
         If My.Computer.Screen.WorkingArea.Height < 900 Then
-            pHeight = CInt(My.Computer.Screen.WorkingArea.Height)
+            pHeight = My.Computer.Screen.WorkingArea.Height
         End If
         Size = New Size(pWidth, pHeight)
         Dim pLeft As Integer
@@ -3858,15 +3863,9 @@ Public Class dlgSettings
         FillSettings()
         lvMovieSources.ListViewItemSorter = New ListViewItemComparer(1)
         lvTVSources.ListViewItemSorter = New ListViewItemComparer(1)
-        sResult.NeedsDBClean_Movie = False
-        sResult.NeedsDBClean_TV = False
-        sResult.NeedsDBUpdate_Movie = False
-        sResult.NeedsDBUpdate_TV = False
-        sResult.NeedsReload_Movie = False
-        sResult.NeedsReload_MovieSet = False
-        sResult.NeedsReload_TVEpisode = False
-        sResult.NeedsReload_TVShow = False
-        sResult.DidCancel = False
+
+        'reset all triggers
+        sResult = New Structures.SettingsResult
         didApply = False
         NoUpdate = False
         RaiseEvent LoadEnd()
@@ -6766,14 +6765,14 @@ Public Class dlgSettings
 
         Text = Master.eLang.GetString(420, "Settings")
         btnApply.Text = Master.eLang.GetString(276, "Apply")
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        btnCancel.Text = Master.eLang.Cancel
         btnGeneralDigitGrpSymbolSettings.Text = Master.eLang.GetString(420, "Settings")
         btnMovieSetScraperTitleRenamerAdd.Text = Master.eLang.GetString(28, "Add")
         btnMovieSetScraperTitleRenamerRemove.Text = Master.eLang.GetString(30, "Remove")
         btnMovieSourceAdd.Text = Master.eLang.GetString(407, "Add Source")
         btnMovieSourceEdit.Text = Master.eLang.GetString(535, "Edit Source")
         btnMovieSourceRemove.Text = Master.eLang.GetString(30, "Remove")
-        btnOK.Text = Master.eLang.GetString(179, "OK")
+        btnOK.Text = Master.eLang.OK
         btnRemTVSource.Text = Master.eLang.GetString(30, "Remove")
         btnTVSourcesRegexTVShowMatchingAdd.Tag = String.Empty
         btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(690, "Edit Regex")

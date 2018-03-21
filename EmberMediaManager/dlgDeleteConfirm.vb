@@ -444,8 +444,8 @@ Public Class dlgDeleteConfirm
 
     Private Sub SetUp()
         Text = Master.eLang.GetString(714, "Confirm Items To Be Deleted")
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        btnOK.Text = Master.eLang.GetString(179, "OK")
+        btnCancel.Text = Master.eLang.Cancel
+        btnOK.Text = Master.eLang.OK
         btnToggleAllFiles.Text = Master.eLang.GetString(715, "Toggle All Files")
         tsslSelectedNode.Text = String.Empty
     End Sub

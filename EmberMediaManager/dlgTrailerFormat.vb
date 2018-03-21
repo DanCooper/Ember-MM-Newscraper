@@ -237,8 +237,8 @@ Public Class dlgTrailerFormat
         lblStatus.Text = Master.eLang.GetString(924, "Getting available formats...")
         gbAudioFormats.Text = Master.eLang.GetString(1333, "Available Audio Formats")
         gbVideoFormats.Text = Master.eLang.GetString(925, "Available Video Formats")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        OK_Button.Text = Master.eLang.OK
+        Cancel_Button.Text = Master.eLang.Cancel
     End Sub
 
 #End Region 'Methods

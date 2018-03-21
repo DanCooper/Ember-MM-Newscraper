@@ -12,19 +12,19 @@ Partial Public Class clsXMLRatings
     <System.Xml.Serialization.XmlArrayItemAttribute("name", IsNullable:=False)> _
     Public Property movies() As List(Of ratingsNameMovie)
         Get
-            Return Me.moviesField
+            Return moviesField
         End Get
         Set(value As List(Of ratingsNameMovie))
-            Me.moviesField = value
+            moviesField = value
         End Set
     End Property
     <System.Xml.Serialization.XmlArrayItemAttribute("name", IsNullable:=False)> _
     Public Property tv() As List(Of ratingsNameTV)
         Get
-            Return Me.tvField
+            Return tvField
         End Get
         Set(value As List(Of ratingsNameTV))
-            Me.tvField = value
+            tvField = value
         End Set
     End Property
 End Class
@@ -42,28 +42,28 @@ Partial Public Class ratingsNameMovie
 
     Public Property country() As String
         Get
-            Return Me.countryField
+            Return countryField
         End Get
         Set(value As String)
-            Me.countryField = value
+            countryField = value
         End Set
     End Property
 
     Public Property icon() As String
         Get
-            Return Me.iconField
+            Return iconField
         End Get
         Set(value As String)
-            Me.iconField = value
+            iconField = value
         End Set
     End Property
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property searchstring() As String
         Get
-            Return Me.searchstringField
+            Return searchstringField
         End Get
         Set(value As String)
-            Me.searchstringField = value
+            searchstringField = value
         End Set
     End Property
 End Class
@@ -79,28 +79,28 @@ Partial Public Class ratingsNameTV
 
     Public Property country() As String
         Get
-            Return Me.countryField
+            Return countryField
         End Get
         Set(value As String)
-            Me.countryField = value
+            countryField = value
         End Set
     End Property
 
     Public Property icon() As String
         Get
-            Return Me.iconField
+            Return iconField
         End Get
         Set(value As String)
-            Me.iconField = value
+            iconField = value
         End Set
     End Property
     <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property searchstring() As String
         Get
-            Return Me.searchstringField
+            Return searchstringField
         End Get
         Set(value As String)
-            Me.searchstringField = value
+            searchstringField = value
         End Set
     End Property
 End Class

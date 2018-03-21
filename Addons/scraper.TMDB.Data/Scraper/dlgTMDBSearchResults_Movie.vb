@@ -104,7 +104,7 @@ Public Class dlgTMDBSearchResults_Movie
 
     Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
         If Not String.IsNullOrEmpty(txtSearch.Text) AndAlso (String.IsNullOrEmpty(txtYear.Text) OrElse Integer.TryParse(txtYear.Text, 0)) Then
-            OK_Button.Enabled = False
+            btnOK.Enabled = False
             pnlPicStatus.Visible = False
             _InfoCache.Clear()
             _PosterCache.Clear()
@@ -157,7 +157,7 @@ Public Class dlgTMDBSearchResults_Movie
         pnlPicStatus.Visible = False
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         If _TMDB.bwTMDB.IsBusy Then
             _TMDB.CancelAsync()
         End If
@@ -169,7 +169,7 @@ Public Class dlgTMDBSearchResults_Movie
 
     Private Sub chkManual_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkManual.CheckedChanged
         ClearInfo()
-        OK_Button.Enabled = False
+        btnOK.Enabled = False
         txtTMDBID.Enabled = chkManual.Checked
         btnVerify.Enabled = chkManual.Checked
         tvResults.Enabled = Not chkManual.Checked
@@ -212,7 +212,7 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Sub dlgIMDBSearchResults_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles Me.GotFocus
-        AcceptButton = OK_Button
+        AcceptButton = btnOK
     End Sub
 
     Private Sub dlgTMDBSearchResults_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -234,13 +234,13 @@ Public Class dlgTMDBSearchResults_Movie
         tvResults.Focus()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         DialogResult = DialogResult.OK
     End Sub
 
     Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.Movie)
         pnlLoading.Visible = False
-        OK_Button.Enabled = True
+        btnOK.Enabled = True
 
         If sInfo IsNot Nothing Then
             ControlsVisible(True)
@@ -318,8 +318,8 @@ Public Class dlgTMDBSearchResults_Movie
     End Function
 
     Private Sub SetUp()
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        btnCancel.Text = Master.eLang.Cancel
+        btnOK.Text = Master.eLang.OK
         Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
         Label1.Text = Master.eLang.GetString(846, "Movie Search Results")
         chkManual.Text = Master.eLang.GetString(926, "Manual TMDB Entry:")
@@ -360,7 +360,7 @@ Public Class dlgTMDBSearchResults_Movie
         tmrLoad.Stop()
 
         ClearInfo()
-        OK_Button.Enabled = False
+        btnOK.Enabled = False
 
         If tvResults.SelectedNode.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(tvResults.SelectedNode.Tag.ToString) Then
             _currnode = tvResults.SelectedNode.Index
@@ -380,7 +380,7 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Sub tvResults_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles tvResults.GotFocus
-        AcceptButton = OK_Button
+        AcceptButton = btnOK
     End Sub
 
     Private Sub txtTMDBID_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles txtTMDBID.GotFocus
@@ -390,7 +390,7 @@ Public Class dlgTMDBSearchResults_Movie
     Private Sub txtTMDBID_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTMDBID.TextChanged
         If chkManual.Checked Then
             btnVerify.Enabled = True
-            OK_Button.Enabled = False
+            btnOK.Enabled = False
         End If
     End Sub
 

@@ -368,7 +368,7 @@ Public Class dlgEditTVSeason
         End If
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         DialogResult = DialogResult.Cancel
     End Sub
 
@@ -488,7 +488,7 @@ Public Class dlgEditTVSeason
         End With
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         SetInfo()
 
         DialogResult = DialogResult.OK
@@ -571,8 +571,8 @@ Public Class dlgEditTVSeason
     End Sub
 
     Private Sub SetInfo()
-        OK_Button.Enabled = False
-        Cancel_Button.Enabled = False
+        btnOK.Enabled = False
+        btnCancel.Enabled = False
 
         tmpDBElement.TVSeason.Aired = txtAired.Text.Trim
         tmpDBElement.TVSeason.Plot = txtPlot.Text.Trim
@@ -621,8 +621,8 @@ Public Class dlgEditTVSeason
         lblTitle.Text = strTitle
 
         Text = Master.eLang.GetString(769, "Edit Season")
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        btnCancel.Text = Master.eLang.Cancel
+        btnOK.Text = Master.eLang.OK
         lblTopTitle.Text = Text
         tblTopDetails.Text = Master.eLang.GetString(830, "Edit the details for the selected season.")
         tpBanner.Text = Master.eLang.GetString(838, "Banner")
