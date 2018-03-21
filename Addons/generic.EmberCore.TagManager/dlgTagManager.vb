@@ -137,8 +137,8 @@ Public Class dlgTagManager
         'fill movie datagridview
         If dgvMovies.Rows.Count = 0 Then
             dgvMovies.SuspendLayout()
-            Me.bsMovies.DataSource = Nothing
-            Me.dgvMovies.DataSource = Nothing
+            bsMovies.DataSource = Nothing
+            dgvMovies.DataSource = Nothing
             If lstFilteredMovies.Count > 0 Then
                 '  If Me.dtMovies.Rows.Count > 0 Then
                 With Me
@@ -234,7 +234,7 @@ Public Class dlgTagManager
         btnRemoveTag.Enabled = False
         btnAddMovie.Enabled = False
         btnRemoveMovie.Enabled = False
-        txtEditTag.Text = ""
+        txtEditTag.Text = String.Empty
         lbTags.ResumeLayout()
     End Sub
     ''' <summary>
@@ -304,7 +304,7 @@ Public Class dlgTagManager
                 End If
             Next
             dgvMovies.ClearSelection()
-            Me.dgvMovies.CurrentCell = Nothing
+            dgvMovies.CurrentCell = Nothing
             LoadMoviesOfSelectedTag()
         End If
     End Sub
@@ -350,7 +350,7 @@ Public Class dlgTagManager
                 btnRemoveTag.Enabled = False
                 btnAddMovie.Enabled = False
                 btnRemoveMovie.Enabled = False
-                txtEditTag.Text = ""
+                txtEditTag.Text = String.Empty
             End If
 
             ' no tag selected, disable remove/edit tag buttons, reset label
@@ -360,7 +360,7 @@ Public Class dlgTagManager
             btnRemoveTag.Enabled = False
             btnAddMovie.Enabled = False
             btnRemoveMovie.Enabled = False
-            txtEditTag.Text = ""
+            txtEditTag.Text = String.Empty
         End If
     End Sub
     ''' <summary>
@@ -523,7 +523,7 @@ Public Class dlgTagManager
         For Each tmovie As Database.DBElement In tag.Movies
             If tmovie.Movie.Title.EndsWith("_TODELETE") Then
                 tmovie.Movie.Tags.Remove(tag.Name)
-                tmovie.Movie.Title = tmovie.Movie.Title.Replace("_TODELETE", "")
+                tmovie.Movie.Title = tmovie.Movie.Title.Replace("_TODELETE", String.Empty)
                 Master.DB.Save_Movie(tmovie, True, True, False, True, False)
             Else
                 tmovie.Movie.Tags.Add(tag.Name)

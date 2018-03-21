@@ -5782,7 +5782,6 @@ Public Class dlgSettings
             End Try
         Next
         ModulesManager.Instance.SaveSettings()
-        Functions.CreateDefaultOptions()
     End Sub
 
     Private Sub SetApplyButton(ByVal v As Boolean)

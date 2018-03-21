@@ -786,6 +786,427 @@ Public Class Settings
 
 #End Region 'Properties
 
+#Region "Simplified Properties"
+
+    Public ReadOnly Property DefaultOptions_Movie As Structures.ScrapeOptions
+        Get
+            Dim scrapeOptions As New Structures.ScrapeOptions
+            With scrapeOptions
+                .bMainActors = MovieScraperCast
+                .bMainCertifications = MovieScraperCert
+                .bMainCollectionID = MovieScraperCollectionID
+                .bMainCountries = MovieScraperCountry
+                .bMainDirectors = MovieScraperDirector
+                .bMainGenres = MovieScraperGenre
+                .bMainMPAA = MovieScraperMPAA
+                .bMainOriginalTitle = MovieScraperOriginalTitle
+                .bMainOutline = MovieScraperOutline
+                .bMainPlot = MovieScraperPlot
+                .bMainRating = MovieScraperRating
+                .bMainRelease = MovieScraperRelease
+                .bMainRuntime = MovieScraperRuntime
+                .bMainStudios = MovieScraperStudio
+                .bMainTagline = MovieScraperTagline
+                .bMainTitle = MovieScraperTitle
+                .bMainTop250 = MovieScraperTop250
+                .bMainTrailer = MovieScraperTrailer
+                .bMainUserRating = MovieScraperUserRating
+                .bMainWriters = MovieScraperCredits
+                .bMainYear = MovieScraperYear
+            End With
+            Return scrapeOptions
+        End Get
+    End Property
+
+    Public ReadOnly Property DefaultOptions_MovieSet As Structures.ScrapeOptions
+        Get
+            Dim scrapeOptions As New Structures.ScrapeOptions
+            With scrapeOptions
+                .bMainPlot = MovieSetScraperPlot
+                .bMainTitle = MovieSetScraperTitle
+            End With
+            Return scrapeOptions
+        End Get
+    End Property
+
+    Public ReadOnly Property DefaultOptions_TV As Structures.ScrapeOptions
+        Get
+            Dim scrapeOptions As New Structures.ScrapeOptions
+            With scrapeOptions
+                .bEpisodeActors = TVScraperEpisodeActors
+                .bEpisodeAired = TVScraperEpisodeAired
+                .bEpisodeCredits = TVScraperEpisodeCredits
+                .bEpisodeDirectors = TVScraperEpisodeDirector
+                .bEpisodeGuestStars = TVScraperEpisodeGuestStars
+                .bEpisodePlot = TVScraperEpisodePlot
+                .bEpisodeRating = TVScraperEpisodeRating
+                .bEpisodeRuntime = TVScraperEpisodeRuntime
+                .bEpisodeTitle = TVScraperEpisodeTitle
+                .bEpisodeUserRating = TVScraperEpisodeUserRating
+                .bMainActors = TVScraperShowActors
+                .bMainCertifications = TVScraperShowCert
+                .bMainCountries = TVScraperShowCountry
+                .bMainCreators = TVScraperShowCreators
+                .bMainEpisodeGuide = TVScraperShowEpiGuideURL
+                .bMainGenres = TVScraperShowGenre
+                .bMainMPAA = TVScraperShowMPAA
+                .bMainOriginalTitle = TVScraperShowOriginalTitle
+                .bMainPlot = TVScraperShowPlot
+                .bMainPremiered = TVScraperShowPremiered
+                .bMainRating = TVScraperShowRating
+                .bMainRuntime = TVScraperShowRuntime
+                .bMainStatus = TVScraperShowStatus
+                .bMainStudios = TVScraperShowStudio
+                .bMainTitle = TVScraperShowTitle
+                .bMainUserRating = TVScraperShowUserRating
+                .bSeasonAired = TVScraperSeasonAired
+                .bSeasonPlot = TVScraperSeasonPlot
+                .bSeasonTitle = TVScraperSeasonTitle
+            End With
+            Return scrapeOptions
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieActorThumbsAnyEnabled As Boolean
+        Get
+            Return MovieActorThumbsEden OrElse MovieActorThumbsFrodo OrElse (MovieUseExpert AndAlso ((MovieActorThumbsExpertBDMV AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertBDMV)) OrElse (MovieActorThumbsExpertMulti AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertMulti)) OrElse (MovieActorThumbsExpertSingle AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertSingle)) OrElse (MovieActorThumbsExpertVTS AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertVTS))))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieBannerAnyEnabled As Boolean
+        Get
+            Return MovieBannerAD OrElse MovieBannerExtended OrElse MovieBannerNMJ OrElse MovieBannerYAMJ OrElse
+                (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieBannerExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieBannerExpertMulti) OrElse Not String.IsNullOrEmpty(MovieBannerExpertSingle) OrElse Not String.IsNullOrEmpty(MovieBannerExpertVTS)))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieClearArtAnyEnabled As Boolean
+        Get
+            Return MovieClearArtAD OrElse MovieClearArtExtended OrElse
+                (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieClearArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertVTS)))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieClearLogoAnyEnabled As Boolean
+        Get
+            Return MovieClearLogoAD OrElse MovieClearLogoExtended OrElse
+                (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieClearLogoExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertMulti) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertSingle) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertVTS)))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieDiscArtAnyEnabled As Boolean
+        Get
+            Return MovieDiscArtAD OrElse MovieDiscArtExtended OrElse
+                (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieDiscArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertVTS)))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieExtrafanartsAnyEnabled As Boolean
+        Get
+            Return MovieExtrafanartsEden OrElse MovieExtrafanartsFrodo OrElse
+                (MovieUseExpert AndAlso (MovieExtrafanartsExpertBDMV OrElse MovieExtrafanartsExpertSingle OrElse MovieExtrafanartsExpertVTS))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieExtrathumbsAnyEnabled As Boolean
+        Get
+            Return MovieExtrathumbsEden OrElse MovieExtrathumbsFrodo OrElse
+                (MovieUseExpert AndAlso (MovieExtrathumbsExpertBDMV OrElse MovieExtrathumbsExpertSingle OrElse MovieExtrathumbsExpertVTS))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieFanartAnyEnabled As Boolean
+        Get
+            Return MovieFanartBoxee OrElse MovieFanartEden OrElse MovieFanartFrodo OrElse MovieFanartNMJ OrElse MovieFanartYAMJ OrElse
+                (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieFanartExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(MovieFanartExpertSingle) OrElse Not String.IsNullOrEmpty(MovieFanartExpertVTS)))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieLandscapeAnyEnabled As Boolean
+        Get
+            Return MovieLandscapeAD OrElse MovieLandscapeExtended OrElse
+                (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieLandscapeExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertMulti) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertSingle) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertVTS)))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieMissingItemsAnyEnabled As Boolean
+        Get
+            Return MovieMissingBanner OrElse MovieMissingClearArt OrElse MovieMissingClearLogo OrElse MovieMissingDiscArt OrElse MovieMissingExtrafanarts OrElse
+                MovieMissingExtrathumbs OrElse MovieMissingFanart OrElse MovieMissingLandscape OrElse MovieMissingNFO OrElse MovieMissingPoster OrElse
+                MovieMissingSubtitles OrElse MovieMissingTheme OrElse MovieMissingTrailer
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieNFOAnyEnabled As Boolean
+        Get
+            Return MovieNFOBoxee OrElse MovieNFOEden OrElse MovieNFOFrodo OrElse MovieNFONMJ OrElse MovieNFOYAMJ OrElse
+                (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieNFOExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieNFOExpertMulti) OrElse Not String.IsNullOrEmpty(MovieNFOExpertSingle) OrElse Not String.IsNullOrEmpty(MovieNFOExpertVTS)))
+        End Get
+    End Property
+
+    Public ReadOnly Property MoviePosterAnyEnabled As Boolean
+        Get
+            Return MoviePosterBoxee OrElse MoviePosterEden OrElse MoviePosterFrodo OrElse MoviePosterNMJ OrElse MoviePosterYAMJ OrElse
+                (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MoviePosterExpertBDMV) OrElse Not String.IsNullOrEmpty(MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(MoviePosterExpertSingle) OrElse Not String.IsNullOrEmpty(MoviePosterExpertVTS)))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieThemeAnyEnabled As Boolean
+        Get
+            Return MovieThemeTvTunesEnable AndAlso (MovieThemeTvTunesMoviePath OrElse (MovieThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(MovieThemeTvTunesCustomPath) OrElse (MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(MovieThemeTvTunesSubDir))))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieTrailerAnyEnabled As Boolean
+        Get
+            Return MovieTrailerEden OrElse MovieTrailerFrodo OrElse MovieTrailerNMJ OrElse MovieTrailerYAMJ OrElse
+                (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieTrailerExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertMulti) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertSingle) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertVTS)))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieSetBannerAnyEnabled As Boolean
+        Get
+            Return (MovieSetBannerExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+                (MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
+                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieSetClearArtAnyEnabled As Boolean
+        Get
+            Return (MovieSetClearArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+                (MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
+                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle))))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieSetClearLogoAnyEnabled As Boolean
+        Get
+            Return (MovieSetClearLogoExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+                (MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
+                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearLogoExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle))))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieSetDiscArtAnyEnabled As Boolean
+        Get
+            Return (MovieSetDiscArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetDiscArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetDiscArtExpertSingle))))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieSetFanartAnyEnabled As Boolean
+        Get
+            Return (MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+                (MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
+                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetFanartExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetFanartExpertSingle))))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieSetLandscapeAnyEnabled As Boolean
+        Get
+            Return (MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+                (MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
+                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetLandscapeExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle))))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieSetMissingItemsAnyEnabled As Boolean
+        Get
+            Return MovieSetMissingBanner OrElse MovieSetMissingClearArt OrElse MovieSetMissingClearLogo OrElse MovieSetMissingDiscArt OrElse
+                MovieSetMissingFanart OrElse MovieSetMissingLandscape OrElse MovieSetMissingNFO OrElse MovieSetMissingPoster
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieSetNFOAnyEnabled As Boolean
+        Get
+            Return (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetNFOExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetNFOExpertSingle))))
+        End Get
+    End Property
+
+    Public ReadOnly Property MovieSetPosterAnyEnabled As Boolean
+        Get
+            Return (MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+                (MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
+                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVAllSeasonsAnyEnabled As Boolean
+        Get
+            Return TVAllSeasonsBannerAnyEnabled() OrElse TVAllSeasonsFanartAnyEnabled() OrElse TVAllSeasonsLandscapeAnyEnabled() OrElse TVAllSeasonsPosterAnyEnabled()
+        End Get
+    End Property
+
+    Public ReadOnly Property TVAllSeasonsBannerAnyEnabled As Boolean
+        Get
+            Return TVSeasonBannerFrodo OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsBannerExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVAllSeasonsFanartAnyEnabled As Boolean
+        Get
+            Return TVSeasonFanartFrodo OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsFanartExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVAllSeasonsLandscapeAnyEnabled As Boolean
+        Get
+            Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsLandscapeExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVAllSeasonsPosterAnyEnabled As Boolean
+        Get
+            Return TVSeasonPosterFrodo OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsPosterExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVEpisodeActorThumbsAnyEnabled As Boolean
+        Get
+            Return TVEpisodeActorThumbsFrodo OrElse
+                (TVUseExpert AndAlso TVEpisodeActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeActorThumbsExtExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVEpisodeFanartAnyEnabled As Boolean
+        Get
+            Return (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeFanartExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVEpisodeNFOAnyEnabled As Boolean
+        Get
+            Return TVEpisodeNFOBoxee OrElse TVEpisodeNFOFrodo OrElse TVEpisodeNFOYAMJ OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeNFOExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVEpisodePosterAnyEnabled As Boolean
+        Get
+            Return TVEpisodePosterBoxee OrElse TVEpisodePosterFrodo OrElse TVEpisodePosterYAMJ OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodePosterExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVSeasonBannerAnyEnabled As Boolean
+        Get
+            Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonBannerExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVSeasonFanartAnyEnabled As Boolean
+        Get
+            Return TVSeasonFanartFrodo OrElse TVSeasonFanartYAMJ OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonFanartExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVSeasonLandscapeAnyEnabled As Boolean
+        Get
+            Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonLandscapeExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVSeasonPosterAnyEnabled As Boolean
+        Get
+            Return TVSeasonPosterBoxee OrElse TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonPosterExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowActorThumbsAnyEnabled As Boolean
+        Get
+            Return TVShowActorThumbsFrodo OrElse
+                (TVUseExpert AndAlso TVShowActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVShowActorThumbsExtExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowBannerAnyEnabled As Boolean
+        Get
+            Return TVShowBannerBoxee OrElse TVShowBannerFrodo OrElse TVShowBannerYAMJ OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowBannerExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowCharacterArtAnyEnabled As Boolean
+        Get
+            Return TVShowCharacterArtAD OrElse TVShowCharacterArtExtended OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowCharacterArtExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowClearArtAnyEnabled As Boolean
+        Get
+            Return TVShowClearArtAD OrElse TVShowClearArtExtended OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearArtExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowClearLogoAnyEnabled As Boolean
+        Get
+            Return TVShowClearLogoAD OrElse TVShowClearLogoExtended OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearLogoExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowExtrafanartsAnyEnabled As Boolean
+        Get
+            Return TVShowExtrafanartsFrodo OrElse
+                (TVUseExpert AndAlso TVShowExtrafanartsExpert)
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowFanartAnyEnabled As Boolean
+        Get
+            Return TVShowFanartBoxee OrElse TVShowFanartFrodo OrElse TVShowFanartYAMJ OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowFanartExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowLandscapeAnyEnabled As Boolean
+        Get
+            Return TVShowLandscapeAD OrElse TVShowLandscapeExtended OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowLandscapeExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowMissingItemsAnyEnabled As Boolean
+        Get
+            Return TVShowMissingBanner OrElse TVShowMissingCharacterArt OrElse TVShowMissingClearArt OrElse TVShowMissingClearLogo OrElse
+                TVShowMissingExtrafanarts OrElse TVShowMissingFanart OrElse TVShowMissingLandscape OrElse TVShowMissingNFO OrElse
+                TVShowMissingPoster OrElse TVShowMissingTheme
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowNFOAnyEnabled As Boolean
+        Get
+            Return TVShowNFOBoxee OrElse TVShowNFOFrodo OrElse TVShowNFOYAMJ OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowNFOExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TVShowPosterAnyEnabled As Boolean
+        Get
+            Return TVShowPosterBoxee OrElse TVShowPosterFrodo OrElse TVShowPosterYAMJ OrElse
+                (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowPosterExpert))
+        End Get
+    End Property
+
+    Public ReadOnly Property TvShowThemeAnyEnabled As Boolean
+        Get
+            Return TVShowThemeTvTunesEnable AndAlso (TVShowThemeTvTunesShowPath OrElse (TVShowThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesCustomPath) OrElse (TVShowThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesSubDir))))
+        End Get
+    End Property
+
+#End Region 'Simplified Properties
+
 #Region "Methods"
 
     Public Sub Load()
@@ -878,9 +1299,9 @@ Public Class Settings
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MainTabSorting) AndAlso (Force OrElse Master.eSettings.GeneralMainTabSorting.Count = 0) Then
             Master.eSettings.GeneralMainTabSorting.Clear()
-            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.Movie, .DefaultList = "movielist", .Enabled = True, .Order = 0, .Title = Master.eLang.GetString(36, "Movies")})
-            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist", .Enabled = True, .Order = 1, .Title = Master.eLang.GetString(366, "Sets")})
-            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.TVShow, .DefaultList = "tvshowlist", .Enabled = True, .Order = 2, .Title = Master.eLang.GetString(653, "TV Shows")})
+            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.Movie, .DefaultList = "movielist", .Order = 0, .Title = Master.eLang.GetString(36, "Movies")})
+            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist", .Order = 1, .Title = Master.eLang.GetString(366, "Sets")})
+            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist", .Order = 2, .Title = Master.eLang.GetString(653, "TV Shows")})
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
@@ -1135,249 +1556,6 @@ Public Class Settings
         Return Paths
     End Function
 
-    Public Function MovieActorThumbsAnyEnabled() As Boolean
-        Return MovieActorThumbsEden OrElse MovieActorThumbsFrodo OrElse
-            (MovieUseExpert AndAlso ((MovieActorThumbsExpertBDMV AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertBDMV)) OrElse (MovieActorThumbsExpertMulti AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertMulti)) OrElse (MovieActorThumbsExpertSingle AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertSingle)) OrElse (MovieActorThumbsExpertVTS AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertVTS))))
-    End Function
-
-    Public Function MovieBannerAnyEnabled() As Boolean
-        Return MovieBannerAD OrElse MovieBannerExtended OrElse MovieBannerNMJ OrElse MovieBannerYAMJ OrElse
-            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieBannerExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieBannerExpertMulti) OrElse Not String.IsNullOrEmpty(MovieBannerExpertSingle) OrElse Not String.IsNullOrEmpty(MovieBannerExpertVTS)))
-    End Function
-
-    Public Function MovieClearArtAnyEnabled() As Boolean
-        Return MovieClearArtAD OrElse MovieClearArtExtended OrElse
-            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieClearArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertVTS)))
-    End Function
-
-    Public Function MovieClearLogoAnyEnabled() As Boolean
-        Return MovieClearLogoAD OrElse MovieClearLogoExtended OrElse
-            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieClearLogoExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertMulti) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertSingle) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertVTS)))
-    End Function
-
-    Public Function MovieDiscArtAnyEnabled() As Boolean
-        Return MovieDiscArtAD OrElse MovieDiscArtExtended OrElse
-            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieDiscArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertVTS)))
-    End Function
-
-    Public Function MovieExtrafanartsAnyEnabled() As Boolean
-        Return MovieExtrafanartsEden OrElse MovieExtrafanartsFrodo OrElse
-            (MovieUseExpert AndAlso (MovieExtrafanartsExpertBDMV OrElse MovieExtrafanartsExpertSingle OrElse MovieExtrafanartsExpertVTS))
-    End Function
-
-    Public Function MovieExtrathumbsAnyEnabled() As Boolean
-        Return MovieExtrathumbsEden OrElse MovieExtrathumbsFrodo OrElse
-            (MovieUseExpert AndAlso (MovieExtrathumbsExpertBDMV OrElse MovieExtrathumbsExpertSingle OrElse MovieExtrathumbsExpertVTS))
-    End Function
-
-    Public Function MovieFanartAnyEnabled() As Boolean
-        Return MovieFanartBoxee OrElse MovieFanartEden OrElse MovieFanartFrodo OrElse MovieFanartNMJ OrElse MovieFanartYAMJ OrElse
-            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieFanartExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(MovieFanartExpertSingle) OrElse Not String.IsNullOrEmpty(MovieFanartExpertVTS)))
-    End Function
-
-    Public Function MovieLandscapeAnyEnabled() As Boolean
-        Return MovieLandscapeAD OrElse MovieLandscapeExtended OrElse
-            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieLandscapeExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertMulti) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertSingle) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertVTS)))
-    End Function
-
-    Public Function MovieMissingItemsAnyEnabled() As Boolean
-        Return MovieMissingBanner OrElse MovieMissingClearArt OrElse MovieMissingClearLogo OrElse MovieMissingDiscArt OrElse MovieMissingExtrafanarts OrElse
-            MovieMissingExtrathumbs OrElse MovieMissingFanart OrElse MovieMissingLandscape OrElse MovieMissingNFO OrElse MovieMissingPoster OrElse
-            MovieMissingSubtitles OrElse MovieMissingTheme OrElse MovieMissingTrailer
-    End Function
-
-    Public Function MovieNFOAnyEnabled() As Boolean
-        Return MovieNFOBoxee OrElse MovieNFOEden OrElse MovieNFOFrodo OrElse MovieNFONMJ OrElse MovieNFOYAMJ OrElse
-            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieNFOExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieNFOExpertMulti) OrElse Not String.IsNullOrEmpty(MovieNFOExpertSingle) OrElse Not String.IsNullOrEmpty(MovieNFOExpertVTS)))
-    End Function
-
-    Public Function MoviePosterAnyEnabled() As Boolean
-        Return MoviePosterBoxee OrElse MoviePosterEden OrElse MoviePosterFrodo OrElse MoviePosterNMJ OrElse MoviePosterYAMJ OrElse
-            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MoviePosterExpertBDMV) OrElse Not String.IsNullOrEmpty(MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(MoviePosterExpertSingle) OrElse Not String.IsNullOrEmpty(MoviePosterExpertVTS)))
-    End Function
-
-    Public Function MovieThemeAnyEnabled() As Boolean
-        Return MovieThemeTvTunesEnable AndAlso (MovieThemeTvTunesMoviePath OrElse (MovieThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(MovieThemeTvTunesCustomPath) OrElse (MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(MovieThemeTvTunesSubDir))))
-    End Function
-
-    Public Function MovieTrailerAnyEnabled() As Boolean
-        Return MovieTrailerEden OrElse MovieTrailerFrodo OrElse MovieTrailerNMJ OrElse MovieTrailerYAMJ OrElse
-            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieTrailerExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertMulti) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertSingle) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertVTS)))
-    End Function
-
-    Public Function MovieSetBannerAnyEnabled() As Boolean
-        Return (MovieSetBannerExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
-    End Function
-
-    Public Function MovieSetClearArtAnyEnabled() As Boolean
-        Return (MovieSetClearArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle))))
-    End Function
-
-    Public Function MovieSetClearLogoAnyEnabled() As Boolean
-        Return (MovieSetClearLogoExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearLogoExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle))))
-    End Function
-
-    Public Function MovieSetDiscArtAnyEnabled() As Boolean
-        Return (MovieSetDiscArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetDiscArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetDiscArtExpertSingle))))
-    End Function
-
-    Public Function MovieSetFanartAnyEnabled() As Boolean
-        Return (MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetFanartExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetFanartExpertSingle))))
-    End Function
-
-    Public Function MovieSetLandscapeAnyEnabled() As Boolean
-        Return (MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetLandscapeExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle))))
-    End Function
-
-    Public Function MovieSetMissingItemsAnyEnabled() As Boolean
-        Return MovieSetMissingBanner OrElse MovieSetMissingClearArt OrElse MovieSetMissingClearLogo OrElse MovieSetMissingDiscArt OrElse
-            MovieSetMissingFanart OrElse MovieSetMissingLandscape OrElse MovieSetMissingNFO OrElse MovieSetMissingPoster
-    End Function
-
-    Public Function MovieSetNFOAnyEnabled() As Boolean
-        Return (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetNFOExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetNFOExpertSingle))))
-    End Function
-
-    Public Function MovieSetPosterAnyEnabled() As Boolean
-        Return (MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
-    End Function
-
-    Public Function TVAllSeasonsAnyEnabled() As Boolean
-        Return TVAllSeasonsBannerAnyEnabled() OrElse TVAllSeasonsFanartAnyEnabled() OrElse TVAllSeasonsLandscapeAnyEnabled() OrElse TVAllSeasonsPosterAnyEnabled()
-    End Function
-
-    Public Function TVAllSeasonsBannerAnyEnabled() As Boolean
-        Return TVSeasonBannerFrodo OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsBannerExpert))
-    End Function
-
-    Public Function TVAllSeasonsFanartAnyEnabled() As Boolean
-        Return TVSeasonFanartFrodo OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsFanartExpert))
-    End Function
-
-    Public Function TVAllSeasonsLandscapeAnyEnabled() As Boolean
-        Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsLandscapeExpert))
-    End Function
-
-    Public Function TVAllSeasonsPosterAnyEnabled() As Boolean
-        Return TVSeasonPosterFrodo OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsPosterExpert))
-    End Function
-
-    Public Function TVEpisodeActorThumbsAnyEnabled() As Boolean
-        Return TVEpisodeActorThumbsFrodo OrElse
-            (TVUseExpert AndAlso TVEpisodeActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeActorThumbsExtExpert))
-    End Function
-
-    Public Function TVEpisodeFanartAnyEnabled() As Boolean
-        Return (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeFanartExpert))
-    End Function
-
-    Public Function TVEpisodeNFOAnyEnabled() As Boolean
-        Return TVEpisodeNFOBoxee OrElse TVEpisodeNFOFrodo OrElse TVEpisodeNFOYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeNFOExpert))
-    End Function
-
-    Public Function TVEpisodePosterAnyEnabled() As Boolean
-        Return TVEpisodePosterBoxee OrElse TVEpisodePosterFrodo OrElse TVEpisodePosterYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodePosterExpert))
-    End Function
-
-    Public Function TVSeasonBannerAnyEnabled() As Boolean
-        Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonBannerExpert))
-    End Function
-
-    Public Function TVSeasonFanartAnyEnabled() As Boolean
-        Return TVSeasonFanartFrodo OrElse TVSeasonFanartYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonFanartExpert))
-    End Function
-
-    Public Function TVSeasonLandscapeAnyEnabled() As Boolean
-        Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonLandscapeExpert))
-    End Function
-
-    Public Function TVSeasonPosterAnyEnabled() As Boolean
-        Return TVSeasonPosterBoxee OrElse TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonPosterExpert))
-    End Function
-
-    Public Function TVShowActorThumbsAnyEnabled() As Boolean
-        Return TVShowActorThumbsFrodo OrElse
-            (TVUseExpert AndAlso TVShowActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVShowActorThumbsExtExpert))
-    End Function
-
-    Public Function TVShowBannerAnyEnabled() As Boolean
-        Return TVShowBannerBoxee OrElse TVShowBannerFrodo OrElse TVShowBannerYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowBannerExpert))
-    End Function
-
-    Public Function TVShowCharacterArtAnyEnabled() As Boolean
-        Return TVShowCharacterArtAD OrElse TVShowCharacterArtExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowCharacterArtExpert))
-    End Function
-
-    Public Function TVShowClearArtAnyEnabled() As Boolean
-        Return TVShowClearArtAD OrElse TVShowClearArtExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearArtExpert))
-    End Function
-
-    Public Function TVShowClearLogoAnyEnabled() As Boolean
-        Return TVShowClearLogoAD OrElse TVShowClearLogoExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearLogoExpert))
-    End Function
-
-    Public Function TVShowExtrafanartsAnyEnabled() As Boolean
-        Return TVShowExtrafanartsFrodo OrElse
-            (TVUseExpert AndAlso TVShowExtrafanartsExpert)
-    End Function
-
-    Public Function TVShowFanartAnyEnabled() As Boolean
-        Return TVShowFanartBoxee OrElse TVShowFanartFrodo OrElse TVShowFanartYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowFanartExpert))
-    End Function
-
-    Public Function TVShowLandscapeAnyEnabled() As Boolean
-        Return TVShowLandscapeAD OrElse TVShowLandscapeExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowLandscapeExpert))
-    End Function
-
-    Public Function TVShowMissingItemsAnyEnabled() As Boolean
-        Return TVShowMissingBanner OrElse TVShowMissingCharacterArt OrElse TVShowMissingClearArt OrElse TVShowMissingClearLogo OrElse
-            TVShowMissingExtrafanarts OrElse TVShowMissingFanart OrElse TVShowMissingLandscape OrElse TVShowMissingNFO OrElse
-            TVShowMissingPoster OrElse TVShowMissingTheme
-    End Function
-
-    Public Function TVShowNFOAnyEnabled() As Boolean
-        Return TVShowNFOBoxee OrElse TVShowNFOFrodo OrElse TVShowNFOYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowNFOExpert))
-    End Function
-
-    Public Function TVShowPosterAnyEnabled() As Boolean
-        Return TVShowPosterBoxee OrElse TVShowPosterFrodo OrElse TVShowPosterYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowPosterExpert))
-    End Function
-
-    Public Function TvShowThemeAnyEnabled() As Boolean
-        Return TVShowThemeTvTunesEnable AndAlso (TVShowThemeTvTunesShowPath OrElse (TVShowThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesCustomPath) OrElse (TVShowThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesSubDir))))
-    End Function
-
 #End Region 'Methods
 
 #Region "Nested Types"
@@ -1541,7 +1719,6 @@ Public Class Settings
 
         Public Property ContentType As Enums.ContentType = Enums.ContentType.None
         Public Property DefaultList As String = String.Empty
-        Public Property Enabled As Boolean = True
         Public Property Order As Integer = -1
         Public Property Title As String = String.Empty
 

@@ -33,9 +33,6 @@ Public Class Master
     Public Shared AppPos As New Drawing.Rectangle
     Public Shared CanScanDiscImage As Boolean
     Public Shared DB As New Database
-    Public Shared DefaultOptions_Movie As New Structures.ScrapeOptions
-    Public Shared DefaultOptions_MovieSet As New Structures.ScrapeOptions
-    Public Shared DefaultOptions_TV As New Structures.ScrapeOptions
     Public Shared SettingsPath As String = Path.Combine(Functions.AppPath, "Profiles\Default")
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared eLang As New Localization

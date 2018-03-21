@@ -1573,7 +1573,7 @@ Public Class dlgEditMovie
             btnPlayTrailer.Enabled = False
         End If
 
-        btnDLTrailer.Enabled = Master.DefaultOptions_Movie.bMainTrailer
+        btnDLTrailer.Enabled = Master.eSettings.DefaultOptions_Movie.bMainTrailer
 
         For i As Integer = 0 To clbGenre.Items.Count - 1
             clbGenre.SetItemChecked(i, False)

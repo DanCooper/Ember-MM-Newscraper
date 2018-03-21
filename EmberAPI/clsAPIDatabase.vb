@@ -1379,6 +1379,19 @@ Public Class Database
         End Using
         Return nList.ToArray
     End Function
+
+    Public Function GetAllYears_Movie() As String()
+        Dim nList As New List(Of String)
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT DISTINCT Year FROM movie WHERE Year <> '' ORDER BY Year;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    nList.Add(SQLreader("Year").ToString)
+                End While
+            End Using
+        End Using
+        Return nList.ToArray
+    End Function
     ''' <summary>
     ''' Get a list of excluded directories
     ''' </summary>
@@ -1578,6 +1591,15 @@ Public Class Database
 
     Public Function DeleteView(ByVal ViewName As String) As Boolean
         If String.IsNullOrEmpty(ViewName) Then Return False
+        If ViewName = "episodelist" OrElse
+            ViewName = "movielist" OrElse
+            ViewName = "seasonlist" OrElse
+            ViewName = "setslist" OrElse
+            ViewName = "tvshowlist" Then
+            logger.Error("It's not allowed to remove a default list")
+            Return False
+        End If
+
         Try
             Dim SQLtransaction As SQLiteTransaction = Nothing
             SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -1657,7 +1679,7 @@ Public Class Database
         End If
     End Function
 
-    Public Function GetViewList(ByVal Type As Enums.ContentType) As List(Of String)
+    Public Function GetViewList(ByVal Type As Enums.ContentType, ByVal onlyCustomLists As Boolean) As List(Of String)
         Dim ViewList As New List(Of String)
         Dim ContentType As String = String.Empty
 
@@ -1684,14 +1706,19 @@ Public Class Database
                 End Using
             End Using
 
-            'remove default lists
+            If onlyCustomLists Then
+                'remove default lists
+                If ViewList.Contains("movielist") Then ViewList.Remove("movielist")
+                If ViewList.Contains("setslist") Then ViewList.Remove("setslist")
+                If ViewList.Contains("tvshowlist") Then ViewList.Remove("tvshowlist")
+            End If
+
+            'remove default lists that are currently not supported to add or customize
             If ViewList.Contains("episodelist") Then ViewList.Remove("episodelist")
-            If ViewList.Contains("movielist") Then ViewList.Remove("movielist")
             If ViewList.Contains("seasonslist") Then ViewList.Remove("seasonslist")
-            If ViewList.Contains("setslist") Then ViewList.Remove("setslist")
-            If ViewList.Contains("tvshowlist") Then ViewList.Remove("tvshowlist")
         End If
 
+        ViewList.Sort()
         Return ViewList
     End Function
 

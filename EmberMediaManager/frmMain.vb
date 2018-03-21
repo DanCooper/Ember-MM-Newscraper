@@ -109,16 +109,13 @@ Public Class frmMain
     Private prevRow_TVShow As Integer = -1
 
     'list movies
-    Private currList_Movies As String = "movielist" 'default movie list SQLite view
-    Private listViews_Movies As New Dictionary(Of String, String)
+    Private currList_Movies As String = "movielist" 'default movie list SQLite view, needed for LoadWithCommandLine() 
 
     'list moviesets
-    Private currList_MovieSets As String = "setslist" 'default moviesets list SQLite view
-    Private listViews_MovieSets As New Dictionary(Of String, String)
+    Private currList_MovieSets As String = "setslist" 'default moviesets list SQLite view, needed for LoadWithCommandLine() 
 
     'list shows
-    Private currList_TVShows As String = "tvshowlist" 'default tv show list SQLite view
-    Private listViews_TVShows As New Dictionary(Of String, String)
+    Private currList_TVShows As String = "tvshowlist" 'default tv show list SQLite view, needed for LoadWithCommandLine() 
 
     'filter movies
     Private bDoingSearch_Movies As Boolean = False
@@ -157,6 +154,7 @@ Public Class frmMain
     Private tTheme As New Theming
     Private CloseApp As Boolean = False
 
+    'Scraper menu tags
     Private _SelectedScrapeType As String = String.Empty
     Private _SelectedScrapeTypeMode As String = String.Empty
     Private _SelectedContentType As String = String.Empty
@@ -349,16 +347,16 @@ Public Class frmMain
         pbStar8.Image = Nothing
         pbStar9.Image = Nothing
         pbStar10.Image = Nothing
-        ToolTips.SetToolTip(pbStar1, "")
-        ToolTips.SetToolTip(pbStar2, "")
-        ToolTips.SetToolTip(pbStar3, "")
-        ToolTips.SetToolTip(pbStar4, "")
-        ToolTips.SetToolTip(pbStar5, "")
-        ToolTips.SetToolTip(pbStar6, "")
-        ToolTips.SetToolTip(pbStar7, "")
-        ToolTips.SetToolTip(pbStar8, "")
-        ToolTips.SetToolTip(pbStar9, "")
-        ToolTips.SetToolTip(pbStar10, "")
+        ToolTips.SetToolTip(pbStar1, String.Empty)
+        ToolTips.SetToolTip(pbStar2, String.Empty)
+        ToolTips.SetToolTip(pbStar3, String.Empty)
+        ToolTips.SetToolTip(pbStar4, String.Empty)
+        ToolTips.SetToolTip(pbStar5, String.Empty)
+        ToolTips.SetToolTip(pbStar6, String.Empty)
+        ToolTips.SetToolTip(pbStar7, String.Empty)
+        ToolTips.SetToolTip(pbStar8, String.Empty)
+        ToolTips.SetToolTip(pbStar9, String.Empty)
+        ToolTips.SetToolTip(pbStar10, String.Empty)
 
         lstActors.Items.Clear()
         If alActors IsNot Nothing Then
@@ -398,13 +396,13 @@ Public Class frmMain
         pbAudioLang4.Image = Nothing
         pbAudioLang5.Image = Nothing
         pbAudioLang6.Image = Nothing
-        ToolTips.SetToolTip(pbAudioLang0, "")
-        ToolTips.SetToolTip(pbAudioLang1, "")
-        ToolTips.SetToolTip(pbAudioLang2, "")
-        ToolTips.SetToolTip(pbAudioLang3, "")
-        ToolTips.SetToolTip(pbAudioLang4, "")
-        ToolTips.SetToolTip(pbAudioLang5, "")
-        ToolTips.SetToolTip(pbAudioLang6, "")
+        ToolTips.SetToolTip(pbAudioLang0, String.Empty)
+        ToolTips.SetToolTip(pbAudioLang1, String.Empty)
+        ToolTips.SetToolTip(pbAudioLang2, String.Empty)
+        ToolTips.SetToolTip(pbAudioLang3, String.Empty)
+        ToolTips.SetToolTip(pbAudioLang4, String.Empty)
+        ToolTips.SetToolTip(pbAudioLang5, String.Empty)
+        ToolTips.SetToolTip(pbAudioLang6, String.Empty)
         pbSubtitleLang0.Image = Nothing
         pbSubtitleLang1.Image = Nothing
         pbSubtitleLang2.Image = Nothing
@@ -412,13 +410,13 @@ Public Class frmMain
         pbSubtitleLang4.Image = Nothing
         pbSubtitleLang5.Image = Nothing
         pbSubtitleLang6.Image = Nothing
-        ToolTips.SetToolTip(pbSubtitleLang0, "")
-        ToolTips.SetToolTip(pbSubtitleLang1, "")
-        ToolTips.SetToolTip(pbSubtitleLang2, "")
-        ToolTips.SetToolTip(pbSubtitleLang3, "")
-        ToolTips.SetToolTip(pbSubtitleLang4, "")
-        ToolTips.SetToolTip(pbSubtitleLang5, "")
-        ToolTips.SetToolTip(pbSubtitleLang6, "")
+        ToolTips.SetToolTip(pbSubtitleLang0, String.Empty)
+        ToolTips.SetToolTip(pbSubtitleLang1, String.Empty)
+        ToolTips.SetToolTip(pbSubtitleLang2, String.Empty)
+        ToolTips.SetToolTip(pbSubtitleLang3, String.Empty)
+        ToolTips.SetToolTip(pbSubtitleLang4, String.Empty)
+        ToolTips.SetToolTip(pbSubtitleLang5, String.Empty)
+        ToolTips.SetToolTip(pbSubtitleLang6, String.Empty)
 
         txtMetaData.Text = String.Empty
 
@@ -549,7 +547,7 @@ Public Class frmMain
 
         tTheme.ApplyTheme(tType)
 
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
 
         Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
             Case 1
@@ -673,7 +671,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             InfoPanelState_Movie = 0
@@ -727,7 +725,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnMid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMid.Click
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             InfoPanelState_Movie = 1
@@ -740,19 +738,19 @@ Public Class frmMain
     End Sub
 
     Private Sub btnMIRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
 
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             If dgvMovies.SelectedRows.Count = 1 Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMeta, True)
-                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_Movie, ScrapeModifiers)
+                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
             End If
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
             If dgvTVEpisodes.SelectedRows.Count = 1 AndAlso currTV.FilenameSpecified Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
-                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
+                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
             End If
         End If
     End Sub
@@ -1013,7 +1011,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             InfoPanelState_Movie = 2
@@ -4029,7 +4027,7 @@ Public Class frmMain
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
 
-        If Not ModulesManager.Instance.ScrapeData_TVShow(tmpShow, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, True) Then
+        If Not ModulesManager.Instance.ScrapeData_TVShow(tmpShow, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, True) Then
             If tmpShow.Episodes.Count > 0 Then
                 Dim dlgChangeEp As New dlgTVChangeEp(tmpShow)
                 If dlgChangeEp.ShowDialog = DialogResult.OK Then
@@ -4071,7 +4069,7 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
-            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifiers)
+            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
         End If
     End Sub
 
@@ -5177,7 +5175,7 @@ Public Class frmMain
         If dgvTVEpisodes.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifiers)
+            CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
         End If
     End Sub
 
@@ -5185,7 +5183,7 @@ Public Class frmMain
         If dgvMovies.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifiers)
+            CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
         End If
     End Sub
 
@@ -5193,7 +5191,7 @@ Public Class frmMain
         If dgvMovieSets.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+            CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifiers)
         End If
     End Sub
 
@@ -5203,7 +5201,7 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
-            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifiers)
+            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
         End If
     End Sub
     ''' <summary>
@@ -5218,7 +5216,7 @@ Public Class frmMain
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifiers)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
     End Sub
     ''' <summary>
     ''' User has selected "Change Movie" from the context menu. This will re-validate the movie title with the user,
@@ -5232,7 +5230,7 @@ Public Class frmMain
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.DefaultOptions_Movie, ScrapeModifiers)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
     End Sub
 
     Private Sub cmnuSeasonEdit_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonEdit.Click
@@ -5283,7 +5281,7 @@ Public Class frmMain
         If dgvTVSeasons.SelectedRows.Count > 0 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_TVSeason(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifiers)
+            CreateScrapeList_TVSeason(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
         End If
     End Sub
 
@@ -5436,9 +5434,9 @@ Public Class frmMain
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMeta, True)
             End Select
             If Master.eSettings.MovieClickScrapeAsk Then
-                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_Movie, ScrapeModifiers)
+                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAsk, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
             Else
-                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_Movie, ScrapeModifiers)
+                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
             End If
         End If
     End Sub
@@ -5455,7 +5453,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMovies_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellEnter
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         If Not currMainTabTag.ContentType = Enums.ContentType.Movie Then Return
 
         tmrWait_TVShow.Stop()
@@ -6053,9 +6051,9 @@ Public Class frmMain
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
             End Select
             If Master.eSettings.MovieSetClickScrapeAsk Then
-                CreateScrapeList_MovieSet(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+                CreateScrapeList_MovieSet(Enums.ScrapeType.SelectedAsk, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifiers)
             Else
-                CreateScrapeList_MovieSet(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+                CreateScrapeList_MovieSet(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifiers)
             End If
         End If
     End Sub
@@ -6072,7 +6070,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMovieSets_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellEnter
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         If Not currMainTabTag.ContentType = Enums.ContentType.MovieSet Then Return
 
         tmrWait_TVShow.Stop()
@@ -6503,9 +6501,9 @@ Public Class frmMain
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
             End Select
             If Master.eSettings.TVGeneralClickScrapeAsk Then
-                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
+                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAsk, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
             Else
-                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
+                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
             End If
         End If
     End Sub
@@ -6523,7 +6521,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         If Not currMainTabTag.ContentType = Enums.ContentType.TV OrElse Not currList = 2 Then Return
 
         tmrWait_TVShow.Stop()
@@ -6980,9 +6978,9 @@ Public Class frmMain
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonPoster, True)
             End Select
             If Master.eSettings.TVGeneralClickScrapeAsk Then
-                CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
+                CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAsk, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
             Else
-                CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
+                CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
             End If
         End If
     End Sub
@@ -6999,7 +6997,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvTVSeasons_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellEnter
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         If Not currMainTabTag.ContentType = Enums.ContentType.TV OrElse Not currList = 1 Then Return
 
         tmrWait_TVShow.Stop()
@@ -7392,9 +7390,9 @@ Public Class frmMain
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTheme, True)
             End Select
             If Master.eSettings.TVGeneralClickScrapeAsk Then
-                CreateScrapeList_TV(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
+                CreateScrapeList_TV(Enums.ScrapeType.SelectedAsk, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
             Else
-                CreateScrapeList_TV(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
+                CreateScrapeList_TV(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
             End If
         End If
     End Sub
@@ -7411,7 +7409,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvTVShows_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         If Not currMainTabTag.ContentType = Enums.ContentType.TV OrElse Not currList = 0 Then Return
 
         tmrWait_Movie.Stop()
@@ -8035,12 +8033,12 @@ Public Class frmMain
                     Case DialogResult.Retry
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifiers)
+                        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
                     Case DialogResult.Abort
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifiers)
+                        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
                     Case Else
                         If InfoCleared Then LoadInfo_Movie(DBMovie.ID)
                 End Select
@@ -8066,12 +8064,12 @@ Public Class frmMain
                 Case DialogResult.Retry
                     Dim ScrapeModifier As New Structures.ScrapeModifiers
                     Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
-                    CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
+                    CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifier)
                 Case DialogResult.Abort
                     Dim ScrapeModifier As New Structures.ScrapeModifiers
                     Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.DoSearch, True)
                     Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
-                    CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
+                    CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifier)
                 Case Else
                     If InfoCleared Then LoadInfo_MovieSet(DBMovieSet.ID)
             End Select
@@ -8140,12 +8138,12 @@ Public Class frmMain
                     Case DialogResult.Retry
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifiers)
+                        CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
                     Case DialogResult.Abort
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifiers)
+                        CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
                     Case Else
                         If InfoCleared Then LoadInfo_TVShow(DBTVShow.ID)
                 End Select
@@ -8192,60 +8190,32 @@ Public Class frmMain
     Private Sub EnableFilters_MovieSets(ByVal isEnabled As Boolean)
         btnClearFilters_MovieSets.Enabled = isEnabled
         btnFilterMissing_MovieSets.Enabled = isEnabled
-        'Me.btnSortDate.Enabled = isEnabled
-        'Me.btnIMDBRating.Enabled = isEnabled
-        'Me.btnSortTitle.Enabled = isEnabled
-        'Me.cbFilterFileSource.Enabled = isEnabled
-        'Me.cbFilterYear.Enabled = isEnabled
-        'Me.cbFilterYearMod.Enabled = isEnabled
         cbSearchMovieSets.Enabled = isEnabled
-        'Me.chkFilterDupe.Enabled = isEnabled
         chkFilterEmpty_MovieSets.Enabled = isEnabled
         chkFilterLock_MovieSets.Enabled = isEnabled
         chkFilterMark_MovieSets.Enabled = isEnabled
-        'Me.chkFilterMarkCustom1.Enabled = isEnabled
-        'Me.chkFilterMarkCustom2.Enabled = isEnabled
-        'Me.chkFilterMarkCustom3.Enabled = isEnabled
-        'Me.chkFilterMarkCustom4.Enabled = isEnabled
         chkFilterMissing_MovieSets.Enabled = If(Master.eSettings.MovieSetMissingItemsAnyEnabled, isEnabled, False)
         chkFilterMultiple_MovieSets.Enabled = isEnabled
         chkFilterNew_MovieSets.Enabled = isEnabled
         chkFilterOne_MovieSets.Enabled = isEnabled
-        'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
         pnlFilterMissingItems_MovieSets.Visible = If(Not isEnabled, False, pnlFilterMissingItems_MovieSets.Visible)
         rbFilterAnd_MovieSets.Enabled = isEnabled
         rbFilterOr_MovieSets.Enabled = isEnabled
-        'Me.txtFilterCountry.Enabled = isEnabled
-        'Me.txtFilterGenre.Enabled = isEnabled
-        'Me.txtFilterSource.Enabled = isEnabled
     End Sub
 
     Private Sub EnableFilters_Shows(ByVal isEnabled As Boolean)
         btnClearFilters_Shows.Enabled = isEnabled
         btnFilterMissing_Shows.Enabled = isEnabled
-        'Me.btnSortDate.Enabled = isEnabled
-        'Me.btnIMDBRating.Enabled = isEnabled
         btnFilterSortTitle_Shows.Enabled = isEnabled
-        'Me.cbFilterFileSource.Enabled = isEnabled
-        'Me.cbFilterYear.Enabled = isEnabled
-        'Me.cbFilterYearMod.Enabled = isEnabled
         cbSearchShows.Enabled = isEnabled
-        'Me.chkFilterDuplicates.Enabled = isEnabled
         chkFilterLock_Shows.Enabled = isEnabled
         chkFilterMark_Shows.Enabled = isEnabled
-        'Me.chkFilterMarkCustom1.Enabled = isEnabled
-        'Me.chkFilterMarkCustom2.Enabled = isEnabled
-        'Me.chkFilterMarkCustom3.Enabled = isEnabled
-        'Me.chkFilterMarkCustom4.Enabled = isEnabled
         chkFilterMissing_Shows.Enabled = If(Master.eSettings.TVShowMissingItemsAnyEnabled, isEnabled, False)
         chkFilterNewEpisodes_Shows.Enabled = isEnabled
         chkFilterNewShows_Shows.Enabled = isEnabled
-        'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
         pnlFilterMissingItems_Shows.Visible = If(Not isEnabled, False, pnlFilterMissingItems_Shows.Visible)
         rbFilterAnd_Shows.Enabled = isEnabled
         rbFilterOr_Shows.Enabled = isEnabled
-        'Me.txtFilterCountry.Enabled = isEnabled
-        'Me.txtFilterGenre.Enabled = isEnabled
         txtFilterSource_Shows.Enabled = isEnabled
     End Sub
 
@@ -8260,7 +8230,6 @@ Public Class frmMain
 
     Private Sub mnuMainFileExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainFileExit.Click, cmnuTrayExit.Click
         If Master.isCL Then
-            'fLoading.SetLoadingMesg("Canceling ...")
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(370, "Canceling Load..."))
             If bwMovieScraper.IsBusy Then bwMovieScraper.CancelAsync()
             If bwReload_Movies.IsBusy Then bwReload_Movies.CancelAsync()
@@ -9916,26 +9885,14 @@ Public Class frmMain
 
         AdvancedSettings.Start()
 
-        'Create Modules Folders
-        Dim sPath = String.Concat(Functions.AppPath, "Modules")
-        If Not Directory.Exists(sPath) Then
-            Directory.CreateDirectory(sPath)
-        End If
-
-        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(855, "Creating default options..."))
-        Functions.CreateDefaultOptions()
-
         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
         Master.DB.Connect_MyVideos()
-        Master.DB.LoadAllGenres()
+        Master.DB.LoadAllGenres() 'TODO: check if needed at this point
 
-        SetMainTabs()
-        ModulesManager.Instance.RuntimeObjects.MediaTabSelected = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
-
+        'set before modules has been loaded to prepare all RuntimeObjects that are used in modules
         ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
         ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
         ModulesManager.Instance.RuntimeObjects.MainMenu = mnuMain
-        ModulesManager.Instance.RuntimeObjects.MainTabControl = tcMain
         ModulesManager.Instance.RuntimeObjects.MainToolStrip = tsMain
         ModulesManager.Instance.RuntimeObjects.MediaListMovies = dgvMovies
         ModulesManager.Instance.RuntimeObjects.MediaListMovieSets = dgvMovieSets
@@ -9989,17 +9946,6 @@ Public Class frmMain
             Threading.Thread.Sleep(50)
         End While
 
-
-        RemoveHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
-        RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-        RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-        RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
-        FillList_Main(True, True, True)
-        AddHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
-        AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-        AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-        AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
-
         If Master.isCL Then ' Command Line
             LoadWithCommandLine(Master.appArgs)
         Else 'Regular Run (GUI)
@@ -10013,6 +9959,19 @@ Public Class frmMain
     ''' <param name="appArgs">Command line arguments. Must NOT be empty!</param>
     ''' <remarks></remarks>
     Private Sub LoadWithCommandLine(ByVal appArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs)
+        logger.Trace("LoadWithCommandLine()")
+
+        'filtered media lists are not possible, so load the default list for all
+        RemoveHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
+        RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+        RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+        RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+        FillList_Main(True, True, True)
+        AddHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
+        AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+        AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+        AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+
         Dim Args() As String = appArgs.CommandLine.ToArray
 
         fCommandLine.RunCommandLine(Args)
@@ -10032,21 +9991,6 @@ Public Class frmMain
     Private Sub LoadWithGUI()
         Try
             logger.Trace("LoadWithGUI()")
-            'If Master.eSettings.CheckUpdates Then
-            '    If Functions.CheckNeedUpdate() Then
-            '        Using dNewVer As New dlgNewVersion
-            '            fLoading.Hide()
-            '            If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
-            '                tmrAppExit.Enabled = True
-            '                CloseApp = True
-            '            End If
-            '        End Using
-            '    End If
-            'End If
-
-            ' Not localized as is the Assembly file version
-            'Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
-
             If Not CloseApp Then
 
                 'moved to frmMain_Load
@@ -10075,23 +10019,23 @@ Public Class frmMain
 
                 'Info panels
                 InfoPanelState_Movie = Master.eSettings.GeneralInfoPanelStateMovie
-                Select Case InfoPanelState_Movie
-                    Case 0
-                        pnlInfoPanel.Height = 25
-                        btnDown.Enabled = False
-                        btnMid.Enabled = True
-                        btnUp.Enabled = True
-                    Case 1
-                        pnlInfoPanel.Height = IPMid
-                        btnMid.Enabled = False
-                        btnDown.Enabled = True
-                        btnUp.Enabled = True
-                    Case 2
-                        pnlInfoPanel.Height = IPUp
-                        btnUp.Enabled = False
-                        btnDown.Enabled = True
-                        btnMid.Enabled = True
-                End Select
+                'Select Case InfoPanelState_Movie
+                '    Case 0
+                '        pnlInfoPanel.Height = 25
+                '        btnDown.Enabled = False
+                '        btnMid.Enabled = True
+                '        btnUp.Enabled = True
+                '    Case 1
+                '        pnlInfoPanel.Height = IPMid
+                '        btnMid.Enabled = False
+                '        btnDown.Enabled = True
+                '        btnUp.Enabled = True
+                '    Case 2
+                '        pnlInfoPanel.Height = IPUp
+                '        btnUp.Enabled = False
+                '        btnDown.Enabled = True
+                '        btnMid.Enabled = True
+                'End Select
 
                 InfoPanelState_MovieSet = Master.eSettings.GeneralInfoPanelStateMovieSet
                 InfoPanelState_TVShow = Master.eSettings.GeneralInfoPanelStateTVShow
@@ -10133,8 +10077,6 @@ Public Class frmMain
                     btnFilterUp_Shows.Enabled = True
                 End If
 
-                pnlFilter_Movies.Visible = True
-
                 'MenuItem Tags for better Enable/Disable handling
                 mnuMainToolsCleanDB.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfNoMovieSets = True, .IfNoTVShows = True, .IfTabTVShows = True}
                 mnuMainToolsClearCache.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfNoMovieSets = True, .IfNoTVShows = True, .IfTabTVShows = True}
@@ -10156,6 +10098,17 @@ Public Class frmMain
                 cmnuTrayExit.Enabled = True
                 cmnuTraySettings.Enabled = True
                 mnuMainEdit.Enabled = True
+
+                'Fill all lists after MainTabs has been set to load the correct view/list
+                RemoveHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
+                RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+                RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+                RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+                FillList_Main(True, True, True)
+                AddHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
+                AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+                AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+                AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -10279,7 +10232,7 @@ Public Class frmMain
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
-                        CreateScrapeList_Movie(CType(_params(1), Enums.ScrapeType), Master.DefaultOptions_Movie, ScrapeModifiers)
+                        CreateScrapeList_Movie(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
                         While bwMovieScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -10288,7 +10241,7 @@ Public Class frmMain
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
-                        CreateScrapeList_MovieSet(CType(_params(1), Enums.ScrapeType), Master.DefaultOptions_MovieSet, ScrapeModifiers)
+                        CreateScrapeList_MovieSet(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions_MovieSet, ScrapeModifiers)
                         While bwMovieSetScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -10297,7 +10250,7 @@ Public Class frmMain
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
-                        CreateScrapeList_TV(CType(_params(1), Enums.ScrapeType), Master.DefaultOptions_TV, ScrapeModifiers)
+                        CreateScrapeList_TV(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
                         While bwTVScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -11005,7 +10958,7 @@ Public Class frmMain
         If Master.eSettings.MovieGeneralCustomScrapeButtonEnabled Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.MovieGeneralCustomScrapeButtonModifierType, True)
-            CreateScrapeList_Movie(Master.eSettings.MovieGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_Movie, ScrapeModifiers)
+            CreateScrapeList_Movie(Master.eSettings.MovieGeneralCustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
         Else
             mnuScrapeMovies.ShowDropDown()
         End If
@@ -11015,7 +10968,7 @@ Public Class frmMain
         If Master.eSettings.MovieSetGeneralCustomScrapeButtonEnabled Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.MovieSetGeneralCustomScrapeButtonModifierType, True)
-            CreateScrapeList_MovieSet(Master.eSettings.MovieSetGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+            CreateScrapeList_MovieSet(Master.eSettings.MovieSetGeneralCustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifiers)
         Else
             mnuScrapeMovieSets.ShowDropDown()
         End If
@@ -11027,7 +10980,7 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.TVGeneralCustomScrapeButtonModifierType, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
-            CreateScrapeList_TV(Master.eSettings.TVGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_TV, ScrapeModifiers)
+            CreateScrapeList_TV(Master.eSettings.TVGeneralCustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
         Else
             mnuScrapeTVShows.ShowDropDown()
         End If
@@ -11614,17 +11567,17 @@ Public Class frmMain
 
             Select Case ContentType
                 Case "movie"
-                    CreateScrapeList_Movie(Type, Master.DefaultOptions_Movie, ScrapeModifiers)
+                    CreateScrapeList_Movie(Type, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
                 Case "movieset"
-                    CreateScrapeList_MovieSet(Type, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+                    CreateScrapeList_MovieSet(Type, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifiers)
                 Case "tvepisode"
-                    CreateScrapeList_TVEpisode(Type, Master.DefaultOptions_TV, ScrapeModifiers)
+                    CreateScrapeList_TVEpisode(Type, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
                 Case "tvseason"
-                    CreateScrapeList_TVSeason(Type, Master.DefaultOptions_TV, ScrapeModifiers)
+                    CreateScrapeList_TVSeason(Type, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
                 Case "tvshow"
                     ScrapeModifiers.withEpisodes = True
                     ScrapeModifiers.withSeasons = True
-                    CreateScrapeList_TV(Type, Master.DefaultOptions_TV, ScrapeModifiers)
+                    CreateScrapeList_TV(Type, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
             End Select
         Else
             Select Case ContentType
@@ -13178,6 +13131,14 @@ Public Class frmMain
             dImgView.ShowDialog(_Image)
         End Using
     End Sub
+
+    Private Function GetCurrentMainTabTag() As Settings.MainTabSorting
+        If tcMain.SelectedTab IsNot Nothing AndAlso TryCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting) IsNot Nothing Then
+            Return DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Else
+            Return New Settings.MainTabSorting
+        End If
+    End Function
     ''' <summary>
     ''' Draw genre text over the image when mouse hovers
     ''' </summary>
@@ -13210,7 +13171,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
+                Select Case GetCurrentMainTabTag().ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13342,7 +13303,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
+                Select Case GetCurrentMainTabTag().ContentType
                     Case Enums.ContentType.Movie
                         Return
                     Case Enums.ContentType.MovieSet
@@ -13401,7 +13362,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
+                Select Case GetCurrentMainTabTag().ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13506,7 +13467,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
+                Select Case GetCurrentMainTabTag().ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13611,7 +13572,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
+                Select Case GetCurrentMainTabTag().ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13702,7 +13663,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
+                Select Case GetCurrentMainTabTag().ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13857,7 +13818,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
+                Select Case GetCurrentMainTabTag().ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -13989,7 +13950,7 @@ Public Class frmMain
                 End If
             ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
 
-                Select Case DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting).ContentType
+                Select Case GetCurrentMainTabTag().ContentType
                     Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
@@ -15366,7 +15327,6 @@ Public Class frmMain
 
     Private Sub RunFilter_Movies(Optional ByVal doFill As Boolean = False)
         If Visible Then
-
             ClearInfo()
 
             currRow_Movie = -1
@@ -15410,7 +15370,6 @@ Public Class frmMain
 
     Private Sub RunFilter_MovieSets(Optional ByVal doFill As Boolean = False)
         If Visible Then
-
             ClearInfo()
 
             currRow_MovieSet = -1
@@ -15446,7 +15405,6 @@ Public Class frmMain
 
     Private Sub RunFilter_Shows(Optional ByVal doFill As Boolean = False)
         If Visible Then
-
             ClearInfo()
 
             currRow_TVShow = -1
@@ -15884,7 +15842,7 @@ Public Class frmMain
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False, Optional ByVal withTools As Boolean = True)
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         For Each i As Object In mnuMainTools.DropDownItems
             If TypeOf i Is ToolStripMenuItem Then
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
@@ -16033,17 +15991,15 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub SetMenus(ByVal ReloadFilters As Boolean)
         Dim mnuItem As ToolStripItem
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
 
         With Master.eSettings
             mnuMainToolsBackdrops.Enabled = Not String.IsNullOrEmpty(.MovieBackdropsPath)
 
-            ' for future use
+            'for future use
             mnuMainToolsClearCache.Enabled = False
 
-            'MainTabs
-            SetMainTabs()
-
+            'Load source list for movies
             mnuUpdateMovies.DropDownItems.Clear()
             cmnuTrayUpdateMovies.DropDownItems.Clear()
             If Master.DB.GetSources_Movie.Count > 1 Then
@@ -16059,6 +16015,7 @@ Public Class frmMain
                 mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
             Next
 
+            'Load source list for tv shows
             mnuUpdateShows.DropDownItems.Clear()
             cmnuTrayUpdateShows.DropDownItems.Clear()
             If Master.DB.GetSources_TVShow.Count > 1 Then
@@ -16074,9 +16031,11 @@ Public Class frmMain
                 mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
             Next
 
+            'Load filter list DataFields for movies
             clbFilterDataFields_Movies.Items.Clear()
             clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tag", "Tagline", "Title", "Top250", "Trailer", "VideoSource", "Votes", "Year"})
 
+            'Load sort methods list for moviesets
             Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet)
             SortMethods.Add(Master.eLang.GetString(278, "Year"), Enums.SortMethod_MovieSet.Year)
             SortMethods.Add(Master.eLang.GetString(21, "Title"), Enums.SortMethod_MovieSet.Title)
@@ -16085,76 +16044,86 @@ Public Class frmMain
             cmnuMovieSetEditSortMethodMethods.ComboBox.ValueMember = "Value"
             cmnuMovieSetEditSortMethodMethods.ComboBox.BindingContext = BindingContext
 
-            listViews_Movies.Clear()
+            'Load view list for movies
+            Dim listViews_Movies As New Dictionary(Of String, String)
             listViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")
-            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movie)
+            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movie, True)
                 listViews_Movies.Add(Regex.Replace(cList, "movie-", String.Empty).Trim, cList)
             Next
+            RemoveHandler cbFilterLists_Movies.SelectedIndexChanged, AddressOf cbFilterLists_Movies_SelectedIndexChanged
             cbFilterLists_Movies.DataSource = listViews_Movies.ToList
             cbFilterLists_Movies.DisplayMember = "Key"
             cbFilterLists_Movies.ValueMember = "Value"
-            cbFilterLists_Movies.SelectedIndex = 0
+            cbFilterLists_Movies.SelectedValue = currList_Movies
+            AddHandler cbFilterLists_Movies.SelectedIndexChanged, AddressOf cbFilterLists_Movies_SelectedIndexChanged
 
-            listViews_MovieSets.Clear()
+            'Load view list for moviesets
+            Dim listViews_MovieSets As New Dictionary(Of String, String)
             listViews_MovieSets.Add(Master.eLang.GetString(786, "Default List"), "setslist")
-            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.MovieSet)
+            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.MovieSet, True)
                 listViews_MovieSets.Add(Regex.Replace(cList, "sets-", String.Empty).Trim, cList)
             Next
+            RemoveHandler cbFilterLists_MovieSets.SelectedIndexChanged, AddressOf cbFilterLists_MovieSets_SelectedIndexChanged
             cbFilterLists_MovieSets.DataSource = listViews_MovieSets.ToList
             cbFilterLists_MovieSets.DisplayMember = "Key"
             cbFilterLists_MovieSets.ValueMember = "Value"
-            cbFilterLists_MovieSets.SelectedIndex = 0
+            cbFilterLists_MovieSets.SelectedValue = currList_MovieSets
+            AddHandler cbFilterLists_MovieSets.SelectedIndexChanged, AddressOf cbFilterLists_MovieSets_SelectedIndexChanged
 
-            listViews_TVShows.Clear()
+            'Load view list for tv shows
+            Dim listViews_TVShows As New Dictionary(Of String, String)
             listViews_TVShows.Add(Master.eLang.GetString(786, "Default List"), "tvshowlist")
-            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.TVShow)
+            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.TVShow, True)
                 listViews_TVShows.Add(Regex.Replace(cList, "tvshow-", String.Empty).Trim, cList)
             Next
+            RemoveHandler cbFilterLists_Shows.SelectedIndexChanged, AddressOf cbFilterLists_Shows_SelectedIndexChanged
             cbFilterLists_Shows.DataSource = listViews_TVShows.ToList
             cbFilterLists_Shows.DisplayMember = "Key"
             cbFilterLists_Shows.ValueMember = "Value"
-            cbFilterLists_Shows.SelectedIndex = 0
+            cbFilterLists_Shows.SelectedValue = currList_TVShows
+            AddHandler cbFilterLists_Shows.SelectedIndexChanged, AddressOf cbFilterLists_Shows_SelectedIndexChanged
 
+            'Load language list
             mnuLanguagesLanguage.Items.Clear()
             mnuLanguagesLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages.OrderBy(Function(f) f.Description) Select lLang.Description).ToArray)
 
+            'MainTabs
+            SetMainTabs()
+
             'not technically a menu, but it's a good place to put it
             If ReloadFilters Then
-
                 RemoveHandler cbFilterDataField_Movies.SelectedIndexChanged, AddressOf clbFilterDataFields_Movies_LostFocus
                 cbFilterDataField_Movies.Items.Clear()
                 cbFilterDataField_Movies.Items.AddRange(New Object() {Master.eLang.GetString(1291, "Is Empty"), Master.eLang.GetString(1292, "Is Not Empty")})
                 cbFilterDataField_Movies.SelectedIndex = 0
                 AddHandler cbFilterDataField_Movies.SelectedIndexChanged, AddressOf clbFilterDataFields_Movies_LostFocus
 
+                'Load filter list sources for movies
                 clbFilterSources_Movies.Items.Clear()
                 clbFilterSources_Movies.Items.AddRange(Master.DB.GetAllSources_Movie)
 
+                'Load filter list sources for tv shows
                 clbFilterSource_Shows.Items.Clear()
                 clbFilterSource_Shows.Items.AddRange(Master.DB.GetAllSources_TVShow)
 
+                'Load filter list "years from" for movies
                 RemoveHandler cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearFrom_Movies_SelectedIndexChanged
                 cbFilterYearFrom_Movies.Items.Clear()
                 cbFilterYearFrom_Movies.Items.Add(Master.eLang.All)
-                For i As Integer = (Date.Now.Year + 1) To 1888 Step -1
-                    cbFilterYearFrom_Movies.Items.Add(i)
-                Next
+                cbFilterYearFrom_Movies.Items.AddRange(Master.DB.GetAllYears_Movie.Reverse.ToArray)
                 cbFilterYearFrom_Movies.SelectedIndex = 0
                 AddHandler cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearFrom_Movies_SelectedIndexChanged
-
                 RemoveHandler cbFilterYearModFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearModFrom_Movies_SelectedIndexChanged
                 cbFilterYearModFrom_Movies.SelectedIndex = 0
                 AddHandler cbFilterYearModFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearModFrom_Movies_SelectedIndexChanged
 
+                'Load filter list "years to" for movies
                 RemoveHandler cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearTo_Movies_SelectedIndexChanged
                 cbFilterYearTo_Movies.Items.Clear()
                 cbFilterYearTo_Movies.Items.Add(Master.eLang.All)
-                For i As Integer = (Date.Now.Year + 1) To 1888 Step -1
-                    cbFilterYearTo_Movies.Items.Add(i)
-                Next
+                cbFilterYearTo_Movies.Items.AddRange(Master.DB.GetAllYears_Movie.Reverse.ToArray)
                 cbFilterYearTo_Movies.SelectedIndex = 0
                 AddHandler cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearTo_Movies_SelectedIndexChanged
-
                 RemoveHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
                 cbFilterYearModTo_Movies.SelectedIndex = 0
                 AddHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
@@ -16182,17 +16151,24 @@ Public Class frmMain
     End Sub
 
     Private Sub SetMainTabs()
+        tcMain.Visible = False
         'cleanup tabs
-        RemoveHandler tcMain.SelectedIndexChanged, AddressOf tcMain_SelectedIndexChanged
         tcMain.TabPages.Clear()
-        AddHandler tcMain.SelectedIndexChanged, AddressOf tcMain_SelectedIndexChanged
-
+        If Master.eSettings.GeneralMainTabSorting.Count = 0 Then
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MainTabSorting, True)
+        End If
         'add tabs
         For Each nTab In Master.eSettings.GeneralMainTabSorting.OrderBy(Function(f) f.Order)
             tcMain.TabPages.Add(New TabPage With {.Text = nTab.Title, .Tag = nTab})
         Next
 
+        'workaround to force that the first tab will be selected after adding tabs to an empty TabControl
+        RemoveHandler tcMain.SelectedIndexChanged, AddressOf tcMain_SelectedIndexChanged
+        tcMain.SelectedIndex = -1
+        AddHandler tcMain.SelectedIndexChanged, AddressOf tcMain_SelectedIndexChanged
+        tcMain.SelectTab(0)
         UpdateMainTabCounts()
+        tcMain.Visible = True
     End Sub
 
     Private Sub SetStatus(ByVal sText As String)
@@ -16221,11 +16197,6 @@ Public Class frmMain
         pnlLoadSettings.Visible = False
         cmnuTraySettings.Enabled = True
         cmnuTrayExit.Enabled = True
-
-        'set all lists back to default before run "FillList"
-        currList_Movies = "movielist"
-        currList_MovieSets = "setslist"
-        currList_TVShows = "tvshowlist"
 
         If Not dresult.DidCancel Then
 
@@ -16426,26 +16397,20 @@ Public Class frmMain
             Dim mCount As Integer = Master.DB.GetViewMediaCount(currMainTabTag.DefaultList)
             Select Case currMainTabTag.ContentType
                 Case Enums.ContentType.Movie, Enums.ContentType.MovieSet
-                    If mCount > 0 Then
-                        mTabPage.Text = String.Format("{0} ({1})", currMainTabTag.Title, mCount)
-                        mTabPage.Enabled = True
-                    ElseIf mCount = -1 Then
+                    If mCount = -1 Then
                         mTabPage.Text = String.Format("{0} ({1})", currMainTabTag.Title, "SQL Error")
                         mTabPage.Enabled = False
                     Else
-                        mTabPage.Text = currMainTabTag.Title
+                        mTabPage.Text = String.Format("{0} ({1})", currMainTabTag.Title, mCount)
                         mTabPage.Enabled = True
                     End If
                 Case Enums.ContentType.TV
-                    If mCount > 0 Then
-                        Dim epCount As Integer = Master.DB.GetViewMediaCount(currMainTabTag.DefaultList, True)
-                        mTabPage.Text = String.Format("{0} ({1}/{2})", currMainTabTag.Title, mCount, epCount)
-                        mTabPage.Enabled = True
-                    ElseIf mCount = -1 Then
+                    If mCount = -1 Then
                         mTabPage.Text = String.Format("{0} ({1})", currMainTabTag.Title, "SQL Error")
                         mTabPage.Enabled = False
                     Else
-                        mTabPage.Text = currMainTabTag.Title
+                        Dim epCount As Integer = Master.DB.GetViewMediaCount(currMainTabTag.DefaultList, True)
+                        mTabPage.Text = String.Format("{0} ({1}/{2})", currMainTabTag.Title, mCount, epCount)
                         mTabPage.Enabled = True
                     End If
             End Select
@@ -16456,7 +16421,7 @@ Public Class frmMain
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub SetMovieCount()
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             If dgvMovies.RowCount > 0 Then
                 tcMain.SelectedTab.Text = String.Format("{0} ({1})", currMainTabTag.Title, dgvMovies.RowCount)
@@ -16470,7 +16435,7 @@ Public Class frmMain
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub SetMovieSetCount()
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         If currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
             If dgvMovieSets.RowCount > 0 Then
                 tcMain.SelectedTab.Text = String.Format("{0} ({1})", currMainTabTag.Title, dgvMovieSets.RowCount)
@@ -16484,7 +16449,7 @@ Public Class frmMain
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub SetTVCount()
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         If currMainTabTag.ContentType = Enums.ContentType.TV Then
             If dgvTVShows.RowCount > 0 Then
                 Dim epCount As Integer = 0
@@ -17221,7 +17186,7 @@ Public Class frmMain
 
         If doTheme Then
             tTheme = New Theming
-            Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+            Dim currMainTabTag = GetCurrentMainTabTag()
             ApplyTheme(If(currMainTabTag.ContentType = Enums.ContentType.Movie, Theming.ThemeType.Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, Theming.ThemeType.MovieSet, Theming.ThemeType.Show)))
         End If
     End Sub
@@ -17294,7 +17259,7 @@ Public Class frmMain
     Private Sub tcMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcMain.SelectedIndexChanged
         ClearInfo()
         ShowNoInfo(False)
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         ModulesManager.Instance.RuntimeObjects.MediaTabSelected = currMainTabTag
         Select Case currMainTabTag.ContentType
             Case Enums.ContentType.Movie
@@ -17446,7 +17411,7 @@ Public Class frmMain
     End Sub
 
     Private Sub MoveInfoPanel()
-        Dim currMainTabTag = DirectCast(tcMain.SelectedTab.Tag, Settings.MainTabSorting)
+        Dim currMainTabTag = GetCurrentMainTabTag()
         Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
             Case 0
                 pnlInfoPanel.Height = 25

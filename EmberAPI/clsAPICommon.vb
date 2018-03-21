@@ -1169,74 +1169,6 @@ Public Class Functions
         End If
     End Function
     ''' <summary>
-    ''' Create a collection of default Movie and TV scrape options
-    ''' based off the currently selected options. 
-    ''' These default options are Master.DefaultOptions and Master.DefaultTVOptions
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Shared Sub CreateDefaultOptions()
-        With Master.DefaultOptions_Movie
-            .bMainActors = Master.eSettings.MovieScraperCast
-            .bMainCertifications = Master.eSettings.MovieScraperCert
-            .bMainCollectionID = Master.eSettings.MovieScraperCollectionID
-            .bMainCountries = Master.eSettings.MovieScraperCountry
-            .bMainDirectors = Master.eSettings.MovieScraperDirector
-            .bMainGenres = Master.eSettings.MovieScraperGenre
-            .bMainMPAA = Master.eSettings.MovieScraperMPAA
-            .bMainOriginalTitle = Master.eSettings.MovieScraperOriginalTitle
-            .bMainOutline = Master.eSettings.MovieScraperOutline
-            .bMainPlot = Master.eSettings.MovieScraperPlot
-            .bMainRating = Master.eSettings.MovieScraperRating
-            .bMainRelease = Master.eSettings.MovieScraperRelease
-            .bMainRuntime = Master.eSettings.MovieScraperRuntime
-            .bMainStudios = Master.eSettings.MovieScraperStudio
-            .bMainTagline = Master.eSettings.MovieScraperTagline
-            .bMainTitle = Master.eSettings.MovieScraperTitle
-            .bMainTop250 = Master.eSettings.MovieScraperTop250
-            .bMainTrailer = Master.eSettings.MovieScraperTrailer
-            .bMainUserRating = Master.eSettings.MovieScraperUserRating
-            .bMainWriters = Master.eSettings.MovieScraperCredits
-            .bMainYear = Master.eSettings.MovieScraperYear
-        End With
-
-        With Master.DefaultOptions_MovieSet
-            .bMainPlot = Master.eSettings.MovieSetScraperPlot
-            .bMainTitle = Master.eSettings.MovieSetScraperTitle
-        End With
-
-        With Master.DefaultOptions_TV
-            .bEpisodeActors = Master.eSettings.TVScraperEpisodeActors
-            .bEpisodeAired = Master.eSettings.TVScraperEpisodeAired
-            .bEpisodeCredits = Master.eSettings.TVScraperEpisodeCredits
-            .bEpisodeDirectors = Master.eSettings.TVScraperEpisodeDirector
-            .bEpisodeGuestStars = Master.eSettings.TVScraperEpisodeGuestStars
-            .bEpisodePlot = Master.eSettings.TVScraperEpisodePlot
-            .bEpisodeRating = Master.eSettings.TVScraperEpisodeRating
-            .bEpisodeRuntime = Master.eSettings.TVScraperEpisodeRuntime
-            .bEpisodeTitle = Master.eSettings.TVScraperEpisodeTitle
-            .bEpisodeUserRating = Master.eSettings.TVScraperEpisodeUserRating
-            .bMainActors = Master.eSettings.TVScraperShowActors
-            .bMainCertifications = Master.eSettings.TVScraperShowCert
-            .bMainCountries = Master.eSettings.TVScraperShowCountry
-            .bMainCreators = Master.eSettings.TVScraperShowCreators
-            .bMainEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
-            .bMainGenres = Master.eSettings.TVScraperShowGenre
-            .bMainMPAA = Master.eSettings.TVScraperShowMPAA
-            .bMainOriginalTitle = Master.eSettings.TVScraperShowOriginalTitle
-            .bMainPlot = Master.eSettings.TVScraperShowPlot
-            .bMainPremiered = Master.eSettings.TVScraperShowPremiered
-            .bMainRating = Master.eSettings.TVScraperShowRating
-            .bMainRuntime = Master.eSettings.TVScraperShowRuntime
-            .bMainStatus = Master.eSettings.TVScraperShowStatus
-            .bMainStudios = Master.eSettings.TVScraperShowStudio
-            .bMainTitle = Master.eSettings.TVScraperShowTitle
-            .bMainUserRating = Master.eSettings.TVScraperShowUserRating
-            .bSeasonAired = Master.eSettings.TVScraperSeasonAired
-            .bSeasonPlot = Master.eSettings.TVScraperSeasonPlot
-            .bSeasonTitle = Master.eSettings.TVScraperSeasonTitle
-        End With
-    End Sub
-    ''' <summary>
     ''' Sets the DoubleBuffered property for the supplied DataGridView.
     ''' This should have the effect of reducing any flicker during re-draw operations
     ''' </summary>
@@ -1783,34 +1715,6 @@ Public Class Functions
         'If you got here, everything went fine
         Return True
     End Function
-
-    ''' <summary>
-    ''' Check version of the MediaInfo dll. If newer than 0.7.11 then don't try to scan disc images with it.
-    ''' </summary>
-    Public Shared Sub TestMediaInfoDLL()
-        'TODO Warning - MediaInfo is newer than this method tests for - is this method required? Looks like it will ALWAYS return False
-        Dim dllPath As String = "Invalid path"
-        Try
-
-            ' Since MediaInfo support ISO now -> FileVersion Check no longer needed!
-            Master.CanScanDiscImage = True
-
-            ' 'just assume dll is there since we're distributing full package... if it's not, user has bigger problems
-            'dllPath = String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "MediaInfo.DLL")
-            'Dim fVersion As FileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(dllPath)
-
-            ''ISO Handling -> Use MediaInfo-Rar(if exists) to scan RAR and ISO files!
-            'Dim mediainfoRaRPath As String = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "mediainfo-rar\mediainfo-rar.exe")
-            'If File.Exists(mediainfoRaRPath) OrElse (fVersion.FileMinorPart <= 7 AndAlso fVersion.FileBuildPart <= 11) Then
-            '    Master.CanScanDiscImage = True
-            'Else
-            '    Master.CanScanDiscImage = False
-            'End If
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & dllPath & ">")
-        End Try
-    End Sub
 
     ''' <summary>
     ''' Run console commands from Ember (used for calling mediainfo-rar.exe for scanning ISO files)

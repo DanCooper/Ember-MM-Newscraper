@@ -497,7 +497,7 @@ Public Class TaskManager
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
 
-                    If Not ModulesManager.Instance.ScrapeData_TVShow(tmpDBElement, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, True) Then
+                    If Not ModulesManager.Instance.ScrapeData_TVShow(tmpDBElement, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, True) Then
                         For Each nMissingSeason In tmpDBElement.Seasons.Where(Function(f) Not f.IDSpecified)
                             Master.DB.Save_TVSeason(nMissingSeason, True, False, False)
                             bNewSeasons = True

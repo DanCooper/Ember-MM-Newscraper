@@ -23,10 +23,8 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlMediaListEditor = New System.Windows.Forms.Panel()
         Me.tblMediaListEditor = New System.Windows.Forms.TableLayoutPanel()
         Me.gbCustomMediaList = New System.Windows.Forms.GroupBox()
@@ -45,20 +43,22 @@ Partial Class frmSettingsHolder
         Me.lblPrefix = New System.Windows.Forms.Label()
         Me.cbCustomMediaListType = New System.Windows.Forms.ComboBox()
         Me.lblCustomMediaListCREATE = New System.Windows.Forms.Label()
-        Me.gbCustomTab = New System.Windows.Forms.GroupBox()
+        Me.gbMainTab = New System.Windows.Forms.GroupBox()
         Me.tblCustomTabs = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnCustomTabAdd = New System.Windows.Forms.Button()
-        Me.btnCustomTabRemove = New System.Windows.Forms.Button()
-        Me.dgvCustomTab = New System.Windows.Forms.DataGridView()
-        Me.colCustomTabName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colCustomTabList = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.btnMainTabAdd = New System.Windows.Forms.Button()
+        Me.btnMainTabRemove = New System.Windows.Forms.Button()
+        Me.dgvMainTab = New System.Windows.Forms.DataGridView()
+        Me.btnMainTabUp = New System.Windows.Forms.Button()
+        Me.btnMainTabDown = New System.Windows.Forms.Button()
+        Me.colMainTabTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colMainTabDefaultList = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.pnlMediaListEditor.SuspendLayout()
         Me.tblMediaListEditor.SuspendLayout()
         Me.gbCustomMediaList.SuspendLayout()
         Me.tblMediaListCurrent.SuspendLayout()
-        Me.gbCustomTab.SuspendLayout()
+        Me.gbMainTab.SuspendLayout()
         Me.tblCustomTabs.SuspendLayout()
-        CType(Me.dgvCustomTab, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvMainTab, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlMediaListEditor
@@ -79,7 +79,7 @@ Partial Class frmSettingsHolder
         Me.tblMediaListEditor.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMediaListEditor.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMediaListEditor.Controls.Add(Me.gbCustomMediaList, 0, 0)
-        Me.tblMediaListEditor.Controls.Add(Me.gbCustomTab, 0, 2)
+        Me.tblMediaListEditor.Controls.Add(Me.gbMainTab, 0, 2)
         Me.tblMediaListEditor.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMediaListEditor.Location = New System.Drawing.Point(0, 0)
         Me.tblMediaListEditor.Name = "tblMediaListEditor"
@@ -302,7 +302,7 @@ Partial Class frmSettingsHolder
         Me.cbCustomMediaListType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbCustomMediaListType.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbCustomMediaListType.FormattingEnabled = True
-        Me.cbCustomMediaListType.Items.AddRange(New Object() {"movie", "sets", "tvshow", "seasons", "episode"})
+        Me.cbCustomMediaListType.Items.AddRange(New Object() {"movie", "sets", "tvshow"})
         Me.cbCustomMediaListType.Location = New System.Drawing.Point(95, 30)
         Me.cbCustomMediaListType.Name = "cbCustomMediaListType"
         Me.cbCustomMediaListType.Size = New System.Drawing.Size(98, 21)
@@ -319,31 +319,36 @@ Partial Class frmSettingsHolder
         Me.lblCustomMediaListCREATE.TabIndex = 15
         Me.lblCustomMediaListCREATE.Text = "CREATE VIEW '"
         '
-        'gbCustomTab
+        'gbMainTab
         '
-        Me.gbCustomTab.AutoSize = True
-        Me.gbCustomTab.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.gbCustomTab.Controls.Add(Me.tblCustomTabs)
-        Me.gbCustomTab.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbCustomTab.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbCustomTab.Location = New System.Drawing.Point(3, 411)
-        Me.gbCustomTab.Name = "gbCustomTab"
-        Me.gbCustomTab.Size = New System.Drawing.Size(599, 204)
-        Me.gbCustomTab.TabIndex = 15
-        Me.gbCustomTab.TabStop = False
-        Me.gbCustomTab.Text = "Custom Tabs"
+        Me.gbMainTab.AutoSize = True
+        Me.gbMainTab.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.gbMainTab.Controls.Add(Me.tblCustomTabs)
+        Me.gbMainTab.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbMainTab.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbMainTab.Location = New System.Drawing.Point(3, 411)
+        Me.gbMainTab.Name = "gbMainTab"
+        Me.gbMainTab.Size = New System.Drawing.Size(600, 204)
+        Me.gbMainTab.TabIndex = 15
+        Me.gbMainTab.TabStop = False
+        Me.gbMainTab.Text = "Main Tabs"
         '
         'tblCustomTabs
         '
         Me.tblCustomTabs.AutoSize = True
         Me.tblCustomTabs.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tblCustomTabs.ColumnCount = 3
+        Me.tblCustomTabs.ColumnCount = 6
+        Me.tblCustomTabs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblCustomTabs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblCustomTabs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblCustomTabs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblCustomTabs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblCustomTabs.Controls.Add(Me.btnCustomTabAdd, 1, 1)
-        Me.tblCustomTabs.Controls.Add(Me.btnCustomTabRemove, 2, 1)
-        Me.tblCustomTabs.Controls.Add(Me.dgvCustomTab, 0, 0)
+        Me.tblCustomTabs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblCustomTabs.Controls.Add(Me.btnMainTabAdd, 4, 1)
+        Me.tblCustomTabs.Controls.Add(Me.btnMainTabRemove, 5, 1)
+        Me.tblCustomTabs.Controls.Add(Me.dgvMainTab, 0, 0)
+        Me.tblCustomTabs.Controls.Add(Me.btnMainTabUp, 1, 1)
+        Me.tblCustomTabs.Controls.Add(Me.btnMainTabDown, 2, 1)
         Me.tblCustomTabs.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblCustomTabs.Location = New System.Drawing.Point(3, 16)
         Me.tblCustomTabs.Name = "tblCustomTabs"
@@ -351,96 +356,102 @@ Partial Class frmSettingsHolder
         Me.tblCustomTabs.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblCustomTabs.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblCustomTabs.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblCustomTabs.Size = New System.Drawing.Size(593, 185)
+        Me.tblCustomTabs.Size = New System.Drawing.Size(594, 185)
         Me.tblCustomTabs.TabIndex = 0
         '
-        'btnCustomTabAdd
+        'btnMainTabAdd
         '
-        Me.btnCustomTabAdd.AutoSize = True
-        Me.btnCustomTabAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCustomTabAdd.Image = CType(resources.GetObject("btnCustomTabAdd.Image"), System.Drawing.Image)
-        Me.btnCustomTabAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCustomTabAdd.Location = New System.Drawing.Point(404, 159)
-        Me.btnCustomTabAdd.Name = "btnCustomTabAdd"
-        Me.btnCustomTabAdd.Size = New System.Drawing.Size(90, 23)
-        Me.btnCustomTabAdd.TabIndex = 13
-        Me.btnCustomTabAdd.Text = "Add"
-        Me.btnCustomTabAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCustomTabAdd.UseVisualStyleBackColor = True
+        Me.btnMainTabAdd.AutoSize = True
+        Me.btnMainTabAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnMainTabAdd.Image = CType(resources.GetObject("btnMainTabAdd.Image"), System.Drawing.Image)
+        Me.btnMainTabAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMainTabAdd.Location = New System.Drawing.Point(405, 159)
+        Me.btnMainTabAdd.Name = "btnMainTabAdd"
+        Me.btnMainTabAdd.Size = New System.Drawing.Size(90, 23)
+        Me.btnMainTabAdd.TabIndex = 13
+        Me.btnMainTabAdd.Text = "Add"
+        Me.btnMainTabAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMainTabAdd.UseVisualStyleBackColor = True
         '
-        'btnCustomTabRemove
+        'btnMainTabRemove
         '
-        Me.btnCustomTabRemove.AutoSize = True
-        Me.btnCustomTabRemove.Enabled = False
-        Me.btnCustomTabRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCustomTabRemove.Image = CType(resources.GetObject("btnCustomTabRemove.Image"), System.Drawing.Image)
-        Me.btnCustomTabRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCustomTabRemove.Location = New System.Drawing.Point(500, 159)
-        Me.btnCustomTabRemove.Name = "btnCustomTabRemove"
-        Me.btnCustomTabRemove.Size = New System.Drawing.Size(90, 23)
-        Me.btnCustomTabRemove.TabIndex = 12
-        Me.btnCustomTabRemove.Text = "Remove"
-        Me.btnCustomTabRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCustomTabRemove.UseVisualStyleBackColor = True
+        Me.btnMainTabRemove.AutoSize = True
+        Me.btnMainTabRemove.Enabled = False
+        Me.btnMainTabRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnMainTabRemove.Image = CType(resources.GetObject("btnMainTabRemove.Image"), System.Drawing.Image)
+        Me.btnMainTabRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMainTabRemove.Location = New System.Drawing.Point(501, 159)
+        Me.btnMainTabRemove.Name = "btnMainTabRemove"
+        Me.btnMainTabRemove.Size = New System.Drawing.Size(90, 23)
+        Me.btnMainTabRemove.TabIndex = 12
+        Me.btnMainTabRemove.Text = "Remove"
+        Me.btnMainTabRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMainTabRemove.UseVisualStyleBackColor = True
         '
-        'dgvCustomTab
+        'dgvMainTab
         '
-        Me.dgvCustomTab.AllowUserToAddRows = False
-        Me.dgvCustomTab.AllowUserToDeleteRows = False
-        Me.dgvCustomTab.AllowUserToResizeColumns = False
-        Me.dgvCustomTab.AllowUserToResizeRows = False
-        Me.dgvCustomTab.BackgroundColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvCustomTab.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
-        Me.dgvCustomTab.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvCustomTab.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colCustomTabName, Me.colCustomTabList})
-        Me.tblCustomTabs.SetColumnSpan(Me.dgvCustomTab, 4)
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvCustomTab.DefaultCellStyle = DataGridViewCellStyle4
-        Me.dgvCustomTab.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvCustomTab.Location = New System.Drawing.Point(3, 3)
-        Me.dgvCustomTab.MultiSelect = False
-        Me.dgvCustomTab.Name = "dgvCustomTab"
-        Me.dgvCustomTab.RowHeadersVisible = False
-        Me.dgvCustomTab.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.dgvCustomTab.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
-        Me.dgvCustomTab.ShowCellErrors = False
-        Me.dgvCustomTab.ShowCellToolTips = False
-        Me.dgvCustomTab.ShowRowErrors = False
-        Me.dgvCustomTab.Size = New System.Drawing.Size(587, 150)
-        Me.dgvCustomTab.TabIndex = 11
+        Me.dgvMainTab.AllowUserToAddRows = False
+        Me.dgvMainTab.AllowUserToDeleteRows = False
+        Me.dgvMainTab.AllowUserToResizeColumns = False
+        Me.dgvMainTab.AllowUserToResizeRows = False
+        Me.dgvMainTab.BackgroundColor = System.Drawing.Color.White
+        Me.dgvMainTab.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvMainTab.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colMainTabTitle, Me.colMainTabDefaultList})
+        Me.tblCustomTabs.SetColumnSpan(Me.dgvMainTab, 7)
+        Me.dgvMainTab.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvMainTab.Location = New System.Drawing.Point(3, 3)
+        Me.dgvMainTab.MultiSelect = False
+        Me.dgvMainTab.Name = "dgvMainTab"
+        Me.dgvMainTab.RowHeadersVisible = False
+        Me.dgvMainTab.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.dgvMainTab.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.dgvMainTab.ShowCellErrors = False
+        Me.dgvMainTab.ShowCellToolTips = False
+        Me.dgvMainTab.ShowRowErrors = False
+        Me.dgvMainTab.Size = New System.Drawing.Size(588, 150)
+        Me.dgvMainTab.TabIndex = 11
         '
-        'colCustomTabName
+        'btnMainTabUp
         '
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.colCustomTabName.DefaultCellStyle = DataGridViewCellStyle2
-        Me.colCustomTabName.FillWeight = 190.0!
-        Me.colCustomTabName.HeaderText = "Name"
-        Me.colCustomTabName.Name = "colCustomTabName"
-        Me.colCustomTabName.Width = 190
+        Me.btnMainTabUp.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnMainTabUp.Enabled = False
+        Me.btnMainTabUp.Image = CType(resources.GetObject("btnMainTabUp.Image"), System.Drawing.Image)
+        Me.btnMainTabUp.Location = New System.Drawing.Point(175, 159)
+        Me.btnMainTabUp.Name = "btnMainTabUp"
+        Me.btnMainTabUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnMainTabUp.TabIndex = 14
+        Me.btnMainTabUp.UseVisualStyleBackColor = True
         '
-        'colCustomTabList
+        'btnMainTabDown
         '
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.btnMainTabDown.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnMainTabDown.Enabled = False
+        Me.btnMainTabDown.Image = CType(resources.GetObject("btnMainTabDown.Image"), System.Drawing.Image)
+        Me.btnMainTabDown.Location = New System.Drawing.Point(204, 159)
+        Me.btnMainTabDown.Name = "btnMainTabDown"
+        Me.btnMainTabDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnMainTabDown.TabIndex = 15
+        Me.btnMainTabDown.UseVisualStyleBackColor = True
+        '
+        'colMainTabTitle
+        '
         DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.colCustomTabList.DefaultCellStyle = DataGridViewCellStyle3
-        Me.colCustomTabList.HeaderText = "List"
-        Me.colCustomTabList.Name = "colCustomTabList"
-        Me.colCustomTabList.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.colCustomTabList.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.colCustomTabList.Width = 360
+        Me.colMainTabTitle.DefaultCellStyle = DataGridViewCellStyle3
+        Me.colMainTabTitle.FillWeight = 190.0!
+        Me.colMainTabTitle.HeaderText = "Title"
+        Me.colMainTabTitle.Name = "colMainTabTitle"
+        Me.colMainTabTitle.Width = 190
+        '
+        'colMainTabDefaultList
+        '
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colMainTabDefaultList.DefaultCellStyle = DataGridViewCellStyle4
+        Me.colMainTabDefaultList.HeaderText = "List"
+        Me.colMainTabDefaultList.Name = "colMainTabDefaultList"
+        Me.colMainTabDefaultList.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colMainTabDefaultList.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.colMainTabDefaultList.Width = 360
         '
         'frmSettingsHolder
         '
@@ -463,11 +474,11 @@ Partial Class frmSettingsHolder
         Me.gbCustomMediaList.PerformLayout()
         Me.tblMediaListCurrent.ResumeLayout(False)
         Me.tblMediaListCurrent.PerformLayout()
-        Me.gbCustomTab.ResumeLayout(False)
-        Me.gbCustomTab.PerformLayout()
+        Me.gbMainTab.ResumeLayout(False)
+        Me.gbMainTab.PerformLayout()
         Me.tblCustomTabs.ResumeLayout(False)
         Me.tblCustomTabs.PerformLayout()
-        CType(Me.dgvCustomTab, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvMainTab, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -490,11 +501,13 @@ Partial Class frmSettingsHolder
     Friend WithEvents lblPrefix As System.Windows.Forms.Label
     Friend WithEvents tblMediaListEditor As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMediaListCurrent As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents gbCustomTab As System.Windows.Forms.GroupBox
+    Friend WithEvents gbMainTab As System.Windows.Forms.GroupBox
     Friend WithEvents tblCustomTabs As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents dgvCustomTab As System.Windows.Forms.DataGridView
-    Friend WithEvents btnCustomTabRemove As System.Windows.Forms.Button
-    Friend WithEvents btnCustomTabAdd As System.Windows.Forms.Button
-    Friend WithEvents colCustomTabName As Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents colCustomTabList As Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents dgvMainTab As System.Windows.Forms.DataGridView
+    Friend WithEvents btnMainTabRemove As System.Windows.Forms.Button
+    Friend WithEvents btnMainTabAdd As System.Windows.Forms.Button
+    Friend WithEvents btnMainTabUp As Windows.Forms.Button
+    Friend WithEvents btnMainTabDown As Windows.Forms.Button
+    Friend WithEvents colMainTabTitle As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colMainTabDefaultList As Windows.Forms.DataGridViewComboBoxColumn
 End Class

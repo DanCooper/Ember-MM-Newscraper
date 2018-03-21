@@ -28,7 +28,7 @@ Namespace My
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
         Private frmEmber As frmMain
 
 #End Region 'Fields
@@ -63,8 +63,6 @@ Namespace My
             Master.fLoading.SetVersionMesg(Master.Version)
 
             Application.DoEvents()
-
-            Functions.TestMediaInfoDLL()
 
             If Master.appArgs.CommandLine.Count > 0 Then
                 Master.isCL = True

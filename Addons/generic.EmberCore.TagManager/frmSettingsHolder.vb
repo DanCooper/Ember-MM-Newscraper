@@ -38,7 +38,7 @@ Public Class frmSettingsHolder
 
     Public Sub New()
         InitializeComponent()
-        Me.SetUp()
+        SetUp()
     End Sub
 
     Private Sub SetUp()

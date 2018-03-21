@@ -333,7 +333,7 @@ Public Class dlgExportMovies
 
         dicListViews_Movies.Clear()
         dicListViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")
-        For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movie)
+        For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movie, True)
             dicListViews_Movies.Add(Regex.Replace(cList, "movie-", String.Empty).Trim, cList)
         Next
         cbList_Movies.DataSource = dicListViews_Movies.ToList
@@ -343,7 +343,7 @@ Public Class dlgExportMovies
 
         dicListViews_TVShows.Clear()
         dicListViews_TVShows.Add(Master.eLang.GetString(786, "Default List"), "tvshowlist")
-        For Each cList As String In Master.DB.GetViewList(Enums.ContentType.TVShow)
+        For Each cList As String In Master.DB.GetViewList(Enums.ContentType.TVShow, True)
             dicListViews_TVShows.Add(Regex.Replace(cList, "tvshow-", String.Empty).Trim, cList)
         Next
         cbList_TVShows.DataSource = dicListViews_TVShows.ToList

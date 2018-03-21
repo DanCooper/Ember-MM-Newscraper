@@ -799,7 +799,7 @@ Public Class Scanner
                     End If
 
                     'Scrape episode data
-                    If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.DefaultOptions_TV, False) Then
+                    If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.eSettings.DefaultOptions_TV, False) Then
                         If cEpisode.TVEpisode.TitleSpecified Then
                             ToNfo = True
 
@@ -1029,7 +1029,7 @@ Public Class Scanner
                                 Else
                                     'Scrape season info
                                     If isNew AndAlso tmpSeason.TVShow.AnyUniqueIDSpecified AndAlso tmpSeason.ShowIDSpecified Then
-                                        ModulesManager.Instance.ScrapeData_TVSeason(tmpSeason, Master.DefaultOptions_TV, False)
+                                        ModulesManager.Instance.ScrapeData_TVSeason(tmpSeason, Master.eSettings.DefaultOptions_TV, False)
                                     End If
                                 End If
 

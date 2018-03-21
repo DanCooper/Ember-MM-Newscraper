@@ -1996,7 +1996,6 @@ Public Class ModulesManager
         Public Property FilterTVShowsSearch() As String
         Public Property FilterTVShowsType() As String
         Public Property MainMenu() As MenuStrip
-        Public Property MainTabControl() As TabControl
         Public Property MainToolStrip() As ToolStrip
         Public Property MediaListMovieSets() As DataGridView
         Public Property MediaListMovies() As DataGridView
