@@ -21,89 +21,80 @@
 Imports EmberAPI
 Imports NLog
 
-Namespace TMDB
-
-    Public Class Scraper
+Public Class clsAPITMDB
 
 #Region "Fields"
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-        Private _TMDBApi As TMDbLib.Client.TMDbClient  'preferred language
-        Private _TMDBApiE As TMDbLib.Client.TMDbClient 'english language
-        Private _MySettings As TMDB_Trailer.SpecialSettings
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-        Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
+    Private _client As TMDbLib.Client.TMDbClient  'preferred language 
+    Private _clientE As TMDbLib.Client.TMDbClient 'english language
+    Private _addonSettings As TMDB_Trailer.AddonSettings
 
 #End Region 'Fields
 
+#Region "Properties"
+
+    Public Property DefaultLanguage As String
+        Get
+            Return _client.DefaultLanguage
+        End Get
+        Set(value As String)
+            _client.DefaultLanguage = value
+        End Set
+    End Property
+
+#End Region 'Properties
+
 #Region "Methods"
 
-        Public Sub New(ByVal Settings As TMDB_Trailer.SpecialSettings)
-            Try
-                _MySettings = Settings
+    Public Async Function CreateAPI(ByVal addonSettings As TMDB_Trailer.AddonSettings) As Task
+        Try
+            _addonSettings = addonSettings
 
-                _TMDBApi = New TMDbLib.Client.TMDbClient(_MySettings.APIKey)
-                _TMDBApi.GetConfigAsync()
-                _TMDBApi.DefaultLanguage = _MySettings.PrefLanguage
-                _TMDBApi.MaxRetryCount = 2
+            _client = New TMDbLib.Client.TMDbClient(_addonSettings.APIKey)
+            Await _client.GetConfigAsync()
+            _client.MaxRetryCount = 2
+            logger.Trace("[TMDB_Trailer] [CreateAPI] Client created")
 
-                If _MySettings.FallBackEng Then
-                    _TMDBApiE = New TMDbLib.Client.TMDbClient(_MySettings.APIKey)
-                    _TMDBApiE.GetConfigAsync()
-                    _TMDBApiE.DefaultLanguage = "en-US"
-                    _TMDBApiE.MaxRetryCount = 2
-                Else
-                    _TMDBApiE = _TMDBApi
-                End If
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        End Sub
-
-        Public Sub CancelAsync()
-            If bwTMDB.IsBusy Then bwTMDB.CancelAsync()
-
-            While bwTMDB.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
-        End Sub
-
-        'Public Sub GetImagesAsync(ByVal imdbID As String, ByVal Type As Enums.ScraperCapabilities)
-        '    Try
-        '        If Not bwTMDB.IsBusy Then
-        '            bwTMDB.WorkerSupportsCancellation = True
-        '            bwTMDB.WorkerReportsProgress = True
-        '            bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .Type = Type})
-        '        End If
-        '    Catch ex As Exception
-        '        logger.Error(New StackFrame().GetMethod().Name,ex)
-        '    End Try
-        'End Sub
-
-        Public Function GetTrailers(ByVal tmdbID As String) As List(Of MediaContainers.Trailer)
-            Dim alTrailers As New List(Of MediaContainers.Trailer)
-            Dim trailers As TMDbLib.Objects.General.ResultContainer(Of TMDbLib.Objects.General.Video)
-
-            If String.IsNullOrEmpty(tmdbID) OrElse Not Integer.TryParse(tmdbID, 0) Then Return alTrailers
-
-            Dim APIResult As Task(Of TMDbLib.Objects.Movies.Movie)
-            APIResult = Task.Run(Function() _TMDBApi.GetMovieAsync(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos))
-
-            trailers = APIResult.Result.Videos
-            If trailers Is Nothing OrElse trailers.Results Is Nothing OrElse trailers.Results.Count = 0 AndAlso _MySettings.FallBackEng Then
-                APIResult = Task.Run(Function() _TMDBApiE.GetMovieAsync(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos))
-                trailers = APIResult.Result.Videos
-                If trailers Is Nothing OrElse trailers.Results Is Nothing OrElse trailers.Results.Count = 0 Then
-                    Return alTrailers
-                End If
+            If _addonSettings.FallBackEng Then
+                _clientE = New TMDbLib.Client.TMDbClient(_addonSettings.APIKey)
+                Await _clientE.GetConfigAsync()
+                _clientE.DefaultLanguage = "en-US"
+                _clientE.MaxRetryCount = 2
+                logger.Trace("[TMDB_Trailer] [CreateAPI] Client-EN created")
+            Else
+                _clientE = _client
+                logger.Trace("[TMDB_Trailer] [CreateAPI] Client-EN = Client")
             End If
-            If trailers IsNot Nothing AndAlso trailers.Results IsNot Nothing Then
-                For Each Video As TMDbLib.Objects.General.Video In trailers.Results.Where(Function(f) f.Site = "YouTube")
-                    Dim tLink As String = String.Format("http://www.youtube.com/watch?v={0}", Video.Key)
-                    If YouTube.Scraper.IsAvailable(tLink) Then
-                        Dim tName As String = YouTube.Scraper.GetVideoTitle(tLink)
-                        alTrailers.Add(New MediaContainers.Trailer With {
+        Catch ex As Exception
+            logger.Error(String.Format("[TMDB_Trailer] [CreateAPI] [Error] {0}", ex.Message))
+        End Try
+    End Function
+
+    Public Function GetTrailers(ByVal tmdbID As String) As List(Of MediaContainers.Trailer)
+        Dim alTrailers As New List(Of MediaContainers.Trailer)
+        Dim trailers As TMDbLib.Objects.General.ResultContainer(Of TMDbLib.Objects.General.Video)
+
+        If String.IsNullOrEmpty(tmdbID) OrElse Not Integer.TryParse(tmdbID, 0) Then Return alTrailers
+
+        Dim APIResult As Task(Of TMDbLib.Objects.Movies.Movie)
+        APIResult = Task.Run(Function() _client.GetMovieAsync(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos))
+
+        trailers = APIResult.Result.Videos
+        If trailers Is Nothing OrElse trailers.Results Is Nothing OrElse trailers.Results.Count = 0 AndAlso _addonSettings.FallBackEng Then
+            APIResult = Task.Run(Function() _clientE.GetMovieAsync(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos))
+            trailers = APIResult.Result.Videos
+            If trailers Is Nothing OrElse trailers.Results Is Nothing OrElse trailers.Results.Count = 0 Then
+                Return alTrailers
+            End If
+        End If
+        If trailers IsNot Nothing AndAlso trailers.Results IsNot Nothing Then
+            For Each Video As TMDbLib.Objects.General.Video In trailers.Results.Where(Function(f) f.Site = "YouTube")
+                Dim tLink As String = String.Format("http://www.youtube.com/watch?v={0}", Video.Key)
+                If YouTube.Scraper.IsAvailable(tLink) Then
+                    Dim tName As String = YouTube.Scraper.GetVideoTitle(tLink)
+                    alTrailers.Add(New MediaContainers.Trailer With {
                                            .LongLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1)),
                                            .Quality = GetVideoQuality(Video.Size),
                                            .Scraper = "TMDB",
@@ -112,84 +103,41 @@ Namespace TMDB
                                            .Title = tName,
                                            .Type = GetVideoType(Video.Type),
                                            .URLWebsite = tLink})
-                    End If
-                Next
-            End If
+                End If
+            Next
+        End If
 
-            Return alTrailers
-        End Function
+        Return alTrailers
+    End Function
 
-        Private Function GetVideoQuality(ByRef Size As Integer) As Enums.TrailerVideoQuality
-            If Size = 0 Then Return Enums.TrailerVideoQuality.Any
+    Private Function GetVideoQuality(ByRef Size As Integer) As Enums.TrailerVideoQuality
+        Select Case Size
+            Case 1080
+                Return Enums.TrailerVideoQuality.HD1080p
+            Case 720
+                Return Enums.TrailerVideoQuality.HD720p
+            Case 480
+                Return Enums.TrailerVideoQuality.HQ480p
+            Case Else
+                Return Enums.TrailerVideoQuality.Any
+        End Select
+    End Function
 
-            Select Case Size
-                Case 1080
-                    Return Enums.TrailerVideoQuality.HD1080p
-                Case 720
-                    Return Enums.TrailerVideoQuality.HD720p
-                Case 480
-                    Return Enums.TrailerVideoQuality.HQ480p
-            End Select
-
-            Return Enums.TrailerVideoQuality.Any
-        End Function
-
-        Private Function GetVideoType(ByRef Type As String) As Enums.TrailerType
-            If String.IsNullOrEmpty(Type) Then Return Enums.TrailerType.Any
-
-            Select Case Type.ToLower
-                Case "clip"
-                    Return Enums.TrailerType.Clip
-                Case "featurette"
-                    Return Enums.TrailerType.Featurette
-                Case "teaser"
-                    Return Enums.TrailerType.Teaser
-                Case "trailer"
-                    Return Enums.TrailerType.Trailer
-            End Select
-
-            Return Enums.TrailerType.Any
-        End Function
-
-        '      Private Sub bwTMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork
-        '          Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        '          Try
-        '              e.Result = GetTMDBImages(Args.Parameter, Args.Type)
-        '          Catch ex As Exception
-        '              logger.Error(New StackFrame().GetMethod().Name,ex)
-        '              e.Result = Nothing
-        '          End Try
-        '      End Sub
-
-        'Private Sub bwTMDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTMDB.ProgressChanged
-        '	If Not bwTMDB.CancellationPending Then
-        '		RaiseEvent ProgressUpdated(e.ProgressPercentage)
-        '	End If
-        'End Sub
-
-        'Private Sub bwTMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
-        '	If Not IsNothing(e.Result) Then
-        '		RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of MediaContainers.Image)))
-        '	End If
-        'End Sub
+    Private Function GetVideoType(ByRef Type As String) As Enums.TrailerType
+        Select Case Type.ToLower
+            Case "clip"
+                Return Enums.TrailerType.Clip
+            Case "featurette"
+                Return Enums.TrailerType.Featurette
+            Case "teaser"
+                Return Enums.TrailerType.Teaser
+            Case "trailer"
+                Return Enums.TrailerType.Trailer
+            Case Else
+                Return Enums.TrailerType.Any
+        End Select
+    End Function
 
 #End Region 'Methods
 
-#Region "Nested Types"
-
-        Private Structure Arguments
-
-#Region "Fields"
-
-            Dim Parameter As String
-            Dim Type As Enums.ModifierType
-
-#End Region 'Fields
-
-        End Structure
-
-#End Region 'Nested Types
-
-    End Class
-
-End Namespace
+End Class
