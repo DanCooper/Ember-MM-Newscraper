@@ -30,6 +30,39 @@ or a "32-bit ARGB value"
     <backcolor>-2302756</backcolor>
     <forecolor>-16777216</forecolor>
   </toppanel>
+  
+  <medialistcolors>
+	<default>
+		<backcolor>White</backcolor>
+		<forecolor>Black</forecolor>
+		<selectionbackcolor>Highlight</selectionbackcolor>
+		<selectionforecolor>HighlightText</selectionforecolor>
+	</default>
+	<locked>
+		<backcolor>LightSteelBlue</backcolor>
+		<forecolor>Black</forecolor>
+		<selectionbackcolor>DarkTurquoise</selectionbackcolor>
+		<selectionforecolor>Black</selectionforecolor>
+	</locked>
+	<missing>
+		<backcolor>White</backcolor>
+		<forecolor>Gray</forecolor>
+		<selectionbackcolor>DarkGray</selectionbackcolor>
+		<selectionforecolor>LightGray</selectionforecolor>
+	</missing>
+	<new>
+		<backcolor>White</backcolor>
+		<forecolor>Green</forecolor>
+		<selectionbackcolor>Highlight</selectionbackcolor>
+		<selectionforecolor>Green</selectionforecolor>
+	</new>
+	<marked>
+		<backcolor>White</backcolor>
+		<forecolor>Crimson</forecolor>
+		<selectionbackcolor>Highlight</selectionbackcolor>
+		<selectionforecolor>Crimson</selectionforecolor>
+	</marked>
+  </medialistcolors>
  
   <images>
     <bannerbackcolor>Gainsboro</bannerbackcolor>

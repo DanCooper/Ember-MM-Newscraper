@@ -26,6 +26,39 @@ fontstyle code 5.
     <backcolor>#2A2728</backcolor>
     <forecolor>Peru</forecolor>	 
   </toppanel>
+  
+  <medialistcolors>
+	<default>
+		<backcolor>White</backcolor>
+		<forecolor>Black</forecolor>
+		<selectionbackcolor>Highlight</selectionbackcolor>
+		<selectionforecolor>HighlightText</selectionforecolor>
+	</default>
+	<locked>
+		<backcolor>LightSteelBlue</backcolor>
+		<forecolor>Black</forecolor>
+		<selectionbackcolor>DarkTurquoise</selectionbackcolor>
+		<selectionforecolor>Black</selectionforecolor>
+	</locked>
+	<new>
+		<backcolor>White</backcolor>
+		<forecolor>Green</forecolor>
+		<selectionbackcolor>Highlight</selectionbackcolor>
+		<selectionforecolor>Green</selectionforecolor>
+	</new>
+	<marked>
+		<backcolor>White</backcolor>
+		<forecolor>Crimson</forecolor>
+		<selectionbackcolor>Highlight</selectionbackcolor>
+		<selectionforecolor>Crimson</selectionforecolor>
+	</marked>
+	<outoftolerance>
+		<backcolor>MistyRose</backcolor>
+		<forecolor>Black</forecolor>
+		<selectionbackcolor>DarkMagenta</selectionbackcolor>
+		<selectionforecolor>HighlightText</selectionforecolor>
+	</outoftolerance>
+  </medialistcolors>
  
   <images>
     <bannerbackcolor>black</bannerbackcolor>
