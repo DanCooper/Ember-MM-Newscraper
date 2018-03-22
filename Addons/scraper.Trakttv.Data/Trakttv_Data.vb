@@ -99,7 +99,7 @@ Public Class Addon
         Set(ByVal value As Boolean)
             _ScraperEnabled_TV = value
             If _ScraperEnabled_TV Then
-              Task.Run(Function()  _TraktAPI_TV.CreateAPI(_AddonSettings_TV, "f91af6501263371353f6d1f5d9ff924934c796b555c0341044336e94080021f1", "20ec71842c1da85dadb554d7920c22b4efb0aeb198fa606880a9e36ffd7c95c4"))
+                Task.Run(Function() _TraktAPI_TV.CreateAPI(_AddonSettings_TV, "f91af6501263371353f6d1f5d9ff924934c796b555c0341044336e94080021f1", "20ec71842c1da85dadb554d7920c22b4efb0aeb198fa606880a9e36ffd7c95c4"))
             End If
         End Set
     End Property
@@ -302,8 +302,9 @@ Public Class Addon
             If nResult.Exception Is Nothing AndAlso nResult.Result IsNot Nothing Then
                 nMovie = nResult.Result
             ElseIf nResult.Exception IsNot Nothing Then
-                Task.Run(Function() _TraktAPI_Movie.RefreshAuthorization())
                 logger.Error(String.Concat("[Tracktv_Data] [Scraper_Movie]: ", nResult.Exception.InnerException.Message))
+                Task.Run(Function() _TraktAPI_Movie.RefreshAuthorization())
+                logger.Error("[Tracktv_Data] [Scraper_Movie] [Abort] API error")
             End If
         End If
 
@@ -333,8 +334,9 @@ Public Class Addon
             If nResult.Exception Is Nothing AndAlso nResult.Result IsNot Nothing Then
                 nTVShow = nResult.Result
             ElseIf nResult.Exception IsNot Nothing Then
-                _TraktAPI_TV.RefreshAuthorization()
                 logger.Error(String.Concat("[Tracktv_Data] [Scraper_TV]: ", nResult.Exception.InnerException.Message))
+                Task.Run(Function() _TraktAPI_TV.RefreshAuthorization())
+                logger.Error("[Tracktv_Data] [Scraper_TV] [Abort] API error")
             End If
         End If
 
@@ -362,8 +364,9 @@ Public Class Addon
             If nResult.Exception Is Nothing AndAlso nResult.Result IsNot Nothing Then
                 nTVEpisode = nResult.Result
             ElseIf nResult.Exception IsNot Nothing Then
-                _TraktAPI_TV.RefreshAuthorization()
-                logger.Error(String.Concat("[Tracktv_Data] [Scraper_TV]: ", nResult.Exception.InnerException.Message))
+                logger.Error(String.Concat("[Tracktv_Data] [Scraper_TVEpisode]: ", nResult.Exception.InnerException.Message))
+                Task.Run(Function() _TraktAPI_TV.RefreshAuthorization())
+                logger.Error("[Tracktv_Data] [Scraper_TVEpisode] [Abort] API error")
             End If
         End If
 

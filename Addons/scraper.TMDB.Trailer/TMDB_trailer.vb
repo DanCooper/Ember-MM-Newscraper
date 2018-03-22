@@ -28,18 +28,17 @@ Public Class TMDB_Trailer
 #Region "Fields"
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
+    Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
 
-    ''' <summary>
-    ''' Scraping Here
-    ''' </summary>
-    ''' <remarks></remarks>
     Private strPrivateAPIKey As String = String.Empty
-    Private _SpecialSettings As New SpecialSettings
+    Private _SpecialSettings As New AddonSettings
     Private _Name As String = "TMDB_Trailer"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
+    Private _TMDBAPI As New clsAPITMDB
+
+    Private Const _strAPIKey As String = "44810eefccd9cb1fa1d57e7b0d67b08d"
 
 #End Region 'Fields
 
@@ -62,7 +61,7 @@ Public Class TMDB_Trailer
 
     ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Trailer_Movie.ModuleVersion
         Get
-            Return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
+            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
@@ -72,6 +71,9 @@ Public Class TMDB_Trailer
         End Get
         Set(ByVal value As Boolean)
             _ScraperEnabled = value
+            If _ScraperEnabled Then
+                Task.Run(Function() _TMDBAPI.CreateAPI(_SpecialSettings))
+            End If
         End Set
     End Property
 
@@ -136,20 +138,17 @@ Public Class TMDB_Trailer
 
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
         logger.Trace("[TMDB_Trailer] [Scraper_Movie] [Start]")
 
-        LoadSettings()
-        _SpecialSettings.PrefLanguage = DBMovie.Language
+        _TMDBAPI.DefaultLanguage = oDBElement.Language
 
-        If String.IsNullOrEmpty(DBMovie.Movie.TMDB) Then
-            DBMovie.Movie.TMDB = ModulesManager.Instance.GetMovieTMDBID(DBMovie.Movie.IMDB)
+        If Not oDBElement.Movie.TMDBSpecified Then
+            oDBElement.Movie.TMDB = ModulesManager.Instance.GetMovieTMDBID(oDBElement.Movie.IMDB)
         End If
 
-        If Not String.IsNullOrEmpty(DBMovie.Movie.TMDB) Then
-            Dim _scraper As New TMDB.Scraper(_SpecialSettings)
-
-            TrailerList = _scraper.GetTrailers(DBMovie.Movie.TMDB)
+        If oDBElement.Movie.TMDBSpecified Then
+            TrailerList = _TMDBAPI.GetTrailers(oDBElement.Movie.TMDB)
         End If
 
         logger.Trace("[TMDB_Trailer] [Scraper_Movie] [Done]")
@@ -166,8 +165,16 @@ Public Class TMDB_Trailer
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Trailer_Movie.SaveSetupScraper
         _SpecialSettings.FallBackEng = _setup.chkFallBackEng.Checked
+
+        Dim bAPIKeyChanged = Not strPrivateAPIKey = _setup.txtApiKey.Text.Trim
+        strPrivateAPIKey = _setup.txtApiKey.Text.Trim
+        _SpecialSettings.FallBackEng = _setup.chkFallBackEng.Checked
+        _SpecialSettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
+
         SaveSettings()
-        'ModulesManager.Instance.SaveSettings()
+
+        If bAPIKeyChanged Then Task.Run(Function() _TMDBAPI.CreateAPI(_SpecialSettings))
+
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -184,7 +191,7 @@ Public Class TMDB_Trailer
 
 #Region "Nested Types"
 
-    Structure SpecialSettings
+    Structure AddonSettings
 
 #Region "Fields"
         Dim APIKey As String

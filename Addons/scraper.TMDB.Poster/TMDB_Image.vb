@@ -31,19 +31,17 @@ Public Class TMDB_Image
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
+    Public Shared _AssemblyName As String
     Public Shared ConfigModifier_Movie As New Structures.ScrapeModifiers
     Public Shared ConfigModifier_MovieSet As New Structures.ScrapeModifiers
     Public Shared ConfigModifier_TV As New Structures.ScrapeModifiers
-    Public Shared _AssemblyName As String
-
-    Private TMDBId As String
 
     Private strPrivateAPIKey As String = String.Empty
-    Private _SpecialSettings_Movie As New SpecialSettings
-    Private _SpecialSettings_MovieSet As New SpecialSettings
-    Private _SpecialSettings_TV As New SpecialSettings
+    Private _SpecialSettings_Movie As New AddonSettings
+    Private _SpecialSettings_MovieSet As New AddonSettings
+    Private _SpecialSettings_TV As New AddonSettings
     Private _Name As String = "TMDB_Image"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_MovieSet As Boolean = False
@@ -51,6 +49,11 @@ Public Class TMDB_Image
     Private _setup_Movie As frmSettingsHolder_Movie
     Private _setup_MovieSet As frmSettingsHolder_MovieSet
     Private _setup_TV As frmSettingsHolder_TV
+    Private _TMDBAPI_Movie As New clsAPITMDB
+    Private _TMDBAPI_MovieSet As New clsAPITMDB
+    Private _TMDBAPI_TV As New clsAPITMDB
+
+    Private Const _strAPIKey As String = "44810eefccd9cb1fa1d57e7b0d67b08d"
 
 #End Region 'Fields
 
@@ -92,7 +95,7 @@ Public Class TMDB_Image
 
     ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Image_Movie.ModuleVersion, Interfaces.ScraperModule_Image_MovieSet.ModuleVersion, Interfaces.ScraperModule_Image_TV.ModuleVersion
         Get
-            Return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
+            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
@@ -102,6 +105,9 @@ Public Class TMDB_Image
         End Get
         Set(ByVal value As Boolean)
             _ScraperEnabled_Movie = value
+            If _ScraperEnabled_Movie Then
+                Task.Run(Function() _TMDBAPI_Movie.CreateAPI(_SpecialSettings_Movie))
+            End If
         End Set
     End Property
 
@@ -111,6 +117,9 @@ Public Class TMDB_Image
         End Get
         Set(ByVal value As Boolean)
             _ScraperEnabled_MovieSet = value
+            If _ScraperEnabled_MovieSet Then
+                Task.Run(Function() _TMDBAPI_MovieSet.CreateAPI(_SpecialSettings_MovieSet))
+            End If
         End Set
     End Property
 
@@ -120,6 +129,9 @@ Public Class TMDB_Image
         End Get
         Set(ByVal value As Boolean)
             _ScraperEnabled_TV = value
+            If _ScraperEnabled_TV Then
+                Task.Run(Function() _TMDBAPI_TV.CreateAPI(_SpecialSettings_TV))
+            End If
         End Set
     End Property
 
@@ -314,53 +326,45 @@ Public Class TMDB_Image
     End Function
 
     Sub LoadSettings_Movie()
-        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.Movie)
-        _SpecialSettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-
         ConfigModifier_Movie.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainExtrafanarts = ConfigModifier_Movie.MainFanart
         ConfigModifier_Movie.MainExtrathumbs = ConfigModifier_Movie.MainFanart
+
+        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.Movie)
+        _SpecialSettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
     End Sub
 
     Sub LoadSettings_MovieSet()
-        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.MovieSet)
-        _SpecialSettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-
         ConfigModifier_MovieSet.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainExtrafanarts = ConfigModifier_MovieSet.MainFanart
         ConfigModifier_MovieSet.MainExtrathumbs = ConfigModifier_MovieSet.MainFanart
+
+        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.MovieSet)
+        _SpecialSettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
     End Sub
 
     Sub LoadSettings_TV()
-        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.TV)
-        _SpecialSettings_TV.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-
         ConfigModifier_TV.EpisodePoster = AdvancedSettings.GetBooleanSetting("DoEpisodePoster", True, , Enums.ContentType.TV)
         ConfigModifier_TV.SeasonPoster = AdvancedSettings.GetBooleanSetting("DoSeasonPoster", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainFanart = AdvancedSettings.GetBooleanSetting("DoShowFanart", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainPoster = AdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainExtrafanarts = ConfigModifier_TV.MainFanart
+
+        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.TV)
+        _SpecialSettings_TV.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
     End Sub
 
     Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("[TMDB_Image] [Scraper_Movie] [Start]")
-
-        LoadSettings_Movie()
-
         If String.IsNullOrEmpty(DBMovie.Movie.TMDB) Then
             DBMovie.Movie.TMDB = ModulesManager.Instance.GetMovieTMDBID(DBMovie.Movie.IMDB)
         End If
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.TMDB) Then
-            Dim Settings As New SpecialSettings
-            Settings.APIKey = _SpecialSettings_Movie.APIKey
-
-            Dim _scraper As New TMDB.Scraper(Settings)
             Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_Movie)
-
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDB, FilteredModifiers, Enums.ContentType.Movie)
+            ImagesContainer = _TMDBAPI_Movie.GetImages_Movie_MovieSet(DBMovie.Movie.TMDB, FilteredModifiers, Enums.ContentType.Movie)
         End If
 
         logger.Trace("[TMDB_Image] [Scraper_Movie] [Done]")
@@ -369,21 +373,13 @@ Public Class TMDB_Image
 
     Function Scraper_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Start]")
-
-        LoadSettings_MovieSet()
-
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.TMDB) AndAlso DBMovieSet.MoviesInSetSpecified Then
             DBMovieSet.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieSet.MoviesInSet.Item(0).DBMovie.Movie.IMDB)
         End If
 
         If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.TMDB) Then
-            Dim Settings As New SpecialSettings
-            Settings.APIKey = _SpecialSettings_MovieSet.APIKey
-
-            Dim _scraper As New TMDB.Scraper(Settings)
             Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_MovieSet)
-
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.TMDB, FilteredModifiers, Enums.ContentType.MovieSet)
+            ImagesContainer = _TMDBAPI_MovieSet.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.TMDB, FilteredModifiers, Enums.ContentType.MovieSet)
         End If
 
         logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Done]")
@@ -392,42 +388,35 @@ Public Class TMDB_Image
 
     Function Scraper_TV(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
         logger.Trace("[TMDB_Image] [Scraper_TV] [Start]")
-
-        LoadSettings_TV()
-
-        Dim Settings As New SpecialSettings
-        Settings.APIKey = _SpecialSettings_TV.APIKey
-
-        Dim _scraper As New TMDB.Scraper(Settings)
         Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_TV)
 
         If DBTV.TVShow IsNot Nothing AndAlso String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
-                DBTV.TVShow.TMDB = _scraper.GetTMDBbyTVDB(DBTV.TVShow.TVDB)
+                DBTV.TVShow.TMDB = _TMDBAPI_TV.GetTMDBbyTVDB(DBTV.TVShow.TVDB)
             ElseIf Not String.IsNullOrEmpty(DBTV.TVShow.IMDB) Then
-                DBTV.TVShow.TMDB = _scraper.GetTMDBbyIMDB(DBTV.TVShow.IMDB)
+                DBTV.TVShow.TMDB = _TMDBAPI_TV.GetTMDBbyIMDB(DBTV.TVShow.IMDB)
             End If
         End If
 
         Select Case DBTV.ContentType
             Case Enums.ContentType.TVEpisode
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                    ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, FilteredModifiers)
+                    ImagesContainer = _TMDBAPI_TV.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, FilteredModifiers)
                     If FilteredModifiers.MainFanart Then
-                        ImagesContainer.MainFanarts = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers).MainFanarts
+                        ImagesContainer.MainFanarts = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers).MainFanarts
                     End If
                 Else
                     logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TMDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVSeason
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                    ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers)
+                    ImagesContainer = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVShow
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                    ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers)
+                    ImagesContainer = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
@@ -443,7 +432,6 @@ Public Class TMDB_Image
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoPoster", ConfigModifier_Movie.MainPoster, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoFanart", ConfigModifier_Movie.MainFanart, , , Enums.ContentType.Movie)
-
             settings.SetSetting("APIKey", _setup_Movie.txtApiKey.Text, , , Enums.ContentType.Movie)
         End Using
     End Sub
@@ -452,7 +440,6 @@ Public Class TMDB_Image
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoPoster", ConfigModifier_MovieSet.MainPoster, , , Enums.ContentType.MovieSet)
             settings.SetBooleanSetting("DoFanart", ConfigModifier_MovieSet.MainFanart, , , Enums.ContentType.MovieSet)
-
             settings.SetSetting("APIKey", _setup_MovieSet.txtApiKey.Text, , , Enums.ContentType.MovieSet)
         End Using
     End Sub
@@ -463,7 +450,6 @@ Public Class TMDB_Image
             settings.SetBooleanSetting("DoSeasonPoster", ConfigModifier_TV.SeasonPoster, , , Enums.ContentType.TV)
             settings.SetBooleanSetting("DoShowFanart", ConfigModifier_TV.MainFanart, , , Enums.ContentType.TV)
             settings.SetBooleanSetting("DoShowPoster", ConfigModifier_TV.MainPoster, , , Enums.ContentType.TV)
-
             settings.SetSetting("APIKey", _setup_TV.txtApiKey.Text, , , Enums.ContentType.TV)
         End Using
     End Sub
@@ -471,7 +457,15 @@ Public Class TMDB_Image
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_Movie.SaveSetupScraper
         ConfigModifier_Movie.MainPoster = _setup_Movie.chkScrapePoster.Checked
         ConfigModifier_Movie.MainFanart = _setup_Movie.chkScrapeFanart.Checked
+
+        Dim bAPIKeyChanged = Not strPrivateAPIKey = _setup_Movie.txtApiKey.Text.Trim
+        strPrivateAPIKey = _setup_Movie.txtApiKey.Text.Trim
+        _SpecialSettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
+
         SaveSettings_Movie()
+
+        If bAPIKeyChanged Then Task.Run(Function() _TMDBAPI_Movie.CreateAPI(_SpecialSettings_Movie))
+
         If DoDispose Then
             RemoveHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
             RemoveHandler _setup_Movie.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
@@ -483,7 +477,15 @@ Public Class TMDB_Image
     Sub SaveSetupScraper_MovieSet(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_MovieSet.SaveSetupScraper
         ConfigModifier_MovieSet.MainPoster = _setup_MovieSet.chkScrapePoster.Checked
         ConfigModifier_MovieSet.MainFanart = _setup_MovieSet.chkScrapeFanart.Checked
+
+        Dim bAPIKeyChanged = Not strPrivateAPIKey = _setup_MovieSet.txtApiKey.Text.Trim
+        strPrivateAPIKey = _setup_MovieSet.txtApiKey.Text.Trim
+        _SpecialSettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
+
         SaveSettings_MovieSet()
+
+        If bAPIKeyChanged Then Task.Run(Function() _TMDBAPI_MovieSet.CreateAPI(_SpecialSettings_MovieSet))
+
         If DoDispose Then
             RemoveHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_MovieSet
             RemoveHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_MovieSet
@@ -497,7 +499,14 @@ Public Class TMDB_Image
         ConfigModifier_TV.SeasonPoster = _setup_TV.chkScrapeSeasonPoster.Checked
         ConfigModifier_TV.MainFanart = _setup_TV.chkScrapeShowFanart.Checked
         ConfigModifier_TV.MainPoster = _setup_TV.chkScrapeShowPoster.Checked
+
+        Dim bAPIKeyChanged = Not strPrivateAPIKey = _setup_TV.txtApiKey.Text.Trim
+        strPrivateAPIKey = _setup_TV.txtApiKey.Text.Trim
+        _SpecialSettings_TV.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
+
         SaveSettings_TV()
+
+        If bAPIKeyChanged Then Task.Run(Function() _TMDBAPI_TV.CreateAPI(_SpecialSettings_TV))
         If DoDispose Then
             RemoveHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV
             RemoveHandler _setup_TV.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_TV
@@ -522,7 +531,7 @@ Public Class TMDB_Image
 
 #Region "Nested Types"
 
-    Structure SpecialSettings
+    Structure AddonSettings
 
 #Region "Fields"
 

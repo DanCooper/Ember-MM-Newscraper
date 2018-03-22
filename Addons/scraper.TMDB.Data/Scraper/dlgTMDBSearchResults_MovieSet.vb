@@ -30,7 +30,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     Friend WithEvents tmrLoad As New Timer
     Friend WithEvents tmrWait As New Timer
 
-    Private _TMDB As TMDB.Scraper
+    Private _TMDB As clsAPITMDB
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
@@ -58,7 +58,7 @@ Public Class dlgTMDBSearchResults_MovieSet
 
 #Region "Methods"
 
-    Public Sub New(ByVal SpecialSettings As TMDB_Data.SpecialSettings, TMDB As TMDB.Scraper)
+    Public Sub New(ByVal SpecialSettings As TMDB_Data.SpecialSettings, TMDB As clsAPITMDB)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -86,7 +86,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(Res As TMDB.SearchResults_MovieSet, ByVal sMovieSetTitle As String) As DialogResult
+    Public Overloads Function ShowDialog(Res As SearchResults_MovieSet, ByVal sMovieSetTitle As String) As DialogResult
         tmrWait.Enabled = False
         tmrWait.Interval = 250
         tmrLoad.Enabled = False
@@ -270,7 +270,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         End If
     End Sub
 
-    Private Sub SearchResultsDownloaded_MovieSet(ByVal M As TMDB.SearchResults_MovieSet)
+    Private Sub SearchResultsDownloaded_MovieSet(ByVal M As SearchResults_MovieSet)
         tvResults.Nodes.Clear()
         ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
