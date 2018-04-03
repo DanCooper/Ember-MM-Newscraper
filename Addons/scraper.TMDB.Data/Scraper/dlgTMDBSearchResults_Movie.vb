@@ -18,10 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
 Imports NLog
 Imports System.Diagnostics
+Imports System.IO
 
 Public Class dlgTMDBSearchResults_Movie
 
@@ -122,7 +122,7 @@ Public Class dlgTMDBSearchResults_Movie
         Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-        _TMDB.GetSearchMovieInfoAsync(txtTMDBID.Text, _tmpMovie, pOpt)
+        _TMDB.GetSearchMovieInfoAsync(txtTMDBID.Text, pOpt)
     End Sub
 
     Private Sub btnOpenFolder_Click(sender As Object, e As EventArgs) Handles btnOpenFolder.Click
@@ -162,7 +162,7 @@ Public Class dlgTMDBSearchResults_Movie
             _TMDB.CancelAsync()
         End If
 
-        _tmpMovie = Nothing
+        _tmpMovie.Clear()
 
         DialogResult = DialogResult.Cancel
     End Sub
@@ -341,7 +341,7 @@ Public Class dlgTMDBSearchResults_Movie
         pnlLoading.Visible = True
         Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        _TMDB.GetSearchMovieInfoAsync(tvResults.SelectedNode.Tag.ToString, _tmpMovie, pOpt)
+        _TMDB.GetSearchMovieInfoAsync(tvResults.SelectedNode.Tag.ToString, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrWait.Tick
