@@ -970,13 +970,13 @@ Namespace IMDB
             End Try
         End Function
 
-        Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal moviecontainer As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions)
+        Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal FilteredOptions As Structures.ScrapeOptions)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = False
                     bwIMDB.WorkerSupportsCancellation = True
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails_Movie,
-                                           .Parameter = imdbID, .Movie = moviecontainer, .Options_Movie = FilteredOptions})
+                                           .Parameter = imdbID, .Options_Movie = FilteredOptions})
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -1014,13 +1014,13 @@ Namespace IMDB
             Return Nothing
         End Function
 
-        Public Sub GetSearchTVShowInfoAsync(ByVal id As String, ByVal show As MediaContainers.TVShow, ByVal options As Structures.ScrapeOptions)
+        Public Sub GetSearchTVShowInfoAsync(ByVal id As String, ByVal options As Structures.ScrapeOptions)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = False
                     bwIMDB.WorkerSupportsCancellation = True
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails_TVShow,
-                                           .Parameter = id, .TVShow = show, .Options_TV = options})
+                                           .Parameter = id, .Options_TV = options})
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -1613,13 +1613,11 @@ Namespace IMDB
 
             Dim FullCast As Boolean
             Dim FullCrew As Boolean
-            Dim Movie As MediaContainers.Movie
             Dim Options_Movie As Structures.ScrapeOptions
             Dim Options_TV As Structures.ScrapeOptions
             Dim Parameter As String
             Dim ScrapeModifiers As Structures.ScrapeModifiers
             Dim Search As SearchType
-            Dim TVShow As MediaContainers.TVShow
             Dim Year As String
 
 #End Region 'Fields
