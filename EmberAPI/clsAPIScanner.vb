@@ -190,7 +190,7 @@ Public Class Scanner
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainSubtitle, bForced)
             If Directory.Exists(a) Then
                 Try
-                    sList.AddRange(Directory.GetFiles(a))
+                    sList.AddRange(Directory.GetFiles(a, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.Filename), "*")))
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
@@ -348,16 +348,19 @@ Public Class Scanner
         Next
 
         'subtitles (external)
-        Dim fList As New List(Of String)
-        Try
-            fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.Filename).FullName, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.Filename), "*.*")))
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-        For Each fFile As String In fList
+        Dim sList As New List(Of String)
+        For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeSubtitle)
+            If Directory.Exists(a) Then
+                Try
+                    sList.AddRange(Directory.GetFiles(a, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.Filename), "*")))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+            End If
+        Next
+        For Each fFile As String In sList
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
-                Dim FullFilePathWithoutExt As String = Path.Combine(Directory.GetParent(tDBElement.Filename).FullName, Path.GetFileNameWithoutExtension(tDBElement.Filename)).ToLower
-                If fFile.ToLower.StartsWith(FullFilePathWithoutExt) AndAlso fFile.ToLower.EndsWith(ext) Then
+                If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
                     tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
                 End If
