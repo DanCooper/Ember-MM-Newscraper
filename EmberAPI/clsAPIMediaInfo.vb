@@ -438,6 +438,8 @@ Public Class MediaInfo
             tCodec = sProfile
         ElseIf sFormat.ToLower.Contains("atmos / truehd") Then
             tCodec = sFormat
+        ElseIf sProfile.ToLower.Contains("truehd+atmos") Then
+            tCodec = sProfile
         ElseIf sProfile.ToLower.Contains("e-ac-3+atmos") Then
             tCodec = "e-ac-3+atmos"
         ElseIf Not String.IsNullOrEmpty(sCodecID) AndAlso Not Integer.TryParse(sCodecID, 0) AndAlso Not sCodecID.ToLower.Contains("a_pcm") AndAlso Not sCodecID.Contains("00001000-0000-0100-8000-00AA00389B71") Then
