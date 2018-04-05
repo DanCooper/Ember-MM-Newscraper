@@ -119,7 +119,11 @@ Public Class Scanner
         Dim efList As New List(Of String)
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainExtrafanarts, bForced)
             If Directory.Exists(a) Then
-                efList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                Try
+                    efList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
                 If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
             End If
         Next
@@ -134,7 +138,11 @@ Public Class Scanner
         Dim etList As New List(Of String)
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainExtrathumbs, bForced)
             If Directory.Exists(a) Then
-                etList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                Try
+                    etList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
                 If etList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
             End If
         Next
@@ -181,7 +189,11 @@ Public Class Scanner
         Dim sList As New List(Of String)
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainSubtitle, bForced)
             If Directory.Exists(a) Then
-                sList.AddRange(Directory.GetFiles(a))
+                Try
+                    sList.AddRange(Directory.GetFiles(a))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
             End If
         Next
         For Each fFile As String In sList
@@ -303,7 +315,11 @@ Public Class Scanner
         For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeActorThumbs)
             Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
             If Directory.Exists(parDir) Then
-                tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                Try
+                    tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
             End If
         Next
 
@@ -323,7 +339,7 @@ Public Class Scanner
             End If
         Next
 
-        'episode poster
+        'poster
         For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodePoster)
             If File.Exists(a) Then
                 tDBElement.ImagesContainer.Poster.LocalFilePath = a
@@ -333,7 +349,11 @@ Public Class Scanner
 
         'subtitles (external)
         Dim fList As New List(Of String)
-        fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.Filename).FullName, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.Filename), "*.*")))
+        Try
+            fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.Filename).FullName, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.Filename), "*.*")))
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
         For Each fFile As String In fList
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
                 Dim FullFilePathWithoutExt As String = Path.Combine(Directory.GetParent(tDBElement.Filename).FullName, Path.GetFileNameWithoutExtension(tDBElement.Filename)).ToLower
@@ -351,7 +371,7 @@ Public Class Scanner
         'remove all known paths
         tDBElement.ImagesContainer = New MediaContainers.ImagesContainer
 
-        'season banner
+        'banner
         If bIsAllSeasons Then
             'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsBanner)
@@ -369,7 +389,7 @@ Public Class Scanner
             Next
         End If
 
-        'season fanart 
+        'fanart 
         If bIsAllSeasons Then
             'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsFanart)
@@ -387,7 +407,7 @@ Public Class Scanner
             Next
         End If
 
-        'season landscape
+        'landscape
         If bIsAllSeasons Then
             'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsLandscape)
@@ -405,7 +425,7 @@ Public Class Scanner
             Next
         End If
 
-        'season poster
+        'poster
         If bIsAllSeasons Then
             'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsPoster)
@@ -440,7 +460,11 @@ Public Class Scanner
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainActorThumbs)
             Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
             If Directory.Exists(parDir) Then
-                tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                Try
+                    tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
             End If
         Next
 
@@ -480,7 +504,11 @@ Public Class Scanner
         Dim efList As New List(Of String)
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainExtrafanarts)
             If Directory.Exists(a) Then
-                efList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                Try
+                    efList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
                 If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
             End If
         Next
