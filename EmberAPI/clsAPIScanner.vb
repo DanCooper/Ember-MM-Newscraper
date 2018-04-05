@@ -1492,7 +1492,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sSource"></param>
     ''' <param name="sPath">Specific Path to scan</param>
-    Public Sub ScanSourceDirectory_TV(ByVal sSource As Database.DBSource, Optional ByVal sPath As String = "")
+    Public Sub ScanSourceDirectory_TV(ByVal sSource As Database.DBSource, Optional ByVal sPath As String = "", Optional forcepathastvshowfolder As Boolean = False)
         Dim ScanPath As String = String.Empty
 
         If Not String.IsNullOrEmpty(sPath) Then
@@ -1509,7 +1509,7 @@ Public Class Scanner
             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
 
             'tv show folder as a source
-            If sSource.IsSingle Then
+            If sSource.IsSingle OrElse forcepathastvshowfolder Then
                 currShowContainer = New Database.DBElement(Enums.ContentType.TVShow)
                 currShowContainer.EpisodeSorting = sSource.EpisodeSorting
                 currShowContainer.Language = sSource.Language
@@ -1704,6 +1704,15 @@ Public Class Scanner
                             Dim Result = Load_TVShow(currShowContainer, True, True, True)
                             If Not Result = Enums.ScannerEventType.None Then
                                 bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Result, .ID = currShowContainer.ID, .Message = currShowContainer.TVShow.Title})
+                            End If
+                        Else
+                            'add a new tv show
+                            Dim nDInfo = New DirectoryInfo(Args.Folder)
+                            While nDInfo.Parent IsNot Nothing AndAlso Not nDInfo.Parent.FullName.ToLower = eSource.Path.ToLower
+                                nDInfo = nDInfo.Parent
+                            End While
+                            If nDInfo.Parent IsNot Nothing AndAlso nDInfo.Parent.FullName.ToLower = eSource.Path.ToLower Then
+                                ScanSourceDirectory_TV(eSource, nDInfo.FullName, True)
                             End If
                         End If
                     End If
