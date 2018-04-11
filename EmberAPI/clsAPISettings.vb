@@ -84,8 +84,6 @@ Public Class Settings
     Public Property GeneralMainFilterSortOrder_Seasons() As Integer = 0
     Public Property GeneralMainFilterSortOrder_Shows() As Integer = 0
     Public Property GeneralMainTabSorting As List(Of MainTabSorting) = New List(Of MainTabSorting)
-    Public Property GeneralMovieSetTheme() As String = "Default"
-    Public Property GeneralMovieTheme() As String = "Default"
     Public Property GeneralOverwriteNfo() As Boolean = False
     Public Property GeneralShowGenresText() As Boolean = True
     Public Property GeneralShowImgDims() As Boolean = True
@@ -95,8 +93,7 @@ Public Class Settings
     Public Property GeneralSplitterDistanceMain() As Integer = 550
     Public Property GeneralSplitterDistanceTVSeason() As Integer = 200
     Public Property GeneralSplitterDistanceTVShow() As Integer = 200
-    Public Property GeneralTVEpisodeTheme() As String = "Default"
-    Public Property GeneralTVShowTheme() As String = "Default"
+    Public Property GeneralTheme() As String = "Default"
     Public Property GeneralVirtualDriveLetter() As String = String.Empty
     Public Property GeneralVirtualDriveBinPath() As String = String.Empty
     Public Property GeneralVirtualDriveTimeout() As Integer = 500

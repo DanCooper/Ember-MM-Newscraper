@@ -322,7 +322,6 @@ Public Class TaskManager
                             DataField_CompareLists(.bMainCertifications, tmpDBElement.TVShow.Certifications, nInfo.Certifications)
                             DataField_CompareLists(.bMainCountries, tmpDBElement.TVShow.Countries, nInfo.Countries)
                             DataField_CompareLists(.bMainCreators, tmpDBElement.TVShow.Creators, nInfo.Creators)
-                            DataField_CompareLists(.bMainDirectors, tmpDBElement.TVShow.Directors, nInfo.Directors)
                             DataField_CompareLists(.bMainGenres, tmpDBElement.TVShow.Genres, nInfo.Genres)
                             DataField_CompareStrings(.bMainMPAA, tmpDBElement.TVShow.MPAA, nInfo.MPAA)
                             DataField_ClearString(.bMainOriginalTitle, tmpDBElement.TVShow.OriginalTitle)

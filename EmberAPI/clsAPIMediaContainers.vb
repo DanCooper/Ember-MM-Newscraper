@@ -1037,14 +1037,6 @@ Namespace MediaContainers
             Clear()
         End Sub
 
-        Public Sub New(ByVal strIMDB As String, ByVal strTitle As String, ByVal strYear As String, ByVal iLev As Integer)
-            Clear()
-            _imdb = strIMDB
-            _title = strTitle
-            _year = strYear
-            _lev = iLev
-        End Sub
-
 #End Region 'Constructors
 
 #Region "Properties"
@@ -2853,7 +2845,6 @@ Namespace MediaContainers
         Private _certifications As New List(Of String)
         Private _countries As New List(Of String)
         Private _creators As New List(Of String)
-        Private _directors As New List(Of String)
         Private _episodeguide As New EpisodeGuide
         Private _genres As New List(Of String)
         Private _imdb As String
@@ -3149,27 +3140,6 @@ Namespace MediaContainers
         Public ReadOnly Property GenresSpecified() As Boolean
             Get
                 Return _genres.Count > 0
-            End Get
-        End Property
-
-        <XmlElement("director")>
-        Public Property Directors() As List(Of String)
-            Get
-                Return _directors
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _directors.Clear()
-                Else
-                    _directors = value
-                End If
-            End Set
-        End Property
-
-        <XmlIgnore()>
-        Public ReadOnly Property DirectorsSpecified() As Boolean
-            Get
-                Return _directors.Count > 0
             End Get
         End Property
 
@@ -3534,7 +3504,6 @@ Namespace MediaContainers
             _certifications.Clear()
             _countries.Clear()
             _creators.Clear()
-            _directors.Clear()
             _episodeguide.URL = String.Empty
             _genres.Clear()
             _tvdb = String.Empty

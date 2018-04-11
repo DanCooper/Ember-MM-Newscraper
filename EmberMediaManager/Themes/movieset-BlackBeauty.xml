@@ -26,319 +26,225 @@ or a "32-bit ARGB value"
 -->
 
 <theme>
-  <toppanel>
+  <filterpanel>
     <backcolor>#2A2728</backcolor>
-    <forecolor>Peru</forecolor>	 
-  </toppanel>
-  
-  <medialistcolors>
-	<default>
-		<backcolor>White</backcolor>
-		<forecolor>Black</forecolor>
-		<selectionbackcolor>Highlight</selectionbackcolor>
-		<selectionforecolor>HighlightText</selectionforecolor>
-	</default>
-	<locked>
-		<backcolor>LightSteelBlue</backcolor>
-		<forecolor>Black</forecolor>
-		<selectionbackcolor>DarkTurquoise</selectionbackcolor>
-		<selectionforecolor>Black</selectionforecolor>
-	</locked>
-	<new>
-		<backcolor>White</backcolor>
-		<forecolor>Green</forecolor>
-		<selectionbackcolor>Highlight</selectionbackcolor>
-		<selectionforecolor>Green</selectionforecolor>
-	</new>
-	<marked>
-		<backcolor>White</backcolor>
-		<forecolor>Crimson</forecolor>
-		<selectionbackcolor>Highlight</selectionbackcolor>
-		<selectionforecolor>Crimson</selectionforecolor>
-	</marked>
-  </medialistcolors>
- 
-  <images>
-    <bannerbackcolor>black</bannerbackcolor>
-    <bannerbottombackcolor>black</bannerbottombackcolor>
-    <bannermaxheight>160</bannermaxheight>
-    <bannermaxwidth>285</bannermaxwidth>
-    <bannerposleft>124</bannerposleft>
-    <bannerpostop>327</bannerpostop>
-    <bannertopbackcolor>FireBrick</bannertopbackcolor>
-    <characterartbackcolor>black</characterartbackcolor>
-    <characterartbottombackcolor>black</characterartbottombackcolor>
-    <characterarttopbackcolor>FireBrick</characterarttopbackcolor>
-    <characterartmaxheight>160</characterartmaxheight>
-    <characterartmaxwidth>160</characterartmaxwidth>
-    <characterartposleft>1011</characterartposleft>
-    <characterartpostop>130</characterartpostop>
-    <clearartbackcolor>black</clearartbackcolor>
-    <clearartbottombackcolor>black</clearartbottombackcolor>
-    <cleararttopbackcolor>FireBrick</cleararttopbackcolor>
-    <clearartmaxheight>160</clearartmaxheight>
-    <clearartmaxwidth>285</clearartmaxwidth>
-    <clearartposleft>715</clearartposleft>
-    <clearartpostop>130</clearartpostop>
-    <clearlogobackcolor>black</clearlogobackcolor>
-    <clearlogobottombackcolor>black</clearlogobottombackcolor>
-    <clearlogotopbackcolor>FireBrick</clearlogotopbackcolor>
-    <clearlogomaxheight>160</clearlogomaxheight>
-    <clearlogomaxwidth>285</clearlogomaxwidth>
-    <clearlogoposleft>419</clearlogoposleft>
-    <clearlogopostop>327</clearlogopostop>
-    <discartbackcolor>black</discartbackcolor>
-    <discartbottombackcolor>black</discartbottombackcolor>
-    <discarttopbackcolor>FireBrick</discarttopbackcolor>
-    <discartmaxheight>160</discartmaxheight>
-    <discartmaxwidth>160</discartmaxwidth>
-    <discartposleft>1011</discartposleft>
-    <discartpostop>130</discartpostop>
-    <fanartbackcolor>black</fanartbackcolor>
-    <fanartsmallbackcolor>black</fanartsmallbackcolor>
-    <fanartsmallbottombackcolor>black</fanartsmallbottombackcolor>
-    <fanartsmallmaxheight>160</fanartsmallmaxheight>
-    <fanartsmallmaxwidth>285</fanartsmallmaxwidth>
-    <fanartsmallposleft>124</fanartsmallposleft>
-    <fanartsmallpostop>130</fanartsmallpostop>
-    <fanartsmalltopbackcolor>FireBrick</fanartsmalltopbackcolor>
-    <genrebackcolor>white</genrebackcolor>
-    <landscapebackcolor>black</landscapebackcolor>
-    <landscapebottombackcolor>black</landscapebottombackcolor>
-    <landscapetopbackcolor>FireBrick</landscapetopbackcolor>
-    <landscapemaxheight>160</landscapemaxheight>
-    <landscapemaxwidth>285</landscapemaxwidth>
-    <landscapeposleft>419</landscapeposleft>
-    <landscapepostop>130</landscapepostop>
-    <mpaabackcolor>#FEFCFF</mpaabackcolor>
-    <posterbackcolor>black</posterbackcolor>
-    <posterbottombackcolor>black</posterbottombackcolor>
-    <postermaxheight>160</postermaxheight>
-    <postermaxwidth>160</postermaxwidth>
-    <posterposleft>4</posterposleft>
-    <posterpostop>130</posterpostop>
-    <postertopbackcolor>FireBrick</postertopbackcolor>
-  </images>
-   
+    <button>
+      <forecolor>Black</forecolor>
+    </button>
+    <forecolor>White</forecolor>
+    <header>
+      <backcolor>FireBrick</backcolor>
+      <forecolor>White</forecolor>
+    </header>
+  </filterpanel>
+
+  <imagepanel>
+    <backcolor>Black</backcolor>
+    <forecolor>Black</forecolor>
+    <mpaa>
+      <backcolor>#FEFCFF</backcolor>
+    </mpaa>
+    <imagename>
+      <backcolor>FireBrick</backcolor>
+      <forecolor>HighlightText</forecolor>
+    </imagename>
+    <imagesize>
+      <backcolor>Black</backcolor>
+      <forecolor>HighlightText</forecolor>
+    </imagesize>
+    <banner>
+      <left>124</left>
+      <maxheight>160</maxheight>
+      <maxwidth>285</maxwidth>
+      <top>327</top>
+    </banner>
+    <clearart>
+      <left>715</left>
+      <maxheight>160</maxheight>
+      <maxwidth>285</maxwidth>
+      <top>130</top>
+    </clearart>
+    <clearlogo>
+      <left>419</left>
+      <maxheight>160</maxheight>
+      <maxwidth>285</maxwidth>
+      <top>327</top>
+    </clearlogo>
+    <discart>
+      <left>1011</left>
+      <maxheight>160</maxheight>
+      <maxwidth>160</maxwidth>
+      <top>130</top>
+    </discart>
+    <fanartsmall>
+      <left>124</left>
+      <maxheight>160</maxheight>
+      <maxwidth>285</maxwidth>
+      <top>130</top>
+    </fanartsmall>
+    <landscape>
+      <left>419</left>
+      <maxheight>160</maxheight>
+      <maxwidth>285</maxwidth>
+      <top>130</top>
+    </landscape>
+    <poster>
+      <left>4</left>
+      <maxheight>160</maxheight>
+      <maxwidth>160</maxwidth>
+      <top>130</top>
+    </poster>
+  </imagepanel>
+
   <infopanel>
-    
-    <ipup>290</ipup> <!-- Must be in multiples of 5!! -->
-    <ipmid>290</ipmid> <!-- Must be in multiples of 5!! -->
-     
-	 <object name="pnlInfoPanel">
-	 <backcolor>#2A2728</backcolor>
-	 </object>
-	 
-    <object name="lblInfoPanelHeader">
-      <width>pnlInfoPanel.Width - 8</width>
+    <backcolor>#2A2728</backcolor>
+    <posmid>290</posmid>
+    <!-- Must be a multiple of 5!! -->
+    <posup>290</posup>
+    <!-- Must be a multiple of 5!! -->
+
+    <control name="lblInfoPanelHeader">
+      <anchor>13</anchor>
+      <backcolor>FireBrick</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>White</forecolor>
       <height>17</height>
       <left>3</left>
       <top>3</top>
-      <backcolor>FireBrick</backcolor>
-      <forecolor>White</forecolor>
+      <width>pnlInfoPanel.Width - 8</width>
+    </control>
+
+    <control name="btnUp">
+      <anchor>9</anchor>
+      <height>22</height>
+      <left>pnlInfoPanel.Width - 71</left>
+      <top>1</top>
+      <width>30</width>
+    </control>
+
+    <control name="btnDown">
+      <anchor>9</anchor>
+      <height>22</height>
+      <left>pnlInfoPanel.Width - 38</left>
+      <top>1</top>
+      <width>30</width>
+    </control>
+
+    <control name="lblPlotHeader">
       <anchor>13</anchor>
-      <font>Arial</font>
+      <backcolor>FireBrick</backcolor>
+      <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
-    </object>
-    
-    <object name="btnUp">
-      <width>30</width>
-      <height>22</height>
-      <left>pnlInfoPanel.Width - 75</left>
-      <top>1</top>
-      <anchor>9</anchor>
-    </object>
-    
-    <object name="btnMid">
-      <visible>false</visible>
-    </object>
-
-    <object name="btnDown">
-      <width>30</width>
-      <height>22</height>
-      <left>pnlInfoPanel.Width - 40</left>
-      <top>1</top>
-      <anchor>9</anchor>
-    </object>
-    
-   <object name="lblPlotHeader">
-      <width>pnlInfoPanel.Width - 10</width>
+      <forecolor>White</forecolor>
       <height>17</height>
       <left>3</left>
       <top>27</top>
-      <backcolor>FireBrick</backcolor>
-      <forecolor>White</forecolor>
-      <anchor>13</anchor>
-      <font>Arial</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
-    </object>
+      <width>pnlInfoPanel.Width - 10</width>
+    </control>
 
-    <object name="txtPlot">
-      <width>lblPlotHeader.Width</width>
+    <control name="txtPlot">
+      <anchor>13</anchor>
+      <backcolor>#2A2728</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>White</forecolor>
       <height>78</height>
       <left>3</left>
       <top>48</top>
-      <backcolor>#2A2728</backcolor>
-      <forecolor>White</forecolor>
-      <anchor>13</anchor>
-      <font>Arial</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
-    </object>
+      <width>lblPlotHeader.Width</width>
+    </control>
 
-    <object name="pnlMoviesInSet">
-      <width>pnlInfoPanel.Width</width>
+    <control name="pnlMoviesInSet">
+      <anchor>13</anchor>
+      <backcolor>#2A2728</backcolor>
       <height>164</height>
       <left>3</left>
       <top>133</top>
-      <backcolor>#2A2728</backcolor>
-      <anchor>13</anchor>
-    </object>
+      <width>pnlInfoPanel.Width</width>
+    </control>
 
-    <!-- BEGIN INTERNAL TO PNLMOVIESINSET -->
-    <object name="lblMoviesInSetHeader">
-      <width>pnlMoviesInSet.Width - 10</width>
+    <!-- BEGIN INTERNAL OF PNLMOVIESINSET -->
+    <control name="lblMoviesInSetHeader">
+      <anchor>13</anchor>
+      <backcolor>FireBrick</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>White</forecolor>
       <height>17</height>
       <left>0</left>
       <top>0</top>
-      <backcolor>FireBrick</backcolor>
-      <forecolor>White</forecolor>
-      <anchor>13</anchor>
-      <font>Arial</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
-    </object>
+      <width>pnlMoviesInSet.Width - 10</width>
+    </control>
 
-    <object name="lvMoviesInSet">
-      <width>lblMoviesInSetHeader.Width</width>
+    <control name="lvMoviesInSet">
+      <anchor>13</anchor>
+      <backcolor>#2A2728</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>White</forecolor>
       <height>130</height>
       <left>0</left>
       <top>21</top>
+      <width>lblMoviesInSetHeader.Width</width>
+    </control>
+    <!-- END INTERNAL OF PNLMOVIESINSET -->
+  </infopanel>
+
+  <medialist>
+    <backcolor>#2A2728</backcolor>
+    <default>
       <backcolor>#2A2728</backcolor>
       <forecolor>White</forecolor>
-      <anchor>13</anchor>
-      <font>Arial</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
-    </object>
-    <!-- END INTERNAL TO PNLMOVIESINSET -->
+      <selectionbackcolor>FireBrick</selectionbackcolor>
+      <selectionforecolor>White</selectionforecolor>
+    </default>
+    <locked>
+      <backcolor>LightSteelBlue</backcolor>
+      <forecolor>Black</forecolor>
+      <selectionbackcolor>DarkTurquoise</selectionbackcolor>
+      <selectionforecolor>Black</selectionforecolor>
+    </locked>
+    <new>
+      <backcolor>White</backcolor>
+      <forecolor>Green</forecolor>
+      <selectionbackcolor>Highlight</selectionbackcolor>
+      <selectionforecolor>Green</selectionforecolor>
+    </new>
+    <marked>
+      <backcolor>White</backcolor>
+      <forecolor>Crimson</forecolor>
+      <selectionbackcolor>Highlight</selectionbackcolor>
+      <selectionforecolor>Crimson</selectionforecolor>
+    </marked> 
+  </medialist>
 
-    <!-- Hide all the stuff we won't be using -->
-    <object name="lblDirectorsHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblDirectors">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblReleaseDateHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblReleaseDate">
-      <visible>false</visible>
-    </object>
-
-    <object name="pnlTop250">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblOutlineHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtOutline">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblIMDBHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtIMDBID">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblTMDBHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtTMDBID">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblCertificationsHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtCertifications">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblFilePathHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtFilePath">
-      <visible>false</visible>
-    </object>
-
-    <object name="btnFilePlay">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblTrailerPathHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtTrailerPath">
-      <visible>false</visible>
-    </object>
-
-    <object name="btnTrailerPlay">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblMetaDataHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="btnMetaDataRefresh">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtMetaData">
-      <visible>false</visible>
-    </object>
-
-    <object name="pbMILoading">
-      <visible>false</visible>
-    </object>
-
-    <object name="pnlActors">
-      <visible>false</visible>
-    </object>
-
-    <!-- BEGIN INTERNAL TO PNLACTORS -->
-    <object name="lblActorsHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="lstActors">
-      <visible>false</visible>
-    </object>
-
-    <object name="pbActors">
-      <visible>false</visible>
-    </object>
-
-    <object name="pbActLoad">
-      <visible>false</visible>
-    </object>
-    <!-- END INTERNAL TO PNLACTORS -->
-
-  </infopanel>
+  <toppanel>
+    <backcolor>#2A2728</backcolor>
+    <originaltitle>
+      <backcolor>#2A2728</backcolor>
+      <forecolor>Peru</forecolor>
+    </originaltitle>
+    <rating>
+      <backcolor>#2A2728</backcolor>
+      <forecolor>Peru</forecolor>
+    </rating>
+    <runtime>
+      <backcolor>#2A2728</backcolor>
+      <forecolor>Peru</forecolor>
+    </runtime>
+    <studio>
+      <backcolor>#2A2728</backcolor>
+      <forecolor>Peru</forecolor>
+    </studio>
+    <title>
+      <backcolor>#2A2728</backcolor>
+      <forecolor>Peru</forecolor>
+    </title>
+  </toppanel>
 </theme>

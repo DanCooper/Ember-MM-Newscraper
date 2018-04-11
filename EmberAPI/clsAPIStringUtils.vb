@@ -543,6 +543,73 @@ Public Class StringUtils
         If String.IsNullOrEmpty(text) Then Return String.Empty
         Return Regex.Match(text, "tt\d{6}\d*", If(searchrighttoleft, RegexOptions.RightToLeft, RegexOptions.None)).Value.Trim
     End Function
+
+    Public Shared Function GetURL_IMDB(ByVal dbelement As Database.DBElement) As String
+        Select Case dbelement.ContentType
+            Case Enums.ContentType.Movie
+                If dbelement.Movie.IMDBSpecified Then
+                    Return String.Concat("https://www.imdb.com/title/", dbelement.Movie.IMDB)
+                End If
+            Case Enums.ContentType.TVEpisode
+                If dbelement.TVEpisode.IMDBSpecified Then
+                    Return String.Concat("https://www.imdb.com/title/", dbelement.TVEpisode.IMDB)
+                End If
+            Case Enums.ContentType.TVSeason
+                If dbelement.TVShow.IMDBSpecified AndAlso dbelement.TVSeason.SeasonSpecified Then
+                    Return String.Format("https://www.imdb.com/title/{0}/episodes?season={1}", dbelement.TVShow.IMDB, dbelement.TVSeason.Season)
+                End If
+            Case Enums.ContentType.TVShow
+                If dbelement.TVShow.IMDBSpecified Then
+                    Return String.Concat("https://www.imdb.com/title/", dbelement.TVShow.IMDB)
+                End If
+        End Select
+        Return String.Empty
+    End Function
+
+    Public Shared Function GetURL_TMDB(ByVal dbelement As Database.DBElement) As String
+        Select Case dbelement.ContentType
+            Case Enums.ContentType.Movie
+                If dbelement.Movie.TMDBSpecified Then
+                    Return String.Concat("https://www.themoviedb.org/movie/", dbelement.Movie.TMDB)
+                End If
+            Case Enums.ContentType.MovieSet
+                If dbelement.MovieSet.TMDBSpecified Then
+                    Return String.Concat("https://www.themoviedb.org/collection/", dbelement.MovieSet.TMDB)
+                End If
+            Case Enums.ContentType.TVEpisode
+                If dbelement.TVShow.TMDBSpecified AndAlso dbelement.TVEpisode.SeasonSpecified AndAlso dbelement.TVEpisode.EpisodeSpecified Then
+                    Return String.Format("https://www.themoviedb.org/tv/{0}/season/{1}/episode/{2}", dbelement.TVShow.TMDB, dbelement.TVEpisode.Season, dbelement.TVEpisode.Episode)
+                End If
+            Case Enums.ContentType.TVSeason
+                If dbelement.TVShow.TMDBSpecified AndAlso dbelement.TVSeason.SeasonSpecified Then
+                    Return String.Format("https://www.themoviedb.org/tv/{0}/season/{1}", dbelement.TVShow.TMDB, dbelement.TVSeason.Season)
+                End If
+            Case Enums.ContentType.TVShow
+                If dbelement.TVShow.TMDBSpecified Then
+                    Return String.Concat("https://www.themoviedb.org/tv/", dbelement.TVShow.TMDB)
+                End If
+        End Select
+        Return String.Empty
+    End Function
+
+    Public Shared Function GetURL_TVDB(ByVal dbelement As Database.DBElement) As String
+        Select Case dbelement.ContentType
+            Case Enums.ContentType.TVEpisode
+                If dbelement.TVShow.TVDBSpecified AndAlso dbelement.TVEpisode.TVDBSpecified Then
+                    Return String.Format("https://thetvdb.com/?tab=episode&seriesid={0}&id={1}", dbelement.TVShow.TVDB, dbelement.TVEpisode.TVDB)
+                End If
+            Case Enums.ContentType.TVSeason
+                If dbelement.TVShow.TVDBSpecified AndAlso dbelement.TVSeason.TVDBSpecified Then
+                    Return String.Format("https://thetvdb.com/?tab=season&seriesid={0}&seasonid={1}", dbelement.TVShow.TVDB, dbelement.TVSeason.TVDB)
+                End If
+            Case Enums.ContentType.TVShow
+                If dbelement.TVShow.TVDBSpecified Then
+                    Return String.Concat("https://thetvdb.com/?tab=series&id=", dbelement.TVShow.TVDB)
+                End If
+        End Select
+        Return String.Empty
+    End Function
+
     ''' <summary>
     ''' Converts a string to an HTML-encoded string.
     ''' </summary>

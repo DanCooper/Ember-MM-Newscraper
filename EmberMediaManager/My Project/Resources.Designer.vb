@@ -492,38 +492,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        '''&lt;!--
-        '''### Anchor Help ###
-        '''0 = none
-        '''1 = Top
-        '''2 = Bottom
-        '''4 = Left
-        '''8 = Right
-        '''
-        '''Can be combined by adding values. For example, the standard TopLeft anchor would
-        '''be anchor code 5.
-        '''
-        '''### FontStyle Help ###
-        '''0 = Regular
-        '''1 = Bold
-        '''2 = Italic
-        '''4 = Underline
-        '''8 = Strikeout
-        '''
-        '''Can be combined by adding values. For example, bold and underlined would be
-        '''fontstyle code 5.
-        '''
-        '''### Color Help ###
-        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property movie_Default() As String
-            Get
-                Return ResourceManager.GetString("movie_Default", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die 
         '''&lt;/body&gt;
         '''&lt;/html&gt; ähnelt.
@@ -618,38 +586,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("MovieSet", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        '''&lt;!--
-        '''### Anchor Help ###
-        '''0 = none
-        '''1 = Top
-        '''2 = Bottom
-        '''4 = Left
-        '''8 = Right
-        '''
-        '''Can be combined by adding values. For example, the standard TopLeft anchor would
-        '''be anchor code 5.
-        '''
-        '''### FontStyle Help ###
-        '''0 = Regular
-        '''1 = Bold
-        '''2 = Italic
-        '''4 = Underline
-        '''8 = Strikeout
-        '''
-        '''Can be combined by adding values. For example, bold and underlined would be
-        '''fontstyle code 5.
-        '''
-        '''### Color Help ###
-        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property movieset_Default() As String
-            Get
-                Return ResourceManager.GetString("movieset_Default", resourceCulture)
             End Get
         End Property
         
@@ -774,70 +710,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        '''&lt;!--
-        '''### Anchor Help ###
-        '''0 = none
-        '''1 = Top
-        '''2 = Bottom
-        '''4 = Left
-        '''8 = Right
-        '''
-        '''Can be combined by adding values. For example, the standard TopLeft anchor would
-        '''be anchor code 5.
-        '''
-        '''### FontStyle Help ###
-        '''0 = Regular
-        '''1 = Bold
-        '''2 = Italic
-        '''4 = Underline
-        '''8 = Strikeout
-        '''
-        '''Can be combined by adding values. For example, bold and underlined would be
-        '''fontstyle code 5.
-        '''
-        '''### Color Help ###
-        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property tvep_Default() As String
-            Get
-                Return ResourceManager.GetString("tvep_Default", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        '''&lt;!--
-        '''### Anchor Help ###
-        '''0 = none
-        '''1 = Top
-        '''2 = Bottom
-        '''4 = Left
-        '''8 = Right
-        '''
-        '''Can be combined by adding values. For example, the standard TopLeft anchor would
-        '''be anchor code 5.
-        '''
-        '''### FontStyle Help ###
-        '''0 = Regular
-        '''1 = Bold
-        '''2 = Italic
-        '''4 = Underline
-        '''8 = Strikeout
-        '''
-        '''Can be combined by adding values. For example, bold and underlined would be
-        '''fontstyle code 5.
-        '''
-        '''### Color Help ###
-        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property tvshow_Default() As String
-            Get
-                Return ResourceManager.GetString("tvshow_Default", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property TVShows() As System.Drawing.Bitmap
@@ -897,9 +769,9 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die http://www.ffmpeg.org/ ähnelt.
         '''</summary>
-        Friend ReadOnly Property urlFfmpeg() As String
+        Friend ReadOnly Property urlFFmpeg() As String
             Get
-                Return ResourceManager.GetString("urlFfmpeg", resourceCulture)
+                Return ResourceManager.GetString("urlFFmpeg", resourceCulture)
             End Get
         End Property
         
@@ -922,20 +794,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.imdb.com/ ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die https://www.imdb.com/ ähnelt.
         '''</summary>
         Friend ReadOnly Property urlIMDB() As String
             Get
                 Return ResourceManager.GetString("urlIMDB", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.impawards.com/ ähnelt.
-        '''</summary>
-        Friend ReadOnly Property urlIMPAwards() As String
-            Get
-                Return ResourceManager.GetString("urlIMPAwards", resourceCulture)
             End Get
         End Property
         
@@ -949,15 +812,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.moviepostersdb.com/ ähnelt.
-        '''</summary>
-        Friend ReadOnly Property urlMoviePostersDb() As String
-            Get
-                Return ResourceManager.GetString("urlMoviePostersDb", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die http://forum.kodi.tv/showthread.php?tid=259449 ähnelt.
         '''</summary>
         Friend ReadOnly Property urlReleaseThread() As String
@@ -967,7 +821,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.themoviedb.org/ ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die https://www.themoviedb.org ähnelt.
         '''</summary>
         Friend ReadOnly Property urlTheMovieDb() As String
             Get
@@ -976,7 +830,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://thetvdb.com/ ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die https://thetvdb.com/ ähnelt.
         '''</summary>
         Friend ReadOnly Property urlTVDB() As String
             Get
@@ -985,7 +839,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.xbmc.org/ ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die https://www.xbmc.org/ ähnelt.
         '''</summary>
         Friend ReadOnly Property urlXBMC() As String
             Get
@@ -994,7 +848,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.youtube.com/ ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die https://www.youtube.com/ ähnelt.
         '''</summary>
         Friend ReadOnly Property urlYouTube() As String
             Get

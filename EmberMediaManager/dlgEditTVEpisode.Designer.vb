@@ -33,7 +33,9 @@ Partial Class dlgEditTVEpisode
         Me.tpDetails = New System.Windows.Forms.TabPage()
         Me.txtVideoSource = New System.Windows.Forms.TextBox()
         Me.lblVideoSource = New System.Windows.Forms.Label()
+        Me.txtUserRating = New System.Windows.Forms.TextBox()
         Me.txtVotes = New System.Windows.Forms.TextBox()
+        Me.lblUserRating = New System.Windows.Forms.Label()
         Me.lblVotes = New System.Windows.Forms.Label()
         Me.lblRuntime = New System.Windows.Forms.Label()
         Me.txtRuntime = New System.Windows.Forms.TextBox()
@@ -112,8 +114,6 @@ Partial Class dlgEditTVEpisode
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.txtLastPlayed = New System.Windows.Forms.TextBox()
-        Me.lblUserRating = New System.Windows.Forms.Label()
-        Me.txtUserRating = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
@@ -273,6 +273,15 @@ Partial Class dlgEditTVEpisode
         Me.lblVideoSource.TabIndex = 87
         Me.lblVideoSource.Text = "Video Source:"
         '
+        'txtUserRating
+        '
+        Me.txtUserRating.BackColor = System.Drawing.SystemColors.Window
+        Me.txtUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtUserRating.Location = New System.Drawing.Point(645, 203)
+        Me.txtUserRating.Name = "txtUserRating"
+        Me.txtUserRating.Size = New System.Drawing.Size(66, 22)
+        Me.txtUserRating.TabIndex = 86
+        '
         'txtVotes
         '
         Me.txtVotes.BackColor = System.Drawing.SystemColors.Window
@@ -281,6 +290,16 @@ Partial Class dlgEditTVEpisode
         Me.txtVotes.Name = "txtVotes"
         Me.txtVotes.Size = New System.Drawing.Size(66, 22)
         Me.txtVotes.TabIndex = 86
+        '
+        'lblUserRating
+        '
+        Me.lblUserRating.AutoSize = True
+        Me.lblUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblUserRating.Location = New System.Drawing.Point(645, 188)
+        Me.lblUserRating.Name = "lblUserRating"
+        Me.lblUserRating.Size = New System.Drawing.Size(70, 13)
+        Me.lblUserRating.TabIndex = 85
+        Me.lblUserRating.Text = "User Rating:"
         '
         'lblVotes
         '
@@ -966,21 +985,21 @@ Partial Class dlgEditTVEpisode
         Me.pnlFileInfo.Size = New System.Drawing.Size(844, 452)
         Me.pnlFileInfo.TabIndex = 0
         '
-        'Cancel_Button
+        'btnCancel
         '
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Location = New System.Drawing.Point(775, 553)
-        Me.btnCancel.Name = "Cancel_Button"
+        Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(67, 23)
         Me.btnCancel.TabIndex = 1
         Me.btnCancel.Text = "Cancel"
         '
-        'OK_Button
+        'btnOK
         '
         Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnOK.Location = New System.Drawing.Point(702, 553)
-        Me.btnOK.Name = "OK_Button"
+        Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(67, 23)
         Me.btnOK.TabIndex = 0
         Me.btnOK.Text = "OK"
@@ -1022,25 +1041,6 @@ Partial Class dlgEditTVEpisode
         Me.txtLastPlayed.Name = "txtLastPlayed"
         Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
         Me.txtLastPlayed.TabIndex = 75
-        '
-        'lblUserRating
-        '
-        Me.lblUserRating.AutoSize = True
-        Me.lblUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblUserRating.Location = New System.Drawing.Point(645, 188)
-        Me.lblUserRating.Name = "lblUserRating"
-        Me.lblUserRating.Size = New System.Drawing.Size(70, 13)
-        Me.lblUserRating.TabIndex = 85
-        Me.lblUserRating.Text = "User Rating:"
-        '
-        'txtUserRating
-        '
-        Me.txtUserRating.BackColor = System.Drawing.SystemColors.Window
-        Me.txtUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtUserRating.Location = New System.Drawing.Point(648, 203)
-        Me.txtUserRating.Name = "txtUserRating"
-        Me.txtUserRating.Size = New System.Drawing.Size(66, 22)
-        Me.txtUserRating.TabIndex = 86
         '
         'dlgEditTVEpisode
         '

@@ -27,8 +27,8 @@ or a "32-bit ARGB value"
 
 <theme>
   <toppanel>
-    <backcolor>-2302756</backcolor>
-    <forecolor>-16777216</forecolor>
+    <backcolor>Gainsboro</backcolor>
+    <forecolor>Black</forecolor>
   </toppanel>
   
   <medialistcolors>
@@ -127,431 +127,435 @@ or a "32-bit ARGB value"
   </images>
    
   <infopanel>
-    <backcolor>-2302756</backcolor>
+    <backcolor>Gainsboro</backcolor>
     <ipup>500</ipup> <!-- Must be in multiples of 5!! -->
     <ipmid>280</ipmid> <!-- Must be in multiples of 5!! -->
     
     <object name="lblInfoPanelHeader">
-      <width>pnlInfoPanel.Width - 8</width>
-      <height>17</height>
-      <left>3</left>
-      <top>3</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
       <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
+      <height>17</height>
+      <left>3</left>
+      <top>3</top>
+      <width>pnlInfoPanel.Width - 8</width>
     </object>
     
     <object name="btnUp">
-      <width>30</width>
+      <anchor>9</anchor>
       <height>22</height>
       <left>pnlInfoPanel.Width - 104</left>
       <top>1</top>
-      <anchor>9</anchor>
+      <width>30</width>
     </object>
     
     <object name="btnMid">
-      <width>30</width>
+      <anchor>9</anchor>
       <height>22</height>
       <left>pnlInfoPanel.width - 71</left>
       <top>1</top>
-      <anchor>9</anchor>
+      <width>30</width>
     </object>
     
     <object name="btnDown">
-      <width>30</width>
+      <anchor>9</anchor>
       <height>22</height>
       <left>pnlInfoPanel.Width - 38</left>
       <top>1</top>
-      <anchor>9</anchor>
+      <width>30</width>
     </object>
     
     <object name="pnlActors">
-      <width>302</width>
+      <anchor>9</anchor>
+      <backcolor>Gainsboro</backcolor>
       <height>244</height>
       <left>pnlInfoPanel.Width - 307</left>
-      <top>29</top>
-      <backcolor>-2302756</backcolor>
-      <anchor>9</anchor>
+      <top>27</top>
+      <width>302</width>
     </object>
     
     <!-- BEGIN INTERNAL TO PNLACTORS -->
     <object name="lblActorsHeader">
-      <width>301</width>
-      <height>17</height>
-      <left>0</left>
-      <top>0</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
       <anchor>5</anchor>
+      <backcolor>ControlDarkDark</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
+      <height>17</height>
+      <left>0</left>
+      <top>0</top>
+      <width>301</width>
     </object>
     
     <object name="lstActors">
-      <width>214</width>
-      <height>221</height>
-      <left>3</left>
-      <top>21</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
       <anchor>5</anchor>
+      <backcolor>Gainsboro</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
+      <height>221</height>
+      <left>3</left>
+      <top>21</top>
+      <width>214</width>
     </object>
     
     <object name="pbActors">
-      <width>81</width>
+      <anchor>5</anchor>
+      <backcolor>Gainsboro</backcolor>
       <height>106</height>
       <left>220</left>
       <top>75</top>
-      <backcolor>-2302756</backcolor>
-      <anchor>5</anchor>
+      <width>81</width>
     </object>
     
     <object name="pbActLoad">
-      <width>41</width>
+      <anchor>5</anchor>
+      <backcolor>Gainsboro</backcolor>
       <height>39</height>
       <left>240</left>
       <top>111</top>
-      <backcolor>-2302756</backcolor>
-      <anchor>5</anchor>
+      <width>41</width>
     </object>
     <!-- END INTERNAL TO PNLACTORS -->
 
     <object name="lblMetaDataHeader">
-      <width>302</width>
+      <anchor>9</anchor>
+      <backcolor>ControlDarkDark</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
       <height>17</height>
       <left>pnlInfoPanel.Width - 307</left>
       <top>282</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
+      <width>302</width>
     </object>
     
     <object name="btnMetaDataRefresh">
-      <width>75</width>
+      <anchor>9</anchor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
       <height>23</height>
       <left>lblMetaDataHeader.Left + 224</left>
       <top>278</top>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <width>75</width>
     </object>
     
     <object name="txtMetaData">
-      <width>302</width>
+      <anchor>9</anchor>
+      <backcolor>Gainsboro</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
       <height>184</height>
       <left>lblMetaDataHeader.Left</left>
       <top>303</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <width>302</width>
     </object>
 
 	<object name="pbMILoading">
-      <width>41</width>
+      <anchor>9</anchor>
       <height>39</height>
       <left>txtMetaData.Left + (txtMetaData.Width / 2) - 20</left>
       <top>txtMetaData.Top + (txtMetaData.Height / 2) - 20</top>
-      <anchor>9</anchor>
+      <width>41</width>
     </object>
 	
     <object name="lblPlotHeader">
-      <width>pnlInfoPanel.Width - 315</width>
+      <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
       <height>17</height>
       <left>3</left>
       <top>282</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
+      <width>pnlInfoPanel.Width - 315</width>
     </object>
     
     <object name="txtPlot">
-      <width>lblPlotHeader.Width</width>
+      <anchor>13</anchor>
+      <backcolor>Gainsboro</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
       <height>184</height>
       <left>3</left>
       <top>303</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <width>lblPlotHeader.Width</width>
     </object>
 
     <object name="lblFilePathHeader">
-      <width>(lblPlotHeader.Width / 2) - 3</width>
-      <height>17</height>
-      <left>3</left>
-      <top>234</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
       <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
+      <height>17</height>
+      <left>3</left>
+      <top>234</top>
+      <width>(lblPlotHeader.Width / 2) - 3</width>
     </object>
     
     <object name="txtFilePath">
-      <width>lblFilePathHeader.Width - 23</width>
-      <height>20</height>
-      <left>3</left>
-      <top>254</top>
-      <backcolor>-1</backcolor>
-      <forecolor>-16777216</forecolor>
       <anchor>13</anchor>
+      <backcolor>-1</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
+      <height>20</height>
+      <left>3</left>
+      <top>254</top>
+      <width>lblFilePathHeader.Width - 23</width>
     </object>
     
     <object name="btnFilePlay">
-      <width>20</width>
+      <anchor>9</anchor>
       <height>20</height>
       <left>txtFilePath.Width + 6</left>
       <top>254</top>
-      <anchor>9</anchor>
+      <width>20</width>
     </object>
 
     <object name="lblTrailerPathHeader">
-      <width>(lblPlotHeader.Width / 2) - 3</width>
+      <anchor>9</anchor>
+      <backcolor>ControlDarkDark</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
       <height>17</height>
       <left>(lblPlotHeader.Width / 2) + 6</left>
       <top>234</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
+      <width>(lblPlotHeader.Width / 2) - 3</width>
     </object>
 
     <object name="txtTrailerPath">
-      <width>lblTrailerPathHeader.Width - 23</width>
+      <anchor>9</anchor>
+      <backcolor>-1</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
       <height>20</height>
       <left>lblTrailerPathHeader.Left</left>
       <top>254</top>
-      <backcolor>-1</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <width>lblTrailerPathHeader.Width - 23</width>
     </object>
 
     <object name="btnTrailerPlay">
-      <width>20</width>
+      <anchor>9</anchor>
       <height>20</height>
       <left>txtTrailerPath.Left + txtTrailerPath.Width + 3</left>
       <top>254</top>
-      <anchor>9</anchor>
+      <width>20</width>
     </object>
 
     <object name="lblIMDBHeader">
-      <width>108</width>
-      <height>17</height>
-      <left>3</left>
-      <top>188</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
       <anchor>5</anchor>
+      <backcolor>ControlDarkDark</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
+      <height>17</height>
+      <left>3</left>
+      <top>188</top>
+      <width>108</width>
     </object>
     
     <object name="txtIMDBID">
-      <width>108</width>
-      <height>20</height>
-      <left>3</left>
-      <top>208</top>
-      <backcolor>-1</backcolor>
-      <forecolor>-16777216</forecolor>
       <anchor>5</anchor>
+      <backcolor>-1</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
+      <height>20</height>
+      <left>3</left>
+      <top>208</top>
+      <width>108</width>
     </object>
 
     <object name="lblTMDBHeader">
-      <width>108</width>
-      <height>17</height>
-      <left>117</left>
-      <top>188</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
       <anchor>5</anchor>
+      <backcolor>ControlDarkDark</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
+      <height>17</height>
+      <left>117</left>
+      <top>188</top>
+      <width>108</width>
     </object>
 
     <object name="txtTMDBID">
-      <width>108</width>
+      <anchor>5</anchor>
+      <backcolor>-1</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
       <height>20</height>
       <left>117</left>
       <top>208</top>
-      <backcolor>-1</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>5</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <width>108</width>
     </object>
     
     <object name="lblCertificationsHeader">
-      <width>pnlInfoPanel.Width - 542</width>
+      <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
       <height>17</height>
       <left>231</left>
       <top>188</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
+      <width>pnlInfoPanel.Width - 542</width>
     </object>
     
     <object name="txtCertifications">
-      <width>lblCertificationsHeader.Width</width>
+      <anchor>13</anchor>
+      <backcolor>-1</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
       <height>20</height>
       <left>231</left>
       <top>208</top>
-      <backcolor>-1</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <width>lblCertificationsHeader.Width</width>
     </object>
 
     <object name="lblOutlineHeader">
-      <width>lblPlotHeader.Width</width>
-      <height>17</height>
-      <left>3</left>
-      <top>81</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
       <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
+      <height>17</height>
+      <left>3</left>
+      <top>81</top>
+      <width>lblPlotHeader.Width</width>
     </object>
     
     <object name="txtOutline">
-      <width>lblPlotHeader.Width</width>
-      <height>78</height>
-      <left>3</left>
-      <top>103</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
       <anchor>13</anchor>
+      <backcolor>Gainsboro</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
+      <height>78</height>
+      <left>3</left>
+      <top>103</top>
+      <width>lblPlotHeader.Width</width>
     </object>
 
     <object name="pnlTop250">
-      <width>56</width>
+      <anchor>9</anchor>
+      <backcolor>Gainsboro</backcolor>
       <height>48</height>
       <left>pnlInfoPanel.Width - 368</left>
       <top>27</top>
-      <backcolor>-2302756</backcolor>
-      <anchor>9</anchor>
+      <width>56</width>
     </object>
     
     <!-- BEGIN INTERNAL TO PNLTOP250 -->
     <object name="pbTop250">
-      <width>54</width>
+      <anchor>5</anchor>
+      <backcolor>Gainsboro</backcolor>
       <height>30</height>
       <left>1</left>
       <top>1</top>
-      <backcolor>-2302756</backcolor>
-      <anchor>5</anchor>
+      <width>54</width>
     </object>
     
     <object name="lblTop250">
-      <width>52</width>
-      <height>17</height>
-      <left>1</left>
-      <top>30</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
       <anchor>5</anchor>
+      <backcolor>Gainsboro</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
+      <forecolor>Black</forecolor>
+      <height>17</height>
+      <left>1</left>
+      <top>30</top>
+      <width>52</width>
     </object>
     <!-- END INTERNAL TO PNLTOP250 -->
 
     <object name="lblReleaseDateHeader">
-      <width>105</width>
+      <anchor>9</anchor>
+      <backcolor>ControlDarkDark</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
       <height>17</height>
       <left>pnlInfoPanel.Width - 479</left>
       <top>27</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
+      <width>105</width>
     </object>
     
     <object name="lblReleaseDate">
-      <width>105</width>
+      <anchor>9</anchor>
+      <backcolor>Gainsboro</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
       <height>16</height>
       <left>lblReleaseDateHeader.Left</left>
       <top>48</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <width>105</width>
     </object>
 
     <object name="lblDirectorsHeader">
-      <width>pnlInfoPanel.Width - 486</width>
-      <height>17</height>
-      <left>3</left>
-      <top>27</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
       <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
+      <height>17</height>
+      <left>3</left>
+      <top>27</top>
+      <width>pnlInfoPanel.Width - 486</width>
     </object>
     
     <object name="lblDirectors">
-      <width>lblDirectorsHeader.Width</width>
-      <height>16</height>
-      <left>3</left>
-      <top>48</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
       <anchor>13</anchor>
+      <backcolor>Gainsboro</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
+      <height>16</height>
+      <left>3</left>
+      <top>48</top>
+      <width>lblDirectorsHeader.Width</width>
     </object>
 
     <!-- Hide all the stuff we won't be using -->
+	
+    <object name="txtTVDBID">
+      <visible>false</visible>
+    </object>
 
     <object name="pnlMoviesInSet">
       <visible>false</visible>

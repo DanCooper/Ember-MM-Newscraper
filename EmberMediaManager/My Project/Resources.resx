@@ -139,10 +139,6 @@
   <data name="puzzle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\puzzle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="urlTVDB" xml:space="preserve">
-    <value>http://thetvdb.com/</value>
-    <comment>thetvdb.com - an open database for television fans</comment>
-  </data>
   <data name="Wizard" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Wizard.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -153,7 +149,7 @@
     <value>..\Resources\colRating.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="urlYouTube" xml:space="preserve">
-    <value>http://www.youtube.com/</value>
+    <value>https://www.youtube.com/</value>
   </data>
   <data name="hasExtrafanart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasExtrafanart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -171,7 +167,7 @@
     <value>..\Images\Countries\de.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="urlXBMC" xml:space="preserve">
-    <value>http://www.xbmc.org/</value>
+    <value>https://www.xbmc.org/</value>
     <comment>XBMC is a free and open source media player application</comment>
   </data>
   <data name="hasSet" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -223,9 +219,6 @@
   <data name="star" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\star.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="urlMoviePostersDb" xml:space="preserve">
-    <value>http://www.moviepostersdb.com/</value>
-  </data>
   <data name="starempty" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\starempty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -260,9 +253,6 @@
   <data name="General" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\process.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="tvshow_Default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\tvshow-Default.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="ad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ad.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -272,14 +262,10 @@
   <data name="urlEmberBugTracker" xml:space="preserve">
     <value>http://bugs.embermediamanager.org</value>
   </data>
-  <data name="urlIMPAwards" xml:space="preserve">
-    <value>http://www.impawards.com/</value>
-    <comment>Internet Movie Poster Awards - Featuring one of the largest collections of movie poster images on the web.</comment>
-  </data>
   <data name="heart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\heart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="urlFfmpeg" xml:space="preserve">
+  <data name="urlFFmpeg" xml:space="preserve">
     <value>http://www.ffmpeg.org/</value>
     <comment>FFmpeg is a complete, cross-platform solution to record, convert and stream audio and video</comment>
   </data>
@@ -301,10 +287,6 @@
   <data name="hasFanart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasFanart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="urlTheMovieDb" xml:space="preserve">
-    <value>http://www.themoviedb.org/</value>
-    <comment>themoviedb.org is a free and community maintained movie database</comment>
-  </data>
   <data name="asc" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\asc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -323,13 +305,6 @@
   <data name="msaa" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\msaa.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="urlIMDB" xml:space="preserve">
-    <value>http://www.imdb.com/</value>
-    <comment>Internet Movie Database</comment>
-  </data>
-  <data name="movie_Default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\movie-Default.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="tvtunes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tvtunes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -341,9 +316,6 @@
   </data>
   <data name="MovieListTableCol" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MovieListTableCol.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="tvep_Default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\tvep-Default.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="colUserRating" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\colUserRating.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -370,9 +342,6 @@
     <value>http://mediainfo.sourceforge.net</value>
     <comment>MediaInfo is a convenient unified display of the most relevant technical and tag data for video and audio files.</comment>
   </data>
-  <data name="movieset_Default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Themes\movieset-Default.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="MovieListTableEnd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MovieListTableEnd.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
@@ -387,5 +356,14 @@
   </data>
   <data name="patreon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\patreon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="urlIMDB" xml:space="preserve">
+    <value>https://www.imdb.com/</value>
+  </data>
+  <data name="urlTheMovieDb" xml:space="preserve">
+    <value>https://www.themoviedb.org</value>
+  </data>
+  <data name="urlTVDB" xml:space="preserve">
+    <value>https://thetvdb.com/</value>
   </data>
 </root>

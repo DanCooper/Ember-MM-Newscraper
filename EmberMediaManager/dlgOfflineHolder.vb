@@ -25,6 +25,7 @@ Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 Imports EmberAPI
 Imports NLog
+
 Public Class dlgOfflineHolder
 
 #Region "Fields"

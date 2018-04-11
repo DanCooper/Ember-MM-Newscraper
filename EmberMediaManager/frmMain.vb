@@ -102,7 +102,7 @@ Public Class frmMain
     Private currRow_TVSeason As Integer = -1
     Private currRow_TVShow As Integer = -1
     Private currList As Integer = 0
-    Private currThemeType As Theming.ThemeType
+    Private currThemeType As Enums.ContentType = Enums.ContentType.None
     Private prevRow_Movie As Integer = -1
     Private prevRow_MovieSet As Integer = -1
     Private prevRow_TVEpisode As Integer = -1
@@ -152,7 +152,7 @@ Public Class frmMain
     Private currTextSearch_TVShows As String = String.Empty
     Private prevTextSearch_TVShows As String = String.Empty
 
-    Private tTheme As New Theming
+    Private tTheme As Theming
     Private CloseApp As Boolean = False
 
     'Scraper menu tags
@@ -226,42 +226,37 @@ Public Class frmMain
 
     Public Property BannerMaxHeight() As Integer = 160
     Public Property BannerMaxWidth() As Integer = 285
-    Public Property BannerPosLeft() As Integer = 124
-    Public Property BannerPosTop() As Integer = 327
+    'Public Property BannerPosLeft() As Integer = 124
+    'Public Property BannerPosTop() As Integer = 327
     Public Property CharacterArtMaxHeight() As Integer = 160
     Public Property CharacterArtMaxWidth() As Integer = 160
-    Public Property CharacterArtPosLeft() As Integer = 1011
-    Public Property CharacterArtPosTop() As Integer = 130
+    'Public Property CharacterArtPosLeft() As Integer = 1011
+    'Public Property CharacterArtPosTop() As Integer = 130
     Public Property ClearArtMaxHeight() As Integer = 160
     Public Property ClearArtMaxWidth() As Integer = 285
-    Public Property ClearArtPosLeft() As Integer = 715
-    Public Property ClearArtPosTop() As Integer = 130
+    'Public Property ClearArtPosLeft() As Integer = 715
+    'Public Property ClearArtPosTop() As Integer = 130
     Public Property ClearLogoMaxHeight() As Integer = 160
     Public Property ClearLogoMaxWidth() As Integer = 285
-    Public Property ClearLogoPosLeft() As Integer = 419
-    Public Property ClearLogoPosTop() As Integer = 327
+    'Public Property ClearLogoPosLeft() As Integer = 419
+    'Public Property ClearLogoPosTop() As Integer = 327
     Public Property DiscArtMaxHeight() As Integer = 160
     Public Property DiscArtMaxWidth() As Integer = 160
-    Public Property DiscArtPosLeft() As Integer = 1011
-    Public Property DiscArtPosTop() As Integer = 130
+    'Public Property DiscArtPosLeft() As Integer = 1011
+    'Public Property DiscArtPosTop() As Integer = 130
     Public Property FanartSmallMaxHeight() As Integer = 160
     Public Property FanartSmallMaxWidth() As Integer = 285
-    Public Property FanartSmallPosLeft() As Integer = 124
-    Public Property FanartSmallPosTop() As Integer = 130
+    'Public Property FanartSmallPosLeft() As Integer = 124
+    'Public Property FanartSmallPosTop() As Integer = 130
     Public Property LandscapeMaxHeight() As Integer = 160
     Public Property LandscapeMaxWidth() As Integer = 285
-    Public Property LandscapePosLeft() As Integer = 419
-    Public Property LandscapePosTop() As Integer = 130
-    Public Property MediaListColor_Default As New Theming.Theme.MediaListColors
-    Public Property MediaListColor_Locked As New Theming.Theme.MediaListColors
-    Public Property MediaListColor_Marked As New Theming.Theme.MediaListColors
-    Public Property MediaListColor_Missing As New Theming.Theme.MediaListColors
-    Public Property MediaListColor_New As New Theming.Theme.MediaListColors
-    Public Property MediaListColor_OutOfTolerance As New Theming.Theme.MediaListColors
+    'Public Property LandscapePosLeft() As Integer = 419
+    'Public Property LandscapePosTop() As Integer = 130
+    Public Property MediaListColors As New clsXMLTheme.MediaListSettings
     Public Property PosterMaxHeight() As Integer = 160
     Public Property PosterMaxWidth() As Integer = 160
-    Public Property PosterPosLeft() As Integer = 4
-    Public Property PosterPosTop() As Integer = 130
+    'Public Property PosterPosLeft() As Integer = 4
+    'Public Property PosterPosTop() As Integer = 130
 
 #End Region 'Properties
 
@@ -359,15 +354,36 @@ Public Class frmMain
         End If
         pnlMPAA.Visible = False
 
+        lblBannerSize.Text = String.Empty
+        lblCharacterArtSize.Text = String.Empty
+        lblClearArtSize.Text = String.Empty
+        lblClearLogoSize.Text = String.Empty
+        lblCountries.Text = String.Empty
+        lblCredits.Text = String.Empty
+        lblDirectors.Text = String.Empty
+        lblDiscArtSize.Text = String.Empty
         lblFanartSmallSize.Text = String.Empty
-        lblTitle.Text = String.Empty
+        lblIMDBHeader.Tag = Nothing
+        lblLandscapeSize.Text = String.Empty
         lblOriginalTitle.Text = String.Empty
         lblPosterSize.Text = String.Empty
         lblRating.Text = String.Empty
+        lblReleaseDate.Text = String.Empty
         lblRuntime.Text = String.Empty
         lblStudio.Text = String.Empty
-        pnlTop250.Visible = False
-        lblTop250.Text = String.Empty
+        lblTagline.Text = String.Empty
+        lblTags.Text = String.Empty
+        lblTitle.Text = String.Empty
+        lblTMDBHeader.Tag = Nothing
+        lblTVDBHeader.Tag = Nothing
+        txtCertifications.Text = String.Empty
+        txtFilePath.Text = String.Empty
+        txtIMDBID.Text = String.Empty
+        txtOutline.Text = String.Empty
+        txtPlot.Text = String.Empty
+        txtTMDBID.Text = String.Empty
+        txtTVDBID.Text = String.Empty
+        txtTrailerPath.Text = String.Empty
         pbStar1.Image = Nothing
         pbStar2.Image = Nothing
         pbStar3.Image = Nothing
@@ -399,16 +415,6 @@ Public Class frmMain
             pbActors.Image = Nothing
         End If
         MainActors.Clear()
-        lblDirectors.Text = String.Empty
-        lblReleaseDate.Text = String.Empty
-        txtCertifications.Text = String.Empty
-        txtIMDBID.Text = String.Empty
-        txtFilePath.Text = String.Empty
-        txtOutline.Text = String.Empty
-        txtPlot.Text = String.Empty
-        txtTMDBID.Text = String.Empty
-        txtTrailerPath.Text = String.Empty
-        lblTagline.Text = String.Empty
         If pbMPAA.Image IsNot Nothing Then
             pbMPAA.Image.Dispose()
             pbMPAA.Image = Nothing
@@ -571,7 +577,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub ApplyTheme(ByVal tType As Theming.ThemeType)
+    Private Sub ApplyTheme(ByVal tType As Enums.ContentType)
         pnlInfoPanel.SuspendLayout()
 
         currThemeType = tType
@@ -662,7 +668,6 @@ Public Class frmMain
 
         pbActLoad.Visible = False
         pbActors.Image = My.Resources.actor_silhouette
-        pbMILoading.Visible = False
 
         pnlInfoPanel.ResumeLayout()
     End Sub
@@ -4332,291 +4337,6 @@ Public Class frmMain
         CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, False, String.Empty)
     End Sub
 
-    'Private Sub cmnuEpisodeMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeMark.Click, cmnuEpisodeUnmark.Click
-    '    Try
-    '        Dim setMark As Boolean = False
-    '        If dgvTVEpisodes.SelectedRows.Count > 1 Then
-    '            For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-    '                'if any one item is set as unmarked, set menu to mark
-    '                'else they are all marked, so set menu to unmark
-    '                If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-    '                    setMark = True
-    '                    Exit For
-    '                End If
-    '            Next
-    '        End If
-
-    '        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-    '            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-    '                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
-    '                SQLcommand.CommandText = "UPDATE episode SET mark = (?) WHERE idEpisode = (?);"
-    '                For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-    '                    parMark.Value = If(dgvTVEpisodes.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
-    '                    parID.Value = sRow.Cells("idEpisode").Value
-    '                    SQLcommand.ExecuteNonQuery()
-    '                    sRow.Cells("Mark").Value = parMark.Value
-    '                Next
-    '            End Using
-
-    '            'now check the status of all episodes in the season so we can update the season mark flag if needed
-    '            Dim MarkCount As Integer = 0
-    '            Dim NotMarkCount As Integer = 0
-    '            For Each sRow As DataGridViewRow In dgvTVEpisodes.Rows
-    '                If Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-    '                    MarkCount += 1
-    '                Else
-    '                    NotMarkCount += 1
-    '                End If
-    '            Next
-
-    '            If MarkCount = 0 OrElse NotMarkCount = 0 Then
-    '                Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                    Dim parSeaMark As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "Mark")
-    '                    Dim parTVShowID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parTVShowID", DbType.Int64, 0, "idShow")
-    '                    Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int64, 0, "Season")
-    '                    SQLSeacommand.CommandText = "UPDATE seasons SET Mark = (?) WHERE idShow = (?) AND Season = (?);"
-    '                    If MarkCount = 0 Then
-    '                        parSeaMark.Value = False
-    '                    ElseIf NotMarkCount = 0 Then
-    '                        parSeaMark.Value = True
-    '                    End If
-    '                    parTVShowID.Value = Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
-    '                    parSeason.Value = Convert.ToInt32(dgvTVSeasons.SelectedRows(0).Cells("Season").Value)
-    '                    SQLSeacommand.ExecuteNonQuery()
-    '                    dgvTVSeasons.SelectedRows(0).Cells("Mark").Value = parSeaMark.Value
-    '                End Using
-    '            End If
-
-    '            SQLtransaction.Commit()
-    '        End Using
-
-    '        dgvTVSeasons.Invalidate()
-    '        dgvTVEpisodes.Invalidate()
-
-    '    Catch ex As Exception
-    '        logger.Error(ex, New StackFrame().GetMethod().Name)
-    '    End Try
-    'End Sub
-
-    'Private Sub cmnuSeasonMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonMark.Click, cmnuSeasonUnmark.Click
-    '    Try
-    '        Dim setMark As Boolean = False
-    '        If dgvTVSeasons.SelectedRows.Count > 1 Then
-    '            For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-    '                If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-    '                    setMark = True
-    '                    Exit For
-    '                End If
-    '            Next
-    '        End If
-
-    '        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-    '            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-    '                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idShow")
-    '                Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int64, 0, "Season")
-    '                SQLcommand.CommandText = "UPDATE seasons SET mark = (?) WHERE idShow = (?) AND Season = (?);"
-    '                For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-    '                    parMark.Value = If(dgvTVSeasons.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
-    '                    parID.Value = sRow.Cells("idShow").Value
-    '                    parSeason.Value = sRow.Cells("Season").Value
-    '                    SQLcommand.ExecuteNonQuery()
-    '                    sRow.Cells("Mark").Value = parMark.Value
-
-    '                    Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                        Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
-    '                        Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int64, 0, "idShow")
-    '                        Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int64, 0, "Season")
-    '                        SQLECommand.CommandText = "UPDATE episode SET mark = (?) WHERE idShow = (?) AND Season = (?);"
-    '                        parEMark.Value = parMark.Value
-    '                        parEID.Value = parID.Value
-    '                        parESeason.Value = parSeason.Value
-    '                        SQLECommand.ExecuteNonQuery()
-
-    '                        For Each eRow As DataGridViewRow In dgvTVEpisodes.Rows
-    '                            eRow.Cells("Mark").Value = parMark.Value
-    '                        Next
-    '                    End Using
-    '                Next
-    '            End Using
-    '            SQLtransaction.Commit()
-    '        End Using
-
-    '        dgvTVSeasons.Invalidate()
-    '        dgvTVEpisodes.Invalidate()
-
-    '    Catch ex As Exception
-    '        logger.Error(ex, New StackFrame().GetMethod().Name)
-    '    End Try
-    'End Sub
-
-    'Private Sub cmnuShowMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowMark.Click, cmnuShowUnmark.Click
-    '    Try
-    '        Dim setMark As Boolean = False
-    '        If dgvTVShows.SelectedRows.Count > 1 Then
-    '            For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-    '                'if any one item is set as unmarked, set menu to mark
-    '                'else they are all marked, so set menu to unmark
-    '                If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-    '                    setMark = True
-    '                    Exit For
-    '                End If
-    '            Next
-    '        End If
-
-    '        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-    '            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-    '                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idShow")
-    '                SQLcommand.CommandText = "UPDATE tvshow SET mark = (?) WHERE idShow = (?);"
-    '                For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-    '                    parMark.Value = If(dgvTVShows.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
-    '                    parID.Value = sRow.Cells("idShow").Value
-    '                    SQLcommand.ExecuteNonQuery()
-    '                    sRow.Cells("Mark").Value = parMark.Value
-
-    '                    Using SQLSeaCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                        Dim parSeaMark As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "mark")
-    '                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int64, 0, "idShow")
-    '                        SQLSeaCommand.CommandText = "UPDATE seasons SET mark = (?) WHERE idShow = (?);"
-    '                        parSeaMark.Value = parMark.Value
-    '                        parSeaID.Value = parID.Value
-    '                        SQLSeaCommand.ExecuteNonQuery()
-
-    '                        For Each eRow As DataGridViewRow In dgvTVSeasons.Rows
-    '                            eRow.Cells("Mark").Value = parMark.Value
-    '                        Next
-    '                    End Using
-
-    '                    Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '                        Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
-    '                        Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int64, 0, "idShow")
-    '                        SQLECommand.CommandText = "UPDATE episode SET mark = (?) WHERE idShow = (?);"
-    '                        parEMark.Value = parMark.Value
-    '                        parEID.Value = parID.Value
-    '                        SQLECommand.ExecuteNonQuery()
-
-    '                        For Each eRow As DataGridViewRow In dgvTVEpisodes.Rows
-    '                            eRow.Cells("Mark").Value = parMark.Value
-    '                        Next
-    '                    End Using
-    '                Next
-    '            End Using
-    '            SQLtransaction.Commit()
-    '        End Using
-
-    '        If chkFilterMark_Shows.Checked Then
-    '            dgvTVShows.ClearSelection()
-    '            dgvTVShows.CurrentCell = Nothing
-    '            If dgvTVShows.RowCount <= 0 Then
-    '                ClearInfo()
-    '                dgvTVSeasons.DataSource = Nothing
-    '                dgvTVEpisodes.DataSource = Nothing
-    '            End If
-    '        End If
-
-    '        dgvTVShows.Invalidate()
-    '        dgvTVSeasons.Invalidate()
-    '        dgvTVEpisodes.Invalidate()
-
-    '    Catch ex As Exception
-    '        logger.Error(ex, New StackFrame().GetMethod().Name)
-    '    End Try
-    'End Sub
-
-    'Private Sub cmnuMovieMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieMark.Click
-    '    Dim setMark As Boolean = False
-    '    If dgvMovies.SelectedRows.Count > 1 Then
-    '        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-    '            'if any one item is set as unmarked, set menu to mark
-    '            'else they are all marked, so set menu to unmark
-    '            If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-    '                setMark = True
-    '                Exit For
-    '            End If
-    '        Next
-    '    End If
-
-    '    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-    '        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
-    '            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idMovie")
-    '            SQLcommand.CommandText = "UPDATE movie SET Mark = (?) WHERE idMovie = (?);"
-    '            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-    '                parMark.Value = If(dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
-    '                parID.Value = sRow.Cells("idMovie").Value
-    '                SQLcommand.ExecuteNonQuery()
-    '                sRow.Cells("Mark").Value = parMark.Value
-    '            Next
-    '        End Using
-    '        SQLtransaction.Commit()
-    '    End Using
-
-    '    setMark = False
-    '    For Each sRow As DataGridViewRow In dgvMovies.Rows
-    '        If Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-    '            setMark = True
-    '            Exit For
-    '        End If
-    '    Next
-    '    btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
-
-    '    If chkFilterMark_Movies.Checked Then
-    '        dgvMovies.ClearSelection()
-    '        dgvMovies.CurrentCell = Nothing
-    '        If dgvMovies.RowCount <= 0 Then ClearInfo()
-    '    End If
-
-    '    dgvMovies.Invalidate()
-    'End Sub
-
-    'Private Sub cmnuMovieSetMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetMark.Click, cmnuMovieSetUnmark.Click
-    '    Dim setMark As Boolean = False
-    '    If dgvMovieSets.SelectedRows.Count > 1 Then
-    '        For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-    '            'if any one item is set as unmarked, set menu to mark
-    '            'else they are all marked, so set menu to unmark
-    '            If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-    '                setMark = True
-    '                Exit For
-    '            End If
-    '        Next
-    '    End If
-
-    '    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-    '        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-    '            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
-    '            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idSet")
-    '            SQLcommand.CommandText = "UPDATE sets SET Mark = (?) WHERE idSet = (?);"
-    '            For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-    '                parMark.Value = If(dgvMovieSets.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
-    '                parID.Value = sRow.Cells("idSet").Value
-    '                SQLcommand.ExecuteNonQuery()
-    '                sRow.Cells("Mark").Value = parMark.Value
-    '            Next
-    '        End Using
-    '        SQLtransaction.Commit()
-    '    End Using
-
-    '    setMark = False
-    '    For Each sRow As DataGridViewRow In dgvMovieSets.Rows
-    '        If Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-    '            setMark = True
-    '            Exit For
-    '        End If
-    '    Next
-    '    'Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
-
-    '    If chkFilterMark_MovieSets.Checked Then
-    '        dgvMovieSets.ClearSelection()
-    '        dgvMovieSets.CurrentCell = Nothing
-    '        If dgvMovieSets.RowCount <= 0 Then ClearInfo()
-    '    End If
-
-    '    dgvMovieSets.Invalidate()
-    'End Sub
-
     Private Sub cmnuMovieMarkAsCustom1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieMarkAsCustom1.Click
         Dim setMark As Boolean = False
         If dgvMovies.SelectedRows.Count > 1 Then
@@ -4644,15 +4364,6 @@ Public Class frmMain
             End Using
             SQLtransaction.Commit()
         End Using
-
-        'setMark = False
-        'For Each sRow As DataGridViewRow In Me.dgvMovies.Rows
-        '    If Convert.ToBoolean(sRow.Cells(66).Value) Then
-        '        setMark = True
-        '        Exit For
-        '    End If
-        'Next
-        'Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
 
         If chkFilterMarkCustom1_Movies.Checked Then
             dgvMovies.ClearSelection()
@@ -4691,15 +4402,6 @@ Public Class frmMain
             SQLtransaction.Commit()
         End Using
 
-        'setMark = False
-        'For Each sRow As DataGridViewRow In Me.dgvMovies.Rows
-        '    If Convert.ToBoolean(sRow.Cells(66).Value) Then
-        '        setMark = True
-        '        Exit For
-        '    End If
-        'Next
-        'Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
-
         If chkFilterMarkCustom2_Movies.Checked Then
             dgvMovies.ClearSelection()
             dgvMovies.CurrentCell = Nothing
@@ -4737,15 +4439,6 @@ Public Class frmMain
             SQLtransaction.Commit()
         End Using
 
-        'setMark = False
-        'For Each sRow As DataGridViewRow In Me.dgvMovies.Rows
-        '    If Convert.ToBoolean(sRow.Cells(66).Value) Then
-        '        setMark = True
-        '        Exit For
-        '    End If
-        'Next
-        'Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
-
         If chkFilterMarkCustom3_Movies.Checked Then
             dgvMovies.ClearSelection()
             dgvMovies.CurrentCell = Nothing
@@ -4782,15 +4475,6 @@ Public Class frmMain
             End Using
             SQLtransaction.Commit()
         End Using
-
-        'setMark = False
-        'For Each sRow As DataGridViewRow In Me.dgvMovies.Rows
-        '    If Convert.ToBoolean(sRow.Cells(66).Value) Then
-        '        setMark = True
-        '        Exit For
-        '    End If
-        'Next
-        'Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
 
         If chkFilterMarkCustom4_Movies.Checked Then
             dgvMovies.ClearSelection()
@@ -5647,11 +5331,11 @@ Public Class frmMain
         If (colName = "Imdb" OrElse colName = "ListTitle" OrElse colName = "MPAA" OrElse colName = "OriginalTitle" OrElse
             colName = "Rating" OrElse colName = "TMDB" OrElse colName = "Year") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvMovies.Item("Mark", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = MediaListColor_Marked.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_Marked.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvMovies.Item("New", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = MediaListColor_New.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_New.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.New.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom1", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
                 e.CellStyle.SelectionForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
@@ -5665,9 +5349,9 @@ Public Class frmMain
                 e.CellStyle.ForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
                 e.CellStyle.SelectionForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
             Else
-                e.CellStyle.ForeColor = MediaListColor_Default.ForeColor
+                e.CellStyle.ForeColor = MediaListColors.Default.ForeColor
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                e.CellStyle.SelectionForeColor = MediaListColor_Default.SelectionForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Default.SelectionForeColor
             End If
         End If
 
@@ -5675,14 +5359,14 @@ Public Class frmMain
 
             'background
             If Convert.ToBoolean(dgvMovies.Item("Lock", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = MediaListColor_Locked.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Locked.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Locked.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Locked.SelectionBackColor
             ElseIf Convert.ToBoolean(dgvMovies.Item("OutOfTolerance", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = MediaListColor_OutOfTolerance.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_OutOfTolerance.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.OutOfTolerance.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.OutOfTolerance.SelectionBackColor
             Else
-                e.CellStyle.BackColor = MediaListColor_Default.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Default.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Default.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Default.SelectionBackColor
             End If
 
             'path fields
@@ -6220,15 +5904,15 @@ Public Class frmMain
         'text fields
         If (colName = "ListTitle") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvMovieSets.Item("Mark", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = MediaListColor_Marked.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_Marked.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvMovieSets.Item("New", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = MediaListColor_New.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_New.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.New.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
             Else
-                e.CellStyle.ForeColor = MediaListColor_Default.ForeColor
+                e.CellStyle.ForeColor = MediaListColors.Default.ForeColor
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                e.CellStyle.SelectionForeColor = MediaListColor_Default.SelectionForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Default.SelectionForeColor
             End If
         End If
 
@@ -6236,11 +5920,11 @@ Public Class frmMain
 
             'background
             If Convert.ToBoolean(dgvMovieSets.Item("Lock", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = MediaListColor_Locked.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Locked.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Locked.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Locked.SelectionBackColor
             Else
-                e.CellStyle.BackColor = MediaListColor_Default.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Default.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Default.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Default.SelectionBackColor
             End If
 
             'path fields
@@ -6669,18 +6353,18 @@ Public Class frmMain
         If (colName = "Aired" OrElse colName = "Episode" OrElse colName = "Season" OrElse
             colName = "Title" OrElse colName = "Rating" OrElse colName = "iUserRating") AndAlso e.RowIndex >= 0 Then
             If Convert.ToInt64(dgvTVEpisodes.Item("idFile", e.RowIndex).Value) = -1 Then
-                e.CellStyle.ForeColor = MediaListColor_Missing.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_Missing.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.Missing.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Missing.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvTVEpisodes.Item("Mark", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = MediaListColor_Marked.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_Marked.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvTVEpisodes.Item("New", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = MediaListColor_New.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_New.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.New.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
             Else
-                e.CellStyle.ForeColor = MediaListColor_Default.ForeColor
+                e.CellStyle.ForeColor = MediaListColors.Default.ForeColor
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                e.CellStyle.SelectionForeColor = MediaListColor_Default.SelectionForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Default.SelectionForeColor
             End If
         End If
 
@@ -6688,14 +6372,14 @@ Public Class frmMain
 
             'background
             If Convert.ToInt64(dgvTVEpisodes.Item("idFile", e.RowIndex).Value) = -1 Then
-                e.CellStyle.BackColor = MediaListColor_Missing.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Missing.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Missing.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Missing.SelectionBackColor
             ElseIf Convert.ToBoolean(dgvTVEpisodes.Item("Lock", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = MediaListColor_Locked.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Locked.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Locked.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Locked.SelectionBackColor
             Else
-                e.CellStyle.BackColor = MediaListColor_Default.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Default.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Default.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Default.SelectionBackColor
             End If
 
             'path fields
@@ -7137,19 +6821,19 @@ Public Class frmMain
         'text fields
         If (colName = "Season" OrElse colName = "SeasonText" OrElse colName = "Episodes") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvTVSeasons.Item("Missing", e.RowIndex).Value) AndAlso Not CInt(dgvTVSeasons.Item("Season", e.RowIndex).Value) = -1 Then
-                e.CellStyle.ForeColor = MediaListColor_Missing.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_Missing.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.Missing.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Missing.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvTVSeasons.Item("Mark", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = MediaListColor_Marked.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_Marked.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvTVSeasons.Item("New", e.RowIndex).Value) OrElse
                 Not String.IsNullOrEmpty(dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
-                e.CellStyle.ForeColor = MediaListColor_New.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_New.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.New.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
             Else
-                e.CellStyle.ForeColor = MediaListColor_Default.ForeColor
+                e.CellStyle.ForeColor = MediaListColors.Default.ForeColor
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                e.CellStyle.SelectionForeColor = MediaListColor_Default.SelectionForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Default.SelectionForeColor
             End If
         End If
 
@@ -7157,11 +6841,11 @@ Public Class frmMain
 
             'background
             If Convert.ToBoolean(dgvTVSeasons.Item("Lock", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = MediaListColor_Locked.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Locked.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Locked.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Locked.SelectionBackColor
             Else
-                e.CellStyle.BackColor = MediaListColor_Default.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Default.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Default.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Default.SelectionBackColor
             End If
 
             'path fields
@@ -7583,16 +7267,16 @@ Public Class frmMain
         If (colName = "ListTitle" OrElse colName = "Episodes" OrElse colName = "strOriginalTitle" OrElse colName = "Status" OrElse
             colName = "Rating" OrElse colName = "iUserRating") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvTVShows.Item("Mark", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = MediaListColor_Marked.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_Marked.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvTVShows.Item("New", e.RowIndex).Value) OrElse
                 Not String.IsNullOrEmpty(dgvTVShows.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(dgvTVShows.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
-                e.CellStyle.ForeColor = MediaListColor_New.ForeColor
-                e.CellStyle.SelectionForeColor = MediaListColor_New.SelectionForeColor
+                e.CellStyle.ForeColor = MediaListColors.New.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
             Else
-                e.CellStyle.ForeColor = MediaListColor_Default.ForeColor
+                e.CellStyle.ForeColor = MediaListColors.Default.ForeColor
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                e.CellStyle.SelectionForeColor = MediaListColor_Default.SelectionForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Default.SelectionForeColor
             End If
         End If
 
@@ -7600,11 +7284,11 @@ Public Class frmMain
 
             'background
             If Convert.ToBoolean(dgvTVShows.Item("Lock", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = MediaListColor_Locked.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Locked.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Locked.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Locked.SelectionBackColor
             Else
-                e.CellStyle.BackColor = MediaListColor_Default.BackColor
-                e.CellStyle.SelectionBackColor = MediaListColor_Default.SelectionBackColor
+                e.CellStyle.BackColor = MediaListColors.Default.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Default.SelectionBackColor
             End If
 
             'path fields
@@ -9067,7 +8751,6 @@ Public Class frmMain
             pbPosterCache.Image = MainPoster.Image
             ImageUtils.ResizePB(pbPoster, pbPosterCache, PosterMaxHeight, PosterMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbPoster)
-            pnlPoster.Location = New Point(PosterPosLeft, PosterPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblPosterSize.Visible = True
@@ -9092,7 +8775,6 @@ Public Class frmMain
             pbFanartSmallCache.Image = MainFanartSmall.Image
             ImageUtils.ResizePB(pbFanartSmall, pbFanartSmallCache, FanartSmallMaxHeight, FanartSmallMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbFanartSmall)
-            pnlFanartSmall.Location = New Point(FanartSmallPosLeft, FanartSmallPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblFanartSmallSize.Visible = True
@@ -9117,7 +8799,6 @@ Public Class frmMain
             pbLandscapeCache.Image = MainLandscape.Image
             ImageUtils.ResizePB(pbLandscape, pbLandscapeCache, LandscapeMaxHeight, LandscapeMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbLandscape)
-            pnlLandscape.Location = New Point(LandscapePosLeft, LandscapePosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblLandscapeSize.Visible = True
@@ -9142,7 +8823,6 @@ Public Class frmMain
             pbClearArtCache.Image = MainClearArt.Image
             ImageUtils.ResizePB(pbClearArt, pbClearArtCache, ClearArtMaxHeight, ClearArtMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbClearArt)
-            pnlClearArt.Location = New Point(ClearArtPosLeft, ClearArtPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblClearArtSize.Visible = True
@@ -9167,7 +8847,6 @@ Public Class frmMain
             pbCharacterArtCache.Image = MainCharacterArt.Image
             ImageUtils.ResizePB(pbCharacterArt, pbCharacterArtCache, CharacterArtMaxHeight, CharacterArtMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbCharacterArt)
-            pnlCharacterArt.Location = New Point(CharacterArtPosLeft, CharacterArtPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblCharacterArtSize.Visible = True
@@ -9192,7 +8871,6 @@ Public Class frmMain
             pbDiscArtCache.Image = MainDiscArt.Image
             ImageUtils.ResizePB(pbDiscArt, pbDiscArtCache, DiscArtMaxHeight, DiscArtMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbDiscArt)
-            pnlDiscArt.Location = New Point(DiscArtPosLeft, DiscArtPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblDiscArtSize.Visible = True
@@ -9217,7 +8895,6 @@ Public Class frmMain
             pbBannerCache.Image = MainBanner.Image
             ImageUtils.ResizePB(pbBanner, pbBannerCache, BannerMaxHeight, BannerMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbBanner)
-            pnlBanner.Location = New Point(BannerPosLeft, BannerPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblBannerSize.Visible = True
@@ -9242,7 +8919,6 @@ Public Class frmMain
             pbClearLogoCache.Image = MainClearLogo.Image
             ImageUtils.ResizePB(pbClearLogo, pbClearLogoCache, ClearLogoMaxHeight, ClearLogoMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbClearLogo)
-            pnlClearLogo.Location = New Point(ClearLogoPosLeft, ClearLogoPosTop)
 
             If Master.eSettings.GeneralShowImgDims Then
                 lblClearLogoSize.Visible = True
@@ -9308,7 +8984,7 @@ Public Class frmMain
         End If
 
         If currMovie.Movie.OriginalTitleSpecified AndAlso Not currMovie.Movie.OriginalTitle = currMovie.Movie.Title Then
-            lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), currMovie.Movie.OriginalTitle)
+            lblOriginalTitle.Text = String.Format("{0}: {1}", Master.eLang.GetString(302, "Original Title"), currMovie.Movie.OriginalTitle)
         Else
             lblOriginalTitle.Text = String.Empty
         End If
@@ -9334,10 +9010,10 @@ Public Class frmMain
         End If
 
         If currMovie.Movie.Top250Specified Then
-            pnlTop250.Visible = True
-            lblTop250.Text = currMovie.Movie.Top250.ToString
+            'pnlTop250.Visible = True
+            'lblTop250.Text = currMovie.Movie.Top250.ToString
         Else
-            pnlTop250.Visible = False
+            'pnlTop250.Visible = False
         End If
 
         txtOutline.Text = currMovie.Movie.Outline
@@ -9412,15 +9088,22 @@ Public Class frmMain
             pbStudio.Left = 0
         End If
 
+        lblCredits.Text = String.Join(" / ", currMovie.Movie.Credits.ToArray)
         lblDirectors.Text = String.Join(" / ", currMovie.Movie.Directors.ToArray)
+        lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
+        lblTags.Text = String.Join(" / ", currMovie.Movie.Tags.ToArray)
+        lblCountries.Text = String.Join(" / ", currMovie.Movie.Countries.ToArray)
 
+        lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currMovie)
         txtIMDBID.Text = currMovie.Movie.IMDB
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currMovie)
         txtTMDBID.Text = currMovie.Movie.TMDB
 
         txtFilePath.Text = currMovie.Filename
         txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.Movie.Trailer)
 
         lblReleaseDate.Text = currMovie.Movie.ReleaseDate
+        lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
         txtCertifications.Text = String.Join(" / ", currMovie.Movie.Certifications.ToArray)
 
         txtMetaData.Text = NFO.FIToString(currMovie.Movie.FileInfo, False)
@@ -9453,6 +9136,10 @@ Public Class frmMain
         End If
 
         txtPlot.Text = currMovieSet.MovieSet.Plot
+
+
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currMovieSet)
+        txtTMDBID.Text = currMovieSet.MovieSet.TMDB
 
         If currMovieSet.MoviesInSet IsNot Nothing AndAlso currMovieSet.MoviesInSet.Count > 0 Then
             If bwLoadImages_MovieSetMoviePosters.IsBusy AndAlso Not bwLoadImages_MovieSetMoviePosters.CancellationPending Then
@@ -9488,7 +9175,9 @@ Public Class frmMain
         SuspendLayout()
         lblTitle.Text = If(Not currTV.FilenameSpecified, String.Concat(currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.TVEpisode.Title)
         txtPlot.Text = currTV.TVEpisode.Plot
+        lblCredits.Text = String.Join(" / ", currTV.TVEpisode.Credits.ToArray)
         lblDirectors.Text = String.Join(" / ", currTV.TVEpisode.Directors.ToArray)
+        lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
         txtFilePath.Text = currTV.Filename
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.TVEpisode.AiredSpecified, Date.Parse(currTV.TVEpisode.Aired).ToShortDateString, "?"))
 
@@ -9559,6 +9248,13 @@ Public Class frmMain
             createGenreThumbs(currTV.TVShow.Genres)
         End If
 
+        lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currTV)
+        txtIMDBID.Text = currTV.TVEpisode.IMDB
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
+        txtTMDBID.Text = currTV.TVEpisode.TMDB
+        lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
+        txtTVDBID.Text = currTV.TVEpisode.TVDB
+
         If currTV.TVShow.StudiosSpecified Then
             pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all images file a lower case
             pbStudio.Tag = currTV.TVShow.Studios.Item(0)
@@ -9592,8 +9288,10 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_TVSeason()
         SuspendLayout()
-        If currTV.TVShow.TitleSpecified Then
-            lblTitle.Text = currTV.TVShow.Title
+        If currTV.TVShow.TitleSpecified AndAlso currTV.TVShow.StatusSpecified Then
+            lblTitle.Text = String.Format("{0} ({1}) ({2})", currTV.TVShow.Title, currTV.TVShow.Status, StringUtils.FormatSeasonText(currTV.TVSeason.Season))
+        Else
+            lblTitle.Text = String.Format("{0} ({1})", currTV.TVShow.Title, StringUtils.FormatSeasonText(currTV.TVSeason.Season))
         End If
 
         If currTV.TVShow.OriginalTitleSpecified AndAlso Not currTV.TVShow.OriginalTitle = currTV.TVShow.Title Then
@@ -9604,6 +9302,13 @@ Public Class frmMain
 
         txtPlot.Text = currTV.TVSeason.Plot
         lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
+        lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currTV)
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
+        txtTMDBID.Text = currTV.TVSeason.TMDB
+        lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
+        txtTVDBID.Text = currTV.TVSeason.TVDB
+        txtCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
+        lblReleaseDate.Text = currTV.TVSeason.Aired
 
         Try
             If currTV.TVShow.RatingSpecified Then
@@ -9691,7 +9396,9 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_TVShow()
         SuspendLayout()
-        If currTV.TVShow.TitleSpecified Then
+        If currTV.TVShow.TitleSpecified AndAlso currTV.TVShow.StatusSpecified Then
+            lblTitle.Text = String.Format("{0} ({1})", currTV.TVShow.Title, currTV.TVShow.Status)
+        Else
             lblTitle.Text = currTV.TVShow.Title
         End If
 
@@ -9703,6 +9410,18 @@ Public Class frmMain
 
         txtPlot.Text = currTV.TVShow.Plot
         lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
+        lblDirectors.Text = String.Join(" / ", currTV.TVShow.Creators.ToArray)
+        lblDirectorsHeader.Text = Master.eLang.GetString(744, "Creators")
+        lblReleaseDate.Text = currTV.TVShow.Premiered
+        lblReleaseDateHeader.Text = Master.eLang.GetString(724, "Premiered")
+        lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currTV)
+        txtIMDBID.Text = currTV.TVShow.IMDB
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
+        txtTMDBID.Text = currTV.TVShow.TMDB
+        lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
+        txtTVDBID.Text = currTV.TVShow.TVDB
+        txtCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
+        lblTags.Text = String.Join(" / ", currTV.TVShow.Tags.ToArray)
 
         Try
             If currTV.TVShow.RatingSpecified Then
@@ -10050,24 +9769,6 @@ Public Class frmMain
 
                 'Info panels
                 InfoPanelState_Movie = Master.eSettings.GeneralInfoPanelStateMovie
-                'Select Case InfoPanelState_Movie
-                '    Case 0
-                '        pnlInfoPanel.Height = 25
-                '        btnDown.Enabled = False
-                '        btnMid.Enabled = True
-                '        btnUp.Enabled = True
-                '    Case 1
-                '        pnlInfoPanel.Height = IPMid
-                '        btnMid.Enabled = False
-                '        btnDown.Enabled = True
-                '        btnUp.Enabled = True
-                '    Case 2
-                '        pnlInfoPanel.Height = IPUp
-                '        btnUp.Enabled = False
-                '        btnDown.Enabled = True
-                '        btnMid.Enabled = True
-                'End Select
-
                 InfoPanelState_MovieSet = Master.eSettings.GeneralInfoPanelStateMovieSet
                 InfoPanelState_TVShow = Master.eSettings.GeneralInfoPanelStateTVShow
 
@@ -10876,7 +10577,7 @@ Public Class frmMain
         ShowNoInfo(False)
         ClearInfo()
 
-        If Not currThemeType = Theming.ThemeType.Episode Then ApplyTheme(Theming.ThemeType.Episode)
+        If Not currThemeType = Enums.ContentType.TVEpisode Then ApplyTheme(Enums.ContentType.TVEpisode)
 
         currTV = Master.DB.Load_TVEpisode(ID, True)
         FillScreenInfoWith_TVEpisode()
@@ -10898,7 +10599,7 @@ Public Class frmMain
         ShowNoInfo(False)
         ClearInfo()
 
-        If Not currThemeType = Theming.ThemeType.Show Then ApplyTheme(Theming.ThemeType.Show)
+        If Not currThemeType = Enums.ContentType.TVSeason Then ApplyTheme(Enums.ContentType.TVSeason)
 
         currTV = Master.DB.Load_TVSeason(ID, True, False)
         FillScreenInfoWith_TVSeason()
@@ -10920,7 +10621,7 @@ Public Class frmMain
         ShowNoInfo(False)
         ClearInfo()
 
-        If Not currThemeType = Theming.ThemeType.Show Then ApplyTheme(Theming.ThemeType.Show)
+        If Not currThemeType = Enums.ContentType.TVShow Then ApplyTheme(Enums.ContentType.TVShow)
 
         currTV = Master.DB.Load_TVShow(ID, False, False)
         FillScreenInfoWith_TVShow()
@@ -15786,7 +15487,7 @@ Public Class frmMain
             If String.IsNullOrEmpty(dgvTVSeasons.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvTVSeasons.Item("FanartPath", iRow).Value.ToString) AndAlso
                 String.IsNullOrEmpty(dgvTVSeasons.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvTVSeasons.Item("PosterPath", iRow).Value.ToString) AndAlso
                 Not Convert.ToBoolean(dgvTVSeasons.Item("Missing", iRow).Value) Then
-                If Not currThemeType = Theming.ThemeType.Show Then ApplyTheme(Theming.ThemeType.Show)
+                If Not currThemeType = Enums.ContentType.TVSeason Then ApplyTheme(Enums.ContentType.TVSeason)
                 ShowNoInfo(True, Enums.ContentType.TVSeason)
                 currTV = Master.DB.Load_TVSeason(Convert.ToInt64(dgvTVSeasons.Item("idSeason", iRow).Value), True, False)
                 FillList_TVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
@@ -16229,11 +15930,8 @@ Public Class frmMain
         cmnuTraySettings.Enabled = True
         cmnuTrayExit.Enabled = True
 
-        If dresult.IsLanguageChanged Then
-            SetUp(True)
-        End If
-
         If Not dresult.DidCancel Then
+            SetUp(True)
 
             'TODO: make it more generic
             If dgvMovies.RowCount > 0 Then
@@ -16575,6 +16273,10 @@ Public Class frmMain
         Dim strCurrentFilter As String = Master.eLang.GetString(624, "Current Filter")
         mnuScrapeSubmenuFilter.Text = strCurrentFilter
 
+        'Countries
+        Dim strCountries As String = Master.eLang.GetString(237, "Countries")
+        lblCountriesHeader.Text = strCountries
+
         'DiscArt Only
         Dim strDiscArtOnly As String = Master.eLang.GetString(1124, "DiscArt Only")
         mnuScrapeModifierDiscArt.Text = strDiscArtOnly
@@ -16802,6 +16504,10 @@ Public Class frmMain
         'Skip (Skip If More Than One Match)
         Dim strSkip As String = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
         mnuScrapeTypeSkip.Text = strSkip
+
+        'Tags
+        Dim strTags As String = Master.eLang.GetString(243, "Tags")
+        lblTagsHeader.Text = strTags
 
         'Theme Only
         Dim strThemeOnly As String = Master.eLang.GetString(1125, "Theme Only")
@@ -17060,6 +16766,7 @@ Public Class frmMain
         lblCharacterArtTitle.Text = Master.eLang.GetString(1140, "CharacterArt")
         lblClearArtTitle.Text = Master.eLang.GetString(1096, "ClearArt")
         lblClearLogoTitle.Text = Master.eLang.GetString(1097, "ClearLogo")
+        lblCreditsHeader.Text = Master.eLang.GetString(394, "Credits (Writers)")
         lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
         lblDiscArtTitle.Text = Master.eLang.GetString(1098, "DiscArt")
         lblFanartSmallTitle.Text = Master.eLang.GetString(149, "Fanart")
@@ -17222,7 +16929,7 @@ Public Class frmMain
         If doTheme Then
             tTheme = New Theming
             Dim currMainTabTag = GetCurrentMainTabTag()
-            ApplyTheme(If(currMainTabTag.ContentType = Enums.ContentType.Movie, Theming.ThemeType.Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, Theming.ThemeType.MovieSet, Theming.ThemeType.Show)))
+            ApplyTheme(currMainTabTag.ContentType)
         End If
     End Sub
     ''' <summary>
@@ -17236,19 +16943,19 @@ Public Class frmMain
             Select Case tType
                 Case Enums.ContentType.Movie
                     lblNoInfo.Text = Master.eLang.GetString(55, "No information is available for this Movie")
-                    If Not currThemeType = Theming.ThemeType.Movie Then ApplyTheme(Theming.ThemeType.Movie)
+                    If Not currThemeType = tType Then ApplyTheme(tType)
                 Case Enums.ContentType.MovieSet
                     lblNoInfo.Text = Master.eLang.GetString(1154, "No information is available for this MovieSet")
-                    If Not currThemeType = Theming.ThemeType.MovieSet Then ApplyTheme(Theming.ThemeType.MovieSet)
+                    If Not currThemeType = tType Then ApplyTheme(tType)
                 Case Enums.ContentType.TVEpisode
                     lblNoInfo.Text = Master.eLang.GetString(652, "No information is available for this Episode")
-                    If Not currThemeType = Theming.ThemeType.Episode Then ApplyTheme(Theming.ThemeType.Episode)
+                    If Not currThemeType = tType Then ApplyTheme(tType)
                 Case Enums.ContentType.TVSeason
                     lblNoInfo.Text = Master.eLang.GetString(1161, "No information is available for this Season")
-                    If Not currThemeType = Theming.ThemeType.Show Then ApplyTheme(Theming.ThemeType.Show)
+                    If Not currThemeType = tType Then ApplyTheme(tType)
                 Case Enums.ContentType.TVShow
                     lblNoInfo.Text = Master.eLang.GetString(651, "No information is available for this Show")
-                    If Not currThemeType = Theming.ThemeType.Show Then ApplyTheme(Theming.ThemeType.Show)
+                    If Not currThemeType = tType Then ApplyTheme(tType)
                 Case Else
                     logger.Warn("Invalid media type <{0}>", tType)
             End Select
@@ -17322,7 +17029,7 @@ Public Class frmMain
                 pnlSearchTVShows.Visible = False
                 dgvMovieSets.Visible = False
                 dgvMovies.Visible = True
-                ApplyTheme(Theming.ThemeType.Movie)
+                ApplyTheme(currMainTabTag.ContentType)
                 If bwLoadImages_TVEpisode.IsBusy Then bwLoadImages_TVEpisode.CancelAsync()
                 If bwLoadImages_TVSeason.IsBusy Then bwLoadImages_TVSeason.CancelAsync()
                 If bwLoadImages_TVShow.IsBusy Then bwLoadImages_TVShow.CancelAsync()
@@ -17367,7 +17074,7 @@ Public Class frmMain
                 pnlSearchTVShows.Visible = False
                 dgvMovies.Visible = False
                 dgvMovieSets.Visible = True
-                ApplyTheme(Theming.ThemeType.MovieSet)
+                ApplyTheme(currMainTabTag.ContentType)
                 If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
                 If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
                 If bwLoadImages_TVEpisode.IsBusy Then bwLoadImages_TVEpisode.CancelAsync()
@@ -17418,7 +17125,7 @@ Public Class frmMain
                 AddHandler scTV.SplitterMoved, AddressOf TVSplitterMoved
                 AddHandler scTVSeasonsEpisodes.SplitterMoved, AddressOf TVSplitterMoved
 
-                ApplyTheme(Theming.ThemeType.Show)
+                ApplyTheme(currMainTabTag.ContentType)
                 If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
                 If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()
                 If bwLoadImages_MovieSetMoviePosters.IsBusy Then bwLoadImages_MovieSetMoviePosters.CancelAsync()
@@ -17449,11 +17156,9 @@ Public Class frmMain
         Dim currMainTabTag = GetCurrentMainTabTag()
         Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
             Case 0
-                pnlInfoPanel.Height = 25
-
+                pnlInfoPanel.Height = 32
             Case 1
                 pnlInfoPanel.Height = IPMid
-
             Case 2
                 pnlInfoPanel.Height = IPUp
         End Select
@@ -17464,7 +17169,7 @@ Public Class frmMain
         Dim aType As Integer = If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
         Select Case aType
             Case 0
-                If pnlInfoPanel.Height = 25 Then
+                If pnlInfoPanel.Height = 32 Then
                     btnDown.Enabled = False
                     btnMid.Enabled = True
                     btnUp.Enabled = True
@@ -18190,51 +17895,51 @@ Public Class frmMain
     End Sub
 
     Private Sub lblIMDBHeader_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.Click
-        If Not String.IsNullOrEmpty(txtIMDBID.Text) Then
-            Functions.Launch(String.Format("http://www.imdb.com/title/{0}/", txtIMDBID.Text))
+        If lblIMDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblIMDBHeader.Tag.ToString) Then
+            Functions.Launch(lblIMDBHeader.Tag.ToString)
         End If
     End Sub
 
     Private Sub lblIMDBHeader_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.MouseEnter
-        If Not String.IsNullOrEmpty(txtIMDBID.Text) Then
-            lblIMDBHeader.Tag = lblIMDBHeader.ForeColor
-            lblIMDBHeader.ForeColor = Color.FromArgb(Not lblIMDBHeader.ForeColor.R, Not lblIMDBHeader.ForeColor.G, Not lblIMDBHeader.ForeColor.B)
+        If lblIMDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblIMDBHeader.Tag.ToString) Then
             Cursor = Cursors.Hand
         End If
     End Sub
 
     Private Sub lblIMDBHeader_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.MouseLeave
-        If Not lblIMDBHeader.Tag Is Nothing Then
-            lblIMDBHeader.ForeColor = DirectCast(lblIMDBHeader.Tag, Color)
-            Cursor = Cursors.Default
-            lblIMDBHeader.Tag = Nothing
-        End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub lblTMDBHeader_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTMDBHeader.Click
-        If Not String.IsNullOrEmpty(txtTMDBID.Text) Then
-            If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
-                Functions.Launch(My.Resources.urlTheMovieDb & "/movie/" & txtTMDBID.Text)
-            Else
-                Functions.Launch(My.Resources.urlTheMovieDb & "movie/" & txtTMDBID.Text)
-            End If
+        If lblTMDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblTMDBHeader.Tag.ToString) Then
+            Functions.Launch(lblTMDBHeader.Tag.ToString)
         End If
     End Sub
 
     Private Sub lblTMDBHeader_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTMDBHeader.MouseEnter
-        If Not String.IsNullOrEmpty(txtTMDBID.Text) Then
-            lblTMDBHeader.Tag = lblTMDBHeader.ForeColor
-            lblTMDBHeader.ForeColor = Color.FromArgb(Not lblTMDBHeader.ForeColor.R, Not lblTMDBHeader.ForeColor.G, Not lblTMDBHeader.ForeColor.B)
+        If lblTMDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblTMDBHeader.Tag.ToString) Then
             Cursor = Cursors.Hand
         End If
     End Sub
 
     Private Sub lblTMDBHeader_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTMDBHeader.MouseLeave
-        If Not lblTMDBHeader.Tag Is Nothing Then
-            lblTMDBHeader.ForeColor = DirectCast(lblTMDBHeader.Tag, Color)
-            Cursor = Cursors.Default
-            lblTMDBHeader.Tag = Nothing
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub lblTVDBHeader_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTVDBHeader.Click
+        If lblTVDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblTVDBHeader.Tag.ToString) Then
+            Functions.Launch(lblTVDBHeader.Tag.ToString)
         End If
+    End Sub
+
+    Private Sub lblTVDBHeader_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTVDBHeader.MouseEnter
+        If lblTVDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblTVDBHeader.Tag.ToString) Then
+            Cursor = Cursors.Hand
+        End If
+    End Sub
+
+    Private Sub lblTVDBHeader_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTVDBHeader.MouseLeave
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub pbStudio_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseEnter

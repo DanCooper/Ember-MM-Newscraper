@@ -26,315 +26,226 @@ or a "32-bit ARGB value"
 -->
 
 <theme>
-  <toppanel>
-    <backcolor>-2302756</backcolor>
-    <forecolor>-16777216</forecolor>
-  </toppanel>
-  
-  <medialistcolors>
-	<default>
-		<backcolor>White</backcolor>
-		<forecolor>Black</forecolor>
-		<selectionbackcolor>Highlight</selectionbackcolor>
-		<selectionforecolor>HighlightText</selectionforecolor>
-	</default>
-	<locked>
-		<backcolor>LightSteelBlue</backcolor>
-		<forecolor>Black</forecolor>
-		<selectionbackcolor>DarkTurquoise</selectionbackcolor>
-		<selectionforecolor>Black</selectionforecolor>
-	</locked>
-	<new>
-		<backcolor>White</backcolor>
-		<forecolor>Green</forecolor>
-		<selectionbackcolor>Highlight</selectionbackcolor>
-		<selectionforecolor>Green</selectionforecolor>
-	</new>
-	<marked>
-		<backcolor>White</backcolor>
-		<forecolor>Crimson</forecolor>
-		<selectionbackcolor>Highlight</selectionbackcolor>
-		<selectionforecolor>Crimson</selectionforecolor>
-	</marked>
-  </medialistcolors>
+  <filterpanel>
+    <backcolor>Control</backcolor>
+    <button>
+      <forecolor>ControlText</forecolor>
+    </button>
+    <forecolor>ControlText</forecolor>
+    <header>
+      <backcolor>ControlDarkDark</backcolor>
+      <forecolor>HighlightText</forecolor>
+    </header>
+  </filterpanel>
 
-  <images>
-    <bannerbackcolor>Gainsboro</bannerbackcolor>
-    <bannerbottombackcolor>DimGray</bannerbottombackcolor>
-    <bannermaxheight>160</bannermaxheight>
-    <bannermaxwidth>285</bannermaxwidth>
-    <bannerposleft>124</bannerposleft>
-    <bannerpostop>327</bannerpostop>
-    <bannertopbackcolor>DimGray</bannertopbackcolor>
-    <characterartbackcolor>Gainsboro</characterartbackcolor>
-    <characterartbottombackcolor>DimGray</characterartbottombackcolor>
-    <characterartmaxheight>160</characterartmaxheight>
-    <characterartmaxwidth>160</characterartmaxwidth>
-    <characterartposleft>1011</characterartposleft>
-    <characterartpostop>130</characterartpostop>
-    <characterarttopbackcolor>DimGray</characterarttopbackcolor>
-    <clearartbackcolor>Gainsboro</clearartbackcolor>
-    <clearartbottombackcolor>DimGray</clearartbottombackcolor>
-    <clearartmaxheight>160</clearartmaxheight>
-    <clearartmaxwidth>285</clearartmaxwidth>
-    <clearartposleft>715</clearartposleft>
-    <clearartpostop>130</clearartpostop>
-    <cleararttopbackcolor>DimGray</cleararttopbackcolor>
-    <clearlogobackcolor>Gainsboro</clearlogobackcolor>
-    <clearlogobottombackcolor>DimGray</clearlogobottombackcolor>
-    <clearlogomaxheight>160</clearlogomaxheight>
-    <clearlogomaxwidth>285</clearlogomaxwidth>
-    <clearlogoposleft>419</clearlogoposleft>
-    <clearlogopostop>327</clearlogopostop>
-    <clearlogotopbackcolor>DimGray</clearlogotopbackcolor>
-    <discartbackcolor>Gainsboro</discartbackcolor>
-    <discartbottombackcolor>DimGray</discartbottombackcolor>
-    <discartmaxheight>160</discartmaxheight>
-    <discartmaxwidth>160</discartmaxwidth>
-    <discartposleft>1011</discartposleft>
-    <discartpostop>130</discartpostop>
-    <discarttopbackcolor>DimGray</discarttopbackcolor>
-    <fanartbackcolor>Gray</fanartbackcolor>
-    <fanartsmallbackcolor>Gainsboro</fanartsmallbackcolor>
-    <fanartsmallbottombackcolor>DimGray</fanartsmallbottombackcolor>
-    <fanartsmallmaxheight>160</fanartsmallmaxheight>
-    <fanartsmallmaxwidth>285</fanartsmallmaxwidth>
-    <fanartsmallposleft>124</fanartsmallposleft>
-    <fanartsmallpostop>130</fanartsmallpostop>
-    <fanartsmalltopbackcolor>DimGray</fanartsmalltopbackcolor>
-    <genrebackcolor>Gainsboro</genrebackcolor>
-    <landscapebackcolor>Gainsboro</landscapebackcolor>
-    <landscapebottombackcolor>DimGray</landscapebottombackcolor>
-    <landscapemaxheight>160</landscapemaxheight>
-    <landscapemaxwidth>285</landscapemaxwidth>
-    <landscapeposleft>419</landscapeposleft>
-    <landscapepostop>130</landscapepostop>
-    <landscapetopbackcolor>DimGray</landscapetopbackcolor>
-    <mpaabackcolor>Gainsboro</mpaabackcolor>
-    <posterbackcolor>Gainsboro</posterbackcolor>
-    <posterbottombackcolor>DimGray</posterbottombackcolor>
-    <postermaxheight>160</postermaxheight>
-    <postermaxwidth>160</postermaxwidth>
-    <posterposleft>4</posterposleft>
-    <posterpostop>130</posterpostop>
-    <postertopbackcolor>DimGray</postertopbackcolor>
-  </images>
+  <imagepanel>
+    <backcolor>Gainsboro</backcolor>
+    <forecolor>Black</forecolor>
+    <imagename>
+      <backcolor>DimGray</backcolor>
+      <forecolor>HighlightText</forecolor>
+    </imagename>
+    <imagesize>
+      <backcolor>DimGray</backcolor>
+      <forecolor>HighlightText</forecolor>
+    </imagesize>
+    <banner>
+      <left>124</left>
+      <maxheight>160</maxheight>
+      <maxwidth>285</maxwidth>
+      <top>327</top>
+    </banner>
+    <clearart>
+      <left>715</left>
+      <maxheight>160</maxheight>
+      <maxwidth>285</maxwidth>
+      <top>130</top>
+    </clearart>
+    <clearlogo>
+      <left>419</left>
+      <maxheight>160</maxheight>
+      <maxwidth>285</maxwidth>
+      <top>327</top>
+    </clearlogo>
+    <discart>
+      <left>1011</left>
+      <maxheight>160</maxheight>
+      <maxwidth>160</maxwidth>
+      <top>130</top>
+    </discart>
+    <fanartsmall>
+      <left>124</left>
+      <maxheight>160</maxheight>
+      <maxwidth>285</maxwidth>
+      <top>130</top>
+    </fanartsmall>
+    <landscape>
+      <left>419</left>
+      <maxheight>160</maxheight>
+      <maxwidth>285</maxwidth>
+      <top>130</top>
+    </landscape>
+    <poster>
+      <left>4</left>
+      <maxheight>160</maxheight>
+      <maxwidth>160</maxwidth>
+      <top>130</top>
+    </poster>
+  </imagepanel>
 
   <infopanel>
-    <backcolor>-2302756</backcolor>
-    <ipup>290</ipup> <!-- Must be in multiples of 5!! -->
-    <ipmid>290</ipmid> <!-- Must be in multiples of 5!! -->
+    <backcolor>Gainsboro</backcolor>
+    <posmid>290</posmid>
+    <!-- Must be a multiple of 5!! -->
+    <posup>290</posup>
+    <!-- Must be a multiple of 5!! -->
 
-    <object name="lblInfoPanelHeader">
-      <width>pnlInfoPanel.Width - 8</width>
+    <control name="lblInfoPanelHeader">
+      <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
       <height>17</height>
       <left>3</left>
       <top>3</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
+      <width>pnlInfoPanel.Width - 8</width>
+    </control>
+
+    <control name="btnUp">
+      <anchor>9</anchor>
+      <height>22</height>
+      <left>pnlInfoPanel.Width - 71</left>
+      <top>1</top>
+      <width>30</width>
+    </control>
+
+    <control name="btnDown">
+      <anchor>9</anchor>
+      <height>22</height>
+      <left>pnlInfoPanel.Width - 38</left>
+      <top>1</top>
+      <width>30</width>
+    </control>
+
+    <control name="lblPlotHeader">
       <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
-    </object>
-
-    <object name="btnUp">
-      <width>30</width>
-      <height>22</height>
-      <left>pnlInfoPanel.Width - 75</left>
-      <top>1</top>
-      <anchor>9</anchor>
-    </object>
-
-    <object name="btnMid">
-      <visible>false</visible>
-    </object>
-
-    <object name="btnDown">
-      <width>30</width>
-      <height>22</height>
-      <left>pnlInfoPanel.Width - 40</left>
-      <top>1</top>
-      <anchor>9</anchor>
-    </object>
-
-    <object name="lblPlotHeader">
-      <width>pnlInfoPanel.Width - 10</width>
+      <forecolor>-1</forecolor>
       <height>17</height>
       <left>3</left>
       <top>27</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
+      <width>pnlInfoPanel.Width - 10</width>
+    </control>
+
+    <control name="txtPlot">
       <anchor>13</anchor>
+      <backcolor>Gainsboro</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
-    </object>
-
-    <object name="txtPlot">
-      <width>lblPlotHeader.Width</width>
+      <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
       <height>78</height>
       <left>3</left>
       <top>48</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
-    </object>
+      <width>lblPlotHeader.Width</width>
+    </control>
 
-    <object name="pnlMoviesInSet">
-      <width>pnlInfoPanel.Width</width>
+    <control name="pnlMoviesInSet">
+      <anchor>13</anchor>
+      <backcolor>Gainsboro</backcolor>
       <height>164</height>
       <left>3</left>
       <top>133</top>
-      <backcolor>-2302756</backcolor>
-      <anchor>13</anchor>
-    </object>
+      <width>pnlInfoPanel.Width</width>
+    </control>
 
-    <!-- BEGIN INTERNAL TO PNLMOVIESINSET -->
-    <object name="lblMoviesInSetHeader">
-      <width>pnlMoviesInSet.Width - 10</width>
-      <height>17</height>
-      <left>0</left>
-      <top>0</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
+    <!-- BEGIN INTERNAL OF PNLMOVIESINSET -->
+      <control name="lblMoviesInSetHeader">
       <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>1</fontstyle>
-    </object>
-
-    <object name="lvMoviesInSet">
-      <width>lblMoviesInSetHeader.Width</width>
-      <height>130</height>
+      <forecolor>-1</forecolor>
+      <height>17</height>
       <left>0</left>
-      <top>21</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
+      <top>0</top>
+      <width>pnlMoviesInSet.Width - 10</width>
+    </control>
+
+    <control name="lvMoviesInSet">
       <anchor>13</anchor>
+      <backcolor>Gainsboro</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>0</fontstyle>
-    </object>
-    <!-- END INTERNAL TO PNLMOVIESINSET -->
-
-    <!-- Hide all the stuff we won't be using -->
-    <object name="lblDirectorsHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblDirectors">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblReleaseDateHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblReleaseDate">
-      <visible>false</visible>
-    </object>
-
-    <object name="pnlTop250">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblOutlineHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtOutline">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblIMDBHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtIMDBID">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblTMDBHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtTMDBID">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblCertificationsHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtCertifications">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblFilePathHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtFilePath">
-      <visible>false</visible>
-    </object>
-
-    <object name="btnFilePlay">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblTrailerPathHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtTrailerPath">
-      <visible>false</visible>
-    </object>
-
-    <object name="btnTrailerPlay">
-      <visible>false</visible>
-    </object>
-
-    <object name="lblMetaDataHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="btnMetaDataRefresh">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtMetaData">
-      <visible>false</visible>
-    </object>
-
-    <object name="pbMILoading">
-      <visible>false</visible>
-    </object>
-
-    <object name="pnlActors">
-      <visible>false</visible>
-    </object>
-
-    <!-- BEGIN INTERNAL TO PNLACTORS -->
-    <object name="lblActorsHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="lstActors">
-      <visible>false</visible>
-    </object>
-
-    <object name="pbActors">
-      <visible>false</visible>
-    </object>
-
-    <object name="pbActLoad">
-      <visible>false</visible>
-    </object>
-    <!-- END INTERNAL TO PNLACTORS -->
-
+      <forecolor>-16777216</forecolor>
+      <height>130</height>
+      <left>0</left>
+      <top>21</top>
+      <width>lblMoviesInSetHeader.Width</width>
+    </control>
+    <!-- END INTERNAL OF PNLMOVIESINSET -->
   </infopanel>
+
+  <medialist>
+    <backcolor>White</backcolor>
+    <default>
+      <backcolor>White</backcolor>
+      <forecolor>Black</forecolor>
+      <selectionbackcolor>Highlight</selectionbackcolor>
+      <selectionforecolor>HighlightText</selectionforecolor>
+    </default>
+    <locked>
+      <backcolor>LightSteelBlue</backcolor>
+      <forecolor>Black</forecolor>
+      <selectionbackcolor>DarkTurquoise</selectionbackcolor>
+      <selectionforecolor>Black</selectionforecolor>
+    </locked>
+    <new>
+      <backcolor>White</backcolor>
+      <forecolor>Green</forecolor>
+      <selectionbackcolor>Highlight</selectionbackcolor>
+      <selectionforecolor>Green</selectionforecolor>
+    </new>
+    <marked>
+      <backcolor>White</backcolor>
+      <forecolor>Crimson</forecolor>
+      <selectionbackcolor>Highlight</selectionbackcolor>
+      <selectionforecolor>Crimson</selectionforecolor>
+    </marked> 
+  </medialist>
+
+  <toppanel>
+    <backcolor>-2302756</backcolor>
+    <originaltitle>
+      <backcolor>Gainsboro</backcolor>
+      <forecolor>Black</forecolor>
+    </originaltitle>
+    <rating>
+      <backcolor>Gainsboro</backcolor>
+      <forecolor>Black</forecolor>
+    </rating>
+    <runtime>
+      <backcolor>Gainsboro</backcolor>
+      <forecolor>Black</forecolor>
+    </runtime>
+    <studio>
+      <backcolor>Gainsboro</backcolor>
+      <forecolor>Black</forecolor>
+    </studio>
+    <title>
+      <backcolor>Gainsboro</backcolor>
+      <forecolor>Black</forecolor>
+    </title>
+    <tagline>
+      <backcolor>Gainsboro</backcolor>
+      <forecolor>Black</forecolor>
+    </tagline>
+  </toppanel>
 </theme>

@@ -183,6 +183,7 @@ Public Class dlgClearOrReplace
             Case Enums.ContentType.TVShow
                 chkAired.Visible = False
                 chkGuestStars.Visible = False
+                chkDirectors.Visible = False
                 chkOutline.Visible = False
                 chkReleaseDate.Visible = False
                 chkTagline.Visible = False
@@ -193,6 +194,7 @@ Public Class dlgClearOrReplace
                 chkWriters.Visible = False
                 chkYear.Visible = False
                 txtAired.Visible = False
+                txtDirectors.Visible = False
                 txtReleaseDate.Visible = False
                 txtTagline.Visible = False
                 txtVideoSource.Visible = False
@@ -300,8 +302,6 @@ Public Class dlgClearOrReplace
                     nInfo.Countries = DoSplit(txtCountries)
                     .bMainCreators = chkCreators.Checked
                     nInfo.Creators = DoSplit(txtCreators)
-                    .bMainDirectors = chkDirectors.Checked
-                    nInfo.Directors = DoSplit(txtDirectors)
                     .bMainGenres = chkGenres.Checked
                     nInfo.Genres = DoSplit(txtGenres)
                     .bMainMPAA = chkMPAA.Checked

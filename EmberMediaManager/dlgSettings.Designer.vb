@@ -54,16 +54,8 @@ Partial Class dlgSettings
         Me.chkGeneralDisplayFanart = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayPoster = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayImgDims = New System.Windows.Forms.CheckBox()
-        Me.gbGeneralThemes = New System.Windows.Forms.GroupBox()
-        Me.tblGeneralThemes = New System.Windows.Forms.TableLayoutPanel()
-        Me.cbGeneralTVEpisodeTheme = New System.Windows.Forms.ComboBox()
-        Me.cbGeneralMovieSetTheme = New System.Windows.Forms.ComboBox()
-        Me.lblGeneralTVEpisodeTheme = New System.Windows.Forms.Label()
-        Me.lblGeneralMovieTheme = New System.Windows.Forms.Label()
-        Me.cbGeneralTVShowTheme = New System.Windows.Forms.ComboBox()
-        Me.lblGeneralMovieSetTheme = New System.Windows.Forms.Label()
-        Me.lblGeneralTVShowTheme = New System.Windows.Forms.Label()
-        Me.cbGeneralMovieTheme = New System.Windows.Forms.ComboBox()
+        Me.lblGeneralTheme = New System.Windows.Forms.Label()
+        Me.cbGeneralTheme = New System.Windows.Forms.ComboBox()
         Me.lblGeneralIntLang = New System.Windows.Forms.Label()
         Me.cbGeneralLanguage = New System.Windows.Forms.ComboBox()
         Me.gbMovieGeneralMiscOpts = New System.Windows.Forms.GroupBox()
@@ -1613,8 +1605,6 @@ Partial Class dlgSettings
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
         Me.gbGeneralMiscOpts.SuspendLayout()
         Me.tblGeneralMisc.SuspendLayout()
-        Me.gbGeneralThemes.SuspendLayout()
-        Me.tblGeneralThemes.SuspendLayout()
         Me.gbMovieGeneralMiscOpts.SuspendLayout()
         Me.tblMovieGeneralMiscOpts.SuspendLayout()
         Me.pnlMovieImages.SuspendLayout()
@@ -2029,7 +2019,7 @@ Partial Class dlgSettings
         Me.gbGeneralMiscOpts.Controls.Add(Me.tblGeneralMisc)
         Me.gbGeneralMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbGeneralMiscOpts.Location = New System.Drawing.Point(247, 292)
+        Me.gbGeneralMiscOpts.Location = New System.Drawing.Point(247, 237)
         Me.gbGeneralMiscOpts.Name = "gbGeneralMiscOpts"
         Me.tblGeneral.SetRowSpan(Me.gbGeneralMiscOpts, 2)
         Me.gbGeneralMiscOpts.Size = New System.Drawing.Size(367, 256)
@@ -2348,136 +2338,27 @@ Partial Class dlgSettings
         Me.chkGeneralDisplayImgDims.Text = "Display Image Dimensions"
         Me.chkGeneralDisplayImgDims.UseVisualStyleBackColor = True
         '
-        'gbGeneralThemes
+        'lblGeneralTheme
         '
-        Me.gbGeneralThemes.AutoSize = True
-        Me.gbGeneralThemes.Controls.Add(Me.tblGeneralThemes)
-        Me.gbGeneralThemes.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbGeneralThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbGeneralThemes.Location = New System.Drawing.Point(3, 50)
-        Me.gbGeneralThemes.Name = "gbGeneralThemes"
-        Me.gbGeneralThemes.Size = New System.Drawing.Size(220, 209)
-        Me.gbGeneralThemes.TabIndex = 2
-        Me.gbGeneralThemes.TabStop = False
-        Me.gbGeneralThemes.Text = "Themes"
+        Me.lblGeneralTheme.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblGeneralTheme.AutoSize = True
+        Me.lblGeneralTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblGeneralTheme.Location = New System.Drawing.Point(3, 50)
+        Me.lblGeneralTheme.Name = "lblGeneralTheme"
+        Me.lblGeneralTheme.Size = New System.Drawing.Size(43, 13)
+        Me.lblGeneralTheme.TabIndex = 0
+        Me.lblGeneralTheme.Text = "Theme:"
         '
-        'tblGeneralThemes
+        'cbGeneralTheme
         '
-        Me.tblGeneralThemes.AutoSize = True
-        Me.tblGeneralThemes.ColumnCount = 2
-        Me.tblGeneralThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralThemes.Controls.Add(Me.cbGeneralTVEpisodeTheme, 0, 7)
-        Me.tblGeneralThemes.Controls.Add(Me.cbGeneralMovieSetTheme, 0, 3)
-        Me.tblGeneralThemes.Controls.Add(Me.lblGeneralTVEpisodeTheme, 0, 6)
-        Me.tblGeneralThemes.Controls.Add(Me.lblGeneralMovieTheme, 0, 0)
-        Me.tblGeneralThemes.Controls.Add(Me.cbGeneralTVShowTheme, 0, 5)
-        Me.tblGeneralThemes.Controls.Add(Me.lblGeneralMovieSetTheme, 0, 2)
-        Me.tblGeneralThemes.Controls.Add(Me.lblGeneralTVShowTheme, 0, 4)
-        Me.tblGeneralThemes.Controls.Add(Me.cbGeneralMovieTheme, 0, 1)
-        Me.tblGeneralThemes.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblGeneralThemes.Location = New System.Drawing.Point(3, 18)
-        Me.tblGeneralThemes.Name = "tblGeneralThemes"
-        Me.tblGeneralThemes.RowCount = 9
-        Me.tblGeneralThemes.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblGeneralThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralThemes.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblGeneralThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralThemes.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblGeneralThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralThemes.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblGeneralThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralThemes.Size = New System.Drawing.Size(214, 188)
-        Me.tblGeneralThemes.TabIndex = 17
-        '
-        'cbGeneralTVEpisodeTheme
-        '
-        Me.cbGeneralTVEpisodeTheme.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbGeneralTVEpisodeTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbGeneralTVEpisodeTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbGeneralTVEpisodeTheme.FormattingEnabled = True
-        Me.cbGeneralTVEpisodeTheme.Location = New System.Drawing.Point(3, 164)
-        Me.cbGeneralTVEpisodeTheme.Name = "cbGeneralTVEpisodeTheme"
-        Me.cbGeneralTVEpisodeTheme.Size = New System.Drawing.Size(208, 21)
-        Me.cbGeneralTVEpisodeTheme.TabIndex = 5
-        '
-        'cbGeneralMovieSetTheme
-        '
-        Me.cbGeneralMovieSetTheme.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbGeneralMovieSetTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbGeneralMovieSetTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbGeneralMovieSetTheme.FormattingEnabled = True
-        Me.cbGeneralMovieSetTheme.Location = New System.Drawing.Point(3, 70)
-        Me.cbGeneralMovieSetTheme.Name = "cbGeneralMovieSetTheme"
-        Me.cbGeneralMovieSetTheme.Size = New System.Drawing.Size(208, 21)
-        Me.cbGeneralMovieSetTheme.TabIndex = 7
-        '
-        'lblGeneralTVEpisodeTheme
-        '
-        Me.lblGeneralTVEpisodeTheme.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralTVEpisodeTheme.AutoSize = True
-        Me.lblGeneralTVEpisodeTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralTVEpisodeTheme.Location = New System.Drawing.Point(3, 144)
-        Me.lblGeneralTVEpisodeTheme.Name = "lblGeneralTVEpisodeTheme"
-        Me.lblGeneralTVEpisodeTheme.Size = New System.Drawing.Size(87, 13)
-        Me.lblGeneralTVEpisodeTheme.TabIndex = 4
-        Me.lblGeneralTVEpisodeTheme.Text = "Episode Theme:"
-        '
-        'lblGeneralMovieTheme
-        '
-        Me.lblGeneralMovieTheme.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralMovieTheme.AutoSize = True
-        Me.lblGeneralMovieTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralMovieTheme.Location = New System.Drawing.Point(3, 3)
-        Me.lblGeneralMovieTheme.Name = "lblGeneralMovieTheme"
-        Me.lblGeneralMovieTheme.Size = New System.Drawing.Size(77, 13)
-        Me.lblGeneralMovieTheme.TabIndex = 0
-        Me.lblGeneralMovieTheme.Text = "Movie Theme:"
-        '
-        'cbGeneralTVShowTheme
-        '
-        Me.cbGeneralTVShowTheme.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbGeneralTVShowTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbGeneralTVShowTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbGeneralTVShowTheme.FormattingEnabled = True
-        Me.cbGeneralTVShowTheme.Location = New System.Drawing.Point(3, 117)
-        Me.cbGeneralTVShowTheme.Name = "cbGeneralTVShowTheme"
-        Me.cbGeneralTVShowTheme.Size = New System.Drawing.Size(208, 21)
-        Me.cbGeneralTVShowTheme.TabIndex = 3
-        '
-        'lblGeneralMovieSetTheme
-        '
-        Me.lblGeneralMovieSetTheme.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralMovieSetTheme.AutoSize = True
-        Me.lblGeneralMovieSetTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralMovieSetTheme.Location = New System.Drawing.Point(3, 50)
-        Me.lblGeneralMovieSetTheme.Name = "lblGeneralMovieSetTheme"
-        Me.lblGeneralMovieSetTheme.Size = New System.Drawing.Size(93, 13)
-        Me.lblGeneralMovieSetTheme.TabIndex = 6
-        Me.lblGeneralMovieSetTheme.Text = "MovieSet Theme:"
-        '
-        'lblGeneralTVShowTheme
-        '
-        Me.lblGeneralTVShowTheme.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralTVShowTheme.AutoSize = True
-        Me.lblGeneralTVShowTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralTVShowTheme.Location = New System.Drawing.Point(3, 97)
-        Me.lblGeneralTVShowTheme.Name = "lblGeneralTVShowTheme"
-        Me.lblGeneralTVShowTheme.Size = New System.Drawing.Size(90, 13)
-        Me.lblGeneralTVShowTheme.TabIndex = 2
-        Me.lblGeneralTVShowTheme.Text = "TV Show Theme:"
-        '
-        'cbGeneralMovieTheme
-        '
-        Me.cbGeneralMovieTheme.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbGeneralMovieTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbGeneralMovieTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbGeneralMovieTheme.FormattingEnabled = True
-        Me.cbGeneralMovieTheme.Location = New System.Drawing.Point(3, 23)
-        Me.cbGeneralMovieTheme.Name = "cbGeneralMovieTheme"
-        Me.cbGeneralMovieTheme.Size = New System.Drawing.Size(208, 21)
-        Me.cbGeneralMovieTheme.TabIndex = 1
+        Me.cbGeneralTheme.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbGeneralTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbGeneralTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbGeneralTheme.FormattingEnabled = True
+        Me.cbGeneralTheme.Location = New System.Drawing.Point(3, 70)
+        Me.cbGeneralTheme.Name = "cbGeneralTheme"
+        Me.cbGeneralTheme.Size = New System.Drawing.Size(216, 21)
+        Me.cbGeneralTheme.TabIndex = 1
         '
         'lblGeneralIntLang
         '
@@ -4170,7 +4051,7 @@ Partial Class dlgSettings
         Me.gbGeneralVirtualDrive.Controls.Add(Me.tblGeneralVirtualDrive)
         Me.gbGeneralVirtualDrive.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbGeneralVirtualDrive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbGeneralVirtualDrive.Location = New System.Drawing.Point(3, 554)
+        Me.gbGeneralVirtualDrive.Location = New System.Drawing.Point(3, 499)
         Me.gbGeneralVirtualDrive.Name = "gbGeneralVirtualDrive"
         Me.gbGeneralVirtualDrive.Size = New System.Drawing.Size(611, 70)
         Me.gbGeneralVirtualDrive.TabIndex = 17
@@ -4286,7 +4167,7 @@ Partial Class dlgSettings
         Me.gbGeneralInterface.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbGeneralInterface.Location = New System.Drawing.Point(3, 3)
         Me.gbGeneralInterface.Name = "gbGeneralInterface"
-        Me.gbGeneralInterface.Size = New System.Drawing.Size(238, 283)
+        Me.gbGeneralInterface.Size = New System.Drawing.Size(238, 228)
         Me.gbGeneralInterface.TabIndex = 0
         Me.gbGeneralInterface.TabStop = False
         Me.gbGeneralInterface.Text = "Interface"
@@ -4297,18 +4178,21 @@ Partial Class dlgSettings
         Me.tblGeneralInterface.ColumnCount = 2
         Me.tblGeneralInterface.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneralInterface.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralInterface.Controls.Add(Me.gbGeneralThemes, 0, 2)
         Me.tblGeneralInterface.Controls.Add(Me.lblGeneralIntLang, 0, 0)
         Me.tblGeneralInterface.Controls.Add(Me.cbGeneralLanguage, 0, 1)
+        Me.tblGeneralInterface.Controls.Add(Me.lblGeneralTheme, 0, 2)
+        Me.tblGeneralInterface.Controls.Add(Me.cbGeneralTheme, 0, 3)
         Me.tblGeneralInterface.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGeneralInterface.Location = New System.Drawing.Point(3, 18)
         Me.tblGeneralInterface.Name = "tblGeneralInterface"
-        Me.tblGeneralInterface.RowCount = 4
+        Me.tblGeneralInterface.RowCount = 5
+        Me.tblGeneralInterface.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblGeneralInterface.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralInterface.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblGeneralInterface.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralInterface.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralInterface.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralInterface.Size = New System.Drawing.Size(232, 262)
+        Me.tblGeneralInterface.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblGeneralInterface.Size = New System.Drawing.Size(232, 207)
         Me.tblGeneralInterface.TabIndex = 17
         '
         'gbGeneralDateAdded
@@ -4317,7 +4201,7 @@ Partial Class dlgSettings
         Me.gbGeneralDateAdded.Controls.Add(Me.tblGeneralDateAdded)
         Me.gbGeneralDateAdded.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbGeneralDateAdded.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbGeneralDateAdded.Location = New System.Drawing.Point(3, 292)
+        Me.gbGeneralDateAdded.Location = New System.Drawing.Point(3, 237)
         Me.gbGeneralDateAdded.Name = "gbGeneralDateAdded"
         Me.gbGeneralDateAdded.Size = New System.Drawing.Size(238, 71)
         Me.gbGeneralDateAdded.TabIndex = 16
@@ -4361,7 +4245,7 @@ Partial Class dlgSettings
         Me.gbGeneralMainWindowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbGeneralMainWindowOpts.Location = New System.Drawing.Point(247, 3)
         Me.gbGeneralMainWindowOpts.Name = "gbGeneralMainWindowOpts"
-        Me.gbGeneralMainWindowOpts.Size = New System.Drawing.Size(367, 283)
+        Me.gbGeneralMainWindowOpts.Size = New System.Drawing.Size(367, 228)
         Me.gbGeneralMainWindowOpts.TabIndex = 14
         Me.gbGeneralMainWindowOpts.TabStop = False
         Me.gbGeneralMainWindowOpts.Text = "Main Window"
@@ -4402,7 +4286,7 @@ Partial Class dlgSettings
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralMainWindow.Size = New System.Drawing.Size(361, 262)
+        Me.tblGeneralMainWindow.Size = New System.Drawing.Size(361, 207)
         Me.tblGeneralMainWindow.TabIndex = 17
         '
         'chkGeneralDisplayDiscArt
@@ -22613,10 +22497,6 @@ Partial Class dlgSettings
         Me.gbGeneralMiscOpts.PerformLayout()
         Me.tblGeneralMisc.ResumeLayout(False)
         Me.tblGeneralMisc.PerformLayout()
-        Me.gbGeneralThemes.ResumeLayout(False)
-        Me.gbGeneralThemes.PerformLayout()
-        Me.tblGeneralThemes.ResumeLayout(False)
-        Me.tblGeneralThemes.PerformLayout()
         Me.gbMovieGeneralMiscOpts.ResumeLayout(False)
         Me.gbMovieGeneralMiscOpts.PerformLayout()
         Me.tblMovieGeneralMiscOpts.ResumeLayout(False)
@@ -23469,9 +23349,8 @@ End Sub
     Friend WithEvents chkGeneralDisplayGenresText As System.Windows.Forms.CheckBox
     Friend WithEvents lblGeneralIntLang As System.Windows.Forms.Label
     Friend WithEvents cbGeneralLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents lblGeneralMovieTheme As System.Windows.Forms.Label
-    Friend WithEvents cbGeneralMovieTheme As System.Windows.Forms.ComboBox
-    Friend WithEvents gbGeneralThemes As System.Windows.Forms.GroupBox
+    Friend WithEvents lblGeneralTheme As System.Windows.Forms.Label
+    Friend WithEvents cbGeneralTheme As System.Windows.Forms.ComboBox
     Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
     Friend WithEvents pnlTVSources As System.Windows.Forms.Panel
     Friend WithEvents btnTVSourceEdit As System.Windows.Forms.Button
@@ -23512,10 +23391,6 @@ End Sub
     Friend WithEvents chkTVGeneralIgnoreLastScan As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVCleanDB As System.Windows.Forms.CheckBox
     Friend WithEvents gbGeneralInterface As System.Windows.Forms.GroupBox
-    Friend WithEvents cbGeneralTVEpisodeTheme As System.Windows.Forms.ComboBox
-    Friend WithEvents lblGeneralTVEpisodeTheme As System.Windows.Forms.Label
-    Friend WithEvents cbGeneralTVShowTheme As System.Windows.Forms.ComboBox
-    Friend WithEvents lblGeneralTVShowTheme As System.Windows.Forms.Label
     Friend WithEvents tcTVSources As System.Windows.Forms.TabControl
     Friend WithEvents tpTVSourcesGeneral As System.Windows.Forms.TabPage
     Friend WithEvents tpTVSourcesRegex As System.Windows.Forms.TabPage
@@ -24057,8 +23932,6 @@ End Sub
     Friend WithEvents chkGeneralDisplayBanner As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayClearLogo As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayCharacterArt As System.Windows.Forms.CheckBox
-    Friend WithEvents cbGeneralMovieSetTheme As System.Windows.Forms.ComboBox
-    Friend WithEvents lblGeneralMovieSetTheme As System.Windows.Forms.Label
     Friend WithEvents colTVSourcesLanguage As System.Windows.Forms.ColumnHeader
     Friend WithEvents colTVSourcesOrdering As System.Windows.Forms.ColumnHeader
     Friend WithEvents lblMovieTrailerDefaultSearch As System.Windows.Forms.Label
@@ -24345,7 +24218,6 @@ End Sub
     Friend WithEvents tblGeneralMisc As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblGeneralInterface As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblGeneralMainWindow As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents tblGeneralThemes As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieSetScraper As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieSetScraperTitleRenamerOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieSetSourcesMiscOpts As System.Windows.Forms.TableLayoutPanel

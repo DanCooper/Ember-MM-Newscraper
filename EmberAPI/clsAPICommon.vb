@@ -1146,6 +1146,19 @@ Public Class Functions
         Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
         Return origin.AddSeconds(timestamp)
     End Function
+
+    Public Shared Function ConvertStringToColor(ByVal value As String) As Color
+        If Not String.IsNullOrEmpty(value) Then
+            If Integer.TryParse(value, 0) Then
+                Return Color.FromArgb(Convert.ToInt32(value))
+            ElseIf Color.FromName(value).IsKnownColor OrElse value.StartsWith("#") Then
+                Return ColorTranslator.FromHtml(value)
+            Else
+                logger.Error(String.Concat("No valid color value: ", value))
+                Return New Color
+            End If
+        End If
+    End Function
     ''' <summary>
     ''' Convert a VB-styled DateTime to a valid Unix-style timestamp
     ''' </summary>
@@ -1884,7 +1897,6 @@ Public Class Structures
 
     Public Structure SettingsResult
         Dim DidCancel As Boolean
-        Dim IsLanguageChanged As Boolean
         Dim NeedsDBClean_Movie As Boolean
         Dim NeedsDBClean_TV As Boolean
         Dim NeedsDBUpdate_Movie As Boolean

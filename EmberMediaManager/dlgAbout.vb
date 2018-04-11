@@ -112,29 +112,7 @@ Public NotInheritable Class dlgAbout
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub pbFFMPEG_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbFFMPEG.Click
-        Functions.Launch(My.Resources.urlFfmpeg)
-    End Sub
-
-    ''' <summary>
-    ''' Launch the default browser to the appropriate URL.
-    ''' The URL is defined in the project's resources
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub pbIMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMDB.Click
-        Functions.Launch(My.Resources.urlIMDB)
-    End Sub
-
-    ''' <summary>
-    ''' Launch the default browser to the appropriate URL.
-    ''' The URL is defined in the project's resources
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub pbIMPA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMPA.Click
-        Functions.Launch(My.Resources.urlIMPAwards)
+        Functions.Launch(My.Resources.urlFFmpeg)
     End Sub
 
     ''' <summary>
@@ -155,41 +133,8 @@ Public NotInheritable Class dlgAbout
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub pbMPDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMPDB.Click
-        Functions.Launch(My.Resources.urlMoviePostersDb)
-    End Sub
-
-    ''' <summary>
-    ''' Launch the default browser to the appropriate URL.
-    ''' The URL is defined in the project's resources
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub pbTMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbTMDB.Click
-        Functions.Launch(My.Resources.urlTheMovieDb)
-    End Sub
-
-    ''' <summary>
-    ''' Launch the default browser to the appropriate URL.
-    ''' The URL is defined in the project's resources
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
     Private Sub pbXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbXBMC.Click
         Functions.Launch(My.Resources.urlXBMC)
-    End Sub
-
-    ''' <summary>
-    ''' Launch the default browser to the appropriate URL.
-    ''' The URL is defined in the project's resources
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub pbYouTube_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbYouTube.Click
-        Functions.Launch(My.Resources.urlYouTube)
     End Sub
 
     ''' <summary>

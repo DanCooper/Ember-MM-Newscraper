@@ -26,7 +26,6 @@ or a "32-bit ARGB value"
 -->
 
 <theme>
-  
   <filterpanel>
     <backcolor>Control</backcolor>
     <button>
@@ -53,52 +52,16 @@ or a "32-bit ARGB value"
       <backcolor>DimGray</backcolor>
       <forecolor>HighlightText</forecolor>
     </imagesize>
-    <banner>
-      <left>124</left>
-      <maxheight>160</maxheight>
-      <maxwidth>285</maxwidth>
-      <top>327</top>
-    </banner>
-    <characterart>
-      <left>1011</left>
-      <maxheight>160</maxheight>
-      <maxwidth>285</maxwidth>
-      <top>130</top>
-    </characterart>
-    <clearart>
-      <left>715</left>
-      <maxheight>160</maxheight>
-      <maxwidth>285</maxwidth>
-      <top>130</top>
-    </clearart>
-    <clearlogo>
-      <left>419</left>
-      <maxheight>160</maxheight>
-      <maxwidth>285</maxwidth>
-      <top>327</top>
-    </clearlogo>
-    <discart>
-      <left>1011</left>
-      <maxheight>160</maxheight>
-      <maxwidth>160</maxwidth>
-      <top>130</top>
-    </discart>
     <fanartsmall>
-      <left>124</left>
+      <left>299</left>
       <maxheight>160</maxheight>
       <maxwidth>285</maxwidth>
       <top>130</top>
     </fanartsmall>
-    <landscape>
-      <left>419</left>
-      <maxheight>160</maxheight>
-      <maxwidth>285</maxwidth>
-      <top>130</top>
-    </landscape>
     <poster>
       <left>4</left>
       <maxheight>160</maxheight>
-      <maxwidth>160</maxwidth>
+      <maxwidth>285</maxwidth>
       <top>130</top>
     </poster>
   </imagepanel>
@@ -143,7 +106,7 @@ or a "32-bit ARGB value"
       <anchor>9</anchor>
       <backcolor>Gainsboro</backcolor>
       <height>244</height>
-      <left>pnlInfoPanel.Width - 307</left>
+      <left>pnlInfoPanel.Width - 505</left>
       <top>27</top>
       <width>302</width>
     </control>
@@ -194,6 +157,43 @@ or a "32-bit ARGB value"
     </control>
     <!-- END INTERNAL OF PNLACTORS -->
 
+    <control name="lblMetaDataHeader">
+      <anchor>9</anchor>
+      <backcolor>ControlDarkDark</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
+      <height>17</height>
+      <left>pnlInfoPanel.Width - 200</left>
+      <top>27</top>
+      <width>195</width>
+    </control>
+
+    <control name="btnMetaDataRefresh">
+      <anchor>9</anchor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <height>23</height>
+      <left>lblMetaDataHeader.Left + 125</left>
+      <top>23</top>
+      <width>65</width>
+    </control>
+
+    <control name="txtMetaData">
+      <anchor>9</anchor>
+      <backcolor>Gainsboro</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
+      <height>221</height>
+      <left>lblMetaDataHeader.Left</left>
+      <top>50</top>
+      <width>lblMetaDataHeader.Width</width>
+    </control>
+
     <control name="lblPlotHeader">
       <anchor>13</anchor>
       <backcolor>ControlDarkDark</backcolor>
@@ -204,7 +204,7 @@ or a "32-bit ARGB value"
       <height>17</height>
       <left>3</left>
       <top>81</top>
-      <width>pnlInfoPanel.Width - 315</width>
+      <width>pnlInfoPanel.Width - 511</width>
     </control>
 
     <control name="txtPlot">
@@ -218,6 +218,40 @@ or a "32-bit ARGB value"
       <left>3</left>
       <top>103</top>
       <width>lblPlotHeader.Width</width>
+    </control>
+
+    <control name="lblFilePathHeader">
+      <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
+      <height>17</height>
+      <left>3</left>
+      <top>234</top>
+      <width>lblPlotHeader.Width</width>
+    </control>
+
+    <control name="txtFilePath">
+      <anchor>13</anchor>
+      <backcolor>-1</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
+      <height>20</height>
+      <left>3</left>
+      <top>254</top>
+      <width>lblFilePathHeader.Width - 23</width>
+    </control>
+
+    <control name="btnFilePlay">
+      <anchor>9</anchor>
+      <height>20</height>
+      <left>txtFilePath.Width + 6</left>
+      <top>254</top>
+      <width>20</width>
     </control>
 
     <control name="lblIMDBHeader">
@@ -298,60 +332,8 @@ or a "32-bit ARGB value"
       <width>108</width>
     </control>
 
-    <control name="lblCertificationsHeader">
-      <anchor>13</anchor>
-      <backcolor>ControlDarkDark</backcolor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
-      <forecolor>-1</forecolor>
-      <height>17</height>
-      <left>345</left>
-      <top>188</top>
-      <width>pnlInfoPanel.Width - 656</width>
-    </control>
-
-    <control name="txtCertifications">
-      <anchor>13</anchor>
-      <backcolor>-1</backcolor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
-      <forecolor>Black</forecolor>
-      <height>20</height>
-      <left>345</left>
-      <top>208</top>
-      <width>lblCertificationsHeader.Width</width>
-    </control>
-
-    <control name="lblReleaseDateHeader">
-      <anchor>9</anchor>
-      <backcolor>ControlDarkDark</backcolor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
-      <forecolor>-1</forecolor>
-      <height>17</height>
-      <left>pnlInfoPanel.Width - 479</left>
-      <top>27</top>
-      <width>105</width>
-    </control>
-
-    <control name="lblReleaseDate">
-      <anchor>9</anchor>
-      <backcolor>Gainsboro</backcolor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
-      <forecolor>Black</forecolor>
-      <height>16</height>
-      <left>lblReleaseDateHeader.Left</left>
-      <top>48</top>
-      <width>105</width>
-    </control>
-
     <control name="lblDirectorsHeader">
-      <anchor>13</anchor>
+      <anchor>5</anchor>
       <backcolor>ControlDarkDark</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
@@ -360,11 +342,11 @@ or a "32-bit ARGB value"
       <height>17</height>
       <left>3</left>
       <top>27</top>
-      <width>pnlInfoPanel.Width - 486</width>
+      <width>300</width>
     </control>
 
     <control name="lblDirectors">
-      <anchor>13</anchor>
+      <anchor>5</anchor>
       <backcolor>Gainsboro</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
@@ -374,6 +356,32 @@ or a "32-bit ARGB value"
       <left>3</left>
       <top>48</top>
       <width>lblDirectorsHeader.Width</width>
+    </control>
+
+    <control name="lblCreditsHeader">
+      <anchor>13</anchor>
+      <backcolor>ControlDarkDark</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+      <forecolor>-1</forecolor>
+      <height>17</height>
+      <left>310</left>
+      <top>27</top>
+      <width>pnlInfoPanel.Width - 818</width>
+    </control>
+
+    <control name="lblCredits">
+      <anchor>13</anchor>
+      <backcolor>Gainsboro</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>Black</forecolor>
+      <height>16</height>
+      <left>310</left>
+      <top>48</top>
+      <width>lblCreditsHeader.Width</width>
     </control>
   </infopanel>
 
@@ -438,5 +446,4 @@ or a "32-bit ARGB value"
       <forecolor>Black</forecolor>
     </tagline>
   </toppanel>
-  
 </theme>

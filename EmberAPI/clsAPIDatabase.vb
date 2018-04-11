@@ -2752,19 +2752,6 @@ Public Class Database
             End Using
         End Using
 
-        'Directors
-        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT actors.strActor ",
-                                                   "FROM actors ",
-                                                   "INNER JOIN directorlinktvshow ON (actors.idActor = directorlinktvshow.idDirector) ",
-                                                   "WHERE directorlinktvshow.idShow = ", _TVDB.ID, ";")
-            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    If Not DBNull.Value.Equals(SQLreader("strActor")) Then _TVDB.TVShow.Directors.Add(SQLreader("strActor").ToString)
-                End While
-            End Using
-        End Using
-
         'Genres
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT genre.strGenre ",

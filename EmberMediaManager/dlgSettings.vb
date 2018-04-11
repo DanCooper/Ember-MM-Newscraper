@@ -1756,7 +1756,6 @@ Public Class dlgSettings
     Private Sub cbGeneralLanguage_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbGeneralLanguage.SelectedIndexChanged
         Cursor.Current = Cursors.WaitCursor
         Master.eLang.LoadAllLanguage(cbGeneralLanguage.SelectedItem.ToString, True)
-        sResult.IsLanguageChanged = True
         SetUp()
         Cursor.Current = Cursors.Default
     End Sub
@@ -2830,10 +2829,7 @@ Public Class dlgSettings
             RemoveHandler cbGeneralLanguage.SelectedIndexChanged, AddressOf cbGeneralLanguage_SelectedIndexChanged
             cbGeneralLanguage.SelectedItem = .GeneralLanguage
             AddHandler cbGeneralLanguage.SelectedIndexChanged, AddressOf cbGeneralLanguage_SelectedIndexChanged
-            cbGeneralMovieTheme.SelectedItem = .GeneralMovieTheme
-            cbGeneralMovieSetTheme.SelectedItem = .GeneralMovieSetTheme
-            cbGeneralTVEpisodeTheme.SelectedItem = .GeneralTVEpisodeTheme
-            cbGeneralTVShowTheme.SelectedItem = .GeneralTVShowTheme
+            cbGeneralTheme.SelectedItem = .GeneralTheme
             cbGeneralVirtualDriveLetter.SelectedItem = .GeneralVirtualDriveLetter
             cbMovieBannerPrefSize.SelectedValue = .MovieBannerPrefSize
             cbMovieExtrafanartsPrefSize.SelectedValue = .MovieExtrafanartsPrefSize
@@ -4058,39 +4054,15 @@ Public Class dlgSettings
     End Sub
 
     Private Sub LoadThemes()
-        cbGeneralMovieTheme.Items.Clear()
-        cbGeneralMovieSetTheme.Items.Clear()
-        cbGeneralTVShowTheme.Items.Clear()
-        cbGeneralTVEpisodeTheme.Items.Clear()
+        cbGeneralTheme.Items.Clear()
         If Directory.Exists(Path.Combine(Functions.AppPath, "Themes")) Then
             Dim mT As New List(Of String)
-            Dim msT As New List(Of String)
-            Dim sT As New List(Of String)
-            Dim eT As New List(Of String)
             Try
-                mT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "movie-*.xml"))
+                mT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "*.xml"))
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
-            cbGeneralMovieTheme.Items.AddRange(mT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movie-", String.Empty)).ToArray)
-            Try
-                msT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "movieset-*.xml"))
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-            cbGeneralMovieSetTheme.Items.AddRange(msT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movieset-", String.Empty)).ToArray)
-            Try
-                sT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "tvshow-*.xml"))
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-            cbGeneralTVShowTheme.Items.AddRange(sT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvshow-", String.Empty)).ToArray)
-            Try
-                eT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "tvep-*.xml"))
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-            cbGeneralTVEpisodeTheme.Items.AddRange(eT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvep-", String.Empty)).ToArray)
+            cbGeneralTheme.Items.AddRange(mT.Cast(Of String)().Select(Function(f) Path.GetFileNameWithoutExtension(f)).ToArray)
         End If
     End Sub
 
@@ -4927,16 +4899,13 @@ Public Class dlgSettings
                 .GeneralImageFilterPosterMatchTolerance = 1
             End If
             .GeneralLanguage = cbGeneralLanguage.Text
-            .GeneralMovieTheme = cbGeneralMovieTheme.Text
-            .GeneralMovieSetTheme = cbGeneralMovieSetTheme.Text
             .GeneralOverwriteNfo = chkGeneralOverwriteNfo.Checked
             .GeneralShowGenresText = chkGeneralDisplayGenresText.Checked
             .GeneralShowLangFlags = chkGeneralDisplayLangFlags.Checked
             .GeneralShowImgDims = chkGeneralDisplayImgDims.Checked
             .GeneralShowImgNames = chkGeneralDisplayImgNames.Checked
             .GeneralSourceFromFolder = chkGeneralSourceFromFolder.Checked
-            .GeneralTVEpisodeTheme = cbGeneralTVEpisodeTheme.Text
-            .GeneralTVShowTheme = cbGeneralTVShowTheme.Text
+            .GeneralTheme = cbGeneralTheme.Text
             .MovieActorThumbsKeepExisting = chkMovieActorThumbsKeepExisting.Checked
             '.MovieActorThumbsQual = Me.tbMovieActorThumbsQual.value
             .MovieBackdropsPath = txtMovieSourcesBackdropsFolderPath.Text
@@ -6857,7 +6826,6 @@ Public Class dlgSettings
         gbFileSystemValidThemeExts.Text = Master.eLang.GetString(1081, "Valid Theme Extensions")
         gbGeneralDateAdded.Text = Master.eLang.GetString(792, "Adding Date")
         gbGeneralInterface.Text = Master.eLang.GetString(795, "Interface")
-        gbGeneralThemes.Text = Master.eLang.GetString(629, "GUI Themes")
         gbGeneralVirtualDrive.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
         gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         gbMovieSourcesBackdropsFolderOpts.Text = Master.eLang.GetString(520, "Backdrops Folder")
@@ -6878,12 +6846,9 @@ Public Class dlgSettings
         gbTVSourcesRegexTVShowMatching.Text = Master.eLang.GetString(691, "Show Match Regex")
         lblGeneralImageFilterPosterMatchRate.Text = Master.eLang.GetString(148, "Poster") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
         lblGeneralImageFilterFanartMatchRate.Text = Master.eLang.GetString(149, "Fanart") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
-        lblGeneralMovieSetTheme.Text = String.Concat(Master.eLang.GetString(1155, "MovieSet Theme"), ":")
-        lblGeneralMovieTheme.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
         lblGeneralOverwriteNfo.Text = Master.eLang.GetString(434, "(If unchecked, non-conforming nfos will be renamed to <filename>.info)")
-        lblGeneralTVEpisodeTheme.Text = String.Concat(Master.eLang.GetString(667, "Episode Theme"), ":")
-        lblGeneralTVShowTheme.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
         lblGeneralIntLang.Text = Master.eLang.GetString(430, "Interface Language:")
+        lblGeneralTheme.Text = String.Concat(Master.eLang.GetString(620, "Theme"), ":")
         lblGeneralVirtualDriveLetter.Text = Master.eLang.GetString(989, "Driveletter")
         lblGeneralVirtualDrivePath.Text = Master.eLang.GetString(990, "Path to VCDMount.exe (Virtual CloneDrive)")
         lblGeneralVirtualDriveTimeout.Text = Master.eLang.GetString(440, "Timeout")
@@ -7961,10 +7926,7 @@ Public Class dlgSettings
 
     Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
         cbGeneralDateTime.SelectedIndexChanged,
-        cbGeneralMovieSetTheme.SelectedIndexChanged,
-        cbGeneralMovieTheme.SelectedIndexChanged,
-        cbGeneralTVEpisodeTheme.SelectedIndexChanged,
-        cbGeneralTVShowTheme.SelectedIndexChanged,
+        cbGeneralTheme.SelectedIndexChanged,
         cbGeneralVirtualDriveLetter.SelectedIndexChanged,
         cbMovieBannerPrefSize.SelectedIndexChanged,
         cbMovieExtrafanartsPrefSize.SelectedIndexChanged,
