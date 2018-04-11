@@ -851,57 +851,14 @@ End Class
 
 Public Class TrailerLinksContainer
 
-#Region "Fields"
-
-    Private _audiourl As String
-    Private _isDash As Boolean
-    Private _videourl As String
-
-#End Region 'Fields
-
 #Region "Properties"
 
-    Public Property AudioURL() As String
-        Get
-            Return _audiourl
-        End Get
-        Set(ByVal value As String)
-            _audiourl = value
-        End Set
-    End Property
+    Public Property AudioURL() As String = String.Empty
 
-    Public Property isDash() As Boolean
-        Get
-            Return _isDash
-        End Get
-        Set(ByVal value As Boolean)
-            _isDash = value
-        End Set
-    End Property
+    Public Property isDash() As Boolean = False
 
-    Public Property VideoURL() As String
-        Get
-            Return _videourl
-        End Get
-        Set(ByVal value As String)
-            _videourl = value
-        End Set
-    End Property
+    Public Property VideoURL() As String = String.Empty
 
 #End Region 'Properties
-
-#Region "Methods"
-
-    Public Sub New()
-        Clear()
-    End Sub
-
-    Public Sub Clear()
-        _audiourl = String.Empty
-        _isDash = False
-        _videourl = String.Empty
-    End Sub
-
-#End Region 'Methods
 
 End Class

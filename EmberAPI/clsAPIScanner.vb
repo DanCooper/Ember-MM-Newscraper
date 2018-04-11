@@ -1869,145 +1869,33 @@ Public Class Scanner
 
     Public Class EpisodeItem
 
-#Region "Fields"
-
-        Private _aired As String
-        Private _bydate As Boolean
-        Private _episode As Integer
-        Private _idepisode As Long
-        Private _season As Integer
-        Private _subepisode As Integer
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property Aired() As String
-            Get
-                Return _aired
-            End Get
-            Set(ByVal value As String)
-                _aired = value
-            End Set
-        End Property
+        Public Property Aired() As String = String.Empty
 
-        Public Property byDate() As Boolean
-            Get
-                Return _bydate
-            End Get
-            Set(ByVal value As Boolean)
-                _bydate = value
-            End Set
-        End Property
+        Public Property byDate() As Boolean = False
 
-        Public Property Episode() As Integer
-            Get
-                Return _episode
-            End Get
-            Set(ByVal value As Integer)
-                _episode = value
-            End Set
-        End Property
+        Public Property Episode() As Integer = -1
 
-        Public Property idEpisode() As Long
-            Get
-                Return _idepisode
-            End Get
-            Set(ByVal value As Long)
-                _idepisode = value
-            End Set
-        End Property
+        Public Property idEpisode() As Long = -1
 
-        Public Property Season() As Integer
-            Get
-                Return _season
-            End Get
-            Set(ByVal value As Integer)
-                _season = value
-            End Set
-        End Property
+        Public Property Season() As Integer = -2
 
-        Public Property SubEpisode() As Integer
-            Get
-                Return _subepisode
-            End Get
-            Set(ByVal value As Integer)
-                _subepisode = value
-            End Set
-        End Property
+        Public Property SubEpisode() As Integer = -1
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _aired = String.Empty
-            _bydate = False
-            _episode = -1
-            _idepisode = -1
-            _season = -2
-            _subepisode = -1
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
     Public Class SeasonAndEpisodeItems
 
-#Region "Fields"
-
-        Private _episodes As List(Of Database.DBElement)
-        Private _seasons As List(Of Integer)
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property Episodes() As List(Of Database.DBElement)
-            Get
-                Return _episodes
-            End Get
-            Set(ByVal value As List(Of Database.DBElement))
-                _episodes = value
-            End Set
-        End Property
+        Public Property Episodes() As List(Of Database.DBElement) = New List(Of Database.DBElement)
 
-        Public Property Seasons() As List(Of Integer)
-            Get
-                Return _seasons
-            End Get
-            Set(ByVal value As List(Of Integer))
-                _seasons = value
-            End Set
-        End Property
+        Public Property Seasons() As List(Of Integer) = New List(Of Integer)
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _episodes = New List(Of Database.DBElement)
-            _seasons = New List(Of Integer)
-        End Sub
-
-#End Region 'Methods
 
     End Class
 

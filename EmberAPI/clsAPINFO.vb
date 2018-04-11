@@ -2014,55 +2014,11 @@ Public Class NFO
                         xmlMovSet = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.MovieSet)
                         xmlMovSet.Plot = xmlMovSet.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
                     End Using
-                    'Else
-                    '    If Not String.IsNullOrEmpty(sPath) Then
-                    '        Dim sReturn As New NonConf
-                    '        sReturn = GetIMDBFromNonConf(sPath, isSingle)
-                    '        xmlMov.IMDBID = sReturn.IMDBID
-                    '        Try
-                    '            If Not String.IsNullOrEmpty(sReturn.Text) Then
-                    '                Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                    '                    xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                    '                    xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                    '                    xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                    '                    xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                    '                    xmlMovSet.Plot = xmlMovSet.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                    '                    xmlMov.IMDBID = sReturn.IMDBID
-                    '                End Using
-                    '            End If
-                    '        Catch
-                    '        End Try
-                    '    End If
                 End If
 
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
-
                 xmlMovSet.Clear()
-                'If Not String.IsNullOrEmpty(sPath) Then
-
-                '    'go ahead and rename it now, will still be picked up in getimdbfromnonconf
-                '    If Not Master.eSettings.GeneralOverwriteNfo Then
-                '        RenameNonConfNfo(sPath, True)
-                '    End If
-
-                '    Dim sReturn As New NonConf
-                '    sReturn = GetIMDBFromNonConf(sPath, isSingle)
-                '    xmlMov.IMDBID = sReturn.IMDBID
-                '    Try
-                '        If Not String.IsNullOrEmpty(sReturn.Text) Then
-                '            Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                '                xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                '                xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                '                xmlMov.Genre = Strings.Join(xmlMov.LGenre.ToArray, " / ")
-                '                xmlMov.Outline = xmlMov.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                '                xmlMovSet.Plot = xmlMovSet.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-                '                xmlMov.IMDBID = sReturn.IMDBID
-                '            End Using
-                '        End If
-                '    Catch
-                '    End Try
-                'End If
             End Try
 
             If xmlSer IsNot Nothing Then
@@ -2592,167 +2548,37 @@ Public Class NFO
 
     Public Class NonConf
 
-#Region "Fields"
-
-        Private _imdbid As String
-        Private _text As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property IMDBID() As String
-            Get
-                Return _imdbid
-            End Get
-            Set(ByVal value As String)
-                _imdbid = value
-            End Set
-        End Property
+        Public Property IMDBID() As String = String.Empty
 
-        Public Property Text() As String
-            Get
-                Return _text
-            End Get
-            Set(ByVal value As String)
-                _text = value
-            End Set
-        End Property
+        Public Property Text() As String = String.Empty
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _imdbid = String.Empty
-            _text = String.Empty
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
     Public Class KnownEpisode
 
-#Region "Fields"
-
-        Private _aireddate As String
-        Private _episode As Integer
-        Private _episodeabsolute As Integer
-        Private _episodecombined As Double
-        Private _episodedvd As Double
-        Private _season As Integer
-        Private _seasoncombined As Integer
-        Private _seasondvd As Integer
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property AiredDate() As String
-            Get
-                Return _aireddate
-            End Get
-            Set(ByVal value As String)
-                _aireddate = value
-            End Set
-        End Property
+        Public Property AiredDate() As String = String.Empty
 
-        Public Property Episode() As Integer
-            Get
-                Return _episode
-            End Get
-            Set(ByVal value As Integer)
-                _episode = value
-            End Set
-        End Property
+        Public Property Episode() As Integer = -1
 
-        Public Property EpisodeAbsolute() As Integer
-            Get
-                Return _episodeabsolute
-            End Get
-            Set(ByVal value As Integer)
-                _episodeabsolute = value
-            End Set
-        End Property
+        Public Property EpisodeAbsolute() As Integer = -1
 
-        Public Property EpisodeCombined() As Double
-            Get
-                Return _episodecombined
-            End Get
-            Set(ByVal value As Double)
-                _episodecombined = value
-            End Set
-        End Property
+        Public Property EpisodeCombined() As Double = -1
 
-        Public Property EpisodeDVD() As Double
-            Get
-                Return _episodedvd
-            End Get
-            Set(ByVal value As Double)
-                _episodedvd = value
-            End Set
-        End Property
+        Public Property EpisodeDVD() As Double = -1
 
-        Public Property Season() As Integer
-            Get
-                Return _season
-            End Get
-            Set(ByVal value As Integer)
-                _season = value
-            End Set
-        End Property
+        Public Property Season() As Integer = -1
 
-        Public Property SeasonCombined() As Integer
-            Get
-                Return _seasoncombined
-            End Get
-            Set(ByVal value As Integer)
-                _seasoncombined = value
-            End Set
-        End Property
+        Public Property SeasonCombined() As Integer = -1
 
-        Public Property SeasonDVD() As Integer
-            Get
-                Return _seasondvd
-            End Get
-            Set(ByVal value As Integer)
-                _seasondvd = value
-            End Set
-        End Property
+        Public Property SeasonDVD() As Integer = -1
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _aireddate = String.Empty
-            _episode = -1
-            _episodeabsolute = -1
-            _episodecombined = -1
-            _episodedvd = -1
-            _season = -1
-            _seasoncombined = -1
-            _seasondvd = -1
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
