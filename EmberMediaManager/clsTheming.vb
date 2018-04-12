@@ -616,6 +616,7 @@ Public Class Theming
             "lblCreditsHeader",
             "lblDirectors",
             "lblDirectorsHeader",
+            "lblGuestStarsHeader",
             "lblFilePathHeader",
             "lblIMDBHeader",
             "lblInfoPanelHeader",
@@ -625,16 +626,22 @@ Public Class Theming
             "lblPlotHeader",
             "lblReleaseDate",
             "lblReleaseDateHeader",
-            "lblTMDBHeader",
-            "lblTVDBHeader",
+            "lblStatus",
+            "lblStatusHeader",
             "lblTags",
             "lblTagsHeader",
+            "lblTMDBHeader",
             "lblTrailerPathHeader",
+            "lblTVDBHeader",
             "lstActors",
+            "lstGuestStars",
             "lvMoviesInSet",
-            "pbActLoad",
             "pbActors",
+            "pbActorsLoad",
+            "pbGuestStars",
+            "pbGuestStarsLoad",
             "pnlActors",
+            "pnlGuestStars",
             "pnlInfoPanel",
             "pnlMoviesInSet",
             "txtCertifications",
@@ -738,8 +745,10 @@ Public Class Theming
                     Select Case aCon(0).Name
                         Case "pnlInfoPanel"
                             xControl = frmMain.pnlInfoPanel
-                        Case "lblActorsHeader", "lstActors", "pbActors", "pbActLoad"
+                        Case "lblActorsHeader", "lstActors", "pbActors", "pbActorsLoad"
                             xControl = frmMain.pnlActors.Controls(aCon(0).Name)
+                        Case "lblGuestStarsHeader", "lstGuestStars", "pbGuestStars", "pbGuestStarsLoad"
+                            xControl = frmMain.pnlGuestStars.Controls(aCon(0).Name)
                         Case "lblMoviesInSetHeader", "lvMoviesInSet"
                             xControl = frmMain.pnlMoviesInSet.Controls(aCon(0).Name)
                         Case Else
@@ -866,24 +875,30 @@ Public Class Theming
             Select Case xCon.Name
                 Case "pnlInfoPanel"
                     xControl = frmMain.pnlInfoPanel
-                Case "lblActorsHeader", "lstActors", "pbActors", "pbActLoad"
+                Case "lblActorsHeader", "lstActors", "pbActors", "pbActorsLoad"
                     xControl = frmMain.pnlActors.Controls(xCon.Name)
+                Case "lblGuestStarsHeader", "lstGuestStars", "pbGuestStars", "pbGuestStarsLoad"
+                    xControl = frmMain.pnlGuestStars.Controls(xCon.Name)
                 Case "lblMoviesInSetHeader", "lvMoviesInSet"
                     xControl = frmMain.pnlMoviesInSet.Controls(xCon.Name)
                 Case Else
                     xControl = frmMain.pnlInfoPanel.Controls(xCon.Name)
             End Select
 
+            If xControl IsNot Nothing Then
+                If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Width) Then xControl.Width = EvaluateFormula(xCon.Width)
+                If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Height) Then xControl.Height = EvaluateFormula(xCon.Height)
+                If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Left) Then xControl.Left = EvaluateFormula(xCon.Left)
+                If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Top) Then xControl.Top = EvaluateFormula(xCon.Top)
+                If Not xCon.Name = "btnUp" AndAlso Not xCon.Name = "btnMid" AndAlso Not xCon.Name = "btnDown" AndAlso Not xCon.Name = "btnMetaDataRefresh" Then xControl.BackColor = xCon.BackColor
+                xControl.Visible = True
+                xControl.ForeColor = xCon.ForeColor
+                xControl.Font = xCon.Font
+                If Not xCon.Name = "pnlInfoPanel" Then xControl.Anchor = xCon.Anchor
+            Else
+                logger.Error(String.Concat("Unknown control in Theme: ", xCon.Name))
+            End If
 
-            If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Width) Then xControl.Width = EvaluateFormula(xCon.Width)
-            If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Height) Then xControl.Height = EvaluateFormula(xCon.Height)
-            If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Left) Then xControl.Left = EvaluateFormula(xCon.Left)
-            If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Top) Then xControl.Top = EvaluateFormula(xCon.Top)
-            If Not xCon.Name = "btnUp" AndAlso Not xCon.Name = "btnMid" AndAlso Not xCon.Name = "btnDown" AndAlso Not xCon.Name = "btnMetaDataRefresh" Then xControl.BackColor = xCon.BackColor
-            xControl.Visible = True
-            xControl.ForeColor = xCon.ForeColor
-            xControl.Font = xCon.Font
-            If Not xCon.Name = "pnlInfoPanel" Then xControl.Anchor = xCon.Anchor
         Next
     End Sub
 

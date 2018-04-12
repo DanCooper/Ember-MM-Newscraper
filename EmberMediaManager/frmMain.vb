@@ -33,6 +33,7 @@ Public Class frmMain
     Friend WithEvents bwCheckVersion As New ComponentModel.BackgroundWorker
     Friend WithEvents bwCleanDB As New ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadPic As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwDownloadGuestStarPic As New ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadImages_Movie As New ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadImages_MovieSet As New ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadImages_MovieSetMoviePosters As New ComponentModel.BackgroundWorker
@@ -55,6 +56,7 @@ Public Class frmMain
     Private TasksDone As Boolean = True
 
     Private alActors As New List(Of String)
+    Private alGuestStars As New List(Of String)
     Private FilterPanelIsRaised_Movie As Boolean = False
     Private FilterPanelIsRaised_MovieSet As Boolean = False
     Private FilterPanelIsRaised_TVShow As Boolean = False
@@ -88,6 +90,7 @@ Public Class frmMain
     Private MainDiscArt As New Images
     Private MainFanart As New Images
     Private MainFanartSmall As New Images
+    Private MainGuestStars As New Images
     Private MainLandscape As New Images
     Private MainPoster As New Images
     Private pbGenre() As PictureBox = Nothing
@@ -202,6 +205,7 @@ Public Class frmMain
                 bwCheckVersion.IsBusy OrElse
                 bwCleanDB.IsBusy OrElse
                 bwDownloadPic.IsBusy OrElse
+                bwDownloadGuestStarPic.IsBusy OrElse
                 bwLoadImages_Movie.IsBusy OrElse
                 bwLoadImages_MovieSet.IsBusy OrElse
                 bwLoadImages_MovieSetMoviePosters.IsBusy OrElse
@@ -264,6 +268,7 @@ Public Class frmMain
 
     Public Sub ClearInfo()
         If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
+        If bwDownloadGuestStarPic.IsBusy Then bwDownloadGuestStarPic.CancelAsync()
         If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
         If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()
         If bwLoadImages_MovieSetMoviePosters.IsBusy Then bwLoadImages_MovieSetMoviePosters.CancelAsync()
@@ -271,7 +276,7 @@ Public Class frmMain
         If bwLoadImages_TVSeason.IsBusy Then bwLoadImages_TVSeason.CancelAsync()
         If bwLoadImages_TVEpisode.IsBusy Then bwLoadImages_TVEpisode.CancelAsync()
 
-        While bwDownloadPic.IsBusy OrElse bwLoadImages_Movie.IsBusy OrElse bwLoadImages_MovieSet.IsBusy OrElse
+        While bwDownloadPic.IsBusy OrElse bwDownloadGuestStarPic.IsBusy OrElse bwLoadImages_Movie.IsBusy OrElse bwLoadImages_MovieSet.IsBusy OrElse
                     bwLoadImages_TVShow.IsBusy OrElse bwLoadImages_TVSeason.IsBusy OrElse bwLoadImages_TVEpisode.IsBusy OrElse
                     bwLoadImages_MovieSetMoviePosters.IsBusy
             Application.DoEvents()
@@ -370,6 +375,7 @@ Public Class frmMain
         lblRating.Text = String.Empty
         lblReleaseDate.Text = String.Empty
         lblRuntime.Text = String.Empty
+        lblStatus.Text = String.Empty
         lblStudio.Text = String.Empty
         lblTagline.Text = String.Empty
         lblTags.Text = String.Empty
@@ -415,6 +421,18 @@ Public Class frmMain
             pbActors.Image = Nothing
         End If
         MainActors.Clear()
+
+        lstGuestStars.Items.Clear()
+        If alGuestStars IsNot Nothing Then
+            alGuestStars.Clear()
+            alGuestStars = Nothing
+        End If
+        If pbGuestStars.Image IsNot Nothing Then
+            pbGuestStars.Image.Dispose()
+            pbGuestStars.Image = Nothing
+        End If
+        MainGuestStars.Clear()
+
         If pbMPAA.Image IsNot Nothing Then
             pbMPAA.Image.Dispose()
             pbMPAA.Image = Nothing
@@ -666,8 +684,10 @@ Public Class frmMain
                 btnDown.Enabled = False
         End Select
 
-        pbActLoad.Visible = False
+        pbActorsLoad.Visible = False
         pbActors.Image = My.Resources.actor_silhouette
+        pbGuestStarsLoad.Visible = False
+        pbGuestStars.Image = My.Resources.actor_silhouette
 
         pnlInfoPanel.ResumeLayout()
     End Sub
@@ -1353,7 +1373,7 @@ Public Class frmMain
         ' Thread finished: display pic if it was able to get one
         '\\
 
-        pbActLoad.Visible = False
+        pbActorsLoad.Visible = False
 
         If e.Cancelled Then
             pbActors.Image = My.Resources.actor_silhouette
@@ -1364,6 +1384,49 @@ Public Class frmMain
                 pbActors.Image = Res.Result
             Else
                 pbActors.Image = My.Resources.actor_silhouette
+            End If
+        End If
+    End Sub
+
+    Private Sub bwDownloadGuestStarPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadGuestStarPic.DoWork
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Try
+
+            sHTTP.StartDownloadImage(Args.pURL)
+
+            While sHTTP.IsDownloading
+                Application.DoEvents()
+                If bwDownloadGuestStarPic.CancellationPending Then
+                    e.Cancel = True
+                    sHTTP.Cancel()
+                    Return
+                End If
+                Threading.Thread.Sleep(50)
+            End While
+
+            e.Result = New Results With {.Result = sHTTP.Image}
+        Catch ex As Exception
+            e.Result = New Results With {.Result = Nothing}
+            e.Cancel = True
+        End Try
+    End Sub
+
+    Private Sub bwDownloadGuestStarPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadGuestStarPic.RunWorkerCompleted
+        '//
+        ' Thread finished: display pic if it was able to get one
+        '\\
+
+        pbGuestStarsLoad.Visible = False
+
+        If e.Cancelled Then
+            pbGuestStars.Image = My.Resources.actor_silhouette
+        Else
+            Dim Res As Results = DirectCast(e.Result, Results)
+
+            If Res.Result IsNot Nothing Then
+                pbGuestStars.Image = Res.Result
+            Else
+                pbGuestStars.Image = My.Resources.actor_silhouette
             End If
         End If
     End Sub
@@ -5433,7 +5496,7 @@ Public Class frmMain
                 Next
             ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
                 If fScanner.IsBusy OrElse bwLoadImages_Movie.IsBusy OrElse
-                bwDownloadPic.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy _
+                bwDownloadPic.IsBusy OrElse bwDownloadGuestStarPic.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy _
                 OrElse bwCleanDB.IsBusy OrElse bwRewriteContent.IsBusy Then Return
 
                 SetStatus(currMovie.Filename)
@@ -9068,7 +9131,7 @@ Public Class frmMain
         End If
 
         If currMovie.Movie.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currMovie.Movie.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Image = APIXML.GetStudioImage(currMovie.Movie.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
             pbStudio.Tag = currMovie.Movie.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
@@ -9180,6 +9243,7 @@ Public Class frmMain
         lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
         txtFilePath.Text = currTV.Filename
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.TVEpisode.AiredSpecified, Date.Parse(currTV.TVEpisode.Aired).ToShortDateString, "?"))
+        lblReleaseDate.Text = currTV.TVEpisode.Aired
 
         Try
             If currTV.TVEpisode.RatingSpecified Then
@@ -9201,8 +9265,8 @@ Public Class frmMain
                             If(Not currTV.TVEpisode.SeasonSpecified, "?", currTV.TVEpisode.Season.ToString),
                             If(Not currTV.TVEpisode.EpisodeSpecified, "?", currTV.TVEpisode.Episode.ToString))
 
-        alActors = New List(Of String)
 
+        alActors = New List(Of String)
         If currTV.TVEpisode.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
             For Each imdbAct As MediaContainers.Person In currTV.TVEpisode.Actors
@@ -9231,6 +9295,35 @@ Public Class frmMain
             lstActors.SelectedIndex = 0
         End If
 
+        alGuestStars = New List(Of String)
+        If currTV.TVEpisode.GuestStarsSpecified Then
+            pbGuestStars.Image = My.Resources.actor_silhouette
+            For Each imdbAct As MediaContainers.Person In currTV.TVEpisode.GuestStars
+                If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
+                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alGuestStars.Add(imdbAct.LocalFilePath)
+                    Else
+                        alGuestStars.Add("none")
+                    End If
+                ElseIf Not String.IsNullOrEmpty(imdbAct.URLOriginal) Then
+                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alGuestStars.Add(imdbAct.URLOriginal)
+                    Else
+                        alGuestStars.Add("none")
+                    End If
+                Else
+                    alGuestStars.Add("none")
+                End If
+
+                If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
+                    lstGuestStars.Items.Add(imdbAct.Name.Trim)
+                Else
+                    lstGuestStars.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
+                End If
+            Next
+            lstGuestStars.SelectedIndex = 0
+        End If
+
         If currTV.TVShow.MPAASpecified Then
             Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currTV.TVShow.MPAA)
             If tmpRatingImg IsNot Nothing Then
@@ -9256,7 +9349,7 @@ Public Class frmMain
         txtTVDBID.Text = currTV.TVEpisode.TVDB
 
         If currTV.TVShow.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
             pbStudio.Tag = currTV.TVShow.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
@@ -9288,20 +9381,10 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_TVSeason()
         SuspendLayout()
-        If currTV.TVShow.TitleSpecified AndAlso currTV.TVShow.StatusSpecified Then
-            lblTitle.Text = String.Format("{0} ({1}) ({2})", currTV.TVShow.Title, currTV.TVShow.Status, StringUtils.FormatSeasonText(currTV.TVSeason.Season))
-        Else
-            lblTitle.Text = String.Format("{0} ({1})", currTV.TVShow.Title, StringUtils.FormatSeasonText(currTV.TVSeason.Season))
-        End If
 
-        If currTV.TVShow.OriginalTitleSpecified AndAlso Not currTV.TVShow.OriginalTitle = currTV.TVShow.Title Then
-            lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), currTV.TVShow.OriginalTitle)
-        Else
-            lblOriginalTitle.Text = String.Empty
-        End If
-
+        lblTitle.Text = currTV.TVSeason.Title
         txtPlot.Text = currTV.TVSeason.Plot
-        lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
+        lblRuntime.Text = currTV.TVShow.Runtime
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currTV)
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
         txtTMDBID.Text = currTV.TVSeason.TMDB
@@ -9374,7 +9457,7 @@ Public Class frmMain
         End If
 
         If currTV.TVShow.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
             pbStudio.Tag = currTV.TVShow.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
@@ -9396,20 +9479,17 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_TVShow()
         SuspendLayout()
-        If currTV.TVShow.TitleSpecified AndAlso currTV.TVShow.StatusSpecified Then
-            lblTitle.Text = String.Format("{0} ({1})", currTV.TVShow.Title, currTV.TVShow.Status)
-        Else
-            lblTitle.Text = currTV.TVShow.Title
-        End If
+
+        lblTitle.Text = currTV.TVShow.Title
 
         If currTV.TVShow.OriginalTitleSpecified AndAlso Not currTV.TVShow.OriginalTitle = currTV.TVShow.Title Then
-            lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), currTV.TVShow.OriginalTitle)
+            lblOriginalTitle.Text = String.Format("{0}: {1}", Master.eLang.GetString(302, "Original Title"), currTV.TVShow.OriginalTitle)
         Else
             lblOriginalTitle.Text = String.Empty
         End If
 
         txtPlot.Text = currTV.TVShow.Plot
-        lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
+        lblRuntime.Text = currTV.TVShow.Runtime
         lblDirectors.Text = String.Join(" / ", currTV.TVShow.Creators.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(744, "Creators")
         lblReleaseDate.Text = currTV.TVShow.Premiered
@@ -9422,6 +9502,7 @@ Public Class frmMain
         txtTVDBID.Text = currTV.TVShow.TVDB
         txtCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
         lblTags.Text = String.Join(" / ", currTV.TVShow.Tags.ToArray)
+        lblStatus.Text = currTV.TVShow.Status
 
         Try
             If currTV.TVShow.RatingSpecified Then
@@ -9487,7 +9568,7 @@ Public Class frmMain
         End If
 
         If currTV.TVShow.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
             pbStudio.Tag = currTV.TVShow.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
@@ -9545,6 +9626,7 @@ Public Class frmMain
             If bwLoadImages_TVSeason.IsBusy Then bwLoadImages_TVSeason.CancelAsync()
             If bwLoadImages_TVEpisode.IsBusy Then bwLoadImages_TVEpisode.CancelAsync()
             If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
+            If bwDownloadGuestStarPic.IsBusy Then bwDownloadGuestStarPic.CancelAsync()
             If bwReload_Movies.IsBusy Then bwReload_Movies.CancelAsync()
             If bwCleanDB.IsBusy Then bwCleanDB.CancelAsync()
             If bwMovieScraper.IsBusy Then bwMovieScraper.CancelAsync()
@@ -9566,7 +9648,7 @@ Public Class frmMain
             End If
 
             While fScanner.IsBusy OrElse bwLoadImages_Movie.IsBusy _
-            OrElse bwLoadImages_MovieSet.IsBusy OrElse bwDownloadPic.IsBusy OrElse bwMovieScraper.IsBusy _
+            OrElse bwLoadImages_MovieSet.IsBusy OrElse bwDownloadPic.IsBusy OrElse bwDownloadGuestStarPic.IsBusy OrElse bwMovieScraper.IsBusy _
             OrElse bwReload_Movies.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse bwCleanDB.IsBusy _
             OrElse bwLoadImages_TVShow.IsBusy OrElse bwLoadImages_TVEpisode.IsBusy OrElse bwLoadImages_TVSeason.IsBusy _
             OrElse bwLoadImages_MovieSetMoviePosters.IsBusy
@@ -10659,7 +10741,7 @@ Public Class frmMain
                     pbActors.Image = My.Resources.actor_silhouette
                 End If
             Else
-                pbActLoad.Visible = True
+                pbActorsLoad.Visible = True
 
                 If bwDownloadPic.IsBusy Then
                     bwDownloadPic.CancelAsync()
@@ -10676,6 +10758,43 @@ Public Class frmMain
 
         Else
             pbActors.Image = My.Resources.actor_silhouette
+        End If
+    End Sub
+
+    Private Sub lstGuestStars_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstGuestStars.SelectedValueChanged
+        If lstGuestStars.Items.Count > 0 AndAlso lstGuestStars.SelectedItems.Count > 0 AndAlso alGuestStars.Item(lstGuestStars.SelectedIndex) IsNot Nothing AndAlso Not alGuestStars.Item(lstGuestStars.SelectedIndex).ToString = "none" Then
+
+            If pbGuestStars.Image IsNot Nothing Then
+                pbGuestStars.Image.Dispose()
+                pbGuestStars.Image = Nothing
+            End If
+
+            If Not alGuestStars.Item(lstGuestStars.SelectedIndex).ToString.Trim.StartsWith("http") Then
+                MainGuestStars.LoadFromFile(alGuestStars.Item(lstGuestStars.SelectedIndex).ToString, True)
+
+                If MainGuestStars.Image IsNot Nothing Then
+                    pbGuestStars.Image = MainGuestStars.Image
+                Else
+                    pbGuestStars.Image = My.Resources.actor_silhouette
+                End If
+            Else
+                pbGuestStarsLoad.Visible = True
+
+                If bwDownloadGuestStarPic.IsBusy Then
+                    bwDownloadGuestStarPic.CancelAsync()
+                    While bwDownloadGuestStarPic.IsBusy
+                        Application.DoEvents()
+                        Threading.Thread.Sleep(50)
+                    End While
+                End If
+
+                bwDownloadGuestStarPic = New ComponentModel.BackgroundWorker
+                bwDownloadGuestStarPic.WorkerSupportsCancellation = True
+                bwDownloadGuestStarPic.RunWorkerAsync(New Arguments With {.pURL = alGuestStars.Item(lstGuestStars.SelectedIndex).ToString})
+            End If
+
+        Else
+            pbGuestStars.Image = My.Resources.actor_silhouette
         End If
     End Sub
 
@@ -16002,6 +16121,10 @@ Public Class frmMain
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
+            While bwDownloadGuestStarPic.IsBusy
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
 
             If dresult.NeedsDBClean_Movie OrElse
                 dresult.NeedsDBClean_TV OrElse
@@ -17036,6 +17159,7 @@ Public Class frmMain
                 If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()
                 If bwLoadImages_MovieSetMoviePosters.IsBusy Then bwLoadImages_MovieSetMoviePosters.CancelAsync()
                 If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
+                If bwDownloadGuestStarPic.IsBusy Then bwDownloadGuestStarPic.CancelAsync()
                 If dgvMovies.RowCount > 0 Then
                     prevRow_Movie = -1
 
@@ -17077,6 +17201,7 @@ Public Class frmMain
                 ApplyTheme(currMainTabTag.ContentType)
                 If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
                 If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
+                If bwDownloadGuestStarPic.IsBusy Then bwDownloadGuestStarPic.CancelAsync()
                 If bwLoadImages_TVEpisode.IsBusy Then bwLoadImages_TVEpisode.CancelAsync()
                 If bwLoadImages_TVSeason.IsBusy Then bwLoadImages_TVSeason.CancelAsync()
                 If bwLoadImages_TVShow.IsBusy Then bwLoadImages_TVShow.CancelAsync()
@@ -17130,6 +17255,7 @@ Public Class frmMain
                 If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()
                 If bwLoadImages_MovieSetMoviePosters.IsBusy Then bwLoadImages_MovieSetMoviePosters.CancelAsync()
                 If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
+                If bwDownloadGuestStarPic.IsBusy Then bwDownloadGuestStarPic.CancelAsync()
                 If dgvTVShows.RowCount > 0 Then
                     prevRow_TVShow = -1
                     currList = 0
