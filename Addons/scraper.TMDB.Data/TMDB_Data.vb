@@ -583,12 +583,17 @@ Public Class TMDB_Data
             logger.Trace("[TMDB_Data] [GetMovieStudio] [Abort] Attempting to get studio for undefined movie")
             Return New Interfaces.ModuleResult
         End If
-        If DBMovie.Movie.IMDBSpecified Then
-            'IMDB-ID is available
-            sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.IMDB))
-        ElseIf DBMovie.Movie.TMDBSpecified Then
-            'TMDB-ID is available
-            sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.TMDB))
+        If Not _TMDBAPI_Movie.IsClientCreated Then
+            Task.Run(Function() _TMDBAPI_Movie.CreateAPI(_SpecialSettings_Movie))
+        End If
+        If _TMDBAPI_Movie.IsClientCreated Then
+            If DBMovie.Movie.IMDBSpecified Then
+                'IMDB-ID is available
+                sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.IMDB))
+            ElseIf DBMovie.Movie.TMDBSpecified Then
+                'TMDB-ID is available
+                sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.TMDB))
+            End If
         End If
         logger.Trace("[TMDB_Data] [GetMovieStudio] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -597,7 +602,14 @@ Public Class TMDB_Data
     Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
         logger.Trace("[TMDB_Data] [GetTMDBID] [Start]")
         If Not String.IsNullOrEmpty(sIMDBID) Then
-            sTMDBID = _TMDBAPI_Movie.GetMovieID(sIMDBID)
+            If Not _TMDBAPI_Movie.IsClientCreated Then
+                Task.Run(Function() _TMDBAPI_Movie.CreateAPI(_SpecialSettings_Movie))
+            End If
+            If _TMDBAPI_Movie.IsClientCreated Then
+                sTMDBID = _TMDBAPI_Movie.GetMovieID(sIMDBID)
+            End If
+        Else
+            logger.Trace("[TMDB_Data] [GetTMDBID] [Abort] No IMDB ID to get the TMDB ID")
         End If
         logger.Trace("[TMDB_Data] [GetTMDBID] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -606,13 +618,18 @@ Public Class TMDB_Data
     Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.GetCollectionID
         logger.Trace("[TMDB_Data] [GetCollectionID] [Start]")
         If Not String.IsNullOrEmpty(sIMDBID) Then
-            sCollectionID = _TMDBAPI_MovieSet.GetMovieCollectionID(sIMDBID)
-            If String.IsNullOrEmpty(sCollectionID) Then
-                logger.Trace("[TMDB_Data] [GetCollectionID] [Abort] nor search result")
-                Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+            If Not _TMDBAPI_Movie.IsClientCreated Then
+                Task.Run(Function() _TMDBAPI_Movie.CreateAPI(_SpecialSettings_Movie))
+            End If
+            If _TMDBAPI_Movie.IsClientCreated Then
+                sCollectionID = _TMDBAPI_MovieSet.GetMovieCollectionID(sIMDBID)
+                If String.IsNullOrEmpty(sCollectionID) Then
+                    logger.Trace("[TMDB_Data] [GetCollectionID] [Abort] nor search result")
+                    Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                End If
             End If
         End If
-        logger.Trace("[TMDB_Data] [GetCollectionID] [Done]")
+            logger.Trace("[TMDB_Data] [GetCollectionID] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
     ''' <summary>

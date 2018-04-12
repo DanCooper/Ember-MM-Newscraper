@@ -117,6 +117,12 @@ Public Class clsAPITMDB
         End Set
     End Property
 
+    Public ReadOnly Property IsClientCreated As Boolean
+        Get
+            Return _client IsNot Nothing
+        End Get
+    End Property
+
 #End Region 'Properties
 
 #Region "Enumerations"
