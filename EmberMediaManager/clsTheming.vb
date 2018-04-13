@@ -92,7 +92,7 @@ Public Class clsXMLTheme
         Public Property FontSize As Integer
 
         <XmlElement("fontstyle")>
-        Public Property FontStyleFromXML As Integer
+        Public Property FontStyleFromXML As Integer = -1
 
         <XmlIgnore()>
         Public Property ForeColor As Color
@@ -238,6 +238,12 @@ Public Class clsXMLTheme
 
         <XmlElement("control")>
         Public Property Controls As New List(Of ControlSettings)
+
+        <XmlElement("globalheadersettings")>
+        Public Property GlobalHeaderSettings As ControlSettings
+
+        <XmlElement("globalvaluesettings")>
+        Public Property GlobalValueSettings As ControlSettings
 
         <XmlElement("posmid")>
         Public Property PosMid As Integer
@@ -755,16 +761,20 @@ Public Class Theming
                             xControl = frmMain.pnlInfoPanel.Controls(aCon(0).Name)
                     End Select
 
-                    Select Case xCon.Groups("value").Value.ToLower
-                        Case "width"
-                            sFormula = sFormula.Replace(xCon.ToString, xControl.Width.ToString)
-                        Case "height"
-                            sFormula = sFormula.Replace(xCon.ToString, xControl.Height.ToString)
-                        Case "top"
-                            sFormula = sFormula.Replace(xCon.ToString, xControl.Top.ToString)
-                        Case "left"
-                            sFormula = sFormula.Replace(xCon.ToString, xControl.Left.ToString)
-                    End Select
+                    If xControl IsNot Nothing Then
+                        Select Case xCon.Groups("value").Value.ToLower
+                            Case "width"
+                                sFormula = sFormula.Replace(xCon.ToString, xControl.Width.ToString)
+                            Case "height"
+                                sFormula = sFormula.Replace(xCon.ToString, xControl.Height.ToString)
+                            Case "top"
+                                sFormula = sFormula.Replace(xCon.ToString, xControl.Top.ToString)
+                            Case "left"
+                                sFormula = sFormula.Replace(xCon.ToString, xControl.Left.ToString)
+                        End Select
+                    Else
+                        logger.Error(String.Concat("Unknown control name in Theme: ", aCon(0).Name))
+                    End If
                 End If
             Next
         Catch ex As Exception
@@ -886,20 +896,91 @@ Public Class Theming
             End Select
 
             If xControl IsNot Nothing Then
-                If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Width) Then xControl.Width = EvaluateFormula(xCon.Width)
-                If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Height) Then xControl.Height = EvaluateFormula(xCon.Height)
-                If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Left) Then xControl.Left = EvaluateFormula(xCon.Left)
-                If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Top) Then xControl.Top = EvaluateFormula(xCon.Top)
-                If Not xCon.Name = "btnUp" AndAlso Not xCon.Name = "btnMid" AndAlso Not xCon.Name = "btnDown" AndAlso Not xCon.Name = "btnMetaDataRefresh" Then xControl.BackColor = xCon.BackColor
-                xControl.Visible = True
-                xControl.ForeColor = xCon.ForeColor
-                xControl.Font = xCon.Font
-                If Not xCon.Name = "pnlInfoPanel" Then xControl.Anchor = xCon.Anchor
+                SetInfoPanelGlobalSettings(xControl, xCon, settings)
+                'If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Width) Then xControl.Width = EvaluateFormula(xCon.Width)
+                'If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Height) Then xControl.Height = EvaluateFormula(xCon.Height)
+                'If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Left) Then xControl.Left = EvaluateFormula(xCon.Left)
+                'If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Top) Then xControl.Top = EvaluateFormula(xCon.Top)
+                'If Not xCon.Name = "btnUp" AndAlso Not xCon.Name = "btnMid" AndAlso Not xCon.Name = "btnDown" AndAlso Not xCon.Name = "btnMetaDataRefresh" Then xControl.BackColor = xCon.BackColor
+                'xControl.Visible = True
+                'xControl.ForeColor = xCon.ForeColor
+                'xControl.Font = xCon.Font
+                'If Not xCon.Name = "pnlInfoPanel" Then xControl.Anchor = xCon.Anchor
             Else
-                logger.Error(String.Concat("Unknown control in Theme: ", xCon.Name))
+                logger.Error(String.Concat("Unknown control name in Theme: ", xCon.Name))
             End If
 
         Next
+    End Sub
+
+    Private Sub SetInfoPanelGlobalSettings(ByRef control As Control, ByVal controlsettings As clsXMLTheme.ControlSettings, ByVal settings As clsXMLTheme.InfoPanelContentSettings)
+        Select Case True
+            Case control.Name = "pnlInfoPanel"
+                Dim globalSettings = settings.GlobalHeaderSettings
+                If globalSettings IsNot Nothing Then
+                    If controlsettings.BackColor.IsEmpty Then controlsettings.BackColor = globalSettings.BackColor
+                    If controlsettings.ForeColor.IsEmpty Then controlsettings.ForeColor = globalSettings.ForeColor
+                    If String.IsNullOrEmpty(controlsettings.FontName) Then controlsettings.FontName = globalSettings.FontName
+                    If controlsettings.FontSize = 0 Then controlsettings.FontSize = globalSettings.FontSize
+                    If controlsettings.FontStyleFromXML = -1 Then controlsettings.FontStyleFromXML = globalSettings.FontStyleFromXML
+                End If
+                control.BackColor = controlsettings.BackColor
+                control.ForeColor = controlsettings.ForeColor
+                control.Font = controlsettings.Font
+            Case control.Name.EndsWith("Header")
+                Dim globalSettings = settings.GlobalHeaderSettings
+                If globalSettings IsNot Nothing Then
+                    If controlsettings.BackColor.IsEmpty Then controlsettings.BackColor = globalSettings.BackColor
+                    If controlsettings.ForeColor.IsEmpty Then controlsettings.ForeColor = globalSettings.ForeColor
+                    If String.IsNullOrEmpty(controlsettings.FontName) Then controlsettings.FontName = globalSettings.FontName
+                    If controlsettings.FontSize = 0 Then controlsettings.FontSize = globalSettings.FontSize
+                    If controlsettings.FontStyleFromXML = -1 Then controlsettings.FontStyleFromXML = globalSettings.FontStyleFromXML
+                    If String.IsNullOrEmpty(controlsettings.Height) Then controlsettings.Height = globalSettings.Height
+                End If
+                control.Anchor = controlsettings.Anchor
+                control.BackColor = controlsettings.BackColor
+                control.ForeColor = controlsettings.ForeColor
+                control.Font = controlsettings.Font
+                control.Height = EvaluateFormula(controlsettings.Height)
+                control.Left = EvaluateFormula(controlsettings.Left)
+                control.Top = EvaluateFormula(controlsettings.Top)
+                control.Width = EvaluateFormula(controlsettings.Width)
+            Case control.Name.StartsWith("lbl"), control.Name.StartsWith("txt")
+                Dim globalSettings = settings.GlobalValueSettings
+                If globalSettings IsNot Nothing Then
+                    If controlsettings.BackColor.IsEmpty Then controlsettings.BackColor = globalSettings.BackColor
+                    If controlsettings.ForeColor.IsEmpty Then controlsettings.ForeColor = globalSettings.ForeColor
+                    If String.IsNullOrEmpty(controlsettings.FontName) Then controlsettings.FontName = globalSettings.FontName
+                    If controlsettings.FontSize = 0 Then controlsettings.FontSize = globalSettings.FontSize
+                    If controlsettings.FontStyleFromXML = -1 Then controlsettings.FontStyleFromXML = globalSettings.FontStyleFromXML
+                    If String.IsNullOrEmpty(controlsettings.Height) Then controlsettings.Height = globalSettings.Height
+                End If
+                control.Anchor = controlsettings.Anchor
+                control.BackColor = controlsettings.BackColor
+                control.ForeColor = controlsettings.ForeColor
+                control.Font = controlsettings.Font
+                control.Height = EvaluateFormula(controlsettings.Height)
+                control.Left = EvaluateFormula(controlsettings.Left)
+                control.Top = EvaluateFormula(controlsettings.Top)
+                control.Width = EvaluateFormula(controlsettings.Width)
+            Case control.Name.StartsWith("btn")
+                control.ForeColor = controlsettings.ForeColor
+                control.Font = controlsettings.Font
+                control.Height = EvaluateFormula(controlsettings.Height)
+                control.Left = EvaluateFormula(controlsettings.Left)
+                control.Top = EvaluateFormula(controlsettings.Top)
+                control.Width = EvaluateFormula(controlsettings.Width)
+            Case Else
+                control.Anchor = controlsettings.Anchor
+                control.BackColor = controlsettings.BackColor
+                control.ForeColor = controlsettings.ForeColor
+                control.Font = controlsettings.Font
+                control.Height = EvaluateFormula(controlsettings.Height)
+                control.Left = EvaluateFormula(controlsettings.Left)
+                control.Top = EvaluateFormula(controlsettings.Top)
+                control.Width = EvaluateFormula(controlsettings.Width)
+        End Select
+        control.Visible = True
     End Sub
 
 #End Region 'Methods
