@@ -28,7 +28,6 @@ ECHO *******************************************
 ECHO *       Delete unused language files      *
 ECHO *******************************************
 DEL .\translations\(en_CH).xml
-DEL .\translations\(en_CH)-Help.xml
 CLS
 ECHO *******************************************
 ECHO *          Rename files for Ember         *
