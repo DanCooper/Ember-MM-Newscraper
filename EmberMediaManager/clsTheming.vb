@@ -616,6 +616,8 @@ Public Class Theming
             "btnUp",
             "lblActorsHeader",
             "lblCertificationsHeader",
+            "lblCollections",
+            "lblCollectionsHEader",
             "lblCountries",
             "lblCountriesHeader",
             "lblCredits",
@@ -897,15 +899,6 @@ Public Class Theming
 
             If xControl IsNot Nothing Then
                 SetInfoPanelGlobalSettings(xControl, xCon, settings)
-                'If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Width) Then xControl.Width = EvaluateFormula(xCon.Width)
-                'If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Height) Then xControl.Height = EvaluateFormula(xCon.Height)
-                'If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Left) Then xControl.Left = EvaluateFormula(xCon.Left)
-                'If Not xCon.Name = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Top) Then xControl.Top = EvaluateFormula(xCon.Top)
-                'If Not xCon.Name = "btnUp" AndAlso Not xCon.Name = "btnMid" AndAlso Not xCon.Name = "btnDown" AndAlso Not xCon.Name = "btnMetaDataRefresh" Then xControl.BackColor = xCon.BackColor
-                'xControl.Visible = True
-                'xControl.ForeColor = xCon.ForeColor
-                'xControl.Font = xCon.Font
-                'If Not xCon.Name = "pnlInfoPanel" Then xControl.Anchor = xCon.Anchor
             Else
                 logger.Error(String.Concat("Unknown control name in Theme: ", xCon.Name))
             End If

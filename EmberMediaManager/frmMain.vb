@@ -363,6 +363,7 @@ Public Class frmMain
         lblCharacterArtSize.Text = String.Empty
         lblClearArtSize.Text = String.Empty
         lblClearLogoSize.Text = String.Empty
+        lblCollections.Text = String.Empty
         lblCountries.Text = String.Empty
         lblCredits.Text = String.Empty
         lblDirectors.Text = String.Empty
@@ -9151,6 +9152,7 @@ Public Class frmMain
             pbStudio.Left = 0
         End If
 
+        lblCollections.Text = String.Join(" / ", From sets In currMovie.Movie.Sets Select sets.Title)
         lblCredits.Text = String.Join(" / ", currMovie.Movie.Credits.ToArray)
         lblDirectors.Text = String.Join(" / ", currMovie.Movie.Directors.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")

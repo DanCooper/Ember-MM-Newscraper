@@ -226,8 +226,8 @@ or a "32-bit ARGB value"
       <posup>470</posup>
       
       <globalheadersettings>
-        <backcolor>Red</backcolor> <!-- ControlDarkDark-->
-        <font>Comic Sans MS</font> <!-- Microsoft Sans Serif-->
+        <backcolor>ControlDarkDark</backcolor>
+        <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>1</fontstyle>
         <forecolor>HighlightText</forecolor>
@@ -235,7 +235,7 @@ or a "32-bit ARGB value"
       </globalheadersettings>
       
       <globalvaluesettings>
-        <backcolor>Yellow</backcolor> <!-- Gainsboro-->
+        <backcolor>Gainsboro</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>0</fontstyle>
@@ -409,18 +409,33 @@ or a "32-bit ARGB value"
       </control>
 
       <control name="lblCertificationsHeader">
-        <anchor>13</anchor>
+        <anchor>9</anchor>
         <left>lblTMDBHeader.Left + lblTMDBHeader.Width + 3</left>
         <top>lblIMDBHeader.Top</top>
-        <width>lblOutlineHeader.Width - (lblTMDBHeader.Left + lblTMDBHeader.Width)</width>
+        <width>lblOutlineHeader.Width / 2 - (lblTMDBHeader.Left + lblTMDBHeader.Width) - 4</width>
       </control>
 
       <control name="txtCertifications">
-        <anchor>13</anchor>
+        <anchor>9</anchor>
         <height>20</height>
         <left>lblCertificationsHeader.Left</left>
         <top>lblCertificationsHeader.Top + lblCertificationsHeader.Height + 3</top>
         <width>lblCertificationsHeader.Width</width>
+      </control>
+
+      <control name="lblCollectionsHeader">
+        <anchor>13</anchor>
+        <left>lblCertificationsHeader.Left + lblCertificationsHeader.Width + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblOutlineHeader.Width - (lblTMDBHeader.Left + lblTMDBHeader.Width)</width>
+      </control>
+
+      <control name="lblCollections">
+        <anchor>13</anchor>
+        <height>20</height>
+        <left>lblCollectionsHeader.Left</left>
+        <top>lblCollectionsHeader.Top + lblCollectionsHeader.Height + 3</top>
+        <width>lblCollectionsHeader.Width</width>
       </control>
 
       <control name="lblFilePathHeader">
@@ -543,14 +558,27 @@ or a "32-bit ARGB value"
       <posmid>290</posmid>
       <posup>290</posup>
 
-      <control name="lblInfoPanelHeader">
-        <anchor>13</anchor>
+      <globalheadersettings>
         <backcolor>ControlDarkDark</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>1</fontstyle>
-        <forecolor>-1</forecolor>
+        <forecolor>HighlightText</forecolor>
         <height>17</height>
+      </globalheadersettings>
+
+      <globalvaluesettings>
+        <backcolor>Gainsboro</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <forecolor>Black</forecolor>
+        <height>17</height>
+      </globalvaluesettings>
+      
+      <control name="lblInfoPanelHeader">
+        <anchor>13</anchor>
+        <height>24</height>
         <left>3</left>
         <top>3</top>
         <width>pnlInfoPanel.Width - 8</width>
@@ -574,12 +602,6 @@ or a "32-bit ARGB value"
 
       <control name="lblPlotHeader">
         <anchor>13</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>-1</forecolor>
-        <height>17</height>
         <left>3</left>
         <top>27</top>
         <width>pnlInfoPanel.Width - 10</width>
@@ -587,11 +609,6 @@ or a "32-bit ARGB value"
 
       <control name="txtPlot">
         <anchor>13</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>78</height>
         <left>3</left>
         <top>48</top>
@@ -640,13 +657,26 @@ or a "32-bit ARGB value"
       <posmid>261</posmid>
       <posup>470</posup>
 
-      <control name="lblInfoPanelHeader">
-        <anchor>13</anchor>
+      <globalheadersettings>
         <backcolor>ControlDarkDark</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>1</fontstyle>
         <forecolor>HighlightText</forecolor>
+        <height>17</height>
+      </globalheadersettings>
+
+      <globalvaluesettings>
+        <backcolor>Gainsboro</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <forecolor>Black</forecolor>
+        <height>17</height>
+      </globalvaluesettings>
+
+      <control name="lblInfoPanelHeader">
+        <anchor>13</anchor>
         <height>24</height>
         <left>3</left>
         <top>3</top>
@@ -745,12 +775,6 @@ or a "32-bit ARGB value"
       <!-- BEGIN INTERNAL OF PNLGUESTSTARS -->
       <control name="lblGuestStarsHeader">
         <anchor>5</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>0</left>
         <top>0</top>
         <width>302</width>
@@ -791,12 +815,6 @@ or a "32-bit ARGB value"
 
       <control name="lblReleaseDateHeader">
         <anchor>9</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblGuestStarsHeader.Height</height>
         <left>pnlGuestStars.Left - 103</left>
         <top>pnlGuestStars.Top</top>
         <width>100</width>
@@ -804,12 +822,6 @@ or a "32-bit ARGB value"
 
       <control name="lblReleaseDate">
         <anchor>9</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>lblReleaseDateHeader.Height</height>
         <left>lblReleaseDateHeader.Left</left>
         <top>lblReleaseDateHeader.Top + lblReleaseDateHeader.Height + 3</top>
         <width>lblReleaseDateHeader.Width</width>
@@ -817,12 +829,6 @@ or a "32-bit ARGB value"
 
       <control name="lblDirectorsHeader">
         <anchor>13</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblInfoPanelHeader.Left</left>
         <top>pnlActors.Top</top>
         <width>(lblReleaseDateHeader.Left - 3) / 2 - 3</width>
@@ -830,12 +836,6 @@ or a "32-bit ARGB value"
 
       <control name="lblDirectors">
         <anchor>13</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>lblDirectorsHeader.Height</height>
         <left>lblDirectorsHeader.Left</left>
         <top>lblDirectorsHeader.Top + lblDirectorsHeader.Height + 3</top>
         <width>lblDirectorsHeader.Width</width>
@@ -843,12 +843,6 @@ or a "32-bit ARGB value"
 
       <control name="lblCreditsHeader">
         <anchor>9</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3</left>
         <top>pnlActors.Top</top>
         <width>lblReleaseDate.Left - (lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3) - 3</width>
@@ -856,12 +850,6 @@ or a "32-bit ARGB value"
 
       <control name="lblCredits">
         <anchor>9</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>lblCreditsHeader.Height</height>
         <left>lblCreditsHeader.Left</left>
         <top>lblCreditsHeader.Top + lblCreditsHeader.Height + 3</top>
         <width>lblCreditsHeader.Width</width>
@@ -869,12 +857,6 @@ or a "32-bit ARGB value"
 
       <control name="lblPlotHeader">
         <anchor>13</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblInfoPanelHeader.Left</left>
         <top>lblDirectors.Top + lblDirectors.Height + 3</top>
         <width>pnlGuestStars.Left - 6</width>
@@ -882,11 +864,6 @@ or a "32-bit ARGB value"
 
       <control name="txtPlot">
         <anchor>13</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>80</height>
         <left>lblPlotHeader.Left + 3</left>
         <top>lblPlotHeader.Top + lblPlotHeader.Height + 3</top>
@@ -895,12 +872,6 @@ or a "32-bit ARGB value"
 
       <control name="lblIMDBHeader">
         <anchor>5</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblInfoPanelHeader.Left</left>
         <top>txtPlot.Top + txtPlot.Height + 3</top>
         <width>100</width>
@@ -908,11 +879,6 @@ or a "32-bit ARGB value"
 
       <control name="txtIMDBID">
         <anchor>5</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>20</height>
         <left>lblIMDBHeader.Left</left>
         <top>lblIMDBHeader.Top + lblIMDBHeader.Height + 3</top>
@@ -921,12 +887,6 @@ or a "32-bit ARGB value"
 
       <control name="lblTMDBHeader">
         <anchor>5</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblIMDBHeader.Left + lblIMDBHeader.Width + 3</left>
         <top>lblIMDBHeader.Top</top>
         <width>lblIMDBHeader.Width</width>
@@ -934,11 +894,6 @@ or a "32-bit ARGB value"
 
       <control name="txtTMDBID">
         <anchor>5</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>txtIMDBID.Height</height>
         <left>lblTMDBHeader.Left</left>
         <top>lblTMDBHeader.Top + lblTMDBHeader.Height + 3</top>
@@ -947,12 +902,6 @@ or a "32-bit ARGB value"
 
       <control name="lblTVDBHeader">
         <anchor>5</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblReleaseDateHeader.Height</height>
         <left>lblTMDBHeader.Left + lblTMDBHeader.Width + 3</left>
         <top>lblIMDBHeader.Top</top>
         <width>lblIMDBHeader.Width</width>
@@ -960,11 +909,6 @@ or a "32-bit ARGB value"
 
       <control name="txtTVDBID">
         <anchor>5</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>txtIMDBID.Height</height>
         <left>lblTVDBHeader.Left</left>
         <top>lblTVDBHeader.Top + lblTVDBHeader.Height + 3</top>
@@ -973,12 +917,6 @@ or a "32-bit ARGB value"
 
       <control name="lblFilePathHeader">
         <anchor>13</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblInfoPanelHeader.Left</left>
         <top>txtIMDBID.Top + txtIMDBID.Height + 3</top>
         <width>lblPlotHeader.Width</width>
@@ -986,11 +924,6 @@ or a "32-bit ARGB value"
 
       <control name="txtFilePath">
         <anchor>13</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>20</height>
         <left>lblFilePathHeader.Left</left>
         <top>lblFilePathHeader.Top + lblFilePathHeader.Height + 3</top>
@@ -1007,12 +940,6 @@ or a "32-bit ARGB value"
 
       <control name="lblMetaDataHeader">
         <anchor>9</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>pnlActors.Left</left>
         <top>pnlActors.Top + pnlActors.Height + 6</top>
         <width>pnlActors.Width</width>
@@ -1031,11 +958,6 @@ or a "32-bit ARGB value"
 
       <control name="txtMetaData">
         <anchor>9</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>184</height>
         <left>lblMetaDataHeader.Left + 3</left>
         <top>lblMetaDataHeader.Top + lblMetaDataHeader.Height + 3</top>
@@ -1047,13 +969,26 @@ or a "32-bit ARGB value"
       <posmid>178</posmid>
       <posup>178</posup>
 
-      <control name="lblInfoPanelHeader">
-        <anchor>13</anchor>
+      <globalheadersettings>
         <backcolor>ControlDarkDark</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>1</fontstyle>
         <forecolor>HighlightText</forecolor>
+        <height>17</height>
+      </globalheadersettings>
+
+      <globalvaluesettings>
+        <backcolor>Gainsboro</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <forecolor>Black</forecolor>
+        <height>17</height>
+      </globalvaluesettings>
+
+      <control name="lblInfoPanelHeader">
+        <anchor>13</anchor>
         <height>24</height>
         <left>3</left>
         <top>3</top>
@@ -1078,12 +1013,6 @@ or a "32-bit ARGB value"
 
       <control name="lblReleaseDateHeader">
         <anchor>9</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>17</height>
         <left>pnlInfoPanel.Width - 105</left>
         <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
         <width>100</width>
@@ -1091,12 +1020,6 @@ or a "32-bit ARGB value"
 
       <control name="lblReleaseDate">
         <anchor>9</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>lblReleaseDateHeader.Height</height>
         <left>lblReleaseDateHeader.Left</left>
         <top>lblReleaseDateHeader.Top + lblReleaseDateHeader.Height + 3</top>
         <width>lblReleaseDateHeader.Width</width>
@@ -1104,12 +1027,6 @@ or a "32-bit ARGB value"
 
       <control name="lblPlotHeader">
         <anchor>13</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblReleaseDateHeader.Height</height>
         <left>lblInfoPanelHeader.Left</left>
         <top>lblReleaseDateHeader.Top</top>
         <width>lblReleaseDateHeader.Left - 6</width>
@@ -1117,11 +1034,6 @@ or a "32-bit ARGB value"
 
       <control name="txtPlot">
         <anchor>13</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>80</height>
         <left>lblPlotHeader.Left + 3</left>
         <top>lblPlotHeader.Top + lblPlotHeader.Height + 3</top>
@@ -1130,12 +1042,6 @@ or a "32-bit ARGB value"
 
       <control name="lblIMDBHeader">
         <anchor>5</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblReleaseDateHeader.Height</height>
         <left>lblInfoPanelHeader.Left</left>
         <top>txtPlot.Top + txtPlot.Height + 3</top>
         <width>100</width>
@@ -1143,11 +1049,6 @@ or a "32-bit ARGB value"
 
       <control name="txtIMDBID">
         <anchor>5</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>20</height>
         <left>lblIMDBHeader.Left</left>
         <top>lblIMDBHeader.Top + lblIMDBHeader.Height + 3</top>
@@ -1156,12 +1057,6 @@ or a "32-bit ARGB value"
 
       <control name="lblTMDBHeader">
         <anchor>5</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblReleaseDateHeader.Height</height>
         <left>lblIMDBHeader.Left + lblIMDBHeader.Width + 3</left>
         <top>lblIMDBHeader.Top</top>
         <width>lblIMDBHeader.Width</width>
@@ -1169,11 +1064,6 @@ or a "32-bit ARGB value"
 
       <control name="txtTMDBID">
         <anchor>5</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>txtIMDBID.Height</height>
         <left>lblTMDBHeader.Left</left>
         <top>lblTMDBHeader.Top + lblTMDBHeader.Height + 3</top>
@@ -1182,12 +1072,6 @@ or a "32-bit ARGB value"
 
       <control name="lblTVDBHeader">
         <anchor>5</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblReleaseDateHeader.Height</height>
         <left>lblTMDBHeader.Left + lblTMDBHeader.Width + 3</left>
         <top>lblIMDBHeader.Top</top>
         <width>lblIMDBHeader.Width</width>
@@ -1195,11 +1079,6 @@ or a "32-bit ARGB value"
 
       <control name="txtTVDBID">
         <anchor>5</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>txtIMDBID.Height</height>
         <left>lblTVDBHeader.Left</left>
         <top>lblTVDBHeader.Top + lblTVDBHeader.Height + 3</top>
@@ -1211,13 +1090,26 @@ or a "32-bit ARGB value"
       <posmid>261</posmid>
       <posup>261</posup>
 
-      <control name="lblInfoPanelHeader">
-        <anchor>13</anchor>
+      <globalheadersettings>
         <backcolor>ControlDarkDark</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>1</fontstyle>
         <forecolor>HighlightText</forecolor>
+        <height>17</height>
+      </globalheadersettings>
+
+      <globalvaluesettings>
+        <backcolor>Gainsboro</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <forecolor>Black</forecolor>
+        <height>17</height>
+      </globalvaluesettings>
+
+      <control name="lblInfoPanelHeader">
+        <anchor>13</anchor>
         <height>24</height>
         <left>3</left>
         <top>3</top>
@@ -1298,12 +1190,6 @@ or a "32-bit ARGB value"
 
       <control name="lblReleaseDateHeader">
         <anchor>9</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>pnlActors.Left - 103</left>
         <top>pnlActors.Top</top>
         <width>100</width>
@@ -1311,12 +1197,6 @@ or a "32-bit ARGB value"
 
       <control name="lblReleaseDate">
         <anchor>9</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>lblReleaseDateHeader.Height</height>
         <left>lblReleaseDateHeader.Left</left>
         <top>lblReleaseDateHeader.Top + lblReleaseDateHeader.Height + 3</top>
         <width>lblReleaseDateHeader.Width</width>
@@ -1324,12 +1204,6 @@ or a "32-bit ARGB value"
 
       <control name="lblStatusHeader">
         <anchor>9</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblReleaseDateHeader.Height</height>
         <left>lblReleaseDateHeader.Left - 153</left>
         <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
         <width>150</width>
@@ -1337,12 +1211,6 @@ or a "32-bit ARGB value"
 
       <control name="lblStatus">
         <anchor>9</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>lblStatusHeader.Height</height>
         <left>lblStatusHeader.Left</left>
         <top>lblStatusHeader.Top + lblStatusHeader.Height + 3</top>
         <width>lblStatusHeader.Width</width>
@@ -1350,12 +1218,6 @@ or a "32-bit ARGB value"
 
       <control name="lblDirectorsHeader">
         <anchor>13</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblInfoPanelHeader.Left</left>
         <top>pnlActors.Top</top>
         <width>lblStatusHeader.Left - 6</width>
@@ -1363,12 +1225,6 @@ or a "32-bit ARGB value"
 
       <control name="lblDirectors">
         <anchor>13</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>lblDirectorsHeader.Height</height>
         <left>lblDirectorsHeader.Left</left>
         <top>lblDirectorsHeader.Top + lblDirectorsHeader.Height + 3</top>
         <width>lblDirectorsHeader.Width</width>
@@ -1376,12 +1232,6 @@ or a "32-bit ARGB value"
 
       <control name="lblPlotHeader">
         <anchor>13</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblInfoPanelHeader.Left</left>
         <top>lblDirectors.Top + lblDirectors.Height + 3</top>
         <width>pnlActors.Left - 6</width>
@@ -1389,11 +1239,6 @@ or a "32-bit ARGB value"
 
       <control name="txtPlot">
         <anchor>13</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>80</height>
         <left>lblPlotHeader.Left + 3</left>
         <top>lblPlotHeader.Top + lblPlotHeader.Height + 3</top>
@@ -1402,12 +1247,6 @@ or a "32-bit ARGB value"
 
       <control name="lblIMDBHeader">
         <anchor>5</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblInfoPanelHeader.Left</left>
         <top>txtPlot.Top + txtPlot.Height + 3</top>
         <width>100</width>
@@ -1415,11 +1254,6 @@ or a "32-bit ARGB value"
 
       <control name="txtIMDBID">
         <anchor>5</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>20</height>
         <left>lblIMDBHeader.Left</left>
         <top>lblIMDBHeader.Top + lblIMDBHeader.Height + 3</top>
@@ -1428,12 +1262,6 @@ or a "32-bit ARGB value"
 
       <control name="lblTMDBHeader">
         <anchor>5</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblIMDBHeader.Left + lblIMDBHeader.Width + 3</left>
         <top>lblIMDBHeader.Top</top>
         <width>lblIMDBHeader.Width</width>
@@ -1441,11 +1269,6 @@ or a "32-bit ARGB value"
 
       <control name="txtTMDBID">
         <anchor>5</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
         <height>txtIMDBID.Height</height>
         <left>lblTMDBHeader.Left</left>
         <top>lblTMDBHeader.Top + lblTMDBHeader.Height + 3</top>
@@ -1454,12 +1277,6 @@ or a "32-bit ARGB value"
 
       <control name="lblTVDBHeader">
         <anchor>5</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblTMDBHeader.Left + lblTMDBHeader.Width + 3</left>
         <top>lblIMDBHeader.Top</top>
         <width>lblIMDBHeader.Width</width>
@@ -1467,12 +1284,7 @@ or a "32-bit ARGB value"
 
       <control name="txtTVDBID">
         <anchor>5</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>txtIMDBID.Height</height>
+        <height>20</height>
         <left>lblTVDBHeader.Left</left>
         <top>lblTVDBHeader.Top + lblTVDBHeader.Height + 3</top>
         <width>lblTVDBHeader.Width</width>
@@ -1480,12 +1292,6 @@ or a "32-bit ARGB value"
 
       <control name="lblCertificationsHeader">
         <anchor>13</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblTVDBHeader.Left + lblTVDBHeader.Width + 3</left>
         <top>lblIMDBHeader.Top</top>
         <width>lblPlotHeader.Width - (lblTVDBHeader.Left + lblTVDBHeader.Width)</width>
@@ -1493,12 +1299,7 @@ or a "32-bit ARGB value"
 
       <control name="txtCertifications">
         <anchor>13</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>txtIMDBID.Height</height>
+        <height>20</height>
         <left>lblCertificationsHeader.Left</left>
         <top>lblCertificationsHeader.Top + lblCertificationsHeader.Height + 3</top>
         <width>lblCertificationsHeader.Width</width>
@@ -1506,12 +1307,6 @@ or a "32-bit ARGB value"
 
       <control name="lblCountriesHeader">
         <anchor>13</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>lblInfoPanelHeader.Left</left>
         <top>txtIMDBID.Top + txtIMDBID.Height + 3</top>
         <width>(lblPlotHeader.Width / 2) - 3</width>
@@ -1519,12 +1314,6 @@ or a "32-bit ARGB value"
 
       <control name="lblCountries">
         <anchor>13</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>lblCountriesHeader.Height</height>
         <left>lblCountriesHeader.Left</left>
         <top>lblCountriesHeader.Top + lblCountriesHeader.Height + 3</top>
         <width>lblCountriesHeader.Width</width>
@@ -1532,12 +1321,6 @@ or a "32-bit ARGB value"
 
       <control name="lblTagsHeader">
         <anchor>9</anchor>
-        <backcolor>ControlDarkDark</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
-        <height>lblActorsHeader.Height</height>
         <left>(lblPlotHeader.Width / 2) + 3</left>
         <top>lblCountriesHeader.Top</top>
         <width>lblPlotHeader.Width / 2</width>
@@ -1545,12 +1328,6 @@ or a "32-bit ARGB value"
 
       <control name="lblTags">
         <anchor>9</anchor>
-        <backcolor>Gainsboro</backcolor>
-        <font>Microsoft Sans Serif</font>
-        <fontsize>8</fontsize>
-        <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
-        <height>lblTagsHeader.Height</height>
         <left>lblTagsHeader.Left</left>
         <top>lblTagsHeader.Top + lblTagsHeader.Height + 3</top>
         <width>lblTagsHeader.Width</width>
