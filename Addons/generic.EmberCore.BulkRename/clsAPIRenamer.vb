@@ -221,14 +221,19 @@ Public Class FileFolderRenamer
                         Dim lFi As New List(Of FileInfo)
                         Try
                             lFi.AddRange(di.GetFiles())
-                        Catch
+                            For Each subtitle In _movie.Subtitles.Where(Function(f) f.SubsPathSpecified)
+                                Dim nPath = subtitle.SubsPath.Replace(srcDir, destDir)
+                                If lFi.Where(Function(f) f.FullName = nPath).Count = 0 Then
+                                    lFi.Add(New FileInfo(nPath))
+                                End If
+                            Next
+                        Catch ex As Exception
+                            logger.Error(ex, New StackFrame().GetMethod().Name)
                         End Try
                         If lFi.Count > 0 Then
-                            Dim srcFile As String
-                            Dim dstFile As String
                             For Each lFile As FileInfo In lFi.OrderBy(Function(s) s.Name)
-                                srcFile = lFile.FullName
-                                dstFile = Path.Combine(destDir, lFile.Name.Replace(_frename.OldFileName.Trim, _frename.NewFileName.Trim))
+                                Dim srcFile As String = lFile.FullName
+                                Dim dstFile As String = Path.Combine(Directory.GetParent(srcFile).FullName, lFile.Name.Replace(_frename.OldFileName.Trim, _frename.NewFileName.Trim))
                                 If Not srcFile = dstFile Then
                                     Try
                                         If sfunction IsNot Nothing Then
@@ -344,15 +349,19 @@ Public Class FileFolderRenamer
                         Dim lFi As New List(Of FileInfo)
 
                         Try
-                            lFi.AddRange(di.GetFiles())
-                        Catch
+                            lFi.AddRange(di.GetFiles(String.Concat(_frename.OldFileName, "*")))
+                            For Each subtitle In _tv.Subtitles.Where(Function(f) f.SubsPathSpecified)
+                                If lFi.Where(Function(f) f.FullName = subtitle.SubsPath).Count = 0 Then
+                                    lFi.Add(New FileInfo(subtitle.SubsPath))
+                                End If
+                            Next
+                        Catch ex As Exception
+                            logger.Error(ex, New StackFrame().GetMethod().Name)
                         End Try
                         If lFi.Count > 0 Then
-                            Dim srcFile As String
-                            Dim dstFile As String
                             For Each lFile As FileInfo In lFi.OrderBy(Function(s) s.Name)
-                                srcFile = lFile.FullName
-                                dstFile = Path.Combine(destDir, lFile.Name.Replace(_frename.OldFileName.Trim, _frename.NewFileName.Trim))
+                                Dim srcFile As String = lFile.FullName
+                                Dim dstFile As String = Path.Combine(lFile.Directory.FullName.Replace(srcDir, destDir), lFile.Name.Replace(_frename.OldFileName.Trim, _frename.NewFileName.Trim))
                                 If Not srcFile = dstFile Then
                                     Try
                                         If sfunction IsNot Nothing Then
@@ -364,6 +373,9 @@ Public Class FileFolderRenamer
                                             File.Move(String.Concat(dstFile, ".$emm$"), dstFile)
                                         Else
                                             If lFile.Name.StartsWith(_frename.OldFileName, StringComparison.OrdinalIgnoreCase) Then
+                                                If Not Directory.Exists(Directory.GetParent(dstFile).FullName) Then
+                                                    Directory.CreateDirectory(Directory.GetParent(dstFile).FullName)
+                                                End If
                                                 File.Move(srcFile, dstFile)
                                             End If
                                         End If

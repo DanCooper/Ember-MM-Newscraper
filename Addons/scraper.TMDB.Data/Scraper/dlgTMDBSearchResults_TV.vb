@@ -120,7 +120,7 @@ Public Class dlgTMDBSearchResults_TV
         Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-        _TMDB.GetSearchTVShowInfoAsync(txtTMDBID.Text, _tmpTVShow, pOpt)
+        _TMDB.GetSearchTVShowInfoAsync(txtTMDBID.Text, pOpt)
 
     End Sub
 
@@ -347,7 +347,7 @@ Public Class dlgTMDBSearchResults_TV
         pnlLoading.Visible = True
         Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        _TMDB.GetSearchTVShowInfoAsync(tvResults.SelectedNode.Tag.ToString, _tmpTVShow, pOpt)
+        _TMDB.GetSearchTVShowInfoAsync(tvResults.SelectedNode.Tag.ToString, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrWait.Tick

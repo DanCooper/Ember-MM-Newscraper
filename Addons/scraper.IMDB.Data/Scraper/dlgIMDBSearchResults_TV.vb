@@ -129,7 +129,7 @@ Public Class dlgIMDBSearchResults_TV
         If Regex.IsMatch(txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
             pnlLoading.Visible = True
             _IMDB.CancelAsync()
-            _IMDB.GetSearchTVShowInfoAsync(txtIMDBID.Text.Replace("tt", String.Empty), _tmpTVShow, pOpt)
+            _IMDB.GetSearchTVShowInfoAsync(txtIMDBID.Text.Replace("tt", String.Empty), pOpt)
         Else
             MessageBox.Show(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), Master.eLang.GetString(292, "Invalid Entry"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End If
@@ -371,7 +371,7 @@ Public Class dlgIMDBSearchResults_TV
         pnlLoading.Visible = True
         Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        _IMDB.GetSearchTVShowInfoAsync(tvResults.SelectedNode.Tag.ToString, _tmpTVShow, pOpt)
+        _IMDB.GetSearchTVShowInfoAsync(tvResults.SelectedNode.Tag.ToString, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrWait.Tick

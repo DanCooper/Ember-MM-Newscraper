@@ -756,71 +756,19 @@ Namespace YouTube
     Public Class AudioLinkItem
         Implements IComparable(Of AudioLinkItem)
 
-#Region "Fields"
-
-        Private _description As String
-        Private _formatcodec As New Enums.TrailerAudioCodec
-        Private _formatquality As New Enums.TrailerAudioQuality
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property Description() As String
-            Get
-                Return _description
-            End Get
-            Set(ByVal value As String)
-                _description = value
-            End Set
-        End Property
+        Public Property Description() As String = String.Empty
 
-        Public Property URL() As String
-            Get
-                Return _url
-            End Get
-            Set(ByVal value As String)
-                _url = value
-            End Set
-        End Property
+        Public Property FormatCodec() As Enums.TrailerAudioCodec = Enums.TrailerAudioCodec.UNKNOWN
 
-        Public Property FormatCodec() As Enums.TrailerAudioCodec
-            Get
-                Return _formatcodec
-            End Get
-            Set(ByVal value As Enums.TrailerAudioCodec)
-                _formatcodec = value
-            End Set
-        End Property
+        Public Property FormatQuality() As Enums.TrailerAudioQuality = Enums.TrailerAudioQuality.UNKNOWN
 
-        Public Property FormatQuality() As Enums.TrailerAudioQuality
-            Get
-                Return _formatquality
-            End Get
-            Set(ByVal value As Enums.TrailerAudioQuality)
-                _formatquality = value
-            End Set
-        End Property
+        Public Property URL() As String = String.Empty
 
 #End Region 'Properties
 
 #Region "Methods"
-
-        Public Sub Clear()
-            _description = String.Empty
-            _formatcodec = Enums.TrailerAudioCodec.UNKNOWN
-            _formatquality = Enums.TrailerAudioQuality.UNKNOWN
-            _url = String.Empty
-        End Sub
 
         Public Function CompareTo(ByVal other As AudioLinkItem) As Integer Implements IComparable(Of AudioLinkItem).CompareTo
             Return (FormatQuality).CompareTo(other.FormatQuality)
@@ -833,82 +781,21 @@ Namespace YouTube
     Public Class VideoLinkItem
         Implements IComparable(Of VideoLinkItem)
 
-#Region "Fields"
-
-        Private _description As String
-        Private _formatcodec As New Enums.TrailerVideoCodec
-        Private _formatquality As New Enums.TrailerVideoQuality
-        Private _isdash As Boolean
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property Description() As String
-            Get
-                Return _description
-            End Get
-            Set(ByVal value As String)
-                _description = value
-            End Set
-        End Property
+        Public Property Description() As String = String.Empty
 
-        Public Property FormatCodec() As Enums.TrailerVideoCodec
-            Get
-                Return _formatcodec
-            End Get
-            Set(ByVal value As Enums.TrailerVideoCodec)
-                _formatcodec = value
-            End Set
-        End Property
+        Public Property FormatCodec() As Enums.TrailerVideoCodec = Enums.TrailerVideoCodec.UNKNOWN
 
-        Public Property FormatQuality() As Enums.TrailerVideoQuality
-            Get
-                Return _formatquality
-            End Get
-            Set(ByVal value As Enums.TrailerVideoQuality)
-                _formatquality = value
-            End Set
-        End Property
+        Public Property FormatQuality() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.UNKNOWN
 
-        Public Property isDash() As Boolean
-            Get
-                Return _isdash
-            End Get
-            Set(ByVal value As Boolean)
-                _isdash = value
-            End Set
-        End Property
+        Public Property isDash() As Boolean = False
 
-        Public Property URL() As String
-            Get
-                Return _url
-            End Get
-            Set(ByVal value As String)
-                _url = value
-            End Set
-        End Property
+        Public Property URL() As String = String.Empty
 
 #End Region 'Properties
 
 #Region "Methods"
-
-        Public Sub Clear()
-            _description = String.Empty
-            _formatcodec = Enums.TrailerVideoCodec.UNKNOWN
-            _formatquality = Enums.TrailerVideoQuality.UNKNOWN
-            _isdash = False
-            _url = String.Empty
-        End Sub
 
         Public Function CompareTo(ByVal other As VideoLinkItem) As Integer Implements IComparable(Of VideoLinkItem).CompareTo
             Return (FormatQuality).CompareTo(other.FormatQuality)
@@ -920,73 +807,17 @@ Namespace YouTube
 
     Public Class YouTubeLinkItemCollection
 
-#Region "Fields"
-
-        Private _audiolinks As New List(Of AudioLinkItem)
-        Private _bestqualitiy As Enums.TrailerVideoQuality
-        Private _title As String
-        Private _videolinks As New List(Of VideoLinkItem)
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property AudioLinks() As List(Of AudioLinkItem)
-            Get
-                Return _audiolinks
-            End Get
-            Set(ByVal value As List(Of AudioLinkItem))
-                _audiolinks = value
-            End Set
-        End Property
+        Public Property AudioLinks() As List(Of AudioLinkItem) = New List(Of AudioLinkItem)
 
-        Public Property BestQuality() As Enums.TrailerVideoQuality
-            Get
-                Return _bestqualitiy
-            End Get
-            Set(ByVal value As Enums.TrailerVideoQuality)
-                _bestqualitiy = value
-            End Set
-        End Property
+        Public Property BestQuality() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.Any
 
-        Public Property Title() As String
-            Get
-                Return _title
-            End Get
-            Set(ByVal value As String)
-                _title = value
-            End Set
-        End Property
+        Public Property Title() As String = String.Empty
 
-        Public Property VideoLinks() As List(Of VideoLinkItem)
-            Get
-                Return _videolinks
-            End Get
-            Set(ByVal value As List(Of VideoLinkItem))
-                _videolinks = value
-            End Set
-        End Property
+        Public Property VideoLinks() As List(Of VideoLinkItem) = New List(Of VideoLinkItem)
 
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _audiolinks = New List(Of AudioLinkItem)
-            _bestqualitiy = Enums.TrailerVideoQuality.Any
-            _title = String.Empty
-            _videolinks = New List(Of VideoLinkItem)
-        End Sub
-
-#End Region 'Methods
+#End Region 'Properties 
 
     End Class
 

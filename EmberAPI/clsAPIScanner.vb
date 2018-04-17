@@ -63,24 +63,7 @@ Public Class Scanner
     ''' <param name="tDBElement">Database.DBElement object</param>
     ''' <param name="bForced">Enable ALL known file naming schemas. Should only be used to search files and not to save files!</param>
     Public Sub GetFolderContents_Movie(ByRef tDBElement As Database.DBElement, Optional ByVal bForced As Boolean = False)
-        If String.IsNullOrEmpty(tDBElement.Filename) Then Return
-
-        Dim currname As String = String.Empty
-        Dim atList As New List(Of String)   'actor thumbs list
-        Dim efList As New List(Of String)   'extrafanart list
-        Dim etList As New List(Of String)   'extrathumbs list
-        Dim sList As New List(Of String)    'external subtitles files list
-        Dim tList As New List(Of String)    'theme files list
-        Dim fList As New List(Of String)    'all other files list
-        Dim fName As String = String.Empty
-
-        Dim parPath As String = String.Empty
-
-        Dim fileName As String = Path.GetFileNameWithoutExtension(tDBElement.Filename)
-        Dim fileNameStack As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(tDBElement.Filename))
-        Dim filePath As String = Path.Combine(Directory.GetParent(tDBElement.Filename).FullName, fileName)
-        Dim filePathStack As String = Path.Combine(Directory.GetParent(tDBElement.Filename).FullName, fileNameStack)
-        Dim fileParPath As String = Directory.GetParent(filePath).FullName
+        If Not tDBElement.FilenameSpecified Then Return
 
         'remove all known paths
         tDBElement.ActorThumbs.Clear()
@@ -92,108 +75,58 @@ Public Class Scanner
         tDBElement.Theme = New MediaContainers.Theme
         tDBElement.Trailer = New MediaContainers.Trailer
 
-        'first add files to filelists
-        If FileUtils.Common.isVideoTS(tDBElement.Filename) Then
-            parPath = FileUtils.Common.GetMainPath(tDBElement.Filename).FullName
-
-            Try
-                fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.Filename).FullName))
-                fList.AddRange(Directory.GetFiles(parPath))
-                If Master.eSettings.MovieUseNMJ Then
-                    fList.AddRange(Directory.GetFiles(Directory.GetParent(parPath).FullName))
-                End If
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        ElseIf FileUtils.Common.isBDRip(tDBElement.Filename) Then
-            parPath = FileUtils.Common.GetMainPath(tDBElement.Filename).FullName
-
-            Try
-                fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName))
-                fList.AddRange(Directory.GetFiles(parPath))
-                If Master.eSettings.MovieUseNMJ Then
-                    fList.AddRange(Directory.GetFiles(Directory.GetParent(parPath).FullName))
-                End If
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Else
-            parPath = FileUtils.Common.GetMainPath(tDBElement.Filename).FullName
-
-            If tDBElement.IsSingle Then
-                fList.AddRange(Directory.GetFiles(parPath))
-            Else
-                Try
-                    Dim sName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(tDBElement.Filename))
-                    fList.AddRange(Directory.GetFiles(parPath, String.Concat(sName, "*")))
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-            End If
-        End If
-
-        'secondly add files from special folders to filelists
-        If tDBElement.IsSingle Then
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainActorThumbs, bForced)
-                Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
-                If Directory.Exists(parDir) Then
-                    atList.AddRange(Directory.GetFiles(parDir))
-                End If
-            Next
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainExtrafanarts, bForced)
-                If Directory.Exists(a) Then
-                    efList.AddRange(Directory.GetFiles(a, "*.jpg"))
-                    If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
-                End If
-            Next
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainExtrathumbs, bForced)
-                If Directory.Exists(a) Then
-                    etList.AddRange(Directory.GetFiles(a, "*.jpg"))
-                    If etList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
-                End If
-            Next
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainSubtitle, bForced)
-                If Directory.Exists(a) Then
-                    sList.AddRange(Directory.GetFiles(a))
-                End If
-            Next
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme, bForced)
-                If Directory.Exists(Directory.GetParent(a).FullName) Then
-                    tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
-                End If
-            Next
-        End If
-
         'actor thumbs
-        If atList.Count > 0 Then
-            tDBElement.ActorThumbs.AddRange(atList)
-        End If
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainActorThumbs, bForced)
+            Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+            If Directory.Exists(parDir) Then
+                tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+            End If
+        Next
 
         'banner
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainBanner, bForced)
-            tDBElement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.Banner.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Banner.LocalFilePath = a
+                Exit For
+            End If
         Next
 
         'clearart
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainClearArt, bForced)
-            tDBElement.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.ClearArt.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.ClearArt.LocalFilePath = a
+                Exit For
+            End If
         Next
 
         'clearlogo
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainClearLogo, bForced)
-            tDBElement.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.ClearLogo.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.ClearLogo.LocalFilePath = a
+                Exit For
+            End If
         Next
 
         'discart
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainDiscArt, bForced)
-            tDBElement.ImagesContainer.DiscArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.DiscArt.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.DiscArt.LocalFilePath = a
+                Exit For
+            End If
         Next
 
         'extrafanarts
+        Dim efList As New List(Of String)
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainExtrafanarts, bForced)
+            If Directory.Exists(a) Then
+                Try
+                    efList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+                If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
+            End If
+        Next
         For Each ePath In efList
             tDBElement.ImagesContainer.Extrafanarts.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
         Next
@@ -202,6 +135,17 @@ Public Class Scanner
         End If
 
         'extrathumbs
+        Dim etList As New List(Of String)
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainExtrathumbs, bForced)
+            If Directory.Exists(a) Then
+                Try
+                    etList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+                If etList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
+            End If
+        Next
         For Each ePath In etList
             tDBElement.ImagesContainer.Extrathumbs.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
         Next
@@ -211,29 +155,47 @@ Public Class Scanner
 
         'fanart
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainFanart, bForced)
-            tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Fanart.LocalFilePath = a
+                Exit For
+            End If
         Next
 
         'landscape
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainLandscape, bForced)
-            tDBElement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.Landscape.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Landscape.LocalFilePath = a
+                Exit For
+            End If
         Next
 
         'nfo
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainNFO, bForced)
-            tDBElement.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.NfoPathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.NfoPath = a
+                Exit For
+            End If
         Next
 
         'poster
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainPoster, bForced)
-            tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Poster.LocalFilePath = a
+                Exit For
+            End If
         Next
 
         'subtitles (external)
+        Dim sList As New List(Of String)
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainSubtitle, bForced)
+            If Directory.Exists(a) Then
+                Try
+                    sList.AddRange(Directory.GetFiles(a, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.Filename), "*")))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+            End If
+        Next
         For Each fFile As String In sList
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
                 If fFile.ToLower.EndsWith(ext) Then
@@ -244,26 +206,26 @@ Public Class Scanner
         Next
 
         'theme
-        If String.IsNullOrEmpty(tDBElement.Theme.LocalFilePath) Then
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme, bForced)
-                For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                    tDBElement.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                    If tDBElement.Theme.LocalFilePathSpecified Then Exit For
-                Next
-                If tDBElement.Theme.LocalFilePathSpecified Then Exit For
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme, bForced)
+            For Each ext As String In Master.eSettings.FileSystemValidThemeExts
+                If File.Exists(String.Concat(a, ext)) Then
+                    tDBElement.Theme.LocalFilePath = String.Concat(a, ext)
+                    Exit For
+                End If
             Next
-        End If
+            If tDBElement.Theme.LocalFilePathSpecified Then Exit For
+        Next
 
         'trailer
-        If String.IsNullOrEmpty(tDBElement.Trailer.LocalFilePath) Then
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTrailer, bForced)
-                For Each t As String In Master.eSettings.FileSystemValidExts
-                    tDBElement.Trailer.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                    If tDBElement.Trailer.LocalFilePathSpecified Then Exit For
-                Next
-                If tDBElement.Trailer.LocalFilePathSpecified Then Exit For
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTrailer, bForced)
+            For Each ext As String In Master.eSettings.FileSystemValidExts
+                If File.Exists(String.Concat(a, ext)) Then
+                    tDBElement.Trailer.LocalFilePath = String.Concat(a, ext)
+                    Exit For
+                End If
             Next
-        End If
+            If tDBElement.Trailer.LocalFilePathSpecified Then Exit For
+        Next
     End Sub
 
     ''' <summary>
@@ -341,10 +303,7 @@ Public Class Scanner
     End Sub
 
     Public Sub GetFolderContents_TVEpisode(ByRef tDBElement As Database.DBElement)
-        If String.IsNullOrEmpty(tDBElement.Filename) Then Return
-
-        Dim fName As String = String.Empty
-        Dim fList As New List(Of String)
+        If Not tDBElement.FilenameSpecified Then Return
 
         'remove all known paths
         tDBElement.ActorThumbs.Clear()
@@ -352,43 +311,56 @@ Public Class Scanner
         tDBElement.NfoPath = String.Empty
         tDBElement.Subtitles = New List(Of MediaContainers.Subtitle)
 
-        Try
-            fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.Filename).FullName, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.Filename), "*.*")))
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        'episode actor thumbs
+        'actor thumbs
         For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeActorThumbs)
             Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
             If Directory.Exists(parDir) Then
-                tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                Try
+                    tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
             End If
         Next
 
-        'episode fanart
+        'fanart
         For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeFanart)
-            tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Fanart.LocalFilePath = a
+                Exit For
+            End If
         Next
 
-        'episode poster
-        For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodePoster)
-            tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
-        Next
-
-        'episode NFO
+        'nfo
         For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeNFO)
-            tDBElement.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.NfoPathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.NfoPath = a
+                Exit For
+            End If
+        Next
+
+        'poster
+        For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodePoster)
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Poster.LocalFilePath = a
+                Exit For
+            End If
         Next
 
         'subtitles (external)
-        For Each fFile As String In fList
+        Dim sList As New List(Of String)
+        For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeSubtitle)
+            If Directory.Exists(a) Then
+                Try
+                    sList.AddRange(Directory.GetFiles(a, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.Filename), "*")))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+            End If
+        Next
+        For Each fFile As String In sList
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
-                Dim FullFilePathWithoutExt As String = Path.Combine(Directory.GetParent(tDBElement.Filename).FullName, Path.GetFileNameWithoutExtension(tDBElement.Filename)).ToLower
-                If fFile.ToLower.StartsWith(FullFilePathWithoutExt) AndAlso fFile.ToLower.EndsWith(ext) Then
+                If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
                     tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
                 End If
@@ -398,80 +370,79 @@ Public Class Scanner
 
     Public Sub GetFolderContents_TVSeason(ByRef tDBElement As Database.DBElement)
         Dim bIsAllSeasons As Boolean = tDBElement.TVSeason.IsAllSeasons
-        Dim strSeasonPath As String = String.Empty
-        Dim strShowPath As String = tDBElement.ShowPath
-        Dim bInside As Boolean = False
-        Dim fList As New List(Of String)
 
         'remove all known paths
         tDBElement.ImagesContainer = New MediaContainers.ImagesContainer
 
-        'check if there is a season directory
-        strSeasonPath = Functions.GetSeasonDirectoryFromShowPath(strShowPath, tDBElement.TVSeason.Season)
-        If Not String.IsNullOrEmpty(strSeasonPath) Then 'If Functions.IsSeasonDirectory(Directory.GetParent(TVDB.Filename).FullName) Then
-            bInside = True
-        End If
-
-        Try
-            If bInside Then
-                fList.AddRange(Directory.GetFiles(strSeasonPath))
-                fList.AddRange(Directory.GetFiles(strShowPath))
-            Else
-                fList.AddRange(Directory.GetFiles(strShowPath))
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        'season banner
-        If bIsAllSeasons Then 'all-seasons
+        'banner
+        If bIsAllSeasons Then
+            'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsBanner)
-                tDBElement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If tDBElement.ImagesContainer.Banner.LocalFilePathSpecified Then Exit For
+                If File.Exists(a) Then
+                    tDBElement.ImagesContainer.Banner.LocalFilePath = a
+                    Exit For
+                End If
             Next
         Else
             For Each a In FileUtils.GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonBanner)
-                tDBElement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If tDBElement.ImagesContainer.Banner.LocalFilePathSpecified Then Exit For
+                If File.Exists(a) Then
+                    tDBElement.ImagesContainer.Banner.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
 
-        'season fanart 
-        If bIsAllSeasons Then 'all-seasons
+        'fanart 
+        If bIsAllSeasons Then
+            'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsFanart)
-                tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
+                If File.Exists(a) Then
+                    tDBElement.ImagesContainer.Fanart.LocalFilePath = a
+                    Exit For
+                End If
             Next
         Else
             For Each a In FileUtils.GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonFanart)
-                tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
+                If File.Exists(a) Then
+                    tDBElement.ImagesContainer.Fanart.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
 
-        'season landscape
-        If bIsAllSeasons Then 'all-seasons
+        'landscape
+        If bIsAllSeasons Then
+            'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsLandscape)
-                tDBElement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If tDBElement.ImagesContainer.Landscape.LocalFilePathSpecified Then Exit For
+                If File.Exists(a) Then
+                    tDBElement.ImagesContainer.Landscape.LocalFilePath = a
+                    Exit For
+                End If
             Next
         Else
             For Each a In FileUtils.GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonLandscape)
-                tDBElement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If tDBElement.ImagesContainer.Landscape.LocalFilePathSpecified Then Exit For
+                If File.Exists(a) Then
+                    tDBElement.ImagesContainer.Landscape.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
 
-        'season poster
-        If bIsAllSeasons Then 'all-seasons
+        'poster
+        If bIsAllSeasons Then
+            'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsPoster)
-                tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
+                If File.Exists(a) Then
+                    tDBElement.ImagesContainer.Poster.LocalFilePath = a
+                    Exit For
+                End If
             Next
         Else
             For Each a In FileUtils.GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonPoster)
-                tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
+                If File.Exists(a) Then
+                    tDBElement.ImagesContainer.Poster.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
     End Sub
@@ -480,9 +451,6 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="tDBElement">TVShowContainer object.</param>
     Public Sub GetFolderContents_TVShow(ByRef tDBElement As Database.DBElement)
-        Dim ShowPath As String = tDBElement.ShowPath
-        Dim efList As New List(Of String)
-        Dim fList As New List(Of String)
 
         'remove all known paths
         tDBElement.ActorThumbs.Clear()
@@ -491,52 +459,62 @@ Public Class Scanner
         tDBElement.NfoPath = String.Empty
         tDBElement.Theme = New MediaContainers.Theme
 
-        Try
-            fList.AddRange(Directory.GetFiles(tDBElement.ShowPath))
-
-            For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainExtrafanarts)
-                If Directory.Exists(a) Then
-                    efList.AddRange(Directory.GetFiles(a, "*.jpg"))
-                    If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        'show actor thumbs
+        'actor thumbs
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainActorThumbs)
             Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
             If Directory.Exists(parDir) Then
-                tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                Try
+                    tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
             End If
         Next
 
-        'show banner
+        'banner
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainBanner)
-            tDBElement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.Banner.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Banner.LocalFilePath = a
+                Exit For
+            End If
         Next
 
-        'show characterart
+        'characterart
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainCharacterArt)
-            tDBElement.ImagesContainer.CharacterArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.CharacterArt.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.CharacterArt.LocalFilePath = a
+                Exit For
+            End If
         Next
 
-        'show clearart
+        'clearart
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainClearArt)
-            tDBElement.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.ClearArt.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.ClearArt.LocalFilePath = a
+                Exit For
+            End If
         Next
 
-        'show clearlogo
+        'clearlogo
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainClearLogo)
-            tDBElement.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.ClearLogo.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.ClearLogo.LocalFilePath = a
+                Exit For
+            End If
         Next
 
-        'show extrafanarts
+        'extrafanarts
+        Dim efList As New List(Of String)
+        For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainExtrafanarts)
+            If Directory.Exists(a) Then
+                Try
+                    efList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+                If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
+            End If
+        Next
         For Each ePath In efList
             tDBElement.ImagesContainer.Extrafanarts.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
         Next
@@ -544,35 +522,45 @@ Public Class Scanner
             tDBElement.ExtrafanartsPath = Directory.GetParent(efList.Item(0)).FullName
         End If
 
-        'show fanart
+        'fanart
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainFanart)
-            tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Fanart.LocalFilePath = a
+                Exit For
+            End If
         Next
 
-        'show landscape
+        'landscape
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainLandscape)
-            tDBElement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.Landscape.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Landscape.LocalFilePath = a
+                Exit For
+            End If
         Next
 
-        'show NFO
+        'nfo
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainNFO)
-            tDBElement.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.NfoPathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.NfoPath = a
+                Exit For
+            End If
         Next
 
-        'show poster
+        'poster
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainPoster)
-            tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Poster.LocalFilePath = a
+                Exit For
+            End If
         Next
 
-        'show theme
+        'theme
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainTheme)
-            For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                tDBElement.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                If tDBElement.Theme.LocalFilePathSpecified Then Exit For
+            For Each ext As String In Master.eSettings.FileSystemValidThemeExts
+                If File.Exists(String.Concat(a, ext)) Then
+                    tDBElement.Theme.LocalFilePath = String.Concat(a, ext)
+                    Exit For
+                End If
             Next
             If tDBElement.Theme.LocalFilePathSpecified Then Exit For
         Next
@@ -1492,7 +1480,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sSource"></param>
     ''' <param name="sPath">Specific Path to scan</param>
-    Public Sub ScanSourceDirectory_TV(ByVal sSource As Database.DBSource, Optional ByVal sPath As String = "")
+    Public Sub ScanSourceDirectory_TV(ByVal sSource As Database.DBSource, Optional ByVal sPath As String = "", Optional forcepathastvshowfolder As Boolean = False)
         Dim ScanPath As String = String.Empty
 
         If Not String.IsNullOrEmpty(sPath) Then
@@ -1509,7 +1497,7 @@ Public Class Scanner
             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
 
             'tv show folder as a source
-            If sSource.IsSingle Then
+            If sSource.IsSingle OrElse forcepathastvshowfolder Then
                 currShowContainer = New Database.DBElement(Enums.ContentType.TVShow)
                 currShowContainer.EpisodeSorting = sSource.EpisodeSorting
                 currShowContainer.Language = sSource.Language
@@ -1705,6 +1693,15 @@ Public Class Scanner
                             If Not Result = Enums.ScannerEventType.None Then
                                 bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Result, .ID = currShowContainer.ID, .Message = currShowContainer.TVShow.Title})
                             End If
+                        Else
+                            'add a new tv show
+                            Dim nDInfo = New DirectoryInfo(Args.Folder)
+                            While nDInfo.Parent IsNot Nothing AndAlso Not nDInfo.Parent.FullName.ToLower = eSource.Path.ToLower
+                                nDInfo = nDInfo.Parent
+                            End While
+                            If nDInfo.Parent IsNot Nothing AndAlso nDInfo.Parent.FullName.ToLower = eSource.Path.ToLower Then
+                                ScanSourceDirectory_TV(eSource, nDInfo.FullName, True)
+                            End If
                         End If
                     End If
                     Args.Scan.TV = True
@@ -1872,145 +1869,33 @@ Public Class Scanner
 
     Public Class EpisodeItem
 
-#Region "Fields"
-
-        Private _aired As String
-        Private _bydate As Boolean
-        Private _episode As Integer
-        Private _idepisode As Long
-        Private _season As Integer
-        Private _subepisode As Integer
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property Aired() As String
-            Get
-                Return _aired
-            End Get
-            Set(ByVal value As String)
-                _aired = value
-            End Set
-        End Property
+        Public Property Aired() As String = String.Empty
 
-        Public Property byDate() As Boolean
-            Get
-                Return _bydate
-            End Get
-            Set(ByVal value As Boolean)
-                _bydate = value
-            End Set
-        End Property
+        Public Property byDate() As Boolean = False
 
-        Public Property Episode() As Integer
-            Get
-                Return _episode
-            End Get
-            Set(ByVal value As Integer)
-                _episode = value
-            End Set
-        End Property
+        Public Property Episode() As Integer = -1
 
-        Public Property idEpisode() As Long
-            Get
-                Return _idepisode
-            End Get
-            Set(ByVal value As Long)
-                _idepisode = value
-            End Set
-        End Property
+        Public Property idEpisode() As Long = -1
 
-        Public Property Season() As Integer
-            Get
-                Return _season
-            End Get
-            Set(ByVal value As Integer)
-                _season = value
-            End Set
-        End Property
+        Public Property Season() As Integer = -2
 
-        Public Property SubEpisode() As Integer
-            Get
-                Return _subepisode
-            End Get
-            Set(ByVal value As Integer)
-                _subepisode = value
-            End Set
-        End Property
+        Public Property SubEpisode() As Integer = -1
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _aired = String.Empty
-            _bydate = False
-            _episode = -1
-            _idepisode = -1
-            _season = -2
-            _subepisode = -1
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
     Public Class SeasonAndEpisodeItems
 
-#Region "Fields"
-
-        Private _episodes As List(Of Database.DBElement)
-        Private _seasons As List(Of Integer)
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property Episodes() As List(Of Database.DBElement)
-            Get
-                Return _episodes
-            End Get
-            Set(ByVal value As List(Of Database.DBElement))
-                _episodes = value
-            End Set
-        End Property
+        Public Property Episodes() As List(Of Database.DBElement) = New List(Of Database.DBElement)
 
-        Public Property Seasons() As List(Of Integer)
-            Get
-                Return _seasons
-            End Get
-            Set(ByVal value As List(Of Integer))
-                _seasons = value
-            End Set
-        End Property
+        Public Property Seasons() As List(Of Integer) = New List(Of Integer)
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _episodes = New List(Of Database.DBElement)
-            _seasons = New List(Of Integer)
-        End Sub
-
-#End Region 'Methods
 
     End Class
 

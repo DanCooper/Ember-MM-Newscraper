@@ -2120,6 +2120,12 @@ Namespace FileUtils
                             Next
                         End If
                     End With
+
+                Case Enums.ModifierType.EpisodeSubtitle
+                    With Master.eSettings
+                        FilenameList.Add(Path.Combine(fEpisodeParentPath, "subs"))
+                        FilenameList.Add(fEpisodeParentPath)
+                    End With
             End Select
 
             FilenameList = FilenameList.Distinct().ToList() 'remove double entries

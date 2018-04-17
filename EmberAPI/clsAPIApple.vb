@@ -166,52 +166,15 @@ Namespace Apple
 
     Public Class VideoLinkItem
 
-#Region "Fields"
-
-        Private _Description As String
-        Private _FormatCodec As Enums.TrailerVideoCodec
-        Private _FormatQuality As Enums.TrailerVideoQuality
-        Private _URL As String
-
-#End Region 'Fields
-
 #Region "Properties"
 
-        Public Property Description() As String
-            Get
-                Return _Description
-            End Get
-            Set(ByVal value As String)
-                _Description = value
-            End Set
-        End Property
+        Public Property Description() As String = String.Empty
 
-        Public Property URL() As String
-            Get
-                Return _URL
-            End Get
-            Set(ByVal value As String)
-                _URL = value
-            End Set
-        End Property
+        Public Property URL() As String = String.Empty
 
-        Friend Property FormatCodec() As Enums.TrailerVideoCodec
-            Get
-                Return _FormatCodec
-            End Get
-            Set(ByVal value As Enums.TrailerVideoCodec)
-                _FormatCodec = value
-            End Set
-        End Property
+        Friend Property FormatCodec() As Enums.TrailerVideoCodec = Enums.TrailerVideoCodec.UNKNOWN
 
-        Friend Property FormatQuality() As Enums.TrailerVideoQuality
-            Get
-                Return _FormatQuality
-            End Get
-            Set(ByVal value As Enums.TrailerVideoQuality)
-                _FormatQuality = value
-            End Set
-        End Property
+        Friend Property FormatQuality() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.UNKNOWN
 
 #End Region 'Properties
 

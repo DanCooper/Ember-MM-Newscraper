@@ -117,6 +117,12 @@ Public Class clsAPITMDB
         End Set
     End Property
 
+    Public ReadOnly Property IsClientCreated As Boolean
+        Get
+            Return _client IsNot Nothing
+        End Get
+    End Property
+
 #End Region 'Properties
 
 #Region "Enumerations"
@@ -295,6 +301,7 @@ Public Class clsAPITMDB
         If String.IsNullOrEmpty(strID) Then Return Nothing
 
         Dim nMovie As New MediaContainers.Movie
+        Dim intTMDBID As Integer = -1
 
         If bwTMDB.CancellationPending Then Return Nothing
 
@@ -309,14 +316,16 @@ Public Class clsAPITMDB
             Else
                 APIResultE = APIResult
             End If
-        Else
+        ElseIf Integer.TryParse(strID, intTMDBID) Then
             'search movie by TMDB ID
-            APIResult = Task.Run(Function() _client.GetMovieAsync(CInt(strID), TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
+            APIResult = Task.Run(Function() _client.GetMovieAsync(intTMDBID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
             If _addonSettings.FallBackEng Then
-                APIResultE = Task.Run(Function() _clientE.GetMovieAsync(CInt(strID), TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
+                APIResultE = Task.Run(Function() _clientE.GetMovieAsync(intTMDBID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
             Else
                 APIResultE = APIResult
             End If
+        Else
+            Return Nothing
         End If
 
         Dim Result As TMDbLib.Objects.Movies.Movie = APIResult.Result
@@ -607,72 +616,75 @@ Public Class clsAPITMDB
         If String.IsNullOrEmpty(strID) OrElse Not Integer.TryParse(strID, 0) Then Return Nothing
 
         Dim nMovieSet As New MediaContainers.MovieSet
+        Dim intTMDBID As Integer = -1
 
-        If bwTMDB.CancellationPending Then Return Nothing
+        If Integer.TryParse(strID, intTMDBID) Then
+            If bwTMDB.CancellationPending Then Return Nothing
 
-        Dim APIResult As Task(Of TMDbLib.Objects.Collections.Collection)
-        Dim APIResultE As Task(Of TMDbLib.Objects.Collections.Collection)
+            Dim APIResult As Task(Of TMDbLib.Objects.Collections.Collection)
+            Dim APIResultE As Task(Of TMDbLib.Objects.Collections.Collection)
 
-        APIResult = Task.Run(Function() _client.GetCollectionAsync(CInt(strID)))
-        If _addonSettings.FallBackEng Then
-            APIResultE = Task.Run(Function() _clientE.GetCollectionAsync(CInt(strID)))
-        Else
-            APIResultE = APIResult
-        End If
+            APIResult = Task.Run(Function() _client.GetCollectionAsync(intTMDBID))
+            If _addonSettings.FallBackEng Then
+                APIResultE = Task.Run(Function() _clientE.GetCollectionAsync(intTMDBID))
+            Else
+                APIResultE = APIResult
+            End If
 
-        If APIResult Is Nothing OrElse APIResultE Is Nothing Then
-            Return Nothing
-        End If
+            If APIResult Is Nothing OrElse APIResultE Is Nothing Then
+                Return Nothing
+            End If
 
-        Dim Result As TMDbLib.Objects.Collections.Collection = APIResult.Result
-        Dim ResultE As TMDbLib.Objects.Collections.Collection = APIResultE.Result
+            Dim Result As TMDbLib.Objects.Collections.Collection = APIResult.Result
+            Dim ResultE As TMDbLib.Objects.Collections.Collection = APIResultE.Result
 
-        If (Result Is Nothing AndAlso Not _addonSettings.FallBackEng) OrElse (Result Is Nothing AndAlso ResultE Is Nothing) OrElse
+            If (Result Is Nothing AndAlso Not _addonSettings.FallBackEng) OrElse (Result Is Nothing AndAlso ResultE Is Nothing) OrElse
                 (Not Result.Id > 0 AndAlso Not _addonSettings.FallBackEng) OrElse (Not Result.Id > 0 AndAlso Not ResultE.Id > 0) Then
-            logger.Warn(String.Format("[TMDB_Data] [Abort] No API result for TMDB Collection ID [{0}]", strID))
+                logger.Warn(String.Format("[TMDB_Data] [Abort] No API result for TMDB Collection ID [{0}]", strID))
+                Return Nothing
+            End If
+
+            nMovieSet.TMDB = CStr(Result.Id)
+
+            If bwTMDB.CancellationPending Or Result Is Nothing Then Return Nothing
+
+            'Plot
+            If FilteredOptions.bMainPlot Then
+                If Result.Overview Is Nothing OrElse (Result.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Overview)) Then
+                    If _addonSettings.FallBackEng AndAlso ResultE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Overview) Then
+                        nMovieSet.Plot = HttpUtility.HtmlDecode(ResultE.Overview)
+                    End If
+                Else
+                    nMovieSet.Plot = HttpUtility.HtmlDecode(Result.Overview)
+                End If
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'Posters (only for SearchResult dialog, auto fallback to "en" by TMDB)
+            If GetPoster Then
+                If Result.PosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(Result.PosterPath) Then
+                    _sPoster = String.Concat(_client.Config.Images.BaseUrl, "w92", Result.PosterPath)
+                Else
+                    _sPoster = String.Empty
+                End If
+            End If
+
+            'Title
+            If FilteredOptions.bMainTitle Then
+                If Result.Name Is Nothing OrElse (Result.Name IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Name)) Then
+                    If _addonSettings.FallBackEng AndAlso ResultE.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Name) Then
+                        'nMovieSet.Title = MovieSetE.Name
+                        nMovieSet.Title = ResultE.Name
+                    End If
+                Else
+                    'nMovieSet.Title = MovieSet.Name
+                    nMovieSet.Title = Result.Name
+                End If
+            End If
+        Else
             Return Nothing
         End If
-
-        nMovieSet.TMDB = CStr(Result.Id)
-
-        If bwTMDB.CancellationPending Or Result Is Nothing Then Return Nothing
-
-        'Plot
-        If FilteredOptions.bMainPlot Then
-            If Result.Overview Is Nothing OrElse (Result.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Overview)) Then
-                If _addonSettings.FallBackEng AndAlso ResultE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Overview) Then
-                    nMovieSet.Plot = HttpUtility.HtmlDecode(ResultE.Overview)
-                End If
-            Else
-                nMovieSet.Plot = HttpUtility.HtmlDecode(Result.Overview)
-            End If
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Posters (only for SearchResult dialog, auto fallback to "en" by TMDB)
-        If GetPoster Then
-            If Result.PosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(Result.PosterPath) Then
-                _sPoster = String.Concat(_client.Config.Images.BaseUrl, "w92", Result.PosterPath)
-            Else
-                _sPoster = String.Empty
-            End If
-        End If
-
-        'Title
-        If FilteredOptions.bMainTitle Then
-            If Result.Name Is Nothing OrElse (Result.Name IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Name)) Then
-                If _addonSettings.FallBackEng AndAlso ResultE.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Name) Then
-                    'nMovieSet.Title = MovieSetE.Name
-                    nMovieSet.Title = ResultE.Name
-                End If
-            Else
-                'nMovieSet.Title = MovieSet.Name
-                nMovieSet.Title = Result.Name
-            End If
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
 
         Return nMovieSet
     End Function
@@ -686,239 +698,244 @@ Public Class clsAPITMDB
         If String.IsNullOrEmpty(strID) Then Return Nothing
 
         Dim nTVShow As New MediaContainers.TVShow
+        Dim intTMDBID As Integer = -1
 
-        If bwTMDB.CancellationPending Then Return Nothing
+        If Integer.TryParse(strID, intTMDBID) Then
+            If bwTMDB.CancellationPending Then Return Nothing
 
-        Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvShow)
-        Dim APIResultE As Task(Of TMDbLib.Objects.TvShows.TvShow)
+            Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvShow)
+            Dim APIResultE As Task(Of TMDbLib.Objects.TvShows.TvShow)
 
-        'search movie by TMDB ID
-        APIResult = Task.Run(Function() _client.GetTvShowAsync(CInt(strID), TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or TMDbLib.Objects.TvShows.TvShowMethods.Credits Or TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds))
-        If _addonSettings.FallBackEng Then
-            APIResultE = Task.Run(Function() _clientE.GetTvShowAsync(CInt(strID), TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or TMDbLib.Objects.TvShows.TvShowMethods.Credits Or TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds))
-        Else
-            APIResultE = APIResult
-        End If
-
-        If APIResult Is Nothing OrElse APIResultE Is Nothing Then
-            Return Nothing
-        End If
-
-        Dim Result As TMDbLib.Objects.TvShows.TvShow = APIResult.Result
-        Dim ResultE As TMDbLib.Objects.TvShows.TvShow = APIResultE.Result
-
-        If (Result Is Nothing AndAlso Not _addonSettings.FallBackEng) OrElse (Result Is Nothing AndAlso ResultE Is Nothing) OrElse
-                (Not Result.Id > 0 AndAlso Not _addonSettings.FallBackEng) OrElse (Not Result.Id > 0 AndAlso Not ResultE.Id > 0) Then
-            logger.Error(String.Format("Can't scrape or tv show not found: [{0}]", strID))
-            Return Nothing
-        End If
-
-        nTVShow.Scrapersource = "TMDB"
-
-        'IDs
-        nTVShow.TMDB = CStr(Result.Id)
-        If Result.ExternalIds.TvdbId IsNot Nothing Then nTVShow.TVDB = CStr(Result.ExternalIds.TvdbId)
-        If Result.ExternalIds.ImdbId IsNot Nothing Then nTVShow.IMDB = Result.ExternalIds.ImdbId
-
-        If bwTMDB.CancellationPending Or Result Is Nothing Then Return Nothing
-
-        'Actors
-        If FilteredOptions.bMainActors Then
-            If Result.Credits IsNot Nothing AndAlso Result.Credits.Cast IsNot Nothing Then
-                For Each aCast As TMDbLib.Objects.TvShows.Cast In Result.Credits.Cast
-                    nTVShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                           .Role = aCast.Character,
-                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                                                           .TMDB = CStr(aCast.Id)})
-                Next
-            End If
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Certifications
-        If FilteredOptions.bMainCertifications Then
-            If Result.ContentRatings IsNot Nothing AndAlso Result.ContentRatings.Results IsNot Nothing AndAlso Result.ContentRatings.Results.Count > 0 Then
-                For Each aCountry In Result.ContentRatings.Results
-                    If Not String.IsNullOrEmpty(aCountry.Rating) Then
-                        Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = aCountry.Iso_3166_1.ToLower)
-                        If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
-                            nTVShow.Certifications.Add(String.Concat(CertificationLanguage.name, ":", aCountry.Rating))
-                        Else
-                            logger.Warn("Unhandled certification language encountered: {0}", aCountry.Iso_3166_1.ToLower)
-                        End If
-                    End If
-                Next
-            End If
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Countries 'TODO: Change from OriginCountry to ProductionCountries (not yet supported by API)
-        'If FilteredOptions.bMainCountry Then
-        '    If Show.OriginCountry IsNot Nothing AndAlso Show.OriginCountry.Count > 0 Then
-        '        For Each aCountry As String In Show.OriginCountry
-        '            nShow.Countries.Add(aCountry)
-        '        Next
-        '    End If
-        'End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Creators
-        If FilteredOptions.bMainCreators Then
-            If Result.CreatedBy IsNot Nothing Then
-                For Each aCreator As TMDbLib.Objects.TvShows.CreatedBy In Result.CreatedBy
-                    nTVShow.Creators.Add(aCreator.Name)
-                Next
-            End If
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Genres
-        If FilteredOptions.bMainGenres Then
-            Dim aGenres As List(Of TMDbLib.Objects.General.Genre) = Nothing
-            If Result.Genres Is Nothing OrElse (Result.Genres IsNot Nothing AndAlso Result.Genres.Count = 0) Then
-                If _addonSettings.FallBackEng AndAlso ResultE.Genres IsNot Nothing AndAlso ResultE.Genres.Count > 0 Then
-                    aGenres = ResultE.Genres
-                End If
+            'search movie by TMDB ID
+            APIResult = Task.Run(Function() _client.GetTvShowAsync(CInt(intTMDBID), TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or TMDbLib.Objects.TvShows.TvShowMethods.Credits Or TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds))
+            If _addonSettings.FallBackEng Then
+                APIResultE = Task.Run(Function() _clientE.GetTvShowAsync(CInt(intTMDBID), TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or TMDbLib.Objects.TvShows.TvShowMethods.Credits Or TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds))
             Else
-                aGenres = Result.Genres
+                APIResultE = APIResult
             End If
 
-            If aGenres IsNot Nothing Then
-                For Each tGenre As TMDbLib.Objects.General.Genre In aGenres
-                    nTVShow.Genres.Add(tGenre.Name)
-                Next
+            If APIResult Is Nothing OrElse APIResultE Is Nothing Then
+                Return Nothing
             End If
-        End If
 
-        If bwTMDB.CancellationPending Then Return Nothing
+            Dim Result As TMDbLib.Objects.TvShows.TvShow = APIResult.Result
+            Dim ResultE As TMDbLib.Objects.TvShows.TvShow = APIResultE.Result
 
-        'OriginalTitle
-        If FilteredOptions.bMainOriginalTitle Then
-            If Result.OriginalName Is Nothing OrElse (Result.OriginalName IsNot Nothing AndAlso String.IsNullOrEmpty(Result.OriginalName)) Then
-                If _addonSettings.FallBackEng AndAlso ResultE.OriginalName IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.OriginalName) Then
+            If (Result Is Nothing AndAlso Not _addonSettings.FallBackEng) OrElse (Result Is Nothing AndAlso ResultE Is Nothing) OrElse
+                    (Not Result.Id > 0 AndAlso Not _addonSettings.FallBackEng) OrElse (Not Result.Id > 0 AndAlso Not ResultE.Id > 0) Then
+                logger.Error(String.Format("Can't scrape or tv show not found: [{0}]", strID))
+                Return Nothing
+            End If
+
+            nTVShow.Scrapersource = "TMDB"
+
+            'IDs
+            nTVShow.TMDB = CStr(Result.Id)
+            If Result.ExternalIds.TvdbId IsNot Nothing Then nTVShow.TVDB = CStr(Result.ExternalIds.TvdbId)
+            If Result.ExternalIds.ImdbId IsNot Nothing Then nTVShow.IMDB = Result.ExternalIds.ImdbId
+
+            If bwTMDB.CancellationPending Or Result Is Nothing Then Return Nothing
+
+            'Actors
+            If FilteredOptions.bMainActors Then
+                If Result.Credits IsNot Nothing AndAlso Result.Credits.Cast IsNot Nothing Then
+                    For Each aCast As TMDbLib.Objects.TvShows.Cast In Result.Credits.Cast
+                        nTVShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
+                                                                               .Role = aCast.Character,
+                                                                               .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
+                                                                               .TMDB = CStr(aCast.Id)})
+                    Next
+                End If
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'Certifications
+            If FilteredOptions.bMainCertifications Then
+                If Result.ContentRatings IsNot Nothing AndAlso Result.ContentRatings.Results IsNot Nothing AndAlso Result.ContentRatings.Results.Count > 0 Then
+                    For Each aCountry In Result.ContentRatings.Results
+                        If Not String.IsNullOrEmpty(aCountry.Rating) Then
+                            Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = aCountry.Iso_3166_1.ToLower)
+                            If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
+                                nTVShow.Certifications.Add(String.Concat(CertificationLanguage.name, ":", aCountry.Rating))
+                            Else
+                                logger.Warn("Unhandled certification language encountered: {0}", aCountry.Iso_3166_1.ToLower)
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'Countries 'TODO: Change from OriginCountry to ProductionCountries (not yet supported by API)
+            'If FilteredOptions.bMainCountry Then
+            '    If Show.OriginCountry IsNot Nothing AndAlso Show.OriginCountry.Count > 0 Then
+            '        For Each aCountry As String In Show.OriginCountry
+            '            nShow.Countries.Add(aCountry)
+            '        Next
+            '    End If
+            'End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'Creators
+            If FilteredOptions.bMainCreators Then
+                If Result.CreatedBy IsNot Nothing Then
+                    For Each aCreator As TMDbLib.Objects.TvShows.CreatedBy In Result.CreatedBy
+                        nTVShow.Creators.Add(aCreator.Name)
+                    Next
+                End If
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'Genres
+            If FilteredOptions.bMainGenres Then
+                Dim aGenres As List(Of TMDbLib.Objects.General.Genre) = Nothing
+                If Result.Genres Is Nothing OrElse (Result.Genres IsNot Nothing AndAlso Result.Genres.Count = 0) Then
+                    If _addonSettings.FallBackEng AndAlso ResultE.Genres IsNot Nothing AndAlso ResultE.Genres.Count > 0 Then
+                        aGenres = ResultE.Genres
+                    End If
+                Else
+                    aGenres = Result.Genres
+                End If
+
+                If aGenres IsNot Nothing Then
+                    For Each tGenre As TMDbLib.Objects.General.Genre In aGenres
+                        nTVShow.Genres.Add(tGenre.Name)
+                    Next
+                End If
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'OriginalTitle
+            If FilteredOptions.bMainOriginalTitle Then
+                If Result.OriginalName Is Nothing OrElse (Result.OriginalName IsNot Nothing AndAlso String.IsNullOrEmpty(Result.OriginalName)) Then
+                    If _addonSettings.FallBackEng AndAlso ResultE.OriginalName IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.OriginalName) Then
+                        nTVShow.OriginalTitle = ResultE.OriginalName
+                    End If
+                Else
                     nTVShow.OriginalTitle = ResultE.OriginalName
                 End If
-            Else
-                nTVShow.OriginalTitle = ResultE.OriginalName
             End If
-        End If
 
-        If bwTMDB.CancellationPending Then Return Nothing
+            If bwTMDB.CancellationPending Then Return Nothing
 
-        'Plot
-        If FilteredOptions.bMainPlot Then
-            If Result.Overview Is Nothing OrElse (Result.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Overview)) Then
-                If _addonSettings.FallBackEng AndAlso ResultE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Overview) Then
-                    nTVShow.Plot = ResultE.Overview
-                End If
-            Else
-                nTVShow.Plot = Result.Overview
-            End If
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Posters (only for SearchResult dialog, auto fallback to "en" by TMDB)
-        If GetPoster Then
-            If Result.PosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(Result.PosterPath) Then
-                _sPoster = String.Concat(_client.Config.Images.BaseUrl, "w92", Result.PosterPath)
-            Else
-                _sPoster = String.Empty
-            End If
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Premiered
-        If FilteredOptions.bMainPremiered Then
-            Dim ScrapedDate As String = String.Empty
-            If Result.FirstAirDate Is Nothing OrElse (Result.FirstAirDate IsNot Nothing AndAlso String.IsNullOrEmpty(CStr(Result.FirstAirDate))) Then
-                If _addonSettings.FallBackEng AndAlso ResultE.FirstAirDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(ResultE.FirstAirDate)) Then
-                    ScrapedDate = CStr(ResultE.FirstAirDate)
-                End If
-            Else
-                ScrapedDate = CStr(Result.FirstAirDate)
-            End If
-            If Not String.IsNullOrEmpty(ScrapedDate) Then
-                Dim RelDate As Date
-                If Date.TryParse(ScrapedDate, RelDate) Then
-                    'always save date in same date format not depending on users language setting!
-                    nTVShow.Premiered = RelDate.ToString("yyyy-MM-dd")
+            'Plot
+            If FilteredOptions.bMainPlot Then
+                If Result.Overview Is Nothing OrElse (Result.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Overview)) Then
+                    If _addonSettings.FallBackEng AndAlso ResultE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Overview) Then
+                        nTVShow.Plot = ResultE.Overview
+                    End If
                 Else
-                    nTVShow.Premiered = ScrapedDate
+                    nTVShow.Plot = Result.Overview
                 End If
             End If
-        End If
 
-        If bwTMDB.CancellationPending Then Return Nothing
+            If bwTMDB.CancellationPending Then Return Nothing
 
-        'Rating
-        If FilteredOptions.bMainRating Then
-            nTVShow.Rating = CStr(Result.VoteAverage)
-            nTVShow.Votes = CStr(Result.VoteCount)
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Runtime
-        If FilteredOptions.bMainRuntime Then
-            If Result.EpisodeRunTime Is Nothing OrElse Result.EpisodeRunTime.Count = 0 Then
-                If _addonSettings.FallBackEng AndAlso ResultE.EpisodeRunTime IsNot Nothing AndAlso ResultE.EpisodeRunTime.Count > 0 Then
-                    nTVShow.Runtime = CStr(ResultE.EpisodeRunTime.Item(0))
+            'Posters (only for SearchResult dialog, auto fallback to "en" by TMDB)
+            If GetPoster Then
+                If Result.PosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(Result.PosterPath) Then
+                    _sPoster = String.Concat(_client.Config.Images.BaseUrl, "w92", Result.PosterPath)
+                Else
+                    _sPoster = String.Empty
                 End If
-            Else
-                nTVShow.Runtime = CStr(Result.EpisodeRunTime.Item(0))
             End If
-        End If
 
-        If bwTMDB.CancellationPending Then Return Nothing
+            If bwTMDB.CancellationPending Then Return Nothing
 
-        'Status
-        If FilteredOptions.bMainStatus Then
-            If Result.Status Is Nothing OrElse (Result.Status IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Status)) Then
-                If _addonSettings.FallBackEng AndAlso ResultE.Status IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Status) Then
-                    nTVShow.Status = ResultE.Status
+            'Premiered
+            If FilteredOptions.bMainPremiered Then
+                Dim ScrapedDate As String = String.Empty
+                If Result.FirstAirDate Is Nothing OrElse (Result.FirstAirDate IsNot Nothing AndAlso String.IsNullOrEmpty(CStr(Result.FirstAirDate))) Then
+                    If _addonSettings.FallBackEng AndAlso ResultE.FirstAirDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(ResultE.FirstAirDate)) Then
+                        ScrapedDate = CStr(ResultE.FirstAirDate)
+                    End If
+                Else
+                    ScrapedDate = CStr(Result.FirstAirDate)
                 End If
-            Else
-                nTVShow.Status = Result.Status
+                If Not String.IsNullOrEmpty(ScrapedDate) Then
+                    Dim RelDate As Date
+                    If Date.TryParse(ScrapedDate, RelDate) Then
+                        'always save date in same date format not depending on users language setting!
+                        nTVShow.Premiered = RelDate.ToString("yyyy-MM-dd")
+                    Else
+                        nTVShow.Premiered = ScrapedDate
+                    End If
+                End If
             End If
-        End If
 
-        If bwTMDB.CancellationPending Then Return Nothing
+            If bwTMDB.CancellationPending Then Return Nothing
 
-        'Studios
-        If FilteredOptions.bMainStudios Then
-            If Result.Networks IsNot Nothing AndAlso Result.Networks.Count > 0 Then
-                For Each aStudio In Result.Networks
-                    nTVShow.Studios.Add(aStudio.Name)
+            'Rating
+            If FilteredOptions.bMainRating Then
+                nTVShow.Rating = CStr(Result.VoteAverage)
+                nTVShow.Votes = CStr(Result.VoteCount)
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'Runtime
+            If FilteredOptions.bMainRuntime Then
+                If Result.EpisodeRunTime Is Nothing OrElse Result.EpisodeRunTime.Count = 0 Then
+                    If _addonSettings.FallBackEng AndAlso ResultE.EpisodeRunTime IsNot Nothing AndAlso ResultE.EpisodeRunTime.Count > 0 Then
+                        nTVShow.Runtime = CStr(ResultE.EpisodeRunTime.Item(0))
+                    End If
+                Else
+                    nTVShow.Runtime = CStr(Result.EpisodeRunTime.Item(0))
+                End If
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'Status
+            If FilteredOptions.bMainStatus Then
+                If Result.Status Is Nothing OrElse (Result.Status IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Status)) Then
+                    If _addonSettings.FallBackEng AndAlso ResultE.Status IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Status) Then
+                        nTVShow.Status = ResultE.Status
+                    End If
+                Else
+                    nTVShow.Status = Result.Status
+                End If
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'Studios
+            If FilteredOptions.bMainStudios Then
+                If Result.Networks IsNot Nothing AndAlso Result.Networks.Count > 0 Then
+                    For Each aStudio In Result.Networks
+                        nTVShow.Studios.Add(aStudio.Name)
+                    Next
+                End If
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'Title
+            If FilteredOptions.bMainTitle Then
+                If Result.Name Is Nothing OrElse (Result.Name IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Name)) Then
+                    If _addonSettings.FallBackEng AndAlso ResultE.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Name) Then
+                        nTVShow.Title = ResultE.Name
+                    End If
+                Else
+                    nTVShow.Title = Result.Name
+                End If
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            'Seasons and Episodes
+            If ScrapeModifiers.withEpisodes OrElse ScrapeModifiers.withSeasons Then
+                For Each aSeason As TMDbLib.Objects.Search.SearchTvSeason In Result.Seasons
+                    GetInfo_TVSeason(nTVShow, Result.Id, aSeason.SeasonNumber, ScrapeModifiers, FilteredOptions)
                 Next
             End If
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Title
-        If FilteredOptions.bMainTitle Then
-            If Result.Name Is Nothing OrElse (Result.Name IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Name)) Then
-                If _addonSettings.FallBackEng AndAlso ResultE.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Name) Then
-                    nTVShow.Title = ResultE.Name
-                End If
-            Else
-                nTVShow.Title = Result.Name
-            End If
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Seasons and Episodes
-        If ScrapeModifiers.withEpisodes OrElse ScrapeModifiers.withSeasons Then
-            For Each aSeason As TMDbLib.Objects.Search.SearchTvSeason In Result.Seasons
-                GetInfo_TVSeason(nTVShow, Result.Id, aSeason.SeasonNumber, ScrapeModifiers, FilteredOptions)
-            Next
+        Else
+            Return Nothing
         End If
 
         Return nTVShow
@@ -1357,49 +1374,47 @@ Public Class clsAPITMDB
         Return Nothing
     End Function
 
-    Public Sub GetSearchMovieInfoAsync(ByVal tmdbID As String, ByVal Movie As MediaContainers.Movie, ByRef FilteredOptions As Structures.ScrapeOptions)
+    Public Sub GetSearchMovieInfoAsync(ByVal tmdbID As String, ByRef FilteredOptions As Structures.ScrapeOptions)
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
         If Not bwTMDB.IsBusy Then
             bwTMDB.WorkerReportsProgress = False
             bwTMDB.WorkerSupportsCancellation = True
             bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails_Movie,
-                  .Parameter = tmdbID, .Movie = Movie, .ScrapeOptions = FilteredOptions})
+                  .Parameter = tmdbID, .ScrapeOptions = FilteredOptions})
         End If
     End Sub
 
-    Public Sub GetSearchMovieSetInfoAsync(ByVal tmdbColID As String, ByVal MovieSet As MediaContainers.MovieSet, ByRef FilteredOptions As Structures.ScrapeOptions)
+    Public Sub GetSearchMovieSetInfoAsync(ByVal tmdbColID As String, ByRef FilteredOptions As Structures.ScrapeOptions)
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
         If Not bwTMDB.IsBusy Then
             bwTMDB.WorkerReportsProgress = False
             bwTMDB.WorkerSupportsCancellation = True
             bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails_MovieSet,
-                  .Parameter = tmdbColID, .MovieSet = MovieSet, .ScrapeOptions = FilteredOptions})
+                  .Parameter = tmdbColID, .ScrapeOptions = FilteredOptions})
         End If
     End Sub
 
-    Public Sub GetSearchTVShowInfoAsync(ByVal tmdbID As String, ByVal Show As MediaContainers.TVShow, ByRef FilteredOptions As Structures.ScrapeOptions)
+    Public Sub GetSearchTVShowInfoAsync(ByVal tmdbID As String, ByRef FilteredOptions As Structures.ScrapeOptions)
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
         If Not bwTMDB.IsBusy Then
             bwTMDB.WorkerReportsProgress = False
             bwTMDB.WorkerSupportsCancellation = True
             bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails_TVShow,
-                  .Parameter = tmdbID, .TVShow = Show, .ScrapeOptions = FilteredOptions})
+                  .Parameter = tmdbID, .ScrapeOptions = FilteredOptions})
         End If
     End Sub
 
     Public Sub SearchAsync_Movie(ByVal sMovie As String, ByRef filterOptions As Structures.ScrapeOptions, Optional ByVal sYear As String = "")
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-        Dim tYear As Integer = 0
+        Dim intYear As Integer
 
-        If Not String.IsNullOrEmpty(sYear) AndAlso Integer.TryParse(sYear, 0) Then
-            tYear = CInt(sYear)
-        End If
+        Integer.TryParse(sYear, intYear)
 
         If Not bwTMDB.IsBusy Then
             bwTMDB.WorkerReportsProgress = False
             bwTMDB.WorkerSupportsCancellation = True
             bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies,
-                  .Parameter = sMovie, .ScrapeOptions = filterOptions, .Year = tYear})
+                  .Parameter = sMovie, .ScrapeOptions = filterOptions, .Year = intYear})
         End If
     End Sub
 
@@ -1628,13 +1643,10 @@ Public Class clsAPITMDB
 
         Dim FullCast As Boolean
         Dim FullCrew As Boolean
-        Dim Movie As MediaContainers.Movie
-        Dim MovieSet As MediaContainers.MovieSet
         Dim Parameter As String
         Dim ScrapeModifiers As Structures.ScrapeModifiers
         Dim ScrapeOptions As Structures.ScrapeOptions
         Dim Search As SearchType
-        Dim TVShow As MediaContainers.TVShow
         Dim Year As Integer
 
 #End Region 'Fields

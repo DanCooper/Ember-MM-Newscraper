@@ -18,16 +18,16 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
 Imports System.IO
 Imports System.Xml.Serialization
-Imports NLog
 
 
 Public Class MediaStub
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -38,19 +38,19 @@ Public Class MediaStub
     ''' <param name="sPath"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function LoadDiscStub(ByVal sPath As String) As MediaStub.DiscStub
+    Public Shared Function LoadDiscStub(ByVal sPath As String) As DiscStub
         Dim xmlSer As XmlSerializer = Nothing
-        Dim xmlStub As New MediaStub.DiscStub
+        Dim xmlStub As New DiscStub
 
         If Not String.IsNullOrEmpty(sPath) Then
             Try
                 If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".disc" Then
                     Using xmlSR As StreamReader = New StreamReader(sPath)
-                        xmlSer = New XmlSerializer(GetType(MediaStub.DiscStub))
-                        xmlStub = DirectCast(xmlSer.Deserialize(xmlSR), MediaStub.DiscStub)
+                        xmlSer = New XmlSerializer(GetType(DiscStub))
+                        xmlStub = DirectCast(xmlSer.Deserialize(xmlSR), DiscStub)
                     End Using
                 Else
-                    Return New MediaStub.DiscStub
+                    Return New DiscStub
                 End If
 
             Catch ex As Exception
@@ -69,12 +69,12 @@ Public Class MediaStub
     ''' <remarks></remarks>
     Public Shared Sub SaveDiscStub(ByVal sPath As String, Optional ByVal sTitle As String = "", Optional ByVal sMessage As String = "")
         Dim doesExist As Boolean = False
-        Dim xmlSer As New XmlSerializer(GetType(MediaStub.DiscStub))
+        Dim xmlSer As New XmlSerializer(GetType(DiscStub))
         Dim fAtt As New FileAttributes
         Dim fAttWritable As Boolean = True
         Dim StubFile As String = sPath
         Dim StubPath As String = Directory.GetParent(StubFile).FullName
-        Dim DiscStub As New MediaStub.DiscStub
+        Dim DiscStub As New DiscStub
 
         DiscStub.Title = sTitle
         DiscStub.Message = sMessage
@@ -112,56 +112,18 @@ Public Class MediaStub
 
 #Region "Nested Types"
 
-    <XmlRoot("discstub")> _
+    <XmlRoot("discstub")>
     Public Class DiscStub
-
-#Region "Fields"
-
-        Private _title As String
-        Private _message As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
 
 #Region "Properties"
 
-        <XmlElement("title")> _
-        Public Property Title() As String
-            Get
-                Return _title
-            End Get
-            Set(ByVal Value As String)
-                _title = Value
-            End Set
-        End Property
+        <XmlElement("title")>
+        Public Property Title() As String = String.Empty
 
-        <XmlElement("message")> _
-        Public Property Message() As String
-            Get
-                Return _message
-            End Get
-            Set(ByVal Value As String)
-                _message = Value
-            End Set
-        End Property
+        <XmlElement("message")>
+        Public Property Message() As String = String.Empty
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _title = String.Empty
-            _message = String.Empty
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
