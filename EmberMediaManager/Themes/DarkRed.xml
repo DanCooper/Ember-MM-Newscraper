@@ -30,20 +30,20 @@ or a "32-bit ARGB value"
 
 <theme>
   <imagepanel>
-    <backcolor>Gainsboro</backcolor>
+    <backcolor>Black</backcolor>
     <genre>
-      <backcolor>Gainsboro</backcolor>
+      <backcolor>Black</backcolor>
     </genre>
     <imagename>
-      <backcolor>DimGray</backcolor>
+      <backcolor>FireBrick</backcolor>
       <forecolor>HighlightText</forecolor>
     </imagename>
     <imagesize>
-      <backcolor>DimGray</backcolor>
+      <backcolor>Black</backcolor>
       <forecolor>HighlightText</forecolor>
     </imagesize>
     <mpaa>
-      <backcolor>Gainsboro</backcolor>
+      <backcolor>#FEFCFF</backcolor>
     </mpaa>
     <movie>
       <banner>
@@ -223,24 +223,24 @@ or a "32-bit ARGB value"
     <movie>
       <posmid>261</posmid>
       <posup>470</posup>
-
-      <backcolor>Gainsboro</backcolor>
+      
+      <backcolor>#2A2728</backcolor>
 
       <globalheadersettings>
-        <backcolor>ControlDarkDark</backcolor>
+        <backcolor>FireBrick</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
+        <forecolor>White</forecolor>
         <height>17</height>
       </globalheadersettings>
 
       <globalvaluesettings>
-        <backcolor>Gainsboro</backcolor>
+        <backcolor>#2A2728</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
+        <forecolor>White</forecolor>
         <height>17</height>
       </globalvaluesettings>
 
@@ -553,23 +553,23 @@ or a "32-bit ARGB value"
       <posmid>290</posmid>
       <posup>290</posup>
 
-      <backcolor>Gainsboro</backcolor>
+      <backcolor>#2A2728</backcolor>
 
       <globalheadersettings>
-        <backcolor>ControlDarkDark</backcolor>
+        <backcolor>FireBrick</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
+        <forecolor>White</forecolor>
         <height>17</height>
       </globalheadersettings>
 
       <globalvaluesettings>
-        <backcolor>Gainsboro</backcolor>
+        <backcolor>#2A2728</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
+        <forecolor>White</forecolor>
         <height>17</height>
       </globalvaluesettings>
 
@@ -657,23 +657,23 @@ or a "32-bit ARGB value"
       <posmid>261</posmid>
       <posup>470</posup>
 
-      <backcolor>Gainsboro</backcolor>
+      <backcolor>#2A2728</backcolor>
 
       <globalheadersettings>
-        <backcolor>ControlDarkDark</backcolor>
+        <backcolor>FireBrick</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
+        <forecolor>White</forecolor>
         <height>17</height>
       </globalheadersettings>
 
       <globalvaluesettings>
-        <backcolor>Gainsboro</backcolor>
+        <backcolor>#2A2728</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
+        <forecolor>White</forecolor>
         <height>17</height>
       </globalvaluesettings>
 
@@ -949,23 +949,23 @@ or a "32-bit ARGB value"
       <posmid>178</posmid>
       <posup>178</posup>
 
-      <backcolor>Gainsboro</backcolor>
+      <backcolor>#2A2728</backcolor>
 
       <globalheadersettings>
-        <backcolor>ControlDarkDark</backcolor>
+        <backcolor>FireBrick</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
+        <forecolor>White</forecolor>
         <height>17</height>
       </globalheadersettings>
 
       <globalvaluesettings>
-        <backcolor>Gainsboro</backcolor>
+        <backcolor>#2A2728</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
+        <forecolor>White</forecolor>
         <height>17</height>
       </globalvaluesettings>
 
@@ -1072,23 +1072,23 @@ or a "32-bit ARGB value"
       <posmid>261</posmid>
       <posup>261</posup>
 
-      <backcolor>Gainsboro</backcolor>
+      <backcolor>#2A2728</backcolor>
 
       <globalheadersettings>
-        <backcolor>ControlDarkDark</backcolor>
+        <backcolor>FireBrick</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>1</fontstyle>
-        <forecolor>HighlightText</forecolor>
+        <forecolor>White</forecolor>
         <height>17</height>
       </globalheadersettings>
 
       <globalvaluesettings>
-        <backcolor>Gainsboro</backcolor>
+        <backcolor>#2A2728</backcolor>
         <font>Microsoft Sans Serif</font>
         <fontsize>8</fontsize>
         <fontstyle>0</fontstyle>
-        <forecolor>Black</forecolor>
+        <forecolor>White</forecolor>
         <height>17</height>
       </globalvaluesettings>
 
@@ -1347,11 +1347,11 @@ or a "32-bit ARGB value"
 
   <toppanel>
     <globalsettings>
-      <backcolor>Gainsboro</backcolor>
+      <backcolor>#2A2728</backcolor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
       <fontstyle>0</fontstyle>
-      <forecolor>Black</forecolor>
+      <forecolor>Peru</forecolor>
     </globalsettings>
     <originaltitle>
     </originaltitle>

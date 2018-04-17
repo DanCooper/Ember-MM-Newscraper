@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -596,7 +596,6 @@ Partial Class frmMain
         Me.lvMoviesInSet = New System.Windows.Forms.ListView()
         Me.ilMoviesInSet = New System.Windows.Forms.ImageList(Me.components)
         Me.lblMoviesInSetHeader = New System.Windows.Forms.Label()
-        Me.txtCertifications = New System.Windows.Forms.TextBox()
         Me.pnlGuestStars = New System.Windows.Forms.Panel()
         Me.pbGuestStarsLoad = New System.Windows.Forms.PictureBox()
         Me.lstGuestStars = New System.Windows.Forms.ListBox()
@@ -607,7 +606,6 @@ Partial Class frmMain
         Me.lstActors = New System.Windows.Forms.ListBox()
         Me.pbActors = New System.Windows.Forms.PictureBox()
         Me.lblActorsHeader = New System.Windows.Forms.Label()
-        Me.lblCertificationsHeader = New System.Windows.Forms.Label()
         Me.lblReleaseDate = New System.Windows.Forms.Label()
         Me.lblReleaseDateHeader = New System.Windows.Forms.Label()
         Me.btnMid = New System.Windows.Forms.Button()
@@ -629,6 +627,8 @@ Partial Class frmMain
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.lblCredits = New System.Windows.Forms.Label()
         Me.lblCountries = New System.Windows.Forms.Label()
+        Me.lblCertificationsHeader = New System.Windows.Forms.Label()
+        Me.lblCertifications = New System.Windows.Forms.Label()
         Me.lblCollections = New System.Windows.Forms.Label()
         Me.lblTags = New System.Windows.Forms.Label()
         Me.lblDirectors = New System.Windows.Forms.Label()
@@ -790,14 +790,14 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuMarked = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuCustom = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeMovieSets = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuScrapeTVShows = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdateMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
@@ -3141,8 +3141,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = False
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -3996,8 +3996,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = False
         Me.dgvMovieSets.AllowUserToDeleteRows = False
         Me.dgvMovieSets.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4222,8 +4222,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4518,8 +4518,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4743,8 +4743,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -7111,10 +7111,8 @@ Partial Class frmMain
         Me.pnlInfoPanel.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlInfoPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlInfoPanel.Controls.Add(Me.pnlMoviesInSet)
-        Me.pnlInfoPanel.Controls.Add(Me.txtCertifications)
         Me.pnlInfoPanel.Controls.Add(Me.pnlGuestStars)
         Me.pnlInfoPanel.Controls.Add(Me.pnlActors)
-        Me.pnlInfoPanel.Controls.Add(Me.lblCertificationsHeader)
         Me.pnlInfoPanel.Controls.Add(Me.lblReleaseDate)
         Me.pnlInfoPanel.Controls.Add(Me.lblReleaseDateHeader)
         Me.pnlInfoPanel.Controls.Add(Me.btnMid)
@@ -7136,6 +7134,8 @@ Partial Class frmMain
         Me.pnlInfoPanel.Controls.Add(Me.lblStatus)
         Me.pnlInfoPanel.Controls.Add(Me.lblCredits)
         Me.pnlInfoPanel.Controls.Add(Me.lblCountries)
+        Me.pnlInfoPanel.Controls.Add(Me.lblCertificationsHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.lblCertifications)
         Me.pnlInfoPanel.Controls.Add(Me.lblCollections)
         Me.pnlInfoPanel.Controls.Add(Me.lblTags)
         Me.pnlInfoPanel.Controls.Add(Me.lblDirectors)
@@ -7199,20 +7199,6 @@ Partial Class frmMain
         Me.lblMoviesInSetHeader.TabIndex = 40
         Me.lblMoviesInSetHeader.Text = "Movies in Set"
         Me.lblMoviesInSetHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'txtCertifications
-        '
-        Me.txtCertifications.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtCertifications.BackColor = System.Drawing.Color.Gainsboro
-        Me.txtCertifications.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtCertifications.Cursor = System.Windows.Forms.Cursors.Default
-        Me.txtCertifications.Location = New System.Drawing.Point(345, 161)
-        Me.txtCertifications.Name = "txtCertifications"
-        Me.txtCertifications.ReadOnly = True
-        Me.txtCertifications.Size = New System.Drawing.Size(85, 22)
-        Me.txtCertifications.TabIndex = 3
-        Me.txtCertifications.TabStop = False
         '
         'pnlGuestStars
         '
@@ -7333,21 +7319,6 @@ Partial Class frmMain
         Me.lblActorsHeader.TabIndex = 18
         Me.lblActorsHeader.Text = "Actors"
         Me.lblActorsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lblCertificationsHeader
-        '
-        Me.lblCertificationsHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblCertificationsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblCertificationsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblCertificationsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCertificationsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblCertificationsHeader.Location = New System.Drawing.Point(345, 141)
-        Me.lblCertificationsHeader.Name = "lblCertificationsHeader"
-        Me.lblCertificationsHeader.Size = New System.Drawing.Size(85, 17)
-        Me.lblCertificationsHeader.TabIndex = 2
-        Me.lblCertificationsHeader.Text = "Certifications"
-        Me.lblCertificationsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblReleaseDate
         '
@@ -7617,6 +7588,34 @@ Partial Class frmMain
         Me.lblCountries.TabIndex = 27
         Me.lblCountries.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblCountries.UseMnemonic = False
+        '
+        'lblCertificationsHeader
+        '
+        Me.lblCertificationsHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblCertificationsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblCertificationsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblCertificationsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCertificationsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblCertificationsHeader.Location = New System.Drawing.Point(0, 0)
+        Me.lblCertificationsHeader.Name = "lblCertificationsHeader"
+        Me.lblCertificationsHeader.Size = New System.Drawing.Size(85, 17)
+        Me.lblCertificationsHeader.TabIndex = 2
+        Me.lblCertificationsHeader.Text = "Certifications"
+        Me.lblCertificationsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblCertifications
+        '
+        Me.lblCertifications.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblCertifications.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCertifications.ForeColor = System.Drawing.Color.Black
+        Me.lblCertifications.Location = New System.Drawing.Point(345, 164)
+        Me.lblCertifications.Name = "lblCertifications"
+        Me.lblCertifications.Size = New System.Drawing.Size(85, 16)
+        Me.lblCertifications.TabIndex = 27
+        Me.lblCertifications.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblCertifications.UseMnemonic = False
         '
         'lblCollections
         '
@@ -9627,7 +9626,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
         Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
-        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeMovieSets
+        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeTVShows
         Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
         '
         'mnuScrapeSubmenuAll
@@ -9669,14 +9668,14 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuCustom.Tag = "custom"
         Me.mnuScrapeSubmenuCustom.Text = "Custom Scraper..."
         '
-        'cmnuTrayScrapeTVShows
+        'cmnuTrayScrapeMovies
         '
-        Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeTVShows.Name = "cmnuTrayScrapeTVShows"
-        Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
-        Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
+        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
+        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovies.Tag = "movie"
+        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
         '
         'mnuScrapeMovieSets
         '
@@ -9724,15 +9723,6 @@ Partial Class frmMain
         Me.mnuUpdateShows.Size = New System.Drawing.Size(123, 22)
         Me.mnuUpdateShows.Text = "TV Shows"
         '
-        'cmnuTrayScrapeMovies
-        '
-        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
-        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovies.Tag = "movie"
-        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
-        '
         'cmnuTrayScrapeMovieSets
         '
         Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
@@ -9741,6 +9731,15 @@ Partial Class frmMain
         Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
         Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
+        '
+        'cmnuTrayScrapeTVShows
+        '
+        Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeTVShows.Name = "cmnuTrayScrapeTVShows"
+        Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
+        Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
         '
         'ilColumnIcons
         '
@@ -10549,7 +10548,6 @@ End Sub
     Friend WithEvents txtMetaData As System.Windows.Forms.TextBox
     Friend WithEvents btnMid As System.Windows.Forms.Button
     Friend WithEvents pbPosterCache As System.Windows.Forms.PictureBox
-    Friend WithEvents txtCertifications As System.Windows.Forms.TextBox
     Friend WithEvents lblCertificationsHeader As System.Windows.Forms.Label
     Friend WithEvents lblReleaseDate As System.Windows.Forms.Label
     Friend WithEvents lblReleaseDateHeader As System.Windows.Forms.Label
@@ -11321,4 +11319,5 @@ End Sub
     Friend WithEvents lblStatusHeader As Label
     Friend WithEvents lblCollections As Label
     Friend WithEvents lblCollectionsHeader As Label
+    Friend WithEvents lblCertifications As Label
 End Class

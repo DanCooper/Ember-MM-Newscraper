@@ -918,23 +918,11 @@
     <None Include="Resources\paypal.png" />
     <None Include="Resources\patreon.png" />
     <Content Include="Resources\tvdb.png" />
-    <Content Include="Themes\BlackBeauty - Kopieren.xml">
+    <Content Include="Themes\DarkBlue.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Themes\BlackBeauty.xml">
+    <Content Include="Themes\DarkRed.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Themes\movie-Default - Kopieren.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Themes\movieset-BlackBeauty.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Themes\tvepisode-BlackBeauty.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Themes\tvshow-BlackBeauty.xml">
-      <SubType>Designer</SubType>
     </Content>
     <None Include="Resources\hasBanner.png" />
     <None Include="Resources\hasCharacterArt.png" />
@@ -954,9 +942,6 @@
     <None Include="Resources\hasActorThumb.png" />
     <None Include="Resources\doRating.png" />
     <Content Include="Resources\menuAdd.png" />
-    <Content Include="Themes\movieset-Default.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="x64\ffmpeg.exe" />
     <None Include="x64\mediainfo-rar\mediainfo-rar.exe" />
     <None Include="x64\mediainfo-rar\MediaInfo.dll" />
@@ -5359,12 +5344,6 @@
     <None Include="Resources\haswatched.png" />
     <Content Include="Themes\Default.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Themes\tvepisode-Default.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Themes\tvshow-Default.xml">
       <SubType>Designer</SubType>
     </Content>
     <None Include="Resources\EmberSplashScreen.jpg" />

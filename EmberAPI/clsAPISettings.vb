@@ -69,9 +69,11 @@ Public Class Settings
     Public Property GeneralImageFilterPoster() As Boolean = False
     Public Property GeneralImageFilterPosterMatchTolerance() As Integer = 1
     Public Property GeneralImagesGlassOverlay() As Boolean = False
-    Public Property GeneralInfoPanelStateMovie() As Integer = 200
-    Public Property GeneralInfoPanelStateMovieSet() As Integer = 200
-    Public Property GeneralInfoPanelStateTVShow() As Integer = 200
+    Public Property GeneralInfoPanelStateMovie() As Integer = 2
+    Public Property GeneralInfoPanelStateMovieSet() As Integer = 2
+    Public Property GeneralInfoPanelStateTVEpisode() As Integer = 2
+    Public Property GeneralInfoPanelStateTVSeason() As Integer = 2
+    Public Property GeneralInfoPanelStateTVShow() As Integer = 2
     Public Property GeneralLanguage() As String = "English_(en_US)"
     Public Property GeneralMainFilterSortColumn_Episodes() As Integer = 1
     Public Property GeneralMainFilterSortColumn_MovieSets() As Integer = 1

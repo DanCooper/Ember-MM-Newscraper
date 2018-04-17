@@ -62,6 +62,8 @@ Public Class frmMain
     Private FilterPanelIsRaised_TVShow As Boolean = False
     Private InfoPanelState_Movie As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private InfoPanelState_MovieSet As Integer = 0 '0 = down, 1 = mid, 2 = up
+    Private InfoPanelState_TVEpisode As Integer = 0 '0 = down, 1 = mid, 2 = up
+    Private InfoPanelState_TVSeason As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private InfoPanelState_TVShow As Integer = 0 '0 = down, 1 = mid, 2 = up
 
     Private bsMovies As New BindingSource
@@ -360,6 +362,7 @@ Public Class frmMain
         pnlMPAA.Visible = False
 
         lblBannerSize.Text = String.Empty
+        lblCertifications.Text = String.Empty
         lblCharacterArtSize.Text = String.Empty
         lblClearArtSize.Text = String.Empty
         lblClearLogoSize.Text = String.Empty
@@ -383,7 +386,6 @@ Public Class frmMain
         lblTitle.Text = String.Empty
         lblTMDBHeader.Tag = Nothing
         lblTVDBHeader.Tag = Nothing
-        txtCertifications.Text = String.Empty
         txtFilePath.Text = String.Empty
         txtIMDBID.Text = String.Empty
         txtOutline.Text = String.Empty
@@ -603,9 +605,20 @@ Public Class frmMain
 
         tTheme.ApplyTheme(tType)
 
-        Dim currMainTabTag = GetCurrentMainTabTag()
-
-        Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
+        Dim iState As Integer
+        Select Case currThemeType
+            Case Enums.ContentType.Movie
+                iState = InfoPanelState_Movie
+            Case Enums.ContentType.MovieSet
+                iState = InfoPanelState_MovieSet
+            Case Enums.ContentType.TVEpisode
+                iState = InfoPanelState_TVEpisode
+            Case Enums.ContentType.TVSeason
+                iState = InfoPanelState_TVSeason
+            Case Enums.ContentType.TVShow
+                iState = InfoPanelState_TVShow
+        End Select
+        Select Case iState
             Case 1
                 If btnMid.Visible Then
                     pnlInfoPanel.Height = IPMid
@@ -614,28 +627,38 @@ Public Class frmMain
                     btnDown.Enabled = True
                 ElseIf btnUp.Visible Then
                     pnlInfoPanel.Height = IPUp
-                    If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-                        InfoPanelState_Movie = 2
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-                        InfoPanelState_MovieSet = 2
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-                        InfoPanelState_TVShow = 2
-                    End If
                     btnUp.Enabled = False
                     btnMid.Enabled = True
                     btnDown.Enabled = True
+                    Select Case currThemeType
+                        Case Enums.ContentType.Movie
+                            InfoPanelState_Movie = 2
+                        Case Enums.ContentType.MovieSet
+                            InfoPanelState_MovieSet = 2
+                        Case Enums.ContentType.TVEpisode
+                            InfoPanelState_TVEpisode = 2
+                        Case Enums.ContentType.TVSeason
+                            InfoPanelState_TVSeason = 2
+                        Case Enums.ContentType.TVShow
+                            InfoPanelState_TVShow = 2
+                    End Select
                 Else
-                    pnlInfoPanel.Height = 25
-                    If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-                        InfoPanelState_Movie = 0
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-                        InfoPanelState_MovieSet = 0
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-                        InfoPanelState_TVShow = 0
-                    End If
+                    pnlInfoPanel.Height = 32
                     btnUp.Enabled = True
                     btnMid.Enabled = True
                     btnDown.Enabled = False
+                    Select Case currThemeType
+                        Case Enums.ContentType.Movie
+                            InfoPanelState_Movie = 0
+                        Case Enums.ContentType.MovieSet
+                            InfoPanelState_MovieSet = 0
+                        Case Enums.ContentType.TVEpisode
+                            InfoPanelState_TVEpisode = 0
+                        Case Enums.ContentType.TVSeason
+                            InfoPanelState_TVSeason = 0
+                        Case Enums.ContentType.TVShow
+                            InfoPanelState_TVShow = 0
+                    End Select
                 End If
             Case 2
                 If btnUp.Visible Then
@@ -645,44 +668,56 @@ Public Class frmMain
                     btnDown.Enabled = True
                 ElseIf btnMid.Visible Then
                     pnlInfoPanel.Height = IPMid
-
-                    If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-                        InfoPanelState_Movie = 1
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-                        InfoPanelState_MovieSet = 1
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-                        InfoPanelState_TVShow = 1
-                    End If
-
                     btnUp.Enabled = True
                     btnMid.Enabled = False
                     btnDown.Enabled = True
+                    Select Case currThemeType
+                        Case Enums.ContentType.Movie
+                            InfoPanelState_Movie = 1
+                        Case Enums.ContentType.MovieSet
+                            InfoPanelState_MovieSet = 1
+                        Case Enums.ContentType.TVEpisode
+                            InfoPanelState_TVEpisode = 1
+                        Case Enums.ContentType.TVSeason
+                            InfoPanelState_TVSeason = 1
+                        Case Enums.ContentType.TVShow
+                            InfoPanelState_TVShow = 1
+                    End Select
                 Else
-                    pnlInfoPanel.Height = 25
-                    If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-                        InfoPanelState_Movie = 0
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-                        InfoPanelState_MovieSet = 0
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-                        InfoPanelState_TVShow = 0
-                    End If
+                    pnlInfoPanel.Height = 32
                     btnUp.Enabled = True
                     btnMid.Enabled = True
                     btnDown.Enabled = False
+                    Select Case currThemeType
+                        Case Enums.ContentType.Movie
+                            InfoPanelState_Movie = 0
+                        Case Enums.ContentType.MovieSet
+                            InfoPanelState_MovieSet = 0
+                        Case Enums.ContentType.TVEpisode
+                            InfoPanelState_TVEpisode = 0
+                        Case Enums.ContentType.TVSeason
+                            InfoPanelState_TVSeason = 0
+                        Case Enums.ContentType.TVShow
+                            InfoPanelState_TVShow = 0
+                    End Select
                 End If
             Case Else
-                pnlInfoPanel.Height = 25
-                If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-                    InfoPanelState_Movie = 0
-                ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-                    InfoPanelState_MovieSet = 0
-                ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-                    InfoPanelState_TVShow = 0
-                End If
-
+                pnlInfoPanel.Height = 32
                 btnUp.Enabled = True
                 btnMid.Enabled = True
                 btnDown.Enabled = False
+                Select Case currThemeType
+                    Case Enums.ContentType.Movie
+                        InfoPanelState_Movie = 0
+                    Case Enums.ContentType.MovieSet
+                        InfoPanelState_MovieSet = 0
+                    Case Enums.ContentType.TVEpisode
+                        InfoPanelState_TVEpisode = 0
+                    Case Enums.ContentType.TVSeason
+                        InfoPanelState_TVSeason = 0
+                    Case Enums.ContentType.TVShow
+                        InfoPanelState_TVShow = 0
+                End Select
         End Select
 
         pbActorsLoad.Visible = False
@@ -728,15 +763,19 @@ Public Class frmMain
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim currMainTabTag = GetCurrentMainTabTag()
         tcMain.Focus()
-        If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-            InfoPanelState_Movie = 0
-        ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-            InfoPanelState_MovieSet = 0
-        ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            InfoPanelState_TVShow = 0
-        End If
+        Select Case currThemeType
+            Case Enums.ContentType.Movie
+                InfoPanelState_Movie = 0
+            Case Enums.ContentType.MovieSet
+                InfoPanelState_MovieSet = 0
+            Case Enums.ContentType.TVEpisode
+                InfoPanelState_TVEpisode = 0
+            Case Enums.ContentType.TVSeason
+                InfoPanelState_TVSeason = 0
+            Case Enums.ContentType.TVShow
+                InfoPanelState_TVShow = 0
+        End Select
         MoveInfoPanel()
     End Sub
 
@@ -782,15 +821,19 @@ Public Class frmMain
     End Sub
 
     Private Sub btnMid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMid.Click
-        Dim currMainTabTag = GetCurrentMainTabTag()
         tcMain.Focus()
-        If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-            InfoPanelState_Movie = 1
-        ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-            InfoPanelState_MovieSet = 1
-        ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            InfoPanelState_TVShow = 1
-        End If
+        Select Case currThemeType
+            Case Enums.ContentType.Movie
+                InfoPanelState_Movie = 1
+            Case Enums.ContentType.MovieSet
+                InfoPanelState_MovieSet = 1
+            Case Enums.ContentType.TVEpisode
+                InfoPanelState_TVEpisode = 1
+            Case Enums.ContentType.TVSeason
+                InfoPanelState_TVSeason = 1
+            Case Enums.ContentType.TVShow
+                InfoPanelState_TVShow = 1
+        End Select
         MoveInfoPanel()
     End Sub
 
@@ -1068,15 +1111,19 @@ Public Class frmMain
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim currMainTabTag = GetCurrentMainTabTag()
         tcMain.Focus()
-        If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-            InfoPanelState_Movie = 2
-        ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-            InfoPanelState_MovieSet = 2
-        ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            InfoPanelState_TVShow = 2
-        End If
+        Select Case currThemeType
+            Case Enums.ContentType.Movie
+                InfoPanelState_Movie = 2
+            Case Enums.ContentType.MovieSet
+                InfoPanelState_MovieSet = 2
+            Case Enums.ContentType.TVEpisode
+                InfoPanelState_TVEpisode = 2
+            Case Enums.ContentType.TVSeason
+                InfoPanelState_TVSeason = 2
+            Case Enums.ContentType.TVShow
+                InfoPanelState_TVShow = 2
+        End Select
         MoveInfoPanel()
     End Sub
 
@@ -9169,7 +9216,7 @@ Public Class frmMain
 
         lblReleaseDate.Text = currMovie.Movie.ReleaseDate
         lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
-        txtCertifications.Text = String.Join(" / ", currMovie.Movie.Certifications.ToArray)
+        lblCertifications.Text = String.Join(" / ", currMovie.Movie.Certifications.ToArray)
 
         txtMetaData.Text = NFO.FIToString(currMovie.Movie.FileInfo, False)
 
@@ -9246,6 +9293,11 @@ Public Class frmMain
         txtFilePath.Text = currTV.Filename
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.TVEpisode.AiredSpecified, Date.Parse(currTV.TVEpisode.Aired).ToShortDateString, "?"))
         lblReleaseDate.Text = currTV.TVEpisode.Aired
+        lblReleaseDateHeader.Text = Master.eLang.GetString(728, "Aired")
+
+        If currTV.TVEpisode.RuntimeSpecified Then
+            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currTV.TVEpisode.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(currTV.TVEpisode.Runtime, currTV.TVEpisode.Runtime.IndexOf("|")), currTV.TVEpisode.Runtime)).Trim
+        End If
 
         Try
             If currTV.TVEpisode.RatingSpecified Then
@@ -9388,11 +9440,12 @@ Public Class frmMain
         txtPlot.Text = currTV.TVSeason.Plot
         lblRuntime.Text = currTV.TVShow.Runtime
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currTV)
+        txtIMDBID.Text = "Link"
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
         txtTMDBID.Text = currTV.TVSeason.TMDB
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
         txtTVDBID.Text = currTV.TVSeason.TVDB
-        txtCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
+        lblCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
         lblReleaseDate.Text = currTV.TVSeason.Aired
 
         Try
@@ -9502,7 +9555,7 @@ Public Class frmMain
         txtTMDBID.Text = currTV.TVShow.TMDB
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
         txtTVDBID.Text = currTV.TVShow.TVDB
-        txtCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
+        lblCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
         lblTags.Text = String.Join(" / ", currTV.TVShow.Tags.ToArray)
         lblStatus.Text = currTV.TVShow.Status
 
@@ -9673,6 +9726,8 @@ Public Class frmMain
                 Master.eSettings.GeneralFilterPanelIsRaisedTVShow = FilterPanelIsRaised_TVShow
                 Master.eSettings.GeneralInfoPanelStateMovie = InfoPanelState_Movie
                 Master.eSettings.GeneralInfoPanelStateMovieSet = InfoPanelState_MovieSet
+                Master.eSettings.GeneralInfoPanelStateTVEpisode = InfoPanelState_TVEpisode
+                Master.eSettings.GeneralInfoPanelStateTVSeason = InfoPanelState_TVSeason
                 Master.eSettings.GeneralInfoPanelStateTVShow = InfoPanelState_TVShow
                 Master.eSettings.GeneralSplitterDistanceMain = scMain.SplitterDistance
                 'Master.eSettings.GeneralSplitterDistanceTVShow and Master.eSettings.GeneralSplitterDistanceTVSeason will not be saved at this point
@@ -9854,6 +9909,8 @@ Public Class frmMain
                 'Info panels
                 InfoPanelState_Movie = Master.eSettings.GeneralInfoPanelStateMovie
                 InfoPanelState_MovieSet = Master.eSettings.GeneralInfoPanelStateMovieSet
+                InfoPanelState_TVEpisode = Master.eSettings.GeneralInfoPanelStateTVEpisode
+                InfoPanelState_TVSeason = Master.eSettings.GeneralInfoPanelStateTVSeason
                 InfoPanelState_TVShow = Master.eSettings.GeneralInfoPanelStateTVShow
 
                 'Filter panels
@@ -9976,6 +10033,8 @@ Public Class frmMain
             pnlFilterVideoSources_Movies.Location = New Point(pnlFilter_Movies.Left + tblFilter_Movies.Left + gbFilterSpecific_Movies.Left + tblFilterSpecific_Movies.Left + tblFilterSpecificData_Movies.Left + txtFilterVideoSource_Movies.Left + 1,
                                                               (pnlFilter_Movies.Top + tblFilter_Movies.Top + gbFilterSpecific_Movies.Top + tblFilterSpecific_Movies.Top + tblFilterSpecificData_Movies.Top + txtFilterVideoSource_Movies.Top) - pnlFilterVideoSources_Movies.Height)
             pnlLoadSettings.Location = New Point(Convert.ToInt32((Width - pnlLoadSettings.Width) / 2), Convert.ToInt32((Height - pnlLoadSettings.Height) / 2))
+
+            ApplyTheme(currThemeType)
         End If
     End Sub
 
@@ -15502,6 +15561,8 @@ Public Class frmMain
                         dgvTVShows.Focus()
                 End Select
 
+                ApplyTheme(currThemeType)
+
                 ResumeLayout(True)
             End If
         Catch ex As Exception
@@ -17252,7 +17313,7 @@ Public Class frmMain
                 AddHandler scTV.SplitterMoved, AddressOf TVSplitterMoved
                 AddHandler scTVSeasonsEpisodes.SplitterMoved, AddressOf TVSplitterMoved
 
-                ApplyTheme(currMainTabTag.ContentType)
+                ApplyTheme(Enums.ContentType.TVShow)
                 If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
                 If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()
                 If bwLoadImages_MovieSetMoviePosters.IsBusy Then bwLoadImages_MovieSetMoviePosters.CancelAsync()
@@ -17281,8 +17342,20 @@ Public Class frmMain
     End Sub
 
     Private Sub MoveInfoPanel()
-        Dim currMainTabTag = GetCurrentMainTabTag()
-        Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
+        Dim iState As Integer
+        Select Case currThemeType
+            Case Enums.ContentType.Movie
+                iState = InfoPanelState_Movie
+            Case Enums.ContentType.MovieSet
+                iState = InfoPanelState_MovieSet
+            Case Enums.ContentType.TVEpisode
+                iState = InfoPanelState_TVEpisode
+            Case Enums.ContentType.TVSeason
+                iState = InfoPanelState_TVSeason
+            Case Enums.ContentType.TVShow
+                iState = InfoPanelState_TVShow
+        End Select
+        Select Case iState
             Case 0
                 pnlInfoPanel.Height = 32
             Case 1
@@ -17294,8 +17367,7 @@ Public Class frmMain
         MoveGenres()
         MoveMPAA()
 
-        Dim aType As Integer = If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
-        Select Case aType
+        Select Case iState
             Case 0
                 If pnlInfoPanel.Height = 32 Then
                     btnDown.Enabled = False

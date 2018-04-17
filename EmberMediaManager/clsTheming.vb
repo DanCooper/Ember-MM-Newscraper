@@ -200,19 +200,6 @@ Public Class clsXMLTheme
 
 #Region "Properties"
 
-        <XmlIgnore()>
-        Public Property BackColor As Color
-
-        <XmlElement("backcolor")>
-        Public Property BackColorFromXML As String
-            Get
-                Return BackColor.ToString
-            End Get
-            Set(value As String)
-                BackColor = Functions.ConvertStringToColor(value)
-            End Set
-        End Property
-
         <XmlElement("movie")>
         Public Property Movie As New InfoPanelContentSettings
 
@@ -235,6 +222,19 @@ Public Class clsXMLTheme
     Public Class InfoPanelContentSettings
 
 #Region "Properties"
+
+        <XmlIgnore()>
+        Public Property BackColor As Color
+
+        <XmlElement("backcolor")>
+        Public Property BackColorFromXML As String
+            Get
+                Return BackColor.ToString
+            End Get
+            Set(value As String)
+                BackColor = Functions.ConvertStringToColor(value)
+            End Set
+        End Property
 
         <XmlElement("control")>
         Public Property Controls As New List(Of ControlSettings)
@@ -418,29 +418,24 @@ Public Class clsXMLTheme
 
 #Region "Properties"
 
-        <XmlIgnore()>
-        Public Property BackColor As Color
-
-        <XmlElement("backcolor")>
-        Public Property BackColorFromXML As String
-            Get
-                Return BackColor.ToString
-            End Get
-            Set(value As String)
-                BackColor = Functions.ConvertStringToColor(value)
-            End Set
-        End Property
+        <XmlElement("globalsettings")>
+        Public Property GlobalSettings As ControlSettings
 
         <XmlElement("originaltitle")>
         Public Property OriginalTitle As New ControlSettings
+
         <XmlElement("rating")>
         Public Property Rating As New ControlSettings
+
         <XmlElement("runtime")>
         Public Property Runtime As New ControlSettings
+
         <XmlElement("studio")>
         Public Property Studio As New ControlSettings
+
         <XmlElement("title")>
         Public Property Title As New ControlSettings
+
         <XmlElement("tagline")>
         Public Property Tagline As New ControlSettings
 
@@ -485,10 +480,12 @@ Public Class Theming
 #Region "Methods"
 
     Public Sub ApplyTheme(ByVal contentType As Enums.ContentType)
-
         'ImagePanel settings
         'Global settings
         With _theme.ImagePanel
+            'Background
+            frmMain.pbFanart.BackColor = .BackColor
+            frmMain.scMain.Panel2.BackColor = .BackColor
             'Banner
             frmMain.pbBanner.BackColor = .BackColor
             frmMain.pnlBanner.BackColor = .BackColor
@@ -558,9 +555,9 @@ Public Class Theming
             frmMain.pnlPosterTop.BackColor = .ImageName.BackColor
             SetControlSettings_ImagePanel(frmMain.lblPosterTitle, .ImageName)
             SetControlSettings_ImagePanel(frmMain.lblPosterSize, .ImageSize)
+            'ContentType specific settings
+            SetImagePanelSettings(contentType)
         End With
-        'ContentType specific settings
-        SetImagePanelSettings(contentType)
 
         'MediaList settings
         If Not _theme.MediaList.BackColor.IsEmpty Then
@@ -579,26 +576,29 @@ Public Class Theming
         frmMain.MediaListColors = _theme.MediaList
 
         'Top Panel
-        SetControlSettings_TopPanel(frmMain.lblOriginalTitle, _theme.TopPanel.Title)
-        'frmMain.lblOriginalTitle.ForeColor = _theme.TopPanel.OriginalTitle.ForeColor
-        'frmMain.lblRating.ForeColor = _theme.TopPanel.Rating.ForeColor
-        'frmMain.lblRuntime.ForeColor = _theme.TopPanel.Runtime.ForeColor
-        'frmMain.lblStudio.ForeColor = _theme.TopPanel.Studio.ForeColor
-        'frmMain.lblTagline.ForeColor = _theme.TopPanel.Tagline.ForeColor
-        'frmMain.lblTitle.ForeColor = _theme.TopPanel.Title.ForeColor
-        'frmMain.pbAudioChannels.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pbAudioCodec.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pbStar1.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pbStar2.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pbStar3.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pbStar4.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pbStar5.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pbStudio.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pbVideoResolution.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pbVideoSource.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pnlInfoIcons.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pnlRating.BackColor = _theme.TopPanel.BackColor
-        'frmMain.pnlTop.BackColor = _theme.TopPanel.BackColor
+        SetControlSettings_TopPanel(frmMain.lblOriginalTitle, _theme.TopPanel.OriginalTitle)
+        SetControlSettings_TopPanel(frmMain.lblRating, _theme.TopPanel.Rating)
+        SetControlSettings_TopPanel(frmMain.lblRuntime, _theme.TopPanel.Runtime)
+        SetControlSettings_TopPanel(frmMain.lblStudio, _theme.TopPanel.Studio)
+        SetControlSettings_TopPanel(frmMain.lblTagline, _theme.TopPanel.Tagline)
+        SetControlSettings_TopPanel(frmMain.lblTitle, _theme.TopPanel.Title)
+        SetControlSettings_TopPanel(frmMain.lblRating, _theme.TopPanel.Rating)
+        SetControlSettings_TopPanel(frmMain.lblRating, _theme.TopPanel.Rating)
+        SetControlSettings_TopPanel(frmMain.lblRating, _theme.TopPanel.Rating)
+        SetControlSettings_TopPanel(frmMain.lblRating, _theme.TopPanel.Rating)
+        frmMain.pbAudioChannels.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pbAudioCodec.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pbStar1.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pbStar2.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pbStar3.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pbStar4.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pbStar5.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pbStudio.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pbVideoResolution.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pbVideoSource.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pnlInfoIcons.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pnlRating.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.pnlTop.BackColor = _theme.TopPanel.GlobalSettings.BackColor
 
 
         'InfoPanel
@@ -615,9 +615,10 @@ Public Class Theming
             "btnTrailerPlay",
             "btnUp",
             "lblActorsHeader",
+            "lblCertifications",
             "lblCertificationsHeader",
             "lblCollections",
-            "lblCollectionsHEader",
+            "lblCollectionsHeader",
             "lblCountries",
             "lblCountriesHeader",
             "lblCredits",
@@ -652,7 +653,6 @@ Public Class Theming
             "pnlGuestStars",
             "pnlInfoPanel",
             "pnlMoviesInSet",
-            "txtCertifications",
             "txtFilePath",
             "txtIMDBID",
             "txtMetaData",
@@ -676,7 +676,8 @@ Public Class Theming
 
         ReplaceControlVars(sFormula)
 
-        Try            'check for invalid characters
+        Try
+            'check for invalid characters
             If Regex.IsMatch(sFormula, "^[().,1234567890 ^*/+-]+$") Then
 
                 'check for equal number of ()
@@ -713,12 +714,34 @@ Public Class Theming
                 End If
             End If
 
-            Return Convert.ToInt32(sFormula)
+            Dim iResult As Integer = 0
+            If Not Integer.TryParse(sFormula, iResult) OrElse iResult = 0 Then
+                Dim tasd = sFormula
+            End If
+            Return iResult
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name & sFormula)
         End Try
 
         Return 0
+    End Function
+
+    Private Function GetControl(name As String) As Control
+        If Not String.IsNullOrEmpty(name) Then
+            Select Case name
+                Case "pnlInfoPanel"
+                    Return frmMain.pnlInfoPanel
+                Case "lblActorsHeader", "lstActors", "pbActors", "pbActorsLoad"
+                    Return frmMain.pnlActors.Controls(name)
+                Case "lblGuestStarsHeader", "lstGuestStars", "pbGuestStars", "pbGuestStarsLoad"
+                    Return frmMain.pnlGuestStars.Controls(name)
+                Case "lblMoviesInSetHeader", "lvMoviesInSet"
+                    Return frmMain.pnlMoviesInSet.Controls(name)
+                Case Else
+                    Return frmMain.pnlInfoPanel.Controls(name)
+            End Select
+        End If
+        Return Nothing
     End Function
 
     Private Function Load(ByVal path As String) As clsXMLTheme
@@ -736,12 +759,11 @@ Public Class Theming
         If File.Exists(tPath) Then
             _theme = Load(tPath)
         Else
-            _theme = Load(String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, "DarkBlue.xml"))
+            _theme = Load(String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, "Default.xml"))
         End If
     End Sub
 
     Private Sub ReplaceControlVars(ByRef sFormula As String)
-        Dim xControl As New Control
         Dim cName As String
 
         Try
@@ -750,19 +772,7 @@ Public Class Theming
                 Dim aCon = From bCon As clsXMLTheme.ControlSettings In _availablecontrols Where bCon.Name.ToLower = cName.ToLower
 
                 If aCon.Count > 0 Then
-                    Select Case aCon(0).Name
-                        Case "pnlInfoPanel"
-                            xControl = frmMain.pnlInfoPanel
-                        Case "lblActorsHeader", "lstActors", "pbActors", "pbActorsLoad"
-                            xControl = frmMain.pnlActors.Controls(aCon(0).Name)
-                        Case "lblGuestStarsHeader", "lstGuestStars", "pbGuestStars", "pbGuestStarsLoad"
-                            xControl = frmMain.pnlGuestStars.Controls(aCon(0).Name)
-                        Case "lblMoviesInSetHeader", "lvMoviesInSet"
-                            xControl = frmMain.pnlMoviesInSet.Controls(aCon(0).Name)
-                        Case Else
-                            xControl = frmMain.pnlInfoPanel.Controls(aCon(0).Name)
-                    End Select
-
+                    Dim xControl = GetControl(aCon(0).Name)
                     If xControl IsNot Nothing Then
                         Select Case xCon.Groups("value").Value.ToLower
                             Case "width"
@@ -793,12 +803,20 @@ Public Class Theming
         End If
     End Sub
 
-    Private Sub SetControlSettings_TopPanel(ByVal control As Object, ByVal settings As clsXMLTheme.ControlSettings)
+    Private Sub SetControlSettings_TopPanel(ByVal control As Object, ByVal controlsettings As clsXMLTheme.ControlSettings)
         If TypeOf control Is Label Then
             Dim nControl = DirectCast(control, Label)
-            nControl.BackColor = settings.BackColor
-            nControl.ForeColor = settings.ForeColor
-            nControl.Font = settings.Font
+            Dim globalSettings = _theme.TopPanel.GlobalSettings
+            If globalSettings IsNot Nothing Then
+                If controlsettings.BackColor.IsEmpty Then controlsettings.BackColor = globalSettings.BackColor
+                If controlsettings.ForeColor.IsEmpty Then controlsettings.ForeColor = globalSettings.ForeColor
+                If String.IsNullOrEmpty(controlsettings.FontName) Then controlsettings.FontName = globalSettings.FontName
+                If controlsettings.FontSize = 0 Then controlsettings.FontSize = globalSettings.FontSize
+                If controlsettings.FontStyleFromXML = -1 Then controlsettings.FontStyleFromXML = globalSettings.FontStyleFromXML
+            End If
+            nControl.BackColor = controlsettings.BackColor
+            nControl.ForeColor = controlsettings.ForeColor
+            nControl.Font = controlsettings.Font
         End If
     End Sub
 
@@ -865,13 +883,13 @@ Public Class Theming
                 settings = _theme.InfoPanel.TVEpisode
             Case Enums.ContentType.TVSeason
                 settings = _theme.InfoPanel.TVSeason
-            Case Enums.ContentType.TVShow
+            Case Enums.ContentType.TVShow, Enums.ContentType.TV
                 settings = _theme.InfoPanel.TVShow
             Case Else
                 Return
         End Select
 
-        frmMain.pnlInfoPanel.BackColor = _theme.InfoPanel.BackColor
+        frmMain.pnlInfoPanel.BackColor = settings.BackColor
         frmMain.IPMid = settings.PosMid
         frmMain.IPUp = settings.PosUp
 
@@ -882,21 +900,8 @@ Public Class Theming
             End If
         Next
 
-        Dim xControl As New Control
         For Each xCon In settings.Controls
-            Select Case xCon.Name
-                Case "pnlInfoPanel"
-                    xControl = frmMain.pnlInfoPanel
-                Case "lblActorsHeader", "lstActors", "pbActors", "pbActorsLoad"
-                    xControl = frmMain.pnlActors.Controls(xCon.Name)
-                Case "lblGuestStarsHeader", "lstGuestStars", "pbGuestStars", "pbGuestStarsLoad"
-                    xControl = frmMain.pnlGuestStars.Controls(xCon.Name)
-                Case "lblMoviesInSetHeader", "lvMoviesInSet"
-                    xControl = frmMain.pnlMoviesInSet.Controls(xCon.Name)
-                Case Else
-                    xControl = frmMain.pnlInfoPanel.Controls(xCon.Name)
-            End Select
-
+            Dim xControl = GetControl(xCon.Name)
             If xControl IsNot Nothing Then
                 SetInfoPanelGlobalSettings(xControl, xCon, settings)
             Else
@@ -938,7 +943,9 @@ Public Class Theming
                 control.Left = EvaluateFormula(controlsettings.Left)
                 control.Top = EvaluateFormula(controlsettings.Top)
                 control.Width = EvaluateFormula(controlsettings.Width)
-            Case control.Name.StartsWith("lbl"), control.Name.StartsWith("txt")
+            Case control.Name.StartsWith("lbl"), control.Name.StartsWith("lv"),
+                 control.Name.StartsWith("lst"), control.Name.StartsWith("pb"),
+                 control.Name.StartsWith("pnl"), control.Name.StartsWith("txt")
                 Dim globalSettings = settings.GlobalValueSettings
                 If globalSettings IsNot Nothing Then
                     If controlsettings.BackColor.IsEmpty Then controlsettings.BackColor = globalSettings.BackColor
@@ -957,6 +964,7 @@ Public Class Theming
                 control.Top = EvaluateFormula(controlsettings.Top)
                 control.Width = EvaluateFormula(controlsettings.Width)
             Case control.Name.StartsWith("btn")
+                control.Anchor = controlsettings.Anchor
                 control.ForeColor = controlsettings.ForeColor
                 control.Font = controlsettings.Font
                 control.Height = EvaluateFormula(controlsettings.Height)
