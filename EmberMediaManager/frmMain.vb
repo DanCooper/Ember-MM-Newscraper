@@ -52,7 +52,7 @@ Public Class frmMain
 
     Public fCommandLine As New CommandLine
 
-    Private TaskList As New List(Of Task)
+    Private TaskList As New Queue(Of Task)
     Private TasksDone As Boolean = True
 
     Private alActors As New List(Of String)
@@ -9660,7 +9660,6 @@ Public Class frmMain
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-
         Try
             Dim doSave As Boolean = True
 
@@ -10048,10 +10047,10 @@ Public Class frmMain
     End Sub
 
     Private Sub TaskRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        TaskList.Add(New Task With {.mType = mType, .Params = _params})
+        TaskList.Enqueue(New Task With {.mType = mType, .Params = _params})
         If TasksDone Then
-            tmrRunTasks.Start()
             TasksDone = False
+            tmrRunTasks.Start()
         End If
     End Sub
     ''' <summary>
@@ -10085,6 +10084,9 @@ Public Class frmMain
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
+                    Case "close"
+                        Close()
+                        Application.Exit()
                     Case "loadmedia"
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
@@ -17485,8 +17487,8 @@ Public Class frmMain
         tmrRunTasks.Enabled = False
         TasksDone = False
         While TaskList.Count > 0
-            GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).Params)
-            TaskList.RemoveAt(0)
+            Dim nTask = TaskList.Dequeue
+            GenericRunCallBack(nTask.mType, nTask.Params)
         End While
         TasksDone = True
     End Sub

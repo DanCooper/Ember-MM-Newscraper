@@ -55,7 +55,7 @@ Namespace My
             ' #  UserInteractive property (True/False)    #
             ' #############################################
             Master.isUserInteractive = Environment.UserInteractive
-            If Master.isUserInteractive AndAlso Not Master.appArgs.CommandLine.Contains("-nowindow") Then
+            If Master.isUserInteractive AndAlso Not Master.appArgs.CommandLine.Contains("-nosplash") Then
                 '# Show UI
                 Master.fLoading.Show()
             End If
