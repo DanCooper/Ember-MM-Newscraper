@@ -361,8 +361,11 @@ Namespace IMDB
                 If filteredoptions.bMainRating Then
                     Dim nRating = ParseRating(htmldReference)
                     If nRating IsNot Nothing Then
-                        nMovie.Rating = nRating.strRating
-                        nMovie.Votes = nRating.strVotes
+                        Dim dblRating As Double
+                        Dim iVotes As Integer
+                        If Double.TryParse(nRating.strRating, dblRating) AndAlso Integer.TryParse(NumUtils.CleanVotes(nRating.strVotes), iVotes) Then
+                            nMovie.Ratings.Add(New MediaContainers.Rating With {.Max = 10, .Name = "imdb", .Value = dblRating, .Votes = iVotes})
+                        End If
                     Else
                         logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Rating", id))
                     End If

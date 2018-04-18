@@ -246,13 +246,10 @@ Public Class NFO
 
             'Rating/Votes
             If (Not DBMovie.Movie.RatingSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bMainRating AndAlso
-                scrapedmovie.RatingSpecified AndAlso Master.eSettings.MovieScraperRating AndAlso Not new_Rating Then
-                DBMovie.Movie.Rating = scrapedmovie.Rating
-                DBMovie.Movie.Votes = NumUtils.CleanVotes(scrapedmovie.Votes)
+                 scrapedmovie.RatingsSpecified AndAlso Master.eSettings.MovieScraperRating Then
+                If Not new_Rating Then DBMovie.Movie.Ratings.Clear() 'removes all old ratings
+                DBMovie.Movie.Ratings.AddRange(scrapedmovie.Ratings)
                 new_Rating = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRating AndAlso Not Master.eSettings.MovieLockRating Then
-                DBMovie.Movie.Rating = String.Empty
-                DBMovie.Movie.Votes = String.Empty
             End If
 
             'ReleaseDate
@@ -403,6 +400,17 @@ Public Class NFO
         If ((Not DBMovie.Movie.OutlineSpecified OrElse Not Master.eSettings.MovieLockOutline) AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Not Master.eSettings.MovieScraperPlotForOutlineIfEmpty) OrElse
             (Not DBMovie.Movie.OutlineSpecified AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Master.eSettings.MovieScraperPlotForOutlineIfEmpty) Then
             DBMovie.Movie.Outline = StringUtils.ShortenOutline(DBMovie.Movie.Plot, Master.eSettings.MovieScraperOutlineLimit)
+        End If
+
+        'Rating/Votes
+        If (Not DBMovie.Movie.RatingSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bMainRating AndAlso
+                DBMovie.Movie.RatingsSpecified AndAlso Master.eSettings.MovieScraperRating Then
+            DBMovie.Movie.Rating = DBMovie.Movie.Ratings.Item(0).Value.ToString
+            DBMovie.Movie.Votes = NumUtils.CleanVotes(DBMovie.Movie.Ratings.Item(0).Votes.ToString)
+        ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRating AndAlso Not Master.eSettings.MovieLockRating Then
+            DBMovie.Movie.Ratings.Clear()
+            DBMovie.Movie.Rating = String.Empty
+            DBMovie.Movie.Votes = String.Empty
         End If
 
         'set ListTitle at the end of merging

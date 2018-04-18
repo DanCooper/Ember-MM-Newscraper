@@ -168,6 +168,7 @@ Namespace MediaContainers
         Private _playcount As Integer
         Private _plot As String
         Private _rating As String
+        Private _ratings As New List(Of Rating)
         Private _runtime As String
         Private _scrapersource As String
         Private _season As Integer
@@ -322,6 +323,23 @@ Namespace MediaContainers
         Public ReadOnly Property AiredSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_aired)
+            End Get
+        End Property
+
+        <XmlElement("ratings")>
+        Public Property Ratings() As List(Of Rating)
+            Get
+                Return _ratings
+            End Get
+            Set(ByVal value As List(Of Rating))
+                _ratings = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property RatingsSpecified() As Boolean
+            Get
+                Return _rating.Count > 0
             End Get
         End Property
 
@@ -754,6 +772,7 @@ Namespace MediaContainers
             _playcount = 0
             _plot = String.Empty
             _rating = String.Empty
+            _ratings.Clear()
             _runtime = String.Empty
             _scrapersource = String.Empty
             _season = -1
@@ -1008,6 +1027,7 @@ Namespace MediaContainers
         Private _playcount As Integer
         Private _plot As String
         Private _rating As String
+        Private _ratings As New List(Of Rating)
         Private _releaseDate As String
         Private _runtime As String
         Private _scrapersource As String
@@ -1257,6 +1277,23 @@ Namespace MediaContainers
         Public ReadOnly Property CountriesSpecified() As Boolean
             Get
                 Return _countries.Count > 0
+            End Get
+        End Property
+
+        <XmlElement("ratings")>
+        Public Property Ratings() As List(Of Rating)
+            Get
+                Return _ratings
+            End Get
+            Set(ByVal value As List(Of Rating))
+                _ratings = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property RatingsSpecified() As Boolean
+            Get
+                Return _ratings.Count > 0
             End Get
         End Property
 
@@ -1994,6 +2031,7 @@ Namespace MediaContainers
             _playcount = 0
             _plot = String.Empty
             _rating = String.Empty
+            _ratings.Clear()
             _releaseDate = String.Empty
             _runtime = String.Empty
             _scrapersource = String.Empty
@@ -2567,6 +2605,135 @@ Namespace MediaContainers
     End Class
 
     <Serializable()>
+    Public Class Rating
+
+#Region "Fields"
+
+        Private _id As Long
+        Private _isdefault As Boolean
+        Private _max As Integer
+        Private _name As String
+        Private _value As Double
+        Private _votes As Integer
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Clean()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlIgnore()>
+        Public Property ID() As Long
+            Get
+                Return _id
+            End Get
+            Set(ByVal Value As Long)
+                _id = Value
+            End Set
+        End Property
+
+        <XmlAttribute("name")>
+        Public Property Name() As String
+            Get
+                Return _name
+            End Get
+            Set(ByVal Value As String)
+                _name = Value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property NameSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_name)
+            End Get
+        End Property
+
+        <XmlAttribute("max")>
+        Public Property Max() As Integer
+            Get
+                Return _max
+            End Get
+            Set(ByVal Value As Integer)
+                _max = Value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property MaxSpecified() As Boolean
+            Get
+                Return Not _max = -1
+            End Get
+        End Property
+
+        <XmlAttribute("default")>
+        Public Property IsDefault() As Boolean
+            Get
+                Return _isdefault
+            End Get
+            Set(ByVal Value As Boolean)
+                _isdefault = Value
+            End Set
+        End Property
+
+        <XmlElement("value")>
+        Public Property Value() As Double
+            Get
+                Return _value
+            End Get
+            Set(ByVal Value As Double)
+                _value = Value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property ValueSpecified() As Boolean
+            Get
+                Return Not _value = -1
+            End Get
+        End Property
+
+        <XmlElement("votes")>
+        Public Property Votes() As Integer
+            Get
+                Return _votes
+            End Get
+            Set(ByVal Value As Integer)
+                _votes = Value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property VotesSpecified() As Boolean
+            Get
+                Return Not _votes = -1
+            End Get
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clean()
+            _id = -1
+            _isdefault = False
+            _max = -1
+            _name = String.Empty
+            _value = -1
+            _votes = -1
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()>
     <XmlRoot("seasondetails")>
     Public Class SeasonDetails
 
@@ -2857,6 +3024,7 @@ Namespace MediaContainers
         Private _plot As String
         Private _premiered As String
         Private _rating As String
+        Private _ratings As New List(Of Rating)
         Private _runtime As String
         Private _scrapersource As String
         Private _seasons As New Seasons
@@ -3068,6 +3236,23 @@ Namespace MediaContainers
         Public ReadOnly Property EpisodeGuideSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_episodeguide.URL)
+            End Get
+        End Property
+
+        <XmlElement("ratings")>
+        Public Property Ratings() As List(Of Rating)
+            Get
+                Return _ratings
+            End Get
+            Set(ByVal value As List(Of Rating))
+                _ratings = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property RatingsSpecified() As Boolean
+            Get
+                Return _rating.Count > 0
             End Get
         End Property
 
@@ -3517,6 +3702,7 @@ Namespace MediaContainers
             _plot = String.Empty
             _premiered = String.Empty
             _rating = String.Empty
+            _ratings.Clear()
             _runtime = String.Empty
             _scrapersource = String.Empty
             _seasons.Clear()

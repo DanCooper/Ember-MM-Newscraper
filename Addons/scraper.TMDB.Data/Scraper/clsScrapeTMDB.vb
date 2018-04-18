@@ -494,8 +494,7 @@ Public Class clsAPITMDB
 
         'Rating
         If FilteredOptions.bMainRating Then
-            nMovie.Rating = CStr(Result.VoteAverage)
-            nMovie.Votes = CStr(Result.VoteCount)
+            nMovie.Ratings.Add(New MediaContainers.Rating With {.Max = 10, .Name = "themoviedb", .Value = Result.VoteAverage, .Votes = Result.VoteCount})
         End If
 
         If bwTMDB.CancellationPending Then Return Nothing
