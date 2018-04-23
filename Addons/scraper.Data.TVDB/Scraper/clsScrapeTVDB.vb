@@ -147,8 +147,10 @@ Namespace TVDBs
             Dim Shows As List(Of TVDB.Model.Series)
 
             Shows = _TVDBApi.GetSeriesByName(sShow, _SpecialSettings.Language, _TVDBMirror).Result
-            If Shows Is Nothing Then
-                Return Nothing
+
+            If Shows.Count = 0 Then
+                'Fallback to Eng
+                Shows = _TVDBApi.GetSeriesByName(sShow, "en", _TVDBMirror).Result
             End If
 
             If Shows.Count > 0 Then
