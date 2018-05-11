@@ -225,7 +225,7 @@ Public Class frmSettingsHolder
                 Select Case True
                     Case r.Cells(1).Value.ToString.StartsWith("movie")
                         nContentType = Enums.ContentType.Movie
-                    Case r.Cells(1).Value.ToString.StartsWith("set")
+                    Case r.Cells(1).Value.ToString.StartsWith("movieset")
                         nContentType = Enums.ContentType.MovieSet
                     Case r.Cells(1).Value.ToString.StartsWith("tvshow")
                         nContentType = Enums.ContentType.TV

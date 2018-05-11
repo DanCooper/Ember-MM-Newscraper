@@ -117,7 +117,7 @@ Public Class dlgSourceTVShow
         Else
             'check duplicate source names
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idSource FROM tvshowsource WHERE strName LIKE """, txtSourceName.Text.Trim, """ AND idSource != ", _id, ";")
+                SQLcommand.CommandText = String.Concat("SELECT idSource FROM tvshowsource WHERE name LIKE """, txtSourceName.Text.Trim, """ AND idSource != ", _id, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         pbValidSourceName.Image = My.Resources.invalid
@@ -192,7 +192,7 @@ Public Class dlgSourceTVShow
                         End If
                     End If
                 End If
-                cbSourceOrdering.SelectedIndex = s.Ordering
+                cbSourceOrdering.SelectedIndex = s.EpisodeOrdering
                 cbSourceEpisodeSorting.SelectedIndex = s.EpisodeSorting
                 chkExclude.Checked = s.Exclude
                 chkSingle.Checked = s.IsSingle
@@ -224,47 +224,32 @@ Public Class dlgSourceTVShow
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-
         Dim strSourcePath As String = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
+        Dim strLanguage As String = "en-US"
+        If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
+            strLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
+        End If
+        Dim eEpisodeOrdering As Enums.EpisodeOrdering = Enums.EpisodeOrdering.Standard
+        If Not String.IsNullOrEmpty(cbSourceOrdering.Text) Then
+            eEpisodeOrdering = DirectCast(cbSourceOrdering.SelectedIndex, Enums.EpisodeOrdering)
+        End If
+        Dim eEpisodeSorting As Enums.EpisodeSorting = Enums.EpisodeSorting.Episode
+        If Not String.IsNullOrEmpty(cbSourceEpisodeSorting.Text) Then
+            eEpisodeSorting = DirectCast(cbSourceEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
+        End If
 
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                If Not _id = -1 Then
-                    SQLcommand.CommandText = String.Concat("UPDATE tvshowsource SET strName = (?), strPath = (?), strLanguage = (?), iOrdering = (?), bExclude = (?), iEpisodeSorting = (?) , bSingle = (?) WHERE idSource =", _id, ";")
-                Else
-                    SQLcommand.CommandText = "INSERT OR REPLACE INTO tvshowsource (strName, strPath, strLanguage, iOrdering, bExclude, iEpisodeSorting, bSingle) VALUES (?,?,?,?,?,?,?);"
-                End If
-                Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "strName")
-                Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "strPath")
-                Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "strLanguage")
-                Dim parOrdering As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOrdering", DbType.Int16, 0, "iOrdering")
-                Dim parExclude As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExclude", DbType.Boolean, 0, "bExclude")
-                Dim parEpisodeSorting As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEpisodeSorting", DbType.Int16, 0, "iEpisodeSorting")
-                Dim parSingle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSingle", DbType.Boolean, 0, "bSingle")
-                parName.Value = txtSourceName.Text.Trim
-                parPath.Value = strSourcePath
-                parExclude.Value = chkExclude.Checked
-                parSingle.Value = chkSingle.Checked
-                If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
-                    parLanguage.Value = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
-                Else
-                    parLanguage.Value = "en-US"
-                End If
-                If Not String.IsNullOrEmpty(cbSourceOrdering.Text) Then
-                    parOrdering.Value = DirectCast(cbSourceOrdering.SelectedIndex, Enums.EpisodeOrdering)
-                Else
-                    parOrdering.Value = Enums.EpisodeOrdering.Standard
-                End If
-                If Not String.IsNullOrEmpty(cbSourceEpisodeSorting.Text) Then
-                    parEpisodeSorting.Value = DirectCast(cbSourceEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
-                Else
-                    parEpisodeSorting.Value = Enums.EpisodeSorting.Episode
-                End If
+        Dim nSource As New Database.DBSource With {
+            .EpisodeOrdering = eEpisodeOrdering,
+            .EpisodeSorting = eEpisodeSorting,
+            .Exclude = chkExclude.Checked,
+            .ID = _id,
+            .IsSingle = chkSingle.Checked,
+            .Language = strLanguage,
+            .LastScan = DateTime.Now.ToString,
+            .Name = txtSourceName.Text.Trim,
+            .Path = strSourcePath}
 
-                SQLcommand.ExecuteNonQuery()
-            End Using
-            SQLtransaction.Commit()
-        End Using
+        Master.DB.Save_Source_TVShow(nSource)
 
         DialogResult = DialogResult.OK
     End Sub

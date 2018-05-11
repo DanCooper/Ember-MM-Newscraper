@@ -579,7 +579,7 @@ Public Class TMDB_Data
 
     Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef sStudio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
         logger.Trace("[TMDB_Data] [GetMovieStudio] [Start]")
-        If Not DBMovie.Movie.AnyUniqueIDSpecified Then
+        If Not DBMovie.Movie.UniqueIDsSpecified Then
             logger.Trace("[TMDB_Data] [GetMovieStudio] [Abort] Attempting to get studio for undefined movie")
             Return New Interfaces.ModuleResult
         End If

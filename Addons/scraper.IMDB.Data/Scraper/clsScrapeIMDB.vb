@@ -364,7 +364,7 @@ Namespace IMDB
                         Dim dblRating As Double
                         Dim iVotes As Integer
                         If Double.TryParse(nRating.strRating, dblRating) AndAlso Integer.TryParse(NumUtils.CleanVotes(nRating.strVotes), iVotes) Then
-                            nMovie.Ratings.Add(New MediaContainers.Rating With {.Max = 10, .Name = "imdb", .Value = dblRating, .Votes = iVotes})
+                            nMovie.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "imdb", .Value = dblRating, .Votes = iVotes})
                         End If
                     Else
                         logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Rating", id))
@@ -603,8 +603,11 @@ Namespace IMDB
                 If filteredoptions.bEpisodeRating Then
                     Dim nRating = ParseRating(htmldReference)
                     If nRating IsNot Nothing Then
-                        nTVEpisode.Rating = nRating.strRating
-                        nTVEpisode.Votes = nRating.strVotes
+                        Dim dblRating As Double
+                        Dim iVotes As Integer
+                        If Double.TryParse(nRating.strRating, dblRating) AndAlso Integer.TryParse(NumUtils.CleanVotes(nRating.strVotes), iVotes) Then
+                            nTVEpisode.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "imdb", .Value = dblRating, .Votes = iVotes})
+                        End If
                     Else
                         logger.Trace(String.Format("[IMDB] [GetTVEpisodeInfo] [ID:""{0}""] can't parse Rating", id))
                     End If
@@ -825,8 +828,11 @@ Namespace IMDB
                 If filteredoptions.bMainRating Then
                     Dim nRating As Rating = ParseRating(htmldReference)
                     If nRating IsNot Nothing Then
-                        nTVShow.Rating = nRating.strRating
-                        nTVShow.Votes = nRating.strVotes
+                        Dim dblRating As Double
+                        Dim iVotes As Integer
+                        If Double.TryParse(nRating.strRating, dblRating) AndAlso Integer.TryParse(NumUtils.CleanVotes(nRating.strVotes), iVotes) Then
+                            nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "imdb", .Value = dblRating, .Votes = iVotes})
+                        End If
                     Else
                         logger.Trace(String.Format("[IMDB] [GetTVShowInfo] [ID:""{0}""] can't parse Rating", id))
                     End If

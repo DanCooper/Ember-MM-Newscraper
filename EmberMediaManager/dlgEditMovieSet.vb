@@ -1247,7 +1247,7 @@ Public Class dlgEditMovieSet
         bsMovies.DataSource = Nothing
         dgvMovies.DataSource = Nothing
 
-        Master.DB.FillDataTable(dtMovies, "SELECT * FROM movie ORDER BY ListTitle COLLATE NOCASE;")
+        Master.DB.FillDataTable(dtMovies, "SELECT * FROM movie ORDER BY listTitle COLLATE NOCASE;")
 
         If dtMovies.Rows.Count > 0 Then
             With Me
@@ -1258,13 +1258,13 @@ Public Class dlgEditMovieSet
                     .dgvMovies.Columns(i).Visible = False
                 Next
 
-                .dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
-                .dgvMovies.Columns("ListTitle").MinimumWidth = 83
-                .dgvMovies.Columns("ListTitle").ReadOnly = True
-                .dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
-                .dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                .dgvMovies.Columns("ListTitle").Visible = True
+                .dgvMovies.Columns("listTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                .dgvMovies.Columns("listTitle").MinimumWidth = 83
+                .dgvMovies.Columns("listTitle").ReadOnly = True
+                .dgvMovies.Columns("listTitle").Resizable = DataGridViewTriState.True
+                .dgvMovies.Columns("listTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvMovies.Columns("listTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                .dgvMovies.Columns("listTitle").Visible = True
 
                 .dgvMovies.Columns("idMovie").ValueType = GetType(Int32)
 
@@ -1298,7 +1298,7 @@ Public Class dlgEditMovieSet
             dgvMovies.CurrentCell = Nothing
             dgvMovies.ClearSelection()
             dgvMovies.Rows(0).Selected = True
-            dgvMovies.CurrentCell = dgvMovies.Rows(0).Cells("ListTitle")
+            dgvMovies.CurrentCell = dgvMovies.Rows(0).Cells("listTitle")
         End If
     End Sub
 
@@ -1351,7 +1351,7 @@ Public Class dlgEditMovieSet
             FilterArray.Remove(filSearch)
             filSearch = String.Empty
 
-            filSearch = String.Concat("Title LIKE '%", txtSearchMovies.Text, "%'")
+            filSearch = String.Concat("title LIKE '%", txtSearchMovies.Text, "%'")
             FilterArray.Add(filSearch)
 
             RunFilter_Movies()

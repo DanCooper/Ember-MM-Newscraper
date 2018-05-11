@@ -539,7 +539,7 @@ Public Class clsAPITrakt
 
     Public Function GetWatchedState_Movie(ByRef tDBElement As Database.DBElement,
                                           Optional ByRef watchedmovies As IEnumerable(Of Objects.Get.Watched.TraktWatchedMovie) = Nothing) As Boolean
-        If Not tDBElement.Movie.AnyUniqueIDSpecified Then Return False
+        If Not tDBElement.Movie.UniqueIDsSpecified Then Return False
 
         Dim strIMDBID As String = tDBElement.Movie.IMDB
         Dim intTMDBID As Integer
@@ -571,7 +571,7 @@ Public Class clsAPITrakt
 
     Public Function GetWatchedState_TVEpisode(ByRef tDBElement As Database.DBElement,
                                               Optional ByRef watchedshows As IEnumerable(Of Objects.Get.Watched.TraktWatchedShow) = Nothing) As Boolean
-        If tDBElement.TVShow Is Nothing OrElse Not tDBElement.TVShow.AnyUniqueIDSpecified Then Return False
+        If tDBElement.TVShow Is Nothing OrElse Not tDBElement.TVShow.UniqueIDsSpecified Then Return False
 
         Dim strShowIMDBID As String = tDBElement.TVShow.IMDB
         Dim intShowTMDBID As Integer

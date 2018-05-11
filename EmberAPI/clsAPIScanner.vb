@@ -778,7 +778,7 @@ Public Class Scanner
                     MediaInfo.UpdateTVMediaInfo(cEpisode)
                 End If
             Else
-                If isNew AndAlso cEpisode.TVShow.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
+                If isNew AndAlso cEpisode.TVShow.UniqueIDsSpecified AndAlso cEpisode.ShowIDSpecified Then
                     If sEpisode.byDate Then
                         If Not cEpisode.TVEpisode.AiredSpecified Then cEpisode.TVEpisode.Aired = sEpisode.Aired
                     Else
@@ -803,7 +803,7 @@ Public Class Scanner
             End If
 
             'Scrape episode images
-            If isNew AndAlso cEpisode.TVShow.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
+            If isNew AndAlso cEpisode.TVShow.UniqueIDsSpecified AndAlso cEpisode.ShowIDSpecified Then
                 Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 If Not cEpisode.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then ScrapeModifiers.EpisodeFanart = True
@@ -1016,7 +1016,7 @@ Public Class Scanner
                                     tmpSeason.TVSeason.TVDB = nfoSeason.TVDB
                                 Else
                                     'Scrape season info
-                                    If isNew AndAlso tmpSeason.TVShow.AnyUniqueIDSpecified AndAlso tmpSeason.ShowIDSpecified Then
+                                    If isNew AndAlso tmpSeason.TVShow.UniqueIDsSpecified AndAlso tmpSeason.ShowIDSpecified Then
                                         ModulesManager.Instance.ScrapeData_TVSeason(tmpSeason, Master.eSettings.DefaultOptions_TV, False)
                                     End If
                                 End If
@@ -1024,7 +1024,7 @@ Public Class Scanner
                                 GetFolderContents_TVSeason(tmpSeason)
 
                                 'Scrape season images
-                                If isNew AndAlso tmpSeason.TVShow.AnyUniqueIDSpecified AndAlso tmpSeason.ShowIDSpecified Then
+                                If isNew AndAlso tmpSeason.TVShow.UniqueIDsSpecified AndAlso tmpSeason.ShowIDSpecified Then
                                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                                     Dim ScrapeModifiers As New Structures.ScrapeModifiers
                                     If Not tmpSeason.ImagesContainer.Banner.LocalFilePathSpecified AndAlso Master.eSettings.TVSeasonBannerAnyEnabled Then ScrapeModifiers.SeasonBanner = True
@@ -1449,13 +1449,13 @@ Public Class Scanner
 
                 If Master.eSettings.MovieScanOrderModify Then
                     Try
-                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
+                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.ScanRecursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
                     Catch ex As Exception
                         logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                 Else
                     Try
-                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
+                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.ScanRecursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
                     Catch ex As Exception
                         logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
@@ -1464,7 +1464,7 @@ Public Class Scanner
                 For Each inDir As DirectoryInfo In dList
                     If bwPrelim.CancellationPending Then Return
                     ScanForFiles_Movie(inDir.FullName, sSource)
-                    If sSource.Recursive Then
+                    If sSource.ScanRecursive Then
                         ScanSourceDirectory_Movie(sSource, False, inDir.FullName)
                     End If
                 Next
@@ -1501,7 +1501,7 @@ Public Class Scanner
                 currShowContainer = New Database.DBElement(Enums.ContentType.TVShow)
                 currShowContainer.EpisodeSorting = sSource.EpisodeSorting
                 currShowContainer.Language = sSource.Language
-                currShowContainer.Ordering = sSource.Ordering
+                currShowContainer.Ordering = sSource.EpisodeOrdering
                 currShowContainer.ShowPath = dInfo.FullName
                 currShowContainer.Source = sSource
                 ScanForFiles_TV(currShowContainer, dInfo.FullName)
@@ -1534,7 +1534,7 @@ Public Class Scanner
                     currShowContainer = New Database.DBElement(Enums.ContentType.TVShow)
                     currShowContainer.EpisodeSorting = sSource.EpisodeSorting
                     currShowContainer.Language = sSource.Language
-                    currShowContainer.Ordering = sSource.Ordering
+                    currShowContainer.Ordering = sSource.EpisodeOrdering
                     currShowContainer.ShowPath = inDir.FullName
                     currShowContainer.Source = sSource
                     ScanForFiles_TV(currShowContainer, inDir.FullName)
@@ -1733,7 +1733,7 @@ Public Class Scanner
                                 Catch ex As Exception
                                     SourceLastScan = DateTime.Now
                                 End Try
-                                If sSource.Recursive OrElse (Master.eSettings.MovieGeneralIgnoreLastScan OrElse Directory.GetLastWriteTime(sSource.Path) > SourceLastScan) Then
+                                If sSource.ScanRecursive OrElse (Master.eSettings.MovieGeneralIgnoreLastScan OrElse Directory.GetLastWriteTime(sSource.Path) > SourceLastScan) Then
                                     'save the scan time back to the db
                                     parLastScan.Value = DateTime.Now
                                     parID.Value = sSource.ID

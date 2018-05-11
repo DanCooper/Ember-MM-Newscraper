@@ -287,8 +287,7 @@ Namespace TVDBs
 
             'Rating
             If FilteredOptions.bMainRating Then
-                nTVShow.Rating = CStr(TVShowInfo.Series.Rating)
-                nTVShow.Votes = CStr(TVShowInfo.Series.RatingCount)
+                nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "thetvdb", .Value = TVShowInfo.Series.Rating, .Votes = TVShowInfo.Series.RatingCount})
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
@@ -393,68 +392,68 @@ Namespace TVDBs
         End Function
 
         Public Function GetTVEpisodeInfo(ByRef EpisodeInfo As TVDB.Model.Episode, ByRef TVShowInfo As TVDB.Model.SeriesDetails, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
-            Dim nEpisode As New MediaContainers.EpisodeDetails
+            Dim nTVEpisode As New MediaContainers.EpisodeDetails
 
             'IDs
-            nEpisode.TVDB = CStr(EpisodeInfo.Id)
-            If EpisodeInfo.IMDBId IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.IMDBId) Then nEpisode.IMDB = EpisodeInfo.IMDBId
+            nTVEpisode.TVDB = CStr(EpisodeInfo.Id)
+            If EpisodeInfo.IMDBId IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.IMDBId) Then nTVEpisode.IMDB = EpisodeInfo.IMDBId
 
             'Episode # Absolute
             If Not EpisodeInfo.AbsoluteNumber = -1 Then
-                nEpisode.EpisodeAbsolute = EpisodeInfo.AbsoluteNumber
+                nTVEpisode.EpisodeAbsolute = EpisodeInfo.AbsoluteNumber
             End If
 
             'Episode # AirsBeforeEpisode (DisplayEpisode)
             If Not EpisodeInfo.AirsBeforeEpisode = -1 Then
-                nEpisode.DisplayEpisode = EpisodeInfo.AirsBeforeEpisode
+                nTVEpisode.DisplayEpisode = EpisodeInfo.AirsBeforeEpisode
             End If
 
             'Episode # Combined
             If Not EpisodeInfo.CombinedEpisodeNumber = -1 Then
-                nEpisode.EpisodeCombined = EpisodeInfo.CombinedEpisodeNumber
+                nTVEpisode.EpisodeCombined = EpisodeInfo.CombinedEpisodeNumber
             End If
 
             'Episode # DVD
             If Not EpisodeInfo.DVDEpisodeNumber = -1 Then
-                nEpisode.EpisodeDVD = EpisodeInfo.DVDEpisodeNumber
+                nTVEpisode.EpisodeDVD = EpisodeInfo.DVDEpisodeNumber
             End If
 
             'Episode # Standard
             If Not EpisodeInfo.Number = -1 Then
-                nEpisode.Episode = EpisodeInfo.Number
+                nTVEpisode.Episode = EpisodeInfo.Number
             End If
 
             'Season # AirsBeforeSeason (DisplaySeason)
             If Not EpisodeInfo.AirsBeforeSeason = -1 Then
-                nEpisode.DisplaySeason = EpisodeInfo.AirsBeforeSeason
+                nTVEpisode.DisplaySeason = EpisodeInfo.AirsBeforeSeason
             End If
 
             'Season # AirsAfterSeason (DisplaySeason, DisplayEpisode; Special handling like in Kodi)
             If Not CDbl(EpisodeInfo.AirsAfterSeason) = -1 Then
-                nEpisode.DisplaySeason = EpisodeInfo.AirsAfterSeason
-                nEpisode.DisplayEpisode = 4096
+                nTVEpisode.DisplaySeason = EpisodeInfo.AirsAfterSeason
+                nTVEpisode.DisplayEpisode = 4096
             End If
 
             'Season # Combined
             If Not EpisodeInfo.CombinedSeason = -1 Then
-                nEpisode.SeasonCombined = EpisodeInfo.CombinedSeason
+                nTVEpisode.SeasonCombined = EpisodeInfo.CombinedSeason
             End If
 
             'Season # DVD
             If Not EpisodeInfo.DVDSeason = -1 Then
-                nEpisode.SeasonDVD = EpisodeInfo.DVDSeason
+                nTVEpisode.SeasonDVD = EpisodeInfo.DVDSeason
             End If
 
             'Season # Standard
             If Not EpisodeInfo.SeasonNumber = -1 Then
-                nEpisode.Season = EpisodeInfo.SeasonNumber
+                nTVEpisode.Season = EpisodeInfo.SeasonNumber
             End If
 
             'Actors
             If FilteredOptions.bEpisodeActors Then
                 If TVShowInfo.Actors IsNot Nothing Then
                     For Each aCast As TVDB.Model.Actor In TVShowInfo.Actors.Where(Function(f) f.Name IsNot Nothing AndAlso f.Role IsNot Nothing).OrderBy(Function(f) f.SortOrder)
-                        nEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
+                        nTVEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
                                                                           .Order = aCast.SortOrder,
                                                                           .Role = aCast.Role,
                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
@@ -470,9 +469,9 @@ Namespace TVDBs
                     Dim RelDate As Date
                     If Date.TryParse(ScrapedDate, RelDate) Then
                         'always save date in same date format not depending on users language setting!
-                        nEpisode.Aired = RelDate.ToString("yyyy-MM-dd")
+                        nTVEpisode.Aired = RelDate.ToString("yyyy-MM-dd")
                     Else
-                        nEpisode.Aired = ScrapedDate
+                        nTVEpisode.Aired = ScrapedDate
                     End If
                 End If
             End If
@@ -484,7 +483,7 @@ Namespace TVDBs
                     Dim charsToTrim() As Char = {"|"c, ","c}
                     CreditsList.AddRange(EpisodeInfo.Writer.Trim(charsToTrim).Split(charsToTrim))
                     For Each aCredits As String In CreditsList
-                        nEpisode.Credits.Add(aCredits.Trim)
+                        nTVEpisode.Credits.Add(aCredits.Trim)
                     Next
                 End If
             End If
@@ -496,7 +495,7 @@ Namespace TVDBs
                     Dim charsToTrim() As Char = {"|"c, ","c}
                     DirectorsList.AddRange(EpisodeInfo.Director.Trim(charsToTrim).Split(charsToTrim))
                     For Each aDirector As String In DirectorsList
-                        nEpisode.Directors.Add(aDirector.Trim)
+                        nTVEpisode.Directors.Add(aDirector.Trim)
                     Next
                 End If
             End If
@@ -504,36 +503,35 @@ Namespace TVDBs
             'Guest Stars
             If FilteredOptions.bEpisodeGuestStars Then
                 If EpisodeInfo.GuestStars IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.GuestStars) Then
-                    nEpisode.GuestStars.AddRange(StringToListOfPerson(EpisodeInfo.GuestStars))
+                    nTVEpisode.GuestStars.AddRange(StringToListOfPerson(EpisodeInfo.GuestStars))
                 End If
             End If
 
             'Plot
             If FilteredOptions.bEpisodePlot Then
                 If EpisodeInfo.Overview IsNot Nothing Then
-                    nEpisode.Plot = EpisodeInfo.Overview
+                    nTVEpisode.Plot = EpisodeInfo.Overview
                 End If
             End If
 
             'Rating
             If FilteredOptions.bEpisodeRating Then
-                nEpisode.Rating = CStr(EpisodeInfo.Rating)
-                nEpisode.Votes = CStr(EpisodeInfo.RatingCount)
+                nTVEpisode.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "thetvdb", .Value = EpisodeInfo.Rating, .Votes = EpisodeInfo.RatingCount})
             End If
 
             'ThumbPoster
             If EpisodeInfo.PictureFilename IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.PictureFilename) Then
-                nEpisode.ThumbPoster.URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", EpisodeInfo.PictureFilename)
+                nTVEpisode.ThumbPoster.URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", EpisodeInfo.PictureFilename)
             End If
 
             'Title
             If FilteredOptions.bEpisodeTitle Then
                 If EpisodeInfo.Name IsNot Nothing Then
-                    nEpisode.Title = EpisodeInfo.Name
+                    nTVEpisode.Title = EpisodeInfo.Name
                 End If
             End If
 
-            Return nEpisode
+            Return nTVEpisode
         End Function
 
         Public Function GetTVDBbyIMDB(ByVal strIMDB As String) As String

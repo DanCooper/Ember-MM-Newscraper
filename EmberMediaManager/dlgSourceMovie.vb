@@ -106,7 +106,7 @@ Public Class dlgSourceMovie
         Else
             'check duplicate source names
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idSource FROM moviesource WHERE strName LIKE """, txtSourceName.Text.Trim, """ AND idSource != ", _id, ";")
+                SQLcommand.CommandText = String.Concat("SELECT idSource FROM moviesource WHERE name LIKE """, txtSourceName.Text.Trim, """ AND idSource != ", _id, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         pbValidSourceName.Image = My.Resources.invalid
@@ -196,7 +196,7 @@ Public Class dlgSourceMovie
                 End If
                 chkExclude.Checked = s.Exclude
                 chkGetYear.Checked = s.GetYear
-                chkScanRecursive.Checked = s.Recursive
+                chkScanRecursive.Checked = s.ScanRecursive
                 chkSingle.Checked = s.IsSingle
                 chkUseFolderName.Checked = s.UseFolderName
                 txtSourceName.Text = s.Name
@@ -225,43 +225,25 @@ Public Class dlgSourceMovie
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-
         Dim strSourcePath As String = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
+        Dim strLanguage As String = "en-US"
+        If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
+            strLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
+        End If
 
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                If Not _id = -1 Then
-                    SQLcommand.CommandText = String.Concat("UPDATE moviesource SET strName = (?), strPath = (?), bRecursive = (?), bFoldername = (?), bSingle = (?), strLastScan = (?), bExclude = (?), bGetYear = (?) , strLanguage = (?) WHERE idSource =", _id, ";")
-                Else
-                    SQLcommand.CommandText = "INSERT OR REPLACE INTO moviesource (strName, strPath, bRecursive, bFoldername, bSingle, strLastScan, bExclude, bGetYear, strLanguage) VALUES (?,?,?,?,?,?,?,?,?);"
-                End If
-                Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "strNme")
-                Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "strPath")
-                Dim parRecur As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRecur", DbType.Boolean, 0, "bRecursive")
-                Dim parFolder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFolder", DbType.Boolean, 0, "bFoldername")
-                Dim parSingle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSingle", DbType.Boolean, 0, "bSingle")
-                Dim parLastScan As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLastScan", DbType.String, 0, "strLastScan")
-                Dim parExclude As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExclude", DbType.Boolean, 0, "bExclude")
-                Dim parGetYear As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGetYear", DbType.Boolean, 0, "bGetYear")
-                Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "strLanguage")
-                parName.Value = txtSourceName.Text.Trim
-                parPath.Value = strSourcePath
-                parRecur.Value = chkScanRecursive.Checked
-                parFolder.Value = chkUseFolderName.Checked
-                parSingle.Value = chkSingle.Checked
-                parLastScan.Value = DateTime.Now
-                parExclude.Value = chkExclude.Checked
-                parGetYear.Value = chkGetYear.Checked
-                If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
-                    parLanguage.Value = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
-                Else
-                    parLanguage.Value = "en-US"
-                End If
+        Dim nSource As New Database.DBSource With {
+            .Exclude = chkExclude.Checked,
+            .GetYear = chkGetYear.Checked,
+            .ID = _id,
+            .IsSingle = chkSingle.Checked,
+            .Language = strLanguage,
+            .LastScan = DateTime.Now.ToString,
+            .Name = txtSourceName.Text.Trim,
+            .Path = strSourcePath,
+            .ScanRecursive = chkScanRecursive.Checked,
+            .UseFolderName = chkUseFolderName.Checked}
 
-                SQLcommand.ExecuteNonQuery()
-            End Using
-            SQLtransaction.Commit()
-        End Using
+        Master.DB.Save_Source_Movie(nSource)
 
         DialogResult = DialogResult.OK
     End Sub

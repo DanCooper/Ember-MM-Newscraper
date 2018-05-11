@@ -564,10 +564,11 @@ Public Class Enums
         Movie = 2
         MovieSet = 3
         Music = 4
-        TV = 5
-        TVEpisode = 6
-        TVSeason = 7
-        TVShow = 8
+        Person = 5
+        TV = 6
+        TVEpisode = 7
+        TVSeason = 8
+        TVShow = 9
     End Enum
 
     Public Enum DefaultType As Integer

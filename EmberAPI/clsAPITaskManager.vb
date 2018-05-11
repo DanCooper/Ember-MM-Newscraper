@@ -421,36 +421,47 @@ Public Class TaskManager
 
             Case Enums.ContentType.Movie
                 Using SQLCommand_Update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLCommand_Update.CommandText = "UPDATE movie SET OutOfTolerance = (?) WHERE idMovie = (?);"
-                    Dim par_OutOfTolerance As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_OutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
+                    SQLCommand_Update.CommandText = "UPDATE movie SET outOfTolerance = (?) WHERE idMovie = (?);"
+                    Dim par_OutOfTolerance As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_outOfTolerance", DbType.Boolean, 0, "outOfTolerance")
                     Dim par_idMovie As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_idMovie", DbType.Int64, 0, "idMovie")
 
                     Using SQLCommand_GetMovies As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand_GetMovies.CommandText = String.Concat("SELECT * FROM movie;")
                         Using SQLReader_GetMovies As SQLite.SQLiteDataReader = SQLCommand_GetMovies.ExecuteReader()
                             While SQLReader_GetMovies.Read
-                                Dim bLevFail_OldValue = CBool(SQLReader_GetMovies("OutOfTolerance"))
+                                Dim bLevFail_OldValue = CBool(SQLReader_GetMovies("outOfTolerance"))
 
                                 If Master.eSettings.MovieLevTolerance > 0 Then
                                     Dim bIsSingle As Boolean = False
                                     Dim bLevFail_NewValue As Boolean = False
                                     Dim bUseFolderName As Boolean = False
+                                    Dim strPath As String = String.Empty
 
-                                    bIsSingle = CBool(SQLReader_GetMovies("Type"))
+                                    bIsSingle = CBool(SQLReader_GetMovies("isSingle"))
 
                                     Using SQLCommand_Source As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                                         SQLCommand_Source.CommandText = String.Concat("SELECT * FROM moviesource WHERE idSource = ", Convert.ToInt64(SQLReader_GetMovies("idSource")), ";")
                                         Using SQLreader_GetSource As SQLite.SQLiteDataReader = SQLCommand_Source.ExecuteReader()
                                             If SQLreader_GetSource.HasRows Then
                                                 SQLreader_GetSource.Read()
-                                                bUseFolderName = CBool(SQLreader_GetSource("bFoldername"))
+                                                bUseFolderName = CBool(SQLreader_GetSource("useFolderName"))
                                             Else
                                                 bUseFolderName = False
                                             End If
                                         End Using
                                     End Using
 
-                                    bLevFail_NewValue = StringUtils.ComputeLevenshtein(SQLReader_GetMovies("Title").ToString, StringUtils.FilterTitleFromPath_Movie(SQLReader_GetMovies("MoviePath").ToString, bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
+                                    Using sqlCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                                        sqlCommand.CommandText = String.Format("SELECT path FROM file WHERE idfile={0};", Convert.ToInt64(SQLReader_GetMovies("idFile")))
+                                        Using sqlReader As SQLite.SQLiteDataReader = sqlCommand.ExecuteReader()
+                                            If sqlReader.HasRows Then
+                                                sqlReader.Read()
+                                                strPath = sqlReader("path").ToString
+                                            End If
+                                        End Using
+                                    End Using
+
+                                    bLevFail_NewValue = StringUtils.ComputeLevenshtein(SQLReader_GetMovies("title").ToString, StringUtils.FilterTitleFromPath_Movie(strPath, bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
 
                                     If Not bLevFail_OldValue = bLevFail_NewValue Then
                                         par_OutOfTolerance.Value = bLevFail_NewValue

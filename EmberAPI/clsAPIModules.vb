@@ -1968,7 +1968,7 @@ Public Class ModulesManager
 
         Public Property ListMovieSets() As String
             Get
-                Return If(_ListMovieSets IsNot Nothing, _ListMovieSets, "setslist")
+                Return If(_ListMovieSets IsNot Nothing, _ListMovieSets, "moviesetlist")
             End Get
             Set(ByVal value As String)
                 _ListMovieSets = value

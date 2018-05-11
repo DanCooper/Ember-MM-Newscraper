@@ -494,7 +494,7 @@ Public Class clsAPITMDB
 
         'Rating
         If FilteredOptions.bMainRating Then
-            nMovie.Ratings.Add(New MediaContainers.Rating With {.Max = 10, .Name = "themoviedb", .Value = Result.VoteAverage, .Votes = Result.VoteCount})
+            nMovie.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "themoviedb", .Value = Result.VoteAverage, .Votes = Result.VoteCount})
         End If
 
         If bwTMDB.CancellationPending Then Return Nothing
@@ -871,8 +871,7 @@ Public Class clsAPITMDB
 
             'Rating
             If FilteredOptions.bMainRating Then
-                nTVShow.Rating = CStr(Result.VoteAverage)
-                nTVShow.Votes = CStr(Result.VoteCount)
+                nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "themoviedb", .Value = Result.VoteAverage, .Votes = Result.VoteCount})
             End If
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -1067,9 +1066,8 @@ Public Class clsAPITMDB
         End If
 
         'Rating
-        If FilteredOptions.bEpisodeRating Then
-            nTVEpisode.Rating = CStr(EpisodeInfo.VoteAverage)
-            nTVEpisode.Votes = CStr(EpisodeInfo.VoteCount)
+        If FilteredOptions.bMainRating Then
+            nTVEpisode.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "themoviedb", .Value = EpisodeInfo.VoteAverage, .Votes = EpisodeInfo.VoteCount})
         End If
 
         'ThumbPoster
