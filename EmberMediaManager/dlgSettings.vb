@@ -611,19 +611,8 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub AddExcludedDir(ByVal Path As String)
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "INSERT OR REPLACE INTO ExcludeDir (Dirname) VALUES (?);"
-
-                Dim parDirname As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirname", DbType.String, 0, "Dirname")
-                parDirname.Value = Path
-
-                SQLcommand.ExecuteNonQuery()
-            End Using
-            SQLtransaction.Commit()
-        End Using
-
+    Private Sub AddExcludedDir(ByVal path As String)
+        Master.DB.AddExcludedPath(path)
         SetApplyButton(True)
         sResult.NeedsDBClean_Movie = True
         sResult.NeedsDBClean_TV = True
@@ -633,17 +622,12 @@ Public Class dlgSettings
         If lstFileSystemExcludedDirs.SelectedItems.Count > 0 Then
             lstFileSystemExcludedDirs.BeginUpdate()
 
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    Dim parDirname As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirname", DbType.String, 0, "Dirname")
-                    While lstFileSystemExcludedDirs.SelectedItems.Count > 0
-                        parDirname.Value = lstFileSystemExcludedDirs.SelectedItems(0).ToString
-                        SQLcommand.CommandText = String.Concat("DELETE FROM ExcludeDir WHERE Dirname = (?);")
-                        SQLcommand.ExecuteNonQuery()
-                        lstFileSystemExcludedDirs.Items.Remove(lstFileSystemExcludedDirs.SelectedItems(0))
-                    End While
-                End Using
-                SQLtransaction.Commit()
+            Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                While lstFileSystemExcludedDirs.SelectedItems.Count > 0
+                    Master.DB.RemoveExcludedPath(lstFileSystemExcludedDirs.SelectedItems(0).ToString, True)
+                    lstFileSystemExcludedDirs.Items.Remove(lstFileSystemExcludedDirs.SelectedItems(0))
+                End While
+                SQLTransaction.Commit()
             End Using
 
             lstFileSystemExcludedDirs.EndUpdate()
@@ -4594,7 +4578,7 @@ Public Class dlgSettings
 
     Private Sub RefreshFileSystemExcludeDirs()
         lstFileSystemExcludedDirs.Items.Clear()
-        lstFileSystemExcludedDirs.Items.AddRange(Master.DB.GetExcludedDirs.ToArray)
+        lstFileSystemExcludedDirs.Items.AddRange(Master.DB.GetExcludedPaths.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemValidExts()

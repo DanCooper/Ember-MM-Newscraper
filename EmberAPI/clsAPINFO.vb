@@ -847,13 +847,13 @@ Public Class NFO
                 Dim iEpisode As Integer = -1
                 Dim iSeason As Integer = -1
                 Dim strAiredDate As String = aKnownEpisode.AiredDate
-                If DBTV.Ordering = Enums.EpisodeOrdering.Absolute Then
+                If DBTV.EpisodeOrdering = Enums.EpisodeOrdering.Absolute Then
                     iEpisode = aKnownEpisode.EpisodeAbsolute
                     iSeason = 1
-                ElseIf DBTV.Ordering = Enums.EpisodeOrdering.DVD Then
+                ElseIf DBTV.EpisodeOrdering = Enums.EpisodeOrdering.DVD Then
                     iEpisode = CInt(aKnownEpisode.EpisodeDVD)
                     iSeason = aKnownEpisode.SeasonDVD
-                ElseIf DBTV.Ordering = Enums.EpisodeOrdering.Standard Then
+                ElseIf DBTV.EpisodeOrdering = Enums.EpisodeOrdering.Standard Then
                     iEpisode = aKnownEpisode.Episode
                     iSeason = aKnownEpisode.Season
                 End If
@@ -1232,13 +1232,13 @@ Public Class NFO
             Dim iEpisode As Integer = -1
             Dim iSeason As Integer = -1
             Dim strAiredDate As String = KnownEpisodesIndex.Item(0).AiredDate
-            If DBTVEpisode.Ordering = Enums.EpisodeOrdering.Absolute Then
+            If DBTVEpisode.EpisodeOrdering = Enums.EpisodeOrdering.Absolute Then
                 iEpisode = KnownEpisodesIndex.Item(0).EpisodeAbsolute
                 iSeason = 1
-            ElseIf DBTVEpisode.Ordering = Enums.EpisodeOrdering.DVD Then
+            ElseIf DBTVEpisode.EpisodeOrdering = Enums.EpisodeOrdering.DVD Then
                 iEpisode = CInt(KnownEpisodesIndex.Item(0).EpisodeDVD)
                 iSeason = KnownEpisodesIndex.Item(0).SeasonDVD
-            ElseIf DBTVEpisode.Ordering = Enums.EpisodeOrdering.Standard Then
+            ElseIf DBTVEpisode.EpisodeOrdering = Enums.EpisodeOrdering.Standard Then
                 iEpisode = KnownEpisodesIndex.Item(0).Episode
                 iSeason = KnownEpisodesIndex.Item(0).Season
             End If

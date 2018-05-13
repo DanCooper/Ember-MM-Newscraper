@@ -577,9 +577,9 @@ Public Class Scanner
     ''' <returns>True if directory is valid, false if not.</returns>
     Public Function IsValidDir(ByVal dInfo As DirectoryInfo, ByVal bIsTV As Boolean) As Boolean
         Try
-            For Each s As String In Master.DB.GetExcludedDirs
+            For Each s As String In Master.DB.GetExcludedPaths
                 If dInfo.FullName.ToLower = s.ToLower Then
-                    logger.Info(String.Format("[Sanner] [IsValidDir] [ExcludeDirs] Path ""{0}"" has been skipped (path is in ""exclude directory"" list)", dInfo.FullName, s))
+                    logger.Info(String.Format("[Sanner] [IsValidDir] [ExcludedPath] Path ""{0}"" has been skipped (path is in ""exclude path"" list)", dInfo.FullName, s))
                     Return False
                 End If
             Next
@@ -831,7 +831,7 @@ Public Class Scanner
 
             If sEpisode.byDate Then
                 If cEpisode.TVEpisode.Season = -1 Then cEpisode.TVEpisode.Season = sEpisode.Season
-                If cEpisode.TVEpisode.Episode = -1 AndAlso cEpisode.Ordering = Enums.EpisodeOrdering.DayOfYear Then
+                If cEpisode.TVEpisode.Episode = -1 AndAlso cEpisode.EpisodeOrdering = Enums.EpisodeOrdering.DayOfYear Then
                     Dim eDate As Date = DateTime.ParseExact(sEpisode.Aired, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
                     cEpisode.TVEpisode.Episode = eDate.DayOfYear
                 ElseIf cEpisode.TVEpisode.Episode = -1 Then
@@ -1501,7 +1501,7 @@ Public Class Scanner
                 currShowContainer = New Database.DBElement(Enums.ContentType.TVShow)
                 currShowContainer.EpisodeSorting = sSource.EpisodeSorting
                 currShowContainer.Language = sSource.Language
-                currShowContainer.Ordering = sSource.EpisodeOrdering
+                currShowContainer.EpisodeOrdering = sSource.EpisodeOrdering
                 currShowContainer.ShowPath = dInfo.FullName
                 currShowContainer.Source = sSource
                 ScanForFiles_TV(currShowContainer, dInfo.FullName)
@@ -1534,7 +1534,7 @@ Public Class Scanner
                     currShowContainer = New Database.DBElement(Enums.ContentType.TVShow)
                     currShowContainer.EpisodeSorting = sSource.EpisodeSorting
                     currShowContainer.Language = sSource.Language
-                    currShowContainer.Ordering = sSource.EpisodeOrdering
+                    currShowContainer.EpisodeOrdering = sSource.EpisodeOrdering
                     currShowContainer.ShowPath = inDir.FullName
                     currShowContainer.Source = sSource
                     ScanForFiles_TV(currShowContainer, inDir.FullName)

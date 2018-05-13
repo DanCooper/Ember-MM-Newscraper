@@ -23,8 +23,8 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlMediaListEditor = New System.Windows.Forms.Panel()
         Me.tblMediaListEditor = New System.Windows.Forms.TableLayoutPanel()
         Me.gbCustomMediaList = New System.Windows.Forms.GroupBox()
@@ -48,10 +48,10 @@ Partial Class frmSettingsHolder
         Me.btnMainTabAdd = New System.Windows.Forms.Button()
         Me.btnMainTabRemove = New System.Windows.Forms.Button()
         Me.dgvMainTab = New System.Windows.Forms.DataGridView()
-        Me.btnMainTabUp = New System.Windows.Forms.Button()
-        Me.btnMainTabDown = New System.Windows.Forms.Button()
         Me.colMainTabTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colMainTabDefaultList = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.btnMainTabUp = New System.Windows.Forms.Button()
+        Me.btnMainTabDown = New System.Windows.Forms.Button()
         Me.pnlMediaListEditor.SuspendLayout()
         Me.tblMediaListEditor.SuspendLayout()
         Me.gbCustomMediaList.SuspendLayout()
@@ -302,7 +302,7 @@ Partial Class frmSettingsHolder
         Me.cbCustomMediaListType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbCustomMediaListType.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbCustomMediaListType.FormattingEnabled = True
-        Me.cbCustomMediaListType.Items.AddRange(New Object() {"movie", "sets", "tvshow"})
+        Me.cbCustomMediaListType.Items.AddRange(New Object() {"movie", "movieset", "tvshow"})
         Me.cbCustomMediaListType.Location = New System.Drawing.Point(95, 30)
         Me.cbCustomMediaListType.Name = "cbCustomMediaListType"
         Me.cbCustomMediaListType.Size = New System.Drawing.Size(98, 21)
@@ -411,6 +411,26 @@ Partial Class frmSettingsHolder
         Me.dgvMainTab.Size = New System.Drawing.Size(588, 150)
         Me.dgvMainTab.TabIndex = 11
         '
+        'colMainTabTitle
+        '
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colMainTabTitle.DefaultCellStyle = DataGridViewCellStyle1
+        Me.colMainTabTitle.FillWeight = 190.0!
+        Me.colMainTabTitle.HeaderText = "Title"
+        Me.colMainTabTitle.Name = "colMainTabTitle"
+        Me.colMainTabTitle.Width = 190
+        '
+        'colMainTabDefaultList
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colMainTabDefaultList.DefaultCellStyle = DataGridViewCellStyle2
+        Me.colMainTabDefaultList.HeaderText = "List"
+        Me.colMainTabDefaultList.Name = "colMainTabDefaultList"
+        Me.colMainTabDefaultList.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colMainTabDefaultList.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.colMainTabDefaultList.Width = 360
+        '
         'btnMainTabUp
         '
         Me.btnMainTabUp.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -432,26 +452,6 @@ Partial Class frmSettingsHolder
         Me.btnMainTabDown.Size = New System.Drawing.Size(23, 23)
         Me.btnMainTabDown.TabIndex = 15
         Me.btnMainTabDown.UseVisualStyleBackColor = True
-        '
-        'colMainTabTitle
-        '
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.colMainTabTitle.DefaultCellStyle = DataGridViewCellStyle3
-        Me.colMainTabTitle.FillWeight = 190.0!
-        Me.colMainTabTitle.HeaderText = "Title"
-        Me.colMainTabTitle.Name = "colMainTabTitle"
-        Me.colMainTabTitle.Width = 190
-        '
-        'colMainTabDefaultList
-        '
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.colMainTabDefaultList.DefaultCellStyle = DataGridViewCellStyle4
-        Me.colMainTabDefaultList.HeaderText = "List"
-        Me.colMainTabDefaultList.Name = "colMainTabDefaultList"
-        Me.colMainTabDefaultList.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.colMainTabDefaultList.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.colMainTabDefaultList.Width = 360
         '
         'frmSettingsHolder
         '

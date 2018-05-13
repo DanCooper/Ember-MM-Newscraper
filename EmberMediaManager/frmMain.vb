@@ -6736,7 +6736,7 @@ Public Class frmMain
             If dgvTVEpisodes.SelectedRows.Count > 1 Then
                 SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVEpisodes.SelectedRows.Count))
             ElseIf dgvTVEpisodes.SelectedRows.Count = 1 Then
-                SetStatus(dgvTVEpisodes.SelectedRows(0).Cells("strFilePath").Value.ToString)
+                SetStatus(dgvTVEpisodes.SelectedRows(0).Cells("path").Value.ToString)
             End If
             currRow_TVEpisode = dgvTVEpisodes.SelectedRows(0).Index
             If Not currList = 2 Then
@@ -6856,7 +6856,7 @@ Public Class frmMain
 
             If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVSeasonScraper.IsBusy Then
                 oldStatus = GetStatus()
-                Dim seasonTitle As String = dgvTVSeasons.Rows(e.RowIndex).Cells("seasonText").Value.ToString
+                Dim seasonTitle As String = dgvTVSeasons.Rows(e.RowIndex).Cells("title").Value.ToString
                 Dim scrapeFor As String = String.Empty
                 Dim scrapeType As String = String.Empty
                 Select Case colName
@@ -6928,7 +6928,7 @@ Public Class frmMain
         End If
 
         'text fields
-        If (colName = "season" OrElse colName = "seasonText" OrElse colName = "episodes") AndAlso e.RowIndex >= 0 Then
+        If (colName = "season" OrElse colName = "title" OrElse colName = "episodes") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvTVSeasons.Item("missing", e.RowIndex).Value) AndAlso Not CInt(dgvTVSeasons.Item("season", e.RowIndex).Value) = -1 Then
                 e.CellStyle.ForeColor = MediaListColors.Missing.ForeColor
                 e.CellStyle.SelectionForeColor = MediaListColors.Missing.SelectionForeColor
@@ -7002,9 +7002,9 @@ Public Class frmMain
             KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
             tmrKeyBuffer.Start()
             For Each drvRow As DataGridViewRow In dgvTVSeasons.Rows
-                If drvRow.Cells("seasonText").Value.ToString.StartsWith(KeyBuffer) Then
+                If drvRow.Cells("title").Value.ToString.StartsWith(KeyBuffer) Then
                     drvRow.Selected = True
-                    dgvTVSeasons.CurrentCell = drvRow.Cells("seasonText")
+                    dgvTVSeasons.CurrentCell = drvRow.Cells("title")
                     Exit For
                 End If
             Next
@@ -7090,7 +7090,7 @@ Public Class frmMain
                     cmnuSeasonEditSeparator.Visible = True
                     cmnuSeasonScrape.Visible = True
 
-                    cmnuSeasonTitle.Text = String.Concat(">> ", dgvTVSeasons.Item("seasonText", dgvHTI.RowIndex).Value, " <<")
+                    cmnuSeasonTitle.Text = String.Concat(">> ", dgvTVSeasons.Item("title", dgvHTI.RowIndex).Value, " <<")
                     cmnuSeasonEdit.Enabled = Convert.ToInt32(dgvTVSeasons.Item("season", dgvHTI.RowIndex).Value) >= 0
 
                     If Not dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 1 Then
@@ -7099,7 +7099,7 @@ Public Class frmMain
                         dgvTVSeasons.CurrentCell = Nothing
                         dgvTVSeasons.ClearSelection()
                         dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected = True
-                        dgvTVSeasons.CurrentCell = dgvTVSeasons.Item("seasonText", dgvHTI.RowIndex)
+                        dgvTVSeasons.CurrentCell = dgvTVSeasons.Item("title", dgvHTI.RowIndex)
                     Else
                         cmnuSeason.Enabled = True
                     End If
@@ -7139,7 +7139,7 @@ Public Class frmMain
             If dgvTVSeasons.SelectedRows.Count > 1 Then
                 SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVSeasons.SelectedRows.Count))
             ElseIf dgvTVSeasons.SelectedRows.Count = 1 Then
-                SetStatus(dgvTVSeasons.SelectedRows(0).Cells("seasonText").Value.ToString)
+                SetStatus(dgvTVSeasons.SelectedRows(0).Cells("title").Value.ToString)
             End If
             currRow_TVSeason = dgvTVSeasons.SelectedRows(0).Index
             If Not currList = 1 Then
@@ -7158,7 +7158,7 @@ Public Class frmMain
             dgvTVSeasons.CurrentCell = Nothing
             dgvTVSeasons.ClearSelection()
             'dgvTVSeasons.Rows(0).Selected = True
-            'dgvTVSeasons.CurrentCell = dgvTVSeasons.Rows(0).Cells("SeasonText")
+            'dgvTVSeasons.CurrentCell = dgvTVSeasons.Rows(0).Cells("title")
         End If
 
         SortingSave_TVSeasons()
@@ -8745,13 +8745,13 @@ Public Class frmMain
         dgvTVEpisodes.DataSource = Nothing
 
         If Master.eSettings.TVDisplayMissingEpisodes Then
-            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT * FROM seasonslist WHERE idShow = ", ShowID, " ORDER BY season;"))
+            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT * FROM seasonlist WHERE idShow = ", ShowID, " ORDER BY season;"))
         Else
-            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT DISTINCT seasonslist.* ",
-                                                                "FROM seasonslist ",
-                                                                "LEFT OUTER JOIN episodelist ON (seasonslist.idShow = episodelist.idShow) AND (seasonslist.season = episodelist.season) ",
-                                                                "WHERE seasonslist.idShow = ", ShowID, " AND (episodelist.missing = 0 OR seasonslist.season = -1) ",
-                                                                "ORDER BY seasonslist.season;"))
+            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT DISTINCT seasonlist.* ",
+                                                                "FROM seasonlist ",
+                                                                "LEFT OUTER JOIN episodelist ON (seasonlist.idShow = episodelist.idShow) AND (seasonlist.season = episodelist.season) ",
+                                                                "WHERE seasonlist.idShow = ", ShowID, " AND (episodelist.missing = 0 OR seasonlist.season = -1) ",
+                                                                "ORDER BY seasonlist.season;"))
         End If
 
         bsTVSeasons.DataSource = dtTVSeasons
@@ -8829,20 +8829,20 @@ Public Class frmMain
         dgvTVSeasons.Columns("season").ToolTipText = Master.eLang.GetString(659, "Season #")
         dgvTVSeasons.Columns("season").HeaderText = "#"
         dgvTVSeasons.Columns("season").DefaultCellStyle.Format = "00"
-        dgvTVSeasons.Columns("seasonText").Resizable = DataGridViewTriState.False
-        dgvTVSeasons.Columns("seasonText").ReadOnly = True
-        dgvTVSeasons.Columns("seasonText").MinimumWidth = 83
-        dgvTVSeasons.Columns("seasonText").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVSeasons.Columns("seasonText").Visible = True
-        dgvTVSeasons.Columns("seasonText").ToolTipText = Master.eLang.GetString(865, "Season Title")
-        dgvTVSeasons.Columns("seasonText").HeaderText = Master.eLang.GetString(865, "Season Title")
+        dgvTVSeasons.Columns("title").Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns("title").ReadOnly = True
+        dgvTVSeasons.Columns("title").MinimumWidth = 83
+        dgvTVSeasons.Columns("title").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns("title").Visible = True
+        dgvTVSeasons.Columns("title").ToolTipText = Master.eLang.GetString(865, "Season Title")
+        dgvTVSeasons.Columns("title").HeaderText = Master.eLang.GetString(865, "Season Title")
 
         dgvTVSeasons.Columns("idSeason").ValueType = GetType(Long)
         dgvTVSeasons.Columns("idShow").ValueType = GetType(Long)
         dgvTVSeasons.Columns("season").ValueType = GetType(Integer)
 
-        If Master.isWindows Then dgvTVSeasons.Columns("seasonText").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-        ResizeTVLists(dgvTVSeasons.Columns("seasonText").Index)
+        If Master.isWindows Then dgvTVSeasons.Columns("title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        ResizeTVLists(dgvTVSeasons.Columns("title").Index)
 
         If Not Master.isCL Then SortingRestore_TVSeasons()
 

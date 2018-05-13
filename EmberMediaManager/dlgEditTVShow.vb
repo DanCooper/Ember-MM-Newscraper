@@ -1125,7 +1125,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub FillInfo()
-        cbOrdering.SelectedIndex = tmpDBElement.Ordering
+        cbOrdering.SelectedIndex = tmpDBElement.EpisodeOrdering
         cbEpisodeSorting.SelectedIndex = tmpDBElement.EpisodeSorting
         If cbSourceLanguage.Items.Count > 0 Then
             Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = tmpDBElement.Language)
@@ -1879,7 +1879,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub SetInfo()
-        tmpDBElement.Ordering = DirectCast(cbOrdering.SelectedIndex, Enums.EpisodeOrdering)
+        tmpDBElement.EpisodeOrdering = DirectCast(cbOrdering.SelectedIndex, Enums.EpisodeOrdering)
         tmpDBElement.EpisodeSorting = DirectCast(cbEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
 
         If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
