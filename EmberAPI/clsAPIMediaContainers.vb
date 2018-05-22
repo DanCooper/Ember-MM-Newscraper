@@ -31,8 +31,8 @@ Namespace MediaContainers
 
 #Region "Fields"
 
-        Private _bitrate As String = String.Empty
-        Private _channels As String = String.Empty
+        Private _bitrate As Integer = 0
+        Private _channels As Integer = 0
         Private _codec As String = String.Empty
         Private _haspreferred As Boolean = False
         Private _language As String = String.Empty
@@ -43,11 +43,11 @@ Namespace MediaContainers
 #Region "Properties"
 
         <XmlElement("bitrate")>
-        Public Property Bitrate() As String
+        Public Property Bitrate() As Integer
             Get
-                Return _bitrate.Trim()
+                Return _bitrate
             End Get
-            Set(ByVal Value As String)
+            Set(ByVal Value As Integer)
                 _bitrate = Value
             End Set
         End Property
@@ -55,16 +55,16 @@ Namespace MediaContainers
         <XmlIgnore>
         Public ReadOnly Property BitrateSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_bitrate)
+                Return Not _bitrate = 0
             End Get
         End Property
 
         <XmlElement("channels")>
-        Public Property Channels() As String
+        Public Property Channels() As Integer
             Get
-                Return _channels.Trim()
+                Return _channels
             End Get
-            Set(ByVal Value As String)
+            Set(ByVal Value As Integer)
                 _channels = Value
             End Set
         End Property
@@ -72,7 +72,7 @@ Namespace MediaContainers
         <XmlIgnore>
         Public ReadOnly Property ChannelsSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_channels)
+                Return Not _channels = 0
             End Get
         End Property
 
@@ -160,7 +160,7 @@ Namespace MediaContainers
         Private _episodeabsolute As Integer
         Private _episodecombined As Double
         Private _episodedvd As Double
-        Private _fileInfo As New Fileinfo
+        Private _fileInfo As New FileInfo
         Private _gueststars As New List(Of Person)
         Private _imdb As String
         Private _lastplayed As String
@@ -618,11 +618,11 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("fileinfo")>
-        Public Property FileInfo() As Fileinfo
+        Public Property FileInfo() As FileInfo
             Get
                 Return _fileInfo
             End Get
-            Set(ByVal value As Fileinfo)
+            Set(ByVal value As FileInfo)
                 _fileInfo = value
             End Set
         End Property
@@ -758,7 +758,7 @@ Namespace MediaContainers
             _episodeabsolute = -1
             _episodecombined = -1
             _episodedvd = -1
-            _fileInfo = New Fileinfo
+            _fileInfo = New FileInfo
             _gueststars.Clear()
             _imdb = String.Empty
             _lastplayed = String.Empty
@@ -957,32 +957,20 @@ Namespace MediaContainers
 
     <Serializable()>
     <XmlRoot("fileinfo")>
-    Public Class Fileinfo
-
-#Region "Fields"
-
-        Private _streamdetails As New StreamData
-
-#End Region 'Fields
+    Public Class FileInfo
 
 #Region "Properties"
 
         <XmlElement("streamdetails")>
-        Property StreamDetails() As StreamData
-            Get
-                Return _streamdetails
-            End Get
-            Set(ByVal value As StreamData)
-                _streamdetails = value
-            End Set
-        End Property
+        Property StreamDetails() As StreamData = New StreamData
 
         <XmlIgnore>
         Public ReadOnly Property StreamDetailsSpecified() As Boolean
             Get
-                Return (_streamdetails.Video IsNot Nothing AndAlso _streamdetails.Video.Count > 0) OrElse
-                (_streamdetails.Audio IsNot Nothing AndAlso _streamdetails.Audio.Count > 0) OrElse
-                (_streamdetails.Subtitle IsNot Nothing AndAlso _streamdetails.Subtitle.Count > 0)
+                Return _
+                    (StreamDetails.Audio IsNot Nothing AndAlso StreamDetails.Audio.Count > 0) OrElse
+                    (StreamDetails.Subtitle IsNot Nothing AndAlso StreamDetails.Subtitle.Count > 0) OrElse
+                    (StreamDetails.Video IsNot Nothing AndAlso StreamDetails.Video.Count > 0)
             End Get
         End Property
 
@@ -1008,7 +996,7 @@ Namespace MediaContainers
         Private _datemodified As String
         Private _directors As New List(Of String)
         Private _fanart As New Fanart
-        Private _fileInfo As New Fileinfo
+        Private _fileInfo As New FileInfo
         Private _genres As New List(Of String)
         Private _imdb As String
         Private _language As String
@@ -1745,11 +1733,11 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("fileinfo")>
-        Public Property FileInfo() As Fileinfo
+        Public Property FileInfo() As FileInfo
             Get
                 Return _fileInfo
             End Get
-            Set(ByVal value As Fileinfo)
+            Set(ByVal value As FileInfo)
                 _fileInfo = value
             End Set
         End Property
@@ -2006,7 +1994,7 @@ Namespace MediaContainers
             _datemodified = String.Empty
             _directors.Clear()
             _fanart = New Fanart
-            _fileInfo = New Fileinfo
+            _fileInfo = New FileInfo
             _genres.Clear()
             _imdb = String.Empty
             _language = String.Empty
@@ -5651,113 +5639,64 @@ Namespace MediaContainers
     <Serializable()>
     Public Class Subtitle
 
-#Region "Fields"
-
-        Private _language As String = String.Empty
-        Private _longlanguage As String = String.Empty
-        Private _subs_foced As Boolean = False
-        Private _subs_path As String = String.Empty
-        Private _subs_type As String = String.Empty
-        Private _toremove As Boolean = False            'trigger to delete local/external subtitle files
-
-#End Region 'Fields
-
 #Region "Properties"
 
         <XmlElement("language")>
-        Public Property Language() As String
-            Get
-                Return _language
-            End Get
-            Set(ByVal Value As String)
-                _language = Value
-            End Set
-        End Property
+        Public Property Language() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_language)
+                Return Not String.IsNullOrEmpty(Language)
             End Get
         End Property
 
         <XmlElement("longlanguage")>
-        Public Property LongLanguage() As String
-            Get
-                Return _longlanguage
-            End Get
-            Set(ByVal value As String)
-                _longlanguage = value
-            End Set
-        End Property
+        Public Property LongLanguage() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_longlanguage)
+                Return Not String.IsNullOrEmpty(LongLanguage)
             End Get
         End Property
 
         <XmlElement("forced")>
-        Public Property SubsForced() As Boolean
-            Get
-                Return _subs_foced
-            End Get
-            Set(ByVal value As Boolean)
-                _subs_foced = value
-            End Set
-        End Property
-
-        <XmlIgnore>
-        Public ReadOnly Property SubsForcedSpecified() As Boolean
-            Get
-                Return _subs_foced
-            End Get
-        End Property
+        Public Property Forced() As Boolean = False
 
         <XmlElement("path")>
-        Public Property SubsPath() As String
+        Public Property Path() As String = String.Empty
+
+        <XmlIgnore>
+        Public ReadOnly Property PathSpecified() As Boolean
             Get
-                Return _subs_path
+                Return Not String.IsNullOrEmpty(Path)
             End Get
-            Set(ByVal value As String)
-                _subs_path = value
-            End Set
         End Property
 
         <XmlIgnore>
-        Public ReadOnly Property SubsPathSpecified() As Boolean
+        Public ReadOnly Property SubsType() As String
             Get
-                Return Not String.IsNullOrEmpty(_subs_path)
+                If String.IsNullOrEmpty(Path) Then
+                    Return "embedded"
+                Else
+                    Return "external"
+                End If
             End Get
-        End Property
-
-        <XmlElement("type")>
-        Public Property SubsType() As String
-            Get
-                Return _subs_type
-            End Get
-            Set(ByVal value As String)
-                _subs_type = value
-            End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property SubsTypeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_subs_type)
+                Return Not String.IsNullOrEmpty(SubsType)
             End Get
         End Property
-
+        ''' <summary>
+        ''' trigger to delete local/external subtitle files
+        ''' </summary>
+        ''' <returns></returns>
         <XmlIgnore>
-        Public Property toRemove() As Boolean
-            Get
-                Return _toremove
-            End Get
-            Set(ByVal value As Boolean)
-                _toremove = value
-            End Set
-        End Property
+        Public Property toRemove() As Boolean = False
 
 #End Region 'Properties
 
@@ -6264,258 +6203,147 @@ Namespace MediaContainers
     <Serializable()>
     Public Class Video
 
-#Region "Fields"
-
-        Private _aspect As String = String.Empty
-        Private _bitrate As String = String.Empty
-        Private _codec As String = String.Empty
-        Private _duration As String = String.Empty
-        Private _encoded_Settings As String = String.Empty
-        Private _height As String = String.Empty
-        Private _language As String = String.Empty
-        Private _longlanguage As String = String.Empty
-        Private _multiview_count As String = String.Empty
-        Private _multiview_layout As String = String.Empty
-        Private _scantype As String = String.Empty
-        'XBMC multiview layout type (http://wiki.xbmc.org/index.php?title=3D)
-        Private _stereomode As String = String.Empty
-        Private _width As String = String.Empty
-        Private _filesize As Double = 0
-
-#End Region 'Fields
-
 #Region "Properties"
 
         <XmlElement("aspect")>
-        Public Property Aspect() As String
-            Get
-                Return _aspect.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _aspect = Value
-            End Set
-        End Property
+        Public Property Aspect() As Double = 0
 
         <XmlIgnore>
         Public ReadOnly Property AspectSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_aspect)
+                Return Not Aspect = 0
             End Get
         End Property
-
+        ''' <summary>
+        ''' Bitrate in bits per seconds
+        ''' </summary>
+        ''' <returns></returns>
         <XmlElement("bitrate")>
-        Public Property Bitrate() As String
-            Get
-                Return _bitrate.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _bitrate = Value
-            End Set
-        End Property
+        Public Property Bitrate() As Integer = 0
 
         <XmlIgnore>
         Public ReadOnly Property BitrateSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_bitrate)
+                Return Not Bitrate = 0
             End Get
         End Property
 
         <XmlElement("codec")>
-        Public Property Codec() As String
-            Get
-                Return _codec.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _codec = Value
-            End Set
-        End Property
+        Public Property Codec() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_codec)
+                Return Not String.IsNullOrEmpty(Codec)
             End Get
         End Property
-
+        ''' <summary>
+        ''' Duration in seconds
+        ''' </summary>
+        ''' <returns></returns>
         <XmlElement("durationinseconds")>
-        Public Property Duration() As String
-            Get
-                Return _duration.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _duration = Value
-            End Set
-        End Property
+        Public Property Duration() As Integer = 0
 
         <XmlIgnore()>
         Public ReadOnly Property DurationSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_duration)
+                Return Not Duration = 0
             End Get
         End Property
 
         <XmlElement("height")>
-        Public Property Height() As String
-            Get
-                Return _height.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _height = Value
-            End Set
-        End Property
+        Public Property Height() As Integer = 0
 
         <XmlIgnore>
         Public ReadOnly Property HeightSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_height)
+                Return Not Height = 0
             End Get
         End Property
 
         <XmlElement("language")>
-        Public Property Language() As String
-            Get
-                Return _language.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _language = Value
-            End Set
-        End Property
+        Public Property Language() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_language)
+                Return Not String.IsNullOrEmpty(Language)
             End Get
         End Property
 
         <XmlElement("longlanguage")>
-        Public Property LongLanguage() As String
-            Get
-                Return _longlanguage.Trim()
-            End Get
-            Set(ByVal value As String)
-                _longlanguage = value
-            End Set
-        End Property
+        Public Property LongLanguage() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_longlanguage)
+                Return Not String.IsNullOrEmpty(LongLanguage)
             End Get
         End Property
 
         <XmlElement("multiview_count")>
-        Public Property MultiViewCount() As String
-            Get
-                Return _multiview_count.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _multiview_count = Value
-            End Set
-        End Property
+        Public Property MultiViewCount() As Integer = 1
 
         <XmlIgnore>
         Public ReadOnly Property MultiViewCountSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_multiview_count)
+                Return Not MultiViewCount = 0
             End Get
         End Property
 
         <XmlElement("multiview_layout")>
-        Public Property MultiViewLayout() As String
-            Get
-                Return _multiview_layout.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _multiview_layout = Value
-            End Set
-        End Property
+        Public Property MultiViewLayout() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property MultiViewLayoutSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_multiview_layout)
+                Return Not String.IsNullOrEmpty(MultiViewLayout)
             End Get
         End Property
 
         <XmlElement("scantype")>
-        Public Property Scantype() As String
-            Get
-                Return _scantype.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _scantype = Value
-            End Set
-        End Property
+        Public Property Scantype() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property ScantypeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_scantype)
+                Return Not String.IsNullOrEmpty(Scantype)
             End Get
         End Property
 
         <XmlIgnore>
-        Public ReadOnly Property ShortStereoMode() As String
-            Get
-                Return ConvertVStereoToShort(_stereomode).Trim()
-            End Get
-        End Property
+        Public ReadOnly Property ShortStereoMode() As String = String.Empty
 
         <XmlElement("stereomode")>
-        Public Property StereoMode() As String
-            Get
-                Return _stereomode.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _stereomode = Value
-            End Set
-        End Property
+        Public Property StereoMode() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property StereoModeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_stereomode)
+                Return Not String.IsNullOrEmpty(StereoMode)
             End Get
         End Property
 
         <XmlElement("width")>
-        Public Property Width() As String
-            Get
-                Return _width.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _width = Value
-            End Set
-        End Property
+        Public Property Width() As Integer = 0
 
         <XmlIgnore>
         Public ReadOnly Property WidthSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_width)
+                Return Not Width = 0
             End Get
         End Property
-
+        ''' <summary>
+        ''' File size in bytes
+        ''' </summary>
+        ''' <returns></returns>
         <XmlElement("filesize")>
-        Public Property Filesize() As Double
-            Get
-                Return _filesize
-            End Get
-            Set(ByVal Value As Double)
-                'for now save filesize in bytes(default)
-                _filesize = Value
-            End Set
-        End Property
+        Public Property Filesize() As Double = 0
 
         <XmlIgnore()>
         Public ReadOnly Property FilesizeSpecified() As Boolean
             Get
-                If _filesize = 0 Then
-                    Return False
-                Else
-                    Return True
-                End If
+                Return Not Filesize = 0
             End Get
         End Property
 

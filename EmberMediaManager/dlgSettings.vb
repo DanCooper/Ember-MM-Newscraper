@@ -872,7 +872,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtEdit.Click
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
-            Dim fi As New MediaContainers.Fileinfo
+            Dim fi As New MediaContainers.FileInfo
             For Each x As Settings.MetadataPerType In MovieMeta
                 If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
                     fi = dEditMeta.ShowDialog(x.MetaData, False)
@@ -880,7 +880,7 @@ Public Class dlgSettings
                         MovieMeta.Remove(x)
                         Dim m As New Settings.MetadataPerType
                         m.FileType = x.FileType
-                        m.MetaData = New MediaContainers.Fileinfo
+                        m.MetaData = New MediaContainers.FileInfo
                         m.MetaData = fi
                         MovieMeta.Add(m)
                         LoadMovieMetadata()
@@ -910,7 +910,7 @@ Public Class dlgSettings
 
     Private Sub btnTVScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtEdit.Click
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.TVEpisode), True)
-            Dim fi As New MediaContainers.Fileinfo
+            Dim fi As New MediaContainers.FileInfo
             For Each x As Settings.MetadataPerType In TVMeta
                 If x.FileType = lstTVScraperDefFIExt.SelectedItems(0).ToString Then
                     fi = dEditMeta.ShowDialog(x.MetaData, True)
@@ -918,7 +918,7 @@ Public Class dlgSettings
                         TVMeta.Remove(x)
                         Dim m As New Settings.MetadataPerType
                         m.FileType = x.FileType
-                        m.MetaData = New MediaContainers.Fileinfo
+                        m.MetaData = New MediaContainers.FileInfo
                         m.MetaData = fi
                         TVMeta.Add(m)
                         LoadTVMetadata()
@@ -991,12 +991,12 @@ Public Class dlgSettings
     Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtAdd.Click
         If Not txtMovieScraperDefFIExt.Text.StartsWith(".") Then txtMovieScraperDefFIExt.Text = String.Concat(".", txtMovieScraperDefFIExt.Text)
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
-            Dim fi As New MediaContainers.Fileinfo
+            Dim fi As New MediaContainers.FileInfo
             fi = dEditMeta.ShowDialog(fi, False)
             If Not fi Is Nothing Then
                 Dim m As New Settings.MetadataPerType
                 m.FileType = txtMovieScraperDefFIExt.Text
-                m.MetaData = New MediaContainers.Fileinfo
+                m.MetaData = New MediaContainers.FileInfo
                 m.MetaData = fi
                 MovieMeta.Add(m)
                 LoadMovieMetadata()
@@ -1010,12 +1010,12 @@ Public Class dlgSettings
     Private Sub btnTVScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtAdd.Click
         If Not txtTVScraperDefFIExt.Text.StartsWith(".") Then txtTVScraperDefFIExt.Text = String.Concat(".", txtTVScraperDefFIExt.Text)
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.TVEpisode), True)
-            Dim fi As New MediaContainers.Fileinfo
+            Dim fi As New MediaContainers.FileInfo
             fi = dEditMeta.ShowDialog(fi, True)
             If Not fi Is Nothing Then
                 Dim m As New Settings.MetadataPerType
                 m.FileType = txtTVScraperDefFIExt.Text
-                m.MetaData = New MediaContainers.Fileinfo
+                m.MetaData = New MediaContainers.FileInfo
                 m.MetaData = fi
                 TVMeta.Add(m)
                 LoadTVMetadata()
@@ -4348,7 +4348,7 @@ Public Class dlgSettings
     Private Sub lstMovieScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstMovieScraperDefFIExt.DoubleClick
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
-                Dim fi As New MediaContainers.Fileinfo
+                Dim fi As New MediaContainers.FileInfo
                 For Each x As Settings.MetadataPerType In MovieMeta
                     If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
                         fi = dEditMeta.ShowDialog(x.MetaData, False)
@@ -4356,7 +4356,7 @@ Public Class dlgSettings
                             MovieMeta.Remove(x)
                             Dim m As New Settings.MetadataPerType
                             m.FileType = x.FileType
-                            m.MetaData = New MediaContainers.Fileinfo
+                            m.MetaData = New MediaContainers.FileInfo
                             m.MetaData = fi
                             MovieMeta.Add(m)
                             LoadMovieMetadata()
@@ -4419,7 +4419,7 @@ Public Class dlgSettings
     Private Sub lstTVScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstTVScraperDefFIExt.DoubleClick
         If lstTVScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.TVEpisode), True)
-                Dim fi As New MediaContainers.Fileinfo
+                Dim fi As New MediaContainers.FileInfo
                 For Each x As Settings.MetadataPerType In TVMeta
                     If x.FileType = lstTVScraperDefFIExt.SelectedItems(0).ToString Then
                         fi = dEditMeta.ShowDialog(x.MetaData, True)
@@ -4427,7 +4427,7 @@ Public Class dlgSettings
                             TVMeta.Remove(x)
                             Dim m As New Settings.MetadataPerType
                             m.FileType = x.FileType
-                            m.MetaData = New MediaContainers.Fileinfo
+                            m.MetaData = New MediaContainers.FileInfo
                             m.MetaData = fi
                             TVMeta.Add(m)
                             LoadTVMetadata()

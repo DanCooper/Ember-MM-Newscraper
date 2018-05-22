@@ -1400,7 +1400,7 @@ Public Class Settings
             Master.eSettings.TVEpisodeFilterCustom.Add("[\W_]PAL[\W_]?.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("\.[->] ")               'convert dots to space
             Master.eSettings.TVEpisodeFilterCustom.Add("_[->] ")                'convert underscore to space
-            Master.eSettings.TVEpisodeFilterCustom.Add(" - [->] ")                'convert space-minus-space to space
+            Master.eSettings.TVEpisodeFilterCustom.Add(" - [->] ")              'convert space-minus-space to space
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSortTokensIsEmpty)) Then
@@ -1564,7 +1564,7 @@ Public Class Settings
 #Region "Fields"
 
         Private _filetype As String
-        Private _metadata As MediaContainers.Fileinfo
+        Private _metadata As MediaContainers.FileInfo
 
 #End Region 'Fields
 
@@ -1587,11 +1587,11 @@ Public Class Settings
             End Set
         End Property
 
-        Public Property MetaData() As MediaContainers.Fileinfo
+        Public Property MetaData() As MediaContainers.FileInfo
             Get
                 Return _metadata
             End Get
-            Set(ByVal value As MediaContainers.Fileinfo)
+            Set(ByVal value As MediaContainers.FileInfo)
                 _metadata = value
             End Set
         End Property
@@ -1602,7 +1602,7 @@ Public Class Settings
 
         Public Sub Clear()
             _filetype = String.Empty
-            _metadata = New MediaContainers.Fileinfo
+            _metadata = New MediaContainers.FileInfo
         End Sub
 
 #End Region 'Methods

@@ -876,7 +876,7 @@ Public Class dlgEditMovieSet
 
     Private Sub FillInfo()
         cbMovieSorting.SelectedIndex = tmpDBElement.SortMethod
-        chkMark.Checked = tmpDBElement.IsMark
+        chkMark.Checked = tmpDBElement.IsMarked
         txtCollectionID.Text = tmpDBElement.MovieSet.TMDB
         txtPlot.Text = tmpDBElement.MovieSet.Plot
         txtTitle.Text = tmpDBElement.MovieSet.Title
@@ -1159,7 +1159,7 @@ Public Class dlgEditMovieSet
         btnSearchMovie.Enabled = False
         btnRescrape.Enabled = False
 
-        tmpDBElement.IsMark = chkMark.Checked
+        tmpDBElement.IsMarked = chkMark.Checked
         tmpDBElement.SortMethod = DirectCast(cbMovieSorting.SelectedIndex, Enums.SortMethod_MovieSet)
 
         If Not String.IsNullOrEmpty(txtTitle.Text) Then

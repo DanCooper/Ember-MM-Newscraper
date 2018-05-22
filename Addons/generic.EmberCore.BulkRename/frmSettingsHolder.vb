@@ -43,18 +43,18 @@ Public Class frmSettingsHolder
 
     Private Sub CreateDummies()
         _fDummyMultiEpisode.Clear()
-        _fDummyMultiEpisode.AudioChannels = "2"
+        _fDummyMultiEpisode.AudioChannels = 2
         _fDummyMultiEpisode.AudioCodec = "mp3"
-        _fDummyMultiEpisode.BasePath = ""
-        _fDummyMultiEpisode.Collection = ""
-        _fDummyMultiEpisode.Country = ""
-        _fDummyMultiEpisode.Director = ""
+        _fDummyMultiEpisode.BasePath = String.Empty
+        _fDummyMultiEpisode.Collection = String.Empty
+        _fDummyMultiEpisode.Country = String.Empty
+        _fDummyMultiEpisode.Director = String.Empty
         _fDummyMultiEpisode.DirExist = False
         _fDummyMultiEpisode.FileExist = False
         _fDummyMultiEpisode.OldFileName = "OldFileName"
         _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
         _fDummyMultiEpisode.ID = -1
-        _fDummyMultiEpisode.IMDB = ""
+        _fDummyMultiEpisode.IMDB = String.Empty
         _fDummyMultiEpisode.IsBDMV = False
         _fDummyMultiEpisode.IsLock = False
         _fDummyMultiEpisode.IsMultiEpisode = True
@@ -65,12 +65,12 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.MPAA = "TV-14"
         _fDummyMultiEpisode.MultiViewCount = "3d"
         _fDummyMultiEpisode.MultiViewLayout = "Side by Side (left eye first)"
-        _fDummyMultiEpisode.NewFileName = ""
-        _fDummyMultiEpisode.NewPath = ""
-        _fDummyMultiEpisode.OldPath = ""
-        _fDummyMultiEpisode.OriginalTitle = ""
+        _fDummyMultiEpisode.NewFileName = String.Empty
+        _fDummyMultiEpisode.NewPath = String.Empty
+        _fDummyMultiEpisode.OldPath = String.Empty
+        _fDummyMultiEpisode.OriginalTitle = String.Empty
         _fDummyMultiEpisode.Parent = "OldDirectoryName"
-        _fDummyMultiEpisode.Path = ""
+        _fDummyMultiEpisode.Path = String.Empty
         _fDummyMultiEpisode.Rating = "7.3"
         _fDummyMultiEpisode.Resolution = "720p"
         _fDummyMultiEpisode.ShortStereoMode = "sbs"
@@ -90,18 +90,18 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dMEpisodeList})
 
         _fDummyMultiSeason.Clear()
-        _fDummyMultiSeason.AudioChannels = "2"
+        _fDummyMultiSeason.AudioChannels = 2
         _fDummyMultiSeason.AudioCodec = "mp3"
-        _fDummyMultiSeason.BasePath = ""
-        _fDummyMultiSeason.Collection = ""
-        _fDummyMultiSeason.Country = ""
-        _fDummyMultiSeason.Director = ""
+        _fDummyMultiSeason.BasePath = String.Empty
+        _fDummyMultiSeason.Collection = String.Empty
+        _fDummyMultiSeason.Country = String.Empty
+        _fDummyMultiSeason.Director = String.Empty
         _fDummyMultiSeason.DirExist = False
         _fDummyMultiSeason.FileExist = False
         _fDummyMultiSeason.OldFileName = "OldFileName"
         _fDummyMultiSeason.Genre = "Comedy / Lovestory"
         _fDummyMultiSeason.ID = -1
-        _fDummyMultiSeason.IMDB = ""
+        _fDummyMultiSeason.IMDB = String.Empty
         _fDummyMultiSeason.IsBDMV = False
         _fDummyMultiSeason.IsLock = False
         _fDummyMultiSeason.IsMultiEpisode = True
@@ -112,12 +112,12 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.MPAA = "TV-14"
         _fDummyMultiSeason.MultiViewCount = "3d"
         _fDummyMultiSeason.MultiViewLayout = "Side by Side (left eye first)"
-        _fDummyMultiSeason.NewFileName = ""
-        _fDummyMultiSeason.NewPath = ""
-        _fDummyMultiSeason.OldPath = ""
-        _fDummyMultiSeason.OriginalTitle = ""
+        _fDummyMultiSeason.NewFileName = String.Empty
+        _fDummyMultiSeason.NewPath = String.Empty
+        _fDummyMultiSeason.OldPath = String.Empty
+        _fDummyMultiSeason.OriginalTitle = String.Empty
         _fDummyMultiSeason.Parent = "OldDirectoryName"
-        _fDummyMultiSeason.Path = ""
+        _fDummyMultiSeason.Path = String.Empty
         _fDummyMultiSeason.Rating = "7.3"
         _fDummyMultiSeason.Resolution = "720p"
         _fDummyMultiSeason.ShortStereoMode = "sbs"
@@ -143,18 +143,18 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 2, .Episodes = dMSEpisodeList2})
 
         _fDummySingleEpisode.Clear()
-        _fDummySingleEpisode.AudioChannels = "2"
+        _fDummySingleEpisode.AudioChannels = 2
         _fDummySingleEpisode.AudioCodec = "mp3"
-        _fDummySingleEpisode.BasePath = ""
-        _fDummySingleEpisode.Collection = ""
-        _fDummySingleEpisode.Country = ""
-        _fDummySingleEpisode.Director = ""
+        _fDummySingleEpisode.BasePath = String.Empty
+        _fDummySingleEpisode.Collection = String.Empty
+        _fDummySingleEpisode.Country = String.Empty
+        _fDummySingleEpisode.Director = String.Empty
         _fDummySingleEpisode.DirExist = False
         _fDummySingleEpisode.FileExist = False
         _fDummySingleEpisode.OldFileName = "OldFileName"
         _fDummySingleEpisode.Genre = "Comedy / Lovestory"
         _fDummySingleEpisode.ID = -1
-        _fDummySingleEpisode.IMDB = ""
+        _fDummySingleEpisode.IMDB = String.Empty
         _fDummySingleEpisode.IsBDMV = False
         _fDummySingleEpisode.IsLock = False
         _fDummySingleEpisode.IsMultiEpisode = False
@@ -165,12 +165,12 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.MPAA = "TV-14"
         _fDummySingleEpisode.MultiViewCount = "3d"
         _fDummySingleEpisode.MultiViewLayout = "Side by Side (left eye first)"
-        _fDummySingleEpisode.NewFileName = ""
-        _fDummySingleEpisode.NewPath = ""
-        _fDummySingleEpisode.OldPath = ""
-        _fDummySingleEpisode.OriginalTitle = ""
+        _fDummySingleEpisode.NewFileName = String.Empty
+        _fDummySingleEpisode.NewPath = String.Empty
+        _fDummySingleEpisode.OldPath = String.Empty
+        _fDummySingleEpisode.OriginalTitle = String.Empty
         _fDummySingleEpisode.Parent = "OldDirectoryName"
-        _fDummySingleEpisode.Path = ""
+        _fDummySingleEpisode.Path = String.Empty
         _fDummySingleEpisode.Rating = "7.3"
         _fDummySingleEpisode.Resolution = "720p"
         _fDummySingleEpisode.ShortStereoMode = "sbs"
@@ -188,7 +188,7 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dSEpisodeList})
 
         _fDummySingleMovie.Clear()
-        _fDummySingleMovie.AudioChannels = "6"
+        _fDummySingleMovie.AudioChannels = 6
         _fDummySingleMovie.AudioCodec = "dts"
         _fDummySingleMovie.BasePath = "D:\Movies"
         _fDummySingleMovie.Collection = "The Avengers Collection"
@@ -211,20 +211,20 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.MPAA = "13"
         _fDummySingleMovie.MultiViewCount = "3d"
         _fDummySingleMovie.MultiViewLayout = "Side by Side (left eye first)"
-        _fDummySingleMovie.NewFileName = ""
-        _fDummySingleMovie.NewPath = ""
-        _fDummySingleMovie.OldPath = ""
+        _fDummySingleMovie.NewFileName = String.Empty
+        _fDummySingleMovie.NewPath = String.Empty
+        _fDummySingleMovie.OldPath = String.Empty
         _fDummySingleMovie.OriginalTitle = "Marvel's The Avengers"
         _fDummySingleMovie.Parent = "OldDirectoryName"
-        _fDummySingleMovie.Path = ""
+        _fDummySingleMovie.Path = String.Empty
         _fDummySingleMovie.Rating = "7.3"
         _fDummySingleMovie.Resolution = "1080p"
         _fDummySingleMovie.ShortStereoMode = "sbs"
-        _fDummySingleMovie.ShowTitle = ""
+        _fDummySingleMovie.ShowTitle = String.Empty
         _fDummySingleMovie.SortTitle = "Avengers"
         _fDummySingleMovie.StereoMode = "left_right"
         _fDummySingleMovie.Title = "The Avengers"
-        _fDummySingleMovie.TVDBID = ""
+        _fDummySingleMovie.TVDBID = String.Empty
         _fDummySingleMovie.VideoCodec = "h264"
         _fDummySingleMovie.VideoSource = "bluray"
         _fDummySingleMovie.Year = "2012"

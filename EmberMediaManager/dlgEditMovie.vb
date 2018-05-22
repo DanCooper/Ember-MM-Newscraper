@@ -1528,7 +1528,7 @@ Public Class dlgEditMovie
             End If
         End If
 
-        chkMark.Checked = tmpDBElement.IsMark
+        chkMark.Checked = tmpDBElement.IsMarked
         If tmpDBElement.Movie.PlayCountSpecified Then
             chkWatched.Checked = True
         Else
@@ -2316,7 +2316,7 @@ Public Class dlgEditMovie
             tmpDBElement.Movie.Language = tmpDBElement.Language
         End If
 
-        tmpDBElement.IsMark = chkMark.Checked
+        tmpDBElement.IsMarked = chkMark.Checked
 
         tmpDBElement.Movie.SortTitle = txtSortTitle.Text.Trim
         tmpDBElement.Movie.Tagline = txtTagline.Text.Trim
@@ -2405,8 +2405,8 @@ Public Class dlgEditMovie
             End If
         Next
         For Each Subtitle In removeSubtitles
-            If File.Exists(Subtitle.SubsPath) Then
-                File.Delete(Subtitle.SubsPath)
+            If File.Exists(Subtitle.Path) Then
+                File.Delete(Subtitle.Path)
             End If
             tmpDBElement.Subtitles.Remove(Subtitle)
         Next
@@ -2633,7 +2633,7 @@ Public Class dlgEditMovie
     Private Sub EditSubtitle()
         If lvSubtitles.SelectedItems.Count > 0 Then
             Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
-            Dim tmpFileInfo As New MediaContainers.Fileinfo
+            Dim tmpFileInfo As New MediaContainers.FileInfo
             tmpFileInfo.StreamDetails.Subtitle.AddRange(tmpDBElement.Subtitles)
             Using dEditStream As New dlgFIStreamEditor
                 Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
@@ -2691,10 +2691,10 @@ Public Class dlgEditMovie
                     i = New ListViewItem
                     i.Tag = Master.eLang.GetString(597, "Subtitle Stream")
                     i.Text = c.ToString
-                    i.SubItems.Add(s.SubsPath)
+                    i.SubItems.Add(s.Path)
                     i.SubItems.Add(s.LongLanguage)
                     i.SubItems.Add(s.SubsType)
-                    i.SubItems.Add(If(s.SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                    i.SubItems.Add(If(s.Forced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
 
                     If s.toRemove Then
                         i.ForeColor = Color.Red

@@ -28,7 +28,7 @@ Public Class dlgFileInfo
 
     Private NeedToRefresh As Boolean = False
     Private SettingDefaults As Boolean = False
-    Private _FileInfo As MediaContainers.Fileinfo
+    Private _FileInfo As MediaContainers.FileInfo
     Private _isEpisode As Boolean = False
     Private _DBElement As Database.DBElement
 
@@ -46,7 +46,7 @@ Public Class dlgFileInfo
         _isEpisode = isEpisode
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal fi As MediaContainers.Fileinfo, ByVal isEpisode As Boolean) As MediaContainers.Fileinfo
+    Public Overloads Function ShowDialog(ByVal fi As MediaContainers.FileInfo, ByVal isEpisode As Boolean) As MediaContainers.FileInfo
         SettingDefaults = True
         _FileInfo = fi
         _isEpisode = isEpisode
@@ -251,14 +251,14 @@ Public Class dlgFileInfo
                         i.Text = c.ToString
                         i.SubItems.Add(v.Codec)
                         i.SubItems.Add(v.Scantype)
-                        i.SubItems.Add(v.Width)
-                        i.SubItems.Add(v.Height)
-                        i.SubItems.Add(v.Aspect)
-                        i.SubItems.Add(v.Duration)
+                        i.SubItems.Add(v.Width.ToString)
+                        i.SubItems.Add(v.Height.ToString)
+                        i.SubItems.Add(v.Aspect.ToString)
+                        i.SubItems.Add(v.Duration.ToString)
                         i.SubItems.Add(CStr(NumUtils.ConvertBytesTo(CLng(v.Filesize), NumUtils.FileSizeUnit.Megabyte, 0)))
                         i.SubItems.Add(v.LongLanguage)
-                        i.SubItems.Add(v.Bitrate)
-                        i.SubItems.Add(v.MultiViewCount)
+                        i.SubItems.Add(v.Bitrate.ToString)
+                        i.SubItems.Add(v.MultiViewCount.ToString)
                         i.SubItems.Add(v.MultiViewLayout)
                         i.SubItems.Add(v.StereoMode)
                         g.Items.Add(i)
@@ -293,8 +293,8 @@ Public Class dlgFileInfo
                         i.Text = c.ToString
                         i.SubItems.Add(a.Codec)
                         i.SubItems.Add(a.LongLanguage)
-                        i.SubItems.Add(a.Channels)
-                        i.SubItems.Add(a.Bitrate)
+                        i.SubItems.Add(a.Channels.ToString)
+                        i.SubItems.Add(a.Bitrate.ToString)
 
                         g.Items.Add(i)
                         lvStreams.Items.Add(i)
@@ -327,7 +327,7 @@ Public Class dlgFileInfo
                         i.Text = c.ToString
                         i.SubItems.Add(s.LongLanguage)
                         i.SubItems.Add(s.SubsType)
-                        i.SubItems.Add(If(s.SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                        i.SubItems.Add(If(s.Forced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
 
                         g.Items.Add(i)
                         lvStreams.Items.Add(i)

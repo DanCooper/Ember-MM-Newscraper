@@ -518,6 +518,46 @@ Public Class StringUtils
 
         Return Regex.Match(strRawString, "((19|20)\d{2})", RegexOptions.RightToLeft).Value.Trim
     End Function
+
+    Public Shared Function FormatDuration(ByVal tDur As String, ByVal sMask As String) As String
+        Dim sDuration As Match = Regex.Match(tDur, "(([0-9]+)h)?\s?(([0-9]+)min)?\s?(([0-9]+)s)?")
+        Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
+        Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
+        Dim sSec As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(6).Value), (Convert.ToInt32(sDuration.Groups(6).Value)), 0)
+        'Dim sMask As String = Master.eSettings.RuntimeMask
+        'Dim sRuntime As String = String.Empty
+
+        'new handling: only seconds as tdur
+        If Integer.TryParse(tDur, 0) Then
+            Dim ts As New TimeSpan(0, 0, Convert.ToInt32(tDur))
+            sHour = ts.Hours
+            sMin = ts.Minutes
+            sSec = ts.Seconds
+        End If
+
+        If sMask.Contains("<h>") Then
+            If sMask.Contains("<m>") OrElse sMask.Contains("<0m>") Then
+                If sMask.Contains("<s>") OrElse sMask.Contains("<0s>") Then
+                    Return sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString).Replace("<0m>", sMin.ToString("00")).Replace("<s>", sSec.ToString).Replace("<0s>", sSec.ToString("00"))
+                Else
+                    Return sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString).Replace("<0m>", sMin.ToString("00"))
+                End If
+            Else
+                Dim tHDec As String = If(sMin > 0, Convert.ToSingle(1 / (60 / sMin)).ToString(".00"), String.Empty)
+                Return sMask.Replace("<h>", String.Concat(sHour, tHDec))
+            End If
+        ElseIf sMask.Contains("<m>") Then
+            If sMask.Contains("<s>") OrElse sMask.Contains("<0s>") Then
+                Return sMask.Replace("<m>", ((sHour * 60) + sMin).ToString).Replace("<s>", sSec.ToString).Replace("<0s>", sSec.ToString("00"))
+            Else
+                Return sMask.Replace("<m>", ((sHour * 60) + sMin).ToString)
+            End If
+        ElseIf sMask.Contains("<s>") Then
+            Return sMask.Replace("<s>", ((sHour * 60 * 60) + sMin * 60 + sSec).ToString)
+        Else
+            Return sMask
+        End If
+    End Function
     ''' <summary>
     ''' For a given <c>Integer</c> season number, determine the appropriate season text
     ''' </summary>

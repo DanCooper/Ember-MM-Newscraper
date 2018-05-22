@@ -1434,7 +1434,7 @@ Public Class NFO
         End If
     End Sub
 
-    Public Shared Function FIToString(ByVal miFI As MediaContainers.Fileinfo, ByVal isTV As Boolean) As String
+    Public Shared Function FIToString(ByVal miFI As MediaContainers.FileInfo, ByVal isTV As Boolean) As String
         '//
         ' Convert Fileinfo into a string to be displayed in the GUI
         '\\
@@ -1508,7 +1508,7 @@ Public Class NFO
     ''' <summary>
     ''' Return the "best" or the "prefered language" audio stream of the videofile
     ''' </summary>
-    ''' <param name="miFIA"><c>MediaInfo.Fileinfo</c> The Mediafile-container of the videofile</param>
+    ''' <param name="fileInfo"><c>MediaInfo.FileInfo</c> The Mediafile-container of the videofile</param>
     ''' <returns>The best <c>MediaInfo.Audio</c> stream information of the videofile</returns>
     ''' <remarks>
     ''' This is used to determine which audio stream information should be displayed in Ember main view (icon display)
@@ -1516,226 +1516,128 @@ Public Class NFO
     ''' 
     ''' 2014/08/12 cocotus - Should work better: If there's more than one audiostream which highest channelcount, the one with highest bitrate or the DTSHD stream will be returned
     ''' </remarks>
-    Public Shared Function GetBestAudio(ByVal miFIA As MediaContainers.Fileinfo, ByVal ForTV As Boolean) As MediaContainers.Audio
-        '//
-        ' Get the highest values from file info
-        '\\
+    Public Shared Function GetBestAudio(ByVal fileInfo As MediaContainers.FileInfo, ByVal contentType As Enums.ContentType) As MediaContainers.Audio
+        Dim nBestAudio As New MediaContainers.Audio
+        Dim nFilteredAudio As New MediaContainers.FileInfo
+        Dim bGetPrefLanguage As Boolean = False
+        Dim bHasPrefLanguage As Boolean = False
+        Dim strPrefLanguage As String = String.Empty
+        Dim iHighestBitrate As Integer = 0
+        Dim iHighestChannels As Integer = 0
 
-        Dim fiaOut As New MediaContainers.Audio
-        Try
-            Dim cmiFIA As New MediaContainers.Fileinfo
-
-            Dim getPrefLanguage As Boolean = False
-            Dim hasPrefLanguage As Boolean = False
-            Dim prefLanguage As String = String.Empty
-            Dim sinMostChannels As Single = 0
-            Dim sinChans As Single = 0
-            Dim sinMostBitrate As Single = 0
-            Dim sinBitrate As Single = 0
-            Dim sinCodec As String = String.Empty
-            fiaOut.Codec = String.Empty
-            fiaOut.Channels = String.Empty
-            fiaOut.Language = String.Empty
-            fiaOut.LongLanguage = String.Empty
-            fiaOut.Bitrate = String.Empty
-
-            If ForTV Then
-                If Not String.IsNullOrEmpty(Master.eSettings.TVGeneralFlagLang) Then
-                    getPrefLanguage = True
-                    prefLanguage = Master.eSettings.TVGeneralFlagLang.ToLower
-                End If
-            Else
+        Select Case contentType
+            Case Enums.ContentType.Movie
                 If Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralFlagLang) Then
-                    getPrefLanguage = True
-                    prefLanguage = Master.eSettings.MovieGeneralFlagLang.ToLower
+                    bGetPrefLanguage = True
+                    strPrefLanguage = Master.eSettings.MovieGeneralFlagLang.ToLower
                 End If
-            End If
-
-            If getPrefLanguage AndAlso miFIA.StreamDetails.Audio.Where(Function(f) f.LongLanguage.ToLower = prefLanguage).Count > 0 Then
-                For Each Stream As MediaContainers.Audio In miFIA.StreamDetails.Audio
-                    If Stream.LongLanguage.ToLower = prefLanguage Then
-                        cmiFIA.StreamDetails.Audio.Add(Stream)
-                    End If
-                Next
-            Else
-                cmiFIA.StreamDetails.Audio.AddRange(miFIA.StreamDetails.Audio)
-            End If
-
-            For Each miAudio As MediaContainers.Audio In cmiFIA.StreamDetails.Audio
-                If Not String.IsNullOrEmpty(miAudio.Channels) Then
-                    sinChans = NumUtils.ConvertToSingle(MediaInfo.FormatAudioChannel(miAudio.Channels))
-                    sinBitrate = 0
-                    If Integer.TryParse(miAudio.Bitrate, 0) Then
-                        sinBitrate = CInt(miAudio.Bitrate)
-                    End If
-                    If sinChans >= sinMostChannels AndAlso (sinBitrate > sinMostBitrate OrElse miAudio.Codec.ToLower.Contains("dtshd") OrElse sinBitrate = 0) Then
-                        If Integer.TryParse(miAudio.Bitrate, 0) Then
-                            sinMostBitrate = CInt(miAudio.Bitrate)
-                        End If
-                        sinMostChannels = sinChans
-                        fiaOut.Bitrate = miAudio.Bitrate
-                        fiaOut.Channels = sinChans.ToString
-                        fiaOut.Codec = miAudio.Codec
-                        fiaOut.Language = miAudio.Language
-                        fiaOut.LongLanguage = miAudio.LongLanguage
-                    End If
+            Case Enums.ContentType.TVEpisode
+                If Not String.IsNullOrEmpty(Master.eSettings.TVGeneralFlagLang) Then
+                    bGetPrefLanguage = True
+                    strPrefLanguage = Master.eSettings.TVGeneralFlagLang.ToLower
                 End If
+        End Select
 
-                If ForTV Then
-                    If Not String.IsNullOrEmpty(Master.eSettings.TVGeneralFlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.TVGeneralFlagLang.ToLower Then fiaOut.HasPreferred = True
-                Else
-                    If Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralFlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.MovieGeneralFlagLang.ToLower Then fiaOut.HasPreferred = True
+        If bGetPrefLanguage AndAlso fileInfo.StreamDetails.Audio.Where(Function(f) f.LongLanguage.ToLower = strPrefLanguage).Count > 0 Then
+            For Each Stream As MediaContainers.Audio In fileInfo.StreamDetails.Audio
+                If Stream.LongLanguage.ToLower = strPrefLanguage Then
+                    nFilteredAudio.StreamDetails.Audio.Add(Stream)
                 End If
             Next
+        Else
+            nFilteredAudio.StreamDetails.Audio.AddRange(fileInfo.StreamDetails.Audio)
+        End If
 
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-        Return fiaOut
-    End Function
-
-    Public Shared Function GetBestVideo(ByVal miFIV As MediaContainers.Fileinfo) As MediaContainers.Video
-        '//
-        ' Get the highest values from file info
-        '\\
-
-        Dim fivOut As New MediaContainers.Video
-        Try
-            Dim iWidest As Integer = 0
-            Dim iWidth As Integer = 0
-
-            'set some defaults to make it easy on ourselves
-            fivOut.Width = String.Empty
-            fivOut.Height = String.Empty
-            fivOut.Aspect = String.Empty
-            fivOut.Codec = String.Empty
-            fivOut.Duration = String.Empty
-            fivOut.Scantype = String.Empty
-            fivOut.Language = String.Empty
-            'cocotus, 2013/02 Added support for new MediaInfo-fields
-            fivOut.Bitrate = String.Empty
-            fivOut.MultiViewCount = String.Empty
-            fivOut.MultiViewLayout = String.Empty
-            fivOut.Filesize = 0
-            'cocotus end
-
-            For Each miVideo As MediaContainers.Video In miFIV.StreamDetails.Video
-                If Not String.IsNullOrEmpty(miVideo.Width) Then
-                    If Integer.TryParse(miVideo.Width, 0) Then
-                        iWidth = Convert.ToInt32(miVideo.Width)
-                    Else
-                        logger.Warn("[GetBestVideo] Invalid width(not a number!) of videostream: " & miVideo.Width)
-                    End If
-                    If iWidth > iWidest Then
-                        iWidest = iWidth
-                        fivOut.Width = miVideo.Width
-                        fivOut.Height = miVideo.Height
-                        fivOut.Aspect = miVideo.Aspect
-                        fivOut.Codec = miVideo.Codec
-                        fivOut.Duration = miVideo.Duration
-                        fivOut.Scantype = miVideo.Scantype
-                        fivOut.Language = miVideo.Language
-
-                        'cocotus, 2013/02 Added support for new MediaInfo-fields
-
-                        'MultiViewCount (3D) handling, simply map field
-                        fivOut.MultiViewCount = miVideo.MultiViewCount
-
-                        'MultiViewLayout (3D) handling, simply map field
-                        fivOut.MultiViewLayout = miVideo.MultiViewLayout
-
-                        'FileSize handling, simply map field
-                        fivOut.Filesize = miVideo.Filesize
-
-                        'Bitrate handling, simply map field
-                        fivOut.Bitrate = miVideo.Bitrate
-                        'cocotus end
-
-                    End If
+        For Each miAudio As MediaContainers.Audio In nFilteredAudio.StreamDetails.Audio
+            If miAudio.ChannelsSpecified Then
+                If miAudio.Channels >= iHighestChannels AndAlso (miAudio.Bitrate > iHighestBitrate OrElse miAudio.Bitrate = 0) Then
+                    iHighestBitrate = miAudio.Bitrate
+                    iHighestChannels = miAudio.Channels
+                    nBestAudio.Bitrate = miAudio.Bitrate
+                    nBestAudio.Channels = miAudio.Channels
+                    nBestAudio.Codec = miAudio.Codec
+                    nBestAudio.Language = miAudio.Language
+                    nBestAudio.LongLanguage = miAudio.LongLanguage
                 End If
-            Next
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-        Return fivOut
-    End Function
-
-    Public Shared Function GetDimensionsFromVideo(ByVal fiRes As MediaContainers.Video) As String
-        '//
-        ' Get the dimension values of the video from the information provided by MediaInfo.dll
-        '\\
-
-        Dim result As String = String.Empty
-        Try
-            If Not String.IsNullOrEmpty(fiRes.Width) AndAlso Not String.IsNullOrEmpty(fiRes.Height) AndAlso Not String.IsNullOrEmpty(fiRes.Aspect) Then
-                Dim iWidth As Integer = Convert.ToInt32(fiRes.Width)
-                Dim iHeight As Integer = Convert.ToInt32(fiRes.Height)
-                Dim sinADR As Single = NumUtils.ConvertToSingle(fiRes.Aspect)
-
-                result = String.Format("{0}x{1} ({2})", iWidth, iHeight, sinADR.ToString("0.00"))
             End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+            If bGetPrefLanguage AndAlso miAudio.LongLanguage.ToLower = strPrefLanguage Then nBestAudio.HasPreferred = True
+        Next
 
-        Return result
+        Return nBestAudio
     End Function
 
-    Public Shared Function GetIMDBFromNonConf(ByVal sPath As String, ByVal isSingle As Boolean) As NonConf
+    Public Shared Function GetBestVideo(ByVal miFIV As MediaContainers.FileInfo) As MediaContainers.Video
+        Dim nBestVideo = miFIV.StreamDetails.Video.OrderBy(Function(f) f.Width).Reverse.FirstOrDefault
+        If nBestVideo IsNot Nothing Then
+            Return nBestVideo
+        Else
+            Return New MediaContainers.Video
+        End If
+    End Function
+
+    Public Shared Function GetDimensionsFromVideo(ByVal video As MediaContainers.Video) As String
+        If video.WidthSpecified AndAlso video.HeightSpecified AndAlso video.AspectSpecified Then
+            Return String.Format("{0}x{1} ({2})", video.Width, video.Height, video.Aspect)
+        ElseIf video.WidthSpecified AndAlso video.HeightSpecified Then
+            Return String.Format("{0}x{1}", video.Width, video.Height)
+        End If
+        Return String.Empty
+    End Function
+
+    Public Shared Function GetIMDBFromNonConf(ByVal path As String, ByVal isSingle As Boolean) As NonConf
         Dim tNonConf As New NonConf
-        Dim dirPath As String = Directory.GetParent(sPath).FullName
-        Dim lFiles As New List(Of String)
+        Dim dirPath As String = Directory.GetParent(path).FullName
+        Dim lstFiles As New List(Of String)
 
         If isSingle Then
             Try
-                lFiles.AddRange(Directory.GetFiles(dirPath, "*.nfo"))
+                lstFiles.AddRange(Directory.GetFiles(dirPath, "*.nfo"))
             Catch
             End Try
             Try
-                lFiles.AddRange(Directory.GetFiles(dirPath, "*.info"))
+                lstFiles.AddRange(Directory.GetFiles(dirPath, "*.info"))
             Catch
             End Try
         Else
-            Dim fName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(sPath)).ToLower
-            Dim oName As String = Path.GetFileNameWithoutExtension(sPath)
+            Dim fName As String = IO.Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(path)).ToLower
+            Dim oName As String = IO.Path.GetFileNameWithoutExtension(path)
             fName = If(fName.EndsWith("*"), fName, String.Concat(fName, "*"))
             oName = If(oName.EndsWith("*"), oName, String.Concat(oName, "*"))
 
             Try
-                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, ".nfo")))
+                lstFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, ".nfo")))
             Catch
             End Try
             Try
-                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, ".nfo")))
+                lstFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, ".nfo")))
             Catch
             End Try
             Try
-                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, ".info")))
+                lstFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, ".info")))
             Catch
             End Try
             Try
-                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, ".info")))
+                lstFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, ".info")))
             Catch
             End Try
         End If
 
-        For Each sFile As String In lFiles
+        For Each sFile As String In lstFiles
             Using srInfo As New StreamReader(sFile)
                 Dim sInfo As String = srInfo.ReadToEnd
-                Dim sIMDBID As String = Regex.Match(sInfo, "tt\d\d\d\d\d\d\d*", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
+                Dim strIMDBID As String = Regex.Match(sInfo, "tt\d\d\d\d\d\d\d*", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
 
-                If Not String.IsNullOrEmpty(sIMDBID) Then
-                    tNonConf.IMDBID = sIMDBID
+                If Not String.IsNullOrEmpty(strIMDBID) Then
+                    tNonConf.IMDBID = strIMDBID
                     'now lets try to see if the rest of the file is a proper nfo
                     If sInfo.ToLower.Contains("</movie>") Then
                         tNonConf.Text = APIXML.XMLToLowerCase(sInfo.Substring(0, sInfo.ToLower.IndexOf("</movie>") + 8))
                     End If
                     Exit For
                 Else
-                    sIMDBID = Regex.Match(sPath, "tt\d\d\d\d\d\d\d*", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
-                    If Not String.IsNullOrEmpty(sIMDBID) Then
-                        tNonConf.IMDBID = sIMDBID
+                    strIMDBID = Regex.Match(path, "tt\d\d\d\d\d\d\d*", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
+                    If Not String.IsNullOrEmpty(strIMDBID) Then
+                        tNonConf.IMDBID = strIMDBID
                     End If
                 End If
             End Using
@@ -1743,8 +1645,8 @@ Public Class NFO
         Return tNonConf
     End Function
 
-    Public Shared Function GetNfoPath_MovieSet(ByVal DBElement As Database.DBElement) As String
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBElement, Enums.ModifierType.MainNFO)
+    Public Shared Function GetNfoPath_MovieSet(ByVal dbElement As Database.DBElement) As String
+        For Each a In FileUtils.GetFilenameList.MovieSet(dbElement, Enums.ModifierType.MainNFO)
             If File.Exists(a) Then
                 Return a
             End If
@@ -1755,66 +1657,66 @@ Public Class NFO
     ''' <summary>
     ''' Get the resolution of the video from the dimensions provided by MediaInfo.dll
     ''' </summary>
-    ''' <param name="fiRes"></param>
+    ''' <param name="video"></param>
     ''' <returns></returns>
-    Public Shared Function GetResFromDimensions(ByVal fiRes As MediaContainers.Video) As String
-        Dim iWidth As Integer
-        Dim iHeight As Integer
-        Dim resOut As String = String.Empty
+    Public Shared Function GetResolutionFromDimensions(ByVal video As MediaContainers.Video) As String
+        Dim iWidth As Integer = video.Width
+        Dim iHeight As Integer = video.Height
+        Dim strResolution As String = String.Empty
 
-        If Integer.TryParse(fiRes.Width, iWidth) AndAlso Integer.TryParse(fiRes.Height, iHeight) Then
-            Select Case True
-                    'exact
-                Case iWidth = 7680 AndAlso iHeight = 4320   'UHD 8K
-                    resOut = "4320"
-                Case iWidth = 4096 AndAlso iHeight = 2160   'UHD 4K (cinema)
-                    resOut = "2160"
-                Case iWidth = 3840 AndAlso iHeight = 2160   'UHD 4K
-                    resOut = "2160"
-                Case iWidth = 2560 AndAlso iHeight = 1600   'WQXGA (16:10)
-                    resOut = "1600"
-                Case iWidth = 2560 AndAlso iHeight = 1440   'WQHD (16:9)
-                    resOut = "1440"
-                Case iWidth = 1920 AndAlso iHeight = 1200   'WUXGA (16:10)
-                    resOut = "1200"
-                Case iWidth = 1920 AndAlso iHeight = 1080   'HD1080 (16:9)
-                    resOut = "1080"
-                Case iWidth = 1680 AndAlso iHeight = 1050   'WSXGA+ (16:10)
-                    resOut = "1050"
-                Case iWidth = 1600 AndAlso iHeight = 900    'HD+ (16:9)
-                    resOut = "900"
-                Case iWidth = 1280 AndAlso iHeight = 720    'HD720 / WXGA (16:9)
-                    resOut = "720"
-                Case iWidth = 800 AndAlso iHeight = 480     'Rec. 601 plus a quarter (5:3)
-                    resOut = "480"
-                Case iWidth = 768 AndAlso iHeight = 576     'PAL
-                    resOut = "576"
-                Case iWidth = 720 AndAlso iHeight = 480     'Rec. 601 (3:2)
-                    resOut = "480"
-                Case iWidth = 720 AndAlso iHeight = 576     'PAL (DVD)
-                    resOut = "576"
-                Case iWidth = 720 AndAlso iHeight = 540     'half of 1080p (16:9)
-                    resOut = "540"
-                Case iWidth = 640 AndAlso iHeight = 480     'VGA (4:3)
-                    resOut = "480"
-                Case iWidth = 640 AndAlso iHeight = 360     'Wide 360p (16:9)
-                    resOut = "360"
-                Case iWidth = 480 AndAlso iHeight = 360     '360p (4:3, uncommon)
-                    resOut = "360"
-                Case iWidth = 426 AndAlso iHeight = 240     'NTSC widescreen (16:9)
-                    resOut = "240"
-                Case iWidth = 352 AndAlso iHeight = 240     'NTSC-standard VCD / super-long-play DVD (4:3)
-                    resOut = "240"
-                Case iWidth = 320 AndAlso iHeight = 240     'CGA / NTSC square pixel (4:3)
-                    resOut = "240"
-                Case iWidth = 256 AndAlso iHeight = 144     'One tenth of 1440p (16:9)
-                    resOut = "144"
-                Case Else
-                    '
-                    ' MAM: simple version, totally sufficient. Add new res at the end of the list if they become available (before "99999999" of course!)
-                    ' Warning: this list needs to be sorted from lowest to highes resolution, else the search routine will go nuts!
-                    '
-                    Dim aVres() = New Dictionary(Of Integer, String) From
+
+        Select Case True
+            'exact
+            Case iWidth = 7680 AndAlso iHeight = 4320   'UHD 8K
+                strResolution = "4320"
+            Case iWidth = 4096 AndAlso iHeight = 2160   'UHD 4K (cinema)
+                strResolution = "2160"
+            Case iWidth = 3840 AndAlso iHeight = 2160   'UHD 4K
+                strResolution = "2160"
+            Case iWidth = 2560 AndAlso iHeight = 1600   'WQXGA (16:10)
+                strResolution = "1600"
+            Case iWidth = 2560 AndAlso iHeight = 1440   'WQHD (16:9)
+                strResolution = "1440"
+            Case iWidth = 1920 AndAlso iHeight = 1200   'WUXGA (16:10)
+                strResolution = "1200"
+            Case iWidth = 1920 AndAlso iHeight = 1080   'HD1080 (16:9)
+                strResolution = "1080"
+            Case iWidth = 1680 AndAlso iHeight = 1050   'WSXGA+ (16:10)
+                strResolution = "1050"
+            Case iWidth = 1600 AndAlso iHeight = 900    'HD+ (16:9)
+                strResolution = "900"
+            Case iWidth = 1280 AndAlso iHeight = 720    'HD720 / WXGA (16:9)
+                strResolution = "720"
+            Case iWidth = 800 AndAlso iHeight = 480     'Rec. 601 plus a quarter (5:3)
+                strResolution = "480"
+            Case iWidth = 768 AndAlso iHeight = 576     'PAL
+                strResolution = "576"
+            Case iWidth = 720 AndAlso iHeight = 480     'Rec. 601 (3:2)
+                strResolution = "480"
+            Case iWidth = 720 AndAlso iHeight = 576     'PAL (DVD)
+                strResolution = "576"
+            Case iWidth = 720 AndAlso iHeight = 540     'half of 1080p (16:9)
+                strResolution = "540"
+            Case iWidth = 640 AndAlso iHeight = 480     'VGA (4:3)
+                strResolution = "480"
+            Case iWidth = 640 AndAlso iHeight = 360     'Wide 360p (16:9)
+                strResolution = "360"
+            Case iWidth = 480 AndAlso iHeight = 360     '360p (4:3, uncommon)
+                strResolution = "360"
+            Case iWidth = 426 AndAlso iHeight = 240     'NTSC widescreen (16:9)
+                strResolution = "240"
+            Case iWidth = 352 AndAlso iHeight = 240     'NTSC-standard VCD / super-long-play DVD (4:3)
+                strResolution = "240"
+            Case iWidth = 320 AndAlso iHeight = 240     'CGA / NTSC square pixel (4:3)
+                strResolution = "240"
+            Case iWidth = 256 AndAlso iHeight = 144     'One tenth of 1440p (16:9)
+                strResolution = "144"
+            Case Else
+                '
+                ' MAM: simple version, totally sufficient. Add new res at the end of the list if they become available (before "99999999" of course!)
+                ' Warning: this list needs to be sorted from lowest to highes resolution, else the search routine will go nuts!
+                '
+                Dim aVres() = New Dictionary(Of Integer, String) From
                         {
                         {426, "240"},
                         {480, "360"},
@@ -1826,30 +1728,30 @@ Public Class NFO
                         {7680, "4320"},
                         {99999999, String.Empty}
                     }.ToArray
-                    '
-                    ' search appropriate horizontal resolution
-                    ' Note: Array's last entry must be a ridiculous high number, else this loop will surely crash!
-                    '
-                    Dim i As Integer
-                    While (aVres(i).Key < iWidth)
-                        i = i + 1
-                    End While
-                    resOut = aVres(i).Value
-            End Select
+                '
+                ' search appropriate horizontal resolution
+                ' Note: Array's last entry must be a ridiculous high number, else this loop will surely crash!
+                '
+                Dim i As Integer
+                While (aVres(i).Key < iWidth)
+                    i = i + 1
+                End While
+                strResolution = aVres(i).Value
+        End Select
 
-            If Not String.IsNullOrEmpty(resOut) AndAlso Not String.IsNullOrEmpty(fiRes.Scantype) Then
-                Return String.Concat(resOut, If(fiRes.Scantype.ToLower = "progressive", "p", "i"))
-            End If
+        If Not String.IsNullOrEmpty(strResolution) AndAlso Not String.IsNullOrEmpty(video.Scantype) Then
+            Return String.Concat(strResolution, If(video.Scantype.ToLower = "progressive", "p", "i"))
         End If
-        Return resOut
+
+        Return strResolution
     End Function
 
-    Public Shared Function IsConformingNFO_Movie(ByVal sPath As String) As Boolean
+    Public Shared Function IsConformingNFO_Movie(ByVal path As String) As Boolean
         Dim testSer As XmlSerializer = Nothing
 
         Try
-            If (Path.GetExtension(sPath) = ".nfo" OrElse Path.GetExtension(sPath) = ".info") AndAlso File.Exists(sPath) Then
-                Using testSR As StreamReader = New StreamReader(sPath)
+            If (IO.Path.GetExtension(path) = ".nfo" OrElse IO.Path.GetExtension(path) = ".info") AndAlso File.Exists(path) Then
+                Using testSR As StreamReader = New StreamReader(path)
                     testSer = New XmlSerializer(GetType(MediaContainers.Movie))
                     Dim testMovie As MediaContainers.Movie = DirectCast(testSer.Deserialize(testSR), MediaContainers.Movie)
                     testMovie = Nothing
@@ -1868,13 +1770,13 @@ Public Class NFO
         End Try
     End Function
 
-    Public Shared Function IsConformingNFO_TVEpisode(ByVal sPath As String) As Boolean
+    Public Shared Function IsConformingNFO_TVEpisode(ByVal path As String) As Boolean
         Dim testSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
         Dim testEp As New MediaContainers.EpisodeDetails
 
         Try
-            If (Path.GetExtension(sPath) = ".nfo" OrElse Path.GetExtension(sPath) = ".info") AndAlso File.Exists(sPath) Then
-                Using xmlSR As StreamReader = New StreamReader(sPath)
+            If (IO.Path.GetExtension(path) = ".nfo" OrElse IO.Path.GetExtension(path) = ".info") AndAlso File.Exists(path) Then
+                Using xmlSR As StreamReader = New StreamReader(path)
                     Dim xmlStr As String = xmlSR.ReadToEnd
                     Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
                     If rMatches.Count = 1 Then
@@ -1918,12 +1820,12 @@ Public Class NFO
         End Try
     End Function
 
-    Public Shared Function IsConformingNFO_TVShow(ByVal sPath As String) As Boolean
+    Public Shared Function IsConformingNFO_TVShow(ByVal path As String) As Boolean
         Dim testSer As XmlSerializer = Nothing
 
         Try
-            If (Path.GetExtension(sPath) = ".nfo" OrElse Path.GetExtension(sPath) = ".info") AndAlso File.Exists(sPath) Then
-                Using testSR As StreamReader = New StreamReader(sPath)
+            If (IO.Path.GetExtension(path) = ".nfo" OrElse IO.Path.GetExtension(path) = ".info") AndAlso File.Exists(path) Then
+                Using testSR As StreamReader = New StreamReader(path)
                     testSer = New XmlSerializer(GetType(MediaContainers.TVShow))
                     Dim testShow As MediaContainers.TVShow = DirectCast(testSer.Deserialize(testSR), MediaContainers.TVShow)
                     testShow = Nothing
@@ -1942,22 +1844,22 @@ Public Class NFO
         End Try
     End Function
 
-    Public Shared Function LoadFromNFO_Movie(ByVal sPath As String, ByVal isSingle As Boolean) As MediaContainers.Movie
+    Public Shared Function LoadFromNFO_Movie(ByVal path As String, ByVal isSingle As Boolean) As MediaContainers.Movie
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlMov As New MediaContainers.Movie
 
-        If Not String.IsNullOrEmpty(sPath) Then
+        If Not String.IsNullOrEmpty(path) Then
             Try
-                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
-                    Using xmlSR As StreamReader = New StreamReader(sPath)
+                If File.Exists(path) AndAlso IO.Path.GetExtension(path).ToLower = ".nfo" Then
+                    Using xmlSR As StreamReader = New StreamReader(path)
                         xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                         xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.Movie)
                         xmlMov = CleanNFO_Movies(xmlMov)
                     End Using
                 Else
-                    If Not String.IsNullOrEmpty(sPath) Then
+                    If Not String.IsNullOrEmpty(path) Then
                         Dim sReturn As New NonConf
-                        sReturn = GetIMDBFromNonConf(sPath, isSingle)
+                        sReturn = GetIMDBFromNonConf(path, isSingle)
                         xmlMov.IMDB = sReturn.IMDBID
                         Try
                             If Not String.IsNullOrEmpty(sReturn.Text) Then
@@ -1977,15 +1879,15 @@ Public Class NFO
                 logger.Error(ex, New StackFrame().GetMethod().Name)
 
                 xmlMov.Clear()
-                If Not String.IsNullOrEmpty(sPath) Then
+                If Not String.IsNullOrEmpty(path) Then
 
                     'go ahead and rename it now, will still be picked up in getimdbfromnonconf
                     If Not Master.eSettings.GeneralOverwriteNfo Then
-                        RenameNonConfNFO_Movie(sPath, True)
+                        RenameNonConfNFO_Movie(path, True)
                     End If
 
                     Dim sReturn As New NonConf
-                    sReturn = GetIMDBFromNonConf(sPath, isSingle)
+                    sReturn = GetIMDBFromNonConf(path, isSingle)
                     xmlMov.IMDB = sReturn.IMDBID
                     Try
                         If Not String.IsNullOrEmpty(sReturn.Text) Then
@@ -2009,14 +1911,14 @@ Public Class NFO
         Return xmlMov
     End Function
 
-    Public Shared Function LoadFromNFO_MovieSet(ByVal sPath As String) As MediaContainers.MovieSet
+    Public Shared Function LoadFromNFO_MovieSet(ByVal path As String) As MediaContainers.MovieSet
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlMovSet As New MediaContainers.MovieSet
 
-        If Not String.IsNullOrEmpty(sPath) Then
+        If Not String.IsNullOrEmpty(path) Then
             Try
-                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
-                    Using xmlSR As StreamReader = New StreamReader(sPath)
+                If File.Exists(path) AndAlso IO.Path.GetExtension(path).ToLower = ".nfo" Then
+                    Using xmlSR As StreamReader = New StreamReader(path)
                         xmlSer = New XmlSerializer(GetType(MediaContainers.MovieSet))
                         xmlMovSet = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.MovieSet)
                         xmlMovSet.Plot = xmlMovSet.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
@@ -2036,15 +1938,15 @@ Public Class NFO
         Return xmlMovSet
     End Function
 
-    Public Shared Function LoadFromNFO_TVEpisode(ByVal sPath As String, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer) As MediaContainers.EpisodeDetails
+    Public Shared Function LoadFromNFO_TVEpisode(ByVal path As String, ByVal seasonNumber As Integer, ByVal episodeNumber As Integer) As MediaContainers.EpisodeDetails
         Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
         Dim xmlEp As New MediaContainers.EpisodeDetails
 
-        If Not String.IsNullOrEmpty(sPath) AndAlso SeasonNumber >= -1 Then
+        If Not String.IsNullOrEmpty(path) AndAlso seasonNumber >= -1 Then
             Try
-                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
+                If File.Exists(path) AndAlso IO.Path.GetExtension(path).ToLower = ".nfo" Then
                     'better way to read multi-root xml??
-                    Using xmlSR As StreamReader = New StreamReader(sPath)
+                    Using xmlSR As StreamReader = New StreamReader(path)
                         Dim xmlStr As String = xmlSR.ReadToEnd
                         Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
                         If rMatches.Count = 1 Then
@@ -2072,7 +1974,7 @@ Public Class NFO
                                 Using xmlRead As StringReader = New StringReader(xmlReg.Value)
                                     xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
                                     xmlEp = CleanNFO_TVEpisodes(xmlEp)
-                                    If xmlEp.Episode = EpisodeNumber AndAlso xmlEp.Season = SeasonNumber Then
+                                    If xmlEp.Episode = episodeNumber AndAlso xmlEp.Season = seasonNumber Then
                                         xmlSer = Nothing
                                         Return xmlEp
                                     End If
@@ -2084,7 +1986,7 @@ Public Class NFO
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
                     If Not Master.eSettings.GeneralOverwriteNfo Then
-                        RenameNonConfNFO_TVEpisode(sPath, True)
+                        RenameNonConfNFO_TVEpisode(path, True)
                     End If
                 End If
 
@@ -2093,7 +1995,7 @@ Public Class NFO
 
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.GeneralOverwriteNfo Then
-                    RenameNonConfNFO_TVEpisode(sPath, True)
+                    RenameNonConfNFO_TVEpisode(path, True)
                 End If
             End Try
         End If
@@ -2101,15 +2003,15 @@ Public Class NFO
         Return New MediaContainers.EpisodeDetails
     End Function
 
-    Public Shared Function LoadFromNFO_TVEpisode(ByVal sPath As String, ByVal SeasonNumber As Integer, ByVal Aired As String) As MediaContainers.EpisodeDetails
+    Public Shared Function LoadFromNFO_TVEpisode(ByVal path As String, ByVal seasonNumber As Integer, ByVal airedDate As String) As MediaContainers.EpisodeDetails
         Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
         Dim xmlEp As New MediaContainers.EpisodeDetails
 
-        If Not String.IsNullOrEmpty(sPath) AndAlso SeasonNumber >= -1 Then
+        If Not String.IsNullOrEmpty(path) AndAlso seasonNumber >= -1 Then
             Try
-                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
+                If File.Exists(path) AndAlso IO.Path.GetExtension(path).ToLower = ".nfo" Then
                     'better way to read multi-root xml??
-                    Using xmlSR As StreamReader = New StreamReader(sPath)
+                    Using xmlSR As StreamReader = New StreamReader(path)
                         Dim xmlStr As String = xmlSR.ReadToEnd
                         Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
                         If rMatches.Count = 1 Then
@@ -2137,7 +2039,7 @@ Public Class NFO
                                 Using xmlRead As StringReader = New StringReader(xmlReg.Value)
                                     xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
                                     xmlEp = CleanNFO_TVEpisodes(xmlEp)
-                                    If xmlEp.Aired = Aired AndAlso xmlEp.Season = SeasonNumber Then
+                                    If xmlEp.Aired = airedDate AndAlso xmlEp.Season = seasonNumber Then
                                         xmlSer = Nothing
                                         Return xmlEp
                                     End If
@@ -2149,7 +2051,7 @@ Public Class NFO
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
                     If Not Master.eSettings.GeneralOverwriteNfo Then
-                        RenameNonConfNFO_TVEpisode(sPath, True)
+                        RenameNonConfNFO_TVEpisode(path, True)
                     End If
                 End If
 
@@ -2158,7 +2060,7 @@ Public Class NFO
 
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.GeneralOverwriteNfo Then
-                    RenameNonConfNFO_TVEpisode(sPath, True)
+                    RenameNonConfNFO_TVEpisode(path, True)
                 End If
             End Try
         End If
@@ -2166,14 +2068,14 @@ Public Class NFO
         Return New MediaContainers.EpisodeDetails
     End Function
 
-    Public Shared Function LoadFromNFO_TVShow(ByVal sPath As String) As MediaContainers.TVShow
+    Public Shared Function LoadFromNFO_TVShow(ByVal path As String) As MediaContainers.TVShow
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlShow As New MediaContainers.TVShow
 
-        If Not String.IsNullOrEmpty(sPath) Then
+        If Not String.IsNullOrEmpty(path) Then
             Try
-                If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
-                    Using xmlSR As StreamReader = New StreamReader(sPath)
+                If File.Exists(path) AndAlso IO.Path.GetExtension(path).ToLower = ".nfo" Then
+                    Using xmlSR As StreamReader = New StreamReader(path)
                         xmlSer = New XmlSerializer(GetType(MediaContainers.TVShow))
                         xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.TVShow)
                         xmlShow = CleanNFO_TVShow(xmlShow)
@@ -2181,7 +2083,7 @@ Public Class NFO
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
                     If Not Master.eSettings.GeneralOverwriteNfo Then
-                        RenameNonConfNFO_TVShow(sPath)
+                        RenameNonConfNFO_TVShow(path)
                     End If
                 End If
 
@@ -2190,7 +2092,7 @@ Public Class NFO
 
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.GeneralOverwriteNfo Then
-                    RenameNonConfNFO_TVShow(sPath)
+                    RenameNonConfNFO_TVShow(path)
                 End If
             End Try
 
@@ -2211,13 +2113,13 @@ Public Class NFO
         Return xmlShow
     End Function
 
-    Private Shared Sub RenameNonConfNFO_Movie(ByVal sPath As String, ByVal isChecked As Boolean)
+    Private Shared Sub RenameNonConfNFO_Movie(ByVal path As String, ByVal isChecked As Boolean)
         'test if current nfo is non-conforming... rename per setting
 
         Try
-            If isChecked OrElse Not IsConformingNFO_Movie(sPath) Then
-                If isChecked OrElse File.Exists(sPath) Then
-                    RenameToInfo(sPath)
+            If isChecked OrElse Not IsConformingNFO_Movie(path) Then
+                If isChecked OrElse File.Exists(path) Then
+                    RenameToInfo(path)
                 End If
             End If
         Catch ex As Exception
@@ -2225,43 +2127,43 @@ Public Class NFO
         End Try
     End Sub
 
-    Private Shared Sub RenameNonConfNFO_TVEpisode(ByVal sPath As String, ByVal isChecked As Boolean)
+    Private Shared Sub RenameNonConfNFO_TVEpisode(ByVal path As String, ByVal isChecked As Boolean)
         'test if current nfo is non-conforming... rename per setting
 
         Try
-            If File.Exists(sPath) AndAlso Not IsConformingNFO_TVEpisode(sPath) Then
-                RenameToInfo(sPath)
+            If File.Exists(path) AndAlso Not IsConformingNFO_TVEpisode(path) Then
+                RenameToInfo(path)
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Private Shared Sub RenameNonConfNFO_TVShow(ByVal sPath As String)
+    Private Shared Sub RenameNonConfNFO_TVShow(ByVal path As String)
         'test if current nfo is non-conforming... rename per setting
 
         Try
-            If File.Exists(sPath) AndAlso Not IsConformingNFO_TVShow(sPath) Then
-                RenameToInfo(sPath)
+            If File.Exists(path) AndAlso Not IsConformingNFO_TVShow(path) Then
+                RenameToInfo(path)
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Private Shared Sub RenameToInfo(ByVal sPath As String)
+    Private Shared Sub RenameToInfo(ByVal path As String)
         Try
             Dim i As Integer = 1
-            Dim strNewName As String = String.Concat(FileUtils.Common.RemoveExtFromPath(sPath), ".info")
+            Dim strNewName As String = String.Concat(FileUtils.Common.RemoveExtFromPath(path), ".info")
             'in case there is already a .info file
             If File.Exists(strNewName) Then
                 Do
-                    strNewName = String.Format("{0}({1}).info", FileUtils.Common.RemoveExtFromPath(sPath), i)
+                    strNewName = String.Format("{0}({1}).info", FileUtils.Common.RemoveExtFromPath(path), i)
                     i += 1
                 Loop While File.Exists(strNewName)
-                strNewName = String.Format("{0}({1}).info", FileUtils.Common.RemoveExtFromPath(sPath), i)
+                strNewName = String.Format("{0}({1}).info", FileUtils.Common.RemoveExtFromPath(path), i)
             End If
-            My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
+            File.Move(path, strNewName)
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
@@ -2275,10 +2177,10 @@ Public Class NFO
         Next
     End Sub
 
-    Public Shared Sub SaveToNFO_Movie(ByRef tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
+    Public Shared Sub SaveToNFO_Movie(ByRef dbElement As Database.DBElement, ByVal forceFileCleanup As Boolean)
         Try
             Try
-                Dim params As New List(Of Object)(New Object() {tDBElement})
+                Dim params As New List(Of Object)(New Object() {dbElement})
                 Dim doContinue As Boolean = True
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_Movie, params, doContinue, False)
                 If Not doContinue Then Return
@@ -2286,12 +2188,12 @@ Public Class NFO
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            If tDBElement.FilenameSpecified Then
+            If dbElement.FilenameSpecified Then
                 'cleanup old NFOs if needed
-                If ForceFileCleanup Then DeleteNFO_Movie(tDBElement, ForceFileCleanup)
+                If forceFileCleanup Then DeleteNFO_Movie(dbElement, forceFileCleanup)
 
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
-                Dim tMovie As MediaContainers.Movie = CType(tDBElement.Movie.CloneDeep, MediaContainers.Movie)
+                Dim tMovie As MediaContainers.Movie = CType(dbElement.Movie.CloneDeep, MediaContainers.Movie)
 
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
                 Dim doesExist As Boolean = False
@@ -2313,7 +2215,7 @@ Public Class NFO
                     End If
                 End If
 
-                For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainNFO)
+                For Each a In FileUtils.GetFilenameList.Movie(dbElement, Enums.ModifierType.MainNFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNFO_Movie(a, False)
                     End If
@@ -2329,7 +2231,7 @@ Public Class NFO
                             End Try
                         End If
                         Using xmlSW As New StreamWriter(a)
-                            tDBElement.NfoPath = a
+                            dbElement.NfoPath = a
                             xmlSer.Serialize(xmlSW, tMovie)
                         End Using
                         If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
@@ -2342,7 +2244,7 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Sub SaveToNFO_MovieSet(ByRef tDBElement As Database.DBElement)
+    Public Shared Sub SaveToNFO_MovieSet(ByRef dbElement As Database.DBElement)
         Try
             'Try
             '    Dim params As New List(Of Object)(New Object() {moviesetToSave})
@@ -2352,15 +2254,15 @@ Public Class NFO
             'Catch ex As Exception
             'End Try
 
-            If Not String.IsNullOrEmpty(tDBElement.MovieSet.Title) Then
-                If tDBElement.MovieSet.TitleHasChanged Then DeleteNFO_MovieSet(tDBElement, False, True)
+            If Not String.IsNullOrEmpty(dbElement.MovieSet.Title) Then
+                If dbElement.MovieSet.TitleHasChanged Then DeleteNFO_MovieSet(dbElement, False, True)
 
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MovieSet))
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
 
-                For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainNFO)
+                For Each a In FileUtils.GetFilenameList.MovieSet(dbElement, Enums.ModifierType.MainNFO)
                     'If Not Master.eSettings.GeneralOverwriteNfo Then
                     '    RenameNonConfNfo(a, False)
                     'End If
@@ -2376,8 +2278,8 @@ Public Class NFO
                             End Try
                         End If
                         Using xmlSW As New StreamWriter(a)
-                            tDBElement.NfoPath = a
-                            xmlSer.Serialize(xmlSW, tDBElement.MovieSet)
+                            dbElement.NfoPath = a
+                            xmlSer.Serialize(xmlSW, dbElement.MovieSet)
                         End Using
                         If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
                     End If
@@ -2389,11 +2291,11 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Sub SaveToNFO_TVEpisode(ByRef tDBElement As Database.DBElement)
+    Public Shared Sub SaveToNFO_TVEpisode(ByRef dbElement As Database.DBElement)
         Try
-            If tDBElement.FilenameSpecified Then
+            If dbElement.FilenameSpecified Then
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
-                Dim tTVEpisode As MediaContainers.EpisodeDetails = CType(tDBElement.TVEpisode.CloneDeep, MediaContainers.EpisodeDetails)
+                Dim tTVEpisode As MediaContainers.EpisodeDetails = CType(dbElement.TVEpisode.CloneDeep, MediaContainers.EpisodeDetails)
 
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
 
@@ -2403,7 +2305,7 @@ Public Class NFO
                 Dim EpList As New List(Of MediaContainers.EpisodeDetails)
                 Dim sBuilder As New StringBuilder
 
-                For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeNFO)
+                For Each a In FileUtils.GetFilenameList.TVEpisode(dbElement, Enums.ModifierType.EpisodeNFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNFO_TVEpisode(a, False)
                     End If
@@ -2425,8 +2327,8 @@ Public Class NFO
                             Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
                             Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
 
-                            parID.Value = tDBElement.ID
-                            parFilename.Value = tDBElement.Filename
+                            parID.Value = dbElement.ID
+                            parFilename.Value = dbElement.Filename
 
                             Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLreader.Read
@@ -2465,7 +2367,7 @@ Public Class NFO
                                 End Using
                             Next
 
-                            tDBElement.NfoPath = a
+                            dbElement.NfoPath = a
 
                             If sBuilder.Length > 0 Then
                                 Using fSW As New StreamWriter(a)
@@ -2483,9 +2385,9 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Sub SaveToNFO_TVShow(ByRef tDBElement As Database.DBElement)
+    Public Shared Sub SaveToNFO_TVShow(ByRef dbElement As Database.DBElement)
         Try
-            Dim params As New List(Of Object)(New Object() {tDBElement})
+            Dim params As New List(Of Object)(New Object() {dbElement})
             Dim doContinue As Boolean = True
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_TVShow, params, doContinue, False)
             If Not doContinue Then Return
@@ -2493,9 +2395,9 @@ Public Class NFO
         End Try
 
         Try
-            If tDBElement.ShowPathSpecified Then
+            If dbElement.ShowPathSpecified Then
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
-                Dim tTVShow As MediaContainers.TVShow = CType(tDBElement.TVShow.CloneDeep, MediaContainers.TVShow)
+                Dim tTVShow As MediaContainers.TVShow = CType(dbElement.TVShow.CloneDeep, MediaContainers.TVShow)
 
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.TVShow))
                 Dim doesExist As Boolean = False
@@ -2518,7 +2420,7 @@ Public Class NFO
                     End If
                 End If
 
-                For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainNFO)
+                For Each a In FileUtils.GetFilenameList.TVShow(dbElement, Enums.ModifierType.MainNFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNFO_TVShow(a)
                     End If
@@ -2536,7 +2438,7 @@ Public Class NFO
                         End If
 
                         Using xmlSW As New StreamWriter(a)
-                            tDBElement.NfoPath = a
+                            dbElement.NfoPath = a
                             xmlSer.Serialize(xmlSW, tTVShow)
                         End Using
 

@@ -289,6 +289,22 @@ Namespace FileUtils
 
             Return lstItems
         End Function
+
+        Public Shared Function GetDefaultsByFileExtension(ByVal fileExtension As String, ByVal contentType As Enums.ContentType) As MediaContainers.FileInfo
+            Dim lstMetadataPerType As New List(Of Settings.MetadataPerType)
+            Select Case contentType
+                Case Enums.ContentType.Movie
+                    lstMetadataPerType = Master.eSettings.MovieMetadataPerFileType
+                Case Enums.ContentType.TVEpisode
+                    lstMetadataPerType = Master.eSettings.TVMetadataPerFileType
+            End Select
+            For Each m As Settings.MetadataPerType In lstMetadataPerType
+                If m.FileType = fileExtension Then
+                    Return m.MetaData
+                End If
+            Next
+            Return Nothing
+        End Function
         ''' <summary>
         ''' Determine the lowest-level directory from the supplied path string. 
         ''' </summary>

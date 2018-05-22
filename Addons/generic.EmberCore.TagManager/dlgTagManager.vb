@@ -132,7 +132,7 @@ Public Class dlgTagManager
 
         'load existing tags from database into datatable
         Master.DB.FillDataTable(dtMovieTags, String.Concat("SELECT * FROM tag ",
-                                                             "ORDER BY strTag COLLATE NOCASE;"))
+                                                           "ORDER BY name COLLATE NOCASE;"))
 
         'fill movie datagridview
         If dgvMovies.Rows.Count = 0 Then
@@ -147,13 +147,13 @@ Public Class dlgTagManager
                     For i As Integer = 0 To .dgvMovies.Columns.Count - 1
                         .dgvMovies.Columns(i).Visible = False
                     Next
-                    .dgvMovies.Columns("ListTitle").Visible = True
-                    .dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
-                    .dgvMovies.Columns("ListTitle").ReadOnly = True
-                    .dgvMovies.Columns("ListTitle").MinimumWidth = 83
-                    .dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                    .dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                    .dgvMovies.Columns("listTitle").Visible = True
+                    .dgvMovies.Columns("listTitle").Resizable = DataGridViewTriState.True
+                    .dgvMovies.Columns("listTitle").ReadOnly = True
+                    .dgvMovies.Columns("listTitle").MinimumWidth = 83
+                    .dgvMovies.Columns("listTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvMovies.Columns("listTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                    .dgvMovies.Columns("listTitle").HeaderText = Master.eLang.GetString(21, "Title")
 
                     .dgvMovies.Columns("ID").ValueType = GetType(Int64)
                 End With
@@ -164,14 +164,14 @@ Public Class dlgTagManager
         'fill listbox of tags
         If lbTags.Items.Count = 0 Then
             For Each sRow As DataRow In dtMovieTags.Rows
-                If Not String.IsNullOrEmpty(sRow.Item("strTag").ToString) Then
+                If Not String.IsNullOrEmpty(sRow.Item("name").ToString) Then
                     Dim tmpnewTag As New SyncTag
                     tmpnewTag.ID = CInt(sRow.Item("idTag"))
-                    tmpnewTag.Name = CStr(sRow.Item("strTag"))
+                    tmpnewTag.Name = CStr(sRow.Item("name"))
                     Dim tmpTag = Master.DB.Load_Tag_Movie(CInt(sRow.Item("idTag")))
                     tmpnewTag.Movies = tmpTag.Movies
                     globalMovieTags.Add(tmpnewTag)
-                    lbTags.Items.Add(sRow.Item("strTag").ToString)
+                    lbTags.Items.Add(sRow.Item("name").ToString)
                 End If
             Next
             'select first item in listbox
@@ -577,7 +577,7 @@ Public Class dlgTagManager
             'load current movielist-view/selection
             Dim dtmovies As New DataTable
             Master.DB.FillDataTable(dtmovies, String.Concat("SELECT * FROM movielist ",
-                                                                "ORDER BY ListTitle COLLATE NOCASE;"))
+                                                            "ORDER BY listTitle COLLATE NOCASE;"))
             For Each sRow As DataRow In dtmovies.Rows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow("idMovie")))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then

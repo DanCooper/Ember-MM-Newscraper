@@ -171,7 +171,7 @@ Public Class FileFolderRenamer
     Private Shared Sub DoRenameSingle_Movie(ByVal _frename As FileRename, ByRef _movie As Database.DBElement, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean, Optional ByVal sfunction As ShowProgress = Nothing, Optional ByVal iProg As Integer = 0)
         logger.Trace(String.Format("[{0}] [{1}] [Start]", Reflection.MethodBase.GetCurrentMethod.ReflectedType, Reflection.MethodBase.GetCurrentMethod.Name))
         Try
-            If Not _movie.IsLock AndAlso Not _frename.FileExist AndAlso Not _frename.DirExist Then
+            If Not _movie.IsLocked AndAlso Not _frename.FileExist AndAlso Not _frename.DirExist Then
                 Dim getError As Boolean = False
                 Dim srcDir As String = Path.Combine(_frename.BasePath, _frename.Path)
                 Dim destDir As String = Path.Combine(_frename.BasePath, _frename.NewPath)
@@ -221,8 +221,8 @@ Public Class FileFolderRenamer
                         Dim lFi As New List(Of FileInfo)
                         Try
                             lFi.AddRange(di.GetFiles())
-                            For Each subtitle In _movie.Subtitles.Where(Function(f) f.SubsPathSpecified)
-                                Dim nPath = subtitle.SubsPath.Replace(srcDir, destDir)
+                            For Each subtitle In _movie.Subtitles.Where(Function(f) f.PathSpecified)
+                                Dim nPath = subtitle.Path.Replace(srcDir, destDir)
                                 If lFi.Where(Function(f) f.FullName = nPath).Count = 0 Then
                                     lFi.Add(New FileInfo(nPath))
                                 End If
@@ -304,7 +304,7 @@ Public Class FileFolderRenamer
 
     Private Shared Sub DoRenameSingle_TVEpisode(ByVal _frename As FileRename, ByRef _tv As Database.DBElement, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean, Optional ByVal sfunction As ShowProgress = Nothing, Optional ByVal iProg As Integer = 0)
         Try
-            If Not _tv.IsLock AndAlso Not _frename.FileExist Then
+            If Not _tv.IsLocked AndAlso Not _frename.FileExist Then
                 Dim getError As Boolean = False
                 Dim srcDir As String = Path.Combine(_frename.BasePath, _frename.Path)
                 Dim destDir As String = Path.Combine(_frename.BasePath, _frename.NewPath)
@@ -350,9 +350,9 @@ Public Class FileFolderRenamer
 
                         Try
                             lFi.AddRange(di.GetFiles(String.Concat(_frename.OldFileName, "*")))
-                            For Each subtitle In _tv.Subtitles.Where(Function(f) f.SubsPathSpecified)
-                                If lFi.Where(Function(f) f.FullName = subtitle.SubsPath).Count = 0 Then
-                                    lFi.Add(New FileInfo(subtitle.SubsPath))
+                            For Each subtitle In _tv.Subtitles.Where(Function(f) f.PathSpecified)
+                                If lFi.Where(Function(f) f.FullName = subtitle.Path).Count = 0 Then
+                                    lFi.Add(New FileInfo(subtitle.Path))
                                 End If
                             Next
                         Catch ex As Exception
@@ -434,7 +434,7 @@ Public Class FileFolderRenamer
 
     Private Shared Sub DoRenameSingle_TVShow(ByVal _frename As FileRename, ByRef _tv As Database.DBElement, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Try
-            If Not _tv.IsLock AndAlso Not _frename.DirExist Then
+            If Not _tv.IsLocked AndAlso Not _frename.DirExist Then
                 Dim getError As Boolean = False
                 Dim srcDir As String = _frename.OldFullPath
                 Dim destDir As String = Path.Combine(_frename.BasePath, _frename.NewPath)
@@ -556,7 +556,7 @@ Public Class FileFolderRenamer
         End If
 
         'IsLock
-        MovieFile.IsLock = _DBElement.IsLock
+        MovieFile.IsLock = _DBElement.IsLocked
 
         'IsSingle
         MovieFile.IsSingle = _DBElement.IsSingle
@@ -615,12 +615,12 @@ Public Class FileFolderRenamer
             'Resolution
             If _DBElement.Movie.FileInfo.StreamDetails.VideoSpecified Then
                 Dim tVid As MediaContainers.Video = NFO.GetBestVideo(_DBElement.Movie.FileInfo)
-                Dim tRes As String = NFO.GetResFromDimensions(tVid)
+                Dim tRes As String = NFO.GetResolutionFromDimensions(tVid)
                 MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
             End If
 
             If _DBElement.Movie.FileInfo.StreamDetails.AudioSpecified Then
-                Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_DBElement.Movie.FileInfo, False)
+                Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_DBElement.Movie.FileInfo, _DBElement.ContentType)
 
                 'Audio Channels
                 If tAud.ChannelsSpecified Then
@@ -635,7 +635,7 @@ Public Class FileFolderRenamer
 
             'MultiViewCount
             If _DBElement.Movie.FileInfo.StreamDetails.VideoSpecified Then
-                If Not String.IsNullOrEmpty(_DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+                If _DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount > 1 Then
                     MovieFile.MultiViewCount = "3d"
                 End If
             End If
@@ -799,7 +799,7 @@ Public Class FileFolderRenamer
         End If
 
         'IsLock
-        EpisodeFile.IsLock = _DBElement.IsLock
+        EpisodeFile.IsLock = _DBElement.IsLocked
 
         'Rating
         If Not EpisodeFile.IsMultiEpisode Then
@@ -829,12 +829,12 @@ Public Class FileFolderRenamer
             'Resolution
             If _DBElement.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
                 Dim tVid As MediaContainers.Video = NFO.GetBestVideo(_DBElement.TVEpisode.FileInfo)
-                Dim tRes As String = NFO.GetResFromDimensions(tVid)
+                Dim tRes As String = NFO.GetResolutionFromDimensions(tVid)
                 EpisodeFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
             End If
 
             If _DBElement.TVEpisode.FileInfo.StreamDetails.AudioSpecified Then
-                Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_DBElement.TVEpisode.FileInfo, False)
+                Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_DBElement.TVEpisode.FileInfo, _DBElement.ContentType)
 
                 'Audio Channels
                 If tAud.ChannelsSpecified Then
@@ -849,7 +849,7 @@ Public Class FileFolderRenamer
 
             'MultiViewCount
             If _DBElement.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
-                If _DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewCountSpecified AndAlso CDbl(_DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+                If _DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewCount > 1 Then
                     EpisodeFile.MultiViewCount = "3d"
                 End If
             End If
@@ -943,7 +943,7 @@ Public Class FileFolderRenamer
         End If
 
         'IsLock
-        ShowFile.IsLock = _DBElement.IsLock
+        ShowFile.IsLock = _DBElement.IsLocked
 
         'IsSingle
         ShowFile.IsSingle = _DBElement.Source.IsSingle
@@ -1218,7 +1218,7 @@ Public Class FileFolderRenamer
                         strCond = ApplyPattern(strCond, "3", f.ShortStereoMode)
                         strCond = ApplyPattern(strCond, "4", f.StereoMode)
                         strCond = ApplyPattern(strCond, "5", f.CollectionListTitle)
-                        strCond = ApplyPattern(strCond, "A", f.AudioChannels)
+                        strCond = ApplyPattern(strCond, "A", f.AudioChannels.ToString)
                         strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not needed here, Only to HaveBase
                         strCond = ApplyPattern(strCond, "C", f.Director)
                         strCond = ApplyPattern(strCond, "D", f.Parent)
@@ -1311,7 +1311,7 @@ Public Class FileFolderRenamer
                 pattern = ApplyPattern(pattern, "3", f.ShortStereoMode)
                 pattern = ApplyPattern(pattern, "4", f.StereoMode)
                 pattern = ApplyPattern(pattern, "5", f.CollectionListTitle)
-                pattern = ApplyPattern(pattern, "A", f.AudioChannels)
+                pattern = ApplyPattern(pattern, "A", f.AudioChannels.ToString)
                 pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
                 pattern = ApplyPattern(pattern, "C", f.Director)
                 pattern = ApplyPattern(pattern, "D", f.Parent) '.Replace("\", String.Empty))
@@ -1768,8 +1768,8 @@ Public Class FileFolderRenamer
             Next
         End If
         If _DBM.SubtitlesSpecified Then
-            For Each subtitle In _DBM.Subtitles.Where(Function(f) f.SubsPathSpecified)
-                subtitle.SubsPath = Path.Combine(Directory.GetParent(subtitle.SubsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(subtitle.SubsPath).Replace(oldFile, newFile))
+            For Each subtitle In _DBM.Subtitles.Where(Function(f) f.PathSpecified)
+                subtitle.Path = Path.Combine(Directory.GetParent(subtitle.Path).FullName.Replace(oldPath, newPath), Path.GetFileName(subtitle.Path).Replace(oldFile, newFile))
             Next
         End If
     End Sub
@@ -1780,8 +1780,8 @@ Public Class FileFolderRenamer
         If _DBE.ImagesContainer.Poster.LocalFilePathSpecified Then _DBE.ImagesContainer.Poster.LocalFilePath = Path.Combine(Directory.GetParent(_DBE.ImagesContainer.Poster.LocalFilePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.ImagesContainer.Poster.LocalFilePath).Replace(oldFile, newFile))
         If _DBE.NfoPathSpecified Then _DBE.NfoPath = Path.Combine(Directory.GetParent(_DBE.NfoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.NfoPath).Replace(oldFile, newFile))
         If _DBE.SubtitlesSpecified Then
-            For Each subtitle In _DBE.Subtitles.Where(Function(f) f.SubsPathSpecified)
-                subtitle.SubsPath = Path.Combine(Directory.GetParent(subtitle.SubsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(subtitle.SubsPath).Replace(oldFile, newFile))
+            For Each subtitle In _DBE.Subtitles.Where(Function(f) f.PathSpecified)
+                subtitle.Path = Path.Combine(Directory.GetParent(subtitle.Path).FullName.Replace(oldPath, newPath), Path.GetFileName(subtitle.Path).Replace(oldFile, newFile))
             Next
         End If
     End Sub
@@ -1800,8 +1800,8 @@ Public Class FileFolderRenamer
         If _DBE.ShowPathSpecified Then _DBE.ShowPath = _DBE.ShowPath.Replace(oldPath, newPath)
         If Not String.IsNullOrEmpty(_DBE.Theme.LocalFilePath) Then _DBE.Theme.LocalFilePath = _DBE.Theme.LocalFilePath.Replace(oldPath, newPath)
         If _DBE.SubtitlesSpecified Then
-            For Each subtitle In _DBE.Subtitles.Where(Function(f) f.SubsPathSpecified)
-                subtitle.SubsPath = subtitle.SubsPath.Replace(oldPath, newPath)
+            For Each subtitle In _DBE.Subtitles.Where(Function(f) f.PathSpecified)
+                subtitle.Path = subtitle.Path.Replace(oldPath, newPath)
             Next
         End If
     End Sub
@@ -1815,7 +1815,7 @@ Public Class FileFolderRenamer
 #Region "Fields"
 
         Private _aired As String
-        Private _audiochannels As String
+        Private _audiochannels As Integer
         Private _audiocodec As String
         Private _basepath As String
         Private _collection As String
@@ -1876,11 +1876,11 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property AudioChannels() As String
+        Public Property AudioChannels() As Integer
             Get
                 Return _audiochannels
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _audiochannels = value
             End Set
         End Property
@@ -2309,7 +2309,7 @@ Public Class FileFolderRenamer
 
         Public Sub Clear()
             _aired = String.Empty
-            _audiochannels = String.Empty
+            _audiochannels = 0
             _audiocodec = String.Empty
             _basepath = String.Empty
             _collection = String.Empty

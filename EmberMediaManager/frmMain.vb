@@ -1903,7 +1903,7 @@ Public Class frmMain
             If Not Cancelled Then
                 If Master.eSettings.MovieScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.MainMeta Then
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
-                    MediaInfo.UpdateMediaInfo(DBScrapeMovie)
+                    MediaInfo.UpdateFileInfo(DBScrapeMovie)
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
 
@@ -2313,7 +2313,7 @@ Public Class frmMain
                 If tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta AndAlso Master.eSettings.TVScraperMetaDataScan Then
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
                     For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.FilenameSpecified)
-                        MediaInfo.UpdateTVMediaInfo(tEpisode)
+                        MediaInfo.UpdateFileInfo(tEpisode)
                     Next
                 End If
 
@@ -2427,7 +2427,7 @@ Public Class frmMain
 
             If Not Cancelled Then
                 If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta Then
-                    MediaInfo.UpdateTVMediaInfo(DBScrapeEpisode)
+                    MediaInfo.UpdateFileInfo(DBScrapeEpisode)
                 End If
                 If bwTVEpisodeScraper.CancellationPending Then Exit For
 
@@ -4178,7 +4178,7 @@ Public Class frmMain
                 If dlgChangeEp.ShowDialog = DialogResult.OK Then
                     If dlgChangeEp.Result.Count > 0 Then
                         If Master.eSettings.TVScraperMetaDataScan Then
-                            MediaInfo.UpdateTVMediaInfo(tmpEpisode)
+                            MediaInfo.UpdateFileInfo(tmpEpisode)
                         End If
                         Master.DB.Change_TVEpisode(tmpEpisode, dlgChangeEp.Result, False)
                     End If
@@ -9191,7 +9191,7 @@ Public Class frmMain
         End If
 
         If Master.eSettings.MovieScraperMetaDataScan Then
-            SetAVImages(APIXML.GetAVImages(currMovie.Movie.FileInfo, currMovie.Filename, False, currMovie.Movie.VideoSource))
+            SetAVImages(APIXML.GetAVImages(currMovie.Movie.FileInfo, currMovie.Filename, currMovie.ContentType, currMovie.Movie.VideoSource))
             pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
         Else
@@ -9413,7 +9413,7 @@ Public Class frmMain
             lblStudio.Text = pbStudio.Tag.ToString
         End If
         If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(currTV.Filename) Then
-            SetAVImages(APIXML.GetAVImages(currTV.TVEpisode.FileInfo, currTV.Filename, True, currTV.TVEpisode.VideoSource))
+            SetAVImages(APIXML.GetAVImages(currTV.TVEpisode.FileInfo, currTV.Filename, currTV.ContentType, currTV.TVEpisode.VideoSource))
             pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
         Else
@@ -11744,7 +11744,7 @@ Public Class frmMain
 
         'create ScrapeList of movies acording to scrapetype
         For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item("Lock")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+            If Convert.ToBoolean(drvRow.Item("locked")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifiers
             sModifier.DoSearch = ScrapeModifiers.DoSearch
@@ -11766,25 +11766,25 @@ Public Class frmMain
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item("new")) Then Continue For
                 Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item("marked")) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = bsMovies.Find("idMovie", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
                 Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString) Then sModifier.MainDiscArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString) Then sModifier.MainExtrafanarts = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("EThumbsPath").ToString) Then sModifier.MainExtrathumbs = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("ThemePath").ToString) Then sModifier.MainTheme = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("TrailerPath").ToString) Then sModifier.MainTrailer = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("bannerPath").ToString) Then sModifier.MainBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("clearArtPath").ToString) Then sModifier.MainClearArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("clearLogoPath").ToString) Then sModifier.MainClearLogo = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("discArtPath").ToString) Then sModifier.MainDiscArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("efanartsPath").ToString) Then sModifier.MainExtrafanarts = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("ethumbsPath").ToString) Then sModifier.MainExtrathumbs = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("fanartPath").ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("landscapePath").ToString) Then sModifier.MainLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("nfoPath").ToString) Then sModifier.MainNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("posterPath").ToString) Then sModifier.MainPoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("rhemePath").ToString) Then sModifier.MainTheme = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("rrailerPath").ToString) Then sModifier.MainTrailer = False
             End Select
             If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
                 ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
@@ -11918,7 +11918,7 @@ Public Class frmMain
 
         'create ScrapeList of moviesets acording to scrapetype
         For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item("Lock")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+            If Convert.ToBoolean(drvRow.Item("locked")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifiers
             sModifier.DoSearch = ScrapeModifiers.DoSearch
@@ -11933,21 +11933,21 @@ Public Class frmMain
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item("new")) Then Continue For
                 Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item("marked")) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = bsMovieSets.Find("idSet", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
                 Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString) Then sModifier.MainDiscArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("bannerPath").ToString) Then sModifier.MainBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("clearArtPath").ToString) Then sModifier.MainClearArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("clearLogoPath").ToString) Then sModifier.MainClearLogo = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("discArtPath").ToString) Then sModifier.MainDiscArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("fanartPath").ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("landscapePath").ToString) Then sModifier.MainLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("nfoPath").ToString) Then sModifier.MainNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("posterPath").ToString) Then sModifier.MainPoster = False
             End Select
             If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
                 ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
@@ -12097,7 +12097,7 @@ Public Class frmMain
 
         'create ScrapeList of tv shows acording to scrapetype
         For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item("Lock")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+            If Convert.ToBoolean(drvRow.Item("locked")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifiers
             sModifier.DoSearch = ScrapeModifiers.DoSearch
@@ -12130,23 +12130,23 @@ Public Class frmMain
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item("new")) Then Continue For
                 Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item("marked")) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = bsTVShows.Find("idShow", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
                 Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("CharacterArtPath").ToString) Then sModifier.MainCharacterArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString) Then sModifier.MainExtrafanarts = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("ThemePath").ToString) Then sModifier.MainTheme = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("bannerPath").ToString) Then sModifier.MainBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("characterArtPath").ToString) Then sModifier.MainCharacterArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("clearArtPath").ToString) Then sModifier.MainClearArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("clearLogoPath").ToString) Then sModifier.MainClearLogo = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("efanartsPath").ToString) Then sModifier.MainExtrafanarts = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("fanartPath").ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("landscapePath").ToString) Then sModifier.MainLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("nfoPath").ToString) Then sModifier.MainNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("posterPath").ToString) Then sModifier.MainPoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("themePath").ToString) Then sModifier.MainTheme = False
             End Select
             If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
                 ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
@@ -12277,7 +12277,7 @@ Public Class frmMain
 
         'create ScrapeList of episodes acording to scrapetype
         For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item("Lock")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+            If Convert.ToBoolean(drvRow.Item("locked")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifiers
             sModifier.DoSearch = ScrapeModifiers.DoSearch
@@ -12289,16 +12289,16 @@ Public Class frmMain
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item("new")) Then Continue For
                 Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item("marked")) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = bsTVEpisodes.Find("idEpisode", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
                 Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.EpisodeFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.EpisodeNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.EpisodePoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("fanartPath").ToString) Then sModifier.EpisodeFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("nfoPath").ToString) Then sModifier.EpisodeNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("posterPath").ToString) Then sModifier.EpisodePoster = False
             End Select
             If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
                 ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
@@ -12433,7 +12433,7 @@ Public Class frmMain
 
         'create ScrapeList of tv seasons acording to scrapetype
         For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item("Lock")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+            If Convert.ToBoolean(drvRow.Item("locked")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifiers
             sModifier.DoSearch = ScrapeModifiers.DoSearch
@@ -12449,17 +12449,17 @@ Public Class frmMain
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item("new")) Then Continue For
                 Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item("marked")) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = bsTVShows.Find("idShow", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
                 Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.SeasonBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.SeasonFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.SeasonLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.SeasonPoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("bannerPath").ToString) Then sModifier.SeasonBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("fanartPath").ToString) Then sModifier.SeasonFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("landscapePath").ToString) Then sModifier.SeasonLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("posterPath").ToString) Then sModifier.SeasonPoster = False
             End Select
             If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
                 ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
@@ -12563,7 +12563,7 @@ Public Class frmMain
 
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                    Using Explorer As New Diagnostics.Process
+                    Using Explorer As New Process
 
                         If Master.isWindows Then
                             Explorer.StartInfo.FileName = "explorer.exe"
@@ -12614,12 +12614,12 @@ Public Class frmMain
             Dim enableIMDB As Boolean = False
             Dim enableTMDB As Boolean = False
             For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                If Not String.IsNullOrEmpty(sRow.Cells("Imdb").Value.ToString) Then
-                    enableIMDB = True
-                End If
-                If Not String.IsNullOrEmpty(sRow.Cells("TMDB").Value.ToString) Then
-                    enableTMDB = True
-                End If
+                'If Not String.IsNullOrEmpty(sRow.Cells("Imdb").Value.ToString) Then
+                '    enableIMDB = True
+                'End If
+                'If Not String.IsNullOrEmpty(sRow.Cells("TMDB").Value.ToString) Then
+                '    enableTMDB = True
+                'End If
             Next
             cmnuMovieBrowseIMDB.Enabled = enableIMDB
             cmnuMovieBrowseTMDB.Enabled = enableTMDB

@@ -254,9 +254,10 @@
       <description>create table file, delete table files</description>
       <execute>
         CREATE TABLE file (
-        idFile    integer PRIMARY KEY,
-        path      text NOT NULL,
-        filesize  integer
+        idFile            integer PRIMARY KEY,
+        path              text NOT NULL,
+        originalFileName  text,
+        filesize          integer
         );
 
         DROP INDEX UniqueFilename;
@@ -269,14 +270,16 @@
         AFTER DELETE
         ON files
         BEGIN
-        DELETE FROM streamdetails WHERE idFile=old.idFile;
+        DELETE FROM streamdetail WHERE idFile=old.idFile;
         END;
 
         INSERT INTO file
         (idFile,
-        path)
+        path,
+        originalFileName)
         SELECT
         idFile,
+        strFilename,
         strFilename
         FROM files;
 
@@ -611,32 +614,39 @@
     </command>
     <!-- END rating related modifications -->
 
-    <!-- START streamdetails related modifications-->
+    <!-- START streamdetail related modifications-->
     <command type="DB">
-      <description>create table streamdetails</description>
+      <description>create table streamdetail</description>
       <execute>
-        CREATE TABLE streamdetails (
-        idFile               integer,
-        iStreamType          integer,
-        strVideoCodec        text,
-        fVideoAspect         float,
-        iVideoWidth          integer,
-        iVideoHeight         integer,
-        strAudioCodec        text,
-        iAudioChannels       integer,
-        strAudioLanguage     text,
-        strSubtitleLanguage  text,
-        iVideoDuration       integer,
-        strStereoMode        text,
-        strVideoLanguage     text
+        CREATE TABLE streamdetail (
+        idFile                integer,
+        streamType            integer,
+        videoCodec            text,
+        videoAspect           float,
+        videoBitrate          integer,
+        videoLanguage         text,
+        videoWidth            integer,
+        videoHeight           integer,
+        videoScantype         text,
+        videoDuration         integer,
+        videoMultiViewCount   integer,
+        videoMultiViewLayout  text,
+        videoStereoMode       text,
+        audioCodec            text,
+        audioChannels         integer,
+        audioBitrate          integer,
+        audioLanguage         text,
+        subtitleLanguage      text,
+        subtitleForced        boolean,
+        subtitlePath          text
         );
 
-        CREATE INDEX ix_streamdetails
-        ON streamdetails
+        CREATE INDEX ix_streamdetail
+        ON streamdetail
         (idFile);
       </execute>
     </command>
-    <!-- END streamdetails related modifications -->
+    <!-- END streamdetail related modifications -->
 
     <!-- START studio related modifications -->
     <command type="DB">
@@ -790,6 +800,36 @@
       </execute>
     </command>
     <!-- END tag related modifications -->
+
+    <!-- START tvshow_link related modifications -->
+    <command type="DB">
+      <description>rename table movielinktvshow to tvshow_link</description>
+      <execute>
+        CREATE TABLE tvshow_link (
+        idShow      integer,
+        idMovie     integer
+        );
+
+        CREATE UNIQUE INDEX ix_tvshow_link_1
+        ON tvshow_link
+        (idShow, idMovie);
+
+        CREATE UNIQUE INDEX ix_tvshow_link_2
+        ON tvshow_link
+        (idMovie, idShow);
+
+        INSERT INTO tvshow_link
+        (idShow,
+        idMovie)
+        SELECT
+        idShow,
+        idMovie
+        FROM movielinktvshow;
+
+        DROP TABLE movielinktvshow;
+      </execute>
+    </command>
+    <!-- END tvshow_link related modifications -->
 
     <!-- START tvshowsource related modifications -->
     <command type="DB">
@@ -1648,9 +1688,6 @@
         DELETE FROM rating WHERE idMedia=old.idEpisode AND media_type='episode';
         DELETE FROM uniqueid WHERE idMedia=old.idEpisode AND media_type='episode';
         DELETE FROM writer_link WHERE idMedia=old.idEpisode AND media_type='episode';
-        DELETE FROM TVVStreams WHERE TVEpID=old.idEpisode;
-        DELETE FROM TVAStreams WHERE TVEpID=old.idEpisode;
-        DELETE FROM TVSubs WHERE TVEpID=old.idEpisode;
         END;
 
         INSERT INTO episode
@@ -1912,16 +1949,13 @@
         DELETE FROM director_link WHERE idMedia=old.idMovie AND media_type='movie';
         DELETE FROM file WHERE idFile=old.idFile;
         DELETE FROM genre_link WHERE idMedia=old.idMovie AND media_type='movie';
-        DELETE FROM movielinktvshow WHERE idMovie=old.idMovie;
         DELETE FROM movieset_link WHERE idMovie=old.idMovie;
         DELETE FROM rating WHERE idMedia=old.idMovie AND media_type='movie';
         DELETE FROM studio_link WHERE idMedia=old.idMovie AND media_type='movie';
         DELETE FROM tag_link WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM tvshow_link WHERE idMovie=old.idMovie;
         DELETE FROM uniqueid WHERE idMedia=old.idMovie AND media_type='movie';
         DELETE FROM writer_link WHERE idMedia=old.idMovie AND media_type='movie';
-        DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
-        DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
-        DELETE FROM MoviesVStreams WHERE MovieID=old.idMovie;
         END;
 
         INSERT INTO movie
@@ -2395,11 +2429,11 @@
         DELETE FROM country_link WHERE idMedia=old.idShow AND media_type='tvshow';
         DELETE FROM director_link WHERE idMedia=old.idShow AND media_type='tvshow';
         DELETE FROM genre_link WHERE idMedia=old.idShow AND media_type='tvshow';
-        DELETE FROM movielinktvshow WHERE idShow=old.idShow;
         DELETE FROM rating WHERE idMedia=old.idShow AND media_type='tvshow';
         DELETE FROM season WHERE idShow=old.idShow;
         DELETE FROM studio_link WHERE idMedia=old.idShow AND media_type='tvshow';
         DELETE FROM tag_link WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM tvshow_link WHERE idShow=old.idShow;
         DELETE FROM uniqueid WHERE idMedia=old.idShow AND media_type='tvshow';
         END;
 

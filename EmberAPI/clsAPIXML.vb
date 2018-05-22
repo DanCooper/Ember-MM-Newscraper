@@ -204,14 +204,14 @@ Public Class APIXML
         End Try
     End Sub
 
-    Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
+    Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.FileInfo, ByVal fName As String, ByVal contentType As Enums.ContentType, ByVal videoSource As String) As Image()
         Dim iReturn(19) As Image
         Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
-        Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, ForTV)
+        Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, contentType)
 
         If lFlags.Count > 0 OrElse dLanguages.Count > 0 Then
             Try
-                Dim vRes As String = NFO.GetResFromDimensions(tVideo).ToLower
+                Dim vRes As String = NFO.GetResolutionFromDimensions(tVideo).ToLower
                 Dim vresFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = vRes AndAlso f.Type = FlagType.VideoResolution)
                 If vresFlag IsNot Nothing Then
                     iReturn(0) = vresFlag.Image
@@ -250,7 +250,7 @@ Public Class APIXML
                 End If
 
                 If tVideo.MultiViewCountSpecified Then
-                    Dim vchanFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tVideo.MultiViewCount AndAlso f.Type = FlagType.VideoChan)
+                    Dim vchanFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tVideo.MultiViewCount.ToString AndAlso f.Type = FlagType.VideoChan)
                     If vchanFlag IsNot Nothing Then
                         iReturn(19) = vchanFlag.Image
                     End If
@@ -282,7 +282,7 @@ Public Class APIXML
                     End If
                 End If
 
-                Dim achanFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = FlagType.AudioChan)
+                Dim achanFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels.ToString AndAlso f.Type = FlagType.AudioChan)
                 If achanFlag IsNot Nothing Then
                     iReturn(4) = achanFlag.Image
                 Else
@@ -342,7 +342,7 @@ Public Class APIXML
                             sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
                             sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Subtitle(i).LongLanguage)
                             sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1287, "Forced"),
-                                                          If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                                                          If(fiAV.StreamDetails.Subtitle(i).Forced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                             iReturn(sIcon) = sLangFlag
                             sIcon += 1
                         Else
@@ -350,7 +350,7 @@ Public Class APIXML
                             sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
                             sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
                             sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1287, "Forced"),
-                                                          If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                                                          If(fiAV.StreamDetails.Subtitle(i).Forced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                             iReturn(sIcon) = sLangFlag
                             aIcon += 1
                         End If

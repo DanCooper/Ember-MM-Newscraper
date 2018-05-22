@@ -436,7 +436,7 @@ Public Class MediaExporter
         Return strPath
     End Function
 
-    Private Function GetAVSInfo(ByVal fInfo As MediaContainers.Fileinfo) As AVSInfo
+    Private Function GetAVSInfo(ByVal fInfo As MediaContainers.FileInfo, ByVal contentType As Enums.ContentType) As AVSInfo
         Dim nInfo As New AVSInfo
 
         Dim tVid As New MediaContainers.Video
@@ -447,32 +447,32 @@ Public Class MediaExporter
         If fInfo IsNot Nothing Then
             If fInfo.StreamDetails.Video.Count > 0 Then
                 tVid = NFO.GetBestVideo(fInfo)
-                tRes = NFO.GetResFromDimensions(tVid)
+                tRes = NFO.GetResolutionFromDimensions(tVid)
 
-                nInfo.vidBitrate = tVid.Bitrate
+                nInfo.vidBitrate = tVid.Bitrate.ToString
                 nInfo.vidFileSize = CStr(tVid.Filesize)
-                nInfo.vidMultiViewCount = tVid.MultiViewCount
+                nInfo.vidMultiViewCount = tVid.MultiViewCount.ToString
                 nInfo.vidMultiViewLayout = tVid.MultiViewLayout
-                nInfo.vidAspect = tVid.Aspect
-                nInfo.vidDuration = tVid.Duration
-                nInfo.vidHeight = tVid.Height
+                nInfo.vidAspect = tVid.Aspect.ToString
+                nInfo.vidDuration = tVid.Duration.ToString
+                nInfo.vidHeight = tVid.Height.ToString
                 nInfo.vidLanguage = tVid.Language
                 nInfo.vidLongLanguage = tVid.LongLanguage
                 nInfo.vidScantype = tVid.Scantype
                 nInfo.vidStereoMode = tVid.StereoMode
-                nInfo.vidWidth = tVid.Width
+                nInfo.vidWidth = tVid.Width.ToString
                 nInfo.vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown"), tVid.Codec)).ToUpper
                 nInfo.vidDimensions = NFO.GetDimensionsFromVideo(tVid)
             End If
 
             If fInfo.StreamDetails.Audio.Count > 0 Then
-                tAud = NFO.GetBestAudio(fInfo, False)
+                tAud = NFO.GetBestAudio(fInfo, contentType)
 
-                nInfo.audBitrate = tAud.Bitrate
-                nInfo.audChannels = tAud.Channels
+                nInfo.audBitrate = tAud.Bitrate.ToString
+                nInfo.audChannels = tAud.Channels.ToString
                 nInfo.audLanguage = tAud.Language
                 nInfo.audLongLanguage = tAud.LongLanguage
-                nInfo.audDetails = String.Format("{0}ch / {1}", If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels), If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec)).ToUpper
+                nInfo.audDetails = String.Format("{0}ch / {1}", If(tAud.ChannelsSpecified, Master.eLang.GetString(138, "Unknown"), tAud.Channels.ToString), If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec)).ToUpper
             End If
 
             If fInfo.StreamDetails.Subtitle.Count > 0 Then
@@ -497,7 +497,7 @@ Public Class MediaExporter
         Return nInfo
     End Function
 
-    Private Function GetDetailAudioInfo(ByVal fInfo As MediaContainers.Fileinfo) As AVSInfo
+    Private Function GetDetailAudioInfo(ByVal fInfo As MediaContainers.FileInfo) As AVSInfo
         Dim nInfo As New AVSInfo
         Dim tAud As New MediaContainers.Audio
         If fInfo IsNot Nothing Then
@@ -510,7 +510,7 @@ Public Class MediaExporter
                         nInfo.audChannels = If(audioinfo.ChannelsSpecified, nInfo.audChannels & ";" & audioinfo.Channels, Master.eLang.GetString(138, "Unknown"))
                         nInfo.audLanguage = If(audioinfo.LanguageSpecified, nInfo.audLanguage & ";" & audioinfo.Language, Master.eLang.GetString(138, "Unknown"))
                         nInfo.audLongLanguage = If(audioinfo.LongLanguageSpecified, nInfo.audLongLanguage & ";" & audioinfo.LongLanguage, Master.eLang.GetString(138, "Unknown"))
-                        nInfo.audDetails = If(audioinfo.CodecSpecified, nInfo.audDetails & ";" & String.Format("{0}ch / {1}", If(String.IsNullOrEmpty(audioinfo.Channels), Master.eLang.GetString(138, "Unknown"), audioinfo.Channels), If(String.IsNullOrEmpty(audioinfo.Codec), Master.eLang.GetString(138, "Unknown"), audioinfo.Codec)).ToUpper, nInfo.audDetails)
+                        nInfo.audDetails = If(audioinfo.CodecSpecified, nInfo.audDetails & ";" & String.Format("{0}ch / {1}", If(audioinfo.ChannelsSpecified, Master.eLang.GetString(138, "Unknown"), audioinfo.Channels.ToString), If(String.IsNullOrEmpty(audioinfo.Codec), Master.eLang.GetString(138, "Unknown"), audioinfo.Codec)).ToUpper, nInfo.audDetails)
                     End If
                 Next
             End If
@@ -630,7 +630,7 @@ Public Class MediaExporter
 
     Private Function ProcessPattern_Flags(ByVal tDBElement As Database.DBElement, ByVal strRow As String, ByVal tContentType As Enums.ContentType) As String
         If APIXML.lFlags.Count > 0 Then
-            Dim fiAV As New MediaContainers.Fileinfo
+            Dim fiAV As New MediaContainers.FileInfo
             Select Case tContentType
                 Case Enums.ContentType.Movie
                     fiAV = tDBElement.Movie.FileInfo
@@ -638,9 +638,9 @@ Public Class MediaExporter
                     fiAV = tDBElement.TVEpisode.FileInfo
             End Select
             Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
-            Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, False)
+            Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, tContentType)
 
-            Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
+            Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResolutionFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
             If vresFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
             Else
@@ -681,7 +681,7 @@ Public Class MediaExporter
                 End If
             End If
 
-            Dim achanFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = APIXML.FlagType.AudioChan)
+            Dim achanFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels.ToString AndAlso f.Type = APIXML.FlagType.AudioChan)
             If achanFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_ACHAN>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
             Else
@@ -775,7 +775,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$YEAR>", tMovie.Movie.Year)
 
         'FileInfo
-        Dim fInfo As AVSInfo = GetAVSInfo(tMovie.Movie.FileInfo)
+        Dim fInfo As AVSInfo = GetAVSInfo(tMovie.Movie.FileInfo, tMovie.ContentType)
 
         'Audio
         strRow = strRow.Replace("<$AUDIO>", fInfo.audDetails)
@@ -818,7 +818,7 @@ Public Class MediaExporter
     End Function
 
     Private Function ProcessPattern_Settings(ByVal strPattern As String) As String
-        _tExportSettings.Clear()
+        _tExportSettings = New ExportSettings
 
         Dim regSettings As Match = Regex.Match(strPattern, "<exportsettings>.*?</exportsettings>", RegexOptions.Singleline)
         If regSettings.Success Then
@@ -884,7 +884,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.TVEpisode.VotesSpecified, Double.Parse(tEpisode.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
         'FileInfo
-        Dim fInfo As AVSInfo = GetAVSInfo(tEpisode.TVEpisode.FileInfo)
+        Dim fInfo As AVSInfo = GetAVSInfo(tEpisode.TVEpisode.FileInfo, tEpisode.ContentType)
 
         'Audio
         strRow = strRow.Replace("<$AUDIO>", fInfo.audDetails)
@@ -1068,282 +1068,55 @@ Public Class MediaExporter
 
     Private Class AVSInfo
 
-#Region "Fields"
-
-        Private _audBitrate As String
-        Private _audChannels As String
-        Private _audDetails As String
-        Private _audLanguage As String
-        Private _audLongLanguage As String
-        Private _subLanguage As String
-        Private _subLongLanguage As String
-        Private _subType As String
-        Private _vidAspect As String
-        Private _vidBitrate As String
-        Private _vidDetails As String
-        Private _vidDimensions As String
-        Private _vidDuration As String
-        Private _vidFileSize As String
-        Private _vidHeight As String
-        Private _vidLanguage As String
-        Private _vidLongLanguage As String
-        Private _vidMultiViewCount As String
-        Private _vidMultiViewLayout As String
-        Private _vidPrivateensions As String
-        Private _vidScantype As String
-        Private _vidStereoMode As String
-        Private _vidWidth As String
-
-#End Region 'Fields
-
 #Region "Properties"
 
-        Public Property audBitrate() As String
-            Get
-                Return _audBitrate
-            End Get
-            Set(ByVal value As String)
-                _audBitrate = value
-            End Set
-        End Property
+        Public Property audBitrate() As String = String.Empty
 
-        Public Property audChannels() As String
-            Get
-                Return _audChannels
-            End Get
-            Set(ByVal value As String)
-                _audChannels = value
-            End Set
-        End Property
+        Public Property audChannels() As String = String.Empty
 
-        Public Property audDetails() As String
-            Get
-                Return _audDetails
-            End Get
-            Set(ByVal value As String)
-                _audDetails = value
-            End Set
-        End Property
+        Public Property audDetails() As String = String.Empty
 
-        Public Property audLanguage() As String
-            Get
-                Return _audLanguage
-            End Get
-            Set(ByVal value As String)
-                _audLanguage = value
-            End Set
-        End Property
+        Public Property audLanguage() As String = String.Empty
 
-        Public Property audLongLanguage() As String
-            Get
-                Return _audLongLanguage
-            End Get
-            Set(ByVal value As String)
-                _audLongLanguage = value
-            End Set
-        End Property
+        Public Property audLongLanguage() As String = String.Empty
 
-        Public Property subLanguage() As String
-            Get
-                Return _subLanguage
-            End Get
-            Set(ByVal value As String)
-                _subLanguage = value
-            End Set
-        End Property
+        Public Property subLanguage() As String = String.Empty
 
-        Public Property subLongLanguage() As String
-            Get
-                Return _subLongLanguage
-            End Get
-            Set(ByVal value As String)
-                _subLongLanguage = value
-            End Set
-        End Property
+        Public Property subLongLanguage() As String = String.Empty
 
-        Public Property subType() As String
-            Get
-                Return _subType
-            End Get
-            Set(ByVal value As String)
-                _subType = value
-            End Set
-        End Property
+        Public Property subType() As String = String.Empty
 
-        Public Property vidAspect() As String
-            Get
-                Return _vidAspect
-            End Get
-            Set(ByVal value As String)
-                _vidAspect = value
-            End Set
-        End Property
+        Public Property vidAspect() As String = String.Empty
 
-        Public Property vidBitrate() As String
-            Get
-                Return _vidBitrate
-            End Get
-            Set(ByVal value As String)
-                _vidBitrate = value
-            End Set
-        End Property
+        Public Property vidBitrate() As String = String.Empty
 
-        Public Property vidDetails() As String
-            Get
-                Return _vidDetails
-            End Get
-            Set(ByVal value As String)
-                _vidDetails = value
-            End Set
-        End Property
+        Public Property vidDetails() As String = String.Empty
 
-        Public Property vidDimensions() As String
-            Get
-                Return _vidDimensions
-            End Get
-            Set(ByVal value As String)
-                _vidDimensions = value
-            End Set
-        End Property
+        Public Property vidDimensions() As String = String.Empty
 
-        Public Property vidDuration() As String
-            Get
-                Return _vidDuration
-            End Get
-            Set(ByVal value As String)
-                _vidDuration = value
-            End Set
-        End Property
+        Public Property vidDuration() As String = String.Empty
 
-        Public Property vidFileSize() As String
-            Get
-                Return _vidFileSize
-            End Get
-            Set(ByVal value As String)
-                _vidFileSize = value
-            End Set
-        End Property
+        Public Property vidFileSize() As String = String.Empty
 
-        Public Property vidHeight() As String
-            Get
-                Return _vidHeight
-            End Get
-            Set(ByVal value As String)
-                _vidHeight = value
-            End Set
-        End Property
+        Public Property vidHeight() As String = String.Empty
 
-        Public Property vidLanguage() As String
-            Get
-                Return _vidLanguage
-            End Get
-            Set(ByVal value As String)
-                _vidLanguage = value
-            End Set
-        End Property
+        Public Property vidLanguage() As String = String.Empty
 
-        Public Property vidLongLanguage() As String
-            Get
-                Return _vidLongLanguage
-            End Get
-            Set(ByVal value As String)
-                _vidLongLanguage = value
-            End Set
-        End Property
+        Public Property vidLongLanguage() As String = String.Empty
 
-        Public Property vidMultiViewCount() As String
-            Get
-                Return _vidMultiViewCount
-            End Get
-            Set(ByVal value As String)
-                _vidMultiViewCount = value
-            End Set
-        End Property
+        Public Property vidMultiViewCount() As String = String.Empty
 
-        Public Property vidMultiViewLayout() As String
-            Get
-                Return _vidMultiViewLayout
-            End Get
-            Set(ByVal value As String)
-                _vidMultiViewLayout = value
-            End Set
-        End Property
+        Public Property vidMultiViewLayout() As String = String.Empty
 
-        Public Property vidPrivateensions() As String
-            Get
-                Return _vidPrivateensions
-            End Get
-            Set(ByVal value As String)
-                _vidPrivateensions = value
-            End Set
-        End Property
+        Public Property vidPrivateensions() As String = String.Empty
 
-        Public Property vidScantype() As String
-            Get
-                Return _vidScantype
-            End Get
-            Set(ByVal value As String)
-                _vidScantype = value
-            End Set
-        End Property
+        Public Property vidScantype() As String = String.Empty
 
-        Public Property vidStereoMode() As String
-            Get
-                Return _vidStereoMode
-            End Get
-            Set(ByVal value As String)
-                _vidStereoMode = value
-            End Set
-        End Property
+        Public Property vidStereoMode() As String = String.Empty
 
-        Public Property vidWidth() As String
-            Get
-                Return _vidWidth
-            End Get
-            Set(ByVal value As String)
-                _vidWidth = value
-            End Set
-        End Property
+        Public Property vidWidth() As String = String.Empty
 
 #End Region 'Properties
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _audBitrate = String.Empty
-            _audChannels = String.Empty
-            _audDetails = String.Empty
-            _audLanguage = String.Empty
-            _audLongLanguage = String.Empty
-            _subLanguage = String.Empty
-            _subLongLanguage = String.Empty
-            _subType = String.Empty
-            _vidAspect = String.Empty
-            _vidBitrate = String.Empty
-            _vidDetails = String.Empty
-            _vidDimensions = String.Empty
-            _vidDuration = String.Empty
-            _vidFileSize = String.Empty
-            _vidHeight = String.Empty
-            _vidLanguage = String.Empty
-            _vidLongLanguage = String.Empty
-            _vidMultiViewCount = String.Empty
-            _vidMultiViewLayout = String.Empty
-            _vidPrivateensions = String.Empty
-            _vidScantype = String.Empty
-            _vidStereoMode = String.Empty
-            _vidWidth = String.Empty
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
@@ -1351,473 +1124,120 @@ Public Class MediaExporter
     <XmlRoot("exportsettings")>
     Public Class ExportSettings
 
-#Region "Fields"
-
-        Private _episodeposters As Boolean
-        Private _episodeposters_maxheight As Integer
-        Private _episodeposters_maxwidth As Integer
-        Private _episodefanarts As Boolean
-        Private _episodefanarts_maxheight As Integer
-        Private _episodefanarts_maxwidth As Integer
-        Private _filename As String
-        Private _flags As Boolean
-        Private _info As String
-        Private _mainbanners As Boolean
-        Private _mainbanners_maxheight As Integer
-        Private _mainbanners_maxwidth As Integer
-        Private _maincharacterarts As Boolean
-        Private _maincleararts As Boolean
-        Private _mainclearlogos As Boolean
-        Private _maindiscarts As Boolean
-        Private _mainfanarts As Boolean
-        Private _mainfanarts_maxheight As Integer
-        Private _mainfanarts_maxwidth As Integer
-        Private _mainlandscapes As Boolean
-        Private _mainlandscapes_maxheight As Integer
-        Private _mainlandscapes_maxwidth As Integer
-        Private _mainposters As Boolean
-        Private _mainposters_maxheight As Integer
-        Private _mainposters_maxwidth As Integer
-        Private _seasonbanners As Boolean
-        Private _seasonbanners_maxheight As Integer
-        Private _seasonbanners_maxwidth As Integer
-        Private _seasonfanarts As Boolean
-        Private _seasonfanarts_maxheight As Integer
-        Private _seasonfanarts_maxwidth As Integer
-        Private _seasonlandscapes As Boolean
-        Private _seasonlandscapes_maxheight As Integer
-        Private _seasonlandscapes_maxwidth As Integer
-        Private _seasonposters As Boolean
-        Private _seasonposters_maxheight As Integer
-        Private _seasonposters_maxwidth As Integer
-
-#End Region 'Fields
-
 #Region "Properties"
 
         <XmlElement("episodefanarts")>
-        Public Property EpisodeFanarts() As Boolean
-            Get
-                Return _episodefanarts
-            End Get
-            Set(ByVal value As Boolean)
-                _episodefanarts = value
-            End Set
-        End Property
+        Public Property EpisodeFanarts() As Boolean = False
 
         <XmlElement("episodefanarts_maxheight")>
-        Public Property EpisodeFanarts_MaxHeight() As Integer
-            Get
-                Return _episodefanarts_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _episodefanarts_maxheight = value
-            End Set
-        End Property
+        Public Property EpisodeFanarts_MaxHeight() As Integer = -1
 
         <XmlElement("episodefanarts_maxwidth")>
-        Public Property EpisodeFanarts_MaxWidth() As Integer
-            Get
-                Return _episodefanarts_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _episodefanarts_maxwidth = value
-            End Set
-        End Property
+        Public Property EpisodeFanarts_MaxWidth() As Integer = -1
 
         <XmlElement("episodeposters")>
-        Public Property EpisodePosters() As Boolean
-            Get
-                Return _episodeposters
-            End Get
-            Set(ByVal value As Boolean)
-                _episodeposters = value
-            End Set
-        End Property
+        Public Property EpisodePosters() As Boolean = False
 
         <XmlElement("episodeposters_maxheight")>
-        Public Property EpisodePosters_MaxHeight() As Integer
-            Get
-                Return _episodeposters_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _episodeposters_maxheight = value
-            End Set
-        End Property
+        Public Property EpisodePosters_MaxHeight() As Integer = -1
 
         <XmlElement("episodeposters_maxwidth")>
-        Public Property EpisodePosters_MaxWidth() As Integer
-            Get
-                Return _episodeposters_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _episodeposters_maxwidth = value
-            End Set
-        End Property
+        Public Property EpisodePosters_MaxWidth() As Integer = -1
 
         <XmlElement("filename")>
-        Public Property Filename() As String
-            Get
-                Return _filename
-            End Get
-            Set(ByVal value As String)
-                _filename = value
-            End Set
-        End Property
+        Public Property Filename() As String = "index.html"
 
         <XmlElement("flags")>
-        Public Property Flags() As Boolean
-            Get
-                Return _flags
-            End Get
-            Set(ByVal value As Boolean)
-                _flags = value
-            End Set
-        End Property
+        Public Property Flags() As Boolean = False
 
         <XmlElement("info")>
-        Public Property Info() As String
-            Get
-                Return _info
-            End Get
-            Set(ByVal value As String)
-                _info = value
-            End Set
-        End Property
+        Public Property Info() As String = String.Empty
 
         <XmlElement("mainbanners")>
-        Public Property MainBanners() As Boolean
-            Get
-                Return _mainbanners
-            End Get
-            Set(ByVal value As Boolean)
-                _mainbanners = value
-            End Set
-        End Property
+        Public Property MainBanners() As Boolean = False
 
         <XmlElement("mainbanners_maxheight")>
-        Public Property MainBanners_MaxHeight() As Integer
-            Get
-                Return _mainbanners_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _mainbanners_maxheight = value
-            End Set
-        End Property
+        Public Property MainBanners_MaxHeight() As Integer = -1
 
         <XmlElement("mainbanners_maxwidth")>
-        Public Property MainBanners_MaxWidth() As Integer
-            Get
-                Return _mainbanners_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _mainbanners_maxwidth = value
-            End Set
-        End Property
+        Public Property MainBanners_MaxWidth() As Integer = -1
 
         <XmlElement("maincharacterarts")>
-        Public Property MainCharacterarts() As Boolean
-            Get
-                Return _maincharacterarts
-            End Get
-            Set(ByVal value As Boolean)
-                _maincharacterarts = value
-            End Set
-        End Property
+        Public Property MainCharacterarts() As Boolean = False
 
         <XmlElement("maincleararts")>
-        Public Property MainClearArts() As Boolean
-            Get
-                Return _maincleararts
-            End Get
-            Set(ByVal value As Boolean)
-                _maincleararts = value
-            End Set
-        End Property
+        Public Property MainClearArts() As Boolean = False
 
         <XmlElement("mainclearlogos")>
-        Public Property MainClearLogos() As Boolean
-            Get
-                Return _mainclearlogos
-            End Get
-            Set(ByVal value As Boolean)
-                _mainclearlogos = value
-            End Set
-        End Property
+        Public Property MainClearLogos() As Boolean = False
 
         <XmlElement("maindiscarts")>
-        Public Property MainDiscArts() As Boolean
-            Get
-                Return _maindiscarts
-            End Get
-            Set(ByVal value As Boolean)
-                _maindiscarts = value
-            End Set
-        End Property
+        Public Property MainDiscArts() As Boolean = False
 
         <XmlElement("mainfanarts")>
-        Public Property MainFanarts() As Boolean
-            Get
-                Return _mainfanarts
-            End Get
-            Set(ByVal value As Boolean)
-                _mainfanarts = value
-            End Set
-        End Property
+        Public Property MainFanarts() As Boolean = False
 
         <XmlElement("mainfanarts_maxheight")>
-        Public Property MainFanarts_MaxHeight() As Integer
-            Get
-                Return _mainfanarts_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _mainfanarts_maxheight = value
-            End Set
-        End Property
+        Public Property MainFanarts_MaxHeight() As Integer = -1
 
         <XmlElement("mainfanarts_maxwidth")>
-        Public Property MainFanarts_MaxWidth() As Integer
-            Get
-                Return _mainfanarts_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _mainfanarts_maxwidth = value
-            End Set
-        End Property
+        Public Property MainFanarts_MaxWidth() As Integer = -1
 
         <XmlElement("mainlandscapes")>
-        Public Property MainLandscapes() As Boolean
-            Get
-                Return _mainlandscapes
-            End Get
-            Set(ByVal value As Boolean)
-                _mainlandscapes = value
-            End Set
-        End Property
+        Public Property MainLandscapes() As Boolean = False
 
         <XmlElement("mainlandscapes_maxheight")>
-        Public Property MainLandscapes_MaxHeight() As Integer
-            Get
-                Return _mainlandscapes_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _mainlandscapes_maxheight = value
-            End Set
-        End Property
+        Public Property MainLandscapes_MaxHeight() As Integer = -1
 
         <XmlElement("mainlandscapes_maxwidth")>
-        Public Property MainLandscapes_MaxWidth() As Integer
-            Get
-                Return _mainlandscapes_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _mainlandscapes_maxwidth = value
-            End Set
-        End Property
+        Public Property MainLandscapes_MaxWidth() As Integer = -1
 
         <XmlElement("mainposters")>
-        Public Property MainPosters() As Boolean
-            Get
-                Return _mainposters
-            End Get
-            Set(ByVal value As Boolean)
-                _mainposters = value
-            End Set
-        End Property
+        Public Property MainPosters() As Boolean = False
 
         <XmlElement("mainposters_maxheight")>
-        Public Property MainPosters_MaxHeight() As Integer
-            Get
-                Return _mainposters_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _mainposters_maxheight = value
-            End Set
-        End Property
+        Public Property MainPosters_MaxHeight() As Integer = -1
 
         <XmlElement("mainposters_maxwidth")>
-        Public Property MainPosters_MaxWidth() As Integer
-            Get
-                Return _mainposters_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _mainposters_maxwidth = value
-            End Set
-        End Property
+        Public Property MainPosters_MaxWidth() As Integer = -1
 
         <XmlElement("seasonbanners")>
-        Public Property SeasonBanners() As Boolean
-            Get
-                Return _seasonbanners
-            End Get
-            Set(ByVal value As Boolean)
-                _seasonbanners = value
-            End Set
-        End Property
+        Public Property SeasonBanners() As Boolean = False
 
         <XmlElement("seasonbanners_maxheight")>
-        Public Property SeasonBanners_MaxHeight() As Integer
-            Get
-                Return _seasonbanners_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _seasonbanners_maxheight = value
-            End Set
-        End Property
+        Public Property SeasonBanners_MaxHeight() As Integer = -1
 
         <XmlElement("seasonbanners_maxwidth")>
-        Public Property SeasonBanners_MaxWidth() As Integer
-            Get
-                Return _seasonbanners_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _seasonbanners_maxwidth = value
-            End Set
-        End Property
+        Public Property SeasonBanners_MaxWidth() As Integer = -1
 
         <XmlElement("seasonfanarts")>
-        Public Property SeasonFanarts() As Boolean
-            Get
-                Return _seasonfanarts
-            End Get
-            Set(ByVal value As Boolean)
-                _seasonfanarts = value
-            End Set
-        End Property
+        Public Property SeasonFanarts() As Boolean = False
 
         <XmlElement("seasonfanarts_maxheight")>
-        Public Property SeasonFanarts_MaxHeight() As Integer
-            Get
-                Return _seasonfanarts_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _seasonfanarts_maxheight = value
-            End Set
-        End Property
+        Public Property SeasonFanarts_MaxHeight() As Integer = -1
 
         <XmlElement("seasonfanarts_maxwidth")>
-        Public Property SeasonFanarts_MaxWidth() As Integer
-            Get
-                Return _seasonfanarts_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _seasonfanarts_maxwidth = value
-            End Set
-        End Property
+        Public Property SeasonFanarts_MaxWidth() As Integer = -1
 
         <XmlElement("seasonlandscapes")>
-        Public Property SeasonLandscapes() As Boolean
-            Get
-                Return _seasonlandscapes
-            End Get
-            Set(ByVal value As Boolean)
-                _seasonlandscapes = value
-            End Set
-        End Property
+        Public Property SeasonLandscapes() As Boolean = False
 
         <XmlElement("seasonlandscapes_maxheight")>
-        Public Property SeasonLandscapes_MaxHeight() As Integer
-            Get
-                Return _seasonlandscapes_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _seasonlandscapes_maxheight = value
-            End Set
-        End Property
+        Public Property SeasonLandscapes_MaxHeight() As Integer = -1
 
         <XmlElement("seasonlandscapes_maxwidth")>
-        Public Property SeasonLandscapes_MaxWidth() As Integer
-            Get
-                Return _seasonlandscapes_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _seasonlandscapes_maxwidth = value
-            End Set
-        End Property
+        Public Property SeasonLandscapes_MaxWidth() As Integer = -1
 
         <XmlElement("seasonposters")>
-        Public Property SeasonPosters() As Boolean
-            Get
-                Return _seasonposters
-            End Get
-            Set(ByVal value As Boolean)
-                _seasonposters = value
-            End Set
-        End Property
+        Public Property SeasonPosters() As Boolean = False
 
         <XmlElement("seasonposters_maxheight")>
-        Public Property SeasonPosters_MaxHeight() As Integer
-            Get
-                Return _seasonposters_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _seasonposters_maxheight = value
-            End Set
-        End Property
+        Public Property SeasonPosters_MaxHeight() As Integer = -1
 
         <XmlElement("seasonposters_maxwidth")>
-        Public Property SeasonPosters_MaxWidth() As Integer
-            Get
-                Return _seasonposters_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _seasonposters_maxwidth = value
-            End Set
-        End Property
+        Public Property SeasonPosters_MaxWidth() As Integer = -1
 
-#End Region 'Properties
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _episodefanarts = False
-            _episodefanarts_maxheight = -1
-            _episodefanarts_maxwidth = -1
-            _episodeposters = False
-            _episodeposters_maxheight = -1
-            _episodeposters_maxwidth = -1
-            _filename = "index.html"
-            _flags = False
-            _info = String.Empty
-            _mainbanners = False
-            _mainbanners_maxheight = -1
-            _mainbanners_maxwidth = -1
-            _maincharacterarts = False
-            _maincleararts = False
-            _mainclearlogos = False
-            _maindiscarts = False
-            _mainfanarts = False
-            _mainfanarts_maxheight = -1
-            _mainfanarts_maxwidth = -1
-            _mainlandscapes = False
-            _mainlandscapes_maxheight = -1
-            _mainlandscapes_maxwidth = -1
-            _mainposters = False
-            _mainposters_maxheight = -1
-            _mainposters_maxwidth = -1
-            _seasonbanners = False
-            _seasonbanners_maxheight = -1
-            _seasonbanners_maxwidth = -1
-            _seasonfanarts = False
-            _seasonfanarts_maxheight = -1
-            _seasonfanarts_maxwidth = -1
-            _seasonlandscapes = False
-            _seasonlandscapes_maxheight = -1
-            _seasonlandscapes_maxwidth = -1
-            _seasonposters = False
-            _seasonposters_maxheight = -1
-            _seasonposters_maxwidth = -1
-        End Sub
-
-#End Region 'Methods
+#End Region 'Properties 
 
     End Class
 

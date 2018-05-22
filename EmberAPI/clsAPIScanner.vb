@@ -200,7 +200,7 @@ Public Class Scanner
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
                 If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
-                    tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                    tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.Path = fFile, .Forced = isForced})
                 End If
             Next
         Next
@@ -362,7 +362,7 @@ Public Class Scanner
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
                 If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
-                    tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                    tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.Path = fFile, .Forced = isForced})
                 End If
             Next
         Next
@@ -614,12 +614,12 @@ Public Class Scanner
         If DBMovie.NfoPathSpecified Then
             DBMovie.Movie = NFO.LoadFromNFO_Movie(DBMovie.NfoPath, DBMovie.IsSingle)
             If Not DBMovie.Movie.FileInfoSpecified AndAlso DBMovie.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
-                MediaInfo.UpdateMediaInfo(DBMovie)
+                MediaInfo.UpdateFileInfo(DBMovie)
             End If
         Else
             DBMovie.Movie = NFO.LoadFromNFO_Movie(DBMovie.Filename, DBMovie.IsSingle)
             If Not DBMovie.Movie.FileInfoSpecified AndAlso DBMovie.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
-                MediaInfo.UpdateMediaInfo(DBMovie)
+                MediaInfo.UpdateFileInfo(DBMovie)
             End If
         End If
 
@@ -682,7 +682,7 @@ Public Class Scanner
 
             'Lock state
             If DBMovie.Movie.Locked Then
-                DBMovie.IsLock = DBMovie.Movie.Locked
+                DBMovie.IsLocked = DBMovie.Movie.Locked
             End If
 
             'VideoSource
@@ -741,7 +741,7 @@ Public Class Scanner
 
         'Lock state
         If DBMovieSet.MovieSet.Locked Then
-            DBMovieSet.IsLock = DBMovieSet.MovieSet.Locked
+            DBMovieSet.IsLocked = DBMovieSet.MovieSet.Locked
         End If
 
         DBMovieSet = Master.DB.Save_MovieSet(DBMovieSet, Batchmode, False, False, True)
@@ -775,7 +775,7 @@ Public Class Scanner
                 End If
 
                 If Not cEpisode.TVEpisode.FileInfoSpecified AndAlso cEpisode.TVEpisode.TitleSpecified AndAlso Master.eSettings.TVScraperMetaDataScan Then
-                    MediaInfo.UpdateTVMediaInfo(cEpisode)
+                    MediaInfo.UpdateFileInfo(cEpisode)
                 End If
             Else
                 If isNew AndAlso cEpisode.TVShow.UniqueIDsSpecified AndAlso cEpisode.ShowIDSpecified Then
@@ -793,7 +793,7 @@ Public Class Scanner
 
                             'if we had info for it (based on title) and mediainfo scanning is enabled
                             If Master.eSettings.TVScraperMetaDataScan Then
-                                MediaInfo.UpdateTVMediaInfo(cEpisode)
+                                MediaInfo.UpdateFileInfo(cEpisode)
                             End If
                         End If
                     End If
@@ -856,7 +856,7 @@ Public Class Scanner
 
             'Lock state
             If cEpisode.TVEpisode.Locked Then
-                cEpisode.IsLock = cEpisode.TVEpisode.Locked
+                cEpisode.IsLocked = cEpisode.TVEpisode.Locked
             End If
 
             'VideoSource
@@ -973,7 +973,7 @@ Public Class Scanner
 
                     'Lock state
                     If DBTVShow.TVShow.Locked Then
-                        DBTVShow.IsLock = DBTVShow.TVShow.Locked
+                        DBTVShow.IsLocked = DBTVShow.TVShow.Locked
                     End If
 
                     Master.DB.Save_TVShow(DBTVShow, Batchmode, False, False, False)

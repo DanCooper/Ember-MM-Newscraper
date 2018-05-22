@@ -343,11 +343,11 @@ Namespace FFmpeg
         ''' Notice: Implemented a first version of ffprobe mediainfo scanning that may be used in future as alternative for MediaInfo scanning
         ''' Its not used right now
         ''' </remarks>
-        Public Shared Function ParseMediaInfoByFFProbe(ByVal jsonOutput As String) As MediaContainers.Fileinfo
+        Public Shared Function ParseMediaInfoByFFProbe(ByVal jsonOutput As String) As MediaContainers.FileInfo
 
             'deserialize JSON
             Dim ffprobeResults As FFProbeResults = JsonConvert.DeserializeObject(Of FFProbeResults)(jsonOutput)
-            Dim MediaInfo As New MediaContainers.Fileinfo
+            Dim MediaInfo As New MediaContainers.FileInfo
             Dim VideoInfo As New MediaContainers.Video
             Dim AudioInfo As New MediaContainers.Audio
             Dim SubtitleInfo As New MediaContainers.Subtitle
@@ -360,43 +360,40 @@ Namespace FFmpeg
                 End If
 
                 ' Process the video stream (skip MJPEG streams) and use only the first Video stream with a width (ignore subsequent ones)
-                If (stream.codec_type.Trim().ToLower() = "video") AndAlso (stream.codec_name.Trim().ToLower() <> "mjpeg") Then
+                If stream.codec_type.Trim.ToLower = "video" AndAlso Not stream.codec_name.Trim.ToLower = "mjpeg" Then
                     VideoInfo = New MediaContainers.Video
-
-
                     'FileSize
                     If Not Double.TryParse(ffprobeResults.format.size, VideoInfo.Filesize) Then
                         logger.Warn("[FFmpeg] GetMediaInfoByFFProbe: Invalid Size: " & ffprobeResults.format.size)
                     End If
                     'Bitrate
-                    Dim tmpnumber As Integer = 0
-                    If Not Integer.TryParse(stream.bit_rate, tmpnumber) Then
+                    Dim iBitrate As Integer = 0
+                    If Not Integer.TryParse(stream.bit_rate, iBitrate) Then
                         ' Video bitrate, sometimes it's a N/A, use overall bitrate instead
-                        VideoInfo.Bitrate = ffprobeResults.format.bit_rate
-                    Else
-                        VideoInfo.Bitrate = stream.bit_rate
+                        Integer.TryParse(ffprobeResults.format.bit_rate, iBitrate)
                     End If
+                    VideoInfo.Bitrate = iBitrate
                     'Duration
-                    If Not Integer.TryParse(ffprobeResults.format.duration, tmpnumber) Then
+                    Dim iDuration As Integer
+                    If Not Integer.TryParse(ffprobeResults.format.duration, iDuration) Then
                         If ffprobeResults.format.duration.Contains(".") Then
-                            VideoInfo.Duration = ffprobeResults.format.duration.Substring(0, ffprobeResults.format.duration.IndexOf("."))
-                        Else
-                            VideoInfo.Duration = ffprobeResults.format.duration
+                            Integer.TryParse(ffprobeResults.format.duration.Substring(0, ffprobeResults.format.duration.IndexOf(".")), iDuration)
                         End If
-                    Else
-                        VideoInfo.Duration = CStr(tmpnumber)
                     End If
+                    VideoInfo.Duration = iDuration
 
-                    'DAR , that display aspect ratio
-                    VideoInfo.Aspect = stream.display_aspect_ratio
+                    'Aspect ratio
+                    Dim dblAspect As Double
+                    Double.TryParse(stream.display_aspect_ratio, dblAspect)
+                    VideoInfo.Aspect = dblAspect
                     ' Height
-                    VideoInfo.Height = CStr((If(stream.height Is Nothing, 0, CInt(stream.height))))
+                    VideoInfo.Height = If(stream.height IsNot Nothing, CInt(stream.height), 0)
                     ' Width
-                    VideoInfo.Width = CStr((If(stream.width Is Nothing, 0, CInt(stream.width))))
+                    VideoInfo.Width = If(stream.width IsNot Nothing, CInt(stream.width), 0)
                     ' Video codec name
                     VideoInfo.Codec = stream.codec_name
                     'Language
-                    VideoInfo.Language = (If(stream.tags Is Nothing, "", stream.tags.language))
+                    VideoInfo.Language = If(stream.tags IsNot Nothing, stream.tags.language, String.Empty)
 
                     ' Not supported anymore:
                     'VideoInfo.Scantype = ???
@@ -416,18 +413,19 @@ Namespace FFmpeg
                     'Finally add Videoinformation to Ember MediaInfo object
                     MediaInfo.StreamDetails.Video.Add(VideoInfo)
 
-                ElseIf stream.codec_type.Trim().ToLower() = "audio" Then
-                    ' Create a new Audio object for each stream we find
+                ElseIf stream.codec_type.Trim.ToLower = "audio" Then
                     AudioInfo = New MediaContainers.Audio
 
                     ' Audio codec name
                     AudioInfo.Codec = stream.codec_name
                     ' Audio Bitrate
-                    AudioInfo.Bitrate = stream.bit_rate
+                    Dim iBitrate As Integer
+                    Integer.TryParse(stream.bit_rate, iBitrate)
+                    AudioInfo.Bitrate = iBitrate
                     ' Store the channel information
-                    AudioInfo.Channels = CStr((If(stream.channels Is Nothing, 0, CInt(stream.channels))))
+                    AudioInfo.Channels = If(stream.channels IsNot Nothing, CInt(stream.channels), 0)
                     'Language
-                    AudioInfo.Language = (If(stream.tags Is Nothing, "", stream.tags.language))
+                    AudioInfo.Language = If(stream.tags IsNot Nothing, stream.tags.language, String.Empty)
 
                     'Currently not supported in existingn MEDIAINFO-structure of Ember:
                     'PID
@@ -441,11 +439,10 @@ Namespace FFmpeg
                     'Finally add Videoinformation to Ember MediaInfo object
                     MediaInfo.StreamDetails.Audio.Add(AudioInfo)
 
-                ElseIf stream.codec_type.Trim().ToLower() = "subtitle" Then
-                    ' Create a new Subtitle object for each stream we find
+                ElseIf stream.codec_type.Trim.ToLower = "subtitle" Then
                     SubtitleInfo = New MediaContainers.Subtitle
                     'Language
-                    SubtitleInfo.Language = (If(stream.tags Is Nothing, "", stream.tags.language))
+                    SubtitleInfo.Language = If(stream.tags IsNot Nothing, stream.tags.language, String.Empty)
 
                     'Currently not supported in existingn MEDIAINFO-structure of Ember:
                     ' Subtitle Codec name
