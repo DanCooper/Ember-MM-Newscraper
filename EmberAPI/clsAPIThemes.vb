@@ -107,7 +107,7 @@ Public Class Themes
     ''' <param name="tDBElement"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_Movie(ByVal tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-        If String.IsNullOrEmpty(tDBElement.Filename) Then Return
+        If Not tDBElement.File.PathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme, ForceFileCleanup)
@@ -118,7 +118,7 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.File.Path & ">")
         End Try
     End Sub
     ''' <summary>
@@ -127,7 +127,7 @@ Public Class Themes
     ''' <param name="DBTVShow"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_TVShow(ByVal DBTVShow As Database.DBElement) ', ByVal ForceFileCleanup As Boolean)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
+        If Not DBTVShow.ShowPathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainTheme) ', ForceFileCleanup)
@@ -138,7 +138,7 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.File.Path & ">")
         End Try
     End Sub
     ''' <summary>

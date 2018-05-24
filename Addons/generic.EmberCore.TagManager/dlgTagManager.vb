@@ -86,7 +86,7 @@ Public Class dlgTagManager
         btnCancel.Text = Master.eLang.Cancel
         lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
         gbMovies.Text = Master.eLang.GetString(36, "Movies")
-        lblTopDetails.Text = Master.eLang.GetString(1374, "Manage XBMC tags")
+        lblTopDetails.Text = Master.eLang.GetString(1374, "Manage tags")
         gbTags.Text = Master.eLang.GetString(9999, "Tags")
         gbMoviesInTag.Text = Master.eLang.GetString(1375, "Movies in tag")
         rdMoviesAll.Text = Master.eLang.GetString(1461, "All movies")
@@ -499,7 +499,7 @@ Public Class dlgTagManager
                     Master.DB.Save_Tag_Movie(tmpDBMovieTag, True, False, True, True)
                 ElseIf list.IsDeleted = True Then
                     'remove tag from database/nfo
-                    Master.DB.Delete_Tag(tmpDBMovieTag.ID, 1, False)
+                    Master.DB.Delete_Tag(tmpDBMovieTag.ID, False)
                 ElseIf list.IsModified = True Then
                     'save tag to database
                     Master.DB.Save_Tag_Movie(tmpDBMovieTag, False, False, True, True)

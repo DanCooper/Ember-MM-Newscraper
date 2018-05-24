@@ -195,13 +195,13 @@ Namespace FileUtils
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie, Enums.ContentType.TVEpisode
-                    If tDBElement.FilenameSpecified Then
-                        If tDBElement.IsSingle OrElse isBDRip(tDBElement.Filename) OrElse isVideoTS(tDBElement.Filename) Then
-                            lstItems.Add(GetMainPath(tDBElement.Filename))
+                    If tDBElement.File.PathSpecified Then
+                        If tDBElement.IsSingle OrElse isBDRip(tDBElement.File.Path) OrElse isVideoTS(tDBElement.File.Path) Then
+                            lstItems.Add(GetMainPath(tDBElement.File.Path))
                         Else
                             Select Case tDBElement.ContentType
                                 Case Enums.ContentType.Movie
-                                    lstItems.Add(New FileInfo(tDBElement.Filename))
+                                    lstItems.Add(New FileInfo(tDBElement.File.Path))
                                     Dim lstFiles As New List(Of String)
                                     lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainBanner))
                                     lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainClearArt))
@@ -222,7 +222,7 @@ Namespace FileUtils
                                     Next
 
                                 Case Enums.ContentType.TVEpisode
-                                    lstItems.Add(New FileInfo(tDBElement.Filename))
+                                    lstItems.Add(New FileInfo(tDBElement.File.Path))
                                     Dim lstFiles As New List(Of String)
                                     lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeFanart))
                                     lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeNFO))
@@ -509,12 +509,12 @@ Namespace FileUtils
         End Sub
 
         Public Shared Function CheckOnlineStatus_Movie(ByRef dbMovie As Database.DBElement, ByVal showMessage As Boolean) As Boolean
-            While Not File.Exists(dbMovie.Filename)
+            While Not File.Exists(dbMovie.File.Path)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
                                                      Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
                                                      Environment.NewLine, Environment.NewLine,
-                                                     dbMovie.Filename), String.Empty,
+                                                     dbMovie.File.Path), String.Empty,
                                                  MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False
@@ -525,12 +525,12 @@ Namespace FileUtils
         End Function
 
         Public Shared Function CheckOnlineStatus_TVEpisode(ByRef dbTV As Database.DBElement, ByVal showMessage As Boolean) As Boolean
-            While Not File.Exists(dbTV.Filename)
+            While Not File.Exists(dbTV.File.Path)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
                                                      Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
                                                      Environment.NewLine, Environment.NewLine,
-                                                     dbTV.Filename), String.Empty,
+                                                     dbTV.File.Path), String.Empty,
                                                  MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False
@@ -808,7 +808,7 @@ Namespace FileUtils
             Dim fScanner As New Scanner
 
             Try
-                Dim MovieFile As New FileInfo(mMovie.Filename)
+                Dim MovieFile As New FileInfo(mMovie.File.Path)
                 Dim MovieDir As DirectoryInfo = MovieFile.Directory
                 'TODO: check VIDEO_TS parent
                 If Common.isVideoTS(MovieDir.FullName) Then
@@ -816,7 +816,7 @@ Namespace FileUtils
                 ElseIf Common.isBDRip(MovieDir.FullName) Then
                     dPath = String.Concat(Path.Combine(MovieDir.Parent.Parent.FullName, MovieDir.Parent.Parent.Name), ".ext")
                 Else
-                    dPath = mMovie.Filename
+                    dPath = mMovie.File.Path
                 End If
 
                 Dim sOrName As String = Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(dPath))
@@ -861,7 +861,7 @@ Namespace FileUtils
                             ItemsToDelete.Add(MovieDir)
                         Else
                             'just delete the movie file itself
-                            ItemsToDelete.Add(New FileInfo(mMovie.Filename))
+                            ItemsToDelete.Add(New FileInfo(mMovie.File.Path))
                         End If
                     End If
                 Else
@@ -914,7 +914,7 @@ Namespace FileUtils
                     End Try
 
                     Try
-                        ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), ".*")))
+                        ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.File.Path), ".*")))
                     Catch
                     End Try
                     ItemsToDelete.AddRange(ioFi)
@@ -1060,17 +1060,17 @@ Namespace FileUtils
 
                     'For each valid file in the directory...
                     For Each sFile As FileInfo In lMediaList
-                        Dim nMovie As New Database.DBElement(Enums.ContentType.Movie) With {.Filename = sFile.FullName, .IsSingle = False}
+                        Dim nMovie As New Database.DBElement(Enums.ContentType.Movie) With {.File = New Database.DBFile With {.Path = sFile.FullName}, .IsSingle = False}
                         RaiseEvent ProgressUpdated((iCount \ lMediaList.Count), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
 
                         'create a new directory for the movie
-                        Dim strNewPath As String = Path.Combine(strSourcePath, Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(nMovie.Filename)))
+                        Dim strNewPath As String = Path.Combine(strSourcePath, Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(nMovie.File.Path)))
                         If Not Directory.Exists(strNewPath) Then
                             Directory.CreateDirectory(strNewPath)
                         End If
 
                         'move movie to the new directory
-                        sFile.MoveTo(Path.Combine(strNewPath, Path.GetFileName(nMovie.Filename)))
+                        sFile.MoveTo(Path.Combine(strNewPath, Path.GetFileName(nMovie.File.Path)))
 
                         'search for files that belong to this movie
                         For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainBanner, True)
@@ -1143,10 +1143,10 @@ Namespace FileUtils
         Public Shared Function Movie(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType, Optional ByVal bForced As Boolean = False) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            If String.IsNullOrEmpty(DBElement.Filename) Then Return FilenameList
+            If Not DBElement.File.PathSpecified Then Return FilenameList
 
             Dim basePath As String = String.Empty
-            Dim fPath As String = DBElement.Filename
+            Dim fPath As String = DBElement.File.Path
             Dim fileName As String = Path.GetFileNameWithoutExtension(fPath)
             Dim fileNameStack As String = Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(fPath))
             Dim filePath As String = Path.Combine(Directory.GetParent(fPath).FullName, fileName)
@@ -2087,11 +2087,11 @@ Namespace FileUtils
         Public Shared Function TVEpisode(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            If String.IsNullOrEmpty(DBElement.Filename) Then Return FilenameList
+            If Not DBElement.File.PathSpecified Then Return FilenameList
 
-            Dim fEpisodeFileName As String = Path.GetFileNameWithoutExtension(DBElement.Filename)
-            Dim fEpisodePath As String = Common.RemoveExtFromPath(DBElement.Filename)
-            Dim fEpisodeParentPath As String = Directory.GetParent(DBElement.Filename).FullName
+            Dim fEpisodeFileName As String = Path.GetFileNameWithoutExtension(DBElement.File.Path)
+            Dim fEpisodePath As String = Common.RemoveExtFromPath(DBElement.File.Path)
+            Dim fEpisodeParentPath As String = Directory.GetParent(DBElement.File.Path).FullName
             Dim sSeason As String = DBElement.TVEpisode.Season.ToString.PadLeft(2, Convert.ToChar("0"))
 
             Select Case mType

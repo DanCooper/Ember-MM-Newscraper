@@ -219,11 +219,14 @@ Namespace TVDBs
             If FilteredOptions.bMainActors Then
                 If TVShowInfo.Actors IsNot Nothing Then
                     For Each aCast As TVDB.Model.Actor In TVShowInfo.Actors.Where(Function(f) f.Name IsNot Nothing AndAlso f.Role IsNot Nothing).OrderBy(Function(f) f.SortOrder)
+                        Dim nUniqueID As New MediaContainers.Uniqueid With {
+                            .Type = "tvdb",
+                            .Value = aCast.Id.ToString}
                         nTVShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
                                                                           .Order = aCast.SortOrder,
                                                                           .Role = aCast.Role,
                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
-                                                                          .TVDB = CStr(aCast.Id)})
+                                                                          .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
                     Next
                 End If
             End If
@@ -455,11 +458,14 @@ Namespace TVDBs
             If FilteredOptions.bEpisodeActors Then
                 If TVShowInfo.Actors IsNot Nothing Then
                     For Each aCast As TVDB.Model.Actor In TVShowInfo.Actors.Where(Function(f) f.Name IsNot Nothing AndAlso f.Role IsNot Nothing).OrderBy(Function(f) f.SortOrder)
+                        Dim nUniqueID As New MediaContainers.Uniqueid With {
+                            .Type = "tvdb",
+                            .Value = aCast.Id.ToString}
                         nTVEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
                                                                           .Order = aCast.SortOrder,
                                                                           .Role = aCast.Role,
                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
-                                                                          .TVDB = CStr(aCast.Id)})
+                                                                          .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
                     Next
                 End If
             End If

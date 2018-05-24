@@ -422,7 +422,7 @@ Public Class NFO
                 DBMovie.ListTitle = tTitle
             End If
         Else
-            DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
+            DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.File.Path, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
         Return DBMovie
@@ -868,7 +868,7 @@ Public Class NFO
                     Next
 
                     'check if we have a local episode file for this scraped episode
-                    Dim lEpisodeList = DBTV.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.Filename) AndAlso f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
+                    Dim lEpisodeList = DBTV.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.File.Path) AndAlso f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
 
                     If lEpisodeList IsNot Nothing AndAlso lEpisodeList.Count > 0 Then
                         For Each nEpisode As Database.DBElement In lEpisodeList
@@ -876,7 +876,7 @@ Public Class NFO
                         Next
                     Else
                         'try to get the episode by AiredDate
-                        Dim dEpisodeList = DBTV.Episodes.Where(Function(f) f.FilenameSpecified AndAlso
+                        Dim dEpisodeList = DBTV.Episodes.Where(Function(f) f.File.PathSpecified AndAlso
                                                                    f.TVEpisode.Episode = -1 AndAlso
                                                                    f.TVEpisode.AiredSpecified AndAlso
                                                                    f.TVEpisode.Aired = strAiredDate)
@@ -1385,7 +1385,7 @@ Public Class NFO
     ''' <param name="DBMovie"></param>
     ''' <remarks></remarks>
     Public Shared Sub DeleteNFO_Movie(ByVal DBMovie As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-        If Not DBMovie.FilenameSpecified Then Return
+        If Not DBMovie.File.PathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainNFO, ForceFileCleanup)
@@ -1394,7 +1394,7 @@ Public Class NFO
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.File.Path & ">")
         End Try
     End Sub
     ''' <summary>
@@ -1412,7 +1412,7 @@ Public Class NFO
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.File.Path & ">")
         End Try
     End Sub
 
@@ -2188,7 +2188,7 @@ Public Class NFO
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            If dbElement.FilenameSpecified Then
+            If dbElement.File.PathSpecified Then
                 'cleanup old NFOs if needed
                 If forceFileCleanup Then DeleteNFO_Movie(dbElement, forceFileCleanup)
 
@@ -2293,7 +2293,7 @@ Public Class NFO
 
     Public Shared Sub SaveToNFO_TVEpisode(ByRef dbElement As Database.DBElement)
         Try
-            If dbElement.FilenameSpecified Then
+            If dbElement.File.PathSpecified Then
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
                 Dim tTVEpisode As MediaContainers.EpisodeDetails = CType(dbElement.TVEpisode.CloneDeep, MediaContainers.EpisodeDetails)
 
@@ -2328,7 +2328,7 @@ Public Class NFO
                             Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
 
                             parID.Value = dbElement.ID
-                            parFilename.Value = dbElement.Filename
+                            parFilename.Value = dbElement.File.Path
 
                             Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLreader.Read

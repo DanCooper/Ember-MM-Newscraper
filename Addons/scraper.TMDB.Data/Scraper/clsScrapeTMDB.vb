@@ -349,10 +349,14 @@ Public Class clsAPITMDB
         If FilteredOptions.bMainActors Then
             If Result.Credits IsNot Nothing AndAlso Result.Credits.Cast IsNot Nothing Then
                 For Each aCast As TMDbLib.Objects.Movies.Cast In Result.Credits.Cast
-                    nMovie.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                           .Role = aCast.Character,
-                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                                                           .TMDB = CStr(aCast.Id)})
+                    Dim nUniqueID As New MediaContainers.Uniqueid With {
+                        .Type = "tmdb",
+                        .Value = aCast.Id.ToString}
+                    nMovie.Actors.Add(New MediaContainers.Person With {
+                                      .Name = aCast.Name,
+                                      .Role = aCast.Character,
+                                      .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
+                                      .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
                 Next
             End If
         End If
@@ -739,10 +743,13 @@ Public Class clsAPITMDB
             If FilteredOptions.bMainActors Then
                 If Result.Credits IsNot Nothing AndAlso Result.Credits.Cast IsNot Nothing Then
                     For Each aCast As TMDbLib.Objects.TvShows.Cast In Result.Credits.Cast
+                        Dim nUniqueID As New MediaContainers.Uniqueid With {
+                            .Type = "tmdb",
+                            .Value = aCast.Id.ToString}
                         nTVShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
                                                                                .Role = aCast.Character,
                                                                                .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                                                               .TMDB = CStr(aCast.Id)})
+                                                                               .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
                     Next
                 End If
             End If
@@ -1008,10 +1015,13 @@ Public Class clsAPITMDB
         If FilteredOptions.bEpisodeActors Then
             If EpisodeInfo.Credits IsNot Nothing AndAlso EpisodeInfo.Credits.Cast IsNot Nothing Then
                 For Each aCast As TMDbLib.Objects.TvShows.Cast In EpisodeInfo.Credits.Cast
+                    Dim nUniqueID As New MediaContainers.Uniqueid With {
+                        .Type = "tmdb",
+                        .Value = aCast.Id.ToString}
                     nTVEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
                                                                            .Role = aCast.Character,
                                                                            .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                                                           .TMDB = CStr(aCast.Id)})
+                                                                           .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
                 Next
             End If
         End If
@@ -1050,10 +1060,13 @@ Public Class clsAPITMDB
         If FilteredOptions.bEpisodeGuestStars Then
             If EpisodeInfo.GuestStars IsNot Nothing Then
                 For Each aCast As TMDbLib.Objects.TvShows.Cast In EpisodeInfo.GuestStars
+                    Dim nUniqueID As New MediaContainers.Uniqueid With {
+                        .Type = "tmdb",
+                        .Value = aCast.Id.ToString}
                     nTVEpisode.GuestStars.Add(New MediaContainers.Person With {.Name = aCast.Name,
                                                                            .Role = aCast.Character,
                                                                            .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                                                           .TMDB = CStr(aCast.Id)})
+                                                                           .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
                 Next
             End If
         End If
@@ -1287,7 +1300,7 @@ Public Class clsAPITMDB
                     Return GetInfo_Movie(r.Matches.Item(0).TMDB, FilteredOptions, False)
                 Else
                     Using dlgSearch As New dlgTMDBSearchResults_Movie(_addonSettings, Me)
-                        If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.Filename) = DialogResult.OK Then
+                        If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.File.Path) = DialogResult.OK Then
                             If Not String.IsNullOrEmpty(dlgSearch.Result.TMDB) Then
                                 Return GetInfo_Movie(dlgSearch.Result.TMDB, FilteredOptions, False)
                             End If

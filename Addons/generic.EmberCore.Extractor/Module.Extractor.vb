@@ -118,11 +118,11 @@ Public Class FrameExtrator
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Select Case mType
             Case Enums.ModuleEventType.FrameExtrator_Movie
-                frmMovie = New frmMovieExtractor(_dbelement.Filename)
+                frmMovie = New frmMovieExtractor(_dbelement.File.Path)
                 _params(0) = frmMovie.pnlExtrator
                 AddHandler frmMovie.GenericEvent, AddressOf Handle_GenericEvent
             Case Enums.ModuleEventType.FrameExtrator_TVEpisode
-                frmTV = New frmTVExtrator(_dbelement.Filename)
+                frmTV = New frmTVExtrator(_dbelement.File.Path)
                 AddHandler frmTV.GenericEvent, AddressOf Handle_GenericEvent
                 _params(0) = frmTV.pnlExtrator
             Case Enums.ModuleEventType.RandomFrameExtrator

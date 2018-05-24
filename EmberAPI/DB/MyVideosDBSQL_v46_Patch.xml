@@ -257,7 +257,7 @@
         idFile            integer PRIMARY KEY,
         path              text NOT NULL,
         originalFileName  text,
-        filesize          integer
+        fileSize          integer
         );
 
         DROP INDEX UniqueFilename;

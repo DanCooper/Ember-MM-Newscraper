@@ -934,7 +934,7 @@ Namespace IMDB
                             Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, filteredoptions)
                         Else
                             Using dlgSearch As New dlgIMDBSearchResults_Movie(_SpecialSettings, Me)
-                                If dlgSearch.ShowDialog(r, title, oDBElement.Filename) = DialogResult.OK Then
+                                If dlgSearch.ShowDialog(r, title, oDBElement.File.Path) = DialogResult.OK Then
                                     If Not String.IsNullOrEmpty(dlgSearch.Result.IMDB) Then
                                         Return GetMovieInfo(dlgSearch.Result.IMDB, False, filteredoptions)
                                     End If
@@ -955,8 +955,8 @@ Namespace IMDB
                         ((r.PartialMatches.Count > 0 AndAlso r.PartialMatches(0).Lev > 5) OrElse r.PartialMatches.Count = 0) Then
                             useAnyway = True
                         End If
-                        Dim exactHaveYear As Integer = FindYear(oDBElement.Filename, r.ExactMatches)
-                        Dim popularHaveYear As Integer = FindYear(oDBElement.Filename, r.PopularTitles)
+                        Dim exactHaveYear As Integer = FindYear(oDBElement.File.Path, r.ExactMatches)
+                        Dim popularHaveYear As Integer = FindYear(oDBElement.File.Path, r.PopularTitles)
                         If r.ExactMatches.Count = 1 Then
                             Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, filteredoptions)
                         ElseIf r.ExactMatches.Count > 1 AndAlso exactHaveYear >= 0 Then

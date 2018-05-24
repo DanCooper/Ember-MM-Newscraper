@@ -57,23 +57,23 @@ Public Class dlgRenameManual_TVEpisode
 
     Private Sub dlgRenameManual_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         SetUp()
-        If FileUtils.Common.isBDRip(_DBElement.Filename) OrElse FileUtils.Common.isVideoTS(_DBElement.Filename) Then
+        If FileUtils.Common.isBDRip(_DBElement.File.Path) OrElse FileUtils.Common.isVideoTS(_DBElement.File.Path) Then
             txtFile.Text = "$F"
             txtFile.Visible = False
-            txtFolder.Text = FileUtils.Common.GetMainPath(_DBElement.Filename).Name
+            txtFolder.Text = FileUtils.Common.GetMainPath(_DBElement.File.Path).Name
         Else
-            Dim FileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.Filename)).Trim
-            Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.Filename).Replace(FileName, String.Empty).ToLower
+            Dim FileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.File.Path)).Trim
+            Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.File.Path).Replace(FileName, String.Empty).ToLower
             If Not FileName.ToLower = "video_ts" Then
                 If Not stackMark = String.Empty AndAlso _DBElement.TVEpisode.Title.ToLower.EndsWith(stackMark) Then
-                    FileName = Path.GetFileNameWithoutExtension(_DBElement.Filename)
+                    FileName = Path.GetFileNameWithoutExtension(_DBElement.File.Path)
                 End If
-                txtFolder.Text = FileUtils.Common.GetMainPath(_DBElement.Filename).Name
+                txtFolder.Text = FileUtils.Common.GetMainPath(_DBElement.File.Path).Name
                 txtFile.Text = FileName
             Else
                 txtFile.Text = "$F"
                 txtFile.Visible = False
-                txtFolder.Text = FileUtils.Common.GetMainPath(_DBElement.Filename).Name
+                txtFolder.Text = FileUtils.Common.GetMainPath(_DBElement.File.Path).Name
             End If
         End If
     End Sub

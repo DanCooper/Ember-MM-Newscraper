@@ -557,7 +557,7 @@ Public Class dlgEditMovie
 
     Private Sub btnSetBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+            .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
             .FilterIndex = 0
         End With
@@ -620,7 +620,7 @@ Public Class dlgEditMovie
 
     Private Sub btnSetClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+            .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
             .FilterIndex = 0
         End With
@@ -683,7 +683,7 @@ Public Class dlgEditMovie
 
     Private Sub btnSetClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+            .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
             .FilterIndex = 0
         End With
@@ -747,8 +747,8 @@ Public Class dlgEditMovie
     Private Sub btnSetDiscArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtLocal.Click
 
         With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
-                .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
+            .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
+            .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
                 .FilterIndex = 0
             End With
 
@@ -872,7 +872,7 @@ Public Class dlgEditMovie
 
     Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+            .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
             .FilterIndex = 4
         End With
@@ -935,7 +935,7 @@ Public Class dlgEditMovie
 
     Private Sub btnSetLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+            .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
             .FilterIndex = 0
         End With
@@ -998,7 +998,7 @@ Public Class dlgEditMovie
 
     Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+            .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
             .FilterIndex = 0
         End With
@@ -1052,7 +1052,7 @@ Public Class dlgEditMovie
     Private Sub btnSetThemeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeLocal.Click
         ThemeStop()
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+            .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
             .Filter = FileUtils.Common.GetOpenFileDialogFilter_Theme()
             .FilterIndex = 0
         End With
@@ -1094,7 +1094,7 @@ Public Class dlgEditMovie
         TrailerStop()
         Dim strValidExtesions As String() = Master.eSettings.FileSystemValidExts.ToArray
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+            .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
             .Filter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))
             .FilterIndex = 0
         End With
@@ -1603,13 +1603,13 @@ Public Class dlgEditMovie
             lvItem.SubItems.Add(tActor.URLOriginal)
         Next
 
-        If Not String.IsNullOrEmpty(tmpDBElement.Filename) AndAlso String.IsNullOrEmpty(tmpDBElement.Movie.VideoSource) Then
-            Dim vSource As String = APIXML.GetVideoSource(tmpDBElement.Filename, False)
+        If Not String.IsNullOrEmpty(tmpDBElement.File.Path) AndAlso String.IsNullOrEmpty(tmpDBElement.Movie.VideoSource) Then
+            Dim vSource As String = APIXML.GetVideoSource(tmpDBElement.File.Path, False)
             If Not String.IsNullOrEmpty(vSource) Then
                 tmpDBElement.VideoSource = vSource
                 tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
             ElseIf String.IsNullOrEmpty(tmpDBElement.VideoSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                tmpDBElement.VideoSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBElement.Filename)), String.Empty, "*EmberAPP")
+                tmpDBElement.VideoSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBElement.File.Path)), String.Empty, "*EmberAPP")
                 tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
             ElseIf Not String.IsNullOrEmpty(tmpDBElement.Movie.VideoSource) Then
                 tmpDBElement.VideoSource = tmpDBElement.Movie.VideoSource
@@ -1631,7 +1631,7 @@ Public Class dlgEditMovie
         If tRating > 0 Then BuildStars(tRating)
 
         If DoAll Then
-            Dim pExt As String = Path.GetExtension(tmpDBElement.Filename).ToLower
+            Dim pExt As String = Path.GetExtension(tmpDBElement.File.Path).ToLower
             If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse
             pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse
             pExt = ".disc" Then
@@ -1812,9 +1812,9 @@ Public Class dlgEditMovie
             End If
 
             'DiscStub
-            If Path.GetExtension(tmpDBElement.Filename).ToLower = ".disc" Then
+            If Path.GetExtension(tmpDBElement.File.Path).ToLower = ".disc" Then
                 Dim DiscStub As New MediaStub.DiscStub
-                DiscStub = MediaStub.LoadDiscStub(tmpDBElement.Filename)
+                DiscStub = MediaStub.LoadDiscStub(tmpDBElement.File.Path)
                 txtMediaStubTitle.Text = DiscStub.Title
                 txtMediaStubMessage.Text = DiscStub.Message
             End If
@@ -2388,8 +2388,8 @@ Public Class dlgEditMovie
             Next
         End If
 
-        If Path.GetExtension(tmpDBElement.Filename) = ".disc" Then
-            Dim StubFile As String = tmpDBElement.Filename
+        If Path.GetExtension(tmpDBElement.File.Path) = ".disc" Then
+            Dim StubFile As String = tmpDBElement.File.Path
             Dim Title As String = txtMediaStubTitle.Text
             Dim Message As String = txtMediaStubMessage.Text
             MediaStub.SaveDiscStub(StubFile, Title, Message)
@@ -2468,7 +2468,7 @@ Public Class dlgEditMovie
         Dim mTitle As String = tmpDBElement.Movie.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
-        tsFilename.Text = tmpDBElement.Filename
+        tsFilename.Text = tmpDBElement.File.Path
         btnCancel.Text = Master.eLang.Cancel
         btnOK.Text = Master.eLang.OK
         btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")

@@ -665,35 +665,35 @@ Public Class FileFolderRenamer
 
         'Path
         MovieFile.BasePath = _DBElement.Source.Path
-        MovieFile.OldFullPath = FileUtils.Common.GetMainPath(_DBElement.Filename).FullName
-        MovieFile.Parent = FileUtils.Common.GetMainPath(_DBElement.Filename).Name
-        If MovieFile.BasePath = FileUtils.Common.GetMainPath(_DBElement.Filename).FullName Then
+        MovieFile.OldFullPath = FileUtils.Common.GetMainPath(_DBElement.File.Path).FullName
+        MovieFile.Parent = FileUtils.Common.GetMainPath(_DBElement.File.Path).Name
+        If MovieFile.BasePath = FileUtils.Common.GetMainPath(_DBElement.File.Path).FullName Then
             MovieFile.OldPath = String.Empty
             MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
         Else
-            MovieFile.OldPath = Directory.GetParent(FileUtils.Common.GetMainPath(_DBElement.Filename).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+            MovieFile.OldPath = Directory.GetParent(FileUtils.Common.GetMainPath(_DBElement.File.Path).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
         End If
-        MovieFile.IsBDMV = FileUtils.Common.isBDRip(_DBElement.Filename)
-        MovieFile.IsVideoTS = FileUtils.Common.isVideoTS(_DBElement.Filename)
+        MovieFile.IsBDMV = FileUtils.Common.isBDRip(_DBElement.File.Path)
+        MovieFile.IsVideoTS = FileUtils.Common.isVideoTS(_DBElement.File.Path)
 
         MovieFile.Path = Path.Combine(MovieFile.OldPath, MovieFile.Parent)
         MovieFile.Path = If(MovieFile.Path.StartsWith(Path.DirectorySeparatorChar), MovieFile.Path.Substring(1), MovieFile.Path)
 
         'File Name
-        MovieFile.Extension = Path.GetExtension(_DBElement.Filename)
-        MovieFile.OldFullFileName = _DBElement.Filename
+        MovieFile.Extension = Path.GetExtension(_DBElement.File.Path)
+        MovieFile.OldFullFileName = _DBElement.File.Path
         If MovieFile.IsBDMV Then
             MovieFile.OldFileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
         ElseIf MovieFile.IsVideoTS Then
             MovieFile.OldFileName = "VIDEO_TS"
         Else
-            If Path.GetFileName(_DBElement.Filename.ToLower) = "video_ts.ifo" Then
-                MovieFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.Filename)
+            If Path.GetFileName(_DBElement.File.Path.ToLower) = "video_ts.ifo" Then
+                MovieFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.File.Path)
             Else
-                MovieFile.OldFileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.Filename))
-                Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.Filename).Replace(MovieFile.OldFileName, String.Empty).ToLower
+                MovieFile.OldFileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.File.Path))
+                Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.File.Path).Replace(MovieFile.OldFileName, String.Empty).ToLower
                 If Not stackMark = String.Empty AndAlso _DBElement.Movie.Title.ToLower.EndsWith(stackMark) Then
-                    MovieFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.Filename)
+                    MovieFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.File.Path)
                 End If
             End If
         End If
@@ -707,12 +707,12 @@ Public Class FileFolderRenamer
         'get list of all episodes for multi-episode files
         Dim aSeasonsEpisodes As New List(Of SeasonsEpisodes)
 
-        If _DBElement.FilenameIDSpecified Then
+        If _DBElement.File.IDSpecified Then
 
             'first step: get a list of all seasons
             Dim aSeasonsList As New List(Of Integer)
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLNewcommand.CommandText = String.Concat("SELECT Season FROM episode WHERE idFile = ", _DBElement.FilenameID, ";")
+                SQLNewcommand.CommandText = String.Concat("SELECT Season FROM episode WHERE idFile = ", _DBElement.File.ID, ";")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     While SQLReader.Read
                         If Not aSeasonsList.Contains(Convert.ToInt32(SQLReader("Season"))) Then aSeasonsList.Add(Convert.ToInt32(SQLReader("Season")))
@@ -725,7 +725,7 @@ Public Class FileFolderRenamer
             For Each aSeason As Integer In aSeasonsList
                 Dim aEpisodesList As New List(Of Episode)
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT idEpisode, Episode, Title, SubEpisode FROM episode WHERE idFile = ", _DBElement.FilenameID, " AND Season = ", aSeason, ";")
+                    SQLNewcommand.CommandText = String.Concat("SELECT idEpisode, Episode, Title, SubEpisode FROM episode WHERE idFile = ", _DBElement.File.ID, " AND Season = ", aSeason, ";")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
                             Dim aEpisode As New Episode
@@ -879,47 +879,47 @@ Public Class FileFolderRenamer
 
         'Path
         EpisodeFile.BasePath = _DBElement.Source.Path
-        EpisodeFile.OldFullPath = FileUtils.Common.GetMainPath(_DBElement.Filename).FullName
+        EpisodeFile.OldFullPath = FileUtils.Common.GetMainPath(_DBElement.File.Path).FullName
         EpisodeFile.ShowFullPath = _DBElement.ShowPath
         EpisodeFile.ShowPath = _DBElement.ShowPath.Replace(_DBElement.Source.Path, String.Empty)
         EpisodeFile.ShowPath = If(EpisodeFile.ShowPath.StartsWith(Path.DirectorySeparatorChar), EpisodeFile.ShowPath.Substring(1), EpisodeFile.ShowPath)
-        If FileUtils.Common.isVideoTS(_DBElement.Filename) Then
-            EpisodeFile.Parent = FileUtils.Common.GetMainPath(_DBElement.Filename).Name
-            If EpisodeFile.BasePath = FileUtils.Common.GetMainPath(_DBElement.Filename).FullName Then
+        If FileUtils.Common.isVideoTS(_DBElement.File.Path) Then
+            EpisodeFile.Parent = FileUtils.Common.GetMainPath(_DBElement.File.Path).Name
+            If EpisodeFile.BasePath = FileUtils.Common.GetMainPath(_DBElement.File.Path).FullName Then
                 EpisodeFile.OldPath = String.Empty
                 EpisodeFile.BasePath = Directory.GetParent(EpisodeFile.BasePath).FullName
             Else
-                EpisodeFile.OldPath = Directory.GetParent(FileUtils.Common.GetMainPath(_DBElement.Filename).FullName).FullName.Replace(_DBElement.Source.Path, String.Empty)
+                EpisodeFile.OldPath = Directory.GetParent(FileUtils.Common.GetMainPath(_DBElement.File.Path).FullName).FullName.Replace(_DBElement.Source.Path, String.Empty)
             End If
-        ElseIf FileUtils.Common.isBDRip(_DBElement.Filename) Then
-            EpisodeFile.Parent = FileUtils.Common.GetMainPath(_DBElement.Filename).Name
-            If EpisodeFile.BasePath = Directory.GetParent(FileUtils.Common.GetMainPath(_DBElement.Filename).FullName).FullName Then
+        ElseIf FileUtils.Common.isBDRip(_DBElement.File.Path) Then
+            EpisodeFile.Parent = FileUtils.Common.GetMainPath(_DBElement.File.Path).Name
+            If EpisodeFile.BasePath = Directory.GetParent(FileUtils.Common.GetMainPath(_DBElement.File.Path).FullName).FullName Then
                 EpisodeFile.OldPath = String.Empty
                 EpisodeFile.BasePath = Directory.GetParent(EpisodeFile.BasePath).FullName
             Else
-                EpisodeFile.OldPath = Directory.GetParent(FileUtils.Common.GetMainPath(_DBElement.Filename).FullName).FullName.Replace(_DBElement.Source.Path, String.Empty)
+                EpisodeFile.OldPath = Directory.GetParent(FileUtils.Common.GetMainPath(_DBElement.File.Path).FullName).FullName.Replace(_DBElement.Source.Path, String.Empty)
             End If
         Else
-            EpisodeFile.Parent = Directory.GetParent(_DBElement.Filename).FullName.Replace(Path.Combine(_DBElement.Source.Path, EpisodeFile.ShowPath), String.Empty).Trim
-            EpisodeFile.Path = Directory.GetParent(_DBElement.Filename).FullName.Replace(_DBElement.Source.Path, String.Empty)
+            EpisodeFile.Parent = Directory.GetParent(_DBElement.File.Path).FullName.Replace(Path.Combine(_DBElement.Source.Path, EpisodeFile.ShowPath), String.Empty).Trim
+            EpisodeFile.Path = Directory.GetParent(_DBElement.File.Path).FullName.Replace(_DBElement.Source.Path, String.Empty)
         End If
-        EpisodeFile.IsBDMV = FileUtils.Common.isBDRip(_DBElement.Filename)
-        EpisodeFile.IsVideoTS = FileUtils.Common.isVideoTS(_DBElement.Filename)
+        EpisodeFile.IsBDMV = FileUtils.Common.isBDRip(_DBElement.File.Path)
+        EpisodeFile.IsVideoTS = FileUtils.Common.isVideoTS(_DBElement.File.Path)
 
         EpisodeFile.Parent = If(EpisodeFile.Parent.StartsWith(Path.DirectorySeparatorChar), EpisodeFile.Parent.Substring(1), EpisodeFile.Parent)
         EpisodeFile.Path = If(EpisodeFile.Path.StartsWith(Path.DirectorySeparatorChar), EpisodeFile.Path.Substring(1), EpisodeFile.Path)
 
         'File
-        EpisodeFile.Extension = Path.GetExtension(_DBElement.Filename)
-        EpisodeFile.OldFullFileName = _DBElement.Filename
+        EpisodeFile.Extension = Path.GetExtension(_DBElement.File.Path)
+        EpisodeFile.OldFullFileName = _DBElement.File.Path
         If Not EpisodeFile.IsVideoTS AndAlso Not EpisodeFile.IsBDMV Then
-            If Path.GetFileName(_DBElement.Filename.ToLower) = "video_ts.ifo" Then
+            If Path.GetFileName(_DBElement.File.Path.ToLower) = "video_ts.ifo" Then
                 EpisodeFile.OldFileName = "VIDEO_TS"
             Else
-                EpisodeFile.OldFileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.Filename))
-                Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.Filename).Replace(EpisodeFile.OldFileName, String.Empty).ToLower
+                EpisodeFile.OldFileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.File.Path))
+                Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.File.Path).Replace(EpisodeFile.OldFileName, String.Empty).ToLower
                 If Not stackMark = String.Empty AndAlso _DBElement.TVEpisode.Title.ToLower.EndsWith(stackMark) Then
-                    EpisodeFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.Filename)
+                    EpisodeFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.File.Path)
                 End If
             End If
         ElseIf EpisodeFile.IsBDMV Then
@@ -1681,9 +1681,9 @@ Public Class FileFolderRenamer
                     DoRenameSingle_TVEpisode(EpisodeFile, tEpisode, BatchMode, ShowError, False)
 
                     'refresh Filename of Multi-Episode files
-                    Dim lstEpisodes = _tmpShow.Episodes.Where(Function(f) f.FilenameID = tEpisode.FilenameID AndAlso Not f.ID = tEpisode.ID)
+                    Dim lstEpisodes = _tmpShow.Episodes.Where(Function(f) f.File.ID = tEpisode.File.ID AndAlso Not f.ID = tEpisode.ID)
                     For Each nEpisode In lstEpisodes
-                        nEpisode.Filename = tEpisode.Filename
+                        nEpisode.File.Path = tEpisode.File.Path
                     Next
                 End If
             Next
@@ -1746,7 +1746,7 @@ Public Class FileFolderRenamer
     Private Shared Sub UpdatePaths_Movie(ByRef _DBM As Database.DBElement, ByVal oldPath As String, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
         If _DBM.ExtrafanartsPathSpecified Then _DBM.ExtrafanartsPath = Path.Combine(Directory.GetParent(_DBM.ExtrafanartsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ExtrafanartsPath).Replace(oldFile, newFile))
         If _DBM.ExtrathumbsPathSpecified Then _DBM.ExtrathumbsPath = Path.Combine(Directory.GetParent(_DBM.ExtrathumbsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ExtrathumbsPath).Replace(oldFile, newFile))
-        If _DBM.FilenameSpecified Then _DBM.Filename = Path.Combine(Directory.GetParent(_DBM.Filename).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.Filename).Replace(oldFile, newFile))
+        If _DBM.File.PathSpecified Then _DBM.File.Path = Path.Combine(Directory.GetParent(_DBM.File.Path).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.File.Path).Replace(oldFile, newFile))
         If _DBM.ImagesContainer.Banner.LocalFilePathSpecified Then _DBM.ImagesContainer.Banner.LocalFilePath = Path.Combine(Directory.GetParent(_DBM.ImagesContainer.Banner.LocalFilePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ImagesContainer.Banner.LocalFilePath).Replace(oldFile, newFile))
         If _DBM.ImagesContainer.ClearArt.LocalFilePathSpecified Then _DBM.ImagesContainer.ClearArt.LocalFilePath = Path.Combine(Directory.GetParent(_DBM.ImagesContainer.ClearArt.LocalFilePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ImagesContainer.ClearArt.LocalFilePath).Replace(oldFile, newFile))
         If _DBM.ImagesContainer.ClearLogo.LocalFilePathSpecified Then _DBM.ImagesContainer.ClearLogo.LocalFilePath = Path.Combine(Directory.GetParent(_DBM.ImagesContainer.ClearLogo.LocalFilePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ImagesContainer.ClearLogo.LocalFilePath).Replace(oldFile, newFile))
@@ -1775,7 +1775,7 @@ Public Class FileFolderRenamer
     End Sub
 
     Private Shared Sub UpdatePaths_TVEpisode(ByRef _DBE As Database.DBElement, ByVal oldPath As String, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
-        If _DBE.FilenameSpecified Then _DBE.Filename = Path.Combine(Directory.GetParent(_DBE.Filename).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.Filename).Replace(oldFile, newFile))
+        If _DBE.File.PathSpecified Then _DBE.File.Path = Path.Combine(Directory.GetParent(_DBE.File.Path).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.File.Path).Replace(oldFile, newFile))
         If _DBE.ImagesContainer.Fanart.LocalFilePathSpecified Then _DBE.ImagesContainer.Fanart.LocalFilePath = Path.Combine(Directory.GetParent(_DBE.ImagesContainer.Fanart.LocalFilePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.ImagesContainer.Fanart.LocalFilePath).Replace(oldFile, newFile))
         If _DBE.ImagesContainer.Poster.LocalFilePathSpecified Then _DBE.ImagesContainer.Poster.LocalFilePath = Path.Combine(Directory.GetParent(_DBE.ImagesContainer.Poster.LocalFilePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.ImagesContainer.Poster.LocalFilePath).Replace(oldFile, newFile))
         If _DBE.NfoPathSpecified Then _DBE.NfoPath = Path.Combine(Directory.GetParent(_DBE.NfoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.NfoPath).Replace(oldFile, newFile))
@@ -1788,7 +1788,7 @@ Public Class FileFolderRenamer
 
     Private Shared Sub UpdatePaths_TVShow(ByRef _DBE As Database.DBElement, ByVal oldPath As String, ByVal newPath As String)
         If _DBE.ExtrafanartsPathSpecified Then _DBE.ExtrafanartsPath = _DBE.ExtrafanartsPath.Replace(oldPath, newPath)
-        If _DBE.FilenameSpecified Then _DBE.Filename = _DBE.Filename.Replace(oldPath, newPath)
+        If _DBE.File.PathSpecified Then _DBE.File.Path = _DBE.File.Path.Replace(oldPath, newPath)
         If _DBE.ImagesContainer.Banner.LocalFilePathSpecified Then _DBE.ImagesContainer.Banner.LocalFilePath = _DBE.ImagesContainer.Banner.LocalFilePath.Replace(oldPath, newPath)
         If _DBE.ImagesContainer.CharacterArt.LocalFilePathSpecified Then _DBE.ImagesContainer.CharacterArt.LocalFilePath = _DBE.ImagesContainer.CharacterArt.LocalFilePath.Replace(oldPath, newPath)
         If _DBE.ImagesContainer.ClearArt.LocalFilePathSpecified Then _DBE.ImagesContainer.ClearArt.LocalFilePath = _DBE.ImagesContainer.ClearArt.LocalFilePath.Replace(oldPath, newPath)

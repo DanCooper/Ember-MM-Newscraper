@@ -213,7 +213,7 @@ Public Class dlgDeleteConfirm
                                     End Try
                                 Else
                                     Try
-                                        AddFileNode(ItemParentNode, DirectCast(nItem, FileInfo), nMovie.Filename = nItem.FullName)
+                                        AddFileNode(ItemParentNode, DirectCast(nItem, FileInfo), nMovie.File.Path = nItem.FullName)
                                     Catch
                                         bHadError = True
                                         Exit For
@@ -291,7 +291,7 @@ Public Class dlgDeleteConfirm
                                         End Try
                                     Else
                                         Try
-                                            AddFileNode(ItemParentNode, DirectCast(nItem, FileInfo), nTVEpisode.Filename = nItem.FullName)
+                                            AddFileNode(ItemParentNode, DirectCast(nItem, FileInfo), nTVEpisode.File.Path = nItem.FullName)
                                         Catch
                                             bHadError = True
                                             Exit For

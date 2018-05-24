@@ -121,7 +121,7 @@ Public Class Images
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_Movie(ByVal DBMovie As Database.DBElement, ByVal ImageType As Enums.ModifierType, ByVal ForceFileCleanup As Boolean)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
+        If Not DBMovie.File.PathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie, ImageType, ForceFileCleanup)
@@ -142,7 +142,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovie.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovie.File.Path & ">")
         End Try
     End Sub
     ''' <summary>
@@ -152,7 +152,7 @@ Public Class Images
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ImageType As Enums.ModifierType, Optional ByVal bForceOldTitle As Boolean = False)
-        If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
+        If Not DBMovieSet.MovieSet.TitleSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, ImageType, bForceOldTitle)
@@ -171,7 +171,7 @@ Public Class Images
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_TVAllSeasons(ByVal DBTVShow As Database.DBElement, ByVal ImageType As Enums.ModifierType)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
+        If Not DBTVShow.ShowPathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, ImageType)
@@ -190,7 +190,7 @@ Public Class Images
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal ImageType As Enums.ModifierType)
-        If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
+        If Not DBTVEpisode.File.PathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, ImageType)
@@ -217,7 +217,7 @@ Public Class Images
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_TVSeason(ByVal DBTVSeason As Database.DBElement, ByVal ImageType As Enums.ModifierType)
-        If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
+        If Not DBTVSeason.ShowPathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, ImageType)
@@ -235,7 +235,7 @@ Public Class Images
     ''' <param name="DBTVShow"></param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_TVShow(ByVal DBTVShow As Database.DBElement, ByVal ImageType As Enums.ModifierType)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
+        If Not DBTVShow.ShowPathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, ImageType)
@@ -844,7 +844,7 @@ Public Class Images
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
-        If String.IsNullOrEmpty(mMovie.Filename) Then Return efPath
+        If Not mMovie.File.PathSpecified Then Return efPath
 
         Dim doResize As Boolean = False
         If Master.eSettings.MovieExtrafanartsResize Then
@@ -922,7 +922,7 @@ Public Class Images
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
-        If String.IsNullOrEmpty(mMovie.Filename) Then Return etPath
+        If Not mMovie.File.PathSpecified Then Return etPath
 
         Dim doResize As Boolean = False
         If Master.eSettings.MovieExtrathumbsResize Then

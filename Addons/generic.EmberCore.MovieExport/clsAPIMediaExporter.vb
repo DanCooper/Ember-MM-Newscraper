@@ -710,11 +710,11 @@ Public Class MediaExporter
 
         'Special Strings
         strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
-        strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(tMovie.Filename)))
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.Filename)))
-        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tMovie.Filename)))
+        strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(tMovie.File.Path)))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.File.Path)))
+        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tMovie.File.Path)))
         strRow = strRow.Replace("<$NOW>", Date.Now.ToLongDateString) 'Save Build Date. might be useful info!
-        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.Filename))
+        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.File.Path))
 
         'Images
         With tMovie.ImagesContainer
@@ -840,10 +840,10 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
         strRow = strRow.Replace("<$COUNT_TVSEASON>", _iCounter_TVSeason.ToString)
         strRow = strRow.Replace("<$COUNT_TVEPISODE>", _iCounter_TVEpisode.ToString)
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.Filename)))
-        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tEpisode.Filename)))
-        strRow = strRow.Replace("<$MISSING>", If(tEpisode.FilenameID = -1, "true", "false"))
-        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tEpisode.Filename))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.File.Path)))
+        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tEpisode.File.Path)))
+        strRow = strRow.Replace("<$MISSING>", If(tEpisode.File.IDSpecified, "false", "true"))
+        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tEpisode.File.Path))
 
         'Images
         With tEpisode.ImagesContainer

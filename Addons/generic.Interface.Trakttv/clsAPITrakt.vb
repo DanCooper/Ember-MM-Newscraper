@@ -611,7 +611,7 @@ Public Class clsAPITrakt
                             End If
                         End If
                     Case Enums.ContentType.TVShow
-                        For Each nTVEpisode In tDBElement.Episodes.Where(Function(f) f.FilenameSpecified)
+                        For Each nTVEpisode In tDBElement.Episodes.Where(Function(f) f.File.PathSpecified)
                             Dim intEpisode = nTVEpisode.TVEpisode.Episode
                             Dim intSeason = nTVEpisode.TVEpisode.Season
 

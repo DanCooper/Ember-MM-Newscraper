@@ -93,7 +93,7 @@ Namespace FFmpeg
 
 
             If String.IsNullOrEmpty(ScanPath) Then
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.Filename))
+                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.File.Path))
                 Return lstThumbContainer
             End If
 
@@ -280,17 +280,17 @@ Namespace FFmpeg
                         logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Result does not contain any cropvalues? Args: {0} Output: {1}"), String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2), cropscanresult))
                     End If
                 Else
-                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.Filename, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
+                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.File.Path, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
                 End If
             Next
 
             If sortcrops.Count < 1 Then
-                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.Filename)
+                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.File.Path)
                 Return String.Empty
             Else
                 'sort list, highest resolution on top -> this one will be returned!
                 sortcrops = sortcrops.OrderByDescending(Function(X) X.Item2).ToList
-                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.Filename))
+                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.File.Path))
                 Return sortcrops(0).Item1
             End If
         End Function
@@ -617,21 +617,21 @@ Namespace FFmpeg
         ''' </remarks>
         Private Shared Function GetVideoFileScanPath(ByVal DBElement As Database.DBElement) As String
             Dim videofilepath As String = String.Empty
-            Dim videofileExt As String = Path.GetExtension(DBElement.Filename).ToLower
+            Dim videofileExt As String = Path.GetExtension(DBElement.File.Path).ToLower
             If videofileExt = ".rar" AndAlso Not videofileExt = ".img" AndAlso Not videofileExt = ".cue" Then
                 'not supported?!
             End If
             Select Case DBElement.ContentType
                 Case Enums.ContentType.Movie
-                    If FileUtils.Common.isBDRip(DBElement.Filename) Then
+                    If FileUtils.Common.isBDRip(DBElement.File.Path) Then
                         'filename points to largest m2ts file, i.e:
                         'E:\Media_1\Movie\Horror\Europa Report\BDMV\STREAM\00000.m2ts
-                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.Filename)
-                    ElseIf FileUtils.Common.isVideoTS(DBElement.Filename) Then
+                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.File.Path)
+                    ElseIf FileUtils.Common.isVideoTS(DBElement.File.Path) Then
                         'filename points to largest VOB  file
-                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.Filename)
-                    ElseIf FileUtils.Common.isDiscImage(DBElement.filename) Then
-                        Dim nVirtualDrive = New FileUtils.VirtualDrive(DBElement.Filename)
+                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.File.Path)
+                    ElseIf FileUtils.Common.isDiscImage(DBElement.File.Path) Then
+                        Dim nVirtualDrive = New FileUtils.VirtualDrive(DBElement.File.Path)
                         If nVirtualDrive.IsLoaded Then
                             If Directory.Exists(String.Concat(nVirtualDrive.Path, "VIDEO_TS")) Then
                                 'get biggest VOB file for thumbscraping
@@ -647,10 +647,10 @@ Namespace FFmpeg
                         End If
                     Else
                         'default case
-                        videofilepath = DBElement.Filename
+                        videofilepath = DBElement.File.Path
                     End If
                 Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    logger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.Filename))
+                    logger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.File.Path))
                     If FileUtils.Common.isBDRip(DBElement.ShowPath) Then
                         'no tv support for now...
                     ElseIf FileUtils.Common.isVideoTS(DBElement.ShowPath) Then

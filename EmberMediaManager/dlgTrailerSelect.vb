@@ -271,7 +271,7 @@ Public Class dlgTrailerSelect
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseLocalTrailer.Click
         Try
             With ofdTrailer
-                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
                 .Filter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))
                 .FilterIndex = 0
             End With

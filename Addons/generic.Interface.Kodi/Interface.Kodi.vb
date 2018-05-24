@@ -383,7 +383,7 @@ Public Class KodiInterface
                             'connection test
                             If Await Task.Run(Function() _APIKodi.GetConnectionToHost) Then
                                 If mDBElement.Episodes IsNot Nothing Then
-                                    For Each tEpisode In mDBElement.Episodes.Where(Function(f) f.FilenameSpecified)
+                                    For Each tEpisode In mDBElement.Episodes.Where(Function(f) f.File.PathSpecified)
                                         If tEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tEpisode, True) Then
                                             If tEpisode.NfoPathSpecified Then
                                                 'run task
@@ -420,7 +420,7 @@ Public Class KodiInterface
 
                 'Remove Movie
                 Case Enums.ModuleEventType.Remove_Movie
-                    If mDBElement.FilenameSpecified Then
+                    If mDBElement.File.PathSpecified Then
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
 
@@ -462,7 +462,7 @@ Public Class KodiInterface
 
                 'Remove TVEpisode
                 Case Enums.ModuleEventType.Remove_TVEpisode
-                    If mDBElement.FilenameSpecified Then
+                    If mDBElement.File.PathSpecified Then
 
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)

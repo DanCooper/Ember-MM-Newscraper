@@ -847,7 +847,7 @@ Namespace MediaContainers
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
-            If Not DBElement.FilenameSpecified Then Return
+            If Not DBElement.File.PathSpecified Then Return
 
             If ActorsSpecified AndAlso Master.eSettings.TVEpisodeActorThumbsAnyEnabled Then
                 Images.SaveTVEpisodeActorThumbs(DBElement)
@@ -2397,223 +2397,89 @@ Namespace MediaContainers
     <Serializable()>
     Public Class Person
 
-#Region "Fields"
-
-        Private _id As Long
-        Private _imdb As String
-        Private _name As String
-        Private _order As Integer
-        Private _role As String
-        Private _thumb As Image
-        Private _tmdb As String
-        Private _tvdb As String
-        Private _uniqueids As New List(Of Uniqueid)
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clean()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
         <XmlIgnore()>
-        Public Property ID() As Long
-            Get
-                Return _id
-            End Get
-            Set(ByVal Value As Long)
-                _id = Value
-            End Set
-        End Property
+        Public Property ID() As Long = -1
 
         <XmlElement("name")>
-        Public Property Name() As String
-            Get
-                Return _name
-            End Get
-            Set(ByVal Value As String)
-                _name = Value
-            End Set
-        End Property
+        Public Property Name() As String = String.Empty
 
         <XmlIgnore()>
         Public ReadOnly Property NameSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_name)
+                Return Not String.IsNullOrEmpty(Name)
             End Get
         End Property
 
         <XmlElement("role")>
-        Public Property Role() As String
-            Get
-                Return _role
-            End Get
-            Set(ByVal Value As String)
-                _role = Value
-            End Set
-        End Property
+        Public Property Role() As String = String.Empty
 
         <XmlIgnore()>
         Public ReadOnly Property RoleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_role)
+                Return Not String.IsNullOrEmpty(Role)
             End Get
         End Property
 
         <XmlElement("order")>
-        Public Property Order() As Integer
-            Get
-                Return _order
-            End Get
-            Set(ByVal Value As Integer)
-                _order = Value
-            End Set
-        End Property
+        Public Property Order() As Integer = -1
 
         <XmlIgnore()>
         Public ReadOnly Property OrderSpecified() As Boolean
             Get
-                Return _order > -1
+                Return Order > -1
             End Get
         End Property
 
         <XmlIgnore()>
-        Public Property Thumb() As Image
-            Get
-                Return _thumb
-            End Get
-            Set(ByVal Value As Image)
-                _thumb = Value
-            End Set
-        End Property
+        Public Property Thumb() As Image = New Image
 
         <XmlElement("thumb")>
         Public Property URLOriginal() As String
             Get
-                Return _thumb.URLOriginal
+                Return Thumb.URLOriginal
             End Get
             Set(ByVal Value As String)
-                _thumb.URLOriginal = Value
+                Thumb.URLOriginal = Value
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property URLOriginalSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_thumb.URLOriginal)
+                Return Not String.IsNullOrEmpty(Thumb.URLOriginal)
             End Get
         End Property
 
         <XmlIgnore()>
         Public Property LocalFilePath() As String
             Get
-                Return _thumb.LocalFilePath
+                Return Thumb.LocalFilePath
             End Get
             Set(ByVal Value As String)
-                _thumb.LocalFilePath = Value
+                Thumb.LocalFilePath = Value
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property LocalFilePathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_thumb.LocalFilePath)
-            End Get
-        End Property
-
-        <XmlElement("imdbid")>
-        Public Property IMDB() As String
-            Get
-                Return _imdb
-            End Get
-            Set(ByVal Value As String)
-                _imdb = Value
-            End Set
-        End Property
-
-        <XmlIgnore()>
-        Public ReadOnly Property IMDBSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(_imdb)
-            End Get
-        End Property
-
-        <XmlElement("tmdbid")>
-        Public Property TMDB() As String
-            Get
-                Return _tmdb
-            End Get
-            Set(ByVal Value As String)
-                _tmdb = Value
-            End Set
-        End Property
-
-        <XmlIgnore()>
-        Public ReadOnly Property TMDBSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(_tmdb)
-            End Get
-        End Property
-
-        <XmlElement("tvdbid")>
-        Public Property TVDB() As String
-            Get
-                Return _tvdb
-            End Get
-            Set(ByVal Value As String)
-                _tvdb = Value
-            End Set
-        End Property
-
-        <XmlIgnore()>
-        Public ReadOnly Property TVDBSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(_tvdb)
+                Return Not String.IsNullOrEmpty(Thumb.LocalFilePath)
             End Get
         End Property
 
         <XmlElement("uniqueid")>
-        Public Property UniqueIDs() As List(Of UniqueId)
-            Get
-                Return _uniqueids
-            End Get
-            Set(ByVal value As List(Of UniqueId))
-                If value Is Nothing Then
-                    _uniqueids.Clear()
-                Else
-                    _uniqueids = value
-                End If
-            End Set
-        End Property
+        Public Property UniqueIDs() As List(Of Uniqueid) = New List(Of Uniqueid)
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return _uniqueids.Count > 0
+                Return UniqueIDs.Count > 0
             End Get
         End Property
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clean()
-            _id = -1
-            _imdb = String.Empty
-            _name = String.Empty
-            _order = -1
-            _role = String.Empty
-            _thumb = New Image
-            _tmdb = String.Empty
-            _tvdb = String.Empty
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
@@ -4322,7 +4188,7 @@ Namespace MediaContainers
         End Sub
 
         Public Sub SaveAllImages(ByRef DBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-            If Not DBElement.FilenameSpecified AndAlso (DBElement.ContentType = Enums.ContentType.Movie OrElse DBElement.ContentType = Enums.ContentType.TVEpisode) Then Return
+            If Not DBElement.File.PathSpecified AndAlso (DBElement.ContentType = Enums.ContentType.Movie OrElse DBElement.ContentType = Enums.ContentType.TVEpisode) Then Return
 
             Dim tContentType As Enums.ContentType = DBElement.ContentType
 

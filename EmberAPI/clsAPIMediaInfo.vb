@@ -80,11 +80,11 @@ Public Class MediaInfo
                 Exit Sub
         End Select
 
-        Dim pExt As String = Path.GetExtension(dbElement.Filename).ToLower
+        Dim pExt As String = Path.GetExtension(dbElement.File.Path).ToLower
         If Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse
                pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg" OrElse pExt = ".rar") Then
             Dim MI As New MediaInfo
-            MI.GetFileInfoFromPath(nFileInfo, dbElement.Filename, dbElement.ContentType)
+            MI.GetFileInfoFromPath(nFileInfo, dbElement.File.Path, dbElement.ContentType)
             If nFileInfo.StreamDetails.Video.Count > 0 OrElse nFileInfo.StreamDetails.Audio.Count > 0 OrElse nFileInfo.StreamDetails.Subtitle.Count > 0 Then
                 ' overwrite only if it get something from Mediainfo 
                 If bLockVideoLanguages Then
