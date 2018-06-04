@@ -98,7 +98,7 @@ Public Class Trailers
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">")
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End If
     End Sub
@@ -108,7 +108,7 @@ Public Class Trailers
     ''' <param name="tDBElement"><c>tDBElement</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_Movie(ByVal tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-        If Not tDBElement.File.PathSpecified Then Return
+        If Not tDBElement.FileItem.FullPathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTrailer, ForceFileCleanup)
@@ -119,7 +119,7 @@ Public Class Trailers
                 Next
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.File.Path & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>

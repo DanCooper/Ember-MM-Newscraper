@@ -268,7 +268,7 @@
 
         CREATE TRIGGER delete_file
         AFTER DELETE
-        ON files
+        ON file
         BEGIN
         DELETE FROM streamdetail WHERE idFile=old.idFile;
         END;
@@ -529,13 +529,14 @@
       <description>create table rating</description>
       <execute>
         CREATE TABLE rating (
-        idRating     integer PRIMARY KEY AUTOINCREMENT,
-        idMedia      integer,
-        media_type   text,
-        rating_type  text,
-        rating       float(50),
-        votes        integer,
-        isDefault    boolean
+        idRating      integer PRIMARY KEY AUTOINCREMENT,
+        idMedia       integer,
+        media_type    text,
+        rating_type   text,
+        rating_max    integer,
+        rating        float(50),
+        votes         integer,
+        isDefault     boolean
         );
 
         CREATE INDEX ix_rating
@@ -550,6 +551,7 @@
         (idMedia,
         media_type,
         rating_type,
+        rating_max,
         rating,
         votes,
         isDefault)
@@ -557,6 +559,7 @@
         idEpisode,
         'episode',
         'default',
+        10,
         Rating,
         Votes,
         0
@@ -573,6 +576,7 @@
         (idMedia,
         media_type,
         rating_type,
+        rating_max,
         rating,
         votes,
         isDefault)
@@ -580,6 +584,7 @@
         idMovie,
         'movie',
         'default',
+        10,
         Rating,
         Votes,
         0
@@ -596,6 +601,7 @@
         (idMedia,
         media_type,
         rating_type,
+        rating_max,
         rating,
         votes,
         isDefault)
@@ -603,6 +609,7 @@
         idShow,
         'tvshow',
         'default',
+        10,
         Rating,
         Votes,
         0
@@ -619,26 +626,29 @@
       <description>create table streamdetail</description>
       <execute>
         CREATE TABLE streamdetail (
-        idFile                integer,
-        streamType            integer,
-        videoCodec            text,
-        videoAspect           float,
-        videoBitrate          integer,
-        videoLanguage         text,
-        videoWidth            integer,
-        videoHeight           integer,
-        videoScantype         text,
-        videoDuration         integer,
-        videoMultiViewCount   integer,
-        videoMultiViewLayout  text,
-        videoStereoMode       text,
-        audioCodec            text,
-        audioChannels         integer,
-        audioBitrate          integer,
-        audioLanguage         text,
-        subtitleLanguage      text,
-        subtitleForced        boolean,
-        subtitlePath          text
+        idFile                  integer,
+        streamType              integer,
+        videoCodec              text,
+        videoAspect             float,
+        videoBitrate            integer,
+        videoLanguage           text,
+        videoWidth              integer,
+        videoHeight             integer,
+        videoScantype           text,
+        videoDuration           integer,
+        videoMultiViewCount     integer,
+        videoMultiViewLayout    text,
+        videoStereoMode         text,
+        videoBitDepth           integer,
+        videoChromaSubsampling  text,
+        videoColourPrimaries    text,
+        audioCodec              text,
+        audioChannels           integer,
+        audioBitrate            integer,
+        audioLanguage           text,
+        subtitleLanguage        text,
+        subtitleForced          boolean,
+        subtitlePath            text
         );
 
         CREATE INDEX ix_streamdetail
@@ -1094,6 +1104,27 @@
         0
         FROM
         movie
+        WHERE
+        TMDBColID IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table sets to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idSet,
+        'movieset',
+        TMDBColID,
+        'tmdb',
+        0
+        FROM
+        sets
         WHERE
         TMDBColID IS NOT ''
       </execute>
@@ -1758,7 +1789,8 @@
         poster.url AS posterPath,
         GROUP_CONCAT(DISTINCT writers.name) AS credits,
         GROUP_CONCAT(DISTINCT directors.name) AS director,
-        CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS missing
+        CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS missing,
+        GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
         FROM
         episode
         LEFT OUTER JOIN file ON (file.idFile=episode.idFile)
@@ -1775,6 +1807,8 @@
         LEFT OUTER JOIN director_link AS directorlink ON (directorlink.idMedia=episode.idEpisode)
         AND (writerlink.media_type='episode')
         LEFT OUTER JOIN person AS directors ON (directors.idPerson=directorlink.idPerson)
+        LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=episode.idEpisode)
+        AND (uniqueids.media_type='episode')
         GROUP BY episode.idEpisode;
       </execute>
     </command>
@@ -2068,7 +2102,8 @@
         GROUP_CONCAT(DISTINCT directors.name) AS director,
         GROUP_CONCAT(DISTINCT genres.name) AS genre,
         GROUP_CONCAT(DISTINCT studios.name) AS studio,
-        GROUP_CONCAT(DISTINCT tags.name) AS 'tag'
+        GROUP_CONCAT(DISTINCT tags.name) AS 'tag',
+        GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
         FROM
         movie
         LEFT OUTER JOIN moviesource AS source ON (source.idSource=movie.idSource)
@@ -2115,6 +2150,8 @@
         LEFT OUTER JOIN tag_link AS taglink ON (taglink.idMedia=movie.idMovie)
         AND (taglink.media_type='movie')
         LEFT OUTER JOIN tag AS tags ON (tags.idTag=taglink.idTag)
+        LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=movie.idMovie)
+        AND (uniqueids.media_type='movie')
         GROUP BY movie.idMovie;
       </execute>
     </command>
@@ -2190,7 +2227,8 @@
         landscape.url AS landscapePath,
         poster.url AS posterPath,
         COUNT(moviesetlink.idMovie) AS 'count',
-        GROUP_CONCAT(DISTINCT movies.title) AS 'movieTitles'
+        GROUP_CONCAT(DISTINCT movies.title) AS 'movieTitles',
+        GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
         FROM
         movieset
         LEFT OUTER JOIN art AS banner ON (banner.idMedia=movieset.idSet)
@@ -2216,6 +2254,8 @@
         AND (poster.type='poster')
         LEFT OUTER JOIN movieset_link AS moviesetlink ON (moviesetlink.idSet=movieset.idSet)
         LEFT OUTER JOIN movie AS movies ON (movies.idMovie=moviesetlink.idMovie)
+        LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=movieset.idSet)
+        AND (uniqueids.media_type='movieset')
         GROUP BY movieset.idSet;
       </execute>
     </command>
@@ -2294,7 +2334,8 @@
         COUNT(DISTINCT CASE WHEN episodelist.playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS playcount,
         CASE WHEN season.season IS NOT -1 THEN CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode)=COUNT(DISTINCT CASE WHEN episodelist.playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END ELSE NULL END AS hasWatched,
         COUNT(DISTINCT CASE WHEN episodelist.new IS 1 THEN episodelist.idEpisode ELSE NULL END) AS newEpisodes,
-        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 THEN 0 ELSE 1 END AS missing
+        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 THEN 0 ELSE 1 END AS missing,
+        GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
         FROM
         season
         LEFT OUTER JOIN art AS banner ON (banner.idMedia=season.idSeason)
@@ -2312,6 +2353,8 @@
         LEFT OUTER JOIN episodelist ON (season.season=episodelist.season)
         AND (season.idShow=episodelist.idShow)
         AND (episodelist.missing=0)
+        LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=season.idSeason)
+        AND (uniqueids.media_type='season')
         GROUP BY
         season.idSeason;
       </execute>
@@ -2519,7 +2562,8 @@
         CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode)=COUNT(DISTINCT CASE WHEN episodelist.playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END AS hasWatched,
         COUNT(DISTINCT CASE WHEN episodelist.new IS 1 THEN episodelist.idEpisode ELSE NULL END) AS newEpisodes,
         COUNT(DISTINCT CASE WHEN episodelist.marked IS 1 THEN episodelist.idEpisode ELSE NULL END) AS markedEpisodes,
-        COUNT(DISTINCT CASE WHEN episodelist.locked IS 1 THEN episodelist.idEpisode ELSE NULL END) AS lockedEpisodes
+        COUNT(DISTINCT CASE WHEN episodelist.locked IS 1 THEN episodelist.idEpisode ELSE NULL END) AS lockedEpisodes,
+        GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
         FROM
         tvshow
         LEFT OUTER JOIN tvshowsource AS source ON (source.idSource=tvshow.idSource)
@@ -2567,6 +2611,8 @@
         LEFT OUTER JOIN tag AS tags ON (tags.idTag=taglink.idTag)
         LEFT OUTER JOIN episodelist ON (tvshow.idShow=episodelist.idShow)
         AND (episodelist.Missing=0)
+        LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=tvshow.idShow)
+        AND (uniqueids.media_type='tvshow')
         GROUP BY
         tvshow.idShow;
       </execute>

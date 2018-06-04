@@ -279,8 +279,8 @@ Public Class clsAPITrakt
             Select Case nContentType
                 Case Enums.ContentType.Movie
                     'search by IMDB ID
-                    If tDBElement.Movie.IMDBSpecified Then
-                        nSearchResults = Await _client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.Movie.IMDB, TraktApiSharp.Enums.TraktSearchResultType.Movie)
+                    If tDBElement.Movie.IDSpecified Then
+                        nSearchResults = Await _client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.Movie.ID, TraktApiSharp.Enums.TraktSearchResultType.Movie)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                         'search by TMDB ID
@@ -291,7 +291,7 @@ Public Class clsAPITrakt
                     If nSearchResults IsNot Nothing AndAlso nSearchResults.ItemCount = 1 AndAlso nSearchResults(0).Movie IsNot Nothing Then
                         Return nSearchResults(0).Movie.Ids.Trakt
                     Else
-                        logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! IMDB: {0} / TMDB: {1}", tDBElement.Movie.IMDB, tDBElement.Movie.TMDB))
+                        logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! IMDB: {0} / TMDB: {1}", tDBElement.Movie.ID, tDBElement.Movie.TMDB))
                     End If
                 Case Enums.ContentType.TVEpisode
                     'search by TVDB ID
@@ -541,7 +541,7 @@ Public Class clsAPITrakt
                                           Optional ByRef watchedmovies As IEnumerable(Of Objects.Get.Watched.TraktWatchedMovie) = Nothing) As Boolean
         If Not tDBElement.Movie.UniqueIDsSpecified Then Return False
 
-        Dim strIMDBID As String = tDBElement.Movie.IMDB
+        Dim strIMDBID As String = tDBElement.Movie.ID
         Dim intTMDBID As Integer
         Integer.TryParse(tDBElement.Movie.TMDB, intTMDBID)
 
@@ -611,7 +611,7 @@ Public Class clsAPITrakt
                             End If
                         End If
                     Case Enums.ContentType.TVShow
-                        For Each nTVEpisode In tDBElement.Episodes.Where(Function(f) f.File.PathSpecified)
+                        For Each nTVEpisode In tDBElement.Episodes.Where(Function(f) f.FileItem.FullPathSpecified)
                             Dim intEpisode = nTVEpisode.TVEpisode.Episode
                             Dim intSeason = nTVEpisode.TVEpisode.Season
 

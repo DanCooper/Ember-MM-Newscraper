@@ -57,33 +57,24 @@ Public Class dlgRenameManual_Movie
 
     Private Sub dlgRenameManual_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         SetUp()
-        If FileUtils.Common.isVideoTS(_DBElement.File.Path) Then
+        If _DBElement.FileItem.bIsBDMV OrElse _DBElement.FileItem.bIsVideoTS Then
             txtFile.Text = "$F"
             txtFile.Visible = False
-            txtFolder.Text = FileUtils.Common.GetMainPath(_DBElement.File.Path).Name
-        ElseIf FileUtils.Common.isBDRip(_DBElement.File.Path) Then
-            txtFile.Text = "$F"
-            txtFile.Visible = False
-            txtFolder.Text = FileUtils.Common.GetMainPath(_DBElement.File.Path).Name
+            txtFolder.Text = _DBElement.FileItem.MainPath.Name
         Else
-            Dim FileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.File.Path)).Trim
-            Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.File.Path).Replace(FileName, String.Empty).ToLower
-            If Not FileName.ToLower = "video_ts" Then
-                If Not stackMark = String.Empty AndAlso _DBElement.Movie.Title.ToLower.EndsWith(stackMark) Then
-                    FileName = Path.GetFileNameWithoutExtension(_DBElement.File.Path)
-                End If
-                If _DBElement.IsSingle Then
-                    txtFolder.Text = FileUtils.Common.GetMainPath(_DBElement.File.Path).Name
-                Else
-                    txtFolder.Text = "$D"
-                    txtFolder.Visible = False
-                End If
-                txtFile.Text = FileName
-            Else
-                txtFile.Text = "$F"
-                txtFile.Visible = False
-                txtFolder.Text = FileUtils.Common.GetMainPath(_DBElement.File.Path).Name
+            'TODO: fix stackMark part
+            Dim FileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.StackedFilename).Trim
+            Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstStackedPath).Replace(FileName, String.Empty).ToLower
+            If Not stackMark = String.Empty Then
+                FileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstStackedPath)
             End If
+            If _DBElement.IsSingle Then
+                txtFolder.Text = _DBElement.FileItem.MainPath.Name
+            Else
+                txtFolder.Text = "$D"
+                txtFolder.Visible = False
+            End If
+            txtFile.Text = FileName
         End If
     End Sub
 

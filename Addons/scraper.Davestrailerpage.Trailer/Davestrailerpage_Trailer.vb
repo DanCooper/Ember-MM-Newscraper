@@ -156,7 +156,7 @@ Public Class Davestrailerpage_Trailer
             tTitle = DBMovie.Movie.OriginalTitle
         End If
 
-        Dim tDavestrailerpageTrailer As New Davestrailerpage.Scraper(tTitle, DBMovie.Movie.IMDB)
+        Dim tDavestrailerpageTrailer As New Davestrailerpage.Scraper(tTitle, DBMovie.Movie.ID)
 
         If tDavestrailerpageTrailer.TrailerList.Count > 0 Then
             TrailerList = tDavestrailerpageTrailer.TrailerList

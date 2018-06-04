@@ -17,20 +17,21 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+
 Imports EmberAPI
+Imports NLog
 Imports System.IO
 Imports System.Text.RegularExpressions
-Imports NLog
 
 Public Class ThumbGenerator
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region
 
-    #Region "Methods"
+#Region "Methods"
 
     ''' <summary>
     ''' Begin the process to extract extrathumbs
@@ -137,38 +138,35 @@ Public Class ThumbGenerator
         ''' </summary>
         Private Sub CreateRandom()
             Try
-                Dim pExt As String = Path.GetExtension(_movie.File.Path).ToLower
-                Dim eMovieFile As String = String.Empty
-                If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso
-                Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
-
+                If Not _movie.FileItem.bIsArchive AndAlso Not _movie.FileItem.bIsDiscImage AndAlso Not _movie.FileItem.bIsDiscStub Then
+                    Dim strFilePath As String = String.Empty
                     Dim intSeconds As Integer = 0
                     Dim intAdd As Integer = 0
-                    Dim tPath As String = String.Empty
+                    Dim strSavePath As String = String.Empty
                     Dim exImage As New Images
 
                     If _isedit Then
-                        tPath = Path.Combine(Master.TempPath, "extrathumbs")
-                        eMovieFile = _movie.File.Path
+                        strSavePath = Path.Combine(Master.TempPath, "extrathumbs")
+                        strFilePath = _movie.FileItem.FirstStackedPath
                     Else 'TODO: chek VIDEO_TS parent
-                        If FileUtils.Common.isVideoTS(_movie.File.Path) Then
-                            tPath = Path.Combine(FileUtils.Common.GetMainPath(_movie.File.Path).FullName, "extrathumbs")
-                            eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.File.Path)
-                        ElseIf FileUtils.Common.isBDRip(_movie.File.Path) Then
-                            tPath = Path.Combine(FileUtils.Common.GetMainPath(_movie.File.Path).FullName, "extrathumbs")
-                            eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.File.Path)
+                        If _movie.FileItem.bIsVideoTS Then
+                            strSavePath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
+                            strFilePath = FileUtils.Common.GetLongestFromRip(_movie.FileItem.FirstStackedPath)
+                        ElseIf _movie.FileItem.bIsBDMV Then
+                            strSavePath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
+                            strFilePath = FileUtils.Common.GetLongestFromRip(_movie.FileItem.FirstStackedPath)
                         Else
-                            tPath = Path.Combine(FileUtils.Common.GetMainPath(_movie.File.Path).FullName, "extrathumbs")
+                            strSavePath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
                             If FileUtils.Common.isVideoTS(_movie.File.Path) OrElse FileUtils.Common.isBDRip(_movie.File.Path) Then
-                                eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.File.Path)
+                                strFilePath = FileUtils.Common.GetLongestFromRip(_movie.File.Path)
                             Else
-                                eMovieFile = _movie.File.Path
+                                strFilePath = _movie.FileItem.FirstStackedPath
                             End If
                         End If
                     End If
 
-                    If Not Directory.Exists(tPath) Then
-                        Directory.CreateDirectory(tPath)
+                    If Not Directory.Exists(strSavePath) Then
+                        Directory.CreateDirectory(strSavePath)
                     End If
 
                     ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
@@ -180,7 +178,7 @@ Public Class ThumbGenerator
 
                     'first get the duration
 
-                    ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", eMovieFile)
+                    ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", strFilePath)
 
                     ffmpeg.Start()
                     Dim d As StreamReader = ffmpeg.StandardError
@@ -237,18 +235,18 @@ Public Class ThumbGenerator
 
                     Dim fThumbs As New List(Of String)
                     Try
-                        fThumbs.AddRange(Directory.GetFiles(tPath, "thumb*.jpg"))
+                        fThumbs.AddRange(Directory.GetFiles(strSavePath, "thumb*.jpg"))
                     Catch
                     End Try
 
                     If fThumbs.Count <= 0 Then
-                        FileUtils.Delete.DeleteDirectory(tPath)
+                        FileUtils.Delete.DeleteDirectory(strSavePath)
                     Else
                         'always set to something if extrathumbs are created so we know during scrapers
                         _setfa = "TRUE"
                         Dim exFanart As New Images
                         If String.IsNullOrEmpty(_movie.ImagesContainer.Fanart.LocalFilePath) Then
-                            exFanart.LoadFromFile(Path.Combine(tPath, "thumb1.jpg"))
+                            exFanart.LoadFromFile(Path.Combine(strSavePath, "thumb1.jpg"))
                             _setfa = exFanart.Save_Movie(_movie, Enums.ModifierType.MainFanart)
                         End If
                     End If

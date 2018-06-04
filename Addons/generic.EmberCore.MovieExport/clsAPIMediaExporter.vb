@@ -450,7 +450,6 @@ Public Class MediaExporter
                 tRes = NFO.GetResolutionFromDimensions(tVid)
 
                 nInfo.vidBitrate = tVid.Bitrate.ToString
-                nInfo.vidFileSize = CStr(tVid.Filesize)
                 nInfo.vidMultiViewCount = tVid.MultiViewCount.ToString
                 nInfo.vidMultiViewLayout = tVid.MultiViewLayout
                 nInfo.vidAspect = tVid.Aspect.ToString
@@ -516,65 +515,6 @@ Public Class MediaExporter
             End If
         End If
         Return nInfo
-    End Function
-
-    Private Function GetFileSize(ByVal fPath As String) As String
-        Dim fSize As Long = 0
-
-        If Not String.IsNullOrEmpty(fPath) Then
-            If FileUtils.Common.isStacked(fPath) OrElse FileUtils.Common.isVideoTS(fPath) OrElse FileUtils.Common.isBDRip(fPath) Then
-                Try
-                    Dim sExt As String = Path.GetExtension(fPath).ToLower
-                    Dim oFile As String = FileUtils.Common.RemoveStackingMarkers(fPath)
-                    Dim sFile As New List(Of String)
-                    Dim bIsVTS As Boolean = False
-
-                    If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
-                        bIsVTS = True
-                    End If
-
-                    If bIsVTS Then
-                        Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "VTS*.VOB"))
-                        Catch
-                        End Try
-                    ElseIf sExt = ".m2ts" Then
-                        Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.m2ts"))
-                        Catch
-                        End Try
-                    Else
-                        Try
-                            Dim strName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(fPath))
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, String.Concat(strName, "*")))
-                        Catch
-                        End Try
-                    End If
-
-                    For Each tFile As String In sFile
-                        fSize += New FileInfo(tFile).Length
-                    Next
-                Catch ex As Exception
-                End Try
-            Else
-                fSize = New FileInfo(fPath).Length
-            End If
-
-            Select Case fSize
-                Case 0 To 1023
-                    Return fSize & " Bytes"
-                Case 1024 To 1048575
-                    Return String.Concat((fSize / 1024).ToString("###0.00"), " KB")
-                Case 1048576 To 1043741824
-                    Return String.Concat((fSize / 1024 ^ 2).ToString("###0.00"), " MB")
-                Case Is > 1043741824
-                    Return String.Concat((fSize / 1024 ^ 3).ToString("###0.00"), " GB")
-            End Select
-        Else
-            Return String.Empty
-        End If
-
-        Return String.Empty
     End Function
 
     Private Shared Sub CopyDirectory(ByVal SourcePath As String, ByVal DestPath As String, Optional ByVal Overwrite As Boolean = False)
@@ -710,11 +650,11 @@ Public Class MediaExporter
 
         'Special Strings
         strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
-        strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(tMovie.File.Path)))
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.File.Path)))
-        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tMovie.File.Path)))
+        strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(tMovie.FileItem.MainPath.FullName)))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.FileItem.FirstStackedPath)))
+        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(tMovie.FileItem.TotalSizeAsReadableString))
         strRow = strRow.Replace("<$NOW>", Date.Now.ToLongDateString) 'Save Build Date. might be useful info!
-        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.File.Path))
+        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.FileItem.MainPath.FullName))
 
         'Images
         With tMovie.ImagesContainer
@@ -750,7 +690,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$DATEMODIFIED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tMovie.DateModified).ToString("dd.MM.yyyy")))
         strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Directors.ToArray)))
         strRow = strRow.Replace("<$GENRES>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Genres.ToArray)))
-        strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tMovie.Movie.IMDB))
+        strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tMovie.Movie.ID))
         strRow = strRow.Replace("<$LANGUAGE>", StringUtils.HtmlEncode(tMovie.Movie.Language))
         strRow = strRow.Replace("<$LASTPLAYED>", StringUtils.HtmlEncode(tMovie.Movie.LastPlayed))
         strRow = strRow.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(tMovie.ListTitle))
@@ -802,7 +742,6 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$VIDEOBITRATE>", fInfo.vidBitrate)
         strRow = strRow.Replace("<$VIDEODIMENSIONS>", fInfo.vidDimensions)
         strRow = strRow.Replace("<$VIDEODURATION>", fInfo.vidDuration)
-        strRow = strRow.Replace("<$VIDEOFILESIZE>", fInfo.vidFileSize)
         strRow = strRow.Replace("<$VIDEOHEIGHT>", fInfo.vidHeight)
         strRow = strRow.Replace("<$VIDEOLANGUAGE>", fInfo.vidLanguage)
         strRow = strRow.Replace("<$VIDEOLONGLANGUAGE>", fInfo.vidLongLanguage)
@@ -840,10 +779,10 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
         strRow = strRow.Replace("<$COUNT_TVSEASON>", _iCounter_TVSeason.ToString)
         strRow = strRow.Replace("<$COUNT_TVEPISODE>", _iCounter_TVEpisode.ToString)
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.File.Path)))
-        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tEpisode.File.Path)))
-        strRow = strRow.Replace("<$MISSING>", If(tEpisode.File.IDSpecified, "false", "true"))
-        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tEpisode.File.Path))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.FileItem.FirstStackedPath)))
+        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(tEpisode.FileItem.TotalSizeAsReadableString))
+        strRow = strRow.Replace("<$MISSING>", If(tEpisode.FileItem.IDSpecified, "false", "true"))
+        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tEpisode.FileItem.MainPath.FullName))
 
         'Images
         With tEpisode.ImagesContainer
@@ -911,7 +850,6 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$VIDEOBITRATE>", fInfo.vidBitrate)
         strRow = strRow.Replace("<$VIDEODIMENSIONS>", fInfo.vidDimensions)
         strRow = strRow.Replace("<$VIDEODURATION>", fInfo.vidDuration)
-        strRow = strRow.Replace("<$VIDEOFILESIZE>", fInfo.vidFileSize)
         strRow = strRow.Replace("<$VIDEOHEIGHT>", fInfo.vidHeight)
         strRow = strRow.Replace("<$VIDEOLANGUAGE>", fInfo.vidLanguage)
         strRow = strRow.Replace("<$VIDEOLONGLANGUAGE>", fInfo.vidLongLanguage)
@@ -1095,8 +1033,6 @@ Public Class MediaExporter
         Public Property vidDimensions() As String = String.Empty
 
         Public Property vidDuration() As String = String.Empty
-
-        Public Property vidFileSize() As String = String.Empty
 
         Public Property vidHeight() As String = String.Empty
 

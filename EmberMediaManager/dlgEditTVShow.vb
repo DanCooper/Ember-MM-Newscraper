@@ -1086,7 +1086,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tmpDBElement, True) Then
+        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tmpDBElement, True) Then
             If Not Master.eSettings.TVShowBannerAnyEnabled Then tcEdit.TabPages.Remove(tpBanner)
             If Not Master.eSettings.TVShowCharacterArtAnyEnabled Then tcEdit.TabPages.Remove(tpCharacterArt)
             If Not Master.eSettings.TVShowClearArtAnyEnabled Then tcEdit.TabPages.Remove(tpClearArt)

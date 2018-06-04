@@ -587,9 +587,9 @@ Public Class TMDB_Data
             Task.Run(Function() _TMDBAPI_Movie.CreateAPI(_SpecialSettings_Movie))
         End If
         If _TMDBAPI_Movie.IsClientCreated Then
-            If DBMovie.Movie.IMDBSpecified Then
+            If DBMovie.Movie.IDSpecified Then
                 'IMDB-ID is available
-                sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.IMDB))
+                sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.ID))
             ElseIf DBMovie.Movie.TMDBSpecified Then
                 'TMDB-ID is available
                 sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.TMDB))
@@ -650,9 +650,9 @@ Public Class TMDB_Data
             If oDBElement.Movie.TMDBSpecified Then
                 'TMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
                 nMovie = _TMDBAPI_Movie.GetInfo_Movie(oDBElement.Movie.TMDB, FilteredOptions, False)
-            ElseIf oDBElement.Movie.IMDBSpecified Then
+            ElseIf oDBElement.Movie.IDSpecified Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                nMovie = _TMDBAPI_Movie.GetInfo_Movie(oDBElement.Movie.IMDB, FilteredOptions, False)
+                nMovie = _TMDBAPI_Movie.GetInfo_Movie(oDBElement.Movie.ID, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID or TMDB-ID for movie --> search first and try to get ID!
                 If oDBElement.Movie.TitleSpecified Then
@@ -680,7 +680,7 @@ Public Class TMDB_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If Not oDBElement.Movie.TMDBSpecified Then
                 Using dlgSearch As New dlgTMDBSearchResults_Movie(_SpecialSettings_Movie, _TMDBAPI_Movie)
-                    If dlgSearch.ShowDialog(oDBElement.Movie.Title, oDBElement.File.Path, FilteredOptions, oDBElement.Movie.Year) = DialogResult.OK Then
+                    If dlgSearch.ShowDialog(oDBElement.Movie.Title, oDBElement.FileItem.FirstStackedPath, FilteredOptions, oDBElement.Movie.Year) = DialogResult.OK Then
                         nMovie = _TMDBAPI_Movie.GetInfo_Movie(dlgSearch.Result.TMDB, FilteredOptions, False)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False

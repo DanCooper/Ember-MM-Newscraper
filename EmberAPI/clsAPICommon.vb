@@ -1333,7 +1333,7 @@ Public Class Functions
 
             For Each sDir As DirectoryInfo In dInfo.GetDirectories
                 For Each pattern In SeasonFolderPattern
-                    For Each sMatch As Match In Regex.Matches(FileUtils.Common.GetDirectory(sDir.FullName), pattern, RegexOptions.IgnoreCase)
+                    For Each sMatch As Match In Regex.Matches(sDir.Name, pattern, RegexOptions.IgnoreCase)
                         Try
                             If (Integer.TryParse(sMatch.Groups("season").Value, 0) AndAlso iSeason = Convert.ToInt32(sMatch.Groups("season").Value)) OrElse (Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) AndAlso iSeason = 0) Then
                                 Return sDir.FullName
@@ -1347,24 +1347,6 @@ Public Class Functions
         End If
         'no matches
         Return String.Empty
-    End Function
-    ''' <summary>
-    ''' Determine whether the supplied path is already defined as a TV Show season subdirectory
-    ''' </summary>
-    ''' <param name="sPath">The path to look for</param>
-    ''' <returns><c>True</c> if the supplied path is found in the list of configured TV Show season directories, <c>False</c> otherwise</returns>
-    ''' <remarks></remarks>
-    Public Shared Function IsSeasonDirectory(ByVal sPath As String) As Boolean
-        'TODO Warning - Potential for false positives and false negatives as paths can be defined in different ways to arrive at the same destination
-        Dim SeasonFolderPattern As New List(Of String)
-        SeasonFolderPattern.Add("(?<season>specials?)$")
-        SeasonFolderPattern.Add("^(s(eason)?)?[\W_]*(?<season>[0-9]+)$")
-        SeasonFolderPattern.Add("[^\w]s(eason)?[\W_]*(?<season>[0-9]+)")
-        For Each pattern In SeasonFolderPattern
-            If Regex.IsMatch(FileUtils.Common.GetDirectory(sPath), pattern, RegexOptions.IgnoreCase) Then Return True
-        Next
-        'no matches
-        Return False
     End Function
     ''' <summary>
     ''' Convert a List(of T) to a string of separated values

@@ -121,7 +121,7 @@ Public Class Images
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_Movie(ByVal DBMovie As Database.DBElement, ByVal ImageType As Enums.ModifierType, ByVal ForceFileCleanup As Boolean)
-        If Not DBMovie.File.PathSpecified Then Return
+        If Not DBMovie.FileItem.FullPathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie, ImageType, ForceFileCleanup)
@@ -142,7 +142,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovie.File.Path & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovie.FileItem.FirstStackedPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -190,7 +190,7 @@ Public Class Images
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal ImageType As Enums.ModifierType)
-        If Not DBTVEpisode.File.PathSpecified Then Return
+        If Not DBTVEpisode.FileItem.FullPathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, ImageType)
@@ -207,7 +207,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBTVEpisode.FileItem.FirstStackedPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -844,7 +844,7 @@ Public Class Images
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
-        If Not mMovie.File.PathSpecified Then Return efPath
+        If Not mMovie.FileItem.FullPathSpecified Then Return String.Empty
 
         Dim doResize As Boolean = False
         If Master.eSettings.MovieExtrafanartsResize Then
@@ -922,7 +922,7 @@ Public Class Images
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
-        If Not mMovie.File.PathSpecified Then Return etPath
+        If Not mMovie.FileItem.FullPathSpecified Then Return String.Empty
 
         Dim doResize As Boolean = False
         If Master.eSettings.MovieExtrathumbsResize Then

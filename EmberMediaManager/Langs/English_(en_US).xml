@@ -536,7 +536,7 @@
   <string id="535">Edit Source</string>
   <string id="536">Miscellaneous Options</string>
   <string id="537">Recognize VIDEO_TS{0}without VIDEO_TS folder</string>
-  <string id="538">Skip Size Check of Stacked Files</string>
+  <string id="538"></string>
   <string id="539">MB</string>
   <string id="540">Skip files smaller than:</string>
   <string id="541">Use Fanart for Place Holder Video</string>
@@ -1543,7 +1543,7 @@
   <string id="1452">Playcount</string>
   <string id="1453">Not Found On Kodi Host</string>
   <string id="1454">Get Watched State from</string>
-  <string id="1455">Filesize [MB]</string>
+  <string id="1455">Filesize</string>
   <string id="1456">Include Distributors</string>
   <string id="1457">Autoscraper</string>
   <string id="1458">Imagedialog</string>

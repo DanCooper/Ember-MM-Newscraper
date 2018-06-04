@@ -248,8 +248,8 @@ Public Class clsAPITMDB
         Dim strUniqueID As String = String.Empty
         If DBMovie.Movie.TMDBSpecified Then
             strUniqueID = DBMovie.Movie.TMDB
-        ElseIf DBMovie.Movie.IMDBSpecified Then
-            strUniqueID = DBMovie.Movie.IMDB
+        ElseIf DBMovie.Movie.IDSpecified Then
+            strUniqueID = DBMovie.Movie.ID
         End If
 
         If Not String.IsNullOrEmpty(strUniqueID) Then
@@ -341,7 +341,7 @@ Public Class clsAPITMDB
 
         'IDs
         nMovie.TMDB = CStr(Result.Id)
-        If Result.ImdbId IsNot Nothing Then nMovie.IMDB = Result.ImdbId
+        If Result.ImdbId IsNot Nothing Then nMovie.ID = Result.ImdbId
 
         If bwTMDB.CancellationPending Or Result Is Nothing Then Return Nothing
 
@@ -356,7 +356,8 @@ Public Class clsAPITMDB
                                       .Name = aCast.Name,
                                       .Role = aCast.Character,
                                       .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                      .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
+                                      .UniqueIDs = New MediaContainers.UniqueidContainer With {.Items = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})}
+                                      })
                 Next
             End If
         End If
@@ -746,10 +747,12 @@ Public Class clsAPITMDB
                         Dim nUniqueID As New MediaContainers.Uniqueid With {
                             .Type = "tmdb",
                             .Value = aCast.Id.ToString}
-                        nTVShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                               .Role = aCast.Character,
-                                                                               .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                                                               .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
+                        nTVShow.Actors.Add(New MediaContainers.Person With {
+                                           .Name = aCast.Name,
+                                           .Role = aCast.Character,
+                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
+                                           .UniqueIDs = New MediaContainers.UniqueidContainer With {.Items = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})}
+                                           })
                     Next
                 End If
             End If
@@ -1018,10 +1021,12 @@ Public Class clsAPITMDB
                     Dim nUniqueID As New MediaContainers.Uniqueid With {
                         .Type = "tmdb",
                         .Value = aCast.Id.ToString}
-                    nTVEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                           .Role = aCast.Character,
-                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                                                           .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
+                    nTVEpisode.Actors.Add(New MediaContainers.Person With {
+                                          .Name = aCast.Name,
+                                          .Role = aCast.Character,
+                                          .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
+                                          .UniqueIDs = New MediaContainers.UniqueidContainer With {.Items = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})}
+                                          })
                 Next
             End If
         End If
@@ -1063,10 +1068,12 @@ Public Class clsAPITMDB
                     Dim nUniqueID As New MediaContainers.Uniqueid With {
                         .Type = "tmdb",
                         .Value = aCast.Id.ToString}
-                    nTVEpisode.GuestStars.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                           .Role = aCast.Character,
-                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                                                           .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
+                    nTVEpisode.GuestStars.Add(New MediaContainers.Person With {
+                                              .Name = aCast.Name,
+                                              .Role = aCast.Character,
+                                              .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
+                                              .UniqueIDs = New MediaContainers.UniqueidContainer With {.Items = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})}
+                                              })
                 Next
             End If
         End If
@@ -1300,7 +1307,7 @@ Public Class clsAPITMDB
                     Return GetInfo_Movie(r.Matches.Item(0).TMDB, FilteredOptions, False)
                 Else
                     Using dlgSearch As New dlgTMDBSearchResults_Movie(_addonSettings, Me)
-                        If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.File.Path) = DialogResult.OK Then
+                        If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.FileItem.FirstStackedPath) = DialogResult.OK Then
                             If Not String.IsNullOrEmpty(dlgSearch.Result.TMDB) Then
                                 Return GetInfo_Movie(dlgSearch.Result.TMDB, FilteredOptions, False)
                             End If

@@ -222,11 +222,13 @@ Namespace TVDBs
                         Dim nUniqueID As New MediaContainers.Uniqueid With {
                             .Type = "tvdb",
                             .Value = aCast.Id.ToString}
-                        nTVShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                          .Order = aCast.SortOrder,
-                                                                          .Role = aCast.Role,
-                                                                          .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
-                                                                          .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
+                        nTVShow.Actors.Add(New MediaContainers.Person With {
+                                           .Name = aCast.Name,
+                                           .Order = aCast.SortOrder,
+                                           .Role = aCast.Role,
+                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
+                                           .UniqueIDs = New MediaContainers.UniqueidContainer With {.Items = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})}
+                                           })
                     Next
                 End If
             End If
@@ -461,11 +463,13 @@ Namespace TVDBs
                         Dim nUniqueID As New MediaContainers.Uniqueid With {
                             .Type = "tvdb",
                             .Value = aCast.Id.ToString}
-                        nTVEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                          .Order = aCast.SortOrder,
-                                                                          .Role = aCast.Role,
-                                                                          .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
-                                                                          .UniqueIDs = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})})
+                        nTVEpisode.Actors.Add(New MediaContainers.Person With {
+                                              .Name = aCast.Name,
+                                              .Order = aCast.SortOrder,
+                                              .Role = aCast.Role,
+                                              .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
+                                              .UniqueIDs = New MediaContainers.UniqueidContainer With {.Items = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})}
+                                              })
                     Next
                 End If
             End If

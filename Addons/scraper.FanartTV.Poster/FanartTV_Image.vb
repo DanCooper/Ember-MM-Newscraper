@@ -538,8 +538,8 @@ Public Class FanartTV_Image
 
         If DBMovie.Movie.TMDBSpecified Then
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDB, FilteredModifiers)
-        ElseIf DBMovie.Movie.IMDBSpecified Then
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.IMDB, FilteredModifiers)
+        ElseIf DBMovie.Movie.IDSpecified Then
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.ID, FilteredModifiers)
         Else
             logger.Trace(String.Concat("[FanartTV_Image] [Scraper_Movie] [Abort] No TMDB and IMDB ID exist to search: ", DBMovie.ListTitle))
         End If
@@ -552,7 +552,7 @@ Public Class FanartTV_Image
         logger.Trace("[FanartTV_Image] [Scraper_MovieSet] [Start]")
 
         If String.IsNullOrEmpty(DBMovieset.MovieSet.TMDB) AndAlso DBMovieset.MoviesInSetSpecified Then
-            DBMovieset.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.MoviesInSet.Item(0).DBMovie.Movie.IMDB)
+            DBMovieset.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.MoviesInSet.Item(0).DBMovie.Movie.ID)
         End If
 
         If DBMovieset.MovieSet.TMDBSpecified Then

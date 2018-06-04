@@ -97,7 +97,7 @@ Public Class dlgTagManager
         'load current movielist-view/selection
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
             Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 lstFilteredMovies.Add(DBElement)
             End If
         Next
@@ -284,7 +284,7 @@ Public Class dlgTagManager
                             If Not _tag.Movies Is Nothing Then
                                 Dim alreadyintag As Boolean = False
                                 For Each movie In _tag.Movies
-                                    If movie.Movie.Title = tmpMovie.Movie.Title AndAlso movie.Movie.IMDB = tmpMovie.Movie.IMDB Then
+                                    If movie.Movie.Title = tmpMovie.Movie.Title AndAlso movie.Movie.ID = tmpMovie.Movie.ID Then
                                         alreadyintag = True
                                     End If
                                 Next
@@ -545,7 +545,7 @@ Public Class dlgTagManager
             'load current movielist-view/selection
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
             Next
@@ -561,7 +561,7 @@ Public Class dlgTagManager
             'load current movielist-view/selection
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
             Next
@@ -580,7 +580,7 @@ Public Class dlgTagManager
                                                             "ORDER BY listTitle COLLATE NOCASE;"))
             For Each sRow As DataRow In dtmovies.Rows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow("idMovie")))
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
             Next

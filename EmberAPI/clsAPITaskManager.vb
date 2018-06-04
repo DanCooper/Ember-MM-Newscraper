@@ -452,7 +452,7 @@ Public Class TaskManager
                                     End Using
 
                                     Using sqlCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                                        sqlCommand.CommandText = String.Format("SELECT path FROM file WHERE idfile={0};", Convert.ToInt64(SQLReader_GetMovies("idFile")))
+                                        sqlCommand.CommandText = String.Format("SELECT path FROM file WHERE idFile={0};", Convert.ToInt64(SQLReader_GetMovies("idFile")))
                                         Using sqlReader As SQLite.SQLiteDataReader = sqlCommand.ExecuteReader()
                                             If sqlReader.HasRows Then
                                                 sqlReader.Read()
@@ -461,7 +461,9 @@ Public Class TaskManager
                                         End Using
                                     End Using
 
-                                    bLevFail_NewValue = StringUtils.ComputeLevenshtein(SQLReader_GetMovies("title").ToString, StringUtils.FilterTitleFromPath_Movie(strPath, bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
+                                    If Not String.IsNullOrEmpty(strPath) Then
+                                        bLevFail_NewValue = StringUtils.ComputeLevenshtein(SQLReader_GetMovies("title").ToString, StringUtils.FilterTitleFromPath_Movie(New FileItem(strPath), bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
+                                    End If
 
                                     If Not bLevFail_OldValue = bLevFail_NewValue Then
                                         par_outOfTolerance.Value = bLevFail_NewValue
@@ -512,7 +514,7 @@ Public Class TaskManager
                             Master.DB.Save_TVSeason(nMissingSeason, True, False, False)
                             bNewSeasons = True
                         Next
-                        For Each nMissingEpisode In tmpDBElement.Episodes.Where(Function(f) Not f.File.PathSpecified)
+                        For Each nMissingEpisode In tmpDBElement.Episodes.Where(Function(f) Not f.FileItem.FullPathSpecified)
                             Master.DB.Save_TVEpisode(nMissingEpisode, True, False, False, False, False)
                         Next
                     End If

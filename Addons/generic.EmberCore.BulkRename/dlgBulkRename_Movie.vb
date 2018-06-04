@@ -136,7 +136,7 @@ Public Class dlgBulkRenamer_Movie
                                     _tmpPath = SQLreader("NfoPath").ToString
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
                                         Dim _currMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt32(SQLreader("idMovie")))
-                                        If _currMovie.IDSpecified AndAlso _currMovie.File.PathSpecified Then
+                                        If _currMovie.IDSpecified AndAlso _currMovie.FileItem.FullPathSpecified Then
                                             Dim MovieFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_Movie(_currMovie)
                                             FFRenamer.Add_Movie(MovieFile)
                                             bwLoadInfo.ReportProgress(iProg, _currMovie.ListTitle)

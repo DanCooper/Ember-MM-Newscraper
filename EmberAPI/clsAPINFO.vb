@@ -79,8 +79,8 @@ Public Class NFO
         For Each scrapedmovie In ScrapedList
 
             'IDs
-            If scrapedmovie.IMDBSpecified Then
-                DBMovie.Movie.IMDB = scrapedmovie.IMDB
+            If scrapedmovie.IDSpecified Then
+                DBMovie.Movie.ID = scrapedmovie.ID
             End If
             If scrapedmovie.TMDBSpecified Then
                 DBMovie.Movie.TMDB = scrapedmovie.TMDB
@@ -359,18 +359,18 @@ Public Class NFO
         Next
 
         'UniqueIDs
-        DBMovie.Movie.UniqueIDs.Clear()
-        If DBMovie.Movie.IMDBSpecified Then
-            DBMovie.Movie.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = True,
-                                        .Type = "imdb",
-                                        .Value = DBMovie.Movie.IMDB})
+        DBMovie.Movie.UniqueIDs.Items.Clear()
+        If DBMovie.Movie.IDSpecified Then
+            DBMovie.Movie.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
+                                              .IsDefault = True,
+                                              .Type = "imdb",
+                                              .Value = DBMovie.Movie.ID})
         End If
         If DBMovie.Movie.TMDBSpecified Then
-            DBMovie.Movie.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = False,
-                                        .Type = "tmdb",
-                                        .Value = DBMovie.Movie.TMDB})
+            DBMovie.Movie.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
+                                              .IsDefault = False,
+                                              .Type = "tmdb",
+                                              .Value = DBMovie.Movie.TMDB})
         End If
 
         'Certification for MPAA
@@ -422,7 +422,7 @@ Public Class NFO
                 DBMovie.ListTitle = tTitle
             End If
         Else
-            DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.File.Path, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
+            DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.FileItem, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
         Return DBMovie
@@ -756,24 +756,24 @@ Public Class NFO
         Next
 
         'UniqueIDs
-        DBTV.TVShow.UniqueIDs.Clear()
+        DBTV.TVShow.UniqueIDs.Items.Clear()
         If DBTV.TVShow.TVDBSpecified Then
-            DBTV.TVShow.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = True,
-                                        .Type = "tvdb",
-                                        .Value = DBTV.TVShow.TVDB})
+            DBTV.TVShow.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
+                                            .IsDefault = True,
+                                            .Type = "tvdb",
+                                            .Value = DBTV.TVShow.TVDB})
         End If
         If DBTV.TVShow.IMDBSpecified Then
-            DBTV.TVShow.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = False,
-                                        .Type = "imdb",
-                                        .Value = DBTV.TVShow.IMDB})
+            DBTV.TVShow.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
+                                            .IsDefault = False,
+                                            .Type = "imdb",
+                                            .Value = DBTV.TVShow.IMDB})
         End If
         If DBTV.TVShow.TMDBSpecified Then
-            DBTV.TVShow.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = False,
-                                        .Type = "tmdb",
-                                        .Value = DBTV.TVShow.TMDB})
+            DBTV.TVShow.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
+                                            .IsDefault = False,
+                                            .Type = "tmdb",
+                                            .Value = DBTV.TVShow.TMDB})
         End If
 
         'Certification for MPAA
@@ -868,7 +868,7 @@ Public Class NFO
                     Next
 
                     'check if we have a local episode file for this scraped episode
-                    Dim lEpisodeList = DBTV.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.File.Path) AndAlso f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
+                    Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.FileItem.FullPathSpecified AndAlso f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
 
                     If lEpisodeList IsNot Nothing AndAlso lEpisodeList.Count > 0 Then
                         For Each nEpisode As Database.DBElement In lEpisodeList
@@ -876,7 +876,7 @@ Public Class NFO
                         Next
                     Else
                         'try to get the episode by AiredDate
-                        Dim dEpisodeList = DBTV.Episodes.Where(Function(f) f.File.PathSpecified AndAlso
+                        Dim dEpisodeList = DBTV.Episodes.Where(Function(f) f.FileItem.FullPathSpecified AndAlso
                                                                    f.TVEpisode.Episode = -1 AndAlso
                                                                    f.TVEpisode.AiredSpecified AndAlso
                                                                    f.TVEpisode.Aired = strAiredDate)
@@ -1160,24 +1160,24 @@ Public Class NFO
         Next
 
         'UniqueIDs
-        DBTVEpisode.TVEpisode.UniqueIDs.Clear()
+        DBTVEpisode.TVEpisode.UniqueIDs.Items.Clear()
         If DBTVEpisode.TVEpisode.TVDBSpecified Then
-            DBTVEpisode.TVEpisode.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = True,
-                                        .Type = "tvdb",
-                                        .Value = DBTVEpisode.TVEpisode.TVDB})
+            DBTVEpisode.TVEpisode.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
+                                                      .IsDefault = True,
+                                                      .Type = "tvdb",
+                                                      .Value = DBTVEpisode.TVEpisode.TVDB})
         End If
         If DBTVEpisode.TVEpisode.IMDBSpecified Then
-            DBTVEpisode.TVEpisode.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = False,
-                                        .Type = "imdb",
-                                        .Value = DBTVEpisode.TVEpisode.IMDB})
+            DBTVEpisode.TVEpisode.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
+                                                      .IsDefault = False,
+                                                      .Type = "imdb",
+                                                      .Value = DBTVEpisode.TVEpisode.IMDB})
         End If
         If DBTVEpisode.TVEpisode.TMDBSpecified Then
-            DBTVEpisode.TVEpisode.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = False,
-                                        .Type = "tmdb",
-                                        .Value = DBTVEpisode.TVEpisode.TMDB})
+            DBTVEpisode.TVEpisode.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
+                                                      .IsDefault = False,
+                                                      .Type = "tmdb",
+                                                      .Value = DBTVEpisode.TVEpisode.TMDB})
         End If
 
         'Add GuestStars to Actors
@@ -1385,7 +1385,7 @@ Public Class NFO
     ''' <param name="DBMovie"></param>
     ''' <remarks></remarks>
     Public Shared Sub DeleteNFO_Movie(ByVal DBMovie As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-        If Not DBMovie.File.PathSpecified Then Return
+        If Not DBMovie.FileItem.FullPathSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainNFO, ForceFileCleanup)
@@ -1394,7 +1394,7 @@ Public Class NFO
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.File.Path & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.FileItem.FirstStackedPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -1412,7 +1412,7 @@ Public Class NFO
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.File.Path & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.FileItem.FirstStackedPath & ">")
         End Try
     End Sub
 
@@ -1434,75 +1434,77 @@ Public Class NFO
         End If
     End Sub
 
-    Public Shared Function FIToString(ByVal miFI As MediaContainers.FileInfo, ByVal isTV As Boolean) As String
-        '//
-        ' Convert Fileinfo into a string to be displayed in the GUI
-        '\\
-
+    Public Shared Function FIToString(ByVal dbElement As Database.DBElement) As String
         Dim strOutput As New StringBuilder
         Dim iVS As Integer = 1
         Dim iAS As Integer = 1
         Dim iSS As Integer = 1
+        Dim nFileInfo As New MediaContainers.FileInfo
 
-        Try
-            If miFI IsNot Nothing Then
+        Select Case dbElement.ContentType
+            Case Enums.ContentType.Movie
+                nFileInfo = dbElement.Movie.FileInfo
+            Case Enums.ContentType.TVEpisode
+                nFileInfo = dbElement.TVEpisode.FileInfo
+        End Select
 
-                If miFI.StreamDetails IsNot Nothing Then
-                    If miFI.StreamDetails.VideoSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(595, "Video Streams"), miFI.StreamDetails.Video.Count.ToString, Environment.NewLine)
-                    If miFI.StreamDetails.AudioSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(596, "Audio Streams"), miFI.StreamDetails.Audio.Count.ToString, Environment.NewLine)
-                    If miFI.StreamDetails.SubtitleSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(597, "Subtitle  Streams"), miFI.StreamDetails.Subtitle.Count.ToString, Environment.NewLine)
-                    For Each miVideo As MediaContainers.Video In miFI.StreamDetails.Video
-                        strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(617, "Video Stream"), iVS)
-                        If miVideo.WidthSpecified AndAlso miVideo.HeightSpecified Then strOutput.AppendFormat("- {0}{1}", String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), miVideo.Width, miVideo.Height), Environment.NewLine)
-                        If miVideo.AspectSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(614, "Aspect Ratio"), miVideo.Aspect, Environment.NewLine)
-                        If miVideo.ScantypeSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(605, "Scan Type"), miVideo.Scantype, Environment.NewLine)
-                        If miVideo.CodecSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miVideo.Codec, Environment.NewLine)
-                        If miVideo.BitrateSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miVideo.Bitrate, Environment.NewLine)
-                        If miVideo.DurationSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(609, "Duration"), miVideo.Duration, Environment.NewLine)
-                        'for now return filesize in mbytes instead of bytes(default)
-                        If miVideo.Filesize > 0 Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1455, "Filesize [MB]"), CStr(NumUtils.ConvertBytesTo(CLng(miVideo.Filesize), NumUtils.FileSizeUnit.Megabyte, 0)), Environment.NewLine)
-                        If miVideo.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(610, "Language"), miVideo.LongLanguage, Environment.NewLine)
-                        If miVideo.MultiViewCountSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1156, "MultiView Count"), miVideo.MultiViewCount, Environment.NewLine)
-                        If miVideo.MultiViewLayoutSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1157, "MultiView Layout"), miVideo.MultiViewLayout, Environment.NewLine)
-                        If miVideo.StereoModeSpecified Then strOutput.AppendFormat("- {0}: {1} ({2})", Master.eLang.GetString(1286, "StereoMode"), miVideo.StereoMode, miVideo.ShortStereoMode)
-                        iVS += 1
-                    Next
+        If nFileInfo IsNot Nothing Then
+            If nFileInfo.StreamDetailsSpecified Then
+                If nFileInfo.StreamDetails.VideoSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(595, "Video Streams"), nFileInfo.StreamDetails.Video.Count.ToString, Environment.NewLine)
+                If nFileInfo.StreamDetails.AudioSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(596, "Audio Streams"), nFileInfo.StreamDetails.Audio.Count.ToString, Environment.NewLine)
+                If nFileInfo.StreamDetails.SubtitleSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(597, "Subtitle  Streams"), nFileInfo.StreamDetails.Subtitle.Count.ToString, Environment.NewLine)
+                'video streams
+                For Each miVideo As MediaContainers.Video In nFileInfo.StreamDetails.Video
+                    strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(617, "Video Stream"), iVS)
+                    If miVideo.WidthSpecified AndAlso miVideo.HeightSpecified Then strOutput.AppendFormat("- {0}{1}", String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), miVideo.Width, miVideo.Height), Environment.NewLine)
+                    If miVideo.AspectSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(614, "Aspect Ratio"), miVideo.Aspect, Environment.NewLine)
+                    If miVideo.ScantypeSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(605, "Scan Type"), miVideo.Scantype, Environment.NewLine)
+                    If miVideo.CodecSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miVideo.Codec, Environment.NewLine)
+                    If miVideo.BitrateSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miVideo.Bitrate, Environment.NewLine)
+                    If miVideo.DurationSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(609, "Duration"), miVideo.Duration, Environment.NewLine)
+                    'for now return filesize in mbytes instead of bytes(default)
+                    If dbElement.FileItemSpecified AndAlso dbElement.FileItem.TotalSizeSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1455, "Filesize"), dbElement.FileItem.TotalSizeAsReadableString, Environment.NewLine)
+                    If miVideo.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(610, "Language"), miVideo.LongLanguage, Environment.NewLine)
+                    If miVideo.MultiViewCountSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1156, "MultiView Count"), miVideo.MultiViewCount, Environment.NewLine)
+                    If miVideo.MultiViewLayoutSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1157, "MultiView Layout"), miVideo.MultiViewLayout, Environment.NewLine)
+                    If miVideo.StereoModeSpecified Then strOutput.AppendFormat("- {0}: {1} ({2})", Master.eLang.GetString(1286, "StereoMode"), miVideo.StereoMode, miVideo.ShortStereoMode)
+                    iVS += 1
+                Next
 
-                    strOutput.Append(Environment.NewLine)
+                strOutput.Append(Environment.NewLine)
 
-                    For Each miAudio As MediaContainers.Audio In miFI.StreamDetails.Audio
-                        'audio
-                        strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(618, "Audio Stream"), iAS.ToString)
-                        If miAudio.CodecSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miAudio.Codec, Environment.NewLine)
-                        If miAudio.ChannelsSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(611, "Channels"), miAudio.Channels, Environment.NewLine)
-                        If miAudio.BitrateSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miAudio.Bitrate, Environment.NewLine)
-                        If miAudio.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miAudio.LongLanguage)
-                        iAS += 1
-                    Next
+                'audio streams
+                For Each miAudio As MediaContainers.Audio In nFileInfo.StreamDetails.Audio
+                    strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(618, "Audio Stream"), iAS.ToString)
+                    If miAudio.CodecSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miAudio.Codec, Environment.NewLine)
+                    If miAudio.ChannelsSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(611, "Channels"), miAudio.Channels, Environment.NewLine)
+                    If miAudio.BitrateSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miAudio.Bitrate, Environment.NewLine)
+                    If miAudio.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miAudio.LongLanguage)
+                    iAS += 1
+                Next
 
-                    strOutput.Append(Environment.NewLine)
+                strOutput.Append(Environment.NewLine)
 
-                    For Each miSub As MediaContainers.Subtitle In miFI.StreamDetails.Subtitle
-                        'subtitles
-                        strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(619, "Subtitle Stream"), iSS.ToString)
-                        If miSub.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miSub.LongLanguage)
-                        iSS += 1
-                    Next
-                End If
+                'subtitle streams
+                For Each miSub As MediaContainers.Subtitle In nFileInfo.StreamDetails.Subtitle
+                    strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(619, "Subtitle Stream"), iSS.ToString)
+                    If miSub.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miSub.LongLanguage)
+                    iSS += 1
+                Next
             End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        End If
 
         If strOutput.ToString.Trim.Length > 0 Then
             Return strOutput.ToString
         Else
-            If isTV Then
-                Return Master.eLang.GetString(504, "Meta Data is not available for this episode. Try rescanning.")
-            Else
-                Return Master.eLang.GetString(419, "Meta Data is not available for this movie. Try rescanning.")
-            End If
+            Select Case dbElement.ContentType
+                Case Enums.ContentType.Movie
+                    Return Master.eLang.GetString(419, "Meta Data is not available for this movie. Try rescanning.")
+                Case Enums.ContentType.TVEpisode
+                    Return Master.eLang.GetString(504, "Meta Data is not available for this episode. Try rescanning.")
+            End Select
         End If
+        Return String.Empty
     End Function
 
     ''' <summary>
@@ -1860,13 +1862,13 @@ Public Class NFO
                     If Not String.IsNullOrEmpty(path) Then
                         Dim sReturn As New NonConf
                         sReturn = GetIMDBFromNonConf(path, isSingle)
-                        xmlMov.IMDB = sReturn.IMDBID
+                        xmlMov.ID = sReturn.IMDBID
                         Try
                             If Not String.IsNullOrEmpty(sReturn.Text) Then
                                 Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                     xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                     xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                    xmlMov.IMDB = sReturn.IMDBID
+                                    xmlMov.ID = sReturn.IMDBID
                                     xmlMov = CleanNFO_Movies(xmlMov)
                                 End Using
                             End If
@@ -1888,13 +1890,13 @@ Public Class NFO
 
                     Dim sReturn As New NonConf
                     sReturn = GetIMDBFromNonConf(path, isSingle)
-                    xmlMov.IMDB = sReturn.IMDBID
+                    xmlMov.ID = sReturn.IMDBID
                     Try
                         If Not String.IsNullOrEmpty(sReturn.Text) Then
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                 xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                 xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                xmlMov.IMDB = sReturn.IMDBID
+                                xmlMov.ID = sReturn.IMDBID
                                 xmlMov = CleanNFO_Movies(xmlMov)
                             End Using
                         End If
@@ -2188,7 +2190,7 @@ Public Class NFO
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            If dbElement.File.PathSpecified Then
+            If dbElement.FileItem.FullPathSpecified Then
                 'cleanup old NFOs if needed
                 If forceFileCleanup Then DeleteNFO_Movie(dbElement, forceFileCleanup)
 
@@ -2293,7 +2295,7 @@ Public Class NFO
 
     Public Shared Sub SaveToNFO_TVEpisode(ByRef dbElement As Database.DBElement)
         Try
-            If dbElement.File.PathSpecified Then
+            If dbElement.FileItem.FullPathSpecified Then
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
                 Dim tTVEpisode As MediaContainers.EpisodeDetails = CType(dbElement.TVEpisode.CloneDeep, MediaContainers.EpisodeDetails)
 
@@ -2328,7 +2330,7 @@ Public Class NFO
                             Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
 
                             parID.Value = dbElement.ID
-                            parFilename.Value = dbElement.File.Path
+                            parFilename.Value = dbElement.FileItem.FullPath
 
                             Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLreader.Read

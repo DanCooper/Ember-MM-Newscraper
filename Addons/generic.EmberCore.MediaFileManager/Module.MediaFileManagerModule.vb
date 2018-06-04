@@ -368,7 +368,7 @@ Public Class FileManagerExternalModule
                             Dim FileDelete As New FileUtils.Delete
                             For Each movieID As Long In MediaToWork
                                 Dim mMovie As Database.DBElement = Master.DB.Load_Movie(movieID)
-                                ItemsToWork = FileDelete.GetItemsToDelete(mMovie)
+                                ItemsToWork = FileUtils.Common.GetAllItemsOfDBElement(mMovie)
                                 If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
                                     If _MySettings.TeraCopy Then
                                         mTeraCopy.Sources.Add(ItemsToWork(0).ToString)

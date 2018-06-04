@@ -837,7 +837,7 @@ Public Class frmMain
         MoveInfoPanel()
     End Sub
 
-    Private Sub btnMIRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
+    Private Sub btnMetaDataRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
         Dim currMainTabTag = GetCurrentMainTabTag()
 
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
@@ -847,7 +847,7 @@ Public Class frmMain
                 CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
             End If
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            If dgvTVEpisodes.SelectedRows.Count = 1 AndAlso currTV.File.PathSpecified Then
+            If dgvTVEpisodes.SelectedRows.Count = 1 AndAlso currTV.FileItem.FullPathSpecified Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
                 CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
@@ -1685,7 +1685,7 @@ Public Class frmMain
             End If
 
             If MainFanart.Image IsNot Nothing Then
-                If String.IsNullOrEmpty(currTV.File.Path) Then
+                If Not currTV.FileItem.IDSpecified Then
                     MainFanart = ImageUtils.AddMissingStamp(MainFanart)
                 ElseIf NeedsGS Then
                     MainFanart = ImageUtils.GrayScale(MainFanart)
@@ -1882,7 +1882,7 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If Not DBScrapeMovie.Movie.IMDBSpecified AndAlso (tScrapeItem.ScrapeModifiers.MainActorthumbs Or tScrapeItem.ScrapeModifiers.MainBanner Or tScrapeItem.ScrapeModifiers.MainClearArt Or
+                If Not DBScrapeMovie.Movie.IDSpecified AndAlso (tScrapeItem.ScrapeModifiers.MainActorthumbs Or tScrapeItem.ScrapeModifiers.MainBanner Or tScrapeItem.ScrapeModifiers.MainClearArt Or
                                                                          tScrapeItem.ScrapeModifiers.MainClearLogo Or tScrapeItem.ScrapeModifiers.MainDiscArt Or tScrapeItem.ScrapeModifiers.MainExtrafanarts Or
                                                                          tScrapeItem.ScrapeModifiers.MainExtrathumbs Or tScrapeItem.ScrapeModifiers.MainFanart Or tScrapeItem.ScrapeModifiers.MainLandscape Or
                                                                          tScrapeItem.ScrapeModifiers.MainPoster Or tScrapeItem.ScrapeModifiers.MainTheme Or tScrapeItem.ScrapeModifiers.MainTrailer) Then
@@ -1903,7 +1903,7 @@ Public Class frmMain
             If Not Cancelled Then
                 If Master.eSettings.MovieScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.MainMeta Then
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
-                    MediaInfo.UpdateFileInfo(DBScrapeMovie)
+                    MetaData.UpdateFileInfo(DBScrapeMovie)
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
 
@@ -2312,8 +2312,8 @@ Public Class frmMain
                 'Episode Meta Data
                 If tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta AndAlso Master.eSettings.TVScraperMetaDataScan Then
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
-                    For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.File.PathSpecified)
-                        MediaInfo.UpdateFileInfo(tEpisode)
+                    For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.FileItem.FullPathSpecified)
+                        MetaData.UpdateFileInfo(tEpisode)
                     Next
                 End If
 
@@ -2427,7 +2427,7 @@ Public Class frmMain
 
             If Not Cancelled Then
                 If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta Then
-                    MediaInfo.UpdateFileInfo(DBScrapeEpisode)
+                    MetaData.UpdateFileInfo(DBScrapeEpisode)
                 End If
                 If bwTVEpisodeScraper.CancellationPending Then Exit For
 
@@ -4178,7 +4178,7 @@ Public Class frmMain
                 If dlgChangeEp.ShowDialog = DialogResult.OK Then
                     If dlgChangeEp.Result.Count > 0 Then
                         If Master.eSettings.TVScraperMetaDataScan Then
-                            MediaInfo.UpdateFileInfo(tmpEpisode)
+                            MetaData.UpdateFileInfo(tmpEpisode)
                         End If
                         Master.DB.Change_TVEpisode(tmpEpisode, dlgChangeEp.Result, False)
                     End If
@@ -5545,7 +5545,7 @@ Public Class frmMain
                 bwDownloadPic.IsBusy OrElse bwDownloadGuestStarPic.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy _
                 OrElse bwCleanDB.IsBusy OrElse bwRewriteContent.IsBusy Then Return
 
-                SetStatus(currMovie.File.Path)
+                SetStatus(currMovie.FileItem.FullPath)
 
                 If dgvMovies.SelectedRows.Count > 1 Then Return
 
@@ -5571,6 +5571,8 @@ Public Class frmMain
             Dim dgvHTI As DataGridView.HitTestInfo = dgvMovies.HitTest(e.X, e.Y)
 
             If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+                Dim bEnableIMDB As Boolean = False
+                Dim bEnableTMDB As Boolean = False
                 If dgvMovies.SelectedRows.Count > 1 AndAlso dgvMovies.Rows(dgvHTI.RowIndex).Selected Then
                     Dim bShowMark As Boolean = False
                     Dim bShowUnmark As Boolean = False
@@ -5587,32 +5589,38 @@ Public Class frmMain
                     cmnuMovieScrape.Visible = False
 
                     For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                        'if any one item is set as unmarked, show menu "Mark"
-                        'if any one item is set as marked, show menu "Unmark"
+                        'if any item is set as unmarked, show menu "Mark"
+                        'if any item is set as marked, show menu "Unmark"
                         If Not Convert.ToBoolean(sRow.Cells("marked").Value) Then
                             bShowMark = True
-                            If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                            If bEnableIMDB AndAlso bEnableTMDB AndAlso bShowUnmark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         Else
                             bShowUnmark = True
-                            If bShowMark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                            If bEnableIMDB AndAlso bEnableTMDB AndAlso bShowMark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         End If
-                        'if any one item is set as unlocked, show menu "Lock"
-                        'if any one item is set as locked, show menu "Unlock"
+                        'if any item is set as unlocked, show menu "Lock"
+                        'if any item is set as locked, show menu "Unlock"
                         If Not Convert.ToBoolean(sRow.Cells("locked").Value) Then
                             bShowLock = True
-                            If bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                            If bEnableIMDB AndAlso bEnableTMDB AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         Else
                             bShowUnlock = True
-                            If bShowLock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowLock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                            If bEnableIMDB AndAlso bEnableTMDB AndAlso bShowLock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowLock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         End If
-                        'if any one item is set as unwatched, show menu "Mark as Watched"
-                        'if any one item is set as watched, show menu "Mark as Unwatched"
+                        'if any item is set as unwatched, show menu "Mark as Watched"
+                        'if any item is set as watched, show menu "Mark as Unwatched"
                         If String.IsNullOrEmpty(sRow.Cells("playcount").Value.ToString) OrElse sRow.Cells("playcount").Value.ToString = "0" Then
                             bShowWatched = True
-                            If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowUnwatched Then Exit For
+                            If bEnableIMDB AndAlso bEnableTMDB AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowUnwatched Then Exit For
                         Else
                             bShowUnwatched = True
-                            If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched Then Exit For
+                            If bEnableIMDB AndAlso bEnableTMDB AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched Then Exit For
+                        End If
+                        'if any item has an IMDB ID, enable button "Open IMDB-Page"
+                        If Not String.IsNullOrEmpty(sRow.Cells("uniqueid").Value.ToString) Then
+                            Dim nUIdContainer As New MediaContainers.UniqueidContainer(sRow.Cells("uniqueid").Value.ToString)
+                            If Not String.IsNullOrEmpty(nUIdContainer.GetIdByName("imdb")) Then bEnableIMDB = True
+                            If Not String.IsNullOrEmpty(nUIdContainer.GetIdByName("tmdb")) Then bEnableTMDB = True
                         End If
                     Next
 
@@ -5729,6 +5737,10 @@ Public Class frmMain
                     cmnuMovieWatched.Visible = Not bIsWatched
                     cmnuMovieUnwatched.Visible = bIsWatched
                 End If
+
+                'Website links
+                cmnuMovieBrowseIMDB.Enabled = bEnableIMDB
+                cmnuMovieBrowseTMDB.Enabled = bEnableTMDB
             Else
                 cmnuMovie.Enabled = False
                 cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
@@ -7845,7 +7857,7 @@ Public Class frmMain
 
     Private Sub Edit_Movie(ByRef DBMovie As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_Movie)
         SetControlsEnabled(False)
-        If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, True) Then
+        If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBMovie, True) Then
             Using dEditMovie As New dlgEditMovie
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBMovie)
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
@@ -7907,7 +7919,7 @@ Public Class frmMain
 
     Private Sub Edit_TVEpisode(ByRef DBTVEpisode As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVEpisode)
         SetControlsEnabled(False)
-        If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, True) Then
+        If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVEpisode, True) Then
             Using dEditTVEpisode As New dlgEditTVEpisode
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVEpisode.GenericRunCallBack
@@ -7929,7 +7941,7 @@ Public Class frmMain
 
     Private Sub Edit_TVSeason(ByRef DBTVSeason As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVSeason)
         SetControlsEnabled(False)
-        If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, True) Then
+        If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVSeason, True) Then
             Using dEditTVSeason As New dlgEditTVSeason
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVSeason.GenericRunCallBack
@@ -7951,7 +7963,7 @@ Public Class frmMain
 
     Private Sub Edit_TVShow(ByRef DBTVShow As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVShow)
         SetControlsEnabled(False)
-        If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, True) Then
+        If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVShow, True) Then
             Using dEditTVShow As New dlgEditTVShow
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVShow, Nothing, Nothing, False, DBTVShow)
                 Select Case dEditTVShow.ShowDialog(DBTVShow)
@@ -9135,16 +9147,16 @@ Public Class frmMain
 
         If currMovie.Movie.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
-            For Each imdbAct As MediaContainers.Person In currMovie.Movie.Actors
-                If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
-                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
-                        alActors.Add(imdbAct.LocalFilePath)
+            For Each actor As MediaContainers.Person In currMovie.Movie.Actors
+                If Not String.IsNullOrEmpty(actor.LocalFilePath) AndAlso File.Exists(actor.LocalFilePath) Then
+                    If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alActors.Add(actor.LocalFilePath)
                     Else
                         alActors.Add("none")
                     End If
-                ElseIf Not String.IsNullOrEmpty(imdbAct.URLOriginal) Then
-                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
-                        alActors.Add(imdbAct.URLOriginal)
+                ElseIf Not String.IsNullOrEmpty(actor.URLOriginal) Then
+                    If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alActors.Add(actor.URLOriginal)
                     Else
                         alActors.Add("none")
                     End If
@@ -9152,10 +9164,10 @@ Public Class frmMain
                     alActors.Add("none")
                 End If
 
-                If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
-                    lstActors.Items.Add(imdbAct.Name.Trim)
+                If String.IsNullOrEmpty(actor.Role.Trim) Then
+                    lstActors.Items.Add(actor.Name.Trim)
                 Else
-                    lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
+                    lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), actor.Name.Trim, actor.Role.Trim))
                 End If
             Next
             lstActors.SelectedIndex = 0
@@ -9191,7 +9203,7 @@ Public Class frmMain
         End If
 
         If Master.eSettings.MovieScraperMetaDataScan Then
-            SetAVImages(APIXML.GetAVImages(currMovie.Movie.FileInfo, currMovie.File.Path, currMovie.ContentType, currMovie.Movie.VideoSource))
+            SetAVImages(APIXML.GetAVImages(currMovie.Movie.FileInfo, currMovie.ContentType, currMovie.Movie.VideoSource))
             pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
         Else
@@ -9207,18 +9219,18 @@ Public Class frmMain
         lblCountries.Text = String.Join(" / ", currMovie.Movie.Countries.ToArray)
 
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currMovie)
-        txtIMDBID.Text = currMovie.Movie.IMDB
+        txtIMDBID.Text = currMovie.Movie.UniqueIDs.GetIdByName("imdb")
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currMovie)
-        txtTMDBID.Text = currMovie.Movie.TMDB
+        txtTMDBID.Text = currMovie.Movie.UniqueIDs.GetIdByName("tmdb")
 
-        txtFilePath.Text = currMovie.File.Path
+        txtFilePath.Text = currMovie.FileItem.FullPath
         txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.Movie.Trailer)
 
         lblReleaseDate.Text = currMovie.Movie.ReleaseDate
         lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
         lblCertifications.Text = String.Join(" / ", currMovie.Movie.Certifications.ToArray)
 
-        txtMetaData.Text = NFO.FIToString(currMovie.Movie.FileInfo, False)
+        txtMetaData.Text = NFO.FIToString(currMovie)
 
         InfoCleared = False
 
@@ -9251,7 +9263,7 @@ Public Class frmMain
 
 
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currMovieSet)
-        txtTMDBID.Text = currMovieSet.MovieSet.TMDB
+        txtTMDBID.Text = currMovieSet.MovieSet.UniqueIDs.GetIdByName("tmdb")
 
         If currMovieSet.MoviesInSet IsNot Nothing AndAlso currMovieSet.MoviesInSet.Count > 0 Then
             If bwLoadImages_MovieSetMoviePosters.IsBusy AndAlso Not bwLoadImages_MovieSetMoviePosters.CancellationPending Then
@@ -9285,12 +9297,12 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_TVEpisode()
         SuspendLayout()
-        lblTitle.Text = If(Not currTV.File.PathSpecified, String.Concat(currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.TVEpisode.Title)
+        lblTitle.Text = If(Not currTV.FileItem.FullPathSpecified, String.Concat(currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.TVEpisode.Title)
         txtPlot.Text = currTV.TVEpisode.Plot
         lblCredits.Text = String.Join(" / ", currTV.TVEpisode.Credits.ToArray)
         lblDirectors.Text = String.Join(" / ", currTV.TVEpisode.Directors.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
-        txtFilePath.Text = currTV.File.Path
+        txtFilePath.Text = currTV.FileItem.FullPath
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.TVEpisode.AiredSpecified, Date.Parse(currTV.TVEpisode.Aired).ToShortDateString, "?"))
         lblReleaseDate.Text = currTV.TVEpisode.Aired
         lblReleaseDateHeader.Text = Master.eLang.GetString(728, "Aired")
@@ -9323,16 +9335,16 @@ Public Class frmMain
         alActors = New List(Of String)
         If currTV.TVEpisode.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
-            For Each imdbAct As MediaContainers.Person In currTV.TVEpisode.Actors
-                If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
-                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
-                        alActors.Add(imdbAct.LocalFilePath)
+            For Each actor As MediaContainers.Person In currTV.TVEpisode.Actors
+                If Not String.IsNullOrEmpty(actor.LocalFilePath) AndAlso File.Exists(actor.LocalFilePath) Then
+                    If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alActors.Add(actor.LocalFilePath)
                     Else
                         alActors.Add("none")
                     End If
-                ElseIf Not String.IsNullOrEmpty(imdbAct.URLOriginal) Then
-                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
-                        alActors.Add(imdbAct.URLOriginal)
+                ElseIf Not String.IsNullOrEmpty(actor.URLOriginal) Then
+                    If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alActors.Add(actor.URLOriginal)
                     Else
                         alActors.Add("none")
                     End If
@@ -9340,10 +9352,10 @@ Public Class frmMain
                     alActors.Add("none")
                 End If
 
-                If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
-                    lstActors.Items.Add(imdbAct.Name.Trim)
+                If String.IsNullOrEmpty(actor.Role.Trim) Then
+                    lstActors.Items.Add(actor.Name.Trim)
                 Else
-                    lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
+                    lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), actor.Name.Trim, actor.Role.Trim))
                 End If
             Next
             lstActors.SelectedIndex = 0
@@ -9352,16 +9364,16 @@ Public Class frmMain
         alGuestStars = New List(Of String)
         If currTV.TVEpisode.GuestStarsSpecified Then
             pbGuestStars.Image = My.Resources.actor_silhouette
-            For Each imdbAct As MediaContainers.Person In currTV.TVEpisode.GuestStars
-                If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
-                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
-                        alGuestStars.Add(imdbAct.LocalFilePath)
+            For Each actor As MediaContainers.Person In currTV.TVEpisode.GuestStars
+                If Not String.IsNullOrEmpty(actor.LocalFilePath) AndAlso File.Exists(actor.LocalFilePath) Then
+                    If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alGuestStars.Add(actor.LocalFilePath)
                     Else
                         alGuestStars.Add("none")
                     End If
-                ElseIf Not String.IsNullOrEmpty(imdbAct.URLOriginal) Then
-                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
-                        alGuestStars.Add(imdbAct.URLOriginal)
+                ElseIf Not String.IsNullOrEmpty(actor.URLOriginal) Then
+                    If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alGuestStars.Add(actor.URLOriginal)
                     Else
                         alGuestStars.Add("none")
                     End If
@@ -9369,10 +9381,10 @@ Public Class frmMain
                     alGuestStars.Add("none")
                 End If
 
-                If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
-                    lstGuestStars.Items.Add(imdbAct.Name.Trim)
+                If String.IsNullOrEmpty(actor.Role.Trim) Then
+                    lstGuestStars.Items.Add(actor.Name.Trim)
                 Else
-                    lstGuestStars.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
+                    lstGuestStars.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), actor.Name.Trim, actor.Role.Trim))
                 End If
             Next
             lstGuestStars.SelectedIndex = 0
@@ -9396,11 +9408,11 @@ Public Class frmMain
         End If
 
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currTV)
-        txtIMDBID.Text = currTV.TVEpisode.IMDB
+        txtIMDBID.Text = currTV.TVEpisode.UniqueIDs.GetIdByName("imdb")
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
-        txtTMDBID.Text = currTV.TVEpisode.TMDB
+        txtTMDBID.Text = currTV.TVEpisode.UniqueIDs.GetIdByName("tmdb")
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
-        txtTVDBID.Text = currTV.TVEpisode.TVDB
+        txtTVDBID.Text = currTV.TVEpisode.UniqueIDs.GetIdByName("tvdb")
 
         If currTV.TVShow.StudiosSpecified Then
             pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
@@ -9412,8 +9424,8 @@ Public Class frmMain
         If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
-        If Master.eSettings.TVScraperMetaDataScan AndAlso currTV.File.PathSpecified Then
-            SetAVImages(APIXML.GetAVImages(currTV.TVEpisode.FileInfo, currTV.File.Path, currTV.ContentType, currTV.TVEpisode.VideoSource))
+        If Master.eSettings.TVScraperMetaDataScan AndAlso currTV.FileItem.FullPathSpecified Then
+            SetAVImages(APIXML.GetAVImages(currTV.TVEpisode.FileInfo, currTV.ContentType, currTV.TVEpisode.VideoSource))
             pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
         Else
@@ -9421,7 +9433,7 @@ Public Class frmMain
             pbStudio.Left = 0
         End If
 
-        txtMetaData.Text = NFO.FIToString(currTV.TVEpisode.FileInfo, True)
+        txtMetaData.Text = NFO.FIToString(currTV)
 
         InfoCleared = False
 
@@ -9440,11 +9452,11 @@ Public Class frmMain
         txtPlot.Text = currTV.TVSeason.Plot
         lblRuntime.Text = currTV.TVShow.Runtime
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currTV)
-        txtIMDBID.Text = "Link"
+        txtIMDBID.Text = If(Not String.IsNullOrEmpty(lblIMDBHeader.Tag.ToString), "Link", String.Empty)
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
-        txtTMDBID.Text = currTV.TVSeason.TMDB
+        txtTMDBID.Text = If(Not String.IsNullOrEmpty(lblTMDBHeader.Tag.ToString), "Link", String.Empty)
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
-        txtTVDBID.Text = currTV.TVSeason.TVDB
+        txtTVDBID.Text = currTV.TVSeason.UniqueIDs.GetIdByName("tvdb")
         lblCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
         lblReleaseDate.Text = currTV.TVSeason.Aired
 
@@ -9468,16 +9480,16 @@ Public Class frmMain
 
         If currTV.TVShow.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
-            For Each imdbAct As MediaContainers.Person In currTV.TVShow.Actors
-                If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
-                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
-                        alActors.Add(imdbAct.LocalFilePath)
+            For Each actor As MediaContainers.Person In currTV.TVShow.Actors
+                If Not String.IsNullOrEmpty(actor.LocalFilePath) AndAlso File.Exists(actor.LocalFilePath) Then
+                    If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alActors.Add(actor.LocalFilePath)
                     Else
                         alActors.Add("none")
                     End If
-                ElseIf Not String.IsNullOrEmpty(imdbAct.URLOriginal) Then
-                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
-                        alActors.Add(imdbAct.URLOriginal)
+                ElseIf Not String.IsNullOrEmpty(actor.URLOriginal) Then
+                    If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alActors.Add(actor.URLOriginal)
                     Else
                         alActors.Add("none")
                     End If
@@ -9485,10 +9497,10 @@ Public Class frmMain
                     alActors.Add("none")
                 End If
 
-                If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
-                    lstActors.Items.Add(imdbAct.Name.Trim)
+                If String.IsNullOrEmpty(actor.Role.Trim) Then
+                    lstActors.Items.Add(actor.Name.Trim)
                 Else
-                    lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
+                    lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), actor.Name.Trim, actor.Role.Trim))
                 End If
             Next
             lstActors.SelectedIndex = 0
@@ -9550,11 +9562,11 @@ Public Class frmMain
         lblReleaseDate.Text = currTV.TVShow.Premiered
         lblReleaseDateHeader.Text = Master.eLang.GetString(724, "Premiered")
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currTV)
-        txtIMDBID.Text = currTV.TVShow.IMDB
+        txtIMDBID.Text = currTV.TVShow.UniqueIDs.GetIdByName("imdb")
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
-        txtTMDBID.Text = currTV.TVShow.TMDB
+        txtTMDBID.Text = currTV.TVShow.UniqueIDs.GetIdByName("tmdb")
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
-        txtTVDBID.Text = currTV.TVShow.TVDB
+        txtTVDBID.Text = currTV.TVShow.UniqueIDs.GetIdByName("tvdb")
         lblCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
         lblTags.Text = String.Join(" / ", currTV.TVShow.Tags.ToArray)
         lblStatus.Text = currTV.TVShow.Status
@@ -9579,16 +9591,16 @@ Public Class frmMain
 
         If currTV.TVShow.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
-            For Each imdbAct As MediaContainers.Person In currTV.TVShow.Actors
-                If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
-                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
-                        alActors.Add(imdbAct.LocalFilePath)
+            For Each actor As MediaContainers.Person In currTV.TVShow.Actors
+                If Not String.IsNullOrEmpty(actor.LocalFilePath) AndAlso File.Exists(actor.LocalFilePath) Then
+                    If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alActors.Add(actor.LocalFilePath)
                     Else
                         alActors.Add("none")
                     End If
-                ElseIf Not String.IsNullOrEmpty(imdbAct.URLOriginal) Then
-                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
-                        alActors.Add(imdbAct.URLOriginal)
+                ElseIf Not String.IsNullOrEmpty(actor.URLOriginal) Then
+                    If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        alActors.Add(actor.URLOriginal)
                     Else
                         alActors.Add("none")
                     End If
@@ -9596,10 +9608,10 @@ Public Class frmMain
                     alActors.Add("none")
                 End If
 
-                If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
-                    lstActors.Items.Add(imdbAct.Name.Trim)
+                If String.IsNullOrEmpty(actor.Role.Trim) Then
+                    lstActors.Items.Add(actor.Name.Trim)
                 Else
-                    lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
+                    lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), actor.Name.Trim, actor.Role.Trim))
                 End If
             Next
             lstActors.SelectedIndex = 0
@@ -12679,17 +12691,17 @@ Public Class frmMain
             Dim enableIMDB As Boolean = False
             Dim enableTMDB As Boolean = False
             Dim enableTVDB As Boolean = False
-            For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                If Not String.IsNullOrEmpty(sRow.Cells("strIMDB").Value.ToString) Then
-                    enableIMDB = True
-                End If
-                If Not String.IsNullOrEmpty(sRow.Cells("strTMDB").Value.ToString) Then
-                    enableTMDB = True
-                End If
-                If Not String.IsNullOrEmpty(sRow.Cells("TVDB").Value.ToString) Then
-                    enableTVDB = True
-                End If
-            Next
+            'For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+            '    If Not String.IsNullOrEmpty(sRow.Cells("strIMDB").Value.ToString) Then
+            '        enableIMDB = True
+            '    End If
+            '    If Not String.IsNullOrEmpty(sRow.Cells("strTMDB").Value.ToString) Then
+            '        enableTMDB = True
+            '    End If
+            '    If Not String.IsNullOrEmpty(sRow.Cells("TVDB").Value.ToString) Then
+            '        enableTVDB = True
+            '    End If
+            'Next
             cmnuShowBrowseIMDB.Enabled = enableIMDB
             cmnuShowBrowseTMDB.Enabled = enableTMDB
             cmnuShowBrowseTVDB.Enabled = enableTVDB
@@ -14873,7 +14885,7 @@ Public Class frmMain
     Private Function Reload_Movie(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean) As Boolean
         Dim DBMovie As Database.DBElement = Master.DB.Load_Movie(ID)
 
-        If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, Not showMessage) Then
+        If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBMovie, Not showMessage) Then
             fScanner.Load_Movie(DBMovie, BatchMode)
             If Not BatchMode Then RefreshRow_Movie(DBMovie.ID)
         Else
@@ -14920,9 +14932,9 @@ Public Class frmMain
         Dim DBTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
         Dim epCount As Integer = 0
 
-        If Not DBTVEpisode.File.IDSpecified Then Return False 'skipping missing episodes
+        If Not DBTVEpisode.FileItem.IDSpecified Then Return False 'skipping missing episodes
 
-        If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, showMessage) Then
+        If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVEpisode, showMessage) Then
             fScanner.Load_TVEpisode(DBTVEpisode, False, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVEpisode(DBTVEpisode.ID)
         Else
@@ -14930,7 +14942,7 @@ Public Class frmMain
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
                                                      Master.eLang.GetString(738, "Remove episode from library"),
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                Master.DB.Delete_TVEpisode(DBTVEpisode.File.Path, False, BatchMode)
+                Master.DB.Delete_TVEpisode(DBTVEpisode.FileItem.FullPath, False, BatchMode)
                 Return True
             Else
                 Return False
@@ -14949,7 +14961,7 @@ Public Class frmMain
     Private Function Reload_TVSeason(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean, reloadFull As Boolean) As Boolean
         Dim DBTVSeason As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
 
-        If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, showMessage) Then
+        If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVSeason, showMessage) Then
             fScanner.GetFolderContents_TVSeason(DBTVSeason)
             Master.DB.Save_TVSeason(DBTVSeason, BatchMode, False, True)
             If Not BatchMode Then RefreshRow_TVSeason(DBTVSeason.ID)
@@ -14969,7 +14981,7 @@ Public Class frmMain
     Private Function Reload_TVShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean, ByVal reloadFull As Boolean) As Boolean
         Dim DBTVShow As Database.DBElement = Master.DB.Load_TVShow(ID, reloadFull, reloadFull)
 
-        If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, showMessage) Then
+        If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVShow, showMessage) Then
             fScanner.Load_TVShow(DBTVShow, False, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVShow(DBTVShow.ID)
         Else
@@ -16016,11 +16028,11 @@ Public Class frmMain
 
                 'Load filter list sources for movies
                 clbFilterSources_Movies.Items.Clear()
-                clbFilterSources_Movies.Items.AddRange(Master.DB.GetAllSources_Movie)
+                clbFilterSources_Movies.Items.AddRange(Master.DB.GetAllSourceNames_Movie)
 
                 'Load filter list sources for tv shows
                 clbFilterSource_Shows.Items.Clear()
-                clbFilterSource_Shows.Items.AddRange(Master.DB.GetAllSources_TVShow)
+                clbFilterSource_Shows.Items.AddRange(Master.DB.GetAllSourceNames_TVShow)
 
                 'Load filter list "years from" for movies
                 RemoveHandler cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearFrom_Movies_SelectedIndexChanged

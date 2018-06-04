@@ -95,14 +95,14 @@ Public Class dlgWorker
                                 Return
                             End If
                             bwGetWatchedState.ReportProgress(3, nWatchedMovie.Movie.Title)
-                            Dim lstDBElement = lstMoviesInDB.Where(Function(f) (nWatchedMovie.Movie.Ids.Imdb IsNot Nothing AndAlso f.Movie.IMDB = nWatchedMovie.Movie.Ids.Imdb) OrElse
+                            Dim lstDBElement = lstMoviesInDB.Where(Function(f) (nWatchedMovie.Movie.Ids.Imdb IsNot Nothing AndAlso f.Movie.ID = nWatchedMovie.Movie.Ids.Imdb) OrElse
                                                                        (nWatchedMovie.Movie.Ids.Tmdb IsNot Nothing AndAlso f.Movie.TMDB = nWatchedMovie.Movie.Ids.Tmdb.ToString))
                             If lstDBElement IsNot Nothing Then
                                 Dim strLastPlayed = Functions.ConvertToProperDateTime(nWatchedMovie.LastWatchedAt.Value.ToLocalTime.ToString)
                                 Dim iPlayCount = nWatchedMovie.Plays.Value
                                 For Each tDBElement In lstDBElement.Where(Function(f) Not f.Movie.LastPlayed = strLastPlayed OrElse
                                                                               Not f.Movie.PlayCount = iPlayCount)
-                                    If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tDBElement, False) Then
+                                    If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, False) Then
                                         tDBElement.Movie.LastPlayed = strLastPlayed
                                         tDBElement.Movie.PlayCount = iPlayCount
                                         Master.DB.Save_Movie(tDBElement, False, True, False, True, False)
@@ -154,12 +154,12 @@ Public Class dlgWorker
                                         Dim strLastPlayed = Functions.ConvertToProperDateTime(nWatchedEpisode.LastWatchedAt.Value.ToLocalTime.ToString)
                                         Dim iPlayCount = nWatchedEpisode.Plays.Value
                                         For Each nTVShow In lstDBTVShow
-                                            If nTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(nTVShow, False) Then
+                                            If nTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(nTVShow, False) Then
                                                 For Each tDBTVEpisode In nTVShow.Episodes.Where(Function(f) (Not f.TVEpisode.LastPlayed = strLastPlayed OrElse
                                                                                                     Not f.TVEpisode.Playcount = iPlayCount) AndAlso
                                                                                                     (nWatchedSeason.Number IsNot Nothing AndAlso f.TVEpisode.Season = CInt(nWatchedSeason.Number)) AndAlso
                                                                                                     (nWatchedEpisode.Number IsNot Nothing AndAlso f.TVEpisode.Episode = CInt(nWatchedEpisode.Number)))
-                                                    If tDBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tDBTVEpisode, False) Then
+                                                    If tDBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBTVEpisode, False) Then
                                                         tDBTVEpisode.TVEpisode.LastPlayed = strLastPlayed
                                                         tDBTVEpisode.TVEpisode.Playcount = iPlayCount
                                                         Master.DB.Save_TVEpisode(tDBTVEpisode, False, True, False, False, True, False)

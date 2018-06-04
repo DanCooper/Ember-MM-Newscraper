@@ -18,22 +18,19 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
 Imports System.IO
 Imports System.Runtime.InteropServices
-Imports System.Text
 Imports System.Text.RegularExpressions
-Imports System.Xml.Serialization
-Imports NLog
 
-<Serializable()> _
 Public Class MediaInfo
 
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private Handle As IntPtr
-    Private UseAnsi As Boolean
+    Private _Handle As IntPtr
+    Private _UseAnsi As Boolean
 
 #End Region 'Fields
 
@@ -55,259 +52,169 @@ Public Class MediaInfo
 
 #Region "Methods"
 
-    Public Shared Sub UpdateFileInfo(ByRef dbElement As Database.DBElement)
-        Dim bLockAudioLanguages As Boolean
-        Dim bLockVideoLanguages As Boolean
-        Dim bUseRuntimeFormat As Boolean
-        Dim currentFileInfo As New MediaContainers.FileInfo
-        Dim nFileInfo As New MediaContainers.FileInfo
-        Dim strRuntimeFormat As String = String.Empty
+    'Private Sub GetFileInfoFromPath(ByRef fiInfo As MediaContainers.FileInfo, ByVal sPath As String, ByVal contentType As Enums.ContentType)
+    '    If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
+    '        Dim sExt As String = Path.GetExtension(sPath).ToLower
+    '        Dim fiOut As New MediaContainers.FileInfo
+    '        Dim miVideo As New MediaContainers.Video
+    '        Dim miAudio As New MediaContainers.Audio
+    '        Dim miSubtitle As New MediaContainers.Subtitle
+    '        Dim AudioStreams As Integer
+    '        Dim SubtitleStreams As Integer
+    '        Dim aLang As String = String.Empty
+    '        Dim sLang As String = String.Empty
+    '        Dim cDVD As New DVD
 
-        Select Case dbElement.ContentType
-            Case Enums.ContentType.Movie
-                bLockAudioLanguages = Master.eSettings.MovieLockLanguageA
-                bLockVideoLanguages = Master.eSettings.MovieLockLanguageV
-                bUseRuntimeFormat = Master.eSettings.MovieScraperUseMDDuration
-                currentFileInfo = dbElement.Movie.FileInfo
-                strRuntimeFormat = Master.eSettings.MovieScraperDurationRuntimeFormat
-            Case Enums.ContentType.TVEpisode
-                bLockAudioLanguages = Master.eSettings.TVLockEpisodeLanguageA
-                bLockVideoLanguages = Master.eSettings.TVLockEpisodeLanguageV
-                bUseRuntimeFormat = Master.eSettings.TVScraperUseMDDuration
-                currentFileInfo = dbElement.TVEpisode.FileInfo
-                strRuntimeFormat = Master.eSettings.TVScraperDurationRuntimeFormat
-            Case Else
-                Exit Sub
-        End Select
+    '        Dim ifoVideo(2) As String
+    '        Dim ifoAudio(2) As String
 
-        Dim pExt As String = Path.GetExtension(dbElement.File.Path).ToLower
-        If Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse
-               pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg" OrElse pExt = ".rar") Then
-            Dim MI As New MediaInfo
-            MI.GetFileInfoFromPath(nFileInfo, dbElement.File.Path, dbElement.ContentType)
-            If nFileInfo.StreamDetails.Video.Count > 0 OrElse nFileInfo.StreamDetails.Audio.Count > 0 OrElse nFileInfo.StreamDetails.Subtitle.Count > 0 Then
-                ' overwrite only if it get something from Mediainfo 
-                If bLockVideoLanguages Then
-                    'sets old language setting if setting is enabled (lock language)
-                    'First make sure that there is no completely new video source scanned of the file --> if so (i.e. more streams) then update!
-                    If nFileInfo.StreamDetails.Video.Count = currentFileInfo.StreamDetails.Video.Count Then
-                        For i = 0 To nFileInfo.StreamDetails.Video.Count - 1
-                            'only preserve if language tag is filled --> else update!
-                            If currentFileInfo.StreamDetails.Video.Item(i).LongLanguageSpecified Then
-                                nFileInfo.StreamDetails.Video.Item(i).Language = currentFileInfo.StreamDetails.Video.Item(i).Language
-                                nFileInfo.StreamDetails.Video.Item(i).LongLanguage = currentFileInfo.StreamDetails.Video.Item(i).LongLanguage
-                            End If
-                        Next
-                    End If
-                End If
-                If bLockAudioLanguages Then
-                    'sets old language setting if setting is enabled (lock language)
-                    'First make sure that there is no completely new audio source scanned of the file --> if so (i.e. more streams) then update!
-                    If nFileInfo.StreamDetails.Audio.Count = currentFileInfo.StreamDetails.Audio.Count Then
-                        For i = 0 To nFileInfo.StreamDetails.Audio.Count - 1
-                            'only preserve if language tag is filled --> else update!
-                            If currentFileInfo.StreamDetails.Audio.Item(i).LongLanguageSpecified Then
-                                nFileInfo.StreamDetails.Audio.Item(i).Language = currentFileInfo.StreamDetails.Audio.Item(i).Language
-                                nFileInfo.StreamDetails.Audio.Item(i).LongLanguage = currentFileInfo.StreamDetails.Audio.Item(i).LongLanguage
-                            End If
-                        Next
-                    End If
-                End If
-            End If
-            If nFileInfo.StreamDetails.VideoSpecified AndAlso bUseRuntimeFormat Then
-                Dim tVid As MediaContainers.Video = NFO.GetBestVideo(currentFileInfo)
-                If tVid.DurationSpecified Then
-                    Select Case dbElement.ContentType
-                        Case Enums.ContentType.Movie
-                            dbElement.Movie.Runtime = StringUtils.FormatDuration(tVid.Duration.ToString, strRuntimeFormat)
-                        Case Enums.ContentType.TVEpisode
-                            dbElement.TVEpisode.Runtime = StringUtils.FormatDuration(tVid.Duration.ToString, strRuntimeFormat)
-                    End Select
-                End If
-            End If
-            MI = Nothing
-        End If
+    '        If Master.eSettings.MovieScraperMetaDataIFOScan AndAlso (sExt = ".ifo" OrElse sExt = ".vob" OrElse sExt = ".bup") AndAlso cDVD.fctOpenIFOFile(sPath) Then
+    '            Try
+    '                ifoVideo = cDVD.GetIFOVideo
+    '                Dim vRes() As String = ifoVideo(1).Split(Convert.ToChar("x"))
+    '                miVideo.Width = ConvertVideoWidthOrHeight(vRes(0))
+    '                miVideo.Height = ConvertVideoWidthOrHeight(vRes(1))
+    '                miVideo.Codec = ifoVideo(0)
+    '                miVideo.Duration = ConvertVideoDuration(cDVD.GetProgramChainPlayBackTime(1))
+    '                miVideo.Aspect = ConvertVideoAspectRatio(ifoVideo(2))
 
-        'load defaults for this file extension if no FileInfo has been readed
-        If Not nFileInfo.StreamDetailsSpecified Then
-            Dim nFileInfoByExtension = FileUtils.Common.GetDefaultsByFileExtension(pExt, dbElement.ContentType)
-            If nFileInfoByExtension IsNot Nothing Then
-                nFileInfo = nFileInfoByExtension
-            End If
-        End If
+    '                With miVideo
+    '                    If .CodecSpecified OrElse
+    '                        .DurationSpecified OrElse
+    '                        .AspectSpecified OrElse
+    '                        .HeightSpecified OrElse
+    '                        .WidthSpecified Then
+    '                        fiOut.StreamDetails.Video.Add(miVideo)
+    '                    End If
+    '                End With
 
-        'set the new FileInfo for the dbElement
-        Select Case dbElement.ContentType
-            Case Enums.ContentType.Movie
-                dbElement.Movie.FileInfo = nFileInfo
-            Case Enums.ContentType.TVEpisode
-                dbElement.TVEpisode.FileInfo = nFileInfo
-        End Select
-    End Sub
+    '                AudioStreams = cDVD.GetIFOAudioNumberOfTracks
+    '                For a As Integer = 1 To AudioStreams
+    '                    miAudio = New MediaContainers.Audio
+    '                    ifoAudio = cDVD.GetIFOAudio(a)
+    '                    miAudio.Codec = ifoAudio(0)
+    '                    miAudio.Channels = ConvertAudioChannels(ifoAudio(2))
+    '                    aLang = ifoAudio(1)
+    '                    If Not String.IsNullOrEmpty(aLang) Then
+    '                        miAudio.LongLanguage = aLang
+    '                        If Not String.IsNullOrEmpty(Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)) Then
+    '                            miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
+    '                        End If
+    '                    End If
+    '                    With miAudio
+    '                        If .CodecSpecified OrElse .ChannelsSpecified OrElse .LanguageSpecified Then
+    '                            fiOut.StreamDetails.Audio.Add(miAudio)
+    '                        End If
+    '                    End With
+    '                Next
 
-    Private Sub GetFileInfoFromPath(ByRef fiInfo As MediaContainers.FileInfo, ByVal sPath As String, ByVal contentType As Enums.ContentType)
-        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
-            Dim sExt As String = Path.GetExtension(sPath).ToLower
-            Dim fiOut As New MediaContainers.FileInfo
-            Dim miVideo As New MediaContainers.Video
-            Dim miAudio As New MediaContainers.Audio
-            Dim miSubtitle As New MediaContainers.Subtitle
-            Dim AudioStreams As Integer
-            Dim SubtitleStreams As Integer
-            Dim aLang As String = String.Empty
-            Dim sLang As String = String.Empty
-            Dim cDVD As New DVD
+    '                SubtitleStreams = cDVD.GetIFOSubPicNumberOf
+    '                For s As Integer = 1 To SubtitleStreams
+    '                    miSubtitle = New MediaContainers.Subtitle
+    '                    sLang = cDVD.GetIFOSubPic(s)
+    '                    If Not String.IsNullOrEmpty(sLang) Then
+    '                        miSubtitle.LongLanguage = sLang
+    '                        Dim strLanguage = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+    '                        If Not String.IsNullOrEmpty(strLanguage) Then
+    '                            miSubtitle.Language = strLanguage
+    '                        End If
+    '                        If Not String.IsNullOrEmpty(miSubtitle.Language) Then
+    '                            'miSubtitle.SubsForced = Not supported(?)
+    '                            fiOut.StreamDetails.Subtitle.Add(miSubtitle)
+    '                        End If
+    '                    End If
+    '                Next
 
-            Dim ifoVideo(2) As String
-            Dim ifoAudio(2) As String
+    '                cDVD.Close()
+    '                cDVD = Nothing
 
-            If Master.eSettings.MovieScraperMetaDataIFOScan AndAlso (sExt = ".ifo" OrElse sExt = ".vob" OrElse sExt = ".bup") AndAlso cDVD.fctOpenIFOFile(sPath) Then
-                Try
-                    ifoVideo = cDVD.GetIFOVideo
-                    Dim vRes() As String = ifoVideo(1).Split(Convert.ToChar("x"))
-                    miVideo.Width = ConvertVideoWidthOrHeight(vRes(0))
-                    miVideo.Height = ConvertVideoWidthOrHeight(vRes(1))
-                    miVideo.Codec = ifoVideo(0)
-                    miVideo.Duration = ConvertVideoDuration(cDVD.GetProgramChainPlayBackTime(1))
-                    miVideo.Aspect = ConvertVideoAspectRatio(ifoVideo(2))
+    '                fiInfo = fiOut
+    '            Catch ex As Exception
+    '                logger.Error(ex, New StackFrame().GetMethod().Name)
+    '            End Try
 
-                    With miVideo
-                        If .CodecSpecified OrElse
-                            .DurationSpecified OrElse
-                            .AspectSpecified OrElse
-                            .HeightSpecified OrElse
-                            .WidthSpecified Then
-                            fiOut.StreamDetails.Video.Add(miVideo)
-                        End If
-                    End With
+    '            'cocotus 20140118 For more accurate metadata scanning of BLURAY/DVD images use improved mediainfo scanning (ScanMI-function) -> don't hop in this branch!! 
+    '            '  ElseIf StringUtils.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
+    '        ElseIf FileUtils.Common.isStacked(sPath) Then
+    '            Try
+    '                Dim oFile As String = FileUtils.Common.RemoveStackingMarkers(sPath)
+    '                Dim sFile As New List(Of String)
+    '                Dim bIsVTS As Boolean = False
 
-                    AudioStreams = cDVD.GetIFOAudioNumberOfTracks
-                    For a As Integer = 1 To AudioStreams
-                        miAudio = New MediaContainers.Audio
-                        ifoAudio = cDVD.GetIFOAudio(a)
-                        miAudio.Codec = ifoAudio(0)
-                        miAudio.Channels = ConvertAudioChannels(ifoAudio(2))
-                        aLang = ifoAudio(1)
-                        If Not String.IsNullOrEmpty(aLang) Then
-                            miAudio.LongLanguage = aLang
-                            If Not String.IsNullOrEmpty(Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)) Then
-                                miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
-                            End If
-                        End If
-                        With miAudio
-                            If .CodecSpecified OrElse .ChannelsSpecified OrElse .LanguageSpecified Then
-                                fiOut.StreamDetails.Audio.Add(miAudio)
-                            End If
-                        End With
-                    Next
+    '                If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
+    '                    bIsVTS = True
+    '                End If
 
-                    SubtitleStreams = cDVD.GetIFOSubPicNumberOf
-                    For s As Integer = 1 To SubtitleStreams
-                        miSubtitle = New MediaContainers.Subtitle
-                        sLang = cDVD.GetIFOSubPic(s)
-                        If Not String.IsNullOrEmpty(sLang) Then
-                            miSubtitle.LongLanguage = sLang
-                            Dim strLanguage = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
-                            If Not String.IsNullOrEmpty(strLanguage) Then
-                                miSubtitle.Language = strLanguage
-                            End If
-                            If Not String.IsNullOrEmpty(miSubtitle.Language) Then
-                                'miSubtitle.SubsForced = Not supported(?)
-                                fiOut.StreamDetails.Subtitle.Add(miSubtitle)
-                            End If
-                        End If
-                    Next
+    '                If bIsVTS Then
+    '                    Try
+    '                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "VTS*.VOB"))
+    '                    Catch
+    '                    End Try
+    '                ElseIf sExt = ".m2ts" Then
+    '                    Try
+    '                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.m2ts"))
+    '                    Catch
+    '                    End Try
+    '                Else
+    '                    Try
+    '                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(sPath)), "*")))
+    '                    Catch
+    '                    End Try
+    '                End If
 
-                    cDVD.Close()
-                    cDVD = Nothing
+    '                Dim TotalDur As Integer = 0
+    '                Dim tInfo As New MediaContainers.FileInfo
+    '                Dim tVideo As New MediaContainers.Video
+    '                Dim tAudio As New MediaContainers.Audio
 
-                    fiInfo = fiOut
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
+    '                miVideo.Width = 0
+    '                miAudio.Channels = 0
 
-                'cocotus 20140118 For more accurate metadata scanning of BLURAY/DVD images use improved mediainfo scanning (ScanMI-function) -> don't hop in this branch!! 
-                '  ElseIf StringUtils.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
-            ElseIf FileUtils.Common.isStacked(sPath) Then
-                Try
-                    Dim oFile As String = FileUtils.Common.RemoveStackingMarkers(sPath)
-                    Dim sFile As New List(Of String)
-                    Dim bIsVTS As Boolean = False
+    '                For Each File As String In sFile
+    '                    'make sure the file is actually part of the stack
+    '                    'handles movie.cd1.ext, movie.cd2.ext and movie.extras.ext
+    '                    'disregards movie.extras.ext in this case
+    '                    If bIsVTS OrElse (oFile = FileUtils.Common.RemoveStackingMarkers(File)) Then
+    '                        tInfo = ScanFileInfo(File)
 
-                    If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
-                        bIsVTS = True
-                    End If
+    '                        tVideo = NFO.GetBestVideo(tInfo)
+    '                        tAudio = NFO.GetBestAudio(tInfo, contentType)
 
-                    If bIsVTS Then
-                        Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "VTS*.VOB"))
-                        Catch
-                        End Try
-                    ElseIf sExt = ".m2ts" Then
-                        Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.m2ts"))
-                        Catch
-                        End Try
-                    Else
-                        Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(sPath)), "*")))
-                        Catch
-                        End Try
-                    End If
+    '                        If Not miVideo.CodecSpecified OrElse tVideo.CodecSpecified Then
+    '                            If tVideo.WidthSpecified AndAlso tVideo.Width >= miVideo.Width Then
+    '                                miVideo = tVideo
+    '                            End If
+    '                        End If
 
-                    Dim TotalDur As Integer = 0
-                    Dim tInfo As New MediaContainers.FileInfo
-                    Dim tVideo As New MediaContainers.Video
-                    Dim tAudio As New MediaContainers.Audio
+    '                        If Not miAudio.CodecSpecified OrElse tAudio.CodecSpecified Then
+    '                            If tAudio.ChannelsSpecified AndAlso tAudio.Channels >= miAudio.Channels Then
+    '                                miAudio = tAudio
+    '                            End If
+    '                        End If
 
-                    miVideo.Width = 0
-                    miAudio.Channels = 0
+    '                        If tVideo.DurationSpecified Then TotalDur += tVideo.Duration
 
-                    For Each File As String In sFile
-                        'make sure the file is actually part of the stack
-                        'handles movie.cd1.ext, movie.cd2.ext and movie.extras.ext
-                        'disregards movie.extras.ext in this case
-                        If bIsVTS OrElse (oFile = FileUtils.Common.RemoveStackingMarkers(File)) Then
-                            tInfo = ScanFileInfo(File)
+    '                        For Each sSub As MediaContainers.Subtitle In tInfo.StreamDetails.Subtitle
+    '                            If Not fiOut.StreamDetails.Subtitle.Contains(sSub) Then
+    '                                fiOut.StreamDetails.Subtitle.Add(sSub)
+    '                            End If
+    '                        Next
+    '                    End If
+    '                Next
 
-                            tVideo = NFO.GetBestVideo(tInfo)
-                            tAudio = NFO.GetBestAudio(tInfo, contentType)
+    '                fiOut.StreamDetails.Video.Add(miVideo)
+    '                fiOut.StreamDetails.Audio.Add(miAudio)
+    '                fiOut.StreamDetails.Video(0).Duration = TotalDur
 
-                            If Not miVideo.CodecSpecified OrElse tVideo.CodecSpecified Then
-                                If tVideo.WidthSpecified AndAlso tVideo.Width >= miVideo.Width Then
-                                    miVideo = tVideo
-                                End If
-                            End If
-
-                            If Not miAudio.CodecSpecified OrElse tAudio.CodecSpecified Then
-                                If tAudio.ChannelsSpecified AndAlso tAudio.Channels >= miAudio.Channels Then
-                                    miAudio = tAudio
-                                End If
-                            End If
-
-                            If tVideo.DurationSpecified Then TotalDur += tVideo.Duration
-
-                            For Each sSub As MediaContainers.Subtitle In tInfo.StreamDetails.Subtitle
-                                If Not fiOut.StreamDetails.Subtitle.Contains(sSub) Then
-                                    fiOut.StreamDetails.Subtitle.Add(sSub)
-                                End If
-                            Next
-                        End If
-                    Next
-
-                    fiOut.StreamDetails.Video.Add(miVideo)
-                    fiOut.StreamDetails.Audio.Add(miAudio)
-                    fiOut.StreamDetails.Video(0).Duration = TotalDur
-
-                    fiInfo = fiOut
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-            Else
-                fiInfo = ScanFileInfo(sPath)
-            End If
-        End If
-    End Sub
+    '                fiInfo = fiOut
+    '            Catch ex As Exception
+    '                logger.Error(ex, New StackFrame().GetMethod().Name)
+    '            End Try
+    '        Else
+    '            fiInfo = ScanFileInfo(sPath)
+    '        End If
+    '    End If
+    'End Sub
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
@@ -346,9 +253,9 @@ Public Class MediaInfo
     End Function
 
     Private Sub Close()
-        MediaInfo_Close(Handle)
-        MediaInfo_Delete(Handle)
-        Handle = Nothing
+        MediaInfo_Close(_Handle)
+        MediaInfo_Delete(_Handle)
+        _Handle = Nothing
     End Sub
 
     ''' <summary>
@@ -381,66 +288,51 @@ Public Class MediaInfo
     End Function
 
     Private Function ConvertAudioFormat(ByVal sCodecID As String, ByVal sFormat As String, ByVal sCodecHint As String, ByVal sProfile As String) As String
-        Dim tCodec As String = String.Empty
+        Dim strCodec As String = String.Empty
         If sFormat.ToLower.Contains("dts") AndAlso (sProfile.ToLower.Contains("hra / core") OrElse sProfile.ToLower.Contains("ma / core")) Then
-            tCodec = sProfile
+            strCodec = sProfile
         ElseIf sFormat.ToLower.Contains("atmos / truehd") Then
-            tCodec = sFormat
+            strCodec = sFormat
         ElseIf sProfile.ToLower.Contains("truehd+atmos") Then
-            tCodec = sProfile
+            strCodec = sProfile
         ElseIf sProfile.ToLower.Contains("e-ac-3+atmos") Then
-            tCodec = "e-ac-3+atmos"
+            strCodec = "e-ac-3+atmos"
         ElseIf Not String.IsNullOrEmpty(sCodecID) AndAlso Not Integer.TryParse(sCodecID, 0) AndAlso Not sCodecID.ToLower.Contains("a_pcm") AndAlso Not sCodecID.Contains("00001000-0000-0100-8000-00AA00389B71") Then
-            tCodec = sCodecID
+            strCodec = sCodecID
         ElseIf Not String.IsNullOrEmpty(sCodecHint) Then
-            tCodec = sCodecHint
+            strCodec = sCodecHint
         ElseIf sFormat.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(sProfile) Then
-            tCodec = String.Concat("mp", sProfile.Replace("Layer", String.Empty).Trim).Trim
+            strCodec = String.Concat("mp", sProfile.Replace("Layer", String.Empty).Trim).Trim
         ElseIf Not String.IsNullOrEmpty(sFormat) Then
-            tCodec = sFormat
+            strCodec = sFormat
         End If
-
-        If Not String.IsNullOrEmpty(tCodec) Then
-            Dim myconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            myconversions = AdvancedSettings.GetComplexSetting("AudioFormatConverts")
-            If Not myconversions Is Nothing Then
-                For Each k In myconversions
-                    If tCodec.ToLower = k.Name.ToLower Then
-                        Return k.Value
-                    End If
-                Next
-                Return tCodec
-            Else
-                Return tCodec
-            End If
-        Else
-            Return String.Empty
-        End If
+        Return strCodec.ToLower
     End Function
 
-    Private Function ConvertBitrate(ByVal bitrate As String) As Integer
-        'now consider bitrate number and calculate all values in KB instead of MB/KB
-        If bitrate.ToLower.IndexOf(" k") > 0 Then
-            bitrate = bitrate.Substring(0, bitrate.ToLower.IndexOf(" k"))
-            Dim mystring As String = String.Empty
-            'use regex to get rid of all letters(if that ever happens just in case) and also remove spaces
-            mystring = Regex.Replace(bitrate, "[^.0-9]", "").Trim
-            bitrate = mystring
-        ElseIf bitrate.ToLower.IndexOf(" m") > 0 Then
-            'can happen if video is ripped from bluray
-            bitrate = bitrate.Substring(0, bitrate.ToLower.IndexOf(" m"))
-            Dim mystring As String = String.Empty
-            'use regex to get rid of all letters(if that ever happens just in case) and also remove spaces
-            mystring = Regex.Replace(bitrate, "[^.0-9]", "").Trim
-            Try
-                bitrate = (CDbl(mystring) * 100).ToString
-            Catch ex As Exception
-            End Try
+    Private Function ConvertBitDepth(ByVal bitdepth As String) As Integer
+        Dim iBitdepth As Integer
+        Integer.TryParse(bitdepth, iBitdepth)
+        Return iBitdepth
+    End Function
+    ''' <summary>
+    ''' Convert the bitrate of a audio or video stream into kb/s
+    ''' </summary>
+    ''' <param name="bitrate">audio or video bitrate "Bitrate" in bits per second</param>
+    ''' <param name="alternateBitrate">"BitRate_Maximum" of a vbr audio stream or "OverallBitRate" of a general video stream</param>
+    ''' <returns>Bitrate in kilobits per second</returns>
+    Private Function ConvertBitrate(ByVal bitrate As String, Optional ByVal alternateBitrate As String = "") As Integer
+        'for bitrate information like "3018000 / 1509000"
+        'returns the highest number
+        Dim rMatches = Regex.Matches(If(Not String.IsNullOrEmpty(bitrate), bitrate, alternateBitrate), "\d+")
+        If rMatches.Count > 0 Then
+            Dim lstNumber As New List(Of Integer)
+            For i As Integer = 0 To rMatches.Count - 1
+                lstNumber.Add(CInt(rMatches(i).Value))
+            Next
+            lstNumber.Sort()
+            lstNumber.Reverse()
+            Return CInt(lstNumber(0) / 1000)
         End If
-        '2014/11/07 Don't set "0" anymore
-        'If rawbitrate = "" Then
-        '    rawbitrate = "0"
-        'End If
         Return 0
     End Function
     ''' <summary>
@@ -466,105 +358,76 @@ Public Class MediaInfo
         Double.TryParse(ratio, dblRatio)
         Return dblRatio
     End Function
-
+    ''' <summary>
+    ''' Convert the duration of video stream into seconds
+    ''' </summary>
+    ''' <param name="duration">video duration as "Duration/String3" like HH:MM:SS.MMM</param>
+    ''' <param name="generalDuration">general duration as "Duration/String3" like HH:MM:SS.MMM</param>
+    ''' <returns>duration in seconds</returns>
     Private Function ConvertVideoDuration(ByVal duration As String, Optional generalDuration As String = "") As Integer
         'It's possible that duration returns empty when retrieved from videostream data.
         'So instead use "General" section of MediaInfo.dll to read duration (it's always filled) 
-        Dim iDuration As Integer
-        If Not Integer.TryParse(duration, iDuration) AndAlso Not String.IsNullOrEmpty(generalDuration) Then
-            Integer.TryParse(generalDuration, iDuration)
+        Dim tsDuration As TimeSpan
+        If TimeSpan.TryParse(duration, tsDuration) Then
+            Return CInt(tsDuration.TotalSeconds)
+        ElseIf TimeSpan.TryParse(generalDuration, tsDuration) Then
+            Return CInt(tsDuration.TotalSeconds)
         End If
-        Return iDuration
-
-        'If Not String.IsNullOrEmpty(duration) Then
-        '    If doReverse Then
-        '        Dim ts As New TimeSpan(0, 0, Convert.ToInt32(duration))
-        '        Return String.Format("{0}h {1}min {2}s", ts.Hours, ts.Minutes, ts.Seconds)
-        '    Else
-        '        Dim sDuration As Match = Regex.Match(duration, "(([0-9]+)\s?h)?\s?(([0-9]+)\s?mi?n)?\s?(([0-9]+)\s?s)?")
-        '        Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
-        '        Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
-        '        Dim sSec As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(6).Value), (Convert.ToInt32(sDuration.Groups(6).Value)), 0)
-        '        Return ((sHour * 60 * 60) + (sMin * 60) + sSec).ToString
-        '    End If
-        'End If
-        'Return "0"
+        Return 0
     End Function
 
     Private Function ConvertVideoFormat(ByVal sCodecID As String, ByVal sFormat As String, ByVal sVersion As String) As String
-        Dim tCodec As String = String.Empty
-
+        Dim strCodec As String = String.Empty
         If Not String.IsNullOrEmpty(sCodecID) AndAlso Not Integer.TryParse(sCodecID, 0) Then
-            tCodec = sCodecID
+            strCodec = sCodecID
         ElseIf sFormat.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(sVersion) Then
-            tCodec = String.Concat("mpeg", sVersion.Replace("Version", String.Empty).Trim, "video").Trim
+            strCodec = String.Concat("mpeg", sVersion.Replace("Version", String.Empty).Trim, "video").Trim
         ElseIf Not String.IsNullOrEmpty(sFormat) Then
-            tCodec = sFormat
+            strCodec = sFormat
         End If
-
-        If Not String.IsNullOrEmpty(tCodec) Then
-            Dim myconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            myconversions = AdvancedSettings.GetComplexSetting("VideoFormatConverts")
-            If Not myconversions Is Nothing Then
-                For Each k In myconversions
-                    If tCodec.ToLower = k.Name.ToLower Then
-                        Return k.Value
-                    End If
-                Next
-                Return tCodec
-            Else
-                Return tCodec
-            End If
-        Else
-            Return String.Empty
-        End If
+        Return strCodec.ToLower
     End Function
 
     Private Function ConvertVideoMultiViewCount(ByVal multiViewCount As String) As Integer
-        Dim iMultiViewCount As Integer
-        Integer.TryParse(multiViewCount, iMultiViewCount)
-        Return iMultiViewCount
+        Dim iCount As Integer
+        Integer.TryParse(multiViewCount, iCount)
+        Return iCount
     End Function
 
     Public Shared Function ConvertVideoMultiViewLayoutToStereoMode(ByVal sFormat As String) As String
-        'MultiViewLayout (http://matroska.org/technical/specs/index.html#StereoMode)
-        If Not String.IsNullOrEmpty(sFormat) Then
-            Dim tFormat As String = String.Empty
-            Select Case sFormat.ToLower
-                Case "side by side (left eye first)"
-                    tFormat = "left_right"
-                Case "top-bottom (right eye first)"
-                    tFormat = "bottom_top"
-                Case "top-bottom (left eye first)"
-                    tFormat = "bottom_top"
-                Case "checkboard (right eye first)"
-                    tFormat = "checkerboard_rl"
-                Case "checkboard (left eye first)"
-                    tFormat = "checkerboard_lr"
-                Case "row interleaved (right eye first)"
-                    tFormat = "row_interleaved_rl"
-                Case "row interleaved (left eye first)"
-                    tFormat = "row_interleaved_lr"
-                Case "column interleaved (right eye first)"
-                    tFormat = "col_interleaved_rl"
-                Case "column interleaved (left eye first)"
-                    tFormat = "col_interleaved_lr"
-                Case "anaglyph (cyan/red)"
-                    tFormat = "anaglyph_cyan_red"
-                Case "side by side (right eye first)"
-                    tFormat = "right_left"
-                Case "anaglyph (green/magenta)"
-                    tFormat = "anaglyph_green_magenta"
-                Case "both eyes laced in one block (left eye first)"
-                    tFormat = "block_lr"
-                Case "both eyes laced in one block (right eye first)"
-                    tFormat = "block_rl"
-            End Select
-
-            Return tFormat
-        Else
-            Return String.Empty
-        End If
+        'MultiViewLayout (http://matroska.org/technical/specs/index.html#StereoMode) 
+        Select Case sFormat.ToLower
+            Case "side by side (left eye first)"
+                Return "left_right"
+            Case "top-bottom (right eye first)"
+                Return "bottom_top"
+            Case "top-bottom (left eye first)"
+                Return "bottom_top"
+            Case "checkboard (right eye first)"
+                Return "checkerboard_rl"
+            Case "checkboard (left eye first)"
+                Return "checkerboard_lr"
+            Case "row interleaved (right eye first)"
+                Return "row_interleaved_rl"
+            Case "row interleaved (left eye first)"
+                Return "row_interleaved_lr"
+            Case "column interleaved (right eye first)"
+                Return "col_interleaved_rl"
+            Case "column interleaved (left eye first)"
+                Return "col_interleaved_lr"
+            Case "anaglyph (cyan/red)"
+                Return "anaglyph_cyan_red"
+            Case "side by side (right eye first)"
+                Return "right_left"
+            Case "anaglyph (green/magenta)"
+                Return "anaglyph_green_magenta"
+            Case "both eyes laced in one block (left eye first)"
+                Return "block_lr"
+            Case "both eyes laced in one block (right eye first)"
+                Return "block_rl"
+            Case Else
+                Return String.Empty
+        End Select
     End Function
 
     Private Function ConvertVideoWidthOrHeight(ByVal widthOrHeight As String) As Integer
@@ -575,50 +438,47 @@ Public Class MediaInfo
 
     Private Function ConvertVideoStereoToShort(ByVal sFormat As String) As String
         If Not String.IsNullOrEmpty(sFormat) Then
-            Dim tFormat As String = String.Empty
             Select Case sFormat.ToLower
                 Case "bottom_top"
-                    tFormat = "tab"
+                    Return "tab"
                 Case "left_right", "right_left"
-                    tFormat = "sbs"
+                    Return "sbs"
                 Case Else
-                    tFormat = "unknown"
+                    Return "unknown"
             End Select
-
-            Return tFormat
-        Else
-            Return String.Empty
         End If
+        Return String.Empty
     End Function
 
     Private Function Count_Get(ByVal streamKind As StreamKind, Optional ByVal streamNumber As UInteger = UInteger.MaxValue) As Integer
         If streamNumber = UInteger.MaxValue Then
-            Return MediaInfo_Count_Get(Handle, CType(streamKind, UIntPtr), CType(-1, IntPtr))
+            Return MediaInfo_Count_Get(_Handle, CType(streamKind, UIntPtr), CType(-1, IntPtr))
         Else
-            Return MediaInfo_Count_Get(Handle, CType(streamKind, UIntPtr), CType(streamNumber, IntPtr))
+            Return MediaInfo_Count_Get(_Handle, CType(streamKind, UIntPtr), CType(streamNumber, IntPtr))
         End If
     End Function
 
     Private Function Get_(ByVal streamKind As StreamKind, ByVal streamNumber As Integer, ByVal parameter As String, Optional ByVal kindOfInfo As InfoKind = InfoKind.Text, Optional ByVal kindOfSearch As InfoKind = InfoKind.Name) As String
-        If UseAnsi Then
+        If _UseAnsi Then
             Dim Parameter_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(parameter)
-            Dim ToReturn As String = Marshal.PtrToStringAnsi(MediaInfoA_Get(Handle, CType(streamKind, UIntPtr), CType(streamNumber, UIntPtr), Parameter_Ptr, CType(kindOfInfo, UIntPtr), CType(kindOfSearch, UIntPtr)))
+            Dim ToReturn As String = Marshal.PtrToStringAnsi(MediaInfoA_Get(_Handle, CType(streamKind, UIntPtr), CType(streamNumber, UIntPtr), Parameter_Ptr, CType(kindOfInfo, UIntPtr), CType(kindOfSearch, UIntPtr)))
             Marshal.FreeHGlobal(Parameter_Ptr)
             Return ToReturn
         Else
-            Return Marshal.PtrToStringUni(MediaInfo_Get(Handle, CType(streamKind, UIntPtr), CType(streamNumber, UIntPtr), parameter, CType(kindOfInfo, UIntPtr), CType(kindOfSearch, UIntPtr)))
+            Return Marshal.PtrToStringUni(MediaInfo_Get(_Handle, CType(streamKind, UIntPtr), CType(streamNumber, UIntPtr), parameter, CType(kindOfInfo, UIntPtr), CType(kindOfSearch, UIntPtr)))
         End If
     End Function
 
     Private Sub Open(ByVal path As String)
-        If UseAnsi Then
+        If _UseAnsi Then
             Dim FileName_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(path)
-            MediaInfoA_Open(Handle, FileName_Ptr)
+            MediaInfoA_Open(_Handle, FileName_Ptr)
             Marshal.FreeHGlobal(FileName_Ptr)
         Else
-            MediaInfo_Open(Handle, path)
+            MediaInfo_Open(_Handle, path)
         End If
     End Sub
+
     ''' <summary>
     ''' Use MediaInfo to get/scan subtitle, audio Stream and video information of videofile
     ''' </summary>
@@ -637,9 +497,10 @@ Public Class MediaInfo
                 Dim alternativeIFOFile As String = String.Empty
 
                 'New ISO Handling -> Use VitualCloneDrive to mount ISO!
-                If FileUtils.Common.isDiscImage(path) OrElse
-                    FileUtils.Common.isVideoTS(path) OrElse
-                    FileUtils.Common.isBDRip(path) Then
+                If FileUtils.Common.isDiscImage(path) Then ' OrElse
+                    'FileUtils.Common.isVideoTS(path) OrElse
+                    'FileUtils.Common.isBDRip(path) Then
+
                     'ISO-File Scanning using VCDMount.exe to mount and read file!
                     If FileUtils.Common.isDiscImage(path) Then
                         nVirtualDrive = New FileUtils.VirtualDrive(path)
@@ -663,12 +524,12 @@ Public Class MediaInfo
                 End If
 
                 If Not String.IsNullOrEmpty(path) Then
-                    Handle = MediaInfo_New()
+                    _Handle = MediaInfo_New()
 
                     If Master.isWindows Then
-                        UseAnsi = False
+                        _UseAnsi = False
                     Else
-                        UseAnsi = True
+                        _UseAnsi = True
                     End If
 
                     Open(path)
@@ -733,12 +594,6 @@ Public Class MediaInfo
                             If Not String.IsNullOrEmpty(strLanguage) Then
                                 miVideo.Language = strLanguage
                             End If
-                        End If
-
-                        If FileUtils.Common.isDiscImage(path) OrElse FileUtils.Common.isVideoTS(path) OrElse FileUtils.Common.isBDRip(path) Then
-                            miVideo.Filesize = FileUtils.Common.GetFolderSize(Directory.GetParent(path).FullName)
-                        Else
-                            miVideo.Filesize = If(Double.TryParse(Get_(StreamKind.General, 0, "FileSize"), 0), CDbl(Get_(StreamKind.General, 0, "FileSize")), 0)
                         End If
 
                         fiOut.StreamDetails.Video.Add(miVideo)
@@ -819,6 +674,7 @@ Public Class MediaInfo
         End Try
         Return fiOut
     End Function
+
     ''' <summary>
     ''' Use MediaInfo.dll Scan to get subtitle and audio Stream information of file (used for scanning IFO files)
     ''' </summary>
@@ -827,12 +683,12 @@ Public Class MediaInfo
         'The whole content of this function is a strip of of the "big" ScanMI function. It is used to scan IFO files of VIDEO_TS media to retrieve language info
         Dim fiOut As New MediaContainers.FileInfo
 
-        Handle = MediaInfo_New()
+        _Handle = MediaInfo_New()
 
         If Master.isWindows Then
-            UseAnsi = False
+            _UseAnsi = False
         Else
-            UseAnsi = True
+            _UseAnsi = True
         End If
 
         Open(ifoPath)
@@ -844,7 +700,7 @@ Public Class MediaInfo
             miAudio.Codec = ConvertAudioFormat(Get_(StreamKind.Audio, i, "CodecID"), Get_(StreamKind.Audio, i, "Format"),
                                            Get_(StreamKind.Audio, i, "CodecID/Hint"), Get_(StreamKind.Audio, i, "Format_Profile"))
             miAudio.Channels = ConvertAudioChannels(Get_(StreamKind.Audio, i, "Channel(s)"))
-            miAudio.Bitrate = ConvertBitrate(Get_(StreamKind.Audio, i, "BitRate/String"))
+            miAudio.Bitrate = ConvertBitrate(Get_(StreamKind.Audio, i, "BitRate"))
 
             Dim strLanguage As String = Get_(StreamKind.Audio, i, "Language/String")
             If Not String.IsNullOrEmpty(strLanguage) Then
@@ -857,7 +713,6 @@ Public Class MediaInfo
         Next
 
         'Subtitle Scan
-
         Dim iSubtitleStreams As Integer = Count_Get(StreamKind.Text)
         For i As Integer = 0 To iSubtitleStreams - 1
             Dim miSubtitle As New MediaContainers.Subtitle
@@ -878,13 +733,90 @@ Public Class MediaInfo
         Dim iVideoStreams As Integer = Count_Get(StreamKind.Visual)
         For i As Integer = 0 To iVideoStreams - 1
             Dim miVideo As New MediaContainers.Video
-            miVideo.Duration = ConvertVideoDuration(Get_(StreamKind.Visual, i, "Duration/String1"), Get_(StreamKind.General, 0, "Duration/String1"))
+            miVideo.Duration = ConvertVideoDuration(Get_(StreamKind.Visual, i, "Duration/String3"), Get_(StreamKind.General, 0, "Duration/String3"))
             fiOut.StreamDetails.Video.Add(miVideo)
         Next
 
         Close()
 
         Return fiOut
+    End Function
+    ''' <summary>
+    ''' Use MediaInfo.dll to get/scan audio, stubtitle and video streams of videofile
+    ''' </summary>
+    ''' <returns>Mediainfo-Scanresults as MediaContainers.Fileinfo</returns>
+    Public Function ScanPath(ByVal strPath As String) As MediaContainers.Fileinfo
+        Dim nFileInfo As New MediaContainers.Fileinfo
+
+        If Not String.IsNullOrEmpty(strPath) Then
+            _Handle = MediaInfo_New()
+            _UseAnsi = Not Master.isWindows
+
+            Open(strPath)
+
+            'Audio Streams
+            Dim intAudioStreamsCount = Count_Get(StreamKind.Audio)
+            For i As Integer = 0 To intAudioStreamsCount - 1
+                Dim nAudio As New MediaContainers.Audio
+                'Audio General
+                nAudio.Bitrate = ConvertBitrate(Get_(StreamKind.Audio, i, "BitRate"), Get_(StreamKind.Audio, i, "BitRate_Maximum"))
+                nAudio.Channels = ConvertAudioChannels(Get_(StreamKind.Audio, i, "Channel(s)_Original"))
+                If Not nAudio.ChannelsSpecified Then
+                    nAudio.Channels = ConvertAudioChannels(Get_(StreamKind.Audio, i, "Channel(s)"))
+                End If
+                nAudio.Codec = ConvertAudioFormat(Get_(StreamKind.Audio, i, "CodecID"),
+                                                  Get_(StreamKind.Audio, i, "Format"),
+                                                  Get_(StreamKind.Audio, i, "CodecID/Hint"),
+                                                  Get_(StreamKind.Audio, i, "Format_Profile"))
+                'Audio Language
+                Dim strLanguage = Get_(StreamKind.Audio, i, "Language/String")
+                If Not String.IsNullOrEmpty(strLanguage) Then
+                    nAudio.LongLanguage = strLanguage
+                    nAudio.Language = Localization.ISOLangGetCode3ByLang(nAudio.LongLanguage)
+                End If
+                nFileInfo.StreamDetails.Audio.Add(nAudio)
+            Next
+
+            'Subtitle Streams
+            Dim intSubtitleStreamsCount As Integer = Count_Get(StreamKind.Text)
+            For i As Integer = 0 To intSubtitleStreamsCount - 1
+                Dim nSubtitle = New MediaContainers.Subtitle
+                'Subtitle Language
+                nSubtitle.LongLanguage = Get_(StreamKind.Text, i, "Language/String")
+                nSubtitle.Language = Localization.ISOLangGetCode3ByLang(nSubtitle.LongLanguage)
+                nSubtitle.Forced = ConvertBoolean(Get_(StreamKind.Text, i, "Forced/String"))
+                nFileInfo.StreamDetails.Subtitle.Add(nSubtitle)
+            Next
+
+            'Video Streams
+            Dim intVideoStreamsCount As Integer = Count_Get(StreamKind.Visual)
+            For i As Integer = 0 To intVideoStreamsCount - 1
+                Dim nVideo As New MediaContainers.Video
+                'Video General
+                nVideo.Aspect = ConvertVideoAspectRatio(Get_(StreamKind.Visual, i, "DisplayAspectRatio"))
+                nVideo.BitDepth = ConvertBitDepth(Get_(StreamKind.Visual, i, "BitDepth"))
+                nVideo.Bitrate = ConvertBitrate(Get_(StreamKind.Visual, i, "BitRate"), Get_(StreamKind.General, i, "OverallBitRate"))
+                nVideo.ChromaSubsampling = Get_(StreamKind.Visual, i, "ChromaSubsampling")
+                nVideo.Codec = ConvertVideoFormat(Get_(StreamKind.Visual, i, "CodecID"),
+                                                  Get_(StreamKind.Visual, i, "Format"),
+                                                  Get_(StreamKind.Visual, i, "Format_Version"))
+                nVideo.Duration = ConvertVideoDuration(Get_(StreamKind.Visual, i, "Duration/String3"), Get_(StreamKind.General, 0, "Duration/String3"))
+                nVideo.Height = ConvertVideoWidthOrHeight(Get_(StreamKind.Visual, i, "Height"))
+                nVideo.MultiViewCount = ConvertVideoMultiViewCount(Get_(StreamKind.Visual, i, "MultiView_Count"))
+                nVideo.MultiViewLayout = Get_(StreamKind.Visual, i, "MultiView_Layout") 'see: http://matroska.org/technical/specs/index.html#StereoMode
+                nVideo.Scantype = Get_(StreamKind.Visual, i, "ScanType")
+                nVideo.Width = ConvertVideoWidthOrHeight(Get_(StreamKind.Visual, i, "Width"))
+                'Video Language
+                Dim strLanguage = Get_(StreamKind.Visual, i, "Language/String")
+                If Not String.IsNullOrEmpty(strLanguage) Then
+                    nVideo.LongLanguage = strLanguage
+                    nVideo.Language = Localization.ISOLangGetCode3ByLang(nVideo.LongLanguage)
+                End If
+                nFileInfo.StreamDetails.Video.Add(nVideo)
+            Next
+            Close()
+        End If
+        Return nFileInfo
     End Function
     ''' 
     ''' <summary>
@@ -942,8 +874,8 @@ Public Class MediaInfo
                 'Bluray
             Else
 
-                ' looking at the largest m2ts file within the \BDMV\STREAM folder
-                Dim di As New IO.DirectoryInfo(Directory.GetParent(path).FullName)
+                'looking at the largest m2ts file within the \BDMV\STREAM folder
+                Dim di As New DirectoryInfo(Directory.GetParent(path).FullName)
                 If ISO Then
                     'ie. path = driveletter & "VIDEO_TS"
                     di = New DirectoryInfo(path)
@@ -961,14 +893,11 @@ Public Class MediaInfo
                     End If
 
                 End If
-                Dim ISOSubtitleScanFile As String
+
                 If myFiles.Last.Length > 5 Then
-                    ISOSubtitleScanFile = myFiles.Last.Substring(0, myFiles.Last.Length - 5) & ".clpi"
-                    Dim clipinfpath As String = ""
-
-                    clipinfpath = Directory.GetParent(path).FullName.Replace("STREAM", "CLIPINF")
-
-                    If IO.File.Exists(clipinfpath & "\" & ISOSubtitleScanFile) Then
+                    Dim ISOSubtitleScanFile As String = myFiles.Last.Substring(0, myFiles.Last.Length - 5) & ".clpi"
+                    Dim clipinfpath As String = Directory.GetParent(path).FullName.Replace("STREAM", "CLIPINF")
+                    If File.Exists(clipinfpath & "\" & ISOSubtitleScanFile) Then
                         fiIFO = ScanLanguage(clipinfpath & "\" & ISOSubtitleScanFile)
                     End If
                 End If

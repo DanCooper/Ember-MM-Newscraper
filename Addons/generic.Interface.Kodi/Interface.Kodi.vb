@@ -301,7 +301,7 @@ Public Class KodiInterface
 
                             'connection test
                             If Await Task.Run(Function() _APIKodi.GetConnectionToHost) Then
-                                If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(mDBElement, True) Then
+                                If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(mDBElement, True) Then
                                     If mDBElement.NfoPathSpecified Then
                                         'run task
                                         Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_Movie(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
@@ -342,7 +342,7 @@ Public Class KodiInterface
 
                             'connection test
                             If Await Task.Run(Function() _APIKodi.GetConnectionToHost) Then
-                                If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(mDBElement, True) Then
+                                If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(mDBElement, True) Then
                                     If mDBElement.NfoPathSpecified Then
                                         'run task
                                         Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
@@ -383,8 +383,8 @@ Public Class KodiInterface
                             'connection test
                             If Await Task.Run(Function() _APIKodi.GetConnectionToHost) Then
                                 If mDBElement.Episodes IsNot Nothing Then
-                                    For Each tEpisode In mDBElement.Episodes.Where(Function(f) f.File.PathSpecified)
-                                        If tEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tEpisode, True) Then
+                                    For Each tEpisode In mDBElement.Episodes.Where(Function(f) f.FileItem.FullPathSpecified)
+                                        If tEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tEpisode, True) Then
                                             If tEpisode.NfoPathSpecified Then
                                                 'run task
                                                 Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(tEpisode, GenericSubEventProgressAsync, GenericEventProcess))
@@ -420,7 +420,7 @@ Public Class KodiInterface
 
                 'Remove Movie
                 Case Enums.ModuleEventType.Remove_Movie
-                    If mDBElement.File.PathSpecified Then
+                    If mDBElement.FileItem.FullPathSpecified Then
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
 
@@ -462,7 +462,7 @@ Public Class KodiInterface
 
                 'Remove TVEpisode
                 Case Enums.ModuleEventType.Remove_TVEpisode
-                    If mDBElement.File.PathSpecified Then
+                    If mDBElement.FileItem.FullPathSpecified Then
 
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
@@ -547,7 +547,7 @@ Public Class KodiInterface
 
                 'Sync Movie
                 Case Enums.ModuleEventType.Sync_Movie
-                    If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(mDBElement, True) Then
+                    If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(mDBElement, True) Then
                         If mDBElement.NfoPathSpecified Then
                             If mHost IsNot Nothing Then
                                 Dim _APIKodi As New Kodi.APIKodi(mHost)
@@ -639,7 +639,7 @@ Public Class KodiInterface
 
                     'Sync TVEpisode
                 Case Enums.ModuleEventType.Sync_TVEpisode
-                    If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(mDBElement, True) Then
+                    If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(mDBElement, True) Then
                         If mDBElement.NfoPathSpecified Then
                             If mHost IsNot Nothing Then
                                 Dim _APIKodi As New Kodi.APIKodi(mHost)
@@ -688,7 +688,7 @@ Public Class KodiInterface
 
                     'Sync TVSeason
                 Case Enums.ModuleEventType.Sync_TVSeason
-                    If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(mDBElement, True) Then
+                    If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(mDBElement, True) Then
                         If mDBElement.IDSpecified Then
                             If mHost IsNot Nothing Then
                                 Dim _APIKodi As New Kodi.APIKodi(mHost)
@@ -737,7 +737,7 @@ Public Class KodiInterface
 
                     'Sync TVShow
                 Case Enums.ModuleEventType.Sync_TVShow
-                    If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(mDBElement, True) Then
+                    If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(mDBElement, True) Then
                         If mDBElement.NfoPathSpecified Then
                             If mHost IsNot Nothing Then
                                 Dim _APIKodi As New Kodi.APIKodi(mHost)
@@ -799,7 +799,7 @@ Public Class KodiInterface
 
                                         'Get Movie Playcount
                                         Case Enums.ContentType.Movie
-                                            If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(mDBElement, True) Then
+                                            If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(mDBElement, True) Then
                                                 If mDBElement.NfoPathSpecified Then
                                                     'run task
                                                     Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_Movie(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
@@ -824,7 +824,7 @@ Public Class KodiInterface
 
                                         'Get TVEpisode Playcount
                                         Case Enums.ContentType.TVEpisode
-                                            If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(mDBElement, True) Then
+                                            If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(mDBElement, True) Then
                                                 If mDBElement.NfoPathSpecified Then
                                                     'run task
                                                     Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
@@ -851,7 +851,7 @@ Public Class KodiInterface
                                         Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                                             If mDBElement.Episodes IsNot Nothing Then
                                                 For Each tEpisode In mDBElement.Episodes
-                                                    If tEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tEpisode, True) Then
+                                                    If tEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tEpisode, True) Then
                                                         If tEpisode.NfoPathSpecified Then
                                                             'run task
                                                             Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(tEpisode, GenericSubEventProgressAsync, GenericEventProcess))
@@ -1532,7 +1532,7 @@ Public Class KodiInterface
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idMovie").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     If DBElement.NfoPathSpecified Then
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = mHost, .mInternalType = InternalType.GetPlaycount, .mType = Enums.ModuleEventType.Task})
@@ -1557,7 +1557,7 @@ Public Class KodiInterface
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idEpisode").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     If DBElement.NfoPathSpecified Then
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mInternalType = InternalType.GetPlaycount, .mType = Enums.ModuleEventType.Task})
@@ -1584,7 +1584,7 @@ Public Class KodiInterface
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idSeason").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, True)
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     'add job to tasklist and get everything done
                     AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mInternalType = InternalType.GetPlaycount, .mType = Enums.ModuleEventType.Task})
                 End If
@@ -1605,7 +1605,7 @@ Public Class KodiInterface
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idShow").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(ID, True, True)
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     If DBElement.NfoPathSpecified Then
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mInternalType = InternalType.GetPlaycount, .mType = Enums.ModuleEventType.Task})
@@ -1689,7 +1689,7 @@ Public Class KodiInterface
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idMovie").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     If DBElement.NfoPathSpecified Then
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_Movie})
@@ -1741,7 +1741,7 @@ Public Class KodiInterface
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idEpisode").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     If DBElement.NfoPathSpecified Then
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_TVEpisode})
@@ -1768,7 +1768,7 @@ Public Class KodiInterface
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idSeason").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     'add job to tasklist and get everything done
                     AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_TVSeason})
                 End If
@@ -1791,7 +1791,7 @@ Public Class KodiInterface
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idSeason").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, True)
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     'add job to tasklist and get everything done
                     AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_TVSeason})
                 End If
@@ -1814,7 +1814,7 @@ Public Class KodiInterface
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idShow").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     If DBElement.NfoPathSpecified Then
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_TVShow})
@@ -1841,7 +1841,7 @@ Public Class KodiInterface
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idShow").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(ID, True, True)
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     If DBElement.NfoPathSpecified Then
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_TVShow})

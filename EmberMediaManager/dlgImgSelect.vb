@@ -985,7 +985,7 @@ Public Class dlgImgSelect
         'Description
         If tImage IsNot Nothing AndAlso tImage.ImageOriginal IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
             Dim imgText As String = String.Empty
-            If String.IsNullOrEmpty(tImage.Width) OrElse String.IsNullOrEmpty(tImage.Height) Then
+            If Not tImage.WidthSpecified OrElse Not tImage.HeightSpecified Then
                 nTag.strResolution = String.Format("{0}x{1}", tImage.ImageOriginal.Image.Size.Width, tImage.ImageOriginal.Image.Size.Height)
             Else
                 nTag.strResolution = String.Format("{0}x{1}", tImage.Width, tImage.Height)

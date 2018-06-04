@@ -179,10 +179,12 @@
     <Compile Include="clsAPIApple.vb" />
     <Compile Include="clsAPICommandLine.vb" />
     <Compile Include="clsAPIFFmpeg.vb" />
+    <Compile Include="clsAPIFileItem.vb" />
     <Compile Include="clsAPIFormsUtils.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="clsAPIIMDB.vb" />
+    <Compile Include="clsAPIMetaData.vb" />
     <Compile Include="clsAPIProfiles.vb" />
     <Compile Include="clsAPITaskManager.vb" />
     <Compile Include="clsAPIThemes.vb" />
@@ -190,7 +192,6 @@
     <Compile Include="clsAPIDatabase.vb" />
     <Compile Include="clsAPIDVD.vb" />
     <Compile Include="clsAPIFileUtils.vb" />
-    <Compile Include="clsAPIHashing.vb" />
     <Compile Include="clsAPIHTTP.vb" />
     <Compile Include="clsAPIImages.vb" />
     <Compile Include="clsAPIImageUtils.vb" />

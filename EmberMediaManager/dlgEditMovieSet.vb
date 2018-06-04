@@ -78,7 +78,7 @@ Public Class dlgEditMovieSet
             If Not String.IsNullOrEmpty(tmpDBElement.MoviesInSet.Item(0).DBMovie.Movie.TMDBColID) Then
                 newColID = tmpDBElement.MoviesInSet.Item(0).DBMovie.Movie.TMDBColID
             Else
-                newColID = ModulesManager.Instance.GetMovieCollectionID(tmpDBElement.MoviesInSet.Item(0).DBMovie.Movie.IMDB)
+                newColID = ModulesManager.Instance.GetMovieCollectionID(tmpDBElement.MoviesInSet.Item(0).DBMovie.Movie.ID)
             End If
 
             If Not String.IsNullOrEmpty(newColID) Then

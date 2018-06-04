@@ -179,7 +179,7 @@ Namespace MediaContainers
         Private _title As String
         Private _tmdb As String
         Private _tvdb As String
-        Private _uniqueids As New List(Of Uniqueid)
+        Private _uniqueids As New UniqueidContainer
         Private _userrating As Integer
         Private _videosource As String
         Private _votes As String
@@ -247,25 +247,31 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("uniqueid")>
-        Public Property UniqueIDs() As List(Of Uniqueid)
+        <XmlIgnore()>
+        Public Property UniqueIDs() As UniqueidContainer
             Get
                 Return _uniqueids
             End Get
-            Set(ByVal value As List(Of Uniqueid))
-                If value Is Nothing Then
-                    _uniqueids.Clear()
-                Else
-                    _uniqueids = value
-                End If
+            Set(ByVal value As UniqueidContainer)
+                _uniqueids = value
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return _uniqueids.Count > 0
+                Return _uniqueids.Items.Count > 0
             End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return _uniqueids.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                _uniqueids.Items = value
+            End Set
         End Property
 
         <XmlElement("title")>
@@ -777,7 +783,7 @@ Namespace MediaContainers
             _tmdb = String.Empty
             _tvdb = String.Empty
             _title = String.Empty
-            _uniqueids.Clear()
+            _uniqueids = New UniqueidContainer
             _userrating = 0
             _videosource = String.Empty
             _votes = String.Empty
@@ -847,7 +853,7 @@ Namespace MediaContainers
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
-            If Not DBElement.File.PathSpecified Then Return
+            If Not DBElement.FileItem.FullPathSpecified Then Return
 
             If ActorsSpecified AndAlso Master.eSettings.TVEpisodeActorThumbsAnyEnabled Then
                 Images.SaveTVEpisodeActorThumbs(DBElement)
@@ -998,7 +1004,7 @@ Namespace MediaContainers
         Private _fanart As New Fanart
         Private _fileInfo As New FileInfo
         Private _genres As New List(Of String)
-        Private _imdb As String
+        Private _id As String
         Private _language As String
         Private _lastplayed As String
         Private _lev As Integer
@@ -1025,7 +1031,7 @@ Namespace MediaContainers
         Private _tmdbcolid As String
         Private _top250 As Integer
         Private _trailer As String
-        Private _uniqueids As New List(Of UniqueId)
+        Private _uniqueids As New UniqueidContainer
         Private _userrating As Integer
         Private _videosource As String
         Private _votes As String
@@ -1043,19 +1049,19 @@ Namespace MediaContainers
 
 #Region "Properties"
         <XmlElement("id")>
-        Public Property IMDB() As String
+        Public Property ID() As String
             Get
-                Return _imdb
+                Return _id
             End Get
             Set(ByVal value As String)
-                _imdb = value
+                _id = value
             End Set
         End Property
 
         <XmlIgnore()>
-        Public ReadOnly Property IMDBSpecified() As Boolean
+        Public ReadOnly Property IDSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_imdb)
+                Return Not String.IsNullOrEmpty(_id)
             End Get
         End Property
 
@@ -1093,25 +1099,31 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("uniqueid")>
-        Public Property UniqueIDs() As List(Of UniqueId)
+        <XmlIgnore()>
+        Public Property UniqueIDs() As UniqueidContainer
             Get
                 Return _uniqueids
             End Get
-            Set(ByVal value As List(Of UniqueId))
-                If value Is Nothing Then
-                    _uniqueids.Clear()
-                Else
-                    _uniqueids = value
-                End If
+            Set(ByVal value As UniqueidContainer)
+                _uniqueids = value
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return _uniqueids.Count > 0
+                Return _uniqueids.Items.Count > 0
             End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return _uniqueids.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                _uniqueids.Items = value
+            End Set
         End Property
 
         <XmlElement("title")>
@@ -1713,7 +1725,7 @@ Namespace MediaContainers
         End Property
 
         <XmlAnyElement("set")>
-        Public Property Set_Kodi() As Object
+        Public Property Sets_Kodi() As Object
             Get
                 Return CreateSetNode()
             End Get
@@ -1996,7 +2008,7 @@ Namespace MediaContainers
             _fanart = New Fanart
             _fileInfo = New FileInfo
             _genres.Clear()
-            _imdb = String.Empty
+            _id = String.Empty
             _language = String.Empty
             _lev = 0
             _locked = False
@@ -2022,7 +2034,7 @@ Namespace MediaContainers
             _tmdbcolid = String.Empty
             _top250 = 0
             _trailer = String.Empty
-            _uniqueids.Clear()
+            _uniqueids = New UniqueidContainer
             _userrating = 0
             _videosource = String.Empty
             _votes = String.Empty
@@ -2237,7 +2249,7 @@ Namespace MediaContainers
         Private _plot As String
         Private _title As String
         Private _tmdb As String
-        Private _uniqueids As New List(Of Uniqueid)
+        Private _uniqueids As New UniqueidContainer
 
 #End Region 'Fields
 
@@ -2292,25 +2304,31 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("uniqueid")>
-        Public Property UniqueIDs() As List(Of UniqueId)
+        <XmlIgnore()>
+        Public Property UniqueIDs() As UniqueidContainer
             Get
                 Return _uniqueids
             End Get
-            Set(ByVal value As List(Of UniqueId))
-                If value Is Nothing Then
-                    _uniqueids.Clear()
-                Else
-                    _uniqueids = value
-                End If
+            Set(ByVal value As UniqueidContainer)
+                _uniqueids = value
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return _uniqueids.Count > 0
+                Return _uniqueids.Items.Count > 0
             End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return _uniqueids.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                _uniqueids.Items = value
+            End Set
         End Property
 
         <XmlElement("plot")>
@@ -2387,7 +2405,7 @@ Namespace MediaContainers
             _plot = String.Empty
             _title = String.Empty
             _tmdb = String.Empty
-            _uniqueids.Clear()
+            _uniqueids = New UniqueidContainer
         End Sub
 
 #End Region 'Methods
@@ -2469,14 +2487,24 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("uniqueid")>
-        Public Property UniqueIDs() As List(Of Uniqueid) = New List(Of Uniqueid)
+        <XmlIgnore()>
+        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return UniqueIDs.Count > 0
+                Return UniqueIDs.Items.Count > 0
             End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return UniqueIDs.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                UniqueIDs.Items = value
+            End Set
         End Property
 
 #End Region 'Properties
@@ -2552,7 +2580,7 @@ Namespace MediaContainers
         Private _title As String
         Private _tmdb As String
         Private _tvdb As String
-        Private _uniqueids As New List(Of Uniqueid)
+        Private _uniqueids As New UniqueidContainer
 
 #End Region 'Fields
 
@@ -2685,25 +2713,31 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("uniqueid")>
-        Public Property UniqueIDs() As List(Of UniqueId)
+        <XmlIgnore()>
+        Public Property UniqueIDs() As UniqueidContainer
             Get
                 Return _uniqueids
             End Get
-            Set(ByVal value As List(Of UniqueId))
-                If value Is Nothing Then
-                    _uniqueids.Clear()
-                Else
-                    _uniqueids = value
-                End If
+            Set(ByVal value As UniqueidContainer)
+                _uniqueids = value
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return _uniqueids.Count > 0
+                Return _uniqueids.Items.Count > 0
             End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return _uniqueids.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                _uniqueids.Items = value
+            End Set
         End Property
 
         <XmlElement("locked")>
@@ -2729,7 +2763,7 @@ Namespace MediaContainers
             _tmdb = String.Empty
             _tvdb = String.Empty
             _title = String.Empty
-            _uniqueids.Clear()
+            _uniqueids = New UniqueidContainer
         End Sub
 
 #End Region 'Methods
@@ -2856,7 +2890,7 @@ Namespace MediaContainers
         Private _title As String
         Private _tmdb As String
         Private _tvdb As String
-        Private _uniqueids As New List(Of Uniqueid)
+        Private _uniqueids As New UniqueidContainer
         Private _userrating As Integer
         Private _votes As String
 
@@ -2930,25 +2964,31 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("uniqueid")>
-        Public Property UniqueIDs() As List(Of UniqueId)
+        <XmlIgnore()>
+        Public Property UniqueIDs() As UniqueidContainer
             Get
                 Return _uniqueids
             End Get
-            Set(ByVal value As List(Of UniqueId))
-                If value Is Nothing Then
-                    _uniqueids.Clear()
-                Else
-                    _uniqueids = value
-                End If
+            Set(ByVal value As UniqueidContainer)
+                _uniqueids = value
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return _uniqueids.Count > 0
+                Return _uniqueids.Items.Count > 0
             End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return _uniqueids.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                _uniqueids.Items = value
+            End Set
         End Property
 
         <XmlElement("title")>
@@ -3527,7 +3567,7 @@ Namespace MediaContainers
             _tags.Clear()
             _title = String.Empty
             _tmdb = String.Empty
-            _uniqueids.Clear()
+            _uniqueids = New UniqueidContainer
             _userrating = 0
             _votes = String.Empty
         End Sub
@@ -3587,7 +3627,7 @@ Namespace MediaContainers
         Private _disc As Integer
         Private _disctype As String
         Private _episode As Integer
-        Private _height As String
+        Private _height As Integer
         Private _imageoriginal As Images
         Private _imagethumb As Images
         Private _index As Integer
@@ -3611,7 +3651,7 @@ Namespace MediaContainers
         Private _urlthumb As String
         Private _voteaverage As String
         Private _votecount As Integer
-        Private _width As String
+        Private _width As Integer
 
 #End Region 'Fields
 
@@ -3670,14 +3710,20 @@ Namespace MediaContainers
             End Set
         End Property
 
-        Public Property Height() As String
+        Public Property Height() As Integer
             Get
                 Return _height
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _height = value
                 DetectImageSize(value)
             End Set
+        End Property
+
+        Public ReadOnly Property HeightSpecified() As Boolean
+            Get
+                Return Not _height = 0
+            End Get
         End Property
 
         Public Property ImageOriginal() As Images
@@ -3870,13 +3916,19 @@ Namespace MediaContainers
             End Set
         End Property
 
-        Public Property Width() As String
+        Public Property Width() As Integer
             Get
                 Return _width
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _width = value
             End Set
+        End Property
+
+        Public ReadOnly Property WidthSpecified() As Boolean
+            Get
+                Return Not _width = 0
+            End Get
         End Property
 
 #End Region 'Properties
@@ -3889,7 +3941,7 @@ Namespace MediaContainers
             _disc = 0
             _disctype = String.Empty
             _episode = -1
-            _height = String.Empty
+            _height = 0
             _imageoriginal = New Images
             _imagethumb = New Images
             _index = 0
@@ -3913,49 +3965,49 @@ Namespace MediaContainers
             _urlthumb = String.Empty
             _voteaverage = String.Empty
             _votecount = 0
-            _width = String.Empty
+            _width = 0
         End Sub
 
-        Private Sub DetectImageSize(ByRef strHeigth As String)
-            Select Case strHeigth
-                Case "3000"
+        Private Sub DetectImageSize(ByRef heigth As Integer)
+            Select Case heigth
+                Case 3000
                     _moviepostersize = Enums.MoviePosterSize.HD3000
                     _tvpostersize = Enums.TVPosterSize.HD3000
-                Case "2160"
+                Case 2160
                     _moviefanartsize = Enums.MovieFanartSize.UHD2160
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.UHD2160
                     _tvfanartsize = Enums.TVFanartSize.UHD2160
-                Case "2100"
+                Case 2100
                     _moviepostersize = Enums.MoviePosterSize.HD2100
-                Case "1500"
+                Case 1500
                     _moviepostersize = Enums.MoviePosterSize.HD1500
                     _tvpostersize = Enums.TVPosterSize.HD1500
                     _tvseasonpostersize = Enums.TVSeasonPosterSize.HD1500
-                Case "1440"
+                Case 1440
                     _moviefanartsize = Enums.MovieFanartSize.QHD1440
                     _tvfanartsize = Enums.TVFanartSize.QHD1440
-                Case "1426"
+                Case 1426
                     _moviepostersize = Enums.MoviePosterSize.HD1426
                     _tvpostersize = Enums.TVPosterSize.HD1426
                     _tvseasonpostersize = Enums.TVSeasonPosterSize.HD1426
-                Case "1080"
+                Case 1080
                     _moviefanartsize = Enums.MovieFanartSize.HD1080
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.HD1080
                     _tvfanartsize = Enums.TVFanartSize.HD1080
-                Case "1000"
+                Case 1000
                     _tvpostersize = Enums.TVPosterSize.HD1000
-                Case "720"
+                Case 720
                     _moviefanartsize = Enums.MovieFanartSize.HD720
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.HD720
                     _tvfanartsize = Enums.TVFanartSize.HD720
-                Case "578"
+                Case 578
                     _tvseasonpostersize = Enums.TVSeasonPosterSize.HD578
-                Case "225", "300" '225 = 16:9 / 300 = 4:3
+                Case 225, 300 '225 = 16:9 / 300 = 4:3
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.SD225
-                Case "185"
+                Case 185
                     _moviebannersize = Enums.MovieBannerSize.HD185
                     _tvbannersize = Enums.TVBannerSize.HD185
-                Case "140"
+                Case 140
                     _tvbannersize = Enums.TVBannerSize.HD140
                 Case Else
                     _moviebannersize = Enums.MovieBannerSize.Any
@@ -4188,7 +4240,8 @@ Namespace MediaContainers
         End Sub
 
         Public Sub SaveAllImages(ByRef DBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-            If Not DBElement.File.PathSpecified AndAlso (DBElement.ContentType = Enums.ContentType.Movie OrElse DBElement.ContentType = Enums.ContentType.TVEpisode) Then Return
+            If Not DBElement.ContentType = Enums.ContentType.TVShow AndAlso
+                (Not DBElement.FileItemSpecified OrElse Not DBElement.FileItem.FullPathSpecified AndAlso (DBElement.ContentType = Enums.ContentType.Movie OrElse DBElement.ContentType = Enums.ContentType.TVEpisode)) Then Return
 
             Dim tContentType As Enums.ContentType = DBElement.ContentType
 
@@ -4874,7 +4927,7 @@ Namespace MediaContainers
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
-                    sID = tDBElement.Movie.IMDB
+                    sID = tDBElement.Movie.ID
                     If String.IsNullOrEmpty(sID) Then
                         sID = tDBElement.Movie.TMDB
                     End If
@@ -6066,6 +6119,54 @@ Namespace MediaContainers
 
     End Class
 
+
+    <Serializable()>
+    Public Class UniqueidContainer
+
+#Region "Properties"
+
+        Public Property Items() As List(Of Uniqueid) = New List(Of Uniqueid)
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            Items = New List(Of Uniqueid)
+        End Sub
+
+        Public Sub New(ByVal uniqueids As String)
+            If Not String.IsNullOrEmpty(uniqueids) Then
+                Dim aUniqueID = Regex.Split(uniqueids, ",")
+                For Each entry In aUniqueID
+                    Dim test = Regex.Split(entry, ":")
+                    If test.Count = 2 Then
+                        Items.Add(New Uniqueid With {
+                                  .Type = test(0),
+                                  .Value = test(1)
+                                  })
+                    End If
+                Next
+            End If
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Function GetIdByName(ByVal name As String) As String
+            Dim nID = Items.FirstOrDefault(Function(f) f.Type.ToLower = name.ToLower)
+            If nID IsNot Nothing Then
+                Return nID.Value
+            Else
+                Return String.Empty
+            End If
+        End Function
+
+#End Region 'Methods
+
+    End Class
+
     <Serializable()>
     Public Class Video
 
@@ -6093,6 +6194,29 @@ Namespace MediaContainers
                 Return Not Bitrate = 0
             End Get
         End Property
+        ''' <summary>
+        ''' Bitrate in bits per seconds
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlElement("bitdepth")>
+        Public Property BitDepth() As Integer = 0
+
+        <XmlIgnore>
+        Public ReadOnly Property BitDepthSpecified() As Boolean
+            Get
+                Return Not BitDepth = 0
+            End Get
+        End Property
+
+        <XmlElement("chromasubsampling")>
+        Public Property ChromaSubsampling() As String = String.Empty
+
+        <XmlIgnore>
+        Public ReadOnly Property ChromaSubsamplingSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(ChromaSubsampling)
+            End Get
+        End Property
 
         <XmlElement("codec")>
         Public Property Codec() As String = String.Empty
@@ -6101,6 +6225,16 @@ Namespace MediaContainers
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Codec)
+            End Get
+        End Property
+
+        <XmlElement("colourprimaries")>
+        Public Property ColourPrimaries() As String = String.Empty
+
+        <XmlIgnore>
+        Public ReadOnly Property ColourPrimariesSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(ColourPrimaries)
             End Get
         End Property
         ''' <summary>
@@ -6197,19 +6331,6 @@ Namespace MediaContainers
         Public ReadOnly Property WidthSpecified() As Boolean
             Get
                 Return Not Width = 0
-            End Get
-        End Property
-        ''' <summary>
-        ''' File size in bytes
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlElement("filesize")>
-        Public Property Filesize() As Double = 0
-
-        <XmlIgnore()>
-        Public ReadOnly Property FilesizeSpecified() As Boolean
-            Get
-                Return Not Filesize = 0
             End Get
         End Property
 

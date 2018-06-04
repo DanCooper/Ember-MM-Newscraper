@@ -426,7 +426,7 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tmpDBElement, True) Then
+        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tmpDBElement, True) Then
             If Not Master.eSettings.TVEpisodeFanartAnyEnabled Then tcEdit.TabPages.Remove(tpFanart)
             If Not Master.eSettings.TVEpisodePosterAnyEnabled Then
                 tcEdit.TabPages.Remove(tpPoster)
@@ -1007,7 +1007,7 @@ Public Class dlgEditTVEpisode
         mTitle = tmpDBElement.TVEpisode.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
-        tsFilename.Text = tmpDBElement.File.Path
+        tsFilename.Text = tmpDBElement.FileItem.FullPath
         btnCancel.Text = Master.eLang.Cancel
         btnOK.Text = Master.eLang.OK
         btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
@@ -1063,7 +1063,7 @@ Public Class dlgEditTVEpisode
     Private Sub btnSetFanartLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartLocal.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.FileItem.FirstStackedPath).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 4
             End With
@@ -1137,7 +1137,7 @@ Public Class dlgEditTVEpisode
     Private Sub btnSetPosterLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterLocal.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(tmpDBElement.File.Path).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.FileItem.FirstStackedPath).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With

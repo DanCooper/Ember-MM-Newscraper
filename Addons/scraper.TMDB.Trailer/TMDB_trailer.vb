@@ -144,7 +144,7 @@ Public Class TMDB_Trailer
         _TMDBAPI.DefaultLanguage = oDBElement.Language
 
         If Not oDBElement.Movie.TMDBSpecified Then
-            oDBElement.Movie.TMDB = ModulesManager.Instance.GetMovieTMDBID(oDBElement.Movie.IMDB)
+            oDBElement.Movie.TMDB = ModulesManager.Instance.GetMovieTMDBID(oDBElement.Movie.ID)
         End If
 
         If oDBElement.Movie.TMDBSpecified Then

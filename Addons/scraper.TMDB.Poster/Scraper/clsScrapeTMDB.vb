@@ -68,7 +68,7 @@ Public Class clsAPITMDB
             If (FilteredModifiers.MainExtrafanarts OrElse FilteredModifiers.MainExtrathumbs OrElse FilteredModifiers.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
                 For Each tImage In Results.Backdrops
                     Dim newImage As New MediaContainers.Image With {
-                            .Height = tImage.Height.ToString,
+                            .Height = tImage.Height,
                             .Likes = 0,
                             .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                             .Scraper = "TMDB",
@@ -77,7 +77,7 @@ Public Class clsAPITMDB
                             .URLThumb = _client.Config.Images.BaseUrl & "w300" & tImage.FilePath,
                             .VoteAverage = tImage.VoteAverage.ToString,
                             .VoteCount = tImage.VoteCount,
-                            .Width = tImage.Width.ToString}
+                            .Width = tImage.Width}
 
                     alImagesContainer.MainFanarts.Add(newImage)
                 Next
@@ -87,7 +87,7 @@ Public Class clsAPITMDB
             If FilteredModifiers.MainPoster AndAlso Results.Posters IsNot Nothing Then
                 For Each tImage In Results.Posters
                     Dim newImage As New MediaContainers.Image With {
-                                .Height = tImage.Height.ToString,
+                                .Height = tImage.Height,
                                 .Likes = 0,
                                 .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                                 .Scraper = "TMDB",
@@ -96,7 +96,7 @@ Public Class clsAPITMDB
                                 .URLThumb = _client.Config.Images.BaseUrl & "w185" & tImage.FilePath,
                                 .VoteAverage = tImage.VoteAverage.ToString,
                                 .VoteCount = tImage.VoteCount,
-                                .Width = tImage.Width.ToString}
+                                .Width = tImage.Width}
 
                     alImagesContainer.MainPosters.Add(newImage)
                 Next
@@ -126,7 +126,7 @@ Public Class clsAPITMDB
             If FilteredModifiers.MainFanart AndAlso Result.Images.Backdrops IsNot Nothing Then
                 For Each tImage In Result.Images.Backdrops
                     Dim newImage As New MediaContainers.Image With {
-                            .Height = tImage.Height.ToString,
+                            .Height = tImage.Height,
                             .Likes = 0,
                             .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                             .Scraper = "TMDB",
@@ -135,7 +135,7 @@ Public Class clsAPITMDB
                             .URLThumb = _client.Config.Images.BaseUrl & "w300" & tImage.FilePath,
                             .VoteAverage = tImage.VoteAverage.ToString,
                             .VoteCount = tImage.VoteCount,
-                            .Width = tImage.Width.ToString}
+                            .Width = tImage.Width}
 
                     alImagesContainer.MainFanarts.Add(newImage)
                 Next
@@ -145,7 +145,7 @@ Public Class clsAPITMDB
             If FilteredModifiers.MainPoster AndAlso Result.Images.Posters IsNot Nothing Then
                 For Each tImage In Result.Images.Posters
                     Dim newImage As New MediaContainers.Image With {
-                                .Height = tImage.Height.ToString,
+                                .Height = tImage.Height,
                                 .Likes = 0,
                                 .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                                 .Scraper = "TMDB",
@@ -154,7 +154,7 @@ Public Class clsAPITMDB
                                 .URLThumb = _client.Config.Images.BaseUrl & "w185" & tImage.FilePath,
                                 .VoteAverage = tImage.VoteAverage.ToString,
                                 .VoteCount = tImage.VoteCount,
-                                .Width = tImage.Width.ToString}
+                                .Width = tImage.Width}
 
                     alImagesContainer.MainPosters.Add(newImage)
                 Next
@@ -173,7 +173,7 @@ Public Class clsAPITMDB
                         If FilteredModifiers.SeasonPoster AndAlso Result_Season.Images.Posters IsNot Nothing Then
                             For Each tImage In Result_Season.Images.Posters
                                 Dim newImage As New MediaContainers.Image With {
-                                        .Height = tImage.Height.ToString,
+                                        .Height = tImage.Height,
                                         .Likes = 0,
                                         .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                                         .Scraper = "TMDB",
@@ -183,7 +183,7 @@ Public Class clsAPITMDB
                                         .URLThumb = _client.Config.Images.BaseUrl & "w185" & tImage.FilePath,
                                         .VoteAverage = tImage.VoteAverage.ToString,
                                         .VoteCount = tImage.VoteCount,
-                                        .Width = tImage.Width.ToString}
+                                        .Width = tImage.Width}
 
                                 alImagesContainer.SeasonPosters.Add(newImage)
                             Next
@@ -235,7 +235,7 @@ Public Class clsAPITMDB
                 For Each tImage In Results.Stills
                     Dim newImage As New MediaContainers.Image With {
                             .Episode = iEpisode,
-                            .Height = tImage.Height.ToString,
+                            .Height = tImage.Height,
                             .Likes = 0,
                             .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                             .Scraper = "TMDB",
@@ -245,7 +245,7 @@ Public Class clsAPITMDB
                             .URLThumb = _client.Config.Images.BaseUrl & "w185" & tImage.FilePath,
                             .VoteAverage = tImage.VoteAverage.ToString,
                             .VoteCount = tImage.VoteCount,
-                            .Width = tImage.Width.ToString}
+                            .Width = tImage.Width}
 
                     alImagesContainer.EpisodePosters.Add(newImage)
                 Next

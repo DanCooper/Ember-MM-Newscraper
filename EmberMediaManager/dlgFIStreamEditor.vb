@@ -66,8 +66,6 @@ Public Class dlgFIStreamEditor
                 txtVideoMultiViewCount.Text = movie.StreamDetails.Video(idx).MultiViewCount.ToString
                 cbVideoMultiViewLayout.Text = movie.StreamDetails.Video(idx).MultiViewLayout
                 txtVideoBitrate.Text = movie.StreamDetails.Video(idx).Bitrate.ToString
-                'for now return filesize in mbytes instead of bytes(default)
-                txtVideoFileSize.Text = CStr(NumUtils.ConvertBytesTo(CLng(movie.StreamDetails.Video(idx).Filesize), NumUtils.FileSizeUnit.Megabyte, 0))
                 txtVideoStereoMode.Text = movie.StreamDetails.Video(idx).StereoMode
             End If
         End If
@@ -109,8 +107,6 @@ Public Class dlgFIStreamEditor
                 stream_v.MultiViewCount = ConvertToInteger(txtVideoMultiViewCount.Text)
                 stream_v.MultiViewLayout = cbVideoMultiViewLayout.Text
                 stream_v.StereoMode = txtVideoStereoMode.Text
-                'since textfield is unit MB we need to convert to Bytes
-                stream_v.Filesize = If(Double.TryParse(txtVideoFileSize.Text, 0), CDbl(txtVideoFileSize.Text) * 1024 * 1024, 0)
                 If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.LongLanguage = cbVideoLanguage.SelectedItem.ToString
                 If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.Language = Localization.ISOLangGetCode3ByLang(cbVideoLanguage.SelectedItem.ToString)
                 Return stream_v
@@ -197,7 +193,6 @@ Public Class dlgFIStreamEditor
         lblVideoWidth.Text = Master.eLang.GetString(606, "Width")
         rbVideoInterlaced.Text = Master.eLang.GetString(615, "Interlaced")
         rbVideoProgressive.Text = Master.eLang.GetString(616, "Progressive")
-        lblVideoFileSize.Text = Master.eLang.GetString(1455, "Filesize [MB]")
     End Sub
 
 #End Region 'Methods

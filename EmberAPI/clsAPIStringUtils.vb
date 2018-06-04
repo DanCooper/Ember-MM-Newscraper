@@ -392,24 +392,19 @@ Public Class StringUtils
     ''' <param name="strPath"><c>String</c> full file path (including file extension) to get title from</param>
     ''' <returns>The filtered title as a <c>String</c></returns>
     ''' <remarks></remarks>
-    Public Shared Function FilterTitleFromPath_Movie(ByVal strPath As String, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
-        If String.IsNullOrEmpty(strPath) Then Return String.Empty
-
-        'removing stack markers
-        strPath = FileUtils.Common.RemoveStackingMarkers(strPath)
+    Public Shared Function FilterTitleFromPath_Movie(ByVal fileItem As FileItem, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
+        If fileItem Is Nothing Then Return String.Empty
 
         'get raw title from path
-        Dim strRawTitle As String = String.Empty
-        If FileUtils.Common.isVideoTS(strPath) Then
-            strRawTitle = FileUtils.Common.GetMainPath(strPath).Name
-        ElseIf FileUtils.Common.isBDRip(strPath) Then
-            strRawTitle = FileUtils.Common.GetMainPath(strPath).Name
+        Dim strRawString As String = String.Empty
+        If fileItem.bIsBDMV OrElse fileItem.bIsVideoTS Then
+            strRawString = fileItem.MainPath.Name
         Else
-            strRawTitle = If(IsSingle AndAlso UseForderName, FileUtils.Common.GetMainPath(strPath).Name, Path.GetFileNameWithoutExtension(strPath))
+            strRawString = If(IsSingle AndAlso UseForderName, fileItem.MainPath.Name, Path.GetFileNameWithoutExtension(fileItem.StackedFilename))
         End If
 
         'filter raw title by filter list
-        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.MovieFilterCustom)
+        Dim strTitle As String = ApplyFilters(strRawString, Master.eSettings.MovieFilterCustom)
 
         'Convert String To Proper Case
         If Master.eSettings.MovieProperCase Then
@@ -418,7 +413,7 @@ Public Class StringUtils
 
         'everything was filtered out... just set to file or directory name
         If String.IsNullOrEmpty(strTitle) Then
-            Return strRawTitle.Trim
+            Return strRawString.Trim
         Else
             Return strTitle.Trim
         End If
@@ -467,7 +462,7 @@ Public Class StringUtils
         If String.IsNullOrEmpty(strPath) Then Return String.Empty
 
         'get raw title from path
-        Dim strRawTitle As String = FileUtils.Common.GetDirectory(strPath)
+        Dim strRawTitle As String = Path.GetDirectoryName(strPath)
 
         'filter raw title by filter list
         Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVShowFilterCustom)
@@ -498,64 +493,70 @@ Public Class StringUtils
         Return Regex.Replace(sString, "([ _.-]\(?\d{4}\))?", String.Empty).Trim
     End Function
     ''' <summary>
-    ''' Get the four-digit year from the given <c>String</c>
+    ''' Get the four-digit year from the given FileItem
     ''' </summary>
-    ''' <param name="strPath"><c>String</c> full file path (including file extension) to get year from</param>
-    ''' <returns>Only the year of source <c>String</c> without brackets</returns>
-    ''' <remarks>The year can only be 4 digits from 1900 - 2099. More or less digits and the string won't be modified.</remarks>
-    Public Shared Function FilterYearFromPath_Movie(ByVal strPath As String, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
-        If String.IsNullOrEmpty(strPath) Then Return String.Empty
+    ''' <param name="fileItem"></param>
+    ''' <param name="IsSingle"></param>
+    ''' <param name="UseForderName"></param>
+    ''' <returns></returns>
+    Public Shared Function FilterYearFromPath_Movie(ByVal fileItem As FileItem, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
+        If fileItem Is Nothing Then Return String.Empty
 
         'get raw string to get year from
         Dim strRawString As String = String.Empty
-        If FileUtils.Common.isVideoTS(strPath) Then
-            strRawString = FileUtils.Common.GetMainPath(strPath).Name
-        ElseIf FileUtils.Common.isBDRip(strPath) Then
-            strRawString = FileUtils.Common.GetMainPath(strPath).Name
+        If fileItem.bIsBDMV OrElse fileItem.bIsVideoTS Then
+            strRawString = fileItem.MainPath.Name
         Else
-            strRawString = If(IsSingle AndAlso UseForderName, FileUtils.Common.GetMainPath(strPath).Name, Path.GetFileNameWithoutExtension(strPath))
+            strRawString = If(IsSingle AndAlso UseForderName, fileItem.MainPath.Name, fileItem.FileInfo.Name)
         End If
 
         Return Regex.Match(strRawString, "((19|20)\d{2})", RegexOptions.RightToLeft).Value.Trim
     End Function
 
-    Public Shared Function FormatDuration(ByVal tDur As String, ByVal sMask As String) As String
-        Dim sDuration As Match = Regex.Match(tDur, "(([0-9]+)h)?\s?(([0-9]+)min)?\s?(([0-9]+)s)?")
-        Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
-        Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
-        Dim sSec As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(6).Value), (Convert.ToInt32(sDuration.Groups(6).Value)), 0)
-        'Dim sMask As String = Master.eSettings.RuntimeMask
-        'Dim sRuntime As String = String.Empty
+    Public Shared Function FormatDuration(ByVal tDur As String, ByVal contentType As Enums.ContentType) As String
+        Dim strMask As String = String.Empty
+        Select Case contentType
+            Case Enums.ContentType.Movie
+                strMask = Master.eSettings.MovieScraperDurationRuntimeFormat
+            Case Enums.ContentType.TVEpisode
+                strMask = Master.eSettings.TVScraperDurationRuntimeFormat
+            Case Else
+                Return String.Empty
+        End Select
+        Dim rmDuration As Match = Regex.Match(tDur, "(([0-9]+)h)?\s?(([0-9]+)min)?\s?(([0-9]+)s)?")
+        Dim iHours As Integer = If(Not String.IsNullOrEmpty(rmDuration.Groups(2).Value), (Convert.ToInt32(rmDuration.Groups(2).Value)), 0)
+        Dim iMinutes As Integer = If(Not String.IsNullOrEmpty(rmDuration.Groups(4).Value), (Convert.ToInt32(rmDuration.Groups(4).Value)), 0)
+        Dim iSeconds As Integer = If(Not String.IsNullOrEmpty(rmDuration.Groups(6).Value), (Convert.ToInt32(rmDuration.Groups(6).Value)), 0)
 
         'new handling: only seconds as tdur
         If Integer.TryParse(tDur, 0) Then
             Dim ts As New TimeSpan(0, 0, Convert.ToInt32(tDur))
-            sHour = ts.Hours
-            sMin = ts.Minutes
-            sSec = ts.Seconds
+            iHours = ts.Hours
+            iMinutes = ts.Minutes
+            iSeconds = ts.Seconds
         End If
 
-        If sMask.Contains("<h>") Then
-            If sMask.Contains("<m>") OrElse sMask.Contains("<0m>") Then
-                If sMask.Contains("<s>") OrElse sMask.Contains("<0s>") Then
-                    Return sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString).Replace("<0m>", sMin.ToString("00")).Replace("<s>", sSec.ToString).Replace("<0s>", sSec.ToString("00"))
+        If strMask.Contains("<h>") Then
+            If strMask.Contains("<m>") OrElse strMask.Contains("<0m>") Then
+                If strMask.Contains("<s>") OrElse strMask.Contains("<0s>") Then
+                    Return strMask.Replace("<h>", iHours.ToString).Replace("<m>", iMinutes.ToString).Replace("<0m>", iMinutes.ToString("00")).Replace("<s>", iSeconds.ToString).Replace("<0s>", iSeconds.ToString("00"))
                 Else
-                    Return sMask.Replace("<h>", sHour.ToString).Replace("<m>", sMin.ToString).Replace("<0m>", sMin.ToString("00"))
+                    Return strMask.Replace("<h>", iHours.ToString).Replace("<m>", iMinutes.ToString).Replace("<0m>", iMinutes.ToString("00"))
                 End If
             Else
-                Dim tHDec As String = If(sMin > 0, Convert.ToSingle(1 / (60 / sMin)).ToString(".00"), String.Empty)
-                Return sMask.Replace("<h>", String.Concat(sHour, tHDec))
+                Dim tHDec As String = If(iMinutes > 0, Convert.ToSingle(1 / (60 / iMinutes)).ToString(".00"), String.Empty)
+                Return strMask.Replace("<h>", String.Concat(iHours, tHDec))
             End If
-        ElseIf sMask.Contains("<m>") Then
-            If sMask.Contains("<s>") OrElse sMask.Contains("<0s>") Then
-                Return sMask.Replace("<m>", ((sHour * 60) + sMin).ToString).Replace("<s>", sSec.ToString).Replace("<0s>", sSec.ToString("00"))
+        ElseIf strMask.Contains("<m>") Then
+            If strMask.Contains("<s>") OrElse strMask.Contains("<0s>") Then
+                Return strMask.Replace("<m>", ((iHours * 60) + iMinutes).ToString).Replace("<s>", iSeconds.ToString).Replace("<0s>", iSeconds.ToString("00"))
             Else
-                Return sMask.Replace("<m>", ((sHour * 60) + sMin).ToString)
+                Return strMask.Replace("<m>", ((iHours * 60) + iMinutes).ToString)
             End If
-        ElseIf sMask.Contains("<s>") Then
-            Return sMask.Replace("<s>", ((sHour * 60 * 60) + sMin * 60 + sSec).ToString)
+        ElseIf strMask.Contains("<s>") Then
+            Return strMask.Replace("<s>", ((iHours * 60 * 60) + iMinutes * 60 + iSeconds).ToString)
         Else
-            Return sMask
+            Return strMask
         End If
     End Function
     ''' <summary>
@@ -587,20 +588,24 @@ Public Class StringUtils
     Public Shared Function GetURL_IMDB(ByVal dbelement As Database.DBElement) As String
         Select Case dbelement.ContentType
             Case Enums.ContentType.Movie
-                If dbelement.Movie.IMDBSpecified Then
-                    Return String.Concat("https://www.imdb.com/title/", dbelement.Movie.IMDB)
+                Dim strID = dbelement.Movie.UniqueIDs.GetIdByName("imdb")
+                If Not String.IsNullOrEmpty(strID) Then
+                    Return String.Concat("https://www.imdb.com/title/", strID)
                 End If
             Case Enums.ContentType.TVEpisode
-                If dbelement.TVEpisode.IMDBSpecified Then
-                    Return String.Concat("https://www.imdb.com/title/", dbelement.TVEpisode.IMDB)
+                Dim strID = dbelement.TVEpisode.UniqueIDs.GetIdByName("imdb")
+                If Not String.IsNullOrEmpty(strID) Then
+                    Return String.Concat("https://www.imdb.com/title/", strID)
                 End If
             Case Enums.ContentType.TVSeason
-                If dbelement.TVShow.IMDBSpecified AndAlso dbelement.TVSeason.SeasonSpecified Then
-                    Return String.Format("https://www.imdb.com/title/{0}/episodes?season={1}", dbelement.TVShow.IMDB, dbelement.TVSeason.Season)
+                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("imdb")
+                If Not String.IsNullOrEmpty(strID) AndAlso dbelement.TVSeason.SeasonSpecified Then
+                    Return String.Format("https://www.imdb.com/title/{0}/episodes?season={1}", strID, dbelement.TVSeason.Season)
                 End If
             Case Enums.ContentType.TVShow
-                If dbelement.TVShow.IMDBSpecified Then
-                    Return String.Concat("https://www.imdb.com/title/", dbelement.TVShow.IMDB)
+                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("imdb")
+                If Not String.IsNullOrEmpty(strID) Then
+                    Return String.Concat("https://www.imdb.com/title/", strID)
                 End If
         End Select
         Return String.Empty
@@ -609,24 +614,29 @@ Public Class StringUtils
     Public Shared Function GetURL_TMDB(ByVal dbelement As Database.DBElement) As String
         Select Case dbelement.ContentType
             Case Enums.ContentType.Movie
-                If dbelement.Movie.TMDBSpecified Then
-                    Return String.Concat("https://www.themoviedb.org/movie/", dbelement.Movie.TMDB)
+                Dim strID = dbelement.Movie.UniqueIDs.GetIdByName("tmdb")
+                If Not String.IsNullOrEmpty(strID) Then
+                    Return String.Concat("https://www.themoviedb.org/movie/", strID)
                 End If
             Case Enums.ContentType.MovieSet
-                If dbelement.MovieSet.TMDBSpecified Then
-                    Return String.Concat("https://www.themoviedb.org/collection/", dbelement.MovieSet.TMDB)
+                Dim strID = dbelement.MovieSet.UniqueIDs.GetIdByName("tmdb")
+                If Not String.IsNullOrEmpty(strID) Then
+                    Return String.Concat("https://www.themoviedb.org/collection/", strID)
                 End If
             Case Enums.ContentType.TVEpisode
-                If dbelement.TVShow.TMDBSpecified AndAlso dbelement.TVEpisode.SeasonSpecified AndAlso dbelement.TVEpisode.EpisodeSpecified Then
-                    Return String.Format("https://www.themoviedb.org/tv/{0}/season/{1}/episode/{2}", dbelement.TVShow.TMDB, dbelement.TVEpisode.Season, dbelement.TVEpisode.Episode)
+                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("tmdb")
+                If Not String.IsNullOrEmpty(strID) AndAlso dbelement.TVEpisode.SeasonSpecified AndAlso dbelement.TVEpisode.EpisodeSpecified Then
+                    Return String.Format("https://www.themoviedb.org/tv/{0}/season/{1}/episode/{2}", strID, dbelement.TVEpisode.Season, dbelement.TVEpisode.Episode)
                 End If
             Case Enums.ContentType.TVSeason
-                If dbelement.TVShow.TMDBSpecified AndAlso dbelement.TVSeason.SeasonSpecified Then
-                    Return String.Format("https://www.themoviedb.org/tv/{0}/season/{1}", dbelement.TVShow.TMDB, dbelement.TVSeason.Season)
+                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("tmdb")
+                If Not String.IsNullOrEmpty(strID) AndAlso dbelement.TVSeason.SeasonSpecified Then
+                    Return String.Format("https://www.themoviedb.org/tv/{0}/season/{1}", strID, dbelement.TVSeason.Season)
                 End If
             Case Enums.ContentType.TVShow
-                If dbelement.TVShow.TMDBSpecified Then
-                    Return String.Concat("https://www.themoviedb.org/tv/", dbelement.TVShow.TMDB)
+                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("tmdb")
+                If Not String.IsNullOrEmpty(strID) Then
+                    Return String.Concat("https://www.themoviedb.org/tv/", strID)
                 End If
         End Select
         Return String.Empty
@@ -635,16 +645,21 @@ Public Class StringUtils
     Public Shared Function GetURL_TVDB(ByVal dbelement As Database.DBElement) As String
         Select Case dbelement.ContentType
             Case Enums.ContentType.TVEpisode
-                If dbelement.TVShow.TVDBSpecified AndAlso dbelement.TVEpisode.TVDBSpecified Then
-                    Return String.Format("https://thetvdb.com/?tab=episode&seriesid={0}&id={1}", dbelement.TVShow.TVDB, dbelement.TVEpisode.TVDB)
+                Dim strID_TVShow = dbelement.TVShow.UniqueIDs.GetIdByName("tvdb")
+                Dim strID_Episode = dbelement.TVEpisode.UniqueIDs.GetIdByName("tvdb")
+                If Not String.IsNullOrEmpty(strID_TVShow) AndAlso Not String.IsNullOrEmpty(strID_Episode) Then
+                    Return String.Format("https://thetvdb.com/?tab=episode&seriesid={0}&id={1}", strID_TVShow, strID_Episode)
                 End If
             Case Enums.ContentType.TVSeason
-                If dbelement.TVShow.TVDBSpecified AndAlso dbelement.TVSeason.TVDBSpecified Then
-                    Return String.Format("https://thetvdb.com/?tab=season&seriesid={0}&seasonid={1}", dbelement.TVShow.TVDB, dbelement.TVSeason.TVDB)
+                Dim strID_TVShow = dbelement.TVShow.UniqueIDs.GetIdByName("tvdb")
+                Dim strID_Season = dbelement.TVSeason.UniqueIDs.GetIdByName("tvdb")
+                If Not String.IsNullOrEmpty(strID_TVShow) AndAlso Not String.IsNullOrEmpty(strID_Season) Then
+                    Return String.Format("https://thetvdb.com/?tab=season&seriesid={0}&seasonid={1}", strID_TVShow, strID_Season)
                 End If
             Case Enums.ContentType.TVShow
-                If dbelement.TVShow.TVDBSpecified Then
-                    Return String.Concat("https://thetvdb.com/?tab=series&id=", dbelement.TVShow.TVDB)
+                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("tvdb")
+                If Not String.IsNullOrEmpty(strID) Then
+                    Return String.Concat("https://thetvdb.com/?tab=series&id=", strID)
                 End If
         End Select
         Return String.Empty

@@ -31,7 +31,6 @@ Public Class Master
     Public Shared appArgs As ApplicationServices.StartupEventArgs
 
     Public Shared AppPos As New Drawing.Rectangle
-    Public Shared CanScanDiscImage As Boolean
     Public Shared DB As New Database
     Public Shared SettingsPath As String = Path.Combine(Functions.AppPath, "Profiles\Default")
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")

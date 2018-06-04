@@ -356,7 +356,7 @@ Public Class Addon
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
             Dim ID As Long = Convert.ToInt64(sRow.Cells("idMovie").Value)
             Dim DBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 If _TraktAPI.GetWatchedState_Movie(DBElement, lstWatchedMovies) Then
                     Master.DB.Save_Movie(DBElement, False, True, False, True, False)
                     logger.Trace(String.Format("[TraktWorker] GetWatchedStateSelected_Movie: ""{0}"" | Synced to Ember", DBElement.Movie.Title))
@@ -376,7 +376,7 @@ Public Class Addon
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows
             Dim ID As Long = Convert.ToInt64(sRow.Cells("idEpisode").Value)
             Dim DBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 If _TraktAPI.GetWatchedState_TVEpisode(DBElement, lstWatchedShows) Then
                     Master.DB.Save_TVEpisode(DBElement, False, True, False, False, True, False)
                     logger.Trace(String.Format("[TraktWorker] GetWatchedStateSelected_TVEpisode: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",
@@ -403,7 +403,7 @@ Public Class Addon
             Dim ID As Long = Convert.ToInt64(sRow.Cells("idSeason").Value)
             Dim DBTVSeason As Database.DBElement = Master.DB.Load_TVSeason(ID, True, True)
             For Each DBElement In DBTVSeason.Episodes
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     If _TraktAPI.GetWatchedState_TVEpisode(DBElement, lstWatchedShows) Then
                         Master.DB.Save_TVEpisode(DBElement, False, True, False, False, True, False)
                         logger.Trace(String.Format("[TraktWorker] GetWatchedStateSelected_TVEpisode: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",
@@ -430,7 +430,7 @@ Public Class Addon
             Dim ID As Long = Convert.ToInt64(sRow.Cells("idShow").Value)
             Dim DBTVSShow As Database.DBElement = Master.DB.Load_TVShow(ID, False, True)
             For Each DBElement In DBTVSShow.Episodes
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     If _TraktAPI.GetWatchedState_TVEpisode(DBElement, lstWatchedShows) Then
                         Master.DB.Save_TVEpisode(DBElement, False, True, False, False, True, False)
                         logger.Trace(String.Format("[TraktWorker] GetWatchedStateSelected_TVEpisode: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",

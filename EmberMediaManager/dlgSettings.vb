@@ -3046,7 +3046,6 @@ Public Class dlgSettings
             chkMovieScraperCredits.Checked = .MovieScraperCredits
             chkMovieScraperXBMCTrailerFormat.Checked = .MovieScraperXBMCTrailerFormat
             chkMovieScraperYear.Checked = .MovieScraperYear
-            chkMovieSkipStackedSizeCheck.Checked = .MovieSkipStackedSizeCheck
             chkMovieSortBeforeScan.Checked = .MovieSortBeforeScan
             chkMovieThemeKeepExisting.Checked = .MovieThemeKeepExisting
             chkMovieTrailerKeepExisting.Checked = .MovieTrailerKeepExisting
@@ -5113,7 +5112,6 @@ Public Class dlgSettings
             Else
                 .MovieSkipLessThan = 0
             End If
-            .MovieSkipStackedSizeCheck = chkMovieSkipStackedSizeCheck.Checked
             .MovieSortBeforeScan = chkMovieSortBeforeScan.Checked
             .MovieSortTokens.Clear()
             .MovieSortTokens.AddRange(lstMovieSortTokens.Items.OfType(Of String).ToList)
@@ -6784,7 +6782,6 @@ Public Class dlgSettings
         chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         chkMovieScraperXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "Save YouTube-Trailer-Links in XBMC compatible format")
         chkMovieScraperCollectionsYAMJCompatibleSets.Text = Master.eLang.GetString(561, "Save YAMJ Compatible Sets to NFO")
-        chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack {0}filename{1}"), "<", ">")
         chkMovieUnstackExpertMulti.Text = Master.eLang.GetString(1179, "also save unstacked")
