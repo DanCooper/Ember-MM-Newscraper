@@ -63,7 +63,53 @@ Public Class MetaData
         Return tFileInfo
     End Function
 
-    Public Shared Function ConvertVideoStereoMode(ByVal strFormat As String) As String
+    Private Shared Function CombineFileInfo(ByVal mainFileInfo As MediaContainers.FileInfo, otherFileInfo As MediaContainers.FileInfo) As MediaContainers.FileInfo
+        If mainFileInfo IsNot Nothing AndAlso mainFileInfo.StreamDetailsSpecified AndAlso otherFileInfo IsNot Nothing AndAlso otherFileInfo.StreamDetailsSpecified Then
+            'check if both containers has the same count of streams
+            If mainFileInfo.StreamDetails.Audio.Count = otherFileInfo.StreamDetails.Audio.Count AndAlso
+                mainFileInfo.StreamDetails.Subtitle.Count = otherFileInfo.StreamDetails.Subtitle.Count AndAlso
+                mainFileInfo.StreamDetails.Video.Count = otherFileInfo.StreamDetails.Video.Count Then
+
+                'audio streams
+                For i = 0 To mainFileInfo.StreamDetails.Audio.Count - 1
+                    If Not mainFileInfo.StreamDetails.Audio(i).BitrateSpecified AndAlso otherFileInfo.StreamDetails.Audio(i).BitrateSpecified Then mainFileInfo.StreamDetails.Audio(i).Bitrate = otherFileInfo.StreamDetails.Audio(i).Bitrate
+                    If Not mainFileInfo.StreamDetails.Audio(i).ChannelsSpecified AndAlso otherFileInfo.StreamDetails.Audio(i).ChannelsSpecified Then mainFileInfo.StreamDetails.Audio(i).Channels = otherFileInfo.StreamDetails.Audio(i).Channels
+                    If Not mainFileInfo.StreamDetails.Audio(i).CodecSpecified AndAlso otherFileInfo.StreamDetails.Audio(i).CodecSpecified Then mainFileInfo.StreamDetails.Audio(i).Codec = otherFileInfo.StreamDetails.Audio(i).Codec
+                    If Not mainFileInfo.StreamDetails.Audio(i).LanguageSpecified AndAlso otherFileInfo.StreamDetails.Audio(i).LanguageSpecified Then mainFileInfo.StreamDetails.Audio(i).Language = otherFileInfo.StreamDetails.Audio(i).Language
+                    If Not mainFileInfo.StreamDetails.Audio(i).LongLanguageSpecified AndAlso otherFileInfo.StreamDetails.Audio(i).LongLanguageSpecified Then mainFileInfo.StreamDetails.Audio(i).LongLanguage = otherFileInfo.StreamDetails.Audio(i).LongLanguage
+                Next
+
+                'subtitle streams
+                For i = 0 To mainFileInfo.StreamDetails.Subtitle.Count - 1
+                    If Not mainFileInfo.StreamDetails.Subtitle(i).Forced AndAlso otherFileInfo.StreamDetails.Subtitle(i).Forced Then mainFileInfo.StreamDetails.Subtitle(i).Forced = otherFileInfo.StreamDetails.Subtitle(i).Forced
+                    If Not mainFileInfo.StreamDetails.Subtitle(i).LanguageSpecified AndAlso otherFileInfo.StreamDetails.Subtitle(i).LanguageSpecified Then mainFileInfo.StreamDetails.Subtitle(i).Language = otherFileInfo.StreamDetails.Subtitle(i).Language
+                    If Not mainFileInfo.StreamDetails.Subtitle(i).LongLanguageSpecified AndAlso otherFileInfo.StreamDetails.Subtitle(i).LongLanguageSpecified Then mainFileInfo.StreamDetails.Subtitle(i).LongLanguage = otherFileInfo.StreamDetails.Subtitle(i).LongLanguage
+                Next
+
+                'video streams
+                For i = 0 To mainFileInfo.StreamDetails.Video.Count - 1
+                    If Not mainFileInfo.StreamDetails.Video(i).AspectSpecified AndAlso otherFileInfo.StreamDetails.Video(i).AspectSpecified Then mainFileInfo.StreamDetails.Video(i).Aspect = otherFileInfo.StreamDetails.Video(i).Aspect
+                    If Not mainFileInfo.StreamDetails.Video(i).BitDepthSpecified AndAlso otherFileInfo.StreamDetails.Video(i).BitDepthSpecified Then mainFileInfo.StreamDetails.Video(i).BitDepth = otherFileInfo.StreamDetails.Video(i).BitDepth
+                    If Not mainFileInfo.StreamDetails.Video(i).BitrateSpecified AndAlso otherFileInfo.StreamDetails.Video(i).BitDepthSpecified Then mainFileInfo.StreamDetails.Video(i).Bitrate = otherFileInfo.StreamDetails.Video(i).Bitrate
+                    If Not mainFileInfo.StreamDetails.Video(i).ChromaSubsamplingSpecified AndAlso otherFileInfo.StreamDetails.Video(i).ChromaSubsamplingSpecified Then mainFileInfo.StreamDetails.Video(i).ChromaSubsampling = otherFileInfo.StreamDetails.Video(i).ChromaSubsampling
+                    If Not mainFileInfo.StreamDetails.Video(i).CodecSpecified AndAlso otherFileInfo.StreamDetails.Video(i).CodecSpecified Then mainFileInfo.StreamDetails.Video(i).Codec = otherFileInfo.StreamDetails.Video(i).Codec
+                    If Not mainFileInfo.StreamDetails.Video(i).ColourPrimariesSpecified AndAlso otherFileInfo.StreamDetails.Video(i).ColourPrimariesSpecified Then mainFileInfo.StreamDetails.Video(i).ColourPrimaries = otherFileInfo.StreamDetails.Video(i).ColourPrimaries
+                    If Not mainFileInfo.StreamDetails.Video(i).DurationSpecified AndAlso otherFileInfo.StreamDetails.Video(i).DurationSpecified Then mainFileInfo.StreamDetails.Video(i).Duration = otherFileInfo.StreamDetails.Video(i).Duration
+                    If Not mainFileInfo.StreamDetails.Video(i).HeightSpecified AndAlso otherFileInfo.StreamDetails.Video(i).HeightSpecified Then mainFileInfo.StreamDetails.Video(i).Height = otherFileInfo.StreamDetails.Video(i).Height
+                    If Not mainFileInfo.StreamDetails.Video(i).LanguageSpecified AndAlso otherFileInfo.StreamDetails.Video(i).LanguageSpecified Then mainFileInfo.StreamDetails.Video(i).Language = otherFileInfo.StreamDetails.Video(i).Language
+                    If Not mainFileInfo.StreamDetails.Video(i).LongLanguageSpecified AndAlso otherFileInfo.StreamDetails.Video(i).LongLanguageSpecified Then mainFileInfo.StreamDetails.Video(i).LongLanguage = otherFileInfo.StreamDetails.Video(i).LongLanguage
+                    If Not mainFileInfo.StreamDetails.Video(i).MultiViewCountSpecified AndAlso otherFileInfo.StreamDetails.Video(i).MultiViewCountSpecified Then mainFileInfo.StreamDetails.Video(i).MultiViewCount = otherFileInfo.StreamDetails.Video(i).MultiViewCount
+                    If Not mainFileInfo.StreamDetails.Video(i).MultiViewLayoutSpecified AndAlso otherFileInfo.StreamDetails.Video(i).MultiViewLayoutSpecified Then mainFileInfo.StreamDetails.Video(i).MultiViewLayout = otherFileInfo.StreamDetails.Video(i).MultiViewLayout
+                    If Not mainFileInfo.StreamDetails.Video(i).ScantypeSpecified AndAlso otherFileInfo.StreamDetails.Video(i).ScantypeSpecified Then mainFileInfo.StreamDetails.Video(i).Scantype = otherFileInfo.StreamDetails.Video(i).Scantype
+                    If Not mainFileInfo.StreamDetails.Video(i).StereoModeSpecified AndAlso otherFileInfo.StreamDetails.Video(i).StereoModeSpecified Then mainFileInfo.StreamDetails.Video(i).StereoMode = otherFileInfo.StreamDetails.Video(i).StereoMode
+                    If Not mainFileInfo.StreamDetails.Video(i).WidthSpecified AndAlso otherFileInfo.StreamDetails.Video(i).WidthSpecified Then mainFileInfo.StreamDetails.Video(i).Width = otherFileInfo.StreamDetails.Video(i).Width
+                Next
+            End If
+        End If
+        Return mainFileInfo
+    End Function
+
+    Private Shared Function ConvertVideoStereoMode(ByVal strFormat As String) As String
         Select Case strFormat.ToLower
             Case "side by side (left eye first)"
                 Return "left_right"
@@ -98,43 +144,6 @@ Public Class MetaData
         End Select
     End Function
 
-    Private Shared Function FormatVideoDurationFromSeconds(ByVal strDurationInSeconds As String, ByVal strMask As String) As String
-        Dim intHours As Integer = 0
-        Dim intMinutes As Integer = 0
-        Dim intSeconds As Integer = 0
-
-        'new handling: only seconds as tdur
-        If Integer.TryParse(strDurationInSeconds, 0) Then
-            Dim ts As New TimeSpan(0, 0, Convert.ToInt32(strDurationInSeconds))
-            intHours = ts.Hours
-            intMinutes = ts.Minutes
-            intSeconds = ts.Seconds
-        End If
-
-        If strMask.Contains("<h>") Then
-            If strMask.Contains("<m>") OrElse strMask.Contains("<0m>") Then
-                If strMask.Contains("<s>") OrElse strMask.Contains("<0s>") Then
-                    Return strMask.Replace("<h>", intHours.ToString).Replace("<m>", intMinutes.ToString).Replace("<0m>", intMinutes.ToString("00")).Replace("<s>", intSeconds.ToString).Replace("<0s>", intSeconds.ToString("00"))
-                Else
-                    Return strMask.Replace("<h>", intHours.ToString).Replace("<m>", intMinutes.ToString).Replace("<0m>", intMinutes.ToString("00"))
-                End If
-            Else
-                Dim tHDec As String = If(intMinutes > 0, Convert.ToSingle(1 / (60 / intMinutes)).ToString(".00"), String.Empty)
-                Return strMask.Replace("<h>", String.Concat(intHours, tHDec))
-            End If
-        ElseIf strMask.Contains("<m>") Then
-            If strMask.Contains("<s>") OrElse strMask.Contains("<0s>") Then
-                Return strMask.Replace("<m>", ((intHours * 60) + intMinutes).ToString).Replace("<s>", intSeconds.ToString).Replace("<0s>", intSeconds.ToString("00"))
-            Else
-                Return strMask.Replace("<m>", ((intHours * 60) + intMinutes).ToString)
-            End If
-        ElseIf strMask.Contains("<s>") Then
-            Return strMask.Replace("<s>", ((intHours * 60 * 60) + intMinutes * 60 + intSeconds).ToString)
-        Else
-            Return strMask
-        End If
-    End Function
-
     Private Shared Function GetFileInfo(ByVal fileItem As FileItem, ByVal contentType As Enums.ContentType) As MediaContainers.FileInfo
         Dim nFileInfo As New MediaContainers.FileInfo
 
@@ -145,7 +154,7 @@ Public Class MetaData
             'scan Main video file to get all media informations
             If fileItem.bIsDiscImage Then
                 Dim nVirtualDrive As New FileUtils.VirtualDrive(fileItem.FirstStackedPath)
-                If nVirtualDrive.IsLoaded Then
+                If nVirtualDrive.IsReady Then
                     Dim nFileItemList As New FileItemList(nVirtualDrive.Path, contentType)
                     If nFileItemList.FileItems.Count > 0 Then
                         nFileInfo = GetFileInfo(nFileItemList.FileItems.Item(0), contentType)
@@ -153,7 +162,7 @@ Public Class MetaData
                     End If
                 End If
             ElseIf fileItem.bIsBDMV Then
-                'looking at the largest m2ts file within the \BDMV\STREAM folder
+                'looking at the largest ".m2ts" file within the "\BDMV\STREAM" folder
                 Dim diStream = New DirectoryInfo(Path.Combine(fileItem.MainPath.FullName, "BDMV", "STREAM"))
                 If diStream.Exists Then
                     Dim fiStream As IEnumerable(Of String) = diStream.GetFiles("*.m2ts").OrderByDescending(Function(f) f.Length).Select(Function(f) f.FullName)
@@ -169,30 +178,36 @@ Public Class MetaData
                         End If
                     End If
                 End If
+            ElseIf fileItem.bIsVideoTS Then
+                'looking at the largest ".ifo" file within the "\VIDEO_TS" folder
+                Dim diVideoTS = New DirectoryInfo(Path.Combine(fileItem.MainPath.FullName, "VIDEO_TS"))
+                If Not diVideoTS.Exists Then
+                    'search for "VIDEO_TS" files without a "VIDEO_TS" folder
+                    diVideoTS = New DirectoryInfo(fileItem.MainPath.FullName)
+                End If
+                If diVideoTS.Exists Then
+                    'get the the biggest ".vob" video file (real video file)
+                    Dim fiVOB As IEnumerable(Of String) = diVideoTS.GetFiles("vts*.vob").OrderByDescending(Function(f) f.Length).Select(Function(f) f.FullName)
+                    'get the the biggest ".ifo" information file (that holds additional data like language that's missing in ".vob" files)
+                    Dim fiIFO As IEnumerable(Of String) = diVideoTS.GetFiles("vts*.ifo").OrderByDescending(Function(f) f.Length).Select(Function(f) f.FullName)
+                    If fiVOB IsNot Nothing AndAlso fiVOB.Count > 0 Then
+                        nFileInfo = nMediaInfo.ScanPath(fiVOB(0))
+                    End If
+                    Dim nAdditionalFileInfo As New MediaContainers.FileInfo
+                    If fiIFO IsNot Nothing AndAlso fiIFO.Count > 0 Then
+                        nAdditionalFileInfo = nMediaInfo.ScanPath(fiIFO(0))
+                    End If
+                    nFileInfo = CombineFileInfo(nFileInfo, nAdditionalFileInfo)
+                End If
             Else
                 nFileInfo = nMediaInfo.ScanPath(fileItem.FirstStackedPath)
             End If
 
             'scan all stacked video files to get the total duration
             For Each strStackedPath In fileItem.PathList.Where(Function(f) Not f.ToString = fileItem.FirstStackedPath)
-                If File.Exists(strStackedPath) Then
-                    If fileItem.bIsDiscImage Then
-                        Dim nVirtualDrive As New FileUtils.VirtualDrive(strStackedPath)
-                        If nVirtualDrive.IsLoaded Then
-                            Dim nAdditionalFileInfo = nMediaInfo.ScanPath(nVirtualDrive.Path)
-                            If nAdditionalFileInfo IsNot Nothing AndAlso nAdditionalFileInfo.StreamDetailsSpecified Then
-                                nStackedFiles.Add(nAdditionalFileInfo)
-                            End If
-                            nVirtualDrive.UnmountDiscImage()
-                        End If
-                    Else
-                        Dim nAdditionalFileInfo = nMediaInfo.ScanPath(strStackedPath)
-                        If nAdditionalFileInfo IsNot Nothing AndAlso nAdditionalFileInfo.StreamDetailsSpecified Then
-                            nStackedFiles.Add(nAdditionalFileInfo)
-                        End If
-                    End If
-                Else
-                    logger.Error(String.Format("[MetaData] [ScanFileItem] Stacked file not found: {0} ", strStackedPath))
+                Dim nAdditionalFileInfo = GetFileInfo(New FileItem(strStackedPath), contentType)
+                If nAdditionalFileInfo IsNot Nothing AndAlso nAdditionalFileInfo.StreamDetailsSpecified Then
+                    nStackedFiles.Add(nAdditionalFileInfo)
                 End If
             Next
 

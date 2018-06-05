@@ -190,7 +190,6 @@
     <Compile Include="clsAPIThemes.vb" />
     <Compile Include="clsAPICommon.vb" />
     <Compile Include="clsAPIDatabase.vb" />
-    <Compile Include="clsAPIDVD.vb" />
     <Compile Include="clsAPIFileUtils.vb" />
     <Compile Include="clsAPIHTTP.vb" />
     <Compile Include="clsAPIImages.vb" />

@@ -2480,7 +2480,7 @@ Namespace FileUtils
 
 #Region "Properties"
 
-        Public Property IsLoaded As Boolean = False
+        Public Property IsReady As Boolean = False
         Public Property Path As String = String.Empty
 
 #End Region 'Properties
@@ -2504,18 +2504,30 @@ Namespace FileUtils
                 'Mount ISO on virtual drive, e.g. ""C:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe" "U:\isotest\test2iso.ISO""
                 Functions.Run_Process(fiVirtualCloneDrive.FullName, String.Format("""{0}""", fiImage.FullName), False, True)
 
-                'timeout enabled to wait for virtual drive
-                If Master.eSettings.GeneralVirtualDriveTimeout > 0 Then
-                    Threading.Thread.Sleep(Master.eSettings.GeneralVirtualDriveTimeout)
+                Dim diVirtualDrive = New DriveInfo(String.Concat(strDriveLetter, ":\"))
+
+                Dim iLimit As Integer
+                While Not diVirtualDrive.IsReady
+                    If iLimit = 10000 Then
+                        logger.Warn("[FileUtils] [VirtualDrive] [LoadDiscImage] wait until the virtual drive is ready timeout")
+                        Exit While
+                    Else
+                        logger.Trace("[FileUtils] [VirtualDrive] [LoadDiscImage] wait until the virtual drive is ready ...")
+                        Threading.Thread.Sleep(500)
+                        iLimit += 500
+                    End If
+                End While
+                If diVirtualDrive.IsReady Then
+                    logger.Trace("[FileUtils] [VirtualDrive] [LoadDiscImage] virtual drive is ready")
+                    IsReady = True
+                    Path = String.Concat(strDriveLetter, ":\")
                 End If
             End If
-            IsLoaded = True
-            Path = String.Concat(strDriveLetter, ":\")
         End Sub
 
         Public Sub UnmountDiscImage()
             Functions.Run_Process(fiVirtualCloneDrive.FullName, "/u", False, True)
-            IsLoaded = False
+            IsReady = False
             Path = String.Empty
         End Sub
 

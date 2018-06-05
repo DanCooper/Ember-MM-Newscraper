@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class dlgSettings
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -26,7 +26,7 @@ Partial Class dlgSettings
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
@@ -189,8 +189,6 @@ Partial Class dlgSettings
         Me.txtGeneralVirtualDriveBinPath = New System.Windows.Forms.TextBox()
         Me.cbGeneralVirtualDriveLetter = New System.Windows.Forms.ComboBox()
         Me.lblGeneralVirtualDrivePath = New System.Windows.Forms.Label()
-        Me.lblGeneralVirtualDriveTimeout = New System.Windows.Forms.Label()
-        Me.txtGeneralVirtualDriveTimeout = New System.Windows.Forms.TextBox()
         Me.gbGeneralInterface = New System.Windows.Forms.GroupBox()
         Me.tblGeneralInterface = New System.Windows.Forms.TableLayoutPanel()
         Me.gbGeneralDateAdded = New System.Windows.Forms.GroupBox()
@@ -4061,18 +4059,15 @@ Partial Class dlgSettings
         'tblGeneralVirtualDrive
         '
         Me.tblGeneralVirtualDrive.AutoSize = True
-        Me.tblGeneralVirtualDrive.ColumnCount = 4
+        Me.tblGeneralVirtualDrive.ColumnCount = 3
         Me.tblGeneralVirtualDrive.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralVirtualDrive.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblGeneralVirtualDrive.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralVirtualDrive.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralVirtualDrive.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralVirtualDrive.Controls.Add(Me.btnGeneralVirtualDriveBinPathBrowse, 3, 1)
+        Me.tblGeneralVirtualDrive.Controls.Add(Me.btnGeneralVirtualDriveBinPathBrowse, 2, 1)
         Me.tblGeneralVirtualDrive.Controls.Add(Me.lblGeneralVirtualDriveLetter, 0, 0)
-        Me.tblGeneralVirtualDrive.Controls.Add(Me.txtGeneralVirtualDriveBinPath, 2, 1)
+        Me.tblGeneralVirtualDrive.Controls.Add(Me.txtGeneralVirtualDriveBinPath, 1, 1)
         Me.tblGeneralVirtualDrive.Controls.Add(Me.cbGeneralVirtualDriveLetter, 0, 1)
-        Me.tblGeneralVirtualDrive.Controls.Add(Me.lblGeneralVirtualDrivePath, 2, 0)
-        Me.tblGeneralVirtualDrive.Controls.Add(Me.lblGeneralVirtualDriveTimeout, 1, 0)
-        Me.tblGeneralVirtualDrive.Controls.Add(Me.txtGeneralVirtualDriveTimeout, 1, 1)
+        Me.tblGeneralVirtualDrive.Controls.Add(Me.lblGeneralVirtualDrivePath, 1, 0)
         Me.tblGeneralVirtualDrive.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGeneralVirtualDrive.Location = New System.Drawing.Point(3, 18)
         Me.tblGeneralVirtualDrive.Name = "tblGeneralVirtualDrive"
@@ -4106,12 +4101,12 @@ Partial Class dlgSettings
         '
         'txtGeneralVirtualDriveBinPath
         '
-        Me.txtGeneralVirtualDriveBinPath.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtGeneralVirtualDriveBinPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtGeneralVirtualDriveBinPath.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtGeneralVirtualDriveBinPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtGeneralVirtualDriveBinPath.Location = New System.Drawing.Point(139, 23)
+        Me.txtGeneralVirtualDriveBinPath.Location = New System.Drawing.Point(82, 23)
         Me.txtGeneralVirtualDriveBinPath.Name = "txtGeneralVirtualDriveBinPath"
-        Me.txtGeneralVirtualDriveBinPath.Size = New System.Drawing.Size(432, 22)
+        Me.txtGeneralVirtualDriveBinPath.Size = New System.Drawing.Size(489, 22)
         Me.txtGeneralVirtualDriveBinPath.TabIndex = 3
         '
         'cbGeneralVirtualDriveLetter
@@ -4132,32 +4127,11 @@ Partial Class dlgSettings
         Me.lblGeneralVirtualDrivePath.AutoSize = True
         Me.tblGeneralVirtualDrive.SetColumnSpan(Me.lblGeneralVirtualDrivePath, 2)
         Me.lblGeneralVirtualDrivePath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralVirtualDrivePath.Location = New System.Drawing.Point(139, 3)
+        Me.lblGeneralVirtualDrivePath.Location = New System.Drawing.Point(82, 3)
         Me.lblGeneralVirtualDrivePath.Name = "lblGeneralVirtualDrivePath"
         Me.lblGeneralVirtualDrivePath.Size = New System.Drawing.Size(226, 13)
         Me.lblGeneralVirtualDrivePath.TabIndex = 2
         Me.lblGeneralVirtualDrivePath.Text = "Path to VCDMount.exe (Virtual CloneDrive)"
-        '
-        'lblGeneralVirtualDriveTimeout
-        '
-        Me.lblGeneralVirtualDriveTimeout.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralVirtualDriveTimeout.AutoSize = True
-        Me.lblGeneralVirtualDriveTimeout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGeneralVirtualDriveTimeout.Location = New System.Drawing.Point(82, 3)
-        Me.lblGeneralVirtualDriveTimeout.Name = "lblGeneralVirtualDriveTimeout"
-        Me.lblGeneralVirtualDriveTimeout.Size = New System.Drawing.Size(48, 13)
-        Me.lblGeneralVirtualDriveTimeout.TabIndex = 6
-        Me.lblGeneralVirtualDriveTimeout.Text = "Timeout"
-        '
-        'txtGeneralVirtualDriveTimeout
-        '
-        Me.txtGeneralVirtualDriveTimeout.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtGeneralVirtualDriveTimeout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtGeneralVirtualDriveTimeout.Location = New System.Drawing.Point(82, 23)
-        Me.txtGeneralVirtualDriveTimeout.Name = "txtGeneralVirtualDriveTimeout"
-        Me.txtGeneralVirtualDriveTimeout.Size = New System.Drawing.Size(51, 22)
-        Me.txtGeneralVirtualDriveTimeout.TabIndex = 15
-        Me.ToolTips.SetToolTip(Me.txtGeneralVirtualDriveTimeout, "Timeout after mounting in milliseconds")
         '
         'gbGeneralInterface
         '
@@ -23266,9 +23240,9 @@ Partial Class dlgSettings
         Me.scSettingsMain.ResumeLayout(False)
         Me.tblSettingsFooter.ResumeLayout(False)
         Me.ResumeLayout(False)
-        Me.PerformLayout
+        Me.PerformLayout()
 
-End Sub
+    End Sub
     Friend WithEvents btnOK As System.Windows.Forms.Button
     Friend WithEvents btnApply As System.Windows.Forms.Button
     Friend WithEvents btnCancel As System.Windows.Forms.Button
@@ -24842,6 +24816,4 @@ End Sub
     Friend WithEvents colMovieGeneralMediaListSortingHide As ColumnHeader
     Friend WithEvents btnMovieGeneralMediaListSortingReset As Button
     Friend WithEvents btnFileSystemExcludedDirsBrowse As Button
-    Friend WithEvents lblGeneralVirtualDriveTimeout As Label
-    Friend WithEvents txtGeneralVirtualDriveTimeout As TextBox
 End Class

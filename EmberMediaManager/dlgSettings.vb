@@ -3240,7 +3240,6 @@ Public Class dlgSettings
             txtGeneralImageFilterPosterMatchRate.Text = .GeneralImageFilterPosterMatchTolerance.ToString
             txtGeneralImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
             txtGeneralVirtualDriveBinPath.Text = .GeneralVirtualDriveBinPath
-            txtGeneralVirtualDriveTimeout.Text = .GeneralVirtualDriveTimeout.ToString
             txtMovieSourcesBackdropsFolderPath.Text = .MovieBackdropsPath
             txtMovieExtrafanartsLimit.Text = .MovieExtrafanartsLimit.ToString
             txtMovieExtrathumbsLimit.Text = .MovieExtrathumbsLimit.ToString
@@ -4851,11 +4850,6 @@ Public Class dlgSettings
             .GeneralDoubleClickScrape = chkGeneralDoubleClickScrape.Checked
             .GeneralVirtualDriveLetter = cbGeneralVirtualDriveLetter.Text
             .GeneralVirtualDriveBinPath = txtGeneralVirtualDriveBinPath.Text
-            If Integer.TryParse(txtGeneralVirtualDriveTimeout.Text, 0) Then
-                .GeneralVirtualDriveTimeout = CInt(txtGeneralVirtualDriveTimeout.Text)
-            Else
-                .GeneralVirtualDriveTimeout = 0
-            End If
             .GeneralDisplayBanner = chkGeneralDisplayBanner.Checked
             .GeneralDisplayCharacterArt = chkGeneralDisplayCharacterArt.Checked
             .GeneralDisplayClearArt = chkGeneralDisplayClearArt.Checked
@@ -6832,7 +6826,6 @@ Public Class dlgSettings
         lblGeneralTheme.Text = String.Concat(Master.eLang.GetString(620, "Theme"), ":")
         lblGeneralVirtualDriveLetter.Text = Master.eLang.GetString(989, "Driveletter")
         lblGeneralVirtualDrivePath.Text = Master.eLang.GetString(990, "Path to VCDMount.exe (Virtual CloneDrive)")
-        lblGeneralVirtualDriveTimeout.Text = Master.eLang.GetString(440, "Timeout")
         lblMovieGeneralCustomMarker1.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #1")
         lblMovieGeneralCustomMarker2.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #2")
         lblMovieGeneralCustomMarker3.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #3")
@@ -6859,9 +6852,6 @@ Public Class dlgSettings
         tpMovieSetFilenamingExpertSingle.Text = Master.eLang.GetString(879, "Single Folder")
         tpTVSourcesGeneral.Text = Master.eLang.GetString(38, "General")
         tpTVSourcesRegex.Text = Master.eLang.GetString(699, "Regex")
-
-        Dim tTip As New ToolTip
-        tTip.SetToolTip(txtGeneralVirtualDriveTimeout, Master.eLang.GetString(441, "Timeout after mounting in milliseconds"))
 
         'items with text from other items
         btnTVSourceAdd.Text = btnMovieSourceAdd.Text
@@ -6956,10 +6946,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtMovieLevTolerance_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieLevTolerance.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtGeneralVirtualDriveTimeout_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtGeneralVirtualDriveTimeout.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
@@ -8268,7 +8254,6 @@ Public Class dlgSettings
         txtGeneralImageFilterFanartMatchRate.TextChanged,
         txtGeneralImageFilterPosterMatchRate.TextChanged,
         txtGeneralVirtualDriveBinPath.TextChanged,
-        txtGeneralVirtualDriveTimeout.TextChanged,
         txtMovieActorThumbsExtExpertBDMV.TextChanged,
         txtMovieActorThumbsExtExpertMulti.TextChanged,
         txtMovieActorThumbsExtExpertSingle.TextChanged,

@@ -98,7 +98,6 @@ Public Class Settings
     Public Property GeneralTheme() As String = "Default"
     Public Property GeneralVirtualDriveLetter() As String = String.Empty
     Public Property GeneralVirtualDriveBinPath() As String = String.Empty
-    Public Property GeneralVirtualDriveTimeout() As Integer = 500
     Public Property GeneralWindowLoc() As Point = New Point(10, 10)
     Public Property GeneralWindowSize() As Size = New Size(1024, 768)
     Public Property GeneralWindowState() As FormWindowState = FormWindowState.Maximized

@@ -41,7 +41,10 @@ Namespace MediaContainers
 #End Region 'Fields
 
 #Region "Properties"
-
+        ''' <summary>
+        ''' Bitrate in kb/s
+        ''' </summary>
+        ''' <returns></returns>
         <XmlElement("bitrate")>
         Public Property Bitrate() As Integer
             Get
