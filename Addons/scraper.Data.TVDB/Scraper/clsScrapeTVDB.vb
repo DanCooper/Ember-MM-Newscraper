@@ -116,12 +116,12 @@ Namespace TVDBs
             Select Case iType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifiers, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
                     Else
                         Using dlgSearch As New dlgTVDBSearchResults(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, sShowName, oDBTV.ShowPath) = DialogResult.OK Then
-                                If Not String.IsNullOrEmpty(dlgSearch.Result.TVDB) Then
-                                    Return GetTVShowInfo(dlgSearch.Result.TVDB, ScrapeModifiers, FilteredOptions, False)
+                                If Not String.IsNullOrEmpty(dlgSearch.Result.UniqueIDs.TVDbId) Then
+                                    Return GetTVShowInfo(dlgSearch.Result.UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
                                 End If
                             End If
                         End Using
@@ -129,12 +129,12 @@ Namespace TVDBs
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifiers, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifiers, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
                     End If
             End Select
 
@@ -163,7 +163,7 @@ Namespace TVDBs
                             t2 = CStr(aShow.FirstAired.Year)
                         End If
                         Dim lNewShow As MediaContainers.TVShow = New MediaContainers.TVShow(String.Empty, t1, t2)
-                        lNewShow.TVDB = CStr(aShow.Id)
+                        lNewShow.UniqueIDs.TVDbId = CStr(aShow.Id)
                         R.Matches.Add(lNewShow)
                     End If
                 Next
@@ -212,8 +212,8 @@ Namespace TVDBs
             Dim TVShowInfo = APIResult.Result
 
             nTVShow.Scrapersource = "TVDB"
-            nTVShow.TVDB = CStr(TVShowInfo.Series.Id)
-            nTVShow.IMDB = TVShowInfo.Series.IMDBId
+            nTVShow.UniqueIDs.TVDbId = CStr(TVShowInfo.Series.Id)
+            nTVShow.UniqueIDs.IMDbId = TVShowInfo.Series.IMDBId
 
             'Actors
             If FilteredOptions.bMainActors Then
@@ -230,6 +230,15 @@ Namespace TVDBs
                                            .UniqueIDs = New MediaContainers.UniqueidContainer With {.Items = New List(Of MediaContainers.Uniqueid)(New MediaContainers.Uniqueid() {nUniqueID})}
                                            })
                     Next
+                End If
+            End If
+
+            If bwTVDB.CancellationPending Then Return Nothing
+
+            'Certifications
+            If FilteredOptions.bMainCertifications Then
+                If Not String.IsNullOrEmpty(TVShowInfo.Series.ContentRating) Then
+                    nTVShow.Certifications.Add(String.Concat("USA:", TVShowInfo.Series.ContentRating))
                 End If
             End If
 
@@ -254,13 +263,6 @@ Namespace TVDBs
                         nTVShow.Genres.Add(tGenre.Trim)
                     Next
                 End If
-            End If
-
-            If bwTVDB.CancellationPending Then Return Nothing
-
-            'MPAA
-            If FilteredOptions.bMainMPAA Then
-                nTVShow.MPAA = TVShowInfo.Series.ContentRating
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
@@ -334,7 +336,11 @@ Namespace TVDBs
                     Dim lSeasonList = nTVShow.KnownSeasons.Where(Function(f) f.Season = aEpisode.SeasonNumber)
 
                     If lSeasonList.Count = 0 Then
-                        nTVShow.KnownSeasons.Add(New MediaContainers.SeasonDetails With {.Season = aEpisode.SeasonNumber, .TVDB = CStr(aEpisode.SeasonId)})
+                        nTVShow.KnownSeasons.Add(New MediaContainers.SeasonDetails With {
+                                                 .Season = aEpisode.SeasonNumber,
+                                                 .UniqueIDs = New MediaContainers.UniqueidContainer With {
+                                                 .TVDbId = CStr(aEpisode.SeasonId)}
+                                                 })
                     End If
                 End If
 
@@ -402,8 +408,8 @@ Namespace TVDBs
             Dim nTVEpisode As New MediaContainers.EpisodeDetails
 
             'IDs
-            nTVEpisode.TVDB = CStr(EpisodeInfo.Id)
-            If EpisodeInfo.IMDBId IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.IMDBId) Then nTVEpisode.IMDB = EpisodeInfo.IMDBId
+            nTVEpisode.UniqueIDs.TVDbId = CStr(EpisodeInfo.Id)
+            If EpisodeInfo.IMDBId IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.IMDBId) Then nTVEpisode.UniqueIDs.IMDbId = EpisodeInfo.IMDBId
 
             'Episode # Absolute
             If Not EpisodeInfo.AbsoluteNumber = -1 Then

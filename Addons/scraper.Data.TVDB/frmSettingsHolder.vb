@@ -25,20 +25,10 @@ Public Class frmSettingsHolder
 #Region "Events"
 
     Public Event ModuleSettingsChanged()
-
     Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-
     Public Event SetupNeedsRestart()
 
-#End Region 'Events
-
-#Region "Fields"
-
-#End Region 'Fields
-
-#Region "Properties"
-
-#End Region 'Properties
+#End Region 'Events 
 
 #Region "Methods"
 
@@ -109,11 +99,10 @@ Public Class frmSettingsHolder
         chkScraperEpisodeGuestStars.CheckedChanged,
         chkScraperEpisodePlot.CheckedChanged,
         chkScraperEpisodeRating.CheckedChanged,
-        chkScraperEpisodeTitle.CheckedChanged, _
- _
+        chkScraperEpisodeTitle.CheckedChanged,
         chkScraperShowActors.CheckedChanged,
+        chkScraperShowCertifications.CheckedChanged,
         chkScraperShowGenres.CheckedChanged,
-        chkScraperShowMPAA.CheckedChanged,
         chkScraperShowPlot.CheckedChanged,
         chkScraperShowPremiered.CheckedChanged,
         chkScraperShowRating.CheckedChanged,
@@ -148,9 +137,9 @@ Public Class frmSettingsHolder
         chkScraperEpisodeRating.Text = Master.eLang.GetString(400, "Rating")
         chkScraperEpisodeTitle.Text = Master.eLang.GetString(21, "Title")
         chkScraperShowActors.Text = Master.eLang.GetString(231, "Actors")
+        chkScraperShowCertifications.Text = Master.eLang.GetString(56, "Certifications")
         chkScraperShowEpisodeGuide.Text = Master.eLang.GetString(723, "Episode Guide URL")
         chkScraperShowGenres.Text = Master.eLang.GetString(725, "Genres")
-        chkScraperShowMPAA.Text = Master.eLang.GetString(401, "MPAA")
         chkScraperShowPlot.Text = Master.eLang.GetString(65, "Plot")
         chkScraperShowPremiered.Text = Master.eLang.GetString(724, "Premiered")
         chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")

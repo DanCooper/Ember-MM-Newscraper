@@ -239,8 +239,8 @@
   <string id="238">Runtime</string>
   <string id="239">Director:</string>
   <string id="240">Use Original Title as Title</string>
-  <string id="241">Plot:</string>
-  <string id="242">Plot Outline:</string>
+  <string id="241"></string>
+  <string id="242"></string>
   <string id="243">Tags</string>
   <string id="244">Votes</string>
   <string id="245">Rating:</string>
@@ -756,7 +756,7 @@
   <string id="755">Episode #</string>
   <string id="756">Loading All Episodes:</string>
   <string id="757">Saving All Images:</string>
-  <string id="758">Searching TVDB</string>
+  <string id="758">Searching</string>
   <string id="759">Select Images:</string>
   <string id="760">Downloading Show Zip:</string>
   <string id="761">Verifying TV Show Details:</string>
@@ -796,7 +796,7 @@
   <string id="795">Interface</string>
   <string id="796">Scan in order of last write time</string>
   <string id="797">Default Episode Ordering</string>
-  <string id="798">Searching IMDB...</string>
+  <string id="798"></string>
   <string id="799">The ID you entered is not a valid IMDB ID.</string>
   <string id="800">Preferred Quality:</string>
   <string id="801">TVDB Mirror</string>
@@ -823,7 +823,7 @@
   <string id="822">Extended Images</string>
   <string id="823">Continue without verification?</string>
   <string id="824">Video Source</string>
-  <string id="825">Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again.</string>
+  <string id="825">Unable to retrieve details for the entered ID. Please check your entry and try again.</string>
   <string id="826">Verification Failed</string>
   <string id="827">Partial Matches ({0})</string>
   <string id="828">Enable Actor Thumbs</string>
@@ -845,7 +845,7 @@
   <string id="844">Are you sure you want to reset to the default list of show regex?</string>
   <string id="845">&gt;&gt; No Item Selected &lt;&lt;</string>
   <string id="846">Movie Search Results</string>
-  <string id="847">Manual IMDB Entry:</string>
+  <string id="847">Manual ID Entry</string>
   <string id="848">Verify</string>
   <string id="849">Enable Click Scrape</string>
   <string id="850">&amp;Check For Updates...</string>
@@ -867,7 +867,7 @@
   <string id="866">Metadata</string>
   <string id="867">XBMC Frodo</string>
   <string id="868">Tag Manager</string>
-  <string id="869">EmberMM.com &amp;Wiki...</string>
+  <string id="869">Wiki</string>
   <string id="870">TMDB Api Key</string>
   <string id="871">Trakt.tv Manager</string>
   <string id="872">Use</string>
@@ -924,7 +924,7 @@
   <string id="923">Select Format</string>
   <string id="924">Getting available formats...</string>
   <string id="925">Available Video Formats</string>
-  <string id="926">Manual TMDB Entry</string>
+  <string id="926"></string>
   <string id="927">A Fanart of your preferred size could not be found. Please choose another.</string>
   <string id="928">A Poster of your preferred size could not be found. Please choose another.</string>
   <string id="929">No Preferred Size</string>
@@ -932,10 +932,10 @@
   <string id="931">Open In Browser</string>
   <string id="932">TVDB API Key</string>
   <string id="933">TMDB ID</string>
-  <string id="934">Searching TMDB...</string>
-  <string id="935">Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again.</string>
+  <string id="934"></string>
+  <string id="935"></string>
   <string id="936">Get your API Key from www.themoviedb.org</string>
-  <string id="937">Unable to retrieve movie details for the entered TVDB ID. Please check your entry and try again.</string>
+  <string id="937"></string>
   <string id="938">TheMovieDB API is missing or not valid</string>
   <string id="939">Edit Movie Sorting</string>
   <string id="940">Directors</string>
@@ -944,7 +944,7 @@
   <string id="943">There are no known episodes for this show. Scrape the show, season, or episode and try again.</string>
   <string id="944">No Known Episodes</string>
   <string id="945">There is no poster available for this episode.</string>
-  <string id="946">Manual TVDB Entry</string>
+  <string id="946"></string>
   <string id="947">Guest Star</string>
   <string id="948">TV Search Results</string>
   <string id="949">The ID you entered is not a valid TVDB ID.</string>

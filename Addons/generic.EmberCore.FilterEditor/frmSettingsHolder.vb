@@ -223,7 +223,7 @@ Public Class frmSettingsHolder
                     (Master.eSettings.GeneralMainTabSorting.FindIndex(Function(f) f.Title = r.Cells(0).Value.ToString) = -1) Then
                 Dim nContentType As Enums.ContentType
                 Select Case True
-                    Case r.Cells(1).Value.ToString.StartsWith("movie")
+                    Case r.Cells(1).Value.ToString.StartsWith("movie") AndAlso Not r.Cells(1).Value.ToString.StartsWith("movieset")
                         nContentType = Enums.ContentType.Movie
                     Case r.Cells(1).Value.ToString.StartsWith("movieset")
                         nContentType = Enums.ContentType.MovieSet

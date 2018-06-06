@@ -96,7 +96,7 @@ Namespace TVDBs
                             .LongLang = If(tEpisode.Language IsNot Nothing, Localization.ISOGetLangByCode2(tEpisode.Language), String.Empty),
                             .Scraper = "TVDB",
                             .Season = tEpisode.SeasonNumber,
-                            .ShortLang = If(tEpisode.Language IsNot Nothing, tEpisode.Language, String.Empty),
+                            .Language = If(tEpisode.Language IsNot Nothing, tEpisode.Language, String.Empty),
                             .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", tEpisode.PictureFilename),
                             .URLThumb = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(_TVDBMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty),
                             .Width = tEpisode.ThumbWidth}
@@ -112,10 +112,10 @@ Namespace TVDBs
                                                                        .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                        .Scraper = "TVDB",
                                                                        .Season = image.Season,
-                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty),
+                                                                       .Language = If(image.Language IsNot Nothing, image.Language, String.Empty),
                                                                        .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath),
                                                                        .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty),
-                                                                       .VoteAverage = CStr(image.Rating),
+                                                                       .VoteAverage = image.Rating,
                                                                        .VoteCount = image.RatingCount,
                                                                        .Width = 758}
                             alImagesContainer.MainBanners.Add(img)
@@ -129,10 +129,10 @@ Namespace TVDBs
                                                                        .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                        .Scraper = "TVDB",
                                                                        .Season = image.Season,
-                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty),
+                                                                       .Language = If(image.Language IsNot Nothing, image.Language, String.Empty),
                                                                        .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath),
                                                                        .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty),
-                                                                       .VoteAverage = CStr(image.Rating),
+                                                                       .VoteAverage = image.Rating,
                                                                        .VoteCount = image.RatingCount,
                                                                        .Width = 758}
                             alImagesContainer.SeasonBanners.Add(img)
@@ -146,10 +146,10 @@ Namespace TVDBs
                                                                                         .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                                         .Scraper = "TVDB",
                                                                                         .Season = image.Season,
-                                                                                        .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty),
+                                                                                        .Language = If(image.Language IsNot Nothing, image.Language, String.Empty),
                                                                                         .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath),
                                                                                         .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty),
-                                                                                        .VoteAverage = CStr(image.Rating),
+                                                                                        .VoteAverage = image.Rating,
                                                                                         .VoteCount = image.RatingCount,
                                                                                         .Width = StringUtils.StringToSize(image.Dimension).Width})
                         Next
@@ -162,10 +162,10 @@ Namespace TVDBs
                                                                        .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                        .Scraper = "TVDB",
                                                                        .Season = image.Season,
-                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty),
+                                                                       .Language = If(image.Language IsNot Nothing, image.Language, String.Empty),
                                                                        .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath),
                                                                        .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty),
-                                                                       .VoteAverage = CStr(image.Rating),
+                                                                       .VoteAverage = image.Rating,
                                                                        .VoteCount = image.RatingCount,
                                                                        .Width = StringUtils.StringToSize(image.Dimension).Width}
                             alImagesContainer.MainPosters.Add(img)
@@ -179,10 +179,10 @@ Namespace TVDBs
                                                                        .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                        .Scraper = "TVDB",
                                                                        .Season = image.Season,
-                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty),
+                                                                       .Language = If(image.Language IsNot Nothing, image.Language, String.Empty),
                                                                        .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty),
                                                                        .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath),
-                                                                       .VoteAverage = CStr(image.Rating),
+                                                                       .VoteAverage = image.Rating,
                                                                        .VoteCount = image.RatingCount,
                                                                        .Width = 400}
                             alImagesContainer.SeasonPosters.Add(img)
@@ -230,7 +230,7 @@ Namespace TVDBs
                                 .LongLang = If(tEpisode.Language IsNot Nothing, Localization.ISOGetLangByCode2(tEpisode.Language), String.Empty),
                                 .Scraper = "TVDB",
                                 .Season = iSeason,
-                                .ShortLang = If(tEpisode.Language IsNot Nothing, tEpisode.Language, String.Empty),
+                                .Language = If(tEpisode.Language IsNot Nothing, tEpisode.Language, String.Empty),
                                 .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", tEpisode.PictureFilename),
                                 .URLThumb = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(_TVDBMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty),
                                 .Width = tEpisode.ThumbWidth}

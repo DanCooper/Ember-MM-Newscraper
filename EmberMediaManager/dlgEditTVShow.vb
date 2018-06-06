@@ -2001,7 +2001,7 @@ Public Class dlgEditTVShow
         lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
         lblOrdering.Text = Master.eLang.GetString(739, "Episode Ordering:")
         lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
-        lblPlot.Text = Master.eLang.GetString(241, "Plot:")
+        lblPlot.Text = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
         lblPremiered.Text = String.Concat(Master.eLang.GetString(724, "Premiered"), ":")
         lblRating.Text = Master.eLang.GetString(245, "Rating:")
         lblRuntime.Text = String.Concat(Master.eLang.GetString(238, "Runtime"), ":")

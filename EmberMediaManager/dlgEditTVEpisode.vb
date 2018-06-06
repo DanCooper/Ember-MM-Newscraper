@@ -1020,7 +1020,7 @@ Public Class dlgEditTVEpisode
         lblCredits.Text = Master.eLang.GetString(228, "Credits:")
         lblDirectors.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
         lblEpisode.Text = String.Concat(Master.eLang.GetString(727, "Episode"), ":")
-        lblPlot.Text = Master.eLang.GetString(241, "Plot:")
+        lblPlot.Text = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
         lblRating.Text = Master.eLang.GetString(245, "Rating:")
         lblRuntime.Text = String.Concat(Master.eLang.GetString(238, "Runtime"), ":")
         lblSeason.Text = String.Concat(Master.eLang.GetString(650, "Season"), ":")

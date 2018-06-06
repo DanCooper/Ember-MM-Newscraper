@@ -112,7 +112,7 @@ Public Class TVDB_Data
         _setup.chkScraperShowActors.Checked = ConfigScrapeOptions.bMainActors
         _setup.chkScraperShowEpisodeGuide.Checked = ConfigScrapeOptions.bMainEpisodeGuide
         _setup.chkScraperShowGenres.Checked = ConfigScrapeOptions.bMainGenres
-        _setup.chkScraperShowMPAA.Checked = ConfigScrapeOptions.bMainMPAA
+        _setup.chkScraperShowCertifications.Checked = ConfigScrapeOptions.bMainCertifications
         _setup.chkScraperShowPlot.Checked = ConfigScrapeOptions.bMainPlot
         _setup.chkScraperShowPremiered.Checked = ConfigScrapeOptions.bMainPremiered
         _setup.chkScraperShowRating.Checked = ConfigScrapeOptions.bMainRating
@@ -154,9 +154,9 @@ Public Class TVDB_Data
         ConfigScrapeOptions.bEpisodeRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
         ConfigScrapeOptions.bEpisodeTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVEpisode)
         ConfigScrapeOptions.bMainActors = AdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVShow)
+        ConfigScrapeOptions.bMainCertifications = AdvancedSettings.GetBooleanSetting("DoCertification", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions.bMainEpisodeGuide = AdvancedSettings.GetBooleanSetting("DoEpisodeGuide", False, , Enums.ContentType.TVShow)
         ConfigScrapeOptions.bMainGenres = AdvancedSettings.GetBooleanSetting("DoGenre", True, , Enums.ContentType.TVShow)
-        ConfigScrapeOptions.bMainMPAA = AdvancedSettings.GetBooleanSetting("DoMPAA", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions.bMainPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions.bMainPremiered = AdvancedSettings.GetBooleanSetting("DoPremiered", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
@@ -183,9 +183,9 @@ Public Class TVDB_Data
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions.bEpisodeRating, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions.bEpisodeTitle, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoActors", ConfigScrapeOptions.bMainActors, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoCertification", ConfigScrapeOptions.bMainCertifications, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoEpisodeGuide", ConfigScrapeOptions.bMainEpisodeGuide, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoGenre", ConfigScrapeOptions.bMainGenres, , , Enums.ContentType.TVShow)
-            settings.SetBooleanSetting("DoMPAA", ConfigScrapeOptions.bMainMPAA, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions.bMainPlot, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoPremiered", ConfigScrapeOptions.bMainPremiered, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions.bMainRating, , , Enums.ContentType.TVShow)
@@ -207,9 +207,9 @@ Public Class TVDB_Data
         ConfigScrapeOptions.bEpisodeRating = _setup.chkScraperEpisodeRating.Checked
         ConfigScrapeOptions.bEpisodeTitle = _setup.chkScraperEpisodeTitle.Checked
         ConfigScrapeOptions.bMainActors = _setup.chkScraperShowActors.Checked
+        ConfigScrapeOptions.bMainCertifications = _setup.chkScraperShowCertifications.Checked
         ConfigScrapeOptions.bMainEpisodeGuide = _setup.chkScraperShowEpisodeGuide.Checked
         ConfigScrapeOptions.bMainGenres = _setup.chkScraperShowGenres.Checked
-        ConfigScrapeOptions.bMainMPAA = _setup.chkScraperShowMPAA.Checked
         ConfigScrapeOptions.bMainPlot = _setup.chkScraperShowPlot.Checked
         ConfigScrapeOptions.bMainPremiered = _setup.chkScraperShowPremiered.Checked
         ConfigScrapeOptions.bMainRating = _setup.chkScraperShowRating.Checked
@@ -245,13 +245,13 @@ Public Class TVDB_Data
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
-            If oDBTV.TVShow.TVDBSpecified Then
+            If oDBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-                nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, ScrapeModifiers, FilteredOptions, False)
-            ElseIf oDBTV.TVShow.IMDBSpecified Then
-                oDBTV.TVShow.TVDB = _scraper.GetTVDBbyIMDB(oDBTV.TVShow.IMDB)
-                If Not oDBTV.TVShow.TVDBSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
-                nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, ScrapeModifiers, FilteredOptions, False)
+                nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
+            ElseIf oDBTV.TVShow.UniqueIDs.IMDBidSpecified Then
+                oDBTV.TVShow.UniqueIDs.TVDbId = _scraper.GetTVDBbyIMDB(oDBTV.TVShow.UniqueIDs.IMDbId)
+                If Not oDBTV.TVShow.UniqueIDs.TVDbIdSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+                nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If oDBTV.TVShow.TitleSpecified Then
@@ -277,10 +277,10 @@ Public Class TVDB_Data
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
-            If Not oDBTV.TVShow.TVDBSpecified Then
+            If Not oDBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
                 Using dlgSearch As New dlgTVDBSearchResults(Settings, _scraper)
                     If dlgSearch.ShowDialog(oDBTV.TVShow.Title, oDBTV.ShowPath, ScrapeModifiers, FilteredOptions) = DialogResult.OK Then
-                        nTVShow = _scraper.GetTVShowInfo(dlgSearch.Result.TVDB, ScrapeModifiers, FilteredOptions, False)
+                        nTVShow = _scraper.GetTVShowInfo(dlgSearch.Result.UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
@@ -308,11 +308,11 @@ Public Class TVDB_Data
         Dim _scraper As New TVDBs.Scraper(Settings)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
-        If oDBTVEpisode.TVShow.TVDBSpecified Then
+        If oDBTVEpisode.TVShow.UniqueIDs.TVDbIdSpecified Then
             If Not oDBTVEpisode.TVEpisode.Episode = -1 AndAlso Not oDBTVEpisode.TVEpisode.Season = -1 Then
-                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEpisode.Season, oDBTVEpisode.TVEpisode.Episode, oDBTVEpisode.EpisodeOrdering, FilteredOptions)
+                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.UniqueIDs.TVDbId), oDBTVEpisode.TVEpisode.Season, oDBTVEpisode.TVEpisode.Episode, oDBTVEpisode.EpisodeOrdering, FilteredOptions)
             ElseIf oDBTVEpisode.TVEpisode.AiredSpecified Then
-                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEpisode.Aired, FilteredOptions)
+                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.UniqueIDs.TVDbId), oDBTVEpisode.TVEpisode.Aired, FilteredOptions)
             Else
                 logger.Trace("[TVDB_Data] [Scraper_TVEpisode] [Abort] No TV Show TVDB ID and also no AiredDate available")
                 Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}

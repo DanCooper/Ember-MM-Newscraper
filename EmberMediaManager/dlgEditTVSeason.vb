@@ -599,7 +599,7 @@ Public Class dlgEditTVSeason
         btnSetPosterLocal.Text = strLocalBrowse
 
         'Plot
-        Dim strPlot As String = Master.eLang.GetString(241, "Plot:")
+        Dim strPlot As String = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
         lblPlot.Text = strPlot
 
         'Remove

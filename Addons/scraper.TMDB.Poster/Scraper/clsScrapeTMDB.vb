@@ -72,10 +72,10 @@ Public Class clsAPITMDB
                             .Likes = 0,
                             .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                             .Scraper = "TMDB",
-                            .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                            .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
                             .URLOriginal = _client.Config.Images.BaseUrl & "original" & tImage.FilePath,
                             .URLThumb = _client.Config.Images.BaseUrl & "w300" & tImage.FilePath,
-                            .VoteAverage = tImage.VoteAverage.ToString,
+                            .VoteAverage = tImage.VoteAverage,
                             .VoteCount = tImage.VoteCount,
                             .Width = tImage.Width}
 
@@ -91,10 +91,10 @@ Public Class clsAPITMDB
                                 .Likes = 0,
                                 .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                                 .Scraper = "TMDB",
-                                .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
                                 .URLOriginal = _client.Config.Images.BaseUrl & "original" & tImage.FilePath,
                                 .URLThumb = _client.Config.Images.BaseUrl & "w185" & tImage.FilePath,
-                                .VoteAverage = tImage.VoteAverage.ToString,
+                                .VoteAverage = tImage.VoteAverage,
                                 .VoteCount = tImage.VoteCount,
                                 .Width = tImage.Width}
 
@@ -130,10 +130,10 @@ Public Class clsAPITMDB
                             .Likes = 0,
                             .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                             .Scraper = "TMDB",
-                            .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                            .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
                             .URLOriginal = _client.Config.Images.BaseUrl & "original" & tImage.FilePath,
                             .URLThumb = _client.Config.Images.BaseUrl & "w300" & tImage.FilePath,
-                            .VoteAverage = tImage.VoteAverage.ToString,
+                            .VoteAverage = tImage.VoteAverage,
                             .VoteCount = tImage.VoteCount,
                             .Width = tImage.Width}
 
@@ -149,10 +149,10 @@ Public Class clsAPITMDB
                                 .Likes = 0,
                                 .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                                 .Scraper = "TMDB",
-                                .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
                                 .URLOriginal = _client.Config.Images.BaseUrl & "original" & tImage.FilePath,
                                 .URLThumb = _client.Config.Images.BaseUrl & "w185" & tImage.FilePath,
-                                .VoteAverage = tImage.VoteAverage.ToString,
+                                .VoteAverage = tImage.VoteAverage,
                                 .VoteCount = tImage.VoteCount,
                                 .Width = tImage.Width}
 
@@ -178,10 +178,10 @@ Public Class clsAPITMDB
                                         .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                                         .Scraper = "TMDB",
                                         .Season = tSeason.SeasonNumber,
-                                        .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                        .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
                                         .URLOriginal = _client.Config.Images.BaseUrl & "original" & tImage.FilePath,
                                         .URLThumb = _client.Config.Images.BaseUrl & "w185" & tImage.FilePath,
-                                        .VoteAverage = tImage.VoteAverage.ToString,
+                                        .VoteAverage = tImage.VoteAverage,
                                         .VoteCount = tImage.VoteCount,
                                         .Width = tImage.Width}
 
@@ -240,10 +240,10 @@ Public Class clsAPITMDB
                             .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                             .Scraper = "TMDB",
                             .Season = iSeason,
-                            .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                            .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
                             .URLOriginal = _client.Config.Images.BaseUrl & "original" & tImage.FilePath,
                             .URLThumb = _client.Config.Images.BaseUrl & "w185" & tImage.FilePath,
-                            .VoteAverage = tImage.VoteAverage.ToString,
+                            .VoteAverage = tImage.VoteAverage,
                             .VoteCount = tImage.VoteCount,
                             .Width = tImage.Width}
 

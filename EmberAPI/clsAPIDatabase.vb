@@ -1071,7 +1071,7 @@ Public Class Database
             Case Enums.ContentType.Movie
                 Return "movie"
             Case Enums.ContentType.MovieSet
-                Return "set"
+                Return "movieset"
             Case Enums.ContentType.Person
                 Return "person"
             Case Enums.ContentType.TVEpisode
@@ -3058,7 +3058,7 @@ Public Class Database
                                         .Order = tMovie.Order,
                                         .Plot = dbElement.MovieSet.Plot,
                                         .Title = dbElement.MovieSet.Title,
-                                        .TMDB = dbElement.MovieSet.TMDB
+                                        .TMDbId = dbElement.MovieSet.UniqueIDs.TMDbId
                                         })
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
@@ -3172,6 +3172,7 @@ Public Class Database
     ''' <param name="bWithMovies">Save the information also to all linked movies?</param>
     ''' <returns>Database.DBElement object</returns>
     Public Function Save_Tag_Movie(ByVal _tagDB As Structures.DBMovieTag, ByVal bIsNew As Boolean, ByVal bBatchMode As Boolean, ByVal bToNfo As Boolean, ByVal bWithMovies As Boolean) As Structures.DBMovieTag
+        'TODO: remove this Function
         If _tagDB.ID = -1 Then bIsNew = True
 
         Dim SQLtransaction As SQLiteTransaction = Nothing
@@ -3235,7 +3236,7 @@ Public Class Database
             'check if there are movies in linktable which aren't in current tag - those are old entries which meed to be removed from linktag table and nfo of movies
             For i = MoviesInTagOld.Count - 1 To 0 Step -1
                 For Each movienew In MoviesInTagNew
-                    If MoviesInTagOld(i).Movie.ID = movienew.Movie.ID Then
+                    If MoviesInTagOld(i).Movie.UniqueIDs.IMDbId = movienew.Movie.UniqueIDs.IMDbId Then
                         MoviesInTagOld.RemoveAt(i)
                         Exit For
                     End If
@@ -4049,10 +4050,9 @@ Public Class Database
                     End Using
                 Else
                     'first check if a movieset with the same TMDBColID is already existing
-                    If entry.TMDBSpecified Then
+                    If entry.TMDbIdSpecified Then
                         Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            sqlCommand.CommandText = String.Concat("SELECT idSet, title, plot ",
-                                                                   "FROM movieset WHERE TMDBColID LIKE """, entry.TMDB, """;")
+                            sqlCommand.CommandText = String.Format("SELECT movieset.idSet, movieset.title, movieset.plot FROM uniqueid INNER JOIN movieset ON (uniqueid.idMedia = movieset.idSet) WHERE uniqueid.media_type = 'movieset' AND uniqueid.type = 'tmdb' AND uniqueid.value = '{0}'", entry.TMDbId)
                             Using sqlReader As SQLiteDataReader = sqlCommand.ExecuteReader()
                                 If sqlReader.HasRows Then
                                     sqlReader.Read()
@@ -5055,14 +5055,18 @@ Public Class Database
                         Dim idArt As Long = Convert.ToInt64(SQLreader("idArt"))
                         Dim strValue As String = SQLreader("url").ToString
                         If File.Exists(strValue) Then
-                            Dim nImage As New Drawing.Bitmap(strValue)
-                            Dim iWidth = nImage.Width
-                            Dim iHeight = nImage.Height
-                            nImage.Dispose()
-                            Using sqlCommand_update As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                sqlCommand_update.CommandText = String.Format("UPDATE art SET width={0}, height={1} WHERE idArt={2};", iWidth, iHeight, idArt)
-                                sqlCommand_update.ExecuteNonQuery()
-                            End Using
+                            Try
+                                Dim nImage As New Drawing.Bitmap(strValue)
+                                Dim iWidth = nImage.Width
+                                Dim iHeight = nImage.Height
+                                nImage.Dispose()
+                                Using sqlCommand_update As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                    sqlCommand_update.CommandText = String.Format("UPDATE art SET width={0}, height={1} WHERE idArt={2};", iWidth, iHeight, idArt)
+                                    sqlCommand_update.ExecuteNonQuery()
+                                End Using
+                            Catch ex As Exception
+                                logger.Error(String.Format("Can't read image (maybe broken): ""{0}""", strValue))
+                            End Try
                         End If
                     End If
                 End While
@@ -5501,52 +5505,52 @@ Public Class Database
 
 #Region "Deprecated Methodes"
 
-    <Obsolete("This method Is deprecated And only to use for database upgrade, use AddCountryToItem instead.")>
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddCountryToItem instead.")>
     Private Sub AddCountryToMovie(ByVal idMovie As Long, ByVal idCountry As Long)
         AddToLinkTable("countrylinkmovie", "idCountry", idCountry, "idMovie", idMovie, "", "")
     End Sub
 
-    <Obsolete("This method Is deprecated And only to use for database upgrade, use AddDirectorToItem instead.")>
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddDirectorToItem instead.")>
     Private Sub AddDirectorToMovie(ByVal idMovie As Long, ByVal idDirector As Long)
         AddToLinkTable("directorlinkmovie", "idDirector", idDirector, "idMovie", idMovie, "", "")
     End Sub
 
-    <Obsolete("This method Is deprecated And only to use for database upgrade, use AddDirectorToItem instead.")>
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddDirectorToItem instead.")>
     Private Sub AddDirectorToTVEpisode(ByVal idEpisode As Long, ByVal idDirector As Long)
         AddToLinkTable("directorlinkepisode", "idDirector", idDirector, "idEpisode", idEpisode, "", "")
     End Sub
 
-    <Obsolete("This method Is deprecated And only to use for database upgrade, use AddDirectorToItem instead.")>
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddDirectorToItem instead.")>
     Private Sub AddDirectorToTvShow(ByVal idShow As Long, ByVal idDirector As Long)
         AddToLinkTable("directorlinktvshow", "idDirector", idDirector, "idShow", idShow, "", "")
     End Sub
 
-    <Obsolete("This method Is deprecated And only to use for database upgrade, use AddGenreToItem instead.")>
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddGenreToItem instead.")>
     Private Sub AddGenreToMovie(ByVal idMovie As Long, ByVal idGenre As Long)
         AddToLinkTable("genrelinkmovie", "idGenre", idGenre, "idMovie", idMovie, "", "")
     End Sub
 
-    <Obsolete("This method Is deprecated And only to use for database upgrade, use AddGenreToItem instead.")>
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddGenreToItem instead.")>
     Private Sub AddGenreToTvShow(ByVal idShow As Long, ByVal idGenre As Long)
         AddToLinkTable("genrelinktvshow", "idGenre", idGenre, "idShow", idShow, "", "")
     End Sub
 
-    <Obsolete("This method Is deprecated And only to use for database upgrade, use AddStudioToItem instead.")>
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddStudioToItem instead.")>
     Private Sub AddStudioToMovie(ByVal idMovie As Long, ByVal idStudio As Long)
         AddToLinkTable("studiolinkmovie", "idStudio", idStudio, "idMovie", idMovie, "", "")
     End Sub
 
-    <Obsolete("This method Is deprecated And only to use for database upgrade, use AddStudioToItem instead.")>
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddStudioToItem instead.")>
     Private Sub AddStudioToTvShow(ByVal idShow As Long, ByVal idStudio As Long)
         AddToLinkTable("studiolinktvshow", "idStudio", idStudio, "idShow", idShow, "", "")
     End Sub
 
-    <Obsolete("This method Is deprecated And only to use for database upgrade, use AddWriterToItem instead.")>
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddWriterToItem instead.")>
     Private Sub AddWriterToMovie(ByVal idMovie As Long, ByVal idWriter As Long)
         AddToLinkTable("writerlinkmovie", "idWriter", idWriter, "idMovie", idMovie, "", "")
     End Sub
 
-    <Obsolete("This method Is deprecated And only to use for database upgrade, use AddWriterToItem instead.")>
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddWriterToItem instead.")>
     Private Sub AddWriterToTVEpisode(ByVal idEpisode As Long, ByVal idWriter As Long)
         AddToLinkTable("writerlinkepisode", "idWriter", idWriter, "idEpisode", idEpisode, "", "")
     End Sub

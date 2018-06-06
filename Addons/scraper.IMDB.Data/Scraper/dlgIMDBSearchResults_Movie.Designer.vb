@@ -49,7 +49,7 @@ Partial Class dlgIMDBSearchResults_Movie
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.pnlLoading = New System.Windows.Forms.Panel()
-        Me.Label3 = New System.Windows.Forms.Label()
+        Me.lblSearching = New System.Windows.Forms.Label()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.pnlPicStatus = New System.Windows.Forms.Panel()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -328,22 +328,22 @@ Partial Class dlgIMDBSearchResults_Movie
         '
         Me.pnlLoading.BackColor = System.Drawing.Color.White
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlLoading.Controls.Add(Me.Label3)
+        Me.pnlLoading.Controls.Add(Me.lblSearching)
         Me.pnlLoading.Controls.Add(Me.ProgressBar1)
         Me.pnlLoading.Location = New System.Drawing.Point(368, 213)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
         Me.pnlLoading.TabIndex = 20
         '
-        'Label3
+        'lblSearching
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(3, 10)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(98, 13)
-        Me.Label3.TabIndex = 0
-        Me.Label3.Text = "Searching IMDB..."
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblSearching.AutoSize = True
+        Me.lblSearching.Location = New System.Drawing.Point(3, 10)
+        Me.lblSearching.Name = "lblSearching"
+        Me.lblSearching.Size = New System.Drawing.Size(70, 13)
+        Me.lblSearching.TabIndex = 0
+        Me.lblSearching.Text = "Searching ..."
+        Me.lblSearching.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'ProgressBar1
         '
@@ -469,7 +469,7 @@ Partial Class dlgIMDBSearchResults_Movie
     Friend WithEvents btnSearch As System.Windows.Forms.Button
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents pnlLoading As System.Windows.Forms.Panel
-    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents lblSearching As System.Windows.Forms.Label
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents pnlPicStatus As System.Windows.Forms.Panel
     Friend WithEvents Label4 As System.Windows.Forms.Label

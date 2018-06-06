@@ -598,8 +598,8 @@ Public Class Scanner
         End If
 
         'IMDB ID
-        If Not dbElement.Movie.IDSpecified Then
-            dbElement.Movie.ID = StringUtils.GetIMDBIDFromString(dbElement.FileItem.FirstStackedPath, True)
+        If Not dbElement.Movie.UniqueIDs.IMDbIDSpecified Then
+            dbElement.Movie.UniqueIDs.IMDbId = StringUtils.GetIMDBIDFromString(dbElement.FileItem.FirstStackedPath, True)
         End If
 
         'Title
@@ -905,8 +905,8 @@ Public Class Scanner
                 End If
 
                 'IMDB ID
-                If Not dbElement.TVShow.IMDBSpecified Then
-                    dbElement.TVShow.IMDB = StringUtils.GetIMDBIDFromString(dbElement.ShowPath, True)
+                If Not dbElement.TVShow.UniqueIDs.IMDbIdSpecified Then
+                    dbElement.TVShow.UniqueIDs.IMDbId = StringUtils.GetIMDBIDFromString(dbElement.ShowPath, True)
                 End If
 
                 'Title
@@ -981,8 +981,8 @@ Public Class Scanner
                                     tmpSeason.TVSeason.Aired = nfoSeason.Aired
                                     tmpSeason.TVSeason.Plot = nfoSeason.Plot
                                     tmpSeason.TVSeason.Title = nfoSeason.Title
-                                    tmpSeason.TVSeason.TMDB = nfoSeason.TMDB
-                                    tmpSeason.TVSeason.TVDB = nfoSeason.TVDB
+                                    tmpSeason.TVSeason.UniqueIDs.TMDbId = nfoSeason.UniqueIDs.TMDbId
+                                    tmpSeason.TVSeason.UniqueIDs.TVDbId = nfoSeason.UniqueIDs.TVDbId
                                 Else
                                     'Scrape season info
                                     If isNew AndAlso tmpSeason.TVShow.UniqueIDsSpecified AndAlso tmpSeason.ShowIDSpecified Then

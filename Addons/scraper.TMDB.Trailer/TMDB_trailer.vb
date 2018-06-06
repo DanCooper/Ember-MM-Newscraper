@@ -143,12 +143,12 @@ Public Class TMDB_Trailer
 
         _TMDBAPI.DefaultLanguage = oDBElement.Language
 
-        If Not oDBElement.Movie.TMDBSpecified Then
-            oDBElement.Movie.TMDB = ModulesManager.Instance.GetMovieTMDBID(oDBElement.Movie.ID)
+        If Not oDBElement.Movie.UniqueIDs.TMDbIdSpecified Then
+            oDBElement.Movie.UniqueIDs.TMDbId = ModulesManager.Instance.GetMovieTMDBID(oDBElement.Movie.UniqueIDs.IMDbId)
         End If
 
-        If oDBElement.Movie.TMDBSpecified Then
-            TrailerList = _TMDBAPI.GetTrailers(oDBElement.Movie.TMDB)
+        If oDBElement.Movie.UniqueIDs.TMDbIdSpecified Then
+            TrailerList = _TMDBAPI.GetTrailers(oDBElement.Movie.UniqueIDs.TMDbId)
         End If
 
         logger.Trace("[TMDB_Trailer] [Scraper_Movie] [Done]")

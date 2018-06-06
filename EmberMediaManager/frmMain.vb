@@ -549,24 +549,17 @@ Public Class frmMain
     Private Sub mnuMainToolsExportMovies_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportMovies.Click
         Try
             Dim table As New DataTable
-            Dim ds As New DataSet
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT * FROM movie INNER JOIN MoviesVStreams ON (MoviesVStreams.MovieID = movie.idMovie) INNER JOIN MoviesAStreams ON (MoviesAStreams.MovieID = movie.idMovie);"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    ds.Tables.Add(table)
-                    ds.EnforceConstraints = False
-                    table.Load(SQLreader)
-                End Using
-            End Using
+            Master.DB.FillDataTable(table, String.Concat("SELECT * FROM movielist;"))
+            table.TableName = "movie"
 
-            Dim saveFileDialog1 As New SaveFileDialog()
-            saveFileDialog1.FileName = "export_movies" + ".xml"
-            saveFileDialog1.Filter = "xml files (*.xml)|*.xml"
-            saveFileDialog1.FilterIndex = 2
-            saveFileDialog1.RestoreDirectory = True
+            Dim dlgSave As New SaveFileDialog()
+            dlgSave.FileName = "export_movies" + ".xml"
+            dlgSave.Filter = "xml files (*.xml)|*.xml"
+            dlgSave.FilterIndex = 2
+            dlgSave.RestoreDirectory = True
 
-            If saveFileDialog1.ShowDialog() = DialogResult.OK Then
-                table.WriteXml(saveFileDialog1.FileName)
+            If dlgSave.ShowDialog() = DialogResult.OK Then
+                table.WriteXml(dlgSave.FileName)
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -576,22 +569,17 @@ Public Class frmMain
     Private Sub mnuMainToolsExportTvShows_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportTvShows.Click
         Try
             Dim table As New DataTable
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "Select * from tvshow;"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    'Load the SqlDataReader object to the DataTable object as follows. 
-                    table.Load(SQLreader)
-                End Using
-            End Using
+            Master.DB.FillDataTable(table, String.Concat("SELECT * FROM tvshowlist;"))
+            table.TableName = "tvshow"
 
-            Dim saveFileDialog1 As New SaveFileDialog()
-            saveFileDialog1.FileName = "export_tvshows" + ".xml"
-            saveFileDialog1.Filter = "xml files (*.xml)|*.xml"
-            saveFileDialog1.FilterIndex = 2
-            saveFileDialog1.RestoreDirectory = True
+            Dim dlgSave As New SaveFileDialog()
+            dlgSave.FileName = "export_tvshow" + ".xml"
+            dlgSave.Filter = "xml files (*.xml)|*.xml"
+            dlgSave.FilterIndex = 2
+            dlgSave.RestoreDirectory = True
 
-            If saveFileDialog1.ShowDialog() = DialogResult.OK Then
-                table.WriteXml(saveFileDialog1.FileName)
+            If dlgSave.ShowDialog() = DialogResult.OK Then
+                table.WriteXml(dlgSave.FileName)
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -1882,10 +1870,19 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If Not DBScrapeMovie.Movie.IDSpecified AndAlso (tScrapeItem.ScrapeModifiers.MainActorthumbs Or tScrapeItem.ScrapeModifiers.MainBanner Or tScrapeItem.ScrapeModifiers.MainClearArt Or
-                                                                         tScrapeItem.ScrapeModifiers.MainClearLogo Or tScrapeItem.ScrapeModifiers.MainDiscArt Or tScrapeItem.ScrapeModifiers.MainExtrafanarts Or
-                                                                         tScrapeItem.ScrapeModifiers.MainExtrathumbs Or tScrapeItem.ScrapeModifiers.MainFanart Or tScrapeItem.ScrapeModifiers.MainLandscape Or
-                                                                         tScrapeItem.ScrapeModifiers.MainPoster Or tScrapeItem.ScrapeModifiers.MainTheme Or tScrapeItem.ScrapeModifiers.MainTrailer) Then
+                If Not DBScrapeMovie.Movie.UniqueIDs.IMDbIdSpecified AndAlso (
+                    tScrapeItem.ScrapeModifiers.MainActorthumbs OrElse
+                    tScrapeItem.ScrapeModifiers.MainBanner OrElse
+                    tScrapeItem.ScrapeModifiers.MainClearArt OrElse
+                    tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
+                    tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
+                    tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
+                    tScrapeItem.ScrapeModifiers.MainExtrathumbs OrElse
+                    tScrapeItem.ScrapeModifiers.MainFanart OrElse
+                    tScrapeItem.ScrapeModifiers.MainLandscape OrElse
+                    tScrapeItem.ScrapeModifiers.MainPoster OrElse
+                    tScrapeItem.ScrapeModifiers.MainTheme OrElse
+                    tScrapeItem.ScrapeModifiers.MainTrailer) Then
                     Dim tModifiers As New Structures.ScrapeModifiers With {.MainNFO = True}
                     Dim tOptions As New Structures.ScrapeOptions 'set all values to false to not override any field. ID's are always determined.
                     If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tModifiers, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
@@ -2097,10 +2094,14 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the movie set ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeMovieSet.MovieSet.TMDB) AndAlso (tScrapeItem.ScrapeModifiers.MainBanner Or tScrapeItem.ScrapeModifiers.MainClearArt Or
-                                                                         tScrapeItem.ScrapeModifiers.MainClearLogo Or tScrapeItem.ScrapeModifiers.MainDiscArt Or
-                                                                         tScrapeItem.ScrapeModifiers.MainFanart Or tScrapeItem.ScrapeModifiers.MainLandscape Or
-                                                                         tScrapeItem.ScrapeModifiers.MainPoster) Then
+                If Not DBScrapeMovieSet.MovieSet.UniqueIDs.TMDbIdSpecified AndAlso (
+                    tScrapeItem.ScrapeModifiers.MainBanner OrElse
+                    tScrapeItem.ScrapeModifiers.MainClearArt OrElse
+                    tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
+                    tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
+                    tScrapeItem.ScrapeModifiers.MainFanart OrElse
+                    tScrapeItem.ScrapeModifiers.MainLandscape OrElse
+                    tScrapeItem.ScrapeModifiers.MainPoster) Then
                     Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifiers, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
                         logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
@@ -2115,7 +2116,7 @@ Public Class frmMain
 
                 NewListTitle = DBScrapeMovieSet.ListTitle
                 NewTitle = DBScrapeMovieSet.MovieSet.Title
-                NewTMDBColID = DBScrapeMovieSet.MovieSet.TMDB
+                NewTMDBColID = DBScrapeMovieSet.MovieSet.UniqueIDs.TMDbId
 
                 If Not NewListTitle = OldListTitle Then
                     bwMovieSetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
@@ -2247,10 +2248,17 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeShow.TVShow.TVDB) AndAlso (tScrapeItem.ScrapeModifiers.MainActorthumbs Or tScrapeItem.ScrapeModifiers.MainBanner Or tScrapeItem.ScrapeModifiers.MainCharacterArt Or
-                                                                           tScrapeItem.ScrapeModifiers.MainClearArt Or tScrapeItem.ScrapeModifiers.MainClearLogo Or tScrapeItem.ScrapeModifiers.MainExtrafanarts Or
-                                                                           tScrapeItem.ScrapeModifiers.MainFanart Or tScrapeItem.ScrapeModifiers.MainLandscape Or tScrapeItem.ScrapeModifiers.MainPoster Or
-                                                                           tScrapeItem.ScrapeModifiers.MainTheme) Then
+                If Not DBScrapeShow.TVShow.UniqueIDs.TVDbIdSpecified AndAlso (
+                    tScrapeItem.ScrapeModifiers.MainActorthumbs OrElse
+                    tScrapeItem.ScrapeModifiers.MainBanner OrElse
+                    tScrapeItem.ScrapeModifiers.MainCharacterArt OrElse
+                    tScrapeItem.ScrapeModifiers.MainClearArt OrElse
+                    tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
+                    tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
+                    tScrapeItem.ScrapeModifiers.MainFanart OrElse
+                    tScrapeItem.ScrapeModifiers.MainLandscape OrElse
+                    tScrapeItem.ScrapeModifiers.MainPoster OrElse
+                    tScrapeItem.ScrapeModifiers.MainTheme) Then
                     Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifiers, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
                         Exit For
@@ -2412,10 +2420,17 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the episode ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeEpisode.TVEpisode.TVDB) AndAlso (tScrapeItem.ScrapeModifiers.MainActorthumbs Or tScrapeItem.ScrapeModifiers.MainBanner Or tScrapeItem.ScrapeModifiers.MainCharacterArt Or
-                                                                         tScrapeItem.ScrapeModifiers.MainClearArt Or tScrapeItem.ScrapeModifiers.MainClearLogo Or tScrapeItem.ScrapeModifiers.MainExtrafanarts Or
-                                                                         tScrapeItem.ScrapeModifiers.MainFanart Or tScrapeItem.ScrapeModifiers.MainLandscape Or tScrapeItem.ScrapeModifiers.MainPoster Or
-                                                                         tScrapeItem.ScrapeModifiers.MainTheme) Then
+                If Not DBScrapeEpisode.TVEpisode.UniqueIDs.TVDbIdSpecified AndAlso (
+                    tScrapeItem.ScrapeModifiers.MainActorthumbs OrElse
+                    tScrapeItem.ScrapeModifiers.MainBanner OrElse
+                    tScrapeItem.ScrapeModifiers.MainCharacterArt OrElse
+                    tScrapeItem.ScrapeModifiers.MainClearArt OrElse
+                    tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
+                    tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
+                    tScrapeItem.ScrapeModifiers.MainFanart OrElse
+                    tScrapeItem.ScrapeModifiers.MainLandscape OrElse
+                    tScrapeItem.ScrapeModifiers.MainPoster OrElse
+                    tScrapeItem.ScrapeModifiers.MainTheme) Then
                     Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, tOpt, Args.ScrapeList.Count = 1) Then
                         Exit For
@@ -2551,8 +2566,11 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeSeason.TVSeason.TVDB) AndAlso (tScrapeItem.ScrapeModifiers.SeasonBanner Or tScrapeItem.ScrapeModifiers.SeasonFanart Or
-                                                                               tScrapeItem.ScrapeModifiers.SeasonLandscape Or tScrapeItem.ScrapeModifiers.SeasonPoster) Then
+                If Not DBScrapeSeason.TVSeason.UniqueIDs.TVDbIdSpecified AndAlso (
+                    tScrapeItem.ScrapeModifiers.SeasonBanner OrElse
+                    tScrapeItem.ScrapeModifiers.SeasonFanart OrElse
+                    tScrapeItem.ScrapeModifiers.SeasonLandscape OrElse
+                    tScrapeItem.ScrapeModifiers.SeasonPoster) Then
                     Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_TVSeason(DBScrapeSeason, tOpt, Args.ScrapeList.Count = 1) Then
                         Exit For
@@ -5619,8 +5637,8 @@ Public Class frmMain
                         'if any item has an IMDB ID, enable button "Open IMDB-Page"
                         If Not String.IsNullOrEmpty(sRow.Cells("uniqueid").Value.ToString) Then
                             Dim nUIdContainer As New MediaContainers.UniqueidContainer(sRow.Cells("uniqueid").Value.ToString)
-                            If Not String.IsNullOrEmpty(nUIdContainer.GetIdByName("imdb")) Then bEnableIMDB = True
-                            If Not String.IsNullOrEmpty(nUIdContainer.GetIdByName("tmdb")) Then bEnableTMDB = True
+                            If nUIdContainer.IMDbIdSpecified Then bEnableIMDB = True
+                            If nUIdContainer.TMDbIdSpecified Then bEnableTMDB = True
                         End If
                     Next
 
@@ -9219,9 +9237,9 @@ Public Class frmMain
         lblCountries.Text = String.Join(" / ", currMovie.Movie.Countries.ToArray)
 
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currMovie)
-        txtIMDBID.Text = currMovie.Movie.UniqueIDs.GetIdByName("imdb")
+        txtIMDBID.Text = currMovie.Movie.UniqueIDs.IMDbId
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currMovie)
-        txtTMDBID.Text = currMovie.Movie.UniqueIDs.GetIdByName("tmdb")
+        txtTMDBID.Text = currMovie.Movie.UniqueIDs.TMDbId
 
         txtFilePath.Text = currMovie.FileItem.FullPath
         txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.Movie.Trailer)
@@ -9263,7 +9281,7 @@ Public Class frmMain
 
 
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currMovieSet)
-        txtTMDBID.Text = currMovieSet.MovieSet.UniqueIDs.GetIdByName("tmdb")
+        txtTMDBID.Text = currMovieSet.MovieSet.UniqueIDs.TMDbId
 
         If currMovieSet.MoviesInSet IsNot Nothing AndAlso currMovieSet.MoviesInSet.Count > 0 Then
             If bwLoadImages_MovieSetMoviePosters.IsBusy AndAlso Not bwLoadImages_MovieSetMoviePosters.CancellationPending Then
@@ -9408,11 +9426,11 @@ Public Class frmMain
         End If
 
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currTV)
-        txtIMDBID.Text = currTV.TVEpisode.UniqueIDs.GetIdByName("imdb")
+        txtIMDBID.Text = currTV.TVEpisode.UniqueIDs.IMDbId
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
-        txtTMDBID.Text = currTV.TVEpisode.UniqueIDs.GetIdByName("tmdb")
+        txtTMDBID.Text = currTV.TVEpisode.UniqueIDs.TMDbId
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
-        txtTVDBID.Text = currTV.TVEpisode.UniqueIDs.GetIdByName("tvdb")
+        txtTVDBID.Text = currTV.TVEpisode.UniqueIDs.TVDbId
 
         If currTV.TVShow.StudiosSpecified Then
             pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
@@ -9456,7 +9474,7 @@ Public Class frmMain
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
         txtTMDBID.Text = If(Not String.IsNullOrEmpty(lblTMDBHeader.Tag.ToString), "Link", String.Empty)
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
-        txtTVDBID.Text = currTV.TVSeason.UniqueIDs.GetIdByName("tvdb")
+        txtTVDBID.Text = currTV.TVSeason.UniqueIDs.TVDbId
         lblCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
         lblReleaseDate.Text = currTV.TVSeason.Aired
 
@@ -9562,11 +9580,11 @@ Public Class frmMain
         lblReleaseDate.Text = currTV.TVShow.Premiered
         lblReleaseDateHeader.Text = Master.eLang.GetString(724, "Premiered")
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDB(currTV)
-        txtIMDBID.Text = currTV.TVShow.UniqueIDs.GetIdByName("imdb")
+        txtIMDBID.Text = currTV.TVShow.UniqueIDs.IMDbId
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDB(currTV)
-        txtTMDBID.Text = currTV.TVShow.UniqueIDs.GetIdByName("tmdb")
+        txtTMDBID.Text = currTV.TVShow.UniqueIDs.TMDbId
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDB(currTV)
-        txtTVDBID.Text = currTV.TVShow.UniqueIDs.GetIdByName("tvdb")
+        txtTVDBID.Text = currTV.TVShow.UniqueIDs.TVDbId
         lblCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
         lblTags.Text = String.Join(" / ", currTV.TVShow.Tags.ToArray)
         lblStatus.Text = currTV.TVShow.Status
@@ -17006,7 +17024,7 @@ Public Class frmMain
         mnuMainHelpAbout.Text = Master.eLang.GetString(6, "&About...")
         mnuMainHelpUpdate.Text = Master.eLang.GetString(850, "&Check For Updates...")
         mnuMainHelpVersions.Text = Master.eLang.GetString(793, "&Versions...")
-        mnuMainHelpWiki.Text = Master.eLang.GetString(869, "EmberMM.com &Wiki...")
+        mnuMainHelpWiki.Text = Master.eLang.GetString(869, "Wiki")
         mnuMainToolsExport.Text = Master.eLang.GetString(1174, "Export")
         mnuMainToolsExportMovies.Text = Master.eLang.GetString(36, "Movies")
         mnuMainToolsExportTvShows.Text = Master.eLang.GetString(653, "TV Shows")

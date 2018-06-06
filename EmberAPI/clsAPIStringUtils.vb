@@ -588,24 +588,20 @@ Public Class StringUtils
     Public Shared Function GetURL_IMDB(ByVal dbelement As Database.DBElement) As String
         Select Case dbelement.ContentType
             Case Enums.ContentType.Movie
-                Dim strID = dbelement.Movie.UniqueIDs.GetIdByName("imdb")
-                If Not String.IsNullOrEmpty(strID) Then
-                    Return String.Concat("https://www.imdb.com/title/", strID)
+                If dbelement.Movie.UniqueIDs.IMDbIdSpecified Then
+                    Return String.Concat("https://www.imdb.com/title/", dbelement.Movie.UniqueIDs.IMDbId)
                 End If
             Case Enums.ContentType.TVEpisode
-                Dim strID = dbelement.TVEpisode.UniqueIDs.GetIdByName("imdb")
-                If Not String.IsNullOrEmpty(strID) Then
-                    Return String.Concat("https://www.imdb.com/title/", strID)
+                If dbelement.TVEpisode.UniqueIDs.IMDbIdSpecified Then
+                    Return String.Concat("https://www.imdb.com/title/", dbelement.TVEpisode.UniqueIDs.IMDbId)
                 End If
             Case Enums.ContentType.TVSeason
-                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("imdb")
-                If Not String.IsNullOrEmpty(strID) AndAlso dbelement.TVSeason.SeasonSpecified Then
-                    Return String.Format("https://www.imdb.com/title/{0}/episodes?season={1}", strID, dbelement.TVSeason.Season)
+                If dbelement.TVShow.UniqueIDs.IMDbIdSpecified AndAlso dbelement.TVSeason.SeasonSpecified Then
+                    Return String.Format("https://www.imdb.com/title/{0}/episodes?season={1}", dbelement.TVShow.UniqueIDs.IMDbId, dbelement.TVSeason.Season)
                 End If
             Case Enums.ContentType.TVShow
-                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("imdb")
-                If Not String.IsNullOrEmpty(strID) Then
-                    Return String.Concat("https://www.imdb.com/title/", strID)
+                If dbelement.TVShow.UniqueIDs.IMDbIdSpecified Then
+                    Return String.Concat("https://www.imdb.com/title/", dbelement.TVShow.UniqueIDs.IMDbId)
                 End If
         End Select
         Return String.Empty
@@ -614,29 +610,24 @@ Public Class StringUtils
     Public Shared Function GetURL_TMDB(ByVal dbelement As Database.DBElement) As String
         Select Case dbelement.ContentType
             Case Enums.ContentType.Movie
-                Dim strID = dbelement.Movie.UniqueIDs.GetIdByName("tmdb")
-                If Not String.IsNullOrEmpty(strID) Then
-                    Return String.Concat("https://www.themoviedb.org/movie/", strID)
+                If dbelement.Movie.UniqueIDs.TMDbIdSpecified Then
+                    Return String.Concat("https://www.themoviedb.org/movie/", dbelement.Movie.UniqueIDs.TMDbId)
                 End If
             Case Enums.ContentType.MovieSet
-                Dim strID = dbelement.MovieSet.UniqueIDs.GetIdByName("tmdb")
-                If Not String.IsNullOrEmpty(strID) Then
-                    Return String.Concat("https://www.themoviedb.org/collection/", strID)
+                If dbelement.MovieSet.UniqueIDs.TMDbIdSpecified Then
+                    Return String.Concat("https://www.themoviedb.org/collection/", dbelement.MovieSet.UniqueIDs.TMDbId)
                 End If
             Case Enums.ContentType.TVEpisode
-                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("tmdb")
-                If Not String.IsNullOrEmpty(strID) AndAlso dbelement.TVEpisode.SeasonSpecified AndAlso dbelement.TVEpisode.EpisodeSpecified Then
-                    Return String.Format("https://www.themoviedb.org/tv/{0}/season/{1}/episode/{2}", strID, dbelement.TVEpisode.Season, dbelement.TVEpisode.Episode)
+                If dbelement.TVShow.UniqueIDs.TMDbIdSpecified AndAlso dbelement.TVEpisode.SeasonSpecified AndAlso dbelement.TVEpisode.EpisodeSpecified Then
+                    Return String.Format("https://www.themoviedb.org/tv/{0}/season/{1}/episode/{2}", dbelement.TVShow.UniqueIDs.TMDbId, dbelement.TVEpisode.Season, dbelement.TVEpisode.Episode)
                 End If
             Case Enums.ContentType.TVSeason
-                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("tmdb")
-                If Not String.IsNullOrEmpty(strID) AndAlso dbelement.TVSeason.SeasonSpecified Then
-                    Return String.Format("https://www.themoviedb.org/tv/{0}/season/{1}", strID, dbelement.TVSeason.Season)
+                If dbelement.TVShow.UniqueIDs.TMDbIdSpecified AndAlso dbelement.TVSeason.SeasonSpecified Then
+                    Return String.Format("https://www.themoviedb.org/tv/{0}/season/{1}", dbelement.TVShow.UniqueIDs.TMDbId, dbelement.TVSeason.Season)
                 End If
             Case Enums.ContentType.TVShow
-                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("tmdb")
-                If Not String.IsNullOrEmpty(strID) Then
-                    Return String.Concat("https://www.themoviedb.org/tv/", strID)
+                If dbelement.TVShow.UniqueIDs.TMDbIdSpecified Then
+                    Return String.Concat("https://www.themoviedb.org/tv/", dbelement.TVShow.UniqueIDs.TMDbId)
                 End If
         End Select
         Return String.Empty
@@ -645,21 +636,16 @@ Public Class StringUtils
     Public Shared Function GetURL_TVDB(ByVal dbelement As Database.DBElement) As String
         Select Case dbelement.ContentType
             Case Enums.ContentType.TVEpisode
-                Dim strID_TVShow = dbelement.TVShow.UniqueIDs.GetIdByName("tvdb")
-                Dim strID_Episode = dbelement.TVEpisode.UniqueIDs.GetIdByName("tvdb")
-                If Not String.IsNullOrEmpty(strID_TVShow) AndAlso Not String.IsNullOrEmpty(strID_Episode) Then
-                    Return String.Format("https://thetvdb.com/?tab=episode&seriesid={0}&id={1}", strID_TVShow, strID_Episode)
+                If dbelement.TVShow.UniqueIDs.TVDbIdSpecified AndAlso dbelement.TVEpisode.UniqueIDs.TVDbIdSpecified Then
+                    Return String.Format("https://thetvdb.com/?tab=episode&seriesid={0}&id={1}", dbelement.TVShow.UniqueIDs.TVDbId, dbelement.TVEpisode.UniqueIDs.TVDbId)
                 End If
             Case Enums.ContentType.TVSeason
-                Dim strID_TVShow = dbelement.TVShow.UniqueIDs.GetIdByName("tvdb")
-                Dim strID_Season = dbelement.TVSeason.UniqueIDs.GetIdByName("tvdb")
-                If Not String.IsNullOrEmpty(strID_TVShow) AndAlso Not String.IsNullOrEmpty(strID_Season) Then
-                    Return String.Format("https://thetvdb.com/?tab=season&seriesid={0}&seasonid={1}", strID_TVShow, strID_Season)
+                If dbelement.TVShow.UniqueIDs.TVDbIdSpecified AndAlso dbelement.TVSeason.UniqueIDs.TVDbIdSpecified Then
+                    Return String.Format("https://thetvdb.com/?tab=season&seriesid={0}&seasonid={1}", dbelement.TVShow.UniqueIDs.TVDbId, dbelement.TVSeason.UniqueIDs.TVDbId)
                 End If
             Case Enums.ContentType.TVShow
-                Dim strID = dbelement.TVShow.UniqueIDs.GetIdByName("tvdb")
-                If Not String.IsNullOrEmpty(strID) Then
-                    Return String.Concat("https://thetvdb.com/?tab=series&id=", strID)
+                If dbelement.TVShow.UniqueIDs.TVDbIdSpecified Then
+                    Return String.Concat("https://thetvdb.com/?tab=series&id=", dbelement.TVShow.UniqueIDs.TVDbId)
                 End If
         End Select
         Return String.Empty

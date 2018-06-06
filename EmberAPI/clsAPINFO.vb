@@ -78,12 +78,9 @@ Public Class NFO
 
         For Each scrapedmovie In ScrapedList
 
-            'IDs
-            If scrapedmovie.IDSpecified Then
-                DBMovie.Movie.ID = scrapedmovie.ID
-            End If
-            If scrapedmovie.TMDBSpecified Then
-                DBMovie.Movie.TMDB = scrapedmovie.TMDB
+            'UniqueIDs
+            If scrapedmovie.UniqueIDsSpecified Then
+                DBMovie.Movie.UniqueIDs.AddRange(scrapedmovie.UniqueIDs)
             End If
 
             'Actors
@@ -142,12 +139,12 @@ Public Class NFO
             End If
 
             'Collection ID
-            If (Not DBMovie.Movie.TMDBColIDSpecified OrElse Not Master.eSettings.MovieLockCollectionID) AndAlso ScrapeOptions.bMainCollectionID AndAlso
-                scrapedmovie.TMDBColIDSpecified AndAlso Master.eSettings.MovieScraperCollectionID AndAlso Not new_CollectionID Then
-                DBMovie.Movie.TMDBColID = scrapedmovie.TMDBColID
+            If (Not DBMovie.Movie.UniqueIDs.TMDbCollectionIDSpecified OrElse Not Master.eSettings.MovieLockCollectionID) AndAlso ScrapeOptions.bMainCollectionID AndAlso
+                scrapedmovie.UniqueIDs.TMDbCollectionIDSpecified AndAlso Master.eSettings.MovieScraperCollectionID AndAlso Not new_CollectionID Then
+                DBMovie.Movie.UniqueIDs.TMDbCollectionId = scrapedmovie.UniqueIDs.TMDbCollectionId
                 new_CollectionID = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCollectionID AndAlso Not Master.eSettings.MovieLockCollectionID Then
-                DBMovie.Movie.TMDBColID = String.Empty
+                DBMovie.Movie.UniqueIDs.TMDbCollectionId = String.Empty
             End If
 
             'Collections
@@ -358,21 +355,6 @@ Public Class NFO
 
         Next
 
-        'UniqueIDs
-        DBMovie.Movie.UniqueIDs.Items.Clear()
-        If DBMovie.Movie.IDSpecified Then
-            DBMovie.Movie.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
-                                              .IsDefault = True,
-                                              .Type = "imdb",
-                                              .Value = DBMovie.Movie.ID})
-        End If
-        If DBMovie.Movie.TMDBSpecified Then
-            DBMovie.Movie.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
-                                              .IsDefault = False,
-                                              .Type = "tmdb",
-                                              .Value = DBMovie.Movie.TMDB})
-        End If
-
         'Certification for MPAA
         If DBMovie.Movie.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCertForMPAA AndAlso
             (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (Not DBMovie.Movie.MPAASpecified OrElse Not Master.eSettings.MovieLockMPAA) OrElse
@@ -413,6 +395,9 @@ Public Class NFO
             DBMovie.Movie.Votes = String.Empty
         End If
 
+        'UniqueID
+        'TODO: set the default uniqueid
+
         'set ListTitle at the end of merging
         If DBMovie.Movie.TitleSpecified Then
             Dim tTitle As String = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
@@ -437,8 +422,8 @@ Public Class NFO
         For Each scrapedmovieset In ScrapedList
 
             'IDs
-            If scrapedmovieset.TMDBSpecified Then
-                DBMovieSet.MovieSet.TMDB = scrapedmovieset.TMDB
+            If scrapedmovieset.UniqueIDs.TMDbIdSpecified Then
+                DBMovieSet.MovieSet.UniqueIDs.TMDbId = scrapedmovieset.UniqueIDs.TMDbId
             End If
 
             'Plot
@@ -532,14 +517,14 @@ Public Class NFO
         For Each scrapedshow In ScrapedList
 
             'IDs
-            If scrapedshow.TVDBSpecified Then
-                DBTV.TVShow.TVDB = scrapedshow.TVDB
+            If scrapedshow.UniqueIDs.TVDbIdSpecified Then
+                DBTV.TVShow.UniqueIDs.TVDbId = scrapedshow.UniqueIDs.TVDbId
             End If
-            If scrapedshow.IMDBSpecified Then
-                DBTV.TVShow.IMDB = scrapedshow.IMDB
+            If scrapedshow.UniqueIDs.IMDbIdSpecified Then
+                DBTV.TVShow.UniqueIDs.IMDbId = scrapedshow.UniqueIDs.IMDbId
             End If
-            If scrapedshow.TMDBSpecified Then
-                DBTV.TVShow.TMDB = scrapedshow.TMDB
+            If scrapedshow.UniqueIDs.TMDbIdSpecified Then
+                DBTV.TVShow.UniqueIDs.TMDbId = scrapedshow.UniqueIDs.TMDbId
             End If
 
             'Actors
@@ -609,7 +594,7 @@ Public Class NFO
             If ScrapeOptions.bMainEpisodeGuide AndAlso scrapedshow.EpisodeGuideSpecified AndAlso Master.eSettings.TVScraperShowEpiGuideURL Then
                 DBTV.TVShow.EpisodeGuide = scrapedshow.EpisodeGuide
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowEpiGuideURL Then
-                DBTV.TVShow.EpisodeGuide.Clear()
+                DBTV.TVShow.EpisodeGuide = New MediaContainers.EpisodeGuide
             End If
 
             'Genres
@@ -757,23 +742,23 @@ Public Class NFO
 
         'UniqueIDs
         DBTV.TVShow.UniqueIDs.Items.Clear()
-        If DBTV.TVShow.TVDBSpecified Then
+        If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
             DBTV.TVShow.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
                                             .IsDefault = True,
                                             .Type = "tvdb",
-                                            .Value = DBTV.TVShow.TVDB})
+                                            .Value = DBTV.TVShow.UniqueIDs.TVDbId})
         End If
-        If DBTV.TVShow.IMDBSpecified Then
+        If DBTV.TVShow.UniqueIDs.IMDbIdSpecified Then
             DBTV.TVShow.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
                                             .IsDefault = False,
                                             .Type = "imdb",
-                                            .Value = DBTV.TVShow.IMDB})
+                                            .Value = DBTV.TVShow.UniqueIDs.IMDbId})
         End If
-        If DBTV.TVShow.TMDBSpecified Then
+        If DBTV.TVShow.UniqueIDs.TMDbIdSpecified Then
             DBTV.TVShow.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
                                             .IsDefault = False,
                                             .Type = "tmdb",
-                                            .Value = DBTV.TVShow.TMDB})
+                                            .Value = DBTV.TVShow.UniqueIDs.TMDbId})
         End If
 
         'Certification for MPAA
@@ -940,11 +925,11 @@ Public Class NFO
         For Each scrapedseason In ScrapedList
 
             'IDs
-            If scrapedseason.TMDBSpecified Then
-                DBTVSeason.TVSeason.TMDB = scrapedseason.TMDB
+            If scrapedseason.UniqueIDs.TMDbIdSpecified Then
+                DBTVSeason.TVSeason.UniqueIDs.TMDbId = scrapedseason.UniqueIDs.TMDbId
             End If
-            If scrapedseason.TVDBSpecified Then
-                DBTVSeason.TVSeason.TVDB = scrapedseason.TVDB
+            If scrapedseason.UniqueIDs.TVDbIdSpecified Then
+                DBTVSeason.TVSeason.UniqueIDs.TVDbId = scrapedseason.UniqueIDs.TVDbId
             End If
 
             'Season number
@@ -1021,14 +1006,14 @@ Public Class NFO
         For Each scrapedepisode In ScrapedList
 
             'IDs
-            If scrapedepisode.IMDBSpecified Then
-                DBTVEpisode.TVEpisode.IMDB = scrapedepisode.IMDB
+            If scrapedepisode.UniqueIDs.IMDbIdSpecified Then
+                DBTVEpisode.TVEpisode.UniqueIDs.IMDbId = scrapedepisode.UniqueIDs.IMDbId
             End If
-            If scrapedepisode.TMDBSpecified Then
-                DBTVEpisode.TVEpisode.TMDB = scrapedepisode.TMDB
+            If scrapedepisode.UniqueIDs.TMDbIdSpecified Then
+                DBTVEpisode.TVEpisode.UniqueIDs.TMDbId = scrapedepisode.UniqueIDs.TMDbId
             End If
-            If scrapedepisode.TVDBSpecified Then
-                DBTVEpisode.TVEpisode.TVDB = scrapedepisode.TVDB
+            If scrapedepisode.UniqueIDs.TVDbIdSpecified Then
+                DBTVEpisode.TVEpisode.UniqueIDs.TVDbId = scrapedepisode.UniqueIDs.TVDbId
             End If
 
             'DisplayEpisode
@@ -1161,23 +1146,23 @@ Public Class NFO
 
         'UniqueIDs
         DBTVEpisode.TVEpisode.UniqueIDs.Items.Clear()
-        If DBTVEpisode.TVEpisode.TVDBSpecified Then
+        If DBTVEpisode.TVEpisode.UniqueIDs.TVDbIdSpecified Then
             DBTVEpisode.TVEpisode.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
                                                       .IsDefault = True,
                                                       .Type = "tvdb",
-                                                      .Value = DBTVEpisode.TVEpisode.TVDB})
+                                                      .Value = DBTVEpisode.TVEpisode.UniqueIDs.TVDbId})
         End If
-        If DBTVEpisode.TVEpisode.IMDBSpecified Then
+        If DBTVEpisode.TVEpisode.UniqueIDs.IMDbIdSpecified Then
             DBTVEpisode.TVEpisode.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
                                                       .IsDefault = False,
                                                       .Type = "imdb",
-                                                      .Value = DBTVEpisode.TVEpisode.IMDB})
+                                                      .Value = DBTVEpisode.TVEpisode.UniqueIDs.IMDbId})
         End If
-        If DBTVEpisode.TVEpisode.TMDBSpecified Then
+        If DBTVEpisode.TVEpisode.UniqueIDs.TMDbIdSpecified Then
             DBTVEpisode.TVEpisode.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
                                                       .IsDefault = False,
                                                       .Type = "tmdb",
-                                                      .Value = DBTVEpisode.TVEpisode.TMDB})
+                                                      .Value = DBTVEpisode.TVEpisode.UniqueIDs.TMDbId})
         End If
 
         'Add GuestStars to Actors
@@ -1368,8 +1353,8 @@ Public Class NFO
 
             'Boxee support
             If Master.eSettings.TVUseBoxee Then
-                If mNFO.BoxeeTvDbSpecified AndAlso Not mNFO.TVDBSpecified Then
-                    mNFO.TVDB = mNFO.BoxeeTvDb
+                If mNFO.BoxeeTvDbSpecified AndAlso Not mNFO.UniqueIDs.TVDbIdSpecified Then
+                    mNFO.UniqueIDs.TVDbId = mNFO.BoxeeTvDb
                     mNFO.BlankBoxeeId()
                 End If
             End If
@@ -1862,13 +1847,13 @@ Public Class NFO
                     If Not String.IsNullOrEmpty(path) Then
                         Dim sReturn As New NonConf
                         sReturn = GetIMDBFromNonConf(path, isSingle)
-                        xmlMov.ID = sReturn.IMDBID
+                        xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
                         Try
                             If Not String.IsNullOrEmpty(sReturn.Text) Then
                                 Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                     xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                     xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                    xmlMov.ID = sReturn.IMDBID
+                                    xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
                                     xmlMov = CleanNFO_Movies(xmlMov)
                                 End Using
                             End If
@@ -1890,13 +1875,13 @@ Public Class NFO
 
                     Dim sReturn As New NonConf
                     sReturn = GetIMDBFromNonConf(path, isSingle)
-                    xmlMov.ID = sReturn.IMDBID
+                    xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
                     Try
                         If Not String.IsNullOrEmpty(sReturn.Text) Then
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                 xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                 xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                xmlMov.ID = sReturn.IMDBID
+                                xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
                                 xmlMov = CleanNFO_Movies(xmlMov)
                             End Using
                         End If
@@ -2204,8 +2189,8 @@ Public Class NFO
 
                 'YAMJ support
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieNFOYAMJ Then
-                    If tMovie.TMDBSpecified Then
-                        tMovie.TMDB = String.Empty
+                    If tMovie.UniqueIDs.TMDbIdSpecified Then
+                        tMovie.UniqueIDs.TMDbId = String.Empty
                     End If
                 End If
 
@@ -2408,8 +2393,8 @@ Public Class NFO
 
                 'Boxee support
                 If Master.eSettings.TVUseBoxee Then
-                    If tTVShow.TVDBSpecified() Then
-                        tTVShow.BoxeeTvDb = tTVShow.TVDB
+                    If tTVShow.UniqueIDs.TVDbIdSpecified Then
+                        tTVShow.BoxeeTvDb = tTVShow.UniqueIDs.TVDbId
                         tTVShow.BlankId()
                     End If
                 End If

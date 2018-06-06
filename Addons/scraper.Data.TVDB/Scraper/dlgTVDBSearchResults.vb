@@ -107,7 +107,7 @@ Public Class dlgTVDBSearchResults
             _InfoCache.Clear()
             _PosterCache.Clear()
             ClearInfo()
-            Label3.Text = String.Concat(Master.eLang.GetString(758, "Searching TVDB"), "...")
+            lblSearching.Text = String.Concat(Master.eLang.GetString(758, "Searching"), " ...")
             pnlLoading.Visible = True
             chkManual.Enabled = False
             TVDB.CancelAsync()
@@ -258,11 +258,11 @@ Public Class dlgTVDBSearchResults
             lblCreator.Text = String.Join(" / ", _tmpTVShow.Creators.ToArray)
             lblGenre.Text = String.Join(" / ", _tmpTVShow.Genres.ToArray)
             txtPlot.Text = StringUtils.ShortenOutline(_tmpTVShow.Plot, 410)
-            lblTVDBID.Text = _tmpTVShow.TVDB
+            lblTVDBID.Text = _tmpTVShow.UniqueIDs.TVDbId
 
-            If _PosterCache.ContainsKey(_tmpTVShow.TVDB) Then
+            If _PosterCache.ContainsKey(_tmpTVShow.UniqueIDs.TVDbId) Then
                 'just set it
-                pbPoster.Image = _PosterCache(_tmpTVShow.TVDB)
+                pbPoster.Image = _PosterCache(_tmpTVShow.UniqueIDs.TVDbId)
             Else
                 'go download it, if available
                 If Not String.IsNullOrEmpty(sPoster) Then
@@ -272,21 +272,21 @@ Public Class dlgTVDBSearchResults
                     pnlPicStatus.Visible = True
                     bwDownloadPic = New System.ComponentModel.BackgroundWorker
                     bwDownloadPic.WorkerSupportsCancellation = True
-                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .TVDBId = _tmpTVShow.TVDB})
+                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .TVDBId = _tmpTVShow.UniqueIDs.TVDbId})
                 End If
 
             End If
 
             'store clone of tmpshow
-            If Not _InfoCache.ContainsKey(_tmpTVShow.TVDB) Then
-                _InfoCache.Add(_tmpTVShow.TVDB, GetTVShowClone(_tmpTVShow))
+            If Not _InfoCache.ContainsKey(_tmpTVShow.UniqueIDs.TVDbId) Then
+                _InfoCache.Add(_tmpTVShow.UniqueIDs.TVDbId, GetTVShowClone(_tmpTVShow))
             End If
 
 
             btnVerify.Enabled = False
         Else
             If chkManual.Checked Then
-                MessageBox.Show(Master.eLang.GetString(937, "Unable to retrieve movie details for the entered TVDB ID. Please check your entry and try again."), Master.eLang.GetString(826, "Verification Failed"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show(Master.eLang.GetString(825, "Unable to retrieve details for the entered ID. Please check your entry and try again."), Master.eLang.GetString(826, "Verification Failed"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 btnVerify.Enabled = True
             End If
         End If
@@ -297,7 +297,7 @@ Public Class dlgTVDBSearchResults
         ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
             For Each Show As MediaContainers.TVShow In M.Matches
-                tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Show.Title), .Tag = Show.TVDB})
+                tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Show.Title), .Tag = Show.UniqueIDs.TVDbId})
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)
 
@@ -327,14 +327,14 @@ Public Class dlgTVDBSearchResults
         Cancel_Button.Text = Master.eLang.Cancel
         Label2.Text = Master.eLang.GetString(951, "View details of each result to find the proper TV show.")
         Label1.Text = Master.eLang.GetString(948, "TV Search Results")
-        chkManual.Text = String.Concat(Master.eLang.GetString(946, "Manual TVDB Entry"), ":")
+        chkManual.Text = String.Concat(Master.eLang.GetString(847, "Manual ID Entry"), " (TVDb):")
         btnVerify.Text = Master.eLang.GetString(848, "Verify")
         lblAiredHeader.Text = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
         lblCreatorsHeader.Text = String.Concat(Master.eLang.GetString(744, "Creators"), ":")
         lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
         lblTVDBHeader.Text = String.Concat(Master.eLang.GetString(941, "TVDB ID"), ":")
         lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Label3.Text = String.Concat(Master.eLang.GetString(758, "Searching TVDB"), "...")
+        lblSearching.Text = String.Concat(Master.eLang.GetString(758, "Searching"), " ...")
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrLoad.Tick
@@ -344,7 +344,7 @@ Public Class dlgTVDBSearchResults
         tmrWait.Stop()
         tmrLoad.Stop()
         pnlLoading.Visible = True
-        Label3.Text = Master.eLang.GetString(875, "Downloading details...")
+        lblSearching.Text = Master.eLang.GetString(875, "Downloading details...")
 
         TVDB.GetSearchTVShowInfoAsync(tvResults.SelectedNode.Tag.ToString, _tmpTVShow, pOpt)
     End Sub

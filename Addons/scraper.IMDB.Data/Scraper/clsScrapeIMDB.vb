@@ -117,6 +117,15 @@ Namespace IMDB
             End While
         End Sub
 
+        Private Function BuildMovieForSearchResults(ByVal imdbID As String, ByVal lev As Integer, ByVal title As String, ByVal year As String) As MediaContainers.Movie
+            Dim nMovie As New MediaContainers.Movie
+            nMovie.UniqueIDs.IMDbId = imdbID
+            nMovie.Lev = lev
+            nMovie.Title = title
+            nMovie.Year = year
+            Return nMovie
+        End Function
+
         Private Sub bwIMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwIMDB.DoWork
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
@@ -198,7 +207,10 @@ Namespace IMDB
                 Dim bIsScraperLanguage As Boolean = _SpecialSettings.PrefLanguage.ToLower.StartsWith("en")
 
                 strPosterURL = String.Empty
-                Dim nMovie As New MediaContainers.Movie With {.ID = id, .Scrapersource = "IMDB"}
+                Dim nMovie As New MediaContainers.Movie With {.Scrapersource = "IMDB"}
+
+                'ID
+                nMovie.UniqueIDs.IMDbId = id
 
                 'reset all local objects
                 htmldPlotSummary = Nothing
@@ -440,7 +452,7 @@ Namespace IMDB
                 'Trailer
                 If filteredoptions.bMainTrailer Then
                     'Get first IMDB trailer if possible
-                    Dim TrailerList As List(Of MediaContainers.Trailer) = EmberAPI.IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.ID)
+                    Dim TrailerList As List(Of MediaContainers.Trailer) = EmberAPI.IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.UniqueIDs.IMDbId)
                     If TrailerList.Count > 0 Then
                         Dim sIMDb As New EmberAPI.IMDb.Scraper
                         sIMDb.GetVideoLinks(TrailerList.Item(0).URLWebsite)
@@ -497,7 +509,8 @@ Namespace IMDB
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 strPosterURL = String.Empty
-                Dim nTVEpisode As New MediaContainers.EpisodeDetails With {.IMDB = id, .Scrapersource = "IMDB"}
+                Dim nTVEpisode As New MediaContainers.EpisodeDetails With {.Scrapersource = "IMDB"}
+                nTVEpisode.UniqueIDs.IMDbId = id
 
                 'get season and episode number
                 Dim selSENode = htmldReference.DocumentNode.SelectSingleNode("//ul[@class=""ipl-inline-list titlereference-overview-season-episode-numbers""]")
@@ -694,7 +707,8 @@ Namespace IMDB
                 Dim bIsScraperLanguage As Boolean = _SpecialSettings.PrefLanguage.ToLower.StartsWith("en")
 
                 strPosterURL = String.Empty
-                Dim nTVShow As New MediaContainers.TVShow With {.IMDB = id, .Scrapersource = "IMDB"}
+                Dim nTVShow As New MediaContainers.TVShow With {.Scrapersource = "IMDB"}
+                nTVShow.UniqueIDs.IMDbId = id
 
                 'reset all local objects
                 htmldPlotSummary = Nothing
@@ -894,7 +908,7 @@ Namespace IMDB
 
                     For Each tSeason In lstSeasons
                         If bwIMDB.CancellationPending Then Return Nothing
-                        GetTVSeasonInfo(nTVShow, nTVShow.IMDB, tSeason, scrapemodifier, filteredoptions)
+                        GetTVSeasonInfo(nTVShow, nTVShow.UniqueIDs.IMDbId, tSeason, scrapemodifier, filteredoptions)
                         If scrapemodifier.withSeasons Then
                             nTVShow.KnownSeasons.Add(New MediaContainers.SeasonDetails With {.Season = tSeason})
                         End If
@@ -927,16 +941,16 @@ Namespace IMDB
                 Select Case scrapetype
                     Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                         If r.ExactMatches.Count = 1 Then
-                            Return GetMovieInfo(r.ExactMatches.Item(0).ID, False, filteredoptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                         ElseIf r.PopularTitles.Count = 1 AndAlso r.PopularTitles(0).Lev <= 5 Then
-                            Return GetMovieInfo(r.PopularTitles.Item(0).ID, False, filteredoptions)
+                            Return GetMovieInfo(r.PopularTitles.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                         ElseIf r.ExactMatches.Count = 1 AndAlso r.ExactMatches(0).Lev <= 5 Then
-                            Return GetMovieInfo(r.ExactMatches.Item(0).ID, False, filteredoptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                         Else
                             Using dlgSearch As New dlgIMDBSearchResults_Movie(_SpecialSettings, Me)
                                 If dlgSearch.ShowDialog(r, title, oDBElement.FileItem.FirstStackedPath) = DialogResult.OK Then
-                                    If Not String.IsNullOrEmpty(dlgSearch.Result.ID) Then
-                                        Return GetMovieInfo(dlgSearch.Result.ID, False, filteredoptions)
+                                    If Not String.IsNullOrEmpty(dlgSearch.Result.UniqueIDs.IMDbId) Then
+                                        Return GetMovieInfo(dlgSearch.Result.UniqueIDs.IMDbId, False, filteredoptions)
                                     End If
                                 End If
                             End Using
@@ -944,7 +958,7 @@ Namespace IMDB
 
                     Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                         If r.ExactMatches.Count = 1 Then
-                            Return GetMovieInfo(r.ExactMatches.Item(0).ID, False, filteredoptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                         End If
 
                     Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
@@ -958,17 +972,17 @@ Namespace IMDB
                         Dim exactHaveYear As Integer = FindYear(oDBElement.FileItem.FirstStackedPath, r.ExactMatches)
                         Dim popularHaveYear As Integer = FindYear(oDBElement.FileItem.FirstStackedPath, r.PopularTitles)
                         If r.ExactMatches.Count = 1 Then
-                            Return GetMovieInfo(r.ExactMatches.Item(0).ID, False, filteredoptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                         ElseIf r.ExactMatches.Count > 1 AndAlso exactHaveYear >= 0 Then
-                            Return GetMovieInfo(r.ExactMatches.Item(exactHaveYear).ID, False, filteredoptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(exactHaveYear).UniqueIDs.IMDbId, False, filteredoptions)
                         ElseIf r.PopularTitles.Count > 0 AndAlso popularHaveYear >= 0 Then
-                            Return GetMovieInfo(r.PopularTitles.Item(popularHaveYear).ID, False, filteredoptions)
+                            Return GetMovieInfo(r.PopularTitles.Item(popularHaveYear).UniqueIDs.IMDbId, False, filteredoptions)
                         ElseIf r.ExactMatches.Count > 0 AndAlso (r.ExactMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            Return GetMovieInfo(r.ExactMatches.Item(0).ID, False, filteredoptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                         ElseIf r.PopularTitles.Count > 0 AndAlso (r.PopularTitles(0).Lev <= 5 OrElse useAnyway) Then
-                            Return GetMovieInfo(r.PopularTitles.Item(0).ID, False, filteredoptions)
+                            Return GetMovieInfo(r.PopularTitles.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                         ElseIf r.PartialMatches.Count > 0 AndAlso (r.PartialMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            Return GetMovieInfo(r.PartialMatches.Item(0).ID, False, filteredoptions)
+                            Return GetMovieInfo(r.PartialMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                         End If
                 End Select
 
@@ -998,12 +1012,12 @@ Namespace IMDB
             Select Case scrapetype
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).IMDB, scrapemodifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).UniqueIDs.IMDbId, scrapemodifier, FilteredOptions, False)
                     Else
                         Using dlgSearch As New dlgIMDBSearchResults_TV(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, title, oDBElement.ShowPath) = DialogResult.OK Then
-                                If Not String.IsNullOrEmpty(dlgSearch.Result.IMDB) Then
-                                    Return GetTVShowInfo(dlgSearch.Result.IMDB, scrapemodifier, FilteredOptions, False)
+                                If Not String.IsNullOrEmpty(dlgSearch.Result.UniqueIDs.IMDbId) Then
+                                    Return GetTVShowInfo(dlgSearch.Result.UniqueIDs.IMDbId, scrapemodifier, FilteredOptions, False)
                                 End If
                             End If
                         End Using
@@ -1011,12 +1025,12 @@ Namespace IMDB
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).IMDB, scrapemodifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).UniqueIDs.IMDbId, scrapemodifier, FilteredOptions, False)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).IMDB, scrapemodifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).UniqueIDs.IMDbId, scrapemodifier, FilteredOptions, False)
                     End If
             End Select
 
@@ -1477,12 +1491,11 @@ Namespace IMDB
                 Dim searchResults = htmldResultsPopularTitles.DocumentNode.SelectNodes("//table[@class=""findList""]/tr[@class]/td[2]")
                 If searchResults IsNot Nothing Then
                     For Each nResult In searchResults
-                        R.PopularTitles.Add(New MediaContainers.Movie With {
-                                            .ID = StringUtils.GetIMDBIDFromString(nResult.OuterHtml),
-                                            .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                            .Title = nResult.SelectSingleNode("a").InnerText,
-                                            .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
-                                            })
+                        R.PopularTitles.Add(BuildMovieForSearchResults(
+                                            StringUtils.GetIMDBIDFromString(nResult.OuterHtml),
+                                            StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                            nResult.SelectSingleNode("a").InnerText,
+                                            Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value))
                     Next
                 End If
             End If
@@ -1492,12 +1505,11 @@ Namespace IMDB
                 Dim searchResults = htmldResultsPartialTitles.DocumentNode.SelectNodes("//table[@class=""findList""]/tr[@class]/td[2]")
                 If searchResults IsNot Nothing Then
                     For Each nResult In searchResults
-                        R.PartialMatches.Add(New MediaContainers.Movie With {
-                                             .ID = StringUtils.GetIMDBIDFromString(nResult.OuterHtml),
-                                             .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                             .Title = nResult.SelectSingleNode("a").InnerText,
-                                             .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
-                                             })
+                        R.PartialMatches.Add(BuildMovieForSearchResults(
+                                             StringUtils.GetIMDBIDFromString(nResult.OuterHtml),
+                                             StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                             nResult.SelectSingleNode("a").InnerText,
+                                             Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value))
                     Next
                 End If
             End If
@@ -1507,12 +1519,11 @@ Namespace IMDB
                 Dim searchResults = htmldResultsTvTitles.DocumentNode.SelectNodes("//span[@title]")
                 If searchResults IsNot Nothing Then
                     For Each nResult In searchResults
-                        R.TvTitles.Add(New MediaContainers.Movie With {
-                                       .ID = StringUtils.GetIMDBIDFromString(nResult.InnerHtml),
-                                       .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                       .Title = nResult.SelectSingleNode("a").InnerText,
-                                       .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
-                                       })
+                        R.TvTitles.Add(BuildMovieForSearchResults(
+                                       StringUtils.GetIMDBIDFromString(nResult.InnerHtml),
+                                       StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                       nResult.SelectSingleNode("a").InnerText,
+                                       Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value))
                     Next
                 End If
             End If
@@ -1522,12 +1533,11 @@ Namespace IMDB
                 Dim searchResults = htmldResultsVideoTitles.DocumentNode.SelectNodes("//span[@title]")
                 If searchResults IsNot Nothing Then
                     For Each nResult In searchResults
-                        R.VideoTitles.Add(New MediaContainers.Movie With {
-                                          .ID = StringUtils.GetIMDBIDFromString(nResult.InnerHtml),
-                                          .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                          .Title = nResult.SelectSingleNode("a").InnerText,
-                                          .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
-                                          })
+                        R.VideoTitles.Add(BuildMovieForSearchResults(
+                                          StringUtils.GetIMDBIDFromString(nResult.InnerHtml),
+                                          StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                          nResult.SelectSingleNode("a").InnerText,
+                                          Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value))
                     Next
                 End If
             End If
@@ -1537,12 +1547,11 @@ Namespace IMDB
                 Dim searchResults = htmldResultsShortTitles.DocumentNode.SelectNodes("//span[@title]")
                 If searchResults IsNot Nothing Then
                     For Each nResult In searchResults
-                        R.ShortTitles.Add(New MediaContainers.Movie With {
-                                          .ID = StringUtils.GetIMDBIDFromString(nResult.InnerHtml),
-                                          .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                          .Title = nResult.SelectSingleNode("a").InnerText,
-                                          .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
-                                          })
+                        R.ShortTitles.Add(BuildMovieForSearchResults(
+                                          StringUtils.GetIMDBIDFromString(nResult.InnerHtml),
+                                          StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                          nResult.SelectSingleNode("a").InnerText,
+                                          Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value))
                     Next
                 End If
             End If
@@ -1552,12 +1561,11 @@ Namespace IMDB
                 Dim searchResults = htmldResultsExact.DocumentNode.SelectNodes("//table[@class=""findList""]/tr[@class]/td[2]")
                 If searchResults IsNot Nothing Then
                     For Each nResult In searchResults
-                        R.ExactMatches.Add(New MediaContainers.Movie With {
-                                           .ID = StringUtils.GetIMDBIDFromString(nResult.OuterHtml),
-                                           .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                           .Title = nResult.SelectSingleNode("a").InnerText,
-                                           .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
-                                           })
+                        R.ExactMatches.Add(BuildMovieForSearchResults(
+                                           StringUtils.GetIMDBIDFromString(nResult.OuterHtml),
+                                           StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                           nResult.SelectSingleNode("a").InnerText,
+                                           Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value))
                     Next
                 End If
             End If
@@ -1593,7 +1601,10 @@ Namespace IMDB
                         Dim attIMDBID = ndInfo.Attributes.Where(Function(f) f.Name = "data-tconst").FirstOrDefault
                         Dim attTitle = ndInfo.Attributes.Where(Function(f) f.Name = "alt").FirstOrDefault
                         If attIMDBID IsNot Nothing AndAlso attTitle IsNot Nothing Then
-                            R.Matches.Add(New MediaContainers.TVShow With {.IMDB = attIMDBID.Value, .Title = attTitle.Value})
+                            Dim nTVShow As New MediaContainers.TVShow
+                            nTVShow.UniqueIDs.IMDbId = attIMDBID.Value
+                            nTVShow.Title = attTitle.Value
+                            R.Matches.Add(nTVShow)
                         End If
                     End If
                 Next

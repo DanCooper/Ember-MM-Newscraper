@@ -106,7 +106,7 @@ Public Class dlgTMDBSearchResults_MovieSet
             _InfoCache.Clear()
             _PosterCache.Clear()
             ClearInfo()
-            Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
+            lblSearching.Text = String.Concat(Master.eLang.GetString(758, "Searching"), " ...")
             pnlLoading.Visible = True
             chkManual.Enabled = False
             _TMDB.CancelAsync()
@@ -235,11 +235,11 @@ Public Class dlgTMDBSearchResults_MovieSet
             _tmpMovieSet = sInfo
             lblTitle.Text = _tmpMovieSet.Title
             txtPlot.Text = _tmpMovieSet.Plot
-            lblTMDBID.Text = _tmpMovieSet.TMDB
+            lblTMDBID.Text = _tmpMovieSet.UniqueIDs.TMDbId
 
-            If _PosterCache.ContainsKey(_tmpMovieSet.TMDB) Then
+            If _PosterCache.ContainsKey(_tmpMovieSet.UniqueIDs.TMDbId) Then
                 'just set it
-                pbPoster.Image = _PosterCache(_tmpMovieSet.TMDB)
+                pbPoster.Image = _PosterCache(_tmpMovieSet.UniqueIDs.TMDbId)
             Else
                 'go download it, if available
                 If Not String.IsNullOrEmpty(sPoster) Then
@@ -249,21 +249,21 @@ Public Class dlgTMDBSearchResults_MovieSet
                     pnlPicStatus.Visible = True
                     bwDownloadPic = New System.ComponentModel.BackgroundWorker
                     bwDownloadPic.WorkerSupportsCancellation = True
-                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpMovieSet.TMDB})
+                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpMovieSet.UniqueIDs.TMDbId})
                 End If
 
             End If
 
             'store clone of tmpmovie
-            If Not _InfoCache.ContainsKey(_tmpMovieSet.TMDB) Then
-                _InfoCache.Add(_tmpMovieSet.TMDB, GetMovieSetClone(_tmpMovieSet))
+            If Not _InfoCache.ContainsKey(_tmpMovieSet.UniqueIDs.TMDbId) Then
+                _InfoCache.Add(_tmpMovieSet.UniqueIDs.TMDbId, GetMovieSetClone(_tmpMovieSet))
             End If
 
 
             btnVerify.Enabled = False
         Else
             If chkManual.Checked Then
-                MessageBox.Show(Master.eLang.GetString(935, "Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again."), Master.eLang.GetString(826, "Verification Failed"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show(Master.eLang.GetString(825, "Unable to retrieve details for the entered ID. Please check your entry and try again."), Master.eLang.GetString(826, "Verification Failed"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 btnVerify.Enabled = True
             End If
         End If
@@ -274,7 +274,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
             For Each MovieSet As MediaContainers.MovieSet In M.Matches
-                tvResults.Nodes.Add(New TreeNode() With {.Text = MovieSet.Title, .Tag = MovieSet.TMDB})
+                tvResults.Nodes.Add(New TreeNode() With {.Text = MovieSet.Title, .Tag = MovieSet.UniqueIDs.TMDbId})
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)
 
@@ -301,11 +301,11 @@ Public Class dlgTMDBSearchResults_MovieSet
         Cancel_Button.Text = Master.eLang.Cancel
         Label2.Text = Master.eLang.GetString(1231, "View details of each result to find the proper movieset.")
         Label1.Text = Master.eLang.GetString(1232, "MovieSet Search Results")
-        chkManual.Text = Master.eLang.GetString(926, "Manual TMDB Entry:")
+        chkManual.Text = String.Concat(Master.eLang.GetString(847, "Manual ID Entry"), " (TMDb):")
         btnVerify.Text = Master.eLang.GetString(848, "Verify")
         lblTMDBHeader.Text = String.Concat(Master.eLang.GetString(933, "TMDB ID"), ":")
-        lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
+        lblPlotHeader.Text = String.Concat(Master.eLang.GetString(64, "Plot Outline"), ":")
+        lblSearching.Text = String.Concat(Master.eLang.GetString(758, "Searching"), " ...")
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrLoad.Tick
@@ -315,7 +315,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         tmrWait.Stop()
         tmrLoad.Stop()
         pnlLoading.Visible = True
-        Label3.Text = Master.eLang.GetString(875, "Downloading details...")
+        lblSearching.Text = Master.eLang.GetString(875, "Downloading details...")
 
         _TMDB.GetSearchMovieSetInfoAsync(tvResults.SelectedNode.Tag.ToString, pOpt)
     End Sub

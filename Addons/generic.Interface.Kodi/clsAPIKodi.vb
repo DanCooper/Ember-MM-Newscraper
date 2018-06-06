@@ -1151,7 +1151,7 @@ Namespace Kodi
 
                     'string or string.empty
                     Dim mDateAdded As String = If(mDBElement.Movie.DateAddedSpecified, mDBElement.Movie.DateAdded, Nothing)
-                    Dim mImdbnumber As String = mDBElement.Movie.ID
+                    Dim mImdbnumber As String = mDBElement.Movie.UniqueIDs.IMDbId
                     Dim mLastPlayed As String = mDBElement.Movie.LastPlayed
                     Dim mMPAA As String = mDBElement.Movie.MPAA
                     Dim mOriginalTitle As String = mDBElement.Movie.OriginalTitle
@@ -1221,8 +1221,8 @@ Namespace Kodi
                                                   GetRemotePath(mDBElement.ImagesContainer.Landscape.LocalFilePath), Nothing)
                     Dim mPoster As String = If(mDBElement.ImagesContainer.Poster.LocalFilePathSpecified,
                                                   GetRemotePath(mDBElement.ImagesContainer.Poster.LocalFilePath), Nothing)
-                    Dim mIMDB As String = If(mDBElement.Movie.IDSpecified, mDBElement.Movie.ID, Nothing)
-                    Dim mTMDB As String = If(mDBElement.Movie.TMDBSpecified, mDBElement.Movie.TMDB, Nothing)
+                    Dim mIMDB As String = If(mDBElement.Movie.UniqueIDs.IMDbIdSpecified, mDBElement.Movie.UniqueIDs.IMDbId, Nothing)
+                    Dim mTMDB As String = If(mDBElement.Movie.UniqueIDs.TMDbIdSpecified, mDBElement.Movie.UniqueIDs.TMDbId, Nothing)
 
                     'all image paths will be set in artwork object
                     Dim mArtwork As New Media.Artwork.Set
@@ -1507,9 +1507,9 @@ Namespace Kodi
                                                  GetRemotePath(mDBElement.ImagesContainer.Fanart.LocalFilePath), Nothing)
                     Dim mPoster As String = If(mDBElement.ImagesContainer.Poster.LocalFilePathSpecified,
                                                   GetRemotePath(mDBElement.ImagesContainer.Poster.LocalFilePath), Nothing)
-                    Dim mIMDB As String = If(mDBElement.TVEpisode.IMDBSpecified, mDBElement.TVEpisode.IMDB, Nothing)
-                    Dim mTMDB As String = If(mDBElement.TVEpisode.TMDBSpecified, mDBElement.TVEpisode.TMDB, Nothing)
-                    Dim mTVDB As String = If(mDBElement.TVEpisode.TVDBSpecified, mDBElement.TVEpisode.TVDB, Nothing)
+                    Dim mIMDB As String = If(mDBElement.TVEpisode.UniqueIDs.IMDbIdSpecified, mDBElement.TVEpisode.UniqueIDs.IMDbId, Nothing)
+                    Dim mTMDB As String = If(mDBElement.TVEpisode.UniqueIDs.TMDbIdSpecified, mDBElement.TVEpisode.UniqueIDs.TMDbId, Nothing)
+                    Dim mTVDB As String = If(mDBElement.TVEpisode.UniqueIDs.TVDbIdSpecified, mDBElement.TVEpisode.UniqueIDs.TVDbId, Nothing)
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
@@ -1735,7 +1735,7 @@ Namespace Kodi
 
                     'string or string.empty
                     Dim mEpisodeGuide As String = mDBElement.TVShow.EpisodeGuide.URL
-                    Dim mImdbnumber As String = mDBElement.TVShow.TVDB
+                    Dim mImdbnumber As String = mDBElement.TVShow.UniqueIDs.TVDbId
                     Dim mMPAA As String = mDBElement.TVShow.MPAA
                     Dim mOriginalTitle As String = mDBElement.TVShow.OriginalTitle
                     Dim mPlot As String = mDBElement.TVShow.Plot
@@ -1785,9 +1785,9 @@ Namespace Kodi
                                               GetRemotePath(mDBElement.ImagesContainer.Landscape.LocalFilePath), Nothing)
                     Dim mPoster As String = If(mDBElement.ImagesContainer.Poster.LocalFilePathSpecified,
                                                  GetRemotePath(mDBElement.ImagesContainer.Poster.LocalFilePath), Nothing)
-                    Dim mIMDB As String = If(mDBElement.TVShow.IMDBSpecified, mDBElement.TVShow.IMDB, Nothing)
-                    Dim mTMDB As String = If(mDBElement.TVShow.TMDBSpecified, mDBElement.TVShow.TMDB, Nothing)
-                    Dim mTVDB As String = If(mDBElement.TVShow.TVDBSpecified, mDBElement.TVShow.TVDB, Nothing)
+                    Dim mIMDB As String = If(mDBElement.TVShow.UniqueIDs.IMDbIdSpecified, mDBElement.TVShow.UniqueIDs.IMDbId, Nothing)
+                    Dim mTMDB As String = If(mDBElement.TVShow.UniqueIDs.TMDbIdSpecified, mDBElement.TVShow.UniqueIDs.TMDbId, Nothing)
+                    Dim mTVDB As String = If(mDBElement.TVShow.UniqueIDs.TVDbIDSpecified, mDBElement.TVShow.UniqueIDs.TVDbId, Nothing)
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set

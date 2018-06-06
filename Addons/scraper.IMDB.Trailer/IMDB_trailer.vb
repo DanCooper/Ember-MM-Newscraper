@@ -150,10 +150,10 @@ Public Class IMDB_Trailer
 
         Dim tIMDBID As String = String.Empty
 
-        If Not String.IsNullOrEmpty(DBMovie.Movie.ID) Then
+        If DBMovie.Movie.UniqueIDs.IMDbIdSpecified Then
             Dim _scraper As New IMDBs.Scraper()
 
-            TrailerList = _scraper.GetTrailers(DBMovie.Movie.ID)
+            TrailerList = _scraper.GetTrailers(DBMovie.Movie.UniqueIDs.IMDbId)
         End If
         logger.Trace("[IMDB_Trailer] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}

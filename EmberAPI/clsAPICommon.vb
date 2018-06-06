@@ -29,46 +29,30 @@ Public Class Containers
 
 #Region "Nested Types"
 
-
     <XmlType(AnonymousType:=True),
      XmlRoot([Namespace]:="", IsNullable:=False, ElementName:="CommandFile")>
     Public Class InstallCommands
-        '''<remarks/>
-
-#Region "Fields"
-
-        Private transactionField As New List(Of CommandsTransaction)
-
-        Private noTransactionField As New List(Of CommandsNoTransactionCommand)
-
-#End Region 'Fields
 
 #Region "Properties"
 
-        '''<remarks/>
-        <XmlElement("transaction")>
-        Public Property transaction() As List(Of CommandsTransaction)
-            Get
-                Return transactionField
-            End Get
-            Set(value As List(Of CommandsTransaction))
-                transactionField = value
-            End Set
-        End Property
-
-        '''<remarks/>
         <XmlElement("noTransaction")>
-        Public Property noTransaction() As List(Of CommandsNoTransactionCommand)
-            Get
-                Return noTransactionField
-            End Get
-            Set(value As List(Of CommandsNoTransactionCommand))
-                noTransactionField = value
-            End Set
-        End Property
-#End Region
+        Public Property noTransaction() As List(Of CommandsNoTransactionCommand) = New List(Of CommandsNoTransactionCommand)
+
+        <XmlElement("transaction")>
+        Public Property transaction() As List(Of CommandsTransaction) = New List(Of CommandsTransaction)
+
+#End Region 'Properties
 
 #Region "Methods"
+
+        Public Shared Function Load(ByVal fpath As String) As InstallCommands
+            If Not File.Exists(fpath) Then Return New InstallCommands
+            Dim xmlSer As XmlSerializer
+            xmlSer = New XmlSerializer(GetType(InstallCommands))
+            Using xmlSW As New StreamReader(fpath)
+                Return DirectCast(xmlSer.Deserialize(xmlSW), InstallCommands)
+            End Using
+        End Function
 
         Public Sub Save(ByVal fpath As String)
             Dim xmlSer As New XmlSerializer(GetType(InstallCommands))
@@ -77,195 +61,70 @@ Public Class Containers
             End Using
         End Sub
 
-        Public Shared Function Load(ByVal fpath As String) As Containers.InstallCommands
-            If Not File.Exists(fpath) Then Return New Containers.InstallCommands
-            Dim xmlSer As XmlSerializer
-            xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
-            Using xmlSW As New StreamReader(fpath)
-                Return DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
-            End Using
-        End Function
 #End Region 'Methods
 
     End Class
 
-    '''<remarks/>
     <XmlType(AnonymousType:=True)>
     Partial Public Class CommandsTransaction
 
-        Private commandField As New List(Of CommandsTransactionCommand)
+#Region "Properties"
 
-        Private nameField As String
-
-        '''<remarks/>
         <XmlElement("command")>
-        Public Property command() As List(Of CommandsTransactionCommand)
-            Get
-                Return commandField
-            End Get
-            Set(value As List(Of CommandsTransactionCommand))
-                commandField = value
-            End Set
-        End Property
+        Public Property command() As List(Of CommandsTransactionCommand) = New List(Of CommandsTransactionCommand)
 
-        '''<remarks/>
         <XmlAttribute()>
-        Public Property name() As String
-            Get
-                Return nameField
-            End Get
-            Set(value As String)
-                nameField = value
-            End Set
-        End Property
-    End Class 'CommandsTransaction
+        Public Property name() As String = String.Empty
 
-    '''<remarks/>
+#End Region 'Properties 
+
+    End Class
+
     <XmlType(AnonymousType:=True)>
     Partial Public Class CommandsTransactionCommand
 
-        Private descriptionField As String
+#Region "Properties"
 
-        Private executeField As String
+        Public Property description() As String = String.Empty
 
-        Private typeField As String
+        Public Property execute() As String = String.Empty
 
-        '''<remarks/>
-        Public Property description() As String
-            Get
-                Return descriptionField
-            End Get
-            Set(value As String)
-                descriptionField = value
-            End Set
-        End Property
-
-        '''<remarks/>
-        Public Property execute() As String
-            Get
-                Return executeField
-            End Get
-            Set(value As String)
-                executeField = value
-            End Set
-        End Property
-
-        '''<remarks/>
         <XmlAttribute()>
-        Public Property type() As String
-            Get
-                Return typeField
-            End Get
-            Set(value As String)
-                typeField = value
-            End Set
-        End Property
+        Public Property type() As String = String.Empty
 
-    End Class 'CommandsTransactionCommand
+#End Region 'Properties 
 
-    '''<remarks/>
+    End Class
+
     <XmlType(AnonymousType:=True)>
     Partial Public Class CommandsNoTransactionCommand
 
-        Private descriptionField As String
-
-        Private executeField As String
-
-        Private typeField As String
-
-        '''<remarks/>
-        Public Property description() As String
-            Get
-                Return descriptionField
-            End Get
-            Set(value As String)
-                descriptionField = value
-            End Set
-        End Property
-
-        '''<remarks/>
-        Public Property execute() As String
-            Get
-                Return executeField
-            End Get
-            Set(value As String)
-                executeField = value
-            End Set
-        End Property
-
-        '''<remarks/>
-        <XmlAttribute()>
-        Public Property type() As String
-            Get
-                Return typeField
-            End Get
-            Set(value As String)
-                typeField = value
-            End Set
-        End Property
-
-    End Class 'CommandsNoTransactionCommand
-
-    Public Class ImgResult
-
-#Region "Fields"
-
-        Dim _fanart As New MediaContainers.Fanart
-        Dim _imagepath As String
-        Dim _posters As New List(Of String)
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property Fanart() As MediaContainers.Fanart
-            Get
-                Return _fanart
-            End Get
-            Set(ByVal value As MediaContainers.Fanart)
-                _fanart = value
-            End Set
-        End Property
+        Public Property description() As String = String.Empty
 
-        Public Property ImagePath() As String
-            Get
-                Return _imagepath
-            End Get
-            Set(ByVal value As String)
-                _imagepath = value
-            End Set
-        End Property
+        Public Property execute() As String = String.Empty
 
-        Public Property Posters() As List(Of String)
-            Get
-                Return _posters
-            End Get
-            Set(ByVal value As List(Of String))
-                _posters = value
-            End Set
-        End Property
+        <XmlAttribute()>
+        Public Property type() As String = String.Empty
 
 #End Region 'Properties
 
-#Region "Methods"
+    End Class
 
-        Public Sub Clear()
-            _imagepath = String.Empty
-            _posters.Clear()
-            _fanart.Clear()
-        End Sub
+    Public Class ImgResult
 
-#End Region 'Methods
+#Region "Properties"
 
-    End Class 'ImgResult
+        Public Property Fanart() As MediaContainers.Fanart = New MediaContainers.Fanart
+
+        Public Property ImagePath() As String = String.Empty
+
+        Public Property Posters() As List(Of String) = New List(Of String)
+
+#End Region 'Properties 
+
+    End Class
 
     Public Class SettingsPanel
 
@@ -397,9 +256,10 @@ Public Class Containers
 
 #End Region 'Methods
 
-    End Class 'SettingsPanel
+    End Class
 
     Public Class Addon
+
 #Region "Fields"
         Private _id As Integer
         Private _name As String
@@ -548,11 +408,11 @@ Public Class Containers
         End Sub
 #End Region 'Methods
 
-    End Class 'Addon
+    End Class
 
 #End Region 'Nested Types
 
-End Class 'Containers
+End Class
 
 Public Class Enums
 

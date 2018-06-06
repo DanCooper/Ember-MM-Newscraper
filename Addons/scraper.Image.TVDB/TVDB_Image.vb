@@ -201,23 +201,23 @@ Public Class TVDB_Image
 
         Select Case DBTV.ContentType
             Case Enums.ContentType.TVEpisode
-                If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
-                    ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TVDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, DBTV.EpisodeOrdering, FilteredModifiers)
+                If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
+                    ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.UniqueIDs.TVDbId, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, DBTV.EpisodeOrdering, FilteredModifiers)
                     If FilteredModifiers.MainFanart Then
-                        ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers).MainFanarts
+                        ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers).MainFanarts
                     End If
                 Else
                     logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVSeason
-                If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
-                    ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers)
+                If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
+                    ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVShow
-                If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
-                    ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers)
+                If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
+                    ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If

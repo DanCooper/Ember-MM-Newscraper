@@ -75,15 +75,15 @@ Public Class dlgEditMovieSet
         Dim newColID As String = String.Empty
 
         If tmpDBElement.MoviesInSetSpecified Then
-            If Not String.IsNullOrEmpty(tmpDBElement.MoviesInSet.Item(0).DBMovie.Movie.TMDBColID) Then
-                newColID = tmpDBElement.MoviesInSet.Item(0).DBMovie.Movie.TMDBColID
+            If tmpDBElement.MoviesInSet.Item(0).DBMovie.Movie.UniqueIDs.TMDbCollectionIDSpecified Then
+                newColID = tmpDBElement.MoviesInSet.Item(0).DBMovie.Movie.UniqueIDs.TMDbCollectionId
             Else
-                newColID = ModulesManager.Instance.GetMovieCollectionID(tmpDBElement.MoviesInSet.Item(0).DBMovie.Movie.ID)
+                newColID = ModulesManager.Instance.GetMovieCollectionID(tmpDBElement.MoviesInSet.Item(0).DBMovie.Movie.UniqueIDs.IMDbId)
             End If
 
             If Not String.IsNullOrEmpty(newColID) Then
                 txtCollectionID.Text = newColID
-                tmpDBElement.MovieSet.TMDB = newColID
+                tmpDBElement.MovieSet.UniqueIDs.TMDbId = newColID
             End If
         End If
     End Sub
@@ -166,10 +166,10 @@ Public Class dlgEditMovieSet
             SetControlsEnabled(False)
             For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                 Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(0).Value))
-                If String.IsNullOrEmpty(txtCollectionID.Text) AndAlso tmpMovie.Movie.TMDBColIDSpecified Then
+                If String.IsNullOrEmpty(txtCollectionID.Text) AndAlso tmpMovie.Movie.UniqueIDs.TMDbCollectionIDSpecified Then
                     If MessageBox.Show(String.Format(Master.eLang.GetString(1264, "Should the Collection ID of the movie ""{0}"" be used as ID for this Collection?"), tmpMovie.Movie.Title), Master.eLang.GetString(1263, "TMDB Collection ID found"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
-                        txtCollectionID.Text = tmpMovie.Movie.TMDBColID
-                        tmpDBElement.MovieSet.TMDB = tmpMovie.Movie.TMDBColID
+                        txtCollectionID.Text = tmpMovie.Movie.UniqueIDs.TMDbCollectionId
+                        tmpDBElement.MovieSet.UniqueIDs.TMDbId = tmpMovie.Movie.UniqueIDs.TMDbCollectionId
                     End If
                 End If
                 Dim newMovieInSet As New MediaContainers.MovieInSet With {.DBMovie = tmpMovie, .Order = tmpDBElement.MoviesInSet.Count}
@@ -877,7 +877,7 @@ Public Class dlgEditMovieSet
     Private Sub FillInfo()
         cbMovieSorting.SelectedIndex = tmpDBElement.SortMethod
         chkMark.Checked = tmpDBElement.IsMarked
-        txtCollectionID.Text = tmpDBElement.MovieSet.TMDB
+        txtCollectionID.Text = tmpDBElement.MovieSet.UniqueIDs.TMDbId
         txtPlot.Text = tmpDBElement.MovieSet.Plot
         txtTitle.Text = tmpDBElement.MovieSet.Title
 
@@ -1167,7 +1167,7 @@ Public Class dlgEditMovieSet
             tmpDBElement.MovieSet.Title = txtTitle.Text.Trim
         End If
 
-        tmpDBElement.MovieSet.TMDB = txtCollectionID.Text.Trim
+        tmpDBElement.MovieSet.UniqueIDs.TMDbId = txtCollectionID.Text.Trim
         tmpDBElement.MovieSet.Plot = txtPlot.Text.Trim
     End Sub
 
@@ -1222,7 +1222,7 @@ Public Class dlgEditMovieSet
         chkMark.Text = Master.eLang.GetString(23, "Mark")
         lblCollectionID.Text = Master.eLang.GetString(1206, "Collection ID:")
         lblMovieSorting.Text = String.Concat(Master.eLang.GetString(665, "Movies sorted by"), ":")
-        lblPlot.Text = Master.eLang.GetString(241, "Plot:")
+        lblPlot.Text = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
         lblTopDetails.Text = Master.eLang.GetString(1132, "Edit the details for the selected movieset.")
         lblTopTitle.Text = Master.eLang.GetString(207, "Edit MovieSet")
         tpBanner.Text = Master.eLang.GetString(838, "Banner")
