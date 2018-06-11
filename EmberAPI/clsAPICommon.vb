@@ -414,9 +414,9 @@ Public Class Containers
 
 End Class
 
-Public Class Enums
-
 #Region "Enumerations"
+
+Public Class Enums
 
     Public Enum ContentType As Integer
         None = 0

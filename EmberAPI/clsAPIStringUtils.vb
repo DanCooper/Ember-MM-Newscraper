@@ -585,7 +585,7 @@ Public Class StringUtils
         Return Regex.Match(text, "tt\d{6}\d*", If(searchrighttoleft, RegexOptions.RightToLeft, RegexOptions.None)).Value.Trim
     End Function
 
-    Public Shared Function GetURL_IMDB(ByVal dbelement As Database.DBElement) As String
+    Public Shared Function GetURL_IMDb(ByVal dbelement As Database.DBElement) As String
         Select Case dbelement.ContentType
             Case Enums.ContentType.Movie
                 If dbelement.Movie.UniqueIDs.IMDbIdSpecified Then
@@ -607,7 +607,7 @@ Public Class StringUtils
         Return String.Empty
     End Function
 
-    Public Shared Function GetURL_TMDB(ByVal dbelement As Database.DBElement) As String
+    Public Shared Function GetURL_TMDb(ByVal dbelement As Database.DBElement) As String
         Select Case dbelement.ContentType
             Case Enums.ContentType.Movie
                 If dbelement.Movie.UniqueIDs.TMDbIdSpecified Then
@@ -633,7 +633,7 @@ Public Class StringUtils
         Return String.Empty
     End Function
 
-    Public Shared Function GetURL_TVDB(ByVal dbelement As Database.DBElement) As String
+    Public Shared Function GetURL_TVDb(ByVal dbelement As Database.DBElement) As String
         Select Case dbelement.ContentType
             Case Enums.ContentType.TVEpisode
                 If dbelement.TVShow.UniqueIDs.TVDbIdSpecified AndAlso dbelement.TVEpisode.UniqueIDs.TVDbIdSpecified Then
