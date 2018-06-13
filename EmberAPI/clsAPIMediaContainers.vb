@@ -810,7 +810,7 @@ Namespace MediaContainers
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
-            If Not DBElement.FileItem.FullPathSpecified Then Return
+            If Not DBElement.FileItemSpecified Then Return
 
             If ActorsSpecified AndAlso Master.eSettings.TVEpisodeActorThumbsAnyEnabled Then
                 Images.SaveTVEpisodeActorThumbs(DBElement)
@@ -1224,7 +1224,7 @@ Namespace MediaContainers
 
         Public Sub SaveAllImages(ByRef DBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
             If Not DBElement.ContentType = Enums.ContentType.TVShow AndAlso
-                (Not DBElement.FileItemSpecified OrElse Not DBElement.FileItem.FullPathSpecified AndAlso (
+                (Not DBElement.FileItemSpecified AndAlso (
                 DBElement.ContentType = Enums.ContentType.Movie OrElse DBElement.ContentType = Enums.ContentType.TVEpisode)) Then Return
 
             Dim tContentType As Enums.ContentType = DBElement.ContentType

@@ -853,7 +853,7 @@ Public Class NFO
                     Next
 
                     'check if we have a local episode file for this scraped episode
-                    Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.FileItem.FullPathSpecified AndAlso f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
+                    Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.FileItemSpecified AndAlso f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
 
                     If lEpisodeList IsNot Nothing AndAlso lEpisodeList.Count > 0 Then
                         For Each nEpisode As Database.DBElement In lEpisodeList
@@ -861,7 +861,7 @@ Public Class NFO
                         Next
                     Else
                         'try to get the episode by AiredDate
-                        Dim dEpisodeList = DBTV.Episodes.Where(Function(f) f.FileItem.FullPathSpecified AndAlso
+                        Dim dEpisodeList = DBTV.Episodes.Where(Function(f) f.FileItemSpecified AndAlso
                                                                    f.TVEpisode.Episode = -1 AndAlso
                                                                    f.TVEpisode.AiredSpecified AndAlso
                                                                    f.TVEpisode.Aired = strAiredDate)
@@ -1370,7 +1370,7 @@ Public Class NFO
     ''' <param name="DBMovie"></param>
     ''' <remarks></remarks>
     Public Shared Sub DeleteNFO_Movie(ByVal DBMovie As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-        If Not DBMovie.FileItem.FullPathSpecified Then Return
+        If Not DBMovie.FileItemSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainNFO, ForceFileCleanup)
@@ -2175,7 +2175,7 @@ Public Class NFO
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            If dbElement.FileItem.FullPathSpecified Then
+            If dbElement.FileItemSpecified Then
                 'cleanup old NFOs if needed
                 If forceFileCleanup Then DeleteNFO_Movie(dbElement, forceFileCleanup)
 
@@ -2280,7 +2280,7 @@ Public Class NFO
 
     Public Shared Sub SaveToNFO_TVEpisode(ByRef dbElement As Database.DBElement)
         Try
-            If dbElement.FileItem.FullPathSpecified Then
+            If dbElement.FileItemSpecified Then
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
                 Dim tTVEpisode As MediaContainers.EpisodeDetails = CType(dbElement.TVEpisode.CloneDeep, MediaContainers.EpisodeDetails)
 

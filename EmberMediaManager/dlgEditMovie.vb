@@ -1603,7 +1603,7 @@ Public Class dlgEditMovie
             lvItem.SubItems.Add(tActor.URLOriginal)
         Next
 
-        If tmpDBElement.FileItem.FullPathSpecified AndAlso String.IsNullOrEmpty(tmpDBElement.Movie.VideoSource) Then
+        If tmpDBElement.FileItemSpecified AndAlso String.IsNullOrEmpty(tmpDBElement.Movie.VideoSource) Then
             Dim vSource As String = APIXML.GetVideoSource(tmpDBElement.FileItem, False)
             If Not String.IsNullOrEmpty(vSource) Then
                 tmpDBElement.VideoSource = vSource

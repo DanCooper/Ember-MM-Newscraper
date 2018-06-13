@@ -1867,7 +1867,7 @@ Namespace Kodi
 
                         'Sync Episodes
                         If mDBElement.EpisodesSpecified Then
-                            For Each tEpisode As Database.DBElement In mDBElement.Episodes.Where(Function(f) f.FileItem.FullPathSpecified)
+                            For Each tEpisode As Database.DBElement In mDBElement.Episodes.Where(Function(f) f.FileItemSpecified)
                                 If tEpisode.TVShow Is Nothing Then Master.DB.AddTVShowInfoToDBElement(tEpisode, mDBElement)
                                 Await Task.Run(Function() UpdateInfo_TVEpisode(tEpisode, blnSendHostNotification, GenericSubEvent, GenericMainEvent))
                             Next

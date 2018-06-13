@@ -514,7 +514,7 @@ Public Class TaskManager
                             Master.DB.Save_TVSeason(nMissingSeason, True, False, False)
                             bNewSeasons = True
                         Next
-                        For Each nMissingEpisode In tmpDBElement.Episodes.Where(Function(f) Not f.FileItem.FullPathSpecified)
+                        For Each nMissingEpisode In tmpDBElement.Episodes.Where(Function(f) Not f.FileItemSpecified)
                             Master.DB.Save_TVEpisode(nMissingEpisode, True, False, False, False, False)
                         Next
                     End If

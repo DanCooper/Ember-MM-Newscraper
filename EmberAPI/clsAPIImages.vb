@@ -121,7 +121,7 @@ Public Class Images
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_Movie(ByVal DBMovie As Database.DBElement, ByVal ImageType As Enums.ModifierType, ByVal ForceFileCleanup As Boolean)
-        If Not DBMovie.FileItem.FullPathSpecified Then Return
+        If Not DBMovie.FileItemSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie, ImageType, ForceFileCleanup)
@@ -190,7 +190,7 @@ Public Class Images
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal ImageType As Enums.ModifierType)
-        If Not DBTVEpisode.FileItem.FullPathSpecified Then Return
+        If Not DBTVEpisode.FileItemSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, ImageType)
@@ -844,7 +844,7 @@ Public Class Images
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
-        If Not mMovie.FileItem.FullPathSpecified Then Return String.Empty
+        If Not mMovie.FileItemSpecified Then Return String.Empty
 
         Dim doResize As Boolean = False
         If Master.eSettings.MovieExtrafanartsResize Then
@@ -922,7 +922,7 @@ Public Class Images
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
-        If Not mMovie.FileItem.FullPathSpecified Then Return String.Empty
+        If Not mMovie.FileItemSpecified Then Return String.Empty
 
         Dim doResize As Boolean = False
         If Master.eSettings.MovieExtrathumbsResize Then

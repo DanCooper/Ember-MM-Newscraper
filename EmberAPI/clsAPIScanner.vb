@@ -72,7 +72,7 @@ Public Class Scanner
     ''' <param name="tDBElement">Database.DBElement object</param>
     ''' <param name="bForced">Enable ALL known file naming schemas. Should only be used to search files and not to save files!</param>
     Public Sub GetFolderContents_Movie(ByRef tDBElement As Database.DBElement, Optional ByVal bForced As Boolean = False)
-        If Not tDBElement.FileItem.FullPathSpecified Then Return
+        If Not tDBElement.FileItemSpecified Then Return
 
         'remove all known paths
         tDBElement.ActorThumbs.Clear()
@@ -312,7 +312,7 @@ Public Class Scanner
     End Sub
 
     Public Sub GetFolderContents_TVEpisode(ByRef tDBElement As Database.DBElement)
-        If Not tDBElement.FileItem.FullPathSpecified Then Return
+        If Not tDBElement.FileItemSpecified Then Return
 
         'remove all known paths
         tDBElement.ActorThumbs.Clear()
@@ -958,7 +958,7 @@ Public Class Scanner
             If dbElement.ShowIDSpecified Then
                 For Each DBTVEpisode As Database.DBElement In dbElement.Episodes
                     DBTVEpisode = Master.DB.AddTVShowInfoToDBElement(DBTVEpisode, dbElement)
-                    If DBTVEpisode.FileItem.FullPathSpecified Then
+                    If DBTVEpisode.FileItemSpecified Then
                         Dim SeasonAndEpisodesList As SeasonAndEpisodeItems = Load_TVEpisode(DBTVEpisode, isNew, batchMode, reportProgress)
 
                         'add new episodes

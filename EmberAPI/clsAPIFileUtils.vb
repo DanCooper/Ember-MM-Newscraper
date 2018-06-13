@@ -196,7 +196,7 @@ Namespace FileUtils
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie, Enums.ContentType.TVEpisode
-                    If tDBElement.FileItem.FullPathSpecified Then
+                    If tDBElement.FileItemSpecified Then
                         If tDBElement.IsSingle OrElse tDBElement.FileItem.bIsBDMV OrElse tDBElement.FileItem.bIsVideoTS Then
                             lstItems.Add(tDBElement.FileItem.MainPath)
                         Else
@@ -1011,7 +1011,7 @@ Namespace FileUtils
         Public Shared Function Movie(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType, Optional ByVal bForced As Boolean = False) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            If Not dbElement.FileItem.FullPathSpecified Then Return FilenameList
+            If Not dbElement.FileItemSpecified Then Return FilenameList
 
             Dim strMainPath As String = dbElement.FileItem.MainPath.FullName
             Dim strPath As String = dbElement.FileItem.FirstStackedPath
@@ -1953,7 +1953,7 @@ Namespace FileUtils
         Public Shared Function TVEpisode(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            If Not dbElement.FileItem.FullPathSpecified Then Return FilenameList
+            If Not dbElement.FileItemSpecified Then Return FilenameList
 
             Dim strMainPath As String = dbElement.FileItem.MainPath.FullName
             Dim strFileName As String = Path.GetFileNameWithoutExtension(dbElement.FileItem.FirstStackedPath)

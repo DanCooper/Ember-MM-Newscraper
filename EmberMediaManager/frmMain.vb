@@ -201,7 +201,7 @@ Public Class frmMain
 
 #Region "Properties"
 
-    Private ReadOnly Property AnyBackgroundWorkerIsBusy As Boolean
+    Private ReadOnly Property AnyBackgroundWorkerIsBusy() As Boolean
         Get
             Return _
                 bwCheckVersion.IsBusy OrElse
@@ -225,6 +225,18 @@ Public Class frmMain
                 bwTVSeasonScraper.IsBusy
         End Get
     End Property
+
+    Private ReadOnly Property AnyScraperIsBusy() As Boolean
+        Get
+            Return _
+                bwMovieScraper.IsBusy OrElse
+                bwMovieSetScraper.IsBusy OrElse
+                bwTVScraper.IsBusy OrElse
+                bwTVEpisodeScraper.IsBusy OrElse
+                bwTVSeasonScraper.IsBusy
+        End Get
+    End Property
+
 
     Public Property GenrePanelColor() As Color = Color.Gainsboro
     Public Property IPMid() As Integer = 280
@@ -592,7 +604,7 @@ Public Class frmMain
                 CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
             End If
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            If dgvTVEpisodes.SelectedRows.Count = 1 AndAlso currTV.FileItem.FullPathSpecified Then
+            If dgvTVEpisodes.SelectedRows.Count = 1 AndAlso currTV.FileItemSpecified Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
                 CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
@@ -1633,7 +1645,7 @@ Public Class frmMain
             End If
 
             If MainFanart.Image IsNot Nothing Then
-                If Not currTV.FileItem.IDSpecified Then
+                If Not currTV.FileItemSpecified Then
                     MainFanart = ImageUtils.AddMissingStamp(MainFanart)
                 ElseIf NeedsGS Then
                     MainFanart = ImageUtils.GrayScale(MainFanart)
@@ -2280,7 +2292,7 @@ Public Class frmMain
                 'Episode Meta Data
                 If tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta AndAlso Master.eSettings.TVScraperMetaDataScan Then
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
-                    For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.FileItem.FullPathSpecified)
+                    For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.FileItemSpecified)
                         MetaData.UpdateFileInfo(tEpisode)
                     Next
                 End If
@@ -3023,16 +3035,12 @@ Public Class frmMain
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
-    Private Function DataGridViews_ColumnExists(ByVal dgView As DataGridView, ByVal columnName As String) As Boolean
-        If dgView IsNot Nothing AndAlso Not String.IsNullOrEmpty(columnName) Then
-            Return dgView.Columns.Contains(columnName)
-        End If
-        Return False
-    End Function
-
-    Private Sub DataGridViews_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles _
+    Private Sub DataGridView_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles _
         dgvMovies.CellClick,
-        dgvMovieSets.CellClick
+        dgvMovieSets.CellClick,
+        dgvTVEpisodes.CellClick,
+        dgvTVSeasons.CellClick,
+        dgvTVShows.CellClick
 
         If e.RowIndex < 0 Then Exit Sub
 
@@ -3055,10 +3063,19 @@ Public Class frmMain
                 defaultOptions = Master.eSettings.DefaultOptions_MovieSet
             Case sender Is dgvTVEpisodes
                 contentType = Enums.ContentType.TVEpisode
+                bClickScrapeAsk = Master.eSettings.TVGeneralClickScrapeAsk
+                bClickScrapeEnabled = Master.eSettings.TVGeneralClickScrape
+                defaultOptions = Master.eSettings.DefaultOptions_TV
             Case sender Is dgvTVSeasons
                 contentType = Enums.ContentType.TVSeason
+                bClickScrapeAsk = Master.eSettings.TVGeneralClickScrapeAsk
+                bClickScrapeEnabled = Master.eSettings.TVGeneralClickScrape
+                defaultOptions = Master.eSettings.DefaultOptions_TV
             Case sender Is dgvTVShows
                 contentType = Enums.ContentType.TVShow
+                bClickScrapeAsk = Master.eSettings.TVGeneralClickScrapeAsk
+                bClickScrapeEnabled = Master.eSettings.TVGeneralClickScrape
+                defaultOptions = Master.eSettings.DefaultOptions_TV
         End Select
 
         If Not contentType = Enums.ContentType.None Then
@@ -3068,11 +3085,14 @@ Public Class frmMain
             End If
 
             If Database.Helpers.ColumnIsWatchedState(colName) Then
-                CreateTask(Enums.ContentType.Movie,
-                           Enums.SelectionType.Selected,
-                           Enums.TaskManagerType.SetWatchedState,
-                           If(String.IsNullOrEmpty(dgView.Rows(e.RowIndex).Cells("lastPlayed").Value.ToString), True, False),
-                           String.Empty)
+                If Not (contentType = Enums.ContentType.TVSeason AndAlso
+                    CInt(dgvTVSeasons.Rows(e.RowIndex).Cells(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).Value) = -1) Then
+                    CreateTask(contentType,
+                               Enums.SelectionType.Selected,
+                               Enums.TaskManagerType.SetWatchedState,
+                               If(String.IsNullOrEmpty(dgView.Rows(e.RowIndex).Cells(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Value.ToString), True, False),
+                               String.Empty)
+                End If
 
             ElseIf bClickScrapeEnabled AndAlso colName = Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset) AndAlso Not bwMovieScraper.IsBusy Then
                 Dim objCell As DataGridViewCell = dgView.Rows(e.RowIndex).Cells(e.ColumnIndex)
@@ -3090,7 +3110,12 @@ Public Class frmMain
                         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, scrapeOptions, ScrapeModifiers)
                 End Select
 
-            ElseIf bClickScrapeEnabled AndAlso Database.Helpers.ColumnIsScrapeModifier(colName) AndAlso Not bwMovieScraper.IsBusy Then
+            ElseIf bClickScrapeEnabled AndAlso Database.Helpers.ColumnIsScrapeModifier(colName) AndAlso
+                Not bwMovieScraper.IsBusy AndAlso
+                Not bwMovieSetScraper.IsBusy AndAlso
+                Not bwTVEpisodeScraper.IsBusy AndAlso
+                Not bwTVSeasonScraper.IsBusy AndAlso
+                Not bwTVScraper.IsBusy Then
                 Dim objCell As DataGridViewCell = dgView.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
                 dgView.ClearSelection()
@@ -3100,12 +3125,19 @@ Public Class frmMain
                         currRow_Movie = objCell.RowIndex
                     Case Enums.ContentType.MovieSet
                         currRow_MovieSet = objCell.RowIndex
+                    Case Enums.ContentType.TVEpisode
+                        currRow_TVEpisode = objCell.RowIndex
+                    Case Enums.ContentType.TVSeason
+                        currRow_TVSeason = objCell.RowIndex
+                    Case Enums.ContentType.TVShow
+                        currRow_TVShow = objCell.RowIndex
                 End Select
 
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Select Case Database.Helpers.ConvertColumnNameToColumnType(colName)
                     Case Database.ColumnType.Banner
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonBanner, True)
                     Case Database.ColumnType.ClearArt
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
                     Case Database.ColumnType.ClearLogo
@@ -3118,16 +3150,24 @@ Public Class frmMain
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainExtrathumbs, True)
                     Case Database.ColumnType.Fanart
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeFanart, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonFanart, True)
                     Case Database.ColumnType.Landscape
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
                     Case Database.ColumnType.MetaData
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMeta, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
                     Case Database.ColumnType.NFO
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeNFO, True)
                     Case Database.ColumnType.Poster
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodePoster, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonPoster, True)
                     Case Database.ColumnType.Subtitle
-                    'Functions.SetScraperMod(Enums.ModType.Subtitles, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainSubtitle, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeSubtitle, True)
                     Case Database.ColumnType.Theme
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTheme, True)
                     Case Database.ColumnType.Trailer
@@ -3138,12 +3178,18 @@ Public Class frmMain
                         CreateScrapeList_Movie(If(bClickScrapeAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
                     Case Enums.ContentType.MovieSet
                         CreateScrapeList_MovieSet(If(bClickScrapeAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
+                    Case Enums.ContentType.TVEpisode
+                        CreateScrapeList_TVEpisode(If(bClickScrapeAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
+                    Case Enums.ContentType.TVSeason
+                        CreateScrapeList_TVSeason(If(bClickScrapeAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
+                    Case Enums.ContentType.TVShow
+                        CreateScrapeList_TV(If(bClickScrapeAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
                 End Select
             End If
         End If
     End Sub
 
-    Private Sub DataGridViews_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles _
+    Private Sub DataGridView_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles _
         dgvMovies.CellDoubleClick,
         dgvMovieSets.CellDoubleClick,
         dgvTVEpisodes.CellDoubleClick,
@@ -3206,7 +3252,115 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub DataGridViews_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles _
+    Private Sub DataGridView_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles _
+        dgvMovies.CellMouseEnter,
+        dgvMovieSets.CellMouseEnter,
+        dgvTVEpisodes.CellMouseEnter,
+        dgvTVSeasons.CellMouseEnter,
+        dgvTVShows.CellMouseEnter
+
+        Dim bClickScrapeEnabled As Boolean
+        Dim bClickScrapeAsk As Boolean
+        Dim dgView As DataGridView = DirectCast(sender, DataGridView)
+
+        Select Case True
+            Case sender Is dgvMovies
+                bClickScrapeAsk = Master.eSettings.MovieClickScrapeAsk
+                bClickScrapeEnabled = Master.eSettings.MovieClickScrape
+            Case sender Is dgvMovieSets
+                bClickScrapeAsk = Master.eSettings.MovieSetClickScrapeAsk
+                bClickScrapeEnabled = Master.eSettings.MovieSetClickScrape
+            Case sender Is dgvTVEpisodes
+                bClickScrapeAsk = Master.eSettings.TVGeneralClickScrapeAsk
+                bClickScrapeEnabled = Master.eSettings.TVGeneralClickScrape
+            Case sender Is dgvTVSeasons
+                bClickScrapeAsk = Master.eSettings.TVGeneralClickScrapeAsk
+                bClickScrapeEnabled = Master.eSettings.TVGeneralClickScrape
+            Case sender Is dgvTVShows
+                bClickScrapeAsk = Master.eSettings.TVGeneralClickScrapeAsk
+                bClickScrapeEnabled = Master.eSettings.TVGeneralClickScrape
+        End Select
+
+        Dim colName As String = dgView.Columns(e.ColumnIndex).Name
+        If Not String.IsNullOrEmpty(colName) Then
+            dgView.ShowCellToolTips = True
+
+            If Database.Helpers.ColumnIsWatchedState(colName) AndAlso e.RowIndex >= 0 Then
+                oldStatus = GetStatus()
+                SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
+            ElseIf bClickScrapeEnabled AndAlso Database.Helpers.ColumnIsScrapeModifier(colName) AndAlso e.RowIndex >= 0 AndAlso
+                Not bwMovieScraper.IsBusy AndAlso
+                Not bwMovieSetScraper.IsBusy AndAlso
+                Not bwTVEpisodeScraper.IsBusy AndAlso
+                Not bwTVSeasonScraper.IsBusy AndAlso
+                Not bwTVScraper.IsBusy AndAlso
+                Not (sender Is dgvTVSeasons AndAlso
+                CInt(dgvTVSeasons.Rows(e.RowIndex).Cells(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).Value) = -1) Then
+
+                dgView.ShowCellToolTips = False
+                oldStatus = GetStatus()
+                Dim strTitle As String = dgView.Rows(e.RowIndex).Cells(Database.Helpers.GetColumnName(Database.ColumnName.Title)).Value.ToString
+                Dim strScrapeFor As String = String.Empty
+                Dim strScrapeType As String = String.Empty
+                Select Case Database.Helpers.ConvertColumnNameToColumnType(colName)
+                    Case Database.ColumnType.Banner
+                        strScrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                    Case Database.ColumnType.CharacterArt
+                        strScrapeFor = Master.eLang.GetString(1121, "CharacterArt Only")
+                    Case Database.ColumnType.ClearArt
+                        strScrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                    Case Database.ColumnType.ClearLogo
+                        strScrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                    Case Database.ColumnType.DiscArt
+                        strScrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
+                    Case Database.ColumnType.Extrafanarts
+                        strScrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
+                    Case Database.ColumnType.Extrathumbs
+                        strScrapeFor = Master.eLang.GetString(74, "Extrathumbs Only")
+                    Case Database.ColumnType.Fanart
+                        strScrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                    Case Database.ColumnType.Landscape
+                        strScrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                    Case Database.ColumnType.NFO
+                        strScrapeFor = Master.eLang.GetString(71, "NFO Only")
+                    Case Database.ColumnType.MetaData
+                        strScrapeFor = Master.eLang.GetString(76, "Meta Data Only")
+                    Case Database.ColumnType.Movieset
+                        strScrapeFor = Master.eLang.GetString(1354, "MovieSet Informations Only")
+                    Case Database.ColumnType.Poster
+                        strScrapeFor = Master.eLang.GetString(72, "Poster Only")
+                    Case Database.ColumnType.Subtitle
+                        strScrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
+                    Case Database.ColumnType.Theme
+                        strScrapeFor = Master.eLang.GetString(1125, "Theme Only")
+                    Case Database.ColumnType.Trailer
+                        strScrapeFor = Master.eLang.GetString(75, "Trailer Only")
+                End Select
+                If bClickScrapeAsk Then
+                    strScrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                Else
+                    strScrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                End If
+                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", strTitle, strScrapeFor, strScrapeType))
+            Else
+                oldStatus = String.Empty
+            End If
+        Else
+            oldStatus = String.Empty
+        End If
+    End Sub
+
+    Private Sub DataGridView_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles _
+        dgvMovies.CellMouseLeave,
+        dgvMovieSets.CellMouseLeave,
+        dgvTVEpisodes.CellMouseLeave,
+        dgvTVSeasons.CellMouseLeave,
+        dgvTVShows.CellMouseLeave
+
+        If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
+    End Sub
+
+    Private Sub DataGridView_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles _
         dgvMovies.CellPainting,
         dgvMovieSets.CellPainting,
         dgvTVEpisodes.CellPainting,
@@ -3274,35 +3428,35 @@ Public Class frmMain
 
                 'text fields
                 If Database.Helpers.ColumnIsText(colName) AndAlso e.RowIndex >= 0 Then
-                    If DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.IsMissing)) AndAlso
+                    If DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.IsMissing)) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.IsMissing), e.RowIndex).Value) Then
                         e.CellStyle.ForeColor = MediaListColors.Missing.ForeColor
                         e.CellStyle.SelectionForeColor = MediaListColors.Missing.SelectionForeColor
-                    ElseIf DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.Marked)) AndAlso
+                    ElseIf DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.Marked)) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked), e.RowIndex).Value) Then
                         e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
                         e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
-                    ElseIf DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.[New])) AndAlso
+                    ElseIf DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.[New])) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]), e.RowIndex).Value) Then
                         e.CellStyle.ForeColor = MediaListColors.New.ForeColor
                         e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
-                    ElseIf DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.NewEpisodesCount)) AndAlso
+                    ElseIf DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.NewEpisodesCount)) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.NewEpisodesCount), e.RowIndex).Value) Then
                         e.CellStyle.ForeColor = MediaListColors.New.ForeColor
                         e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
-                    ElseIf DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom1)) AndAlso
+                    ElseIf DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom1)) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom1), e.RowIndex).Value) Then
                         e.CellStyle.ForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
                         e.CellStyle.SelectionForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
-                    ElseIf DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom2)) AndAlso
+                    ElseIf DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom2)) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom2), e.RowIndex).Value) Then
                         e.CellStyle.ForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
                         e.CellStyle.SelectionForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
-                    ElseIf DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom3)) AndAlso
+                    ElseIf DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom3)) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom3), e.RowIndex).Value) Then
                         e.CellStyle.ForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
                         e.CellStyle.SelectionForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
-                    ElseIf DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom4)) AndAlso
+                    ElseIf DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom4)) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.MarkedCustom4), e.RowIndex).Value) Then
                         e.CellStyle.ForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
                         e.CellStyle.SelectionForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
@@ -3315,15 +3469,15 @@ Public Class frmMain
 
                 If e.ColumnIndex >= 1 AndAlso e.RowIndex >= 0 Then
                     'background
-                    If DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.IsMissing)) AndAlso
+                    If DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.IsMissing)) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.IsMissing), e.RowIndex).Value) Then
                         e.CellStyle.BackColor = MediaListColors.Missing.BackColor
                         e.CellStyle.SelectionBackColor = MediaListColors.Missing.SelectionBackColor
-                    ElseIf DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.Locked)) AndAlso
+                    ElseIf DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.Locked)) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked), e.RowIndex).Value) Then
                         e.CellStyle.BackColor = MediaListColors.Locked.BackColor
                         e.CellStyle.SelectionBackColor = MediaListColors.Locked.SelectionBackColor
-                    ElseIf DataGridViews_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.OutOfTolerance)) AndAlso
+                    ElseIf DataGridView_ColumnExists(dgView, Database.Helpers.GetColumnName(Database.ColumnName.OutOfTolerance)) AndAlso
                         Convert.ToBoolean(dgView.Item(Database.Helpers.GetColumnName(Database.ColumnName.OutOfTolerance), e.RowIndex).Value) Then
                         e.CellStyle.BackColor = MediaListColors.OutOfTolerance.BackColor
                         e.CellStyle.SelectionBackColor = MediaListColors.OutOfTolerance.SelectionBackColor
@@ -3364,7 +3518,37 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub DataGridViews_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles _
+    Private Function DataGridView_ColumnExists(ByVal dgView As DataGridView, ByVal columnName As String) As Boolean
+        If dgView IsNot Nothing AndAlso Not String.IsNullOrEmpty(columnName) Then
+            Return dgView.Columns.Contains(columnName)
+        End If
+        Return False
+    End Function
+
+    Private Function DataGridView_ColumnHasValue(ByVal dgView As DataGridView, ByVal columnName As String, ByVal row As Integer) As Boolean
+        If dgView IsNot Nothing AndAlso Not String.IsNullOrEmpty(columnName) AndAlso row >= 0 Then
+            Return DataGridView_ColumnExists(dgView, columnName) AndAlso Not String.IsNullOrEmpty(dgView.Item(columnName, row).Value.ToString)
+        End If
+        Return False
+    End Function
+
+    Private Function DataGridView_ColumnAnyInfoValue(ByVal dgView As DataGridView, ByVal row As Integer) As Boolean
+        If dgView IsNot Nothing AndAlso row >= 0 Then
+            Return _
+                DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.BannerPath), row) OrElse
+                DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath), row) OrElse
+                DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath), row) OrElse
+                DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath), row) OrElse
+                DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath), row) OrElse
+                DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.FanartPath), row) OrElse
+                DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath), row) OrElse
+                DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.NfoPath), row) OrElse
+                DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.PosterPath), row)
+        End If
+        Return False
+    End Function
+
+    Private Sub DataGridView_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles _
         dgvMovies.KeyDown,
         dgvMovieSets.KeyDown,
         dgvTVEpisodes.KeyDown,
@@ -5568,74 +5752,6 @@ Public Class frmMain
         tmrWait_Movie.Start()
     End Sub
 
-    Private Sub dgvMovies_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellMouseEnter
-        Dim colName As String = dgvMovies.Columns(e.ColumnIndex).Name
-        If String.IsNullOrEmpty(colName) Then
-            Return
-        End If
-
-        dgvMovies.ShowCellToolTips = True
-
-        If Database.Helpers.ColumnIsWatchedState(colName) AndAlso e.RowIndex >= 0 Then
-            oldStatus = GetStatus()
-            SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
-        ElseIf Database.Helpers.ColumnIsScrapeModifier(colName) AndAlso e.RowIndex >= 0 Then
-            dgvMovies.ShowCellToolTips = False
-            If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
-                oldStatus = GetStatus()
-                Dim movieTitle As String = dgvMovies.Rows(e.RowIndex).Cells("title").Value.ToString
-                Dim scrapeFor As String = String.Empty
-                Dim scrapeType As String = String.Empty
-                Select Case Database.Helpers.ConvertColumnNameToColumnType(colName)
-                    Case Database.ColumnType.Banner
-                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
-                    Case Database.ColumnType.ClearArt
-                        scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
-                    Case Database.ColumnType.ClearLogo
-                        scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
-                    Case Database.ColumnType.DiscArt
-                        scrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
-                    Case Database.ColumnType.Extrafanarts
-                        scrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
-                    Case Database.ColumnType.Extrathumbs
-                        scrapeFor = Master.eLang.GetString(74, "Extrathumbs Only")
-                    Case Database.ColumnType.Fanart
-                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-                    Case Database.ColumnType.Landscape
-                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
-                    Case Database.ColumnType.NFO
-                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
-                    Case Database.ColumnType.MetaData
-                        scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
-                    Case Database.ColumnType.Movieset
-                        scrapeFor = Master.eLang.GetString(1354, "MovieSet Informations Only")
-                    Case Database.ColumnType.Poster
-                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
-                    Case Database.ColumnType.Subtitle
-                        scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
-                    Case Database.ColumnType.Theme
-                        scrapeFor = Master.eLang.GetString(1125, "Theme Only")
-                    Case Database.ColumnType.Trailer
-                        scrapeFor = Master.eLang.GetString(75, "Trailer Only")
-                End Select
-                If Master.eSettings.MovieClickScrapeAsk Then
-                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-                Else
-                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-                End If
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieTitle, scrapeFor, scrapeType))
-            Else
-                oldStatus = String.Empty
-            End If
-        Else
-            oldStatus = String.Empty
-        End If
-    End Sub
-
-    Private Sub dgvMovies_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellMouseLeave
-        If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
-    End Sub
-
     Private Sub dgvMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovies.KeyPress
         Try
             If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Convert.ToChar(Keys.Space) Then
@@ -5981,59 +6097,6 @@ Public Class frmMain
         tmrWait_MovieSet.Start()
     End Sub
 
-    Private Sub dgvMovieSets_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellMouseEnter
-        Dim colName As String = dgvMovieSets.Columns(e.ColumnIndex).Name
-        If String.IsNullOrEmpty(colName) Then
-            Return
-        End If
-
-        dgvMovieSets.ShowCellToolTips = True
-
-        If (colName = "bannerPath" OrElse colName = "clearArtPath" OrElse colName = "clearLogoPath" OrElse colName = "discArtPath" OrElse
-             colName = "fanartPath" OrElse colName = "landscapePath" OrElse colName = "nfoPath" OrElse colName = "posterPath") AndAlso e.RowIndex >= 0 Then
-            dgvMovieSets.ShowCellToolTips = False
-
-            If Master.eSettings.MovieSetClickScrape AndAlso Not bwMovieSetScraper.IsBusy Then
-                oldStatus = GetStatus()
-                Dim movieSetName As String = dgvMovieSets.Rows(e.RowIndex).Cells("title").Value.ToString
-                Dim scrapeFor As String = String.Empty
-                Dim scrapeType As String = String.Empty
-                Select Case colName
-                    Case "bannerPath"
-                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
-                    Case "clearArtPath"
-                        scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
-                    Case "clearLogoPath"
-                        scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
-                    Case "discArtPath"
-                        scrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
-                    Case "fanartPath"
-                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-                    Case "landscapePath"
-                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
-                    Case "nfoPath"
-                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
-                    Case "posterPath"
-                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
-                End Select
-                If Master.eSettings.MovieSetClickScrapeAsk Then
-                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-                Else
-                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-                End If
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieSetName, scrapeFor, scrapeType))
-            Else
-                oldStatus = String.Empty
-            End If
-        Else
-            oldStatus = String.Empty
-        End If
-    End Sub
-
-    Private Sub dgvMovieSets_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellMouseLeave
-        If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
-    End Sub
-
     Private Sub dgvMovieSets_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovieSets.KeyPress
         If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Convert.ToChar(Keys.Space) Then
             KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
@@ -6259,50 +6322,6 @@ Public Class frmMain
         SortingSave_MovieSets()
     End Sub
 
-    Private Sub dgvTVEpisodes_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellClick
-        If e.RowIndex < 0 Then Exit Sub
-
-        Dim colName As String = dgvTVEpisodes.Columns(e.ColumnIndex).Name
-        If String.IsNullOrEmpty(colName) Then
-            Return
-        End If
-
-        If colName = "playcount" Then
-            CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, If(Not String.IsNullOrEmpty(dgvTVEpisodes.Rows(e.RowIndex).Cells("playcount").Value.ToString) AndAlso
-                                      Not dgvTVEpisodes.Rows(e.RowIndex).Cells("playcount").Value.ToString = "0", False, True), String.Empty)
-
-        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
-            (colName = "fanartPath" OrElse colName = "nfoPath" OrElse colName = "posterPath") AndAlso
-            Not bwTVEpisodeScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex)
-
-            'EMM not able to scrape subtitles yet.
-            'So don't set status for it, but leave the option open for the future.
-            dgvTVEpisodes.ClearSelection()
-            dgvTVEpisodes.Rows(objCell.RowIndex).Selected = True
-            currRow_TVEpisode = objCell.RowIndex
-
-            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-            Select Case colName
-                Case "fanartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeFanart, True)
-                Case "nfoPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeNFO, True)
-                Case "posterPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodePoster, True)
-                Case "hasSub"
-                    'Functions.SetScraperMod(Enums.ModType.Subtitles, True)
-                Case "metaData" 'Metadata - need to add this column to the view.
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
-            End Select
-            If Master.eSettings.TVGeneralClickScrapeAsk Then
-                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAsk, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
-            Else
-                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
-            End If
-        End If
-    End Sub
-
     Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
         Dim currMainTabTag = GetCurrentMainTabTag()
         If Not currMainTabTag.ContentType = Enums.ContentType.TV OrElse Not currList = 2 Then Return
@@ -6320,58 +6339,6 @@ Public Class frmMain
 
         currRow_TVEpisode = e.RowIndex
         tmrWait_TVEpisode.Start()
-    End Sub
-
-    Private Sub dgvTVEpisodes_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellMouseEnter
-        Dim colName As String = dgvTVEpisodes.Columns(e.ColumnIndex).Name
-        If String.IsNullOrEmpty(colName) Then
-            Return
-        End If
-
-        dgvTVEpisodes.ShowCellToolTips = True
-
-        If colName = "playcount" AndAlso e.RowIndex >= 0 Then
-            oldStatus = GetStatus()
-            SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
-        ElseIf (colName = "FfanartPath" OrElse colName = "nfoPath" OrElse
-            colName = "posterPath" OrElse colName = "hasSub") AndAlso e.RowIndex >= 0 Then
-            dgvTVEpisodes.ShowCellToolTips = False
-
-            If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVEpisodeScraper.IsBusy Then
-                oldStatus = GetStatus()
-                Dim episodeTitle As String = dgvTVEpisodes.Rows(e.RowIndex).Cells("title").Value.ToString
-                Dim scrapeFor As String = String.Empty
-                Dim scrapeType As String = String.Empty
-                Select Case colName
-                    Case "fanartPath"
-                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-                    Case "nfoPath"
-                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
-                    Case "metaData"
-                        scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
-                    Case "posterPath"
-                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
-                    Case "hasSub"
-                        scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
-                End Select
-
-                If Master.eSettings.TVGeneralClickScrapeAsk Then
-                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-                Else
-                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-                End If
-
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", episodeTitle, scrapeFor, scrapeType))
-            Else
-                oldStatus = String.Empty
-            End If
-        Else
-            oldStatus = String.Empty
-        End If
-    End Sub
-
-    Private Sub dgvTVEpisodes_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellMouseLeave
-        If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
     End Sub
 
     Private Sub dgvTVEpisodes_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVEpisodes.KeyPress
@@ -6594,54 +6561,6 @@ Public Class frmMain
         SortingSave_TVEpisodes()
     End Sub
 
-    Private Sub dgvTVSeasons_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellClick
-        If e.RowIndex < 0 Then Exit Sub
-
-        Dim colName As String = dgvTVSeasons.Columns(e.ColumnIndex).Name
-        If String.IsNullOrEmpty(colName) Then
-            Return
-        End If
-
-        If colName = "hasWatched" Then
-            If Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("season").Value) = -1 Then
-                CreateTask(Enums.ContentType.TVSeason,
-                           Enums.SelectionType.Selected,
-                           Enums.TaskManagerType.SetWatchedState,
-                           If(CBool(dgvTVSeasons.Rows(e.RowIndex).Cells("hasWatched").Value), False, True),
-                           String.Empty)
-            End If
-
-        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
-            (colName = "bannerPath" OrElse colName = "fanartPath" OrElse
-             colName = "landscapePath" OrElse colName = "posterPath") AndAlso
-            Not bwTVSeasonScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = dgvTVSeasons.Rows(e.RowIndex).Cells(e.ColumnIndex)
-
-            'EMM not able to scrape subtitles yet.
-            'So don't set status for it, but leave the option open for the future.
-            dgvTVSeasons.ClearSelection()
-            dgvTVSeasons.Rows(objCell.RowIndex).Selected = True
-            currRow_TVSeason = objCell.RowIndex
-
-            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-            Select Case colName
-                Case "bannerPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonBanner, True)
-                Case "fanartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonFanart, True)
-                Case "landscapePath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
-                Case "posterPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonPoster, True)
-            End Select
-            If Master.eSettings.TVGeneralClickScrapeAsk Then
-                CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAsk, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
-            Else
-                CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
-            End If
-        End If
-    End Sub
-
     Private Sub dgvTVSeasons_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellEnter
         Dim currMainTabTag = GetCurrentMainTabTag()
         If Not currMainTabTag.ContentType = Enums.ContentType.TV OrElse Not currList = 1 Then Return
@@ -6659,56 +6578,6 @@ Public Class frmMain
 
         currRow_TVSeason = e.RowIndex
         tmrWait_TVSeason.Start()
-    End Sub
-
-    Private Sub dgvTVSeasons_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellMouseEnter
-        Dim colName As String = dgvTVSeasons.Columns(e.ColumnIndex).Name
-        If String.IsNullOrEmpty(colName) Then
-            Return
-        End If
-
-        dgvTVSeasons.ShowCellToolTips = True
-
-        If colName = "hasWatched" AndAlso e.RowIndex >= 0 AndAlso Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("season").Value) = -1 Then
-            oldStatus = GetStatus()
-            SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
-        ElseIf (colName = "bannerPath" OrElse colName = "fanartPath" OrElse
-            colName = "landscapePath" OrElse colName = "posterPath") AndAlso e.RowIndex >= 0 Then
-            dgvTVSeasons.ShowCellToolTips = False
-
-            If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVSeasonScraper.IsBusy Then
-                oldStatus = GetStatus()
-                Dim seasonTitle As String = dgvTVSeasons.Rows(e.RowIndex).Cells("title").Value.ToString
-                Dim scrapeFor As String = String.Empty
-                Dim scrapeType As String = String.Empty
-                Select Case colName
-                    Case "bannerPath"
-                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
-                    Case "fanartPath"
-                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-                    Case "landscapePath"
-                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
-                    Case "posterPath"
-                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
-                End Select
-
-                If Master.eSettings.TVGeneralClickScrapeAsk Then
-                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-                Else
-                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-                End If
-
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", seasonTitle, scrapeFor, scrapeType))
-            Else
-                oldStatus = String.Empty
-            End If
-        Else
-            oldStatus = String.Empty
-        End If
-    End Sub
-
-    Private Sub dgvTVSeasons_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellMouseLeave
-        If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
     End Sub
 
     Private Sub dgvTVSeasons_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVSeasons.KeyPress
@@ -6874,65 +6743,6 @@ Public Class frmMain
         SortingSave_TVSeasons()
     End Sub
 
-    Private Sub dgvTVShows_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellClick
-        If e.RowIndex < 0 Then Exit Sub
-
-        Dim colName As String = dgvTVShows.Columns(e.ColumnIndex).Name
-        If String.IsNullOrEmpty(colName) Then
-            Return
-        End If
-
-        If colName = "hasWatched" Then
-            CreateTask(Enums.ContentType.TVShow,
-                       Enums.SelectionType.Selected,
-                       Enums.TaskManagerType.SetWatchedState,
-                       If(CBool(dgvTVShows.Rows(e.RowIndex).Cells("hasWatched").Value), False, True),
-                       String.Empty)
-
-        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
-            (colName = "bannerPath" OrElse colName = "characterArtPath" OrElse colName = "clearArtPath" OrElse
-            colName = "clearLogoPath" OrElse colName = "efanartsPath" OrElse colName = "fanartPath" OrElse
-            colName = "landscapePath" OrElse colName = "nfoPath" OrElse colName = "posterPath" OrElse
-            colName = "themePath") AndAlso Not bwTVScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = dgvTVShows.Rows(e.RowIndex).Cells(e.ColumnIndex)
-
-            'EMM not able to scrape subtitles yet.
-            'So don't set status for it, but leave the option open for the future.
-            dgvTVShows.ClearSelection()
-            dgvTVShows.Rows(objCell.RowIndex).Selected = True
-            currRow_TVShow = objCell.RowIndex
-
-            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-            Select Case colName
-                Case "bannerPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
-                Case "characterArtPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainCharacterArt, True)
-                Case "clearArtPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
-                Case "clearLogoPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
-                Case "efanartsPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainExtrafanarts, True)
-                Case "fanartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
-                Case "landscapePath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
-                Case "nfoPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
-                Case "posterPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
-                Case "themePath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTheme, True)
-            End Select
-            If Master.eSettings.TVGeneralClickScrapeAsk Then
-                CreateScrapeList_TV(Enums.ScrapeType.SelectedAsk, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
-            Else
-                CreateScrapeList_TV(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
-            End If
-        End If
-    End Sub
-
     Private Sub dgvTVShows_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
         Dim currMainTabTag = GetCurrentMainTabTag()
         If Not currMainTabTag.ContentType = Enums.ContentType.TV OrElse Not currList = 0 Then Return
@@ -6950,70 +6760,6 @@ Public Class frmMain
 
         currRow_TVShow = e.RowIndex
         tmrWait_TVShow.Start()
-    End Sub
-
-    Private Sub dgvTVShows_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellMouseEnter
-        Dim colName As String = dgvTVShows.Columns(e.ColumnIndex).Name
-        If String.IsNullOrEmpty(colName) Then
-            Return
-        End If
-
-        dgvTVShows.ShowCellToolTips = True
-
-        If colName = "hasWatched" AndAlso e.RowIndex >= 0 Then
-            oldStatus = GetStatus()
-            SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
-        ElseIf (colName = "bannerPath" OrElse colName = "characterArtPath" OrElse colName = "clearArtPath" OrElse
-            colName = "clearLogoPath" OrElse colName = "efanartsPath" OrElse colName = "fanartPath" OrElse
-            colName = "landscapePath" OrElse colName = "nfoPath" OrElse colName = "posterPath" OrElse
-            colName = "themePath") AndAlso e.RowIndex >= 0 Then
-            dgvTVShows.ShowCellToolTips = False
-
-            If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVScraper.IsBusy Then
-                oldStatus = GetStatus()
-                Dim tvshowTitle As String = dgvTVShows.Rows(e.RowIndex).Cells("title").Value.ToString
-                Dim scrapeFor As String = String.Empty
-                Dim scrapeType As String = String.Empty
-                Select Case colName
-                    Case "bannerPath"
-                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
-                    Case "characterArtPath"
-                        scrapeFor = Master.eLang.GetString(1121, "CharacterArt Only")
-                    Case "clearArtPath"
-                        scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
-                    Case "clearLogoPath"
-                        scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
-                    Case "efanartsPath"
-                        scrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
-                    Case "fanartPath"
-                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-                    Case "landscapePath"
-                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
-                    Case "nfoPath"
-                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
-                    Case "posterPath"
-                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
-                    Case "themePath"
-                        scrapeFor = Master.eLang.GetString(1125, "Theme Only")
-                End Select
-
-                If Master.eSettings.TVGeneralClickScrapeAsk Then
-                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-                Else
-                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-                End If
-
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", tvshowTitle, scrapeFor, scrapeType))
-            Else
-                oldStatus = String.Empty
-            End If
-        Else
-            oldStatus = String.Empty
-        End If
-    End Sub
-
-    Private Sub dgvTVShows_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellMouseLeave
-        If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
     End Sub
 
     Private Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
@@ -7723,66 +7469,66 @@ Public Class frmMain
                     dgvMovies.Columns(i).Visible = False
                 Next
 
-                dgvMovies.Columns("bannerPath").Width = 20
-                dgvMovies.Columns("bannerPath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("bannerPath").ReadOnly = True
-                dgvMovies.Columns("bannerPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("bannerPath").Visible = Not CheckColumnHide_Movies("bannerPath")
-                dgvMovies.Columns("bannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
-                dgvMovies.Columns("clearArtPath").Width = 20
-                dgvMovies.Columns("clearArtPath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("clearArtPath").ReadOnly = True
-                dgvMovies.Columns("clearArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("clearArtPath").Visible = Not CheckColumnHide_Movies("clearArtPath")
-                dgvMovies.Columns("clearArtPath").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
-                dgvMovies.Columns("clearLogoPath").Width = 20
-                dgvMovies.Columns("clearLogoPath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("clearLogoPath").ReadOnly = True
-                dgvMovies.Columns("clearLogoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("clearLogoPath").Visible = Not CheckColumnHide_Movies("clearLogoPath")
-                dgvMovies.Columns("clearLogoPath").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
-                dgvMovies.Columns("discArtPath").Width = 20
-                dgvMovies.Columns("discArtPath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("discArtPath").ReadOnly = True
-                dgvMovies.Columns("discArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("discArtPath").Visible = Not CheckColumnHide_Movies("discArtPath")
-                dgvMovies.Columns("discArtPath").ToolTipText = Master.eLang.GetString(1098, "DiscArt")
-                dgvMovies.Columns("efanartsPath").Width = 20
-                dgvMovies.Columns("efanartsPath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("efanartsPath").ReadOnly = True
-                dgvMovies.Columns("efanartsPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("efanartsPath").Visible = Not CheckColumnHide_Movies("efanartsPath")
-                dgvMovies.Columns("efanartsPath").ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
-                dgvMovies.Columns("ethumbsPath").Width = 20
-                dgvMovies.Columns("ethumbsPath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("ethumbsPath").ReadOnly = True
-                dgvMovies.Columns("ethumbsPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("ethumbsPath").Visible = Not CheckColumnHide_Movies("ethumbsPath")
-                dgvMovies.Columns("ethumbsPath").ToolTipText = Master.eLang.GetString(153, "Extrathumbs")
-                dgvMovies.Columns("fanartPath").Width = 20
-                dgvMovies.Columns("fanartPath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("fanartPath").ReadOnly = True
-                dgvMovies.Columns("fanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("fanartPath").Visible = Not CheckColumnHide_Movies("fanartPath")
-                dgvMovies.Columns("fanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-                dgvMovies.Columns("hasSet").Width = 20
-                dgvMovies.Columns("hasSet").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("hasSet").ReadOnly = True
-                dgvMovies.Columns("hasSet").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("hasSet").Visible = Not CheckColumnHide_Movies("hasSet")
-                dgvMovies.Columns("hasSet").ToolTipText = Master.eLang.GetString(1295, "Part of a MovieSet")
-                dgvMovies.Columns("hasSub").Width = 20
-                dgvMovies.Columns("hasSub").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("hasSub").ReadOnly = True
-                dgvMovies.Columns("hasSub").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("hasSub").Visible = Not CheckColumnHide_Movies("hasSub")
-                dgvMovies.Columns("hasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
-                dgvMovies.Columns("lastPlayed").Width = 20
-                dgvMovies.Columns("lastPlayed").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("lastPlayed").ReadOnly = True
-                dgvMovies.Columns("lastPlayed").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("lastPlayed").Visible = Not CheckColumnHide_Movies("lastPlayed")
-                dgvMovies.Columns("lastPlayed").ToolTipText = Master.eLang.GetString(981, "Watched")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToolTipText = Master.eLang.GetString(838, "Banner")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ToolTipText = Master.eLang.GetString(1098, "DiscArt")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).ToolTipText = Master.eLang.GetString(153, "Extrathumbs")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToolTipText = Master.eLang.GetString(149, "Fanart")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset)).ToolTipText = Master.eLang.GetString(1295, "Part of a MovieSet")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).ToolTipText = Master.eLang.GetString(152, "Subtitles")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).ToolTipText = Master.eLang.GetString(981, "Watched")
                 'dgvMovies.Columns("Imdb").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                 'dgvMovies.Columns("Imdb").MinimumWidth = 45
                 'dgvMovies.Columns("Imdb").Resizable = DataGridViewTriState.False
@@ -7791,46 +7537,46 @@ Public Class frmMain
                 'dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
                 'dgvMovies.Columns("Imdb").ToolTipText = "IMDB ID"
                 'dgvMovies.Columns("Imdb").HeaderText = "IMDB"
-                dgvMovies.Columns("landscapePath").Width = 20
-                dgvMovies.Columns("landscapePath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("landscapePath").ReadOnly = True
-                dgvMovies.Columns("landscapePath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("landscapePath").Visible = Not CheckColumnHide_Movies("landscapePath")
-                dgvMovies.Columns("landscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
-                dgvMovies.Columns("listTitle").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("listTitle").ReadOnly = True
-                dgvMovies.Columns("listTitle").MinimumWidth = 83
-                dgvMovies.Columns("listTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("listTitle").Visible = True
-                dgvMovies.Columns("listTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                dgvMovies.Columns("listTitle").HeaderText = Master.eLang.GetString(21, "Title")
-                dgvMovies.Columns("mpaa").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-                dgvMovies.Columns("mpaa").MinimumWidth = 45
-                dgvMovies.Columns("mpaa").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("mpaa").ReadOnly = True
-                dgvMovies.Columns("mpaa").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("mpaa").Visible = Not CheckColumnHide_Movies("mpaa")
-                dgvMovies.Columns("mpaa").ToolTipText = Master.eLang.GetString(401, "MPAA")
-                dgvMovies.Columns("mpaa").HeaderText = Master.eLang.GetString(401, "MPAA")
-                dgvMovies.Columns("nfoPath").Width = 20
-                dgvMovies.Columns("nfoPath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("nfoPath").ReadOnly = True
-                dgvMovies.Columns("nfoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("nfoPath").Visible = Not CheckColumnHide_Movies("nfoPath")
-                dgvMovies.Columns("nfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
-                dgvMovies.Columns("originalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-                dgvMovies.Columns("originalTitle").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("originalTitle").ReadOnly = True
-                dgvMovies.Columns("originalTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("originalTitle").Visible = Not CheckColumnHide_Movies("originalTitle")
-                dgvMovies.Columns("originalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
-                dgvMovies.Columns("originalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
-                dgvMovies.Columns("posterPath").Width = 20
-                dgvMovies.Columns("posterPath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("posterPath").ReadOnly = True
-                dgvMovies.Columns("posterPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("posterPath").Visible = Not CheckColumnHide_Movies("posterPath")
-                dgvMovies.Columns("posterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).MinimumWidth = 83
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).Visible = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToolTipText = Master.eLang.GetString(21, "Title")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).HeaderText = Master.eLang.GetString(21, "Title")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).MinimumWidth = 45
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.MPAA))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA )).ToolTipText = Master.eLang.GetString(401, "MPAA")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA )).HeaderText = Master.eLang.GetString(401, "MPAA")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToolTipText = Master.eLang.GetString(150, "Nfo")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).ToolTipText = Master.eLang.GetString(302, "Original Title")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).HeaderText = Master.eLang.GetString(302, "Original Title")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToolTipText = Master.eLang.GetString(148, "Poster")
                 'dgvMovies.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                 'dgvMovies.Columns("Rating").MinimumWidth = 30
                 'dgvMovies.Columns("Rating").Resizable = DataGridViewTriState.False
@@ -7838,12 +7584,12 @@ Public Class frmMain
                 'dgvMovies.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
                 'dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
                 'dgvMovies.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
-                dgvMovies.Columns("themePath").Width = 20
-                dgvMovies.Columns("themePath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("themePath").ReadOnly = True
-                dgvMovies.Columns("themePath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("themePath").Visible = Not CheckColumnHide_Movies("themePath")
-                dgvMovies.Columns("themePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ToolTipText = Master.eLang.GetString(1118, "Theme")
                 'dgvMovies.Columns("TMDB").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                 'dgvMovies.Columns("TMDB").MinimumWidth = 45
                 'dgvMovies.Columns("TMDB").Resizable = DataGridViewTriState.False
@@ -7852,38 +7598,38 @@ Public Class frmMain
                 'dgvMovies.Columns("TMDB").Visible = Not CheckColumnHide_Movies("TMDB")
                 'dgvMovies.Columns("TMDB").ToolTipText = "TMDB ID"
                 'dgvMovies.Columns("TMDB").HeaderText = "TMDB"
-                dgvMovies.Columns("top250").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-                dgvMovies.Columns("top250").MinimumWidth = 35
-                dgvMovies.Columns("top250").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("top250").ReadOnly = True
-                dgvMovies.Columns("top250").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("top250").Visible = Not CheckColumnHide_Movies("top250")
-                dgvMovies.Columns("top250").ToolTipText = "Top 250"
-                dgvMovies.Columns("top250").HeaderText = "250"
-                dgvMovies.Columns("trailerPath").Width = 20
-                dgvMovies.Columns("trailerPath").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("trailerPath").ReadOnly = True
-                dgvMovies.Columns("trailerPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("trailerPath").Visible = Not CheckColumnHide_Movies("trailerPath")
-                dgvMovies.Columns("trailerPath").ToolTipText = Master.eLang.GetString(151, "Trailer")
-                dgvMovies.Columns("userRating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-                dgvMovies.Columns("userRating").MinimumWidth = 30
-                dgvMovies.Columns("userRating").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("userRating").ReadOnly = True
-                dgvMovies.Columns("userRating").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("userRating").Visible = Not CheckColumnHide_Movies("userRating")
-                dgvMovies.Columns("userRating").ToolTipText = Master.eLang.GetString(1467, "User Rating")
-                dgvMovies.Columns("year").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-                dgvMovies.Columns("year").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("year").ReadOnly = True
-                dgvMovies.Columns("year").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("year").Visible = Not CheckColumnHide_Movies("year")
-                dgvMovies.Columns("year").ToolTipText = Master.eLang.GetString(278, "Year")
-                dgvMovies.Columns("year").HeaderText = Master.eLang.GetString(278, "Year")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).MinimumWidth = 35
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.Top250))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).ToolTipText = "Top 250"
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).HeaderText = "250"
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).ToolTipText = Master.eLang.GetString(151, "Trailer")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).MinimumWidth = 30
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.UserRating))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).ToolTipText = Master.eLang.GetString(1467, "User Rating")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Year)).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Year)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Year)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Year)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Year)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.Year))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Year)).ToolTipText = Master.eLang.GetString(278, "Year")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Year)).HeaderText = Master.eLang.GetString(278, "Year")
 
                 dgvMovies.Columns(Database.Helpers.GetMainIdName(Database.TableName.movie)).ValueType = GetType(Long)
 
-                If Master.isWindows Then dgvMovies.Columns("listTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                If Master.isWindows Then dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             End If
 
             If doMovieSets Then
@@ -7899,7 +7645,7 @@ Public Class frmMain
                         Next
                     End If
                 Catch ex As Exception
-                    logger.Warn("default list for movieset list sorting has been loaded")
+                    logger.Warn("Default list For movieset list sorting has been loaded")
                     Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
                     If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
                         For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
@@ -7912,65 +7658,65 @@ Public Class frmMain
                     dgvMovieSets.Columns(i).Visible = False
                 Next
 
-                dgvMovieSets.Columns("bannerPath").Width = 20
-                dgvMovieSets.Columns("bannerPath").Resizable = DataGridViewTriState.False
-                dgvMovieSets.Columns("bannerPath").ReadOnly = True
-                dgvMovieSets.Columns("bannerPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovieSets.Columns("bannerPath").Visible = Not CheckColumnHide_MovieSets("bannerPath")
-                dgvMovieSets.Columns("bannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
-                dgvMovieSets.Columns("clearArtPath").Width = 20
-                dgvMovieSets.Columns("clearArtPath").Resizable = DataGridViewTriState.False
-                dgvMovieSets.Columns("clearArtPath").ReadOnly = True
-                dgvMovieSets.Columns("clearArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovieSets.Columns("clearArtPath").Visible = Not CheckColumnHide_MovieSets("clearArtPath")
-                dgvMovieSets.Columns("clearArtPath").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
-                dgvMovieSets.Columns("clearLogoPath").Width = 20
-                dgvMovieSets.Columns("clearLogoPath").Resizable = DataGridViewTriState.False
-                dgvMovieSets.Columns("clearLogoPath").ReadOnly = True
-                dgvMovieSets.Columns("clearLogoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovieSets.Columns("clearLogoPath").Visible = Not CheckColumnHide_MovieSets("clearLogoPath")
-                dgvMovieSets.Columns("clearLogoPath").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
-                dgvMovieSets.Columns("discArtPath").Width = 20
-                dgvMovieSets.Columns("discArtPath").Resizable = DataGridViewTriState.False
-                dgvMovieSets.Columns("discArtPath").ReadOnly = True
-                dgvMovieSets.Columns("discArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovieSets.Columns("discArtPath").Visible = Not CheckColumnHide_MovieSets("discArtPath")
-                dgvMovieSets.Columns("discArtPath").ToolTipText = Master.eLang.GetString(1098, "DiscArt")
-                dgvMovieSets.Columns("fanartPath").Width = 20
-                dgvMovieSets.Columns("fanartPath").Resizable = DataGridViewTriState.False
-                dgvMovieSets.Columns("fanartPath").ReadOnly = True
-                dgvMovieSets.Columns("fanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovieSets.Columns("fanartPath").Visible = Not CheckColumnHide_MovieSets("fanartPath")
-                dgvMovieSets.Columns("fanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-                dgvMovieSets.Columns("landscapePath").Width = 20
-                dgvMovieSets.Columns("landscapePath").Resizable = DataGridViewTriState.False
-                dgvMovieSets.Columns("landscapePath").ReadOnly = True
-                dgvMovieSets.Columns("landscapePath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovieSets.Columns("landscapePath").Visible = Not CheckColumnHide_MovieSets("landscapePath")
-                dgvMovieSets.Columns("landscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
-                dgvMovieSets.Columns("listTitle").Resizable = DataGridViewTriState.False
-                dgvMovieSets.Columns("listTitle").ReadOnly = True
-                dgvMovieSets.Columns("listTitle").MinimumWidth = 83
-                dgvMovieSets.Columns("listTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovieSets.Columns("listTitle").Visible = True
-                dgvMovieSets.Columns("listTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                dgvMovieSets.Columns("listTitle").HeaderText = Master.eLang.GetString(21, "Title")
-                dgvMovieSets.Columns("nfoPath").Width = 20
-                dgvMovieSets.Columns("nfoPath").Resizable = DataGridViewTriState.False
-                dgvMovieSets.Columns("nfoPath").ReadOnly = True
-                dgvMovieSets.Columns("nfoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovieSets.Columns("nfoPath").Visible = Not CheckColumnHide_MovieSets("nfoPath")
-                dgvMovieSets.Columns("nfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
-                dgvMovieSets.Columns("posterPath").Width = 20
-                dgvMovieSets.Columns("posterPath").Resizable = DataGridViewTriState.False
-                dgvMovieSets.Columns("posterPath").ReadOnly = True
-                dgvMovieSets.Columns("posterPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovieSets.Columns("posterPath").Visible = Not CheckColumnHide_MovieSets("posterPath")
-                dgvMovieSets.Columns("posterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Width = 20
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ReadOnly = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToolTipText = Master.eLang.GetString(838, "Banner")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Width = 20
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ReadOnly = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Width = 20
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ReadOnly = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).Width = 20
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ReadOnly = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ToolTipText = Master.eLang.GetString(1098, "DiscArt")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Width = 20
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ReadOnly = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToolTipText = Master.eLang.GetString(149, "Fanart")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Width = 20
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ReadOnly = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ReadOnly = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).MinimumWidth = 83
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).Visible = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToolTipText = Master.eLang.GetString(21, "Title")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).HeaderText = Master.eLang.GetString(21, "Title")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).Width = 20
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ReadOnly = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToolTipText = Master.eLang.GetString(150, "Nfo")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Width = 20
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ReadOnly = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToolTipText = Master.eLang.GetString(148, "Poster")
 
-                dgvMovieSets.Columns("idSet").ValueType = GetType(Long)
+                dgvMovieSets.Columns(Database.Helpers.GetMainIdName(Database.TableName.movieset)).ValueType = GetType(Long)
 
-                If Master.isWindows Then dgvMovieSets.Columns("listTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                If Master.isWindows Then dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
 
                 dgvMovieSets.Enabled = True
             End If
@@ -7991,7 +7737,7 @@ Public Class frmMain
                         Next
                     End If
                 Catch ex As Exception
-                    logger.Warn("default list for tv show list sorting has been loaded")
+                    logger.Warn("Default list For tv show list sorting has been loaded")
                     Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowListSorting, True)
                     If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
                         For Each mColumn In Master.eSettings.TVGeneralShowListSorting
@@ -8004,90 +7750,90 @@ Public Class frmMain
                     dgvTVShows.Columns(i).Visible = False
                 Next
 
-                dgvTVShows.Columns("bannerPath").Width = 20
-                dgvTVShows.Columns("bannerPath").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("bannerPath").ReadOnly = True
-                dgvTVShows.Columns("bannerPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("bannerPath").Visible = Not CheckColumnHide_TVShows("bannerPath")
-                dgvTVShows.Columns("bannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
-                dgvTVShows.Columns("characterArtPath").Width = 20
-                dgvTVShows.Columns("characterArtPath").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("characterArtPath").ReadOnly = True
-                dgvTVShows.Columns("characterArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("characterArtPath").Visible = Not CheckColumnHide_TVShows("characterArtPath")
-                dgvTVShows.Columns("characterArtPath").ToolTipText = Master.eLang.GetString(1140, "CharacterArt")
-                dgvTVShows.Columns("clearArtPath").Width = 20
-                dgvTVShows.Columns("clearArtPath").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("clearArtPath").ReadOnly = True
-                dgvTVShows.Columns("clearArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("clearArtPath").Visible = Not CheckColumnHide_TVShows("clearArtPath")
-                dgvTVShows.Columns("clearArtPath").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
-                dgvTVShows.Columns("clearLogoPath").Width = 20
-                dgvTVShows.Columns("clearLogoPath").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("clearLogoPath").ReadOnly = True
-                dgvTVShows.Columns("clearLogoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("clearLogoPath").Visible = Not CheckColumnHide_TVShows("clearLogoPath")
-                dgvTVShows.Columns("clearLogoPath").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
-                dgvTVShows.Columns("efanartsPath").Width = 20
-                dgvTVShows.Columns("efanartsPath").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("efanartsPath").ReadOnly = True
-                dgvTVShows.Columns("efanartsPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("efanartsPath").Visible = Not CheckColumnHide_TVShows("efanartsPath")
-                dgvTVShows.Columns("efanartsPath").ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
-                dgvTVShows.Columns("episodes").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-                dgvTVShows.Columns("episodes").MinimumWidth = 30
-                dgvTVShows.Columns("episodes").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-                dgvTVShows.Columns("episodes").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("episodes").ReadOnly = True
-                dgvTVShows.Columns("episodes").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("episodes").Visible = Not CheckColumnHide_TVShows("episodes")
-                dgvTVShows.Columns("episodes").ToolTipText = Master.eLang.GetString(682, "Episodes")
-                dgvTVShows.Columns("episodes").HeaderText = String.Empty
-                dgvTVShows.Columns("fanartPath").Width = 20
-                dgvTVShows.Columns("fanartPath").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("fanartPath").ReadOnly = True
-                dgvTVShows.Columns("fanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("fanartPath").Visible = Not CheckColumnHide_TVShows("fanartPath")
-                dgvTVShows.Columns("fanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-                dgvTVShows.Columns("hasWatched").Width = 20
-                dgvTVShows.Columns("hasWatched").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("hasWatched").ReadOnly = True
-                dgvTVShows.Columns("hasWatched").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("hasWatched").Visible = Not CheckColumnHide_TVShows("hasWatched")
-                dgvTVShows.Columns("hasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
-                dgvTVShows.Columns("landscapePath").Width = 20
-                dgvTVShows.Columns("landscapePath").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("landscapePath").ReadOnly = True
-                dgvTVShows.Columns("landscapePath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("landscapePath").Visible = Not CheckColumnHide_TVShows("landscapePath")
-                dgvTVShows.Columns("landscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
-                dgvTVShows.Columns("listTitle").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("listTitle").ReadOnly = True
-                dgvTVShows.Columns("listTitle").MinimumWidth = 83
-                dgvTVShows.Columns("listTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("listTitle").Visible = True
-                dgvTVShows.Columns("listTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                dgvTVShows.Columns("listTitle").HeaderText = Master.eLang.GetString(21, "Title")
-                dgvTVShows.Columns("mpaa").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-                dgvTVShows.Columns("mpaa").MinimumWidth = 45
-                dgvTVShows.Columns("mpaa").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("mpaa").ReadOnly = True
-                dgvTVShows.Columns("mpaa").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("mpaa").Visible = Not CheckColumnHide_TVShows("mpaa")
-                dgvTVShows.Columns("mpaa").ToolTipText = Master.eLang.GetString(401, "MPAA")
-                dgvTVShows.Columns("mpaa").HeaderText = Master.eLang.GetString(401, "MPAA")
-                dgvTVShows.Columns("nfoPath").Width = 20
-                dgvTVShows.Columns("nfoPath").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("nfoPath").ReadOnly = True
-                dgvTVShows.Columns("nfoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("nfoPath").Visible = Not CheckColumnHide_TVShows("nfoPath")
-                dgvTVShows.Columns("nfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
-                dgvTVShows.Columns("posterPath").Width = 20
-                dgvTVShows.Columns("posterPath").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("posterPath").ReadOnly = True
-                dgvTVShows.Columns("posterPath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("posterPath").Visible = Not CheckColumnHide_TVShows("posterPath")
-                dgvTVShows.Columns("posterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToolTipText = Master.eLang.GetString(838, "Banner")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath)).ToolTipText = Master.eLang.GetString(1140, "CharacterArt")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).MinimumWidth = 30
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).ToolTipText = Master.eLang.GetString(682, "Episodes")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).HeaderText = String.Empty
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToolTipText = Master.eLang.GetString(149, "Fanart")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).ToolTipText = Master.eLang.GetString(981, "Watched")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).MinimumWidth = 83
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).Visible = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToolTipText = Master.eLang.GetString(21, "Title")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).HeaderText = Master.eLang.GetString(21, "Title")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA )).MinimumWidth = 45
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA )).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA )).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.MPAA))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA )).ToolTipText = Master.eLang.GetString(401, "MPAA")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).HeaderText = Master.eLang.GetString(401, "MPAA")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath ))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).ToolTipText = Master.eLang.GetString(150, "Nfo")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToolTipText = Master.eLang.GetString(148, "Poster")
                 'dgvTVShows.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                 'dgvTVShows.Columns("Rating").MinimumWidth = 30
                 'dgvTVShows.Columns("Rating").Resizable = DataGridViewTriState.False
@@ -8095,37 +7841,37 @@ Public Class frmMain
                 'dgvTVShows.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
                 'dgvTVShows.Columns("Rating").Visible = Not CheckColumnHide_TVShows("Rating")
                 'dgvTVShows.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
-                dgvTVShows.Columns("status").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                dgvTVShows.Columns("status").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("status").ReadOnly = True
-                dgvTVShows.Columns("status").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("status").Visible = Not CheckColumnHide_TVShows("status")
-                dgvTVShows.Columns("status").ToolTipText = Master.eLang.GetString(215, "Status")
-                dgvTVShows.Columns("status").HeaderText = Master.eLang.GetString(215, "Status")
-                dgvTVShows.Columns("originalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                dgvTVShows.Columns("originalTitle").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("originalTitle").ReadOnly = True
-                dgvTVShows.Columns("originalTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("originalTitle").Visible = Not CheckColumnHide_TVShows("originalTitle")
-                dgvTVShows.Columns("originalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
-                dgvTVShows.Columns("originalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
-                dgvTVShows.Columns("themePath").Width = 20
-                dgvTVShows.Columns("themePath").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("themePath").ReadOnly = True
-                dgvTVShows.Columns("themePath").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("themePath").Visible = Not CheckColumnHide_TVShows("themePath")
-                dgvTVShows.Columns("themePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
-                dgvTVShows.Columns("userRating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-                dgvTVShows.Columns("userRating").MinimumWidth = 30
-                dgvTVShows.Columns("userRating").Resizable = DataGridViewTriState.False
-                dgvTVShows.Columns("userRating").ReadOnly = True
-                dgvTVShows.Columns("userRating").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvTVShows.Columns("userRating").Visible = Not CheckColumnHide_TVShows("userRating")
-                dgvTVShows.Columns("userRating").ToolTipText = Master.eLang.GetString(1467, "User Rating")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.Status))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).ToolTipText = Master.eLang.GetString(215, "Status")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).HeaderText = Master.eLang.GetString(215, "Status")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).ToolTipText = Master.eLang.GetString(302, "Original Title")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).HeaderText = Master.eLang.GetString(302, "Original Title")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ToolTipText = Master.eLang.GetString(1118, "Theme")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).MinimumWidth = 30
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.UserRating))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).ToolTipText = Master.eLang.GetString(1467, "User Rating")
 
-                dgvTVShows.Columns("idShow").ValueType = GetType(Long)
+                dgvTVShows.Columns(Database.Helpers.GetMainIdName(Database.TableName.tvshow)).ValueType = GetType(Long)
 
-                If Master.isWindows Then dgvTVShows.Columns("listTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                If Master.isWindows Then dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
 
                 dgvTVShows.Enabled = True
             End If
@@ -8180,9 +7926,9 @@ Public Class frmMain
         dgvTVEpisodes.Enabled = False
 
         If bIsAllSeasons Then
-            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND missing = 0"), " ORDER BY season, episode;"))
+            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("Select * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"), " ORDER BY season, episode;"))
         Else
-            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, " AND season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND missing = 0"), " ORDER BY episode;"))
+            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("Select * FROM episodelist WHERE idShow = ", ShowID, " And season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"), " ORDER BY episode;"))
         End If
 
         bsTVEpisodes.DataSource = dtTVEpisodes
@@ -8195,7 +7941,7 @@ Public Class frmMain
                 Next
             End If
         Catch ex As Exception
-            logger.Warn("default list for episode list sorting has been loaded")
+            logger.Warn("Default list For episode list sorting has been loaded")
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeListSorting, True)
             If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
                 For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
@@ -8204,60 +7950,60 @@ Public Class frmMain
             End If
         End Try
 
-        dgvTVEpisodes.Columns("season").DisplayIndex = 0
-        dgvTVEpisodes.Columns("episode").DisplayIndex = 1
-        dgvTVEpisodes.Columns("aired").DisplayIndex = 2
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).DisplayIndex = 0
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).DisplayIndex = 1
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Aired)).DisplayIndex = 2
 
         For i As Integer = 0 To dgvTVEpisodes.Columns.Count - 1
             dgvTVEpisodes.Columns(i).Visible = False
         Next
 
-        dgvTVEpisodes.Columns("aired").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("aired").Width = 80
-        dgvTVEpisodes.Columns("aired").ReadOnly = True
-        dgvTVEpisodes.Columns("aired").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("aired").Visible = sEpisodeSorting = Enums.EpisodeSorting.Aired
-        dgvTVEpisodes.Columns("aired").ToolTipText = Master.eLang.GetString(728, "Aired")
-        dgvTVEpisodes.Columns("aired").HeaderText = Master.eLang.GetString(728, "Aired")
-        dgvTVEpisodes.Columns("episode").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-        dgvTVEpisodes.Columns("episode").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("episode").ReadOnly = True
-        dgvTVEpisodes.Columns("episode").MinimumWidth = If(bIsAllSeasons, 41, 82)
-        dgvTVEpisodes.Columns("episode").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("episode").Visible = Not sEpisodeSorting = Enums.EpisodeSorting.Aired
-        dgvTVEpisodes.Columns("episode").ToolTipText = Master.eLang.GetString(755, "Episode #")
-        dgvTVEpisodes.Columns("episode").HeaderText = "#"
-        dgvTVEpisodes.Columns("episode").DefaultCellStyle.Format = "00"
-        dgvTVEpisodes.Columns("fanartPath").Width = 20
-        dgvTVEpisodes.Columns("fanartPath").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("fanartPath").ReadOnly = True
-        dgvTVEpisodes.Columns("fanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("fanartPath").Visible = Not CheckColumnHide_TVEpisodes("fanartPath")
-        dgvTVEpisodes.Columns("fanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-        dgvTVEpisodes.Columns("hasSub").Width = 20
-        dgvTVEpisodes.Columns("hasSub").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("hasSub").ReadOnly = True
-        dgvTVEpisodes.Columns("hasSub").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("hasSub").Visible = Not CheckColumnHide_TVEpisodes("hasSub")
-        dgvTVEpisodes.Columns("hasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
-        dgvTVEpisodes.Columns("nfoPath").Width = 20
-        dgvTVEpisodes.Columns("nfoPath").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("nfoPath").ReadOnly = True
-        dgvTVEpisodes.Columns("nfoPath").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("nfoPath").Visible = Not CheckColumnHide_TVEpisodes("nfoPath")
-        dgvTVEpisodes.Columns("nfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
-        dgvTVEpisodes.Columns("playcount").Width = 20
-        dgvTVEpisodes.Columns("playcount").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("playcount").ReadOnly = True
-        dgvTVEpisodes.Columns("playcount").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("playcount").Visible = Not CheckColumnHide_TVEpisodes("playcount")
-        dgvTVEpisodes.Columns("playcount").ToolTipText = Master.eLang.GetString(981, "Watched")
-        dgvTVEpisodes.Columns("posterPath").Width = 20
-        dgvTVEpisodes.Columns("posterPath").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("posterPath").ReadOnly = True
-        dgvTVEpisodes.Columns("posterPath").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("posterPath").Visible = Not CheckColumnHide_TVEpisodes("posterPath")
-        dgvTVEpisodes.Columns("posterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Aired)).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Aired)).Width = 80
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Aired)).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Aired)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Aired)).Visible = sEpisodeSorting = Enums.EpisodeSorting.Aired
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Aired)).ToolTipText = Master.eLang.GetString(728, "Aired")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Aired)).HeaderText = Master.eLang.GetString(728, "Aired")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).MinimumWidth = If(bIsAllSeasons, 41, 82)
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).Visible = Not sEpisodeSorting = Enums.EpisodeSorting.Aired
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).ToolTipText = Master.eLang.GetString(755, "Episode #")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).HeaderText = "#"
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).DefaultCellStyle.Format = "00"
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Width = 20
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToolTipText = Master.eLang.GetString(149, "Fanart")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).Width = 20
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles))
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).ToolTipText = Master.eLang.GetString(152, "Subtitles")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Width = 20
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed))
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).ToolTipText = Master.eLang.GetString(981, "Watched")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).Width = 20
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath ))
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).ToolTipText = Master.eLang.GetString(150, "Nfo")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Width = 20
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToolTipText = Master.eLang.GetString(148, "Poster")
         'dgvTVEpisodes.Columns("rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
         'dgvTVEpisodes.Columns("rating").MinimumWidth = 30
         'dgvTVEpisodes.Columns("rating").Resizable = DataGridViewTriState.False
@@ -8265,36 +8011,36 @@ Public Class frmMain
         'dgvTVEpisodes.Columns("rating").SortMode = DataGridViewColumnSortMode.Automatic
         'dgvTVEpisodes.Columns("rating").Visible = Not CheckColumnHide_TVEpisodes("rating")
         'dgvTVEpisodes.Columns("rating").ToolTipText = Master.eLang.GetString(400, "Rating")
-        dgvTVEpisodes.Columns("season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-        dgvTVEpisodes.Columns("season").MinimumWidth = 41
-        dgvTVEpisodes.Columns("season").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("season").ReadOnly = True
-        dgvTVEpisodes.Columns("season").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("season").Visible = bIsAllSeasons
-        dgvTVEpisodes.Columns("season").ToolTipText = Master.eLang.GetString(659, "Season #")
-        dgvTVEpisodes.Columns("season").HeaderText = "#"
-        dgvTVEpisodes.Columns("season").DefaultCellStyle.Format = "00"
-        dgvTVEpisodes.Columns("title").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("title").ReadOnly = True
-        dgvTVEpisodes.Columns("title").MinimumWidth = 83
-        dgvTVEpisodes.Columns("title").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("title").Visible = True
-        dgvTVEpisodes.Columns("title").ToolTipText = Master.eLang.GetString(21, "Title")
-        dgvTVEpisodes.Columns("title").HeaderText = Master.eLang.GetString(21, "Title")
-        dgvTVEpisodes.Columns("userRating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-        dgvTVEpisodes.Columns("userRating").MinimumWidth = 30
-        dgvTVEpisodes.Columns("userRating").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("userRating").ReadOnly = True
-        dgvTVEpisodes.Columns("userRating").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVEpisodes.Columns("userRating").Visible = Not CheckColumnHide_TVEpisodes("userRating")
-        dgvTVEpisodes.Columns("userRating").ToolTipText = Master.eLang.GetString(1467, "User Rating")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).MinimumWidth = 41
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).Visible = bIsAllSeasons
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).ToolTipText = Master.eLang.GetString(659, "Season #")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).HeaderText = "#"
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).DefaultCellStyle.Format = "00"
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).MinimumWidth = 83
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).Visible = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).ToolTipText = Master.eLang.GetString(21, "Title")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).HeaderText = Master.eLang.GetString(21, "Title")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).MinimumWidth = 30
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.UserRating))
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).ToolTipText = Master.eLang.GetString(1467, "User Rating")
 
-        dgvTVEpisodes.Columns("idEpisode").ValueType = GetType(Long)
-        dgvTVEpisodes.Columns("idShow").ValueType = GetType(Long)
-        dgvTVEpisodes.Columns("episode").ValueType = GetType(Integer)
-        dgvTVEpisodes.Columns("season").ValueType = GetType(Integer)
+        dgvTVEpisodes.Columns(Database.Helpers.GetMainIdName(Database.TableName.episode)).ValueType = GetType(Long)
+        dgvTVEpisodes.Columns(Database.Helpers.GetMainIdName(Database.TableName.tvshow)).ValueType = GetType(Long)
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)).ValueType = GetType(Integer)
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).ValueType = GetType(Integer)
 
-        If Master.isWindows Then dgvTVEpisodes.Columns("title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        If Master.isWindows Then dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
 
         dgvTVEpisodes.CurrentCell = Nothing
         dgvTVEpisodes.ClearSelection()
@@ -8314,11 +8060,11 @@ Public Class frmMain
         dgvTVEpisodes.DataSource = Nothing
 
         If Master.eSettings.TVDisplayMissingEpisodes Then
-            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT * FROM seasonlist WHERE idShow = ", ShowID, " ORDER BY season;"))
+            Master.DB.FillDataTable(dtTVSeasons, String.Concat("Select * FROM seasonlist WHERE idShow = ", ShowID, " ORDER BY season;"))
         Else
-            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT DISTINCT seasonlist.* ",
+            Master.DB.FillDataTable(dtTVSeasons, String.Concat("Select DISTINCT seasonlist.* ",
                                                                 "FROM seasonlist ",
-                                                                "LEFT OUTER JOIN episodelist ON (seasonlist.idShow = episodelist.idShow) AND (seasonlist.season = episodelist.season) ",
+                                                                "LEFT OUTER JOIN episodelist On (seasonlist.idShow = episodelist.idShow) And (seasonlist.season = episodelist.season) ",
                                                                 "WHERE seasonlist.idShow = ", ShowID, " AND (episodelist.missing = 0 OR seasonlist.season = -1) ",
                                                                 "ORDER BY seasonlist.season;"))
         End If
@@ -8344,77 +8090,77 @@ Public Class frmMain
             End Try
         End If
 
-        dgvTVSeasons.Columns("season").DisplayIndex = 0
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).DisplayIndex = 0
 
         For i As Integer = 0 To dgvTVSeasons.Columns.Count - 1
             dgvTVSeasons.Columns(i).Visible = False
         Next
 
-        dgvTVSeasons.Columns("bannerPath").Width = 20
-        dgvTVSeasons.Columns("bannerPath").Resizable = DataGridViewTriState.False
-        dgvTVSeasons.Columns("bannerPath").ReadOnly = True
-        dgvTVSeasons.Columns("bannerPath").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVSeasons.Columns("bannerPath").Visible = Not CheckColumnHide_TVSeasons("bannerPath")
-        dgvTVSeasons.Columns("bannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
-        dgvTVSeasons.Columns("episodes").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-        dgvTVSeasons.Columns("episodes").MinimumWidth = 30
-        dgvTVSeasons.Columns("episodes").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-        dgvTVSeasons.Columns("episodes").Resizable = DataGridViewTriState.False
-        dgvTVSeasons.Columns("episodes").ReadOnly = True
-        dgvTVSeasons.Columns("episodes").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVSeasons.Columns("episodes").Visible = Not CheckColumnHide_TVSeasons("episodes")
-        dgvTVSeasons.Columns("episodes").ToolTipText = Master.eLang.GetString(682, "Episodes")
-        dgvTVSeasons.Columns("episodes").HeaderText = String.Empty
-        dgvTVSeasons.Columns("fanartPath").Width = 20
-        dgvTVSeasons.Columns("fanartPath").Resizable = DataGridViewTriState.False
-        dgvTVSeasons.Columns("fanartPath").ReadOnly = True
-        dgvTVSeasons.Columns("fanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVSeasons.Columns("fanartPath").Visible = Not CheckColumnHide_TVSeasons("fanartPath")
-        dgvTVSeasons.Columns("fanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-        dgvTVSeasons.Columns("hasWatched").Width = 20
-        dgvTVSeasons.Columns("hasWatched").Resizable = DataGridViewTriState.False
-        dgvTVSeasons.Columns("hasWatched").ReadOnly = True
-        dgvTVSeasons.Columns("hasWatched").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVSeasons.Columns("hasWatched").Visible = Not CheckColumnHide_TVSeasons("hasWatched")
-        dgvTVSeasons.Columns("hasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
-        dgvTVSeasons.Columns("landscapePath").Width = 20
-        dgvTVSeasons.Columns("landscapePath").Resizable = DataGridViewTriState.False
-        dgvTVSeasons.Columns("landscapePath").ReadOnly = True
-        dgvTVSeasons.Columns("landscapePath").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVSeasons.Columns("landscapePath").Visible = Not CheckColumnHide_TVSeasons("landscapePath")
-        dgvTVSeasons.Columns("landscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
-        dgvTVSeasons.Columns("posterPath").Width = 20
-        dgvTVSeasons.Columns("posterPath").Resizable = DataGridViewTriState.False
-        dgvTVSeasons.Columns("posterPath").ReadOnly = True
-        dgvTVSeasons.Columns("posterPath").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVSeasons.Columns("posterPath").Visible = Not CheckColumnHide_TVSeasons("posterPath")
-        dgvTVSeasons.Columns("posterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
-        dgvTVSeasons.Columns("season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-        dgvTVSeasons.Columns("season").MinimumWidth = 41
-        dgvTVSeasons.Columns("season").Resizable = DataGridViewTriState.False
-        dgvTVSeasons.Columns("season").ReadOnly = True
-        dgvTVSeasons.Columns("season").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVSeasons.Columns("season").Visible = True
-        dgvTVSeasons.Columns("season").ToolTipText = Master.eLang.GetString(659, "Season #")
-        dgvTVSeasons.Columns("season").HeaderText = "#"
-        dgvTVSeasons.Columns("season").DefaultCellStyle.Format = "00"
-        dgvTVSeasons.Columns("title").Resizable = DataGridViewTriState.False
-        dgvTVSeasons.Columns("title").ReadOnly = True
-        dgvTVSeasons.Columns("title").MinimumWidth = 83
-        dgvTVSeasons.Columns("title").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVSeasons.Columns("title").Visible = True
-        dgvTVSeasons.Columns("title").ToolTipText = Master.eLang.GetString(865, "Season Title")
-        dgvTVSeasons.Columns("title").HeaderText = Master.eLang.GetString(865, "Season Title")
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Width = 20
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ReadOnly = True
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Visible = Not CheckColumnHide_TVSeasons(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath))
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToolTipText = Master.eLang.GetString(838, "Banner")
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).MinimumWidth = 30
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).ReadOnly = True
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).Visible = Not CheckColumnHide_TVSeasons(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount))
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).ToolTipText = Master.eLang.GetString(682, "Episodes")
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount)).HeaderText = String.Empty
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Width = 20
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ReadOnly = True
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_TVSeasons(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToolTipText = Master.eLang.GetString(149, "Fanart")
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).Width = 20
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).ReadOnly = True
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).Visible = Not CheckColumnHide_TVSeasons(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched))
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).ToolTipText = Master.eLang.GetString(981, "Watched")
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Width = 20
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ReadOnly = True
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Visible = Not CheckColumnHide_TVSeasons(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath))
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToolTipText = Master.eLang.GetString(1035, "Landscape")
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Width = 20
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ReadOnly = True
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_TVSeasons(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToolTipText = Master.eLang.GetString(148, "Poster")
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).MinimumWidth = 41
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).ReadOnly = True
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).Visible = True
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).ToolTipText = Master.eLang.GetString(659, "Season #")
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).HeaderText = "#"
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).DefaultCellStyle.Format = "00"
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).ReadOnly = True
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).MinimumWidth = 83
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).Visible = True
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).ToolTipText = Master.eLang.GetString(865, "Season Title")
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).HeaderText = Master.eLang.GetString(865, "Season Title")
 
-        dgvTVSeasons.Columns("idSeason").ValueType = GetType(Long)
-        dgvTVSeasons.Columns("idShow").ValueType = GetType(Long)
-        dgvTVSeasons.Columns("season").ValueType = GetType(Integer)
+        dgvTVSeasons.Columns(Database.Helpers.GetMainIdName(Database.TableName.season)).ValueType = GetType(Long)
+        dgvTVSeasons.Columns(Database.Helpers.GetMainIdName(Database.TableName.tvshow)).ValueType = GetType(Long)
+        dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).ValueType = GetType(Integer)
 
-        If Master.isWindows Then dgvTVSeasons.Columns("title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        If Master.isWindows Then dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Title)).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
 
         If Not Master.isCL Then SortingRestore_TVSeasons()
 
-        FillList_TVEpisodes(ShowID, Convert.ToInt32(dgvTVSeasons.Item("season", 0).Value))
+        FillList_TVEpisodes(ShowID, Convert.ToInt32(dgvTVSeasons.Item(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber), 0).Value))
 
         AddHandler dgvTVSeasons.SelectionChanged, AddressOf dgvTVSeasons_SelectionChanged
     End Sub
@@ -8853,12 +8599,12 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_TVEpisode()
         SuspendLayout()
-        lblTitle.Text = If(Not currTV.FileItem.FullPathSpecified, String.Concat(currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.TVEpisode.Title)
+        lblTitle.Text = If(Not currTV.FileItemSpecified, String.Concat(currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.TVEpisode.Title)
         txtPlot.Text = currTV.TVEpisode.Plot
         lblCredits.Text = String.Join(" / ", currTV.TVEpisode.Credits.ToArray)
         lblDirectors.Text = String.Join(" / ", currTV.TVEpisode.Directors.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
-        txtFilePath.Text = currTV.FileItem.FullPath
+        txtFilePath.Text = If(currTV.FileItemSpecified, currTV.FileItem.FullPath, String.Empty)
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.TVEpisode.AiredSpecified, Date.Parse(currTV.TVEpisode.Aired).ToShortDateString, "?"))
         lblReleaseDate.Text = currTV.TVEpisode.Aired
         lblReleaseDateHeader.Text = Master.eLang.GetString(728, "Aired")
@@ -8980,7 +8726,7 @@ Public Class frmMain
         If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
-        If Master.eSettings.TVScraperMetaDataScan AndAlso currTV.FileItem.FullPathSpecified Then
+        If Master.eSettings.TVScraperMetaDataScan AndAlso currTV.FileItemSpecified Then
             SetAVImages(APIXML.GetAVImages(currTV.TVEpisode.FileInfo, currTV.ContentType, currTV.TVEpisode.VideoSource))
             pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
@@ -9449,12 +9195,6 @@ Public Class frmMain
             logger.Trace("LoadWithGUI()")
             If Not CloseApp Then
 
-                'moved to frmMain_Load
-                'Me.tpMovies.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.Content_Type.Movie, .DefaultList = "movielist"}
-                'Me.tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.Content_Type.MovieSet, .DefaultList = "setslist"}
-                'Me.tpTVShows.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(653, "TV Shows"), .ContentType = Enums.Content_Type.TV, .DefaultList = "tvshowlist"}
-                'ModulesManager.Instance.RuntimeObjects.MediaTabSelected = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
-
                 SetUp(True)
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(863, "Positioning controls..."))
@@ -9610,7 +9350,6 @@ Public Class frmMain
             BringToFront()
             Activate()
             cmnuTray.Enabled = True
-            If Not Functions.CheckIfWindows Then Mono_Shown()
         End If
     End Sub
 
@@ -11224,10 +10963,6 @@ Public Class frmMain
                 CreateScrapeList_TV(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifiers)
         End Select
     End Sub
-
-    Private Sub Mono_Shown()
-        pnlNoInfo.Location = New Point(Convert.ToInt32((scMain.Panel2.Width - pnlNoInfo.Width) / 2), Convert.ToInt32((scMain.Panel2.Height - pnlNoInfo.Height) / 2))
-    End Sub
     ''' <summary>
     ''' Slide the genre images along with the panel and move with form resizing
     ''' </summary>
@@ -11312,7 +11047,7 @@ Public Class frmMain
 
         'create ScrapeList of movies acording to scrapetype
         For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item("locked")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+            If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifiers
             sModifier.DoSearch = ScrapeModifiers.DoSearch
@@ -11334,25 +11069,25 @@ Public Class frmMain
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item("new")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
                 Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item("marked")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = bsMovies.Find(Database.Helpers.GetMainIdName(Database.TableName.movie), drvRow.Item(0))
                     If Not index >= 0 Then Continue For
                 Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item("bannerPath").ToString) Then sModifier.MainBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("clearArtPath").ToString) Then sModifier.MainClearArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("clearLogoPath").ToString) Then sModifier.MainClearLogo = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("discArtPath").ToString) Then sModifier.MainDiscArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("efanartsPath").ToString) Then sModifier.MainExtrafanarts = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("ethumbsPath").ToString) Then sModifier.MainExtrathumbs = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("fanartPath").ToString) Then sModifier.MainFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("landscapePath").ToString) Then sModifier.MainLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("nfoPath").ToString) Then sModifier.MainNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("posterPath").ToString) Then sModifier.MainPoster = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("rhemePath").ToString) Then sModifier.MainTheme = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("rrailerPath").ToString) Then sModifier.MainTrailer = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.MainBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ToString) Then sModifier.MainClearArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ToString) Then sModifier.MainDiscArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ToString) Then sModifier.MainExtrafanarts = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).ToString) Then sModifier.MainExtrathumbs = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.nfoPath )).ToString) Then sModifier.MainNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ToString) Then sModifier.MainTheme = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).ToString) Then sModifier.MainTrailer = False
             End Select
             If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
                 ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
@@ -11486,7 +11221,7 @@ Public Class frmMain
 
         'create ScrapeList of moviesets acording to scrapetype
         For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item("locked")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+            If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifiers
             sModifier.DoSearch = ScrapeModifiers.DoSearch
@@ -11501,21 +11236,21 @@ Public Class frmMain
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item("new")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
                 Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item("marked")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                    Dim index As Integer = bsMovieSets.Find("idSet", drvRow.Item(0))
+                    Dim index As Integer = bsMovieSets.Find(Database.Helpers.GetMainIdName(Database.TableName.movieset), drvRow.Item(0))
                     If Not index >= 0 Then Continue For
                 Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item("bannerPath").ToString) Then sModifier.MainBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("clearArtPath").ToString) Then sModifier.MainClearArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("clearLogoPath").ToString) Then sModifier.MainClearLogo = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("discArtPath").ToString) Then sModifier.MainDiscArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("fanartPath").ToString) Then sModifier.MainFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("landscapePath").ToString) Then sModifier.MainLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("nfoPath").ToString) Then sModifier.MainNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("posterPath").ToString) Then sModifier.MainPoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.MainBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ToString) Then sModifier.MainClearArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ToString) Then sModifier.MainDiscArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
             End Select
             If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
                 ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
@@ -11665,7 +11400,7 @@ Public Class frmMain
 
         'create ScrapeList of tv shows acording to scrapetype
         For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item("locked")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+            If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifiers
             sModifier.DoSearch = ScrapeModifiers.DoSearch
@@ -11698,23 +11433,23 @@ Public Class frmMain
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item("new")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.New))) Then Continue For
                 Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item("marked")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                    Dim index As Integer = bsTVShows.Find("idShow", drvRow.Item(0))
+                    Dim index As Integer = bsTVShows.Find(Database.Helpers.GetMainIdName(Database.TableName.tvshow), drvRow.Item(0))
                     If Not index >= 0 Then Continue For
                 Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item("bannerPath").ToString) Then sModifier.MainBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("characterArtPath").ToString) Then sModifier.MainCharacterArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("clearArtPath").ToString) Then sModifier.MainClearArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("clearLogoPath").ToString) Then sModifier.MainClearLogo = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("efanartsPath").ToString) Then sModifier.MainExtrafanarts = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("fanartPath").ToString) Then sModifier.MainFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("landscapePath").ToString) Then sModifier.MainLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("nfoPath").ToString) Then sModifier.MainNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("posterPath").ToString) Then sModifier.MainPoster = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("themePath").ToString) Then sModifier.MainTheme = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.MainBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath)).ToString) Then sModifier.MainCharacterArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ToString) Then sModifier.MainClearArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ToString) Then sModifier.MainExtrafanarts = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ToString) Then sModifier.MainTheme = False
             End Select
             If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
                 ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
@@ -11845,7 +11580,7 @@ Public Class frmMain
 
         'create ScrapeList of episodes acording to scrapetype
         For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item("locked")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+            If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifiers
             sModifier.DoSearch = ScrapeModifiers.DoSearch
@@ -11857,16 +11592,16 @@ Public Class frmMain
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item("new")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
                 Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item("marked")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                    Dim index As Integer = bsTVEpisodes.Find("idEpisode", drvRow.Item(0))
+                    Dim index As Integer = bsTVEpisodes.Find(Database.Helpers.GetMainIdName(Database.TableName.episode), drvRow.Item(0))
                     If Not index >= 0 Then Continue For
                 Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item("fanartPath").ToString) Then sModifier.EpisodeFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("nfoPath").ToString) Then sModifier.EpisodeNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("posterPath").ToString) Then sModifier.EpisodePoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.EpisodeFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.EpisodeNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.EpisodePoster = False
             End Select
             If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
                 ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
@@ -12001,33 +11736,34 @@ Public Class frmMain
 
         'create ScrapeList of tv seasons acording to scrapetype
         For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item("locked")) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+            If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifiers
+            Dim iSeason As Integer = CInt(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)))
             sModifier.DoSearch = ScrapeModifiers.DoSearch
-            sModifier.AllSeasonsBanner = ScrapeModifiers.AllSeasonsBanner AndAlso AllSeasonsBannerAllowed AndAlso CInt(drvRow.Item("Season")) = -1
-            sModifier.AllSeasonsFanart = ScrapeModifiers.AllSeasonsFanart AndAlso AllSeasonsFanartAllowed AndAlso CInt(drvRow.Item("Season")) = -1
-            sModifier.AllSeasonsLandscape = ScrapeModifiers.AllSeasonsLandscape AndAlso AllSeasonsLandscapeAllowed AndAlso CInt(drvRow.Item("Season")) = -1
-            sModifier.AllSeasonsPoster = ScrapeModifiers.AllSeasonsPoster AndAlso AllSeasonsPosterAllowed AndAlso CInt(drvRow.Item("Season")) = -1
-            sModifier.SeasonBanner = ScrapeModifiers.SeasonBanner AndAlso SeasonBannerAllowed AndAlso Not CInt(drvRow.Item("Season")) = -1
-            sModifier.SeasonFanart = ScrapeModifiers.SeasonFanart AndAlso SeasonFanartAllowed AndAlso Not CInt(drvRow.Item("Season")) = -1
-            sModifier.SeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso SeasonLandscapeAllowed AndAlso Not CInt(drvRow.Item("Season")) = -1
+            sModifier.AllSeasonsBanner = ScrapeModifiers.AllSeasonsBanner AndAlso AllSeasonsBannerAllowed AndAlso iSeason = -1
+            sModifier.AllSeasonsFanart = ScrapeModifiers.AllSeasonsFanart AndAlso AllSeasonsFanartAllowed AndAlso iSeason = -1
+            sModifier.AllSeasonsLandscape = ScrapeModifiers.AllSeasonsLandscape AndAlso AllSeasonsLandscapeAllowed AndAlso iSeason = -1
+            sModifier.AllSeasonsPoster = ScrapeModifiers.AllSeasonsPoster AndAlso AllSeasonsPosterAllowed AndAlso iSeason = -1
+            sModifier.SeasonBanner = ScrapeModifiers.SeasonBanner AndAlso SeasonBannerAllowed AndAlso Not iSeason = -1
+            sModifier.SeasonFanart = ScrapeModifiers.SeasonFanart AndAlso SeasonFanartAllowed AndAlso Not iSeason = -1
+            sModifier.SeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso SeasonLandscapeAllowed AndAlso Not iSeason = -1
             sModifier.SeasonNFO = ScrapeModifiers.SeasonNFO
-            sModifier.SeasonPoster = ScrapeModifiers.SeasonPoster AndAlso SeasonPosterAllowed AndAlso Not CInt(drvRow.Item("Season")) = -1
+            sModifier.SeasonPoster = ScrapeModifiers.SeasonPoster AndAlso SeasonPosterAllowed AndAlso Not iSeason = -1
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item("new")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
                 Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item("marked")) Then Continue For
+                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                    Dim index As Integer = bsTVShows.Find("idShow", drvRow.Item(0))
+                    Dim index As Integer = bsTVShows.Find(Database.Helpers.GetMainIdName(Database.TableName.tvshow), drvRow.Item(0))
                     If Not index >= 0 Then Continue For
                 Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item("bannerPath").ToString) Then sModifier.SeasonBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("fanartPath").ToString) Then sModifier.SeasonFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("landscapePath").ToString) Then sModifier.SeasonLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("posterPath").ToString) Then sModifier.SeasonPoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.SeasonBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.SeasonFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.SeasonLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.SeasonPoster = False
             End Select
             If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
                 ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
@@ -12157,7 +11893,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_IMDb(Master.DB.Load_TVEpisode(CLng(sRow.Cells("idEpisode").Value), True)))
+                    Functions.Launch(StringUtils.GetURL_IMDb(Master.DB.Load_TVEpisode(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.episode)).Value), True)))
                 Next
             End If
         End If
@@ -12175,7 +11911,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_TMDb(Master.DB.Load_TVEpisode(CLng(sRow.Cells("idEpisode").Value), True)))
+                    Functions.Launch(StringUtils.GetURL_TMDb(Master.DB.Load_TVEpisode(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.episode)).Value), True)))
                 Next
             End If
         End If
@@ -12193,7 +11929,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_TVDb(Master.DB.Load_TVEpisode(CLng(sRow.Cells("idEpisode").Value), True)))
+                    Functions.Launch(StringUtils.GetURL_TVDb(Master.DB.Load_TVEpisode(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.episode)).Value), True)))
                 Next
             End If
         End If
@@ -12247,7 +11983,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_TMDb(Master.DB.Load_MovieSet(CLng(sRow.Cells("idSet").Value))))
+                    Functions.Launch(StringUtils.GetURL_TMDb(Master.DB.Load_MovieSet(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.movieset)).Value))))
                 Next
             End If
         End If
@@ -12265,7 +12001,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_IMDb(Master.DB.Load_TVSeason(CLng(sRow.Cells("idSeason").Value), True, False)))
+                    Functions.Launch(StringUtils.GetURL_IMDb(Master.DB.Load_TVSeason(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.season)).Value), True, False)))
                 Next
             End If
         End If
@@ -12283,7 +12019,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_TMDb(Master.DB.Load_TVSeason(CLng(sRow.Cells("idSeason").Value), True, False)))
+                    Functions.Launch(StringUtils.GetURL_TMDb(Master.DB.Load_TVSeason(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.season)).Value), True, False)))
                 Next
             End If
         End If
@@ -12301,7 +12037,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_TVDb(Master.DB.Load_TVSeason(CLng(sRow.Cells("idSeason").Value), True, False)))
+                    Functions.Launch(StringUtils.GetURL_TVDb(Master.DB.Load_TVSeason(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.season)).Value), True, False)))
                 Next
             End If
         End If
@@ -12319,7 +12055,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_IMDb(Master.DB.Load_TVShow(CLng(sRow.Cells("idSeason").Value), False, False)))
+                    Functions.Launch(StringUtils.GetURL_IMDb(Master.DB.Load_TVShow(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.tvshow)).Value), False, False)))
                 Next
             End If
         End If
@@ -12337,7 +12073,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_TMDb(Master.DB.Load_TVShow(CLng(sRow.Cells("idSeason").Value), False, False)))
+                    Functions.Launch(StringUtils.GetURL_TMDb(Master.DB.Load_TVShow(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.tvshow)).Value), False, False)))
                 Next
             End If
         End If
@@ -12355,7 +12091,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_TVDb(Master.DB.Load_TVShow(CLng(sRow.Cells("idSeason").Value), False, False)))
+                    Functions.Launch(StringUtils.GetURL_TVDb(Master.DB.Load_TVShow(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.tvshow)).Value), False, False)))
                 Next
             End If
         End If
@@ -12464,7 +12200,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -12491,7 +12227,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -12550,7 +12286,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -12628,7 +12364,7 @@ Public Class frmMain
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -12655,7 +12391,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -12733,7 +12469,7 @@ Public Class frmMain
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -12760,7 +12496,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -12838,7 +12574,7 @@ Public Class frmMain
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -12929,7 +12665,7 @@ Public Class frmMain
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -12956,7 +12692,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -12983,7 +12719,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13014,7 +12750,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13084,7 +12820,7 @@ Public Class frmMain
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13111,7 +12847,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13138,7 +12874,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13216,7 +12952,7 @@ Public Class frmMain
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13243,7 +12979,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13270,7 +13006,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13301,7 +13037,7 @@ Public Class frmMain
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14820,11 +14556,7 @@ Public Class frmMain
         ClearInfo()
 
         If dgvMovies.Rows.Count > iRow Then
-            If String.IsNullOrEmpty(dgvMovies.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovies.Item("ClearArtPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvMovies.Item("ClearLogoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovies.Item("DiscArtPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvMovies.Item("EFanartsPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovies.Item("EThumbsPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvMovies.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovies.Item("LandscapePath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvMovies.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovies.Item("PosterPath", iRow).Value.ToString) Then
+            If Not DataGridView_ColumnAnyInfoValue(dgvMovies, iRow) Then
                 ShowNoInfo(True, Enums.ContentType.Movie)
                 currMovie = Master.DB.Load_Movie(Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), iRow).Value))
                 FillScreenInfoWith_Movie()
@@ -14848,17 +14580,13 @@ Public Class frmMain
         End While
 
         ClearInfo()
-
         If dgvMovieSets.Rows.Count > iRow Then
-            If String.IsNullOrEmpty(dgvMovieSets.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovieSets.Item("ClearArtPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvMovieSets.Item("ClearLogoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovieSets.Item("DiscArtPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvMovieSets.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovieSets.Item("LandscapePath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvMovieSets.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovieSets.Item("PosterPath", iRow).Value.ToString) Then
+            If Not DataGridView_ColumnAnyInfoValue(dgvMovieSets, iRow) Then
                 ShowNoInfo(True, Enums.ContentType.MovieSet)
-                currMovieSet = Master.DB.Load_MovieSet(Convert.ToInt64(dgvMovieSets.Item("idSet", iRow).Value))
+                currMovieSet = Master.DB.Load_MovieSet(Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), iRow).Value))
                 FillScreenInfoWith_MovieSet()
             Else
-                LoadInfo_MovieSet(Convert.ToInt64(dgvMovieSets.Item("idSet", iRow).Value))
+                LoadInfo_MovieSet(Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), iRow).Value))
             End If
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not fScanner.IsBusy AndAlso
@@ -14876,16 +14604,15 @@ Public Class frmMain
         ClearInfo()
 
         If dgvTVEpisodes.Rows.Count > iRow Then
-            If String.IsNullOrEmpty(dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToInt64(dgvTVEpisodes.Item("idFile", iRow).Value) = -1 Then
+            If Not Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.file), iRow).Value) = -1 AndAlso Not DataGridView_ColumnAnyInfoValue(dgvTVEpisodes, iRow) Then
                 ShowNoInfo(True, Enums.ContentType.TVEpisode)
-                currTV = Master.DB.Load_TVEpisode(Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
+                currTV = Master.DB.Load_TVEpisode(Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), iRow).Value), True)
                 FillScreenInfoWith_TVEpisode()
             Else
-                LoadInfo_TVEpisode(Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", iRow).Value))
+                LoadInfo_TVEpisode(Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), iRow).Value))
             End If
 
-            If Not Convert.ToInt64(dgvTVEpisodes.Item("idFile", iRow).Value) = -1 AndAlso Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not fScanner.IsBusy AndAlso
+            If Not Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.file), iRow).Value) = -1 AndAlso Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not fScanner.IsBusy AndAlso
                 Not bwReload_Movies.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwReload_TVShows.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 cmnuEpisode.Enabled = True
             End If
@@ -14904,16 +14631,14 @@ Public Class frmMain
         ClearInfo()
 
         If dgvTVSeasons.Rows.Count > iRow Then
-            If String.IsNullOrEmpty(dgvTVSeasons.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvTVSeasons.Item("FanartPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvTVSeasons.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvTVSeasons.Item("PosterPath", iRow).Value.ToString) AndAlso
-                Not Convert.ToBoolean(dgvTVSeasons.Item("Missing", iRow).Value) Then
+            If Not Convert.ToBoolean(dgvTVSeasons.Item(Database.Helpers.GetColumnName(Database.ColumnName.IsMissing), iRow).Value) AndAlso Not DataGridView_ColumnAnyInfoValue(dgvTVSeasons, iRow) Then
                 If Not currThemeType = Enums.ContentType.TVSeason Then ApplyTheme(Enums.ContentType.TVSeason)
                 ShowNoInfo(True, Enums.ContentType.TVSeason)
-                currTV = Master.DB.Load_TVSeason(Convert.ToInt64(dgvTVSeasons.Item("idSeason", iRow).Value), True, False)
-                FillList_TVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
+                currTV = Master.DB.Load_TVSeason(Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), iRow).Value), True, False)
+                FillList_TVEpisodes(Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), iRow).Value), Convert.ToInt32(dgvTVSeasons.Item(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber), iRow).Value))
             Else
-                LoadInfo_TVSeason(Convert.ToInt64(dgvTVSeasons.Item("idSeason", iRow).Value))
-                FillList_TVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
+                LoadInfo_TVSeason(Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), iRow).Value))
+                FillList_TVEpisodes(Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), iRow).Value), Convert.ToInt32(dgvTVSeasons.Item(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber), iRow).Value))
             End If
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not fScanner.IsBusy AndAlso
@@ -14935,16 +14660,12 @@ Public Class frmMain
         ClearInfo()
 
         If dgvTVShows.Rows.Count > iRow Then
-            If String.IsNullOrEmpty(dgvTVShows.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvTVShows.Item("CharacterArtPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvTVShows.Item("ClearArtPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvTVShows.Item("ClearLogoPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvTVShows.Item("EFanartsPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvTVShows.Item("FanartPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvTVShows.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvTVShows.Item("NfoPath", iRow).Value.ToString) AndAlso
-                String.IsNullOrEmpty(dgvTVShows.Item("PosterPath", iRow).Value.ToString) Then
+            If Not DataGridView_ColumnAnyInfoValue(dgvTVShows, iRow) Then
                 ShowNoInfo(True, Enums.ContentType.TVShow)
-                currTV = Master.DB.Load_TVShow(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value), False, False)
-                FillList_TVSeasons(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value))
+                currTV = Master.DB.Load_TVShow(Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), iRow).Value), False, False)
+                FillList_TVSeasons(Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), iRow).Value))
             Else
-                LoadInfo_TVShow(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value))
+                LoadInfo_TVShow(Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), iRow).Value))
             End If
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not fScanner.IsBusy AndAlso
@@ -15080,16 +14801,16 @@ Public Class frmMain
                 strIDName = Database.Helpers.GetMainIdName(Database.TableName.movie)
             Case Enums.ContentType.MovieSet
                 nDataGridView = dgvMovieSets
-                strIDName = "idSet"
+                strIDName = Database.Helpers.GetMainIdName(Database.TableName.movieset)
             Case Enums.ContentType.TVEpisode
                 nDataGridView = dgvTVEpisodes
-                strIDName = "idEpisode"
+                strIDName = Database.Helpers.GetMainIdName(Database.TableName.episode)
             Case Enums.ContentType.TVSeason
                 nDataGridView = dgvTVSeasons
-                strIDName = "idSeason"
+                strIDName = Database.Helpers.GetMainIdName(Database.TableName.season)
             Case Enums.ContentType.TVShow, Enums.ContentType.TV
                 nDataGridView = dgvTVShows
-                strIDName = "idShow"
+                strIDName = Database.Helpers.GetMainIdName(Database.TableName.tvshow)
         End Select
 
         If nDataGridView IsNot Nothing AndAlso Not String.IsNullOrEmpty(strIDName) Then
@@ -16380,8 +16101,6 @@ Public Class frmMain
                 Case Enums.ContentType.TVShow
                     lblNoInfo.Text = Master.eLang.GetString(651, "No information is available for this Show")
                     If Not currThemeType = tType Then ApplyTheme(tType)
-                Case Else
-                    logger.Warn("Invalid media type <{0}>", tType)
             End Select
         End If
 

@@ -98,11 +98,11 @@ Public Class Database
         DiscArtPath
         DisplayEpisode
         DisplaySeason
+        EpisodeCount
         EpisodeGuideURL
         EpisodeNumber
         EpisodeOrdering
         EpisodeSorting
-        EpisodeCount
         ExtrafanartsPath
         ExtrathumbsPath
         FanartPath
@@ -115,6 +115,7 @@ Public Class Database
         LandscapePath
         Language
         LastPlayed
+        ListTitle
         Locked
         LockedEpisodesCount
         MPAA
@@ -126,12 +127,13 @@ Public Class Database
         MarkedEpisodesCount
         MovieCount
         MovieTitles
+        [New]
         NewEpisodesCount
         NfoPath
         OriginalTitle
         OutOfTolerance
         Outline
-        Playcount
+        PlayCount
         Plot
         PosterPath
         Premiered
@@ -157,8 +159,6 @@ Public Class Database
         UserRating
         VideoSource
         Year
-        [New]
-        ListTitle
     End Enum
 
     Public Enum TableName As Integer
@@ -249,7 +249,7 @@ Public Class Database
     End Function
 
     Private Function AddFileItem(ByVal fileItem As FileItem) As Long
-        If Not fileItem.FullPathSpecified Then Return -1
+        If fileItem Is Nothing OrElse Not fileItem.FullPathSpecified Then Return -1
 
         If Not fileItem.IDSpecified Then
             'search for an existing entry with same path
@@ -2420,7 +2420,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("displayEpisode")) Then .DisplayEpisode = Convert.ToInt32(SQLreader("displayEpisode"))
                         If Not DBNull.Value.Equals(SQLreader("aired")) Then .Aired = SQLreader("aired").ToString
                         If Not DBNull.Value.Equals(SQLreader("plot")) Then .Plot = SQLreader("plot").ToString
-                        If Not DBNull.Value.Equals(SQLreader("playcount")) Then .Playcount = Convert.ToInt32(SQLreader("playcount"))
+                        If Not DBNull.Value.Equals(SQLreader("playCount")) Then .Playcount = Convert.ToInt32(SQLreader("playCount"))
                         If Not DBNull.Value.Equals(SQLreader("dateAdded")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("dateAdded"))).ToString("yyyy-MM-dd HH:mm:ss")
                         If Not DBNull.Value.Equals(SQLreader("runtime")) Then .Runtime = SQLreader("runtime").ToString
                         If Not DBNull.Value.Equals(SQLreader("videoSource")) Then .VideoSource = SQLreader("videoSource").ToString
@@ -2800,7 +2800,7 @@ Public Class Database
                                                            "tagline,",
                                                            "runtime,",
                                                            "releaseDate,",
-                                                           "playcount,",
+                                                           "playCount,",
                                                            "trailer,",
                                                            "nfoPath,",
                                                            "trailerPath,",
@@ -2847,7 +2847,7 @@ Public Class Database
             Dim par_tagline As SQLiteParameter = sqlCommand.Parameters.Add("par_tagline", DbType.String, 0, "tagline")
             Dim par_runtime As SQLiteParameter = sqlCommand.Parameters.Add("par_runtime", DbType.String, 0, "runtime")
             Dim par_releaseDate As SQLiteParameter = sqlCommand.Parameters.Add("par_releaseDate", DbType.String, 0, "releaseDate")
-            Dim par_playcount As SQLiteParameter = sqlCommand.Parameters.Add("par_playcount", DbType.Int64, 0, "playcount")
+            Dim par_playCount As SQLiteParameter = sqlCommand.Parameters.Add("par_playCount", DbType.Int64, 0, "playCount")
             Dim par_trailer As SQLiteParameter = sqlCommand.Parameters.Add("par_trailer", DbType.String, 0, "trailer")
             Dim par_nfoPath As SQLiteParameter = sqlCommand.Parameters.Add("par_nfoPath", DbType.String, 0, "nfoPath")
             Dim par_trailerPath As SQLiteParameter = sqlCommand.Parameters.Add("par_trailerPath", DbType.String, 0, "trailerPath")
@@ -2995,7 +2995,7 @@ Public Class Database
                 par_originalTitle.Value = .OriginalTitle
                 par_outline.Value = .Outline
                 If .PlayCountSpecified Then 'has to be NOTHING instead of "0"
-                    par_playcount.Value = .PlayCount
+                    par_playCount.Value = .PlayCount
                 End If
                 par_plot.Value = .Plot
                 par_releaseDate.Value = NumUtils.DateToISO8601Date(.ReleaseDate)
@@ -3462,7 +3462,7 @@ Public Class Database
             If Not dbElement.IDSpecified Then
                 sqlCommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (",
                      "idShow, idFile, idSource, new, marked, locked, title, season, episode, ",
-                     "plot, aired, nfoPath, playcount, ",
+                     "plot, aired, nfoPath, playCount, ",
                      "displaySeason, displayEpisode, dateAdded, runtime, videoSource, hasSub, subEpisode, ",
                      "lastPlayed, userRating",
                      ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
@@ -3470,7 +3470,7 @@ Public Class Database
             Else
                 sqlCommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (",
                      "idEpisode, idShow, idFile, idSource, new, marked, locked, title, season, episode, ",
-                     "plot, aired, nfoPath, playcount, ",
+                     "plot, aired, nfoPath, playCount, ",
                      "displaySeason, displayEpisode, dateAdded, runtime, videoSource, hasSub, subEpisode, ",
                      "lastPlayed, userRating",
                      ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
@@ -3491,7 +3491,7 @@ Public Class Database
             Dim par_plot As SQLiteParameter = sqlCommand.Parameters.Add("par_plot", DbType.String, 0, "plot")
             Dim par_aired As SQLiteParameter = sqlCommand.Parameters.Add("par_aired", DbType.String, 0, "aired")
             Dim par_nfoPath As SQLiteParameter = sqlCommand.Parameters.Add("par_nfoPath", DbType.String, 0, "nfoPath")
-            Dim par_playcount As SQLiteParameter = sqlCommand.Parameters.Add("par_playcount", DbType.Int64, 0, "playcount")
+            Dim par_playCount As SQLiteParameter = sqlCommand.Parameters.Add("par_playCount", DbType.Int64, 0, "playCount")
             Dim par_displaySeason As SQLiteParameter = sqlCommand.Parameters.Add("par_displaySeason", DbType.String, 0, "displaySeason")
             Dim par_displayEpisode As SQLiteParameter = sqlCommand.Parameters.Add("par_displayEpisode", DbType.String, 0, "displayEpisode")
             Dim par_dateAdded As SQLiteParameter = sqlCommand.Parameters.Add("par_dateAdded", DbType.Int64, 0, "dateAdded")
@@ -3594,7 +3594,7 @@ Public Class Database
                 par_plot.Value = .Plot
                 par_aired.Value = NumUtils.DateToISO8601Date(.Aired)
                 If .PlaycountSpecified Then 'need to be NOTHING instead of "0"
-                    par_playcount.Value = .Playcount
+                    par_playCount.Value = .Playcount
                 End If
                 If .SubEpisodeSpecified Then
                     par_subEpisode.Value = .SubEpisode
@@ -4465,8 +4465,8 @@ Public Class Database
                         Patch14_studio("idShow", "tvshow", True)
                         Patch14_writer("idEpisode", "episode", True)
                         Patch14_writer("idMovie", "movie", True)
-                        Patch14_playcounts("episode", True)
-                        Patch14_playcounts("movie", True)
+                        Patch14_playCounts("episode", True)
+                        Patch14_playCounts("movie", True)
                 End Select
 
                 sqlTransaction.Commit()
@@ -4781,7 +4781,7 @@ Public Class Database
         If Not BatchMode Then SQLtransaction.Commit()
     End Sub
 
-    Private Sub Patch14_playcounts(ByVal table As String, ByVal BatchMode As Boolean)
+    Private Sub Patch14_playCounts(ByVal table As String, ByVal BatchMode As Boolean)
         bwPatchDB.ReportProgress(-1, "Fixing Playcounts...")
 
         Dim SQLtransaction As SQLiteTransaction = Nothing
@@ -5794,13 +5794,7 @@ Public Class Database
 
         Public ReadOnly Property FileItemSpecified() As Boolean
             Get
-                Return FileItem IsNot Nothing
-            End Get
-        End Property
-
-        Public ReadOnly Property FilenameSpecified() As Boolean
-            Get
-                Return FileItemSpecified AndAlso FileItem.FullPathSpecified
+                Return FileItem IsNot Nothing AndAlso FileItem.FullPathSpecified
             End Get
         End Property
 
@@ -6104,7 +6098,7 @@ Public Class Database
                     GetColumnName(Database.ColumnName.LandscapePath),
                     GetColumnName(Database.ColumnName.LastPlayed),
                     GetColumnName(Database.ColumnName.NfoPath),
-                    GetColumnName(Database.ColumnName.Playcount),
+                    GetColumnName(Database.ColumnName.PlayCount),
                     GetColumnName(Database.ColumnName.PosterPath),
                     GetColumnName(Database.ColumnName.Ratings),
                     GetColumnName(Database.ColumnName.ThemePath),
@@ -6148,7 +6142,7 @@ Public Class Database
                     GetColumnName(Database.ColumnName.LandscapePath),
                     GetColumnName(Database.ColumnName.LastPlayed),
                     GetColumnName(Database.ColumnName.NfoPath),
-                    GetColumnName(Database.ColumnName.Playcount),
+                    GetColumnName(Database.ColumnName.PlayCount),
                     GetColumnName(Database.ColumnName.PosterPath),
                     GetColumnName(Database.ColumnName.ThemePath),
                     GetColumnName(Database.ColumnName.TrailerPath)
@@ -6175,15 +6169,43 @@ Public Class Database
             If Not String.IsNullOrEmpty(columnName) Then
                 Dim lstColumns As String() = New String() {
                     GetColumnName(Database.ColumnName.Aired),
+                    GetColumnName(Database.ColumnName.Certifications),
+                    GetColumnName(Database.ColumnName.Countries),
+                    GetColumnName(Database.ColumnName.Certifications),
+                    GetColumnName(Database.ColumnName.Creators),
+                    GetColumnName(Database.ColumnName.Credits),
+                    GetColumnName(Database.ColumnName.Directors),
+                    GetColumnName(Database.ColumnName.DisplayEpisode),
+                    GetColumnName(Database.ColumnName.DisplaySeason),
                     GetColumnName(Database.ColumnName.EpisodeCount),
+                    GetColumnName(Database.ColumnName.EpisodeGuideURL),
                     GetColumnName(Database.ColumnName.EpisodeNumber),
+                    GetColumnName(Database.ColumnName.Genres),
+                    GetColumnName(Database.ColumnName.Language),
                     GetColumnName(Database.ColumnName.ListTitle),
                     GetColumnName(Database.ColumnName.MPAA),
+                    GetColumnName(Database.ColumnName.MovieCount),
+                    GetColumnName(Database.ColumnName.OriginalTitle),
+                    GetColumnName(Database.ColumnName.Outline),
+                    GetColumnName(Database.ColumnName.PlayCount),
+                    GetColumnName(Database.ColumnName.Plot),
+                    GetColumnName(Database.ColumnName.Premiered),
                     GetColumnName(Database.ColumnName.Ratings),
+                    GetColumnName(Database.ColumnName.ReleaseDate),
+                    GetColumnName(Database.ColumnName.Runtime),
                     GetColumnName(Database.ColumnName.SeasonNumber),
+                    GetColumnName(Database.ColumnName.SortTitle),
                     GetColumnName(Database.ColumnName.Status),
+                    GetColumnName(Database.ColumnName.Studios),
+                    GetColumnName(Database.ColumnName.SubEpisode),
+                    GetColumnName(Database.ColumnName.Tagline),
+                    GetColumnName(Database.ColumnName.Tags),
                     GetColumnName(Database.ColumnName.Title),
+                    GetColumnName(Database.ColumnName.Top250),
+                    GetColumnName(Database.ColumnName.Trailer),
+                    GetColumnName(Database.ColumnName.UniqueIDs),
                     GetColumnName(Database.ColumnName.UserRating),
+                    GetColumnName(Database.ColumnName.VideoSource),
                     GetColumnName(Database.ColumnName.Year)
                 }
                 Return lstColumns.Contains(columnName)
@@ -6221,6 +6243,7 @@ Public Class Database
         Public Shared Function ColumnIsWatchedState(ByVal columnName As String) As Boolean
             If Not String.IsNullOrEmpty(columnName) Then
                 Dim lstColumns As String() = New String() {
+                    GetColumnName(Database.ColumnName.HasWatched),
                     GetColumnName(Database.ColumnName.LastPlayed)
                 }
                 Return lstColumns.Contains(columnName)
@@ -6267,7 +6290,7 @@ Public Class Database
                         Return ColumnType.Trailer
                     Case "userRating"
                         Return ColumnType.UserRating
-                    Case "hasWatched", "lastPlayed", "playcount"
+                    Case "hasWatched", "lastPlayed", "playCount"
                         Return ColumnType.WatchedState
                 End Select
             End If
@@ -6376,8 +6399,8 @@ Public Class Database
                     Return "outline"
                 Case ColumnName.OutOfTolerance
                     Return "outOfTolerance"
-                Case ColumnName.Playcount
-                    Return "playcount"
+                Case ColumnName.PlayCount
+                    Return "playCount"
                 Case ColumnName.Plot
                     Return "plot"
                 Case ColumnName.PosterPath

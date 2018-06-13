@@ -107,7 +107,7 @@ Public Class Themes
     ''' <param name="tDBElement"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_Movie(ByVal tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-        If Not tDBElement.FileItem.FullPathSpecified Then Return
+        If Not tDBElement.FileItemSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme, ForceFileCleanup)
