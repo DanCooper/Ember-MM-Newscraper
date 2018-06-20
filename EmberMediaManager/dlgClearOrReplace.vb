@@ -262,7 +262,7 @@ Public Class dlgClearOrReplace
                     .bMainYear = chkYear.Checked
                     Dim uiYear As UInteger = 0
                     UInteger.TryParse(txtYear.Text.Trim, uiYear)
-                    nInfo.Year = uiYear.ToString
+                    nInfo.Year = CInt(uiYear)
                     _Result.GenericObject = nInfo
                 Case Enums.ContentType.MovieSet
                     .bMainPlot = chkPlot.Checked

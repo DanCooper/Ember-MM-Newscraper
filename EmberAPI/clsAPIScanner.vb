@@ -611,7 +611,7 @@ Public Class Scanner
 
         'ListTitle
         Dim tTitle As String = StringUtils.SortTokens_Movie(dbElement.Movie.Title)
-        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(dbElement.Movie.Year) Then
+        If Master.eSettings.MovieDisplayYear AndAlso dbElement.Movie.YearSpecified Then
             dbElement.ListTitle = String.Format("{0} ({1})", tTitle, dbElement.Movie.Year)
         Else
             dbElement.ListTitle = tTitle

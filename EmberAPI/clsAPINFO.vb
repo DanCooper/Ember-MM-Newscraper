@@ -341,7 +341,7 @@ Public Class NFO
                 DBMovie.Movie.Year = scrapedmovie.Year
                 new_Year = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperYear AndAlso Not Master.eSettings.MovieLockYear Then
-                DBMovie.Movie.Year = String.Empty
+                DBMovie.Movie.Year = 0
             End If
 
             'Runtime
@@ -401,7 +401,7 @@ Public Class NFO
         'set ListTitle at the end of merging
         If DBMovie.Movie.TitleSpecified Then
             Dim tTitle As String = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
-            If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
+            If Master.eSettings.MovieDisplayYear AndAlso DBMovie.Movie.YearSpecified Then
                 DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
             Else
                 DBMovie.ListTitle = tTitle
@@ -1865,7 +1865,7 @@ Public Class NFO
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
 
-                xmlMov.Clear()
+                xmlMov = New MediaContainers.Movie
                 If Not String.IsNullOrEmpty(path) Then
 
                     'go ahead and rename it now, will still be picked up in getimdbfromnonconf
@@ -1914,7 +1914,7 @@ Public Class NFO
 
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
-                xmlMovSet.Clear()
+                xmlMovSet = New MediaContainers.MovieSet
             End Try
 
             If xmlSer IsNot Nothing Then

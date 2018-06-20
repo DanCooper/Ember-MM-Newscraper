@@ -584,10 +584,10 @@ Public Class clsAPITMDB
         If FilteredOptions.bMainYear Then
             If Result.ReleaseDate Is Nothing OrElse (Result.ReleaseDate IsNot Nothing AndAlso String.IsNullOrEmpty(CStr(Result.ReleaseDate))) Then
                 If _addonSettings.FallBackEng AndAlso ResultE.ReleaseDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(ResultE.ReleaseDate)) Then
-                    nMovie.Year = CStr(ResultE.ReleaseDate.Value.Year)
+                    nMovie.Year = ResultE.ReleaseDate.Value.Year
                 End If
             Else
-                nMovie.Year = CStr(Result.ReleaseDate.Value.Year)
+                nMovie.Year = Result.ReleaseDate.Value.Year
             End If
         End If
 
@@ -1279,7 +1279,7 @@ Public Class clsAPITMDB
     End Function
 
     Public Function GetSearchMovieInfo(ByVal strMovieName As String, ByRef oDBMovie As Database.DBElement, ByVal eType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
-        Dim r As SearchResults_Movie = SearchMovie(strMovieName, CInt(If(Not String.IsNullOrEmpty(oDBMovie.Movie.Year), oDBMovie.Movie.Year, Nothing)))
+        Dim r As SearchResults_Movie = SearchMovie(strMovieName, oDBMovie.Movie.Year)
 
         Select Case eType
             Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
@@ -1401,17 +1401,12 @@ Public Class clsAPITMDB
         End If
     End Sub
 
-    Public Sub SearchAsync_Movie(ByVal sMovie As String, ByRef filterOptions As Structures.ScrapeOptions, Optional ByVal sYear As String = "")
-        '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-        Dim intYear As Integer
-
-        Integer.TryParse(sYear, intYear)
-
+    Public Sub SearchAsync_Movie(ByVal title As String, ByRef filterOptions As Structures.ScrapeOptions, Optional ByVal year As Integer = 0)
         If Not bwTMDB.IsBusy Then
             bwTMDB.WorkerReportsProgress = False
             bwTMDB.WorkerSupportsCancellation = True
             bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies,
-                  .Parameter = sMovie, .ScrapeOptions = filterOptions, .Year = intYear})
+                  .Parameter = title, .ScrapeOptions = filterOptions, .Year = year})
         End If
     End Sub
 
@@ -1425,70 +1420,70 @@ Public Class clsAPITMDB
         End If
     End Sub
 
-    Public Sub SearchAsync_TVShow(ByVal sShow As String, ByRef filterOptions As Structures.ScrapeOptions)
+    Public Sub SearchAsync_TVShow(ByVal title As String, ByRef filterOptions As Structures.ScrapeOptions)
 
         If Not bwTMDB.IsBusy Then
             bwTMDB.WorkerReportsProgress = False
             bwTMDB.WorkerSupportsCancellation = True
             bwTMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.TVShows,
-                  .Parameter = sShow, .ScrapeOptions = filterOptions})
+                  .Parameter = title, .ScrapeOptions = filterOptions})
         End If
     End Sub
 
-    Private Function SearchMovie(ByVal strMovie As String, Optional ByVal iYear As Integer = 0) As SearchResults_Movie
-        If String.IsNullOrEmpty(strMovie) Then Return New SearchResults_Movie
+    Private Function SearchMovie(ByVal title As String, ByVal year As Integer) As SearchResults_Movie
+        If String.IsNullOrEmpty(title) Then Return New SearchResults_Movie
 
         Dim R As New SearchResults_Movie
-        Dim Page As Integer = 1
+        Dim iPage As Integer = 1
         Dim Movies As TMDbLib.Objects.General.SearchContainer(Of TMDbLib.Objects.Search.SearchMovie)
-        Dim TotP As Integer
-        Dim aE As Boolean
+        Dim iPageTotal As Integer
+        Dim bFallbackToEng As Boolean
 
         Dim APIResult As Task(Of TMDbLib.Objects.General.SearchContainer(Of TMDbLib.Objects.Search.SearchMovie))
-        APIResult = Task.Run(Function() _client.SearchMovieAsync(strMovie, Page, _addonSettings.GetAdultItems, iYear))
+        APIResult = Task.Run(Function() _client.SearchMovieAsync(title, iPage, _addonSettings.GetAdultItems, year))
 
         Movies = APIResult.Result
 
         If Movies.TotalResults = 0 AndAlso _addonSettings.FallBackEng Then
-            APIResult = Task.Run(Function() _clientE.SearchMovieAsync(strMovie, Page, _addonSettings.GetAdultItems, iYear))
+            APIResult = Task.Run(Function() _clientE.SearchMovieAsync(title, iPage, _addonSettings.GetAdultItems, year))
             Movies = APIResult.Result
-            aE = True
+            bFallbackToEng = True
         End If
 
         'try -1 year if no search result was found
-        If Movies.TotalResults = 0 AndAlso iYear > 0 AndAlso _addonSettings.SearchDeviant Then
-            APIResult = Task.Run(Function() _clientE.SearchMovieAsync(strMovie, Page, _addonSettings.GetAdultItems, iYear - 1))
+        If Movies.TotalResults = 0 AndAlso year > 0 AndAlso _addonSettings.SearchDeviant Then
+            APIResult = Task.Run(Function() _clientE.SearchMovieAsync(title, iPage, _addonSettings.GetAdultItems, year - 1))
             Movies = APIResult.Result
 
             If Movies.TotalResults = 0 AndAlso _addonSettings.FallBackEng Then
-                APIResult = Task.Run(Function() _clientE.SearchMovieAsync(strMovie, Page, _addonSettings.GetAdultItems, iYear - 1))
+                APIResult = Task.Run(Function() _clientE.SearchMovieAsync(title, iPage, _addonSettings.GetAdultItems, year - 1))
                 Movies = APIResult.Result
-                aE = True
+                bFallbackToEng = True
             End If
 
             'still no search result, try +1 year
             If Movies.TotalResults = 0 Then
-                APIResult = Task.Run(Function() _clientE.SearchMovieAsync(strMovie, Page, _addonSettings.GetAdultItems, iYear + 1))
+                APIResult = Task.Run(Function() _clientE.SearchMovieAsync(title, iPage, _addonSettings.GetAdultItems, year + 1))
                 Movies = APIResult.Result
 
                 If Movies.TotalResults = 0 AndAlso _addonSettings.FallBackEng Then
-                    APIResult = Task.Run(Function() _clientE.SearchMovieAsync(strMovie, Page, _addonSettings.GetAdultItems, iYear + 1))
+                    APIResult = Task.Run(Function() _clientE.SearchMovieAsync(title, iPage, _addonSettings.GetAdultItems, year + 1))
                     Movies = APIResult.Result
-                    aE = True
+                    bFallbackToEng = True
                 End If
             End If
         End If
 
         If Movies.TotalResults > 0 Then
-            TotP = Movies.TotalPages
-            While Page <= TotP AndAlso Page <= 3
+            iPageTotal = Movies.TotalPages
+            While iPage <= iPageTotal AndAlso iPage <= 3
                 If Movies.Results IsNot Nothing Then
                     For Each aMovie In Movies.Results
                         Dim tOriginalTitle As String = String.Empty
                         Dim tPlot As String = String.Empty
                         Dim tThumbPoster As MediaContainers.Image = New MediaContainers.Image
                         Dim tTitle As String = String.Empty
-                        Dim tYear As String = String.Empty
+                        Dim tYear As Integer
 
                         If aMovie.OriginalTitle IsNot Nothing Then tOriginalTitle = aMovie.OriginalTitle
                         If aMovie.Overview IsNot Nothing Then tPlot = aMovie.Overview
@@ -1496,25 +1491,25 @@ Public Class clsAPITMDB
                             tThumbPoster.URLOriginal = _client.Config.Images.BaseUrl & "original" & aMovie.PosterPath
                             tThumbPoster.URLThumb = _client.Config.Images.BaseUrl & "w185" & aMovie.PosterPath
                         End If
-                        If aMovie.ReleaseDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(aMovie.ReleaseDate)) Then tYear = CStr(aMovie.ReleaseDate.Value.Year)
+                        If aMovie.ReleaseDate IsNot Nothing AndAlso Not aMovie.ReleaseDate.HasValue Then tYear = aMovie.ReleaseDate.Value.Year
                         If aMovie.Title IsNot Nothing Then tTitle = aMovie.Title
 
-                        Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie With {
+                        Dim nMovie As MediaContainers.Movie = New MediaContainers.Movie With {
                             .OriginalTitle = tOriginalTitle,
                             .Plot = tPlot,
                             .Title = tTitle,
                             .ThumbPoster = tThumbPoster,
                             .Year = tYear}
-                        lNewMovie.UniqueIDs.TMDbId = CStr(aMovie.Id)
-                        R.Matches.Add(lNewMovie)
+                        nMovie.UniqueIDs.TMDbId = CStr(aMovie.Id)
+                        R.Matches.Add(nMovie)
                     Next
                 End If
-                Page = Page + 1
-                If aE Then
-                    APIResult = Task.Run(Function() _clientE.SearchMovieAsync(strMovie, Page, _addonSettings.GetAdultItems, iYear))
+                iPage = iPage + 1
+                If bFallbackToEng Then
+                    APIResult = Task.Run(Function() _clientE.SearchMovieAsync(title, iPage, _addonSettings.GetAdultItems, year))
                     Movies = APIResult.Result
                 Else
-                    APIResult = Task.Run(Function() _client.SearchMovieAsync(strMovie, Page, _addonSettings.GetAdultItems, iYear))
+                    APIResult = Task.Run(Function() _client.SearchMovieAsync(title, iPage, _addonSettings.GetAdultItems, year))
                     Movies = APIResult.Result
                 End If
             End While
@@ -1544,21 +1539,22 @@ Public Class clsAPITMDB
         End If
 
         If MovieSets.TotalResults > 0 Then
-            Dim t1 As String = String.Empty
             Dim t2 As String = String.Empty
             Dim t3 As String = String.Empty
             TotP = MovieSets.TotalPages
             While Page <= TotP AndAlso Page <= 3
                 If MovieSets.Results IsNot Nothing Then
                     For Each aMovieSet In MovieSets.Results
-                        t1 = CStr(aMovieSet.Id)
                         If aMovieSet.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(aMovieSet.Name) Then
                             t2 = aMovieSet.Name
                         End If
                         'If aMovieSet.overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(aMovieSet.overview) Then
                         '    t3 = aMovieSet.overview
                         'End If
-                        R.Matches.Add(New MediaContainers.MovieSet(t1, t2, t3))
+                        Dim nMovieset = New MediaContainers.MovieSet With {
+                            .Title = t2}
+                        nMovieset.UniqueIDs.TMDbId = CStr(aMovieSet.Id)
+                        R.Matches.Add(nMovieset)
                     Next
                 End If
                 Page = Page + 1
@@ -1612,9 +1608,11 @@ Public Class clsAPITMDB
                         If aShow.FirstAirDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(aShow.FirstAirDate)) Then
                             t2 = CStr(aShow.FirstAirDate.Value.Year)
                         End If
-                        Dim lNewShow As MediaContainers.TVShow = New MediaContainers.TVShow(String.Empty, t1, t2)
-                        lNewShow.UniqueIDs.TMDbId = CStr(aShow.Id)
-                        R.Matches.Add(lNewShow)
+                        Dim nTVShow As MediaContainers.TVShow = New MediaContainers.TVShow With {
+                            .Premiered = t2,
+                            .Title = t1}
+                        nTVShow.UniqueIDs.TMDbId = CStr(aShow.Id)
+                        R.Matches.Add(nTVShow)
                     Next
                 End If
                 Page = Page + 1

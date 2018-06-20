@@ -608,7 +608,7 @@ Public Class FileFolderRenamer
 
         'Year
         If _DBElement.Movie.YearSpecified Then
-            MovieFile.Year = _DBElement.Movie.Year
+            MovieFile.Year = _DBElement.Movie.Year.ToString
         End If
 
         If _DBElement.Movie.FileInfoSpecified Then

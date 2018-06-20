@@ -332,8 +332,9 @@ Public Class clsAPIOMDb
 
         'Year
         If filteredOptions.bMainYear Then
-            If Not String.IsNullOrEmpty(Result.Year) Then
-                nMovie.Year = Result.Year
+            Dim iYear As Integer
+            If Not String.IsNullOrEmpty(Result.Year) AndAlso Integer.TryParse(Result.Year, iYear) Then
+                nMovie.Year = iYear
             End If
         End If
 
@@ -908,7 +909,7 @@ Public Class clsAPIOMDb
     End Function
 
     Public Function GetSearchMovieInfo(ByVal strMovieName As String, ByRef oDBMovie As Database.DBElement, ByVal eType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
-        Dim r As SearchResults_Movie = SearchMovie(strMovieName, CInt(If(Not String.IsNullOrEmpty(oDBMovie.Movie.Year), oDBMovie.Movie.Year, Nothing)))
+        Dim r As SearchResults_Movie = SearchMovie(strMovieName, oDBMovie.Movie.Year)
 
         Select Case eType
             Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
@@ -980,7 +981,6 @@ Public Class clsAPIOMDb
     End Sub
 
     Public Sub GetSearchTVShowInfoAsync(ByVal tmdbID As String, ByRef FilteredOptions As Structures.ScrapeOptions)
-        '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
         If Not bwOMDb.IsBusy Then
             bwOMDb.WorkerReportsProgress = False
             bwOMDb.WorkerSupportsCancellation = True
@@ -989,17 +989,12 @@ Public Class clsAPIOMDb
         End If
     End Sub
 
-    Public Sub SearchAsync_Movie(ByVal sMovie As String, ByRef filterOptions As Structures.ScrapeOptions, Optional ByVal sYear As String = "")
-        '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-        Dim intYear As Integer
-
-        Integer.TryParse(sYear, intYear)
-
+    Public Sub SearchAsync_Movie(ByVal title As String, ByRef filterOptions As Structures.ScrapeOptions, ByVal year As Integer)
         If Not bwOMDb.IsBusy Then
             bwOMDb.WorkerReportsProgress = False
             bwOMDb.WorkerSupportsCancellation = True
             bwOMDb.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies,
-                  .Parameter = sMovie, .ScrapeOptions = filterOptions, .Year = intYear})
+                  .Parameter = title, .ScrapeOptions = filterOptions, .Year = year})
         End If
     End Sub
 
@@ -1013,44 +1008,52 @@ Public Class clsAPIOMDb
         End If
     End Sub
 
-    Private Function SearchMovie(ByVal strMovie As String, Optional ByVal iYear As Integer = 0) As SearchResults_Movie
-        If String.IsNullOrEmpty(strMovie) Then Return New SearchResults_Movie
+    Private Function SearchMovie(ByVal title As String, ByVal year As Integer) As SearchResults_Movie
+        If String.IsNullOrEmpty(title) Then Return New SearchResults_Movie
 
         Dim R As New SearchResults_Movie
         Dim Movies As OMDbSharp.ItemList
 
         Dim APIResult As Task(Of OMDbSharp.ItemList)
-        APIResult = Task.Run(Function() _client.GetItemList(strMovie))
+        APIResult = Task.Run(Function() _client.GetItemList(title))
 
         Movies = APIResult.Result
 
         If Movies.Search.Count > 0 Then
-            For Each aMovie In Movies.Search.Where(Function(f) f.Type = "movie")
-                Dim tPlot As String = String.Empty
-                Dim tThumbPoster As MediaContainers.Image = New MediaContainers.Image
-                Dim strTitle As String = String.Empty
-                Dim strYear As String = String.Empty
+            Dim lstResults As IEnumerable(Of OMDbSharp.Search)
+            If year > 0 Then
+                lstResults = Movies.Search.Where(Function(f) f.Type = "movie" And f.Year = year.ToString)
+            Else
+                lstResults = Movies.Search.Where(Function(f) f.Type = "movie")
+            End If
+            If lstResults IsNot Nothing Then
+                For Each aMovie In lstResults
+                    Dim tPlot As String = String.Empty
+                    Dim tThumbPoster As MediaContainers.Image = New MediaContainers.Image
+                    Dim strTitle As String = String.Empty
+                    Dim iYear As Integer
 
-                If Not String.IsNullOrEmpty(aMovie.Year) Then strYear = aMovie.Year
-                If Not String.IsNullOrEmpty(aMovie.Title) Then strTitle = aMovie.Title
+                    Integer.TryParse(aMovie.Year, iYear)
+                    If Not String.IsNullOrEmpty(aMovie.Title) Then strTitle = aMovie.Title
 
-                Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie With {
-                    .Plot = tPlot,
-                    .Title = strTitle,
-                    .ThumbPoster = tThumbPoster,
-                    .Year = strYear}
-                lNewMovie.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
-                                              .Type = "imdb",
-                                              .Value = aMovie.imdbID})
-                R.Matches.Add(lNewMovie)
-            Next
+                    Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie With {
+                        .Plot = tPlot,
+                        .Title = strTitle,
+                        .ThumbPoster = tThumbPoster,
+                        .Year = iYear}
+                    lNewMovie.UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
+                                                  .Type = "imdb",
+                                                  .Value = aMovie.imdbID})
+                    R.Matches.Add(lNewMovie)
+                Next
+            End If
         End If
 
         Return R
     End Function
 
-    Private Function SearchTVShow(ByVal strShow As String) As SearchResults_TVShow
-        If String.IsNullOrEmpty(strShow) Then Return New SearchResults_TVShow
+    Private Function SearchTVShow(ByVal tvshow As String) As SearchResults_TVShow
+        If String.IsNullOrEmpty(tvshow) Then Return New SearchResults_TVShow
 
         Dim R As New SearchResults_TVShow
         'Dim Page As Integer = 1

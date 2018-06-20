@@ -140,23 +140,21 @@ Public Class dlgTagManager
             bsMovies.DataSource = Nothing
             dgvMovies.DataSource = Nothing
             If lstFilteredMovies.Count > 0 Then
-                '  If Me.dtMovies.Rows.Count > 0 Then
-                With Me
-                    .bsMovies.DataSource = .lstFilteredMovies
-                    .dgvMovies.DataSource = .bsMovies
-                    For i As Integer = 0 To .dgvMovies.Columns.Count - 1
-                        .dgvMovies.Columns(i).Visible = False
-                    Next
-                    .dgvMovies.Columns("listTitle").Visible = True
-                    .dgvMovies.Columns("listTitle").Resizable = DataGridViewTriState.True
-                    .dgvMovies.Columns("listTitle").ReadOnly = True
-                    .dgvMovies.Columns("listTitle").MinimumWidth = 83
-                    .dgvMovies.Columns("listTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvMovies.Columns("listTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                    .dgvMovies.Columns("listTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                'If Me.dtMovies.Rows.Count > 0 Then
+                bsMovies.DataSource = lstFilteredMovies
+                dgvMovies.DataSource = bsMovies
+                For i As Integer = 0 To dgvMovies.Columns.Count - 1
+                    dgvMovies.Columns(i).Visible = False
+                Next
+                dgvMovies.Columns("listTitle").Visible = True
+                dgvMovies.Columns("listTitle").Resizable = DataGridViewTriState.True
+                dgvMovies.Columns("listTitle").ReadOnly = True
+                dgvMovies.Columns("listTitle").MinimumWidth = 83
+                dgvMovies.Columns("listTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("listTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                dgvMovies.Columns("listTitle").HeaderText = Master.eLang.GetString(21, "Title")
 
-                    .dgvMovies.Columns("ID").ValueType = GetType(Int64)
-                End With
+                dgvMovies.Columns("ID").ValueType = GetType(Int64)
             End If
             dgvMovies.ResumeLayout()
         End If

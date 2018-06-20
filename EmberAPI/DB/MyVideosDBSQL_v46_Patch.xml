@@ -1933,7 +1933,7 @@
         locked          bool,
         title           text,
         originalTitle   text,
-        year            text,
+        year            integer,
         mpaa            text,
         top250          integer,
         outline         text,
@@ -2226,7 +2226,7 @@
         fanart.url AS fanartPath,
         landscape.url AS landscapePath,
         poster.url AS posterPath,
-        COUNT(moviesetlink.idMovie) AS 'count',
+        COUNT(moviesetlink.idMovie) AS 'movieCount',
         GROUP_CONCAT(DISTINCT movies.title) AS 'movieTitles',
         GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
         FROM

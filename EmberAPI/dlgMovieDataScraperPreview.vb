@@ -252,7 +252,7 @@ Public Class dlgMovieDataScraperPreview
 
                     'Year
                     If scraperresult.YearSpecified Then
-                        .txtYearIMDB.Text = scraperresult.Year
+                        .txtYearIMDB.Text = scraperresult.Year.ToString
                         tbYear.SelectedTab = tbYearIMDB
                     Else
                         tbYear.TabPages.Remove(tbYearIMDB)
@@ -420,7 +420,7 @@ Public Class dlgMovieDataScraperPreview
 
                     'Year
                     If scraperresult.YearSpecified Then
-                        .txtYearTMDB.Text = scraperresult.Year
+                        .txtYearTMDB.Text = scraperresult.Year.ToString
                         tbYear.SelectedTab = tbYearTMDB
                     Else
                         tbYear.TabPages.Remove(tbYearTMDB)
@@ -587,7 +587,7 @@ Public Class dlgMovieDataScraperPreview
 
                     'Year
                     If scraperresult.YearSpecified Then
-                        .txtYearOFDB.Text = scraperresult.Year
+                        .txtYearOFDB.Text = scraperresult.Year.ToString
                         tbYear.SelectedTab = tbYearOFDB
                     Else
                         tbYear.TabPages.Remove(tbYearOFDB)
@@ -754,7 +754,7 @@ Public Class dlgMovieDataScraperPreview
 
                     'Year
                     If scraperresult.YearSpecified Then
-                        .txtYearMoviepilot.Text = scraperresult.Year
+                        .txtYearMoviepilot.Text = scraperresult.Year.ToString
                         tbYear.SelectedTab = tbYearMoviepilot
                     Else
                         tbYear.TabPages.Remove(tbYearMoviepilot)

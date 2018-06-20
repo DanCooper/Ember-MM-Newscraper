@@ -118,11 +118,13 @@ Namespace IMDB
         End Sub
 
         Private Function BuildMovieForSearchResults(ByVal imdbID As String, ByVal lev As Integer, ByVal title As String, ByVal year As String) As MediaContainers.Movie
+            Dim iYear As Integer
+            Integer.TryParse(year, iYear)
             Dim nMovie As New MediaContainers.Movie
             nMovie.UniqueIDs.IMDbId = imdbID
             nMovie.Lev = lev
             nMovie.Title = title
-            nMovie.Year = year
+            nMovie.Year = iYear
             Return nMovie
         End Function
 
@@ -179,7 +181,8 @@ Namespace IMDB
                 tmpyear = tmpname.Substring(i + 1, tmpname.Length - i - 1)
                 If Integer.TryParse(tmpyear, 0) AndAlso Convert.ToInt32(tmpyear) > 1950 Then 'let's assume there are no movies older then 1950
                     For c = 0 To movies.Count - 1
-                        If movies(c).Year = tmpyear Then
+                        Dim iYear As Integer
+                        If Integer.TryParse(tmpyear, iYear) AndAlso movies(c).Year = iYear Then
                             ret = c
                             Exit For
                         End If
@@ -390,7 +393,7 @@ Namespace IMDB
                     Dim dateRelease As New Date
                     If ParseReleaseDate(htmldReference, dateRelease) Then
                         If filteredoptions.bMainRelease Then nMovie.ReleaseDate = dateRelease.ToString("yyyy-MM-dd")
-                        If filteredoptions.bMainYear Then nMovie.Year = dateRelease.Year.ToString
+                        If filteredoptions.bMainYear Then nMovie.Year = dateRelease.Year
                     Else
                         logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse ReleaseDate/Year", id))
                     End If
@@ -476,9 +479,10 @@ Namespace IMDB
 
                 'Year (fallback if ReleaseDate can't be parsed)
                 If filteredoptions.bMainYear AndAlso Not nMovie.YearSpecified Then
+                    Dim iYear As Integer
                     Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""titlereference-title-year""]/a")
-                    If selNode IsNot Nothing Then
-                        nMovie.Year = selNode.InnerText
+                    If selNode IsNot Nothing AndAlso Integer.TryParse(selNode.InnerText, iYear) Then
+                        nMovie.Year = iYear
                     Else
                         logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Year (fallback)", id))
                     End If
@@ -934,7 +938,7 @@ Namespace IMDB
             Return New List(Of String)
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal title As String, ByVal year As String, ByRef oDBElement As Database.DBElement, ByVal scrapetype As Enums.ScrapeType, ByVal filteredoptions As Structures.ScrapeOptions) As MediaContainers.Movie
+        Public Function GetSearchMovieInfo(ByVal title As String, ByVal year As Integer, ByRef oDBElement As Database.DBElement, ByVal scrapetype As Enums.ScrapeType, ByVal filteredoptions As Structures.ScrapeOptions) As MediaContainers.Movie
             Dim r As SearchResults_Movie = SearchMovie(title, year)
 
             Try
@@ -1449,10 +1453,10 @@ Namespace IMDB
             Return Nothing
         End Function
 
-        Private Function SearchMovie(ByVal title As String, ByVal year As String) As SearchResults_Movie
+        Private Function SearchMovie(ByVal title As String, ByVal year As Integer) As SearchResults_Movie
             Dim R As New SearchResults_Movie
 
-            Dim strTitle As String = String.Concat(title, " ", If(Not String.IsNullOrEmpty(year), String.Concat("(", year, ")"), String.Empty)).Trim
+            Dim strTitle As String = String.Concat(title, " ", If(Not year = 0, String.Concat("(", year, ")"), String.Empty)).Trim
 
             Dim htmldResultsPartialTitles As HtmlDocument = Nothing
             Dim htmldResultsPopularTitles As HtmlDocument = Nothing
@@ -1573,7 +1577,7 @@ Namespace IMDB
             Return R
         End Function
 
-        Public Sub SearchMovieAsync(ByVal title As String, ByVal year As String, ByVal filteredoptions As Structures.ScrapeOptions)
+        Public Sub SearchMovieAsync(ByVal title As String, ByVal year As Integer, ByVal filteredoptions As Structures.ScrapeOptions)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = False
@@ -1638,7 +1642,7 @@ Namespace IMDB
             Dim Parameter As String
             Dim ScrapeModifiers As Structures.ScrapeModifiers
             Dim Search As SearchType
-            Dim Year As String
+            Dim Year As Integer
 
 #End Region 'Fields
 

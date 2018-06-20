@@ -68,7 +68,7 @@ Namespace MoviepilotDE
 
         Public Function GetMovieInfo(ByVal strOriginalTitle As String,
                                      ByVal strTitle As String,
-                                     ByVal strYear As String,
+                                     ByVal iYear As Integer,
                                      ByVal FilteredOptions As Structures.ScrapeOptions,
                                      ByVal strLanguage As String) As MediaContainers.Movie
             Try
@@ -78,10 +78,10 @@ Namespace MoviepilotDE
                 nMovie.Scrapersource = "MOVIEPILOT"
 
 
-                Dim sURL As String = SearchMovie(strOriginalTitle, strYear)
+                Dim sURL As String = SearchMovie(strOriginalTitle, iYear)
                 'if theres no link with originaltitle, try with title
                 If String.IsNullOrEmpty(sURL) AndAlso Not strOriginalTitle = strTitle Then
-                    sURL = SearchMovie(strTitle, strYear)
+                    sURL = SearchMovie(strTitle, iYear)
                 End If
 
                 If Not String.IsNullOrEmpty(sURL) Then
@@ -196,19 +196,19 @@ Namespace MoviepilotDE
         ''' <summary>
         ''' Retrieve the URL for a specific movie on MoviePilot.de (German site)
         ''' </summary>
-        ''' <param name="strTitle"><c>String</c> which contains the originaltitle or title of the movie</param>
-        ''' <param name="strYear"><c>String</c> which contains the movie year</param>
+        ''' <param name="title"><c>String</c> which contains the originaltitle or title of the movie</param>
+        ''' <param name="year"><c>Integer</c> which contains the movie year</param>
         ''' <returns><c>String</c> which is URL of the movie on Moviepilot.de (or empty string if nothing was found)</returns>
         ''' <remarks>Retrieve the URL on Moviepilot.de here and use it to download the HTML source later on!</remarks>
-        Private Function SearchMovie(ByVal strTitle As String, ByVal strYear As String) As String
+        Private Function SearchMovie(ByVal title As String, ByVal year As Integer) As String
             Dim strURL As String = String.Empty
             Try
-                If Not String.IsNullOrEmpty(strTitle) Then
+                If Not String.IsNullOrEmpty(title) Then
 
                     'search movie on website
                     'like http://www.moviepilot.de/suche?q=Machete+Kills&type=movie
                     Dim sHTTP As New HTTP
-                    Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.moviepilot.de/suche?q=", strTitle, "&type=movie&sourceid=mozilla-search"))
+                    Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.moviepilot.de/suche?q=", title, "&type=movie&sourceid=mozilla-search"))
                     sHTTP = Nothing
 
                     If Not String.IsNullOrEmpty(HTML) Then
@@ -247,14 +247,14 @@ Namespace MoviepilotDE
                             End If
 
                             'Only one search result or no Year to filter
-                            If resResult.Count = 1 OrElse (filterResult.Count > 0 AndAlso String.IsNullOrEmpty(strYear)) Then
+                            If resResult.Count = 1 OrElse (filterResult.Count > 0 AndAlso year = 0) Then
                                 If strURL = String.Empty OrElse strURL.Contains("http://www.moviepilot.de") = False Then
                                     strURL = String.Concat("http://www.moviepilot.de", resResult.Item(0).Groups("URL").Value).Trim
                                 End If
                             ElseIf resResult.Count > 0 Then
                                 ' Try to find a search result with same Year
                                 For ctr As Integer = 0 To resResult.Count - 1
-                                    If resResult.Item(ctr).Groups("YEAR").Value = strYear Then
+                                    If resResult.Item(ctr).Groups("YEAR").Value = year.ToString Then
                                         strURL = String.Concat("http://www.moviepilot.de", resResult.Item(ctr).Groups("URL").Value.Trim)
                                         Return strURL
                                     End If

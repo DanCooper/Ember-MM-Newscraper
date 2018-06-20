@@ -69,7 +69,7 @@ Public Class dlgTMDBSearchResults_Movie
         _TMDB = TMDB
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions, ByVal sMovieYear As String) As DialogResult
+    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions, ByVal sMovieYear As Integer) As DialogResult
         tmrWait.Enabled = False
         tmrWait.Interval = 250
         tmrLoad.Enabled = False
@@ -80,7 +80,7 @@ Public Class dlgTMDBSearchResults_Movie
         Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
         txtSearch.Text = sMovieTitle
         txtFileName.Text = sMovieFilename
-        txtYear.Text = sMovieYear
+        txtYear.Text = sMovieYear.ToString
         chkManual.Enabled = False
 
         _TMDB.SearchAsync_Movie(sMovieTitle, _filterOptions, sMovieYear)
@@ -103,7 +103,8 @@ Public Class dlgTMDBSearchResults_Movie
     End Function
 
     Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
-        If Not String.IsNullOrEmpty(txtSearch.Text) AndAlso (String.IsNullOrEmpty(txtYear.Text) OrElse Integer.TryParse(txtYear.Text, 0)) Then
+        Dim iYear As Integer
+        If Not String.IsNullOrEmpty(txtSearch.Text) AndAlso (String.IsNullOrEmpty(txtYear.Text) OrElse Integer.TryParse(txtYear.Text, iYear)) Then
             btnOK.Enabled = False
             pnlPicStatus.Visible = False
             _InfoCache.Clear()
@@ -114,7 +115,7 @@ Public Class dlgTMDBSearchResults_Movie
             chkManual.Enabled = False
             _TMDB.CancelAsync()
 
-            _TMDB.SearchAsync_Movie(txtSearch.Text, _filterOptions, txtYear.Text)
+            _TMDB.SearchAsync_Movie(txtSearch.Text, _filterOptions, iYear)
         End If
     End Sub
 
@@ -162,7 +163,7 @@ Public Class dlgTMDBSearchResults_Movie
             _TMDB.CancelAsync()
         End If
 
-        _tmpMovie.Clear()
+        _tmpMovie = New MediaContainers.Movie
 
         DialogResult = DialogResult.Cancel
     End Sub
@@ -190,7 +191,7 @@ Public Class dlgTMDBSearchResults_Movie
         lblTMDBID.Text = String.Empty
         pbPoster.Image = Nothing
 
-        _tmpMovie.Clear()
+        _tmpMovie = New MediaContainers.Movie
 
         _TMDB.CancelAsync()
     End Sub
@@ -247,7 +248,7 @@ Public Class dlgTMDBSearchResults_Movie
             _tmpMovie = sInfo
             lblTitle.Text = _tmpMovie.Title
             lblTagline.Text = _tmpMovie.Tagline
-            lblYear.Text = _tmpMovie.Year
+            lblYear.Text = _tmpMovie.Year.ToString
             lblDirectors.Text = String.Join(" / ", _tmpMovie.Directors.ToArray)
             lblGenre.Text = String.Join(" / ", _tmpMovie.Genres.ToArray)
             txtPlot.Text = StringUtils.ShortenOutline(_tmpMovie.Plot, 410)
@@ -291,7 +292,7 @@ Public Class dlgTMDBSearchResults_Movie
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
             For Each Movie As MediaContainers.Movie In M.Matches
                 tvResults.Nodes.Add(New TreeNode() With {
-                                    .Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)),
+                                    .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year.ToString), String.Empty)),
                                     .Tag = Movie.UniqueIDs.TMDbId})
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)

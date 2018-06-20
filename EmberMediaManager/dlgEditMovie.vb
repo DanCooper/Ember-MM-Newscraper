@@ -1552,7 +1552,7 @@ Public Class dlgEditMovie
         txtUserRating.Text = tmpDBElement.Movie.UserRating.ToString
         txtVideoSource.Text = tmpDBElement.Movie.VideoSource
         txtVotes.Text = tmpDBElement.Movie.Votes
-        txtYear.Text = tmpDBElement.Movie.Year
+        txtYear.Text = tmpDBElement.Movie.Year.ToString
 
         If Not String.IsNullOrEmpty(tmpDBElement.Movie.LastPlayed) Then
             Dim timecode As Double = 0
@@ -2318,7 +2318,7 @@ Public Class dlgEditMovie
 
         tmpDBElement.Movie.SortTitle = txtSortTitle.Text.Trim
         tmpDBElement.Movie.Tagline = txtTagline.Text.Trim
-        tmpDBElement.Movie.Year = txtYear.Text.Trim
+        tmpDBElement.Movie.Year = If(Integer.TryParse(txtYear.Text.Trim, 0), CInt(txtYear.Text.Trim), 0)
         tmpDBElement.Movie.Votes = txtVotes.Text.Trim
         tmpDBElement.Movie.Outline = txtOutline.Text.Trim
         tmpDBElement.Movie.Plot = txtPlot.Text.Trim

@@ -503,24 +503,28 @@ Namespace FileUtils
         Public Shared Function CheckOnlineStatus(ByRef dbElement As Database.DBElement, ByVal showMessage As Boolean) As Boolean
             Select Case dbElement.ContentType
                 Case Enums.ContentType.Movie, Enums.ContentType.TVEpisode
-                    While Not File.Exists(dbElement.FileItem.FirstStackedPath)
-                        If showMessage Then
-                            If MessageBox.Show(String.Concat(
-                                               Master.eLang.GetString(587, "This file is no longer available"), ".",
-                                               Environment.NewLine,
-                                               Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
-                                               Environment.NewLine,
-                                               Environment.NewLine,
-                                               dbElement.FileItem.FirstStackedPath),
-                                               String.Empty,
-                                               MessageBoxButtons.RetryCancel,
-                                               MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
-                        Else
-                            Return False
-                        End If
-                    End While
-                    dbElement.IsOnline = True
-                    Return True
+                    If dbElement.FileItemSpecified Then
+                        While Not File.Exists(dbElement.FileItem.FirstStackedPath)
+                            If showMessage Then
+                                If MessageBox.Show(String.Concat(
+                                                   Master.eLang.GetString(587, "This file is no longer available"), ".",
+                                                   Environment.NewLine,
+                                                   Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                                   Environment.NewLine,
+                                                   Environment.NewLine,
+                                                   dbElement.FileItem.FirstStackedPath),
+                                                   String.Empty,
+                                                   MessageBoxButtons.RetryCancel,
+                                                   MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
+                            Else
+                                Return False
+                            End If
+                        End While
+                        dbElement.IsOnline = True
+                        Return True
+                    Else
+                        Return False
+                    End If
 
                 Case Enums.ContentType.TVShow, Enums.ContentType.TVSeason
                     While Not Directory.Exists(dbElement.ShowPath)

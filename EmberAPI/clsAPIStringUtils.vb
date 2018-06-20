@@ -499,8 +499,8 @@ Public Class StringUtils
     ''' <param name="IsSingle"></param>
     ''' <param name="UseForderName"></param>
     ''' <returns></returns>
-    Public Shared Function FilterYearFromPath_Movie(ByVal fileItem As FileItem, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
-        If fileItem Is Nothing Then Return String.Empty
+    Public Shared Function FilterYearFromPath_Movie(ByVal fileItem As FileItem, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As Integer
+        If fileItem Is Nothing Then Return 0
 
         'get raw string to get year from
         Dim strRawString As String = String.Empty
@@ -510,7 +510,10 @@ Public Class StringUtils
             strRawString = If(IsSingle AndAlso UseForderName, fileItem.MainPath.Name, fileItem.FileInfo.Name)
         End If
 
-        Return Regex.Match(strRawString, "((19|20)\d{2})", RegexOptions.RightToLeft).Value.Trim
+        Dim iYear As Integer
+        Integer.TryParse(Regex.Match(strRawString, "((19|20)\d{2})", RegexOptions.RightToLeft).Value.Trim, iYear)
+
+        Return iYear
     End Function
 
     Public Shared Function FormatDuration(ByVal tDur As String, ByVal contentType As Enums.ContentType) As String

@@ -68,7 +68,7 @@ Public Class dlgIMDBSearchResults_Movie
         _IMDB = IMDB
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieYear As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions) As DialogResult
+    Public Overloads Function ShowDialog(ByVal title As String, ByVal year As Integer, ByVal path As String, ByVal filterOptions As Structures.ScrapeOptions) As DialogResult
         tmrWait.Enabled = False
         tmrWait.Interval = 250
         tmrLoad.Enabled = False
@@ -77,15 +77,13 @@ Public Class dlgIMDBSearchResults_Movie
 
         _filterOptions = filterOptions
 
-        Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
-        txtSearch.Text = String.Concat(sMovieTitle, " ", If(Not String.IsNullOrEmpty(sMovieYear), String.Concat("(", sMovieYear, ")"), String.Empty))
-        txtFileName.Text = sMovieFilename
+        Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", title)
+        txtSearch.Text = String.Concat(title, " ", If(Not year = 0, String.Concat("(", year, ")"), String.Empty))
+        txtFileName.Text = path
 
-        ' fix for Enhancement #91
-        'chkManual.Enabled = False
         chkManual.Enabled = True
 
-        _IMDB.SearchMovieAsync(sMovieTitle, sMovieYear, _filterOptions)
+        _IMDB.SearchMovieAsync(title, year, _filterOptions)
 
         Return ShowDialog()
     End Function
@@ -117,7 +115,7 @@ Public Class dlgIMDBSearchResults_Movie
             chkManual.Enabled = False
 
             _IMDB.CancelAsync()
-            _IMDB.SearchMovieAsync(txtSearch.Text, String.Empty, _filterOptions)
+            _IMDB.SearchMovieAsync(txtSearch.Text, 0, _filterOptions)
         End If
     End Sub
 
@@ -170,7 +168,7 @@ Public Class dlgIMDBSearchResults_Movie
             _IMDB.CancelAsync()
         End If
 
-        _tmpMovie.Clear()
+        _tmpMovie = New MediaContainers.Movie
 
         DialogResult = DialogResult.Cancel
     End Sub
@@ -210,7 +208,7 @@ Public Class dlgIMDBSearchResults_Movie
         lblIMDBID.Text = String.Empty
         pbPoster.Image = Nothing
 
-        _tmpMovie.Clear()
+        _tmpMovie = New MediaContainers.Movie
 
         _IMDB.CancelAsync()
     End Sub
@@ -293,7 +291,7 @@ Public Class dlgIMDBSearchResults_Movie
                 _tmpMovie = sInfo
                 lblTitle.Text = _tmpMovie.Title
                 lblTagline.Text = _tmpMovie.Tagline
-                lblYear.Text = _tmpMovie.Year
+                lblYear.Text = _tmpMovie.Year.ToString
                 lblDirectors.Text = String.Join(" / ", _tmpMovie.Directors.ToArray)
                 lblGenre.Text = String.Join(" / ", _tmpMovie.Genres.ToArray)
                 txtOutline.Text = _tmpMovie.Outline
@@ -356,7 +354,7 @@ Public Class dlgIMDBSearchResults_Movie
                         'tSearchResults.PartialMatches.Sort()
                         For Each Movie As MediaContainers.Movie In tSearchResults.PartialMatches
                             TnP.Nodes.Add(New TreeNode() With {
-                                          .Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)),
+                                          .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
                                           })
                         Next
@@ -373,7 +371,7 @@ Public Class dlgIMDBSearchResults_Movie
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(1006, "TV Movie Titles ({0})"), tSearchResults.TvTitles.Count))
                         For Each Movie As MediaContainers.Movie In tSearchResults.TvTitles
                             TnP.Nodes.Add(New TreeNode() With {
-                                          .Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)),
+                                          .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
                                           })
                         Next
@@ -390,7 +388,7 @@ Public Class dlgIMDBSearchResults_Movie
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(1083, "Video Titles ({0})"), tSearchResults.VideoTitles.Count))
                         For Each Movie As MediaContainers.Movie In tSearchResults.VideoTitles
                             TnP.Nodes.Add(New TreeNode() With {
-                                          .Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)),
+                                          .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
                                           })
                         Next
@@ -407,7 +405,7 @@ Public Class dlgIMDBSearchResults_Movie
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(1389, "Short Titles ({0})"), tSearchResults.ShortTitles.Count))
                         For Each Movie As MediaContainers.Movie In tSearchResults.ShortTitles
                             TnP.Nodes.Add(New TreeNode() With {
-                                          .Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)),
+                                          .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
                                           })
                         Next
@@ -424,7 +422,7 @@ Public Class dlgIMDBSearchResults_Movie
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(829, "Popular Titles ({0})"), tSearchResults.PopularTitles.Count))
                         For Each Movie As MediaContainers.Movie In tSearchResults.PopularTitles
                             TnP.Nodes.Add(New TreeNode() With {
-                                          .Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)),
+                                          .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
                                           })
                         Next
@@ -441,7 +439,7 @@ Public Class dlgIMDBSearchResults_Movie
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(831, "Exact Matches ({0})"), tSearchResults.ExactMatches.Count))
                         For Each Movie As MediaContainers.Movie In tSearchResults.ExactMatches
                             TnP.Nodes.Add(New TreeNode() With {
-                                          .Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)),
+                                          .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
                                           })
                         Next

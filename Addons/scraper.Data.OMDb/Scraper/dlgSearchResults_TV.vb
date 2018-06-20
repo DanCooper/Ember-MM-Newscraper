@@ -170,7 +170,7 @@ Public Class dlgSearchResults_TV
         If _OMDb.bwOMDb.IsBusy Then
             _OMDb.CancelAsync()
         End If
-        _tmpTVShow.Clear()
+        _tmpTVShow = New MediaContainers.TVShow
 
         DialogResult = DialogResult.Cancel
     End Sub
@@ -198,7 +198,7 @@ Public Class dlgSearchResults_TV
         lblTMDBID.Text = String.Empty
         pbPoster.Image = Nothing
 
-        _tmpTVShow.Clear()
+        _tmpTVShow = New MediaContainers.TVShow
 
         _OMDb.CancelAsync()
     End Sub

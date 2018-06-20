@@ -753,30 +753,26 @@ Public Class dlgEditMovieSet
         bsMovies.DataSource = Nothing
         dgvMovies.DataSource = Nothing
 
-        Master.DB.FillDataTable(dtMovies, "SELECT * FROM movie ORDER BY ListTitle COLLATE NOCASE;")
+        Master.DB.FillDataTable(dtMovies, String.Format("SELECT * FROM movie ORDER BY {0} COLLATE NOCASE;",
+                                                        Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)))
 
         If dtMovies.Rows.Count > 0 Then
-            With Me
-                .bsMovies.DataSource = .dtMovies
-                .dgvMovies.DataSource = .bsMovies
+            bsMovies.DataSource = dtMovies
+            dgvMovies.DataSource = bsMovies
 
-                For i As Integer = 0 To .dgvMovies.Columns.Count - 1
-                    .dgvMovies.Columns(i).Visible = False
-                Next
+            For i As Integer = 0 To dgvMovies.Columns.Count - 1
+                dgvMovies.Columns(i).Visible = False
+            Next
 
-                .dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
-                .dgvMovies.Columns("ListTitle").MinimumWidth = 83
-                .dgvMovies.Columns("ListTitle").ReadOnly = True
-                .dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
-                .dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                .dgvMovies.Columns("ListTitle").Visible = True
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).HeaderText = Master.eLang.GetString(21, "Title")
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).MinimumWidth = 83
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ReadOnly = True
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).Resizable = DataGridViewTriState.True
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).SortMode = DataGridViewColumnSortMode.Automatic
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToolTipText = Master.eLang.GetString(21, "Title")
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).Visible = True
 
-                .dgvMovies.Columns("idMovie").ValueType = GetType(Int32)
-
-                .SetControlsEnabled(True)
-
-            End With
+            SetControlsEnabled(True)
         End If
 
         dgvMovies.ResumeLayout()
@@ -1247,29 +1243,26 @@ Public Class dlgEditMovieSet
         bsMovies.DataSource = Nothing
         dgvMovies.DataSource = Nothing
 
-        Master.DB.FillDataTable(dtMovies, "SELECT * FROM movie ORDER BY listTitle COLLATE NOCASE;")
+        Master.DB.FillDataTable(dtMovies, String.Format("SELECT * FROM movie ORDER BY {0} COLLATE NOCASE;",
+                                                        Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)))
 
         If dtMovies.Rows.Count > 0 Then
-            With Me
-                .bsMovies.DataSource = .dtMovies
-                .dgvMovies.DataSource = .bsMovies
+            bsMovies.DataSource = dtMovies
+            dgvMovies.DataSource = bsMovies
 
-                For i As Integer = 0 To .dgvMovies.Columns.Count - 1
-                    .dgvMovies.Columns(i).Visible = False
-                Next
+            For i As Integer = 0 To dgvMovies.Columns.Count - 1
+                dgvMovies.Columns(i).Visible = False
+            Next
 
-                .dgvMovies.Columns("listTitle").HeaderText = Master.eLang.GetString(21, "Title")
-                .dgvMovies.Columns("listTitle").MinimumWidth = 83
-                .dgvMovies.Columns("listTitle").ReadOnly = True
-                .dgvMovies.Columns("listTitle").Resizable = DataGridViewTriState.True
-                .dgvMovies.Columns("listTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvMovies.Columns("listTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                .dgvMovies.Columns("listTitle").Visible = True
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).HeaderText = Master.eLang.GetString(21, "Title")
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).MinimumWidth = 83
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ReadOnly = True
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).Resizable = DataGridViewTriState.True
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).SortMode = DataGridViewColumnSortMode.Automatic
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToolTipText = Master.eLang.GetString(21, "Title")
+            dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).Visible = True
 
-                .dgvMovies.Columns("idMovie").ValueType = GetType(Int32)
-
-                .SetControlsEnabled(True)
-            End With
+            SetControlsEnabled(True)
         End If
     End Sub
 

@@ -1974,6 +1974,7 @@ Public Class ModulesManager
         Public Property FilterMovies() As String
         Public Property FilterMoviesSearch() As String
         Public Property FilterMoviesType() As String
+        Public Property FilterMoviesets() As String
         Public Property FilterTVShows() As String
         Public Property FilterTVShowsSearch() As String
         Public Property FilterTVShowsType() As String

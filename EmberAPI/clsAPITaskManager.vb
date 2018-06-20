@@ -176,7 +176,7 @@ Public Class TaskManager
                             DataField_CompareStrings(.bMainVideoSource, tmpDBElement.VideoSource, nInfo.VideoSource)
                             tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
                             DataField_CompareLists(.bMainWriters, tmpDBElement.Movie.Credits, nInfo.Credits)
-                            DataField_CompareStrings(.bMainYear, tmpDBElement.Movie.Year, nInfo.Year)
+                            DataField_CompareIntegers(.bMainYear, tmpDBElement.Movie.Year, nInfo.Year)
                         End With
 
                         If _bHasChanged Then

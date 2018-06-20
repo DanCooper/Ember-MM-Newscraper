@@ -162,7 +162,9 @@ Namespace TVDBs
                         If Not String.IsNullOrEmpty(CStr(aShow.FirstAired)) Then
                             t2 = CStr(aShow.FirstAired.Year)
                         End If
-                        Dim lNewShow As MediaContainers.TVShow = New MediaContainers.TVShow(String.Empty, t1, t2)
+                        Dim lNewShow As MediaContainers.TVShow = New MediaContainers.TVShow With {
+                            .Premiered = t2,
+                            .Title = t1}
                         lNewShow.UniqueIDs.TVDbId = CStr(aShow.Id)
                         R.Matches.Add(lNewShow)
                     End If

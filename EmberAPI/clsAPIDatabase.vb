@@ -83,6 +83,7 @@ Public Class Database
     End Enum
 
     Public Enum ColumnName As Integer
+        Actor
         Aired
         BannerPath
         Certifications
@@ -139,11 +140,13 @@ Public Class Database
         Premiered
         Ratings
         ReleaseDate
+        Role
         Runtime
         SeasonNumber
         SortMethod
         SortTitle
         SortedTitle
+        SourceName
         Status
         Studios
         SubEpisode
@@ -159,6 +162,14 @@ Public Class Database
         UserRating
         VideoSource
         Year
+    End Enum
+
+    Public Enum DataType As Integer
+        [Boolean]
+        [Double]
+        [Integer]
+        [Long]
+        [String]
     End Enum
 
     Public Enum TableName As Integer
@@ -195,7 +206,7 @@ Public Class Database
         writer_link
     End Enum
 
-#End Region 'Enums
+#End Region 'Enumerations
 
 #Region "Methods"
 
@@ -685,11 +696,12 @@ Public Class Database
                 CleanMainTable("genre", "genre_link", "idGenre")
                 'person
                 logger.Info("Cleaning person table")
-                CleanMainTable("person", "actor_link", "idPerson")
-                CleanMainTable("person", "creator_link", "idPerson")
-                CleanMainTable("person", "director_link", "idPerson")
-                CleanMainTable("person", "gueststar_link", "idPerson")
-                CleanMainTable("person", "writer_link", "idPerson")
+                'TODO: fix person cleanup
+                'CleanMainTable("person", "actor_link", "idPerson")
+                'CleanMainTable("person", "creator_link", "idPerson")
+                'CleanMainTable("person", "director_link", "idPerson")
+                'CleanMainTable("person", "gueststar_link", "idPerson")
+                ' CleanMainTable("person", "writer_link", "idPerson")
                 'studio
                 logger.Info("Cleaning studio table")
                 CleanMainTable("studio", "studio_link", "idStudio")
@@ -2065,7 +2077,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(sqlReader("title")) Then .Title = sqlReader("title").ToString
                         If Not DBNull.Value.Equals(sqlReader("originalTitle")) Then .OriginalTitle = sqlReader("originalTitle").ToString
                         If Not DBNull.Value.Equals(sqlReader("sortTitle")) Then .SortTitle = sqlReader("sortTitle").ToString
-                        If Not DBNull.Value.Equals(sqlReader("year")) Then .Year = sqlReader("year").ToString
+                        If Not DBNull.Value.Equals(sqlReader("year")) Then .Year = Convert.ToInt32(sqlReader("year"))
                         If Not DBNull.Value.Equals(sqlReader("mpaa")) Then .MPAA = sqlReader("mpaa").ToString
                         If Not DBNull.Value.Equals(sqlReader("top250")) Then .Top250 = Convert.ToInt32(sqlReader("top250"))
                         If Not DBNull.Value.Equals(sqlReader("outline")) Then .Outline = sqlReader("outline").ToString
@@ -2839,7 +2851,7 @@ Public Class Database
             Dim par_title As SQLiteParameter = sqlCommand.Parameters.Add("par_title", DbType.String, 0, "title")
             Dim par_originalTitle As SQLiteParameter = sqlCommand.Parameters.Add("par_originalTitle", DbType.String, 0, "originalTitle")
             Dim par_sortTitle As SQLiteParameter = sqlCommand.Parameters.Add("par_sortTitle", DbType.String, 0, "sortTitle")
-            Dim par_year As SQLiteParameter = sqlCommand.Parameters.Add("par_year", DbType.String, 0, "year")
+            Dim par_year As SQLiteParameter = sqlCommand.Parameters.Add("par_year", DbType.Int32, 0, "year")
             Dim par_mpaa As SQLiteParameter = sqlCommand.Parameters.Add("par_mpaa", DbType.String, 0, "mpaa")
             Dim par_top250 As SQLiteParameter = sqlCommand.Parameters.Add("par_top250", DbType.Int64, 0, "top250")
             Dim par_outline As SQLiteParameter = sqlCommand.Parameters.Add("par_outline", DbType.String, 0, "outline")
@@ -3007,7 +3019,9 @@ Public Class Database
                     par_top250.Value = .Top250
                 End If
                 par_trailer.Value = .Trailer
-                par_year.Value = .Year
+                If .YearSpecified Then 'has to be NOTHING instead of "0"
+                    par_year.Value = .Year
+                End If
             End With
 
             par_outOfTolerance.Value = dbElement.OutOfTolerance
@@ -4585,6 +4599,7 @@ Public Class Database
                         Patch47_certification_temp(True)
                         Patch47_file_temp(True)
                         Patch47_streamdetails(True)
+                        Patch47_year(True)
                         If MessageBox.Show("Ember now saves the resolution of all images in the database. Do you want to scan all images (all sources has to be mountet for this)?", "Get resolution of images", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                             Patch47_art(True)
                         End If
@@ -5645,6 +5660,20 @@ Public Class Database
         If Not batchMode Then sqlTransaction.Commit()
     End Sub
 
+    Private Sub Patch47_year(ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Fixing Year...")
+
+        Dim SQLtransaction As SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            sqlCommand.CommandText = "UPDATE movie SET year = NULL WHERE year = 0 OR year = '';"
+            sqlCommand.ExecuteNonQuery()
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
 #End Region 'Database upgrade Methods
 
 #Region "Deprecated Methodes"
@@ -6195,6 +6224,7 @@ Public Class Database
                     GetColumnName(Database.ColumnName.Runtime),
                     GetColumnName(Database.ColumnName.SeasonNumber),
                     GetColumnName(Database.ColumnName.SortTitle),
+                    GetColumnName(Database.ColumnName.SourceName),
                     GetColumnName(Database.ColumnName.Status),
                     GetColumnName(Database.ColumnName.Studios),
                     GetColumnName(Database.ColumnName.SubEpisode),
@@ -6382,7 +6412,7 @@ Public Class Database
                 Case ColumnName.MarkedEpisodesCount
                     Return "markedEpisodes"
                 Case ColumnName.MovieCount
-                    Return "count"
+                    Return "movieCount"
                 Case ColumnName.MovieTitles
                     Return "movieTitles"
                 Case ColumnName.MPAA
@@ -6419,6 +6449,8 @@ Public Class Database
                     Return "sortMethod"
                 Case ColumnName.SortTitle
                     Return "sortTitle"
+                Case ColumnName.SourceName
+                    Return "source"
                 Case ColumnName.Status
                     Return "status"
                 Case ColumnName.Studios
@@ -6454,8 +6486,55 @@ Public Class Database
             End Select
         End Function
 
-        Public Shared Function GetMainIdName(ByVal tableName As TableName) As String
-            Select Case tableName
+        Public Shared Function GetColumnName(ByVal column As String) As ColumnName
+            For Each item In System.Enum.GetValues(GetType(ColumnName))
+                If GetColumnName(DirectCast(item, ColumnName)) = column.ToLower Then Return DirectCast(item, ColumnName)
+            Next
+            Return Nothing
+        End Function
+
+        Public Shared Function GetDataType(ByVal item As ColumnName) As DataType
+            Select Case item
+                Case ColumnName.HasMetaData,
+                     ColumnName.HasMovieset,
+                     ColumnName.HasSubtitles,
+                     ColumnName.HasWatched,
+                     ColumnName.IsMissing,
+                     ColumnName.Locked,
+                     ColumnName.Marked,
+                     ColumnName.MarkedCustom1,
+                     ColumnName.MarkedCustom2,
+                     ColumnName.MarkedCustom3,
+                     ColumnName.MarkedCustom4,
+                     ColumnName.New
+                    Return DataType.Boolean
+                Case ColumnName.DateAdded,
+                     ColumnName.DateModified,
+                     ColumnName.DisplayEpisode,
+                     ColumnName.DisplaySeason,
+                     ColumnName.EpisodeCount,
+                     ColumnName.EpisodeNumber,
+                     ColumnName.LastPlayed,
+                     ColumnName.LockedEpisodesCount,
+                     ColumnName.MarkedEpisodesCount,
+                     ColumnName.MovieCount,
+                     ColumnName.NewEpisodesCount,
+                     ColumnName.OutOfTolerance,
+                     ColumnName.PlayCount,
+                     ColumnName.SeasonNumber,
+                     ColumnName.SubEpisode,
+                     ColumnName.Top250,
+                     ColumnName.UserRating,
+                     ColumnName.Year
+                    Return DataType.Integer
+                Case Else
+                    Return DataType.String
+            End Select
+            Return Nothing
+        End Function
+
+        Public Shared Function GetMainIdName(ByVal item As TableName) As String
+            Select Case item
                 Case TableName.art
                     Return "idArt"
                 Case TableName.certification
@@ -6494,23 +6573,369 @@ Public Class Database
             Return String.Empty
         End Function
 
+        Public Shared Function GetMainViewName(ByVal contentType As Enums.ContentType) As String
+            Select Case contentType
+                Case Enums.ContentType.Movie
+                    Return "movielist"
+                Case Enums.ContentType.MovieSet
+                    Return "moviesetlist"
+                Case Enums.ContentType.TVEpisode
+                    Return "episodelist"
+                Case Enums.ContentType.TVSeason
+                    Return "seasonlist"
+                Case Enums.ContentType.TVShow
+                    Return "tvshowlist"
+            End Select
+            Return String.Empty
+        End Function
+
 #End Region 'Methods
 
     End Class
 
+    Public Class Filter
 
-        Public Class SQLViewProperty
+        Public Enum Condition As Integer
+            [And]
+            [Or]
+        End Enum
 
-#Region "Properties"
+        Public Enum Operators As Integer
+            After
+            Before
+            Between
+            Contains
+            DoesNotContain
+            EndWith
+            GreaterThan
+            GreaterThanOrEqual
+            [In]
+            LessThan
+            LessThanOrEqual
+            NotBetween
+            NotIn
+            StartWith
+            [False]
+            [Is]
+            [IsNot]
+            IsNotNull
+            IsNotNullOrEmpty
+            IsNull
+            IsNullOrEmpty
+            [True]
+        End Enum
 
-            Public Property Name() As String = String.Empty
+        Public ReadOnly Property Contains(ByVal field As ColumnName) As Boolean
+            Get
+                Return Rules.Where(Function(f) f.Field = field).Count > 0
+            End Get
+        End Property
 
-            Public Property Statement() As String = String.Empty
+        Public ReadOnly Property Contains(ByVal field As ColumnName, ByVal [operator] As Operators) As Boolean
+            Get
+                Return Rules.Where(Function(f) f.Field = field AndAlso f.Operator = [operator]).Count > 0
+            End Get
+        End Property
 
-#End Region 'Properties 
+        Public ReadOnly Property ContainsAnyDataFieldFilter() As Boolean
+            Get
+                Return Rules.Where(Function(f) _
+                                       f.Field = ColumnName.Aired OrElse
+                                       f.Field = ColumnName.Certifications OrElse
+                                       f.Field = ColumnName.Countries OrElse
+                                       f.Field = ColumnName.Creators OrElse
+                                       f.Field = ColumnName.Credits OrElse
+                                       f.Field = ColumnName.Directors OrElse
+                                       f.Field = ColumnName.EpisodeGuideURL OrElse
+                                       f.Field = ColumnName.Genres OrElse
+                                       f.Field = ColumnName.LastPlayed OrElse
+                                       f.Field = ColumnName.MPAA OrElse
+                                       f.Field = ColumnName.OriginalTitle OrElse
+                                       f.Field = ColumnName.Outline OrElse
+                                       f.Field = ColumnName.PlayCount OrElse
+                                       f.Field = ColumnName.Plot OrElse
+                                       f.Field = ColumnName.Premiered OrElse
+                                       f.Field = ColumnName.Ratings OrElse
+                                       f.Field = ColumnName.ReleaseDate OrElse
+                                       f.Field = ColumnName.Runtime OrElse
+                                       f.Field = ColumnName.SortTitle OrElse
+                                       f.Field = ColumnName.Status OrElse
+                                       f.Field = ColumnName.Studios OrElse
+                                       f.Field = ColumnName.Tagline OrElse
+                                       f.Field = ColumnName.Tags OrElse
+                                       f.Field = ColumnName.Title OrElse
+                                       f.Field = ColumnName.Top250 OrElse
+                                       f.Field = ColumnName.Trailer OrElse
+                                       f.Field = ColumnName.UserRating OrElse
+                                       f.Field = ColumnName.VideoSource OrElse
+                                       f.Field = ColumnName.Year).Count > 0
+            End Get
+        End Property
+
+        Public ReadOnly Property ContainsAnyFromSearchBar() As Boolean
+            Get
+                Return Rules.Where(Function(f) _
+                                       f.Field = ColumnName.Actor OrElse
+                                       f.Field = ColumnName.Countries OrElse
+                                       f.Field = ColumnName.Creators OrElse
+                                       f.Field = ColumnName.Credits OrElse
+                                       f.Field = ColumnName.Directors OrElse
+                                       f.Field = ColumnName.MovieTitles OrElse
+                                       f.Field = ColumnName.OriginalTitle OrElse
+                                       f.Field = ColumnName.Role OrElse
+                                       f.Field = ColumnName.Studios OrElse
+                                       f.Field = ColumnName.Title).Count > 0
+            End Get
+        End Property
+
+        Public Shared Function ConvertStringToOperator(ByVal [operator] As String) As Operators
+            Select Case [operator].ToUpper
+                Case "=", "IS"
+                    Return Operators.Is
+                Case "<>", "NOT"
+                    Return Operators.IsNot
+                Case ">="
+                    Return Operators.GreaterThanOrEqual
+                Case ">"
+                    Return Operators.GreaterThan
+                Case "<="
+                    Return Operators.LessThanOrEqual
+                Case "<"
+                    Return Operators.LessThan
+                Case "BETWEEN"
+                    Return Operators.Between
+                Case "LIKE"
+                    Return Operators.Contains
+                Case "IN"
+                    Return Operators.In
+                Case "NOT BETWEEN"
+                    Return Operators.NotBetween
+                Case "NOT IN"
+                    Return Operators.NotIn
+                Case Else
+                    Return Nothing
+            End Select
+        End Function
+
+        Public Sub RemoveAll(ByVal field As ColumnName)
+            Rules.RemoveAll(Function(f) f.Field = field)
+            RulesWithOperator.RemoveAll(Function(f) f.Rules.Where(Function(r) r.Field = field).Count > 0)
+        End Sub
+
+        Public Sub RemoveAll(ByVal field As ColumnName, ByVal [operator] As Operators)
+            Rules.RemoveAll(Function(f) f.Field = field And f.Operator = [operator])
+            RulesWithOperator.RemoveAll(Function(f) f.Rules.Where(Function(r) r.Field = field And r.Operator = [operator]).Count > 0)
+        End Sub
+
+        Public Sub RemoveAllDataFieldFilters()
+            RemoveAll(ColumnName.Aired)
+            RemoveAll(ColumnName.Certifications)
+            RemoveAll(ColumnName.Countries)
+            RemoveAll(ColumnName.Creators)
+            RemoveAll(ColumnName.Credits)
+            RemoveAll(ColumnName.Directors)
+            RemoveAll(ColumnName.EpisodeGuideURL)
+            RemoveAll(ColumnName.Genres)
+            RemoveAll(ColumnName.LastPlayed)
+            RemoveAll(ColumnName.MPAA)
+            RemoveAll(ColumnName.OriginalTitle)
+            RemoveAll(ColumnName.Outline)
+            RemoveAll(ColumnName.PlayCount)
+            RemoveAll(ColumnName.Plot)
+            RemoveAll(ColumnName.Premiered)
+            RemoveAll(ColumnName.Ratings)
+            RemoveAll(ColumnName.ReleaseDate)
+            RemoveAll(ColumnName.Runtime)
+            RemoveAll(ColumnName.SortTitle)
+            RemoveAll(ColumnName.Status)
+            RemoveAll(ColumnName.Studios)
+            RemoveAll(ColumnName.Tagline)
+            RemoveAll(ColumnName.Tags)
+            RemoveAll(ColumnName.Title)
+            RemoveAll(ColumnName.Top250)
+            RemoveAll(ColumnName.Trailer)
+            RemoveAll(ColumnName.UserRating)
+            RemoveAll(ColumnName.VideoSource)
+            RemoveAll(ColumnName.Year)
+        End Sub
+
+        Public Sub RemoveAllMissingFilters()
+            RemoveAll(ColumnName.BannerPath)
+            RemoveAll(ColumnName.CharacterArtPath)
+            RemoveAll(ColumnName.ClearArtPath)
+            RemoveAll(ColumnName.ClearLogoPath)
+            RemoveAll(ColumnName.DiscArtPath)
+            RemoveAll(ColumnName.ExtrafanartsPath)
+            RemoveAll(ColumnName.ExtrathumbsPath)
+            RemoveAll(ColumnName.FanartPath)
+            RemoveAll(ColumnName.HasSubtitles)
+            RemoveAll(ColumnName.LandscapePath)
+            RemoveAll(ColumnName.NfoPath)
+            RemoveAll(ColumnName.PosterPath)
+            RemoveAll(ColumnName.ThemePath)
+            RemoveAll(ColumnName.TrailerPath)
+        End Sub
+
+        Public Sub RemoveAllSearchbarFilters()
+            RemoveAll(ColumnName.Actor)
+            RemoveAll(ColumnName.Countries)
+            RemoveAll(ColumnName.Creators)
+            RemoveAll(ColumnName.Credits)
+            RemoveAll(ColumnName.Directors)
+            RemoveAll(ColumnName.MovieTitles)
+            RemoveAll(ColumnName.OriginalTitle)
+            RemoveAll(ColumnName.Role)
+            RemoveAll(ColumnName.Studios)
+            RemoveAll(ColumnName.Title)
+        End Sub
+
+        Public ReadOnly Property AnyRuleSpecified As Boolean
+            Get
+                Return RulesSpecified OrElse RulesWithOperatorSpecified
+            End Get
+        End Property
+
+        Public Property Rules As List(Of Rule) = New List(Of Rule)
+
+        Private ReadOnly Property RulesSpecified As Boolean
+            Get
+                Return Rules.Count > 0
+            End Get
+        End Property
+
+        Public Property RulesWithOperator As List(Of RuleWithOperator) = New List(Of RuleWithOperator)
+
+        Private ReadOnly Property RulesWithOperatorSpecified As Boolean
+            Get
+                Return RulesWithOperator.Count > 0
+            End Get
+        End Property
+
+        Public Class Rule
+
+            Public Property Field As ColumnName
+
+            Public Property [Operator] As Operators
+
+            Public Property Value As Object
+
+            Public Property Value2 As Object
 
         End Class
 
-#End Region 'Nested Types
+        Public Class RuleWithOperator
+
+            Public Property InnerCondition As Condition
+
+            Public Property OuterCondition As Condition
+
+            Public Property Rules As List(Of Rule) = New List(Of Rule)
+
+        End Class
+
+        Public Function BuildFilter(ByVal condition As Condition) As String
+            Dim lstRules As New List(Of String)
+            If RulesSpecified Then lstRules.Add(BuildRule(Rules, condition))
+            For Each nRuleWithOperator In RulesWithOperator
+                lstRules.Add(BuildRule(nRuleWithOperator.Rules, nRuleWithOperator.InnerCondition))
+            Next
+            lstRules = lstRules.Where(Function(f) Not String.IsNullOrEmpty(f)).ToList
+            If lstRules.Count > 0 Then
+                logger.Trace(String.Format("Current Filter: {0}", String.Format("({0})", String.Join(String.Format(" {0} ", condition.ToString.ToUpper), lstRules))))
+                Return String.Format("({0})", String.Join(String.Format(" {0} ", condition.ToString.ToUpper), lstRules))
+            End If
+            Return String.Empty
+        End Function
+
+        Private Function BuildRule(ByVal rules As List(Of Rule), ByVal condition As Condition) As String
+            Dim lstRules As New List(Of String)
+            For Each nRule In rules
+                Dim strRule As String = String.Empty
+                Select Case nRule.Operator
+                    Case Operators.Between
+                        If nRule.Value2 IsNot Nothing Then
+                            If Helpers.GetDataType(nRule.Field) = DataType.String Then
+                                strRule = String.Format("({0} >= '{1}' AND {0} <='{2}')", Helpers.GetColumnName(nRule.Field), nRule.Value, nRule.Value2)
+                            Else
+                                strRule = String.Format("({0} >= {1} AND {0} <={2})", Helpers.GetColumnName(nRule.Field), nRule.Value, nRule.Value2)
+                            End If
+                        End If
+                    Case Operators.Contains
+                        strRule = String.Format("{0} LIKE '%{1}%'", Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                    Case Operators.DoesNotContain
+                        strRule = String.Format("{0} NOT LIKE '%{1}%'", Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                    Case Operators.EndWith
+                        strRule = String.Format("{0} LIKE '%{1}'", Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                    Case Operators.False
+                        If nRule.Value IsNot Nothing Then
+                        Else
+                            strRule = String.Format("{0}=0", Helpers.GetColumnName(nRule.Field))
+                        End If
+                    Case Operators.GreaterThan
+                        strRule = String.Format("{0} > {1}", Helpers.GetColumnName(nRule.Field), nRule.Value)
+                    Case Operators.GreaterThanOrEqual
+                        strRule = String.Format("{0} >= {1}", Helpers.GetColumnName(nRule.Field), nRule.Value)
+                    Case Operators.LessThan
+                        strRule = String.Format("{0} < {1}", Helpers.GetColumnName(nRule.Field), nRule.Value)
+                    Case Operators.LessThanOrEqual
+                        strRule = String.Format("{0} <= {1}", Helpers.GetColumnName(nRule.Field), nRule.Value)
+                    Case Operators.Is
+                        If Helpers.GetDataType(nRule.Field) = DataType.String Then
+                            strRule = String.Format("{0}='{1}'", Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                        Else
+                            strRule = String.Format("{0}={1}", Helpers.GetColumnName(nRule.Field), nRule.Value)
+                        End If
+                    Case Operators.IsNot
+                        If Helpers.GetDataType(nRule.Field) = DataType.String Then
+                            strRule = String.Format("NOT {0}='{1}'", Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                        Else
+                            strRule = String.Format("NOT {0}={1}", Helpers.GetColumnName(nRule.Field), nRule.Value)
+                        End If
+                    Case Operators.IsNotNull
+                        strRule = String.Format("{0} IS NOT NULL", Helpers.GetColumnName(nRule.Field))
+                    Case Operators.IsNotNullOrEmpty
+                        If Helpers.GetDataType(nRule.Field) = DataType.String Then
+                            strRule = String.Format("({0} IS NOT NULL AND NOT {0}='')", Helpers.GetColumnName(nRule.Field))
+                        Else
+                            strRule = String.Format("({0} IS NOT NULL AND NOT {0}=0)", Helpers.GetColumnName(nRule.Field))
+                        End If
+                    Case Operators.IsNullOrEmpty
+                        If Helpers.GetDataType(nRule.Field) = DataType.String Then
+                            strRule = String.Format("({0} IS NULL OR {0}='')", Helpers.GetColumnName(nRule.Field))
+                        Else
+                            strRule = String.Format("({0} IS NULL OR {0}=0)", Helpers.GetColumnName(nRule.Field))
+                        End If
+                    Case Operators.StartWith
+                        strRule = String.Format("{0} LIKE '{1}%'", Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                    Case Operators.True
+                        If nRule.Value IsNot Nothing Then
+                        Else
+                            strRule = String.Format("{0}=1", Helpers.GetColumnName(nRule.Field))
+                        End If
+                End Select
+                If Not String.IsNullOrEmpty(strRule) Then lstRules.Add(strRule)
+            Next
+            If lstRules.Count > 0 Then
+                Return String.Format("({0})", String.Join(String.Format(" {0} ", condition.ToString.ToUpper), lstRules.Where(Function(f) Not String.IsNullOrEmpty(f))))
+            End If
+            Return String.Empty
+        End Function
 
     End Class
+
+
+    Public Class SQLViewProperty
+
+#Region "Properties"
+
+        Public Property Name() As String = String.Empty
+
+        Public Property Statement() As String = String.Empty
+
+#End Region 'Properties 
+
+    End Class
+
+#End Region 'Nested Types
+
+End Class
