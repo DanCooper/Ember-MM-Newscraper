@@ -1454,21 +1454,6 @@
       </execute>
     </command>
     <command type="DB">
-      <description>move table directorlinktvshow entries to director_link</description>
-      <execute>
-        INSERT INTO director_link
-        (idPerson,
-        idMedia,
-        media_type)
-        SELECT
-        idDirector,
-        idShow,
-        'tvshow'
-        FROM
-        directorlinktvshow
-      </execute>
-    </command>
-    <command type="DB">
       <description>move table gueststarlinkepisode entries to gueststar_link</description>
       <execute>
         INSERT INTO gueststar_link
@@ -2553,7 +2538,6 @@
         poster.url AS posterPath,
         GROUP_CONCAT(DISTINCT countries.name) AS country,
         GROUP_CONCAT(DISTINCT creators.name) AS creator,
-        GROUP_CONCAT(DISTINCT directors.name) AS director,
         GROUP_CONCAT(DISTINCT genres.name) AS genre,
         GROUP_CONCAT(DISTINCT studios.name) AS studio,
         GROUP_CONCAT(DISTINCT tags.name) AS 'tag',
@@ -2597,9 +2581,6 @@
         LEFT OUTER JOIN creator_link AS creatorlink ON (creatorlink.idMedia=tvshow.idShow)
         AND (creatorlink.media_type='tvshow')
         LEFT OUTER JOIN person AS creators ON (creators.idPerson=creatorlink.idPerson)
-        LEFT OUTER JOIN director_link AS directorlink ON (directorlink.idMedia=tvshow.idShow)
-        AND (directorlink.media_type='tvshow')
-        LEFT OUTER JOIN person AS directors ON (directors.idPerson=directorlink.idPerson)
         LEFT OUTER JOIN genre_link AS genrelink ON (genrelink.idMedia=tvshow.idShow)
         AND (genrelink.media_type='tvshow')
         LEFT OUTER JOIN genre AS genres ON (genres.idGenre=genrelink.idGenre)

@@ -2992,7 +2992,7 @@ Public Class frmMain
     End Sub
 
     Private Sub clbFilterSource_Movies_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterSources_Movies.LostFocus
-        Filter_Source(clbFilterSources_Movies, pnlFilterSources_Movies, txtFilterSource_Movies, Enums.ContentType.Movie)
+        Filter_SourceName(clbFilterSources_Movies, pnlFilterSources_Movies, txtFilterSource_Movies, Enums.ContentType.Movie)
     End Sub
 
     Private Sub clbFilterVideoSources_Movies_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterVideoSources_Movies.LostFocus
@@ -3000,7 +3000,7 @@ Public Class frmMain
     End Sub
 
     Private Sub clbFilterSource_Shows_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterSource_Shows.LostFocus
-        Filter_Source(clbFilterSource_Shows, pnlFilterSources_Shows, txtFilterSource_Shows, Enums.ContentType.Movie)
+        Filter_SourceName(clbFilterSource_Shows, pnlFilterSources_Shows, txtFilterSource_Shows, Enums.ContentType.TVShow)
     End Sub
 
     Private Sub mnuMainToolsCleanDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsCleanDB.Click, cmnuTrayToolsCleanDB.Click
@@ -6950,6 +6950,11 @@ Public Class frmMain
         dgvTVEpisodes.Enabled = False
 
         If bIsAllSeasons Then
+            Master.DB.FillDataTable(dtTVEpisodes, String.Format("SELECT * FROM {0} WHERE {1}={2} {3} ORDER BY {4}, {5};",
+                                                                Database.Helpers.GetMainViewName(Enums.ContentType.TVEpisode),
+                                                                Database.Helpers.GetMainIdName(Database.TableName.tvshow),
+                                                                ShowID,
+                                                                If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0")))
             Master.DB.FillDataTable(dtTVEpisodes, String.Concat("Select * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"), " ORDER BY season, episode;"))
         Else
             Master.DB.FillDataTable(dtTVEpisodes, String.Concat("Select * FROM episodelist WHERE idShow = ", ShowID, " And season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"), " ORDER BY episode;"))
@@ -8040,6 +8045,9 @@ Public Class frmMain
                     Filter_Movies.Rules.AddRange(filter)
                     RunFilter_Movies()
                 Case Enums.ContentType.TVShow
+                    Filter_TVShows.RemoveAll(columnName)
+                    Filter_TVShows.Rules.AddRange(filter)
+                    RunFilter_TVShows()
             End Select
         Else
             Select Case contentType
@@ -8050,6 +8058,11 @@ Public Class frmMain
                         RunFilter_Movies()
                     End If
                 Case Enums.ContentType.TVShow
+                    If Filter_TVShows.Contains(columnName) Then
+                        textBox.Text = String.Empty
+                        Filter_TVShows.RemoveAll(columnName)
+                        RunFilter_TVShows()
+                    End If
             End Select
         End If
     End Sub
@@ -8159,6 +8172,8 @@ Public Class frmMain
                     rule.Field = Database.ColumnName.Actor
                 Case Master.eLang.GetString(301, "Country")
                     rule.Field = Database.ColumnName.Countries
+                Case Master.eLang.GetString(798, "Creator")
+                    rule.Field = Database.ColumnName.Creators
                 Case Master.eLang.GetString(729, "Credits")
                     rule.Field = Database.ColumnName.Credits
                 Case Master.eLang.GetString(62, "Director")
@@ -8179,23 +8194,15 @@ Public Class frmMain
 
             Select Case contentType
                 Case Enums.ContentType.Movie
-                    Filter_Movies.RemoveAll(Database.ColumnName.Actor)
-                    Filter_Movies.RemoveAll(Database.ColumnName.Countries)
-                    Filter_Movies.RemoveAll(Database.ColumnName.Credits)
-                    Filter_Movies.RemoveAll(Database.ColumnName.Directors)
-                    Filter_Movies.RemoveAll(Database.ColumnName.OriginalTitle)
-                    Filter_Movies.RemoveAll(Database.ColumnName.Role)
-                    Filter_Movies.RemoveAll(Database.ColumnName.Studios)
-                    Filter_Movies.RemoveAll(Database.ColumnName.Title)
+                    Filter_Movies.RemoveAllSearchbarFilters()
                     Filter_Movies.Rules.AddRange(filter)
                     RunFilter_Movies(comboBox.Text = Master.eLang.GetString(100, "Actor") OrElse comboBox.Text = Master.eLang.GetString(233, "Role"))
                 Case Enums.ContentType.MovieSet
-                    Filter_Moviesets.RemoveAll(Database.ColumnName.MovieTitles)
-                    Filter_Moviesets.RemoveAll(Database.ColumnName.Title)
+                    Filter_Moviesets.RemoveAllSearchbarFilters()
                     Filter_Moviesets.Rules.AddRange(filter)
                     RunFilter_MovieSets()
                 Case Enums.ContentType.TVShow
-                    Filter_TVShows.RemoveAll(Database.ColumnName.Title)
+                    Filter_TVShows.RemoveAllSearchbarFilters()
                     Filter_TVShows.Rules.AddRange(filter)
                     RunFilter_TVShows()
             End Select
@@ -8207,21 +8214,29 @@ Public Class frmMain
                         Filter_Movies.RemoveAllSearchbarFilters()
                         RunFilter_Movies()
                     End If
+                Case Enums.ContentType.MovieSet
+                    If Filter_Moviesets.ContainsAnyFromSearchBar Then
+                        searchBar.Text = String.Empty
+                        Filter_Moviesets.RemoveAllSearchbarFilters()
+                        RunFilter_MovieSets()
+                    End If
                 Case Enums.ContentType.TVShow
+                    If Filter_TVShows.ContainsAnyFromSearchBar Then
+                        searchBar.Text = String.Empty
+                        Filter_TVShows.RemoveAllSearchbarFilters()
+                        RunFilter_TVShows()
+                    End If
             End Select
         End If
     End Sub
 
-    Private Sub Filter_Source(
-                             ByRef checkedListBox As CheckedListBox,
-                             ByRef filterPanel As Panel,
-                             ByRef textBox As TextBox,
-                             ByVal contentType As Enums.ContentType)
+    Private Sub Filter_SourceName(
+                                 ByRef checkedListBox As CheckedListBox,
+                                 ByRef filterPanel As Panel,
+                                 ByRef textBox As TextBox,
+                                 ByVal contentType As Enums.ContentType)
 
-        Dim filter As New Database.Filter.RuleWithOperator With {
-            .InnerCondition = Database.Filter.Condition.Or,
-            .OuterCondition = Database.Filter.Condition.And
-        }
+        Dim filter As New Database.Filter.RuleWithOperator With {.InnerCondition = Database.Filter.Condition.Or}
 
         filterPanel.Visible = False
         filterPanel.Tag = "NO"
@@ -8248,6 +8263,9 @@ Public Class frmMain
                     Filter_Movies.RulesWithOperator.Add(filter)
                     RunFilter_Movies()
                 Case Enums.ContentType.TVShow
+                    Filter_TVShows.RemoveAll(Database.ColumnName.SourceName)
+                    Filter_TVShows.RulesWithOperator.Add(filter)
+                    RunFilter_TVShows()
             End Select
         Else
             Select Case contentType
@@ -8258,6 +8276,11 @@ Public Class frmMain
                         RunFilter_Movies()
                     End If
                 Case Enums.ContentType.TVShow
+                    If Filter_TVShows.Contains(Database.ColumnName.SourceName) Then
+                        textBox.Text = String.Empty
+                        Filter_TVShows.RemoveAll(Database.ColumnName.SourceName)
+                        RunFilter_TVShows()
+                    End If
             End Select
         End If
     End Sub
@@ -8301,6 +8324,9 @@ Public Class frmMain
                     Filter_Movies.RulesWithOperator.Add(filter)
                     RunFilter_Movies()
                 Case Enums.ContentType.TVShow
+                    Filter_TVShows.RemoveAll(Database.ColumnName.Year)
+                    Filter_TVShows.RulesWithOperator.Add(filter)
+                    RunFilter_TVShows()
             End Select
         Else
             toYearMod.Enabled = False
@@ -8313,6 +8339,10 @@ Public Class frmMain
                         RunFilter_Movies()
                     End If
                 Case Enums.ContentType.TVShow
+                    If Filter_TVShows.Contains(Database.ColumnName.Year) Then
+                        Filter_TVShows.RemoveAll(Database.ColumnName.Year)
+                        RunFilter_TVShows()
+                    End If
             End Select
         End If
     End Sub
@@ -15023,7 +15053,16 @@ Public Class frmMain
 
         RemoveHandler cbSearchMovies.SelectedIndexChanged, AddressOf cbSearchMovies_SelectedIndexChanged
         cbSearchMovies.Items.Clear()
-        cbSearchMovies.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(302, "Original Title"), Master.eLang.GetString(100, "Actor"), Master.eLang.GetString(233, "Role"), Master.eLang.GetString(62, "Director"), Master.eLang.GetString(729, "Credits"), Master.eLang.GetString(301, "Country"), Master.eLang.GetString(395, "Studio")})
+        cbSearchMovies.Items.AddRange(New Object() {
+                                      Master.eLang.GetString(21, "Title"),
+                                      Master.eLang.GetString(302, "Original Title"),
+                                      Master.eLang.GetString(100, "Actor"),
+                                      Master.eLang.GetString(233, "Role"),
+                                      Master.eLang.GetString(62, "Director"),
+                                      Master.eLang.GetString(729, "Credits"),
+                                      Master.eLang.GetString(301, "Country"),
+                                      Master.eLang.GetString(395, "Studio")
+                                      })
         If cbSearchMovies.Items.Count > 0 Then
             cbSearchMovies.SelectedIndex = 0
         End If
@@ -15031,7 +15070,10 @@ Public Class frmMain
 
         RemoveHandler cbSearchMovieSets.SelectedIndexChanged, AddressOf cbSearchMovieSets_SelectedIndexChanged
         cbSearchMovieSets.Items.Clear()
-        cbSearchMovieSets.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), String.Format("{0} ({1})", Master.eLang.GetString(21, "Title"), Master.eLang.GetString(1379, "Movie"))})
+        cbSearchMovieSets.Items.AddRange(New Object() {
+                                         Master.eLang.GetString(21, "Title"),
+                                         String.Format("{0} ({1})", Master.eLang.GetString(21, "Title"), Master.eLang.GetString(1379, "Movie"))
+                                         })
         If cbSearchMovieSets.Items.Count > 0 Then
             cbSearchMovieSets.SelectedIndex = 0
         End If
@@ -15039,7 +15081,13 @@ Public Class frmMain
 
         RemoveHandler cbSearchShows.SelectedIndexChanged, AddressOf cbSearchShows_SelectedIndexChanged
         cbSearchShows.Items.Clear()
-        cbSearchShows.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title")})
+        cbSearchShows.Items.AddRange(New Object() {
+                                     Master.eLang.GetString(21, "Title"),
+                                     Master.eLang.GetString(302, "Original Title"),
+                                     Master.eLang.GetString(798, "Creator"),
+                                     Master.eLang.GetString(301, "Country"),
+                                     Master.eLang.GetString(395, "Studio")
+                                     })
         If cbSearchShows.Items.Count > 0 Then
             cbSearchShows.SelectedIndex = 0
         End If
