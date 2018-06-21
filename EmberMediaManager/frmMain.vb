@@ -125,20 +125,20 @@ Public Class frmMain
 
     'filter movies
     Private bDoingSearch_Movies As Boolean = False
-    Private Filter_Movies As New Database.Filter
+    Private Filter_Movies As New SmartPlaylist.Playlist
     Private filSearch_Movies As String = String.Empty
     Private currTextSearch_Movies As String = String.Empty
     Private prevTextSearch_Movies As String = String.Empty
 
     'filter moviesets
     Private bDoingSearch_MovieSets As Boolean = False
-    Private Filter_Moviesets As New Database.Filter
+    Private Filter_Moviesets As New SmartPlaylist.Playlist
     Private currTextSearch_MovieSets As String = String.Empty
     Private prevTextSearch_MovieSets As String = String.Empty
 
     'filter shows
     Private bDoingSearch_TVShows As Boolean = False
-    Private Filter_TVShows As New Database.Filter
+    Private Filter_TVShows As New SmartPlaylist.Playlist
     Private filSearch_TVShows As String = String.Empty
     Private currTextSearch_TVShows As String = String.Empty
     Private prevTextSearch_TVShows As String = String.Empty
@@ -2567,9 +2567,9 @@ Public Class frmMain
 
     Private Sub chkFilterEmpty_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterEmpty_MovieSets.Click
         If chkFilterEmpty_MovieSets.Checked Then
-            Filter_Moviesets.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.MovieCount, .Operator = Database.Filter.Operators.Is, .Value = 0})
+            Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.MovieCount, .Operator = SmartPlaylist.Operators.Is, .Value = 0})
         Else
-            Filter_Moviesets.RemoveAll(Database.ColumnName.MovieCount, Database.Filter.Operators.Is)
+            Filter_Moviesets.RemoveAll(Database.ColumnName.MovieCount, SmartPlaylist.Operators.Is)
         End If
         RunFilter_MovieSets()
     End Sub
@@ -2580,9 +2580,9 @@ Public Class frmMain
 
     Private Sub chkFilterOne_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterOne_MovieSets.Click
         If chkFilterOne_MovieSets.Checked Then
-            Filter_Moviesets.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.MovieCount, .Operator = Database.Filter.Operators.Is, .Value = 1})
+            Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.MovieCount, .Operator = SmartPlaylist.Operators.Is, .Value = 1})
         Else
-            Filter_Moviesets.RemoveAll(Database.ColumnName.MovieCount, Database.Filter.Operators.Is)
+            Filter_Moviesets.RemoveAll(Database.ColumnName.MovieCount, SmartPlaylist.Operators.Is)
         End If
         RunFilter_MovieSets()
     End Sub
@@ -2665,7 +2665,7 @@ Public Class frmMain
 
     Private Sub chkFilterTolerance_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterTolerance_Movies.Click
         If chkFilterTolerance_Movies.Checked Then
-            Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.OutOfTolerance, .Operator = Database.Filter.Operators.True})
+            Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.OutOfTolerance, .Operator = SmartPlaylist.Operators.True})
         Else
             Filter_Movies.RemoveAll(Database.ColumnName.OutOfTolerance)
         End If
@@ -2964,7 +2964,7 @@ Public Class frmMain
         pnlFilterDataFields_Movies.Tag = "NO"
 
         If clbFilterDataFields_Movies.CheckedItems.Count > 0 Then
-            Dim filter As New List(Of Database.Filter.Rule)
+            Dim filter As New List(Of SmartPlaylist.Rule)
             txtFilterDataField_Movies.Text = String.Empty
 
             Dim lstItems As New List(Of String)
@@ -2973,9 +2973,9 @@ Public Class frmMain
             txtFilterDataField_Movies.Text = String.Join(" | ", lstItems.ToArray)
 
             For i As Integer = 0 To lstItems.Count - 1
-                Dim rule As New Database.Filter.Rule
+                Dim rule As New SmartPlaylist.Rule
                 rule.Field = Database.Helpers.GetColumnName(lstItems(i))
-                rule.Operator = If(cbFilterDataField_Movies.SelectedIndex = 0, Database.Filter.Operators.IsNullOrEmpty, Database.Filter.Operators.IsNotNullOrEmpty)
+                rule.Operator = If(cbFilterDataField_Movies.SelectedIndex = 0, SmartPlaylist.Operators.IsNullOrEmpty, SmartPlaylist.Operators.IsNotNullOrEmpty)
                 filter.Add(rule)
             Next
 
@@ -3036,7 +3036,7 @@ Public Class frmMain
     Private Sub ClearFilters_Movies(Optional ByVal Reload As Boolean = False)
         lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsMovies.RemoveFilter()
-        Filter_Movies = New Database.Filter
+        Filter_Movies = New SmartPlaylist.Playlist
         filSearch_Movies = String.Empty
 
         RemoveHandler txtSearchMovies.TextChanged, AddressOf txtSearchMovies_TextChanged
@@ -3131,7 +3131,7 @@ Public Class frmMain
     Private Sub ClearFilters_MovieSets(Optional ByVal Reload As Boolean = False)
         lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsMovieSets.RemoveFilter()
-        Filter_Moviesets = New Database.Filter
+        Filter_Moviesets = New SmartPlaylist.Playlist
 
         RemoveHandler txtSearchMovieSets.TextChanged, AddressOf txtSearchMovieSets_TextChanged
         txtSearchMovieSets.Text = String.Empty
@@ -3157,7 +3157,7 @@ Public Class frmMain
     Private Sub ClearFilters_Shows(Optional ByVal Reload As Boolean = False)
         lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsTVShows.RemoveFilter()
-        Filter_TVShows = New Database.Filter
+        Filter_TVShows = New SmartPlaylist.Playlist
         filSearch_TVShows = String.Empty
 
         RemoveHandler txtSearchShows.TextChanged, AddressOf txtSearchShows_TextChanged
@@ -7978,7 +7978,7 @@ Public Class frmMain
 
     Private Sub Filter_Boolean(ByVal columnName As Database.ColumnName, ByVal value As Boolean, ByVal contentType As Enums.ContentType)
         If value Then
-            Dim rule As New Database.Filter.Rule With {.Field = columnName, .Operator = If(value, Database.Filter.Operators.True, Database.Filter.Operators.False)}
+            Dim rule As New SmartPlaylist.Rule With {.Field = columnName, .Operator = If(value, SmartPlaylist.Operators.True, SmartPlaylist.Operators.False)}
             Select Case contentType
                 Case Enums.ContentType.Movie
                     Filter_Movies.Rules.Add(rule)
@@ -8014,7 +8014,7 @@ Public Class frmMain
                                      ByVal columnName As Database.ColumnName,
                                      ByVal contentType As Enums.ContentType)
 
-        Dim filter As New List(Of Database.Filter.Rule)
+        Dim filter As New List(Of SmartPlaylist.Rule)
 
         filterPanel.Visible = False
         filterPanel.Tag = "NO"
@@ -8028,12 +8028,12 @@ Public Class frmMain
             textBox.Text = String.Join(" | ", lstItems.ToArray)
 
             For i As Integer = 0 To lstItems.Count - 1
-                Dim rule As New Database.Filter.Rule
+                Dim rule As New SmartPlaylist.Rule
                 rule.Field = columnName
                 If lstItems.Item(i) = Master.eLang.None Then
-                    rule.Operator = Database.Filter.Operators.IsNullOrEmpty
+                    rule.Operator = SmartPlaylist.Operators.IsNullOrEmpty
                 Else
-                    rule.Operator = Database.Filter.Operators.Contains
+                    rule.Operator = SmartPlaylist.Operators.Contains
                     rule.Value = lstItems.Item(i)
                 End If
                 filter.Add(rule)
@@ -8069,7 +8069,7 @@ Public Class frmMain
 
     Private Sub Filter_GreaterThan(ByVal columnName As Database.ColumnName, ByVal value As Integer, ByVal contentType As Enums.ContentType)
         If value > -1 Then
-            Dim rule As New Database.Filter.Rule With {.Field = columnName, .Operator = Database.Filter.Operators.GreaterThan, .Value = value}
+            Dim rule As New SmartPlaylist.Rule With {.Field = columnName, .Operator = SmartPlaylist.Operators.GreaterThan, .Value = value}
             Select Case contentType
                 Case Enums.ContentType.Movie
                     Filter_Movies.Rules.Add(rule)
@@ -8102,19 +8102,19 @@ Public Class frmMain
         Filter_Movies.RemoveAllMissingFilters()
         If chkFilterMissing_Movies.Checked Then
             With Master.eSettings
-                If .MovieMissingBanner Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingClearArt Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingClearLogo Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingDiscArt Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.DiscArtPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingExtrafanarts Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ExtrafanartsPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingExtrathumbs Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ExtrathumbsPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingFanart Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingLandscape Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingNFO Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingPoster Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingSubtitles Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.HasSubtitles, .Operator = Database.Filter.Operators.False})
-                If .MovieMissingTheme Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ThemePath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieMissingTrailer Then Filter_Movies.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.TrailerPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
+                If .MovieMissingBanner Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingClearArt Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingClearLogo Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingDiscArt Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.DiscArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingExtrafanarts Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ExtrafanartsPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingExtrathumbs Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ExtrathumbsPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingFanart Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingLandscape Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingNFO Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingPoster Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingSubtitles Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.HasSubtitles, .Operator = SmartPlaylist.Operators.False})
+                If .MovieMissingTheme Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ThemePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingTrailer Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.TrailerPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
             End With
         End If
         RunFilter_Movies()
@@ -8124,14 +8124,14 @@ Public Class frmMain
         Filter_Moviesets.RemoveAllMissingFilters()
         If chkFilterMissing_MovieSets.Checked Then
             With Master.eSettings
-                If .MovieSetMissingBanner Then Filter_Moviesets.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieSetMissingClearArt Then Filter_Moviesets.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieSetMissingClearLogo Then Filter_Moviesets.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieSetMissingDiscArt Then Filter_Moviesets.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.DiscArtPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieSetMissingFanart Then Filter_Moviesets.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieSetMissingLandscape Then Filter_Moviesets.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieSetMissingNFO Then Filter_Moviesets.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .MovieSetMissingPoster Then Filter_Moviesets.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
+                If .MovieSetMissingBanner Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieSetMissingClearArt Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieSetMissingClearLogo Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieSetMissingDiscArt Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.DiscArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieSetMissingFanart Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieSetMissingLandscape Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieSetMissingNFO Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieSetMissingPoster Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
             End With
         End If
         RunFilter_MovieSets()
@@ -8141,16 +8141,16 @@ Public Class frmMain
         Filter_TVShows.RemoveAllMissingFilters()
         If chkFilterMissing_Shows.Checked Then
             With Master.eSettings
-                If .TVShowMissingBanner Then Filter_TVShows.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .TVShowMissingCharacterArt Then Filter_TVShows.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.CharacterArtPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .TVShowMissingClearArt Then Filter_TVShows.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .TVShowMissingClearLogo Then Filter_TVShows.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .TVShowMissingExtrafanarts Then Filter_TVShows.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ExtrafanartsPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .TVShowMissingFanart Then Filter_TVShows.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .TVShowMissingLandscape Then Filter_TVShows.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .TVShowMissingNFO Then Filter_TVShows.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .TVShowMissingPoster Then Filter_TVShows.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
-                If .TVShowMissingTheme Then Filter_TVShows.Rules.Add(New Database.Filter.Rule With {.Field = Database.ColumnName.ThemePath, .Operator = Database.Filter.Operators.IsNullOrEmpty})
+                If .TVShowMissingBanner Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingCharacterArt Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.CharacterArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingClearArt Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingClearLogo Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingExtrafanarts Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ExtrafanartsPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingFanart Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingLandscape Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingNFO Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingPoster Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingTheme Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ThemePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
             End With
         End If
         RunFilter_TVShows()
@@ -8161,9 +8161,9 @@ Public Class frmMain
                                 ByRef comboBox As ComboBox,
                                 ByVal contentType As Enums.ContentType)
 
-        Dim filter As New List(Of Database.Filter.Rule)
-        Dim rule As New Database.Filter.Rule With {
-            .Operator = Database.Filter.Operators.Contains,
+        Dim filter As New List(Of SmartPlaylist.Rule)
+        Dim rule As New SmartPlaylist.Rule With {
+            .Operator = SmartPlaylist.Operators.Contains,
             .Value = searchBar.Text}
 
         If Not String.IsNullOrEmpty(searchBar.Text) Then
@@ -8236,7 +8236,7 @@ Public Class frmMain
                                  ByRef textBox As TextBox,
                                  ByVal contentType As Enums.ContentType)
 
-        Dim filter As New Database.Filter.RuleWithOperator With {.InnerCondition = Database.Filter.Condition.Or}
+        Dim filter As New SmartPlaylist.RuleWithOperator With {.InnerCondition = SmartPlaylist.Condition.Or}
 
         filterPanel.Visible = False
         filterPanel.Tag = "NO"
@@ -8250,9 +8250,9 @@ Public Class frmMain
             textBox.Text = String.Join(" | ", lstItems.ToArray)
 
             For i As Integer = 0 To lstItems.Count - 1
-                Dim rule As New Database.Filter.Rule
+                Dim rule As New SmartPlaylist.Rule
                 rule.Field = Database.ColumnName.SourceName
-                rule.Operator = Database.Filter.Operators.Is
+                rule.Operator = SmartPlaylist.Operators.Is
                 rule.Value = lstItems.Item(i)
                 filter.Rules.Add(rule)
             Next
@@ -8293,10 +8293,10 @@ Public Class frmMain
                            ByVal contentType As Enums.ContentType)
 
         If Not String.IsNullOrEmpty(fromYear.Text) AndAlso Not fromYear.Text = Master.eLang.All Then
-            Dim filter As New Database.Filter.RuleWithOperator With {.InnerCondition = Database.Filter.Condition.And}
-            filter.Rules.Add(New Database.Filter.Rule With {
+            Dim filter As New SmartPlaylist.RuleWithOperator With {.InnerCondition = SmartPlaylist.Condition.And}
+            filter.Rules.Add(New SmartPlaylist.Rule With {
                                          .Field = Database.ColumnName.Year,
-                                         .Operator = Database.Filter.ConvertStringToOperator(fromYearMod.Text),
+                                         .Operator = SmartPlaylist.Playlist.ConvertStringToOperator(fromYearMod.Text),
                                          .Value = fromYear.Text
                                          })
 
@@ -8306,9 +8306,9 @@ Public Class frmMain
                     toYear.Enabled = True
 
                     If Not String.IsNullOrEmpty(toYear.Text) AndAlso Not toYear.Text = Master.eLang.All Then
-                        filter.Rules.Add(New Database.Filter.Rule With {
+                        filter.Rules.Add(New SmartPlaylist.Rule With {
                                          .Field = Database.ColumnName.Year,
-                                         .Operator = Database.Filter.ConvertStringToOperator(toYearMod.Text),
+                                         .Operator = SmartPlaylist.Playlist.ConvertStringToOperator(toYearMod.Text),
                                          .Value = toYear.Text
                                          })
                     End If
@@ -13265,7 +13265,7 @@ Public Class frmMain
 
             If Filter_Movies.AnyRuleSpecified Then
                 lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                bsMovies.Filter = Filter_Movies.BuildFilter(If(rbFilterAnd_Movies.Checked, Database.Filter.Condition.And, Database.Filter.Condition.Or))
+                bsMovies.Filter = Filter_Movies.BuildFilter(If(rbFilterAnd_Movies.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or))
                 ModulesManager.Instance.RuntimeObjects.FilterMovies = bsMovies.Filter
             Else
                 If chkFilterDuplicates_Movies.Checked Then
@@ -13299,7 +13299,7 @@ Public Class frmMain
 
             If Filter_Moviesets.AnyRuleSpecified Then
                 lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                bsMovieSets.Filter = Filter_Moviesets.BuildFilter(If(rbFilterAnd_MovieSets.Checked, Database.Filter.Condition.And, Database.Filter.Condition.Or))
+                bsMovieSets.Filter = Filter_Moviesets.BuildFilter(If(rbFilterAnd_MovieSets.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or))
                 ModulesManager.Instance.RuntimeObjects.FilterMoviesets = bsMovieSets.Filter
             Else
                 lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
@@ -13332,7 +13332,7 @@ Public Class frmMain
 
             If Filter_TVShows.AnyRuleSpecified Then
                 lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                bsTVShows.Filter = Filter_TVShows.BuildFilter(If(rbFilterAnd_Shows.Checked, Database.Filter.Condition.And, Database.Filter.Condition.Or))
+                bsTVShows.Filter = Filter_TVShows.BuildFilter(If(rbFilterAnd_Shows.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or))
                 ModulesManager.Instance.RuntimeObjects.FilterTVShows = bsTVShows.Filter
             Else
                 lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
@@ -15598,7 +15598,7 @@ Public Class frmMain
         clbFilterCountries_Movies.Items.Add(Master.eLang.None)
         clbFilterCountries_Movies.Items.AddRange(mCountry)
 
-        If Filter_Movies.Contains(Database.ColumnName.Countries, Database.Filter.Operators.IsNullOrEmpty) Then
+        If Filter_Movies.Contains(Database.ColumnName.Countries, SmartPlaylist.Operators.IsNullOrEmpty) Then
             clbFilterCountries_Movies.SetItemChecked(0, True)
         Else
             Dim rCountrys = Filter_Movies.Rules.Where(Function(f) f.Field = Database.ColumnName.Countries)
@@ -15618,7 +15618,7 @@ Public Class frmMain
         clbFilterGenres_Movies.Items.Add(Master.eLang.None)
         clbFilterGenres_Movies.Items.AddRange(mGenre)
 
-        If Filter_Movies.Contains(Database.ColumnName.Genres, Database.Filter.Operators.IsNullOrEmpty) Then
+        If Filter_Movies.Contains(Database.ColumnName.Genres, SmartPlaylist.Operators.IsNullOrEmpty) Then
             clbFilterGenres_Movies.SetItemChecked(0, True)
         Else
             Dim rGenres = Filter_Movies.Rules.Where(Function(f) f.Field = Database.ColumnName.Genres)
@@ -15638,7 +15638,7 @@ Public Class frmMain
         clbFilterGenres_Shows.Items.Add(Master.eLang.None)
         clbFilterGenres_Shows.Items.AddRange(mGenre)
 
-        If Filter_TVShows.Contains(Database.ColumnName.Genres, Database.Filter.Operators.IsNullOrEmpty) Then
+        If Filter_TVShows.Contains(Database.ColumnName.Genres, SmartPlaylist.Operators.IsNullOrEmpty) Then
             clbFilterGenres_Shows.SetItemChecked(0, True)
         Else
             Dim rGenres = Filter_TVShows.Rules.Where(Function(f) f.Field = Database.ColumnName.Genres)
@@ -15658,7 +15658,7 @@ Public Class frmMain
         clbFilterTags_Movies.Items.Add(Master.eLang.None)
         clbFilterTags_Movies.Items.AddRange(mTag)
 
-        If Filter_Movies.Contains(Database.ColumnName.Tags, Database.Filter.Operators.IsNullOrEmpty) Then
+        If Filter_Movies.Contains(Database.ColumnName.Tags, SmartPlaylist.Operators.IsNullOrEmpty) Then
             clbFilterTags_Movies.SetItemChecked(0, True)
         Else
             Dim rTags = Filter_Movies.Rules.Where(Function(f) f.Field = Database.ColumnName.Tags)
@@ -15678,7 +15678,7 @@ Public Class frmMain
         clbFilterTags_Shows.Items.Add(Master.eLang.None)
         clbFilterTags_Shows.Items.AddRange(mTag)
 
-        If Filter_TVShows.Contains(Database.ColumnName.Tags, Database.Filter.Operators.IsNullOrEmpty) Then
+        If Filter_TVShows.Contains(Database.ColumnName.Tags, SmartPlaylist.Operators.IsNullOrEmpty) Then
             clbFilterTags_Shows.SetItemChecked(0, True)
         Else
             Dim rTags = Filter_TVShows.Rules.Where(Function(f) f.Field = Database.ColumnName.Tags)
@@ -15698,7 +15698,7 @@ Public Class frmMain
         clbFilterVideoSources_Movies.Items.Add(Master.eLang.None)
         clbFilterVideoSources_Movies.Items.AddRange(mVideoSource)
 
-        If Filter_Movies.Contains(Database.ColumnName.VideoSource, Database.Filter.Operators.IsNullOrEmpty) Then
+        If Filter_Movies.Contains(Database.ColumnName.VideoSource, SmartPlaylist.Operators.IsNullOrEmpty) Then
             clbFilterVideoSources_Movies.SetItemChecked(0, True)
         Else
             Dim rVideoSources = Filter_Movies.Rules.Where(Function(f) f.Field = Database.ColumnName.VideoSource)

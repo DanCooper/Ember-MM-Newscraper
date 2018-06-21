@@ -186,6 +186,7 @@
     <Compile Include="clsAPIIMDB.vb" />
     <Compile Include="clsAPIMetaData.vb" />
     <Compile Include="clsAPIProfiles.vb" />
+    <Compile Include="clsAPISmartPlaylist.vb" />
     <Compile Include="clsAPITaskManager.vb" />
     <Compile Include="clsAPIThemes.vb" />
     <Compile Include="clsAPICommon.vb" />
