@@ -30,7 +30,6 @@ Public Class APIXML
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public Shared CertLanguagesXML As New clsXMLCertLanguages
-    Public Shared FilterXML As New clsXMLFilter
     Public Shared GenreXML As New clsXMLGenres
     Public Shared RatingXML As New clsXMLRatings
     Public Shared ScraperLanguagesXML As New clsXMLScraperLanguages
@@ -176,27 +175,6 @@ Public Class APIXML
                 ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), clsXMLScraperLanguages)
                 objStreamReader.Close()
                 ScraperLanguagesXML.Save()
-            End If
-
-            Dim filterPath As String = Path.Combine(Master.SettingsPath, "Queries.xml")
-            If File.Exists(filterPath) Then
-                objStreamReader = New StreamReader(filterPath)
-                Dim xFilter As New XmlSerializer(FilterXML.GetType)
-
-                FilterXML = CType(xFilter.Deserialize(objStreamReader), clsXMLFilter)
-                objStreamReader.Close()
-            Else
-                Dim filterPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultQueries.xml")
-                objStreamReader = New StreamReader(filterPathD)
-                Dim xFilter As New XmlSerializer(FilterXML.GetType)
-
-                FilterXML = CType(xFilter.Deserialize(objStreamReader), clsXMLFilter)
-                objStreamReader.Close()
-                Try
-                    File.Copy(filterPathD, filterPath)
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
             End If
 
         Catch ex As Exception

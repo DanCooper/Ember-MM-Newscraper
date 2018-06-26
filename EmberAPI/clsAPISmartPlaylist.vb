@@ -41,21 +41,21 @@ Namespace SmartPlaylist
         Contains
         DoesNotContain
         EndWith
+        [False]
         GreaterThan
         GreaterThanOrEqual
         [In]
-        LessThan
-        LessThanOrEqual
-        NotBetween
-        NotIn
-        StartWith
-        [False]
         [Is]
         [IsNot]
         IsNotNull
         IsNotNullOrEmpty
         IsNull
         IsNullOrEmpty
+        LessThan
+        LessThanOrEqual
+        NotBetween
+        NotIn
+        StartWith
         [True]
     End Enum
 
@@ -122,30 +122,19 @@ Namespace SmartPlaylist
 
         Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
+        Dim _filter As String = String.Empty
+        Dim _sqlfullquery As String = String.Empty
+        Dim _sqlquery As String = String.Empty
+
 #End Region 'Fields
-
-#Region "Enumerations"
-
-        Public Enum PlaylistType As Integer
-            'albums
-            episodes
-            'mixed
-            movies
-            'musicvideos
-            'songs
-            tvshows
-        End Enum
-
-
-#End Region 'Enumerations
 
 #Region "Properties"
 
         <XmlAttribute("type")>
-        Public Property Type As PlaylistType
+        Private Property Type As Enums.ContentType
 
         <XmlElement("name")>
-        Public Property Name As String = String.Empty
+        Private Property Name As String = String.Empty
 
         <XmlIgnore()>
         Public ReadOnly Property NameSpecified() As Boolean
@@ -153,6 +142,9 @@ Namespace SmartPlaylist
                 Return Not String.IsNullOrEmpty(Name)
             End Get
         End Property
+
+        <XmlElement("match")>
+        Public Property Match As Condition
 
         <XmlElement("limit")>
         Public Property Limit As Integer = 0
@@ -201,74 +193,116 @@ Namespace SmartPlaylist
             End Get
         End Property
 
+        <XmlIgnore()>
         Public ReadOnly Property Contains(ByVal field As Database.ColumnName) As Boolean
             Get
-                Return Rules.Where(Function(f) f.Field = field).Count > 0
+                Return Rules.FirstOrDefault(Function(f) f.Field = field) IsNot Nothing
             End Get
         End Property
 
+        <XmlIgnore()>
         Public ReadOnly Property Contains(ByVal field As Database.ColumnName, ByVal [operator] As Operators) As Boolean
             Get
-                Return Rules.Where(Function(f) f.Field = field AndAlso f.Operator = [operator]).Count > 0
+                Return Rules.FirstOrDefault(Function(f) f.Field = field AndAlso f.Operator = [operator]) IsNot Nothing
             End Get
         End Property
 
+        <XmlIgnore()>
         Public ReadOnly Property ContainsAnyDataFieldFilter() As Boolean
             Get
-                Return Rules.Where(Function(f) _
-                                       f.Field = Database.ColumnName.Aired OrElse
-                                       f.Field = Database.ColumnName.Certifications OrElse
-                                       f.Field = Database.ColumnName.Countries OrElse
-                                       f.Field = Database.ColumnName.Creators OrElse
-                                       f.Field = Database.ColumnName.Credits OrElse
-                                       f.Field = Database.ColumnName.Directors OrElse
-                                       f.Field = Database.ColumnName.EpisodeGuideURL OrElse
-                                       f.Field = Database.ColumnName.Genres OrElse
-                                       f.Field = Database.ColumnName.LastPlayed OrElse
-                                       f.Field = Database.ColumnName.MPAA OrElse
-                                       f.Field = Database.ColumnName.OriginalTitle OrElse
-                                       f.Field = Database.ColumnName.Outline OrElse
-                                       f.Field = Database.ColumnName.PlayCount OrElse
-                                       f.Field = Database.ColumnName.Plot OrElse
-                                       f.Field = Database.ColumnName.Premiered OrElse
-                                       f.Field = Database.ColumnName.Ratings OrElse
-                                       f.Field = Database.ColumnName.ReleaseDate OrElse
-                                       f.Field = Database.ColumnName.Runtime OrElse
-                                       f.Field = Database.ColumnName.SortTitle OrElse
-                                       f.Field = Database.ColumnName.Status OrElse
-                                       f.Field = Database.ColumnName.Studios OrElse
-                                       f.Field = Database.ColumnName.Tagline OrElse
-                                       f.Field = Database.ColumnName.Tags OrElse
-                                       f.Field = Database.ColumnName.Title OrElse
-                                       f.Field = Database.ColumnName.Top250 OrElse
-                                       f.Field = Database.ColumnName.Trailer OrElse
-                                       f.Field = Database.ColumnName.UserRating OrElse
-                                       f.Field = Database.ColumnName.VideoSource OrElse
-                                       f.Field = Database.ColumnName.Year).Count > 0
+                Return Rules.FirstOrDefault(Function(f) _
+                                                f.Field = Database.ColumnName.Aired OrElse
+                                                f.Field = Database.ColumnName.Certifications OrElse
+                                                f.Field = Database.ColumnName.Countries OrElse
+                                                f.Field = Database.ColumnName.Creators OrElse
+                                                f.Field = Database.ColumnName.Credits OrElse
+                                                f.Field = Database.ColumnName.Directors OrElse
+                                                f.Field = Database.ColumnName.EpisodeGuideURL OrElse
+                                                f.Field = Database.ColumnName.Genres OrElse
+                                                f.Field = Database.ColumnName.LastPlayed OrElse
+                                                f.Field = Database.ColumnName.MPAA OrElse
+                                                f.Field = Database.ColumnName.OriginalTitle OrElse
+                                                f.Field = Database.ColumnName.Outline OrElse
+                                                f.Field = Database.ColumnName.PlayCount OrElse
+                                                f.Field = Database.ColumnName.Plot OrElse
+                                                f.Field = Database.ColumnName.Premiered OrElse
+                                                f.Field = Database.ColumnName.Ratings OrElse
+                                                f.Field = Database.ColumnName.ReleaseDate OrElse
+                                                f.Field = Database.ColumnName.Runtime OrElse
+                                                f.Field = Database.ColumnName.SortTitle OrElse
+                                                f.Field = Database.ColumnName.Status OrElse
+                                                f.Field = Database.ColumnName.Studios OrElse
+                                                f.Field = Database.ColumnName.Tagline OrElse
+                                                f.Field = Database.ColumnName.Tags OrElse
+                                                f.Field = Database.ColumnName.Title OrElse
+                                                f.Field = Database.ColumnName.Top250 OrElse
+                                                f.Field = Database.ColumnName.Trailer OrElse
+                                                f.Field = Database.ColumnName.UserRating OrElse
+                                                f.Field = Database.ColumnName.VideoSource OrElse
+                                                f.Field = Database.ColumnName.Year) IsNot Nothing
             End Get
         End Property
 
+        <XmlIgnore()>
         Public ReadOnly Property ContainsAnyFromSearchBar() As Boolean
             Get
-                Return Rules.Where(Function(f) _
-                                       f.Field = Database.ColumnName.Actor OrElse
-                                       f.Field = Database.ColumnName.Countries OrElse
-                                       f.Field = Database.ColumnName.Creators OrElse
-                                       f.Field = Database.ColumnName.Credits OrElse
-                                       f.Field = Database.ColumnName.Directors OrElse
-                                       f.Field = Database.ColumnName.MovieTitles OrElse
-                                       f.Field = Database.ColumnName.OriginalTitle OrElse
-                                       f.Field = Database.ColumnName.Role OrElse
-                                       f.Field = Database.ColumnName.Studios OrElse
-                                       f.Field = Database.ColumnName.Title).Count > 0
+                Return Rules.FirstOrDefault(Function(f) _
+                                                f.Field = Database.ColumnName.Actor OrElse
+                                                f.Field = Database.ColumnName.Countries OrElse
+                                                f.Field = Database.ColumnName.Creators OrElse
+                                                f.Field = Database.ColumnName.Credits OrElse
+                                                f.Field = Database.ColumnName.Directors OrElse
+                                                f.Field = Database.ColumnName.MovieTitles OrElse
+                                                f.Field = Database.ColumnName.OriginalTitle OrElse
+                                                f.Field = Database.ColumnName.Role OrElse
+                                                f.Field = Database.ColumnName.Studios OrElse
+                                                f.Field = Database.ColumnName.Title) IsNot Nothing
+            End Get
+        End Property
+        ''' <summary>
+        ''' Returns only the filter for use in DataGridViews
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore()>
+        Public ReadOnly Property Filter As String
+            Get
+                Return _filter
+            End Get
+        End Property
+        ''' <summary>
+        ''' Returns the full SQL query for external use
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore()>
+        Public ReadOnly Property SqlFullQuery As String
+            Get
+                Return _sqlfullquery
+            End Get
+        End Property
+        ''' <summary>
+        ''' Returns only the SQL query without the filter part
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore()>
+        Public ReadOnly Property SqlQuery As String
+            Get
+                Return _sqlquery
             End Get
         End Property
 
 #End Region 'Properties
 
+#Region "Constructors"
+
+        Public Sub New(ByVal playlistType As Enums.ContentType)
+            Type = playlistType
+        End Sub
+
+#End Region 'Constructors
+
 #Region "Methods"
 
-        Public Function BuildFilter(ByVal condition As Condition) As String
+        Private Function BuildFilter(ByVal condition As Condition) As String
             Dim lstRules As New List(Of String)
             If RulesSpecified Then lstRules.Add(BuildRule(Rules, condition))
             For Each nRuleWithOperator In RulesWithOperator
@@ -276,7 +310,7 @@ Namespace SmartPlaylist
             Next
             lstRules = lstRules.Where(Function(f) Not String.IsNullOrEmpty(f)).ToList
             If lstRules.Count > 0 Then
-                Logger.Trace(String.Format("Current Filter: {0}", String.Format("({0})", String.Join(String.Format(" {0} ", condition.ToString.ToUpper), lstRules))))
+                logger.Trace(String.Format("Current Filter: {0}", String.Format("({0})", String.Join(String.Format(" {0} ", condition.ToString.ToUpper), lstRules))))
                 Return String.Format("({0})", String.Join(String.Format(" {0} ", condition.ToString.ToUpper), lstRules))
             End If
             Return String.Empty
@@ -287,6 +321,8 @@ Namespace SmartPlaylist
             For Each nRule In rules
                 Dim strRule As String = String.Empty
                 Select Case nRule.Operator
+                    Case Operators.After
+                    Case Operators.Before
                     Case Operators.Between
                         If nRule.Value2 IsNot Nothing Then
                             If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
@@ -302,18 +338,11 @@ Namespace SmartPlaylist
                     Case Operators.EndWith
                         strRule = String.Format("{0} LIKE '%{1}'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
                     Case Operators.False
-                        If nRule.Value IsNot Nothing Then
-                        Else
-                            strRule = String.Format("{0}=0", Database.Helpers.GetColumnName(nRule.Field))
-                        End If
+                        strRule = String.Format("{0}=0", Database.Helpers.GetColumnName(nRule.Field))
                     Case Operators.GreaterThan
                         strRule = String.Format("{0} > {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
                     Case Operators.GreaterThanOrEqual
                         strRule = String.Format("{0} >= {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
-                    Case Operators.LessThan
-                        strRule = String.Format("{0} < {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
-                    Case Operators.LessThanOrEqual
-                        strRule = String.Format("{0} <= {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
                     Case Operators.Is
                         If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
                             strRule = String.Format("{0}='{1}'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
@@ -334,19 +363,24 @@ Namespace SmartPlaylist
                         Else
                             strRule = String.Format("({0} IS NOT NULL AND NOT {0}=0)", Database.Helpers.GetColumnName(nRule.Field))
                         End If
+                    Case Operators.IsNull
+                        strRule = String.Format("({0} IS NULL)", Database.Helpers.GetColumnName(nRule.Field))
                     Case Operators.IsNullOrEmpty
                         If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
                             strRule = String.Format("({0} IS NULL OR {0}='')", Database.Helpers.GetColumnName(nRule.Field))
                         Else
                             strRule = String.Format("({0} IS NULL OR {0}=0)", Database.Helpers.GetColumnName(nRule.Field))
                         End If
+                    Case Operators.LessThan
+                        strRule = String.Format("{0} < {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
+                    Case Operators.LessThanOrEqual
+                        strRule = String.Format("{0} <= {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
+                    Case Operators.NotBetween
+                    Case Operators.NotIn
                     Case Operators.StartWith
                         strRule = String.Format("{0} LIKE '{1}%'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
                     Case Operators.True
-                        If nRule.Value IsNot Nothing Then
-                        Else
-                            strRule = String.Format("{0}=1", Database.Helpers.GetColumnName(nRule.Field))
-                        End If
+                        strRule = String.Format("{0}=1", Database.Helpers.GetColumnName(nRule.Field))
                 End Select
                 If Not String.IsNullOrEmpty(strRule) Then lstRules.Add(strRule)
             Next
@@ -355,6 +389,18 @@ Namespace SmartPlaylist
             End If
             Return String.Empty
         End Function
+
+        Public Function BuildSqlQuery() As String
+            Dim strQuery As String = String.Empty
+            Select Case Type
+                Case Enums.ContentType.Movie
+                   ' strQuery = String.Format()
+                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.TVShow
+            End Select
+            Return strQuery
+        End Function
+
 
         Public Shared Function ConvertStringToOperator(ByVal [operator] As String) As Operators
             Select Case [operator].ToUpper

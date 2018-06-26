@@ -34,12 +34,8 @@ Public Class frmMain
     Friend WithEvents bwCleanDB As New ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadPic As New ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadGuestStarPic As New ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadImages_Movie As New ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadImages_MovieSet As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadImages As New ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadImages_MovieSetMoviePosters As New ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadImages_TVEpisode As New ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadImages_TVSeason As New ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadImages_TVShow As New ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieScraper As New ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieSetScraper As New ComponentModel.BackgroundWorker
     Friend WithEvents bwReload_Movies As New ComponentModel.BackgroundWorker
@@ -125,20 +121,20 @@ Public Class frmMain
 
     'filter movies
     Private bDoingSearch_Movies As Boolean = False
-    Private Filter_Movies As New SmartPlaylist.Playlist
+    Private Filter_Movies As New SmartPlaylist.Playlist(Enums.ContentType.Movie)
     Private filSearch_Movies As String = String.Empty
     Private currTextSearch_Movies As String = String.Empty
     Private prevTextSearch_Movies As String = String.Empty
 
     'filter moviesets
     Private bDoingSearch_MovieSets As Boolean = False
-    Private Filter_Moviesets As New SmartPlaylist.Playlist
+    Private Filter_Moviesets As New SmartPlaylist.Playlist(Enums.ContentType.MovieSet)
     Private currTextSearch_MovieSets As String = String.Empty
     Private prevTextSearch_MovieSets As String = String.Empty
 
     'filter shows
     Private bDoingSearch_TVShows As Boolean = False
-    Private Filter_TVShows As New SmartPlaylist.Playlist
+    Private Filter_TVShows As New SmartPlaylist.Playlist(Enums.ContentType.TVShow)
     Private filSearch_TVShows As String = String.Empty
     Private currTextSearch_TVShows As String = String.Empty
     Private prevTextSearch_TVShows As String = String.Empty
@@ -155,9 +151,7 @@ Public Class frmMain
 
     Private KeyBuffer As String = String.Empty
 
-    Private currMovie As Database.DBElement
-    Private currMovieSet As Database.DBElement
-    Private currTV As Database.DBElement
+    Private currDBElement As Database.DBElement
 
 #End Region 'Fields
 
@@ -194,12 +188,8 @@ Public Class frmMain
                 bwCleanDB.IsBusy OrElse
                 bwDownloadPic.IsBusy OrElse
                 bwDownloadGuestStarPic.IsBusy OrElse
-                bwLoadImages_Movie.IsBusy OrElse
-                bwLoadImages_MovieSet.IsBusy OrElse
+                bwLoadImages.IsBusy OrElse
                 bwLoadImages_MovieSetMoviePosters.IsBusy OrElse
-                bwLoadImages_TVEpisode.IsBusy OrElse
-                bwLoadImages_TVSeason.IsBusy OrElse
-                bwLoadImages_TVShow.IsBusy OrElse
                 bwMovieScraper.IsBusy OrElse
                 bwMovieSetScraper.IsBusy OrElse
                 bwReload_Movies.IsBusy OrElse
@@ -222,7 +212,6 @@ Public Class frmMain
                 bwTVSeasonScraper.IsBusy
         End Get
     End Property
-
 
     Public Property GenrePanelColor() As Color = Color.Gainsboro
     Public Property IPMid() As Integer = 280
@@ -534,7 +523,7 @@ Public Class frmMain
                 CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
             End If
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            If dgvTVEpisodes.SelectedRows.Count = 1 AndAlso currTV.FileItemSpecified Then
+            If dgvTVEpisodes.SelectedRows.Count = 1 AndAlso currDBElement.FileItemSpecified Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
                 CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
@@ -545,16 +534,13 @@ Public Class frmMain
     Public Sub ClearInfo()
         If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
         If bwDownloadGuestStarPic.IsBusy Then bwDownloadGuestStarPic.CancelAsync()
-        If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
-        If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()
+        If bwLoadImages.IsBusy Then bwLoadImages.CancelAsync()
         If bwLoadImages_MovieSetMoviePosters.IsBusy Then bwLoadImages_MovieSetMoviePosters.CancelAsync()
-        If bwLoadImages_TVShow.IsBusy Then bwLoadImages_TVShow.CancelAsync()
-        If bwLoadImages_TVSeason.IsBusy Then bwLoadImages_TVSeason.CancelAsync()
-        If bwLoadImages_TVEpisode.IsBusy Then bwLoadImages_TVEpisode.CancelAsync()
 
-        While bwDownloadPic.IsBusy OrElse bwDownloadGuestStarPic.IsBusy OrElse bwLoadImages_Movie.IsBusy OrElse bwLoadImages_MovieSet.IsBusy OrElse
-                    bwLoadImages_TVShow.IsBusy OrElse bwLoadImages_TVSeason.IsBusy OrElse bwLoadImages_TVEpisode.IsBusy OrElse
-                    bwLoadImages_MovieSetMoviePosters.IsBusy
+        While bwDownloadPic.IsBusy OrElse
+            bwDownloadGuestStarPic.IsBusy OrElse
+            bwLoadImages.IsBusy OrElse
+            bwLoadImages_MovieSetMoviePosters.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -1097,7 +1083,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub bwLoadImages_Movie_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadImages_Movie.DoWork
+    Private Sub bwLoadImages_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadImages.DoWork
         MainActors.Clear()
         MainBanner.Clear()
         MainCharacterArt.Clear()
@@ -1109,79 +1095,85 @@ Public Class frmMain
         MainLandscape.Clear()
         MainPoster.Clear()
 
-        If bwLoadImages_Movie.CancellationPending Then
+        If bwLoadImages.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        currMovie.LoadAllImages(True, False)
+        currDBElement.LoadAllImages(True, False)
 
-        If bwLoadImages_Movie.CancellationPending Then
+        If bwLoadImages.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        If Master.eSettings.GeneralDisplayBanner Then MainBanner = currMovie.ImagesContainer.Banner.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearArt Then MainClearArt = currMovie.ImagesContainer.ClearArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearLogo Then MainClearLogo = currMovie.ImagesContainer.ClearLogo.ImageOriginal
-        If Master.eSettings.GeneralDisplayDiscArt Then MainDiscArt = currMovie.ImagesContainer.DiscArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanart Then MainFanart = currMovie.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currMovie.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayLandscape Then MainLandscape = currMovie.ImagesContainer.Landscape.ImageOriginal
-        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currMovie.ImagesContainer.Poster.ImageOriginal
+        If Master.eSettings.GeneralDisplayBanner Then MainBanner = currDBElement.ImagesContainer.Banner.ImageOriginal
+        If Master.eSettings.GeneralDisplayCharacterArt Then MainBanner = currDBElement.ImagesContainer.CharacterArt.ImageOriginal
+        If Master.eSettings.GeneralDisplayClearArt Then MainClearArt = currDBElement.ImagesContainer.ClearArt.ImageOriginal
+        If Master.eSettings.GeneralDisplayClearLogo Then MainClearLogo = currDBElement.ImagesContainer.ClearLogo.ImageOriginal
+        If Master.eSettings.GeneralDisplayDiscArt Then MainDiscArt = currDBElement.ImagesContainer.DiscArt.ImageOriginal
+        If Master.eSettings.GeneralDisplayFanart Then MainFanart = currDBElement.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currDBElement.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayLandscape Then MainLandscape = currDBElement.ImagesContainer.Landscape.ImageOriginal
+        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currDBElement.ImagesContainer.Poster.ImageOriginal
 
-        If bwLoadImages_Movie.CancellationPending Then
+        If bwLoadImages.CancellationPending Then
+            e.Cancel = True
+            Return
+        End If
+
+        If Master.eSettings.GeneralDisplayFanart AndAlso currDBElement.ContentType = Enums.ContentType.TVEpisode Then
+            Dim NeedsGS As Boolean = False
+            If currDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                MainFanart = currDBElement.ImagesContainer.Fanart.ImageOriginal
+            Else
+                Dim SeasonID As Long = Master.DB.GetTVSeasonIDFromEpisode(currDBElement)
+                Dim TVSeasonFanart As String = Master.DB.GetArtForItem(SeasonID, Enums.ContentType.TVSeason, "fanart")
+                If Not String.IsNullOrEmpty(TVSeasonFanart) Then
+                    MainFanart.LoadFromFile(TVSeasonFanart, True)
+                    NeedsGS = True
+                Else
+                    Dim TVShowFanart As String = Master.DB.GetArtForItem(currDBElement.ShowID, Enums.ContentType.TVShow, "fanart")
+                    If Not String.IsNullOrEmpty(TVShowFanart) Then
+                        MainFanart.LoadFromFile(TVShowFanart, True)
+                        NeedsGS = True
+                    End If
+                End If
+            End If
+
+            If MainFanart.Image IsNot Nothing Then
+                If Not currDBElement.FileItemSpecified Then
+                    MainFanart = ImageUtils.AddMissingStamp(MainFanart)
+                ElseIf NeedsGS Then
+                    MainFanart = ImageUtils.GrayScale(MainFanart)
+                End If
+            End If
+        End If
+
+        If Master.eSettings.GeneralDisplayFanart AndAlso currDBElement.ContentType = Enums.ContentType.TVSeason Then
+            Dim NeedsGS As Boolean = False
+            If currDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                MainFanart = currDBElement.ImagesContainer.Fanart.ImageOriginal
+            Else
+                Dim TVShowFanart As String = Master.DB.GetArtForItem(currDBElement.ShowID, Enums.ContentType.TVShow, "fanart")
+                If Not String.IsNullOrEmpty(TVShowFanart) Then
+                    MainFanart.LoadFromFile(TVShowFanart, True)
+                    NeedsGS = True
+                End If
+            End If
+
+            If MainFanart.Image IsNot Nothing AndAlso NeedsGS Then
+                MainFanart = ImageUtils.GrayScale(MainFanart)
+            End If
+        End If
+
+        If bwLoadImages.CancellationPending Then
             e.Cancel = True
             Return
         End If
     End Sub
 
-    Private Sub bwLoadImages_Movie_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadImages_Movie.RunWorkerCompleted
-        If Not e.Cancelled Then
-            FillScreenInfoWith_Images()
-        End If
-    End Sub
-
-    Private Sub bwLoadImages_MovieSet_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadImages_MovieSet.DoWork
-        MainActors.Clear()
-        MainBanner.Clear()
-        MainCharacterArt.Clear()
-        MainClearArt.Clear()
-        MainClearLogo.Clear()
-        MainDiscArt.Clear()
-        MainFanart.Clear()
-        MainFanartSmall.Clear()
-        MainLandscape.Clear()
-        MainPoster.Clear()
-
-        If bwLoadImages_MovieSet.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        currMovieSet.LoadAllImages(True, False)
-
-        If bwLoadImages_MovieSet.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        If Master.eSettings.GeneralDisplayBanner Then MainBanner = currMovieSet.ImagesContainer.Banner.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearArt Then MainClearArt = currMovieSet.ImagesContainer.ClearArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearLogo Then MainClearLogo = currMovieSet.ImagesContainer.ClearLogo.ImageOriginal
-        If Master.eSettings.GeneralDisplayDiscArt Then MainDiscArt = currMovieSet.ImagesContainer.DiscArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanart Then MainFanart = currMovieSet.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currMovieSet.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayLandscape Then MainLandscape = currMovieSet.ImagesContainer.Landscape.ImageOriginal
-        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currMovieSet.ImagesContainer.Poster.ImageOriginal
-
-        If bwLoadImages_MovieSet.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-    End Sub
-
-    Private Sub bwLoadImages_MovieSet_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadImages_MovieSet.RunWorkerCompleted
+    Private Sub bwLoadImages_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadImages.RunWorkerCompleted
         If Not e.Cancelled Then
             FillScreenInfoWith_Images()
         End If
@@ -1191,9 +1183,9 @@ Public Class frmMain
         Dim Posters As New List(Of MovieInSetPoster)
 
         Try
-            If currMovieSet.MoviesInSet IsNot Nothing AndAlso currMovieSet.MoviesInSet.Count > 0 Then
+            If currDBElement.MoviesInSetSpecified Then
                 Try
-                    For Each tMovieInSet As MediaContainers.MovieInSet In currMovieSet.MoviesInSet
+                    For Each tMovieInSet As MediaContainers.MovieInSet In currDBElement.MoviesInSet
                         If bwLoadImages_MovieSetMoviePosters.CancellationPending Then
                             e.Cancel = True
                             Return
@@ -1248,186 +1240,6 @@ Public Class frmMain
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
-        End If
-    End Sub
-
-    Private Sub bwLoadImages_TVEpisode_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadImages_TVEpisode.DoWork
-        MainActors.Clear()
-        MainBanner.Clear()
-        MainCharacterArt.Clear()
-        MainClearArt.Clear()
-        MainClearLogo.Clear()
-        MainDiscArt.Clear()
-        MainFanart.Clear()
-        MainFanartSmall.Clear()
-        MainLandscape.Clear()
-        MainPoster.Clear()
-
-        If bwLoadImages_TVEpisode.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        currTV.LoadAllImages(True, False)
-
-        If bwLoadImages_TVEpisode.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currTV.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currTV.ImagesContainer.Poster.ImageOriginal
-
-        If bwLoadImages_TVEpisode.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        If Master.eSettings.GeneralDisplayFanart Then
-            Dim NeedsGS As Boolean = False
-            If currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                MainFanart = currTV.ImagesContainer.Fanart.ImageOriginal
-            Else
-                Dim SeasonID As Long = Master.DB.GetTVSeasonIDFromEpisode(currTV)
-                Dim TVSeasonFanart As String = Master.DB.GetArtForItem(SeasonID, Enums.ContentType.TVSeason, "fanart")
-                If Not String.IsNullOrEmpty(TVSeasonFanart) Then
-                    MainFanart.LoadFromFile(TVSeasonFanart, True)
-                    NeedsGS = True
-                Else
-                    Dim TVShowFanart As String = Master.DB.GetArtForItem(currTV.ShowID, Enums.ContentType.TVShow, "fanart")
-                    If Not String.IsNullOrEmpty(TVShowFanart) Then
-                        MainFanart.LoadFromFile(TVShowFanart, True)
-                        NeedsGS = True
-                    End If
-                End If
-            End If
-
-            If MainFanart.Image IsNot Nothing Then
-                If Not currTV.FileItemSpecified Then
-                    MainFanart = ImageUtils.AddMissingStamp(MainFanart)
-                ElseIf NeedsGS Then
-                    MainFanart = ImageUtils.GrayScale(MainFanart)
-                End If
-            End If
-        End If
-
-        If bwLoadImages_TVEpisode.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-    End Sub
-
-    Private Sub bwLoadImages_TVEpisode_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadImages_TVEpisode.RunWorkerCompleted
-        If Not e.Cancelled Then
-            FillScreenInfoWith_Images()
-        End If
-    End Sub
-
-    Private Sub bwLoadImages_TVSeason_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadImages_TVSeason.DoWork
-        MainActors.Clear()
-        MainBanner.Clear()
-        MainCharacterArt.Clear()
-        MainClearArt.Clear()
-        MainClearLogo.Clear()
-        MainDiscArt.Clear()
-        MainFanart.Clear()
-        MainFanartSmall.Clear()
-        MainLandscape.Clear()
-        MainPoster.Clear()
-
-        If bwLoadImages_TVSeason.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        currTV.LoadAllImages(True, False)
-
-        If bwLoadImages_TVSeason.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        If Master.eSettings.GeneralDisplayBanner Then MainBanner = currTV.ImagesContainer.Banner.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currTV.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayLandscape Then MainLandscape = currTV.ImagesContainer.Landscape.ImageOriginal
-        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currTV.ImagesContainer.Poster.ImageOriginal
-
-        If bwLoadImages_TVSeason.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        If Master.eSettings.GeneralDisplayFanart Then
-            Dim NeedsGS As Boolean = False
-            If currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                MainFanart = currTV.ImagesContainer.Fanart.ImageOriginal
-            Else
-                Dim TVShowFanart As String = Master.DB.GetArtForItem(currTV.ShowID, Enums.ContentType.TVShow, "fanart")
-                If Not String.IsNullOrEmpty(TVShowFanart) Then
-                    MainFanart.LoadFromFile(TVShowFanart, True)
-                    NeedsGS = True
-                End If
-            End If
-
-            If MainFanart.Image IsNot Nothing AndAlso NeedsGS Then
-                MainFanart = ImageUtils.GrayScale(MainFanart)
-            End If
-        End If
-
-        If bwLoadImages_TVSeason.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-    End Sub
-
-    Private Sub bwLoadImages_TVSeason_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadImages_TVSeason.RunWorkerCompleted
-        If Not e.Cancelled Then
-            FillScreenInfoWith_Images()
-        End If
-    End Sub
-
-    Private Sub bwLoadImages_TVShow_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadImages_TVShow.DoWork
-        MainActors.Clear()
-        MainBanner.Clear()
-        MainCharacterArt.Clear()
-        MainClearArt.Clear()
-        MainClearLogo.Clear()
-        MainDiscArt.Clear()
-        MainFanart.Clear()
-        MainFanartSmall.Clear()
-        MainLandscape.Clear()
-        MainPoster.Clear()
-
-        If bwLoadImages_TVShow.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        currTV.LoadAllImages(True, False)
-
-        If bwLoadImages_TVShow.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        If Master.eSettings.GeneralDisplayBanner Then MainBanner = currTV.ImagesContainer.Banner.ImageOriginal
-        If Master.eSettings.GeneralDisplayCharacterArt Then MainCharacterArt = currTV.ImagesContainer.CharacterArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearArt Then MainClearArt = currTV.ImagesContainer.ClearArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearLogo Then MainClearLogo = currTV.ImagesContainer.ClearLogo.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanart Then MainFanart = currTV.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currTV.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayLandscape Then MainLandscape = currTV.ImagesContainer.Landscape.ImageOriginal
-        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currTV.ImagesContainer.Poster.ImageOriginal
-
-        If bwLoadImages_TVShow.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-    End Sub
-
-    Private Sub bwLoadImages_TVShow_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadImages_TVShow.RunWorkerCompleted
-        If Not e.Cancelled Then
-            FillScreenInfoWith_Images()
         End If
     End Sub
 
@@ -1867,7 +1679,7 @@ Public Class frmMain
             DBScrapeShow = Master.DB.Load_TVShow_Full(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow))))
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
-            If tScrapeItem.ScrapeModifiers.MainNFO Then
+            If tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.EpisodeNFO Then
                 bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
@@ -3036,7 +2848,7 @@ Public Class frmMain
     Private Sub ClearFilters_Movies(Optional ByVal Reload As Boolean = False)
         lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsMovies.RemoveFilter()
-        Filter_Movies = New SmartPlaylist.Playlist
+        Filter_Movies = New SmartPlaylist.Playlist(Enums.ContentType.Movie)
         filSearch_Movies = String.Empty
 
         RemoveHandler txtSearchMovies.TextChanged, AddressOf txtSearchMovies_TextChanged
@@ -3131,7 +2943,7 @@ Public Class frmMain
     Private Sub ClearFilters_MovieSets(Optional ByVal Reload As Boolean = False)
         lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsMovieSets.RemoveFilter()
-        Filter_Moviesets = New SmartPlaylist.Playlist
+        Filter_Moviesets = New SmartPlaylist.Playlist(Enums.ContentType.MovieSet)
 
         RemoveHandler txtSearchMovieSets.TextChanged, AddressOf txtSearchMovieSets_TextChanged
         txtSearchMovieSets.Text = String.Empty
@@ -3157,7 +2969,7 @@ Public Class frmMain
     Private Sub ClearFilters_Shows(Optional ByVal Reload As Boolean = False)
         lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsTVShows.RemoveFilter()
-        Filter_TVShows = New SmartPlaylist.Playlist
+        Filter_TVShows = New SmartPlaylist.Playlist(Enums.ContentType.TVShow)
         filSearch_TVShows = String.Empty
 
         RemoveHandler txtSearchShows.TextChanged, AddressOf txtSearchShows_TextChanged
@@ -4163,13 +3975,13 @@ Public Class frmMain
 
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                    SeasonPath = Functions.GetSeasonDirectoryFromShowPath(currTV.ShowPath, Convert.ToInt32(sRow.Cells("Season").Value))
+                    SeasonPath = Functions.GetSeasonDirectoryFromShowPath(currDBElement.ShowPath, Convert.ToInt32(sRow.Cells("Season").Value))
 
                     Using Explorer As New Process
                         If Master.isWindows Then
                             Explorer.StartInfo.FileName = "explorer.exe"
                             If String.IsNullOrEmpty(SeasonPath) Then
-                                Explorer.StartInfo.Arguments = String.Format("/root,""{0}""", currTV.ShowPath)
+                                Explorer.StartInfo.Arguments = String.Format("/root,""{0}""", currDBElement.ShowPath)
                             Else
                                 Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", SeasonPath)
                             End If
@@ -4177,7 +3989,7 @@ Public Class frmMain
                         Else
                             Explorer.StartInfo.FileName = "xdg-open"
                             If String.IsNullOrEmpty(SeasonPath) Then
-                                Explorer.StartInfo.Arguments = String.Format("""{0}""", currTV.ShowPath)
+                                Explorer.StartInfo.Arguments = String.Format("""{0}""", currDBElement.ShowPath)
                             Else
                                 Explorer.StartInfo.Arguments = String.Format("""{0}""", SeasonPath)
                             End If
@@ -4216,7 +4028,7 @@ Public Class frmMain
     ''' <remarks>If any individual genre is invalid or generates an error, 
     ''' the remaining genres are still processed, however the placement/spacing
     ''' of the remaining genres may show gaps where the erronious genres should have been</remarks>
-    Private Sub createGenreThumbs(ByVal genres As List(Of String))
+    Private Sub CreateGenreThumbs(ByVal genres As List(Of String))
         If genres Is Nothing OrElse genres.Count = 0 Then Return
 
         genres.Sort()
@@ -6425,6 +6237,7 @@ Public Class frmMain
         If doMovies Then
             bsMovies.DataSource = Nothing
             dgvMovies.DataSource = Nothing
+            'Master.DB.FillDataTable(dtMovies, Filter_Movies.SqlQuery)
 
             If Not String.IsNullOrEmpty(filSearch_Movies) AndAlso cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
                 Master.DB.FillDataTable(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM person ",
@@ -6954,8 +6767,10 @@ Public Class frmMain
                                                                 Database.Helpers.GetMainViewName(Enums.ContentType.TVEpisode),
                                                                 Database.Helpers.GetMainIdName(Database.TableName.tvshow),
                                                                 ShowID,
-                                                                If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0")))
-            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("Select * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"), " ORDER BY season, episode;"))
+                                                                If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"),
+                                                                Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber),
+                                                                Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)))
+            'Master.DB.FillDataTable(dtTVEpisodes, String.Concat("Select * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"), " ORDER BY season, episode;"))
         Else
             Master.DB.FillDataTable(dtTVEpisodes, String.Concat("Select * FROM episodelist WHERE idShow = ", ShowID, " And season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"), " ORDER BY episode;"))
         End If
@@ -7428,56 +7243,56 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_Movie()
         SuspendLayout()
-        If currMovie.Movie.TitleSpecified AndAlso currMovie.Movie.YearSpecified Then
-            lblTitle.Text = String.Format("{0} ({1})", currMovie.Movie.Title, currMovie.Movie.Year)
-        ElseIf currMovie.Movie.TitleSpecified AndAlso Not currMovie.Movie.YearSpecified Then
-            lblTitle.Text = currMovie.Movie.Title
-        ElseIf Not currMovie.Movie.TitleSpecified AndAlso currMovie.Movie.YearSpecified Then
-            lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), currMovie.Movie.Year)
+        If currDBElement.Movie.TitleSpecified AndAlso currDBElement.Movie.YearSpecified Then
+            lblTitle.Text = String.Format("{0} ({1})", currDBElement.Movie.Title, currDBElement.Movie.Year)
+        ElseIf currDBElement.Movie.TitleSpecified AndAlso Not currDBElement.Movie.YearSpecified Then
+            lblTitle.Text = currDBElement.Movie.Title
+        ElseIf Not currDBElement.Movie.TitleSpecified AndAlso currDBElement.Movie.YearSpecified Then
+            lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), currDBElement.Movie.Year)
         End If
 
-        If currMovie.Movie.OriginalTitleSpecified AndAlso Not currMovie.Movie.OriginalTitle = currMovie.Movie.Title Then
-            lblOriginalTitle.Text = String.Format("{0}: {1}", Master.eLang.GetString(302, "Original Title"), currMovie.Movie.OriginalTitle)
+        If currDBElement.Movie.OriginalTitleSpecified AndAlso Not currDBElement.Movie.OriginalTitle = currDBElement.Movie.Title Then
+            lblOriginalTitle.Text = String.Format("{0}: {1}", Master.eLang.GetString(302, "Original Title"), currDBElement.Movie.OriginalTitle)
         Else
             lblOriginalTitle.Text = String.Empty
         End If
 
         Try
-            If currMovie.Movie.RatingSpecified Then
-                If currMovie.Movie.VotesSpecified Then
-                    Dim strRating As String = Double.Parse(currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    Dim strVotes As String = Double.Parse(currMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+            If currDBElement.Movie.RatingSpecified Then
+                If currDBElement.Movie.VotesSpecified Then
+                    Dim strRating As String = Double.Parse(currDBElement.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strVotes As String = Double.Parse(currDBElement.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                     lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                 Else
-                    Dim strRating As String = Double.Parse(currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strRating As String = Double.Parse(currDBElement.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                     lblRating.Text = String.Concat(strRating, "/10")
                 End If
             End If
         Catch ex As Exception
-            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currMovie.Movie.Rating, " / ", currMovie.Movie.Votes, ")"))
+            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currDBElement.Movie.Rating, " / ", currDBElement.Movie.Votes, ")"))
             lblRating.Text = "Error: Please rescrape Rating"
         End Try
 
-        If currMovie.Movie.RuntimeSpecified Then
-            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(currMovie.Movie.Runtime, currMovie.Movie.Runtime.IndexOf("|")), currMovie.Movie.Runtime)).Trim
+        If currDBElement.Movie.RuntimeSpecified Then
+            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currDBElement.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(currDBElement.Movie.Runtime, currDBElement.Movie.Runtime.IndexOf("|")), currDBElement.Movie.Runtime)).Trim
         End If
 
-        If currMovie.Movie.Top250Specified Then
+        If currDBElement.Movie.Top250Specified Then
             'pnlTop250.Visible = True
             'lblTop250.Text = currMovie.Movie.Top250.ToString
         Else
             'pnlTop250.Visible = False
         End If
 
-        txtOutline.Text = currMovie.Movie.Outline
-        txtPlot.Text = currMovie.Movie.Plot
-        lblTagline.Text = currMovie.Movie.Tagline
+        txtOutline.Text = currDBElement.Movie.Outline
+        txtPlot.Text = currDBElement.Movie.Plot
+        lblTagline.Text = currDBElement.Movie.Tagline
 
         alActors = New List(Of String)
 
-        If currMovie.Movie.ActorsSpecified Then
+        If currDBElement.Movie.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
-            For Each actor As MediaContainers.Person In currMovie.Movie.Actors
+            For Each actor As MediaContainers.Person In currDBElement.Movie.Actors
                 If Not String.IsNullOrEmpty(actor.LocalFilePath) AndAlso File.Exists(actor.LocalFilePath) Then
                     If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
                         alActors.Add(actor.LocalFilePath)
@@ -7503,8 +7318,8 @@ Public Class frmMain
             lstActors.SelectedIndex = 0
         End If
 
-        If currMovie.Movie.MPAASpecified Then
-            Dim tmpRatingImg As Image = APIXML.GetRatingImage(currMovie.Movie.MPAA)
+        If currDBElement.Movie.MPAASpecified Then
+            Dim tmpRatingImg As Image = APIXML.GetRatingImage(currDBElement.Movie.MPAA)
             If tmpRatingImg IsNot Nothing Then
                 pbMPAA.Image = tmpRatingImg
                 MoveMPAA()
@@ -7512,13 +7327,13 @@ Public Class frmMain
         End If
 
 
-        If currMovie.Movie.GenresSpecified Then
-            createGenreThumbs(currMovie.Movie.Genres)
+        If currDBElement.Movie.GenresSpecified Then
+            CreateGenreThumbs(currDBElement.Movie.Genres)
         End If
 
-        If currMovie.Movie.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currMovie.Movie.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
-            pbStudio.Tag = currMovie.Movie.Studios.Item(0)
+        If currDBElement.Movie.StudiosSpecified Then
+            pbStudio.Image = APIXML.GetStudioImage(currDBElement.Movie.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
+            pbStudio.Tag = currDBElement.Movie.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
             pbStudio.Tag = String.Empty
@@ -7529,7 +7344,7 @@ Public Class frmMain
         End If
 
         If Master.eSettings.MovieScraperMetaDataScan Then
-            SetAVImages(APIXML.GetAVImages(currMovie.Movie.FileInfo, currMovie.ContentType, currMovie.Movie.VideoSource))
+            SetAVImages(APIXML.GetAVImages(currDBElement.Movie.FileInfo, currDBElement.ContentType, currDBElement.Movie.VideoSource))
             pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
         Else
@@ -7537,26 +7352,26 @@ Public Class frmMain
             pbStudio.Left = 0
         End If
 
-        lblCollections.Text = String.Join(" / ", From sets In currMovie.Movie.Sets Select sets.Title)
-        lblCredits.Text = String.Join(" / ", currMovie.Movie.Credits.ToArray)
-        lblDirectors.Text = String.Join(" / ", currMovie.Movie.Directors.ToArray)
+        lblCollections.Text = String.Join(" / ", From sets In currDBElement.Movie.Sets Select sets.Title)
+        lblCredits.Text = String.Join(" / ", currDBElement.Movie.Credits.ToArray)
+        lblDirectors.Text = String.Join(" / ", currDBElement.Movie.Directors.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
-        lblTags.Text = String.Join(" / ", currMovie.Movie.Tags.ToArray)
-        lblCountries.Text = String.Join(" / ", currMovie.Movie.Countries.ToArray)
+        lblTags.Text = String.Join(" / ", currDBElement.Movie.Tags.ToArray)
+        lblCountries.Text = String.Join(" / ", currDBElement.Movie.Countries.ToArray)
 
-        lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currMovie)
-        txtIMDBID.Text = currMovie.Movie.UniqueIDs.IMDbId
-        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currMovie)
-        txtTMDBID.Text = currMovie.Movie.UniqueIDs.TMDbId
+        lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currDBElement)
+        txtIMDBID.Text = currDBElement.Movie.UniqueIDs.IMDbId
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currDBElement)
+        txtTMDBID.Text = currDBElement.Movie.UniqueIDs.TMDbId
 
-        txtFilePath.Text = currMovie.FileItem.FullPath
-        txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.Movie.Trailer)
+        txtFilePath.Text = currDBElement.FileItem.FullPath
+        txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currDBElement.Trailer.LocalFilePath), currDBElement.Trailer.LocalFilePath, currDBElement.Movie.Trailer)
 
-        lblReleaseDate.Text = currMovie.Movie.ReleaseDate
+        lblReleaseDate.Text = currDBElement.Movie.ReleaseDate
         lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
-        lblCertifications.Text = String.Join(" / ", currMovie.Movie.Certifications.ToArray)
+        lblCertifications.Text = String.Join(" / ", currDBElement.Movie.Certifications.ToArray)
 
-        txtMetaData.Text = NFO.FIToString(currMovie)
+        txtMetaData.Text = NFO.FIToString(currDBElement)
 
         InfoCleared = False
 
@@ -7577,21 +7392,21 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_MovieSet()
         SuspendLayout()
-        If currMovieSet.MovieSet.TitleSpecified AndAlso currMovieSet.MoviesInSet IsNot Nothing AndAlso currMovieSet.MoviesInSet.Count > 0 Then
-            lblTitle.Text = String.Format("{0} ({1})", currMovieSet.MovieSet.Title, currMovieSet.MoviesInSet.Count)
-        ElseIf currMovieSet.MovieSet.TitleSpecified Then
-            lblTitle.Text = currMovieSet.MovieSet.Title
+        If currDBElement.MovieSet.TitleSpecified AndAlso currDBElement.MoviesInSet IsNot Nothing AndAlso currDBElement.MoviesInSet.Count > 0 Then
+            lblTitle.Text = String.Format("{0} ({1})", currDBElement.MovieSet.Title, currDBElement.MoviesInSet.Count)
+        ElseIf currDBElement.MovieSet.TitleSpecified Then
+            lblTitle.Text = currDBElement.MovieSet.Title
         Else
             lblTitle.Text = String.Empty
         End If
 
-        txtPlot.Text = currMovieSet.MovieSet.Plot
+        txtPlot.Text = currDBElement.MovieSet.Plot
 
 
-        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currMovieSet)
-        txtTMDBID.Text = currMovieSet.MovieSet.UniqueIDs.TMDbId
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currDBElement)
+        txtTMDBID.Text = currDBElement.MovieSet.UniqueIDs.TMDbId
 
-        If currMovieSet.MoviesInSet IsNot Nothing AndAlso currMovieSet.MoviesInSet.Count > 0 Then
+        If currDBElement.MoviesInSet IsNot Nothing AndAlso currDBElement.MoviesInSet.Count > 0 Then
             If bwLoadImages_MovieSetMoviePosters.IsBusy AndAlso Not bwLoadImages_MovieSetMoviePosters.CancellationPending Then
                 bwLoadImages_MovieSetMoviePosters.CancelAsync()
             End If
@@ -7623,45 +7438,45 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_TVEpisode()
         SuspendLayout()
-        lblTitle.Text = If(Not currTV.FileItemSpecified, String.Concat(currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.TVEpisode.Title)
-        txtPlot.Text = currTV.TVEpisode.Plot
-        lblCredits.Text = String.Join(" / ", currTV.TVEpisode.Credits.ToArray)
-        lblDirectors.Text = String.Join(" / ", currTV.TVEpisode.Directors.ToArray)
+        lblTitle.Text = If(Not currDBElement.FileItemSpecified, String.Concat(currDBElement.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currDBElement.TVEpisode.Title)
+        txtPlot.Text = currDBElement.TVEpisode.Plot
+        lblCredits.Text = String.Join(" / ", currDBElement.TVEpisode.Credits.ToArray)
+        lblDirectors.Text = String.Join(" / ", currDBElement.TVEpisode.Directors.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
-        txtFilePath.Text = If(currTV.FileItemSpecified, currTV.FileItem.FullPath, String.Empty)
-        lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.TVEpisode.AiredSpecified, Date.Parse(currTV.TVEpisode.Aired).ToShortDateString, "?"))
-        lblReleaseDate.Text = currTV.TVEpisode.Aired
+        txtFilePath.Text = If(currDBElement.FileItemSpecified, currDBElement.FileItem.FullPath, String.Empty)
+        lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currDBElement.TVEpisode.AiredSpecified, Date.Parse(currDBElement.TVEpisode.Aired).ToShortDateString, "?"))
+        lblReleaseDate.Text = currDBElement.TVEpisode.Aired
         lblReleaseDateHeader.Text = Master.eLang.GetString(728, "Aired")
 
-        If currTV.TVEpisode.RuntimeSpecified Then
-            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currTV.TVEpisode.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(currTV.TVEpisode.Runtime, currTV.TVEpisode.Runtime.IndexOf("|")), currTV.TVEpisode.Runtime)).Trim
+        If currDBElement.TVEpisode.RuntimeSpecified Then
+            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currDBElement.TVEpisode.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(currDBElement.TVEpisode.Runtime, currDBElement.TVEpisode.Runtime.IndexOf("|")), currDBElement.TVEpisode.Runtime)).Trim
         End If
 
         Try
-            If currTV.TVEpisode.RatingSpecified Then
-                If currTV.TVEpisode.VotesSpecified Then
-                    Dim strRating As String = Double.Parse(currTV.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    Dim strVotes As String = Double.Parse(currTV.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+            If currDBElement.TVEpisode.RatingSpecified Then
+                If currDBElement.TVEpisode.VotesSpecified Then
+                    Dim strRating As String = Double.Parse(currDBElement.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strVotes As String = Double.Parse(currDBElement.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                     lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                 Else
-                    Dim strRating As String = Double.Parse(currTV.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strRating As String = Double.Parse(currDBElement.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                     lblRating.Text = String.Concat(strRating, "/10")
                 End If
             End If
         Catch ex As Exception
-            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.TVEpisode.Rating, " / ", currTV.TVEpisode.Votes, ")"))
+            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currDBElement.TVEpisode.Rating, " / ", currDBElement.TVEpisode.Votes, ")"))
             lblRating.Text = "Error: Please rescrape Rating"
         End Try
 
         lblTagline.Text = String.Format(Master.eLang.GetString(648, "Season: {0}, Episode: {1}"),
-                            If(Not currTV.TVEpisode.SeasonSpecified, "?", currTV.TVEpisode.Season.ToString),
-                            If(Not currTV.TVEpisode.EpisodeSpecified, "?", currTV.TVEpisode.Episode.ToString))
+                            If(Not currDBElement.TVEpisode.SeasonSpecified, "?", currDBElement.TVEpisode.Season.ToString),
+                            If(Not currDBElement.TVEpisode.EpisodeSpecified, "?", currDBElement.TVEpisode.Episode.ToString))
 
 
         alActors = New List(Of String)
-        If currTV.TVEpisode.ActorsSpecified Then
+        If currDBElement.TVEpisode.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
-            For Each actor As MediaContainers.Person In currTV.TVEpisode.Actors
+            For Each actor As MediaContainers.Person In currDBElement.TVEpisode.Actors
                 If Not String.IsNullOrEmpty(actor.LocalFilePath) AndAlso File.Exists(actor.LocalFilePath) Then
                     If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
                         alActors.Add(actor.LocalFilePath)
@@ -7688,9 +7503,9 @@ Public Class frmMain
         End If
 
         alGuestStars = New List(Of String)
-        If currTV.TVEpisode.GuestStarsSpecified Then
+        If currDBElement.TVEpisode.GuestStarsSpecified Then
             pbGuestStars.Image = My.Resources.actor_silhouette
-            For Each actor As MediaContainers.Person In currTV.TVEpisode.GuestStars
+            For Each actor As MediaContainers.Person In currDBElement.TVEpisode.GuestStars
                 If Not String.IsNullOrEmpty(actor.LocalFilePath) AndAlso File.Exists(actor.LocalFilePath) Then
                     If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
                         alGuestStars.Add(actor.LocalFilePath)
@@ -7716,8 +7531,8 @@ Public Class frmMain
             lstGuestStars.SelectedIndex = 0
         End If
 
-        If currTV.TVShow.MPAASpecified Then
-            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currTV.TVShow.MPAA)
+        If currDBElement.TVShow.MPAASpecified Then
+            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currDBElement.TVShow.MPAA)
             If tmpRatingImg IsNot Nothing Then
                 pbMPAA.Image = tmpRatingImg
                 MoveMPAA()
@@ -7725,20 +7540,20 @@ Public Class frmMain
         End If
 
 
-        If currTV.TVShow.GenresSpecified Then
-            createGenreThumbs(currTV.TVShow.Genres)
+        If currDBElement.TVShow.GenresSpecified Then
+            CreateGenreThumbs(currDBElement.TVShow.Genres)
         End If
 
-        lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currTV)
-        txtIMDBID.Text = currTV.TVEpisode.UniqueIDs.IMDbId
-        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currTV)
-        txtTMDBID.Text = currTV.TVEpisode.UniqueIDs.TMDbId
-        lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(currTV)
-        txtTVDBID.Text = currTV.TVEpisode.UniqueIDs.TVDbId
+        lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currDBElement)
+        txtIMDBID.Text = currDBElement.TVEpisode.UniqueIDs.IMDbId
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currDBElement)
+        txtTMDBID.Text = currDBElement.TVEpisode.UniqueIDs.TMDbId
+        lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(currDBElement)
+        txtTVDBID.Text = currDBElement.TVEpisode.UniqueIDs.TVDbId
 
-        If currTV.TVShow.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
-            pbStudio.Tag = currTV.TVShow.Studios.Item(0)
+        If currDBElement.TVShow.StudiosSpecified Then
+            pbStudio.Image = APIXML.GetStudioImage(currDBElement.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
+            pbStudio.Tag = currDBElement.TVShow.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
             pbStudio.Tag = String.Empty
@@ -7746,8 +7561,8 @@ Public Class frmMain
         If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
-        If Master.eSettings.TVScraperMetaDataScan AndAlso currTV.FileItemSpecified Then
-            SetAVImages(APIXML.GetAVImages(currTV.TVEpisode.FileInfo, currTV.ContentType, currTV.TVEpisode.VideoSource))
+        If Master.eSettings.TVScraperMetaDataScan AndAlso currDBElement.FileItemSpecified Then
+            SetAVImages(APIXML.GetAVImages(currDBElement.TVEpisode.FileInfo, currDBElement.ContentType, currDBElement.TVEpisode.VideoSource))
             pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
         Else
@@ -7755,7 +7570,7 @@ Public Class frmMain
             pbStudio.Left = 0
         End If
 
-        txtMetaData.Text = NFO.FIToString(currTV)
+        txtMetaData.Text = NFO.FIToString(currDBElement)
 
         InfoCleared = False
 
@@ -7770,39 +7585,39 @@ Public Class frmMain
     Private Sub FillScreenInfoWith_TVSeason()
         SuspendLayout()
 
-        lblTitle.Text = currTV.TVSeason.Title
-        txtPlot.Text = currTV.TVSeason.Plot
-        lblRuntime.Text = currTV.TVShow.Runtime
-        lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currTV)
+        lblTitle.Text = currDBElement.TVSeason.Title
+        txtPlot.Text = currDBElement.TVSeason.Plot
+        lblRuntime.Text = currDBElement.TVShow.Runtime
+        lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currDBElement)
         txtIMDBID.Text = If(Not String.IsNullOrEmpty(lblIMDBHeader.Tag.ToString), "Link", String.Empty)
-        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currTV)
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currDBElement)
         txtTMDBID.Text = If(Not String.IsNullOrEmpty(lblTMDBHeader.Tag.ToString), "Link", String.Empty)
-        lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(currTV)
-        txtTVDBID.Text = currTV.TVSeason.UniqueIDs.TVDbId
-        lblCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
-        lblReleaseDate.Text = currTV.TVSeason.Aired
+        lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(currDBElement)
+        txtTVDBID.Text = currDBElement.TVSeason.UniqueIDs.TVDbId
+        lblCertifications.Text = String.Join(" / ", currDBElement.TVShow.Certifications.ToArray)
+        lblReleaseDate.Text = currDBElement.TVSeason.Aired
 
         Try
-            If currTV.TVShow.RatingSpecified Then
-                If currTV.TVShow.VotesSpecified Then
-                    Dim strRating As String = Double.Parse(currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    Dim strVotes As String = Double.Parse(currTV.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+            If currDBElement.TVShow.RatingSpecified Then
+                If currDBElement.TVShow.VotesSpecified Then
+                    Dim strRating As String = Double.Parse(currDBElement.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strVotes As String = Double.Parse(currDBElement.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                     lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                 Else
-                    Dim strRating As String = Double.Parse(currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strRating As String = Double.Parse(currDBElement.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                     lblRating.Text = String.Concat(strRating, "/10")
                 End If
             End If
         Catch ex As Exception
-            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.TVShow.Rating, " / ", currTV.TVShow.Votes, ")"))
+            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currDBElement.TVShow.Rating, " / ", currDBElement.TVShow.Votes, ")"))
             lblRating.Text = "Error: Please rescrape Rating"
         End Try
 
         alActors = New List(Of String)
 
-        If currTV.TVShow.ActorsSpecified Then
+        If currDBElement.TVShow.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
-            For Each actor As MediaContainers.Person In currTV.TVShow.Actors
+            For Each actor As MediaContainers.Person In currDBElement.TVShow.Actors
                 If Not String.IsNullOrEmpty(actor.LocalFilePath) AndAlso File.Exists(actor.LocalFilePath) Then
                     If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
                         alActors.Add(actor.LocalFilePath)
@@ -7828,8 +7643,8 @@ Public Class frmMain
             lstActors.SelectedIndex = 0
         End If
 
-        If currTV.TVShow.MPAASpecified Then
-            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currTV.TVShow.MPAA)
+        If currDBElement.TVShow.MPAASpecified Then
+            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currDBElement.TVShow.MPAA)
             If tmpRatingImg IsNot Nothing Then
                 pbMPAA.Image = tmpRatingImg
                 MoveMPAA()
@@ -7837,13 +7652,13 @@ Public Class frmMain
         End If
 
 
-        If currTV.TVShow.Genres.Count > 0 Then
-            createGenreThumbs(currTV.TVShow.Genres)
+        If currDBElement.TVShow.Genres.Count > 0 Then
+            CreateGenreThumbs(currDBElement.TVShow.Genres)
         End If
 
-        If currTV.TVShow.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
-            pbStudio.Tag = currTV.TVShow.Studios.Item(0)
+        If currDBElement.TVShow.StudiosSpecified Then
+            pbStudio.Image = APIXML.GetStudioImage(currDBElement.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
+            pbStudio.Tag = currDBElement.TVShow.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
             pbStudio.Tag = String.Empty
@@ -7865,51 +7680,51 @@ Public Class frmMain
     Private Sub FillScreenInfoWith_TVShow()
         SuspendLayout()
 
-        lblTitle.Text = currTV.TVShow.Title
+        lblTitle.Text = currDBElement.TVShow.Title
 
-        If currTV.TVShow.OriginalTitleSpecified AndAlso Not currTV.TVShow.OriginalTitle = currTV.TVShow.Title Then
-            lblOriginalTitle.Text = String.Format("{0}: {1}", Master.eLang.GetString(302, "Original Title"), currTV.TVShow.OriginalTitle)
+        If currDBElement.TVShow.OriginalTitleSpecified AndAlso Not currDBElement.TVShow.OriginalTitle = currDBElement.TVShow.Title Then
+            lblOriginalTitle.Text = String.Format("{0}: {1}", Master.eLang.GetString(302, "Original Title"), currDBElement.TVShow.OriginalTitle)
         Else
             lblOriginalTitle.Text = String.Empty
         End If
 
-        txtPlot.Text = currTV.TVShow.Plot
-        lblRuntime.Text = currTV.TVShow.Runtime
-        lblDirectors.Text = String.Join(" / ", currTV.TVShow.Creators.ToArray)
+        txtPlot.Text = currDBElement.TVShow.Plot
+        lblRuntime.Text = currDBElement.TVShow.Runtime
+        lblDirectors.Text = String.Join(" / ", currDBElement.TVShow.Creators.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(744, "Creators")
-        lblReleaseDate.Text = currTV.TVShow.Premiered
+        lblReleaseDate.Text = currDBElement.TVShow.Premiered
         lblReleaseDateHeader.Text = Master.eLang.GetString(724, "Premiered")
-        lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currTV)
-        txtIMDBID.Text = currTV.TVShow.UniqueIDs.IMDbId
-        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currTV)
-        txtTMDBID.Text = currTV.TVShow.UniqueIDs.TMDbId
-        lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(currTV)
-        txtTVDBID.Text = currTV.TVShow.UniqueIDs.TVDbId
-        lblCertifications.Text = String.Join(" / ", currTV.TVShow.Certifications.ToArray)
-        lblTags.Text = String.Join(" / ", currTV.TVShow.Tags.ToArray)
-        lblStatus.Text = currTV.TVShow.Status
+        lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currDBElement)
+        txtIMDBID.Text = currDBElement.TVShow.UniqueIDs.IMDbId
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currDBElement)
+        txtTMDBID.Text = currDBElement.TVShow.UniqueIDs.TMDbId
+        lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(currDBElement)
+        txtTVDBID.Text = currDBElement.TVShow.UniqueIDs.TVDbId
+        lblCertifications.Text = String.Join(" / ", currDBElement.TVShow.Certifications.ToArray)
+        lblTags.Text = String.Join(" / ", currDBElement.TVShow.Tags.ToArray)
+        lblStatus.Text = currDBElement.TVShow.Status
 
         Try
-            If currTV.TVShow.RatingSpecified Then
-                If currTV.TVShow.VotesSpecified Then
-                    Dim strRating As String = Double.Parse(currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    Dim strVotes As String = Double.Parse(currTV.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+            If currDBElement.TVShow.RatingSpecified Then
+                If currDBElement.TVShow.VotesSpecified Then
+                    Dim strRating As String = Double.Parse(currDBElement.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strVotes As String = Double.Parse(currDBElement.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                     lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                 Else
-                    Dim strRating As String = Double.Parse(currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strRating As String = Double.Parse(currDBElement.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                     lblRating.Text = String.Concat(strRating, "/10")
                 End If
             End If
         Catch ex As Exception
-            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.TVShow.Rating, " / ", currTV.TVShow.Votes, ")"))
+            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currDBElement.TVShow.Rating, " / ", currDBElement.TVShow.Votes, ")"))
             lblRating.Text = "Error: Please rescrape Rating"
         End Try
 
         alActors = New List(Of String)
 
-        If currTV.TVShow.ActorsSpecified Then
+        If currDBElement.TVShow.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
-            For Each actor As MediaContainers.Person In currTV.TVShow.Actors
+            For Each actor As MediaContainers.Person In currDBElement.TVShow.Actors
                 If Not String.IsNullOrEmpty(actor.LocalFilePath) AndAlso File.Exists(actor.LocalFilePath) Then
                     If Not actor.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not actor.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
                         alActors.Add(actor.LocalFilePath)
@@ -7935,8 +7750,8 @@ Public Class frmMain
             lstActors.SelectedIndex = 0
         End If
 
-        If currTV.TVShow.MPAASpecified Then
-            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currTV.TVShow.MPAA)
+        If currDBElement.TVShow.MPAASpecified Then
+            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currDBElement.TVShow.MPAA)
             If tmpRatingImg IsNot Nothing Then
                 pbMPAA.Image = tmpRatingImg
                 MoveMPAA()
@@ -7944,13 +7759,13 @@ Public Class frmMain
         End If
 
 
-        If currTV.TVShow.Genres.Count > 0 Then
-            createGenreThumbs(currTV.TVShow.Genres)
+        If currDBElement.TVShow.Genres.Count > 0 Then
+            CreateGenreThumbs(currDBElement.TVShow.Genres)
         End If
 
-        If currTV.TVShow.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
-            pbStudio.Tag = currTV.TVShow.Studios.Item(0)
+        If currDBElement.TVShow.StudiosSpecified Then
+            pbStudio.Image = APIXML.GetStudioImage(currDBElement.TVShow.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
+            pbStudio.Tag = currDBElement.TVShow.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
             pbStudio.Tag = String.Empty
@@ -8379,12 +8194,8 @@ Public Class frmMain
             End If
 
             If fScanner.IsBusy Then fScanner.Cancel()
-            If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
-            If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()
+            If bwLoadImages.IsBusy Then bwLoadImages.CancelAsync()
             If bwLoadImages_MovieSetMoviePosters.IsBusy Then bwLoadImages_MovieSetMoviePosters.CancelAsync()
-            If bwLoadImages_TVShow.IsBusy Then bwLoadImages_TVShow.CancelAsync()
-            If bwLoadImages_TVSeason.IsBusy Then bwLoadImages_TVSeason.CancelAsync()
-            If bwLoadImages_TVEpisode.IsBusy Then bwLoadImages_TVEpisode.CancelAsync()
             If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
             If bwDownloadGuestStarPic.IsBusy Then bwDownloadGuestStarPic.CancelAsync()
             If bwReload_Movies.IsBusy Then bwReload_Movies.CancelAsync()
@@ -8407,11 +8218,15 @@ Public Class frmMain
                 End If
             End If
 
-            While fScanner.IsBusy OrElse bwLoadImages_Movie.IsBusy _
-            OrElse bwLoadImages_MovieSet.IsBusy OrElse bwDownloadPic.IsBusy OrElse bwDownloadGuestStarPic.IsBusy OrElse bwMovieScraper.IsBusy _
-            OrElse bwReload_Movies.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse bwCleanDB.IsBusy _
-            OrElse bwLoadImages_TVShow.IsBusy OrElse bwLoadImages_TVEpisode.IsBusy OrElse bwLoadImages_TVSeason.IsBusy _
-            OrElse bwLoadImages_MovieSetMoviePosters.IsBusy
+            While fScanner.IsBusy OrElse
+                bwCleanDB.IsBusy OrElse
+                bwDownloadPic.IsBusy OrElse
+                bwDownloadGuestStarPic.IsBusy OrElse
+                bwLoadImages.IsBusy OrElse
+                bwLoadImages_MovieSetMoviePosters.IsBusy OrElse
+                bwMovieScraper.IsBusy OrElse
+                bwReload_Movies.IsBusy OrElse
+                bwReload_MovieSets.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -9421,40 +9236,40 @@ Public Class frmMain
         ShowNoInfo(False)
         ClearInfo()
 
-        currMovie = Master.DB.Load_Movie(ID)
+        currDBElement = Master.DB.Load_Movie(ID)
         FillScreenInfoWith_Movie()
 
-        If bwLoadImages_Movie.IsBusy AndAlso Not bwLoadImages_Movie.CancellationPending Then
-            bwLoadImages_Movie.CancelAsync()
+        If bwLoadImages.IsBusy AndAlso Not bwLoadImages.CancellationPending Then
+            bwLoadImages.CancelAsync()
         End If
 
-        While bwLoadImages_Movie.IsBusy
+        While bwLoadImages.IsBusy
             Application.DoEvents()
         End While
 
-        bwLoadImages_Movie = New ComponentModel.BackgroundWorker
-        bwLoadImages_Movie.WorkerSupportsCancellation = True
-        bwLoadImages_Movie.RunWorkerAsync()
+        bwLoadImages = New ComponentModel.BackgroundWorker
+        bwLoadImages.WorkerSupportsCancellation = True
+        bwLoadImages.RunWorkerAsync()
     End Sub
 
     Private Sub LoadInfo_MovieSet(ByVal ID As Long)
         ShowNoInfo(False)
         ClearInfo()
 
-        currMovieSet = Master.DB.Load_MovieSet(ID)
+        currDBElement = Master.DB.Load_MovieSet(ID)
         FillScreenInfoWith_MovieSet()
 
-        If bwLoadImages_MovieSet.IsBusy AndAlso Not bwLoadImages_MovieSet.CancellationPending Then
-            bwLoadImages_MovieSet.CancelAsync()
+        If bwLoadImages.IsBusy AndAlso Not bwLoadImages.CancellationPending Then
+            bwLoadImages.CancelAsync()
         End If
 
-        While bwLoadImages_MovieSet.IsBusy
+        While bwLoadImages.IsBusy
             Application.DoEvents()
         End While
 
-        bwLoadImages_MovieSet = New ComponentModel.BackgroundWorker
-        bwLoadImages_MovieSet.WorkerSupportsCancellation = True
-        bwLoadImages_MovieSet.RunWorkerAsync()
+        bwLoadImages = New ComponentModel.BackgroundWorker
+        bwLoadImages.WorkerSupportsCancellation = True
+        bwLoadImages.RunWorkerAsync()
     End Sub
 
     Private Sub LoadInfo_TVEpisode(ByVal ID As Long)
@@ -9463,20 +9278,20 @@ Public Class frmMain
 
         If Not currThemeType = Enums.ContentType.TVEpisode Then ApplyTheme(Enums.ContentType.TVEpisode)
 
-        currTV = Master.DB.Load_TVEpisode(ID, True)
+        currDBElement = Master.DB.Load_TVEpisode(ID, True)
         FillScreenInfoWith_TVEpisode()
 
-        If bwLoadImages_TVEpisode.IsBusy AndAlso Not bwLoadImages_TVEpisode.CancellationPending Then
-            bwLoadImages_TVEpisode.CancelAsync()
+        If bwLoadImages.IsBusy AndAlso Not bwLoadImages.CancellationPending Then
+            bwLoadImages.CancelAsync()
         End If
 
-        While bwLoadImages_TVEpisode.IsBusy
+        While bwLoadImages.IsBusy
             Application.DoEvents()
         End While
 
-        bwLoadImages_TVEpisode = New ComponentModel.BackgroundWorker
-        bwLoadImages_TVEpisode.WorkerSupportsCancellation = True
-        bwLoadImages_TVEpisode.RunWorkerAsync()
+        bwLoadImages = New ComponentModel.BackgroundWorker
+        bwLoadImages.WorkerSupportsCancellation = True
+        bwLoadImages.RunWorkerAsync()
     End Sub
 
     Private Sub LoadInfo_TVSeason(ByVal ID As Long)
@@ -9485,20 +9300,20 @@ Public Class frmMain
 
         If Not currThemeType = Enums.ContentType.TVSeason Then ApplyTheme(Enums.ContentType.TVSeason)
 
-        currTV = Master.DB.Load_TVSeason(ID, True, False)
+        currDBElement = Master.DB.Load_TVSeason(ID, True, False)
         FillScreenInfoWith_TVSeason()
 
-        If bwLoadImages_TVSeason.IsBusy AndAlso Not bwLoadImages_TVSeason.CancellationPending Then
-            bwLoadImages_TVSeason.CancelAsync()
+        If bwLoadImages.IsBusy AndAlso Not bwLoadImages.CancellationPending Then
+            bwLoadImages.CancelAsync()
         End If
 
-        While bwLoadImages_TVSeason.IsBusy
+        While bwLoadImages.IsBusy
             Application.DoEvents()
         End While
 
-        bwLoadImages_TVSeason = New ComponentModel.BackgroundWorker
-        bwLoadImages_TVSeason.WorkerSupportsCancellation = True
-        bwLoadImages_TVSeason.RunWorkerAsync()
+        bwLoadImages = New ComponentModel.BackgroundWorker
+        bwLoadImages.WorkerSupportsCancellation = True
+        bwLoadImages.RunWorkerAsync()
     End Sub
 
     Private Sub LoadInfo_TVShow(ByVal ID As Long)
@@ -9507,21 +9322,21 @@ Public Class frmMain
 
         If Not currThemeType = Enums.ContentType.TVShow Then ApplyTheme(Enums.ContentType.TVShow)
 
-        currTV = Master.DB.Load_TVShow(ID, False, False)
+        currDBElement = Master.DB.Load_TVShow(ID, False, False)
         FillScreenInfoWith_TVShow()
 
-        If bwLoadImages_TVShow.IsBusy AndAlso Not bwLoadImages_TVShow.CancellationPending Then
-            bwLoadImages_TVShow.CancelAsync()
+        If bwLoadImages.IsBusy AndAlso Not bwLoadImages.CancellationPending Then
+            bwLoadImages.CancelAsync()
         End If
 
-        While bwLoadImages_TVShow.IsBusy
+        While bwLoadImages.IsBusy
             Application.DoEvents()
         End While
 
 
-        bwLoadImages_TVShow = New ComponentModel.BackgroundWorker
-        bwLoadImages_TVShow.WorkerSupportsCancellation = True
-        bwLoadImages_TVShow.RunWorkerAsync()
+        bwLoadImages = New ComponentModel.BackgroundWorker
+        bwLoadImages.WorkerSupportsCancellation = True
+        bwLoadImages.RunWorkerAsync()
 
         FillList_TVSeasons(ID)
     End Sub
@@ -13265,7 +13080,8 @@ Public Class frmMain
 
             If Filter_Movies.AnyRuleSpecified Then
                 lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                bsMovies.Filter = Filter_Movies.BuildFilter(If(rbFilterAnd_Movies.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or))
+                Filter_Movies.Match = If(rbFilterAnd_Movies.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or)
+                bsMovies.Filter = Filter_Movies.Filter
                 ModulesManager.Instance.RuntimeObjects.FilterMovies = bsMovies.Filter
             Else
                 If chkFilterDuplicates_Movies.Checked Then
@@ -13299,7 +13115,8 @@ Public Class frmMain
 
             If Filter_Moviesets.AnyRuleSpecified Then
                 lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                bsMovieSets.Filter = Filter_Moviesets.BuildFilter(If(rbFilterAnd_MovieSets.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or))
+                Filter_Moviesets.Match = If(rbFilterAnd_MovieSets.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or)
+                bsMovieSets.Filter = Filter_Moviesets.Filter
                 ModulesManager.Instance.RuntimeObjects.FilterMoviesets = bsMovieSets.Filter
             Else
                 lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
@@ -13332,7 +13149,8 @@ Public Class frmMain
 
             If Filter_TVShows.AnyRuleSpecified Then
                 lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                bsTVShows.Filter = Filter_TVShows.BuildFilter(If(rbFilterAnd_Shows.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or))
+                Filter_TVShows.Match = If(rbFilterAnd_Shows.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or)
+                bsTVShows.Filter = Filter_TVShows.Filter
                 ModulesManager.Instance.RuntimeObjects.FilterTVShows = bsTVShows.Filter
             Else
                 lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
@@ -13562,7 +13380,7 @@ Public Class frmMain
         If dgvMovies.Rows.Count > iRow Then
             If Not DataGridView_ColumnAnyInfoValue(dgvMovies, iRow) Then
                 ShowNoInfo(True, Enums.ContentType.Movie)
-                currMovie = Master.DB.Load_Movie(Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), iRow).Value))
+                currDBElement = Master.DB.Load_Movie(Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), iRow).Value))
                 FillScreenInfoWith_Movie()
             Else
                 LoadInfo_Movie(Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), iRow).Value))
@@ -13587,7 +13405,7 @@ Public Class frmMain
         If dgvMovieSets.Rows.Count > iRow Then
             If Not DataGridView_ColumnAnyInfoValue(dgvMovieSets, iRow) Then
                 ShowNoInfo(True, Enums.ContentType.MovieSet)
-                currMovieSet = Master.DB.Load_MovieSet(Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), iRow).Value))
+                currDBElement = Master.DB.Load_MovieSet(Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), iRow).Value))
                 FillScreenInfoWith_MovieSet()
             Else
                 LoadInfo_MovieSet(Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), iRow).Value))
@@ -13610,7 +13428,7 @@ Public Class frmMain
         If dgvTVEpisodes.Rows.Count > iRow Then
             If Not Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.file), iRow).Value) = -1 AndAlso Not DataGridView_ColumnAnyInfoValue(dgvTVEpisodes, iRow) Then
                 ShowNoInfo(True, Enums.ContentType.TVEpisode)
-                currTV = Master.DB.Load_TVEpisode(Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), iRow).Value), True)
+                currDBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), iRow).Value), True)
                 FillScreenInfoWith_TVEpisode()
             Else
                 LoadInfo_TVEpisode(Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), iRow).Value))
@@ -13638,7 +13456,7 @@ Public Class frmMain
             If Not Convert.ToBoolean(dgvTVSeasons.Item(Database.Helpers.GetColumnName(Database.ColumnName.IsMissing), iRow).Value) AndAlso Not DataGridView_ColumnAnyInfoValue(dgvTVSeasons, iRow) Then
                 If Not currThemeType = Enums.ContentType.TVSeason Then ApplyTheme(Enums.ContentType.TVSeason)
                 ShowNoInfo(True, Enums.ContentType.TVSeason)
-                currTV = Master.DB.Load_TVSeason(Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), iRow).Value), True, False)
+                currDBElement = Master.DB.Load_TVSeason(Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), iRow).Value), True, False)
                 FillList_TVEpisodes(Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), iRow).Value), Convert.ToInt32(dgvTVSeasons.Item(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber), iRow).Value))
             Else
                 LoadInfo_TVSeason(Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), iRow).Value))
@@ -13666,7 +13484,7 @@ Public Class frmMain
         If dgvTVShows.Rows.Count > iRow Then
             If Not DataGridView_ColumnAnyInfoValue(dgvTVShows, iRow) Then
                 ShowNoInfo(True, Enums.ContentType.TVShow)
-                currTV = Master.DB.Load_TVShow(Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), iRow).Value), False, False)
+                currDBElement = Master.DB.Load_TVShow(Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), iRow).Value), False, False)
                 FillList_TVSeasons(Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), iRow).Value))
             Else
                 LoadInfo_TVShow(Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), iRow).Value))
@@ -14080,66 +13898,63 @@ Public Class frmMain
 
             'TODO: make it more generic
             If dgvMovies.RowCount > 0 Then
-                dgvMovies.Columns("bannerPath").Visible = Not CheckColumnHide_Movies("bannerPath")
-                dgvMovies.Columns("clearArtPath").Visible = Not CheckColumnHide_Movies("clearArtPath")
-                dgvMovies.Columns("clearLogoPath").Visible = Not CheckColumnHide_Movies("clearLogoPath")
-                dgvMovies.Columns("discArtPath").Visible = Not CheckColumnHide_Movies("discArtPath")
-                dgvMovies.Columns("efanartsPath").Visible = Not CheckColumnHide_Movies("efanartsPath")
-                dgvMovies.Columns("ethumbsPath").Visible = Not CheckColumnHide_Movies("ethumbsPath")
-                dgvMovies.Columns("fanartPath").Visible = Not CheckColumnHide_Movies("fanartPath")
-                dgvMovies.Columns("hasSet").Visible = Not CheckColumnHide_Movies("hasSet")
-                dgvMovies.Columns("hasSub").Visible = Not CheckColumnHide_Movies("hasSub")
-                dgvMovies.Columns("lastPlayed").Visible = Not CheckColumnHide_Movies("lastPlayed")
-                'dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
-                dgvMovies.Columns("landscapePath").Visible = Not CheckColumnHide_Movies("landscapePath")
-                dgvMovies.Columns("mpaa").Visible = Not CheckColumnHide_Movies("mpaa")
-                dgvMovies.Columns("nfoPath").Visible = Not CheckColumnHide_Movies("nfoPath")
-                dgvMovies.Columns("originalTitle").Visible = Not CheckColumnHide_Movies("originalTitle")
-                dgvMovies.Columns("posterPath").Visible = Not CheckColumnHide_Movies("posterPath")
-                'dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
-                dgvMovies.Columns("themePath").Visible = Not CheckColumnHide_Movies("themePath")
-                'dgvMovies.Columns("TMDB").Visible = Not CheckColumnHide_Movies("TMDB")
-                dgvMovies.Columns("trailerPath").Visible = Not CheckColumnHide_Movies("trailerPath")
-                dgvMovies.Columns("year").Visible = Not CheckColumnHide_Movies("year")
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.MPAA)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.MPAA))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Year)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.Year))
             End If
 
             If dgvMovieSets.RowCount > 0 Then
-                dgvMovieSets.Columns("bannerPath").Visible = Not CheckColumnHide_MovieSets("bannerPath")
-                dgvMovieSets.Columns("clearArtPath").Visible = Not CheckColumnHide_MovieSets("clearArtPath")
-                dgvMovieSets.Columns("clearLogoPath").Visible = Not CheckColumnHide_MovieSets("clearLogoPath")
-                dgvMovieSets.Columns("discArtPath").Visible = Not CheckColumnHide_MovieSets("discArtPath")
-                dgvMovieSets.Columns("fanartPath").Visible = Not CheckColumnHide_MovieSets("fanartPath")
-                dgvMovieSets.Columns("landscapePath").Visible = Not CheckColumnHide_MovieSets("landscapePath")
-                dgvMovieSets.Columns("nfoPath").Visible = Not CheckColumnHide_MovieSets("nfoPath")
-                dgvMovieSets.Columns("posterPath").Visible = Not CheckColumnHide_MovieSets("posterPath")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
             End If
 
             If dgvTVShows.RowCount > 0 Then
-                dgvTVShows.Columns("bannerPath").Visible = Not CheckColumnHide_TVShows("bannerPath")
-                dgvTVShows.Columns("characterArtPath").Visible = Not CheckColumnHide_TVShows("characterArtPath")
-                dgvTVShows.Columns("clearArtPath").Visible = Not CheckColumnHide_TVShows("clearArtPath")
-                dgvTVShows.Columns("clearLogoPath").Visible = Not CheckColumnHide_TVShows("clearLogoPath")
-                dgvTVShows.Columns("efanartsPath").Visible = Not CheckColumnHide_TVShows("efanartsPath")
-                dgvTVShows.Columns("fanartPath").Visible = Not CheckColumnHide_TVShows("fanartPath")
-                dgvTVShows.Columns("landscapePath").Visible = Not CheckColumnHide_TVShows("landscapePath")
-                dgvTVShows.Columns("nfoPath").Visible = Not CheckColumnHide_TVShows("nfoPath")
-                dgvTVShows.Columns("posterPath").Visible = Not CheckColumnHide_TVShows("posterPath")
-                dgvTVShows.Columns("status").Visible = Not CheckColumnHide_TVShows("status")
-                dgvTVShows.Columns("themePath").Visible = Not CheckColumnHide_TVShows("themePath")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.Status))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath))
             End If
 
             If dgvTVSeasons.RowCount > 0 Then
-                dgvTVSeasons.Columns("bannerPath").Visible = Not CheckColumnHide_TVSeasons("bannerPath")
-                dgvTVSeasons.Columns("fanartPath").Visible = Not CheckColumnHide_TVSeasons("fanartPath")
-                dgvTVSeasons.Columns("landscapePath").Visible = Not CheckColumnHide_TVSeasons("landscapePath")
-                dgvTVSeasons.Columns("posterPath").Visible = Not CheckColumnHide_TVSeasons("posterPath")
+                dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).Visible = Not CheckColumnHide_TVSeasons(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath))
+                dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_TVSeasons(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
+                dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Visible = Not CheckColumnHide_TVSeasons(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath))
+                dgvTVSeasons.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_TVSeasons(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
             End If
 
             If dgvTVEpisodes.RowCount > 0 Then
-                dgvTVEpisodes.Columns("fanartPath").Visible = Not CheckColumnHide_TVEpisodes("fanartPath")
-                dgvTVEpisodes.Columns("posterPath").Visible = Not CheckColumnHide_TVEpisodes("posterPath")
-                dgvTVEpisodes.Columns("hasSub").Visible = Not CheckColumnHide_TVEpisodes("hasSub")
-                dgvTVEpisodes.Columns("playcount").Visible = Not CheckColumnHide_TVEpisodes("playcount")
+                dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
+                dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
+                dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles))
+                dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PlayCount)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.PlayCount))
             End If
 
             'might as well wait for these
@@ -14163,9 +13978,13 @@ Public Class frmMain
 
                 If dresult.NeedsDBClean_Movie OrElse dresult.NeedsDBClean_TV Then
                     If MessageBox.Show(String.Format(Master.eLang.GetString(1007, "You've changed a setting that makes it necessary that the database is cleaned up. Please make sure that all sources are available!{0}{0}Should the process be continued?"), Environment.NewLine), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
-                        While bwLoadImages_Movie.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse
-                            bwLoadImages_MovieSet.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
-                            bwLoadImages_TVEpisode.IsBusy OrElse bwLoadImages_TVSeason.IsBusy OrElse bwLoadImages_TVShow.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
+                        While bwLoadImages.IsBusy OrElse
+                            bwMovieScraper.IsBusy OrElse
+                            bwReload_Movies.IsBusy OrElse
+                            bwMovieSetScraper.IsBusy OrElse
+                            bwReload_MovieSets.IsBusy OrElse
+                            bwReload_TVShows.IsBusy OrElse
+                            bwCleanDB.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
@@ -14179,9 +13998,13 @@ Public Class frmMain
 
                 If dresult.NeedsReload_Movie Then
                     If Not fScanner.IsBusy Then
-                        While bwLoadImages_Movie.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse
-                            bwLoadImages_MovieSet.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
-                            bwLoadImages_TVEpisode.IsBusy OrElse bwLoadImages_TVSeason.IsBusy OrElse bwLoadImages_TVShow.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
+                        While bwLoadImages.IsBusy OrElse
+                            bwMovieScraper.IsBusy OrElse
+                            bwReload_Movies.IsBusy OrElse
+                            bwMovieSetScraper.IsBusy OrElse
+                            bwReload_MovieSets.IsBusy OrElse
+                            bwReload_TVShows.IsBusy OrElse
+                            bwCleanDB.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
@@ -14190,9 +14013,13 @@ Public Class frmMain
                 End If
                 If dresult.NeedsReload_MovieSet Then
                     If Not fScanner.IsBusy Then
-                        While bwLoadImages_Movie.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse
-                            bwLoadImages_MovieSet.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
-                            bwLoadImages_TVEpisode.IsBusy OrElse bwLoadImages_TVSeason.IsBusy OrElse bwLoadImages_TVShow.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
+                        While bwLoadImages.IsBusy OrElse
+                            bwMovieScraper.IsBusy OrElse
+                            bwReload_Movies.IsBusy OrElse
+                            bwMovieSetScraper.IsBusy OrElse
+                            bwReload_MovieSets.IsBusy OrElse
+                            bwReload_TVShows.IsBusy OrElse
+                            bwCleanDB.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
@@ -14201,9 +14028,13 @@ Public Class frmMain
                 End If
                 If dresult.NeedsReload_TVEpisode OrElse dresult.NeedsReload_TVShow Then
                     If Not fScanner.IsBusy Then
-                        While bwLoadImages_Movie.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse
-                            bwLoadImages_MovieSet.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
-                            bwLoadImages_TVEpisode.IsBusy OrElse bwLoadImages_TVSeason.IsBusy OrElse bwLoadImages_TVShow.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
+                        While bwLoadImages.IsBusy OrElse
+                            bwMovieScraper.IsBusy OrElse
+                            bwReload_Movies.IsBusy OrElse
+                            bwMovieSetScraper.IsBusy OrElse
+                            bwReload_MovieSets.IsBusy OrElse
+                            bwReload_TVShows.IsBusy OrElse
+                            bwCleanDB.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
@@ -14212,9 +14043,13 @@ Public Class frmMain
                 End If
                 If dresult.NeedsDBUpdate_Movie OrElse dresult.NeedsDBUpdate_TV Then
                     If Not fScanner.IsBusy Then
-                        While bwLoadImages_Movie.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse
-                            bwLoadImages_MovieSet.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
-                            bwLoadImages_TVEpisode.IsBusy OrElse bwLoadImages_TVSeason.IsBusy OrElse bwLoadImages_TVShow.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
+                        While bwLoadImages.IsBusy OrElse
+                            bwMovieScraper.IsBusy OrElse
+                            bwReload_Movies.IsBusy OrElse
+                            bwMovieSetScraper.IsBusy OrElse
+                            bwReload_MovieSets.IsBusy OrElse
+                            bwReload_TVShows.IsBusy OrElse
+                            bwCleanDB.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
@@ -14223,18 +14058,22 @@ Public Class frmMain
                 End If
             End If
 
-            If Not fScanner.IsBusy AndAlso Not bwLoadImages_Movie.IsBusy AndAlso Not bwMovieScraper.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso
-                    Not bwLoadImages_MovieSet.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso
-                    Not bwLoadImages_TVEpisode.IsBusy AndAlso Not bwLoadImages_TVSeason.IsBusy AndAlso Not bwLoadImages_TVShow.IsBusy AndAlso Not bwReload_TVShows.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+            If Not fScanner.IsBusy AndAlso Not bwLoadImages.IsBusy AndAlso Not bwMovieScraper.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso
+                    Not bwMovieSetScraper.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso
+                    Not bwReload_TVShows.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 FillList_Main(True, True, True)
             End If
 
             SetMenus(True)
 
             If dresult.NeedsRestart Then
-                While bwLoadImages_Movie.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse
-                    bwLoadImages_MovieSet.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
-                    bwLoadImages_TVEpisode.IsBusy OrElse bwLoadImages_TVSeason.IsBusy OrElse bwLoadImages_TVShow.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
+                While bwLoadImages.IsBusy OrElse
+                    bwMovieScraper.IsBusy OrElse
+                    bwReload_Movies.IsBusy OrElse
+                    bwMovieSetScraper.IsBusy OrElse
+                    bwReload_MovieSets.IsBusy OrElse
+                    bwReload_TVShows.IsBusy OrElse
+                    bwCleanDB.IsBusy
                     Application.DoEvents()
                     Threading.Thread.Sleep(50)
                 End While
@@ -15195,10 +15034,7 @@ Public Class frmMain
                 dgvMovieSets.Visible = False
                 dgvMovies.Visible = True
                 ApplyTheme(currMainTabTag.ContentType)
-                If bwLoadImages_TVEpisode.IsBusy Then bwLoadImages_TVEpisode.CancelAsync()
-                If bwLoadImages_TVSeason.IsBusy Then bwLoadImages_TVSeason.CancelAsync()
-                If bwLoadImages_TVShow.IsBusy Then bwLoadImages_TVShow.CancelAsync()
-                If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()
+                If bwLoadImages.IsBusy Then bwLoadImages.CancelAsync()
                 If bwLoadImages_MovieSetMoviePosters.IsBusy Then bwLoadImages_MovieSetMoviePosters.CancelAsync()
                 If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
                 If bwDownloadGuestStarPic.IsBusy Then bwDownloadGuestStarPic.CancelAsync()
@@ -15241,12 +15077,9 @@ Public Class frmMain
                 dgvMovies.Visible = False
                 dgvMovieSets.Visible = True
                 ApplyTheme(currMainTabTag.ContentType)
-                If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
+                If bwLoadImages.IsBusy Then bwLoadImages.CancelAsync()
                 If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
                 If bwDownloadGuestStarPic.IsBusy Then bwDownloadGuestStarPic.CancelAsync()
-                If bwLoadImages_TVEpisode.IsBusy Then bwLoadImages_TVEpisode.CancelAsync()
-                If bwLoadImages_TVSeason.IsBusy Then bwLoadImages_TVSeason.CancelAsync()
-                If bwLoadImages_TVShow.IsBusy Then bwLoadImages_TVShow.CancelAsync()
                 If dgvMovieSets.RowCount > 0 Then
                     prevRow_MovieSet = -1
 
@@ -15293,8 +15126,7 @@ Public Class frmMain
                 AddHandler scTVSeasonsEpisodes.SplitterMoved, AddressOf TVSplitterMoved
 
                 ApplyTheme(Enums.ContentType.TVShow)
-                If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
-                If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()
+                If bwLoadImages.IsBusy Then bwLoadImages.CancelAsync()
                 If bwLoadImages_MovieSetMoviePosters.IsBusy Then bwLoadImages_MovieSetMoviePosters.CancelAsync()
                 If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
                 If bwDownloadGuestStarPic.IsBusy Then bwDownloadGuestStarPic.CancelAsync()

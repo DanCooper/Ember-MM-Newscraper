@@ -3470,8 +3470,10 @@ Public Class Database
         'delete so it will remove if there is a "missing" episode entry already. Only "missing" episodes must be deleted.
         RemoveMissingEpisode(dbElement.ShowID, dbElement.TVEpisode.Season, dbElement.TVEpisode.Episode)
 
-        'add the path as first to get the idFile value
-        dbElement.FileItem.ID = AddFileItem(dbElement.FileItem)
+        If dbElement.FileItemSpecified Then
+            'add the path as first to get the idFile value
+            dbElement.FileItem.ID = AddFileItem(dbElement.FileItem)
+        End If
 
         Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             If Not dbElement.IDSpecified Then

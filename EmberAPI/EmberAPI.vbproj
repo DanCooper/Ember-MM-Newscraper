@@ -244,7 +244,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="XML Serialization\clsXMLFilter.vb" />
     <Compile Include="XML Serialization\clsXMLAdvancedSettings.vb" />
     <Compile Include="XML Serialization\clsXMLGenres.vb" />
     <Compile Include="XML Serialization\clsXMLLanguage.vb" />
@@ -464,9 +463,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Defaults\DefaultCertLanguages.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Defaults\DefaultQueries.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Defaults\Core.ScraperLanguages.xml">
