@@ -1734,7 +1734,7 @@ Public Class Images
         imgResult = Nothing
 
         If Master.eSettings.MovieBannerPrefSize = Enums.MovieBannerSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult Is Nothing Then
@@ -1742,7 +1742,7 @@ Public Class Images
         End If
 
         If imgResult Is Nothing AndAlso Not Master.eSettings.MovieBannerPrefSizeOnly AndAlso Not Master.eSettings.MovieBannerPrefSize = Enums.MovieBannerSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult IsNot Nothing Then
@@ -1763,7 +1763,7 @@ Public Class Images
         imgResult = Nothing
 
         If Master.eSettings.MovieSetBannerPrefSize = Enums.MovieBannerSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult Is Nothing Then
@@ -1771,7 +1771,7 @@ Public Class Images
         End If
 
         If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetBannerPrefSizeOnly AndAlso Not Master.eSettings.MovieSetBannerPrefSize = Enums.MovieBannerSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult IsNot Nothing Then
@@ -1792,7 +1792,7 @@ Public Class Images
         imgResult = Nothing
 
         If Master.eSettings.MoviePosterPrefSize = Enums.MoviePosterSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult Is Nothing Then
@@ -1800,7 +1800,7 @@ Public Class Images
         End If
 
         If imgResult Is Nothing AndAlso Not Master.eSettings.MoviePosterPrefSizeOnly AndAlso Not Master.eSettings.MoviePosterPrefSize = Enums.MoviePosterSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult IsNot Nothing Then
@@ -1821,7 +1821,7 @@ Public Class Images
         imgResult = Nothing
 
         If Master.eSettings.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult Is Nothing Then
@@ -1829,7 +1829,7 @@ Public Class Images
         End If
 
         If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetPosterPrefSizeOnly AndAlso Not Master.eSettings.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult IsNot Nothing Then
@@ -1842,7 +1842,7 @@ Public Class Images
     Public Shared Function GetPreferredMovieClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -1854,7 +1854,7 @@ Public Class Images
     Public Shared Function GetPreferredMovieSetClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -1866,7 +1866,7 @@ Public Class Images
     Public Shared Function GetPreferredMovieClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -1878,7 +1878,7 @@ Public Class Images
     Public Shared Function GetPreferredMovieSetClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -1890,7 +1890,7 @@ Public Class Images
     Public Shared Function GetPreferredMovieDiscArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2046,7 +2046,7 @@ Public Class Images
     Public Shared Function GetPreferredMovieSetDiscArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2058,7 +2058,7 @@ Public Class Images
     Public Shared Function GetPreferredMovieLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2070,7 +2070,7 @@ Public Class Images
     Public Shared Function GetPreferredMovieSetLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2090,7 +2090,7 @@ Public Class Images
         imgResult = Nothing
 
         If Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult Is Nothing Then
@@ -2098,7 +2098,7 @@ Public Class Images
         End If
 
         If imgResult Is Nothing AndAlso Not Master.eSettings.MovieFanartPrefSizeOnly AndAlso Not Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult IsNot Nothing Then
@@ -2119,7 +2119,7 @@ Public Class Images
         imgResult = Nothing
 
         If Master.eSettings.MovieSetFanartPrefSize = Enums.MovieFanartSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult Is Nothing Then
@@ -2127,7 +2127,7 @@ Public Class Images
         End If
 
         If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetFanartPrefSizeOnly AndAlso Not Master.eSettings.MovieSetFanartPrefSize = Enums.MovieFanartSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult IsNot Nothing Then
@@ -2156,7 +2156,7 @@ Public Class Images
 
         If Not ShowImageList.Count = 0 Then
             If imgResult Is Nothing AndAlso Master.eSettings.TVAllSeasonsBannerPrefSize = Enums.TVBannerSize.Any Then
-                imgResult = ShowImageList.First
+                imgResult = ShowImageList.FirstOrDefault
             End If
 
             If imgResult Is Nothing Then
@@ -2164,7 +2164,7 @@ Public Class Images
             End If
 
             If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsBannerPrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsBannerPrefSize = Enums.TVBannerSize.Any Then
-                imgResult = ShowImageList.First
+                imgResult = ShowImageList.FirstOrDefault
             End If
         End If
 
@@ -2195,7 +2195,7 @@ Public Class Images
 
         If Not ShowImageList.Count = 0 Then
             If imgResult Is Nothing AndAlso Master.eSettings.TVAllSeasonsFanartPrefSize = Enums.TVPosterSize.Any Then
-                imgResult = ShowImageList.First
+                imgResult = ShowImageList.FirstOrDefault
             End If
 
             If imgResult Is Nothing Then
@@ -2203,7 +2203,7 @@ Public Class Images
             End If
 
             If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsFanartPrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsFanartPrefSize = Enums.TVFanartSize.Any Then
-                imgResult = ShowImageList.First
+                imgResult = ShowImageList.FirstOrDefault
             End If
         End If
 
@@ -2220,7 +2220,7 @@ Public Class Images
         imgResult = SeasonImageList.Find(Function(f) f.Season = -1)
 
         If imgResult Is Nothing Then
-            imgResult = ShowImageList.First
+            imgResult = ShowImageList.FirstOrDefault
         End If
 
         If imgResult IsNot Nothing Then
@@ -2249,7 +2249,7 @@ Public Class Images
 
         If Not ShowImageList.Count = 0 Then
             If imgResult Is Nothing AndAlso Master.eSettings.TVAllSeasonsPosterPrefSize = Enums.TVPosterSize.Any Then
-                imgResult = ShowImageList.First
+                imgResult = ShowImageList.FirstOrDefault
             End If
 
             If imgResult Is Nothing Then
@@ -2257,7 +2257,7 @@ Public Class Images
             End If
 
             If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsPosterPrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsPosterPrefSize = Enums.TVPosterSize.Any Then
-                imgResult = ShowImageList.First
+                imgResult = ShowImageList.FirstOrDefault
             End If
         End If
 
@@ -2287,7 +2287,7 @@ Public Class Images
 
         If Not ShowImageList.Count = 0 Then
             If imgResult Is Nothing AndAlso Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
-                imgResult = ShowImageList.First
+                imgResult = ShowImageList.FirstOrDefault
             End If
 
             If imgResult Is Nothing Then
@@ -2295,7 +2295,7 @@ Public Class Images
             End If
 
             If imgResult Is Nothing AndAlso Not Master.eSettings.TVEpisodeFanartPrefSizeOnly AndAlso Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
-                imgResult = ShowImageList.First
+                imgResult = ShowImageList.FirstOrDefault
             End If
         End If
 
@@ -2375,7 +2375,7 @@ Public Class Images
 
         If Not ShowImageList.Count = 0 Then
             If imgResult Is Nothing AndAlso Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
-                imgResult = ShowImageList.First
+                imgResult = ShowImageList.FirstOrDefault
             End If
 
             If imgResult Is Nothing Then
@@ -2383,7 +2383,7 @@ Public Class Images
             End If
 
             If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonFanartPrefSizeOnly AndAlso Not Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
-                imgResult = ShowImageList.First
+                imgResult = ShowImageList.FirstOrDefault
             End If
         End If
 
@@ -2438,7 +2438,7 @@ Public Class Images
         If ImageList.Count = 0 Then Return False
 
         If Master.eSettings.TVShowBannerPrefSize = Enums.TVBannerSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult Is Nothing Then
@@ -2446,7 +2446,7 @@ Public Class Images
         End If
 
         If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowBannerPrefSizeOnly AndAlso Not Master.eSettings.TVShowBannerPrefSize = Enums.TVBannerSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult IsNot Nothing Then
@@ -2459,7 +2459,7 @@ Public Class Images
     Public Shared Function GetPreferredTVShowCharacterArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2471,7 +2471,7 @@ Public Class Images
     Public Shared Function GetPreferredTVShowClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2483,7 +2483,7 @@ Public Class Images
     Public Shared Function GetPreferredTVShowClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2557,7 +2557,7 @@ Public Class Images
         If ImageList.Count = 0 Then Return False
 
         If Master.eSettings.TVShowFanartPrefSize = Enums.TVFanartSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult Is Nothing Then
@@ -2565,7 +2565,7 @@ Public Class Images
         End If
 
         If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowFanartPrefSizeOnly AndAlso Not Master.eSettings.TVShowFanartPrefSize = Enums.TVFanartSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult IsNot Nothing Then
@@ -2578,7 +2578,7 @@ Public Class Images
     Public Shared Function GetPreferredTVShowLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        imgResult = ImageList.FirstOrDefault
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2597,7 +2597,7 @@ Public Class Images
         If ImageList.Count = 0 Then Return False
 
         If Master.eSettings.TVShowPosterPrefSize = Enums.TVPosterSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult Is Nothing Then
@@ -2605,7 +2605,7 @@ Public Class Images
         End If
 
         If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowPosterPrefSizeOnly AndAlso Not Master.eSettings.TVShowPosterPrefSize = Enums.TVPosterSize.Any Then
-            imgResult = ImageList.First
+            imgResult = ImageList.FirstOrDefault
         End If
 
         If imgResult IsNot Nothing Then
