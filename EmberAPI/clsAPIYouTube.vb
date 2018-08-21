@@ -715,6 +715,7 @@ Namespace YouTube
                     properties(entry(0).ToLower()).SetValue(info, Convert.ChangeType(entry(1), properties(entry(0).ToLower()).PropertyType))
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
+                    logger.Error(String.Format("Tkey: ""{0}"", key: ""{1}""", entry(0), entry(1)))
                 End Try
             Next
 
