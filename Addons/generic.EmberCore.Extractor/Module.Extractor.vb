@@ -169,14 +169,6 @@ Public Class FrameExtrator
         RaiseEvent ModuleEnabledChanged(_name, state, difforder)
     End Sub
 
-    Public Shared Function GetFFMpeg() As String
-        If Master.isWindows Then
-            Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-        Else
-            Return "ffmpeg"
-        End If
-    End Function
-
 #End Region 'Methods
 
 End Class

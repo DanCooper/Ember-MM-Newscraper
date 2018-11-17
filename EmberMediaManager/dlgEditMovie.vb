@@ -356,18 +356,10 @@ Public Class dlgEditMovie
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
-                If Master.isWindows Then
-                    If Regex.IsMatch(tPath, "plugin:\/\/plugin\.video\.youtube\/\?action=play_video&videoid=") Then
-                        tPath = tPath.Replace("plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")
-                    End If
-                    Process.Start(tPath)
-                Else
-                    Using Explorer As New Process
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = tPath
-                        Explorer.Start()
-                    End Using
+                If Regex.IsMatch(tPath, "plugin:\/\/plugin\.video\.youtube\/\?action=play_video&videoid=") Then
+                    tPath = tPath.Replace("plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")
                 End If
+                Process.Start(tPath)
             End If
 
         Catch
@@ -386,15 +378,7 @@ Public Class dlgEditMovie
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
-                If Master.isWindows Then
-                    Process.Start(tPath)
-                Else
-                    Using Explorer As New Process
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = tPath
-                        Explorer.Start()
-                    End Using
-                End If
+                Process.Start(tPath)
             End If
 
         Catch
@@ -2714,15 +2698,7 @@ Public Class dlgEditMovie
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
-                If Master.isWindows Then
-                    Process.Start(tPath)
-                Else
-                    Using Explorer As New Process
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = tPath
-                        Explorer.Start()
-                    End Using
-                End If
+                Process.Start(tPath)
             End If
         Catch
             MessageBox.Show(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -2738,15 +2714,7 @@ Public Class dlgEditMovie
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
-                If Master.isWindows Then
-                    Process.Start(tPath)
-                Else
-                    Using Explorer As New Process
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = tPath
-                        Explorer.Start()
-                    End Using
-                End If
+                Process.Start(tPath)
             End If
         Catch
             MessageBox.Show(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Warning)

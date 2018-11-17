@@ -128,15 +128,9 @@ Public Class dlgSearchResults_TV
         If Not String.IsNullOrEmpty(txtFileName.Text) Then
             Dim fPath As String = Directory.GetParent(txtFileName.Text).FullName
             If Not String.IsNullOrEmpty(fPath) Then
-                Using Explorer As New Diagnostics.Process
-
-                    If Master.isWindows Then
-                        Explorer.StartInfo.FileName = "explorer.exe"
-                        Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", fPath)
-                    Else
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = String.Format("""{0}""", fPath)
-                    End If
+                Using Explorer As New Process
+                    Explorer.StartInfo.FileName = "explorer.exe"
+                    Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", fPath)
                     Explorer.Start()
                 End Using
             End If

@@ -87,7 +87,7 @@ Public Class frmTVExtrator
         Try
             Using ffmpeg As New Process()
 
-                ffmpeg.StartInfo.FileName = FrameExtrator.GetFFMpeg
+                ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
                 ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", _strFilename, Path.Combine(Master.TempPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
