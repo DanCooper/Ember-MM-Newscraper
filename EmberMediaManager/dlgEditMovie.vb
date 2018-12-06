@@ -41,7 +41,6 @@ Public Class dlgEditMovie
     Private lvwActorSorter As ListViewColumnSorter
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
-    Private tmpRating As String = String.Empty
     Private AnyThemePlayerEnabled As Boolean = False
     Private AnyTrailerPlayerEnabled As Boolean = False
 
@@ -1154,247 +1153,6 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub BuildStars(ByVal sinRating As Single)
-        'f'in MS and them leaving control arrays out of VB.NET
-        With Me
-            .pbStar1.Image = Nothing
-            .pbStar2.Image = Nothing
-            .pbStar3.Image = Nothing
-            .pbStar4.Image = Nothing
-            .pbStar5.Image = Nothing
-            .pbStar6.Image = Nothing
-            .pbStar7.Image = Nothing
-            .pbStar8.Image = Nothing
-            .pbStar9.Image = Nothing
-            .pbStar10.Image = Nothing
-
-            If sinRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
-                Select Case (sinRating)
-                    Case Is <= 0.5
-                        .pbStar1.Image = My.Resources.starhalf
-                        .pbStar2.Image = My.Resources.starempty
-                        .pbStar3.Image = My.Resources.starempty
-                        .pbStar4.Image = My.Resources.starempty
-                        .pbStar5.Image = My.Resources.starempty
-                        .pbStar6.Image = My.Resources.starempty
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 1
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.starempty
-                        .pbStar3.Image = My.Resources.starempty
-                        .pbStar4.Image = My.Resources.starempty
-                        .pbStar5.Image = My.Resources.starempty
-                        .pbStar6.Image = My.Resources.starempty
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 1.5
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.starhalf
-                        .pbStar3.Image = My.Resources.starempty
-                        .pbStar4.Image = My.Resources.starempty
-                        .pbStar5.Image = My.Resources.starempty
-                        .pbStar6.Image = My.Resources.starempty
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 2
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.starempty
-                        .pbStar4.Image = My.Resources.starempty
-                        .pbStar5.Image = My.Resources.starempty
-                        .pbStar6.Image = My.Resources.starempty
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 2.5
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.starhalf
-                        .pbStar4.Image = My.Resources.starempty
-                        .pbStar5.Image = My.Resources.starempty
-                        .pbStar6.Image = My.Resources.starempty
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 3
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.starempty
-                        .pbStar5.Image = My.Resources.starempty
-                        .pbStar6.Image = My.Resources.starempty
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 3.5
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.starhalf
-                        .pbStar5.Image = My.Resources.starempty
-                        .pbStar6.Image = My.Resources.starempty
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 4
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.starempty
-                        .pbStar6.Image = My.Resources.starempty
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 4.5
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.starhalf
-                        .pbStar6.Image = My.Resources.starempty
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 5
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.starempty
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 5.5
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.starhalf
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 6
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.star
-                        .pbStar7.Image = My.Resources.starempty
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 6.5
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.star
-                        .pbStar7.Image = My.Resources.starhalf
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 7
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.star
-                        .pbStar7.Image = My.Resources.star
-                        .pbStar8.Image = My.Resources.starempty
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 7.5
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.star
-                        .pbStar7.Image = My.Resources.star
-                        .pbStar8.Image = My.Resources.starhalf
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 8
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.star
-                        .pbStar7.Image = My.Resources.star
-                        .pbStar8.Image = My.Resources.star
-                        .pbStar9.Image = My.Resources.starempty
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 8.5
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.star
-                        .pbStar7.Image = My.Resources.star
-                        .pbStar8.Image = My.Resources.star
-                        .pbStar9.Image = My.Resources.starhalf
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 9
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.star
-                        .pbStar7.Image = My.Resources.star
-                        .pbStar8.Image = My.Resources.star
-                        .pbStar9.Image = My.Resources.star
-                        .pbStar10.Image = My.Resources.starempty
-                    Case Is <= 9.5
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.star
-                        .pbStar7.Image = My.Resources.star
-                        .pbStar8.Image = My.Resources.star
-                        .pbStar9.Image = My.Resources.star
-                        .pbStar10.Image = My.Resources.starhalf
-                    Case Else
-                        .pbStar1.Image = My.Resources.star
-                        .pbStar2.Image = My.Resources.star
-                        .pbStar3.Image = My.Resources.star
-                        .pbStar4.Image = My.Resources.star
-                        .pbStar5.Image = My.Resources.star
-                        .pbStar6.Image = My.Resources.star
-                        .pbStar7.Image = My.Resources.star
-                        .pbStar8.Image = My.Resources.star
-                        .pbStar9.Image = My.Resources.star
-                        .pbStar10.Image = My.Resources.star
-                End Select
-            End If
-        End With
-    End Sub
-
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         ThemeStop()
         TrailerStop()
@@ -1462,13 +1220,6 @@ Public Class dlgEditMovie
         LoadGenres()
         LoadRatings()
 
-        Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True, tmpDBElement)
-        pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
-        If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
-            tcEdit.TabPages.Remove(tpFrameExtraction)
-        End If
-
         Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
         pnlThemePreview.Controls.Add(DirectCast(paramsThemePreview(0), Panel))
@@ -1513,11 +1264,7 @@ Public Class dlgEditMovie
         End If
 
         chkMark.Checked = tmpDBElement.IsMarked
-        If tmpDBElement.Movie.PlayCountSpecified Then
-            chkWatched.Checked = True
-        Else
-            chkWatched.Checked = False
-        End If
+        chkWatched.Checked = tmpDBElement.Movie.PlayCountSpecified
 
         txtCerts.Text = String.Join(" / ", tmpDBElement.Movie.Certifications.ToArray)
         txtCountries.Text = String.Join(" / ", tmpDBElement.Movie.Countries.ToArray)
@@ -1538,13 +1285,13 @@ Public Class dlgEditMovie
         txtVotes.Text = tmpDBElement.Movie.Votes
         txtYear.Text = tmpDBElement.Movie.Year.ToString
 
-        If Not String.IsNullOrEmpty(tmpDBElement.Movie.LastPlayed) Then
+        If tmpDBElement.Movie.LastPlayedSpecified Then
             Dim timecode As Double = 0
             Double.TryParse(tmpDBElement.Movie.LastPlayed, timecode)
             If timecode > 0 Then
-                txtLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
+                dtpLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
             Else
-                txtLastPlayed.Text = tmpDBElement.Movie.LastPlayed
+                dtpLastPlayed.Text = tmpDBElement.Movie.LastPlayed
             End If
         End If
 
@@ -1599,20 +1346,6 @@ Public Class dlgEditMovie
                 tmpDBElement.VideoSource = tmpDBElement.Movie.VideoSource
             End If
         End If
-
-        Dim tRating As Single = NumUtils.ConvertToSingle(tmpDBElement.Movie.Rating)
-        tmpRating = tRating.ToString
-        pbStar1.Tag = tRating
-        pbStar2.Tag = tRating
-        pbStar3.Tag = tRating
-        pbStar4.Tag = tRating
-        pbStar5.Tag = tRating
-        pbStar6.Tag = tRating
-        pbStar7.Tag = tRating
-        pbStar8.Tag = tRating
-        pbStar9.Tag = tRating
-        pbStar10.Tag = tRating
-        If tRating > 0 Then BuildStars(tRating)
 
         If DoAll Then
             Dim pExt As String = Path.GetExtension(tmpDBElement.FileItem.FirstStackedPath).ToLower
@@ -1876,7 +1609,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Banner = tImage
             pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
@@ -1895,7 +1628,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearArt.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.ClearArt = tImage
             pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
@@ -1914,7 +1647,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.ClearLogo = tImage
             pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
@@ -1933,7 +1666,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbDiscArt.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.DiscArt = tImage
             pbDiscArt.Image = tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
@@ -1952,7 +1685,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Fanart = tImage
             pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -1971,7 +1704,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbLandscape.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Landscape = tImage
             pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
@@ -1990,7 +1723,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Poster = tImage
             pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
@@ -2005,206 +1738,6 @@ Public Class dlgEditMovie
             e.Effect = DragDropEffects.Copy
         Else
             e.Effect = DragDropEffects.None
-        End If
-    End Sub
-
-    Private Sub pbStar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar1.Click
-        tmpRating = pbStar1.Tag.ToString
-    End Sub
-
-    Private Sub pbStar1_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar1.MouseLeave
-        Dim tmpDBL As Single = 0
-        Single.TryParse(tmpRating, tmpDBL)
-        BuildStars(tmpDBL)
-    End Sub
-
-    Private Sub pbStar1_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar1.MouseMove
-        If e.X < 12 Then
-            pbStar1.Tag = 0.5
-            BuildStars(0.5)
-        Else
-            pbStar1.Tag = 1
-            BuildStars(1)
-        End If
-    End Sub
-
-    Private Sub pbStar2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar2.Click
-        tmpRating = pbStar2.Tag.ToString
-    End Sub
-
-    Private Sub pbStar2_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar2.MouseLeave
-        Dim tmpDBL As Single = 0
-        Single.TryParse(tmpRating, tmpDBL)
-        BuildStars(tmpDBL)
-    End Sub
-
-    Private Sub pbStar2_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar2.MouseMove
-        If e.X < 12 Then
-            pbStar2.Tag = 1.5
-            BuildStars(1.5)
-        Else
-            pbStar2.Tag = 2
-            BuildStars(2)
-        End If
-    End Sub
-
-    Private Sub pbStar3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar3.Click
-        tmpRating = pbStar3.Tag.ToString
-    End Sub
-
-    Private Sub pbStar3_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar3.MouseLeave
-        Dim tmpDBL As Single = 0
-        Single.TryParse(tmpRating, tmpDBL)
-        BuildStars(tmpDBL)
-    End Sub
-
-    Private Sub pbStar3_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar3.MouseMove
-        If e.X < 12 Then
-            pbStar3.Tag = 2.5
-            BuildStars(2.5)
-        Else
-            pbStar3.Tag = 3
-            BuildStars(3)
-        End If
-    End Sub
-
-    Private Sub pbStar4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar4.Click
-        tmpRating = pbStar4.Tag.ToString
-    End Sub
-
-    Private Sub pbStar4_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar4.MouseLeave
-        Dim tmpDBL As Single = 0
-        Single.TryParse(tmpRating, tmpDBL)
-        BuildStars(tmpDBL)
-    End Sub
-
-    Private Sub pbStar4_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar4.MouseMove
-        If e.X < 12 Then
-            pbStar4.Tag = 3.5
-            BuildStars(3.5)
-        Else
-            pbStar4.Tag = 4
-            BuildStars(4)
-        End If
-    End Sub
-
-    Private Sub pbStar5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar5.Click
-        tmpRating = pbStar5.Tag.ToString
-    End Sub
-
-    Private Sub pbStar5_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar5.MouseLeave
-        Dim tmpDBL As Single = 0
-        Single.TryParse(tmpRating, tmpDBL)
-        BuildStars(tmpDBL)
-    End Sub
-
-    Private Sub pbStar5_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar5.MouseMove
-        If e.X < 12 Then
-            pbStar5.Tag = 4.5
-            BuildStars(4.5)
-        Else
-            pbStar5.Tag = 5
-            BuildStars(5)
-        End If
-    End Sub
-
-    Private Sub pbStar6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar6.Click
-        tmpRating = pbStar6.Tag.ToString
-    End Sub
-
-    Private Sub pbStar6_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar6.MouseLeave
-        Dim tmpDBL As Single = 0
-        Single.TryParse(tmpRating, tmpDBL)
-        BuildStars(tmpDBL)
-    End Sub
-
-    Private Sub pbStar6_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar6.MouseMove
-        If e.X < 12 Then
-            pbStar6.Tag = 5.5
-            BuildStars(5.5)
-        Else
-            pbStar6.Tag = 6
-            BuildStars(6)
-        End If
-    End Sub
-
-    Private Sub pbStar7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar7.Click
-        tmpRating = pbStar7.Tag.ToString
-    End Sub
-
-    Private Sub pbStar7_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar7.MouseLeave
-        Dim tmpDBL As Single = 0
-        Single.TryParse(tmpRating, tmpDBL)
-        BuildStars(tmpDBL)
-    End Sub
-
-    Private Sub pbStar7_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar7.MouseMove
-        If e.X < 12 Then
-            pbStar7.Tag = 6.5
-            BuildStars(6.5)
-        Else
-            pbStar7.Tag = 7
-            BuildStars(7)
-        End If
-    End Sub
-
-    Private Sub pbStar8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar8.Click
-        tmpRating = pbStar8.Tag.ToString
-    End Sub
-
-    Private Sub pbStar8_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar8.MouseLeave
-        Dim tmpDBL As Single = 0
-        Single.TryParse(tmpRating, tmpDBL)
-        BuildStars(tmpDBL)
-    End Sub
-
-    Private Sub pbStar8_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar8.MouseMove
-        If e.X < 12 Then
-            pbStar8.Tag = 7.5
-            BuildStars(7.5)
-        Else
-            pbStar8.Tag = 8
-            BuildStars(8)
-        End If
-    End Sub
-
-    Private Sub pbStar9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar9.Click
-        tmpRating = pbStar9.Tag.ToString
-    End Sub
-
-    Private Sub pbStar9_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar9.MouseLeave
-        Dim tmpDBL As Single = 0
-        Single.TryParse(tmpRating, tmpDBL)
-        BuildStars(tmpDBL)
-    End Sub
-
-    Private Sub pbStar9_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar9.MouseMove
-        If e.X < 12 Then
-            pbStar9.Tag = 8.5
-            BuildStars(8.5)
-        Else
-            pbStar9.Tag = 9
-            BuildStars(9)
-        End If
-    End Sub
-
-    Private Sub pbStar10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar10.Click
-        tmpRating = pbStar10.Tag.ToString
-    End Sub
-
-    Private Sub pbStar10_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar10.MouseLeave
-        Dim tmpDBL As Single = 0
-        Single.TryParse(tmpRating, tmpDBL)
-        BuildStars(tmpDBL)
-    End Sub
-
-    Private Sub pbStar10_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar10.MouseMove
-        If e.X < 12 Then
-            pbStar10.Tag = 9.5
-            BuildStars(9.5)
-        Else
-            pbStar10.Tag = 10
-            BuildStars(10)
         End If
     End Sub
 
@@ -2323,12 +1856,6 @@ Public Class dlgEditMovie
         tmpDBElement.Movie.UserRating = If(Integer.TryParse(txtUserRating.Text.Trim, 0), CInt(txtUserRating.Text.Trim), 0)
         tmpDBElement.ListTitle = StringUtils.ListTitle_Movie(txtTitle.Text, txtYear.Text)
 
-        If Not tmpRating.Trim = String.Empty AndAlso tmpRating.Trim <> "0" Then
-            tmpDBElement.Movie.Rating = tmpRating
-        Else
-            tmpDBElement.Movie.Rating = String.Empty
-        End If
-
         'cocotus, 2013/02 Playcount/Watched state support added
         'if watched-checkbox is checked -> save Playcount=1 in nfo
         If chkWatched.Checked Then
@@ -2408,7 +1935,7 @@ Public Class dlgEditMovie
         btnSetThemeDL.Text = strDownload
         btnSetTrailerDL.Text = strDownload
 
-        'Loacal Browse
+        'Local Browse
         Dim strLocalBrowse As String = Master.eLang.GetString(78, "Local Browse")
         btnSetBannerLocal.Text = strLocalBrowse
         btnSetClearArtLocal.Text = strLocalBrowse
@@ -2503,6 +2030,12 @@ Public Class dlgEditMovie
         tpMetaData.Text = Master.eLang.GetString(866, "Metadata")
         tpPoster.Text = Master.eLang.GetString(148, "Poster")
 
+        btnFrameSaveAsExtrafanart.Text = Master.eLang.GetString(1050, "Save as Extrafanart")
+        btnFrameSaveAsExtrathumb.Text = Master.eLang.GetString(305, "Save as Extrathumb")
+        btnFrameSaveAsFanart.Text = Master.eLang.GetString(1049, "Save as Fanart")
+        lblExtractingFrame.Text = Master.eLang.GetString(306, "Extracting Frame...")
+        btnFrameLoad.Text = Master.eLang.GetString(307, "Load Video")
+
         cbSourceLanguage.Items.Clear()
         cbSourceLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
     End Sub
@@ -2522,37 +2055,6 @@ Public Class dlgEditMovie
             btnPlayTrailer.Enabled = True
         Else
             btnPlayTrailer.Enabled = False
-        End If
-    End Sub
-
-    Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If mType = Enums.ModuleEventType.FrameExtrator_Movie AndAlso _params IsNot Nothing Then
-            If _params(0).ToString = "FanartToSave" Then
-                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromFile(Path.Combine(Master.TempPath, "frame.jpg"), True)
-                If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                    pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                    pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
-
-                    lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
-                    lblFanartSize.Visible = True
-                End If
-            ElseIf _params(0).ToString = "ExtrafanartToSave" Then
-                Dim fPath As String = _params(1).ToString
-                If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                    Dim eImg As New MediaContainers.Image
-                    eImg.ImageOriginal.LoadFromFile(fPath, True)
-                    tmpDBElement.ImagesContainer.Extrafanarts.Add(eImg)
-                    RefreshExtrafanarts()
-                End If
-            ElseIf _params(0).ToString = "ExtrathumbToSave" Then
-                Dim fPath As String = _params(1).ToString
-                If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                    Dim eImg As New MediaContainers.Image
-                    eImg.ImageOriginal.LoadFromFile(fPath, True)
-                    tmpDBElement.ImagesContainer.Extrathumbs.Add(eImg)
-                    RefreshExtrathumbs()
-                End If
-            End If
         End If
     End Sub
 
@@ -2742,6 +2244,105 @@ Public Class dlgEditMovie
                     txtUserRating.Select(txtUserRating.Text.Length, 0)
                 End If
             End If
+        End If
+    End Sub
+
+    Private Sub btnFrameLoad_Click(sender As Object, e As EventArgs) Handles btnFrameLoad.Click
+        Dim nFrame = FFmpeg.FFmpeg.ExtractThumbnail(tmpDBElement.FileItem.FirstStackedPath, 0, True)
+        If nFrame IsNot Nothing AndAlso nFrame.Duration > 0 AndAlso nFrame.Image IsNot Nothing AndAlso nFrame.Image.ImageOriginal IsNot Nothing Then
+            tbFrame.Maximum = nFrame.Duration
+            tbFrame.Value = 0
+            tbFrame.Enabled = True
+            pbFrame.Image = nFrame.Image.ImageOriginal.Image
+            pbFrame.Tag = nFrame.Image
+            btnFrameLoad.Enabled = False
+            btnFrameSaveAsExtrafanart.Enabled = True
+            btnFrameSaveAsExtrathumb.Enabled = True
+            btnFrameSaveAsFanart.Enabled = True
+        Else
+            tbFrame.Maximum = 0
+            tbFrame.Value = 0
+            tbFrame.Enabled = False
+            pbFrame.Image = Nothing
+            pbFrame.Tag = Nothing
+        End If
+    End Sub
+
+    Private Sub FrameChange() Handles tbFrame.KeyUp, tbFrame.MouseUp
+        If tbFrame.Value <> PreviousFrameValue Then
+            GrabTheFrame()
+        End If
+    End Sub
+
+    Private Sub tbFrame_Scroll(sender As Object, e As EventArgs) Handles tbFrame.Scroll
+        Dim sec2Time As New TimeSpan(0, 0, tbFrame.Value)
+        lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
+    End Sub
+
+    Private Sub GrabTheFrame()
+        tbFrame.Enabled = False
+        pnlFrameProgress.Visible = True
+        btnFrameSaveAsExtrafanart.Enabled = False
+        btnFrameSaveAsExtrathumb.Enabled = False
+        btnFrameSaveAsFanart.Enabled = False
+
+        Dim nFrame = FFmpeg.FFmpeg.ExtractThumbnail(tmpDBElement.FileItem.FirstStackedPath, tbFrame.Value, True)
+
+        If nFrame IsNot Nothing AndAlso nFrame.Image IsNot Nothing AndAlso nFrame.Image.ImageOriginal.Image IsNot Nothing Then
+            pbFrame.Image = nFrame.Image.ImageOriginal.Image
+            pbFrame.Tag = nFrame.Image
+            tbFrame.Enabled = True
+            btnFrameSaveAsExtrafanart.Enabled = True
+            btnFrameSaveAsExtrathumb.Enabled = True
+            btnFrameSaveAsFanart.Enabled = True
+            pnlFrameProgress.Visible = False
+            PreviousFrameValue = tbFrame.Value
+        Else
+            lblTime.Text = String.Empty
+            tbFrame.Maximum = 0
+            tbFrame.Value = 0
+            tbFrame.Enabled = False
+            btnFrameSaveAsExtrafanart.Enabled = False
+            btnFrameSaveAsExtrathumb.Enabled = False
+            btnFrameSaveAsFanart.Enabled = False
+            btnFrameLoad.Enabled = True
+            pbFrame.Image = Nothing
+            pbFrame.Tag = Nothing
+            pnlFrameProgress.Visible = False
+            PreviousFrameValue = tbFrame.Value
+        End If
+
+        tbFrame.Focus()
+    End Sub
+
+    Private Sub btnFrameSaveAsFanart_Click(sender As Object, e As EventArgs) Handles btnFrameSaveAsFanart.Click
+        If pbFrame.Image IsNot Nothing AndAlso pbFrame.Tag IsNot Nothing Then
+            tmpDBElement.ImagesContainer.Fanart = DirectCast(pbFrame.Tag, MediaContainers.Image)
+            If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+                pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
+
+                lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+                lblFanartSize.Visible = True
+            End If
+            btnFrameSaveAsFanart.Enabled = False
+        End If
+    End Sub
+
+    Private Sub btnFrameSaveAsExtrafanart_Click(sender As Object, e As EventArgs) Handles btnFrameSaveAsExtrafanart.Click
+        If pbFrame.Image IsNot Nothing AndAlso pbFrame.Tag IsNot Nothing Then
+            tmpDBElement.ImagesContainer.Extrafanarts.Add(DirectCast(pbFrame.Tag, MediaContainers.Image))
+            RefreshExtrafanarts()
+            btnFrameSaveAsExtrafanart.Enabled = False
+        End If
+    End Sub
+
+    Private Sub btnFrameSaveAsExtrathumb_Click(sender As Object, e As EventArgs) Handles btnFrameSaveAsExtrathumb.Click
+        If pbFrame.Image IsNot Nothing AndAlso pbFrame.Tag IsNot Nothing Then
+            tmpDBElement.ImagesContainer.Extrathumbs.Add(DirectCast(pbFrame.Tag, MediaContainers.Image))
+            tmpDBElement.ImagesContainer.Extrathumbs.Last.Index = tmpDBElement.ImagesContainer.Extrathumbs.Count - 1
+            RefreshExtrathumbs()
+            btnFrameSaveAsExtrathumb.Enabled = False
         End If
     End Sub
 

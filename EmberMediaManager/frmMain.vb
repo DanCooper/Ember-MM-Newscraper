@@ -1374,7 +1374,7 @@ Public Class frmMain
                             End Using
                         Else
                             'autoscraping
-                            Images.SetPreferredImages(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifiers, IsAutoScraper:=True)
+                            Images.SetPreferredImages(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
                         End If
                     End If
                 End If
@@ -1585,7 +1585,7 @@ Public Class frmMain
                             End Using
                         Else
                             'autoscraping
-                            Images.SetPreferredImages(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifiers, IsAutoScraper:=True)
+                            Images.SetPreferredImages(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
                         End If
                     End If
                 End If
@@ -1729,7 +1729,7 @@ Public Class frmMain
                         End Using
                     Else
                         'autoscraping
-                        Images.SetPreferredImages(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifiers, IsAutoScraper:=True)
+                        Images.SetPreferredImages(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
                     End If
                 End If
 
@@ -1908,7 +1908,7 @@ Public Class frmMain
                             End Using
                         Else
                             'autoscraping
-                            Images.SetPreferredImages(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifiers, IsAutoScraper:=True)
+                            Images.SetPreferredImages(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
                         End If
                     End If
                 End If
@@ -2044,7 +2044,7 @@ Public Class frmMain
                             End Using
                         Else
                             'autoscraping
-                            Images.SetPreferredImages(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifiers, IsAutoScraper:=True)
+                            Images.SetPreferredImages(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
                         End If
                     End If
                 End If
@@ -5968,7 +5968,6 @@ Public Class frmMain
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBMovie, True) Then
             Using dEditMovie As New dlgEditMovie
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBMovie)
-                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog(DBMovie)
                     Case DialogResult.OK
                         DBMovie = dEditMovie.Result
@@ -5988,7 +5987,6 @@ Public Class frmMain
                     Case Else
                         If InfoCleared Then LoadInfo_Movie(DBMovie.ID)
                 End Select
-                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         End If
         SetControlsEnabled(True)
@@ -5999,7 +5997,6 @@ Public Class frmMain
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovieSet, True) Then
         Using dEditMovieSet As New dlgEditMovieSet
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
-            'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             Select Case dEditMovieSet.ShowDialog(DBMovieSet)
                 Case DialogResult.OK
                     DBMovieSet = dEditMovieSet.Result
@@ -6019,7 +6016,6 @@ Public Class frmMain
                 Case Else
                     If InfoCleared Then LoadInfo_MovieSet(DBMovieSet.ID)
             End Select
-            'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
         End Using
         'End If
         SetControlsEnabled(True)
@@ -6030,7 +6026,6 @@ Public Class frmMain
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVEpisode, True) Then
             Using dEditTVEpisode As New dlgEditTVEpisode
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
-                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVEpisode.GenericRunCallBack
                 Select Case dEditTVEpisode.ShowDialog(DBTVEpisode)
                     Case DialogResult.OK
                         DBTVEpisode = dEditTVEpisode.Result
@@ -6041,7 +6036,6 @@ Public Class frmMain
                     Case Else
                         If InfoCleared Then LoadInfo_TVEpisode(DBTVEpisode.ID)
                 End Select
-                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVEpisode.GenericRunCallBack
             End Using
         End If
         SetControlsEnabled(True)
@@ -6052,7 +6046,6 @@ Public Class frmMain
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVSeason, True) Then
             Using dEditTVSeason As New dlgEditTVSeason
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
-                'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVSeason.GenericRunCallBack
                 Select Case dEditTVSeason.ShowDialog(DBTVSeason)
                     Case DialogResult.OK
                         DBTVSeason = dEditTVSeason.Result
@@ -6063,7 +6056,6 @@ Public Class frmMain
                     Case Else
                         'If Me.InfoCleared Then Me.LoadInfo_TVSeason(CInt(DBTVSeason.ID)) 'TODO: 
                 End Select
-                'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVSeason.GenericRunCallBack
             End Using
         End If
         SetControlsEnabled(True)
@@ -9718,7 +9710,7 @@ Public Class frmMain
                     mnuScrapeModifierDiscArt.Visible = True
                     mnuScrapeModifierExtrafanarts.Enabled = .MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts)
                     mnuScrapeModifierExtrafanarts.Visible = True
-                    mnuScrapeModifierExtrathumbs.Enabled = .MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs)
+                    mnuScrapeModifierExtrathumbs.Enabled = .MovieExtrathumbsAnyEnabled AndAlso (Master.eSettings.MovieExtrathumbsCreatorAutoThumbs OrElse Master.eSettings.MovieExtrathumbsCreatorUseETasFA OrElse ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs))
                     mnuScrapeModifierExtrathumbs.Visible = True
                     mnuScrapeModifierFanart.Enabled = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     mnuScrapeModifierFanart.Visible = True
@@ -10245,7 +10237,7 @@ Public Class frmMain
         Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
         Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
         Dim ExtrafanartsAllowed As Boolean = Master.eSettings.MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim ExtrathumbsAllowed As Boolean = Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        Dim ExtrathumbsAllowed As Boolean = Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso (Master.eSettings.MovieExtrathumbsCreatorAutoThumbs OrElse Master.eSettings.MovieExtrathumbsCreatorUseETasFA OrElse ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart))
         Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
         Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
         Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)

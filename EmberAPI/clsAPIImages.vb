@@ -120,7 +120,9 @@ Public Class Images
     ''' <param name="DBMovie"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_Movie(ByVal DBMovie As Database.DBElement, ByVal ImageType As Enums.ModifierType, ByVal ForceFileCleanup As Boolean)
+    Public Shared Sub Delete_Movie(ByVal DBMovie As Database.DBElement,
+                                   ByVal ImageType As Enums.ModifierType,
+                                   ByVal ForceFileCleanup As Boolean)
         If Not DBMovie.FileItemSpecified Then Return
 
         Try
@@ -151,7 +153,9 @@ Public Class Images
     ''' <param name="DBMovieSet"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ImageType As Enums.ModifierType, Optional ByVal bForceOldTitle As Boolean = False)
+    Public Shared Sub Delete_MovieSet(ByVal DBMovieSet As Database.DBElement,
+                                      ByVal ImageType As Enums.ModifierType,
+                                      Optional ByVal bForceOldTitle As Boolean = False)
         If Not DBMovieSet.MovieSet.TitleSpecified Then Return
 
         Try
@@ -408,8 +412,8 @@ Public Class Images
     Public Function Save_Movie(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = False
-        Dim bResizeEnabled As Boolean = False
+        Dim doResize As Boolean
+        Dim bResizeEnabled As Boolean
         Dim intHeight As Integer = -1
         Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
@@ -482,8 +486,8 @@ Public Class Images
     Public Function Save_MovieSet(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = False
-        Dim bResizeEnabled As Boolean = False
+        Dim doResize As Boolean
+        Dim bResizeEnabled As Boolean
         Dim intHeight As Integer = -1
         Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
@@ -541,8 +545,8 @@ Public Class Images
     Public Function Save_TVAllSeasons(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = False
-        Dim bResizeEnabled As Boolean = False
+        Dim doResize As Boolean
+        Dim bResizeEnabled As Boolean
         Dim intHeight As Integer = -1
         Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
@@ -600,8 +604,8 @@ Public Class Images
     Public Function Save_TVEpisode(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = False
-        Dim bResizeEnabled As Boolean = False
+        Dim doResize As Boolean
+        Dim bResizeEnabled As Boolean
         Dim intHeight As Integer = -1
         Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
@@ -654,8 +658,8 @@ Public Class Images
     Public Function Save_TVSeason(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = False
-        Dim bResizeEnabled As Boolean = False
+        Dim doResize As Boolean
+        Dim bResizeEnabled As Boolean
         Dim intHeight As Integer = -1
         Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
@@ -713,8 +717,8 @@ Public Class Images
     Public Function Save_TVShow(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = False
-        Dim bResizeEnabled As Boolean = False
+        Dim doResize As Boolean
+        Dim bResizeEnabled As Boolean
         Dim intHeight As Integer = -1
         Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
@@ -846,7 +850,7 @@ Public Class Images
 
         If Not mMovie.FileItemSpecified Then Return String.Empty
 
-        Dim doResize As Boolean = False
+        Dim doResize As Boolean
         If Master.eSettings.MovieExtrafanartsResize Then
             If _image Is Nothing Then LoadFromMemoryStream()
             doResize = _image.Width > Master.eSettings.MovieExtrafanartsWidth OrElse _image.Height > Master.eSettings.MovieExtrafanartsHeight
@@ -924,7 +928,7 @@ Public Class Images
 
         If Not mMovie.FileItemSpecified Then Return String.Empty
 
-        Dim doResize As Boolean = False
+        Dim doResize As Boolean
         If Master.eSettings.MovieExtrathumbsResize Then
             If _image Is Nothing Then LoadFromMemoryStream()
             doResize = _image.Width > Master.eSettings.MovieExtrathumbsWidth OrElse _image.Height > Master.eSettings.MovieExtrathumbsHeight
@@ -1066,7 +1070,7 @@ Public Class Images
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return efPath
 
-        Dim doResize As Boolean = False
+        Dim doResize As Boolean
         If Master.eSettings.TVShowExtrafanartsResize Then
             If _image Is Nothing Then LoadFromMemoryStream()
             doResize = _image.Width > Master.eSettings.TVShowExtrafanartsWidth OrElse _image.Height > Master.eSettings.TVShowExtrafanartsHeight
@@ -1102,9 +1106,8 @@ Public Class Images
     End Function
 
     Public Shared Function GetPreferredImagesContainer(ByVal DBElement As Database.DBElement,
-                                            ByVal SearchResultsContainer As MediaContainers.SearchResultsContainer,
-                                            ByVal ScrapeModifiers As Structures.ScrapeModifiers,
-                                            Optional ByVal IsAutoScraper As Boolean = False) As MediaContainers.PreferredImagesContainer
+                                                       ByVal SearchResultsContainer As MediaContainers.SearchResultsContainer,
+                                                       ByVal ScrapeModifiers As Structures.ScrapeModifiers) As MediaContainers.PreferredImagesContainer
 
         Dim nPreferredImagesContainer As New MediaContainers.PreferredImagesContainer
 
@@ -1177,25 +1180,25 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.MovieBannerKeepExisting Then
+                    If Not DBElement.ImagesContainer.Banner.LocalFilePathSpecified OrElse Not Master.eSettings.MovieBannerKeepExisting Then
                         GetPreferredMovieBanner(SearchResultsContainer.MainBanners, defImg)
                     End If
                 Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.MovieSetBannerKeepExisting Then
+                    If Not DBElement.ImagesContainer.Banner.LocalFilePathSpecified OrElse Not Master.eSettings.MovieSetBannerKeepExisting Then
                         GetPreferredMovieSetBanner(SearchResultsContainer.MainBanners, defImg)
                     End If
                 Case Enums.ContentType.TVSeason
                     If DBElement.TVSeason.IsAllSeasons Then
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsBannerKeepExisting Then
+                        If Not DBElement.ImagesContainer.Banner.LocalFilePathSpecified OrElse Not Master.eSettings.TVAllSeasonsBannerKeepExisting Then
                             GetPreferredTVAllSeasonsBanner(SearchResultsContainer.SeasonBanners, SearchResultsContainer.MainBanners, defImg)
                         End If
                     Else
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TVSeasonBannerKeepExisting Then
+                        If Not DBElement.ImagesContainer.Banner.LocalFilePathSpecified OrElse Not Master.eSettings.TVSeasonBannerKeepExisting Then
                             GetPreferredTVSeasonBanner(SearchResultsContainer.SeasonBanners, defImg, DBElement.TVSeason.Season)
                         End If
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TVShowBannerKeepExisting Then
+                    If Not DBElement.ImagesContainer.Banner.LocalFilePathSpecified OrElse Not Master.eSettings.TVShowBannerKeepExisting Then
                         GetPreferredTVShowBanner(SearchResultsContainer.MainBanners, defImg)
                     End If
             End Select
@@ -1215,7 +1218,7 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.CharacterArt.LocalFilePath) OrElse Not Master.eSettings.TVShowCharacterArtKeepExisting Then
+                    If Not DBElement.ImagesContainer.CharacterArt.LocalFilePathSpecified OrElse Not Master.eSettings.TVShowCharacterArtKeepExisting Then
                         GetPreferredTVShowCharacterArt(SearchResultsContainer.MainCharacterArts, defImg)
                     End If
             End Select
@@ -1235,15 +1238,15 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFilePath) OrElse Not Master.eSettings.MovieClearArtKeepExisting Then
+                    If Not DBElement.ImagesContainer.ClearArt.LocalFilePathSpecified OrElse Not Master.eSettings.MovieClearArtKeepExisting Then
                         GetPreferredMovieClearArt(SearchResultsContainer.MainClearArts, defImg)
                     End If
                 Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFilePath) OrElse Not Master.eSettings.MovieSetClearArtKeepExisting Then
+                    If Not DBElement.ImagesContainer.ClearArt.LocalFilePathSpecified OrElse Not Master.eSettings.MovieSetClearArtKeepExisting Then
                         GetPreferredMovieSetClearArt(SearchResultsContainer.MainClearArts, defImg)
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFilePath) OrElse Not Master.eSettings.TVShowClearArtKeepExisting Then
+                    If Not DBElement.ImagesContainer.ClearArt.LocalFilePathSpecified OrElse Not Master.eSettings.TVShowClearArtKeepExisting Then
                         GetPreferredTVShowClearArt(SearchResultsContainer.MainClearArts, defImg)
                     End If
             End Select
@@ -1263,15 +1266,15 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFilePath) OrElse Not Master.eSettings.MovieClearLogoKeepExisting Then
+                    If Not DBElement.ImagesContainer.ClearLogo.LocalFilePathSpecified OrElse Not Master.eSettings.MovieClearLogoKeepExisting Then
                         GetPreferredMovieClearLogo(SearchResultsContainer.MainClearLogos, defImg)
                     End If
                 Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFilePath) OrElse Not Master.eSettings.MovieSetClearLogoKeepExisting Then
+                    If Not DBElement.ImagesContainer.ClearLogo.LocalFilePathSpecified OrElse Not Master.eSettings.MovieSetClearLogoKeepExisting Then
                         GetPreferredMovieSetClearLogo(SearchResultsContainer.MainClearLogos, defImg)
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFilePath) OrElse Not Master.eSettings.TVShowClearLogoKeepExisting Then
+                    If Not DBElement.ImagesContainer.ClearLogo.LocalFilePathSpecified OrElse Not Master.eSettings.TVShowClearLogoKeepExisting Then
                         GetPreferredTVShowClearLogo(SearchResultsContainer.MainClearLogos, defImg)
                     End If
             End Select
@@ -1291,11 +1294,11 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.DiscArt.LocalFilePath) OrElse Not Master.eSettings.MovieDiscArtKeepExisting Then
+                    If Not DBElement.ImagesContainer.DiscArt.LocalFilePathSpecified OrElse Not Master.eSettings.MovieDiscArtKeepExisting Then
                         GetPreferredMovieDiscArt(SearchResultsContainer.MainDiscArts, defImg)
                     End If
                 Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.DiscArt.LocalFilePath) OrElse Not Master.eSettings.MovieSetDiscArtKeepExisting Then
+                    If Not DBElement.ImagesContainer.DiscArt.LocalFilePathSpecified OrElse Not Master.eSettings.MovieSetDiscArtKeepExisting Then
                         GetPreferredMovieSetDiscArt(SearchResultsContainer.MainDiscArts, defImg)
                     End If
             End Select
@@ -1315,29 +1318,29 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.MovieFanartKeepExisting Then
+                    If Not DBElement.ImagesContainer.Fanart.LocalFilePathSpecified OrElse Not Master.eSettings.MovieFanartKeepExisting Then
                         GetPreferredMovieFanart(SearchResultsContainer.MainFanarts, defImg)
                     End If
                 Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.MovieSetFanartKeepExisting Then
+                    If Not DBElement.ImagesContainer.Fanart.LocalFilePathSpecified OrElse Not Master.eSettings.MovieSetFanartKeepExisting Then
                         GetPreferredMovieSetFanart(SearchResultsContainer.MainFanarts, defImg)
                     End If
                 Case Enums.ContentType.TVEpisode
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVEpisodeFanartKeepExisting Then
+                    If Not DBElement.ImagesContainer.Fanart.LocalFilePathSpecified OrElse Not Master.eSettings.TVEpisodeFanartKeepExisting Then
                         GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.MainFanarts, defImg, DBElement.TVEpisode.Season, DBElement.TVEpisode.Episode)
                     End If
                 Case Enums.ContentType.TVSeason
                     If DBElement.TVSeason.IsAllSeasons Then
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsFanartKeepExisting Then
+                        If Not DBElement.ImagesContainer.Fanart.LocalFilePathSpecified OrElse Not Master.eSettings.TVAllSeasonsFanartKeepExisting Then
                             GetPreferredTVAllSeasonsFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg)
                         End If
                     Else
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVSeasonFanartKeepExisting Then
+                        If Not DBElement.ImagesContainer.Fanart.LocalFilePathSpecified OrElse Not Master.eSettings.TVSeasonFanartKeepExisting Then
                             GetPreferredTVSeasonFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg, DBElement.TVSeason.Season)
                         End If
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVShowFanartKeepExisting Then
+                    If Not DBElement.ImagesContainer.Fanart.LocalFilePathSpecified OrElse Not Master.eSettings.TVShowFanartKeepExisting Then
                         GetPreferredTVShowFanart(SearchResultsContainer.MainFanarts, defImg)
                     End If
             End Select
@@ -1353,7 +1356,7 @@ Public Class Images
 
         'Main Extrafanarts
         If DoMainExtrafanarts Then
-            Dim bKeepExisting As Boolean = False
+            Dim bKeepExisting As Boolean
             Dim iLimit As Integer = 0
             Dim iDifference As Integer = 0
 
@@ -1371,7 +1374,7 @@ Public Class Images
                 Dim defImgList As New List(Of MediaContainers.Image)
                 Select Case tContentType
                     Case Enums.ContentType.Movie
-                        GetPreferredMovieExtrafanarts(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), nPreferredImagesContainer.ImagesContainer.Fanart, IsAutoScraper:=IsAutoScraper)
+                        GetPreferredMovieExtrafanarts(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), nPreferredImagesContainer.ImagesContainer.Fanart)
                     Case Enums.ContentType.TVShow
                         ' If option RemoveDuplicateImages is activated, compare all scraped extrafanarts of the show against all current fanart (including season fanart)
                         ' for this put all fanart of a show in temporary container
@@ -1382,7 +1385,7 @@ Public Class Images
                         For Each season In DBElement.Seasons
                             tmpCurrentShowImagesContainer.ImagesContainer.Extrafanarts.Add(season.ImagesContainer.Fanart)
                         Next
-                        GetPreferredTVShowExtrafanarts(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), tmpCurrentShowImagesContainer.ImagesContainer.Extrafanarts, IsAutoScraper:=IsAutoScraper)
+                        GetPreferredTVShowExtrafanarts(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), tmpCurrentShowImagesContainer.ImagesContainer.Extrafanarts)
                 End Select
 
                 If Not bKeepExisting Then
@@ -1400,7 +1403,7 @@ Public Class Images
 
         'Main Extrathumbs
         If DoMainExtrathumbs Then
-            Dim bKeepExisting As Boolean = False
+            Dim bKeepExisting As Boolean
             Dim iLimit As Integer = 0
             Dim iDifference As Integer = 0
 
@@ -1416,7 +1419,7 @@ Public Class Images
 
                 Select Case tContentType
                     Case Enums.ContentType.Movie
-                        GetPreferredMovieExtrathumbs(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), nPreferredImagesContainer.ImagesContainer.Fanart, DBElement, IsAutoScraper:=IsAutoScraper)
+                        GetPreferredMovieExtrathumbs(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), nPreferredImagesContainer.ImagesContainer.Fanart, DBElement)
                 End Select
 
                 If Not bKeepExisting Then
@@ -1438,25 +1441,25 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.MovieLandscapeKeepExisting Then
+                    If Not DBElement.ImagesContainer.Landscape.LocalFilePathSpecified OrElse Not Master.eSettings.MovieLandscapeKeepExisting Then
                         GetPreferredMovieLandscape(SearchResultsContainer.MainLandscapes, defImg)
                     End If
                 Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.MovieSetLandscapeKeepExisting Then
+                    If Not DBElement.ImagesContainer.Landscape.LocalFilePathSpecified OrElse Not Master.eSettings.MovieSetLandscapeKeepExisting Then
                         GetPreferredMovieSetLandscape(SearchResultsContainer.MainLandscapes, defImg)
                     End If
                 Case Enums.ContentType.TVSeason
                     If DBElement.TVSeason.IsAllSeasons Then
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsLandscapeKeepExisting Then
+                        If Not DBElement.ImagesContainer.Landscape.LocalFilePathSpecified OrElse Not Master.eSettings.TVAllSeasonsLandscapeKeepExisting Then
                             GetPreferredTVAllSeasonsLandscape(SearchResultsContainer.SeasonLandscapes, SearchResultsContainer.MainLandscapes, defImg)
                         End If
                     Else
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TVSeasonLandscapeKeepExisting Then
+                        If Not DBElement.ImagesContainer.Landscape.LocalFilePathSpecified OrElse Not Master.eSettings.TVSeasonLandscapeKeepExisting Then
                             GetPreferredTVSeasonLandscape(SearchResultsContainer.SeasonLandscapes, defImg, DBElement.TVSeason.Season)
                         End If
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TVShowLandscapeKeepExisting Then
+                    If Not DBElement.ImagesContainer.Landscape.LocalFilePathSpecified OrElse Not Master.eSettings.TVShowLandscapeKeepExisting Then
                         GetPreferredTVShowLandscape(SearchResultsContainer.MainLandscapes, defImg)
                     End If
             End Select
@@ -1476,29 +1479,29 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.MoviePosterKeepExisting Then
+                    If Not DBElement.ImagesContainer.Poster.LocalFilePathSpecified OrElse Not Master.eSettings.MoviePosterKeepExisting Then
                         GetPreferredMoviePoster(SearchResultsContainer.MainPosters, defImg)
                     End If
                 Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.MovieSetPosterKeepExisting Then
+                    If Not DBElement.ImagesContainer.Poster.LocalFilePathSpecified OrElse Not Master.eSettings.MovieSetPosterKeepExisting Then
                         GetPreferredMovieSetPoster(SearchResultsContainer.MainPosters, defImg)
                     End If
                 Case Enums.ContentType.TVEpisode
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVEpisodePosterKeepExisting Then
+                    If Not DBElement.ImagesContainer.Poster.LocalFilePathSpecified OrElse Not Master.eSettings.TVEpisodePosterKeepExisting Then
                         GetPreferredTVEpisodePoster(SearchResultsContainer.EpisodePosters, defImg, DBElement.TVEpisode.Season, DBElement.TVEpisode.Episode)
                     End If
                 Case Enums.ContentType.TVSeason
                     If DBElement.TVSeason.IsAllSeasons Then
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsPosterKeepExisting Then
+                        If Not DBElement.ImagesContainer.Poster.LocalFilePathSpecified OrElse Not Master.eSettings.TVAllSeasonsPosterKeepExisting Then
                             GetPreferredTVAllSeasonsPoster(SearchResultsContainer.SeasonPosters, SearchResultsContainer.MainPosters, defImg)
                         End If
                     Else
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVSeasonPosterKeepExisting Then
+                        If Not DBElement.ImagesContainer.Poster.LocalFilePathSpecified OrElse Not Master.eSettings.TVSeasonPosterKeepExisting Then
                             GetPreferredTVSeasonPoster(SearchResultsContainer.SeasonPosters, defImg, DBElement.TVSeason.Season)
                         End If
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVShowPosterKeepExisting Then
+                    If Not DBElement.ImagesContainer.Poster.LocalFilePathSpecified OrElse Not Master.eSettings.TVShowPosterKeepExisting Then
                         GetPreferredTVShowPoster(SearchResultsContainer.MainPosters, defImg)
                     End If
             End Select
@@ -1520,11 +1523,11 @@ Public Class Images
             If DoSeasonBanner Then
                 Dim defImg As MediaContainers.Image = Nothing
                 If sSeason.TVSeason.IsAllSeasons Then
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsBannerKeepExisting Then
+                    If Not sSeason.ImagesContainer.Banner.LocalFilePathSpecified OrElse Not Master.eSettings.TVAllSeasonsBannerKeepExisting Then
                         GetPreferredTVAllSeasonsBanner(SearchResultsContainer.SeasonBanners, SearchResultsContainer.MainBanners, defImg)
                     End If
                 Else
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TVSeasonBannerKeepExisting Then
+                    If Not sSeason.ImagesContainer.Banner.LocalFilePathSpecified OrElse Not Master.eSettings.TVSeasonBannerKeepExisting Then
                         GetPreferredTVSeasonBanner(SearchResultsContainer.SeasonBanners, defImg, sContainer.Season)
                     End If
                 End If
@@ -1543,11 +1546,11 @@ Public Class Images
             If DoSeasonFanart Then
                 Dim defImg As MediaContainers.Image = Nothing
                 If sSeason.TVSeason.IsAllSeasons Then
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsFanartKeepExisting Then
+                    If Not sSeason.ImagesContainer.Fanart.LocalFilePathSpecified OrElse Not Master.eSettings.TVAllSeasonsFanartKeepExisting Then
                         GetPreferredTVAllSeasonsFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg)
                     End If
                 Else
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVSeasonFanartKeepExisting Then
+                    If Not sSeason.ImagesContainer.Fanart.LocalFilePathSpecified OrElse Not Master.eSettings.TVSeasonFanartKeepExisting Then
                         GetPreferredTVSeasonFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg, sContainer.Season)
                     End If
                 End If
@@ -1566,11 +1569,11 @@ Public Class Images
             If DoSeasonLandscape Then
                 Dim defImg As MediaContainers.Image = Nothing
                 If sSeason.TVSeason.IsAllSeasons Then
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsLandscapeKeepExisting Then
+                    If Not sSeason.ImagesContainer.Landscape.LocalFilePathSpecified OrElse Not Master.eSettings.TVAllSeasonsLandscapeKeepExisting Then
                         GetPreferredTVAllSeasonsLandscape(SearchResultsContainer.SeasonLandscapes, SearchResultsContainer.MainLandscapes, defImg)
                     End If
                 Else
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TVSeasonLandscapeKeepExisting Then
+                    If Not sSeason.ImagesContainer.Landscape.LocalFilePathSpecified OrElse Not Master.eSettings.TVSeasonLandscapeKeepExisting Then
                         GetPreferredTVSeasonLandscape(SearchResultsContainer.SeasonLandscapes, defImg, sContainer.Season)
                     End If
                 End If
@@ -1589,11 +1592,11 @@ Public Class Images
             If DoSeasonPoster Then
                 Dim defImg As MediaContainers.Image = Nothing
                 If sSeason.TVSeason.IsAllSeasons Then
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsPosterKeepExisting Then
+                    If Not sSeason.ImagesContainer.Poster.LocalFilePathSpecified OrElse Not Master.eSettings.TVAllSeasonsPosterKeepExisting Then
                         GetPreferredTVAllSeasonsPoster(SearchResultsContainer.SeasonPosters, SearchResultsContainer.MainPosters, defImg)
                     End If
                 Else
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVSeasonPosterKeepExisting Then
+                    If Not sSeason.ImagesContainer.Poster.LocalFilePathSpecified OrElse Not Master.eSettings.TVSeasonPosterKeepExisting Then
                         GetPreferredTVSeasonPoster(SearchResultsContainer.SeasonPosters, defImg, sContainer.Season)
                     End If
                 End If
@@ -1618,7 +1621,7 @@ Public Class Images
             'Episode Fanart
             If DoEpisodeFanart Then
                 Dim defImg As MediaContainers.Image = Nothing
-                If String.IsNullOrEmpty(tEpisode.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVEpisodeFanartKeepExisting Then
+                If Not tEpisode.ImagesContainer.Fanart.LocalFilePathSpecified OrElse Not Master.eSettings.TVEpisodeFanartKeepExisting Then
                     GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.MainFanarts, defImg, sContainer.Season, sContainer.Episode)
                 End If
 
@@ -1635,7 +1638,7 @@ Public Class Images
             'Episode Poster
             If DoEpisodePoster Then
                 Dim defImg As MediaContainers.Image = Nothing
-                If String.IsNullOrEmpty(tEpisode.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVEpisodePosterKeepExisting Then
+                If Not tEpisode.ImagesContainer.Poster.LocalFilePathSpecified OrElse Not Master.eSettings.TVEpisodePosterKeepExisting Then
                     GetPreferredTVEpisodePoster(SearchResultsContainer.EpisodePosters, defImg, sContainer.Season, sContainer.Episode)
                 End If
 
@@ -1674,10 +1677,9 @@ Public Class Images
 
     Public Shared Sub SetPreferredImages(ByRef DBElement As Database.DBElement,
                                          ByVal SearchResultsContainer As MediaContainers.SearchResultsContainer,
-                                         ByVal ScrapeModifiers As Structures.ScrapeModifiers,
-                                         Optional ByVal IsAutoScraper As Boolean = False)
+                                         ByVal ScrapeModifiers As Structures.ScrapeModifiers)
 
-        Dim PreferredImagesContainer As MediaContainers.PreferredImagesContainer = GetPreferredImagesContainer(DBElement, SearchResultsContainer, ScrapeModifiers, IsAutoScraper)
+        Dim PreferredImagesContainer As MediaContainers.PreferredImagesContainer = GetPreferredImagesContainer(DBElement, SearchResultsContainer, ScrapeModifiers)
 
         If PreferredImagesContainer IsNot Nothing Then
 
@@ -1729,7 +1731,8 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieBanner(ByRef ImageList As List(Of MediaContainers.Image),
+                                                   ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
         imgResult = Nothing
 
@@ -1758,7 +1761,8 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieSetBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieSetBanner(ByRef ImageList As List(Of MediaContainers.Image),
+                                                      ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
         imgResult = Nothing
 
@@ -1787,7 +1791,8 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMoviePoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMoviePoster(ByRef ImageList As List(Of MediaContainers.Image),
+                                                   ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
         imgResult = Nothing
 
@@ -1816,7 +1821,8 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieSetPoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieSetPoster(ByRef ImageList As List(Of MediaContainers.Image),
+                                                      ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
         imgResult = Nothing
 
@@ -1839,7 +1845,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredMovieClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieClearArt(ByRef ImageList As List(Of MediaContainers.Image),
+                                                     ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -1851,7 +1858,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredMovieSetClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieSetClearArt(ByRef ImageList As List(Of MediaContainers.Image),
+                                                        ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -1863,7 +1871,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredMovieClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieClearLogo(ByRef ImageList As List(Of MediaContainers.Image),
+                                                      ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -1875,7 +1884,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredMovieSetClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieSetClearLogo(ByRef ImageList As List(Of MediaContainers.Image),
+                                                         ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -1887,7 +1897,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredMovieDiscArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieDiscArt(ByRef ImageList As List(Of MediaContainers.Image),
+                                                    ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -1904,20 +1915,23 @@ Public Class Images
     ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extraFanart</param>
     ''' <returns><c>List</c> of image URLs that fit the preferred thumb size</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieExtrafanarts(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal CurrentMovieFanart As MediaContainers.Image, Optional ByVal IsAutoScraper As Boolean = False) As Boolean
+    Public Shared Function GetPreferredMovieExtrafanarts(ByRef ImageList As List(Of MediaContainers.Image),
+                                                         ByRef imgResultList As List(Of MediaContainers.Image),
+                                                         ByVal iLimit As Integer,
+                                                         ByVal CurrentMovieFanart As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        Dim DoCalculateDuplicaImages As Boolean = False
+        Dim DoCalculateDuplicateImages As Boolean
 
-        If Master.eSettings.GeneralImageFilter = True AndAlso Master.eSettings.GeneralImageFilterFanart = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
-            DoCalculateDuplicaImages = True
+        If False Then ' Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterFanart AndAlso ((IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterAutoscraper) OrElse (Not IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterImagedialog)) Then
+            DoCalculateDuplicateImages = True
         End If
 
         If Master.eSettings.MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any Then
             For Each img As MediaContainers.Image In ImageList
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because method RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
-                If DoCalculateDuplicaImages = False Then
+                If Not DoCalculateDuplicateImages Then
                     iLimit -= 1
                     If iLimit = 0 Then Exit For
                 End If
@@ -1928,7 +1942,7 @@ Public Class Images
             For Each img As MediaContainers.Image In ImageList.Where(Function(f) f.MovieFanartSize = Master.eSettings.MovieExtrafanartsPrefSize)
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
-                If DoCalculateDuplicaImages = False Then
+                If Not DoCalculateDuplicateImages Then
                     iLimit -= 1
                     If iLimit = 0 Then Exit For
                 End If
@@ -1939,14 +1953,14 @@ Public Class Images
             For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
-                If DoCalculateDuplicaImages = False Then
+                If Not DoCalculateDuplicateImages Then
                     iLimit -= 1
                     If iLimit = 0 Then Exit For
                 End If
             Next
         End If
 
-        If DoCalculateDuplicaImages = True Then
+        If DoCalculateDuplicateImages Then
             'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
             Dim lsttmpCurrentMovieFanarts As New List(Of MediaContainers.Image)
             lsttmpCurrentMovieFanarts.Add(CurrentMovieFanart)
@@ -1977,11 +1991,14 @@ Public Class Images
     ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extrathumbs</param>
     ''' <returns><c>List</c> of image URLs that fit the preferred thumb size</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieExtrathumbs(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal CurrentMovieFanart As MediaContainers.Image, ByVal DBElement As Database.DBElement, Optional ByVal IsAutoScraper As Boolean = False) As Boolean
+    Public Shared Function GetPreferredMovieExtrathumbs(ByRef ImageList As List(Of MediaContainers.Image),
+                                                        ByRef imgResultList As List(Of MediaContainers.Image),
+                                                        ByVal iLimit As Integer,
+                                                        ByVal CurrentMovieFanart As MediaContainers.Image,
+                                                        ByVal DBElement As Database.DBElement) As Boolean
 
         'Generate thumbnails?
         If (Master.eSettings.MovieExtrathumbsCreatorAutoThumbs OrElse (Master.eSettings.MovieExtrathumbsCreatorUseETasFA AndAlso imgResultList.Count = 0)) AndAlso iLimit > 0 Then
-            imgResultList.Clear()
             imgResultList = FFmpeg.FFmpeg.GenerateThumbnailsWithoutBars(DBElement, ThumbCount:=iLimit, NoSpoilers:=Master.eSettings.MovieExtrathumbsCreatorNoSpoilers, Timeout:=30000)
             'dont't care about the following extrathumb PrefQuality setting(s) of scrapers since it doesn't make sense for frame extraction (we only respect the Keep and Limit setting and Resize options for extracted frames)
             'if it necessary to mix scraped fanarts with extracted frames then special handling is needed in this function but for now don't care about this
@@ -1989,9 +2006,9 @@ Public Class Images
         End If
 
         If ImageList.Count = 0 Then Return False
-        Dim DoCalculateDuplicaImages As Boolean = False
+        Dim DoCalculateDuplicaImages As Boolean
 
-        If Master.eSettings.GeneralImageFilter = True AndAlso Master.eSettings.GeneralImageFilterFanart = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
+        If False Then '  Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterFanart AndAlso ((IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterAutoscraper) OrElse (Not IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterImagedialog)) Then
             DoCalculateDuplicaImages = True
         End If
 
@@ -1999,7 +2016,7 @@ Public Class Images
             For Each img As MediaContainers.Image In ImageList
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
-                If DoCalculateDuplicaImages = False Then
+                If Not DoCalculateDuplicaImages Then
                     iLimit -= 1
                     If iLimit = 0 Then Exit For
                 End If
@@ -2010,7 +2027,7 @@ Public Class Images
             For Each img As MediaContainers.Image In ImageList.Where(Function(f) f.MovieFanartSize = Master.eSettings.MovieExtrathumbsPrefSize)
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
-                If DoCalculateDuplicaImages = False Then
+                If Not DoCalculateDuplicaImages Then
                     iLimit -= 1
                     If iLimit = 0 Then Exit For
                 End If
@@ -2021,7 +2038,7 @@ Public Class Images
             For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
-                If DoCalculateDuplicaImages = False Then
+                If Not DoCalculateDuplicaImages Then
                     iLimit -= 1
                     If iLimit = 0 Then Exit For
                 End If
@@ -2029,7 +2046,7 @@ Public Class Images
         End If
 
         'Use Imagefilter?
-        If DoCalculateDuplicaImages = True Then
+        If DoCalculateDuplicaImages Then
             'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
             Dim lsttmpCurrentMovieFanarts As New List(Of MediaContainers.Image)
             lsttmpCurrentMovieFanarts.Add(CurrentMovieFanart)
@@ -2043,7 +2060,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredMovieSetDiscArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieSetDiscArt(ByRef ImageList As List(Of MediaContainers.Image),
+                                                       ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -2055,7 +2073,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredMovieLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieLandscape(ByRef ImageList As List(Of MediaContainers.Image),
+                                                      ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -2067,7 +2086,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredMovieSetLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieSetLandscape(ByRef ImageList As List(Of MediaContainers.Image),
+                                                         ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -2085,7 +2105,8 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieFanart(ByRef ImageList As List(Of MediaContainers.Image),
+                                                   ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
         imgResult = Nothing
 
@@ -2114,7 +2135,8 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieSetFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieSetFanart(ByRef ImageList As List(Of MediaContainers.Image),
+                                                      ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
         imgResult = Nothing
 
@@ -2137,7 +2159,9 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVAllSeasonsBanner(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVAllSeasonsBanner(ByRef SeasonImageList As List(Of MediaContainers.Image),
+                                                          ByRef ShowImageList As List(Of MediaContainers.Image),
+                                                          ByRef imgResult As MediaContainers.Image) As Boolean
         If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
         If Not SeasonImageList.Count = 0 Then
@@ -2175,7 +2199,9 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVAllSeasonsFanart(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVAllSeasonsFanart(ByRef SeasonImageList As List(Of MediaContainers.Image),
+                                                          ByRef ShowImageList As List(Of MediaContainers.Image),
+                                                          ByRef imgResult As MediaContainers.Image) As Boolean
         If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
 
@@ -2214,7 +2240,9 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVAllSeasonsLandscape(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVAllSeasonsLandscape(ByRef SeasonImageList As List(Of MediaContainers.Image),
+                                                             ByRef ShowImageList As List(Of MediaContainers.Image),
+                                                             ByRef imgResult As MediaContainers.Image) As Boolean
         If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
         imgResult = SeasonImageList.Find(Function(f) f.Season = -1)
@@ -2230,7 +2258,9 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVAllSeasonsPoster(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVAllSeasonsPoster(ByRef SeasonImageList As List(Of MediaContainers.Image),
+                                                          ByRef ShowImageList As List(Of MediaContainers.Image),
+                                                          ByRef imgResult As MediaContainers.Image) As Boolean
         If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
         If Not SeasonImageList.Count = 0 Then
@@ -2268,7 +2298,11 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVEpisodeFanart(ByRef EpisodeImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer, ByVal iEpisode As Integer) As Boolean
+    Public Shared Function GetPreferredTVEpisodeFanart(ByRef EpisodeImageList As List(Of MediaContainers.Image),
+                                                       ByRef ShowImageList As List(Of MediaContainers.Image),
+                                                       ByRef imgResult As MediaContainers.Image,
+                                                       ByVal iSeason As Integer,
+                                                       ByVal iEpisode As Integer) As Boolean
         If EpisodeImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
         If Not EpisodeImageList.Count = 0 Then
@@ -2306,7 +2340,10 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVEpisodePoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer, ByVal iEpisode As Integer) As Boolean
+    Public Shared Function GetPreferredTVEpisodePoster(ByRef ImageList As List(Of MediaContainers.Image),
+                                                       ByRef imgResult As MediaContainers.Image,
+                                                       ByVal iSeason As Integer,
+                                                       ByVal iEpisode As Integer) As Boolean
         If ImageList.Count = 0 Then Return False
 
         If Master.eSettings.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any Then
@@ -2334,7 +2371,9 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredTVSeasonBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
+    Public Shared Function GetPreferredTVSeasonBanner(ByRef ImageList As List(Of MediaContainers.Image),
+                                                      ByRef imgResult As MediaContainers.Image,
+                                                      ByVal iSeason As Integer) As Boolean
         If ImageList.Count = 0 Then Return False
 
         If Master.eSettings.TVSeasonBannerPrefSize = Enums.TVBannerSize.Any Then
@@ -2356,7 +2395,10 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVSeasonFanart(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
+    Public Shared Function GetPreferredTVSeasonFanart(ByRef SeasonImageList As List(Of MediaContainers.Image),
+                                                      ByRef ShowImageList As List(Of MediaContainers.Image),
+                                                      ByRef imgResult As MediaContainers.Image,
+                                                      ByVal iSeason As Integer) As Boolean
         If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
         If Not SeasonImageList.Count = 0 Then
@@ -2394,7 +2436,9 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVSeasonLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
+    Public Shared Function GetPreferredTVSeasonLandscape(ByRef ImageList As List(Of MediaContainers.Image),
+                                                         ByRef imgResult As MediaContainers.Image,
+                                                         ByVal iSeason As Integer) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.Find(Function(f) f.Season = iSeason)
@@ -2406,7 +2450,9 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVSeasonPoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
+    Public Shared Function GetPreferredTVSeasonPoster(ByRef ImageList As List(Of MediaContainers.Image),
+                                                      ByRef imgResult As MediaContainers.Image,
+                                                      ByVal iSeason As Integer) As Boolean
         If ImageList.Count = 0 Then Return False
 
         If Master.eSettings.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any Then
@@ -2434,7 +2480,8 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredTVShowBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVShowBanner(ByRef ImageList As List(Of MediaContainers.Image),
+                                                    ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         If Master.eSettings.TVShowBannerPrefSize = Enums.TVBannerSize.Any Then
@@ -2456,7 +2503,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVShowCharacterArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVShowCharacterArt(ByRef ImageList As List(Of MediaContainers.Image),
+                                                          ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -2468,7 +2516,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVShowClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVShowClearArt(ByRef ImageList As List(Of MediaContainers.Image),
+                                                      ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -2480,7 +2529,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVShowClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVShowClearLogo(ByRef ImageList As List(Of MediaContainers.Image),
+                                                       ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -2492,13 +2542,16 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVShowExtrafanarts(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal lsttmpCurrentTVSowFanarts As List(Of MediaContainers.Image), Optional ByVal IsAutoScraper As Boolean = False) As Boolean
+    Public Shared Function GetPreferredTVShowExtrafanarts(ByRef ImageList As List(Of MediaContainers.Image),
+                                                          ByRef imgResultList As List(Of MediaContainers.Image),
+                                                          ByVal iLimit As Integer,
+                                                          ByVal lsttmpCurrentTVSowFanarts As List(Of MediaContainers.Image)) As Boolean
 
         If ImageList.Count = 0 Then Return False
 
-        Dim DoCalculateDuplicaImages As Boolean = False
+        Dim DoCalculateDuplicaImages As Boolean
 
-        If Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterFanart AndAlso ((IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterAutoscraper) OrElse (Not IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterImagedialog)) Then
+        If False Then '  Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterFanart AndAlso ((IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterAutoscraper) OrElse (Not IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterImagedialog)) Then
             DoCalculateDuplicaImages = True
         End If
 
@@ -2506,7 +2559,7 @@ Public Class Images
             For Each img As MediaContainers.Image In ImageList
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because method RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
-                If DoCalculateDuplicaImages = False Then
+                If Not DoCalculateDuplicaImages Then
                     iLimit -= 1
                     If iLimit = 0 Then Exit For
                 End If
@@ -2517,7 +2570,7 @@ Public Class Images
             For Each img As MediaContainers.Image In ImageList.Where(Function(f) f.TVFanartSize = Master.eSettings.TVShowExtrafanartsPrefSize)
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
-                If DoCalculateDuplicaImages = False Then
+                If Not DoCalculateDuplicaImages Then
                     iLimit -= 1
                     If iLimit = 0 Then Exit For
                 End If
@@ -2528,14 +2581,14 @@ Public Class Images
             For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
-                If DoCalculateDuplicaImages = False Then
+                If Not DoCalculateDuplicaImages Then
                     iLimit -= 1
                     If iLimit = 0 Then Exit For
                 End If
             Next
         End If
 
-        If DoCalculateDuplicaImages = True Then
+        If DoCalculateDuplicaImages Then
             'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
             FindDuplicateImages(imgResultList, Enums.ContentType.Movie, CurrentImageList:=lsttmpCurrentTVSowFanarts, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
         End If
@@ -2553,7 +2606,8 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredTVShowFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVShowFanart(ByRef ImageList As List(Of MediaContainers.Image),
+                                                    ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         If Master.eSettings.TVShowFanartPrefSize = Enums.TVFanartSize.Any Then
@@ -2575,7 +2629,8 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVShowLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVShowLandscape(ByRef ImageList As List(Of MediaContainers.Image),
+                                                       ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.FirstOrDefault
@@ -2593,7 +2648,8 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredTVShowPoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVShowPoster(ByRef ImageList As List(Of MediaContainers.Image),
+                                                    ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         If Master.eSettings.TVShowPosterPrefSize = Enums.TVPosterSize.Any Then
@@ -2614,7 +2670,6 @@ Public Class Images
             Return False
         End If
     End Function
-
     ''' <summary>
     ''' Find duplicate images in a given list of images
     ''' </summary>
@@ -2634,7 +2689,12 @@ Public Class Images
     ''' 2015/09/23 Cocotus - First implementation
     ''' Used to avoid duplicate images
     ''' </remarks>
-    Public Shared Function FindDuplicateImages(ByRef ImageList As List(Of MediaContainers.Image), ByVal ContentType As Enums.ContentType, Optional ByVal CurrentImageList As List(Of MediaContainers.Image) = Nothing, Optional ByVal MatchTolerance As Integer = 5, Optional ByVal Limit As Integer = 0, Optional ByVal RemoveDuplicatesFromList As Boolean = True) As Boolean
+    Public Shared Function FindDuplicateImages(ByRef ImageList As List(Of MediaContainers.Image),
+                                               ByVal ContentType As Enums.ContentType,
+                                               Optional ByVal CurrentImageList As List(Of MediaContainers.Image) = Nothing,
+                                               Optional ByVal MatchTolerance As Integer = 5,
+                                               Optional ByVal Limit As Integer = 0,
+                                               Optional ByVal RemoveDuplicatesFromList As Boolean = True) As Boolean
         'if there are no images to compare, then leave immediately
         If ImageList.Count = 0 Then Return False
 
@@ -2654,7 +2714,7 @@ Public Class Images
         End Select
 
         'If RemoveDuplicatesFromList = False then Limit parameter is not considered -> always go through whole list
-        If RemoveDuplicatesFromList = False Then
+        If Not RemoveDuplicatesFromList Then
             Limit = ImageList.Count
             'since the following algorithm marks duplicates from beginning of list and keeps the images instance which is lower in list, we reverse the list to place images in preferred language at the end of the list
             ImageList.Reverse()
@@ -2682,19 +2742,19 @@ Public Class Images
                     currentimagesimilarity = SearchDuplicateImageinList(tmpImage, CurrentImageList, MatchTolerance)
                     If MatchTolerance >= currentimagesimilarity Then
                         logger.Trace("[FindDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: Current image!")
-                        If RemoveDuplicatesFromList = True Then
+                        If RemoveDuplicatesFromList Then
                             'investigate next image, start with next item in loop
                             Continue For
                         End If
                     End If
                     'if all images will be analyzed then store index of image in imagelist with calculacted Similarityvalue
-                    If RemoveDuplicatesFromList = False Then
+                    If Not RemoveDuplicatesFromList Then
                         Dim newSimilarityvalue = Tuple.Create(i, currentimagesimilarity)
                         lstCalculatedSimilarity.Add(newSimilarityvalue)
                     End If
 
                     '2. Step: Calculate similarity for each image combination in imagelist (lstLimit or whole Imagelist depending on RemoveDuplicates parameter) - basically we compare each image to find out which images are identical to each other
-                    If RemoveDuplicatesFromList = True Then
+                    If RemoveDuplicatesFromList Then
                         Dim IsUniqueImage As Boolean = True
                         Dim referenceimage As Images = Nothing
                         If lstLimitImages.Count > 0 Then
@@ -2736,7 +2796,7 @@ Public Class Images
                             End If
                         End If
                         'finally add image to Limitimagelist (this list will contain only unique images) 
-                        If IsUniqueImage = True Then
+                        If IsUniqueImage Then
                             lstLimitImages.Add(ImageList(i))
                         End If
                     Else
@@ -2782,7 +2842,7 @@ Public Class Images
         '3. Step:
         'if RemoveDuplicatesFromList = false: mark duplicate image in imagelist at index calculated above
         'if RemoveDuplicatesFromList = true: just return lstUniqueImages instead of imagelist
-        If RemoveDuplicatesFromList = True Then
+        If RemoveDuplicatesFromList Then
             ImageList.Clear()
             ImageList.AddRange(lstLimitImages)
         Else
@@ -2810,7 +2870,7 @@ Public Class Images
             Next
         End If
 
-        If RemoveDuplicatesFromList = False Then
+        If Not RemoveDuplicatesFromList Then
             'finished processing, reverse imagelist to put preferred languages back to top like its used to be
             ImageList.Reverse()
         End If
@@ -2829,7 +2889,9 @@ Public Class Images
     ''' 2016/02/10 Cocotus - First implementation
     ''' Refactored the massive FindDuplicateImages method...
     ''' </remarks>
-    Public Shared Function SearchDuplicateImageinList(ByRef referenceImage As Images, ByVal searchImageList As List(Of MediaContainers.Image), ByVal MatchTolerance As Integer) As Integer
+    Public Shared Function SearchDuplicateImageinList(ByRef referenceImage As Images,
+                                                      ByVal searchImageList As List(Of MediaContainers.Image),
+                                                      ByVal MatchTolerance As Integer) As Integer
 
         Dim currentimagesimilarity As Integer = 99
         If searchImageList Is Nothing Then

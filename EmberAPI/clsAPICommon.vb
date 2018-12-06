@@ -527,151 +527,149 @@ Public Class Enums
         ''' Called after edit movie
         ''' </summary>
         ''' <remarks></remarks>
-        AfterEdit_Movie = 0
+        AfterEdit_Movie
         ''' <summary>
         ''' Called after edit movieset
         ''' </summary>
         ''' <remarks></remarks>
-        AfterEdit_MovieSet = 1
+        AfterEdit_MovieSet
         ''' <summary>
         ''' Called after edit episode
         ''' </summary>
         ''' <remarks></remarks>
-        AfterEdit_TVEpisode = 2
+        AfterEdit_TVEpisode
         ''' <summary>
         ''' Called after edit season
         ''' </summary>
         ''' <remarks></remarks>
-        AfterEdit_TVSeason = 3
+        AfterEdit_TVSeason
         ''' <summary>
         ''' Called after edit show
         ''' </summary>
         ''' <remarks></remarks>
-        AfterEdit_TVShow = 4
+        AfterEdit_TVShow
         ''' <summary>
         ''' Called after update DB process
         ''' </summary>
         ''' <remarks></remarks>
-        AfterUpdateDB_TV = 5
+        AfterUpdateDB_TV
         ''' <summary>
         ''' Called after update DB process
         ''' </summary>
         ''' <remarks></remarks>
-        AfterUpdateDB_Movie = 6
+        AfterUpdateDB_Movie
         ''' <summary>
         ''' Called when Manual editing or reading from nfo
         ''' </summary>
         ''' <remarks></remarks>
-        BeforeEdit_Movie = 7
+        BeforeEdit_Movie
         ''' <summary>
         ''' Called when Manual editing or reading from nfo
         ''' </summary>
         ''' <remarks></remarks>
-        BeforeEdit_MovieSet = 8
+        BeforeEdit_MovieSet
         ''' <summary>
         ''' Called when Manual editing or reading from nfo
         ''' </summary>
         ''' <remarks></remarks>
-        BeforeEdit_TVEpisode = 9
+        BeforeEdit_TVEpisode
         ''' <summary>
         ''' Called when Manual editing or reading from nfo
         ''' </summary>
         ''' <remarks></remarks>
-        BeforeEdit_TVSeason = 10
+        BeforeEdit_TVSeason
         ''' <summary>
         ''' Called when Manual editing or reading from nfo
         ''' </summary>
         ''' <remarks></remarks>
-        BeforeEdit_TVShow = 11
+        BeforeEdit_TVShow
         ''' <summary>
         ''' Command Line Module Call
         ''' </summary>
         ''' <remarks></remarks>
-        CommandLine = 12
-        FrameExtrator_Movie = 13
-        FrameExtrator_TVEpisode = 14
-        Generic = 15
-        MediaPlayer_Audio = 16
-        MediaPlayer_Video = 17
-        MediaPlayerPlay_Audio = 18
-        MediaPlayerPlay_Video = 19
-        MediaPlayerPlaylistAdd_Audio = 20
-        MediaPlayerPlaylistAdd_Video = 21
-        MediaPlayerPlaylistClear_Audio = 22
-        MediaPlayerPlaylistClear_Video = 23
-        MediaPlayerStop_Audio = 24
-        MediaPlayerStop_Video = 25
-        Notification = 26
-        OnBannerSave_Movie = 24
-        OnClearArtSave_Movie = 28
-        OnClearLogoSave_Movie = 29
-        OnDiscArtSave_Movie = 30
-        OnFanartDelete_Movie = 31
-        OnFanartSave_Movie = 32
-        OnLandscapeSave_Movie = 33
-        OnNFORead_TVShow = 34
-        OnNFOSave_Movie = 35
-        OnNFOSave_TVShow = 36
-        OnPosterDelete_Movie = 37
-        OnPosterSave_Movie = 38
-        OnThemeSave_Movie = 39
-        OnTrailerSave_Movie = 40
-        RandomFrameExtrator = 41
-        Remove_Movie = 42
-        Remove_MovieSet = 43
-        Remove_TVEpisode = 44
-        Remove_TVSeason = 45
-        Remove_TVShow = 46
+        CommandLine
+        Generic
+        MediaPlayer_Audio
+        MediaPlayer_Video
+        MediaPlayerPlay_Audio
+        MediaPlayerPlay_Video
+        MediaPlayerPlaylistAdd_Audio
+        MediaPlayerPlaylistAdd_Video
+        MediaPlayerPlaylistClear_Audio
+        MediaPlayerPlaylistClear_Video
+        MediaPlayerStop_Audio
+        MediaPlayerStop_Video
+        Notification
+        OnBannerSave_Movie
+        OnClearArtSave_Movie
+        OnClearLogoSave_Movie
+        OnDiscArtSave_Movie
+        OnFanartDelete_Movie
+        OnFanartSave_Movie
+        OnLandscapeSave_Movie
+        OnNFORead_TVShow
+        OnNFOSave_Movie
+        OnNFOSave_TVShow
+        OnPosterDelete_Movie
+        OnPosterSave_Movie
+        OnThemeSave_Movie
+        OnTrailerSave_Movie
+        RandomFrameExtrator
+        Remove_Movie
+        Remove_MovieSet
+        Remove_TVEpisode
+        Remove_TVSeason
+        Remove_TVShow
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_Movie = 47
+        ScraperMulti_Movie
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVEpisode = 48
+        ScraperMulti_TVEpisode
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_Movie = 49
+        ScraperSingle_Movie
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVEpisode = 50
-        ShowMovie = 51
-        ShowTVShow = 52
-        SyncModuleSettings = 53
-        Sync_Movie = 54
-        Sync_MovieSet = 55
-        Sync_TVEpisode = 56
-        Sync_TVSeason = 57
-        Sync_TVShow = 58
-        Task = 59
+        ScraperSingle_TVEpisode
+        ShowMovie
+        ShowTVShow
+        SyncModuleSettings
+        Sync_Movie
+        Sync_MovieSet
+        Sync_TVEpisode
+        Sync_TVSeason
+        Sync_TVShow
+        Task
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVShow = 60
+        ScraperMulti_TVShow
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVShow = 61
+        ScraperSingle_TVShow
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVSeason = 62
+        ScraperMulti_TVSeason
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVSeason = 63
-        DuringUpdateDB_TV = 64
+        ScraperSingle_TVSeason
+        DuringUpdateDB_TV
     End Enum
 
     Public Enum MovieBannerSize As Integer
@@ -1136,25 +1134,6 @@ Public Class Functions
         End Try
 
         Return iMod
-    End Function
-    ''' <summary>
-    ''' Get a path to the ffmpeg included with the Ember distribution
-    ''' </summary>
-    ''' <returns>A path to an instance of ffmpeg</returns>
-    ''' <remarks>Windows distributions have ffmpeg in the Bin subdirectory.
-    ''' Note that no validation is done to ensure that ffmpeg actually exists.</remarks>
-    Public Shared Function GetFFMpeg() As String
-        Return String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-    End Function
-
-    ''' <summary>
-    ''' Get a path to the FFProbe included with the Ember distribution
-    ''' </summary>
-    ''' <returns>A path to an instance of FFProbe</returns>
-    ''' <remarks>Windows distributions have FFProbe in the Bin subdirectory.
-    ''' Note that no validation is done to ensure that FFProbe actually exists.</remarks>
-    Public Shared Function GetFFProbe() As String
-        Return String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "ffprobe.exe")
     End Function
     ''' <summary>
     ''' Determines the path to the desired season of a given show

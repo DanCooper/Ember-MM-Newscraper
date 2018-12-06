@@ -458,13 +458,6 @@ Public Class dlgEditTVEpisode
             dFileInfoEdit.Height = pnlFileInfo.Height
             dFileInfoEdit.Show()
 
-            Dim params As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_TVEpisode, params, Nothing, True, tmpDBElement)
-            pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
-            If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
-                tcEdit.TabPages.Remove(tpFrameExtraction)
-            End If
-
             FillInfo()
         Else
             DialogResult = DialogResult.Cancel
@@ -606,7 +599,7 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub pbEpisodeFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Fanart = tImage
             pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -625,7 +618,7 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub pbEpisodePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Poster = tImage
             pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
@@ -1046,17 +1039,13 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If mType = Enums.ModuleEventType.FrameExtrator_TVEpisode Then
-            tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromFile(Path.Combine(Master.TempPath, "frame.jpg"), True)
-            If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
-                pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
-                pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
+        tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromFile(Path.Combine(Master.TempPath, "frame.jpg"), True)
+        If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
+            pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
+            pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
 
-                lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
-                lblPosterSize.Visible = True
-            End If
-            'Poster.Image = DirectCast(_params(0), Bitmap)   'New Bitmap(pbFrame.Image)
-            ' pbPoster.Image = DirectCast(_params(1), Image)   'pbFrame.Image
+            lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
+            lblPosterSize.Visible = True
         End If
     End Sub
 

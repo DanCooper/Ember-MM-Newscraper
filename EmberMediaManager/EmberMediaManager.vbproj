@@ -942,16 +942,6 @@
     <None Include="Resources\hasActorThumb.png" />
     <None Include="Resources\doRating.png" />
     <Content Include="Resources\menuAdd.png" />
-    <None Include="x64\ffmpeg.exe" />
-    <None Include="x64\mediainfo-rar\mediainfo-rar.exe" />
-    <None Include="x64\mediainfo-rar\MediaInfo.dll" />
-    <None Include="x64\mediainfo-rar\unrar.exe" />
-    <None Include="x64\MediaInfo.dll" />
-    <None Include="x86\ffmpeg.exe" />
-    <None Include="x86\mediainfo-rar\mediainfo-rar.exe" />
-    <None Include="x86\mediainfo-rar\MediaInfo.dll" />
-    <None Include="x86\mediainfo-rar\unrar.exe" />
-    <None Include="x86\MediaInfo.dll" />
     <Content Include="Images\Flags\achan_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -5356,7 +5346,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Bin\" />
     <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
