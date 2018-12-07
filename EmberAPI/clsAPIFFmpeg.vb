@@ -42,8 +42,8 @@ Namespace FFmpeg
 
 #Region "Constructors"
 
-        Private Sub New(_FFmpegTask As FFmpegTask)
-            CurrentFFmpegTask = _FFmpegTask
+        Private Sub New(task As FFmpegTask)
+            CurrentFFmpegTask = task
             _output = New StringBuilder()
         End Sub
 
@@ -88,9 +88,9 @@ Namespace FFmpeg
             Return Path.Combine(Functions.AppPath, "Bin", "ffprobe.exe")
         End Function
 
-        Public Shared Function ExtractThumbnail(ByVal videopath As String,
-                                                ByVal position As Integer,
-                                                ByVal loadBitmap As Boolean) As ThumbnailWithVideoDuration
+        Public Shared Function ExtractImageFromVideo(ByVal videopath As String,
+                                                     ByVal position As Integer,
+                                                     ByVal loadBitmap As Boolean) As ThumbnailWithVideoDuration
             Dim strPath = Path.Combine(Master.TempPath, "ffmpeg")
             If Not Directory.Exists(strPath) Then Directory.CreateDirectory(strPath)
             Dim strFullPath = Path.Combine(strPath, "frame.jpg")
