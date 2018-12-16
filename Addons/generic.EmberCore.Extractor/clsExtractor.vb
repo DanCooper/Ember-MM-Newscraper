@@ -149,19 +149,11 @@ Public Class ThumbGenerator
                         strSavePath = Path.Combine(Master.TempPath, "extrathumbs")
                         strFilePath = _movie.FileItem.FirstStackedPath
                     Else 'TODO: chek VIDEO_TS parent
-                        If _movie.FileItem.bIsVideoTS Then
-                            strSavePath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
-                            strFilePath = FileUtils.Common.GetLongestFromRip(_movie.FileItem.FirstStackedPath)
-                        ElseIf _movie.FileItem.bIsBDMV Then
-                            strSavePath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
-                            strFilePath = FileUtils.Common.GetLongestFromRip(_movie.FileItem.FirstStackedPath)
+                        strSavePath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
+                        If _movie.FileItem.bIsBDMV OrElse _movie.FileItem.bIsVideoTS Then
+                            strFilePath = FileUtils.Common.GetLongestFromRip(_movie.FileItem)
                         Else
-                            strSavePath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
-                            If FileUtils.Common.isVideoTS(_movie.File.Path) OrElse FileUtils.Common.isBDRip(_movie.File.Path) Then
-                                strFilePath = FileUtils.Common.GetLongestFromRip(_movie.File.Path)
-                            Else
-                                strFilePath = _movie.FileItem.FirstStackedPath
-                            End If
+                            strFilePath = _movie.FileItem.FirstStackedPath
                         End If
                     End If
 

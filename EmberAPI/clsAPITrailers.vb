@@ -598,13 +598,11 @@ Public Class Trailers
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 '                                                ffmpeg info                                                     '
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                ' -r      = fps                                                                                                  '
-                ' -an     = disable audio recording                                                                              '
-                ' -i      = creating a video from many images                                                                    '
-                ' -q:v n  = constant qualitiy(:video) (but a variable bitrate), "n" 1 (excellent quality) and 31 (worst quality) '
-                ' -b:v n  = bitrate(:video)                                                                                      '
+                ' -i      = input file url                                                                                       '
+                ' -vcodec = Set the video codec                                                                                  '
+                ' -acodec = Set the audio codec                                                                                  '
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
+                ffmpeg.StartInfo.FileName = EmberAPI.FFmpeg.FFmpeg.GetFFMpeg
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
                 ffmpeg.StartInfo.CreateNoWindow = True
@@ -675,13 +673,11 @@ Public Class Trailers
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 '                                                ffmpeg info                                                     '
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                ' -r      = fps                                                                                                  '
-                ' -an     = disable audio recording                                                                              '
-                ' -i      = creating a video from many images                                                                    '
-                ' -q:v n  = constant qualitiy(:video) (but a variable bitrate), "n" 1 (excellent quality) and 31 (worst quality) '
-                ' -b:v n  = bitrate(:video)                                                                                      '
+                ' -i      = input file url                                                                                       '
+                ' -vcodec = Set the video codec                                                                                  '
+                ' -acodec = Set the audio codec                                                                                  '
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
+                ffmpeg.StartInfo.FileName = EmberAPI.FFmpeg.FFmpeg.GetFFMpeg
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
                 ffmpeg.StartInfo.CreateNoWindow = True

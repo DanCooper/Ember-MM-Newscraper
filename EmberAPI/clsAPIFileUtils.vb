@@ -18,10 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
-Imports NLog
 
 Namespace FileUtils
 
@@ -807,12 +807,6 @@ Namespace FileUtils
 
     Public Class DragAndDrop
 
-#Region "Fields"
-
-        Shared logger As Logger = LogManager.GetCurrentClassLogger()
-
-#End Region 'Fields
-
 #Region "Methods"
 
         Public Shared Function CheckDroppedImage(ByVal e As DragEventArgs) As Boolean
@@ -827,7 +821,7 @@ Namespace FileUtils
             Return False
         End Function
 
-        Public Shared Function GetDoppedImage(ByVal e As DragEventArgs) As MediaContainers.Image
+        Public Shared Function GetDroppedImage(ByVal e As DragEventArgs) As MediaContainers.Image
             Dim tImage As New MediaContainers.Image
             If e.Data.GetDataPresent("HTML FORMAT") Then
                 Dim clipboardHtml As String = CStr(e.Data.GetData("HTML Format"))
@@ -856,6 +850,7 @@ Namespace FileUtils
 
             Return tImage
         End Function
+
         Public Shared Function getHtmlFragment(ByVal html As String) As String
             Dim fragStartPos As Integer
             Dim fragEndPos As Integer
@@ -2540,4 +2535,3 @@ Namespace FileUtils
     End Class
 
 End Namespace
-

@@ -30,7 +30,6 @@ Public Class MediaInfo
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private _Handle As IntPtr
-    Private _UseAnsi As Boolean
 
 #End Region 'Fields
 
@@ -298,24 +297,11 @@ Public Class MediaInfo
     End Function
 
     Private Function Get_(ByVal streamKind As StreamKind, ByVal streamNumber As Integer, ByVal parameter As String, Optional ByVal kindOfInfo As InfoKind = InfoKind.Text, Optional ByVal kindOfSearch As InfoKind = InfoKind.Name) As String
-        If _UseAnsi Then
-            Dim Parameter_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(parameter)
-            Dim ToReturn As String = Marshal.PtrToStringAnsi(MediaInfoA_Get(_Handle, CType(streamKind, UIntPtr), CType(streamNumber, UIntPtr), Parameter_Ptr, CType(kindOfInfo, UIntPtr), CType(kindOfSearch, UIntPtr)))
-            Marshal.FreeHGlobal(Parameter_Ptr)
-            Return ToReturn
-        Else
-            Return Marshal.PtrToStringUni(MediaInfo_Get(_Handle, CType(streamKind, UIntPtr), CType(streamNumber, UIntPtr), parameter, CType(kindOfInfo, UIntPtr), CType(kindOfSearch, UIntPtr)))
-        End If
+        Return Marshal.PtrToStringUni(MediaInfo_Get(_Handle, CType(streamKind, UIntPtr), CType(streamNumber, UIntPtr), parameter, CType(kindOfInfo, UIntPtr), CType(kindOfSearch, UIntPtr)))
     End Function
 
     Private Sub Open(ByVal path As String)
-        If _UseAnsi Then
-            Dim FileName_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(path)
-            MediaInfoA_Open(_Handle, FileName_Ptr)
-            Marshal.FreeHGlobal(FileName_Ptr)
-        Else
-            MediaInfo_Open(_Handle, path)
-        End If
+        MediaInfo_Open(_Handle, path)
     End Sub
     ''' <summary>
     ''' Reads the metadata with MediaInfo.dll from the specified file
@@ -327,7 +313,6 @@ Public Class MediaInfo
 
         If Not String.IsNullOrEmpty(path) Then
             _Handle = MediaInfo_New()
-            _UseAnsi = Not Master.isWindows
 
             Open(path)
 

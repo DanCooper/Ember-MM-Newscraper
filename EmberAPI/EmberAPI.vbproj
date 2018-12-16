@@ -291,6 +291,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="x64\ffmpeg.exe" />
+    <None Include="x64\ffprobe.exe" />
+    <None Include="x64\MediaInfo.dll" />
+    <None Include="x86\ffmpeg.exe" />
+    <None Include="x86\ffprobe.exe" />
+    <None Include="x86\MediaInfo.dll" />
     <None Include="DB\MyVideosDBSQL_v2_Patch.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

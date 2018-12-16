@@ -80,7 +80,8 @@ Public Class FrameExtrator
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.FrameExtrator_Movie, Enums.ModuleEventType.FrameExtrator_TVEpisode, Enums.ModuleEventType.RandomFrameExtrator})
+            Return Nothing
+            'Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.FrameExtrator_Movie, Enums.ModuleEventType.FrameExtrator_TVEpisode, Enums.ModuleEventType.RandomFrameExtrator})
         End Get
     End Property
 
@@ -116,22 +117,22 @@ Public Class FrameExtrator
     End Function
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        Select Case mType
-            Case Enums.ModuleEventType.FrameExtrator_Movie
-                frmMovie = New frmMovieExtractor(_dbelement.File.Path)
-                _params(0) = frmMovie.pnlExtrator
-                AddHandler frmMovie.GenericEvent, AddressOf Handle_GenericEvent
-            Case Enums.ModuleEventType.FrameExtrator_TVEpisode
-                frmTV = New frmTVExtrator(_dbelement.File.Path)
-                AddHandler frmTV.GenericEvent, AddressOf Handle_GenericEvent
-                _params(0) = frmTV.pnlExtrator
-            Case Enums.ModuleEventType.RandomFrameExtrator
-                'TODO: check if it does not end with memory leak
-                Dim dbm As Database.DBElement = DirectCast(_params(0), Database.DBElement)
-                Dim auto As Integer = DirectCast(_params(1), Integer)
-                Dim edit As Boolean = DirectCast(_params(2), Boolean)
-                _params(3) = ThumbGenerator.CreateRandomThumbs(dbm, auto, edit)
-        End Select
+        'Select Case mType
+        '    Case Enums.ModuleEventType.FrameExtrator_Movie
+        '        frmMovie = New frmMovieExtractor(_dbelement.FileItem.FirstStackedPath)
+        '        _params(0) = frmMovie.pnlExtrator
+        '        AddHandler frmMovie.GenericEvent, AddressOf Handle_GenericEvent
+        '    Case Enums.ModuleEventType.FrameExtrator_TVEpisode
+        '        frmTV = New frmTVExtrator(_dbelement.FileItem.FirstStackedPath)
+        '        AddHandler frmTV.GenericEvent, AddressOf Handle_GenericEvent
+        '        _params(0) = frmTV.pnlExtrator
+        '    Case Enums.ModuleEventType.RandomFrameExtrator
+        '        'TODO: check if it does not end with memory leak
+        '        Dim dbm As Database.DBElement = DirectCast(_params(0), Database.DBElement)
+        '        Dim auto As Integer = DirectCast(_params(1), Integer)
+        '        Dim edit As Boolean = DirectCast(_params(2), Boolean)
+        '        _params(3) = ThumbGenerator.CreateRandomThumbs(dbm, auto, edit)
+        'End Select
     End Function
 
     Sub Handle_GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
@@ -168,14 +169,6 @@ Public Class FrameExtrator
     Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
         RaiseEvent ModuleEnabledChanged(_name, state, difforder)
     End Sub
-
-    Public Shared Function GetFFMpeg() As String
-        If Master.isWindows Then
-            Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-        Else
-            Return "ffmpeg"
-        End If
-    End Function
 
 #End Region 'Methods
 

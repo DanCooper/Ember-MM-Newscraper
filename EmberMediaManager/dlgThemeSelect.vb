@@ -127,15 +127,7 @@ Public Class dlgThemeSelect
     End Sub
 
     Private Sub lvThemes_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThemes.DoubleClick
-        If Master.isWindows Then
-            Process.Start(lvThemes.SelectedItems(0).SubItems(2).Text.ToString)
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = lvThemes.SelectedItems(0).SubItems(2).Text.ToString
-                Explorer.Start()
-            End Using
-        End If
+        Process.Start(lvThemes.SelectedItems(0).SubItems(2).Text.ToString)
     End Sub
 
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click

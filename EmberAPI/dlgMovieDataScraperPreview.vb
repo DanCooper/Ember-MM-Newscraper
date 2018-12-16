@@ -1227,18 +1227,10 @@ Public Class dlgMovieDataScraperPreview
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
-                If Master.isWindows Then
-                    If Regex.IsMatch(tPath, "plugin:\/\/plugin\.video\.youtube\/\?action=play_video&videoid=") Then
-                        tPath = tPath.Replace("plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")
-                    End If
-                    Process.Start(tPath)
-                Else
-                    Using Explorer As New Process
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = tPath
-                        Explorer.Start()
-                    End Using
+                If Regex.IsMatch(tPath, "plugin:\/\/plugin\.video\.youtube\/\?action=play_video&videoid=") Then
+                    tPath = tPath.Replace("plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")
                 End If
+                Process.Start(tPath)
             End If
 
         Catch

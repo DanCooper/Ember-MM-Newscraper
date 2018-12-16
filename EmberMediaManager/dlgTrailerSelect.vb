@@ -304,26 +304,10 @@ Public Class dlgTrailerSelect
 
     Private Sub btnPlayBrowser_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayInBrowser.Click
         If Not String.IsNullOrEmpty(txtManualTrailerLink.Text) Then
-            If Master.isWindows Then
-                Process.Start(txtManualTrailerLink.Text)
-            Else
-                Using Explorer As New Process
-                    Explorer.StartInfo.FileName = "xdg-open"
-                    Explorer.StartInfo.Arguments = txtManualTrailerLink.Text
-                    Explorer.Start()
-                End Using
-            End If
+            Process.Start(txtManualTrailerLink.Text)
         Else
             If Not String.IsNullOrEmpty(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString) Then
-                If Master.isWindows Then
-                    Process.Start(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
-                Else
-                    Using Explorer As New Process
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
-                        Explorer.Start()
-                    End Using
-                End If
+                Process.Start(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
             End If
         End If
     End Sub
@@ -452,15 +436,7 @@ Public Class dlgTrailerSelect
 
     Private Sub lvTrailers_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvTrailers.DoubleClick
         If Not _withPlayer OrElse pnlTrailerPreviewNoPlayer.Visible Then
-            If Master.isWindows Then
-                Process.Start(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
-            Else
-                Using Explorer As New Process
-                    Explorer.StartInfo.FileName = "xdg-open"
-                    Explorer.StartInfo.Arguments = lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
-                    Explorer.Start()
-                End Using
-            End If
+            Process.Start(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
         Else
             If Not String.IsNullOrEmpty(lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
                 Dim vLink As String = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString

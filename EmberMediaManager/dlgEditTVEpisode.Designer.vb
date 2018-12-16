@@ -23,8 +23,8 @@ Partial Class dlgEditTVEpisode
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditTVEpisode))
-        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
         Me.lblTopTitle = New System.Windows.Forms.Label()
@@ -91,7 +91,6 @@ Partial Class dlgEditTVEpisode
         Me.btnSetFanartLocal = New System.Windows.Forms.Button()
         Me.pbFanart = New System.Windows.Forms.PictureBox()
         Me.tpFrameExtraction = New System.Windows.Forms.TabPage()
-        Me.pnlFrameExtrator = New System.Windows.Forms.Panel()
         Me.tpSubtitles = New System.Windows.Forms.TabPage()
         Me.lblSubtitlesPreview = New System.Windows.Forms.Label()
         Me.txtSubtitlesPreview = New System.Windows.Forms.TextBox()
@@ -114,6 +113,16 @@ Partial Class dlgEditTVEpisode
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.txtLastPlayed = New System.Windows.Forms.TextBox()
+        Me.dtpLastPlayed = New System.Windows.Forms.DateTimePicker()
+        Me.pnlFrameProgress = New System.Windows.Forms.Panel()
+        Me.lblExtractingFrame = New System.Windows.Forms.Label()
+        Me.prbExtractingFrame = New System.Windows.Forms.ProgressBar()
+        Me.btnFrameLoad = New System.Windows.Forms.Button()
+        Me.pbFrame = New System.Windows.Forms.PictureBox()
+        Me.btnFrameSaveAsFanart = New System.Windows.Forms.Button()
+        Me.lblTime = New System.Windows.Forms.Label()
+        Me.tbFrame = New System.Windows.Forms.TrackBar()
+        Me.btnFrameSaveAsPoster = New System.Windows.Forms.Button()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
@@ -136,6 +145,9 @@ Partial Class dlgEditTVEpisode
         Me.tpSubtitles.SuspendLayout()
         Me.tpMetaData.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
+        Me.pnlFrameProgress.SuspendLayout()
+        CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -148,7 +160,7 @@ Partial Class dlgEditTVEpisode
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(854, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(1008, 64)
         Me.pnlTop.TabIndex = 2
         '
         'lblTopDetails
@@ -200,7 +212,7 @@ Partial Class dlgEditTVEpisode
         Me.tcEdit.Location = New System.Drawing.Point(4, 70)
         Me.tcEdit.Name = "tcEdit"
         Me.tcEdit.SelectedIndex = 0
-        Me.tcEdit.Size = New System.Drawing.Size(844, 478)
+        Me.tcEdit.Size = New System.Drawing.Size(1004, 517)
         Me.tcEdit.TabIndex = 3
         '
         'tpDetails
@@ -249,7 +261,7 @@ Partial Class dlgEditTVEpisode
         Me.tpDetails.Location = New System.Drawing.Point(4, 22)
         Me.tpDetails.Name = "tpDetails"
         Me.tpDetails.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpDetails.Size = New System.Drawing.Size(836, 452)
+        Me.tpDetails.Size = New System.Drawing.Size(996, 491)
         Me.tpDetails.TabIndex = 0
         Me.tpDetails.Text = "Details"
         Me.tpDetails.UseVisualStyleBackColor = True
@@ -691,7 +703,7 @@ Partial Class dlgEditTVEpisode
         Me.lblPosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblPosterSize.Location = New System.Drawing.Point(8, 8)
         Me.lblPosterSize.Name = "lblPosterSize"
-        Me.lblPosterSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblPosterSize.Size = New System.Drawing.Size(105, 23)
         Me.lblPosterSize.TabIndex = 0
         Me.lblPosterSize.Text = "Size: (XXXXxXXXX)"
         Me.lblPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -755,7 +767,7 @@ Partial Class dlgEditTVEpisode
         Me.lblFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblFanartSize.Location = New System.Drawing.Point(8, 8)
         Me.lblFanartSize.Name = "lblFanartSize"
-        Me.lblFanartSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblFanartSize.Size = New System.Drawing.Size(105, 23)
         Me.lblFanartSize.TabIndex = 0
         Me.lblFanartSize.Text = "Size: (XXXXxXXXX)"
         Me.lblFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -826,21 +838,20 @@ Partial Class dlgEditTVEpisode
         '
         'tpFrameExtraction
         '
-        Me.tpFrameExtraction.Controls.Add(Me.pnlFrameExtrator)
+        Me.tpFrameExtraction.Controls.Add(Me.pnlFrameProgress)
+        Me.tpFrameExtraction.Controls.Add(Me.btnFrameLoad)
+        Me.tpFrameExtraction.Controls.Add(Me.pbFrame)
+        Me.tpFrameExtraction.Controls.Add(Me.btnFrameSaveAsPoster)
+        Me.tpFrameExtraction.Controls.Add(Me.btnFrameSaveAsFanart)
+        Me.tpFrameExtraction.Controls.Add(Me.lblTime)
+        Me.tpFrameExtraction.Controls.Add(Me.tbFrame)
         Me.tpFrameExtraction.Location = New System.Drawing.Point(4, 22)
         Me.tpFrameExtraction.Name = "tpFrameExtraction"
         Me.tpFrameExtraction.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpFrameExtraction.Size = New System.Drawing.Size(836, 452)
+        Me.tpFrameExtraction.Size = New System.Drawing.Size(996, 491)
         Me.tpFrameExtraction.TabIndex = 3
         Me.tpFrameExtraction.Text = "Frame Extraction"
         Me.tpFrameExtraction.UseVisualStyleBackColor = True
-        '
-        'pnlFrameExtrator
-        '
-        Me.pnlFrameExtrator.Location = New System.Drawing.Point(1, 0)
-        Me.pnlFrameExtrator.Name = "pnlFrameExtrator"
-        Me.pnlFrameExtrator.Size = New System.Drawing.Size(834, 452)
-        Me.pnlFrameExtrator.TabIndex = 0
         '
         'tpSubtitles
         '
@@ -887,12 +898,12 @@ Partial Class dlgEditTVEpisode
         Me.lvSubtitles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup1.Header = "Local Subtitles"
-        ListViewGroup1.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
+        ListViewGroup2.Header = "Local Subtitles"
+        ListViewGroup2.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem1.Group = ListViewGroup1
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        ListViewItem2.Group = ListViewGroup2
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
         Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -989,7 +1000,7 @@ Partial Class dlgEditTVEpisode
         '
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(775, 553)
+        Me.btnCancel.Location = New System.Drawing.Point(929, 619)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(67, 23)
         Me.btnCancel.TabIndex = 1
@@ -998,7 +1009,7 @@ Partial Class dlgEditTVEpisode
         'btnOK
         '
         Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnOK.Location = New System.Drawing.Point(702, 553)
+        Me.btnOK.Location = New System.Drawing.Point(856, 619)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(67, 23)
         Me.btnOK.TabIndex = 0
@@ -1009,7 +1020,7 @@ Partial Class dlgEditTVEpisode
         Me.chkWatched.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkWatched.AutoSize = True
         Me.chkWatched.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWatched.Location = New System.Drawing.Point(12, 557)
+        Me.chkWatched.Location = New System.Drawing.Point(12, 623)
         Me.chkWatched.Name = "chkWatched"
         Me.chkWatched.Size = New System.Drawing.Size(72, 17)
         Me.chkWatched.TabIndex = 7
@@ -1019,9 +1030,9 @@ Partial Class dlgEditTVEpisode
         'StatusStrip
         '
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsFilename})
-        Me.StatusStrip.Location = New System.Drawing.Point(0, 579)
+        Me.StatusStrip.Location = New System.Drawing.Point(0, 645)
         Me.StatusStrip.Name = "StatusStrip"
-        Me.StatusStrip.Size = New System.Drawing.Size(854, 22)
+        Me.StatusStrip.Size = New System.Drawing.Size(1008, 22)
         Me.StatusStrip.SizingGrip = False
         Me.StatusStrip.TabIndex = 8
         Me.StatusStrip.Text = "StatusStrip1"
@@ -1037,10 +1048,125 @@ Partial Class dlgEditTVEpisode
         Me.txtLastPlayed.BackColor = System.Drawing.SystemColors.Window
         Me.txtLastPlayed.Enabled = False
         Me.txtLastPlayed.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtLastPlayed.Location = New System.Drawing.Point(96, 552)
+        Me.txtLastPlayed.Location = New System.Drawing.Point(90, 620)
         Me.txtLastPlayed.Name = "txtLastPlayed"
         Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
         Me.txtLastPlayed.TabIndex = 75
+        '
+        'dtpLastPlayed
+        '
+        Me.dtpLastPlayed.Checked = False
+        Me.dtpLastPlayed.CustomFormat = "yyyy-dd-MM / hh:mm:ss"
+        Me.dtpLastPlayed.Enabled = False
+        Me.dtpLastPlayed.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpLastPlayed.Location = New System.Drawing.Point(232, 620)
+        Me.dtpLastPlayed.Name = "dtpLastPlayed"
+        Me.dtpLastPlayed.Size = New System.Drawing.Size(156, 22)
+        Me.dtpLastPlayed.TabIndex = 78
+        '
+        'pnlFrameProgress
+        '
+        Me.pnlFrameProgress.BackColor = System.Drawing.Color.White
+        Me.pnlFrameProgress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFrameProgress.Controls.Add(Me.lblExtractingFrame)
+        Me.pnlFrameProgress.Controls.Add(Me.prbExtractingFrame)
+        Me.pnlFrameProgress.Location = New System.Drawing.Point(272, 184)
+        Me.pnlFrameProgress.Name = "pnlFrameProgress"
+        Me.pnlFrameProgress.Size = New System.Drawing.Size(252, 51)
+        Me.pnlFrameProgress.TabIndex = 36
+        Me.pnlFrameProgress.Visible = False
+        '
+        'lblExtractingFrame
+        '
+        Me.lblExtractingFrame.AutoSize = True
+        Me.lblExtractingFrame.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblExtractingFrame.Location = New System.Drawing.Point(2, 7)
+        Me.lblExtractingFrame.Name = "lblExtractingFrame"
+        Me.lblExtractingFrame.Size = New System.Drawing.Size(103, 13)
+        Me.lblExtractingFrame.TabIndex = 0
+        Me.lblExtractingFrame.Text = "Extracting Frame..."
+        '
+        'prbExtractingFrame
+        '
+        Me.prbExtractingFrame.Location = New System.Drawing.Point(4, 26)
+        Me.prbExtractingFrame.MarqueeAnimationSpeed = 25
+        Me.prbExtractingFrame.Name = "prbExtractingFrame"
+        Me.prbExtractingFrame.Size = New System.Drawing.Size(242, 16)
+        Me.prbExtractingFrame.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.prbExtractingFrame.TabIndex = 1
+        '
+        'btnFrameLoad
+        '
+        Me.btnFrameLoad.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnFrameLoad.Image = CType(resources.GetObject("btnFrameLoad.Image"), System.Drawing.Image)
+        Me.btnFrameLoad.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFrameLoad.Location = New System.Drawing.Point(810, 6)
+        Me.btnFrameLoad.Name = "btnFrameLoad"
+        Me.btnFrameLoad.Size = New System.Drawing.Size(96, 83)
+        Me.btnFrameLoad.TabIndex = 37
+        Me.btnFrameLoad.Text = "Load Video"
+        Me.btnFrameLoad.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnFrameLoad.UseVisualStyleBackColor = True
+        '
+        'pbFrame
+        '
+        Me.pbFrame.BackColor = System.Drawing.Color.DimGray
+        Me.pbFrame.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbFrame.Location = New System.Drawing.Point(6, 6)
+        Me.pbFrame.Name = "pbFrame"
+        Me.pbFrame.Size = New System.Drawing.Size(800, 450)
+        Me.pbFrame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbFrame.TabIndex = 41
+        Me.pbFrame.TabStop = False
+        '
+        'btnFrameSaveAsFanart
+        '
+        Me.btnFrameSaveAsFanart.Enabled = False
+        Me.btnFrameSaveAsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFrameSaveAsFanart.Image = CType(resources.GetObject("btnFrameSaveAsFanart.Image"), System.Drawing.Image)
+        Me.btnFrameSaveAsFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFrameSaveAsFanart.Location = New System.Drawing.Point(810, 184)
+        Me.btnFrameSaveAsFanart.Name = "btnFrameSaveAsFanart"
+        Me.btnFrameSaveAsFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnFrameSaveAsFanart.TabIndex = 42
+        Me.btnFrameSaveAsFanart.Text = "Save as Fanart"
+        Me.btnFrameSaveAsFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnFrameSaveAsFanart.UseVisualStyleBackColor = True
+        '
+        'lblTime
+        '
+        Me.lblTime.Location = New System.Drawing.Point(747, 462)
+        Me.lblTime.Name = "lblTime"
+        Me.lblTime.Size = New System.Drawing.Size(59, 23)
+        Me.lblTime.TabIndex = 40
+        Me.lblTime.Text = "00:00:00"
+        Me.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'tbFrame
+        '
+        Me.tbFrame.AutoSize = False
+        Me.tbFrame.BackColor = System.Drawing.Color.White
+        Me.tbFrame.Cursor = System.Windows.Forms.Cursors.Default
+        Me.tbFrame.Enabled = False
+        Me.tbFrame.Location = New System.Drawing.Point(6, 462)
+        Me.tbFrame.Name = "tbFrame"
+        Me.tbFrame.Size = New System.Drawing.Size(735, 27)
+        Me.tbFrame.TabIndex = 39
+        Me.tbFrame.TickStyle = System.Windows.Forms.TickStyle.None
+        '
+        'btnFrameSaveAsPoster
+        '
+        Me.btnFrameSaveAsPoster.Enabled = False
+        Me.btnFrameSaveAsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFrameSaveAsPoster.Image = CType(resources.GetObject("btnFrameSaveAsPoster.Image"), System.Drawing.Image)
+        Me.btnFrameSaveAsPoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFrameSaveAsPoster.Location = New System.Drawing.Point(810, 95)
+        Me.btnFrameSaveAsPoster.Name = "btnFrameSaveAsPoster"
+        Me.btnFrameSaveAsPoster.Size = New System.Drawing.Size(96, 83)
+        Me.btnFrameSaveAsPoster.TabIndex = 42
+        Me.btnFrameSaveAsPoster.Text = "Save as Poster"
+        Me.btnFrameSaveAsPoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnFrameSaveAsPoster.UseVisualStyleBackColor = True
         '
         'dlgEditTVEpisode
         '
@@ -1048,7 +1174,8 @@ Partial Class dlgEditTVEpisode
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(854, 601)
+        Me.ClientSize = New System.Drawing.Size(1008, 667)
+        Me.Controls.Add(Me.dtpLastPlayed)
         Me.Controls.Add(Me.txtLastPlayed)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.chkWatched)
@@ -1089,6 +1216,10 @@ Partial Class dlgEditTVEpisode
         Me.tpMetaData.ResumeLayout(False)
         Me.StatusStrip.ResumeLayout(False)
         Me.StatusStrip.PerformLayout()
+        Me.pnlFrameProgress.ResumeLayout(False)
+        Me.pnlFrameProgress.PerformLayout()
+        CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1149,7 +1280,6 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents txtAired As System.Windows.Forms.TextBox
     Friend WithEvents btnActorDown As System.Windows.Forms.Button
     Friend WithEvents btnActorUp As System.Windows.Forms.Button
-    Friend WithEvents pnlFrameExtrator As System.Windows.Forms.Panel
     Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
     Friend WithEvents chkWatched As System.Windows.Forms.CheckBox
     Friend WithEvents pbStar10 As System.Windows.Forms.PictureBox
@@ -1182,4 +1312,14 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
     Friend WithEvents txtUserRating As TextBox
     Friend WithEvents lblUserRating As Label
+    Friend WithEvents dtpLastPlayed As DateTimePicker
+    Friend WithEvents pnlFrameProgress As Panel
+    Friend WithEvents lblExtractingFrame As Label
+    Friend WithEvents prbExtractingFrame As ProgressBar
+    Friend WithEvents btnFrameLoad As Button
+    Friend WithEvents pbFrame As PictureBox
+    Friend WithEvents btnFrameSaveAsFanart As Button
+    Friend WithEvents lblTime As Label
+    Friend WithEvents tbFrame As TrackBar
+    Friend WithEvents btnFrameSaveAsPoster As Button
 End Class

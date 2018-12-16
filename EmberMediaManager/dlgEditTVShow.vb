@@ -1420,7 +1420,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub pbBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Banner = tImage
             pbBanner.Image = tImage.ImageOriginal.Image
@@ -1439,7 +1439,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub pbCharacterArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbCharacterArt.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.CharacterArt = tImage
             pbCharacterArt.Image = tImage.ImageOriginal.Image
@@ -1458,7 +1458,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub pbClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearArt.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.ClearArt = tImage
             pbClearArt.Image = tImage.ImageOriginal.Image
@@ -1477,7 +1477,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub pbClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.ClearLogo = tImage
             pbClearLogo.Image = tImage.ImageOriginal.Image
@@ -1496,7 +1496,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub pbFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Fanart = tImage
             pbFanart.Image = tImage.ImageOriginal.Image
@@ -1515,7 +1515,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub pbLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbLandscape.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Landscape = tImage
             pbLandscape.Image = tImage.ImageOriginal.Image
@@ -1534,7 +1534,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub pbPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Poster = tImage
             pbPoster.Image = tImage.ImageOriginal.Image
@@ -2041,15 +2041,7 @@ Public Class dlgEditTVShow
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
-                If Master.isWindows Then
-                    Process.Start(tPath)
-                Else
-                    Using Explorer As New Process
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = tPath
-                        Explorer.Start()
-                    End Using
-                End If
+                Process.Start(tPath)
             End If
         Catch
             MessageBox.Show(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Warning)

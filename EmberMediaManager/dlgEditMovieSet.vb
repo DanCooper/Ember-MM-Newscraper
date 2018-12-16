@@ -1003,7 +1003,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub pbBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Banner = tImage
             pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
@@ -1022,7 +1022,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub pbClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearArt.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.ClearArt = tImage
             pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
@@ -1041,7 +1041,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub pbClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.ClearLogo = tImage
             pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
@@ -1060,7 +1060,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub pbDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbDiscArt.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.DiscArt = tImage
             pbDiscArt.Image = tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
@@ -1079,7 +1079,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub pbFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Fanart = tImage
             pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -1098,7 +1098,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub pbLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbLandscape.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Landscape = tImage
             pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
@@ -1117,7 +1117,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub pbPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Poster = tImage
             pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
@@ -1368,7 +1368,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub dgvMovies_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovies.CellPainting
-        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+        If e.RowIndex >= 0 AndAlso Not dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
             e.Handled = True
             Return
         End If

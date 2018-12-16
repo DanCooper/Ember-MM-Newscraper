@@ -79,7 +79,7 @@ Public Class frmTVExtrator
 
     Private Sub btnFrameSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSave.Click
         If pbFrame.Image IsNot Nothing Then
-            RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_TVEpisode, Nothing)
+            'RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_TVEpisode, Nothing)
         End If
     End Sub
 
@@ -87,7 +87,7 @@ Public Class frmTVExtrator
         Try
             Using ffmpeg As New Process()
 
-                ffmpeg.StartInfo.FileName = FrameExtrator.GetFFMpeg
+                ffmpeg.StartInfo.FileName = EmberAPI.FFmpeg.FFmpeg.GetFFMpeg
                 ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", _strFilename, Path.Combine(Master.TempPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
@@ -146,7 +146,7 @@ Public Class frmTVExtrator
             tbFrame.Enabled = False
             Dim ffmpeg As New Process()
 
-            ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
+            ffmpeg.StartInfo.FileName = EmberAPI.FFmpeg.FFmpeg.GetFFMpeg
             'ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currShow.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
             ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -vframes 1 -y ""{2}""", tbFrame.Value, _strFilename, Path.Combine(Master.TempPath, "frame.jpg"))
             ffmpeg.EnableRaisingEvents = False

@@ -495,7 +495,7 @@ Public Class dlgEditTVSeason
     End Sub
 
     Private Sub pbSeasonBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Banner = tImage
             pbBanner.Image = tImage.ImageOriginal.Image
@@ -514,7 +514,7 @@ Public Class dlgEditTVSeason
     End Sub
 
     Private Sub pbSeasonFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Fanart = tImage
             pbFanart.Image = tImage.ImageOriginal.Image
@@ -533,7 +533,7 @@ Public Class dlgEditTVSeason
     End Sub
 
     Private Sub pbSeasonLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbLandscape.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Landscape = tImage
             pbLandscape.Image = tImage.ImageOriginal.Image
@@ -552,7 +552,7 @@ Public Class dlgEditTVSeason
     End Sub
 
     Private Sub pbSeasonPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             tmpDBElement.ImagesContainer.Poster = tImage
             pbPoster.Image = tImage.ImageOriginal.Image
