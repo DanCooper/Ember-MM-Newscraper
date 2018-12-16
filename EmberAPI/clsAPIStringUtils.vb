@@ -462,7 +462,7 @@ Public Class StringUtils
         If String.IsNullOrEmpty(strPath) Then Return String.Empty
 
         'get raw title from path
-        Dim strRawTitle As String = Path.GetDirectoryName(strPath)
+        Dim strRawTitle As String = New DirectoryInfo(strPath).Name
 
         'filter raw title by filter list
         Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVShowFilterCustom)

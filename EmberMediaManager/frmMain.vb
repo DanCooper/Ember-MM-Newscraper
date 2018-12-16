@@ -2374,7 +2374,7 @@ Public Class frmMain
     End Function
 
     Private Sub chkFilterDuplicates_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDuplicates_Movies.Click
-        RunFilter_Movies(True)
+        RunFilter_Movies()
     End Sub
 
     Private Sub chkFilterEmpty_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterEmpty_MovieSets.Click
@@ -6237,30 +6237,30 @@ Public Class frmMain
         If doMovies Then
             bsMovies.DataSource = Nothing
             dgvMovies.DataSource = Nothing
-            'Master.DB.FillDataTable(dtMovies, Filter_Movies.SqlQuery)
+            Master.DB.FillDataTable(dtMovies, Filter_Movies.SqlQuery)
 
-            If Not String.IsNullOrEmpty(filSearch_Movies) AndAlso cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
-                Master.DB.FillDataTable(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM person ",
-                                                                   "LEFT OUTER JOIN actor_link ON (person.idPerson=actor_link.idPerson) ",
-                                                                   "INNER JOIN '", currList_Movies, "' ON (actor_link.idMedia='", currList_Movies, "'.idMovie AND actor_link.media_type='movie') ",
-                                                                   "WHERE person.name LIKE '%", filSearch_Movies, "%' ",
-                                                                   "ORDER BY '", currList_Movies, "'.ListTitle COLLATE NOCASE;"))
-            ElseIf Not String.IsNullOrEmpty(filSearch_Movies) AndAlso cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
-                Master.DB.FillDataTable(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM actor_link ",
-                                                                   "INNER JOIN '", currList_Movies, "' ON (actor_link.idMedia='", currList_Movies, "'.idMovie AND actor_link.media_type='movie') ",
-                                                                   "WHERE actor_link.role LIKE '%", filSearch_Movies, "%' ",
-                                                                   "ORDER BY '", currList_Movies, "'.ListTitle COLLATE NOCASE;"))
-            Else
-                If chkFilterDuplicates_Movies.Checked Then
-                    Master.DB.FillDataTable(dtMovies, String.Concat("SELECT * FROM '", currList_Movies, "' ",
-                                                                       "WHERE imdb IN (SELECT imdb FROM '", currList_Movies, "' WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ",
-                                                                       "ORDER BY listTitle COLLATE NOCASE;"))
-                Else
-                    Master.DB.FillDataTable(dtMovies, String.Format("SELECT * FROM '{0}' ORDER BY {1} COLLATE NOCASE;",
-                                                                    currList_Movies,
-                                                                    Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)))
-                End If
-            End If
+            'If Not String.IsNullOrEmpty(filSearch_Movies) AndAlso cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
+            '    Master.DB.FillDataTable(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM person ",
+            '                                                       "LEFT OUTER JOIN actor_link ON (person.idPerson=actor_link.idPerson) ",
+            '                                                       "INNER JOIN '", currList_Movies, "' ON (actor_link.idMedia='", currList_Movies, "'.idMovie AND actor_link.media_type='movie') ",
+            '                                                       "WHERE person.name LIKE '%", filSearch_Movies, "%' ",
+            '                                                       "ORDER BY '", currList_Movies, "'.ListTitle COLLATE NOCASE;"))
+            'ElseIf Not String.IsNullOrEmpty(filSearch_Movies) AndAlso cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
+            '    Master.DB.FillDataTable(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM actor_link ",
+            '                                                       "INNER JOIN '", currList_Movies, "' ON (actor_link.idMedia='", currList_Movies, "'.idMovie AND actor_link.media_type='movie') ",
+            '                                                       "WHERE actor_link.role LIKE '%", filSearch_Movies, "%' ",
+            '                                                       "ORDER BY '", currList_Movies, "'.ListTitle COLLATE NOCASE;"))
+            'Else
+            '    If chkFilterDuplicates_Movies.Checked Then
+            '        Master.DB.FillDataTable(dtMovies, String.Concat("SELECT * FROM '", currList_Movies, "' ",
+            '                                                           "WHERE imdb IN (SELECT imdb FROM '", currList_Movies, "' WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ",
+            '                                                           "ORDER BY listTitle COLLATE NOCASE;"))
+            '    Else
+            '        Master.DB.FillDataTable(dtMovies, String.Format("SELECT * FROM '{0}' ORDER BY {1} COLLATE NOCASE;",
+            '                                                        currList_Movies,
+            '                                                        Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)))
+            '    End If
+            'End If
         End If
 
         If doMovieSets Then
@@ -8011,7 +8011,7 @@ Public Class frmMain
                 Case Enums.ContentType.Movie
                     Filter_Movies.RemoveAllSearchbarFilters()
                     Filter_Movies.Rules.AddRange(filter)
-                    RunFilter_Movies(comboBox.Text = Master.eLang.GetString(100, "Actor") OrElse comboBox.Text = Master.eLang.GetString(233, "Role"))
+                    RunFilter_Movies()
                 Case Enums.ContentType.MovieSet
                     Filter_Moviesets.RemoveAllSearchbarFilters()
                     Filter_Moviesets.Rules.AddRange(filter)
@@ -8051,7 +8051,7 @@ Public Class frmMain
                                  ByRef textBox As TextBox,
                                  ByVal contentType As Enums.ContentType)
 
-        Dim filter As New SmartPlaylist.RuleWithOperator With {.InnerCondition = SmartPlaylist.Condition.Or}
+        Dim filter As New SmartPlaylist.RuleWithOperator With {.InnerCondition = SmartPlaylist.Condition.Any}
 
         filterPanel.Visible = False
         filterPanel.Tag = "NO"
@@ -8108,7 +8108,7 @@ Public Class frmMain
                            ByVal contentType As Enums.ContentType)
 
         If Not String.IsNullOrEmpty(fromYear.Text) AndAlso Not fromYear.Text = Master.eLang.All Then
-            Dim filter As New SmartPlaylist.RuleWithOperator With {.InnerCondition = SmartPlaylist.Condition.And}
+            Dim filter As New SmartPlaylist.RuleWithOperator With {.InnerCondition = SmartPlaylist.Condition.All}
             filter.Rules.Add(New SmartPlaylist.Rule With {
                                          .Field = Database.ColumnName.Year,
                                          .Operator = SmartPlaylist.Playlist.ConvertStringToOperator(fromYearMod.Text),
@@ -13069,7 +13069,7 @@ Public Class frmMain
         FillList_Main(False, True, False)
     End Sub
 
-    Private Sub RunFilter_Movies(Optional ByVal doFill As Boolean = False)
+    Private Sub RunFilter_Movies()
         If Visible Then
             ClearInfo()
 
@@ -13080,7 +13080,8 @@ Public Class frmMain
 
             If Filter_Movies.AnyRuleSpecified Then
                 lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                Filter_Movies.Match = If(rbFilterAnd_Movies.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or)
+                Filter_Movies.Match = If(rbFilterAnd_Movies.Checked, SmartPlaylist.Condition.All, SmartPlaylist.Condition.Any)
+                Filter_Movies.Build()
                 bsMovies.Filter = Filter_Movies.Filter
                 ModulesManager.Instance.RuntimeObjects.FilterMovies = bsMovies.Filter
             Else
@@ -13094,7 +13095,7 @@ Public Class frmMain
                 ModulesManager.Instance.RuntimeObjects.FilterMovies = String.Empty
             End If
 
-            If doFill Then
+            If Filter_Movies.NeedsQuery Then
                 FillList_Main(True, False, False)
                 ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch = StringUtils.ConvertToValidFilterString(txtSearchMovies.Text)
                 ModulesManager.Instance.RuntimeObjects.FilterMoviesType = cbSearchMovies.Text
@@ -13115,7 +13116,7 @@ Public Class frmMain
 
             If Filter_Moviesets.AnyRuleSpecified Then
                 lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                Filter_Moviesets.Match = If(rbFilterAnd_MovieSets.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or)
+                Filter_Moviesets.Match = If(rbFilterAnd_MovieSets.Checked, SmartPlaylist.Condition.All, SmartPlaylist.Condition.Any)
                 bsMovieSets.Filter = Filter_Moviesets.Filter
                 ModulesManager.Instance.RuntimeObjects.FilterMoviesets = bsMovieSets.Filter
             Else
@@ -13149,7 +13150,7 @@ Public Class frmMain
 
             If Filter_TVShows.AnyRuleSpecified Then
                 lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                Filter_TVShows.Match = If(rbFilterAnd_Shows.Checked, SmartPlaylist.Condition.And, SmartPlaylist.Condition.Or)
+                Filter_TVShows.Match = If(rbFilterAnd_Shows.Checked, SmartPlaylist.Condition.All, SmartPlaylist.Condition.Any)
                 bsTVShows.Filter = Filter_TVShows.Filter
                 ModulesManager.Instance.RuntimeObjects.FilterTVShows = bsTVShows.Filter
             Else

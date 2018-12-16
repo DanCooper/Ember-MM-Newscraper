@@ -24,8 +24,11 @@ Imports System.Xml.Serialization
 Namespace SmartPlaylist
 
     Public Enum Condition As Integer
-        [And]
-        [Or]
+        All
+        Any
+        None
+        [Not]
+        NotAll
     End Enum
 
     Public Enum Direction As Integer
@@ -123,8 +126,11 @@ Namespace SmartPlaylist
         Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
         Dim _filter As String = String.Empty
-        Dim _sqlfullquery As String = String.Empty
-        Dim _sqlquery As String = String.Empty
+        Dim _joinclause As String = String.Empty
+        Dim _joinfilter As String = String.Empty
+        Dim _match As Condition = Condition.All
+        Dim _sqlmaingrouping As String = String.Empty
+        Dim _sqlmainquery As String = String.Empty
 
 #End Region 'Fields
 
@@ -145,6 +151,16 @@ Namespace SmartPlaylist
 
         <XmlElement("match")>
         Public Property Match As Condition
+            Get
+                Return _match
+            End Get
+            Set(value As Condition)
+                If Not _match = value Then
+                    _match = value
+                    Build()
+                End If
+            End Set
+        End Property
 
         <XmlElement("limit")>
         Public Property Limit As Integer = 0
@@ -276,7 +292,22 @@ Namespace SmartPlaylist
         <XmlIgnore()>
         Public ReadOnly Property SqlFullQuery As String
             Get
-                Return _sqlfullquery
+                Return String.Format("{0} WHERE {1} {2} {3} ORDER BY {4} COLLATE NOCASE;",
+                                     _sqlmainquery,
+                                     _filter,
+                                     _joinclause,
+                                     _sqlmaingrouping,
+                                     Database.Helpers.GetColumnName(Database.ColumnName.ListTitle))
+            End Get
+        End Property
+        ''' <summary>
+        ''' True if the default media list view can't provide all filters and a SQL query is needed
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore()>
+        Public ReadOnly Property NeedsQuery As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_joinclause)
             End Get
         End Property
         ''' <summary>
@@ -286,7 +317,11 @@ Namespace SmartPlaylist
         <XmlIgnore()>
         Public ReadOnly Property SqlQuery As String
             Get
-                Return _sqlquery
+                Return String.Format("{0} {1} {2} ORDER BY {3} COLLATE NOCASE;",
+                                     _sqlmainquery,
+                                     _joinclause,
+                                     _sqlmaingrouping,
+                                     Database.Helpers.GetColumnName(Database.ColumnName.ListTitle))
             End Get
         End Property
 
@@ -296,93 +331,119 @@ Namespace SmartPlaylist
 
         Public Sub New(ByVal playlistType As Enums.ContentType)
             Type = playlistType
+            Build()
         End Sub
 
 #End Region 'Constructors
 
 #Region "Methods"
 
-        Private Function BuildFilter(ByVal condition As Condition) As String
+        Public Sub Build()
+            BuildSqlMainQuery()
+            BuildCriteria()
+        End Sub
+
+        Private Sub BuildCriteria()
             Dim lstRules As New List(Of String)
-            If RulesSpecified Then lstRules.Add(BuildRule(Rules, condition))
+            If RulesSpecified Then lstRules.Add(BuildRules(Rules, Match))
             For Each nRuleWithOperator In RulesWithOperator
-                lstRules.Add(BuildRule(nRuleWithOperator.Rules, nRuleWithOperator.InnerCondition))
+                lstRules.Add(BuildRules(nRuleWithOperator.Rules, nRuleWithOperator.InnerCondition))
             Next
+            'remove empty rules
             lstRules = lstRules.Where(Function(f) Not String.IsNullOrEmpty(f)).ToList
             If lstRules.Count > 0 Then
-                logger.Trace(String.Format("Current Filter: {0}", String.Format("({0})", String.Join(String.Format(" {0} ", condition.ToString.ToUpper), lstRules))))
-                Return String.Format("({0})", String.Join(String.Format(" {0} ", condition.ToString.ToUpper), lstRules))
+                logger.Trace(String.Format("Current Filter: {0}", String.Format("({0})", String.Join(String.Format(" {0} ", Match.ToString.ToUpper), lstRules))))
+                _filter = String.Format("({0})", String.Join(String.Format(" {0} ", Match.ToString.ToUpper), lstRules))
+            Else
+                _filter = String.Empty
             End If
-            Return String.Empty
-        End Function
+        End Sub
 
-        Private Function BuildRule(ByVal rules As List(Of Rule), ByVal condition As Condition) As String
+        Private Sub BuildJoinClauseAndFilter(ByVal columnName As Database.ColumnName)
+            Dim strClause As String = String.Empty
+            Select Case columnName
+                Case Database.ColumnName.Actor
+                Case Database.ColumnName.Role
+                    strClause = String.Format("LEFT OUTER JOIN {0} ON ({1}.{2}={0}.{3})",
+                                              Database.Helpers.GetTableName(Database.TableName.actor_link),
+                                              Database.Helpers.GetMainViewName(Type),
+                                              Database.Helpers.GetMainIdName(Database.Helpers.GetMainViewName(Type)),
+                                              Database.Helpers.GetMainIdName(Database.TableName.actor_link))
+                    _joinclause = String.Format("{0} {1}", _joinclause, strClause)
+            End Select
+        End Sub
+
+        Private Function BuildRules(ByVal rules As List(Of Rule), ByVal condition As Condition) As String
             Dim lstRules As New List(Of String)
             For Each nRule In rules
                 Dim strRule As String = String.Empty
-                Select Case nRule.Operator
-                    Case Operators.After
-                    Case Operators.Before
-                    Case Operators.Between
-                        If nRule.Value2 IsNot Nothing Then
-                            If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
-                                strRule = String.Format("({0} >= '{1}' AND {0} <='{2}')", Database.Helpers.GetColumnName(nRule.Field), nRule.Value, nRule.Value2)
-                            Else
-                                strRule = String.Format("({0} >= {1} AND {0} <={2})", Database.Helpers.GetColumnName(nRule.Field), nRule.Value, nRule.Value2)
+                If Database.Helpers.ColumnIsInMainView(nRule.Field) Then
+                    Select Case nRule.Operator
+                        Case Operators.After
+                        Case Operators.Before
+                        Case Operators.Between
+                            If nRule.Value2 IsNot Nothing Then
+                                If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
+                                    strRule = String.Format("({0} >= '{1}' AND {0} <= '{2}')", Database.Helpers.GetColumnName(nRule.Field), nRule.Value, nRule.Value2)
+                                Else
+                                    strRule = String.Format("({0} >= {1} AND {0} <= {2})", Database.Helpers.GetColumnName(nRule.Field), nRule.Value, nRule.Value2)
+                                End If
                             End If
-                        End If
-                    Case Operators.Contains
-                        strRule = String.Format("{0} LIKE '%{1}%'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
-                    Case Operators.DoesNotContain
-                        strRule = String.Format("{0} NOT LIKE '%{1}%'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
-                    Case Operators.EndWith
-                        strRule = String.Format("{0} LIKE '%{1}'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
-                    Case Operators.False
-                        strRule = String.Format("{0}=0", Database.Helpers.GetColumnName(nRule.Field))
-                    Case Operators.GreaterThan
-                        strRule = String.Format("{0} > {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
-                    Case Operators.GreaterThanOrEqual
-                        strRule = String.Format("{0} >= {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
-                    Case Operators.Is
-                        If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
-                            strRule = String.Format("{0}='{1}'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
-                        Else
-                            strRule = String.Format("{0}={1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
-                        End If
-                    Case Operators.IsNot
-                        If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
-                            strRule = String.Format("NOT {0}='{1}'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
-                        Else
-                            strRule = String.Format("NOT {0}={1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
-                        End If
-                    Case Operators.IsNotNull
-                        strRule = String.Format("{0} IS NOT NULL", Database.Helpers.GetColumnName(nRule.Field))
-                    Case Operators.IsNotNullOrEmpty
-                        If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
-                            strRule = String.Format("({0} IS NOT NULL AND NOT {0}='')", Database.Helpers.GetColumnName(nRule.Field))
-                        Else
-                            strRule = String.Format("({0} IS NOT NULL AND NOT {0}=0)", Database.Helpers.GetColumnName(nRule.Field))
-                        End If
-                    Case Operators.IsNull
-                        strRule = String.Format("({0} IS NULL)", Database.Helpers.GetColumnName(nRule.Field))
-                    Case Operators.IsNullOrEmpty
-                        If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
-                            strRule = String.Format("({0} IS NULL OR {0}='')", Database.Helpers.GetColumnName(nRule.Field))
-                        Else
-                            strRule = String.Format("({0} IS NULL OR {0}=0)", Database.Helpers.GetColumnName(nRule.Field))
-                        End If
-                    Case Operators.LessThan
-                        strRule = String.Format("{0} < {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
-                    Case Operators.LessThanOrEqual
-                        strRule = String.Format("{0} <= {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
-                    Case Operators.NotBetween
-                    Case Operators.NotIn
-                    Case Operators.StartWith
-                        strRule = String.Format("{0} LIKE '{1}%'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
-                    Case Operators.True
-                        strRule = String.Format("{0}=1", Database.Helpers.GetColumnName(nRule.Field))
-                End Select
-                If Not String.IsNullOrEmpty(strRule) Then lstRules.Add(strRule)
+                        Case Operators.Contains
+                            strRule = String.Format("{0} LIKE '%{1}%'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                        Case Operators.DoesNotContain
+                            strRule = String.Format("{0} NOT LIKE '%{1}%'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                        Case Operators.EndWith
+                            strRule = String.Format("{0} LIKE '%{1}'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                        Case Operators.False
+                            strRule = String.Format("{0} = 0", Database.Helpers.GetColumnName(nRule.Field))
+                        Case Operators.GreaterThan
+                            strRule = String.Format("{0} > {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
+                        Case Operators.GreaterThanOrEqual
+                            strRule = String.Format("{0} >= {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
+                        Case Operators.Is
+                            If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
+                                strRule = String.Format("{0} = '{1}'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                            Else
+                                strRule = String.Format("{0} = {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
+                            End If
+                        Case Operators.IsNot
+                            If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
+                                strRule = String.Format("NOT {0} = '{1}'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                            Else
+                                strRule = String.Format("NOT {0} = {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
+                            End If
+                        Case Operators.IsNotNull
+                            strRule = String.Format("{0} IS NOT NULL", Database.Helpers.GetColumnName(nRule.Field))
+                        Case Operators.IsNotNullOrEmpty
+                            If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
+                                strRule = String.Format("({0} IS NOT NULL AND NOT {0} = '')", Database.Helpers.GetColumnName(nRule.Field))
+                            Else
+                                strRule = String.Format("({0} IS NOT NULL AND NOT {0} = 0)", Database.Helpers.GetColumnName(nRule.Field))
+                            End If
+                        Case Operators.IsNull
+                            strRule = String.Format("({0} IS NULL)", Database.Helpers.GetColumnName(nRule.Field))
+                        Case Operators.IsNullOrEmpty
+                            If Database.Helpers.GetDataType(nRule.Field) = Database.DataType.String Then
+                                strRule = String.Format("({0} IS NULL OR {0} = '')", Database.Helpers.GetColumnName(nRule.Field))
+                            Else
+                                strRule = String.Format("({0} IS NULL OR {0} = 0)", Database.Helpers.GetColumnName(nRule.Field))
+                            End If
+                        Case Operators.LessThan
+                            strRule = String.Format("{0} < {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
+                        Case Operators.LessThanOrEqual
+                            strRule = String.Format("{0} <= {1}", Database.Helpers.GetColumnName(nRule.Field), nRule.Value)
+                        Case Operators.NotBetween
+                        Case Operators.NotIn
+                        Case Operators.StartWith
+                            strRule = String.Format("{0} LIKE '{1}%'", Database.Helpers.GetColumnName(nRule.Field), StringUtils.ConvertToValidFilterString(nRule.Value.ToString))
+                        Case Operators.True
+                            strRule = String.Format("{0} = 1", Database.Helpers.GetColumnName(nRule.Field))
+                    End Select
+                    If Not String.IsNullOrEmpty(strRule) Then lstRules.Add(strRule)
+                Else
+                    BuildJoinClauseAndFilter(nRule.Field)
+                End If
             Next
             If lstRules.Count > 0 Then
                 Return String.Format("({0})", String.Join(String.Format(" {0} ", condition.ToString.ToUpper), lstRules.Where(Function(f) Not String.IsNullOrEmpty(f))))
@@ -390,17 +451,11 @@ Namespace SmartPlaylist
             Return String.Empty
         End Function
 
-        Public Function BuildSqlQuery() As String
-            Dim strQuery As String = String.Empty
-            Select Case Type
-                Case Enums.ContentType.Movie
-                   ' strQuery = String.Format()
-                Case Enums.ContentType.MovieSet
-                Case Enums.ContentType.TVShow
-            End Select
-            Return strQuery
-        End Function
-
+        Private Sub BuildSqlMainQuery()
+            Dim strViewName As String = Database.Helpers.GetMainViewName(Type)
+            _sqlmainquery = String.Format("SELECT DISTINCT {0}.* FROM {0}", strViewName)
+            _sqlmaingrouping = String.Format("GROUP BY {0}.{1}", strViewName, Database.Helpers.GetMainIdName(strViewName))
+        End Sub
 
         Public Shared Function ConvertStringToOperator(ByVal [operator] As String) As Operators
             Select Case [operator].ToUpper

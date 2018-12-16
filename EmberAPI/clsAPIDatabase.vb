@@ -86,6 +86,10 @@ Public Class Database
     Public Enum ColumnName As Integer
         Actor
         Aired
+        AudioBitrate
+        AudioChannels
+        AudioCodec
+        AudioLanguage
         BannerPath
         Certifications
         CharacterArtPath
@@ -108,6 +112,7 @@ Public Class Database
         ExtrafanartsPath
         ExtrathumbsPath
         FanartPath
+        FileSize
         Genres
         HasMetaData
         HasMovieset
@@ -129,12 +134,14 @@ Public Class Database
         MarkedEpisodesCount
         MovieCount
         MovieTitles
+        Name
         [New]
         NewEpisodesCount
         NfoPath
         OriginalTitle
         OutOfTolerance
         Outline
+        Path
         PlayCount
         Plot
         PosterPath
@@ -151,6 +158,8 @@ Public Class Database
         Status
         Studios
         SubEpisode
+        SubtitleForced
+        SubtitleLanguage
         SubtitlesPath
         Tagline
         Tags
@@ -161,15 +170,29 @@ Public Class Database
         TrailerPath
         UniqueIDs
         UserRating
+        VideoAspect
+        VideoBitDepth
+        VideoBitrate
+        VideoChromaSupersampling
+        VideoCodec
+        VideoColorPrimaries
+        VideoDuration
+        VideoHeight
+        VideoLanguage
+        VideoMultiViewCount
+        VideoMultiViewLayout
+        VideoScantype
         VideoSource
+        VideoStereoMode
+        VideoWidth
         Year
     End Enum
 
     Public Enum DataType As Integer
         [Boolean]
-        [Double]
-        [Integer]
-        [Long]
+        [Double]    'float
+        [Integer]   'int32
+        [Long]      'int64
         [String]
     End Enum
 
@@ -2994,7 +3017,7 @@ Public Class Database
             End If
 
             par_locked.Value = dbElement.IsLocked
-            par_idFile.Value = dbElement.FileItem.ID
+            par_idFile.Value = If(dbElement.FileItemSpecified, dbElement.FileItem.ID, -1)
             par_marked.Value = dbElement.IsMarked
             par_markCustom1.Value = dbElement.IsMarkCustom1
             par_markCustom2.Value = dbElement.IsMarkCustom2
@@ -3583,7 +3606,7 @@ Public Class Database
 
             'First let's save it to NFO, even because we will need the NFO path, also save Images
             'art Table be be linked later
-            If dbElement.FileItem.IDSpecified Then
+            If dbElement.FileItemSpecified Then
                 If bToNFO Then NFO.SaveToNFO_TVEpisode(dbElement)
                 If bToDisk Then
                     dbElement.ImagesContainer.SaveAllImages(dbElement, False)
@@ -3596,7 +3619,7 @@ Public Class Database
             par_hasSub.Value = (dbElement.Subtitles IsNot Nothing AndAlso dbElement.Subtitles.Count > 0) OrElse dbElement.TVEpisode.FileInfo.StreamDetails.Subtitle.Count > 0
             par_new.Value = bForceIsNewFlag OrElse Not dbElement.IDSpecified
             par_marked.Value = dbElement.IsMarked
-            par_idFile.Value = dbElement.FileItem.ID
+            par_idFile.Value = If(dbElement.FileItemSpecified, dbElement.FileItem.ID, -1)
             par_locked.Value = dbElement.IsLocked
             par_idSource.Value = dbElement.Source.ID
             par_videoSource.Value = dbElement.VideoSource
@@ -6184,6 +6207,37 @@ Public Class Database
             Return False
         End Function
 
+        Public Shared Function ColumnIsInMainView(ByVal columnName As ColumnName) As Boolean
+            Select Case columnName
+                Case ColumnName.Actor,
+                     ColumnName.AudioBitrate,
+                     ColumnName.AudioChannels,
+                     ColumnName.AudioCodec,
+                     ColumnName.AudioLanguage,
+                     ColumnName.FileSize,
+                     ColumnName.Role,
+                     ColumnName.SubtitleForced,
+                     ColumnName.SubtitleLanguage,
+                     ColumnName.SubtitlesPath,
+                     ColumnName.VideoAspect,
+                     ColumnName.VideoBitDepth,
+                     ColumnName.VideoBitrate,
+                     ColumnName.VideoChromaSupersampling,
+                     ColumnName.VideoCodec,
+                     ColumnName.VideoColorPrimaries,
+                     ColumnName.VideoHeight,
+                     ColumnName.VideoLanguage,
+                     ColumnName.VideoMultiViewCount,
+                     ColumnName.VideoMultiViewLayout,
+                     ColumnName.VideoScantype,
+                     ColumnName.VideoStereoMode,
+                     ColumnName.VideoWidth
+                    Return False
+                Case Else
+                    Return True
+            End Select
+        End Function
+
         Public Shared Function ColumnIsInteger(ByVal columnName As String) As Boolean
             If Not String.IsNullOrEmpty(columnName) Then
                 Dim lstColumns As String() = New String() {
@@ -6287,43 +6341,45 @@ Public Class Database
         Public Shared Function ConvertColumnNameToColumnType(ByVal columnName As String) As ColumnType
             If Not String.IsNullOrEmpty(columnName) Then
                 Select Case columnName
-                    Case "bannerPath"
+                    Case GetColumnName(Database.ColumnName.BannerPath)
                         Return ColumnType.Banner
-                    Case "characterartPath"
+                    Case GetColumnName(Database.ColumnName.CharacterArtPath)
                         Return ColumnType.CharacterArt
-                    Case "clearartPath"
+                    Case GetColumnName(Database.ColumnName.ClearArtPath)
                         Return ColumnType.ClearArt
-                    Case "clearlogoPath"
+                    Case GetColumnName(Database.ColumnName.ClearLogoPath)
                         Return ColumnType.ClearLogo
-                    Case "discartPath"
+                    Case GetColumnName(Database.ColumnName.DiscArtPath)
                         Return ColumnType.DiscArt
-                    Case "efanartsPath"
+                    Case GetColumnName(Database.ColumnName.ExtrafanartsPath)
                         Return ColumnType.Extrafanarts
-                    Case "ethumbsPath"
+                    Case GetColumnName(Database.ColumnName.ExtrathumbsPath)
                         Return ColumnType.Extrathumbs
-                    Case "fanartPath"
+                    Case GetColumnName(Database.ColumnName.FanartPath)
                         Return ColumnType.Fanart
-                    Case "hasMetaData"
+                    Case GetColumnName(Database.ColumnName.HasMetaData)
                         Return ColumnType.MetaData
-                    Case "hasSet"
+                    Case GetColumnName(Database.ColumnName.HasMovieset)
                         Return ColumnType.Movieset
-                    Case "landscapePath"
+                    Case GetColumnName(Database.ColumnName.LandscapePath)
                         Return ColumnType.Landscape
-                    Case "nfoPath"
+                    Case GetColumnName(Database.ColumnName.NfoPath)
                         Return ColumnType.NFO
-                    Case "posterPath"
+                    Case GetColumnName(Database.ColumnName.PosterPath)
                         Return ColumnType.Poster
-                    Case "rating"
+                    Case GetColumnName(Database.ColumnName.Ratings)
                         Return ColumnType.Rating
-                    Case "themePath"
+                    Case GetColumnName(Database.ColumnName.ThemePath)
                         Return ColumnType.Theme
-                    Case "hasSub"
+                    Case GetColumnName(Database.ColumnName.HasSubtitles)
                         Return ColumnType.Subtitle
-                    Case "trailerPath"
+                    Case GetColumnName(Database.ColumnName.TrailerPath)
                         Return ColumnType.Trailer
-                    Case "userRating"
+                    Case GetColumnName(Database.ColumnName.UserRating)
                         Return ColumnType.UserRating
-                    Case "hasWatched", "lastPlayed", "playCount"
+                    Case GetColumnName(Database.ColumnName.HasWatched),
+                         GetColumnName(Database.ColumnName.LastPlayed),
+                         GetColumnName(Database.ColumnName.PlayCount)
                         Return ColumnType.WatchedState
                 End Select
             End If
@@ -6420,6 +6476,8 @@ Public Class Database
                     Return "movieTitles"
                 Case ColumnName.MPAA
                     Return "mpaa"
+                Case ColumnName.Name
+                    Return "name"
                 Case ColumnName.New
                     Return "new"
                 Case ColumnName.NewEpisodesCount
@@ -6442,6 +6500,8 @@ Public Class Database
                     Return "premiered"
                 Case ColumnName.ReleaseDate
                     Return "releaseDate"
+                Case ColumnName.Role
+                    Return "role"
                 Case ColumnName.Runtime
                     Return "runtime"
                 Case ColumnName.SeasonNumber
@@ -6490,7 +6550,7 @@ Public Class Database
         End Function
 
         Public Shared Function GetColumnName(ByVal column As String) As ColumnName
-            For Each item In System.Enum.GetValues(GetType(ColumnName))
+            For Each item In [Enum].GetValues(GetType(ColumnName))
                 If GetColumnName(DirectCast(item, ColumnName)) = column.ToLower Then Return DirectCast(item, ColumnName)
             Next
             Return Nothing
@@ -6509,9 +6569,14 @@ Public Class Database
                      ColumnName.MarkedCustom2,
                      ColumnName.MarkedCustom3,
                      ColumnName.MarkedCustom4,
-                     ColumnName.New
+                     ColumnName.New,
+                     ColumnName.SubtitleForced
                     Return DataType.Boolean
-                Case ColumnName.DateAdded,
+                Case ColumnName.VideoAspect
+                    Return DataType.Double
+                Case ColumnName.AudioBitrate,
+                     ColumnName.AudioChannels,
+                     ColumnName.DateAdded,
                      ColumnName.DateModified,
                      ColumnName.DisplayEpisode,
                      ColumnName.DisplaySeason,
@@ -6528,6 +6593,12 @@ Public Class Database
                      ColumnName.SubEpisode,
                      ColumnName.Top250,
                      ColumnName.UserRating,
+                     ColumnName.VideoBitDepth,
+                     ColumnName.VideoBitrate,
+                     ColumnName.VideoDuration,
+                     ColumnName.VideoHeight,
+                     ColumnName.VideoMultiViewCount,
+                     ColumnName.VideoWidth,
                      ColumnName.Year
                     Return DataType.Integer
                 Case Else
@@ -6538,6 +6609,8 @@ Public Class Database
 
         Public Shared Function GetMainIdName(ByVal item As TableName) As String
             Select Case item
+                Case TableName.actor_link, TableName.creator_link, TableName.director_link, TableName.gueststar_link, TableName.person, TableName.writer_link
+                    Return "idPerson"
                 Case TableName.art
                     Return "idArt"
                 Case TableName.certification
@@ -6556,8 +6629,6 @@ Public Class Database
                     Return "idSet"
                 Case TableName.moviesource
                     Return "idSource"
-                Case TableName.person
-                    Return "idPerson"
                 Case TableName.rating
                     Return "idRating"
                 Case TableName.season
@@ -6576,6 +6647,22 @@ Public Class Database
             Return String.Empty
         End Function
 
+        Public Shared Function GetMainIdName(ByVal viewName As String) As String
+            Select Case viewName
+                Case "movielist"
+                    Return GetMainIdName(TableName.movie)
+                Case "moviesetlist"
+                    Return GetMainIdName(TableName.movieset)
+                Case "episodelist"
+                    Return GetMainIdName(TableName.episode)
+                Case "seasonlist"
+                    Return GetMainIdName(TableName.season)
+                Case "tvshowlist"
+                    Return GetMainIdName(TableName.tvshow)
+            End Select
+            Return String.Empty
+        End Function
+
         Public Shared Function GetMainViewName(ByVal contentType As Enums.ContentType) As String
             Select Case contentType
                 Case Enums.ContentType.Movie
@@ -6588,6 +6675,74 @@ Public Class Database
                     Return "seasonlist"
                 Case Enums.ContentType.TVShow
                     Return "tvshowlist"
+            End Select
+            Return String.Empty
+        End Function
+
+        Public Shared Function GetTableName(ByVal tableName As TableName) As String
+            Select Case tableName
+                Case TableName.actor_link
+                    Return "actor_link"
+                Case TableName.art
+                    Return "art"
+                Case TableName.certification
+                    Return "certification"
+                Case TableName.certification_link
+                    Return "certification_link"
+                Case TableName.country
+                    Return "country"
+                Case TableName.country_link
+                    Return "country_link"
+                Case TableName.creator_link
+                    Return "creator_link"
+                Case TableName.director_link
+                    Return "director_link"
+                Case TableName.episode
+                    Return "episode"
+                Case TableName.excludedpath
+                    Return "excludedpath"
+                Case TableName.file
+                    Return "file"
+                Case TableName.genre
+                    Return "genre"
+                Case TableName.genre_link
+                    Return "genre_link"
+                Case TableName.gueststar_link
+                    Return "gueststar_link"
+                Case TableName.movie
+                    Return "movie"
+                Case TableName.movieset
+                    Return "movieset"
+                Case TableName.movieset_link
+                    Return "movieset_link"
+                Case TableName.moviesource
+                    Return "moviesource"
+                Case TableName.person
+                    Return "person"
+                Case TableName.rating
+                    Return "rating"
+                Case TableName.season
+                    Return "season"
+                Case TableName.streamdetail
+                    Return "streamdetail"
+                Case TableName.studio
+                    Return "studio"
+                Case TableName.studio_link
+                    Return "studio_link"
+                Case TableName.tag
+                    Return "tag"
+                Case TableName.tag_link
+                    Return "tag_link"
+                Case TableName.tvshow
+                    Return "tvshow"
+                Case TableName.tvshowsource
+                    Return "tvshowsource"
+                Case TableName.tvshow_link
+                    Return "tvshow_link"
+                Case TableName.uniqueid
+                    Return "uniqueid"
+                Case TableName.writer_link
+                    Return "writer_link"
             End Select
             Return String.Empty
         End Function
