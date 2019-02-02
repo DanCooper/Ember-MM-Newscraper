@@ -957,7 +957,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBElement = NFO.MergeDataScraperResults_Movie(DBElement, ScrapedList, ScrapeType, ScrapeOptions)
+                DBElement = Info.MergeDataScraperResults_Movie(DBElement, ScrapedList, ScrapeType, ScrapeOptions)
 
                 'create cache paths for Actor Thumbs
                 DBElement.Movie.CreateCachePaths_ActorsThumbs()
@@ -1037,7 +1037,7 @@ Public Class ModulesManager
             Next
 
             'Merge scraperresults considering global datascraper settings
-            DBElement = NFO.MergeDataScraperResults_MovieSet(DBElement, ScrapedList, ScrapeType, ScrapeOptions)
+            DBElement = Info.MergeDataScraperResults_MovieSet(DBElement, ScrapedList, ScrapeType, ScrapeOptions)
         End If
 
         If ScrapedList.Count > 0 Then
@@ -1102,7 +1102,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBElement = NFO.MergeDataScraperResults_TVEpisode_Single(DBElement, ScrapedList, ScrapeOptions)
+                DBElement = Info.MergeDataScraperResults_TVEpisode_Single(DBElement, ScrapedList, ScrapeOptions)
 
                 'create cache paths for Actor Thumbs
                 DBElement.TVEpisode.CreateCachePaths_ActorsThumbs()
@@ -1159,7 +1159,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBElement = NFO.MergeDataScraperResults_TVSeason(DBElement, ScrapedList, ScrapeOptions)
+                DBElement = Info.MergeDataScraperResults_TVSeason(DBElement, ScrapedList, ScrapeOptions)
             End If
 
             If ScrapedList.Count > 0 Then
@@ -1248,7 +1248,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBElement = NFO.MergeDataScraperResults_TV(DBElement, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifiers.withEpisodes)
+                DBElement = Info.MergeDataScraperResults_TV(DBElement, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifiers.withEpisodes)
 
                 'create cache paths for Actor Thumbs
                 DBElement.TVShow.CreateCachePaths_ActorsThumbs()

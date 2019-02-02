@@ -589,16 +589,6 @@ Public Class Enums
         ''' <remarks></remarks>
         CommandLine
         Generic
-        MediaPlayer_Audio
-        MediaPlayer_Video
-        MediaPlayerPlay_Audio
-        MediaPlayerPlay_Video
-        MediaPlayerPlaylistAdd_Audio
-        MediaPlayerPlaylistAdd_Video
-        MediaPlayerPlaylistClear_Audio
-        MediaPlayerPlaylistClear_Video
-        MediaPlayerStop_Audio
-        MediaPlayerStop_Video
         Notification
         OnBannerSave_Movie
         OnClearArtSave_Movie
@@ -1643,6 +1633,7 @@ Public Class Structures
         Dim bEpisodeCredits As Boolean
         Dim bEpisodeDirectors As Boolean
         Dim bEpisodeGuestStars As Boolean
+        Dim bEpisodeOriginalTitle As Boolean
         Dim bEpisodePlot As Boolean
         Dim bEpisodeRating As Boolean
         Dim bEpisodeRuntime As Boolean

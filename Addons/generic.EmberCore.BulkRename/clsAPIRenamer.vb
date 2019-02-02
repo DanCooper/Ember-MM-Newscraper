@@ -614,13 +614,13 @@ Public Class FileFolderRenamer
         If _DBElement.Movie.FileInfoSpecified Then
             'Resolution
             If _DBElement.Movie.FileInfo.StreamDetails.VideoSpecified Then
-                Dim tVid As MediaContainers.Video = NFO.GetBestVideo(_DBElement.Movie.FileInfo)
-                Dim tRes As String = NFO.GetResolutionFromDimensions(tVid)
+                Dim tVid As MediaContainers.Video = Info.GetBestVideo(_DBElement.Movie.FileInfo)
+                Dim tRes As String = Info.GetResolutionFromDimensions(tVid)
                 MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
             End If
 
             If _DBElement.Movie.FileInfo.StreamDetails.AudioSpecified Then
-                Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_DBElement.Movie.FileInfo, _DBElement.ContentType)
+                Dim tAud As MediaContainers.Audio = Info.GetBestAudio(_DBElement.Movie.FileInfo, _DBElement.ContentType)
 
                 'Audio Channels
                 If tAud.ChannelsSpecified Then
@@ -828,13 +828,13 @@ Public Class FileFolderRenamer
         If _DBElement.TVEpisode.FileInfoSpecified Then
             'Resolution
             If _DBElement.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
-                Dim tVid As MediaContainers.Video = NFO.GetBestVideo(_DBElement.TVEpisode.FileInfo)
-                Dim tRes As String = NFO.GetResolutionFromDimensions(tVid)
+                Dim tVid As MediaContainers.Video = Info.GetBestVideo(_DBElement.TVEpisode.FileInfo)
+                Dim tRes As String = Info.GetResolutionFromDimensions(tVid)
                 EpisodeFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
             End If
 
             If _DBElement.TVEpisode.FileInfo.StreamDetails.AudioSpecified Then
-                Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_DBElement.TVEpisode.FileInfo, _DBElement.ContentType)
+                Dim tAud As MediaContainers.Audio = Info.GetBestAudio(_DBElement.TVEpisode.FileInfo, _DBElement.ContentType)
 
                 'Audio Channels
                 If tAud.ChannelsSpecified Then

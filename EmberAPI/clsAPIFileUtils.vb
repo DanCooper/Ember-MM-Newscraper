@@ -526,6 +526,16 @@ Namespace FileUtils
                         Return False
                     End If
 
+                Case Enums.ContentType.MovieSet
+                    For Each nMovie In dbElement.MoviesInSet
+                        If Not CheckOnlineStatus(nMovie.DBMovie, showMessage) Then
+                            Return False
+                        End If
+                        Return True
+                    Next
+                    'Empty MovieSet
+                    Return True
+
                 Case Enums.ContentType.TVShow, Enums.ContentType.TVSeason
                     While Not Directory.Exists(dbElement.ShowPath)
                         If showMessage Then
@@ -813,15 +823,29 @@ Namespace FileUtils
             Dim strFile() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
             If strFile IsNot Nothing Then
                 Dim fi As New FileInfo(strFile(0))
-                If fi.Extension = ".gif" Or fi.Extension = ".bmp" Or fi.Extension = ".jpg" Or fi.Extension = ".jpeg" Or fi.Extension = ".png" Then
+                Return fi.Extension = ".bmp" OrElse
+                    fi.Extension = ".gif" OrElse
+                    fi.Extension = ".jpeg" OrElse
+                    fi.Extension = ".jpg" OrElse
+                    fi.Extension = ".png"
+            Else
+                Dim tPictureBox As PictureBox = CType(e.Data.GetData(GetType(PictureBox)), PictureBox)
+                If tPictureBox IsNot Nothing AndAlso
+                    tPictureBox.Tag IsNot Nothing AndAlso
+                    TypeOf tPictureBox.Tag Is MediaContainers.Image Then
                     Return True
                 End If
             End If
-
             Return False
         End Function
 
         Public Shared Function GetDroppedImage(ByVal e As DragEventArgs) As MediaContainers.Image
+            Dim tPictureBox As PictureBox = CType(e.Data.GetData(GetType(PictureBox)), PictureBox)
+            If tPictureBox IsNot Nothing AndAlso
+                    tPictureBox.Tag IsNot Nothing AndAlso
+                    TypeOf tPictureBox.Tag Is MediaContainers.Image Then
+                Return CType(tPictureBox.Tag, MediaContainers.Image)
+            End If
             Dim tImage As New MediaContainers.Image
             If e.Data.GetDataPresent("HTML FORMAT") Then
                 Dim clipboardHtml As String = CStr(e.Data.GetData("HTML Format"))
@@ -847,7 +871,6 @@ Namespace FileUtils
                     Return tImage
                 End If
             End If
-
             Return tImage
         End Function
 
@@ -977,6 +1000,7 @@ Namespace FileUtils
                                 If File.Exists(String.Concat(a, t)) Then File.Move(String.Concat(a, t), Path.Combine(strNewPath, Path.GetFileName(String.Concat(a, t))))
                             Next
                         Next
+                        'TODO: search  more files like subtitles
                         iCount += 1
                     Next
 

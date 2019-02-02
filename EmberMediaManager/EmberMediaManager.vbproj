@@ -335,12 +335,6 @@
     <Compile Include="dlgSortFiles.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgStudioSelect.Designer.vb">
-      <DependentUpon>dlgStudioSelect.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgStudioSelect.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgThemeSelect.Designer.vb">
       <DependentUpon>dlgThemeSelect.vb</DependentUpon>
     </Compile>
@@ -488,9 +482,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgSortFiles.resx">
       <DependentUpon>dlgSortFiles.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgStudioSelect.resx">
-      <DependentUpon>dlgStudioSelect.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgThemeSelect.resx">
       <DependentUpon>dlgThemeSelect.vb</DependentUpon>
@@ -907,6 +898,9 @@
     <None Include="Resources\colRating.png" />
     <None Include="Resources\colUserRating.png" />
     <None Include="Resources\bug.png" />
+    <None Include="Resources\download_small.png" />
+    <None Include="Resources\folder_small.png" />
+    <None Include="Resources\internet_small.png" />
     <Content Include="Resources\movieset-Default.xml" />
     <Content Include="Resources\msaa.png" />
     <None Include="Resources\starempty.png" />

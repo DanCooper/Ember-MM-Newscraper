@@ -1019,7 +1019,7 @@ Public Class clsAPIOMDb
 
         Movies = APIResult.Result
 
-        If Movies.Search.Count > 0 Then
+        If Movies.Search IsNot Nothing AndAlso Movies.Search.Count > 0 Then
             Dim lstResults As IEnumerable(Of OMDbSharp.Search)
             If year > 0 Then
                 lstResults = Movies.Search.Where(Function(f) f.Type = "movie" And f.Year = year.ToString)

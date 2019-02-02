@@ -239,11 +239,11 @@
   <string id="238">Runtime</string>
   <string id="239">Director:</string>
   <string id="240">Use Original Title as Title</string>
-  <string id="241"></string>
-  <string id="242"></string>
+  <string id="241">Movie Assignment</string>
+  <string id="242">Database</string>
   <string id="243">Tags</string>
   <string id="244">Votes</string>
-  <string id="245">Rating:</string>
+  <string id="245">Ratings</string>
   <string id="246">Video Sources</string>
   <string id="247">Season Scraped</string>
   <string id="248">Show Scraped</string>
@@ -737,7 +737,7 @@
   <string id="736">Only Get Images for the Media Language</string>
   <string id="737">Also Get English Images</string>
   <string id="738">Remove episode from library</string>
-  <string id="739">Episode Ordering:</string>
+  <string id="739">Episode Ordering</string>
   <string id="740">Re-download Show Information Every:</string>
   <string id="741">Preferred Language</string>
   <string id="742">Fetch Available Languages</string>
@@ -765,7 +765,7 @@
   <string id="764">Source Name</string>
   <string id="765">Map Video Source by File Extension</string>
   <string id="766">(Re)Scrape Show</string>
-  <string id="767">Change Show</string>
+  <string id="767">Change TV Show</string>
   <string id="768">Delete TV Show</string>
   <string id="769">Edit Season</string>
   <string id="770">Change Images</string>
@@ -915,10 +915,10 @@
   <string id="914">Select Trailer</string>
   <string id="915">Select Trailer to Download</string>
   <string id="916">Manual Trailer Entry</string>
-  <string id="917">Direct Link, YouTube, IMDB or Apple Trailer URL:</string>
-  <string id="918">Compiling trailer list...</string>
+  <string id="917">Direct Link, YouTube, IMDB or Apple Trailer URL</string>
+  <string id="918">Compiling Trailer List</string>
   <string id="919">Preview Trailer</string>
-  <string id="920">Local Trailer:</string>
+  <string id="920">Local Trailer</string>
   <string id="921">The video format links could not be retrieved.</string>
   <string id="922">Fallback to english</string>
   <string id="923">Select Format</string>
@@ -1257,7 +1257,7 @@
   <string id="1165">Initializing Main Form. Please wait...</string>
   <string id="1166">Default Language</string>
   <string id="1167">Ordering</string>
-  <string id="1168">Blank</string>
+  <string id="1168"></string>
   <string id="1169">Please use the {0}{1}{0} button for this trailer</string>
   <string id="1170">Trailer could not be parsed</string>
   <string id="1171">Scrape Trailers</string>
@@ -1295,7 +1295,7 @@
   <string id="1203">MovieSets</string>
   <string id="1204">MovieSet Scraped</string>
   <string id="1205">Verifying MovieSet Details:</string>
-  <string id="1206">Collection ID:</string>
+  <string id="1206">Collection ID</string>
   <string id="1207">Also Get Blank Images</string>
   <string id="1208">Reload All MovieSets</string>
   <string id="1209">Ignore &lt;dateadded&gt; from NFO</string>

@@ -790,14 +790,14 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuMarked = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuCustom = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeMovieSets = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuScrapeTVShows = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdateMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
@@ -849,277 +849,277 @@ Partial Class frmMain
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrRunTasks = New System.Windows.Forms.Timer(Me.components)
-        Me.StatusStrip.SuspendLayout()
-        Me.mnuMain.SuspendLayout()
-        CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.scMain.Panel1.SuspendLayout()
-        Me.scMain.Panel2.SuspendLayout()
-        Me.scMain.SuspendLayout()
-        Me.pnlFilterVideoSources_Movies.SuspendLayout()
-        Me.pnlFilterVideoSourcesMain_Movies.SuspendLayout()
-        Me.pnlFilterVideoSourcesTop_Movies.SuspendLayout()
-        Me.tblFilterVideoSourcesTop_Movies.SuspendLayout()
-        Me.pnlFilterCountries_Movies.SuspendLayout()
-        Me.pnlFilterCountriesMain_Movies.SuspendLayout()
-        Me.pnlFilterCountriesTop_Movies.SuspendLayout()
-        Me.tblFilterCountriesTop_Movies.SuspendLayout()
-        Me.pnlFilterGenres_Movies.SuspendLayout()
-        Me.pnlFilterGenresMain_Movies.SuspendLayout()
-        Me.pnlFilterGenresTop_Movies.SuspendLayout()
-        Me.tblFilterGenresTop_Movies.SuspendLayout()
-        Me.pnlFilterTags_Movies.SuspendLayout()
-        Me.pnlFilterTagsMain_Movies.SuspendLayout()
-        Me.pnlFilterTagsTop_Movies.SuspendLayout()
-        Me.tblFilterTagsTop_Movies.SuspendLayout()
-        Me.pnlFilterGenres_Shows.SuspendLayout()
-        Me.pnlFilterGenresMain_Shows.SuspendLayout()
-        Me.pnlFilterGenresTop_Shows.SuspendLayout()
-        Me.tblFilterGenresTop_Shows.SuspendLayout()
-        Me.pnlFilterTags_Shows.SuspendLayout()
-        Me.pnlFilterTagsMain_Shows.SuspendLayout()
-        Me.pnlFilterTagsTop_Shows.SuspendLayout()
-        Me.tblFilterTagsTop_Shows.SuspendLayout()
-        Me.pnlFilterDataFields_Movies.SuspendLayout()
-        Me.pnlFilterDataFieldsMain_Movies.SuspendLayout()
-        Me.pnlFilterDataFieldsTop_Movies.SuspendLayout()
-        Me.tblFilterDataFieldsTop_Movies.SuspendLayout()
-        Me.pnlFilterMissingItems_Movies.SuspendLayout()
-        Me.pnlFilterMissingItemsMain_Movies.SuspendLayout()
-        Me.tblFilterMissingItemsMain_Movies.SuspendLayout()
-        Me.pnlFilterMissingItemsTop_Movies.SuspendLayout()
-        Me.tblFilterMissingItemsTop_Movies.SuspendLayout()
-        Me.pnlFilterMissingItems_MovieSets.SuspendLayout()
-        Me.pnlFilterMissingItemsMain_MovieSets.SuspendLayout()
-        Me.tlbFilterMissingItemsMain_MovieSets.SuspendLayout()
-        Me.pnlFilterMissingItemsTop_MovieSets.SuspendLayout()
-        Me.tblFilterMissingItemsTop_MovieSets.SuspendLayout()
-        Me.pnlFilterMissingItems_Shows.SuspendLayout()
-        Me.pnlFilterMissingItemsMain_Shows.SuspendLayout()
-        Me.tblFilterMissingItemsMain_Shows.SuspendLayout()
-        Me.pnlFilterMissingItemsTop_Shows.SuspendLayout()
-        Me.tblFilterMissingItemsTop_Shows.SuspendLayout()
-        Me.pnlFilterSources_Movies.SuspendLayout()
-        Me.pnlFilterSourcesMain_Movies.SuspendLayout()
-        Me.pnlFilterSourcesTop_Movies.SuspendLayout()
-        Me.tblFilterSourcesTop_Movies.SuspendLayout()
-        Me.pnlFilterSources_Shows.SuspendLayout()
-        Me.pnlFilterSourcesMain_Shows.SuspendLayout()
-        Me.pnlFilterSourcesTop_Shows.SuspendLayout()
-        Me.tblFilterSourcesTop_Shows.SuspendLayout()
-        CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuMovie.SuspendLayout()
-        Me.mnuGenres.SuspendLayout()
-        Me.mnuTags.SuspendLayout()
-        Me.mnuScrapeType.SuspendLayout()
-        Me.mnuScrapeModifier.SuspendLayout()
-        Me.mnuScrapeOption.SuspendLayout()
-        Me.mnuLanguages.SuspendLayout()
-        CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuMovieSet.SuspendLayout()
-        CType(Me.scTV, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.scTV.Panel1.SuspendLayout()
-        Me.scTV.Panel2.SuspendLayout()
-        Me.scTV.SuspendLayout()
-        CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuShow.SuspendLayout()
-        CType(Me.scTVSeasonsEpisodes, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.scTVSeasonsEpisodes.Panel1.SuspendLayout()
-        Me.scTVSeasonsEpisodes.Panel2.SuspendLayout()
-        Me.scTVSeasonsEpisodes.SuspendLayout()
-        CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuSeason.SuspendLayout()
-        CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuEpisode.SuspendLayout()
-        Me.pnlListTop.SuspendLayout()
-        Me.tblListTop.SuspendLayout()
-        Me.pnlSearchMovies.SuspendLayout()
-        CType(Me.picSearchMovies, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlSearchMovieSets.SuspendLayout()
-        CType(Me.picSearchMovieSets, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlSearchTVShows.SuspendLayout()
-        CType(Me.picSearchTVShows, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlFilter_Movies.SuspendLayout()
-        Me.tblFilter_Movies.SuspendLayout()
-        Me.gbFilterGeneral_Movies.SuspendLayout()
-        Me.tblFilterGeneral_Movies.SuspendLayout()
-        Me.gbFilterSorting_Movies.SuspendLayout()
-        Me.tblFilterSorting_Movies.SuspendLayout()
-        Me.gbFilterSpecific_Movies.SuspendLayout()
-        Me.tblFilterSpecific_Movies.SuspendLayout()
-        Me.gbFilterModifier_Movies.SuspendLayout()
-        Me.tblFilterModifier_Movies.SuspendLayout()
-        Me.tblFilterSpecificData_Movies.SuspendLayout()
-        Me.gbFilterDataField_Movies.SuspendLayout()
-        Me.tblFilterDataField_Movies.SuspendLayout()
-        Me.gbFilterList_Movies.SuspendLayout()
-        Me.tblFilterLists_Movies.SuspendLayout()
-        Me.pnlFilterTop_Movies.SuspendLayout()
-        Me.tblFilterTop_Movies.SuspendLayout()
-        Me.pnlFilter_MovieSets.SuspendLayout()
-        Me.tblFilter_MovieSets.SuspendLayout()
-        Me.gbFilterList_MovieSets.SuspendLayout()
-        Me.tblFilterLists_MovieSets.SuspendLayout()
-        Me.gbFilterGeneral_MovieSets.SuspendLayout()
-        Me.tblFilterGeneral_MovieSets.SuspendLayout()
-        Me.gbFilterSpecific_MovieSets.SuspendLayout()
-        Me.tblFilterSpecific_MovieSets.SuspendLayout()
-        Me.gbFilterModifier_MovieSets.SuspendLayout()
-        Me.tblFilterModifier_MovieSets.SuspendLayout()
-        Me.pnlFilterTop_MovieSets.SuspendLayout()
-        Me.tblFilterTop_MovieSets.SuspendLayout()
-        Me.pnlFilter_Shows.SuspendLayout()
-        Me.tblFilter_Shows.SuspendLayout()
-        Me.gbFilterSorting_Shows.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
-        Me.gbFilterList_Shows.SuspendLayout()
-        Me.tblFilterLists_Shows.SuspendLayout()
-        Me.gbFilterGeneral_Shows.SuspendLayout()
-        Me.tblFilterGeneral_Shows.SuspendLayout()
-        Me.gbFilterSpecific_Shows.SuspendLayout()
-        Me.tblFilterSpecific_Shows.SuspendLayout()
-        Me.gbFilterModifier_Shows.SuspendLayout()
-        Me.tblFilterModifier_Shows.SuspendLayout()
-        Me.tblFilterSpecificData_Shows.SuspendLayout()
-        Me.gbFilterSpecificEpisodes_Shows.SuspendLayout()
-        Me.tblFilterSpecificEpisodes_Shows.SuspendLayout()
-        Me.gbFilterSpecificShows_Shows.SuspendLayout()
-        Me.TableLayoutPanel2.SuspendLayout()
-        Me.pnlFilterTop_Shows.SuspendLayout()
-        Me.tblFilterTop_Shows.SuspendLayout()
-        Me.pnlCancel.SuspendLayout()
-        Me.pnlNoInfo.SuspendLayout()
-        Me.pnlNoInfoBG.SuspendLayout()
-        CType(Me.pbNoInfo, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlInfoPanel.SuspendLayout()
-        Me.pnlMoviesInSet.SuspendLayout()
-        Me.pnlGuestStars.SuspendLayout()
-        CType(Me.pbGuestStarsLoad, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbGuestStars, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlActors.SuspendLayout()
-        CType(Me.pbActorsLoad, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbActors, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbBannerCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlBanner.SuspendLayout()
-        Me.pnlBannerMain.SuspendLayout()
-        Me.tblBannerMain.SuspendLayout()
-        CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlBannerBottom.SuspendLayout()
-        Me.tblBannerBottom.SuspendLayout()
-        Me.pnlBannerTop.SuspendLayout()
-        Me.tblBannerTop.SuspendLayout()
-        CType(Me.pbCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlClearLogo.SuspendLayout()
-        Me.pnlClearLogoMain.SuspendLayout()
-        Me.tblClearLogoMain.SuspendLayout()
-        CType(Me.pbClearLogo, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlClearLogoBottom.SuspendLayout()
-        Me.tblClearLogoBottom.SuspendLayout()
-        Me.pnlClearLogoTop.SuspendLayout()
-        Me.tblClearLogoTop.SuspendLayout()
-        Me.pnlCharacterArt.SuspendLayout()
-        Me.pnlCharacterArtMain.SuspendLayout()
-        Me.tblCharacterArtMain.SuspendLayout()
-        CType(Me.pbCharacterArt, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlCharacterArtBottom.SuspendLayout()
-        Me.tblCharacterArtBottom.SuspendLayout()
-        Me.pnlCharacterArtTop.SuspendLayout()
-        Me.tblCharacterArtTop.SuspendLayout()
-        CType(Me.pbCharacterArtCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlDiscArt.SuspendLayout()
-        Me.pnlDiscArtMain.SuspendLayout()
-        Me.tblDiscArtMain.SuspendLayout()
-        CType(Me.pbDiscArt, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlDiscArtBottom.SuspendLayout()
-        Me.tblDiscArtBottom.SuspendLayout()
-        Me.pnlDiscArtTop.SuspendLayout()
-        Me.tblDiscArtTop.SuspendLayout()
-        CType(Me.pbDiscArtCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbClearLogoCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlClearArt.SuspendLayout()
-        Me.pnlClearArtMain.SuspendLayout()
-        Me.tblClearArtMain.SuspendLayout()
-        CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlClearArtBottom.SuspendLayout()
-        Me.tblClearArtBottom.SuspendLayout()
-        Me.pnlClearArtTop.SuspendLayout()
-        Me.tblClearArtTop.SuspendLayout()
-        Me.pnlLandscape.SuspendLayout()
-        Me.pnlLandscapeMain.SuspendLayout()
-        Me.tblLandscapeMain.SuspendLayout()
-        CType(Me.pbLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlLandscapeBottom.SuspendLayout()
-        Me.tblLandscapeBottom.SuspendLayout()
-        Me.pnlLandscapeTop.SuspendLayout()
-        Me.tblLandscapeTop.SuspendLayout()
-        Me.pnlFanartSmall.SuspendLayout()
-        Me.pnlFanartSmallMain.SuspendLayout()
-        Me.tblFanartSmallMain.SuspendLayout()
-        CType(Me.pbFanartSmall, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlFanartSmallBottom.SuspendLayout()
-        Me.tblFanartSmallBottom.SuspendLayout()
-        Me.pnlFanartSmallTop.SuspendLayout()
-        Me.tblFanartSmallTop.SuspendLayout()
-        Me.pnlPoster.SuspendLayout()
-        Me.pnlPosterMain.SuspendLayout()
-        Me.tblPosterMain.SuspendLayout()
-        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlPosterBottom.SuspendLayout()
-        Me.tblPosterBottom.SuspendLayout()
-        Me.pnlPosterTop.SuspendLayout()
-        Me.tblPosterTop.SuspendLayout()
-        Me.pnlTop.SuspendLayout()
-        Me.tblHeader.SuspendLayout()
-        Me.pnlRating.SuspendLayout()
-        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlInfoIcons.SuspendLayout()
-        Me.tblInfoIcons.SuspendLayout()
-        Me.tblSubtitleLang.SuspendLayout()
-        CType(Me.pbSubtitleLang0, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang6, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang5, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang3, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang4, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tblAudioLang.SuspendLayout()
-        CType(Me.pbAudioLang0, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang3, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang4, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang5, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang6, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbVideoSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbVideoCodec, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbVideoResolution, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioChannels, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbVideoChannels, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbClearArtCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlMPAA.SuspendLayout()
-        CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tsMain.SuspendLayout()
-        Me.mnuScrapeSubmenu.SuspendLayout()
-        Me.cmnuTray.SuspendLayout()
-        Me.pnlLoadSettingsBG.SuspendLayout()
-        CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlLoadSettings.SuspendLayout()
-        Me.SuspendLayout()
+        Me.StatusStrip.SuspendLayout
+        Me.mnuMain.SuspendLayout
+        CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.scMain.Panel1.SuspendLayout
+        Me.scMain.Panel2.SuspendLayout
+        Me.scMain.SuspendLayout
+        Me.pnlFilterVideoSources_Movies.SuspendLayout
+        Me.pnlFilterVideoSourcesMain_Movies.SuspendLayout
+        Me.pnlFilterVideoSourcesTop_Movies.SuspendLayout
+        Me.tblFilterVideoSourcesTop_Movies.SuspendLayout
+        Me.pnlFilterCountries_Movies.SuspendLayout
+        Me.pnlFilterCountriesMain_Movies.SuspendLayout
+        Me.pnlFilterCountriesTop_Movies.SuspendLayout
+        Me.tblFilterCountriesTop_Movies.SuspendLayout
+        Me.pnlFilterGenres_Movies.SuspendLayout
+        Me.pnlFilterGenresMain_Movies.SuspendLayout
+        Me.pnlFilterGenresTop_Movies.SuspendLayout
+        Me.tblFilterGenresTop_Movies.SuspendLayout
+        Me.pnlFilterTags_Movies.SuspendLayout
+        Me.pnlFilterTagsMain_Movies.SuspendLayout
+        Me.pnlFilterTagsTop_Movies.SuspendLayout
+        Me.tblFilterTagsTop_Movies.SuspendLayout
+        Me.pnlFilterGenres_Shows.SuspendLayout
+        Me.pnlFilterGenresMain_Shows.SuspendLayout
+        Me.pnlFilterGenresTop_Shows.SuspendLayout
+        Me.tblFilterGenresTop_Shows.SuspendLayout
+        Me.pnlFilterTags_Shows.SuspendLayout
+        Me.pnlFilterTagsMain_Shows.SuspendLayout
+        Me.pnlFilterTagsTop_Shows.SuspendLayout
+        Me.tblFilterTagsTop_Shows.SuspendLayout
+        Me.pnlFilterDataFields_Movies.SuspendLayout
+        Me.pnlFilterDataFieldsMain_Movies.SuspendLayout
+        Me.pnlFilterDataFieldsTop_Movies.SuspendLayout
+        Me.tblFilterDataFieldsTop_Movies.SuspendLayout
+        Me.pnlFilterMissingItems_Movies.SuspendLayout
+        Me.pnlFilterMissingItemsMain_Movies.SuspendLayout
+        Me.tblFilterMissingItemsMain_Movies.SuspendLayout
+        Me.pnlFilterMissingItemsTop_Movies.SuspendLayout
+        Me.tblFilterMissingItemsTop_Movies.SuspendLayout
+        Me.pnlFilterMissingItems_MovieSets.SuspendLayout
+        Me.pnlFilterMissingItemsMain_MovieSets.SuspendLayout
+        Me.tlbFilterMissingItemsMain_MovieSets.SuspendLayout
+        Me.pnlFilterMissingItemsTop_MovieSets.SuspendLayout
+        Me.tblFilterMissingItemsTop_MovieSets.SuspendLayout
+        Me.pnlFilterMissingItems_Shows.SuspendLayout
+        Me.pnlFilterMissingItemsMain_Shows.SuspendLayout
+        Me.tblFilterMissingItemsMain_Shows.SuspendLayout
+        Me.pnlFilterMissingItemsTop_Shows.SuspendLayout
+        Me.tblFilterMissingItemsTop_Shows.SuspendLayout
+        Me.pnlFilterSources_Movies.SuspendLayout
+        Me.pnlFilterSourcesMain_Movies.SuspendLayout
+        Me.pnlFilterSourcesTop_Movies.SuspendLayout
+        Me.tblFilterSourcesTop_Movies.SuspendLayout
+        Me.pnlFilterSources_Shows.SuspendLayout
+        Me.pnlFilterSourcesMain_Shows.SuspendLayout
+        Me.pnlFilterSourcesTop_Shows.SuspendLayout
+        Me.tblFilterSourcesTop_Shows.SuspendLayout
+        CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.cmnuMovie.SuspendLayout
+        Me.mnuGenres.SuspendLayout
+        Me.mnuTags.SuspendLayout
+        Me.mnuScrapeType.SuspendLayout
+        Me.mnuScrapeModifier.SuspendLayout
+        Me.mnuScrapeOption.SuspendLayout
+        Me.mnuLanguages.SuspendLayout
+        CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.cmnuMovieSet.SuspendLayout
+        CType(Me.scTV, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.scTV.Panel1.SuspendLayout
+        Me.scTV.Panel2.SuspendLayout
+        Me.scTV.SuspendLayout
+        CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.cmnuShow.SuspendLayout
+        CType(Me.scTVSeasonsEpisodes, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.scTVSeasonsEpisodes.Panel1.SuspendLayout
+        Me.scTVSeasonsEpisodes.Panel2.SuspendLayout
+        Me.scTVSeasonsEpisodes.SuspendLayout
+        CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.cmnuSeason.SuspendLayout
+        CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.cmnuEpisode.SuspendLayout
+        Me.pnlListTop.SuspendLayout
+        Me.tblListTop.SuspendLayout
+        Me.pnlSearchMovies.SuspendLayout
+        CType(Me.picSearchMovies, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlSearchMovieSets.SuspendLayout
+        CType(Me.picSearchMovieSets, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlSearchTVShows.SuspendLayout
+        CType(Me.picSearchTVShows, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlFilter_Movies.SuspendLayout
+        Me.tblFilter_Movies.SuspendLayout
+        Me.gbFilterGeneral_Movies.SuspendLayout
+        Me.tblFilterGeneral_Movies.SuspendLayout
+        Me.gbFilterSorting_Movies.SuspendLayout
+        Me.tblFilterSorting_Movies.SuspendLayout
+        Me.gbFilterSpecific_Movies.SuspendLayout
+        Me.tblFilterSpecific_Movies.SuspendLayout
+        Me.gbFilterModifier_Movies.SuspendLayout
+        Me.tblFilterModifier_Movies.SuspendLayout
+        Me.tblFilterSpecificData_Movies.SuspendLayout
+        Me.gbFilterDataField_Movies.SuspendLayout
+        Me.tblFilterDataField_Movies.SuspendLayout
+        Me.gbFilterList_Movies.SuspendLayout
+        Me.tblFilterLists_Movies.SuspendLayout
+        Me.pnlFilterTop_Movies.SuspendLayout
+        Me.tblFilterTop_Movies.SuspendLayout
+        Me.pnlFilter_MovieSets.SuspendLayout
+        Me.tblFilter_MovieSets.SuspendLayout
+        Me.gbFilterList_MovieSets.SuspendLayout
+        Me.tblFilterLists_MovieSets.SuspendLayout
+        Me.gbFilterGeneral_MovieSets.SuspendLayout
+        Me.tblFilterGeneral_MovieSets.SuspendLayout
+        Me.gbFilterSpecific_MovieSets.SuspendLayout
+        Me.tblFilterSpecific_MovieSets.SuspendLayout
+        Me.gbFilterModifier_MovieSets.SuspendLayout
+        Me.tblFilterModifier_MovieSets.SuspendLayout
+        Me.pnlFilterTop_MovieSets.SuspendLayout
+        Me.tblFilterTop_MovieSets.SuspendLayout
+        Me.pnlFilter_Shows.SuspendLayout
+        Me.tblFilter_Shows.SuspendLayout
+        Me.gbFilterSorting_Shows.SuspendLayout
+        Me.TableLayoutPanel1.SuspendLayout
+        Me.gbFilterList_Shows.SuspendLayout
+        Me.tblFilterLists_Shows.SuspendLayout
+        Me.gbFilterGeneral_Shows.SuspendLayout
+        Me.tblFilterGeneral_Shows.SuspendLayout
+        Me.gbFilterSpecific_Shows.SuspendLayout
+        Me.tblFilterSpecific_Shows.SuspendLayout
+        Me.gbFilterModifier_Shows.SuspendLayout
+        Me.tblFilterModifier_Shows.SuspendLayout
+        Me.tblFilterSpecificData_Shows.SuspendLayout
+        Me.gbFilterSpecificEpisodes_Shows.SuspendLayout
+        Me.tblFilterSpecificEpisodes_Shows.SuspendLayout
+        Me.gbFilterSpecificShows_Shows.SuspendLayout
+        Me.TableLayoutPanel2.SuspendLayout
+        Me.pnlFilterTop_Shows.SuspendLayout
+        Me.tblFilterTop_Shows.SuspendLayout
+        Me.pnlCancel.SuspendLayout
+        Me.pnlNoInfo.SuspendLayout
+        Me.pnlNoInfoBG.SuspendLayout
+        CType(Me.pbNoInfo, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlInfoPanel.SuspendLayout
+        Me.pnlMoviesInSet.SuspendLayout
+        Me.pnlGuestStars.SuspendLayout
+        CType(Me.pbGuestStarsLoad, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbGuestStars, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlActors.SuspendLayout
+        CType(Me.pbActorsLoad, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbActors, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbBannerCache, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlBanner.SuspendLayout
+        Me.pnlBannerMain.SuspendLayout
+        Me.tblBannerMain.SuspendLayout
+        CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlBannerBottom.SuspendLayout
+        Me.tblBannerBottom.SuspendLayout
+        Me.pnlBannerTop.SuspendLayout
+        Me.tblBannerTop.SuspendLayout
+        CType(Me.pbCache, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlClearLogo.SuspendLayout
+        Me.pnlClearLogoMain.SuspendLayout
+        Me.tblClearLogoMain.SuspendLayout
+        CType(Me.pbClearLogo, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlClearLogoBottom.SuspendLayout
+        Me.tblClearLogoBottom.SuspendLayout
+        Me.pnlClearLogoTop.SuspendLayout
+        Me.tblClearLogoTop.SuspendLayout
+        Me.pnlCharacterArt.SuspendLayout
+        Me.pnlCharacterArtMain.SuspendLayout
+        Me.tblCharacterArtMain.SuspendLayout
+        CType(Me.pbCharacterArt, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlCharacterArtBottom.SuspendLayout
+        Me.tblCharacterArtBottom.SuspendLayout
+        Me.pnlCharacterArtTop.SuspendLayout
+        Me.tblCharacterArtTop.SuspendLayout
+        CType(Me.pbCharacterArtCache, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlDiscArt.SuspendLayout
+        Me.pnlDiscArtMain.SuspendLayout
+        Me.tblDiscArtMain.SuspendLayout
+        CType(Me.pbDiscArt, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlDiscArtBottom.SuspendLayout
+        Me.tblDiscArtBottom.SuspendLayout
+        Me.pnlDiscArtTop.SuspendLayout
+        Me.tblDiscArtTop.SuspendLayout
+        CType(Me.pbDiscArtCache, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbClearLogoCache, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlClearArt.SuspendLayout
+        Me.pnlClearArtMain.SuspendLayout
+        Me.tblClearArtMain.SuspendLayout
+        CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlClearArtBottom.SuspendLayout
+        Me.tblClearArtBottom.SuspendLayout
+        Me.pnlClearArtTop.SuspendLayout
+        Me.tblClearArtTop.SuspendLayout
+        Me.pnlLandscape.SuspendLayout
+        Me.pnlLandscapeMain.SuspendLayout
+        Me.tblLandscapeMain.SuspendLayout
+        CType(Me.pbLandscape, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlLandscapeBottom.SuspendLayout
+        Me.tblLandscapeBottom.SuspendLayout
+        Me.pnlLandscapeTop.SuspendLayout
+        Me.tblLandscapeTop.SuspendLayout
+        Me.pnlFanartSmall.SuspendLayout
+        Me.pnlFanartSmallMain.SuspendLayout
+        Me.tblFanartSmallMain.SuspendLayout
+        CType(Me.pbFanartSmall, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlFanartSmallBottom.SuspendLayout
+        Me.tblFanartSmallBottom.SuspendLayout
+        Me.pnlFanartSmallTop.SuspendLayout
+        Me.tblFanartSmallTop.SuspendLayout
+        Me.pnlPoster.SuspendLayout
+        Me.pnlPosterMain.SuspendLayout
+        Me.tblPosterMain.SuspendLayout
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlPosterBottom.SuspendLayout
+        Me.tblPosterBottom.SuspendLayout
+        Me.pnlPosterTop.SuspendLayout
+        Me.tblPosterTop.SuspendLayout
+        Me.pnlTop.SuspendLayout
+        Me.tblHeader.SuspendLayout
+        Me.pnlRating.SuspendLayout
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlInfoIcons.SuspendLayout
+        Me.tblInfoIcons.SuspendLayout
+        Me.tblSubtitleLang.SuspendLayout
+        CType(Me.pbSubtitleLang0, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbSubtitleLang1, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbSubtitleLang6, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbSubtitleLang2, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbSubtitleLang5, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbSubtitleLang3, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbSubtitleLang4, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.tblAudioLang.SuspendLayout
+        CType(Me.pbAudioLang0, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbAudioLang3, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbAudioLang4, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbAudioLang5, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbAudioLang6, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbVideoSource, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbVideoCodec, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbVideoResolution, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbAudioChannels, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbVideoChannels, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbClearArtCache, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlMPAA.SuspendLayout
+        CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.tsMain.SuspendLayout
+        Me.mnuScrapeSubmenu.SuspendLayout
+        Me.cmnuTray.SuspendLayout
+        Me.pnlLoadSettingsBG.SuspendLayout
+        CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlLoadSettings.SuspendLayout
+        Me.SuspendLayout
         '
         'BottomToolStripPanel
         '
@@ -1294,7 +1294,7 @@ Partial Class frmMain
         'tsSpring
         '
         Me.tsSpring.Name = "tsSpring"
-        Me.tsSpring.Size = New System.Drawing.Size(1488, 17)
+        Me.tsSpring.Size = New System.Drawing.Size(881, 17)
         Me.tsSpring.Spring = True
         Me.tsSpring.Text = "  "
         '
@@ -9626,7 +9626,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
         Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
-        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeTVShows
+        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeMovies
         Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
         '
         'mnuScrapeSubmenuAll
@@ -9668,14 +9668,14 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuCustom.Tag = "custom"
         Me.mnuScrapeSubmenuCustom.Text = "Custom Scraper..."
         '
-        'cmnuTrayScrapeMovies
+        'cmnuTrayScrapeMovieSets
         '
-        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
-        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovies.Tag = "movie"
-        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
+        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
+        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
+        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
         '
         'mnuScrapeMovieSets
         '
@@ -9723,15 +9723,6 @@ Partial Class frmMain
         Me.mnuUpdateShows.Size = New System.Drawing.Size(123, 22)
         Me.mnuUpdateShows.Text = "TV Shows"
         '
-        'cmnuTrayScrapeMovieSets
-        '
-        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
-        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
-        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
-        '
         'cmnuTrayScrapeTVShows
         '
         Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
@@ -9740,6 +9731,15 @@ Partial Class frmMain
         Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
         Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
+        '
+        'cmnuTrayScrapeMovies
+        '
+        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
+        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovies.Tag = "movie"
+        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
         '
         'ilColumnIcons
         '
@@ -10072,428 +10072,428 @@ Partial Class frmMain
         Me.Padding = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.Text = "Ember Media Manager"
         Me.StatusStrip.ResumeLayout(False)
-        Me.StatusStrip.PerformLayout()
+        Me.StatusStrip.PerformLayout
         Me.mnuMain.ResumeLayout(False)
-        Me.mnuMain.PerformLayout()
+        Me.mnuMain.PerformLayout
         Me.scMain.Panel1.ResumeLayout(False)
-        Me.scMain.Panel1.PerformLayout()
+        Me.scMain.Panel1.PerformLayout
         Me.scMain.Panel2.ResumeLayout(False)
-        Me.scMain.Panel2.PerformLayout()
-        CType(Me.scMain, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.scMain.Panel2.PerformLayout
+        CType(Me.scMain, System.ComponentModel.ISupportInitialize).EndInit
         Me.scMain.ResumeLayout(False)
         Me.pnlFilterVideoSources_Movies.ResumeLayout(False)
-        Me.pnlFilterVideoSources_Movies.PerformLayout()
+        Me.pnlFilterVideoSources_Movies.PerformLayout
         Me.pnlFilterVideoSourcesMain_Movies.ResumeLayout(False)
         Me.pnlFilterVideoSourcesTop_Movies.ResumeLayout(False)
-        Me.pnlFilterVideoSourcesTop_Movies.PerformLayout()
+        Me.pnlFilterVideoSourcesTop_Movies.PerformLayout
         Me.tblFilterVideoSourcesTop_Movies.ResumeLayout(False)
-        Me.tblFilterVideoSourcesTop_Movies.PerformLayout()
+        Me.tblFilterVideoSourcesTop_Movies.PerformLayout
         Me.pnlFilterCountries_Movies.ResumeLayout(False)
-        Me.pnlFilterCountries_Movies.PerformLayout()
+        Me.pnlFilterCountries_Movies.PerformLayout
         Me.pnlFilterCountriesMain_Movies.ResumeLayout(False)
         Me.pnlFilterCountriesTop_Movies.ResumeLayout(False)
-        Me.pnlFilterCountriesTop_Movies.PerformLayout()
+        Me.pnlFilterCountriesTop_Movies.PerformLayout
         Me.tblFilterCountriesTop_Movies.ResumeLayout(False)
-        Me.tblFilterCountriesTop_Movies.PerformLayout()
+        Me.tblFilterCountriesTop_Movies.PerformLayout
         Me.pnlFilterGenres_Movies.ResumeLayout(False)
-        Me.pnlFilterGenres_Movies.PerformLayout()
+        Me.pnlFilterGenres_Movies.PerformLayout
         Me.pnlFilterGenresMain_Movies.ResumeLayout(False)
         Me.pnlFilterGenresTop_Movies.ResumeLayout(False)
-        Me.pnlFilterGenresTop_Movies.PerformLayout()
+        Me.pnlFilterGenresTop_Movies.PerformLayout
         Me.tblFilterGenresTop_Movies.ResumeLayout(False)
-        Me.tblFilterGenresTop_Movies.PerformLayout()
+        Me.tblFilterGenresTop_Movies.PerformLayout
         Me.pnlFilterTags_Movies.ResumeLayout(False)
-        Me.pnlFilterTags_Movies.PerformLayout()
+        Me.pnlFilterTags_Movies.PerformLayout
         Me.pnlFilterTagsMain_Movies.ResumeLayout(False)
         Me.pnlFilterTagsTop_Movies.ResumeLayout(False)
-        Me.pnlFilterTagsTop_Movies.PerformLayout()
+        Me.pnlFilterTagsTop_Movies.PerformLayout
         Me.tblFilterTagsTop_Movies.ResumeLayout(False)
-        Me.tblFilterTagsTop_Movies.PerformLayout()
+        Me.tblFilterTagsTop_Movies.PerformLayout
         Me.pnlFilterGenres_Shows.ResumeLayout(False)
-        Me.pnlFilterGenres_Shows.PerformLayout()
+        Me.pnlFilterGenres_Shows.PerformLayout
         Me.pnlFilterGenresMain_Shows.ResumeLayout(False)
         Me.pnlFilterGenresTop_Shows.ResumeLayout(False)
-        Me.pnlFilterGenresTop_Shows.PerformLayout()
+        Me.pnlFilterGenresTop_Shows.PerformLayout
         Me.tblFilterGenresTop_Shows.ResumeLayout(False)
-        Me.tblFilterGenresTop_Shows.PerformLayout()
+        Me.tblFilterGenresTop_Shows.PerformLayout
         Me.pnlFilterTags_Shows.ResumeLayout(False)
-        Me.pnlFilterTags_Shows.PerformLayout()
+        Me.pnlFilterTags_Shows.PerformLayout
         Me.pnlFilterTagsMain_Shows.ResumeLayout(False)
         Me.pnlFilterTagsTop_Shows.ResumeLayout(False)
-        Me.pnlFilterTagsTop_Shows.PerformLayout()
+        Me.pnlFilterTagsTop_Shows.PerformLayout
         Me.tblFilterTagsTop_Shows.ResumeLayout(False)
-        Me.tblFilterTagsTop_Shows.PerformLayout()
+        Me.tblFilterTagsTop_Shows.PerformLayout
         Me.pnlFilterDataFields_Movies.ResumeLayout(False)
-        Me.pnlFilterDataFields_Movies.PerformLayout()
+        Me.pnlFilterDataFields_Movies.PerformLayout
         Me.pnlFilterDataFieldsMain_Movies.ResumeLayout(False)
         Me.pnlFilterDataFieldsTop_Movies.ResumeLayout(False)
-        Me.pnlFilterDataFieldsTop_Movies.PerformLayout()
+        Me.pnlFilterDataFieldsTop_Movies.PerformLayout
         Me.tblFilterDataFieldsTop_Movies.ResumeLayout(False)
-        Me.tblFilterDataFieldsTop_Movies.PerformLayout()
+        Me.tblFilterDataFieldsTop_Movies.PerformLayout
         Me.pnlFilterMissingItems_Movies.ResumeLayout(False)
-        Me.pnlFilterMissingItems_Movies.PerformLayout()
+        Me.pnlFilterMissingItems_Movies.PerformLayout
         Me.pnlFilterMissingItemsMain_Movies.ResumeLayout(False)
-        Me.pnlFilterMissingItemsMain_Movies.PerformLayout()
+        Me.pnlFilterMissingItemsMain_Movies.PerformLayout
         Me.tblFilterMissingItemsMain_Movies.ResumeLayout(False)
-        Me.tblFilterMissingItemsMain_Movies.PerformLayout()
+        Me.tblFilterMissingItemsMain_Movies.PerformLayout
         Me.pnlFilterMissingItemsTop_Movies.ResumeLayout(False)
-        Me.pnlFilterMissingItemsTop_Movies.PerformLayout()
+        Me.pnlFilterMissingItemsTop_Movies.PerformLayout
         Me.tblFilterMissingItemsTop_Movies.ResumeLayout(False)
-        Me.tblFilterMissingItemsTop_Movies.PerformLayout()
+        Me.tblFilterMissingItemsTop_Movies.PerformLayout
         Me.pnlFilterMissingItems_MovieSets.ResumeLayout(False)
-        Me.pnlFilterMissingItems_MovieSets.PerformLayout()
+        Me.pnlFilterMissingItems_MovieSets.PerformLayout
         Me.pnlFilterMissingItemsMain_MovieSets.ResumeLayout(False)
-        Me.pnlFilterMissingItemsMain_MovieSets.PerformLayout()
+        Me.pnlFilterMissingItemsMain_MovieSets.PerformLayout
         Me.tlbFilterMissingItemsMain_MovieSets.ResumeLayout(False)
-        Me.tlbFilterMissingItemsMain_MovieSets.PerformLayout()
+        Me.tlbFilterMissingItemsMain_MovieSets.PerformLayout
         Me.pnlFilterMissingItemsTop_MovieSets.ResumeLayout(False)
-        Me.pnlFilterMissingItemsTop_MovieSets.PerformLayout()
+        Me.pnlFilterMissingItemsTop_MovieSets.PerformLayout
         Me.tblFilterMissingItemsTop_MovieSets.ResumeLayout(False)
-        Me.tblFilterMissingItemsTop_MovieSets.PerformLayout()
+        Me.tblFilterMissingItemsTop_MovieSets.PerformLayout
         Me.pnlFilterMissingItems_Shows.ResumeLayout(False)
-        Me.pnlFilterMissingItems_Shows.PerformLayout()
+        Me.pnlFilterMissingItems_Shows.PerformLayout
         Me.pnlFilterMissingItemsMain_Shows.ResumeLayout(False)
-        Me.pnlFilterMissingItemsMain_Shows.PerformLayout()
+        Me.pnlFilterMissingItemsMain_Shows.PerformLayout
         Me.tblFilterMissingItemsMain_Shows.ResumeLayout(False)
-        Me.tblFilterMissingItemsMain_Shows.PerformLayout()
+        Me.tblFilterMissingItemsMain_Shows.PerformLayout
         Me.pnlFilterMissingItemsTop_Shows.ResumeLayout(False)
-        Me.pnlFilterMissingItemsTop_Shows.PerformLayout()
+        Me.pnlFilterMissingItemsTop_Shows.PerformLayout
         Me.tblFilterMissingItemsTop_Shows.ResumeLayout(False)
-        Me.tblFilterMissingItemsTop_Shows.PerformLayout()
+        Me.tblFilterMissingItemsTop_Shows.PerformLayout
         Me.pnlFilterSources_Movies.ResumeLayout(False)
-        Me.pnlFilterSources_Movies.PerformLayout()
+        Me.pnlFilterSources_Movies.PerformLayout
         Me.pnlFilterSourcesMain_Movies.ResumeLayout(False)
         Me.pnlFilterSourcesTop_Movies.ResumeLayout(False)
-        Me.pnlFilterSourcesTop_Movies.PerformLayout()
+        Me.pnlFilterSourcesTop_Movies.PerformLayout
         Me.tblFilterSourcesTop_Movies.ResumeLayout(False)
-        Me.tblFilterSourcesTop_Movies.PerformLayout()
+        Me.tblFilterSourcesTop_Movies.PerformLayout
         Me.pnlFilterSources_Shows.ResumeLayout(False)
-        Me.pnlFilterSources_Shows.PerformLayout()
+        Me.pnlFilterSources_Shows.PerformLayout
         Me.pnlFilterSourcesMain_Shows.ResumeLayout(False)
         Me.pnlFilterSourcesTop_Shows.ResumeLayout(False)
-        Me.pnlFilterSourcesTop_Shows.PerformLayout()
+        Me.pnlFilterSourcesTop_Shows.PerformLayout
         Me.tblFilterSourcesTop_Shows.ResumeLayout(False)
-        Me.tblFilterSourcesTop_Shows.PerformLayout()
-        CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tblFilterSourcesTop_Shows.PerformLayout
+        CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).EndInit
         Me.cmnuMovie.ResumeLayout(False)
         Me.mnuGenres.ResumeLayout(False)
-        Me.mnuGenres.PerformLayout()
+        Me.mnuGenres.PerformLayout
         Me.mnuTags.ResumeLayout(False)
-        Me.mnuTags.PerformLayout()
+        Me.mnuTags.PerformLayout
         Me.mnuScrapeType.ResumeLayout(False)
         Me.mnuScrapeModifier.ResumeLayout(False)
         Me.mnuScrapeOption.ResumeLayout(False)
         Me.mnuLanguages.ResumeLayout(False)
-        CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).EndInit
         Me.cmnuMovieSet.ResumeLayout(False)
         Me.scTV.Panel1.ResumeLayout(False)
         Me.scTV.Panel2.ResumeLayout(False)
-        CType(Me.scTV, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.scTV, System.ComponentModel.ISupportInitialize).EndInit
         Me.scTV.ResumeLayout(False)
-        CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).EndInit
         Me.cmnuShow.ResumeLayout(False)
         Me.scTVSeasonsEpisodes.Panel1.ResumeLayout(False)
         Me.scTVSeasonsEpisodes.Panel2.ResumeLayout(False)
-        CType(Me.scTVSeasonsEpisodes, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.scTVSeasonsEpisodes, System.ComponentModel.ISupportInitialize).EndInit
         Me.scTVSeasonsEpisodes.ResumeLayout(False)
-        CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).EndInit
         Me.cmnuSeason.ResumeLayout(False)
-        CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).EndInit
         Me.cmnuEpisode.ResumeLayout(False)
         Me.pnlListTop.ResumeLayout(False)
-        Me.pnlListTop.PerformLayout()
+        Me.pnlListTop.PerformLayout
         Me.tblListTop.ResumeLayout(False)
-        Me.tblListTop.PerformLayout()
+        Me.tblListTop.PerformLayout
         Me.pnlSearchMovies.ResumeLayout(False)
-        Me.pnlSearchMovies.PerformLayout()
-        CType(Me.picSearchMovies, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlSearchMovies.PerformLayout
+        CType(Me.picSearchMovies, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlSearchMovieSets.ResumeLayout(False)
-        Me.pnlSearchMovieSets.PerformLayout()
-        CType(Me.picSearchMovieSets, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlSearchMovieSets.PerformLayout
+        CType(Me.picSearchMovieSets, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlSearchTVShows.ResumeLayout(False)
-        Me.pnlSearchTVShows.PerformLayout()
-        CType(Me.picSearchTVShows, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlSearchTVShows.PerformLayout
+        CType(Me.picSearchTVShows, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlFilter_Movies.ResumeLayout(False)
-        Me.pnlFilter_Movies.PerformLayout()
+        Me.pnlFilter_Movies.PerformLayout
         Me.tblFilter_Movies.ResumeLayout(False)
-        Me.tblFilter_Movies.PerformLayout()
+        Me.tblFilter_Movies.PerformLayout
         Me.gbFilterGeneral_Movies.ResumeLayout(False)
-        Me.gbFilterGeneral_Movies.PerformLayout()
+        Me.gbFilterGeneral_Movies.PerformLayout
         Me.tblFilterGeneral_Movies.ResumeLayout(False)
-        Me.tblFilterGeneral_Movies.PerformLayout()
+        Me.tblFilterGeneral_Movies.PerformLayout
         Me.gbFilterSorting_Movies.ResumeLayout(False)
-        Me.gbFilterSorting_Movies.PerformLayout()
+        Me.gbFilterSorting_Movies.PerformLayout
         Me.tblFilterSorting_Movies.ResumeLayout(False)
-        Me.tblFilterSorting_Movies.PerformLayout()
+        Me.tblFilterSorting_Movies.PerformLayout
         Me.gbFilterSpecific_Movies.ResumeLayout(False)
-        Me.gbFilterSpecific_Movies.PerformLayout()
+        Me.gbFilterSpecific_Movies.PerformLayout
         Me.tblFilterSpecific_Movies.ResumeLayout(False)
-        Me.tblFilterSpecific_Movies.PerformLayout()
+        Me.tblFilterSpecific_Movies.PerformLayout
         Me.gbFilterModifier_Movies.ResumeLayout(False)
-        Me.gbFilterModifier_Movies.PerformLayout()
+        Me.gbFilterModifier_Movies.PerformLayout
         Me.tblFilterModifier_Movies.ResumeLayout(False)
-        Me.tblFilterModifier_Movies.PerformLayout()
+        Me.tblFilterModifier_Movies.PerformLayout
         Me.tblFilterSpecificData_Movies.ResumeLayout(False)
-        Me.tblFilterSpecificData_Movies.PerformLayout()
+        Me.tblFilterSpecificData_Movies.PerformLayout
         Me.gbFilterDataField_Movies.ResumeLayout(False)
-        Me.gbFilterDataField_Movies.PerformLayout()
+        Me.gbFilterDataField_Movies.PerformLayout
         Me.tblFilterDataField_Movies.ResumeLayout(False)
-        Me.tblFilterDataField_Movies.PerformLayout()
+        Me.tblFilterDataField_Movies.PerformLayout
         Me.gbFilterList_Movies.ResumeLayout(False)
-        Me.gbFilterList_Movies.PerformLayout()
+        Me.gbFilterList_Movies.PerformLayout
         Me.tblFilterLists_Movies.ResumeLayout(False)
         Me.pnlFilterTop_Movies.ResumeLayout(False)
-        Me.pnlFilterTop_Movies.PerformLayout()
+        Me.pnlFilterTop_Movies.PerformLayout
         Me.tblFilterTop_Movies.ResumeLayout(False)
-        Me.tblFilterTop_Movies.PerformLayout()
+        Me.tblFilterTop_Movies.PerformLayout
         Me.pnlFilter_MovieSets.ResumeLayout(False)
-        Me.pnlFilter_MovieSets.PerformLayout()
+        Me.pnlFilter_MovieSets.PerformLayout
         Me.tblFilter_MovieSets.ResumeLayout(False)
-        Me.tblFilter_MovieSets.PerformLayout()
+        Me.tblFilter_MovieSets.PerformLayout
         Me.gbFilterList_MovieSets.ResumeLayout(False)
-        Me.gbFilterList_MovieSets.PerformLayout()
+        Me.gbFilterList_MovieSets.PerformLayout
         Me.tblFilterLists_MovieSets.ResumeLayout(False)
         Me.gbFilterGeneral_MovieSets.ResumeLayout(False)
-        Me.gbFilterGeneral_MovieSets.PerformLayout()
+        Me.gbFilterGeneral_MovieSets.PerformLayout
         Me.tblFilterGeneral_MovieSets.ResumeLayout(False)
-        Me.tblFilterGeneral_MovieSets.PerformLayout()
+        Me.tblFilterGeneral_MovieSets.PerformLayout
         Me.gbFilterSpecific_MovieSets.ResumeLayout(False)
-        Me.gbFilterSpecific_MovieSets.PerformLayout()
+        Me.gbFilterSpecific_MovieSets.PerformLayout
         Me.tblFilterSpecific_MovieSets.ResumeLayout(False)
-        Me.tblFilterSpecific_MovieSets.PerformLayout()
+        Me.tblFilterSpecific_MovieSets.PerformLayout
         Me.gbFilterModifier_MovieSets.ResumeLayout(False)
-        Me.gbFilterModifier_MovieSets.PerformLayout()
+        Me.gbFilterModifier_MovieSets.PerformLayout
         Me.tblFilterModifier_MovieSets.ResumeLayout(False)
-        Me.tblFilterModifier_MovieSets.PerformLayout()
+        Me.tblFilterModifier_MovieSets.PerformLayout
         Me.pnlFilterTop_MovieSets.ResumeLayout(False)
-        Me.pnlFilterTop_MovieSets.PerformLayout()
+        Me.pnlFilterTop_MovieSets.PerformLayout
         Me.tblFilterTop_MovieSets.ResumeLayout(False)
-        Me.tblFilterTop_MovieSets.PerformLayout()
+        Me.tblFilterTop_MovieSets.PerformLayout
         Me.pnlFilter_Shows.ResumeLayout(False)
-        Me.pnlFilter_Shows.PerformLayout()
+        Me.pnlFilter_Shows.PerformLayout
         Me.tblFilter_Shows.ResumeLayout(False)
-        Me.tblFilter_Shows.PerformLayout()
+        Me.tblFilter_Shows.PerformLayout
         Me.gbFilterSorting_Shows.ResumeLayout(False)
-        Me.gbFilterSorting_Shows.PerformLayout()
+        Me.gbFilterSorting_Shows.PerformLayout
         Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
+        Me.TableLayoutPanel1.PerformLayout
         Me.gbFilterList_Shows.ResumeLayout(False)
-        Me.gbFilterList_Shows.PerformLayout()
+        Me.gbFilterList_Shows.PerformLayout
         Me.tblFilterLists_Shows.ResumeLayout(False)
         Me.gbFilterGeneral_Shows.ResumeLayout(False)
-        Me.gbFilterGeneral_Shows.PerformLayout()
+        Me.gbFilterGeneral_Shows.PerformLayout
         Me.tblFilterGeneral_Shows.ResumeLayout(False)
-        Me.tblFilterGeneral_Shows.PerformLayout()
+        Me.tblFilterGeneral_Shows.PerformLayout
         Me.gbFilterSpecific_Shows.ResumeLayout(False)
-        Me.gbFilterSpecific_Shows.PerformLayout()
+        Me.gbFilterSpecific_Shows.PerformLayout
         Me.tblFilterSpecific_Shows.ResumeLayout(False)
-        Me.tblFilterSpecific_Shows.PerformLayout()
+        Me.tblFilterSpecific_Shows.PerformLayout
         Me.gbFilterModifier_Shows.ResumeLayout(False)
-        Me.gbFilterModifier_Shows.PerformLayout()
+        Me.gbFilterModifier_Shows.PerformLayout
         Me.tblFilterModifier_Shows.ResumeLayout(False)
-        Me.tblFilterModifier_Shows.PerformLayout()
+        Me.tblFilterModifier_Shows.PerformLayout
         Me.tblFilterSpecificData_Shows.ResumeLayout(False)
-        Me.tblFilterSpecificData_Shows.PerformLayout()
+        Me.tblFilterSpecificData_Shows.PerformLayout
         Me.gbFilterSpecificEpisodes_Shows.ResumeLayout(False)
-        Me.gbFilterSpecificEpisodes_Shows.PerformLayout()
+        Me.gbFilterSpecificEpisodes_Shows.PerformLayout
         Me.tblFilterSpecificEpisodes_Shows.ResumeLayout(False)
-        Me.tblFilterSpecificEpisodes_Shows.PerformLayout()
+        Me.tblFilterSpecificEpisodes_Shows.PerformLayout
         Me.gbFilterSpecificShows_Shows.ResumeLayout(False)
-        Me.gbFilterSpecificShows_Shows.PerformLayout()
+        Me.gbFilterSpecificShows_Shows.PerformLayout
         Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.TableLayoutPanel2.PerformLayout()
+        Me.TableLayoutPanel2.PerformLayout
         Me.pnlFilterTop_Shows.ResumeLayout(False)
-        Me.pnlFilterTop_Shows.PerformLayout()
+        Me.pnlFilterTop_Shows.PerformLayout
         Me.tblFilterTop_Shows.ResumeLayout(False)
-        Me.tblFilterTop_Shows.PerformLayout()
+        Me.tblFilterTop_Shows.PerformLayout
         Me.pnlCancel.ResumeLayout(False)
-        Me.pnlCancel.PerformLayout()
+        Me.pnlCancel.PerformLayout
         Me.pnlNoInfo.ResumeLayout(False)
         Me.pnlNoInfoBG.ResumeLayout(False)
-        CType(Me.pbNoInfo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbNoInfo, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlInfoPanel.ResumeLayout(False)
-        Me.pnlInfoPanel.PerformLayout()
+        Me.pnlInfoPanel.PerformLayout
         Me.pnlMoviesInSet.ResumeLayout(False)
         Me.pnlGuestStars.ResumeLayout(False)
-        CType(Me.pbGuestStarsLoad, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbGuestStars, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbGuestStarsLoad, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbGuestStars, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlActors.ResumeLayout(False)
-        CType(Me.pbActorsLoad, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbActors, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbBannerCache, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbActorsLoad, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbActors, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbBannerCache, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlBanner.ResumeLayout(False)
-        Me.pnlBanner.PerformLayout()
+        Me.pnlBanner.PerformLayout
         Me.pnlBannerMain.ResumeLayout(False)
-        Me.pnlBannerMain.PerformLayout()
+        Me.pnlBannerMain.PerformLayout
         Me.tblBannerMain.ResumeLayout(False)
-        CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlBannerBottom.ResumeLayout(False)
-        Me.pnlBannerBottom.PerformLayout()
+        Me.pnlBannerBottom.PerformLayout
         Me.tblBannerBottom.ResumeLayout(False)
-        Me.tblBannerBottom.PerformLayout()
+        Me.tblBannerBottom.PerformLayout
         Me.pnlBannerTop.ResumeLayout(False)
-        Me.pnlBannerTop.PerformLayout()
+        Me.pnlBannerTop.PerformLayout
         Me.tblBannerTop.ResumeLayout(False)
-        Me.tblBannerTop.PerformLayout()
-        CType(Me.pbCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tblBannerTop.PerformLayout
+        CType(Me.pbCache, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlClearLogo.ResumeLayout(False)
-        Me.pnlClearLogo.PerformLayout()
+        Me.pnlClearLogo.PerformLayout
         Me.pnlClearLogoMain.ResumeLayout(False)
-        Me.pnlClearLogoMain.PerformLayout()
+        Me.pnlClearLogoMain.PerformLayout
         Me.tblClearLogoMain.ResumeLayout(False)
-        CType(Me.pbClearLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbClearLogo, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlClearLogoBottom.ResumeLayout(False)
-        Me.pnlClearLogoBottom.PerformLayout()
+        Me.pnlClearLogoBottom.PerformLayout
         Me.tblClearLogoBottom.ResumeLayout(False)
-        Me.tblClearLogoBottom.PerformLayout()
+        Me.tblClearLogoBottom.PerformLayout
         Me.pnlClearLogoTop.ResumeLayout(False)
-        Me.pnlClearLogoTop.PerformLayout()
+        Me.pnlClearLogoTop.PerformLayout
         Me.tblClearLogoTop.ResumeLayout(False)
-        Me.tblClearLogoTop.PerformLayout()
+        Me.tblClearLogoTop.PerformLayout
         Me.pnlCharacterArt.ResumeLayout(False)
-        Me.pnlCharacterArt.PerformLayout()
+        Me.pnlCharacterArt.PerformLayout
         Me.pnlCharacterArtMain.ResumeLayout(False)
-        Me.pnlCharacterArtMain.PerformLayout()
+        Me.pnlCharacterArtMain.PerformLayout
         Me.tblCharacterArtMain.ResumeLayout(False)
-        CType(Me.pbCharacterArt, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbCharacterArt, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlCharacterArtBottom.ResumeLayout(False)
-        Me.pnlCharacterArtBottom.PerformLayout()
+        Me.pnlCharacterArtBottom.PerformLayout
         Me.tblCharacterArtBottom.ResumeLayout(False)
-        Me.tblCharacterArtBottom.PerformLayout()
+        Me.tblCharacterArtBottom.PerformLayout
         Me.pnlCharacterArtTop.ResumeLayout(False)
-        Me.pnlCharacterArtTop.PerformLayout()
+        Me.pnlCharacterArtTop.PerformLayout
         Me.tblCharacterArtTop.ResumeLayout(False)
-        Me.tblCharacterArtTop.PerformLayout()
-        CType(Me.pbCharacterArtCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tblCharacterArtTop.PerformLayout
+        CType(Me.pbCharacterArtCache, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlDiscArt.ResumeLayout(False)
-        Me.pnlDiscArt.PerformLayout()
+        Me.pnlDiscArt.PerformLayout
         Me.pnlDiscArtMain.ResumeLayout(False)
-        Me.pnlDiscArtMain.PerformLayout()
+        Me.pnlDiscArtMain.PerformLayout
         Me.tblDiscArtMain.ResumeLayout(False)
-        CType(Me.pbDiscArt, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbDiscArt, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlDiscArtBottom.ResumeLayout(False)
-        Me.pnlDiscArtBottom.PerformLayout()
+        Me.pnlDiscArtBottom.PerformLayout
         Me.tblDiscArtBottom.ResumeLayout(False)
-        Me.tblDiscArtBottom.PerformLayout()
+        Me.tblDiscArtBottom.PerformLayout
         Me.pnlDiscArtTop.ResumeLayout(False)
-        Me.pnlDiscArtTop.PerformLayout()
+        Me.pnlDiscArtTop.PerformLayout
         Me.tblDiscArtTop.ResumeLayout(False)
-        Me.tblDiscArtTop.PerformLayout()
-        CType(Me.pbDiscArtCache, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbClearLogoCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tblDiscArtTop.PerformLayout
+        CType(Me.pbDiscArtCache, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbClearLogoCache, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlClearArt.ResumeLayout(False)
-        Me.pnlClearArt.PerformLayout()
+        Me.pnlClearArt.PerformLayout
         Me.pnlClearArtMain.ResumeLayout(False)
-        Me.pnlClearArtMain.PerformLayout()
+        Me.pnlClearArtMain.PerformLayout
         Me.tblClearArtMain.ResumeLayout(False)
-        CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlClearArtBottom.ResumeLayout(False)
-        Me.pnlClearArtBottom.PerformLayout()
+        Me.pnlClearArtBottom.PerformLayout
         Me.tblClearArtBottom.ResumeLayout(False)
-        Me.tblClearArtBottom.PerformLayout()
+        Me.tblClearArtBottom.PerformLayout
         Me.pnlClearArtTop.ResumeLayout(False)
-        Me.pnlClearArtTop.PerformLayout()
+        Me.pnlClearArtTop.PerformLayout
         Me.tblClearArtTop.ResumeLayout(False)
-        Me.tblClearArtTop.PerformLayout()
+        Me.tblClearArtTop.PerformLayout
         Me.pnlLandscape.ResumeLayout(False)
-        Me.pnlLandscape.PerformLayout()
+        Me.pnlLandscape.PerformLayout
         Me.pnlLandscapeMain.ResumeLayout(False)
-        Me.pnlLandscapeMain.PerformLayout()
+        Me.pnlLandscapeMain.PerformLayout
         Me.tblLandscapeMain.ResumeLayout(False)
-        CType(Me.pbLandscape, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbLandscape, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlLandscapeBottom.ResumeLayout(False)
-        Me.pnlLandscapeBottom.PerformLayout()
+        Me.pnlLandscapeBottom.PerformLayout
         Me.tblLandscapeBottom.ResumeLayout(False)
-        Me.tblLandscapeBottom.PerformLayout()
+        Me.tblLandscapeBottom.PerformLayout
         Me.pnlLandscapeTop.ResumeLayout(False)
-        Me.pnlLandscapeTop.PerformLayout()
+        Me.pnlLandscapeTop.PerformLayout
         Me.tblLandscapeTop.ResumeLayout(False)
-        Me.tblLandscapeTop.PerformLayout()
+        Me.tblLandscapeTop.PerformLayout
         Me.pnlFanartSmall.ResumeLayout(False)
-        Me.pnlFanartSmall.PerformLayout()
+        Me.pnlFanartSmall.PerformLayout
         Me.pnlFanartSmallMain.ResumeLayout(False)
-        Me.pnlFanartSmallMain.PerformLayout()
+        Me.pnlFanartSmallMain.PerformLayout
         Me.tblFanartSmallMain.ResumeLayout(False)
-        CType(Me.pbFanartSmall, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbFanartSmall, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlFanartSmallBottom.ResumeLayout(False)
-        Me.pnlFanartSmallBottom.PerformLayout()
+        Me.pnlFanartSmallBottom.PerformLayout
         Me.tblFanartSmallBottom.ResumeLayout(False)
-        Me.tblFanartSmallBottom.PerformLayout()
+        Me.tblFanartSmallBottom.PerformLayout
         Me.pnlFanartSmallTop.ResumeLayout(False)
-        Me.pnlFanartSmallTop.PerformLayout()
+        Me.pnlFanartSmallTop.PerformLayout
         Me.tblFanartSmallTop.ResumeLayout(False)
-        Me.tblFanartSmallTop.PerformLayout()
+        Me.tblFanartSmallTop.PerformLayout
         Me.pnlPoster.ResumeLayout(False)
-        Me.pnlPoster.PerformLayout()
+        Me.pnlPoster.PerformLayout
         Me.pnlPosterMain.ResumeLayout(False)
-        Me.pnlPosterMain.PerformLayout()
+        Me.pnlPosterMain.PerformLayout
         Me.tblPosterMain.ResumeLayout(False)
-        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlPosterBottom.ResumeLayout(False)
-        Me.pnlPosterBottom.PerformLayout()
+        Me.pnlPosterBottom.PerformLayout
         Me.tblPosterBottom.ResumeLayout(False)
-        Me.tblPosterBottom.PerformLayout()
+        Me.tblPosterBottom.PerformLayout
         Me.pnlPosterTop.ResumeLayout(False)
-        Me.pnlPosterTop.PerformLayout()
+        Me.pnlPosterTop.PerformLayout
         Me.tblPosterTop.ResumeLayout(False)
-        Me.tblPosterTop.PerformLayout()
+        Me.tblPosterTop.PerformLayout
         Me.pnlTop.ResumeLayout(False)
-        Me.pnlTop.PerformLayout()
+        Me.pnlTop.PerformLayout
         Me.tblHeader.ResumeLayout(False)
-        Me.tblHeader.PerformLayout()
+        Me.tblHeader.PerformLayout
         Me.pnlRating.ResumeLayout(False)
-        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlInfoIcons.ResumeLayout(False)
-        Me.pnlInfoIcons.PerformLayout()
+        Me.pnlInfoIcons.PerformLayout
         Me.tblInfoIcons.ResumeLayout(False)
-        Me.tblInfoIcons.PerformLayout()
+        Me.tblInfoIcons.PerformLayout
         Me.tblSubtitleLang.ResumeLayout(False)
-        CType(Me.pbSubtitleLang0, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang6, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang5, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang3, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang0, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbSubtitleLang1, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbSubtitleLang6, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbSubtitleLang2, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbSubtitleLang5, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbSubtitleLang3, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbSubtitleLang4, System.ComponentModel.ISupportInitialize).EndInit
         Me.tblAudioLang.ResumeLayout(False)
-        CType(Me.pbAudioLang0, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang3, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang4, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang5, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang6, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbVideoSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbVideoCodec, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbVideoResolution, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioChannels, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbVideoChannels, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbClearArtCache, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang0, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbAudioLang3, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbAudioLang4, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbAudioLang5, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbAudioLang6, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbVideoSource, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbVideoCodec, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbVideoResolution, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbAudioChannels, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbVideoChannels, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbClearArtCache, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlMPAA.ResumeLayout(False)
-        Me.pnlMPAA.PerformLayout()
-        CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlMPAA.PerformLayout
+        CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit
         Me.tsMain.ResumeLayout(False)
-        Me.tsMain.PerformLayout()
+        Me.tsMain.PerformLayout
         Me.mnuScrapeSubmenu.ResumeLayout(False)
         Me.cmnuTray.ResumeLayout(False)
         Me.pnlLoadSettingsBG.ResumeLayout(False)
-        CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlLoadSettings.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout

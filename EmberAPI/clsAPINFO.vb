@@ -25,7 +25,7 @@ Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 Imports System.Windows.Forms
 
-Public Class NFO
+Public Class Info
 
 #Region "Fields"
 
@@ -60,7 +60,6 @@ Public Class NFO
         Dim new_OriginalTitle As Boolean = False
         Dim new_Outline As Boolean = False
         Dim new_Plot As Boolean = False
-        Dim new_Rating As Boolean = False
         Dim new_ReleaseDate As Boolean = False
         Dim new_Runtime As Boolean = False
         Dim new_Studio As Boolean = False
@@ -86,13 +85,10 @@ Public Class NFO
             'Actors
             If (Not DBMovie.Movie.ActorsSpecified OrElse Not Master.eSettings.MovieLockActors) AndAlso ScrapeOptions.bMainActors AndAlso
                 scrapedmovie.ActorsSpecified AndAlso Master.eSettings.MovieScraperCast AndAlso Not new_Actors Then
-
                 If Master.eSettings.MovieScraperCastWithImgOnly Then
                     FilterOnlyPersonsWithImage(scrapedmovie.Actors)
                 End If
-
                 FilterCountLimit(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors)
-
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedmovie.ActorsSpecified Then
                     ReorderPersons(scrapedmovie.Actors)
@@ -139,8 +135,8 @@ Public Class NFO
             End If
 
             'Collection ID
-            If (Not DBMovie.Movie.UniqueIDs.TMDbCollectionIDSpecified OrElse Not Master.eSettings.MovieLockCollectionID) AndAlso ScrapeOptions.bMainCollectionID AndAlso
-                scrapedmovie.UniqueIDs.TMDbCollectionIDSpecified AndAlso Master.eSettings.MovieScraperCollectionID AndAlso Not new_CollectionID Then
+            If (Not DBMovie.Movie.UniqueIDs.TMDbCollectionIdSpecified OrElse Not Master.eSettings.MovieLockCollectionID) AndAlso ScrapeOptions.bMainCollectionID AndAlso
+                scrapedmovie.UniqueIDs.TMDbCollectionIdSpecified AndAlso Master.eSettings.MovieScraperCollectionID AndAlso Not new_CollectionID Then
                 DBMovie.Movie.UniqueIDs.TMDbCollectionId = scrapedmovie.UniqueIDs.TMDbCollectionId
                 new_CollectionID = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCollectionID AndAlso Not Master.eSettings.MovieLockCollectionID Then
@@ -165,9 +161,7 @@ Public Class NFO
             'Countries
             If (Not DBMovie.Movie.CountriesSpecified OrElse Not Master.eSettings.MovieLockCountry) AndAlso ScrapeOptions.bMainCountries AndAlso
                 scrapedmovie.CountriesSpecified AndAlso Master.eSettings.MovieScraperCountry AndAlso Not new_Countries Then
-
                 FilterCountLimit(Master.eSettings.MovieScraperCountryLimit, scrapedmovie.Countries)
-
                 DBMovie.Movie.Countries = scrapedmovie.Countries
                 new_Countries = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCountry AndAlso Not Master.eSettings.MovieLockCountry Then
@@ -186,11 +180,8 @@ Public Class NFO
             'Genres
             If (Not DBMovie.Movie.GenresSpecified OrElse Not Master.eSettings.MovieLockGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
                 scrapedmovie.GenresSpecified AndAlso Master.eSettings.MovieScraperGenre AndAlso Not new_Genres Then
-
                 StringUtils.GenreFilter(scrapedmovie.Genres)
-
                 FilterCountLimit(Master.eSettings.MovieScraperGenreLimit, scrapedmovie.Genres)
-
                 DBMovie.Movie.Genres = scrapedmovie.Genres
                 new_Genres = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperGenre AndAlso Not Master.eSettings.MovieLockGenre Then
@@ -241,12 +232,18 @@ Public Class NFO
                 DBMovie.Movie.Plot = StringUtils.RemoveBrackets(DBMovie.Movie.Plot)
             End If
 
-            'Rating/Votes
-            If (Not DBMovie.Movie.RatingSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bMainRating AndAlso
+            'Ratings
+            If (Not DBMovie.Movie.RatingsSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bMainRating AndAlso
                  scrapedmovie.RatingsSpecified AndAlso Master.eSettings.MovieScraperRating Then
-                If Not new_Rating Then DBMovie.Movie.Ratings.Clear() 'removes all old ratings
-                DBMovie.Movie.Ratings.AddRange(scrapedmovie.Ratings)
-                new_Rating = True
+                For Each nRating In scrapedmovie.Ratings
+                    'remove old rating(s) from the same source
+                    DBMovie.Movie.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
+                    DBMovie.Movie.Ratings.Add(nRating)
+                Next
+            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRating AndAlso Not Master.eSettings.MovieLockRating Then
+                DBMovie.Movie.Ratings.Clear()
+                DBMovie.Movie.Rating = String.Empty
+                DBMovie.Movie.Votes = String.Empty
             End If
 
             'ReleaseDate
@@ -359,7 +356,6 @@ Public Class NFO
         If DBMovie.Movie.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCertForMPAA AndAlso
             (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (Not DBMovie.Movie.MPAASpecified OrElse Not Master.eSettings.MovieLockMPAA) OrElse
              Not new_MPAA AndAlso (Not DBMovie.Movie.MPAASpecified OrElse Not Master.eSettings.MovieLockMPAA)) Then
-
             Dim tmpstring As String = String.Empty
             tmpstring = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(String.Join(" / ", DBMovie.Movie.Certifications.ToArray)), If(Master.eSettings.MovieScraperCertOnlyValue, String.Join(" / ", DBMovie.Movie.Certifications.ToArray).Split(Convert.ToChar(":"))(1), String.Join(" / ", DBMovie.Movie.Certifications.ToArray)))
             'only update DBMovie if scraped result is not empty/nothing!
@@ -385,6 +381,7 @@ Public Class NFO
         End If
 
         'Rating/Votes
+        'TODO: set the default rating/votes
         If (Not DBMovie.Movie.RatingSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bMainRating AndAlso
                 DBMovie.Movie.RatingsSpecified AndAlso Master.eSettings.MovieScraperRating Then
             DBMovie.Movie.Rating = DBMovie.Movie.Ratings.Item(0).Value.ToString
@@ -524,7 +521,6 @@ Public Class NFO
             'Actors
             If (Not DBTV.TVShow.ActorsSpecified OrElse Not Master.eSettings.TVLockShowActors) AndAlso ScrapeOptions.bMainActors AndAlso
                 scrapedshow.ActorsSpecified AndAlso Master.eSettings.TVScraperShowActors AndAlso Not new_Actors Then
-
                 If Master.eSettings.TVScraperCastWithImgOnly Then
                     FilterOnlyPersonsWithImage(scrapedshow.Actors)
                 End If
@@ -576,7 +572,6 @@ Public Class NFO
             'Countries
             If (Not DBTV.TVShow.CountriesSpecified OrElse Not Master.eSettings.TVLockShowCountry) AndAlso ScrapeOptions.bMainCountries AndAlso
                 scrapedshow.CountriesSpecified AndAlso Master.eSettings.TVScraperShowCountry AndAlso Not new_ShowCountries Then
-
                 FilterCountLimit(Master.eSettings.TVScraperShowCountryLimit, scrapedshow.Countries)
                 DBTV.TVShow.Countries = scrapedshow.Countries
                 new_ShowCountries = True
@@ -594,7 +589,6 @@ Public Class NFO
             'Genres
             If (Not DBTV.TVShow.GenresSpecified OrElse Not Master.eSettings.TVLockShowGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
                 scrapedshow.GenresSpecified AndAlso Master.eSettings.TVScraperShowGenre AndAlso Not new_Genres Then
-
                 StringUtils.GenreFilter(scrapedshow.Genres)
                 FilterCountLimit(Master.eSettings.TVScraperShowGenreLimit, scrapedshow.Genres)
                 DBTV.TVShow.Genres = scrapedshow.Genres
@@ -639,13 +633,16 @@ Public Class NFO
                 DBTV.TVShow.Premiered = String.Empty
             End If
 
-            'Rating/Votes
-            If (Not DBTV.TVShow.RatingSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
-                scrapedshow.RatingSpecified AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
-                DBTV.TVShow.Rating = scrapedshow.Rating
-                DBTV.TVShow.Votes = NumUtils.CleanVotes(scrapedshow.Votes)
-                new_Rating = True
+            'Ratings
+            If (Not DBTV.TVShow.RatingsSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
+                 scrapedshow.RatingsSpecified AndAlso Master.eSettings.TVScraperShowRating Then
+                For Each nRating In scrapedshow.Ratings
+                    'remove old rating(s) from the same source
+                    DBTV.TVShow.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
+                    DBTV.TVShow.Ratings.Add(nRating)
+                Next
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRating AndAlso Not Master.eSettings.TVLockShowRating Then
+                DBTV.TVShow.Ratings.Clear()
                 DBTV.TVShow.Rating = String.Empty
                 DBTV.TVShow.Votes = String.Empty
             End If
@@ -756,6 +753,9 @@ Public Class NFO
         If (Not DBTV.TVShow.TitleSpecified OrElse Not Master.eSettings.TVLockShowTitle) AndAlso Master.eSettings.TVScraperShowOriginalTitleAsTitle AndAlso DBTV.TVShow.OriginalTitleSpecified Then
             DBTV.TVShow.Title = DBTV.TVShow.OriginalTitle
         End If
+
+        'Rating/Votes
+        'TODO: set the default rating/votes
 
         'UniqueID
         'TODO: set the default uniqueid
@@ -967,7 +967,6 @@ Public Class NFO
         Dim new_GuestStars As Boolean = False
         Dim new_OriginalTitle As Boolean = False
         Dim new_Plot As Boolean = False
-        Dim new_Rating As Boolean = False
         Dim new_Runtime As Boolean = False
         Dim new_Season As Boolean = False
         Dim new_ThumbPoster As Boolean = False
@@ -1069,13 +1068,18 @@ Public Class NFO
                 DBTVEpisode.TVEpisode.Plot = String.Empty
             End If
 
-            'Rating/Votes
-            If (Not DBTVEpisode.TVEpisode.RatingSpecified OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso
-                scrapedepisode.RatingSpecified AndAlso Master.eSettings.TVScraperEpisodeRating AndAlso Not new_Rating Then
+            'Ratings
+            If (Not DBTVEpisode.TVEpisode.RatingsSpecified OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso
+                scrapedepisode.RatingsSpecified AndAlso Master.eSettings.TVScraperEpisodeRating Then
+                For Each nRating In scrapedepisode.Ratings
+                    'remove old rating(s) from the same source
+                    DBTVEpisode.TVEpisode.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
+                    DBTVEpisode.TVEpisode.Ratings.Add(nRating)
+                Next
                 DBTVEpisode.TVEpisode.Rating = scrapedepisode.Rating
                 DBTVEpisode.TVEpisode.Votes = NumUtils.CleanVotes(scrapedepisode.Votes)
-                new_Rating = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
+                DBTVEpisode.TVEpisode.Ratings.Clear()
                 DBTVEpisode.TVEpisode.Rating = String.Empty
                 DBTVEpisode.TVEpisode.Votes = String.Empty
             End If
@@ -1128,6 +1132,18 @@ Public Class NFO
         'TV Show Runtime for Episode Runtime
         If Not DBTVEpisode.TVEpisode.RuntimeSpecified AndAlso Master.eSettings.TVScraperUseSRuntimeForEp AndAlso DBTVEpisode.TVShow.RuntimeSpecified Then
             DBTVEpisode.TVEpisode.Runtime = DBTVEpisode.TVShow.Runtime
+        End If
+
+        'Rating/Votes
+        'TODO: set the default rating/votes
+        If (Not DBTVEpisode.TVEpisode.RatingSpecified OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso
+                DBTVEpisode.TVEpisode.RatingsSpecified AndAlso Master.eSettings.TVScraperEpisodeRating Then
+            DBTVEpisode.TVEpisode.Rating = DBTVEpisode.TVEpisode.Ratings.Item(0).Value.ToString
+            DBTVEpisode.TVEpisode.Votes = NumUtils.CleanVotes(DBTVEpisode.TVEpisode.Ratings.Item(0).Votes.ToString)
+        ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
+            DBTVEpisode.TVEpisode.Ratings.Clear()
+            DBTVEpisode.TVEpisode.Rating = String.Empty
+            DBTVEpisode.TVEpisode.Votes = String.Empty
         End If
 
         'UniqueID
@@ -2262,12 +2278,13 @@ Public Class NFO
                         End If
 
                         Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND idFile IN (SELECT idFile FROM files WHERE strFilename = (?)) ORDER BY Episode"
+                            'TODO: move that query to clsAPIDatabase
+                            SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND idFile IN (SELECT idFile FROM file WHERE path = (?)) ORDER BY Episode"
                             Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
-                            Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
+                            Dim parPath As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parPath", DbType.String, 0, "path")
 
                             parID.Value = dbElement.ID
-                            parFilename.Value = dbElement.FileItem.FullPath
+                            parPath.Value = dbElement.FileItem.FullPath
 
                             Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLreader.Read

@@ -1108,7 +1108,7 @@ Public Class frmMain
         End If
 
         If Master.eSettings.GeneralDisplayBanner Then MainBanner = currDBElement.ImagesContainer.Banner.ImageOriginal
-        If Master.eSettings.GeneralDisplayCharacterArt Then MainBanner = currDBElement.ImagesContainer.CharacterArt.ImageOriginal
+        If Master.eSettings.GeneralDisplayCharacterArt Then MainCharacterArt = currDBElement.ImagesContainer.CharacterArt.ImageOriginal
         If Master.eSettings.GeneralDisplayClearArt Then MainClearArt = currDBElement.ImagesContainer.ClearArt.ImageOriginal
         If Master.eSettings.GeneralDisplayClearLogo Then MainClearLogo = currDBElement.ImagesContainer.ClearLogo.ImageOriginal
         If Master.eSettings.GeneralDisplayDiscArt Then MainDiscArt = currDBElement.ImagesContainer.DiscArt.ImageOriginal
@@ -5975,11 +5975,11 @@ Public Class frmMain
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                         Master.DB.Save_Movie(DBMovie, False, True, True, True, False)
                         RefreshRow_Movie(DBMovie.ID)
-                    Case DialogResult.Retry
+                    Case DialogResult.Retry 'Rescrape
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
                         CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
-                    Case DialogResult.Abort
+                    Case DialogResult.Abort 'Change Movie
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -5994,30 +5994,30 @@ Public Class frmMain
 
     Private Sub Edit_MovieSet(ByRef DBMovieSet As Database.DBElement)
         SetControlsEnabled(False)
-        'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovieSet, True) Then
-        Using dEditMovieSet As New dlgEditMovieSet
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
-            Select Case dEditMovieSet.ShowDialog(DBMovieSet)
-                Case DialogResult.OK
-                    DBMovieSet = dEditMovieSet.Result
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
-                    tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                    Master.DB.Save_MovieSet(DBMovieSet, False, True, True, True)
-                    RefreshRow_MovieSet(DBMovieSet.ID)
-                Case DialogResult.Retry
-                    Dim ScrapeModifier As New Structures.ScrapeModifiers
-                    Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
-                    CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifier)
-                Case DialogResult.Abort
-                    Dim ScrapeModifier As New Structures.ScrapeModifiers
-                    Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.DoSearch, True)
-                    Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
-                    CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifier)
-                Case Else
-                    If InfoCleared Then LoadInfo_MovieSet(DBMovieSet.ID)
-            End Select
-        End Using
-        'End If
+        If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBMovieSet, True) Then
+            Using dEditMovieSet As New dlgEditMovieSet
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
+                Select Case dEditMovieSet.ShowDialog(DBMovieSet)
+                    Case DialogResult.OK
+                        DBMovieSet = dEditMovieSet.Result
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
+                        tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
+                        Master.DB.Save_MovieSet(DBMovieSet, False, True, True, True)
+                        RefreshRow_MovieSet(DBMovieSet.ID)
+                    Case DialogResult.Retry 'Rescrape
+                        Dim ScrapeModifier As New Structures.ScrapeModifiers
+                        Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
+                        CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifier)
+                    Case DialogResult.Abort 'Change MovieSet
+                        Dim ScrapeModifier As New Structures.ScrapeModifiers
+                        Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.DoSearch, True)
+                        Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
+                        CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifier)
+                    Case Else
+                        If InfoCleared Then LoadInfo_MovieSet(DBMovieSet.ID)
+                End Select
+            End Using
+        End If
         SetControlsEnabled(True)
     End Sub
 
@@ -6033,6 +6033,12 @@ Public Class frmMain
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                         Master.DB.Save_TVEpisode(DBTVEpisode, False, True, True, True, True)
                         RefreshRow_TVEpisode(DBTVEpisode.ID)
+                    Case DialogResult.Retry 'Rescrape
+                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
+                        CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+                    Case DialogResult.Abort 'Change TVEpisode
+                        'TODO
                     Case Else
                         If InfoCleared Then LoadInfo_TVEpisode(DBTVEpisode.ID)
                 End Select
@@ -6073,11 +6079,11 @@ Public Class frmMain
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                         Master.DB.Save_TVShow(DBTVShow, False, True, True, True)
                         RefreshRow_TVShow(DBTVShow.ID)
-                    Case DialogResult.Retry
+                    Case DialogResult.Retry 'Rescrape
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
                         CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
-                    Case DialogResult.Abort
+                    Case DialogResult.Abort 'Change TVShow
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -6796,6 +6802,13 @@ Public Class frmMain
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).SortMode = DataGridViewColumnSortMode.Automatic
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath))
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToolTipText = Master.eLang.GetString(150, "Nfo")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).ReadOnly = True
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle))
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).ToolTipText = Master.eLang.GetString(302, "Original Title")
+        dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle)).HeaderText = Master.eLang.GetString(302, "Original Title")
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Width = 20
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Resizable = DataGridViewTriState.False
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ReadOnly = True
@@ -7325,7 +7338,7 @@ Public Class frmMain
         lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
         lblCertifications.Text = String.Join(" / ", currDBElement.Movie.Certifications.ToArray)
 
-        txtMetaData.Text = NFO.FIToString(currDBElement)
+        txtMetaData.Text = Info.FIToString(currDBElement)
 
         InfoCleared = False
 
@@ -7524,7 +7537,7 @@ Public Class frmMain
             pbStudio.Left = 0
         End If
 
-        txtMetaData.Text = NFO.FIToString(currDBElement)
+        txtMetaData.Text = Info.FIToString(currDBElement)
 
         InfoCleared = False
 
@@ -14668,7 +14681,7 @@ Public Class frmMain
         cmnuSeasonRemove.Text = Master.eLang.GetString(30, "Remove")
         cmnuSeasonRemoveFromDisk.Text = Master.eLang.GetString(771, "Delete Season")
         cmnuSeasonScrape.Text = Master.eLang.GetString(146, "(Re)Scrape Season")
-        cmnuShowChange.Text = Master.eLang.GetString(767, "Change Show")
+        cmnuShowChange.Text = Master.eLang.GetString(767, "Change TV Show")
         cmnuShowClearCache.Text = Master.eLang.GetString(565, "Clear Cache")
         cmnuShowClearCacheDataAndImages.Text = Master.eLang.GetString(583, "Data and Images")
         cmnuShowClearCacheDataOnly.Text = Master.eLang.GetString(566, "Data Only")

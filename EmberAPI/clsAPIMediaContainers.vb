@@ -29,6 +29,13 @@ Namespace MediaContainers
     <Serializable()>
     Public Class Audio
 
+#Region "Fields"
+
+        Private _language As String = String.Empty
+        Private _longLanguage As String = String.Empty
+
+#End Region 'Fields
+
 #Region "Properties"
         ''' <summary>
         ''' Bitrate in kb/s
@@ -68,7 +75,15 @@ Namespace MediaContainers
         Public Property HasPreferred() As Boolean = False
 
         <XmlElement("language")>
-        Public Property Language() As String = String.Empty
+        Public Property Language() As String
+            Get
+                Return _language
+            End Get
+            Set(value As String)
+                _language = value
+                _longLanguage = Localization.ISOGetLangByCode3(_language)
+            End Set
+        End Property
 
         <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
@@ -78,7 +93,15 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("longlanguage")>
-        Public Property LongLanguage() As String = String.Empty
+        Public Property LongLanguage() As String
+            Get
+                Return _longLanguage
+            End Get
+            Set(value As String)
+                _longLanguage = value
+                _language = Localization.ISOLangGetCode3ByLang(value)
+            End Set
+        End Property
 
         <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
@@ -99,6 +122,8 @@ Namespace MediaContainers
 
 #Region "Fields"
 
+        Private _dateadded As String = String.Empty
+        Private _datemodified As String = String.Empty
         Private _rating As String = String.Empty
         Private _id As String = String.Empty
 
@@ -195,6 +220,16 @@ Namespace MediaContainers
         Public ReadOnly Property TitleSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Title) AndAlso Not Regex.IsMatch(Title, "s\d{2}e\d{2}$", RegexOptions.IgnoreCase)
+            End Get
+        End Property
+
+        <XmlElement("originaltitle")>
+        Public Property OriginalTitle() As String = String.Empty
+
+        <XmlIgnore()>
+        Public ReadOnly Property OriginalTitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(OriginalTitle)
             End Get
         End Property
 
@@ -417,12 +452,36 @@ Namespace MediaContainers
         Public Property ThumbPoster() As Image = New Image
 
         <XmlElement("dateadded")>
-        Public Property DateAdded() As String = String.Empty
+        Public Property DateAdded() As String
+            Get
+                Return _dateadded
+            End Get
+            Set(ByVal value As String)
+                _dateadded = Functions.ConvertToProperDateTime(value)
+            End Set
+        End Property
 
         <XmlIgnore()>
         Public ReadOnly Property DateAddedSpecified() As Boolean
             Get
-                Return DateAdded IsNot Nothing
+                Return Not String.IsNullOrEmpty(DateAdded)
+            End Get
+        End Property
+
+        <XmlElement("datemodified")>
+        Public Property DateModified() As String
+            Get
+                Return _datemodified
+            End Get
+            Set(ByVal value As String)
+                _datemodified = Functions.ConvertToProperDateTime(value)
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property DateModifiedSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(DateModified)
             End Get
         End Property
 
@@ -450,46 +509,6 @@ Namespace MediaContainers
 #End Region 'Properties
 
 #Region "Methods"
-
-        Public Sub AddCreditsFromString(ByVal value As String)
-            Credits.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
-                For Each credit As String In values
-                    credit = credit.Trim
-                    If Not Credits.Contains(credit) And Not value = "See more" Then
-                        Credits.Add(credit)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not Credits.Contains(value) And Not value = "See more" Then
-                    Credits.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddDirectorsFromString(ByVal value As String)
-            Directors.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
-                For Each director As String In values
-                    director = director.Trim
-                    If Not Directors.Contains(director) And Not value = "See more" Then
-                        Directors.Add(director)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not Directors.Contains(value) And Not value = "See more" Then
-                    Directors.Add(value.Trim)
-                End If
-            End If
-        End Sub
 
         Public Function CloneDeep() As Object Implements ICloneable.Clone
             Dim Stream As New MemoryStream(50000)
@@ -1849,123 +1868,6 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddCertificationsFromString(ByVal value As String)
-            Certifications.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each certification As String In values
-                    certification = certification.Trim
-                    If Not Certifications.Contains(certification) Then
-                        Certifications.Add(certification)
-                    End If
-                Next
-            Else
-                If Not Certifications.Contains(value) Then
-                    Certifications.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddGenresFromString(ByVal value As String)
-            Genres.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each genre As String In values
-                    genre = genre.Trim
-                    If Not Genres.Contains(genre) Then
-                        Genres.Add(genre)
-                    End If
-                Next
-            Else
-                If Not Genres.Contains(value) Then
-                    Genres.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddStudiosFromString(ByVal value As String)
-            Studios.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each studio As String In values
-                    studio = studio.Trim
-                    If Not Studios.Contains(studio) Then
-                        Studios.Add(studio)
-                    End If
-                Next
-            Else
-                If Not Studios.Contains(value) Then
-                    Studios.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddDirectorsFromString(ByVal value As String)
-            Directors.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each director As String In values
-                    director = director.Trim
-                    If Not Directors.Contains(director) And Not value = "See more" Then
-                        Directors.Add(director)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not Directors.Contains(value) And Not value = "See more" Then
-                    Directors.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddCreditsFromString(ByVal value As String)
-            Credits.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each credit As String In values
-                    credit = credit.Trim
-                    If Not Credits.Contains(credit) And Not value = "See more" Then
-                        Credits.Add(credit)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not Credits.Contains(value) And Not value = "See more" Then
-                    Credits.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddCountriesFromString(ByVal value As String)
-            Countries.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each country As String In values
-                    country = country.Trim
-                    If Not Countries.Contains(country) Then
-                        Countries.Add(country)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not Countries.Contains(value) Then
-                    Countries.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
         Public Function CloneDeep() As Object Implements ICloneable.Clone
             Dim Stream As New MemoryStream(50000)
             Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
@@ -2778,7 +2680,6 @@ Namespace MediaContainers
             End If
 
             If cSettings.GetBlankImages OrElse Not cSettings.MediaLanguageOnly Then
-                FilteredList.AddRange(ImagesList.Where(Function(f) f.LongLang = Master.eLang.GetString(1168, "Blank")))
                 FilteredList.AddRange(ImagesList.Where(Function(f) f.Language = String.Empty))
             End If
 
@@ -2786,7 +2687,6 @@ Namespace MediaContainers
                 FilteredList.AddRange(ImagesList.Where(Function(f) Not f.Language = If(cSettings.ForceLanguage, cSettings.ForcedLanguage, String.Empty) AndAlso
                                                            Not f.Language = cSettings.MediaLanguage AndAlso
                                                            Not f.Language = "en" AndAlso
-                                                           Not f.LongLang = Master.eLang.GetString(1168, "Blank") AndAlso
                                                            Not f.Language = String.Empty))
             End If
 
@@ -3081,10 +2981,25 @@ Namespace MediaContainers
     <Serializable()>
     Public Class Subtitle
 
+#Region "Fields"
+
+        Private _language As String = String.Empty
+        Private _longLanguage As String = String.Empty
+
+#End Region 'Fields
+
 #Region "Properties"
 
         <XmlElement("language")>
-        Public Property Language() As String = String.Empty
+        Public Property Language() As String
+            Get
+                Return _language
+            End Get
+            Set(value As String)
+                _language = value
+                _longLanguage = Localization.ISOGetLangByCode3(_language)
+            End Set
+        End Property
 
         <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
@@ -3094,7 +3009,15 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("longlanguage")>
-        Public Property LongLanguage() As String = String.Empty
+        Public Property LongLanguage() As String
+            Get
+                Return _longLanguage
+            End Get
+            Set(value As String)
+                _longLanguage = value
+                _language = Localization.ISOLangGetCode3ByLang(value)
+            End Set
+        End Property
 
         <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
@@ -3718,83 +3641,6 @@ Namespace MediaContainers
 
 #Region "Methods"
 
-        Public Sub AddCertificationsFromString(ByVal value As String)
-            Certifications.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each certification As String In values
-                    certification = certification.Trim
-                    If Not Certifications.Contains(certification) Then
-                        Certifications.Add(certification)
-                    End If
-                Next
-            Else
-                If Not Certifications.Contains(value) Then
-                    Certifications.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddCountriesFromString(ByVal value As String)
-            Countries.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each country As String In values
-                    country = country.Trim
-                    If Not Countries.Contains(country) Then
-                        Countries.Add(country)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not Countries.Contains(value) Then
-                    Countries.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddGenresFromString(ByVal value As String)
-            Genres.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
-                For Each genre As String In values
-                    genre = genre.Trim
-                    If Not Genres.Contains(genre) Then
-                        Genres.Add(genre)
-                    End If
-                Next
-            Else
-                If Not Genres.Contains(value) Then
-                    Genres.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddStudiosFromString(ByVal value As String)
-            Studios.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
-                For Each studio As String In values
-                    studio = studio.Trim
-                    If Not Studios.Contains(studio) Then
-                        Studios.Add(studio)
-                    End If
-                Next
-            Else
-                If Not Studios.Contains(value) Then
-                    Studios.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
         Public Function CloneDeep() As Object Implements ICloneable.Clone
             Dim Stream As New MemoryStream(50000)
             Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
@@ -4055,6 +3901,13 @@ Namespace MediaContainers
     <Serializable()>
     Public Class Video
 
+#Region "Fields"
+
+        Private _language As String = String.Empty
+        Private _longLanguage As String = String.Empty
+
+#End Region 'Fields
+
 #Region "Properties"
 
         <XmlElement("aspect")>
@@ -4147,7 +4000,15 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("language")>
-        Public Property Language() As String = String.Empty
+        Public Property Language() As String
+            Get
+                Return _language
+            End Get
+            Set(value As String)
+                _language = value
+                _longLanguage = Localization.ISOGetLangByCode3(_language)
+            End Set
+        End Property
 
         <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
@@ -4157,7 +4018,15 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("longlanguage")>
-        Public Property LongLanguage() As String = String.Empty
+        Public Property LongLanguage() As String
+            Get
+                Return _longLanguage
+            End Get
+            Set(value As String)
+                _longLanguage = value
+                _language = Localization.ISOLangGetCode3ByLang(value)
+            End Set
+        End Property
 
         <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean

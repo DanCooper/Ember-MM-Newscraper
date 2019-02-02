@@ -71,7 +71,7 @@ Public Class dlgMovieDataScraperPreview
         lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
         lblOutline.Text = String.Concat(Master.eLang.GetString(64, "Plot Outline"), ":")
         lblPlot.Text = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
-        lblRating.Text = Master.eLang.GetString(245, "Rating:")
+        lblRating.Text = String.Concat(Master.eLang.GetString(245, "Ratings"), ":")
         lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
         lblRuntime.Text = String.Concat(Master.eLang.GetString(238, "Runtime"), ":")
         lblStudios.Text = String.Concat(Master.eLang.GetString(226, "Studios"), ":")

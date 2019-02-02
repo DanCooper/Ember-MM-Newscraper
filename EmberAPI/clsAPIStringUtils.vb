@@ -733,12 +733,12 @@ Public Class StringUtils
         Return ListTitle
     End Function
 
-    Public Shared Function ListTitle_TVShow(ByVal TVShowTitle As String, ByVal MovieYear As String) As String
+    Public Shared Function ListTitle_TVShow(ByVal TVShowTitle As String, ByVal Status As String) As String
         Dim ListTitle As String = TVShowTitle
-        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(MovieYear) Then
-            ListTitle = String.Format("{0} ({1})", SortTokens_Movie(TVShowTitle.Trim), MovieYear.Trim)
+        If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(Status) Then
+            ListTitle = String.Format("{0} ({1})", SortTokens_TV(TVShowTitle.Trim), Status.Trim)
         Else
-            ListTitle = SortTokens_Movie(TVShowTitle.Trim)
+            ListTitle = SortTokens_TV(TVShowTitle.Trim)
         End If
         Return ListTitle
     End Function

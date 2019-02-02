@@ -1689,7 +1689,8 @@
         subEpisode      integer,
         lastPlayed      integer,
         userRating      integer NOT NULL DEFAULT 0,
-        dateModified    integer
+        dateModified    integer,
+        originalTitle   text
         );
 
         CREATE TRIGGER delete_episode

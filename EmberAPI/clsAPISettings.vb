@@ -1501,6 +1501,7 @@ Public Class Settings
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralEpisodeListSorting.Count <= 0) Then
             Master.eSettings.TVGeneralEpisodeListSorting.Clear()
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.Title), .LabelID = 21, .LabelText = "Title"})
+            Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle), .LabelID = 302, .LabelText = "Original Title"})
             'Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = "Rating", .LabelID = 400, .LabelText = "Rating"})
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.UserRating), .LabelID = 1467, .LabelText = "User Rating"})
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.NfoPath), .LabelID = 150, .LabelText = "NFO"})

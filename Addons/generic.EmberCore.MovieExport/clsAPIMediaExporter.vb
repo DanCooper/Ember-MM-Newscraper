@@ -446,8 +446,8 @@ Public Class MediaExporter
 
         If fInfo IsNot Nothing Then
             If fInfo.StreamDetails.Video.Count > 0 Then
-                tVid = NFO.GetBestVideo(fInfo)
-                tRes = NFO.GetResolutionFromDimensions(tVid)
+                tVid = Info.GetBestVideo(fInfo)
+                tRes = Info.GetResolutionFromDimensions(tVid)
 
                 nInfo.vidBitrate = tVid.Bitrate.ToString
                 nInfo.vidMultiViewCount = tVid.MultiViewCount.ToString
@@ -461,11 +461,11 @@ Public Class MediaExporter
                 nInfo.vidStereoMode = tVid.StereoMode
                 nInfo.vidWidth = tVid.Width.ToString
                 nInfo.vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown"), tVid.Codec)).ToUpper
-                nInfo.vidDimensions = NFO.GetDimensionsFromVideo(tVid)
+                nInfo.vidDimensions = Info.GetDimensionsFromVideo(tVid)
             End If
 
             If fInfo.StreamDetails.Audio.Count > 0 Then
-                tAud = NFO.GetBestAudio(fInfo, contentType)
+                tAud = Info.GetBestAudio(fInfo, contentType)
 
                 nInfo.audBitrate = tAud.Bitrate.ToString
                 nInfo.audChannels = tAud.Channels.ToString
@@ -577,10 +577,10 @@ Public Class MediaExporter
                 Case Enums.ContentType.TVEpisode
                     fiAV = tDBElement.TVEpisode.FileInfo
             End Select
-            Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
-            Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, tContentType)
+            Dim tVideo As MediaContainers.Video = Info.GetBestVideo(fiAV)
+            Dim tAudio As MediaContainers.Audio = Info.GetBestAudio(fiAV, tContentType)
 
-            Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResolutionFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
+            Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = Info.GetResolutionFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
             If vresFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
             Else

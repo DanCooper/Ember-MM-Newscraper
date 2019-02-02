@@ -310,7 +310,7 @@ Public Class MetaData
                 End If
             End If
             If nFileInfo.StreamDetails.VideoSpecified AndAlso bUseRuntimeFormat Then
-                Dim tVid As MediaContainers.Video = NFO.GetBestVideo(currentFileInfo)
+                Dim tVid As MediaContainers.Video = Info.GetBestVideo(currentFileInfo)
                 If tVid.DurationSpecified Then
                     Select Case dbElement.ContentType
                         Case Enums.ContentType.Movie

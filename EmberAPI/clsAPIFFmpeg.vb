@@ -91,7 +91,7 @@ Namespace FFmpeg
         Public Shared Function ExtractImageFromVideo(ByVal videopath As String,
                                                      ByVal position As Integer,
                                                      ByVal loadBitmap As Boolean) As ThumbnailWithVideoDuration
-            Dim strPath = Path.Combine(Master.TempPath, "ffmpeg")
+            Dim strPath = Path.Combine(Master.TempPath, "FFmpeg")
             If Not Directory.Exists(strPath) Then Directory.CreateDirectory(strPath)
             Dim strFullPath = Path.Combine(strPath, "frame.jpg")
             If File.Exists(strFullPath) Then File.Delete(strFullPath)
@@ -106,6 +106,7 @@ Namespace FFmpeg
             If File.Exists(strFullPath) Then
                 Dim nImage As New MediaContainers.Image
                 nImage.ImageOriginal.LoadFromFile(strFullPath, loadBitmap)
+                File.Delete(strFullPath)
                 Return New ThumbnailWithVideoDuration With {
                     .Duration = GetDurationFromFFmpegOutput(result),
                     .Image = nImage}

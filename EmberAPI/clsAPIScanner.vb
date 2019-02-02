@@ -581,12 +581,12 @@ Public Class Scanner
         GetFolderContents_Movie(dbElement)
 
         If dbElement.NfoPathSpecified Then
-            dbElement.Movie = NFO.LoadFromNFO_Movie(dbElement.NfoPath, dbElement.IsSingle)
+            dbElement.Movie = Info.LoadFromNFO_Movie(dbElement.NfoPath, dbElement.IsSingle)
             If Not dbElement.Movie.FileInfoSpecified AndAlso dbElement.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
                 MetaData.UpdateFileInfo(dbElement)
             End If
         Else
-            dbElement.Movie = NFO.LoadFromNFO_Movie(dbElement.FileItem.FirstStackedPath, dbElement.IsSingle)
+            dbElement.Movie = Info.LoadFromNFO_Movie(dbElement.FileItem.FirstStackedPath, dbElement.IsSingle)
             If Not dbElement.Movie.FileInfoSpecified AndAlso dbElement.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
                 MetaData.UpdateFileInfo(dbElement)
             End If
@@ -686,13 +686,13 @@ Public Class Scanner
         GetFolderContents_MovieSet(dbElement)
 
         If Not dbElement.NfoPathSpecified Then
-            Dim sNFO As String = NFO.GetNfoPath_MovieSet(dbElement)
+            Dim sNFO As String = Info.GetNfoPath_MovieSet(dbElement)
             If Not String.IsNullOrEmpty(sNFO) Then
                 dbElement.NfoPath = sNFO
-                dbElement.MovieSet = NFO.LoadFromNFO_MovieSet(sNFO)
+                dbElement.MovieSet = Info.LoadFromNFO_MovieSet(sNFO)
             End If
         Else
-            dbElement.MovieSet = NFO.LoadFromNFO_MovieSet(dbElement.NfoPath)
+            dbElement.MovieSet = Info.LoadFromNFO_MovieSet(dbElement.NfoPath)
         End If
 
         'ListTitle
@@ -738,9 +738,9 @@ Public Class Scanner
 
             If cEpisode.NfoPathSpecified Then
                 If sEpisode.byDate Then
-                    cEpisode.TVEpisode = NFO.LoadFromNFO_TVEpisode(cEpisode.NfoPath, sEpisode.Season, sEpisode.Aired)
+                    cEpisode.TVEpisode = Info.LoadFromNFO_TVEpisode(cEpisode.NfoPath, sEpisode.Season, sEpisode.Aired)
                 Else
-                    cEpisode.TVEpisode = NFO.LoadFromNFO_TVEpisode(cEpisode.NfoPath, sEpisode.Season, sEpisode.Episode)
+                    cEpisode.TVEpisode = Info.LoadFromNFO_TVEpisode(cEpisode.NfoPath, sEpisode.Season, sEpisode.Episode)
                 End If
 
                 If Not cEpisode.TVEpisode.FileInfoSpecified AndAlso cEpisode.TVEpisode.TitleSpecified AndAlso Master.eSettings.TVScraperMetaDataScan Then
@@ -899,7 +899,7 @@ Public Class Scanner
                 GetFolderContents_TVShow(dbElement)
 
                 If dbElement.NfoPathSpecified Then
-                    dbElement.TVShow = NFO.LoadFromNFO_TVShow(dbElement.NfoPath)
+                    dbElement.TVShow = Info.LoadFromNFO_TVShow(dbElement.NfoPath)
                 Else
                     dbElement.TVShow = New MediaContainers.TVShow
                 End If

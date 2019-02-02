@@ -25,7 +25,7 @@ Public Class dlgEditTVSeason
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private tmpDBElement As Database.DBElement
 
@@ -41,7 +41,7 @@ Public Class dlgEditTVSeason
 
 #End Region 'Properties
 
-#Region "Methods"
+#Region "Dialog"
 
     Public Sub New()
         ' This call is required by the designer.
@@ -51,340 +51,12 @@ Public Class dlgEditTVSeason
         StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal DBTVSeason As Database.DBElement) As DialogResult
-        tmpDBElement = DBTVSeason
-        Return ShowDialog()
-    End Function
-
-    Private Sub btnRemoveBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveBanner.Click
-        pbBanner.Image = Nothing
-        pbBanner.Tag = Nothing
-        lblBannerSize.Text = String.Empty
-        lblBannerSize.Visible = False
-        tmpDBElement.ImagesContainer.Banner = New MediaContainers.Image
-    End Sub
-
-    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
-        pbFanart.Image = Nothing
-        pbFanart.Tag = Nothing
-        lblFanartSize.Text = String.Empty
-        lblFanartSize.Visible = False
-        tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
-    End Sub
-
-    Private Sub btnRemoveLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLandscape.Click
-        pbLandscape.Image = Nothing
-        pbLandscape.Tag = Nothing
-        lblLandscapeSize.Text = String.Empty
-        lblLandscapeSize.Visible = False
-        tmpDBElement.ImagesContainer.Landscape = New MediaContainers.Image
-    End Sub
-
-    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
-        pbPoster.Image = Nothing
-        pbPoster.Tag = Nothing
-        lblPosterSize.Text = String.Empty
-        lblPosterSize.Visible = False
-        tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
-    End Sub
-
-    Private Sub btnSetBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerDL.Click
-        Using dImgManual As New dlgImgManual
-            If dImgManual.ShowDialog() = DialogResult.OK Then
-                Dim tImage As MediaContainers.Image = dImgManual.Results
-                If tImage.ImageOriginal.Image IsNot Nothing Then
-                    tmpDBElement.ImagesContainer.Banner = tImage
-                    pbBanner.Image = tImage.ImageOriginal.Image
-                    pbBanner.Tag = tImage
-
-                    lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
-                    lblBannerSize.Visible = True
-                End If
-            End If
-        End Using
-    End Sub
-
-    Private Sub btnSetBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerScrape.Click
-        Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-        Cursor = Cursors.WaitCursor
-        If tmpDBElement.TVSeason.IsAllSeasons Then
-            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsBanner, True)
-        Else
-            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonBanner, True)
-        End If
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-            If aContainer.SeasonBanners.Count > 0 OrElse (tmpDBElement.TVSeason.IsAllSeasons AndAlso aContainer.MainBanners.Count > 0) Then
-                Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                    If tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Banner.ImageOriginal.LoadFromMemoryStream Then
-                        pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
-                        lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
-                        lblBannerSize.Visible = True
-                    Else
-                        pbBanner.Image = Nothing
-                        pbBanner.Tag = Nothing
-                        lblBannerSize.Text = String.Empty
-                        lblBannerSize.Visible = False
-                    End If
-                End If
-            Else
-                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End If
-        End If
-        Cursor = Cursors.Default
-    End Sub
-
-    Private Sub btnSetBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerLocal.Click
-        With ofdImage
-            .InitialDirectory = tmpDBElement.ShowPath
-            .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
-            .FilterIndex = 0
-        End With
-
-        If ofdImage.ShowDialog() = DialogResult.OK Then
-            Dim tImage As New MediaContainers.Image
-            tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
-            If tImage.ImageOriginal.Image IsNot Nothing Then
-                tmpDBElement.ImagesContainer.Banner = tImage
-                pbBanner.Image = tImage.ImageOriginal.Image
-                pbBanner.Tag = tImage
-
-                lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
-                lblBannerSize.Visible = True
-            End If
-        End If
-    End Sub
-
-    Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
-        Using dImgManual As New dlgImgManual
-            If dImgManual.ShowDialog() = DialogResult.OK Then
-                Dim tImage As MediaContainers.Image = dImgManual.Results
-                If tImage.ImageOriginal.Image IsNot Nothing Then
-                    tmpDBElement.ImagesContainer.Fanart = tImage
-                    pbFanart.Image = tImage.ImageOriginal.Image
-                    pbFanart.Tag = tImage
-
-                    lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
-                    lblFanartSize.Visible = True
-                End If
-            End If
-        End Using
-    End Sub
-
-    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
-        Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-        Cursor = Cursors.WaitCursor
-        If tmpDBElement.TVSeason.IsAllSeasons Then
-            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsFanart, True)
-        Else
-            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonFanart, True)
-        End If
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-            If aContainer.SeasonFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                    tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                    If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromMemoryStream Then
-                        pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                        lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
-                        lblFanartSize.Visible = True
-                    Else
-                        pbFanart.Image = Nothing
-                        pbFanart.Tag = Nothing
-                        lblFanartSize.Text = String.Empty
-                        lblFanartSize.Visible = False
-                    End If
-                End If
-            Else
-                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End If
-        End If
-        Cursor = Cursors.Default
-    End Sub
-
-    Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
-        With ofdImage
-            .InitialDirectory = tmpDBElement.ShowPath
-            .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
-            .FilterIndex = 4
-        End With
-
-        If ofdImage.ShowDialog() = DialogResult.OK Then
-            Dim tImage As New MediaContainers.Image
-            tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
-            If tImage.ImageOriginal.Image IsNot Nothing Then
-                tmpDBElement.ImagesContainer.Fanart = tImage
-                pbFanart.Image = tImage.ImageOriginal.Image
-                pbFanart.Tag = tImage
-
-                lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
-                lblFanartSize.Visible = True
-            End If
-        End If
-    End Sub
-
-    Private Sub btnSetLandscapeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeDL.Click
-        Using dImgManual As New dlgImgManual
-            If dImgManual.ShowDialog() = DialogResult.OK Then
-                Dim tImage As MediaContainers.Image = dImgManual.Results
-                If tImage.ImageOriginal.Image IsNot Nothing Then
-                    tmpDBElement.ImagesContainer.Landscape = tImage
-                    pbLandscape.Image = tImage.ImageOriginal.Image
-                    pbLandscape.Tag = tImage
-
-                    lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
-                    lblLandscapeSize.Visible = True
-                End If
-            End If
-        End Using
-    End Sub
-
-    Private Sub btnSetLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeScrape.Click
-        Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-        Cursor = Cursors.WaitCursor
-        If tmpDBElement.TVSeason.IsAllSeasons Then
-            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsLandscape, True)
-        Else
-            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
-        End If
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-            If aContainer.SeasonLandscapes.Count > 0 OrElse (tmpDBElement.TVSeason.IsAllSeasons AndAlso aContainer.MainLandscapes.Count > 0) Then
-                Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                    tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                    If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Landscape.ImageOriginal.LoadFromMemoryStream Then
-                        pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
-                        lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
-                        lblLandscapeSize.Visible = True
-                    Else
-                        pbLandscape.Image = Nothing
-                        pbLandscape.Tag = Nothing
-                        lblLandscapeSize.Text = String.Empty
-                        lblLandscapeSize.Visible = False
-                    End If
-                End If
-            Else
-                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End If
-        End If
-        Cursor = Cursors.Default
-    End Sub
-
-    Private Sub btnSetLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeLocal.Click
-        With ofdImage
-            .InitialDirectory = tmpDBElement.ShowPath
-            .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
-            .FilterIndex = 0
-        End With
-
-        If ofdImage.ShowDialog() = DialogResult.OK Then
-            Dim tImage As New MediaContainers.Image
-            tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
-            If tImage.ImageOriginal.Image IsNot Nothing Then
-                tmpDBElement.ImagesContainer.Landscape = tImage
-                pbLandscape.Image = tImage.ImageOriginal.Image
-                pbLandscape.Tag = tImage
-
-                lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
-                lblLandscapeSize.Visible = True
-            End If
-        End If
-    End Sub
-
-    Private Sub btnSetSeasonPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
-        Using dImgManual As New dlgImgManual
-            If dImgManual.ShowDialog() = DialogResult.OK Then
-                Dim tImage As MediaContainers.Image = dImgManual.Results
-                If tImage.ImageOriginal.Image IsNot Nothing Then
-                    tmpDBElement.ImagesContainer.Poster = tImage
-                    pbPoster.Image = tImage.ImageOriginal.Image
-                    pbPoster.Tag = tImage
-
-                    lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
-                    lblPosterSize.Visible = True
-                End If
-            End If
-        End Using
-    End Sub
-
-    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
-        Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-        Cursor = Cursors.WaitCursor
-        If tmpDBElement.TVSeason.IsAllSeasons Then
-            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsPoster, True)
-        Else
-            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonPoster, True)
-        End If
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-            If aContainer.SeasonPosters.Count > 0 OrElse (tmpDBElement.TVSeason.IsAllSeasons AndAlso aContainer.MainPosters.Count > 0) Then
-                Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                    tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                    If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromMemoryStream Then
-                        pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
-                        lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
-                        lblPosterSize.Visible = True
-                    Else
-                        pbPoster.Image = Nothing
-                        pbPoster.Tag = Nothing
-                        lblPosterSize.Text = String.Empty
-                        lblPosterSize.Visible = False
-                    End If
-                End If
-            Else
-                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End If
-        End If
-        Cursor = Cursors.Default
-    End Sub
-
-    Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click
-        With ofdImage
-            .InitialDirectory = tmpDBElement.ShowPath
-            .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
-            .FilterIndex = 0
-        End With
-
-        If ofdImage.ShowDialog() = DialogResult.OK Then
-            Dim tImage As New MediaContainers.Image
-            tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
-            If tImage.ImageOriginal.Image IsNot Nothing Then
-                tmpDBElement.ImagesContainer.Poster = tImage
-                pbPoster.Image = tImage.ImageOriginal.Image
-                pbPoster.Tag = tImage
-
-                lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
-                lblPosterSize.Visible = True
-            End If
-        End If
-    End Sub
-
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        DialogResult = DialogResult.Cancel
-    End Sub
-
-    Private Sub dlgEditSeason_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tmpDBElement, True) Then
-            If Not Master.eSettings.TVSeasonBannerAnyEnabled Then tcEdit.TabPages.Remove(tpBanner)
-            If Not Master.eSettings.TVSeasonFanartAnyEnabled Then tcEdit.TabPages.Remove(tpFanart)
-            If Not Master.eSettings.TVSeasonLandscapeAnyEnabled Then tcEdit.TabPages.Remove(tpLandscape)
-            If Not Master.eSettings.TVSeasonPosterAnyEnabled Then tcEdit.TabPages.Remove(tpPoster)
-
             pbBanner.AllowDrop = True
             pbFanart.AllowDrop = True
             pbLandscape.AllowDrop = True
             pbPoster.AllowDrop = True
-
-            SetUp()
 
             Dim iBackground As New Bitmap(pnlTop.Width, pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -392,243 +64,465 @@ Public Class dlgEditTVSeason
                 pnlTop.BackgroundImage = iBackground
             End Using
 
-            FillInfo()
+            Setup()
+            Data_Fill()
         Else
             DialogResult = DialogResult.Cancel
         End If
     End Sub
 
-    Private Sub FillInfo()
-        txtAired.Text = tmpDBElement.TVSeason.Aired
-        txtPlot.Text = tmpDBElement.TVSeason.Plot
-        txtTitle.Text = tmpDBElement.TVSeason.Title
-
-        'Images and TabPages
-        With tmpDBElement.ImagesContainer
-
-            'Load all images to MemoryStream and Bitmap
-            tmpDBElement.LoadAllImages(True, True)
-
-            'Banner
-            If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonBannerAnyEnabled) OrElse
-                (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled) Then
-                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)) OrElse
-                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner) AndAlso
-                     Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)) Then
-                    btnSetBannerScrape.Enabled = False
-                End If
-                If .Banner.ImageOriginal.Image IsNot Nothing Then
-                    pbBanner.Image = .Banner.ImageOriginal.Image
-                    pbBanner.Tag = .Banner
-
-                    lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
-                    lblBannerSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpBanner)
-            End If
-
-            'Fanart
-            If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonFanartAnyEnabled) OrElse
-                (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled) Then
-                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) AndAlso
-                    Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)) OrElse
-                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) AndAlso
-                     Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)) Then
-                    btnSetFanartScrape.Enabled = False
-                End If
-                If .Fanart.ImageOriginal.Image IsNot Nothing Then
-                    pbFanart.Image = .Fanart.ImageOriginal.Image
-                    pbFanart.Tag = .Fanart
-
-                    lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
-                    lblFanartSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpFanart)
-            End If
-
-            'Landscape
-            If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled) OrElse
-                (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled) Then
-                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)) OrElse
-                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape) AndAlso
-                     Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)) Then
-                    btnSetLandscapeScrape.Enabled = False
-                End If
-                If .Landscape.ImageOriginal.Image IsNot Nothing Then
-                    pbLandscape.Image = .Landscape.ImageOriginal.Image
-                    pbLandscape.Tag = .Landscape
-
-                    lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
-                    lblLandscapeSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpLandscape)
-            End If
-
-            'Poster
-            If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonPosterAnyEnabled) OrElse
-                (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled) Then
-                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)) OrElse
-                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster) AndAlso
-                     Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)) Then
-                    btnSetPosterScrape.Enabled = False
-                End If
-                If .Poster.ImageOriginal.Image IsNot Nothing Then
-                    pbPoster.Image = .Poster.ImageOriginal.Image
-                    pbPoster.Tag = .Poster
-
-                    lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
-                    lblPosterSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpPoster)
-            End If
-        End With
+    Private Sub Dialog_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Activate()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
-        SetInfo()
+    Private Sub DialogResult_Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        DialogResult = DialogResult.Cancel
+    End Sub
 
+    Private Sub DialogResult_OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+        Data_Save()
         DialogResult = DialogResult.OK
     End Sub
 
-    Private Sub pbSeasonBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
-        If tImage.ImageOriginal.Image IsNot Nothing Then
-            tmpDBElement.ImagesContainer.Banner = tImage
-            pbBanner.Image = tImage.ImageOriginal.Image
-            pbBanner.Tag = tImage
-            lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
-            lblBannerSize.Visible = True
-        End If
+    Private Sub DialogResult_Rescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
+        DialogResult = DialogResult.Retry
     End Sub
 
-    Private Sub pbSeasonBanner_DragEnter(sender As Object, e As DragEventArgs) Handles pbBanner.DragEnter
-        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
-            e.Effect = DragDropEffects.Copy
-        Else
-            e.Effect = DragDropEffects.None
-        End If
-    End Sub
-
-    Private Sub pbSeasonFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
-        If tImage.ImageOriginal.Image IsNot Nothing Then
-            tmpDBElement.ImagesContainer.Fanart = tImage
-            pbFanart.Image = tImage.ImageOriginal.Image
-            pbFanart.Tag = tImage
-            lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
-            lblFanartSize.Visible = True
-        End If
-    End Sub
-
-    Private Sub pbSeasonFanart_DragEnter(sender As Object, e As DragEventArgs) Handles pbFanart.DragEnter
-        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
-            e.Effect = DragDropEffects.Copy
-        Else
-            e.Effect = DragDropEffects.None
-        End If
-    End Sub
-
-    Private Sub pbSeasonLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbLandscape.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
-        If tImage.ImageOriginal.Image IsNot Nothing Then
-            tmpDBElement.ImagesContainer.Landscape = tImage
-            pbLandscape.Image = tImage.ImageOriginal.Image
-            pbLandscape.Tag = tImage
-            lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
-            lblLandscapeSize.Visible = True
-        End If
-    End Sub
-
-    Private Sub pbSeasonLandscape_DragEnter(sender As Object, e As DragEventArgs) Handles pbLandscape.DragEnter
-        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
-            e.Effect = DragDropEffects.Copy
-        Else
-            e.Effect = DragDropEffects.None
-        End If
-    End Sub
-
-    Private Sub pbSeasonPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
-        If tImage.ImageOriginal.Image IsNot Nothing Then
-            tmpDBElement.ImagesContainer.Poster = tImage
-            pbPoster.Image = tImage.ImageOriginal.Image
-            pbPoster.Tag = tImage
-            lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
-            lblPosterSize.Visible = True
-        End If
-    End Sub
-
-    Private Sub pbSeasonPoster_DragEnter(sender As Object, e As DragEventArgs) Handles pbPoster.DragEnter
-        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
-            e.Effect = DragDropEffects.Copy
-        Else
-            e.Effect = DragDropEffects.None
-        End If
-    End Sub
-
-    Private Sub SetInfo()
-        btnOK.Enabled = False
-        btnCancel.Enabled = False
-
-        tmpDBElement.TVSeason.Aired = txtAired.Text.Trim
-        tmpDBElement.TVSeason.Plot = txtPlot.Text.Trim
-        tmpDBElement.TVSeason.Title = txtTitle.Text.Trim
-    End Sub
-
-    Private Sub SetUp()
-        'Aired
-        Dim strAired As String = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
-        lblAired.Text = strAired
-
-        'Download
-        Dim strDownload As String = Master.eLang.GetString(373, "Download")
-        btnSetBannerDL.Text = strDownload
-        btnSetFanartDL.Text = strDownload
-        btnSetLandscapeDL.Text = strDownload
-        btnSetPosterDL.Text = strDownload
-
-        'Loacal Browse
-        Dim strLocalBrowse As String = Master.eLang.GetString(78, "Local Browse")
-        btnSetBannerLocal.Text = strLocalBrowse
-        btnSetFanartLocal.Text = strLocalBrowse
-        btnSetLandscapeLocal.Text = strLocalBrowse
-        btnSetPosterLocal.Text = strLocalBrowse
-
-        'Plot
-        Dim strPlot As String = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
-        lblPlot.Text = strPlot
-
-        'Remove
-        Dim strRemove As String = Master.eLang.GetString(30, "Remove")
-        btnRemoveBanner.Text = strRemove
-        btnRemoveFanart.Text = strRemove
-        btnRemoveLandscape.Text = strRemove
-        btnRemovePoster.Text = strRemove
-
-        'Scrape
-        Dim strScrape As String = Master.eLang.GetString(79, "Scrape")
-        btnSetBannerScrape.Text = strScrape
-        btnSetFanartScrape.Text = strScrape
-        btnSetLandscapeScrape.Text = strScrape
-        btnSetPosterScrape.Text = strScrape
-
-        'Title
-        Dim strTitle As String = Master.eLang.GetString(21, "Title")
-        lblTitle.Text = strTitle
-
-        Text = Master.eLang.GetString(769, "Edit Season")
+    Private Sub Setup()
+        Dim mTitle As String = tmpDBElement.TVShow.Title
+        Text = String.Concat(Master.eLang.GetString(663, "Edit Show"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         btnCancel.Text = Master.eLang.Cancel
         btnOK.Text = Master.eLang.OK
-        lblTopTitle.Text = Text
-        tblTopDetails.Text = Master.eLang.GetString(830, "Edit the details for the selected season.")
-        tpBanner.Text = Master.eLang.GetString(838, "Banner")
-        tpFanart.Text = Master.eLang.GetString(149, "Fanart")
-        tpLandscape.Text = Master.eLang.GetString(1035, "Landscape")
-        tpPoster.Text = Master.eLang.GetString(148, "Poster")
+        btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
+        chkLocked.Text = Master.eLang.GetString(43, "Locked")
+        chkMarked.Text = Master.eLang.GetString(48, "Marked")
+        lblAired.Text = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
+        lblBanner.Text = Master.eLang.GetString(838, "Banner")
+        lblFanart.Text = Master.eLang.GetString(149, "Fanart")
+        lblLandscape.Text = Master.eLang.GetString(1059, "Landscape")
+        lblPlot.Text = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
+        lblPoster.Text = Master.eLang.GetString(148, "Poster")
+        lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
+        lblTopDetails.Text = Master.eLang.GetString(830, "Edit the details for the selected season.")
+        lblTopTitle.Text = Master.eLang.GetString(769, "Edit Season")
+        tpDetails.Text = Master.eLang.GetString(26, "Details")
+    End Sub
+
+    Public Overloads Function ShowDialog(ByVal DBTVShow As Database.DBElement) As DialogResult
+        tmpDBElement = DBTVShow
+        Return ShowDialog()
+    End Function
+
+#End Region 'Dialog
+
+#Region "Methods"
+
+    Private Function ConvertButtonToModifierType(ByVal sender As System.Object) As Enums.ModifierType
+        Select Case True
+            Case sender Is btnRemoveBanner, sender Is btnSetBannerDL, sender Is btnSetBannerLocal, sender Is btnSetBannerScrape
+                Return Enums.ModifierType.SeasonBanner
+            Case sender Is btnRemoveFanart, sender Is btnSetFanartDL, sender Is btnSetFanartLocal, sender Is btnSetFanartScrape
+                Return Enums.ModifierType.SeasonFanart
+            Case sender Is btnRemoveLandscape, sender Is btnSetLandscapeDL, sender Is btnSetLandscapeLocal, sender Is btnSetLandscapeScrape
+                Return Enums.ModifierType.SeasonLandscape
+            Case sender Is btnRemovePoster, sender Is btnSetPosterDL, sender Is btnSetPosterLocal, sender Is btnSetPosterScrape
+                Return Enums.ModifierType.SeasonPoster
+            Case Else
+                Return Nothing
+        End Select
+    End Function
+
+    Private Sub Data_Fill(Optional ByVal DoAll As Boolean = True)
+        'Database related part
+        With tmpDBElement
+            chkLocked.Checked = .IsLocked
+            chkMarked.Checked = .IsMarked
+        End With
+
+        'Information part
+        With tmpDBElement.TVSeason
+            'Aired
+            dtpAired.Text = .Aired
+            'Plot
+            txtPlot.Text = .Plot
+            'Title
+            txtTitle.Text = .Title
+        End With
+
+        If DoAll Then
+            'Images and TabPages/Panels controll
+            Dim bNeedTab_Images As Boolean
+
+            With tmpDBElement.ImagesContainer
+                'Load all images to MemoryStream and Bitmap
+                tmpDBElement.LoadAllImages(True, True)
+
+                'Banner
+                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonBannerAnyEnabled) OrElse
+                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled) Then
+                    If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)) OrElse
+                        (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner) AndAlso
+                        Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)) Then
+                        btnSetBannerScrape.Enabled = False
+                    End If
+                    If .Banner.ImageOriginal.Image IsNot Nothing Then
+                        Image_LoadPictureBox(Enums.ModifierType.SeasonBanner)
+                    End If
+                    bNeedTab_Images = True
+                Else
+                    pnlBanner.Visible = False
+                End If
+
+                'Fanart
+                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonFanartAnyEnabled) OrElse
+                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled) Then
+                    If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) AndAlso
+                        Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)) OrElse
+                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) AndAlso
+                    Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)) Then
+                        btnSetFanartScrape.Enabled = False
+                    End If
+                    If .Fanart.ImageOriginal.Image IsNot Nothing Then
+                        Image_LoadPictureBox(Enums.ModifierType.SeasonFanart)
+                    End If
+                    bNeedTab_Images = True
+                Else
+                    pnlFanart.Visible = False
+                End If
+
+                'Landscape
+                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled) OrElse
+                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled) Then
+                    If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)) OrElse
+                        (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape) AndAlso
+                        Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)) Then
+                        btnSetLandscapeScrape.Enabled = False
+                    End If
+                    If .Landscape.ImageOriginal.Image IsNot Nothing Then
+                        Image_LoadPictureBox(Enums.ModifierType.SeasonLandscape)
+                    End If
+                    bNeedTab_Images = True
+                Else
+                    pnlLandscape.Visible = False
+                End If
+
+                'Poster
+                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonPosterAnyEnabled) OrElse
+                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled) Then
+                    If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)) OrElse
+                        (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster) AndAlso
+                        Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)) Then
+                        btnSetPosterScrape.Enabled = False
+                    End If
+                    If .Poster.ImageOriginal.Image IsNot Nothing Then
+                        Image_LoadPictureBox(Enums.ModifierType.SeasonPoster)
+                    End If
+                    bNeedTab_Images = True
+                Else
+                    pnlPoster.Visible = False
+                End If
+            End With
+
+            'Remove empty tab pages
+            If Not bNeedTab_Images Then
+                tcEdit.TabPages.Remove(tpImages)
+            End If
+        End If
+    End Sub
+
+    Private Sub Data_Save()
+        btnOK.Enabled = False
+        btnCancel.Enabled = False
+        btnRescrape.Enabled = False
+
+        'Database related part
+        With tmpDBElement
+            .IsLocked = chkLocked.Checked
+            .IsMarked = chkMarked.Checked
+        End With
+
+        'Information part
+        With tmpDBElement.TVSeason
+            'Aired
+            .Aired = dtpAired.Value.ToString("yyyy-MM-dd")
+            'Plot
+            .Plot = txtPlot.Text.Trim
+            'Title
+            .Title = txtTitle.Text.Trim
+        End With
+    End Sub
+
+    Private Sub Image_DoubleClick(sender As Object, e As EventArgs) Handles _
+        pbBanner.DoubleClick,
+        pbFanart.DoubleClick,
+        pbLandscape.DoubleClick,
+        pbPoster.DoubleClick
+        Cursor.Current = Cursors.WaitCursor
+        Dim tImage As MediaContainers.Image = DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image)
+        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+            ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
+        End If
+        Cursor.Current = Cursors.Default
+    End Sub
+
+    Private Sub Image_Download_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        btnSetBannerDL.Click,
+        btnSetFanartDL.Click,
+        btnSetLandscapeDL.Click,
+        btnSetPosterDL.Click
+        Using dImgManual As New dlgImgManual
+            Dim tImage As MediaContainers.Image
+            If dImgManual.ShowDialog() = DialogResult.OK Then
+                tImage = dImgManual.Results
+                If tImage.ImageOriginal.Image IsNot Nothing Then
+                    Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
+                    Select Case modType
+                        Case Enums.ModifierType.SeasonBanner
+                            tmpDBElement.ImagesContainer.Banner = tImage
+                        Case Enums.ModifierType.SeasonFanart
+                            tmpDBElement.ImagesContainer.Fanart = tImage
+                        Case Enums.ModifierType.SeasonLandscape
+                            tmpDBElement.ImagesContainer.Landscape = tImage
+                        Case Enums.ModifierType.SeasonPoster
+                            tmpDBElement.ImagesContainer.Poster = tImage
+                    End Select
+                    Image_LoadPictureBox(modType)
+                End If
+            End If
+        End Using
+    End Sub
+
+    Private Sub Image_LoadPictureBox(ByVal imageType As Enums.ModifierType)
+        Dim cImage As MediaContainers.Image
+        Dim lblSize As Label
+        Dim pbImage As PictureBox
+        Select Case imageType
+            Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
+                cImage = tmpDBElement.ImagesContainer.Banner
+                lblSize = lblBannerSize
+                pbImage = pbBanner
+            Case Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.SeasonFanart
+                cImage = tmpDBElement.ImagesContainer.Fanart
+                lblSize = lblFanartSize
+                pbImage = pbFanart
+            Case Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
+                cImage = tmpDBElement.ImagesContainer.Landscape
+                lblSize = lblLandscapeSize
+                pbImage = pbLandscape
+            Case Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.SeasonPoster
+                cImage = tmpDBElement.ImagesContainer.Poster
+                lblSize = lblPosterSize
+                pbImage = pbPoster
+            Case Else
+                Return
+        End Select
+        If cImage.ImageOriginal.Image IsNot Nothing Then
+            pbImage.Image = cImage.ImageOriginal.Image
+            pbImage.Tag = cImage
+            lblSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbImage.Image.Width, pbImage.Image.Height)
+            lblSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub Image_Local_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        btnSetBannerLocal.Click,
+        btnSetFanartLocal.Click,
+        btnSetLandscapeLocal.Click,
+        btnSetPosterLocal.Click
+        With ofdLocalFiles
+            .InitialDirectory = tmpDBElement.FileItem.MainPath.FullName
+            .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+            .FilterIndex = 0
+        End With
+        If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
+            Dim tImage As New MediaContainers.Image
+            tImage.ImageOriginal.LoadFromFile(ofdLocalFiles.FileName, True)
+            If tImage.ImageOriginal.Image IsNot Nothing Then
+                Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
+                Select Case modType
+                    Case Enums.ModifierType.SeasonBanner
+                        tmpDBElement.ImagesContainer.Banner = tImage
+                    Case Enums.ModifierType.SeasonFanart
+                        tmpDBElement.ImagesContainer.Fanart = tImage
+                    Case Enums.ModifierType.SeasonLandscape
+                        tmpDBElement.ImagesContainer.Landscape = tImage
+                    Case Enums.ModifierType.SeasonPoster
+                        tmpDBElement.ImagesContainer.Poster = tImage
+                End Select
+                Image_LoadPictureBox(modType)
+            End If
+        End If
+    End Sub
+
+    Private Sub Image_Remove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        btnRemoveBanner.Click,
+        btnRemoveFanart.Click,
+        btnRemoveLandscape.Click,
+        btnRemovePoster.Click
+        Dim lblSize As Label
+        Dim pbImage As PictureBox
+        Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
+        Select Case modType
+            Case Enums.ModifierType.MainBanner
+                lblSize = lblBannerSize
+                pbImage = pbBanner
+                tmpDBElement.ImagesContainer.Banner = New MediaContainers.Image
+            Case Enums.ModifierType.MainFanart
+                lblSize = lblFanartSize
+                pbImage = pbFanart
+                tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
+            Case Enums.ModifierType.MainLandscape
+                lblSize = lblLandscapeSize
+                pbImage = pbLandscape
+                tmpDBElement.ImagesContainer.Landscape = New MediaContainers.Image
+            Case Enums.ModifierType.MainPoster
+                lblSize = lblPosterSize
+                pbImage = pbPoster
+                tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
+            Case Else
+                Return
+        End Select
+        lblSize.Text = String.Empty
+        lblSize.Visible = False
+        pbImage.Image = Nothing
+        pbImage.Tag = Nothing
+    End Sub
+
+    Private Sub Image_Scrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        btnSetBannerScrape.Click,
+        btnSetFanartScrape.Click,
+        btnSetLandscapeScrape.Click,
+        btnSetPosterScrape.Click
+        Cursor = Cursors.WaitCursor
+        Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
+        Dim aContainer As New MediaContainers.SearchResultsContainer
+        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+        Select Case modType
+            Case Enums.ModifierType.SeasonBanner
+                If tmpDBElement.TVSeason.IsAllSeasons Then
+                    modType = Enums.ModifierType.AllSeasonsBanner
+                End If
+            Case Enums.ModifierType.SeasonFanart
+                If tmpDBElement.TVSeason.IsAllSeasons Then
+                    modType = Enums.ModifierType.AllSeasonsFanart
+                End If
+            Case Enums.ModifierType.SeasonLandscape
+                If tmpDBElement.TVSeason.IsAllSeasons Then
+                    modType = Enums.ModifierType.AllSeasonsLandscape
+                End If
+            Case Enums.ModifierType.SeasonPoster
+                If tmpDBElement.TVSeason.IsAllSeasons Then
+                    modType = Enums.ModifierType.AllSeasonsPoster
+                End If
+        End Select
+        Functions.SetScrapeModifiers(ScrapeModifiers, modType, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+            Dim iImageCount = 0
+            Dim strNoImagesFound As String = String.Empty
+            Select Case modType
+                Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
+                    iImageCount = aContainer.SeasonBanners.Count
+                    If tmpDBElement.TVSeason.IsAllSeasons Then iImageCount += aContainer.MainBanners.Count
+                    strNoImagesFound = Master.eLang.GetString(1363, "No Banners found")
+                Case Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.SeasonFanart
+                    iImageCount = aContainer.SeasonFanarts.Count + aContainer.MainFanarts.Count
+                    strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
+                Case Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
+                    iImageCount = aContainer.SeasonLandscapes.Count
+                    If tmpDBElement.TVSeason.IsAllSeasons Then iImageCount += aContainer.MainLandscapes.Count
+                    strNoImagesFound = Master.eLang.GetString(1197, "No Landscapes found")
+                Case Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.SeasonPoster
+                    iImageCount = aContainer.SeasonPosters.Count
+                    If tmpDBElement.TVSeason.IsAllSeasons Then iImageCount += aContainer.MainPosters.Count
+                    strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
+            End Select
+            If iImageCount > 0 Then
+                Dim dlgImgS = New dlgImgSelect()
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
+                    Select Case modType
+                        Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
+                            tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+                            If tmpDBElement.ImagesContainer.Banner.ImageOriginal.LoadFromMemoryStream() Then
+                                Image_LoadPictureBox(modType)
+                            Else
+                                Image_Remove_Click(sender, e)
+                            End If
+                        Case Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.SeasonFanart
+                            tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+                            If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromMemoryStream() Then
+                                Image_LoadPictureBox(modType)
+                            Else
+                                Image_Remove_Click(sender, e)
+                            End If
+                        Case Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
+                            tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+                            If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.LoadFromMemoryStream() Then
+                                Image_LoadPictureBox(modType)
+                            Else
+                                Image_Remove_Click(sender, e)
+                            End If
+                        Case Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.SeasonPoster
+                            tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+                            If tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromMemoryStream() Then
+                                Image_LoadPictureBox(modType)
+                            Else
+                                Image_Remove_Click(sender, e)
+                            End If
+                    End Select
+                End If
+            Else
+                MessageBox.Show(strNoImagesFound, String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+        End If
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub PictureBox_DragEnter(sender As Object, e As DragEventArgs) Handles _
+        pbBanner.DragEnter,
+        pbFanart.DragEnter,
+        pbLandscape.DragEnter,
+        pbPoster.DragEnter
+
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub PictureBox_DragDrop(sender As Object, e As DragEventArgs) Handles _
+        pbBanner.DragDrop,
+        pbFanart.DragDrop,
+        pbLandscape.DragDrop,
+        pbPoster.DragDrop
+
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
+        If tImage.ImageOriginal.Image IsNot Nothing Then
+            Select Case True
+                Case sender Is pbBanner
+                    tmpDBElement.ImagesContainer.Banner = tImage
+                    Image_LoadPictureBox(Enums.ModifierType.SeasonBanner)
+                Case sender Is pbFanart
+                    tmpDBElement.ImagesContainer.Fanart = tImage
+                    Image_LoadPictureBox(Enums.ModifierType.SeasonFanart)
+                Case sender Is pbLandscape
+                    tmpDBElement.ImagesContainer.Landscape = tImage
+                    Image_LoadPictureBox(Enums.ModifierType.SeasonLandscape)
+                Case sender Is pbPoster
+                    tmpDBElement.ImagesContainer.Poster = tImage
+                    Image_LoadPictureBox(Enums.ModifierType.SeasonPoster)
+            End Select
+        End If
+    End Sub
+
+    Private Sub TextBox_NumericOnly(sender As Object, e As KeyPressEventArgs)
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub TextBox_SelectAll(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
+        If e.KeyData = (Keys.Control Or Keys.A) Then
+            DirectCast(sender, TextBox).SelectAll()
+        End If
     End Sub
 
 #End Region 'Methods

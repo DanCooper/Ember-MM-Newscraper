@@ -1718,6 +1718,19 @@ Public Class Database
         Return nList.ToArray
     End Function
 
+    Public Function GetAllMovieSetDetails() As List(Of MediaContainers.SetDetails)
+        Dim nList As New List(Of MediaContainers.SetDetails)
+        For Each nSet In GetMovieSets()
+            nList.Add(New MediaContainers.SetDetails With {
+                      .ID = nSet.ID,
+                      .Plot = nSet.MovieSet.Plot,
+                      .Title = nSet.MovieSet.Title,
+                      .TMDbId = nSet.MovieSet.UniqueIDs.TMDbId
+                      })
+        Next
+        Return nList
+    End Function
+
     Public Function GetAllSourceNames_Movie() As String()
         Dim nList As New List(Of String)
         nList.AddRange(Master.DB.GetSources_Movie.Select(Function(f) f.Name))
@@ -1734,6 +1747,19 @@ Public Class Database
         Dim nList As New List(Of String)
         Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             sqlCommand.CommandText = "SELECT DISTINCT videoSource FROM movie WHERE videoSource IS NOT '' ORDER BY videoSource;"
+            Using SQLreader As SQLiteDataReader = sqlCommand.ExecuteReader()
+                While SQLreader.Read
+                    nList.Add(SQLreader("videoSource").ToString)
+                End While
+            End Using
+        End Using
+        Return nList.ToArray
+    End Function
+
+    Public Function GetAllVideoSources_TVEpisode() As String()
+        Dim nList As New List(Of String)
+        Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            sqlCommand.CommandText = "SELECT DISTINCT videoSource FROM episode WHERE videoSource IS NOT '' ORDER BY videoSource;"
             Using SQLreader As SQLiteDataReader = sqlCommand.ExecuteReader()
                 While SQLreader.Read
                     nList.Add(SQLreader("videoSource").ToString)
@@ -2037,6 +2063,21 @@ Public Class Database
                 If SQLreader.HasRows Then
                     While SQLreader.Read()
                         lstDBELement.Add(Master.DB.Load_Movie(Convert.ToInt64(SQLreader("idMovie"))))
+                    End While
+                End If
+            End Using
+        End Using
+        Return lstDBELement
+    End Function
+
+    Public Function GetMovieSets() As List(Of DBElement)
+        Dim lstDBELement As New List(Of DBElement)
+        Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            sqlCommand.CommandText = "SELECT idSet FROM movieset ORDER BY listTitle;"
+            Using SQLreader As SQLiteDataReader = sqlCommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    While SQLreader.Read()
+                        lstDBELement.Add(Master.DB.Load_MovieSet(Convert.ToInt64(SQLreader("idSet"))))
                     End While
                 End If
             End Using
@@ -2463,6 +2504,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("subEpisode")) Then .SubEpisode = Convert.ToInt32(SQLreader("subEpisode"))
                         If Not DBNull.Value.Equals(SQLreader("lastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("lastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
                         If Not DBNull.Value.Equals(SQLreader("userRating")) Then .UserRating = Convert.ToInt32(SQLreader("userRating"))
+                        If Not DBNull.Value.Equals(SQLreader("originalTitle")) Then .OriginalTitle = SQLreader("originalTitle").ToString
                     End With
                 End If
             End Using
@@ -2635,6 +2677,9 @@ Public Class Database
 
         'Genres
         dbElement.TVShow.Genres = GetGenresForItem(dbElement.ID, dbElement.ContentType)
+
+        'Ratings
+        dbElement.TVShow.Ratings = GetRatingsForItem(dbElement.ID, dbElement.ContentType)
 
         'Studios
         dbElement.TVShow.Studios = GetStudiosForItem(dbElement.ID, dbElement.ContentType)
@@ -2904,6 +2949,7 @@ Public Class Database
             Dim par_language As SQLiteParameter = sqlCommand.Parameters.Add("par_language", DbType.String, 0, "language")
             Dim par_userRating As SQLiteParameter = sqlCommand.Parameters.Add("par_userRating", DbType.Int64, 0, "userRating")
 
+            'DateAdded
             Try
                 If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(dbElement.Movie.DateAdded) Then
                     Dim DateTimeAdded As Date = Date.ParseExact(dbElement.Movie.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
@@ -2944,6 +2990,7 @@ Public Class Database
                 dbElement.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_dateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
+            'DateModified
             Try
                 If Not dbElement.IDSpecified AndAlso dbElement.Movie.DateModifiedSpecified Then
                     Dim DateTimeDateModified As Date = Date.ParseExact(dbElement.Movie.DateModified, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
@@ -2961,6 +3008,7 @@ Public Class Database
                 dbElement.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_dateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
+            'LastPlayed
             Dim DateTimeLastPlayedUnix As Double = -1
             If dbElement.Movie.LastPlayedSpecified Then
                 Try
@@ -2992,7 +3040,7 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path
             'Also save Images to get ExtrafanartsPath and ExtrathumbsPath
             'art Table will be linked later
-            If toNFO Then NFO.SaveToNFO_Movie(dbElement, forceFileCleanup)
+            If toNFO Then Info.SaveToNFO_Movie(dbElement, forceFileCleanup)
             If toDisk Then
                 dbElement.ImagesContainer.SaveAllImages(dbElement, forceFileCleanup)
                 dbElement.Movie.SaveAllActorThumbs(dbElement)
@@ -3182,7 +3230,7 @@ Public Class Database
 
             'First let's save it to NFO, even because we will need the NFO path, also save Images
             'art Table be be linked later
-            If bToNFO Then NFO.SaveToNFO_MovieSet(dbElement)
+            If bToNFO Then Info.SaveToNFO_MovieSet(dbElement)
             If bToDisk Then
                 dbElement.ImagesContainer.SaveAllImages(dbElement, False)
             End If
@@ -3504,16 +3552,16 @@ Public Class Database
                      "idShow, idFile, idSource, new, marked, locked, title, season, episode, ",
                      "plot, aired, nfoPath, playCount, ",
                      "displaySeason, displayEpisode, dateAdded, runtime, videoSource, hasSub, subEpisode, ",
-                     "lastPlayed, userRating",
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
+                     "lastPlayed, userRating, dateModified, originaltitle",
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
             Else
                 sqlCommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (",
                      "idEpisode, idShow, idFile, idSource, new, marked, locked, title, season, episode, ",
                      "plot, aired, nfoPath, playCount, ",
                      "displaySeason, displayEpisode, dateAdded, runtime, videoSource, hasSub, subEpisode, ",
-                     "lastPlayed, userRating",
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
+                     "lastPlayed, userRating, dateModified, originalTitle",
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
                 Dim par_idEpisode As SQLiteParameter = sqlCommand.Parameters.Add("par_idEpisode", DbType.Int64, 0, "idEpisode")
                 par_idEpisode.Value = dbElement.ID
@@ -3541,7 +3589,10 @@ Public Class Database
             Dim par_subEpisode As SQLiteParameter = sqlCommand.Parameters.Add("par_subEpisode", DbType.String, 0, "subEpisode")
             Dim par_lastPlayed As SQLiteParameter = sqlCommand.Parameters.Add("par_lastPlayed", DbType.Int64, 0, "lastPlayed")
             Dim par_userRating As SQLiteParameter = sqlCommand.Parameters.Add("par_userRating", DbType.Int64, 0, "userRating")
+            Dim par_dateModified As SQLiteParameter = sqlCommand.Parameters.Add("par_dateModified", DbType.Int64, 0, "dateModified")
+            Dim par_originalTitle As SQLiteParameter = sqlCommand.Parameters.Add("par_originalTitle", DbType.String, 0, "originalTitle")
 
+            'DateAdded
             Try
                 If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(dbElement.TVEpisode.DateAdded) Then
                     Dim DateTimeAdded As Date = Date.ParseExact(dbElement.TVEpisode.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
@@ -3582,6 +3633,25 @@ Public Class Database
                 dbElement.TVEpisode.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_dateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
+            'DateModified
+            Try
+                If Not dbElement.IDSpecified AndAlso dbElement.TVEpisode.DateModifiedSpecified Then
+                    Dim DateTimeDateModified As Date = Date.ParseExact(dbElement.TVEpisode.DateModified, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                    par_dateModified.Value = Functions.ConvertToUnixTimestamp(DateTimeDateModified)
+                ElseIf dbElement.IDSpecified Then
+                    par_dateModified.Value = Functions.ConvertToUnixTimestamp(Date.Now)
+                End If
+                If par_dateModified.Value IsNot Nothing Then
+                    dbElement.TVEpisode.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_dateModified.Value)).ToString("yyyy-MM-dd HH:mm:ss")
+                Else
+                    dbElement.TVEpisode.DateModified = String.Empty
+                End If
+            Catch
+                par_dateModified.Value = If(Not dbElement.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), dbElement.DateModified)
+                dbElement.TVEpisode.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_dateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
+            End Try
+
+            'LastPlayed
             Dim DateTimeLastPlayedUnix As Double = -1
             If dbElement.TVEpisode.LastPlayedSpecified Then
                 Try
@@ -3607,7 +3677,7 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path, also save Images
             'art Table be be linked later
             If dbElement.FileItemSpecified Then
-                If bToNFO Then NFO.SaveToNFO_TVEpisode(dbElement)
+                If bToNFO Then Info.SaveToNFO_TVEpisode(dbElement)
                 If bToDisk Then
                     dbElement.ImagesContainer.SaveAllImages(dbElement, False)
                     dbElement.TVEpisode.SaveAllActorThumbs(dbElement)
@@ -3639,6 +3709,7 @@ Public Class Database
                 If .SubEpisodeSpecified Then
                     par_subEpisode.Value = .SubEpisode
                 End If
+                par_originalTitle.Value = .OriginalTitle
             End With
 
             If Not dbElement.IDSpecified Then
@@ -3704,7 +3775,7 @@ Public Class Database
         End Using
         If Not bBatchMode Then SQLtransaction.Commit()
 
-        If dbElement.FileItem.IDSpecified AndAlso bDoSync Then
+        If dbElement.FileItemSpecified AndAlso bDoSync Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, Nothing, False, dbElement)
         End If
 
@@ -3871,7 +3942,7 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path
             'Also Save Images to get ExtrafanartsPath
             'art Table be be linked later
-            If bToNFO Then NFO.SaveToNFO_TVShow(dbElement)
+            If bToNFO Then Info.SaveToNFO_TVShow(dbElement)
             If bToDisk Then
                 dbElement.ImagesContainer.SaveAllImages(dbElement, False)
                 dbElement.Theme.SaveAllThemes(dbElement, False)
@@ -4070,13 +4141,13 @@ Public Class Database
     End Sub
 
     Private Sub SetFileInfoForFileItem(ByVal fileItem As FileItem, ByVal fileInfo As MediaContainers.FileInfo)
-        If fileItem IsNot Nothing AndAlso fileItem.IDSpecified AndAlso fileInfo.StreamDetailsSpecified Then
-            'Video streams
-            Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                sqlCommand.CommandText = String.Format("DELETE FROM streamdetail WHERE idFile={0};", fileItem.ID)
-                sqlCommand.ExecuteNonQuery()
+        If fileItem IsNot Nothing AndAlso fileItem.IDSpecified Then
+            RemoveFileInfoFromFileItem(fileItem.ID)
+            If fileInfo.StreamDetailsSpecified Then
+                'Video streams
+                Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
 
-                sqlCommand.CommandText = String.Concat("INSERT INTO streamdetail (",
+                    sqlCommand.CommandText = String.Concat("INSERT INTO streamdetail (",
                                                            "idFile,",
                                                            "streamType,",
                                                            "videoCodec,",
@@ -4094,47 +4165,47 @@ Public Class Database
                                                            "videoChromaSubsampling) ",
                                                            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
 
-                Dim par_idFile As SQLiteParameter = sqlCommand.Parameters.Add("par_idFile", DbType.Int64, 0, "idFile")
-                Dim par_streamType As SQLiteParameter = sqlCommand.Parameters.Add("par_streamType", DbType.Int32, 0, "streamType")
-                Dim par_videoCodec As SQLiteParameter = sqlCommand.Parameters.Add("par_videoCodec", DbType.String, 0, "videoCodec")
-                Dim par_videoAspect As SQLiteParameter = sqlCommand.Parameters.Add("par_videoAspect", DbType.Double, 0, "videoAspect")
-                Dim par_videoBitrate As SQLiteParameter = sqlCommand.Parameters.Add("par_videoBitrate", DbType.Int32, 0, "videoBitrate")
-                Dim par_videoLanguage As SQLiteParameter = sqlCommand.Parameters.Add("par_videoLanguage", DbType.String, 0, "videoLanguage")
-                Dim par_videoWidth As SQLiteParameter = sqlCommand.Parameters.Add("par_videoWidth", DbType.Int32, 0, "videoWidth")
-                Dim par_videoHeight As SQLiteParameter = sqlCommand.Parameters.Add("par_videoHeight", DbType.Int32, 0, "videoHeight")
-                Dim par_videoScantype As SQLiteParameter = sqlCommand.Parameters.Add("par_videoScantype", DbType.String, 0, "videoScantype")
-                Dim par_videoDuration As SQLiteParameter = sqlCommand.Parameters.Add("par_videoDuration", DbType.Int32, 0, "videoDuration")
-                Dim par_videoMultiViewCount As SQLiteParameter = sqlCommand.Parameters.Add("par_videoMultiViewCount", DbType.Int32, 0, "videoMultiViewCount")
-                Dim par_videoMultiViewLayout As SQLiteParameter = sqlCommand.Parameters.Add("par_videoMultiViewLayout", DbType.String, 0, "videoMultiViewLayout")
-                Dim par_videoStereoMode As SQLiteParameter = sqlCommand.Parameters.Add("par_videoStereoMode", DbType.String, 0, "videoStereoMode")
-                Dim par_videoBitDepth As SQLiteParameter = sqlCommand.Parameters.Add("par_videoBitDepth", DbType.Int32, 0, "videoBitDepth")
-                Dim par_videoChromaSubsampling As SQLiteParameter = sqlCommand.Parameters.Add("par_videoChromaSubsampling", DbType.String, 0, "videoChromaSubsampling")
-                Dim par_videoColourPrimaries As SQLiteParameter = sqlCommand.Parameters.Add("par_videoColourPrimaries", DbType.String, 0, "videoColourPrimaries")
+                    Dim par_idFile As SQLiteParameter = sqlCommand.Parameters.Add("par_idFile", DbType.Int64, 0, "idFile")
+                    Dim par_streamType As SQLiteParameter = sqlCommand.Parameters.Add("par_streamType", DbType.Int32, 0, "streamType")
+                    Dim par_videoCodec As SQLiteParameter = sqlCommand.Parameters.Add("par_videoCodec", DbType.String, 0, "videoCodec")
+                    Dim par_videoAspect As SQLiteParameter = sqlCommand.Parameters.Add("par_videoAspect", DbType.Double, 0, "videoAspect")
+                    Dim par_videoBitrate As SQLiteParameter = sqlCommand.Parameters.Add("par_videoBitrate", DbType.Int32, 0, "videoBitrate")
+                    Dim par_videoLanguage As SQLiteParameter = sqlCommand.Parameters.Add("par_videoLanguage", DbType.String, 0, "videoLanguage")
+                    Dim par_videoWidth As SQLiteParameter = sqlCommand.Parameters.Add("par_videoWidth", DbType.Int32, 0, "videoWidth")
+                    Dim par_videoHeight As SQLiteParameter = sqlCommand.Parameters.Add("par_videoHeight", DbType.Int32, 0, "videoHeight")
+                    Dim par_videoScantype As SQLiteParameter = sqlCommand.Parameters.Add("par_videoScantype", DbType.String, 0, "videoScantype")
+                    Dim par_videoDuration As SQLiteParameter = sqlCommand.Parameters.Add("par_videoDuration", DbType.Int32, 0, "videoDuration")
+                    Dim par_videoMultiViewCount As SQLiteParameter = sqlCommand.Parameters.Add("par_videoMultiViewCount", DbType.Int32, 0, "videoMultiViewCount")
+                    Dim par_videoMultiViewLayout As SQLiteParameter = sqlCommand.Parameters.Add("par_videoMultiViewLayout", DbType.String, 0, "videoMultiViewLayout")
+                    Dim par_videoStereoMode As SQLiteParameter = sqlCommand.Parameters.Add("par_videoStereoMode", DbType.String, 0, "videoStereoMode")
+                    Dim par_videoBitDepth As SQLiteParameter = sqlCommand.Parameters.Add("par_videoBitDepth", DbType.Int32, 0, "videoBitDepth")
+                    Dim par_videoChromaSubsampling As SQLiteParameter = sqlCommand.Parameters.Add("par_videoChromaSubsampling", DbType.String, 0, "videoChromaSubsampling")
+                    Dim par_videoColourPrimaries As SQLiteParameter = sqlCommand.Parameters.Add("par_videoColourPrimaries", DbType.String, 0, "videoColourPrimaries")
 
-                For i As Integer = 0 To fileInfo.StreamDetails.Video.Count - 1
-                    par_idFile.Value = fileItem.ID
-                    par_streamType.Value = 0 'video stream
-                    par_videoCodec.Value = fileInfo.StreamDetails.Video(i).Codec
-                    par_videoLanguage.Value = fileInfo.StreamDetails.Video(i).Language
-                    par_videoMultiViewLayout.Value = fileInfo.StreamDetails.Video(i).MultiViewLayout
-                    par_videoScantype.Value = fileInfo.StreamDetails.Video(i).Scantype
-                    par_videoStereoMode.Value = fileInfo.StreamDetails.Video(i).StereoMode
-                    par_videoAspect.Value = fileInfo.StreamDetails.Video(i).Aspect
-                    par_videoBitrate.Value = fileInfo.StreamDetails.Video(i).Bitrate
-                    par_videoDuration.Value = fileInfo.StreamDetails.Video(i).Duration
-                    par_videoHeight.Value = fileInfo.StreamDetails.Video(i).Height
-                    par_videoMultiViewCount.Value = fileInfo.StreamDetails.Video(i).MultiViewCount
-                    par_videoWidth.Value = fileInfo.StreamDetails.Video(i).Width
-                    par_videoBitDepth.Value = fileInfo.StreamDetails.Video(i).BitDepth
-                    par_videoChromaSubsampling.Value = fileInfo.StreamDetails.Video(i).ChromaSubsampling
-                    par_videoColourPrimaries.Value = fileInfo.StreamDetails.Video(i).ColourPrimaries
-                    sqlCommand.ExecuteNonQuery()
-                Next
-            End Using
+                    For i As Integer = 0 To fileInfo.StreamDetails.Video.Count - 1
+                        par_idFile.Value = fileItem.ID
+                        par_streamType.Value = 0 'video stream
+                        par_videoCodec.Value = fileInfo.StreamDetails.Video(i).Codec
+                        par_videoLanguage.Value = fileInfo.StreamDetails.Video(i).Language
+                        par_videoMultiViewLayout.Value = fileInfo.StreamDetails.Video(i).MultiViewLayout
+                        par_videoScantype.Value = fileInfo.StreamDetails.Video(i).Scantype
+                        par_videoStereoMode.Value = fileInfo.StreamDetails.Video(i).StereoMode
+                        par_videoAspect.Value = fileInfo.StreamDetails.Video(i).Aspect
+                        par_videoBitrate.Value = fileInfo.StreamDetails.Video(i).Bitrate
+                        par_videoDuration.Value = fileInfo.StreamDetails.Video(i).Duration
+                        par_videoHeight.Value = fileInfo.StreamDetails.Video(i).Height
+                        par_videoMultiViewCount.Value = fileInfo.StreamDetails.Video(i).MultiViewCount
+                        par_videoWidth.Value = fileInfo.StreamDetails.Video(i).Width
+                        par_videoBitDepth.Value = fileInfo.StreamDetails.Video(i).BitDepth
+                        par_videoChromaSubsampling.Value = fileInfo.StreamDetails.Video(i).ChromaSubsampling
+                        par_videoColourPrimaries.Value = fileInfo.StreamDetails.Video(i).ColourPrimaries
+                        sqlCommand.ExecuteNonQuery()
+                    Next
+                End Using
 
-            'Audio streams
-            Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                sqlCommand.CommandText = String.Concat("INSERT INTO streamdetail (",
+                'Audio streams
+                Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    sqlCommand.CommandText = String.Concat("INSERT INTO streamdetail (",
                                                            "idFile,",
                                                            "streamType,",
                                                            "audioCodec,",
@@ -4143,27 +4214,27 @@ Public Class Database
                                                            "audioLanguage) ",
                                                            "VALUES (?,?,?,?,?,?)")
 
-                Dim par_idFile As SQLiteParameter = sqlCommand.Parameters.Add("par_idFile", DbType.Int64, 0, "idFile")
-                Dim par_streamType As SQLiteParameter = sqlCommand.Parameters.Add("par_streamType", DbType.Int32, 0, "streamType")
-                Dim par_audioCodec As SQLiteParameter = sqlCommand.Parameters.Add("par_audioCodec", DbType.String, 0, "audioCodec")
-                Dim par_audioChannels As SQLiteParameter = sqlCommand.Parameters.Add("par_audioChannels", DbType.Int32, 0, "audioChannels")
-                Dim par_audioBitrate As SQLiteParameter = sqlCommand.Parameters.Add("par_audioBitrate", DbType.Int32, 0, "audioBitrate")
-                Dim par_audioLanguage As SQLiteParameter = sqlCommand.Parameters.Add("par_audioLanguage", DbType.String, 0, "audioLanguage")
+                    Dim par_idFile As SQLiteParameter = sqlCommand.Parameters.Add("par_idFile", DbType.Int64, 0, "idFile")
+                    Dim par_streamType As SQLiteParameter = sqlCommand.Parameters.Add("par_streamType", DbType.Int32, 0, "streamType")
+                    Dim par_audioCodec As SQLiteParameter = sqlCommand.Parameters.Add("par_audioCodec", DbType.String, 0, "audioCodec")
+                    Dim par_audioChannels As SQLiteParameter = sqlCommand.Parameters.Add("par_audioChannels", DbType.Int32, 0, "audioChannels")
+                    Dim par_audioBitrate As SQLiteParameter = sqlCommand.Parameters.Add("par_audioBitrate", DbType.Int32, 0, "audioBitrate")
+                    Dim par_audioLanguage As SQLiteParameter = sqlCommand.Parameters.Add("par_audioLanguage", DbType.String, 0, "audioLanguage")
 
-                For i As Integer = 0 To fileInfo.StreamDetails.Audio.Count - 1
-                    par_idFile.Value = fileItem.ID
-                    par_streamType.Value = 1 'audio stream
-                    par_audioCodec.Value = fileInfo.StreamDetails.Audio(i).Codec
-                    par_audioLanguage.Value = fileInfo.StreamDetails.Audio(i).Language
-                    par_audioBitrate.Value = fileInfo.StreamDetails.Audio(i).Bitrate
-                    par_audioChannels.Value = fileInfo.StreamDetails.Audio(i).Channels
-                    sqlCommand.ExecuteNonQuery()
-                Next
-            End Using
+                    For i As Integer = 0 To fileInfo.StreamDetails.Audio.Count - 1
+                        par_idFile.Value = fileItem.ID
+                        par_streamType.Value = 1 'audio stream
+                        par_audioCodec.Value = fileInfo.StreamDetails.Audio(i).Codec
+                        par_audioLanguage.Value = fileInfo.StreamDetails.Audio(i).Language
+                        par_audioBitrate.Value = fileInfo.StreamDetails.Audio(i).Bitrate
+                        par_audioChannels.Value = fileInfo.StreamDetails.Audio(i).Channels
+                        sqlCommand.ExecuteNonQuery()
+                    Next
+                End Using
 
-            'Subtitle streams (embedded only)
-            Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                sqlCommand.CommandText = String.Concat("INSERT INTO streamdetail (",
+                'Subtitle streams (embedded only)
+                Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    sqlCommand.CommandText = String.Concat("INSERT INTO streamdetail (",
                                                            "idFile,",
                                                            "streamType,",
                                                            "subtitleLanguage,",
@@ -4171,21 +4242,22 @@ Public Class Database
                                                            "subtitlePath) ",
                                                            "VALUES (?,?,?,?,?)")
 
-                Dim par_idFile As SQLiteParameter = sqlCommand.Parameters.Add("par_idFile", DbType.Int64, 0, "idFile")
-                Dim par_streamType As SQLiteParameter = sqlCommand.Parameters.Add("par_streamType", DbType.Int32, 0, "streamType")
-                Dim par_subtitleLanguage As SQLiteParameter = sqlCommand.Parameters.Add("par_subtitleLanguage", DbType.String, 0, "subtitleLanguage")
-                Dim par_subtitleForced As SQLiteParameter = sqlCommand.Parameters.Add("par_subtitleForced", DbType.Boolean, 0, "subtitleForced")
-                Dim par_subtitlePath As SQLiteParameter = sqlCommand.Parameters.Add("par_subtitlePath", DbType.String, 0, "subtitlePath")
+                    Dim par_idFile As SQLiteParameter = sqlCommand.Parameters.Add("par_idFile", DbType.Int64, 0, "idFile")
+                    Dim par_streamType As SQLiteParameter = sqlCommand.Parameters.Add("par_streamType", DbType.Int32, 0, "streamType")
+                    Dim par_subtitleLanguage As SQLiteParameter = sqlCommand.Parameters.Add("par_subtitleLanguage", DbType.String, 0, "subtitleLanguage")
+                    Dim par_subtitleForced As SQLiteParameter = sqlCommand.Parameters.Add("par_subtitleForced", DbType.Boolean, 0, "subtitleForced")
+                    Dim par_subtitlePath As SQLiteParameter = sqlCommand.Parameters.Add("par_subtitlePath", DbType.String, 0, "subtitlePath")
 
-                For i As Integer = 0 To fileInfo.StreamDetails.Subtitle.Count - 1
-                    par_idFile.Value = fileItem.ID
-                    par_streamType.Value = 2 'subtitle stream
-                    par_subtitleForced.Value = fileInfo.StreamDetails.Subtitle(i).Forced
-                    par_subtitleLanguage.Value = fileInfo.StreamDetails.Subtitle(i).Language
-                    par_subtitlePath.Value = fileInfo.StreamDetails.Subtitle(i).Path
-                    sqlCommand.ExecuteNonQuery()
-                Next
-            End Using
+                    For i As Integer = 0 To fileInfo.StreamDetails.Subtitle.Count - 1
+                        par_idFile.Value = fileItem.ID
+                        par_streamType.Value = 2 'subtitle stream
+                        par_subtitleForced.Value = fileInfo.StreamDetails.Subtitle(i).Forced
+                        par_subtitleLanguage.Value = fileInfo.StreamDetails.Subtitle(i).Language
+                        par_subtitlePath.Value = fileInfo.StreamDetails.Subtitle(i).Path
+                        sqlCommand.ExecuteNonQuery()
+                    Next
+                End Using
+            End If
         End If
     End Sub
 
@@ -4239,12 +4311,12 @@ Public Class Database
                             Using sqlReader As SQLiteDataReader = sqlCommand.ExecuteReader()
                                 If sqlReader.HasRows Then
                                     sqlReader.Read()
-                                    If Not DBNull.Value.Equals(sqlReader("idSet")) Then entry.ID = CInt(sqlReader("idSet"))
+                                    If Not DBNull.Value.Equals(sqlReader("idSet")) Then entry.ID = CLng(sqlReader("idSet"))
                                     If Not DBNull.Value.Equals(sqlReader("title")) Then entry.Title = CStr(sqlReader("title"))
                                     If Not DBNull.Value.Equals(sqlReader("plot")) AndAlso
                                             Not String.IsNullOrEmpty(CStr(sqlReader("plot"))) Then entry.Plot = CStr(sqlReader("plot"))
                                     bIsNewSet = False
-                                    NFO.SaveToNFO_Movie(dbElement, False) 'to save the "new" SetName and/or SetPlot
+                                    Info.SaveToNFO_Movie(dbElement, False) 'to save the "new" SetName and/or SetPlot
                                 Else
                                     bIsNewSet = True
                                 End If
@@ -4260,11 +4332,11 @@ Public Class Database
                             Using sqlReader As SQLiteDataReader = sqlCommand.ExecuteReader()
                                 If sqlReader.HasRows Then
                                     sqlReader.Read()
-                                    If Not DBNull.Value.Equals(sqlReader("idSet")) Then entry.ID = CInt(sqlReader("idSet"))
+                                    If Not DBNull.Value.Equals(sqlReader("idSet")) Then entry.ID = CLng(sqlReader("idSet"))
                                     If Not DBNull.Value.Equals(sqlReader("plot")) AndAlso
                                                     Not String.IsNullOrEmpty(CStr(sqlReader("plot"))) Then entry.Plot = CStr(sqlReader("plot"))
                                     bIsNewSet = False
-                                    NFO.SaveToNFO_Movie(dbElement, False) 'to save the "new" SetName and/or SetPlot
+                                    Info.SaveToNFO_Movie(dbElement, False) 'to save the "new" SetName and/or SetPlot
                                 Else
                                     bIsNewSet = True
                                 End If

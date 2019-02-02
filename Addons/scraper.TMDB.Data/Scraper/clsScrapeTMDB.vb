@@ -1058,6 +1058,14 @@ Public Class clsAPITMDB
             End If
         End If
 
+        'OriginalTitle
+        'TODO: implement
+        'If FilteredOptions.bEpisodeOriginalTitle Then
+        '    If EpisodeInfo.Name IsNot Nothing Then
+        '        nTVEpisode.OriginalTitle = EpisodeInfo.Name
+        '    End If
+        'End If
+
         'Plot
         If FilteredOptions.bEpisodePlot Then
             If EpisodeInfo.Overview IsNot Nothing Then

@@ -130,7 +130,7 @@ Public Class Localization
                 Return Master.eLang.GetString(138, "Unknown")
             End If
         Else
-            Return Master.eLang.GetString(1168, "Blank")
+            Return String.Empty
         End If
     End Function
 
@@ -143,7 +143,7 @@ Public Class Localization
                 Return Master.eLang.GetString(138, "Unknown")
             End If
         Else
-            Return Master.eLang.GetString(1168, "Blank")
+            Return String.Empty
         End If
     End Function
 
@@ -156,7 +156,7 @@ Public Class Localization
                 Return Master.eLang.GetString(138, "Unknown")
             End If
         Else
-            Return Master.eLang.GetString(1168, "Blank")
+            Return String.Empty
         End If
     End Function
 
@@ -169,7 +169,7 @@ Public Class Localization
                 Return Master.eLang.GetString(138, "Unknown")
             End If
         Else
-            Return Master.eLang.GetString(1168, "Blank")
+            Return String.Empty
         End If
     End Function
 
@@ -182,7 +182,7 @@ Public Class Localization
                 Return Master.eLang.GetString(138, "Unknown")
             End If
         Else
-            Return Master.eLang.GetString(1168, "Blank")
+            Return String.Empty
         End If
     End Function
 

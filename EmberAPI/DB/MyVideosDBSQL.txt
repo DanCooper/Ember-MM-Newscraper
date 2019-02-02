@@ -196,7 +196,9 @@ CREATE TABLE episode (
         strIMDB         text,
         strTMDB         text,
         strTVDB         text,
-        iUserRating		integer NOT NULL DEFAULT 0
+        iUserRating		integer NOT NULL DEFAULT 0,
+		dateModified	integer,
+        originalTitle   text
         );
 
         CREATE TRIGGER delete_episode
