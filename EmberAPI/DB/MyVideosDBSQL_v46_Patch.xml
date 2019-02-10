@@ -2427,7 +2427,7 @@
         CREATE TABLE tvshow (
         idShow            integer PRIMARY KEY,
         idSource          integer NOT NULL,
-        ListTitle         text,
+        listTitle         text,
         "new"             bool DEFAULT 0,
         marked            bool NOT NULL DEFAULT 0,
         path              text NOT NULL,

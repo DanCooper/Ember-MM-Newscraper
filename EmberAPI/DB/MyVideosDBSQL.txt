@@ -1,932 +1,966 @@
-CREATE TABLE actors (
-        idActor INTEGER PRIMARY KEY AUTOINCREMENT,
-        strActor text NOT NULL,
-        strThumb text,
-		strIMDB text,
-		strTMDB text
-        );
+CREATE TABLE actor_link (
+	idPerson    integer,
+	idMedia     integer,
+	media_type  text,
+	role        text,
+	cast_order  integer
+	);
 
-        CREATE TRIGGER delete_person
-        AFTER DELETE
-        ON actors
-        BEGIN
-        DELETE FROM art WHERE media_id=old.idActor AND media_type IN ('actor','artist','writer','director');
-        END;
+CREATE UNIQUE INDEX ix_actor_link_1
+	ON actor_link
+	(idPerson, media_type, idMedia);
 
-CREATE TABLE actorlinkepisode (
-        idActor integer,
-        idEpisode integer,
-        strRole text,
-        iOrder integer
-        );
-        
-        CREATE UNIQUE INDEX ix_actorlinkepisode_1
-        ON actorlinkepisode
-        (idActor, idEpisode);
+CREATE UNIQUE INDEX ix_actor_link_2
+	ON actor_link
+	(idMedia, media_type, idPerson);
 
-        CREATE UNIQUE INDEX ix_actorlinkepisode_2
-        ON actorlinkepisode
-        (idEpisode, idActor);
+CREATE INDEX ix_actor_link_3
+	ON actor_link
+	(media_type);
 
-CREATE TABLE actorlinkmovie (
-        idActor integer,
-        idMovie integer,
-        strRole text,
-        iOrder integer
-        );
 
-        CREATE UNIQUE INDEX ix_actorlinkmovie_1
-        ON actorlinkmovie
-        (idActor, idMovie);
-
-        CREATE UNIQUE INDEX ix_actorlinkmovie_2
-        ON actorlinkmovie
-        (idMovie, idActor);
-
-CREATE TABLE actorlinktvshow (
-        idActor integer,
-        idShow integer,
-        strRole text,
-        iOrder integer
-        );
-
-        CREATE UNIQUE INDEX ix_actorlinktvshow_1
-        ON actorlinktvshow
-        (idActor, idShow);
-
-        CREATE UNIQUE INDEX ix_actorlinktvshow_2
-        ON actorlinktvshow
-        (idShow, idActor);
-
-CREATE TABLE gueststarlinkepisode (
-        idActor     integer,
-        idEpisode   integer,
-        strRole     text,
-        iOrder      integer
-        );
-        
-        CREATE UNIQUE INDEX ix_gueststarlinkepisode_1
-        ON gueststarlinkepisode
-        (idActor, idEpisode);
-
-        CREATE UNIQUE INDEX ix_gueststarlinkepisode_2
-        ON gueststarlinkepisode
-        (idEpisode, idActor);
 
 CREATE TABLE art (
-		art_id		integer PRIMARY KEY,
-		media_id	integer,
-		media_type	text,
-		type		text,
-		url			text
-		);
+	idArt       integer PRIMARY KEY,
+	idMedia     integer,
+	media_type  text,
+	type        text,
+	url         text,
+	width       integer,
+	height      integer
+	);
 
-		CREATE INDEX ix_art
-		ON art
-		(media_id, media_type, type);
+CREATE INDEX ix_art
+	ON art
+	(idMedia, media_type, type);
 
-CREATE TABLE creatorlinktvshow (
-        idActor   integer,
-        idShow      integer
-        );
 
-        CREATE UNIQUE INDEX ix_creatorlinktvshow_1
-        ON creatorlinktvshow
-        (idActor, idShow);
 
-        CREATE UNIQUE INDEX ix_creatorlinktvshow_2
-        ON creatorlinktvshow
-        (idShow, idActor);
+CREATE TABLE certification (
+	idCertification  integer PRIMARY KEY,
+	name             text
+	);
+
+CREATE UNIQUE INDEX ix_certification
+	ON certification
+	(name);
+
+
+
+CREATE TABLE certification_link (
+	idCertification  integer,
+	idMedia          integer,
+	media_type       text
+	);
+
+CREATE UNIQUE INDEX certification_link_1
+	ON certification_link
+	(idCertification, media_type, idMedia);
+
+CREATE INDEX certification_link_3
+	ON certification_link
+	(media_type);
+
+CREATE UNIQUE INDEX certification_linkk_2
+	ON certification_link
+	(idMedia, media_type, idCertification);
+
+
 
 CREATE TABLE country (
-        idCountry   integer PRIMARY KEY,
-        strCountry  text
-        );
+	idCountry  integer PRIMARY KEY,
+	name       text
+	);
 
-CREATE TABLE countrylinkmovie (
-        idCountry  integer,
-        idMovie    integer
-        );
 
-        CREATE UNIQUE INDEX ix_countrylinkmovie_1
-        ON countrylinkmovie
-        (idCountry, idMovie);
 
-        CREATE UNIQUE INDEX ix_countrylinkmovie_2
-        ON countrylinkmovie
-        (idMovie, idCountry);
+CREATE TABLE country_link (
+	idCountry   integer,
+	idMedia     integer,
+	media_type  text
+	);
 
-CREATE TABLE directorlinkepisode (
-        idDirector  integer,
-        idEpisode   integer
-        );
+CREATE UNIQUE INDEX country_link_1
+	ON country_link
+	(idCountry, media_type, idMedia);
 
-        CREATE UNIQUE INDEX ix_directorlinkepisode_1
-        ON directorlinkepisode
-        (idDirector, idEpisode);
+CREATE UNIQUE INDEX country_link_2
+	ON country_link
+	(idMedia, media_type, idCountry);
 
-        CREATE UNIQUE INDEX ix_directorlinkepisode_2
-        ON directorlinkepisode
-        (idEpisode, idDirector);
+CREATE INDEX country_link_3
+	ON country_link
+	(media_type);
 
-CREATE TABLE countrylinktvshow (
-        idCountry  integer,
-        idShow    integer
-        );
 
-        CREATE UNIQUE INDEX ix_countrylinktvshow_1
-        ON countrylinktvshow
-        (idCountry, idShow);
 
-        CREATE UNIQUE INDEX ix_countrylinktvshow_2
-        ON countrylinktvshow
-        (idShow, idCountry);
+CREATE TABLE creator_link (
+	idPerson    integer,
+	idMedia     integer,
+	media_type  text
+	);
 
-CREATE TABLE directorlinkmovie (
-        idDirector  integer,
-        idMovie     integer
-        );
+CREATE UNIQUE INDEX ix_creator_link_1
+	ON creator_link
+	(idPerson, media_type, idMedia);
 
-        CREATE UNIQUE INDEX ix_directorlinkmovie_1
-        ON directorlinkmovie
-        (idDirector, idMovie);
+CREATE UNIQUE INDEX ix_creator_link_2
+	ON creator_link
+	(idMedia, media_type, idPerson);
 
-        CREATE UNIQUE INDEX ix_directorlinkmovie_2
-        ON directorlinkmovie
-        (idMovie, idDirector);
+CREATE INDEX ix_creator_link_3
+	ON creator_link
+	(media_type);
 
-CREATE TABLE directorlinktvshow (
-        idDirector  integer,
-        idShow      integer
-        );
 
-        CREATE UNIQUE INDEX ix_directorlinktvshow_1
-        ON directorlinktvshow
-        (idDirector, idShow);
 
-        CREATE UNIQUE INDEX ix_directorlinktvshow_2
-        ON directorlinktvshow
-        (idShow, idDirector);
+CREATE TABLE director_link (
+	idPerson    integer,
+	idMedia     integer,
+	media_type  text
+	);
+
+CREATE UNIQUE INDEX ix_director_link_1
+	ON director_link
+	(idPerson, media_type, idMedia);
+
+CREATE UNIQUE INDEX ix_director_link_2
+	ON director_link
+	(idMedia, media_type, idPerson);
+
+CREATE INDEX ix_director_link_3
+	ON director_link
+	(media_type);
+
+
 
 CREATE TABLE episode (
-        idEpisode       integer PRIMARY KEY AUTOINCREMENT,
-        idShow          integer NOT NULL,
-        idFile          integer NOT NULL,
-        idSource        integer NOT NULL,
-        Episode         integer,
-        Title           text,
-        "New"           bool DEFAULT 0,
-        Mark            bool NOT NULL DEFAULT 0,
-        Lock            bool NOT NULL DEFAULT 0,
-        Season          integer,
-        Rating          text,
-        Plot            text,
-        Aired           text,
-        NfoPath         text,
-        Playcount       integer,
-        DisplaySeason   integer,
-        DisplayEpisode  integer,
-        DateAdded       integer,
-        Runtime         text,
-        Votes           text,
-        VideoSource     text,
-        HasSub          bool NOT NULL DEFAULT 0,
-        SubEpisode      integer,
-        iLastPlayed     integer,
-        strIMDB         text,
-        strTMDB         text,
-        strTVDB         text,
-        iUserRating		integer NOT NULL DEFAULT 0,
-		dateModified	integer,
-        originalTitle   text
-        );
-
-        CREATE TRIGGER delete_episode
-        AFTER DELETE
-        ON episode
-        BEGIN
-        DELETE FROM actorlinkepisode WHERE idEpisode=old.idEpisode;
-        DELETE FROM art WHERE media_id=old.idEpisode AND media_type='episode';
-        DELETE FROM directorlinkepisode WHERE idEpisode=old.idEpisode;
-        DELETE FROM files WHERE idFile=old.idFile;
-        DELETE FROM gueststarlinkepisode WHERE idEpisode=old.idEpisode;
-        DELETE FROM writerlinkepisode WHERE idEpisode=old.idEpisode;
-        DELETE FROM TVVStreams WHERE TVEpID=old.idEpisode;
-        DELETE FROM TVAStreams WHERE TVEpID=old.idEpisode;
-        DELETE FROM TVSubs WHERE TVEpID=old.idEpisode;
-        END;
-
-CREATE TABLE files (
-	idFile INTEGER PRIMARY KEY AUTOINCREMENT,
-	strFilename TEXT NOT NULL
+	idEpisode       integer PRIMARY KEY,
+	idShow          integer NOT NULL,
+	idFile          integer NOT NULL,
+	idSource        integer NOT NULL,
+	episode         integer,
+	title           text,
+	"new"           bool DEFAULT 0,
+	marked          bool NOT NULL DEFAULT 0,
+	locked          bool NOT NULL DEFAULT 0,
+	season          integer,
+	plot            text,
+	aired           text,
+	nfoPath         text,
+	playcount       integer,
+	displaySeason   integer,
+	displayEpisode  integer,
+	dateAdded       integer,
+	runtime         text,
+	videoSource     text,
+	hasSub          bool NOT NULL DEFAULT 0,
+	subEpisode      integer,
+	lastPlayed      integer,
+	userRating      integer NOT NULL DEFAULT 0,
+	dateModified    integer,
+	originalTitle   text
 	);
-CREATE UNIQUE INDEX UniqueFilename ON files (strFilename);
+
+CREATE TRIGGER delete_episode
+	AFTER DELETE
+	ON episode
+BEGIN
+	DELETE FROM actor_link WHERE idMedia=old.idEpisode AND media_type='episode';
+	DELETE FROM art WHERE idMedia=old.idEpisode AND media_type='episode';
+	DELETE FROM director_link WHERE idMedia=old.idEpisode AND media_type='episode';
+	DELETE FROM file WHERE idFile=old.idFile;
+	DELETE FROM gueststar_link WHERE idMedia=old.idEpisode AND media_type='episode';
+	DELETE FROM rating WHERE idMedia=old.idEpisode AND media_type='episode';
+	DELETE FROM uniqueid WHERE idMedia=old.idEpisode AND media_type='episode';
+	DELETE FROM writer_link WHERE idMedia=old.idEpisode AND media_type='episode';
+END;
+
+
+
+CREATE TABLE excludedpath (
+	path  text PRIMARY KEY NOT NULL
+	);
+
+
+
+CREATE TABLE file (
+	idFile            integer PRIMARY KEY,
+	path              text NOT NULL,
+	originalFileName  text,
+	fileSize          integer
+	);
+
+CREATE UNIQUE INDEX UniqueFilename
+	ON file
+	(path);
+
+CREATE TRIGGER delete_file
+	AFTER DELETE
+	ON file
+BEGIN
+	DELETE FROM streamdetail WHERE idFile=old.idFile;
+END;
+
+
+
+
 
 CREATE TABLE genre (
-        idGenre   integer PRIMARY KEY,
-        strGenre  text
-        );
-
-CREATE TABLE genrelinkmovie (
-        idGenre  integer,
-        idMovie  integer
-        );
-
-        CREATE UNIQUE INDEX ix_genrelinkmovie_1
-        ON genrelinkmovie
-        (idGenre, idMovie);
-
-        CREATE UNIQUE INDEX ix_genrelinkmovie_2
-        ON genrelinkmovie
-        (idMovie, idGenre);
-
-CREATE TABLE genrelinktvshow (
-        idGenre  integer,
-        idShow   integer
-        );
-
-        CREATE UNIQUE INDEX ix_genrelinktvshow_1
-        ON genrelinktvshow
-        (idGenre, idShow);
-
-        CREATE UNIQUE INDEX ix_genrelinktvshow_2
-        ON genrelinktvshow
-        (idShow, idGenre);
-
-CREATE TABLE tag (
-        idTag   integer PRIMARY KEY,
-        strTag  text
-        );
-
-        CREATE UNIQUE INDEX ix_tag_1
-        ON tag
-        (strTag);
-
-CREATE TABLE taglinks (
-        idTag       integer,
-        idMedia     integer,
-        media_type  text
-        );
-
-        CREATE UNIQUE INDEX ix_taglinks_1
-        ON taglinks
-        (idTag, media_type, idMedia);
-
-        CREATE UNIQUE INDEX ix_taglinks_2
-        ON taglinks
-        (idMedia, media_type, idTag);
-
-        CREATE INDEX ix_taglinks_3
-        ON taglinks
-        (media_type);
-
-        CREATE TRIGGER delete_tag
-        AFTER DELETE
-        ON taglinks
-        BEGIN DELETE FROM tag WHERE idTag=old.idTag AND idTag NOT IN (SELECT DISTINCT idTag FROM taglinks);
-		END;
-
-CREATE TABLE movie (
-        idMovie         integer PRIMARY KEY AUTOINCREMENT,
-        idSource        integer NOT NULL,
-        MoviePath       text,
-        Type            bool,
-        ListTitle       text,
-        HasSub          bool NOT NULL DEFAULT 0,
-        "New"           bool NOT NULL DEFAULT 0,
-        Mark            bool NOT NULL DEFAULT 0,
-        Imdb            text,
-        Lock            bool,
-        Title           text,
-        OriginalTitle   text,
-        Year            text,
-        Rating          text,
-        Votes           text,
-        MPAA            text,
-        Top250          integer,
-        Outline         text,
-        Plot            text,
-        Tagline         text,
-        Certification   text,
-        Runtime         text,
-        ReleaseDate     text,
-        Playcount       integer,
-        Trailer         text,
-        EThumbsPath     text,
-        NfoPath         text,
-        TrailerPath     text,
-        SubPath         text,
-        FanartURL       text,
-        OutOfTolerance  bool,
-        VideoSource     text,
-        SortTitle       text,
-        DateAdded       integer,
-        EFanartsPath    text,
-        ThemePath       text,
-        TMDB            text,
-        TMDBColID       text,
-        DateModified    integer,
-        MarkCustom1     bool NOT NULL DEFAULT 0,
-        MarkCustom2     bool NOT NULL DEFAULT 0,
-        MarkCustom3     bool NOT NULL DEFAULT 0,
-        MarkCustom4     bool NOT NULL DEFAULT 0,
-        HasSet          bool NOT NULL DEFAULT 0,
-        iLastPlayed     integer,
-        Language        text,
-        iUserRating		integer NOT NULL DEFAULT 0
-        );
-
-        CREATE TRIGGER delete_movie
-        AFTER DELETE
-        ON movie
-        BEGIN
-        DELETE FROM actorlinkmovie WHERE idMovie=old.idMovie;
-        DELETE FROM art WHERE media_id=old.idMovie AND media_type='movie';
-        DELETE FROM countrylinkmovie WHERE idMovie=old.idMovie;
-        DELETE FROM directorlinkmovie WHERE idMovie=old.idMovie;
-        DELETE FROM genrelinkmovie WHERE idMovie=old.idMovie;
-        DELETE FROM movielinktvshow WHERE idMovie=old.idMovie;
-        DELETE FROM setlinkmovie WHERE idMovie=old.idMovie;
-        DELETE FROM studiolinkmovie WHERE idMovie=old.idMovie;
-        DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
-        DELETE FROM writerlinkmovie WHERE idMovie=old.idMovie;
-        DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
-        DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
-        DELETE FROM MoviesVStreams WHERE MovieID=old.idMovie;
-        END;
-
-CREATE TABLE movielinktvshow (
-        idMovie  integer,
-        idShow   integer
-        );
-
-        CREATE UNIQUE INDEX ix_movielinktvshow_1
-        ON movielinktvshow
-        (idShow, idMovie);
-
-        CREATE UNIQUE INDEX ix_movielinktvshow_2
-        ON movielinktvshow
-        (idMovie, idShow);
-
-CREATE TABLE seasons (
-        idSeason       integer PRIMARY KEY,
-        idShow         integer,
-        Season         integer,
-        SeasonText     text,
-        Lock           bool NOT NULL DEFAULT 0,
-        Mark           bool NOT NULL DEFAULT 0,
-        "New"          bool NOT NULL DEFAULT 0,
-		strTVDB        text,
-		strTMDB        text,
-		strAired       text,
-		strPlot        text
-        );
-
-        CREATE UNIQUE INDEX ix_seasons
-        ON seasons
-        (idShow, season);
-				
-        CREATE TRIGGER delete_season
-        AFTER DELETE
-        ON seasons
-        BEGIN
-        DELETE FROM art WHERE media_id=old.idSeason AND media_type='season';
-        DELETE FROM episode WHERE Season=old.Season AND idShow=old.idShow;
-        END;
-
-CREATE TABLE sets (
-        idSet          integer PRIMARY KEY AUTOINCREMENT,
-        ListTitle      text NOT NULL,
-        NfoPath        text,
-        TMDBColID      text,
-        Plot           text,
-        SetName        text,
-        "New"          bool NOT NULL DEFAULT 0,
-        Mark           bool NOT NULL DEFAULT 0,
-        Lock           bool NOT NULL DEFAULT 0,
-		SortMethod     integer NOT NULL DEFAULT 0,
-		Language       text
-        );
-
-        CREATE TRIGGER delete_set
-        AFTER DELETE
-        ON sets
-        BEGIN
-        DELETE FROM art WHERE media_id=old.idSet AND media_type='set';
-        END;
-
-CREATE TABLE studio (
-        idStudio   integer PRIMARY KEY,
-        strStudio  text
-        );
-
-        CREATE TABLE studiolinkmovie (
-        idStudio  integer,
-        idMovie   integer
-        );
-
-        CREATE UNIQUE INDEX ix_studiolinkmovie_1
-        ON studiolinkmovie
-        (idStudio, idMovie);
-
-        CREATE UNIQUE INDEX ix_studiolinkmovie_2
-        ON studiolinkmovie
-        (idMovie, idStudio);
-
-CREATE TABLE studiolinktvshow (
-        idStudio  integer,
-        idShow    integer
-        );
-
-        CREATE UNIQUE INDEX ix_studiolinktvshow_1
-        ON studiolinktvshow
-        (idStudio, idShow);
-
-        CREATE UNIQUE INDEX ix_studiolinktvshow_2
-        ON studiolinktvshow
-        (idShow, idStudio);
-
-CREATE TABLE tvshow (
-		idShow				integer PRIMARY KEY AUTOINCREMENT,
-		idSource			integer NOT NULL,
-		ListTitle			text,
-		"New"				bool DEFAULT 0,
-		Mark				bool NOT NULL DEFAULT 0,
-		TVShowPath			text NOT NULL,
-		TVDB				text,
-		Lock				bool NOT NULL DEFAULT 0,
-		EpisodeGuide		text,
-		Plot				text,
-		Premiered			text,
-		MPAA				text,
-		Rating				text,
-		NfoPath				text,
-		Language			text,
-		Ordering			integer NOT NULL DEFAULT 0,
-		Status				text,
-		ThemePath			text,
-		EFanartsPath		text,
-		Runtime				text,
-		Title				text,
-		Votes				text,
-		EpisodeSorting		integer NOT NULL DEFAULT 0,
-		SortTitle			text,
-		strIMDB				text,
-		strTMDB				text,
-		strOriginalTitle	text,
-		iUserRating			integer NOT NULL DEFAULT 0
-		);
-
-        CREATE UNIQUE INDEX UniqueTVShowPath
-        ON tvshow
-        (TVShowPath);
-
-        CREATE TRIGGER delete_tvshow
-        AFTER DELETE
-        ON tvshow
-        BEGIN
-        DELETE FROM actorlinktvshow WHERE idShow=old.idShow;
-        DELETE FROM art WHERE media_id=old.idShow AND media_type='tvshow';
-        DELETE FROM creatorlinktvshow WHERE idShow=old.idShow;
-        DELETE FROM countrylinktvshow WHERE idShow=old.idShow;
-        DELETE FROM directorlinktvshow WHERE idShow=old.idShow;
-        DELETE FROM episode WHERE idShow=old.idShow;
-        DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
-        DELETE FROM movielinktvshow WHERE idShow=old.idShow;
-        DELETE FROM seasons WHERE idShow=old.idShow;
-        DELETE FROM studiolinktvshow WHERE idShow=old.idShow;
-        DELETE FROM taglinks WHERE idMedia=old.idShow AND media_type='tvshow';
-        END;
-
-CREATE TABLE writerlinkepisode (
-        idWriter   integer,
-        idEpisode  integer
-        );
-
-        CREATE UNIQUE INDEX ix_writerlinkepisode_1
-        ON writerlinkepisode
-        (idWriter, idEpisode);
-
-        CREATE UNIQUE INDEX ix_writerlinkepisode_2
-        ON writerlinkepisode
-        (idEpisode, idWriter);
-        
-CREATE TABLE writerlinkmovie (
-		idWriter  integer,
-		idMovie   integer
-		);
-
-        CREATE UNIQUE INDEX ix_writerlinkmovie_1
-        ON writerlinkmovie
-        (idWriter, idMovie);
-
-        CREATE UNIQUE INDEX ix_writerlinkmovie_2
-        ON writerlinkmovie
-        (idMovie, idWriter);
-
-CREATE TABLE setlinkmovie (
-		idSet INTEGER NOT NULL,
-		idMovie INTEGER NOT NULL,
-		iOrder INTEGER NOT NULL DEFAULT -1,
-		PRIMARY KEY (idSet, idMovie)
-		);
-
-CREATE TABLE MoviesVStreams (
-		MovieID INTEGER NOT NULL,
-		StreamID INTEGER NOT NULL,
-		Video_Width TEXT,
-		Video_Height TEXT,
-		Video_Codec TEXT,
-		Video_Duration TEXT,
-		Video_ScanType TEXT,
-		Video_AspectDisplayRatio TEXT,
-		Video_Language TEXT,
-		Video_LongLanguage TEXT,
-		Video_Bitrate TEXT,
-		Video_MultiViewCount TEXT,
-		Video_MultiViewLayout TEXT,
-		Video_StereoMode TEXT,
-		Video_FileSize INTEGER NOT NULL DEFAULT 0,
-		PRIMARY KEY (MovieID,StreamID)
-		);
-
-CREATE TABLE MoviesAStreams (
-		MovieID INTEGER NOT NULL,
-		StreamID INTEGER NOT NULL,
-		Audio_Language TEXT,
-		Audio_LongLanguage TEXT,
-		Audio_Codec TEXT,
-		Audio_Channel TEXT,
-		Audio_Bitrate TEXT,
-		PRIMARY KEY (MovieID,StreamID)
-		);
-
-CREATE TABLE MoviesSubs (
-		MovieID INTEGER NOT NULL,
-		StreamID INTEGER NOT NULL,
-		Subs_Language TEXT,
-		Subs_LongLanguage TEXT,
-		Subs_Type TEXT,
-		Subs_Path TEXT,
-		Subs_Forced BOOL NOT NULL DEFAULT 0,
-		PRIMARY KEY (MovieID,StreamID)
-		);
-
-CREATE TABLE moviesource (
-		idSource		INTEGER PRIMARY KEY AUTOINCREMENT,
-		strName			TEXT NOT NULL,
-		strPath			TEXT NOT NULL,
-		bRecursive		BOOL NOT NULL DEFAULT 0,
-		bFoldername		BOOL NOT NULL DEFAULT 0,
-		bSingle			BOOL NOT NULL DEFAULT 0,
-		strLastScan		TEXT NOT NULL DEFAULT '1900/01/01',
-		bExclude		BOOL NOT NULL DEFAULT 0,
-		bGetYear		BOOL NOT NULL DEFAULT 1,
-		strLanguage		TEXT NOT NULL DEFAULT 'en-US'
-		);
-	
-CREATE UNIQUE INDEX UniqueMovieSourcePath
-		ON moviesource
-		(strPath);
-
-CREATE TRIGGER delete_moviesource
-		AFTER DELETE
-		ON moviesource
-BEGIN
-		DELETE FROM movie WHERE idSource=old.idSource;
-END;
-
-CREATE TABLE TVVStreams (
-		TVEpID INTEGER NOT NULL,
-		StreamID INTEGER NOT NULL,
-		Video_Width TEXT,
-		Video_Height TEXT,
-		Video_Codec TEXT,
-		Video_Duration TEXT,
-		Video_ScanType TEXT,
-		Video_AspectDisplayRatio TEXT,
-		Video_Language TEXT,
-		Video_LongLanguage TEXT,
-		Video_Bitrate TEXT,
-		Video_MultiViewCount TEXT,
-		Video_MultiViewLayout TEXT,
-		Video_StereoMode TEXT,
-		Video_FileSize INTEGER NOT NULL DEFAULT 0,
-		PRIMARY KEY (TVEpID,StreamID)
-		);
-
-CREATE TABLE TVAStreams (
-		TVEpID INTEGER NOT NULL,
-		StreamID INTEGER NOT NULL,
-		Audio_Language TEXT,
-		Audio_LongLanguage TEXT,
-		Audio_Codec TEXT,
-		Audio_Channel TEXT,
-		Audio_Bitrate TEXT,
-		PRIMARY KEY (TVEpID,StreamID)
-		);
-
-CREATE TABLE TVSubs (
-		TVEpID INTEGER NOT NULL,
-		StreamID INTEGER NOT NULL,
-		Subs_Language TEXT,
-		Subs_LongLanguage TEXT,
-		Subs_Type TEXT,
-		Subs_Path TEXT,
-		Subs_Forced BOOL NOT NULL DEFAULT 0,
-		PRIMARY KEY (TVEpID,StreamID)
-		);
-
-CREATE TABLE tvshowsource (
-		idSource			INTEGER PRIMARY KEY AUTOINCREMENT,
-		strName				TEXT NOT NULL,
-		strPath				TEXT NOT NULL,
-		strLastScan			TEXT NOT NULL DEFAULT '1900/01/01',
-		strLanguage			TEXT NOT NULL DEFAULT 'en-US',
-		iOrdering			INTEGER NOT NULL DEFAULT 0,
-		bExclude			BOOL NOT NULL DEFAULT 0,
-		iEpisodeSorting		INTEGER NOT NULL DEFAULT 0,
-		bSingle				BOOL NOT NULL DEFAULT 0
-		);
-
-CREATE UNIQUE INDEX UniqueTVShowSourcePath
-		ON tvshowsource
-		(strPath);
-
-CREATE TRIGGER delete_tvshowsource
-		AFTER DELETE
-		ON tvshowsource
-BEGIN
-		DELETE FROM tvshow WHERE idSource=old.idSource;
-END;
-
-CREATE TABLE OrigPaths (
-	OrigPath TEXT NOT NULL,
-	EmberPath TEXT NOT NULL,
-	Platform TEXT NOT NULL,
-	Recursive BOOL NOT NULL DEFAULT 0,
-	PRIMARY KEY (OrigPath,Platform)
+	idGenre  integer PRIMARY KEY,
+	name     text
 	);
 
-CREATE TABLE EmberFiles (
-		OrigPath TEXT NOT NULL,
-		EmberPath TEXT NOT NULL,
-		Filename TEXT NOT NULL,
-		Hash TEXT NOT NULL,
-		Platform TEXT NOT NULL,
-		UseFile BOOL NOT NULL DEFAULT 0,
-		PRIMARY KEY (OrigPath,Filename)
-		);
 
-CREATE TABLE ExcludeFiles (
-		Filename TEXT NOT NULL,
-		PRIMARY KEY (Filename)
-		);
 
-CREATE TABLE ExcludeDir (
-		Dirname TEXT NOT NULL,
-		PRIMARY KEY (Dirname)
-		);
+CREATE TABLE genre_link (
+	idGenre     integer,
+	idMedia     integer,
+	media_type  text
+	);
 
-CREATE TABLE ExcludeFilesInFolders (
-		Filename TEXT NOT NULL,
-		EmberPath TEXT NOT NULL,
-		PRIMARY KEY (Filename,EmberPath)
-		);
+CREATE UNIQUE INDEX genre_link_1
+	ON genre_link
+	(idGenre, media_type, idMedia);
+
+CREATE UNIQUE INDEX genre_link_2
+	ON genre_link
+	(idMedia, media_type, idGenre);
+
+CREATE INDEX genre_link_3
+	ON genre_link
+	(media_type);
+
+
+
+CREATE TABLE gueststar_link (
+	idPerson    integer,
+	idMedia     integer,
+	media_type  text,
+	role        text,
+	cast_order  integer
+	);
+
+CREATE UNIQUE INDEX ix_gueststar_link_1
+	ON gueststar_link
+	(idPerson, media_type, idMedia);
+
+CREATE UNIQUE INDEX ix_gueststar_link_2
+	ON gueststar_link
+	(idMedia, media_type, idPerson);
+
+CREATE INDEX ix_gueststar_link_3
+	ON gueststar_link
+	(media_type);
+
+
+
+CREATE TABLE movie (
+	idMovie         integer PRIMARY KEY,
+	idSource        integer NOT NULL,
+	idFile          integer NOT NULL DEFAULT -1,
+	isSingle        bool,
+	listTitle       text,
+	hasSub          bool NOT NULL DEFAULT 0,
+	"new"           bool NOT NULL DEFAULT 0,
+	marked          bool NOT NULL DEFAULT 0,
+	locked          bool,
+	title           text,
+	originalTitle   text,
+	year            integer,
+	mpaa            text,
+	top250          integer,
+	outline         text,
+	plot            text,
+	tagline         text,
+	runtime         text,
+	releaseDate     text,
+	playcount       integer,
+	trailer         text,
+	ethumbsPath     text,
+	nfoPath         text,
+	trailerPath     text,
+	subPath         text,
+	outOfTolerance  bool,
+	videoSource     text,
+	sortTitle       text,
+	dateAdded       integer,
+	efanartsPath    text,
+	themePath       text,
+	dateModified    integer,
+	markCustom1     bool NOT NULL DEFAULT 0,
+	markCustom2     bool NOT NULL DEFAULT 0,
+	markCustom3     bool NOT NULL DEFAULT 0,
+	markCustom4     bool NOT NULL DEFAULT 0,
+	hasSet          bool NOT NULL DEFAULT 0,
+	lastPlayed      integer,
+	language        text,
+	userRating      integer NOT NULL DEFAULT 0
+	);
+
+CREATE UNIQUE INDEX ix_movie_file_1
+	ON movie
+	(idFile, idMovie);
+
+CREATE UNIQUE INDEX ix_movie_file_2
+	ON movie
+	(idMovie, idFile);
+
+CREATE TRIGGER delete_movie
+	AFTER DELETE
+	ON movie
+BEGIN
+	DELETE FROM actor_link WHERE idMedia=old.idMovie AND media_type='movie';
+	DELETE FROM art WHERE idMedia=old.idMovie AND media_type='movie';
+	DELETE FROM certification_link WHERE idMedia=old.idMovie AND media_type='movie';
+	DELETE FROM country_link WHERE idMedia=old.idMovie AND media_type='movie';
+	DELETE FROM director_link WHERE idMedia=old.idMovie AND media_type='movie';
+	DELETE FROM file WHERE idFile=old.idFile;
+	DELETE FROM genre_link WHERE idMedia=old.idMovie AND media_type='movie';
+	DELETE FROM movieset_link WHERE idMovie=old.idMovie;
+	DELETE FROM rating WHERE idMedia=old.idMovie AND media_type='movie';
+	DELETE FROM studio_link WHERE idMedia=old.idMovie AND media_type='movie';
+	DELETE FROM tag_link WHERE idMedia=old.idMovie AND media_type='movie';
+	DELETE FROM tvshow_link WHERE idMovie=old.idMovie;
+	DELETE FROM uniqueid WHERE idMedia=old.idMovie AND media_type='movie';
+	DELETE FROM writer_link WHERE idMedia=old.idMovie AND media_type='movie';
+END;
+
+
+
+CREATE TABLE movieset (
+	idSet       integer PRIMARY KEY,
+	listTitle   text NOT NULL,
+	nfoPath     text,
+	plot        text,
+	title       text,
+	"new"       bool NOT NULL DEFAULT 0,
+	marked      bool NOT NULL DEFAULT 0,
+	locked      bool NOT NULL DEFAULT 0,
+	sortMethod  integer NOT NULL DEFAULT 0,
+	language    text
+	);
+
+CREATE TRIGGER delete_movieset
+	AFTER DELETE
+	ON movieset
+BEGIN
+	DELETE FROM art WHERE idMedia=old.idSet AND media_type='movieset';
+	DELETE FROM movieset_link WHERE idSet=old.idSet;
+	DELETE FROM uniqueid WHERE idMedia=old.idSet AND media_type='movieset';
+END;
+
+
+
+CREATE TABLE movieset_link (
+	idSet      integer NOT NULL,
+	idMovie    integer NOT NULL,
+	set_order  integer NOT NULL DEFAULT -1
+	);
+
+CREATE UNIQUE INDEX movieset_link_1
+	ON movieset_link
+	(idSet, idMovie);
+
+CREATE UNIQUE INDEX movieset_link_2
+	ON movieset_link
+	(idMovie, idSet);
+
+
+
+ CREATE TABLE moviesource (
+	idSource       integer PRIMARY KEY,
+	path           text NOT NULL,
+	name           text NOT NULL,
+	scanRecursive  bool NOT NULL DEFAULT 0,
+	useFolderName  bool NOT NULL DEFAULT 0,
+	isSingle       bool NOT NULL DEFAULT 0,
+	lastScan       text NOT NULL DEFAULT '1900/01/01',
+	exclude        bool NOT NULL DEFAULT 0,
+	getYear        bool NOT NULL DEFAULT 1,
+	language       text NOT NULL DEFAULT 'en-US'
+	);
+
+CREATE UNIQUE INDEX UniqueMovieSourcePath
+	ON moviesource
+	(path);
+
+CREATE TRIGGER delete_moviesource
+	AFTER DELETE
+	ON moviesource
+BEGIN
+	DELETE FROM movie WHERE idSource=old.idSource;
+END;
+
+
+
+CREATE TABLE person (
+	idPerson  integer PRIMARY KEY AUTOINCREMENT,
+	name      text NOT NULL,
+	thumb     text
+	);
+
+CREATE TRIGGER delete_person
+	AFTER DELETE
+	ON person
+BEGIN
+	DELETE FROM art WHERE idMedia=old.idPerson AND media_type='person';
+	DELETE FROM uniqueid WHERE idMedia=old.idPerson AND media_type='person';
+END;
+
+
+
+CREATE TABLE rating (
+	idRating     integer PRIMARY KEY AUTOINCREMENT,
+	idMedia      integer,
+	media_type   text,
+	rating_type  text,
+	rating_max   integer,
+	rating       float(50),
+	votes        integer,
+	isDefault    boolean
+	);
+
+CREATE INDEX ix_rating
+	ON rating
+	(idMedia, media_type);
+
+
+
+CREATE TABLE season (
+	idSeason  integer PRIMARY KEY,
+	idShow    integer,
+	season    integer,
+	title     text,
+	locked    bool NOT NULL DEFAULT 0,
+	marked    bool NOT NULL DEFAULT 0,
+	"new"     bool NOT NULL DEFAULT 0,
+	aired     text,
+	plot      text
+	);
+
+CREATE UNIQUE INDEX ix_season
+	ON season
+	(idShow, season);
+
+CREATE TRIGGER delete_season
+	AFTER DELETE
+	ON season
+BEGIN
+	DELETE FROM art WHERE idMedia=old.idSeason AND media_type='season';
+	DELETE FROM episode WHERE season=old.season AND idShow=old.idShow;
+	DELETE FROM uniqueid WHERE idMedia=old.idSeason AND media_type='season';
+END;
+
+
+
+CREATE TABLE streamdetail (
+	idFile                  integer,
+	streamType              integer,
+	videoCodec              text,
+	videoAspect             float,
+	videoBitrate            integer,
+	videoLanguage           text,
+	videoWidth              integer,
+	videoHeight             integer,
+	videoScantype           text,
+	videoDuration           integer,
+	videoMultiViewCount     integer,
+	videoMultiViewLayout    text,
+	videoStereoMode         text,
+	videoBitDepth           integer,
+	videoChromaSubsampling  text,
+	videoColourPrimaries    text,
+	audioCodec              text,
+	audioChannels           integer,
+	audioBitrate            integer,
+	audioLanguage           text,
+	subtitleLanguage        text,
+	subtitleForced          boolean,
+	subtitlePath            text
+	);
+
+CREATE INDEX ix_streamdetail
+	ON streamdetail
+	(idFile);
+
+
+
+CREATE TABLE studio (
+	idStudio  integer PRIMARY KEY,
+	name      text
+	);
+
+
+
+CREATE TABLE studio_link (
+	idStudio    integer,
+	idMedia     integer,
+	media_type  text
+	);
+
+CREATE UNIQUE INDEX ix_studio_link_1
+	ON studio_link
+	(idStudio, media_type, idMedia);
+
+CREATE UNIQUE INDEX ix_studio_link_2
+	ON studio_link
+	(idMedia, media_type, idStudio);
+
+CREATE INDEX ix_studio_link_3
+	ON studio_link
+	(media_type);
+
+
+
+CREATE TABLE tag (
+	idTag  integer PRIMARY KEY,
+	name   text
+	);
+
+CREATE UNIQUE INDEX ix_tag_1
+	ON tag
+	(name);
+
+
+
+CREATE TABLE tag_link (
+	idTag       integer,
+	idMedia     integer,
+	media_type  text
+	);
+
+CREATE UNIQUE INDEX ix_taglinks_1
+	ON tag_link
+	(idTag, media_type, idMedia);
+
+CREATE UNIQUE INDEX ix_taglinks_2
+	ON tag_link
+	(idMedia, media_type, idTag);
+
+CREATE INDEX ix_taglinks_3
+	ON tag_link
+	(media_type);
+
+CREATE TRIGGER delete_tag
+	AFTER DELETE
+	ON tag_link
+BEGIN
+	DELETE FROM tag WHERE idTag=old.idTag AND idTag NOT IN (SELECT DISTINCT idTag FROM tag_link);
+END;
+
+
+
+CREATE TABLE tvshow (
+	idShow           integer PRIMARY KEY,
+	idSource         integer NOT NULL,
+	listTitle        text,
+	"new"            bool DEFAULT 0,
+	marked           bool NOT NULL DEFAULT 0,
+	path             text NOT NULL,
+	locked           bool NOT NULL DEFAULT 0,
+	episodeGuide     text,
+	plot             text,
+	premiered        text,
+	mpaa             text,
+	nfoPath          text,
+	language         text,
+	episodeOrdering  integer NOT NULL DEFAULT 0,
+	status           text,
+	themePath        text,
+	efanartsPath     text,
+	runtime          text,
+	title            text,
+	episodeSorting   integer NOT NULL DEFAULT 0,
+	sortTitle        text,
+	originalTitle    text,
+	userRating       integer NOT NULL DEFAULT 0,
+	dateModified     integer
+	);
+
+CREATE UNIQUE INDEX UniquePath
+	ON tvshow
+	(path);
+
+CREATE TRIGGER delete_tvshow
+	AFTER DELETE
+	ON tvshow
+BEGIN
+	DELETE FROM actor_link WHERE idMedia=old.idShow AND media_type='tvshow';
+	DELETE FROM art WHERE idMedia=old.idShow AND media_type='tvshow';
+	DELETE FROM certification_link WHERE idMedia=old.idShow AND media_type='tvshow';
+	DELETE FROM creator_link WHERE idMedia=old.idShow AND media_type='tvshow';
+	DELETE FROM country_link WHERE idMedia=old.idShow AND media_type='tvshow';
+	DELETE FROM director_link WHERE idMedia=old.idShow AND media_type='tvshow';
+	DELETE FROM genre_link WHERE idMedia=old.idShow AND media_type='tvshow';
+	DELETE FROM rating WHERE idMedia=old.idShow AND media_type='tvshow';
+	DELETE FROM season WHERE idShow=old.idShow;
+	DELETE FROM studio_link WHERE idMedia=old.idShow AND media_type='tvshow';
+	DELETE FROM tag_link WHERE idMedia=old.idShow AND media_type='tvshow';
+	DELETE FROM tvshow_link WHERE idShow=old.idShow;
+	DELETE FROM uniqueid WHERE idMedia=old.idShow AND media_type='tvshow';
+END;
+
+
+
+CREATE TABLE tvshow_link (
+	idShow   integer,
+	idMovie  integer
+	);
+
+CREATE UNIQUE INDEX ix_tvshow_link_1
+	ON tvshow_link
+	(idShow, idMovie);
+
+CREATE UNIQUE INDEX ix_tvshow_link_2
+	ON tvshow_link
+	(idMovie, idShow);
+
+
+
+CREATE TABLE tvshowsource (
+	idSource         integer PRIMARY KEY,
+	path             text NOT NULL,
+	name             text NOT NULL,
+	lastScan         text NOT NULL DEFAULT '1900/01/01',
+	language         text NOT NULL DEFAULT 'en-US',
+	episodeOrdering  integer NOT NULL DEFAULT 0,
+	exclude          bool NOT NULL DEFAULT 0,
+	episodeSorting   integer NOT NULL DEFAULT 0,
+	isSingle         bool NOT NULL DEFAULT 0
+	);
+
+CREATE UNIQUE INDEX UniqueTVShowSourcePath
+	ON tvshowsource
+	(path);
+
+CREATE TRIGGER delete_tvshowsource
+	AFTER DELETE
+	ON tvshowsource
+BEGIN
+	DELETE FROM tvshow WHERE idSource=old.idSource;
+END;
+
+
+
+CREATE TABLE uniqueid (
+	idUniqueID  integer PRIMARY KEY,
+	idMedia     integer,
+	media_type  text,
+	value       text,
+	type        text,
+	isDefault   boolean DEFAULT 0
+	);
+
+CREATE INDEX ix_uniqueid1
+	ON uniqueid
+	(idMedia, media_type, type);
+
+CREATE INDEX ix_uniqueid2
+	ON uniqueid
+	(media_type, value);
+
+
+
+CREATE TABLE writer_link (
+	idPerson    integer,
+	idMedia     integer,
+	media_type  text
+	);
+
+CREATE UNIQUE INDEX ix_writer_link_1
+	ON writer_link
+	(idPerson, media_type, idMedia);
+
+CREATE UNIQUE INDEX ix_writer_link_2
+	ON writer_link
+	(idMedia, media_type, idPerson);
+
+CREATE INDEX ix_writer_link_3
+	ON writer_link
+	(media_type);
+
+
 
 CREATE VIEW episodelist
-        AS
-        SELECT
-        episode.*,
-        files.strFilename AS strFilePath,
-        source.strName AS Source,
-        fanart.url AS FanartPath,
-        poster.url AS PosterPath,
-        GROUP_CONCAT(DISTINCT credits.strActor) AS Credits,
-        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
-        CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS Missing
-        FROM
-        episode
-        LEFT OUTER JOIN files ON (files.idFile = episode.idFile)
-        LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = episode.idSource)
-        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = episode.idEpisode)
-        AND (fanart.media_type = 'episode')
-        AND (fanart.type = 'fanart')
-        LEFT OUTER JOIN art AS poster ON (poster.media_id = episode.idEpisode)
-        AND (poster.media_type = 'episode')
-        AND (poster.type = 'thumb')
-        LEFT OUTER JOIN writerlinkepisode AS writerlink ON (writerlink.idEpisode = episode.idEpisode)
-        LEFT OUTER JOIN actors AS credits ON (credits.idActor = writerlink.idWriter)
-        LEFT OUTER JOIN directorlinkepisode AS directorlink ON (directorlink.idEpisode = episode.idEpisode)
-        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
-        GROUP BY episode.idEpisode;
+	AS
+SELECT
+	episode.*,
+	file.path AS path,
+	source.name AS source,
+	fanart.url AS fanartPath,
+	poster.url AS posterPath,
+	GROUP_CONCAT(DISTINCT writers.name) AS credits,
+	GROUP_CONCAT(DISTINCT directors.name) AS director,
+	CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS missing,
+	GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
+FROM
+	episode
+	LEFT OUTER JOIN file ON (file.idFile=episode.idFile)
+	LEFT OUTER JOIN tvshowsource AS source ON (source.idSource=episode.idSource)
+	LEFT OUTER JOIN art AS fanart ON (fanart.idMedia=episode.idEpisode)
+	AND (fanart.media_type='episode')
+	AND (fanart.type ='fanart')
+	LEFT OUTER JOIN art AS poster ON (poster.idMedia=episode.idEpisode)
+	AND (poster.media_type='episode')
+	AND (poster.type='thumb')
+	LEFT OUTER JOIN writer_link AS writerlink ON (writerlink.idMedia=episode.idEpisode)
+	AND (writerlink.media_type='episode')
+	LEFT OUTER JOIN person AS writers ON (writers.idPerson=writerlink.idPerson)
+	LEFT OUTER JOIN director_link AS directorlink ON (directorlink.idMedia=episode.idEpisode)
+	AND (writerlink.media_type='episode')
+	LEFT OUTER JOIN person AS directors ON (directors.idPerson=directorlink.idPerson)
+	LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=episode.idEpisode)
+	AND (uniqueids.media_type='episode')
+GROUP BY
+	episode.idEpisode;
+
+
 
 CREATE VIEW movielist
-        AS
-        SELECT
-        movie.*,
-        CASE WHEN movie.SortTitle IS NOT '' THEN movie.SortTitle ELSE movie.ListTitle END AS SortedTitle,
-        source.strName AS Source,
-        banner.url AS BannerPath,
-        clearart.url AS ClearArtPath,
-        clearlogo.url AS ClearLogoPath,
-        discart.url AS DiscArtPath,
-        fanart.url AS FanartPath,
-        keyart.url AS KeyArtPath,
-        landscape.url AS LandscapePath,
-        poster.url AS PosterPath,
-        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
-        GROUP_CONCAT(DISTINCT credits.strActor) AS Credits,
-        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
-        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
-        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
-        GROUP_CONCAT(DISTINCT tags.strTag) AS 'Tag'
-        FROM
-        movie
-        LEFT OUTER JOIN moviesource AS source ON (source.idSource = movie.idSource)
-        LEFT OUTER JOIN art AS banner ON (banner.media_id = movie.idMovie)
-        AND (banner.media_type = 'movie')
-        AND (banner.type = 'banner')
-        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = movie.idMovie)
-        AND (clearart.media_type = 'movie')
-        AND (clearart.type = 'clearart')
-        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = movie.idMovie)
-        AND (clearlogo.media_type = 'movie')
-        AND (clearlogo.type = 'clearlogo')
-        LEFT OUTER JOIN art AS discart ON (discart.media_id = movie.idMovie)
-        AND (discart.media_type = 'movie')
-        AND (discart.type = 'discart')
-        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = movie.idMovie)
-        AND (fanart.media_type = 'movie')
-        AND (fanart.type = 'fanart')
-        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = movie.idMovie)
-        AND (keyart.media_type = 'movie')
-        AND (keyart.type = 'keyart')
-        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = movie.idMovie)
-        AND (landscape.media_type = 'movie')
-        AND (landscape.type = 'landscape')
-        LEFT OUTER JOIN art AS poster ON (poster.media_id = movie.idMovie)
-        AND (poster.media_type = 'movie')
-        AND (poster.type = 'poster')
-        LEFT OUTER JOIN countrylinkmovie AS countrylink ON (countrylink.idMovie = movie.idMovie)
-        LEFT OUTER JOIN country AS countries ON (countries.idCountry = countrylink.idCountry)
-        LEFT OUTER JOIN writerlinkmovie AS writerlink ON (writerlink.idMovie = movie.idMovie)
-        LEFT OUTER JOIN actors AS credits ON (credits.idActor = writerlink.idWriter)
-        LEFT OUTER JOIN directorlinkmovie AS directorlink ON (directorlink.idMovie = movie.idMovie)
-        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
-        LEFT OUTER JOIN genrelinkmovie AS genrelink ON (genrelink.idMovie = movie.idMovie)
-        LEFT OUTER JOIN genre AS genres ON (genres.idGenre = genrelink.idGenre)
-        LEFT OUTER JOIN studiolinkmovie AS studiolink ON (studiolink.idMovie = movie.idMovie)
-        LEFT OUTER JOIN studio AS studios ON (studios.idStudio = studiolink.idStudio)
-        LEFT OUTER JOIN taglinks AS taglink ON (taglink.idMedia = movie.idMovie)
-        AND (taglink.media_type = 'movie')
-        LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglink.idTag)
-        GROUP BY movie.idMovie;
+	AS
+SELECT
+	movie.*,
+	CASE WHEN movie.sortTitle IS NOT '' THEN movie.sortTitle ELSE movie.listTitle END AS sortedTitle,
+	source.name AS source,
+	file.path AS path,
+	banner.url AS bannerPath,
+	clearart.url AS clearartPath,
+	clearlogo.url AS clearlogoPath,
+	discart.url AS discartPath,
+	fanart.url AS fanartPath,
+	keyart.url AS keyartPath,
+	landscape.url AS landscapePath,
+	poster.url AS posterPath,
+	GROUP_CONCAT(DISTINCT certifications.name) AS certification,
+	GROUP_CONCAT(DISTINCT countries.name) AS country,
+	GROUP_CONCAT(DISTINCT credits.name) AS credits,
+	GROUP_CONCAT(DISTINCT directors.name) AS director,
+	GROUP_CONCAT(DISTINCT genres.name) AS genre,
+	GROUP_CONCAT(DISTINCT studios.name) AS studio,
+	GROUP_CONCAT(DISTINCT tags.name) AS 'tag',
+	GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
+FROM
+	movie
+	LEFT OUTER JOIN moviesource AS source ON (source.idSource=movie.idSource)
+	LEFT OUTER JOIN art AS banner ON (banner.idMedia=movie.idMovie)
+	AND (banner.media_type='movie')
+	AND (banner.type='banner')
+	LEFT OUTER JOIN art AS clearart ON (clearart.idMedia=movie.idMovie)
+	AND (clearart.media_type='movie')
+	AND (clearart.type='clearart')
+	LEFT OUTER JOIN art AS clearlogo ON (clearlogo.idMedia=movie.idMovie)
+	AND (clearlogo.media_type='movie')
+	AND (clearlogo.type='clearlogo')
+	LEFT OUTER JOIN art AS discart ON (discart.idMedia=movie.idMovie)
+	AND (discart.media_type='movie')
+	AND (discart.type='discart')
+	LEFT OUTER JOIN art AS fanart ON (fanart.idMedia=movie.idMovie)
+	AND (fanart.media_type='movie')
+	AND (fanart.type='fanart')
+	LEFT OUTER JOIN art AS keyart ON (keyart.idMedia=movie.idMovie)
+	AND (keyart.media_type='movie')
+	AND (keyart.type='keyart')
+	LEFT OUTER JOIN art AS landscape ON (landscape.idMedia=movie.idMovie)
+	AND (landscape.media_type='movie')
+	AND (landscape.type='landscape')
+	LEFT OUTER JOIN art AS poster ON (poster.idMedia=movie.idMovie)
+	AND (poster.media_type='movie')
+	AND (poster.type='poster')
+	LEFT OUTER JOIN certification_link AS certificationlink ON (certificationlink.idMedia=movie.idMovie)
+	AND (certificationlink.media_type='movie')
+	LEFT OUTER JOIN certification AS certifications ON (certifications.idCertification=certificationlink.idCertification)
+	LEFT OUTER JOIN country_link AS countrylink ON (countrylink.idMedia=movie.idMovie)
+	AND (countrylink.media_type='movie')
+	LEFT OUTER JOIN country AS countries ON (countries.idCountry=countrylink.idCountry)
+	LEFT OUTER JOIN writer_link AS writerlink ON (writerlink.idMedia=movie.idMovie)
+	AND (writerlink.media_type='movie')
+	LEFT OUTER JOIN person AS credits ON (credits.idPerson=writerlink.idPerson)
+	LEFT OUTER JOIN director_link AS directorlink ON (directorlink.idMedia=movie.idMovie)
+	AND (directorlink.media_type='movie')
+	LEFT OUTER JOIN person AS directors ON (directors.idPerson=directorlink.idPerson)
+	LEFT OUTER JOIN file ON (file.idFile=movie.idFile)
+	LEFT OUTER JOIN genre_link AS genrelink ON (genrelink.idMedia=movie.idMovie)
+	AND (genrelink.media_type='movie')
+	LEFT OUTER JOIN genre AS genres ON (genres.idGenre=genrelink.idGenre)
+	LEFT OUTER JOIN studio_link AS studiolink ON (studiolink.idMedia=movie.idMovie)
+	AND (studiolink.media_type='movie')
+	LEFT OUTER JOIN studio AS studios ON (studios.idStudio=studiolink.idStudio)
+	LEFT OUTER JOIN tag_link AS taglink ON (taglink.idMedia=movie.idMovie)
+	AND (taglink.media_type='movie')
+	LEFT OUTER JOIN tag AS tags ON (tags.idTag=taglink.idTag)
+	LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=movie.idMovie)
+	AND (uniqueids.media_type='movie')
+GROUP BY
+	movie.idMovie;
 
-CREATE VIEW setslist
-        AS
-        SELECT
-        sets.*,
-        banner.url AS BannerPath,
-        clearart.url AS ClearArtPath,
-        clearlogo.url AS ClearLogoPath,
-        discart.url AS DiscArtPath,
-        fanart.url AS FanartPath,
-        keyart.url AS keyartPath,
-        landscape.url AS LandscapePath,
-        poster.url AS PosterPath,
-        COUNT(setlink.idMovie) AS 'Count',
-        GROUP_CONCAT(DISTINCT movies.Title) AS 'MovieTitles'
-        FROM
-        sets
-        LEFT OUTER JOIN art AS banner ON (banner.media_id = sets.idSet)
-        AND (banner.media_type = 'set')
-        AND (banner.type = 'banner')
-        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = sets.idSet)
-        AND (clearart.media_type = 'set')
-        AND (clearart.type = 'clearart')
-        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = sets.idSet)
-        AND (clearlogo.media_type = 'set')
-        AND (clearlogo.type = 'clearlogo')
-        LEFT OUTER JOIN art AS discart ON (discart.media_id = sets.idSet)
-        AND (discart.media_type = 'set')
-        AND (discart.type = 'discart')
-        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = sets.idSet)
-        AND (fanart.media_type = 'set')
-        AND (fanart.type = 'fanart')
-        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = sets.idMovie)
-        AND (keyart.media_type = 'set')
-        AND (keyart.type = 'keyart')
-        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = sets.idSet)
-        AND (landscape.media_type = 'set')
-        AND (landscape.type = 'landscape')
-        LEFT OUTER JOIN art AS poster ON (poster.media_id = sets.idSet)
-        AND (poster.media_type = 'set')
-        AND (poster.type = 'poster')
-        LEFT OUTER JOIN setlinkmovie AS setlink ON (setlink.idSet = sets.idSet)
-        LEFT OUTER JOIN movie AS movies ON (movies.idMovie = setlink.idMovie)
-        GROUP BY sets.idSet;
 
-CREATE VIEW seasonslist
-        AS
-        SELECT
-        seasons.*,
-        banner.url AS BannerPath,
-        fanart.url AS FanartPath,
-        landscape.url AS LandscapePath,
-        poster.url AS PosterPath,
-        CASE WHEN seasons.Season IS NOT -1 THEN COUNT(DISTINCT episodelist.idEpisode) ELSE NULL END AS Episodes,
-        COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS Playcount,
-        CASE WHEN seasons.Season IS NOT -1 THEN CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END ELSE NULL END AS HasWatched,
-        COUNT(DISTINCT CASE WHEN episodelist.New IS 1 THEN episodelist.idEpisode ELSE NULL END) AS NewEpisodes,
-        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 THEN 0 ELSE 1 END AS Missing
-        FROM
-        seasons
-        LEFT OUTER JOIN art AS banner ON (banner.media_id = seasons.idSeason)
-        AND (banner.media_type = 'season')
-        AND (banner.type = 'banner')
-        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = seasons.idSeason)
-        AND (fanart.media_type = 'season')
-        AND (fanart.type = 'fanart')
-        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = seasons.idSeason)
-        AND (landscape.media_type = 'season')
-        AND (landscape.type = 'landscape')
-        LEFT OUTER JOIN art AS poster ON (poster.media_id = seasons.idSeason)
-        AND (poster.media_type = 'season')
-        AND (poster.type = 'poster')
-        LEFT OUTER JOIN episodelist ON (seasons.Season = episodelist.Season)
-        AND (seasons.idShow = episodelist.idShow)
-        AND (episodelist.Missing = 0)
-        GROUP BY
-        seasons.idSeason;
+
+CREATE VIEW moviesetlist
+	AS
+SELECT
+	movieset.*,
+	banner.url AS bannerPath,
+	clearart.url AS clearartPath,
+	clearlogo.url AS clearlogoPath,
+	discart.url AS discartPath,
+	fanart.url AS fanartPath,
+	keyart.url AS keyartPath,
+	landscape.url AS landscapePath,
+	poster.url AS posterPath,
+	COUNT(moviesetlink.idMovie) AS 'movieCount',
+	GROUP_CONCAT(DISTINCT movies.title) AS 'movieTitles',
+	GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
+FROM
+	movieset
+	LEFT OUTER JOIN art AS banner ON (banner.idMedia=movieset.idSet)
+	AND (banner.media_type='movieset')
+	AND (banner.type='banner')
+	LEFT OUTER JOIN art AS clearart ON (clearart.idMedia=movieset.idSet)
+	AND (clearart.media_type='movieset')
+	AND (clearart.type='clearart')
+	LEFT OUTER JOIN art AS clearlogo ON (clearlogo.idMedia=movieset.idSet)
+	AND (clearlogo.media_type='movieset')
+	AND (clearlogo.type='clearlogo')
+	LEFT OUTER JOIN art AS discart ON (discart.idMedia=movieset.idSet)
+	AND (discart.media_type='movieset')
+	AND (discart.type='discart')
+	LEFT OUTER JOIN art AS fanart ON (fanart.idMedia=movieset.idSet)
+	AND (fanart.media_type='movieset')
+	AND (fanart.type='fanart')
+	LEFT OUTER JOIN art AS keyart ON (keyart.idMedia=movieset.idSet)
+	AND (keyart.media_type='movieset')
+	AND (keyart.type='keyart')
+	LEFT OUTER JOIN art AS landscape ON (landscape.idMedia=movieset.idSet)
+	AND (landscape.media_type='movieset')
+	AND (landscape.type='landscape')
+	LEFT OUTER JOIN art AS poster ON (poster.idMedia=movieset.idSet)
+	AND (poster.media_type='movieset')
+	AND (poster.type='poster')
+	LEFT OUTER JOIN movieset_link AS moviesetlink ON (moviesetlink.idSet=movieset.idSet)
+	LEFT OUTER JOIN movie AS movies ON (movies.idMovie=moviesetlink.idMovie)
+	LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=movieset.idSet)
+	AND (uniqueids.media_type='movieset')
+GROUP BY
+	movieset.idSet;
+
+
+
+CREATE VIEW seasonlist
+	AS
+SELECT
+	season.*,
+	banner.url AS bannerPath,
+	fanart.url AS fanartPath,
+	landscape.url AS landscapePath,
+	poster.url AS posterPath,
+	CASE WHEN season.season IS NOT -1 THEN COUNT(DISTINCT episodelist.idEpisode) ELSE NULL END AS episodes,
+	COUNT(DISTINCT CASE WHEN episodelist.lastPlayed IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS playcount,
+	CASE WHEN season.season IS NOT -1 THEN CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode)=COUNT(DISTINCT CASE WHEN episodelist.lastPlayed IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END ELSE 0 END AS hasWatched,
+	COUNT(DISTINCT CASE WHEN episodelist.new IS 1 THEN episodelist.idEpisode ELSE NULL END) AS newEpisodes,
+	CASE WHEN season.season IS -1 OR COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 THEN 0 ELSE 1 END AS missing,
+	GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
+FROM
+	season
+	LEFT OUTER JOIN art AS banner ON (banner.idMedia=season.idSeason)
+	AND (banner.media_type='season')
+	AND (banner.type='banner')
+	LEFT OUTER JOIN art AS fanart ON (fanart.idMedia=season.idSeason)
+	AND (fanart.media_type='season')
+	AND (fanart.type='fanart')
+	LEFT OUTER JOIN art AS landscape ON (landscape.idMedia=season.idSeason)
+	AND (landscape.media_type='season')
+	AND (landscape.type='landscape')
+	LEFT OUTER JOIN art AS poster ON (poster.idMedia=season.idSeason)
+	AND (poster.media_type='season')
+	AND (poster.type='poster')
+	LEFT OUTER JOIN episodelist ON (season.season=episodelist.season)
+	AND (season.idShow=episodelist.idShow)
+	AND (episodelist.missing=0)
+	LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=season.idSeason)
+	AND (uniqueids.media_type='season')
+GROUP BY
+	season.idSeason;
+
+
+
+
+
 
 CREATE VIEW tvshowlist
-        AS
-        SELECT
-        tvshow.*,
-        CASE WHEN tvshow.SortTitle IS NOT '' THEN tvshow.SortTitle ELSE tvshow.ListTitle END AS SortedTitle,
-        source.strName AS Source,
-        banner.url AS BannerPath,
-        characterart.url AS CharacterArtPath,
-        clearart.url AS ClearArtPath,
-        clearlogo.url AS ClearLogoPath,
-        fanart.url AS FanartPath,
-        keyart.url AS KeyArtPath,
-        landscape.url AS LandscapePath,
-        poster.url AS PosterPath,
-        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
-        GROUP_CONCAT(DISTINCT creators.strActor) AS Creator,
-        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
-        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
-        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
-        GROUP_CONCAT(DISTINCT tags.strTag) AS Tag,
-        COUNT(DISTINCT episodelist.idEpisode) AS Episodes,
-        COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS Playcount,
-        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END AS HasWatched,
-        COUNT(DISTINCT CASE WHEN episodelist.New IS 1 THEN episodelist.idEpisode ELSE NULL END) AS NewEpisodes,
-        COUNT(DISTINCT CASE WHEN episodelist.Mark IS 1 THEN episodelist.idEpisode ELSE NULL END) AS MarkedEpisodes,
-        COUNT(DISTINCT CASE WHEN episodelist.Lock IS 1 THEN episodelist.idEpisode ELSE NULL END) AS LockedEpisodes
-        FROM
-        tvshow
-        LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = tvshow.idSource)
-        LEFT OUTER JOIN art AS banner ON (banner.media_id = tvshow.idShow)
-        AND (banner.media_type = 'tvshow')
-        AND (banner.type = 'banner')
-        LEFT OUTER JOIN art AS characterart ON (characterart.media_id = tvshow.idShow)
-        AND (characterart.media_type = 'tvshow')
-        AND (characterart.type = 'characterart')
-        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = tvshow.idShow)
-        AND (clearart.media_type = 'tvshow')
-        AND (clearart.type = 'clearart')
-        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = tvshow.idShow)
-        AND (clearlogo.media_type = 'tvshow')
-        AND (clearlogo.type = 'clearlogo')
-        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = tvshow.idShow)
-        AND (fanart.media_type = 'tvshow')
-        AND (fanart.type = 'fanart')
-        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = tvshow.idShow)
-        AND (keyart.media_type = 'tvshow')
-        AND (keyart.type = 'keyart')
-        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = tvshow.idShow)
-        AND (landscape.media_type = 'tvshow')
-        AND (landscape.type = 'landscape')
-        LEFT OUTER JOIN art AS poster ON (poster.media_id = tvshow.idShow)
-        AND (poster.media_type = 'tvshow')
-        AND (poster.type = 'poster')
-        LEFT OUTER JOIN countrylinktvshow AS countrylink ON (countrylink.idShow = tvshow.idShow)
-        LEFT OUTER JOIN country AS countries ON (countries.idCountry = countrylink.idCountry)
-        LEFT OUTER JOIN creatorlinktvshow AS creatorlink ON (creatorlink.idShow = tvshow.idShow)
-        LEFT OUTER JOIN actors AS creators ON (creators.idActor = creatorlink.idActor)
-        LEFT OUTER JOIN directorlinktvshow AS directorlink ON (directorlink.idShow = tvshow.idShow)
-        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
-        LEFT OUTER JOIN genrelinktvshow AS genrelink ON (genrelink.idShow = tvshow.idShow)
-        LEFT OUTER JOIN genre AS genres ON (genres.idGenre = genrelink.idGenre)
-        LEFT OUTER JOIN studiolinktvshow AS studiolink ON (studiolink.idShow = tvshow.idShow)
-        LEFT OUTER JOIN studio AS studios ON (studios.idStudio = studiolink.idStudio)
-        LEFT OUTER JOIN taglinks AS taglink ON (taglink.idMedia = tvshow.idShow)
-        AND (taglink.media_type = 'tvshow')
-        LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglink.idTag)
-        LEFT OUTER JOIN episodelist ON (tvshow.idShow = episodelist.idShow)
-        AND (episodelist.Missing = 0)
-        GROUP BY
-        tvshow.idShow;
+	AS
+SELECT
+	tvshow.*,
+	CASE WHEN tvshow.sortTitle IS NOT '' THEN tvshow.sortTitle ELSE tvshow.listTitle END AS sortedTitle,
+	source.name AS source,
+	banner.url AS bannerPath,
+	characterart.url AS characterartPath,
+	clearart.url AS clearartPath,
+	clearlogo.url AS clearlogoPath,
+	fanart.url AS fanartPath,
+	keyart.url AS keyartPath,
+	landscape.url AS landscapePath,
+	poster.url AS posterPath,
+	GROUP_CONCAT(DISTINCT countries.name) AS country,
+	GROUP_CONCAT(DISTINCT creators.name) AS creator,
+	GROUP_CONCAT(DISTINCT genres.name) AS genre,
+	GROUP_CONCAT(DISTINCT studios.name) AS studio,
+	GROUP_CONCAT(DISTINCT tags.name) AS 'tag',
+	COUNT(DISTINCT episodelist.idEpisode) AS episodes,
+	COUNT(DISTINCT CASE WHEN episodelist.lastPlayed IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS playcount,
+	CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode)=COUNT(DISTINCT CASE WHEN episodelist.lastPlayed IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END AS hasWatched,
+	COUNT(DISTINCT CASE WHEN episodelist.new IS 1 THEN episodelist.idEpisode ELSE NULL END) AS newEpisodes,
+	COUNT(DISTINCT CASE WHEN episodelist.marked IS 1 THEN episodelist.idEpisode ELSE NULL END) AS markedEpisodes,
+	COUNT(DISTINCT CASE WHEN episodelist.locked IS 1 THEN episodelist.idEpisode ELSE NULL END) AS lockedEpisodes,
+	GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
+FROM
+	tvshow
+	LEFT OUTER JOIN tvshowsource AS source ON (source.idSource=tvshow.idSource)
+	LEFT OUTER JOIN art AS banner ON (banner.idMedia=tvshow.idShow)
+	AND (banner.media_type='tvshow')
+	AND (banner.type='banner')
+	LEFT OUTER JOIN art AS characterart ON (characterart.idMedia=tvshow.idShow)
+	AND (characterart.media_type='tvshow')
+	AND (characterart.type='characterart')
+	LEFT OUTER JOIN art AS clearart ON (clearart.idMedia=tvshow.idShow)
+	AND (clearart.media_type='tvshow')
+	AND (clearart.type='clearart')
+	LEFT OUTER JOIN art AS clearlogo ON (clearlogo.idMedia=tvshow.idShow)
+	AND (clearlogo.media_type='tvshow')
+	AND (clearlogo.type='clearlogo')
+	LEFT OUTER JOIN art AS fanart ON (fanart.idMedia=tvshow.idShow)
+	AND (fanart.media_type='tvshow')
+	AND (fanart.type='fanart')
+	LEFT OUTER JOIN art AS keyart ON (keyart.idMedia=tvshow.idShow)
+	AND (keyart.media_type='tvshow')
+	AND (keyart.type='keyart')
+	LEFT OUTER JOIN art AS landscape ON (landscape.idMedia=tvshow.idShow)
+	AND (landscape.media_type='tvshow')
+	AND (landscape.type='landscape')
+	LEFT OUTER JOIN art AS poster ON (poster.idMedia=tvshow.idShow)
+	AND (poster.media_type='tvshow')
+	AND (poster.type='poster')
+	LEFT OUTER JOIN certification_link AS certificationlink ON (certificationlink.idMedia=tvshow.idShow)
+	AND (certificationlink.media_type='tvshow')
+	LEFT OUTER JOIN country_link AS countrylink ON (countrylink.idMedia=tvshow.idShow)
+	AND (countrylink.media_type='tvshow')
+	LEFT OUTER JOIN country AS countries ON (countries.idCountry=countrylink.idCountry)
+	AND (countrylink.media_type='tvshow')
+	LEFT OUTER JOIN creator_link AS creatorlink ON (creatorlink.idMedia=tvshow.idShow)
+	AND (creatorlink.media_type='tvshow')
+	LEFT OUTER JOIN person AS creators ON (creators.idPerson=creatorlink.idPerson)
+	LEFT OUTER JOIN genre_link AS genrelink ON (genrelink.idMedia=tvshow.idShow)
+	AND (genrelink.media_type='tvshow')
+	LEFT OUTER JOIN genre AS genres ON (genres.idGenre=genrelink.idGenre)
+	LEFT OUTER JOIN studio_link AS studiolink ON (studiolink.idMedia=tvshow.idShow)
+	AND (studiolink.media_type='tvshow')
+	LEFT OUTER JOIN studio AS studios ON (studios.idStudio=studiolink.idStudio)
+	LEFT OUTER JOIN tag_link AS taglink ON (taglink.idMedia=tvshow.idShow)
+	AND (taglink.media_type='tvshow')
+	LEFT OUTER JOIN tag AS tags ON (tags.idTag=taglink.idTag)
+	LEFT OUTER JOIN episodelist ON (tvshow.idShow=episodelist.idShow)
+	AND (episodelist.Missing=0)
+	LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=tvshow.idShow)
+	AND (uniqueids.media_type='tvshow')
+GROUP BY
+	tvshow.idShow;
