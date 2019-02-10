@@ -882,7 +882,7 @@
   <string id="881">Added</string>
   <string id="882">comma separated</string>
   <string id="883">Episode Scraped</string>
-  <string id="884"></string>
+  <string id="884">TV Show Links</string>
   <string id="885">Change Watched Status</string>
   <string id="886">Downloading {0}</string>
   <string id="887">Preparing images...</string>
@@ -933,7 +933,7 @@
   <string id="932">TVDB API Key</string>
   <string id="933">TMDB ID</string>
   <string id="934">Image Limit</string>
-  <string id="935">We have to limit ammount of downloaded images to a useful value to prevent useless traffic on the image providers.{0}{0}Notes: Most skins can't show more than 4 Extrathumbs.{0}It's still possible to manually select as many as you want in the "Image Select" dialog.</string>
+  <string id="935">We have to limit the amount of images downloaded to a suitable value to prevent needless traffic on the image providers.{0}The limit for automatically downloaded Extrafanarts and Extrathumbs is 20.{0}{0}Notes: Most skins can't show more than 4 Extrathumbs.{0}It's still possible to manually select as many as you want in the "Image Select" dialog.</string>
   <string id="936">Get your API Key from www.themoviedb.org</string>
   <string id="937"></string>
   <string id="938">TheMovieDB API is missing or not valid</string>

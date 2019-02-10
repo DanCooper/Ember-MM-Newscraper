@@ -193,6 +193,7 @@ Public Class dlgEditMovie
         lblTop250.Text = String.Concat(Master.eLang.GetString(591, "Top 250"), ":")
         lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
         lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
+        lblTVShowLinks.Text = String.Concat(Master.eLang.GetString(884, "TV Show Links"), ":")
         lblUserRating.Text = String.Concat(Master.eLang.GetString(1467, "User Rating"), ":")
         lblVideoSource.Text = String.Concat(Master.eLang.GetString(824, "Video Source"), ":")
         lblYear.Text = String.Concat(Master.eLang.GetString(278, "Year"), ":")
@@ -305,7 +306,8 @@ Public Class dlgEditMovie
 
     Private Sub CheckedListBox_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles _
         clbGenres.ItemCheck,
-        clbTags.ItemCheck
+        clbTags.ItemCheck,
+        clbTVShowLinks.ItemCheck
         Dim nCheckedListBox = DirectCast(sender, CheckedListBox)
         If e.Index = 0 Then
             For i As Integer = 1 To nCheckedListBox.Items.Count - 1
@@ -439,6 +441,8 @@ Public Class dlgEditMovie
             txtLinkTrailer.Text = tmpDBElement.Movie.Trailer
             btnLinkTrailerPlay.Enabled = tmpDBElement.Movie.TrailerSpecified
             btnLinkTrailerGet.Enabled = Master.eSettings.DefaultOptions_Movie.bMainTrailer
+            'TV Show Links
+            TVShowLinks_Fill()
             'UserRating
             txtUserRating.Text = .UserRating.ToString
             'Videosource
@@ -762,6 +766,15 @@ Public Class dlgEditMovie
             .Top250 = If(Integer.TryParse(txtTop250.Text.Trim, 0), CInt(txtTop250.Text.Trim), 0)
             'Trailer Link
             .Trailer = txtLinkTrailer.Text.Trim
+            'TV Show Links
+            If clbTVShowLinks.CheckedItems.Count > 0 Then
+                If clbTVShowLinks.CheckedIndices.Contains(0) Then
+                    .ShowLinks.Clear()
+                Else
+                    .ShowLinks = clbTVShowLinks.CheckedItems.Cast(Of String).ToList
+                    .ShowLinks.Sort()
+                End If
+            End If
             'UserRating
             .UserRating = If(Integer.TryParse(txtUserRating.Text.Trim, 0), CInt(txtUserRating.Text.Trim), 0)
             'Watched/Lastplayed
@@ -1975,6 +1988,25 @@ Public Class dlgEditMovie
         Else
             btnLinkTrailerPlay.Enabled = False
         End If
+    End Sub
+    ''' <summary>
+    ''' Fills the genre list with selected genres first in list and all known genres from database as second
+    ''' </summary>
+    Private Sub TVShowLinks_Fill()
+        clbTVShowLinks.Items.Add(Master.eLang.None)
+        If tmpDBElement.Movie.ShowLinksSpecified Then
+            tmpDBElement.Movie.ShowLinks.Sort()
+            clbTVShowLinks.Items.AddRange(tmpDBElement.Movie.ShowLinks.ToArray)
+            'enable all selected tv shows, skip the first entry "[none]"
+            For i As Integer = 1 To clbTVShowLinks.Items.Count - 1
+                clbTVShowLinks.SetItemChecked(i, True)
+            Next
+        Else
+            'select "[none]" if no tv show link has been specified
+            clbTVShowLinks.SetItemChecked(0, True)
+        End If
+        'add the rest of all tv shows
+        clbTVShowLinks.Items.AddRange(Master.DB.GetAllTVShowTitles.Where(Function(f) Not clbTVShowLinks.Items.Contains(f)).ToArray)
     End Sub
 
     Private Sub UserRating_TextChanged(sender As Object, e As EventArgs) Handles txtUserRating.TextChanged

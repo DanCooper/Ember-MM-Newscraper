@@ -8198,7 +8198,7 @@ Public Class dlgSettings
         Dim tTextBox = CType(sender, TextBox)
         If Not Integer.TryParse(tTextBox.Text, iLimit) OrElse iLimit > Settings.ExtraImagesLimit OrElse iLimit = 0 Then
             Dim strTitle As String = Master.eLang.GetString(934, "Image Limit")
-            Dim strText As String = Master.eLang.GetString(935, "The count of automatically downloaded images is limited to a useful value to prevent useless traffic on the image providers.{0}Note: Most skins can't show more than 4 Extrathumbs.{0}You still can manually select as many as you want in the ""Image Select"" dialog.")
+            Dim strText As String = Master.eLang.GetString(935, "We have to limit the amount of images downloaded to a suitable value to prevent needless traffic on the image providers.{0}The limit for automatically downloaded Extrafanarts and Extrathumbs is 20.{0}{0}Notes: Most skins can't show more than 4 Extrathumbs.{0}It's still possible to manually select as many as you want in the ""Image Select"" dialog.")
             MessageBox.Show(String.Format(strText, Environment.NewLine), strTitle, MessageBoxButtons.OK, MessageBoxIcon.Information)
             tTextBox.Text = "20"
         End If

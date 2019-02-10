@@ -1895,6 +1895,16 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlElement("showlink")>
+        Public Property ShowLinks() As List(Of String) = New List(Of String)
+
+        <XmlIgnore()>
+        Public ReadOnly Property ShowLinksSpecified() As Boolean
+            Get
+                Return ShowLinks.Count > 0
+            End Get
+        End Property
+
         <XmlElement("fileinfo")>
         Public Property FileInfo() As FileInfo = New FileInfo
 

@@ -236,7 +236,12 @@ Public Class Database
 
 #Region "Methods"
 
-    Private Sub AddArt(ByVal idMedia As Long, ByVal contentType As Enums.ContentType, ByVal artType As String, ByVal url As String, ByVal width As Integer, ByVal height As Integer)
+    Private Sub AddArt(ByVal idMedia As Long,
+                       ByVal contentType As Enums.ContentType,
+                       ByVal artType As String,
+                       ByVal url As String,
+                       ByVal width As Integer,
+                       ByVal height As Integer)
         Dim mediaType As String = ConvertContentTypeToMediaType(contentType)
         If Not String.IsNullOrEmpty(mediaType) Then
             Dim doesExist As Boolean = False
@@ -369,7 +374,11 @@ Public Class Database
     ''' <param name="isActor"><c>True</c> if adding an actor, <c>False</c> if adding a Creator, Director, Writer or something else without ID's and images to refresh if already exist in actors table</param>
     ''' <returns><c>ID</c> of person in table person</returns>
     ''' <remarks></remarks>
-    Private Function AddPerson(ByVal name As String, ByVal thumbURL As String, ByVal thumb As String, ByVal uniqueIDs As MediaContainers.UniqueidContainer, ByVal isActor As Boolean) As Long
+    Private Function AddPerson(ByVal name As String,
+                               ByVal thumbURL As String,
+                               ByVal thumb As String,
+                               ByVal uniqueIDs As MediaContainers.UniqueidContainer,
+                               ByVal isActor As Boolean) As Long
         Dim doesExist As Boolean = False
         Dim lngID As Long = -1
 
@@ -414,8 +423,8 @@ Public Class Database
     End Function
 
     Private Function AddRating(ByVal idMedia As Long,
-                                   ByVal mediaType As String,
-                                   ByVal rating As MediaContainers.RatingDetails) As Long
+                               ByVal mediaType As String,
+                               ByVal rating As MediaContainers.RatingDetails) As Long
         If Not idMedia = -1 AndAlso Not String.IsNullOrEmpty(mediaType) AndAlso rating.ValueSpecified AndAlso rating.VotesSpecified Then
             Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                 sqlCommand.CommandText = String.Format("INSERT OR REPLACE INTO rating (idMedia, media_type, rating_type, rating_max, rating, votes, isDefault) VALUES ({0},'{1}',?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM rating;",
@@ -451,20 +460,20 @@ Public Class Database
     End Function
 
     Private Sub AddToLinkTable(ByVal table As String,
-                                   ByVal firstField As String,
-                                   ByVal firstID As Long,
-                                   ByVal secondField As String,
-                                   ByVal secondID As Long,
-                                   ByVal typeField As String,
-                                   ByVal type As String)
+                               ByVal firstField As String,
+                               ByVal firstID As Long,
+                               ByVal secondField As String,
+                               ByVal secondID As Long,
+                               ByVal typeField As String,
+                               ByVal type As String)
         If Not firstID = -1 AndAlso Not secondID = -1 Then
             Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                 sqlCommand.CommandText = String.Format("SELECT * FROM {0} WHERE {1}={2} AND {3}={4}", table, firstField, firstID, secondField, secondID)
                 If Not String.IsNullOrEmpty(typeField) AndAlso Not String.IsNullOrEmpty(type) Then
                     sqlCommand.CommandText = String.Concat(sqlCommand.CommandText, String.Format(" AND {0}='{1}'", typeField, type))
                 End If
-                Using SQLreader As SQLiteDataReader = sqlCommand.ExecuteReader()
-                    If SQLreader.HasRows Then Exit Sub
+                Using sqlReader As SQLiteDataReader = sqlCommand.ExecuteReader()
+                    If sqlReader.HasRows Then Exit Sub
                 End Using
             End Using
 
@@ -501,11 +510,11 @@ Public Class Database
     ''' <param name="role"></param>
     ''' <param name="order"></param>
     Private Sub AddToPersonLinkTable(ByVal table As String,
-                                   ByVal idPerson As Long,
-                                   ByVal idMedia As Long,
-                                   ByVal mediaType As String,
-                                   ByVal role As String,
-                                   ByVal order As Integer)
+                                     ByVal idPerson As Long,
+                                     ByVal idMedia As Long,
+                                     ByVal mediaType As String,
+                                     ByVal role As String,
+                                     ByVal order As Integer)
         If Not idPerson = -1 AndAlso Not idMedia = -1 Then
             Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                 sqlCommand.CommandText = String.Format("INSERT OR REPLACE INTO {0} (idPerson, idMedia, media_type, role, cast_order) VALUES ({1},{2},'{3}',?,{4})", table, idPerson, idMedia, mediaType, order)
@@ -517,9 +526,9 @@ Public Class Database
     End Sub
 
     Private Function AddToTable(ByVal table As String,
-                                    ByVal firstField As String,
-                                    ByVal secondField As String,
-                                    ByVal value As String) As Long
+                                ByVal firstField As String,
+                                ByVal secondField As String,
+                                ByVal value As String) As Long
         'search for an already existing entry
         Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             sqlCommand.CommandText = String.Format("SELECT {0} FROM {1} WHERE {2} LIKE ?", firstField, table, secondField)
@@ -544,8 +553,8 @@ Public Class Database
     End Function
 
     Private Function AddUniqueID(ByVal idMedia As Long,
-                                ByVal mediaType As String,
-                                ByVal uniqueID As MediaContainers.Uniqueid) As Long
+                                 ByVal mediaType As String,
+                                 ByVal uniqueID As MediaContainers.Uniqueid) As Long
         If Not idMedia = -1 AndAlso Not String.IsNullOrEmpty(mediaType) AndAlso uniqueID.TypeSpecified AndAlso uniqueID.ValueSpecified Then
             Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                 sqlCommand.CommandText = String.Format("INSERT OR REPLACE INTO uniqueid (idMedia, media_type, value, type, isDefault) VALUES ({0},'{1}',?,?,?); SELECT LAST_INSERT_ROWID() FROM uniqueid;",
@@ -569,7 +578,10 @@ Public Class Database
     ''' <param name="cleanTVShows">If <c>True</c>, process the TV files</param>
     ''' <param name="idSource">Optional. If provided, only process entries from that source.</param>
     ''' <remarks></remarks>
-    Public Sub Clean(ByVal cleanMovies As Boolean, ByVal cleanMovieSets As Boolean, ByVal cleanTVShows As Boolean, Optional ByVal idSource As Long = -1)
+    Public Sub Clean(ByVal cleanMovies As Boolean,
+                     ByVal cleanMovieSets As Boolean,
+                     ByVal cleanTVShows As Boolean,
+                     Optional ByVal idSource As Long = -1)
         logger.Info("Cleaning videodatabase started")
 
         Using sqlTransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
@@ -749,9 +761,9 @@ Public Class Database
     End Sub
 
     Private Sub CleanLinkTable(ByVal linkTable As String,
-                                   ByVal mainTable As String,
-                                   ByVal mainField As String,
-                                   ByVal contentType As Enums.ContentType)
+                               ByVal mainTable As String,
+                               ByVal mainField As String,
+                               ByVal contentType As Enums.ContentType)
         Dim mediaType As String = ConvertContentTypeToMediaType(contentType)
         If Not String.IsNullOrEmpty(mediaType) Then
             Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -762,7 +774,9 @@ Public Class Database
         End If
     End Sub
 
-    Private Sub CleanMainTable(ByVal mainTable As String, ByVal linkTable As String, ByVal mainField As String)
+    Private Sub CleanMainTable(ByVal mainTable As String,
+                               ByVal linkTable As String,
+                               ByVal mainField As String)
         If Not String.IsNullOrEmpty(mainTable) AndAlso Not String.IsNullOrEmpty(linkTable) Then
             Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                 sqlCommand.CommandText = String.Format("DELETE FROM {0} WHERE NOT EXISTS (SELECT 1 FROM {1} WHERE {0}.{2}={1}.{2});",
@@ -772,13 +786,14 @@ Public Class Database
         End If
     End Sub
 
-    Private Function GetActorsForItem(ByVal idMedia As Long, ByVal contentType As Enums.ContentType) As List(Of MediaContainers.Person)
+    Private Function GetActorsForItem(ByVal idMedia As Long,
+                                      ByVal contentType As Enums.ContentType) As List(Of MediaContainers.Person)
         Return GetFromPersonLinkTable("actor_link", idMedia, contentType)
     End Function
 
     Public Function GetArtForItem(ByVal idMedia As Long,
-                                      ByVal contentType As Enums.ContentType,
-                                      ByVal artType As String) As String
+                                  ByVal contentType As Enums.ContentType,
+                                  ByVal artType As String) As String
         Dim mediaType As String = ConvertContentTypeToMediaType(contentType)
         If Not String.IsNullOrEmpty(mediaType) Then
             Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -957,7 +972,6 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("set_order")) Then nSet.Order = CInt(SQLreader("set_order"))
                     If Not DBNull.Value.Equals(SQLreader("plot")) Then nSet.Plot = SQLreader("plot").ToString
                     If Not DBNull.Value.Equals(SQLreader("title")) Then nSet.Title = SQLreader("title").ToString
-                    'If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then tSet.TMDB = SQLreader("TMDBColID").ToString
                     lstResults.Add(nSet)
                 End While
             End Using
@@ -971,6 +985,20 @@ Public Class Database
 
     Private Function GetTagsForItem(ByVal idMedia As Long, ByVal contentType As Enums.ContentType) As List(Of String)
         Return GetFromLinkTable("tag_link", "idTag", "tag", "idTag", idMedia, contentType)
+    End Function
+
+    Private Function GetTVShowLinksForMovie(ByVal idMovie As Long, ByVal contentType As Enums.ContentType) As List(Of String)
+        Dim lstResults As New List(Of String)
+        Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            sqlCommand.CommandText = String.Concat("SELECT b.title FROM tvshow_link ",
+                                                           "AS a INNER JOIN tvshow AS b ON (a.idShow=b.idShow) WHERE a.idMovie=", idMovie, ";")
+            Using SQLreader As SQLiteDataReader = sqlCommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("title")) Then lstResults.Add(SQLreader("title").ToString)
+                End While
+            End Using
+        End Using
+        Return lstResults
     End Function
 
     Private Function GetWritersForItem(ByVal idMedia As Long, ByVal contentType As Enums.ContentType) As List(Of String)
@@ -999,11 +1027,11 @@ Public Class Database
     End Function
 
     Private Function GetFromLinkTable(ByVal linkTable As String,
-                                          ByVal linkField As String,
-                                          ByVal mainTable As String,
-                                          ByVal mainField As String,
-                                          ByVal idMedia As Long,
-                                          ByVal contentType As Enums.ContentType) As List(Of String)
+                                      ByVal linkField As String,
+                                      ByVal mainTable As String,
+                                      ByVal mainField As String,
+                                      ByVal idMedia As Long,
+                                      ByVal contentType As Enums.ContentType) As List(Of String)
         Dim lstResults As New List(Of String)
         Dim mediaType As String = ConvertContentTypeToMediaType(contentType)
         If Not String.IsNullOrEmpty(mediaType) Then
@@ -1021,8 +1049,8 @@ Public Class Database
     End Function
 
     Private Function GetFromPersonLinkTable(ByVal linkTable As String,
-                                                ByVal idMedia As Long,
-                                                ByVal contentType As Enums.ContentType) As List(Of MediaContainers.Person)
+                                            ByVal idMedia As Long,
+                                            ByVal contentType As Enums.ContentType) As List(Of MediaContainers.Person)
         Dim lstResults As New List(Of MediaContainers.Person)
         Dim mediaType As String = ConvertContentTypeToMediaType(contentType)
         If Not String.IsNullOrEmpty(mediaType) Then
@@ -1835,6 +1863,22 @@ Public Class Database
         End Using
         Return tList
     End Function
+
+    Public Function GetAllTVShowTitles() As List(Of String)
+        Dim lstTitles As New List(Of String)
+        Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            sqlCommand.CommandText = String.Format("SELECT {0} FROM {1};",
+                                                   Helpers.GetColumnName(ColumnName.Title),
+                                                   Helpers.GetTableName(TableName.tvshow))
+            Using SQLreader As SQLiteDataReader = sqlCommand.ExecuteReader()
+                While SQLreader.Read
+                    lstTitles.Add(SQLreader(Helpers.GetColumnName(ColumnName.Title)).ToString)
+                End While
+            End Using
+        End Using
+        lstTitles.Sort()
+        Return lstTitles
+    End Function
     ''' <summary>
     ''' Get all movie sources from DB
     ''' </summary>
@@ -2220,6 +2264,9 @@ Public Class Database
 
         'Tags
         dbElement.Movie.Tags = GetTagsForItem(dbElement.ID, dbElement.ContentType)
+
+        'TV Show Links
+        dbElement.Movie.ShowLinks = GetTVShowLinksForMovie(dbElement.ID, dbElement.ContentType)
 
         'UniqueIDs
         dbElement.Movie.UniqueIDs = GetUniqueIDsForItem(dbElement.ID, dbElement.ContentType)
@@ -3157,7 +3204,7 @@ Public Class Database
                 SetGenresForItem(dbElement.ID, dbElement.ContentType, dbElement.Movie.Genres)
 
                 'Movieset
-                SetMoviesetsForItem(dbElement, dbElement.Movie.Sets)
+                SetMoviesetsForMovie(dbElement, dbElement.Movie.Sets)
 
                 'Ratings
                 SetRatingsForItem(dbElement.ID, dbElement.ContentType, dbElement.Movie.Ratings)
@@ -3167,6 +3214,9 @@ Public Class Database
 
                 'Tags
                 SetTagsForItem(dbElement.ID, dbElement.ContentType, dbElement.Movie.Tags)
+
+                'TVShow Links
+                SetTVShowLinksForMovie(dbElement)
 
                 'UniqueIDs
                 SetUniqueIDsForItem(dbElement.ID, dbElement.ContentType, dbElement.Movie.UniqueIDs)
@@ -4292,7 +4342,7 @@ Public Class Database
         End If
     End Sub
 
-    Private Sub SetMoviesetsForItem(ByVal dbElement As DBElement, ByRef moviesets As List(Of MediaContainers.SetDetails))
+    Private Sub SetMoviesetsForMovie(ByVal dbElement As DBElement, ByRef moviesets As List(Of MediaContainers.SetDetails))
         RemoveMoviesetFromMovie(dbElement.ID)
         For Each entry As MediaContainers.SetDetails In moviesets
             Dim bIsNewSet As Boolean = Not entry.IDSpecified
@@ -4469,6 +4519,38 @@ Public Class Database
                 AddToLinkTable("tag_link", "idTag", AddTag(entry), "idMedia", idMedia, "media_type", mediaType)
             Next
         End If
+    End Sub
+
+    Private Sub SetTVShowLinksForMovie(ByVal dbElement As DBElement)
+        RemoveFromTable(Helpers.GetTableName(TableName.tvshow_link), Helpers.GetMainIdName(TableName.movie), dbElement.ID)
+        For Each strTitle In dbElement.Movie.ShowLinks
+            Dim lngIDShow As Long = -1
+            'search idShow by title
+            Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                sqlCommand.CommandText = String.Format("SELECT {0} FROM {1} WHERE {2}=?",
+                                                       Helpers.GetMainIdName(TableName.tvshow),
+                                                       Helpers.GetTableName(TableName.tvshow),
+                                                       Helpers.GetColumnName(ColumnName.Title))
+                Dim par_title As SQLiteParameter = sqlCommand.Parameters.Add("par_title", DbType.String, 0, Helpers.GetColumnName(ColumnName.Title))
+                par_title.Value = strTitle
+                Using sqlReader As SQLiteDataReader = sqlCommand.ExecuteReader()
+                    While sqlReader.Read
+                        lngIDShow = CLng(sqlReader(Helpers.GetMainIdName(TableName.tvshow)))
+                        Exit While
+                    End While
+                End Using
+            End Using
+
+            If Not lngIDShow = -1 Then
+                AddToLinkTable(Helpers.GetTableName(TableName.tvshow_link),
+                               Helpers.GetMainIdName(TableName.tvshow),
+                               lngIDShow,
+                               Helpers.GetMainIdName(TableName.movie),
+                               dbElement.ID,
+                               String.Empty,
+                               String.Empty)
+            End If
+        Next
     End Sub
 
     Private Sub SetUniqueIDsForItem(ByVal idMedia As Long, ByVal contentType As Enums.ContentType, ByVal uniqueids As MediaContainers.UniqueidContainer)
