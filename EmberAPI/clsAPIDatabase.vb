@@ -69,6 +69,7 @@ Public Class Database
         Extrafanarts
         Extrathumbs
         Fanart
+        KeyArt
         Landscape
         MetaData
         Movieset
@@ -119,6 +120,7 @@ Public Class Database
         HasSubtitles
         HasWatched
         IsMissing
+        KeyArtPath
         LandscapePath
         Language
         LastPlayed
@@ -2170,6 +2172,7 @@ Public Class Database
         dbElement.ImagesContainer.ClearLogo.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "clearlogo")
         dbElement.ImagesContainer.DiscArt.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "discart")
         dbElement.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "fanart")
+        dbElement.ImagesContainer.KeyArt.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "keyart")
         dbElement.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "landscape")
         dbElement.ImagesContainer.Poster.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "poster")
         If Not String.IsNullOrEmpty(dbElement.ExtrafanartsPath) AndAlso Directory.Exists(dbElement.ExtrafanartsPath) Then
@@ -2289,6 +2292,7 @@ Public Class Database
         dbElement.ImagesContainer.ClearLogo.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "clearlogo")
         dbElement.ImagesContainer.DiscArt.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "discart")
         dbElement.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "fanart")
+        dbElement.ImagesContainer.KeyArt.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "keyart")
         dbElement.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "landscape")
         dbElement.ImagesContainer.Poster.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "poster")
 
@@ -2658,6 +2662,7 @@ Public Class Database
         dbElement.ImagesContainer.ClearArt.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "clearart")
         dbElement.ImagesContainer.ClearLogo.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "clearlogo")
         dbElement.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "fanart")
+        dbElement.ImagesContainer.KeyArt.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "keyart")
         dbElement.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "landscape")
         dbElement.ImagesContainer.Poster.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "poster")
         If Not String.IsNullOrEmpty(dbElement.ExtrafanartsPath) AndAlso Directory.Exists(dbElement.ExtrafanartsPath) Then
@@ -3131,6 +3136,7 @@ Public Class Database
                 SetArtForItem(dbElement.ID, dbElement.ContentType, "clearlogo", dbElement.ImagesContainer.ClearLogo)
                 SetArtForItem(dbElement.ID, dbElement.ContentType, "discart", dbElement.ImagesContainer.DiscArt)
                 SetArtForItem(dbElement.ID, dbElement.ContentType, "fanart", dbElement.ImagesContainer.Fanart)
+                SetArtForItem(dbElement.ID, dbElement.ContentType, "keyart", dbElement.ImagesContainer.KeyArt)
                 SetArtForItem(dbElement.ID, dbElement.ContentType, "landscape", dbElement.ImagesContainer.Landscape)
                 SetArtForItem(dbElement.ID, dbElement.ContentType, "poster", dbElement.ImagesContainer.Poster)
 
@@ -3172,14 +3178,14 @@ Public Class Database
 
         'YAMJ watched file
         If dbElement.Movie.PlayCountSpecified AndAlso Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-            For Each a In FileUtils.GetFilenameList.Movie(dbElement, Enums.ModifierType.MainWatchedFile)
+            For Each a In FileUtils.FileNames.GetFileNames(dbElement, Enums.ModifierType.MainWatchedFile)
                 If Not File.Exists(a) Then
                     Dim fs As FileStream = File.Create(a)
                     fs.Close()
                 End If
             Next
         ElseIf Not dbElement.Movie.PlayCountSpecified AndAlso Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-            For Each a In FileUtils.GetFilenameList.Movie(dbElement, Enums.ModifierType.MainWatchedFile)
+            For Each a In FileUtils.FileNames.GetFileNames(dbElement, Enums.ModifierType.MainWatchedFile)
                 If File.Exists(a) Then
                     File.Delete(a)
                 End If
@@ -3271,6 +3277,7 @@ Public Class Database
         SetArtForItem(dbElement.ID, dbElement.ContentType, "clearlogo", dbElement.ImagesContainer.ClearLogo)
         SetArtForItem(dbElement.ID, dbElement.ContentType, "discart", dbElement.ImagesContainer.DiscArt)
         SetArtForItem(dbElement.ID, dbElement.ContentType, "fanart", dbElement.ImagesContainer.Fanart)
+        SetArtForItem(dbElement.ID, dbElement.ContentType, "keyart", dbElement.ImagesContainer.KeyArt)
         SetArtForItem(dbElement.ID, dbElement.ContentType, "landscape", dbElement.ImagesContainer.Landscape)
         SetArtForItem(dbElement.ID, dbElement.ContentType, "poster", dbElement.ImagesContainer.Poster)
 
@@ -3995,6 +4002,7 @@ Public Class Database
                 SetArtForItem(dbElement.ID, dbElement.ContentType, "clearart", dbElement.ImagesContainer.ClearArt)
                 SetArtForItem(dbElement.ID, dbElement.ContentType, "clearlogo", dbElement.ImagesContainer.ClearLogo)
                 SetArtForItem(dbElement.ID, dbElement.ContentType, "fanart", dbElement.ImagesContainer.Fanart)
+                SetArtForItem(dbElement.ID, dbElement.ContentType, "keyart", dbElement.ImagesContainer.KeyArt)
                 SetArtForItem(dbElement.ID, dbElement.ContentType, "landscape", dbElement.ImagesContainer.Landscape)
                 SetArtForItem(dbElement.ID, dbElement.ContentType, "poster", dbElement.ImagesContainer.Poster)
 
@@ -6222,6 +6230,7 @@ Public Class Database
                     GetColumnName(Database.ColumnName.HasMovieset),
                     GetColumnName(Database.ColumnName.HasSubtitles),
                     GetColumnName(Database.ColumnName.HasWatched),
+                    GetColumnName(Database.ColumnName.KeyArtPath),
                     GetColumnName(Database.ColumnName.LandscapePath),
                     GetColumnName(Database.ColumnName.LastPlayed),
                     GetColumnName(Database.ColumnName.NfoPath),
@@ -6266,6 +6275,7 @@ Public Class Database
                     GetColumnName(Database.ColumnName.HasMovieset),
                     GetColumnName(Database.ColumnName.HasSubtitles),
                     GetColumnName(Database.ColumnName.HasWatched),
+                    GetColumnName(Database.ColumnName.KeyArtPath),
                     GetColumnName(Database.ColumnName.LandscapePath),
                     GetColumnName(Database.ColumnName.LastPlayed),
                     GetColumnName(Database.ColumnName.NfoPath),
@@ -6388,6 +6398,7 @@ Public Class Database
                     GetColumnName(Database.ColumnName.HasSubtitles),
                     GetColumnName(Database.ColumnName.HasWatched),
                     GetColumnName(Database.ColumnName.LastPlayed),
+                    GetColumnName(Database.ColumnName.KeyArtPath),
                     GetColumnName(Database.ColumnName.LandscapePath),
                     GetColumnName(Database.ColumnName.NfoPath),
                     GetColumnName(Database.ColumnName.PosterPath),
@@ -6433,6 +6444,8 @@ Public Class Database
                         Return ColumnType.MetaData
                     Case GetColumnName(Database.ColumnName.HasMovieset)
                         Return ColumnType.Movieset
+                    Case GetColumnName(Database.ColumnName.KeyArtPath)
+                        Return ColumnType.KeyArt
                     Case GetColumnName(Database.ColumnName.LandscapePath)
                         Return ColumnType.Landscape
                     Case GetColumnName(Database.ColumnName.NfoPath)
@@ -6518,6 +6531,8 @@ Public Class Database
                     Return "hasWatched"
                 Case ColumnName.IsMissing
                     Return "missing"
+                Case ColumnName.KeyArtPath
+                    Return "keyartPath"
                 Case ColumnName.LandscapePath
                     Return "landscapePath"
                 Case ColumnName.Language

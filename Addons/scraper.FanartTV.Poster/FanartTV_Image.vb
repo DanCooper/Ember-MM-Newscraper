@@ -256,9 +256,7 @@ Public Class FanartTV_Image
         _setup_Movie.chkScrapeFanart.Checked = ConfigModifier_Movie.MainFanart
         _setup_Movie.chkScrapeBanner.Checked = ConfigModifier_Movie.MainBanner
         _setup_Movie.chkScrapeClearArt.Checked = ConfigModifier_Movie.MainClearArt
-        _setup_Movie.chkScrapeClearArtOnlyHD.Checked = _SpecialSettings_Movie.ClearArtOnlyHD
         _setup_Movie.chkScrapeClearLogo.Checked = ConfigModifier_Movie.MainClearLogo
-        _setup_Movie.chkScrapeClearLogoOnlyHD.Checked = _SpecialSettings_Movie.ClearLogoOnlyHD
         _setup_Movie.chkScrapeDiscArt.Checked = ConfigModifier_Movie.MainDiscArt
         _setup_Movie.chkScrapeLandscape.Checked = ConfigModifier_Movie.MainLandscape
         _setup_Movie.txtApiKey.Text = _SpecialSettings_Movie.ApiKey
@@ -295,9 +293,7 @@ Public Class FanartTV_Image
         _setup_MovieSet.chkScrapeFanart.Checked = ConfigModifier_MovieSet.MainFanart
         _setup_MovieSet.chkScrapeBanner.Checked = ConfigModifier_MovieSet.MainBanner
         _setup_MovieSet.chkScrapeClearArt.Checked = ConfigModifier_MovieSet.MainClearArt
-        _setup_MovieSet.chkScrapeClearArtOnlyHD.Checked = _SpecialSettings_MovieSet.ClearArtOnlyHD
         _setup_MovieSet.chkScrapeClearLogo.Checked = ConfigModifier_MovieSet.MainClearLogo
-        _setup_MovieSet.chkScrapeClearLogoOnlyHD.Checked = _SpecialSettings_MovieSet.ClearLogoOnlyHD
         _setup_MovieSet.chkScrapeDiscArt.Checked = ConfigModifier_MovieSet.MainDiscArt
         _setup_MovieSet.chkScrapeLandscape.Checked = ConfigModifier_MovieSet.MainLandscape
         _setup_MovieSet.txtApiKey.Text = _SpecialSettings_MovieSet.ApiKey
@@ -336,9 +332,7 @@ Public Class FanartTV_Image
         _setup_TV.chkScrapeShowBanner.Checked = ConfigModifier_TV.MainBanner
         _setup_TV.chkScrapeShowCharacterArt.Checked = ConfigModifier_TV.MainCharacterArt
         _setup_TV.chkScrapeShowClearArt.Checked = ConfigModifier_TV.MainClearArt
-        _setup_TV.chkScrapeShowClearArtOnlyHD.Checked = _SpecialSettings_TV.ClearArtOnlyHD
         _setup_TV.chkScrapeShowClearLogo.Checked = ConfigModifier_TV.MainClearLogo
-        _setup_TV.chkScrapeShowClearLogoOnlyHD.Checked = _SpecialSettings_TV.ClearLogoOnlyHD
         _setup_TV.chkScrapeShowFanart.Checked = ConfigModifier_TV.MainFanart
         _setup_TV.chkScrapeShowLandscape.Checked = ConfigModifier_TV.MainLandscape
         _setup_TV.chkScrapeShowPoster.Checked = ConfigModifier_TV.MainPoster
@@ -369,8 +363,6 @@ Public Class FanartTV_Image
 
     Sub LoadSettings_Movie()
         _SpecialSettings_Movie.ApiKey = AdvancedSettings.GetSetting("ApiKey", "", , Enums.ContentType.Movie)
-        _SpecialSettings_Movie.ClearArtOnlyHD = AdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.ContentType.Movie)
-        _SpecialSettings_Movie.ClearLogoOnlyHD = AdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.ContentType.Movie)
 
         ConfigModifier_Movie.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.Movie)
@@ -379,14 +371,10 @@ Public Class FanartTV_Image
         ConfigModifier_Movie.MainClearLogo = AdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainDiscArt = AdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainLandscape = AdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.ContentType.Movie)
-        ConfigModifier_Movie.MainExtrafanarts = ConfigModifier_Movie.MainFanart
-        ConfigModifier_Movie.MainExtrathumbs = ConfigModifier_Movie.MainFanart
     End Sub
 
     Sub LoadSettings_MovieSet()
         _SpecialSettings_MovieSet.ApiKey = AdvancedSettings.GetSetting("ApiKey", "", , Enums.ContentType.MovieSet)
-        _SpecialSettings_MovieSet.ClearArtOnlyHD = AdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.ContentType.MovieSet)
-        _SpecialSettings_MovieSet.ClearLogoOnlyHD = AdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.ContentType.MovieSet)
 
         ConfigModifier_MovieSet.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.MovieSet)
@@ -395,14 +383,10 @@ Public Class FanartTV_Image
         ConfigModifier_MovieSet.MainClearLogo = AdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainDiscArt = AdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainLandscape = AdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.ContentType.MovieSet)
-        ConfigModifier_MovieSet.MainExtrafanarts = ConfigModifier_MovieSet.MainFanart
-        ConfigModifier_MovieSet.MainExtrathumbs = ConfigModifier_MovieSet.MainFanart
     End Sub
 
     Sub LoadSettings_TV()
         _SpecialSettings_TV.ApiKey = AdvancedSettings.GetSetting("ApiKey", "", , Enums.ContentType.TV)
-        _SpecialSettings_TV.ClearArtOnlyHD = AdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.ContentType.TV)
-        _SpecialSettings_TV.ClearLogoOnlyHD = AdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.ContentType.TV)
 
         ConfigModifier_TV.SeasonBanner = AdvancedSettings.GetBooleanSetting("DoSeasonBanner", True, , Enums.ContentType.TV)
         ConfigModifier_TV.SeasonLandscape = AdvancedSettings.GetBooleanSetting("DoSeasonLandscape", True, , Enums.ContentType.TV)
@@ -414,13 +398,10 @@ Public Class FanartTV_Image
         ConfigModifier_TV.MainFanart = AdvancedSettings.GetBooleanSetting("DoShowFanart", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainLandscape = AdvancedSettings.GetBooleanSetting("DoShowLandscape", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainPoster = AdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.ContentType.TV)
-        ConfigModifier_TV.MainExtrafanarts = ConfigModifier_TV.MainFanart
     End Sub
 
     Sub SaveSettings_Movie()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("ClearArtOnlyHD", _SpecialSettings_Movie.ClearArtOnlyHD, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("ClearLogoOnlyHD", _SpecialSettings_Movie.ClearLogoOnlyHD, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoPoster", ConfigModifier_Movie.MainPoster, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoFanart", ConfigModifier_Movie.MainFanart, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoBanner", ConfigModifier_Movie.MainBanner, , , Enums.ContentType.Movie)
@@ -435,8 +416,6 @@ Public Class FanartTV_Image
 
     Sub SaveSettings_MovieSet()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("ClearArtOnlyHD", _SpecialSettings_MovieSet.ClearArtOnlyHD, , , Enums.ContentType.MovieSet)
-            settings.SetBooleanSetting("ClearLogoOnlyHD", _SpecialSettings_MovieSet.ClearLogoOnlyHD, , , Enums.ContentType.MovieSet)
             settings.SetBooleanSetting("DoPoster", ConfigModifier_MovieSet.MainPoster, , , Enums.ContentType.MovieSet)
             settings.SetBooleanSetting("DoFanart", ConfigModifier_MovieSet.MainFanart, , , Enums.ContentType.MovieSet)
             settings.SetBooleanSetting("DoBanner", ConfigModifier_MovieSet.MainBanner, , , Enums.ContentType.MovieSet)
@@ -451,8 +430,6 @@ Public Class FanartTV_Image
 
     Sub SaveSettings_TV()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("ClearArtOnlyHD", _SpecialSettings_TV.ClearArtOnlyHD, , , Enums.ContentType.TV)
-            settings.SetBooleanSetting("ClearLogoOnlyHD", _SpecialSettings_TV.ClearLogoOnlyHD, , , Enums.ContentType.TV)
             settings.SetBooleanSetting("DoSeasonBanner", ConfigModifier_TV.SeasonBanner, , , Enums.ContentType.TV)
             settings.SetBooleanSetting("DoSeasonLandscape", ConfigModifier_TV.SeasonLandscape, , , Enums.ContentType.TV)
             settings.SetBooleanSetting("DoSeasonPoster", ConfigModifier_TV.SeasonPoster, , , Enums.ContentType.TV)
@@ -469,8 +446,6 @@ Public Class FanartTV_Image
     End Sub
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_Movie.SaveSetupScraper
-        _SpecialSettings_Movie.ClearArtOnlyHD = _setup_Movie.chkScrapeClearArtOnlyHD.Checked
-        _SpecialSettings_Movie.ClearLogoOnlyHD = _setup_Movie.chkScrapeClearLogoOnlyHD.Checked
         ConfigModifier_Movie.MainPoster = _setup_Movie.chkScrapePoster.Checked
         ConfigModifier_Movie.MainFanart = _setup_Movie.chkScrapeFanart.Checked
         ConfigModifier_Movie.MainBanner = _setup_Movie.chkScrapeBanner.Checked
@@ -488,8 +463,6 @@ Public Class FanartTV_Image
     End Sub
 
     Sub SaveSetupScraper_MovieSet(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_MovieSet.SaveSetupScraper
-        _SpecialSettings_MovieSet.ClearArtOnlyHD = _setup_MovieSet.chkScrapeClearArtOnlyHD.Checked
-        _SpecialSettings_MovieSet.ClearLogoOnlyHD = _setup_MovieSet.chkScrapeClearLogoOnlyHD.Checked
         ConfigModifier_MovieSet.MainPoster = _setup_MovieSet.chkScrapePoster.Checked
         ConfigModifier_MovieSet.MainFanart = _setup_MovieSet.chkScrapeFanart.Checked
         ConfigModifier_MovieSet.MainBanner = _setup_MovieSet.chkScrapeBanner.Checked
@@ -507,8 +480,6 @@ Public Class FanartTV_Image
     End Sub
 
     Sub SaveSetupScraper_TV(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_TV.SaveSetupScraper
-        _SpecialSettings_TV.ClearArtOnlyHD = _setup_TV.chkScrapeShowClearArtOnlyHD.Checked
-        _SpecialSettings_TV.ClearLogoOnlyHD = _setup_TV.chkScrapeShowClearLogoOnlyHD.Checked
         ConfigModifier_TV.SeasonBanner = _setup_TV.chkScrapeSeasonBanner.Checked
         ConfigModifier_TV.SeasonLandscape = _setup_TV.chkScrapeSeasonLandscape.Checked
         ConfigModifier_TV.SeasonPoster = _setup_TV.chkScrapeSeasonPoster.Checked
@@ -626,12 +597,6 @@ Public Class FanartTV_Image
 #Region "Fields"
 
         Dim ApiKey As String
-        Dim ClearArtOnlyHD As Boolean
-        Dim ClearLogoOnlyHD As Boolean
-        Dim GetEnglishImages As Boolean
-        Dim GetBlankImages As Boolean
-        Dim PrefLanguage As String
-        Dim PrefLanguageOnly As Boolean
 
 #End Region 'Fields
 

@@ -283,14 +283,14 @@
 </value>
   </data>
   <metadata name="ilSettings.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>220, 17</value>
+    <value>126, 17</value>
   </metadata>
   <data name="ilSettings.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAAy
-        XAAAAk1TRnQBSQFMAgEBDAEAAZQBFQGUARUBGAEAARgBAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFg
+        XAAAAk1TRnQBSQFMAgEBDAEAAVQBFgFUARYBGAEAARgBAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFg
         AwABYAMAAQEBAAEgBgABkP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A
         /wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AWwADDAEQA4gB/wMAAf8DAAH/AwAB/wMyAVFUAAMB
         BAIEAwEEAwMEBAEFAwQBBgMEAQYDBAEFAwABAQMEAQYDBAEGAwQBBQMEAQUDAwEEBwABAQMAAQHMAAMH
@@ -1620,26 +1620,6 @@
         gg==
 </value>
   </data>
-  <data name="btnTVSourcesRegexTVShowMatchingGet.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr/AAAK/wE0YpqCAAADLElE
-        QVQ4T6XRfUzMcQDH8e895VJ3LcrsVDilyJzHeWgkuWHzOJuHreZMlnNJ6rrqWkWl9MAV5SS1DuFYpeXq
-        njpJhWXCmMVWiM3DkYc46+nje9hp60+/7f39/r7b9/f6/fb7EgD/1e/BNjBMBoZAjC/6iLLFSvY2fuEr
-        Wy2bDlrkhQlNEnXZQ3nYhcdpE6o7q4ixy0D66V57o4Cmnu9Earb6Sk01l5ZcbukVVjyEn+Y+NtZWfC9o
-        l+muPs2dZ+puGg38pIB9zm+3hYZe0X490y7EyspErLqowI6acJCsl4isl+B0+9LB689yJMN07+DwCOCT
-        bZDcfd3vNV9j/pzX6oOoejGCytMRWHQMInUmGNkPMKtEjVSLCDmtocOd1tYlH20D/wBL9w/+2ks9F6S6
-        EBy95YUk81woaV4qLUjaE5DDHZhSUIGYhmUIrkhGenNMi6lL7+sAkszv1k3Kv/shpn4O0honQ1YXBO/8
-        c2ClNYOk3gZJuQN+hgnrL0sQoomGwiQeUrXlRDsAn6MdeS6peiwujoNvXiFcUhpAEu5QmQJJN0ESm7H6
-        eBHKDXOhbRYgyRgIuX5hiQMQpLeoiLwJwiMZGJ+iAUdBgXgLrfH3zFYY8UHPB8ws2IxcyGtnIvLanFIH
-        kFjXuYWnMPUyYq7DQ6mGMLMYZD8FDphBDurBjtXhpdYDtmoO3l/lIaKS/iODLN4B3HhuHb+qoK2a7DJA
-        rJahrIMHabUYngkakD03wJYZ0FU+EX3nuegunYDtZfvartyrnO4A7Of64N2PALbUYBNlK5Hb5kWPyxtx
-        +gXYpg6HNmsF3p4ah141D2+L3fCoNODVt6qQ3Q4gSiYjqpwsEltm2src29i//EQEYnV+iNNNxfozm3Ey
-        eQMGVWPxPnccvh13h+3sDIO1VjLPAdCLQWO7juGQibPFwYKwqHtrTiwe8j+UCLK7DmRnzVBR9PI3yPNA
-        wz6BWST0ZPKcuX+etQ8sQpg0dyYh/lTyZxGGv5Orp5jjEyTjChdFO7sL1rJZTqKVfvwwZw5rGn2ZG93H
-        GgnYY9G4NBcKOds30HvG35h07fT3U9l0bY8BgPwCcCAyRtt/BjAAAAAASUVORK5CYII=
-</value>
-  </data>
   <data name="btnTVSourcesRegexTVShowMatchingRemove.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
@@ -1677,7 +1657,7 @@
     <value>17, 17</value>
   </metadata>
   <metadata name="ToolTips.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>316, 17</value>
+    <value>227, 17</value>
   </metadata>
   <data name="btnTVScraperDefFIExtRemove.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1772,7 +1752,7 @@
 </value>
   </data>
   <metadata name="tsSettingsTopMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>413, 17</value>
+    <value>324, 17</value>
   </metadata>
   <metadata name="tsSettingsTopMenu.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1780,34 +1760,11 @@
   <metadata name="pnlSettingsMain.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="gbSettingsHelp.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="pbSettingsHelpLogo.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="pbSettingsHelpLogo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAArpAAAK6QH9dc7TAAABrElE
-        QVQ4T6XOyS8DYRjH8dFtxminpjNjjROSCrocJC4kwklSiQMH0QaHlhKqEloOLSKSlpMtsTvRJk62hNSW
-        2qKNKxdHf4bH+x5GTPs6iMMnmefbXydDAcC/ECMmRNIWPpLq46MpjymSbiBtsKxQuvau5eaf48zsI2jC
-        96AJ3QE98wD6+ee0GHkpydwrDkw/ndzUTN0ANZ6AnMDlW07g6paaSIAqeA1sOJnsTSn3isM0eZFPj52B
-        evgItCPHJ3LX+k4W1cPHoPOfAhc4V3zF9wPGjx7pdZ74h84dg1z3QY3caXdsHXVA/ZMdPBR+/uf7QcZ2
-        b4lsz16VfDPO7TnGtQuMawdyXTtLP7eY4sjEdiwvsZ2rkNexDGznyj5pkxVknCNabXAsgMERBUNbdIO0
-        wYgR45rD7caWMGDF9T6atMGIEeObQ5ypMXjINwYDpN9lxIhJ1v4yye49F23efdE2oCdtMGLEJOuAX7K4
-        QbJ4oNA+1ETaYIpDTVECUq6iqEpWrG0VqpyvgrnrSZdXVIe6GalACpBfX0AjHGJCGwPCIDSSjxtiRBiE
-        /IK/A+oLK0Rr5wubW8gAAAAASUVORK5CYII=
-</value>
-  </data>
-  <metadata name="lblHelp.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="fileBrowse.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>520, 17</value>
+    <value>481, 17</value>
   </metadata>
   <metadata name="cdColor.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>627, 17</value>
+    <value>588, 17</value>
   </metadata>
   <data name="btnMovieSetGeneralMediaListSortingDown.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1956,7 +1913,7 @@
     <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>61</value>
+    <value>43</value>
   </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

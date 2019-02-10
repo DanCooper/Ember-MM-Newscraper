@@ -43,7 +43,6 @@ Public Class dlgImgSelect
     Private iListImage_Location_Language As Point = New Point(3, 180)
     Private iListImage_Location_Resolution As Point = New Point(3, 165)
     Private iListImage_Location_Scraper As Point = New Point(3, 0)
-    Private iListImage_Location_Select As Point = New Point(iListImage_Size_Panel.Width - iListImage_Size_Select.Width - 5, 5)
     Private iListImage_Size_DiscType As Size = New Size(174, 15)
     Private iListImage_Size_Image As Size = New Size(174, 135)
     Private iListImage_Size_Language As Size = New Size(174, 15)
@@ -51,6 +50,7 @@ Public Class dlgImgSelect
     Private iListImage_Size_Resolution As Size = New Size(174, 15)
     Private iListImage_Size_Scraper As Size = New Size(174, 15)
     Private iListImage_Size_Select As Size = New Size(16, 16)
+    Private iListImage_Location_Select As Point = New Point(iListImage_Size_Panel.Width - iListImage_Size_Select.Width - 5, 5)
 
     Private lblListImage_DiscType() As Label
     Private lblListImage_Language() As Label
@@ -121,6 +121,7 @@ Public Class dlgImgSelect
     Private DoMainExtrafanarts As Boolean = False
     Private DoMainExtrathumbs As Boolean = False
     Private DoMainFanart As Boolean = False
+    Private DoMainKeyArt As Boolean = False
     Private DoMainLandscape As Boolean = False
     Private DoMainPoster As Boolean = False
     Private DoSeasonBanner As Boolean = False
@@ -144,6 +145,7 @@ Public Class dlgImgSelect
     Private LoadedMainExtrafanarts As Boolean = False
     Private LoadedMainExtrathumbs As Boolean = False
     Private LoadedMainFanart As Boolean = False
+    Private LoadedMainKeyArt As Boolean = False
     Private LoadedMainLandscape As Boolean = False
     Private LoadedMainPoster As Boolean = False
     Private LoadedSeasonBanner As Boolean = False
@@ -178,9 +180,7 @@ Public Class dlgImgSelect
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
-        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
-        StartPosition = FormStartPosition.Manual
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
 
         'Set panel sizes based on "Fields" settings
         pnlSubImages.Width = iSubImage_DistanceLeft + iSubImage_Size_Panel.Width + 20
@@ -208,14 +208,14 @@ Public Class dlgImgSelect
                     'mark all duplicate images in searchcontainer for movie
                     'posters
                     If Master.eSettings.GeneralImageFilterPoster Then
-                        Images.FindDuplicateImages(tSearchResultsContainer.MainPosters, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance, RemoveDuplicatesFromList:=False)
+                        Images.DuplicateImages_Find(tSearchResultsContainer.MainPosters, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance, RemoveDuplicatesFromList:=False)
                         'this will consider IsDuplicate value of all images by moving all duplicate images to bottom
                         Dim orderedList = tSearchResultsContainer.MainPosters.OrderByDescending(Function(x) x.IsDuplicate = False).ToList()
                         tSearchResultsContainer.MainPosters = orderedList
                     End If
                     'fanarts
                     If Master.eSettings.GeneralImageFilterFanart Then
-                        Images.FindDuplicateImages(tSearchResultsContainer.MainFanarts, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, RemoveDuplicatesFromList:=False)
+                        Images.DuplicateImages_Find(tSearchResultsContainer.MainFanarts, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, RemoveDuplicatesFromList:=False)
                         'this will consider IsDuplicate value of all images by moving all duplicate images to bottom
                         Dim orderedList = tSearchResultsContainer.MainFanarts.OrderByDescending(Function(x) x.IsDuplicate = False).ToList()
                         tSearchResultsContainer.MainFanarts = orderedList
@@ -230,9 +230,7 @@ Public Class dlgImgSelect
 
     Private Sub dlgImgSelect_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         AddHandler MouseWheel, AddressOf MouseWheelEvent
-
         Functions.PNLDoubleBuffer(pnlImgSelectMain)
-
         SetUp()
     End Sub
 
@@ -313,7 +311,7 @@ Public Class dlgImgSelect
         lblListImage_Language(iIndex).Name = iIndex.ToString
         lblListImage_Language(iIndex).Size = iListImage_Size_Language
         lblListImage_Language(iIndex).Tag = tTag
-        lblListImage_Language(iIndex).Text = tTag.Image.LongLang
+        lblListImage_Language(iIndex).Text = tTag.Image.LongLanguage
         lblListImage_Language(iIndex).TextAlign = ContentAlignment.MiddleCenter
         lblListImageList_Resolution(iIndex).AutoSize = False
         lblListImageList_Resolution(iIndex).BackColor = Color.White
@@ -700,7 +698,6 @@ Public Class dlgImgSelect
     Private Sub cmnuListImagePreview_Click(sender As Object, e As EventArgs) Handles cmnuListImagePreview.Click
         Cursor.Current = Cursors.WaitCursor
         currListImage.Image.LoadAndCache(tContentType, True, True)
-
         If currListImage.Image.ImageOriginal.Image IsNot Nothing Then
             ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(currListImage.Image.ImageOriginal.Image)
         End If
@@ -748,6 +745,10 @@ Public Class dlgImgSelect
                 Result.ImagesContainer.Fanart = tDBElement.ImagesContainer.Fanart
                 currTopImage = CreateImageTag(Result.ImagesContainer.Fanart, eImageType)
                 RefreshTopImage(currTopImage)
+            Case Enums.ModifierType.MainKeyArt
+                Result.ImagesContainer.KeyArt = tDBElement.ImagesContainer.KeyArt
+                currTopImage = CreateImageTag(Result.ImagesContainer.KeyArt, eImageType)
+                RefreshTopImage(currTopImage)
             Case Enums.ModifierType.MainLandscape, Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
                 Result.ImagesContainer.Landscape = tDBElement.ImagesContainer.Landscape
                 currTopImage = CreateImageTag(Result.ImagesContainer.Landscape, eImageType)
@@ -789,6 +790,10 @@ Public Class dlgImgSelect
                 Result.ImagesContainer.Fanart = tPreferredImagesContainer.ImagesContainer.Fanart
                 currTopImage = CreateImageTag(Result.ImagesContainer.Fanart, eImageType)
                 RefreshTopImage(currTopImage)
+            Case Enums.ModifierType.MainKeyArt
+                Result.ImagesContainer.KeyArt = tPreferredImagesContainer.ImagesContainer.KeyArt
+                currTopImage = CreateImageTag(Result.ImagesContainer.KeyArt, eImageType)
+                RefreshTopImage(currTopImage)
             Case Enums.ModifierType.MainLandscape, Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
                 Result.ImagesContainer.Landscape = tPreferredImagesContainer.ImagesContainer.Landscape
                 currTopImage = CreateImageTag(Result.ImagesContainer.Landscape, eImageType)
@@ -828,6 +833,10 @@ Public Class dlgImgSelect
                 RefreshTopImage(currTopImage)
             Case Enums.ModifierType.MainFanart, Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.EpisodeFanart, Enums.ModifierType.SeasonFanart
                 Result.ImagesContainer.Fanart = New MediaContainers.Image
+                currTopImage = CreateImageTag(New MediaContainers.Image, eImageType)
+                RefreshTopImage(currTopImage)
+            Case Enums.ModifierType.MainKeyArt
+                Result.ImagesContainer.KeyArt = New MediaContainers.Image
                 currTopImage = CreateImageTag(New MediaContainers.Image, eImageType)
                 RefreshTopImage(currTopImage)
             Case Enums.ModifierType.MainLandscape, Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
@@ -988,7 +997,7 @@ Public Class dlgImgSelect
         ElseIf tImage IsNot Nothing AndAlso tImage.ImageThumb IsNot Nothing AndAlso tImage.ImageThumb.Image IsNot Nothing Then
             Dim imgText As String = String.Empty
             If CDbl(tImage.Width) = 0 OrElse CDbl(tImage.Height) = 0 Then
-                nTag.strResolution = String.Concat("unknown", Environment.NewLine, tImage.LongLang)
+                nTag.strResolution = String.Concat("unknown", Environment.NewLine, tImage.LongLanguage)
             Else
                 nTag.strResolution = String.Format("{0}x{1}", tImage.Width, tImage.Height)
             End If
@@ -1028,6 +1037,8 @@ Public Class dlgImgSelect
                 nTag.strTitle = Master.eLang.GetString(1098, "DiscArt")
             Case Enums.ModifierType.MainFanart, Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.EpisodeFanart, Enums.ModifierType.SeasonFanart
                 nTag.strTitle = Master.eLang.GetString(149, "Fanart")
+            Case Enums.ModifierType.MainKeyArt
+                nTag.strTitle = Master.eLang.GetString(296, "KeyArt")
             Case Enums.ModifierType.MainLandscape, Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
                 nTag.strTitle = Master.eLang.GetString(1035, "Landscape")
             Case Enums.ModifierType.MainPoster, Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.EpisodePoster, Enums.ModifierType.SeasonPoster
@@ -1074,6 +1085,8 @@ Public Class dlgImgSelect
                 If LoadedMainFanart Then FillListImages(tTag)
             Case Enums.ModifierType.MainFanart
                 If LoadedMainFanart Then FillListImages(tTag)
+            Case Enums.ModifierType.MainKeyArt
+                If LoadedMainKeyArt Then FillListImages(tTag)
             Case Enums.ModifierType.MainLandscape
                 If LoadedMainLandscape Then FillListImages(tTag)
             Case Enums.ModifierType.MainPoster
@@ -1152,6 +1165,11 @@ Public Class dlgImgSelect
         'While Movie / MovieSet / TV / TVShow scraping
         If DoMainPoster Then
             AddTopImage(Result.ImagesContainer.Poster, iCount, Enums.ModifierType.MainPoster)
+            iCount += 1
+            noTopImages = False
+        End If
+        If DoMainKeyArt Then
+            AddTopImage(Result.ImagesContainer.KeyArt, iCount, Enums.ModifierType.MainKeyArt)
             iCount += 1
             noTopImages = False
         End If
@@ -1359,6 +1377,9 @@ Public Class dlgImgSelect
         'Fanart
         Result.ImagesContainer.Fanart.LoadAndCache(tContentType, True)
 
+        'KeyArt
+        Result.ImagesContainer.KeyArt.LoadAndCache(tContentType, True)
+
         'Landscape
         Result.ImagesContainer.Landscape.LoadAndCache(tContentType, True)
 
@@ -1461,7 +1482,8 @@ Public Class dlgImgSelect
                                         tSearchResultsContainer.MainBanners.Count + tSearchResultsContainer.MainCharacterArts.Count +
                                         tSearchResultsContainer.MainClearArts.Count + tSearchResultsContainer.MainClearLogos.Count +
                                         tSearchResultsContainer.MainDiscArts.Count + tSearchResultsContainer.MainFanarts.Count +
-                                        tSearchResultsContainer.MainLandscapes.Count + tSearchResultsContainer.MainPosters.Count +
+                                        tSearchResultsContainer.MainKeyArts.Count + tSearchResultsContainer.MainLandscapes.Count +
+                                        tSearchResultsContainer.MainPosters.Count +
                                         tSearchResultsContainer.SeasonBanners.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count +
                                         tSearchResultsContainer.SeasonFanarts.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count +
                                         tSearchResultsContainer.SeasonLandscapes.Where(Function(f) If(Not DoOnlySeason = -2, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count +
@@ -1481,6 +1503,20 @@ Public Class dlgImgSelect
         LoadedMainPoster = True
         bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsPoster)
         bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainPoster)
+
+        'Main KeyArts
+        If DoMainKeyArt Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainKeyArts
+                tImg.LoadAndCache(tContentType, False, True)
+                If bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
+            Next
+        End If
+        LoadedMainKeyArt = True
+        bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainKeyArt)
 
         'Main Banners
         If DoMainBanner OrElse DoAllSeasonsBanner Then
@@ -1738,6 +1774,11 @@ Public Class dlgImgSelect
             Result.ImagesContainer.Fanart.LoadAndCache(tContentType, False, True)
         End If
 
+        'Main KeyArt
+        If DoMainKeyArt Then
+            Result.ImagesContainer.KeyArt.LoadAndCache(tContentType, False, True)
+        End If
+
         'Main Landscape
         If DoMainLandscape OrElse DoAllSeasonsLandscape OrElse DoSeasonLandscape Then
             Result.ImagesContainer.Landscape.LoadAndCache(tContentType, False, True)
@@ -1888,6 +1929,12 @@ Public Class dlgImgSelect
                     AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
                     iCount += 1
                 Next
+            Case Enums.ModifierType.MainKeyArt
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainKeyArts
+                    AddListImage(tImage, iCount, Enums.ModifierType.MainKeyArt)
+                    iCount += 1
+                Next
             Case Enums.ModifierType.MainLandscape
                 iCount = 0
                 For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
@@ -1943,16 +1990,16 @@ Public Class dlgImgSelect
         Result.ImagesContainer.ClearArt = tPreferredImagesContainer.ImagesContainer.ClearArt
         Result.ImagesContainer.ClearLogo = tPreferredImagesContainer.ImagesContainer.ClearLogo
         Result.ImagesContainer.DiscArt = tPreferredImagesContainer.ImagesContainer.DiscArt
-        With Master.eSettings
-            Select Case tContentType
-                Case Enums.ContentType.Movie
-                    If .MovieExtrafanartsPreselect OrElse .MovieExtrafanartsKeepExisting Then Result.ImagesContainer.Extrafanarts.AddRange(tPreferredImagesContainer.ImagesContainer.Extrafanarts)
-                    If .MovieExtrathumbsPreselect OrElse .MovieExtrathumbsKeepExisting Then Result.ImagesContainer.Extrathumbs.AddRange(tPreferredImagesContainer.ImagesContainer.Extrathumbs)
-                Case Enums.ContentType.TV, Enums.ContentType.TVShow
-                    If .TVShowExtrafanartsPreselect OrElse .TVShowExtrafanartsKeepExisting Then Result.ImagesContainer.Extrafanarts.AddRange(tPreferredImagesContainer.ImagesContainer.Extrafanarts)
-            End Select
-        End With
+        Dim nImageSettings = Settings.Helpers.GetImageSettings(tContentType, Enums.ModifierType.MainExtrafanarts)
+        If nImageSettings IsNot Nothing Then
+            If nImageSettings.Preselect Then Result.ImagesContainer.Extrafanarts = tPreferredImagesContainer.ImagesContainer.Extrafanarts
+        End If
+        nImageSettings = Settings.Helpers.GetImageSettings(tContentType, Enums.ModifierType.MainExtrathumbs)
+        If nImageSettings IsNot Nothing Then
+            If nImageSettings.Preselect Then Result.ImagesContainer.Extrathumbs = tPreferredImagesContainer.ImagesContainer.Extrathumbs
+        End If
         Result.ImagesContainer.Fanart = tPreferredImagesContainer.ImagesContainer.Fanart
+        Result.ImagesContainer.KeyArt = tPreferredImagesContainer.ImagesContainer.KeyArt
         Result.ImagesContainer.Landscape = tPreferredImagesContainer.ImagesContainer.Landscape
         Result.ImagesContainer.Poster = tPreferredImagesContainer.ImagesContainer.Poster
         Result.Seasons.AddRange(tPreferredImagesContainer.Seasons)
@@ -2072,7 +2119,6 @@ Public Class dlgImgSelect
             For iIndex As Integer = 0 To pnlSubImage_Panel.Count - 1
                 If DirectCast(pnlSubImage_Panel(iIndex).Tag, iTag).ImageType = tTag.ImageType AndAlso DirectCast(pnlSubImage_Panel(iIndex).Tag, iTag).iSeason = tTag.iSeason Then
                     If pnlSubImage_Panel(iIndex) IsNot Nothing AndAlso pnlSubImage_Panel(iIndex).Contains(pbSubImage_Image(iIndex)) Then
-                        'tTag = CreateTag(tTag.Image, tTag.ImageType)
                         lblSubImage_Resolution(iIndex).Text = tTag.strResolution
                         pnlSubImage_Panel(iIndex).Tag = tTag
                         pbSubImage_Image(iIndex).Tag = tTag
@@ -2091,7 +2137,6 @@ Public Class dlgImgSelect
             For iIndex As Integer = 0 To pnlTopImage_Panel.Count - 1
                 If DirectCast(pnlTopImage_Panel(iIndex).Tag, iTag).ImageType = tTag.ImageType Then
                     If pnlTopImage_Panel(iIndex) IsNot Nothing AndAlso pnlTopImage_Panel(iIndex).Contains(pbTopImage_Image(iIndex)) Then
-                        'tTag = CreateTag(tTag.Image, tTag.ImageType)
                         lblTopImage_Resolution(iIndex).Text = tTag.strResolution
                         pnlTopImage_Panel(iIndex).Tag = tTag
                         pbTopImage_Image(iIndex).Tag = tTag
@@ -2211,6 +2256,9 @@ Public Class dlgImgSelect
             Case Enums.ModifierType.MainFanart
                 Result.ImagesContainer.Fanart = tTag.Image
                 RefreshTopImage(tTag)
+            Case Enums.ModifierType.MainKeyArt
+                Result.ImagesContainer.KeyArt = tTag.Image
+                RefreshTopImage(tTag)
             Case Enums.ModifierType.MainLandscape
                 Result.ImagesContainer.Landscape = tTag.Image
                 RefreshTopImage(tTag)
@@ -2232,6 +2280,7 @@ Public Class dlgImgSelect
                 DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.MovieExtrafanartsAnyEnabled
                 DoMainExtrathumbs = tScrapeModifiers.MainExtrathumbs AndAlso Master.eSettings.MovieExtrathumbsAnyEnabled
                 DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
+                DoMainKeyArt = tScrapeModifiers.MainKeyArt AndAlso Master.eSettings.MovieKeyArtAnyEnabled
                 DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
                 DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
                 If DoMainExtrafanarts OrElse DoMainExtrathumbs Then noSubImages = False
@@ -2241,6 +2290,7 @@ Public Class dlgImgSelect
                 DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.MovieSetClearLogoAnyEnabled
                 DoMainDiscArt = tScrapeModifiers.MainDiscArt AndAlso Master.eSettings.MovieSetDiscArtAnyEnabled
                 DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.MovieSetFanartAnyEnabled
+                DoMainKeyArt = tScrapeModifiers.MainKeyArt AndAlso Master.eSettings.MovieSetKeyArtAnyEnabled
                 DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.MovieSetLandscapeAnyEnabled
                 DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.MovieSetPosterAnyEnabled
             Case Enums.ContentType.TV
@@ -2256,6 +2306,7 @@ Public Class dlgImgSelect
                 DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
                 DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.TVShowExtrafanartsAnyEnabled
                 DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
+                DoMainKeyArt = tScrapeModifiers.MainKeyArt AndAlso Master.eSettings.TVShowKeyArtAnyEnabled
                 DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
                 DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
                 DoSeasonBanner = tScrapeModifiers.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
@@ -2270,6 +2321,7 @@ Public Class dlgImgSelect
                 DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
                 DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.TVShowExtrafanartsAnyEnabled
                 DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
+                DoMainKeyArt = tScrapeModifiers.MainKeyArt AndAlso Master.eSettings.TVShowKeyArtAnyEnabled
                 DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
                 DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
                 If DoMainExtrafanarts Then noSubImages = False
@@ -2294,6 +2346,7 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub SetUp()
+        Text = Master.eLang.GetString(759, "Select Images")
         btnCancel.Text = Master.eLang.Cancel
         btnExtrafanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
         btnExtrathumbs.Text = Master.eLang.GetString(153, "Extrathumbs")

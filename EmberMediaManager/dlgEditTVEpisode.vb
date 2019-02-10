@@ -51,9 +51,7 @@ Public Class dlgEditTVEpisode
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
-        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
-        StartPosition = FormStartPosition.Manual
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
     Private Sub Dialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -73,15 +71,13 @@ Public Class dlgEditTVEpisode
                 pnlTop.BackgroundImage = iBackground
             End Using
 
-            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement, True)
-            dFileInfoEdit.TopLevel = False
-            dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
-            dFileInfoEdit.BackColor = Color.White
-            dFileInfoEdit.btnClose.Visible = False
+            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement.TVEpisode.FileInfo) With {
+                .BackColor = Color.White,
+                .Dock = DockStyle.Fill,
+                .FormBorderStyle = FormBorderStyle.None,
+                .TopLevel = False
+            }
             pnlFileInfo.Controls.Add(dFileInfoEdit)
-            Dim oldwidth As Integer = dFileInfoEdit.Width
-            dFileInfoEdit.Width = pnlFileInfo.Width
-            dFileInfoEdit.Height = pnlFileInfo.Height
             dFileInfoEdit.Show()
 
             Data_Fill()
@@ -253,11 +249,11 @@ Public Class dlgEditTVEpisode
         End If
     End Sub
 
-    Private Function ConvertButtonToModifierType(ByVal sender As System.Object) As Enums.ModifierType
+    Private Function ConvertControlToImageType(ByVal sender As System.Object) As Enums.ModifierType
         Select Case True
-            Case sender Is btnRemoveFanart, sender Is btnSetFanartDL, sender Is btnSetFanartLocal, sender Is btnSetFanartScrape
+            Case sender Is btnRemoveFanart, sender Is btnDLFanart, sender Is btnLocalFanart, sender Is btnScrapeFanart, sender Is btnClipboardFanart
                 Return Enums.ModifierType.EpisodeFanart
-            Case sender Is btnRemovePoster, sender Is btnSetPosterDL, sender Is btnSetPosterLocal, sender Is btnSetPosterScrape
+            Case sender Is btnRemovePoster, sender Is btnDLPoster, sender Is btnLocalPoster, sender Is btnScrapePoster, sender Is btnClipboardPoster
                 Return Enums.ModifierType.EpisodePoster
             Case Else
                 Return Nothing
@@ -365,7 +361,7 @@ Public Class dlgEditTVEpisode
 
                 'Fanart
                 If Master.eSettings.TVEpisodeFanartAnyEnabled Then
-                    btnSetFanartScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
+                    btnScrapeFanart.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
                     If .Fanart.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.EpisodeFanart)
                     End If
@@ -376,7 +372,7 @@ Public Class dlgEditTVEpisode
 
                 'Poster
                 If Master.eSettings.TVEpisodePosterAnyEnabled Then
-                    btnSetPosterScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+                    btnScrapePoster.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
                     If .Poster.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.EpisodePoster)
                     End If
@@ -569,7 +565,7 @@ Public Class dlgEditTVEpisode
             tbFrame.Value = 0
             tbFrame.Enabled = False
             btnFrameSaveAsFanart.Enabled = False
-            btnFrameSaveAsposter.Enabled = False
+            btnFrameSaveAsPoster.Enabled = False
             btnFrameLoadVideo.Enabled = True
             pbFrame.Image = Nothing
             pbFrame.Tag = Nothing
@@ -711,6 +707,18 @@ Public Class dlgEditTVEpisode
         End If
     End Sub
 
+    Private Sub Image_Clipboard_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        btnClipboardFanart.Click,
+        btnClipboardPoster.Click
+
+        Dim lstImages = FileUtils.ClipboardHandler.GetImagesFromClipboard
+        If lstImages.Count > 0 Then
+            Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+            tmpDBElement.ImagesContainer.SetImageByType(lstImages(0), eImageType)
+            Image_LoadPictureBox(eImageType)
+        End If
+    End Sub
+
     Private Sub Image_DoubleClick(sender As Object, e As EventArgs) Handles _
         pbFanart.DoubleClick,
         pbFrame.DoubleClick,
@@ -724,42 +732,56 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub Image_Download_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        btnSetFanartDL.Click,
-        btnSetPosterDL.Click
+        btnDLFanart.Click,
+        btnDLPoster.Click
         Using dImgManual As New dlgImgManual
             Dim tImage As MediaContainers.Image
             If dImgManual.ShowDialog() = DialogResult.OK Then
                 tImage = dImgManual.Results
                 If tImage.ImageOriginal.Image IsNot Nothing Then
-                    Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
-                    Select Case modType
-                        Case Enums.ModifierType.EpisodeFanart
-                            tmpDBElement.ImagesContainer.Fanart = tImage
-                        Case Enums.ModifierType.EpisodePoster
-                            tmpDBElement.ImagesContainer.Poster = tImage
-                    End Select
-                    Image_LoadPictureBox(modType)
+                    Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+                    tmpDBElement.ImagesContainer.SetImageByType(tImage, eImageType)
+                    Image_LoadPictureBox(eImageType)
                 End If
             End If
         End Using
     End Sub
 
-    Private Sub Image_LoadPictureBox(ByVal imageType As Enums.ModifierType)
-        Dim cImage As MediaContainers.Image
+    Private Sub Image_DragDrop(sender As Object, e As DragEventArgs) Handles _
+        pbFanart.DragDrop,
+        pbPoster.DragDrop
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
+        If tImage.ImageOriginal.Image IsNot Nothing Then
+            Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+            tmpDBElement.ImagesContainer.SetImageByType(tImage, eImageType)
+            Image_LoadPictureBox(eImageType)
+        End If
+    End Sub
+
+    Private Sub Image_DragEnter(sender As Object, e As DragEventArgs) Handles _
+        pbFanart.DragEnter,
+        pbPoster.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub Image_LoadPictureBox(ByVal ImageType As Enums.ModifierType)
         Dim lblSize As Label
         Dim pbImage As PictureBox
-        Select Case imageType
+        Select Case ImageType
             Case Enums.ModifierType.EpisodeFanart
-                cImage = tmpDBElement.ImagesContainer.Fanart
-                lblSize = lblFanartSize
+                lblSize = lblSizeFanart
                 pbImage = pbFanart
             Case Enums.ModifierType.EpisodePoster
-                cImage = tmpDBElement.ImagesContainer.Poster
-                lblSize = lblPosterSize
+                lblSize = lblSizePoster
                 pbImage = pbPoster
             Case Else
                 Return
         End Select
+        Dim cImage = tmpDBElement.ImagesContainer.GetImageByType(ImageType)
         If cImage.ImageOriginal.Image IsNot Nothing Then
             pbImage.Image = cImage.ImageOriginal.Image
             pbImage.Tag = cImage
@@ -769,8 +791,8 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub Image_Local_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        btnSetFanartLocal.Click,
-        btnSetPosterLocal.Click
+        btnLocalFanart.Click,
+        btnLocalPoster.Click
         With ofdLocalFiles
             .InitialDirectory = tmpDBElement.FileItem.MainPath.FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
@@ -780,80 +802,70 @@ Public Class dlgEditTVEpisode
             Dim tImage As New MediaContainers.Image
             tImage.ImageOriginal.LoadFromFile(ofdLocalFiles.FileName, True)
             If tImage.ImageOriginal.Image IsNot Nothing Then
-                Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
-                Select Case modType
-                    Case Enums.ModifierType.EpisodeFanart
-                        tmpDBElement.ImagesContainer.Fanart = tImage
-                    Case Enums.ModifierType.EpisodePoster
-                        tmpDBElement.ImagesContainer.Poster = tImage
-                End Select
-                Image_LoadPictureBox(modType)
+                Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+                tmpDBElement.ImagesContainer.SetImageByType(tImage, eImageType)
+                Image_LoadPictureBox(eImageType)
             End If
         End If
     End Sub
 
     Private Sub Image_Remove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-            btnRemoveFanart.Click,
-            btnRemovePoster.Click
-        Dim lblSize As Label
-        Dim pbImage As PictureBox
-        Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
-        Select Case modType
+        btnRemoveFanart.Click,
+        btnRemovePoster.Click
+        Dim lblSize As Label = Nothing
+        Dim pbImage As PictureBox = Nothing
+        Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+        Select Case eImageType
             Case Enums.ModifierType.EpisodeFanart
-                lblSize = lblFanartSize
+                lblSize = lblSizeFanart
                 pbImage = pbFanart
-                tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
             Case Enums.ModifierType.EpisodePoster
-                lblSize = lblPosterSize
+                lblSize = lblSizePoster
                 pbImage = pbPoster
-                tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
             Case Else
                 Return
         End Select
-        lblSize.Text = String.Empty
-        lblSize.Visible = False
-        pbImage.Image = Nothing
-        pbImage.Tag = Nothing
+        If lblSize IsNot Nothing Then
+            lblSize.Text = String.Empty
+            lblSize.Visible = False
+        End If
+        If pbImage IsNot Nothing Then
+            pbImage.Image = Nothing
+            pbImage.Tag = Nothing
+        End If
     End Sub
 
     Private Sub Image_Scrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        btnSetFanartScrape.Click,
-        btnSetPosterScrape.Click
+        btnScrapeFanart.Click,
+        btnScrapePoster.Click
         Cursor = Cursors.WaitCursor
-        Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
+        Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
-        Functions.SetScrapeModifiers(ScrapeModifiers, modType, True)
+        Functions.SetScrapeModifiers(ScrapeModifiers, eImageType, True)
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             Dim iImageCount = 0
             Dim strNoImagesFound As String = String.Empty
-            Select Case modType
+            Select Case eImageType
                 Case Enums.ModifierType.EpisodeFanart
-                    iImageCount = aContainer.MainFanarts.Count
+                    iImageCount = aContainer.EpisodeFanarts.Count + aContainer.MainFanarts.Count
                     strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
                 Case Enums.ModifierType.EpisodePoster
-                    iImageCount = aContainer.MainPosters.Count
+                    iImageCount = aContainer.EpisodePosters.Count
                     strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
             End Select
             If iImageCount > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                    Select Case modType
-                        Case Enums.ModifierType.EpisodeFanart
-                            tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                            If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                        Case Enums.ModifierType.EpisodePoster
-                            tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                            If tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                    End Select
+                    tmpDBElement.ImagesContainer.SetImageByType(dlgImgS.Result.ImagesContainer.GetImageByType(eImageType), eImageType)
+                    If tmpDBElement.ImagesContainer.GetImageByType(eImageType) IsNot Nothing AndAlso
+                        tmpDBElement.ImagesContainer.GetImageByType(eImageType).ImageOriginal.LoadFromMemoryStream Then
+                        Image_LoadPictureBox(eImageType)
+                    Else
+                        Image_Remove_Click(sender, e)
+                    End If
                 End If
             Else
                 MessageBox.Show(strNoImagesFound, String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -866,34 +878,6 @@ Public Class dlgEditTVEpisode
         If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
             tmpDBElement.TVEpisode = Info.LoadFromNFO_TVEpisode(tmpDBElement.NfoPath, tmpDBElement.TVEpisode.Season, tmpDBElement.TVEpisode.Episode)
             Data_Fill(False)
-        End If
-    End Sub
-
-    Private Sub PictureBox_DragEnter(sender As Object, e As DragEventArgs) Handles _
-        pbFanart.DragEnter,
-        pbPoster.DragEnter
-
-        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
-            e.Effect = DragDropEffects.Copy
-        Else
-            e.Effect = DragDropEffects.None
-        End If
-    End Sub
-
-    Private Sub PictureBox_DragDrop(sender As Object, e As DragEventArgs) Handles _
-        pbFanart.DragDrop,
-        pbPoster.DragDrop
-
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
-        If tImage.ImageOriginal.Image IsNot Nothing Then
-            Select Case True
-                Case sender Is pbFanart
-                    tmpDBElement.ImagesContainer.Fanart = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.EpisodeFanart)
-                Case sender Is pbPoster
-                    tmpDBElement.ImagesContainer.Poster = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.EpisodePoster)
-            End Select
         End If
     End Sub
 

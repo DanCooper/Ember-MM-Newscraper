@@ -482,44 +482,124 @@ Public Class Enums
         Aired = 1
     End Enum
 
+    Public Enum ImageSize As Integer
+        ''' <summary>
+        ''' Movie Poster 2000x3000 / TVShow Poster 2000x3000
+        ''' </summary>
+        HD3000 = 0
+        ''' <summary>
+        ''' Movie Fanart 3840x2160 / Episode Poster 3840x2160 / TVShow Fanart 3840x2160
+        ''' </summary>
+        UHD2160 = 1
+        ''' <summary>
+        ''' Movie Poster 1400x2100
+        ''' </summary>
+        HD2100 = 2
+        ''' <summary>
+        ''' Movie Poster 1000x1500 / TVShow Poster 1000x1500 / Season Poster 1000x1500
+        ''' </summary>
+        HD1500 = 3
+        ''' <summary>
+        ''' Movie Fanart 2560x1440 / TVShow Fanart 2560x1440
+        ''' </summary>
+        QHD1440 = 4
+        ''' <summary>
+        ''' Movie Poster 1000x1426 / TVShow Poster 1000x1426 / Season Poster 1000x1426
+        ''' </summary>
+        HD1426 = 5
+        ''' <summary>
+        ''' Movie Fanart 1920x1080 / Episode Poster 1920x1080 / TVShow Fanart 1920x1080
+        ''' </summary>
+        HD1080 = 6
+        ''' <summary>
+        ''' Movie DiscArt 1000x1000 / TVShow Poster 680x1000
+        ''' </summary>
+        HD1000 = 7
+        ''' <summary>
+        ''' Movie Fanart 1280x720 / Episode Poster 1280x720 / TVShow Fanart 1280x720
+        ''' </summary>
+        HD720 = 8
+        ''' <summary>
+        ''' Season Poster 400x578
+        ''' </summary>
+        HD578 = 9
+        ''' <summary>
+        ''' Movie ClearArtHD 1000x562 / Movie Landscape 1000x562 / TVShow ClearArtHD 1000x562 / TVShow Landscape 1000x562
+        ''' </summary>
+        HD562 = 10
+        ''' <summary>
+        ''' TV CharacterArt 512x512
+        ''' </summary>
+        HD512 = 11
+        ''' <summary>
+        ''' Movie ClearLogoHD 800x310 / TVShow ClearLogoHD 800x310
+        ''' </summary>
+        HD310 = 12
+        ''' <summary>
+        ''' Movie ClearArtSD 500x281 / TVShow ClearArtSD 500x281
+        ''' </summary>
+        SD281 = 13
+        ''' <summary>
+        ''' Episode Poster 400x300 (400x225 for 16:9 images)
+        ''' </summary>
+        SD225 = 14
+        ''' <summary>
+        ''' Movie Banner 1000x185 / TVShow Banner 1000x185
+        ''' </summary>        
+        HD185 = 15
+        ''' <summary>
+        ''' Movie ClearLogoSD 400x155 / TVShow ClearLogoSD 400x155
+        ''' </summary>
+        SD155 = 16
+        ''' <summary>
+        ''' TVShow Banner 758x140
+        ''' </summary>
+        HD140 = 17
+        ''' <summary>
+        ''' Any size that does not correspond to a standard
+        ''' </summary>
+        Any = 99
+    End Enum
+
     Public Enum ModifierType As Integer
-        All = 0
-        AllSeasonsBanner = 1
-        AllSeasonsFanart = 2
-        AllSeasonsLandscape = 3
-        AllSeasonsPoster = 4
-        DoSearch = 5
-        EpisodeActorThumbs = 6
-        EpisodeFanart = 7
-        EpisodePoster = 8
-        EpisodeMeta = 9
-        EpisodeNFO = 10
-        EpisodeSubtitle = 11
-        EpisodeWatchedFile = 12
-        MainActorThumbs = 13
-        MainBanner = 14
-        MainCharacterArt = 15
-        MainClearArt = 16
-        MainClearLogo = 17
-        MainDiscArt = 18
-        MainExtrafanarts = 19
-        MainExtrathumbs = 20
-        MainFanart = 21
-        MainLandscape = 22
-        MainMeta = 23
-        MainNFO = 24
-        MainPoster = 25
-        MainSubtitle = 26
-        MainTheme = 27
-        MainTrailer = 28
-        MainWatchedFile = 29
-        SeasonBanner = 30
-        SeasonFanart = 31
-        SeasonLandscape = 32
-        SeasonNFO = 33
-        SeasonPoster = 34
-        withEpisodes = 35
-        withSeasons = 36
+        All
+        AllSeasonsBanner
+        AllSeasonsFanart
+        AllSeasonsLandscape
+        AllSeasonsPoster
+        DoSearch
+        EpisodeActorThumbs
+        EpisodeFanart
+        EpisodePoster
+        EpisodeMeta
+        EpisodeNFO
+        EpisodeSubtitle
+        EpisodeWatchedFile
+        MainActorThumbs
+        MainBanner
+        MainCharacterArt
+        MainClearArt
+        MainClearLogo
+        MainDiscArt
+        MainExtrafanarts
+        MainExtrathumbs
+        MainFanart
+        MainKeyArt
+        MainLandscape
+        MainMeta
+        MainNFO
+        MainPoster
+        MainSubtitle
+        MainTheme
+        MainTrailer
+        MainWatchedFile
+        SeasonBanner
+        SeasonFanart
+        SeasonLandscape
+        SeasonNFO
+        SeasonPoster
+        withEpisodes
+        withSeasons
     End Enum
 
     Public Enum ModuleEventType As Integer
@@ -662,28 +742,6 @@ Public Class Enums
         DuringUpdateDB_TV
     End Enum
 
-    Public Enum MovieBannerSize As Integer
-        HD185 = 0       'Fanart.tv has only 1000x185
-        Any = 99
-    End Enum
-
-    Public Enum MovieFanartSize As Integer
-        UHD2160 = 0
-        QHD1440 = 1
-        HD1080 = 2
-        HD720 = 3
-        Thumb = 4
-        Any = 99
-    End Enum
-
-    Public Enum MoviePosterSize As Integer
-        HD3000 = 0
-        HD2100 = 1
-        HD1500 = 2
-        HD1426 = 3
-        Any = 99
-    End Enum
-
     Public Enum ScannerEventType As Integer
         None
         Added_Movie
@@ -775,47 +833,10 @@ Public Class Enums
         SetWatchedState
     End Enum
 
-    Public Enum TVBannerSize As Integer
-        HD185 = 0       'Fanart.tv only 1000x185 (season and tv show banner)
-        HD140 = 1       'TVDB has only 758x140 (season and tv show banner)
-        Any = 99
-    End Enum
-
     Public Enum TVBannerType As Integer
         Blank = 0       'will leave the title and show logo off the banner
         Graphical = 1   'will show the series name in the show's official font or will display the actual logo for the show
         Text = 2        'will show the series name as plain text in an Arial font
-        Any = 99
-    End Enum
-
-    Public Enum TVEpisodePosterSize As Integer
-        UHD2160 = 0
-        HD1080 = 1
-        HD720 = 2
-        SD225 = 3      'TVDB has only 400 x 300 (400x225 for 16:9 images)
-        Any = 99
-    End Enum
-
-    Public Enum TVFanartSize As Integer
-        UHD2160 = 0
-        QHD1440 = 1
-        HD1080 = 2      'Fanart.tv has only 1920x1080
-        HD720 = 3      'TVDB has 1280x720 and 1920x1080
-        Any = 99
-    End Enum
-
-    Public Enum TVPosterSize As Integer
-        HD3000 = 0
-        HD1500 = 1
-        HD1426 = 2      'Fanart.tv has only 1000x1426
-        HD1000 = 3      'TVDB has only 680x1000
-        Any = 99
-    End Enum
-
-    Public Enum TVSeasonPosterSize As Integer
-        HD1500 = 0
-        HD1426 = 1
-        HD578 = 2
         Any = 99
     End Enum
     ''' <summary>
@@ -1286,6 +1307,7 @@ Public Class Functions
         FilteredModifiers.MainExtrafanarts = Options.MainExtrafanarts AndAlso Options2.MainExtrafanarts
         FilteredModifiers.MainExtrathumbs = Options.MainExtrathumbs AndAlso Options2.MainExtrathumbs
         FilteredModifiers.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
+        FilteredModifiers.MainKeyArt = Options.MainKeyArt AndAlso Options2.MainKeyArt
         FilteredModifiers.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
         FilteredModifiers.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
         FilteredModifiers.MainPoster = Options.MainPoster AndAlso Options2.MainPoster
@@ -1325,6 +1347,7 @@ Public Class Functions
                 .MainExtrafanarts OrElse
                 .MainExtrathumbs OrElse
                 .MainFanart OrElse
+                .MainKeyArt OrElse
                 .MainLandscape OrElse
                 .MainMeta OrElse
                 .MainNFO OrElse
@@ -1341,7 +1364,6 @@ Public Class Functions
                 Return True
             End If
         End With
-
         Return False
     End Function
 
@@ -1370,6 +1392,7 @@ Public Class Functions
                     .MainExtrafanarts = MValue
                     .MainExtrathumbs = MValue
                     .MainFanart = MValue
+                    .MainKeyArt = MValue
                     .MainLandscape = MValue
                     .MainMeta = MValue
                     .MainNFO = MValue
@@ -1427,6 +1450,8 @@ Public Class Functions
                     .MainExtrathumbs = MValue
                 Case Enums.ModifierType.MainFanart
                     .MainFanart = MValue
+                Case Enums.ModifierType.MainKeyArt
+                    .MainKeyArt = MValue
                 Case Enums.ModifierType.MainLandscape
                     .MainLandscape = MValue
                 Case Enums.ModifierType.MainMeta
@@ -1606,6 +1631,7 @@ Public Class Structures
         Dim MainExtrafanarts As Boolean
         Dim MainExtrathumbs As Boolean
         Dim MainFanart As Boolean
+        Dim MainKeyArt As Boolean
         Dim MainLandscape As Boolean
         Dim MainMeta As Boolean
         Dim MainNFO As Boolean

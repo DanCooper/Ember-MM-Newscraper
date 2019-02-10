@@ -79,29 +79,17 @@ Public Class frmSettingsHolder_MovieSet
 
     Private Sub chkScrapeClearArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearArt.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
-
-        Me.chkScrapeClearArtOnlyHD.Enabled = Me.chkScrapeClearArt.Checked
-
-        If Not Me.chkScrapeClearArt.Checked Then
-            Me.chkScrapeClearArtOnlyHD.Checked = False
-        End If
     End Sub
 
-    Private Sub chkScrapeClearArtOnlyHD_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearArtOnlyHD.CheckedChanged
+    Private Sub chkScrapeClearArtOnlyHD_CheckedChanged(sender As Object, e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub chkScrapeClearLogo_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearLogo.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
-
-        Me.chkScrapeClearLogoOnlyHD.Enabled = Me.chkScrapeClearLogo.Checked
-
-        If Not Me.chkScrapeClearLogo.Checked Then
-            Me.chkScrapeClearLogoOnlyHD.Checked = False
-        End If
     End Sub
 
-    Private Sub chkScrapeClearLogoOnlyHD_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearLogoOnlyHD.CheckedChanged
+    Private Sub chkScrapeClearLogoOnlyHD_CheckedChanged(sender As Object, e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -137,9 +125,7 @@ Public Class frmSettingsHolder_MovieSet
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkScrapeBanner.Text = Master.eLang.GetString(838, "Banner")
         Me.chkScrapeClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
-        Me.chkScrapeClearArtOnlyHD.Text = Master.eLang.GetString(1105, "Only HD")
         Me.chkScrapeClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
-        Me.chkScrapeClearLogoOnlyHD.Text = Me.chkScrapeClearArtOnlyHD.Text
         Me.chkScrapeDiscArt.Text = Master.eLang.GetString(1098, "DiscArt")
         Me.chkScrapeFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.chkScrapeLandscape.Text = Master.eLang.GetString(1035, "Landscape")

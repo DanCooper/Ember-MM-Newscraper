@@ -732,6 +732,7 @@ CREATE VIEW movielist
         clearlogo.url AS ClearLogoPath,
         discart.url AS DiscArtPath,
         fanart.url AS FanartPath,
+        keyart.url AS KeyArtPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
         GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
@@ -758,6 +759,9 @@ CREATE VIEW movielist
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = movie.idMovie)
         AND (fanart.media_type = 'movie')
         AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = movie.idMovie)
+        AND (keyart.media_type = 'movie')
+        AND (keyart.type = 'keyart')
         LEFT OUTER JOIN art AS landscape ON (landscape.media_id = movie.idMovie)
         AND (landscape.media_type = 'movie')
         AND (landscape.type = 'landscape')
@@ -788,6 +792,7 @@ CREATE VIEW setslist
         clearlogo.url AS ClearLogoPath,
         discart.url AS DiscArtPath,
         fanart.url AS FanartPath,
+        keyart.url AS keyartPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
         COUNT(setlink.idMovie) AS 'Count',
@@ -809,6 +814,9 @@ CREATE VIEW setslist
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = sets.idSet)
         AND (fanart.media_type = 'set')
         AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = sets.idMovie)
+        AND (keyart.media_type = 'set')
+        AND (keyart.type = 'keyart')
         LEFT OUTER JOIN art AS landscape ON (landscape.media_id = sets.idSet)
         AND (landscape.media_type = 'set')
         AND (landscape.type = 'landscape')
@@ -863,6 +871,7 @@ CREATE VIEW tvshowlist
         clearart.url AS ClearArtPath,
         clearlogo.url AS ClearLogoPath,
         fanart.url AS FanartPath,
+        keyart.url AS KeyArtPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
         GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
@@ -895,6 +904,9 @@ CREATE VIEW tvshowlist
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = tvshow.idShow)
         AND (fanart.media_type = 'tvshow')
         AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = tvshow.idShow)
+        AND (keyart.media_type = 'tvshow')
+        AND (keyart.type = 'keyart')
         LEFT OUTER JOIN art AS landscape ON (landscape.media_id = tvshow.idShow)
         AND (landscape.media_type = 'tvshow')
         AND (landscape.type = 'landscape')

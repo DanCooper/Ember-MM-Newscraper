@@ -89,6 +89,7 @@ Public Class frmMain
     Private MainFanart As New Images
     Private MainFanartSmall As New Images
     Private MainGuestStars As New Images
+    Private MainKeyArt As New Images
     Private MainLandscape As New Images
     Private MainPoster As New Images
     Private pbGenre() As PictureBox = Nothing
@@ -229,11 +230,13 @@ Public Class frmMain
     Public Property DiscArtMaxWidth() As Integer = 160
     Public Property FanartSmallMaxHeight() As Integer = 160
     Public Property FanartSmallMaxWidth() As Integer = 285
+    Public Property KeyArtMaxHeight() As Integer = 160
+    Public Property KeyArtMaxWidth() As Integer = 160
     Public Property LandscapeMaxHeight() As Integer = 160
     Public Property LandscapeMaxWidth() As Integer = 285
     Public Property MediaListColors As New clsXMLTheme.MediaListSettings
     Public Property PosterMaxHeight() As Integer = 160
-    Public Property PosterMaxWidth() As Integer = 160
+    Public Property PosterMaxWidth() As Integer = 113
 
 #End Region 'Properties
 
@@ -592,6 +595,13 @@ Public Class frmMain
         End If
         pnlFanartSmall.Visible = False
         MainFanartSmall.Clear()
+
+        If pbKeyArt.Image IsNot Nothing Then
+            pbKeyArt.Image.Dispose()
+            pbKeyArt.Image = Nothing
+        End If
+        pnlKeyArt.Visible = False
+        MainKeyArt.Clear()
 
         If pbLandscape.Image IsNot Nothing Then
             pbLandscape.Image.Dispose()
@@ -1092,6 +1102,7 @@ Public Class frmMain
         MainDiscArt.Clear()
         MainFanart.Clear()
         MainFanartSmall.Clear()
+        MainKeyArt.Clear()
         MainLandscape.Clear()
         MainPoster.Clear()
 
@@ -1114,6 +1125,7 @@ Public Class frmMain
         If Master.eSettings.GeneralDisplayDiscArt Then MainDiscArt = currDBElement.ImagesContainer.DiscArt.ImageOriginal
         If Master.eSettings.GeneralDisplayFanart Then MainFanart = currDBElement.ImagesContainer.Fanart.ImageOriginal
         If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currDBElement.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayKeyArt Then MainKeyArt = currDBElement.ImagesContainer.KeyArt.ImageOriginal
         If Master.eSettings.GeneralDisplayLandscape Then MainLandscape = currDBElement.ImagesContainer.Landscape.ImageOriginal
         If Master.eSettings.GeneralDisplayPoster Then MainPoster = currDBElement.ImagesContainer.Poster.ImageOriginal
 
@@ -1321,6 +1333,7 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
                     tScrapeItem.ScrapeModifiers.MainExtrathumbs OrElse
                     tScrapeItem.ScrapeModifiers.MainFanart OrElse
+                    tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
                     tScrapeItem.ScrapeModifiers.MainLandscape OrElse
                     tScrapeItem.ScrapeModifiers.MainPoster OrElse
                     tScrapeItem.ScrapeModifiers.MainTheme OrElse
@@ -1360,6 +1373,7 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
                     tScrapeItem.ScrapeModifiers.MainExtrathumbs OrElse
                     tScrapeItem.ScrapeModifiers.MainFanart OrElse
+                    tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
                     tScrapeItem.ScrapeModifiers.MainLandscape OrElse
                     tScrapeItem.ScrapeModifiers.MainPoster Then
 
@@ -1542,12 +1556,17 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
                     tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
                     tScrapeItem.ScrapeModifiers.MainFanart OrElse
+                    tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
                     tScrapeItem.ScrapeModifiers.MainLandscape OrElse
                     tScrapeItem.ScrapeModifiers.MainPoster) Then
-                    Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
-                    If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifiers, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
+                    Dim tModifiers As New Structures.ScrapeModifiers With {.MainNFO = True}
+                    Dim tOptions As New Structures.ScrapeOptions 'set all values to false to not override any field. ID's are always determined.
+                    If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tModifiers, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
                         logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
-                        Exit For
+                        Cancelled = True
+                        If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            bwMovieSetScraper.CancelAsync()
+                        End If
                     End If
                 End If
             End If
@@ -1571,6 +1590,7 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
                     tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
                     tScrapeItem.ScrapeModifiers.MainFanart OrElse
+                    tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
                     tScrapeItem.ScrapeModifiers.MainLandscape OrElse
                     tScrapeItem.ScrapeModifiers.MainPoster Then
 
@@ -1698,6 +1718,7 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
                     tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
                     tScrapeItem.ScrapeModifiers.MainFanart OrElse
+                    tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
                     tScrapeItem.ScrapeModifiers.MainLandscape OrElse
                     tScrapeItem.ScrapeModifiers.MainPoster OrElse
                     tScrapeItem.ScrapeModifiers.MainTheme) Then
@@ -2533,6 +2554,13 @@ Public Class frmMain
         Filter_Missing_Movies()
     End Sub
 
+    Private Sub chkMovieMissingKeyArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingKeyArt.CheckedChanged
+        Master.eSettings.MovieMissingKeyArt = chkMovieMissingKeyArt.Checked
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        Filter_Missing_Movies()
+    End Sub
+
     Private Sub chkMovieMissingLandscape_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingLandscape.CheckedChanged
         Master.eSettings.MovieMissingLandscape = chkMovieMissingLandscape.Checked
         chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
@@ -2610,6 +2638,13 @@ Public Class frmMain
         Filter_Missing_MovieSets()
     End Sub
 
+    Private Sub chkMovieSetMissingKeyArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingKeyArt.CheckedChanged
+        Master.eSettings.MovieSetMissingKeyArt = chkMovieSetMissingKeyArt.Checked
+        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        Filter_Missing_MovieSets()
+    End Sub
+
     Private Sub chkMovieSetMissingLandscape_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingLandscape.CheckedChanged
         Master.eSettings.MovieSetMissingLandscape = chkMovieSetMissingLandscape.Checked
         chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
@@ -2668,6 +2703,13 @@ Public Class frmMain
 
     Private Sub chkShowMissingFanart_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingFanart.CheckedChanged
         Master.eSettings.TVShowMissingFanart = chkShowMissingFanart.Checked
+        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        Filter_Missing_TVShows()
+    End Sub
+
+    Private Sub chkShowMissingKeyArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingKeyArt.CheckedChanged
+        Master.eSettings.TVShowMissingKeyArt = chkShowMissingKeyArt.Checked
         chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
         chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
         Filter_Missing_TVShows()
@@ -3068,7 +3110,7 @@ Public Class frmMain
 
         If Not ModulesManager.Instance.ScrapeData_TVShow(tmpShow, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, True) Then
             If tmpShow.Episodes.Count > 0 Then
-                Dim dlgChangeEp As New dlgTVChangeEp(tmpShow)
+                Dim dlgChangeEp As New dlgTVChangeTVEpisode(tmpShow)
                 If dlgChangeEp.ShowDialog = DialogResult.OK Then
                     If dlgChangeEp.Result.Count > 0 Then
                         If Master.eSettings.TVScraperMetaDataScan Then
@@ -3482,16 +3524,31 @@ Public Class frmMain
         dgvMovies.Invalidate()
     End Sub
 
+    Private Sub cmnuEpisodeEditMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeEditMetaData.Click
+        If dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+        Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
+        Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), indX).Value)
+        Dim DBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, False)
+        Using dFileInfo As New dlgFileInfo(DBElement.TVEpisode.FileInfo)
+            If dFileInfo.ShowDialog() = DialogResult.OK Then
+                DBElement.TVEpisode.FileInfo = dFileInfo.Result
+                Master.DB.Save_TVEpisode(DBElement, False, True, False, False, True)
+                RefreshRow_TVEpisode(ID)
+            End If
+        End Using
+    End Sub
+
     Private Sub cmnuMovieEditMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieEditMetaData.Click
         If dgvMovies.SelectedRows.Count > 1 Then Return
         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
         Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
         Dim DBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-        Using dEditMeta As New dlgFileInfo(DBElement, False)
-            Select Case dEditMeta.ShowDialog()
-                Case DialogResult.OK
-                    RefreshRow_Movie(ID)
-            End Select
+        Using dFileInfo As New dlgFileInfo(DBElement.Movie.FileInfo)
+            If dFileInfo.ShowDialog() = DialogResult.OK Then
+                DBElement.Movie.FileInfo = dFileInfo.Result
+                Master.DB.Save_Movie(DBElement, False, True, False, True, False)
+                RefreshRow_Movie(ID)
+            End If
         End Using
     End Sub
 
@@ -4179,6 +4236,8 @@ Public Class frmMain
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeFanart, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonFanart, True)
+                    Case Database.ColumnType.KeyArt
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
                     Case Database.ColumnType.Landscape
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
@@ -4343,6 +4402,8 @@ Public Class frmMain
                         strScrapeFor = Master.eLang.GetString(74, "Extrathumbs Only")
                     Case Database.ColumnType.Fanart
                         strScrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                    Case Database.ColumnType.KeyArt
+                        strScrapeFor = Master.eLang.GetString(303, "KeyArt Only")
                     Case Database.ColumnType.Landscape
                         strScrapeFor = Master.eLang.GetString(1061, "Landscape Only")
                     Case Database.ColumnType.NFO
@@ -4426,6 +4487,8 @@ Public Class frmMain
                             ilColumnIcons.Draw(e.Graphics, pt, 8)
                         Case Database.ColumnType.Fanart
                             ilColumnIcons.Draw(e.Graphics, pt, 9)
+                        Case Database.ColumnType.KeyArt
+                            ilColumnIcons.Draw(e.Graphics, pt, 12)
                         Case Database.ColumnType.Landscape
                             ilColumnIcons.Draw(e.Graphics, pt, 10)
                         Case Database.ColumnType.Movieset
@@ -4565,6 +4628,7 @@ Public Class frmMain
                 DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath), row) OrElse
                 DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath), row) OrElse
                 DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.FanartPath), row) OrElse
+                DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath), row) OrElse
                 DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath), row) OrElse
                 DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.NfoPath), row) OrElse
                 DataGridView_ColumnHasValue(dgView, Database.Helpers.GetColumnName(Database.ColumnName.PosterPath), row)
@@ -5309,6 +5373,7 @@ Public Class frmMain
 
                         cmnuEpisodeEditSeparator.Visible = True
                         cmnuEpisodeEdit.Visible = False
+                        cmnuEpisodeEditMetaData.Visible = False
                         cmnuEpisodeScrapeSeparator.Visible = True
                         cmnuEpisodeScrape.Visible = False
                         cmnuEpisodeChange.Visible = False
@@ -5380,6 +5445,7 @@ Public Class frmMain
 
                         cmnuEpisodeEditSeparator.Visible = True
                         cmnuEpisodeEdit.Visible = True
+                        cmnuEpisodeEditMetaData.Visible = True
                         cmnuEpisodeScrapeSeparator.Visible = True
                         cmnuEpisodeScrape.Visible = True
                         cmnuEpisodeChange.Visible = True
@@ -6198,29 +6264,6 @@ Public Class frmMain
             bsMovies.DataSource = Nothing
             dgvMovies.DataSource = Nothing
             Master.DB.FillDataTable(dtMovies, Filter_Movies.SqlQuery)
-
-            'If Not String.IsNullOrEmpty(filSearch_Movies) AndAlso cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
-            '    Master.DB.FillDataTable(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM person ",
-            '                                                       "LEFT OUTER JOIN actor_link ON (person.idPerson=actor_link.idPerson) ",
-            '                                                       "INNER JOIN '", currList_Movies, "' ON (actor_link.idMedia='", currList_Movies, "'.idMovie AND actor_link.media_type='movie') ",
-            '                                                       "WHERE person.name LIKE '%", filSearch_Movies, "%' ",
-            '                                                       "ORDER BY '", currList_Movies, "'.ListTitle COLLATE NOCASE;"))
-            'ElseIf Not String.IsNullOrEmpty(filSearch_Movies) AndAlso cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
-            '    Master.DB.FillDataTable(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM actor_link ",
-            '                                                       "INNER JOIN '", currList_Movies, "' ON (actor_link.idMedia='", currList_Movies, "'.idMovie AND actor_link.media_type='movie') ",
-            '                                                       "WHERE actor_link.role LIKE '%", filSearch_Movies, "%' ",
-            '                                                       "ORDER BY '", currList_Movies, "'.ListTitle COLLATE NOCASE;"))
-            'Else
-            '    If chkFilterDuplicates_Movies.Checked Then
-            '        Master.DB.FillDataTable(dtMovies, String.Concat("SELECT * FROM '", currList_Movies, "' ",
-            '                                                           "WHERE imdb IN (SELECT imdb FROM '", currList_Movies, "' WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ",
-            '                                                           "ORDER BY listTitle COLLATE NOCASE;"))
-            '    Else
-            '        Master.DB.FillDataTable(dtMovies, String.Format("SELECT * FROM '{0}' ORDER BY {1} COLLATE NOCASE;",
-            '                                                        currList_Movies,
-            '                                                        Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)))
-            '    End If
-            'End If
         End If
 
         If doMovieSets Then
@@ -6332,14 +6375,12 @@ Public Class frmMain
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed))
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).ToolTipText = Master.eLang.GetString(981, "Watched")
-                'dgvMovies.Columns("Imdb").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-                'dgvMovies.Columns("Imdb").MinimumWidth = 45
-                'dgvMovies.Columns("Imdb").Resizable = DataGridViewTriState.False
-                'dgvMovies.Columns("Imdb").ReadOnly = True
-                'dgvMovies.Columns("Imdb").SortMode = DataGridViewColumnSortMode.Automatic
-                'dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
-                'dgvMovies.Columns("Imdb").ToolTipText = "IMDB ID"
-                'dgvMovies.Columns("Imdb").HeaderText = "IMDB"
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).Width = 20
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).Resizable = DataGridViewTriState.False
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ReadOnly = True
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToolTipText = Master.eLang.GetString(296, "KeyArt")
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Width = 20
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Resizable = DataGridViewTriState.False
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ReadOnly = True
@@ -6380,27 +6421,12 @@ Public Class frmMain
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToolTipText = Master.eLang.GetString(148, "Poster")
-                'dgvMovies.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-                'dgvMovies.Columns("Rating").MinimumWidth = 30
-                'dgvMovies.Columns("Rating").Resizable = DataGridViewTriState.False
-                'dgvMovies.Columns("Rating").ReadOnly = True
-                'dgvMovies.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
-                'dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
-                'dgvMovies.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Width = 20
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Resizable = DataGridViewTriState.False
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ReadOnly = True
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).Visible = Not CheckColumnHide_Movies(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath))
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ToolTipText = Master.eLang.GetString(1118, "Theme")
-                'dgvMovies.Columns("TMDB").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-                'dgvMovies.Columns("TMDB").MinimumWidth = 45
-                'dgvMovies.Columns("TMDB").Resizable = DataGridViewTriState.False
-                'dgvMovies.Columns("TMDB").ReadOnly = True
-                'dgvMovies.Columns("TMDB").SortMode = DataGridViewColumnSortMode.Automatic
-                'dgvMovies.Columns("TMDB").Visible = Not CheckColumnHide_Movies("TMDB")
-                'dgvMovies.Columns("TMDB").ToolTipText = "TMDB ID"
-                'dgvMovies.Columns("TMDB").HeaderText = "TMDB"
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).MinimumWidth = 35
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Top250)).Resizable = DataGridViewTriState.False
@@ -6489,6 +6515,12 @@ Public Class frmMain
                 dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath))
                 dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToolTipText = Master.eLang.GetString(149, "Fanart")
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).Width = 20
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ReadOnly = True
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).Visible = Not CheckColumnHide_MovieSets(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath))
+                dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToolTipText = Master.eLang.GetString(296, "KeyArt")
                 dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Width = 20
                 dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Resizable = DataGridViewTriState.False
                 dgvMovieSets.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ReadOnly = True
@@ -6600,6 +6632,12 @@ Public Class frmMain
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).SortMode = DataGridViewColumnSortMode.Automatic
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched))
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.HasWatched)).ToolTipText = Master.eLang.GetString(981, "Watched")
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).Width = 20
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ReadOnly = True
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath))
+                dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToolTipText = Master.eLang.GetString(296, "KeyArt")
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Width = 20
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).Resizable = DataGridViewTriState.False
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ReadOnly = True
@@ -6633,13 +6671,6 @@ Public Class frmMain
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).SortMode = DataGridViewColumnSortMode.Automatic
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_TVShows(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToolTipText = Master.eLang.GetString(148, "Poster")
-                'dgvTVShows.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-                'dgvTVShows.Columns("Rating").MinimumWidth = 30
-                'dgvTVShows.Columns("Rating").Resizable = DataGridViewTriState.False
-                'dgvTVShows.Columns("Rating").ReadOnly = True
-                'dgvTVShows.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
-                'dgvTVShows.Columns("Rating").Visible = Not CheckColumnHide_TVShows("Rating")
-                'dgvTVShows.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).Resizable = DataGridViewTriState.False
                 dgvTVShows.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Status)).ReadOnly = True
@@ -6976,11 +7007,6 @@ Public Class frmMain
     End Sub
 
     Private Sub FillScreenInfoWith_Images()
-        Dim g As Graphics
-        Dim strSize As String
-        Dim lenSize As Integer
-        Dim rect As Rectangle
-
         If MainPoster.Image IsNot Nothing OrElse MainPoster.LoadFromMemoryStream Then
             lblPosterSize.Text = String.Format("{0} x {1}", MainPoster.Image.Width, MainPoster.Image.Height)
             pbPosterCache.Image = MainPoster.Image
@@ -7002,6 +7028,30 @@ Public Class frmMain
             If pbPoster.Image IsNot Nothing Then
                 pbPoster.Image.Dispose()
                 pbPoster.Image = Nothing
+            End If
+        End If
+
+        If MainKeyArt.Image IsNot Nothing OrElse MainKeyArt.LoadFromMemoryStream Then
+            lblKeyArtSize.Text = String.Format("{0} x {1}", MainKeyArt.Image.Width, MainKeyArt.Image.Height)
+            pbKeyArtCache.Image = MainKeyArt.Image
+            ImageUtils.ResizePB(pbKeyArt, pbKeyArtCache, KeyArtMaxHeight, KeyArtMaxWidth)
+            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbKeyArt)
+
+            If Master.eSettings.GeneralShowImgDims Then
+                lblKeyArtSize.Visible = True
+            Else
+                lblKeyArtSize.Visible = False
+            End If
+
+            If Master.eSettings.GeneralShowImgNames Then
+                lblKeyArtTitle.Visible = True
+            Else
+                lblKeyArtTitle.Visible = False
+            End If
+        Else
+            If pbKeyArt.Image IsNot Nothing Then
+                pbKeyArt.Image.Dispose()
+                pbKeyArt.Image = Nothing
             End If
         End If
 
@@ -7175,19 +7225,9 @@ Public Class frmMain
 
         If MainFanart.Image IsNot Nothing OrElse MainFanart.LoadFromMemoryStream Then
             pbFanartCache.Image = MainFanart.Image
-
-            ImageUtils.ResizePB(pbFanart, pbFanartCache, scMain.Panel2.Height - 90, scMain.Panel2.Width)
+            ImageUtils.ResizePB(pbFanart, pbFanartCache, scMain.Panel2.Height - (pnlTop.Top + pnlTop.Height), scMain.Panel2.Width, True)
             pbFanart.Left = Convert.ToInt32((scMain.Panel2.Width - pbFanart.Width) / 2)
-
-            If pbFanart.Image IsNot Nothing AndAlso Master.eSettings.GeneralShowImgDims Then
-                g = Graphics.FromImage(pbFanart.Image)
-                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                strSize = String.Format("{0} x {1}", MainFanart.Image.Width, MainFanart.Image.Height)
-                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                rect = New Rectangle(Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2 - 15), pbFanart.Height - 25, lenSize + 30, 25)
-                ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2), pbFanart.Height - 20)
-            End If
+            pbFanart.Top = pnlTop.Top + pnlTop.Height
         Else
             If pbFanartCache.Image IsNot Nothing Then
                 pbFanartCache.Image.Dispose()
@@ -7204,6 +7244,7 @@ Public Class frmMain
         If pbClearLogo.Image IsNot Nothing Then pnlClearLogo.Visible = True
         If pbDiscArt.Image IsNot Nothing Then pnlDiscArt.Visible = True
         If pbFanartSmall.Image IsNot Nothing Then pnlFanartSmall.Visible = True
+        If pbKeyArt.Image IsNot Nothing Then pnlKeyArt.Visible = True
         If pbLandscape.Image IsNot Nothing Then pnlLandscape.Visible = True
         If pbPoster.Image IsNot Nothing Then pnlPoster.Visible = True
     End Sub
@@ -7657,6 +7698,7 @@ Public Class frmMain
 
         txtPlot.Text = currDBElement.TVShow.Plot
         lblRuntime.Text = currDBElement.TVShow.Runtime
+        lblCountries.Text = String.Join(" / ", currDBElement.TVShow.Countries.ToArray)
         lblDirectors.Text = String.Join(" / ", currDBElement.TVShow.Creators.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(744, "Creators")
         lblReleaseDate.Text = currDBElement.TVShow.Premiered
@@ -7891,6 +7933,7 @@ Public Class frmMain
                 If .MovieMissingExtrafanarts Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ExtrafanartsPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .MovieMissingExtrathumbs Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ExtrathumbsPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .MovieMissingFanart Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingKeyArt Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.KeyArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .MovieMissingLandscape Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .MovieMissingNFO Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .MovieMissingPoster Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
@@ -7911,6 +7954,7 @@ Public Class frmMain
                 If .MovieSetMissingClearLogo Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .MovieSetMissingDiscArt Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.DiscArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .MovieSetMissingFanart Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieSetMissingKeyArt Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.KeyArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .MovieSetMissingLandscape Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .MovieSetMissingNFO Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .MovieSetMissingPoster Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
@@ -7929,6 +7973,7 @@ Public Class frmMain
                 If .TVShowMissingClearLogo Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .TVShowMissingExtrafanarts Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ExtrafanartsPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .TVShowMissingFanart Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingKeyArt Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.KeyArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .TVShowMissingLandscape Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .TVShowMissingNFO Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
                 If .TVShowMissingPoster Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
@@ -7939,7 +7984,7 @@ Public Class frmMain
     End Sub
 
     Private Sub Filter_SearchBar(
-                                ByRef searchBar As FormUtils.TextBox_with_Watermark,
+                                ByRef searchBar As AdvancedControls.TextBox_with_Watermark,
                                 ByRef comboBox As ComboBox,
                                 ByVal contentType As Enums.ContentType)
 
@@ -8485,10 +8530,11 @@ Public Class frmMain
             End If
             MoveMPAA()
             MoveGenres()
-            ImageUtils.ResizePB(pbFanart, pbFanartCache, scMain.Panel2.Height - 90, scMain.Panel2.Width)
+            ImageUtils.ResizePB(pbFanart, pbFanartCache, scMain.Panel2.Height - (pnlTop.Top + pnlTop.Height), scMain.Panel2.Width, True)
             pbFanart.Left = Convert.ToInt32((scMain.Panel2.Width - pbFanart.Width) / 2)
+            pbFanart.Top = pnlTop.Top + pnlTop.Height
             pnlNoInfo.Location = New Point(Convert.ToInt32((scMain.Panel2.Width - pnlNoInfo.Width) / 2), Convert.ToInt32((scMain.Panel2.Height - pnlNoInfo.Height) / 2))
-            pnlCancel.Location = New Point(Convert.ToInt32((scMain.Panel2.Width - pnlNoInfo.Width) / 2), 124)
+            pnlCancel.Location = New Point(Convert.ToInt32((scMain.Panel2.Width - pnlNoInfo.Width) / 2), 125)
             pnlFilterCountries_Movies.Location = New Point(pnlFilter_Movies.Left + tblFilter_Movies.Left + gbFilterSpecific_Movies.Left + tblFilterSpecific_Movies.Left + tblFilterSpecificData_Movies.Left + txtFilterCountry_Movies.Left + 1,
                                                               (pnlFilter_Movies.Top + tblFilter_Movies.Top + gbFilterSpecific_Movies.Top + tblFilterSpecific_Movies.Top + tblFilterSpecificData_Movies.Top + txtFilterCountry_Movies.Top) - pnlFilterCountries_Movies.Height)
             pnlFilterGenres_Movies.Location = New Point(pnlFilter_Movies.Left + tblFilter_Movies.Left + gbFilterSpecific_Movies.Left + tblFilterSpecific_Movies.Left + tblFilterSpecificData_Movies.Left + txtFilterGenre_Movies.Left + 1,
@@ -9723,10 +9769,12 @@ Public Class frmMain
                     mnuScrapeModifierDiscArt.Visible = True
                     mnuScrapeModifierExtrafanarts.Enabled = .MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts)
                     mnuScrapeModifierExtrafanarts.Visible = True
-                    mnuScrapeModifierExtrathumbs.Enabled = .MovieExtrathumbsAnyEnabled AndAlso (Master.eSettings.MovieExtrathumbsCreatorAutoThumbs OrElse Master.eSettings.MovieExtrathumbsCreatorUseETasFA OrElse ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs))
+                    mnuScrapeModifierExtrathumbs.Enabled = .MovieExtrathumbsAnyEnabled AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs) OrElse Master.eSettings.MovieExtrathumbsVideoExtraction)
                     mnuScrapeModifierExtrathumbs.Visible = True
                     mnuScrapeModifierFanart.Enabled = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     mnuScrapeModifierFanart.Visible = True
+                    mnuScrapeModifierKeyArt.Enabled = .MovieKeyArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainKeyArt)
+                    mnuScrapeModifierKeyArt.Visible = True
                     mnuScrapeModifierLandscape.Enabled = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
                     mnuScrapeModifierLandscape.Visible = True
                     mnuScrapeModifierMetaData.Enabled = .MovieScraperMetaDataScan
@@ -9758,6 +9806,8 @@ Public Class frmMain
                     mnuScrapeModifierExtrathumbs.Visible = False
                     mnuScrapeModifierFanart.Enabled = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
                     mnuScrapeModifierFanart.Visible = True
+                    mnuScrapeModifierKeyArt.Enabled = .MovieSetKeyArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainKeyArt)
+                    mnuScrapeModifierKeyArt.Visible = True
                     mnuScrapeModifierLandscape.Enabled = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
                     mnuScrapeModifierLandscape.Visible = True
                     mnuScrapeModifierMetaData.Enabled = False
@@ -9789,13 +9839,15 @@ Public Class frmMain
                     mnuScrapeModifierExtrathumbs.Visible = False
                     mnuScrapeModifierFanart.Enabled = .TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
                     mnuScrapeModifierFanart.Visible = True
+                    mnuScrapeModifierKeyArt.Enabled = False
+                    mnuScrapeModifierKeyArt.Visible = False
                     mnuScrapeModifierLandscape.Enabled = False
                     mnuScrapeModifierLandscape.Visible = False
                     mnuScrapeModifierMetaData.Enabled = .TVScraperMetaDataScan
                     mnuScrapeModifierMetaData.Visible = True
                     mnuScrapeModifierNFO.Enabled = True
                     mnuScrapeModifierNFO.Visible = True
-                    mnuScrapeModifierPoster.Enabled = .TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+                    mnuScrapeModifierPoster.Enabled = .TVEpisodePosterAnyEnabled AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster) OrElse Master.eSettings.TVEpisodePosterVideoExtraction)
                     mnuScrapeModifierPoster.Visible = True
                     mnuScrapeModifierTheme.Enabled = False
                     mnuScrapeModifierTheme.Visible = False
@@ -9820,6 +9872,8 @@ Public Class frmMain
                     mnuScrapeModifierExtrathumbs.Visible = False
                     mnuScrapeModifierFanart.Enabled = .TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
                     mnuScrapeModifierFanart.Visible = True
+                    mnuScrapeModifierKeyArt.Enabled = False
+                    mnuScrapeModifierKeyArt.Visible = False
                     mnuScrapeModifierLandscape.Enabled = .TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
                     mnuScrapeModifierLandscape.Visible = True
                     mnuScrapeModifierMetaData.Enabled = False
@@ -9851,6 +9905,8 @@ Public Class frmMain
                     mnuScrapeModifierExtrathumbs.Visible = False
                     mnuScrapeModifierFanart.Enabled = .TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
                     mnuScrapeModifierFanart.Visible = True
+                    mnuScrapeModifierKeyArt.Enabled = .TVShowKeyArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainKeyArt)
+                    mnuScrapeModifierKeyArt.Visible = True
                     mnuScrapeModifierLandscape.Enabled = .TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
                     mnuScrapeModifierLandscape.Visible = True
                     mnuScrapeModifierMetaData.Enabled = False
@@ -9888,6 +9944,7 @@ Public Class frmMain
         mnuScrapeModifierExtrafanarts.Click,
         mnuScrapeModifierExtrathumbs.Click,
         mnuScrapeModifierFanart.Click,
+        mnuScrapeModifierKeyArt.Click,
         mnuScrapeModifierLandscape.Click,
         mnuScrapeModifierMetaData.Click,
         mnuScrapeModifierNFO.Click,
@@ -9935,6 +9992,8 @@ Public Class frmMain
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsFanart, True)
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeFanart, True)
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonFanart, True)
+                Case "keyart"
+                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
                 Case "landscape"
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsLandscape, True)
@@ -10200,33 +10259,6 @@ Public Class frmMain
         pnlMPAA.Top = pnlInfoPanel.Top - (pnlMPAA.Height + 10)
     End Sub
 
-    Private Sub InfoDownloaded_Movie(ByRef DBMovie As Database.DBElement)
-        If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-            tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
-            Application.DoEvents()
-
-            Edit_Movie(DBMovie, Enums.ModuleEventType.ScraperSingle_Movie)
-        End If
-
-        pnlCancel.Visible = False
-        tslLoading.Visible = False
-        tspbLoading.Visible = False
-        SetStatus(String.Empty)
-        SetControlsEnabled(True)
-        EnableFilters_Movies(True)
-    End Sub
-    ''' <summary>
-    ''' Update the progressbar for the download progress
-    ''' </summary>
-    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
-    ''' <remarks></remarks>
-    Private Sub InfoDownloadedPercent_Movie(ByVal iPercent As Integer)
-        If ReportDownloadPercent = True Then
-            tspbLoading.Value = iPercent
-            Refresh()
-        End If
-    End Sub
-
     Private Sub CreateScrapeList_Movie(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifiers As Structures.ScrapeModifiers)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
@@ -10250,8 +10282,9 @@ Public Class frmMain
         Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
         Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
         Dim ExtrafanartsAllowed As Boolean = Master.eSettings.MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim ExtrathumbsAllowed As Boolean = Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso (Master.eSettings.MovieExtrathumbsCreatorAutoThumbs OrElse Master.eSettings.MovieExtrathumbsCreatorUseETasFA OrElse ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart))
+        Dim ExtrathumbsAllowed As Boolean = Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) OrElse Master.eSettings.MovieExtrathumbsVideoExtraction)
         Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        Dim KeyArtAllowed As Boolean = Master.eSettings.MovieKeyArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
         Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
         Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
         Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
@@ -10271,6 +10304,7 @@ Public Class frmMain
             sModifier.MainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso ExtrafanartsAllowed
             sModifier.MainExtrathumbs = ScrapeModifiers.MainExtrathumbs AndAlso ExtrathumbsAllowed
             sModifier.MainFanart = ScrapeModifiers.MainFanart AndAlso FanartAllowed
+            sModifier.MainKeyArt = ScrapeModifiers.MainKeyArt AndAlso KeyArtAllowed
             sModifier.MainLandscape = ScrapeModifiers.MainLandscape AndAlso LandscapeAllowed
             sModifier.MainMeta = ScrapeModifiers.MainMeta
             sModifier.MainNFO = ScrapeModifiers.MainNFO
@@ -10295,6 +10329,7 @@ Public Class frmMain
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ToString) Then sModifier.MainExtrafanarts = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).ToString) Then sModifier.MainExtrathumbs = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToString) Then sModifier.MainKeyArt = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
@@ -10379,33 +10414,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub InfoDownloaded_MovieSet(ByRef DBMovieSet As Database.DBElement)
-        If Not String.IsNullOrEmpty(DBMovieSet.ListTitle) Then
-            tslLoading.Text = Master.eLang.GetString(1205, "Verifying MovieSet Details:")
-            Application.DoEvents()
-
-            Edit_MovieSet(DBMovieSet)
-        End If
-
-        pnlCancel.Visible = False
-        tslLoading.Visible = False
-        tspbLoading.Visible = False
-        SetStatus(String.Empty)
-        SetControlsEnabled(True)
-        EnableFilters_MovieSets(True)
-    End Sub
-    ''' <summary>
-    ''' Update the progressbar for the download progress
-    ''' </summary>
-    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
-    ''' <remarks></remarks>
-    Private Sub InfoDownloadedPercent_MovieSet(ByVal iPercent As Integer)
-        If ReportDownloadPercent = True Then
-            tspbLoading.Value = iPercent
-            Refresh()
-        End If
-    End Sub
-
     Private Sub CreateScrapeList_MovieSet(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifiers As Structures.ScrapeModifiers)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
@@ -10428,6 +10436,7 @@ Public Class frmMain
         Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
         Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
         Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
+        Dim KeyArtAllowed As Boolean = Master.eSettings.MovieSetKeyArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
         Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
         Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
 
@@ -10442,6 +10451,7 @@ Public Class frmMain
             sModifier.MainClearLogo = ScrapeModifiers.MainClearLogo AndAlso ClearLogoAllowed
             sModifier.MainDiscArt = ScrapeModifiers.MainDiscArt AndAlso DiscArtAllowed
             sModifier.MainFanart = ScrapeModifiers.MainFanart AndAlso FanartAllowed
+            sModifier.MainKeyArt = ScrapeModifiers.MainKeyArt AndAlso KeyArtAllowed
             sModifier.MainLandscape = ScrapeModifiers.MainLandscape AndAlso LandscapeAllowed
             sModifier.MainNFO = ScrapeModifiers.MainNFO
             sModifier.MainPoster = ScrapeModifiers.MainPoster AndAlso PosterAllowed
@@ -10460,6 +10470,7 @@ Public Class frmMain
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ToString) Then sModifier.MainDiscArt = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToString) Then sModifier.MainKeyArt = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
@@ -10543,33 +10554,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub InfoDownloaded_TV(ByRef DBTVShow As Database.DBElement)
-        If DBTVShow.TVShow.TitleSpecified Then
-            tslLoading.Text = Master.eLang.GetString(761, "Verifying TV Show Details:")
-            Application.DoEvents()
-
-            Edit_TVShow(DBTVShow, Enums.ModuleEventType.ScraperSingle_TVShow)
-        End If
-
-        pnlCancel.Visible = False
-        tslLoading.Visible = False
-        tspbLoading.Visible = False
-        SetStatus(String.Empty)
-        SetControlsEnabled(True)
-        EnableFilters_Shows(True)
-    End Sub
-    ''' <summary>
-    ''' Update the progressbar for the download progress
-    ''' </summary>
-    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
-    ''' <remarks></remarks>
-    Private Sub InfoDownloadedPercent_TV(ByVal iPercent As Integer)
-        If ReportDownloadPercent = True Then
-            tspbLoading.Value = iPercent
-            Refresh()
-        End If
-    End Sub
-
     Private Sub CreateScrapeList_TV(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifiers As Structures.ScrapeModifiers)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
@@ -10602,6 +10586,7 @@ Public Class frmMain
         Dim MainClearLogoAllowed As Boolean = Master.eSettings.TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
         Dim MainExtrafanartsAllowed As Boolean = Master.eSettings.TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
         Dim MainFanartAllowed As Boolean = Master.eSettings.TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+        Dim MainKeyArtAllowed As Boolean = Master.eSettings.TVShowKeyArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
         Dim MainLandscapeAllowed As Boolean = Master.eSettings.TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
         Dim MainPosterAllowed As Boolean = Master.eSettings.TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
         Dim MainThemeAllowed As Boolean = Master.eSettings.TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
@@ -10632,6 +10617,7 @@ Public Class frmMain
             sModifier.MainClearLogo = ScrapeModifiers.MainClearLogo AndAlso MainClearLogoAllowed
             sModifier.MainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso MainExtrafanartsAllowed
             sModifier.MainFanart = ScrapeModifiers.MainFanart AndAlso MainFanartAllowed
+            sModifier.MainKeyArt = ScrapeModifiers.MainKeyArt AndAlso MainKeyArtAllowed
             sModifier.MainLandscape = ScrapeModifiers.MainLandscape AndAlso MainLandscapeAllowed
             sModifier.MainNFO = ScrapeModifiers.MainNFO
             sModifier.MainPoster = ScrapeModifiers.MainPoster AndAlso MainPosterAllowed
@@ -10658,6 +10644,7 @@ Public Class frmMain
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ToString) Then sModifier.MainExtrafanarts = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToString) Then sModifier.MainKeyArt = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
                     If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
@@ -10741,33 +10728,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub InfoDownloaded_TVEpisode(ByRef DBTVEpisode As Database.DBElement)
-        If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
-            tslLoading.Text = Master.eLang.GetString(762, "Verifying TV Episode Details:")
-            Application.DoEvents()
-
-            Edit_TVEpisode(DBTVEpisode, Enums.ModuleEventType.ScraperSingle_TVEpisode)
-        End If
-
-        pnlCancel.Visible = False
-        tslLoading.Visible = False
-        tspbLoading.Visible = False
-        SetStatus(String.Empty)
-        SetControlsEnabled(True)
-        EnableFilters_Shows(True)
-    End Sub
-    ''' <summary>
-    ''' Update the progressbar for the download progress
-    ''' </summary>
-    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
-    ''' <remarks></remarks>
-    Private Sub InfoDownloadedPercent_TVEpisode(ByVal iPercent As Integer)
-        If ReportDownloadPercent = True Then
-            tspbLoading.Value = iPercent
-            Refresh()
-        End If
-    End Sub
-
     Private Sub CreateScrapeList_TVEpisode(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifiers As Structures.ScrapeModifiers)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
@@ -10787,8 +10747,9 @@ Public Class frmMain
 
         Dim ActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
         Dim FanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) OrElse
-                                                                                           ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart))
-        Dim PosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+            ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart))
+        Dim PosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster) OrElse
+            Master.eSettings.TVEpisodePosterVideoExtraction)
 
         'create ScrapeList of episodes acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -10890,33 +10851,6 @@ Public Class frmMain
             bwTVEpisodeScraper.WorkerSupportsCancellation = True
             bwTVEpisodeScraper.WorkerReportsProgress = True
             bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
-        End If
-    End Sub
-
-    Private Sub InfoDownloaded_TVSeason(ByRef DBTVSeason As Database.DBElement)
-        If Not String.IsNullOrEmpty(DBTVSeason.TVShow.Title) Then
-            tslLoading.Text = Master.eLang.GetString(80, "Verifying TV Season Details:")
-            Application.DoEvents()
-
-            Edit_TVSeason(DBTVSeason, Enums.ModuleEventType.ScraperSingle_TVSeason)
-        End If
-
-        pnlCancel.Visible = False
-        tslLoading.Visible = False
-        tspbLoading.Visible = False
-        SetStatus(String.Empty)
-        SetControlsEnabled(True)
-        EnableFilters_Shows(True)
-    End Sub
-    ''' <summary>
-    ''' Update the progressbar for the download progress
-    ''' </summary>
-    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
-    ''' <remarks></remarks>
-    Private Sub InfoDownloadedPercent_TVSeason(ByVal iPercent As Integer)
-        If ReportDownloadPercent = True Then
-            tspbLoading.Value = iPercent
-            Refresh()
         End If
     End Sub
 
@@ -11052,6 +10986,141 @@ Public Class frmMain
             bwTVSeasonScraper.WorkerSupportsCancellation = True
             bwTVSeasonScraper.WorkerReportsProgress = True
             bwTVSeasonScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
+        End If
+    End Sub
+
+    Private Sub InfoDownloaded_Movie(ByRef DBMovie As Database.DBElement)
+        If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+            tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
+            Application.DoEvents()
+
+            Edit_Movie(DBMovie, Enums.ModuleEventType.ScraperSingle_Movie)
+        End If
+
+        pnlCancel.Visible = False
+        tslLoading.Visible = False
+        tspbLoading.Visible = False
+        SetStatus(String.Empty)
+        SetControlsEnabled(True)
+        EnableFilters_Movies(True)
+    End Sub
+    ''' <summary>
+    ''' Update the progressbar for the download progress
+    ''' </summary>
+    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
+    ''' <remarks></remarks>
+    Private Sub InfoDownloadedPercent_Movie(ByVal iPercent As Integer)
+        If ReportDownloadPercent = True Then
+            tspbLoading.Value = iPercent
+            Refresh()
+        End If
+    End Sub
+
+    Private Sub InfoDownloaded_MovieSet(ByRef DBMovieSet As Database.DBElement)
+        If Not String.IsNullOrEmpty(DBMovieSet.ListTitle) Then
+            tslLoading.Text = Master.eLang.GetString(1205, "Verifying MovieSet Details:")
+            Application.DoEvents()
+
+            Edit_MovieSet(DBMovieSet)
+        End If
+
+        pnlCancel.Visible = False
+        tslLoading.Visible = False
+        tspbLoading.Visible = False
+        SetStatus(String.Empty)
+        SetControlsEnabled(True)
+        EnableFilters_MovieSets(True)
+    End Sub
+    ''' <summary>
+    ''' Update the progressbar for the download progress
+    ''' </summary>
+    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
+    ''' <remarks></remarks>
+    Private Sub InfoDownloadedPercent_MovieSet(ByVal iPercent As Integer)
+        If ReportDownloadPercent = True Then
+            tspbLoading.Value = iPercent
+            Refresh()
+        End If
+    End Sub
+
+    Private Sub InfoDownloaded_TV(ByRef DBTVShow As Database.DBElement)
+        If DBTVShow.TVShow.TitleSpecified Then
+            tslLoading.Text = Master.eLang.GetString(761, "Verifying TV Show Details:")
+            Application.DoEvents()
+
+            Edit_TVShow(DBTVShow, Enums.ModuleEventType.ScraperSingle_TVShow)
+        End If
+
+        pnlCancel.Visible = False
+        tslLoading.Visible = False
+        tspbLoading.Visible = False
+        SetStatus(String.Empty)
+        SetControlsEnabled(True)
+        EnableFilters_Shows(True)
+    End Sub
+    ''' <summary>
+    ''' Update the progressbar for the download progress
+    ''' </summary>
+    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
+    ''' <remarks></remarks>
+    Private Sub InfoDownloadedPercent_TV(ByVal iPercent As Integer)
+        If ReportDownloadPercent = True Then
+            tspbLoading.Value = iPercent
+            Refresh()
+        End If
+    End Sub
+
+    Private Sub InfoDownloaded_TVEpisode(ByRef DBTVEpisode As Database.DBElement)
+        If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
+            tslLoading.Text = Master.eLang.GetString(762, "Verifying TV Episode Details:")
+            Application.DoEvents()
+
+            Edit_TVEpisode(DBTVEpisode, Enums.ModuleEventType.ScraperSingle_TVEpisode)
+        End If
+
+        pnlCancel.Visible = False
+        tslLoading.Visible = False
+        tspbLoading.Visible = False
+        SetStatus(String.Empty)
+        SetControlsEnabled(True)
+        EnableFilters_Shows(True)
+    End Sub
+    ''' <summary>
+    ''' Update the progressbar for the download progress
+    ''' </summary>
+    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
+    ''' <remarks></remarks>
+    Private Sub InfoDownloadedPercent_TVEpisode(ByVal iPercent As Integer)
+        If ReportDownloadPercent = True Then
+            tspbLoading.Value = iPercent
+            Refresh()
+        End If
+    End Sub
+
+    Private Sub InfoDownloaded_TVSeason(ByRef DBTVSeason As Database.DBElement)
+        If Not String.IsNullOrEmpty(DBTVSeason.TVShow.Title) Then
+            tslLoading.Text = Master.eLang.GetString(80, "Verifying TV Season Details:")
+            Application.DoEvents()
+
+            Edit_TVSeason(DBTVSeason, Enums.ModuleEventType.ScraperSingle_TVSeason)
+        End If
+
+        pnlCancel.Visible = False
+        tslLoading.Visible = False
+        tspbLoading.Visible = False
+        SetStatus(String.Empty)
+        SetControlsEnabled(True)
+        EnableFilters_Shows(True)
+    End Sub
+    ''' <summary>
+    ''' Update the progressbar for the download progress
+    ''' </summary>
+    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
+    ''' <remarks></remarks>
+    Private Sub InfoDownloadedPercent_TVSeason(ByVal iPercent As Integer)
+        If ReportDownloadPercent = True Then
+            tspbLoading.Value = iPercent
+            Refresh()
         End If
     End Sub
 
@@ -11986,6 +12055,103 @@ Public Class frmMain
         End Try
     End Sub
 
+    Private Sub pbKeyArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbKeyArt.MouseDoubleClick
+        Try
+            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+                If pbKeyArtCache.Image IsNot Nothing Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(pbKeyArtCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+
+                Select Case GetCurrentMainTabTag().ContentType
+                    Case Enums.ContentType.Movie
+                        If dgvMovies.SelectedRows.Count > 1 Then Return
+                        SetControlsEnabled(False)
+
+                        Dim indX As Integer = dgvMovies.SelectedRows(0).Index
+                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
+
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
+                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+                            If aContainer.MainKeyArts.Count > 0 Then
+                                Dim dlgImgS As New dlgImgSelect()
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
+                                    tmpDBElement.ImagesContainer.KeyArt = dlgImgS.Result.ImagesContainer.KeyArt
+                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
+                                    RefreshRow_Movie(ID)
+                                End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            End If
+                        End If
+                        SetControlsEnabled(True)
+                    Case Enums.ContentType.MovieSet
+                        If dgvMovieSets.SelectedRows.Count > 1 Then Return
+                        SetControlsEnabled(False)
+
+                        Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
+                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+                            If aContainer.MainKeyArts.Count > 0 Then
+                                Dim dlgImgS As New dlgImgSelect()
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
+                                    tmpDBElement.ImagesContainer.KeyArt = dlgImgS.Result.ImagesContainer.KeyArt
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
+                                    RefreshRow_MovieSet(ID)
+                                End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            End If
+                        End If
+                        SetControlsEnabled(True)
+                    Case Enums.ContentType.TV
+                        'TV Show list
+                        If dgvTVShows.Focused Then
+                            If dgvTVShows.SelectedRows.Count > 1 Then Return
+                            SetControlsEnabled(False)
+
+                            Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
+
+                            Dim aContainer As New MediaContainers.SearchResultsContainer
+                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
+                            If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+                                If aContainer.MainKeyArts.Count > 0 Then
+                                    Dim dlgImgS As New dlgImgSelect()
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
+                                        tmpDBElement.ImagesContainer.KeyArt = dlgImgS.Result.ImagesContainer.KeyArt
+                                        Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
+                                        RefreshRow_TVShow(ID)
+                                    End If
+                                Else
+                                    MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                End If
+                            End If
+                            SetControlsEnabled(True)
+                        End If
+                End Select
+            End If
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+            SetControlsEnabled(True)
+        End Try
+    End Sub
+
     Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbLandscape.MouseDoubleClick
         Try
             If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
@@ -12669,12 +12835,15 @@ Public Class frmMain
             Dim newDRow As DataRow = Nothing
             Dim newTable As New DataTable
 
-            Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM seasonslist WHERE idSeason={0}", SeasonID))
+            Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM {0} WHERE {1}={2}",
+                                                            Database.Helpers.GetMainViewName(Enums.ContentType.TVSeason),
+                                                            Database.Helpers.GetMainIdName(Database.TableName.season),
+                                                            SeasonID))
             If newTable.Rows.Count > 0 Then
                 newDRow = newTable.Rows.Item(0)
             End If
 
-            Dim oldDRow As DataRow = dtTVSeasons.Select(String.Format("idSeason = {0}", SeasonID.ToString)).FirstOrDefault()
+            Dim oldDRow As DataRow = dtTVSeasons.Select(String.Format("{0}={1}", Database.Helpers.GetMainIdName(Database.TableName.season), SeasonID.ToString)).FirstOrDefault()
 
             If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
                 Try
@@ -12688,7 +12857,7 @@ Public Class frmMain
                 End Try
             End If
 
-            If dgvTVSeasons.Visible AndAlso dgvTVSeasons.SelectedRows.Count > 0 AndAlso CInt(dgvTVSeasons.SelectedRows(0).Cells("idSeason").Value) = SeasonID AndAlso currList = 1 Then
+            If dgvTVSeasons.Visible AndAlso dgvTVSeasons.SelectedRows.Count > 0 AndAlso CInt(dgvTVSeasons.SelectedRows(0).Cells(Database.Helpers.GetMainIdName(Database.TableName.season)).Value) = SeasonID AndAlso currList = 1 Then
                 SelectRow_TVSeason(dgvTVSeasons.SelectedRows(0).Index)
             End If
 
@@ -12698,11 +12867,17 @@ Public Class frmMain
 
     Private Sub RefreshRow_TVSeason(ByVal ShowID As Long, ByVal iSeason As Integer)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLNewcommand.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
+            SQLNewcommand.CommandText = String.Format("SELECT {0} FROM {1} WHERE {2} = {3} AND {4} = {5};",
+                                                      Database.Helpers.GetMainIdName(Database.TableName.season),
+                                                      Database.Helpers.GetTableName(Database.TableName.season),
+                                                      Database.Helpers.GetMainIdName(Database.TableName.tvshow),
+                                                      ShowID,
+                                                      Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber),
+                                                      iSeason)
             Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 SQLreader.Read()
                 If SQLreader.HasRows Then
-                    RefreshRow_TVSeason(Convert.ToInt64(SQLreader("idSeason")))
+                    RefreshRow_TVSeason(Convert.ToInt64(SQLreader(Database.Helpers.GetMainIdName(Database.TableName.season))))
                 End If
             End Using
         End Using
@@ -13280,8 +13455,9 @@ Public Class frmMain
                 MoveMPAA()
                 MoveGenres()
 
-                ImageUtils.ResizePB(pbFanart, pbFanartCache, scMain.Panel2.Height - 90, scMain.Panel2.Width)
+                ImageUtils.ResizePB(pbFanart, pbFanartCache, scMain.Panel2.Height - (pnlTop.Top + pnlTop.Height), scMain.Panel2.Width, True)
                 pbFanart.Left = Convert.ToInt32((scMain.Panel2.Width - pbFanart.Width) / 2)
+                pbFanart.Top = pnlTop.Top + pnlTop.Height
                 pnlNoInfo.Location = New Point(Convert.ToInt32((scMain.Panel2.Width - pnlNoInfo.Width) / 2), Convert.ToInt32((scMain.Panel2.Height - pnlNoInfo.Height) / 2))
                 pnlCancel.Location = New Point(Convert.ToInt32((scMain.Panel2.Width - pnlNoInfo.Width) / 2), 124)
                 pnlFilterCountries_Movies.Location = New Point(pnlFilter_Movies.Left + tblFilter_Movies.Left + gbFilterSpecific_Movies.Left + tblFilterSpecific_Movies.Left + tblFilterSpecificData_Movies.Left + txtFilterCountry_Movies.Left + 1,
@@ -14243,6 +14419,11 @@ Public Class frmMain
         cmnuMovieEditGenres.Text = strEditGenres
         cmnuShowEditGenres.Text = strEditGenres
 
+        'Edit Meta Data
+        Dim strEditMetaData As String = Master.eLang.GetString(603, "Edit Meta Data")
+        cmnuEpisodeEditMetaData.Text = strEditMetaData
+        cmnuMovieEditMetaData.Text = strEditMetaData
+
         'Edit Movie Sorting
         Dim strEditMovieSorting As String = Master.eLang.GetString(939, "Edit Movie Sorting")
         cmnuMovieSetEditSortMethod.Text = strEditMovieSorting
@@ -14277,6 +14458,10 @@ Public Class frmMain
         lblFilter_Movies.Text = String.Format("{0} ({1})", strFilters, If(bsMovies.Filter Is Nothing, Master.eLang.GetString(1091, "Inactive"), Master.eLang.GetString(1090, "Active")))
         lblFilter_MovieSets.Text = String.Format("{0} ({1})", strFilters, If(bsMovieSets.Filter Is Nothing, Master.eLang.GetString(1091, "Inactive"), Master.eLang.GetString(1090, "Active")))
         lblFilter_Shows.Text = String.Format("{0} ({1})", strFilters, If(bsTVShows.Filter Is Nothing, Master.eLang.GetString(1091, "Inactive"), Master.eLang.GetString(1090, "Active")))
+
+        'KeyArt Only
+        Dim strKeyArtOnly As String = Master.eLang.GetString(303, "KeyArt Only")
+        mnuScrapeModifierKeyArt.Text = strKeyArtOnly
 
         'Landscape Only
         Dim strLandscapeOnly As String = Master.eLang.GetString(1061, "Landscape Only")
@@ -14548,6 +14733,10 @@ Public Class frmMain
         chkMovieMissingFanart.Checked = Master.eSettings.MovieMissingFanart
         AddHandler chkMovieMissingFanart.CheckedChanged, AddressOf chkMovieMissingFanart_CheckedChanged
 
+        RemoveHandler chkMovieMissingKeyArt.CheckedChanged, AddressOf chkMovieMissingKeyArt_CheckedChanged
+        chkMovieMissingKeyArt.Checked = Master.eSettings.MovieMissingKeyArt
+        AddHandler chkMovieMissingKeyArt.CheckedChanged, AddressOf chkMovieMissingKeyArt_CheckedChanged
+
         RemoveHandler chkMovieMissingLandscape.CheckedChanged, AddressOf chkMovieMissingLandscape_CheckedChanged
         chkMovieMissingLandscape.Checked = Master.eSettings.MovieMissingLandscape
         AddHandler chkMovieMissingLandscape.CheckedChanged, AddressOf chkMovieMissingLandscape_CheckedChanged
@@ -14592,6 +14781,10 @@ Public Class frmMain
         chkMovieSetMissingFanart.Checked = Master.eSettings.MovieSetMissingFanart
         AddHandler chkMovieSetMissingFanart.CheckedChanged, AddressOf chkMovieSetMissingFanart_CheckedChanged
 
+        RemoveHandler chkMovieSetMissingKeyArt.CheckedChanged, AddressOf chkMovieSetMissingKeyArt_CheckedChanged
+        chkMovieSetMissingKeyArt.Checked = Master.eSettings.MovieSetMissingKeyArt
+        AddHandler chkMovieSetMissingKeyArt.CheckedChanged, AddressOf chkMovieSetMissingKeyArt_CheckedChanged
+
         RemoveHandler chkMovieSetMissingLandscape.CheckedChanged, AddressOf chkMovieSetMissingLandscape_CheckedChanged
         chkMovieSetMissingLandscape.Checked = Master.eSettings.MovieSetMissingLandscape
         AddHandler chkMovieSetMissingLandscape.CheckedChanged, AddressOf chkMovieSetMissingLandscape_CheckedChanged
@@ -14628,6 +14821,10 @@ Public Class frmMain
         chkShowMissingFanart.Checked = Master.eSettings.TVShowMissingFanart
         AddHandler chkShowMissingFanart.CheckedChanged, AddressOf chkShowMissingFanart_CheckedChanged
 
+        RemoveHandler chkShowMissingKeyArt.CheckedChanged, AddressOf chkShowMissingKeyArt_CheckedChanged
+        chkShowMissingKeyArt.Checked = Master.eSettings.TVShowMissingKeyArt
+        AddHandler chkShowMissingKeyArt.CheckedChanged, AddressOf chkShowMissingKeyArt_CheckedChanged
+
         RemoveHandler chkShowMissingLandscape.CheckedChanged, AddressOf chkShowMissingLandscape_CheckedChanged
         chkShowMissingLandscape.Checked = Master.eSettings.TVShowMissingLandscape
         AddHandler chkShowMissingLandscape.CheckedChanged, AddressOf chkShowMissingLandscape_CheckedChanged
@@ -14654,7 +14851,6 @@ Public Class frmMain
         cmnuMovieChange.Text = Master.eLang.GetString(32, "Change Movie")
         cmnuMovieChangeAuto.Text = Master.eLang.GetString(1294, "Change Movie (Auto)")
         cmnuMovieEdit.Text = Master.eLang.GetString(25, "Edit Movie")
-        cmnuMovieEditMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
         cmnuMovieLock.Text = Master.eLang.GetString(24, "Lock")
         cmnuMovieMarkAs.Text = Master.eLang.GetString(1192, "Mark as")
         cmnuMovieMarkAsCustom1.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker1Name), Master.eSettings.MovieGeneralCustomMarker1Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #1"))

@@ -18,11 +18,11 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports EmberAPI
-Imports NLog
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
+Imports EmberAPI
+Imports NLog
 
 <Serializable()>
 <XmlRoot("theme")>
@@ -187,6 +187,8 @@ Public Class clsXMLTheme
         Public Property DiscArt As New ImageSettings
         <XmlElement("fanartsmall")>
         Public Property FanartSmall As New ImageSettings
+        <XmlElement("keyart")>
+        Public Property KeyArt As New ImageSettings
         <XmlElement("landscape")>
         Public Property Landscape As New ImageSettings
         <XmlElement("poster")>
@@ -261,15 +263,19 @@ Public Class clsXMLTheme
 
         <XmlElement("left")>
         Public Property Left As Integer
+
         Public ReadOnly Property Location As Point
             Get
                 Return New Point(Left, Top)
             End Get
         End Property
+
         <XmlElement("maxheight")>
         Public Property MaxHeight As Integer
+
         <XmlElement("maxwidth")>
         Public Property MaxWidth As Integer
+
         <XmlElement("top")>
         Public Property Top As Integer
 
@@ -536,6 +542,14 @@ Public Class Theming
             frmMain.pnlFanartSmallTop.BackColor = .ImageName.BackColor
             SetControlSettings_ImagePanel(frmMain.lblFanartSmallTitle, .ImageName)
             SetControlSettings_ImagePanel(frmMain.lblFanartSmallSize, .ImageSize)
+            'KeyArt
+            frmMain.pbKeyArt.BackColor = .BackColor
+            frmMain.pnlKeyArt.BackColor = .BackColor
+            frmMain.pnlKeyArtBottom.BackColor = .ImageSize.BackColor
+            frmMain.pnlKeyArtMain.BackColor = .BackColor
+            frmMain.pnlKeyArtTop.BackColor = .ImageName.BackColor
+            SetControlSettings_ImagePanel(frmMain.lblKeyArtTitle, .ImageName)
+            SetControlSettings_ImagePanel(frmMain.lblKeyArtSize, .ImageSize)
             'Landscape
             frmMain.pbLandscape.BackColor = .BackColor
             frmMain.pnlLandscape.BackColor = .BackColor
@@ -599,7 +613,6 @@ Public Class Theming
         frmMain.pnlInfoIcons.BackColor = _theme.TopPanel.GlobalSettings.BackColor
         frmMain.pnlRating.BackColor = _theme.TopPanel.GlobalSettings.BackColor
         frmMain.pnlTop.BackColor = _theme.TopPanel.GlobalSettings.BackColor
-
 
         'InfoPanel
         SetInfoPanelSettings(contentType)
@@ -666,7 +679,7 @@ Public Class Theming
         Next
     End Sub
 
-    Public Function EvaluateFormula(ByVal sFormula As String) As Integer
+    Private Function EvaluateFormula(ByVal sFormula As String) As Integer
         Dim mReg As Match
         Dim rResult As Double = 0.0
         Dim dFirst As Double = 0.0
@@ -755,11 +768,17 @@ Public Class Theming
     End Function
 
     Public Sub ParseTheme()
-        Dim tPath As String = String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, String.Format("{0}.xml", Master.eSettings.GeneralTheme))
-        If File.Exists(tPath) Then
-            _theme = Load(tPath)
+        Dim lstFiles As New List(Of FileInfo)
+        Dim diDefaults As DirectoryInfo = New DirectoryInfo(Path.Combine(Functions.AppPath, "Themes"))
+        Dim diCustom As DirectoryInfo = New DirectoryInfo(Path.Combine(Master.SettingsPath, "Themes"))
+        If diDefaults.Exists Then lstFiles.AddRange(diDefaults.GetFiles("*.xml"))
+        If diCustom.Exists Then lstFiles.AddRange(diCustom.GetFiles("*.xml"))
+        Dim fiTheme = lstFiles.FirstOrDefault(Function(f) f.Name = String.Format("{0}.xml", Master.eSettings.GeneralTheme))
+        If fiTheme IsNot Nothing AndAlso fiTheme.Exists Then
+            _theme = Load(fiTheme.FullName)
         Else
-            _theme = Load(String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, "Default.xml"))
+            _theme = Load(String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, "FullHD-Default.xml"))
+            Master.eSettings.GeneralTheme = "FullHD-Default"
         End If
     End Sub
 
@@ -861,6 +880,10 @@ Public Class Theming
             frmMain.FanartSmallMaxHeight = .FanartSmall.MaxHeight
             frmMain.FanartSmallMaxWidth = .FanartSmall.MaxWidth
             frmMain.pnlFanartSmall.Location = .FanartSmall.Location
+            'KeyArt
+            frmMain.KeyArtMaxHeight = .KeyArt.MaxHeight
+            frmMain.KeyArtMaxWidth = .KeyArt.MaxWidth
+            frmMain.pnlKeyArt.Location = .KeyArt.Location
             'Landscape
             frmMain.LandscapeMaxHeight = .Landscape.MaxHeight
             frmMain.LandscapeMaxWidth = .Landscape.MaxWidth

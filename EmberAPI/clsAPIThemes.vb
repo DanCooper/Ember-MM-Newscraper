@@ -110,7 +110,7 @@ Public Class Themes
         If Not tDBElement.FileItemSpecified Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme, ForceFileCleanup)
+            For Each a In FileUtils.FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTheme, ForceFileCleanup)
                 For Each t As String In Master.eSettings.FileSystemValidThemeExts
                     If File.Exists(String.Concat(a, t)) Then
                         Delete(String.Concat(a, t))
@@ -130,7 +130,7 @@ Public Class Themes
         If Not DBTVShow.ShowPathSpecified Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainTheme) ', ForceFileCleanup)
+            For Each a In FileUtils.FileNames.GetFileNames(DBTVShow, Enums.ModifierType.MainTheme) ', ForceFileCleanup)
                 For Each t As String In Master.eSettings.FileSystemValidThemeExts
                     If File.Exists(String.Concat(a, t)) Then
                         Delete(String.Concat(a, t))
@@ -246,7 +246,7 @@ Public Class Themes
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme)
+            For Each a In FileUtils.FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTheme)
                 SaveToFile(String.Concat(a, _ext))
                 strReturn = (String.Concat(a, _ext))
             Next
@@ -271,7 +271,7 @@ Public Class Themes
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainTheme)
+            For Each a In FileUtils.FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTheme)
                 SaveToFile(String.Concat(a, _ext))
                 strReturn = (String.Concat(a, _ext))
             Next

@@ -34,6 +34,11 @@ Public Class Settings
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
+    Public Const ExtraImagesLimit As Integer = 20
+    Private _movieextrafanartslimit As Integer = 4
+    Private _movieextrathumbslimit As Integer = 4
+    Private _tvshowextrafanartslimit As Integer  = 4
+
 #End Region 'Fields 
 
 #Region "Properties"
@@ -55,6 +60,7 @@ Public Class Settings
     Public Property GeneralDisplayDiscArt() As Boolean = True
     Public Property GeneralDisplayFanart() As Boolean = True
     Public Property GeneralDisplayFanartSmall() As Boolean = True
+    Public Property GeneralDisplayKeyArt() As Boolean = True
     Public Property GeneralDisplayLandscape() As Boolean = True
     Public Property GeneralDisplayPoster() As Boolean = True
     Public Property GeneralDoubleClickScrape() As Boolean = False
@@ -95,7 +101,7 @@ Public Class Settings
     Public Property GeneralSplitterDistanceMain() As Integer = 550
     Public Property GeneralSplitterDistanceTVSeason() As Integer = 200
     Public Property GeneralSplitterDistanceTVShow() As Integer = 200
-    Public Property GeneralTheme() As String = "Default"
+    Public Property GeneralTheme() As String = "FullHD-Default"
     Public Property GeneralVirtualDriveLetter() As String = String.Empty
     Public Property GeneralVirtualDriveBinPath() As String = String.Empty
     Public Property GeneralWindowLoc() As Point = New Point(10, 10)
@@ -123,7 +129,7 @@ Public Class Settings
     Public Property MovieBannerHeight() As Integer = 0
     Public Property MovieBannerKeepExisting() As Boolean = False
     Public Property MovieBannerNMJ() As Boolean = False
-    Public Property MovieBannerPrefSize() As Enums.MovieBannerSize = Enums.MovieBannerSize.Any
+    Public Property MovieBannerPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieBannerPrefSizeOnly() As Boolean = False
     Public Property MovieBannerResize() As Boolean = False
     Public Property MovieBannerWidth() As Integer = 0
@@ -136,6 +142,8 @@ Public Class Settings
     Public Property MovieClearArtExpertVTS() As String = String.Empty
     Public Property MovieClearArtExtended() As Boolean = False
     Public Property MovieClearArtKeepExisting() As Boolean = False
+    Public Property MovieClearArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property MovieClearArtPrefSizeOnly() As Boolean = False
     Public Property MovieClearLogoAD() As Boolean = False
     Public Property MovieClearLogoExpertBDMV() As String = String.Empty
     Public Property MovieClearLogoExpertMulti() As String = String.Empty
@@ -143,6 +151,8 @@ Public Class Settings
     Public Property MovieClearLogoExpertVTS() As String = String.Empty
     Public Property MovieClearLogoExtended() As Boolean = False
     Public Property MovieClearLogoKeepExisting() As Boolean = False
+    Public Property MovieClearLogoPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property MovieClearLogoPrefSizeOnly() As Boolean = False
     Public Property MovieClickScrape() As Boolean = False
     Public Property MovieClickScrapeAsk() As Boolean = False
     Public Property MovieDiscArtAD() As Boolean = False
@@ -152,6 +162,8 @@ Public Class Settings
     Public Property MovieDiscArtExpertVTS() As String = String.Empty
     Public Property MovieDiscArtExtended() As Boolean = False
     Public Property MovieDiscArtKeepExisting() As Boolean = False
+    Public Property MovieDiscArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property MovieDiscArtPrefSizeOnly() As Boolean = False
     Public Property MovieDisplayYear() As Boolean = False
     Public Property MovieExtrafanartsEden() As Boolean = False
     Public Property MovieExtrafanartsExpertBDMV() As Boolean = False
@@ -160,16 +172,25 @@ Public Class Settings
     Public Property MovieExtrafanartsFrodo() As Boolean = False
     Public Property MovieExtrafanartsHeight() As Integer = 0
     Public Property MovieExtrafanartsKeepExisting() As Boolean = False
-    Public Property MovieExtrafanartsLimit() As Integer = 4
-    Public Property MovieExtrafanartsPrefSize() As Enums.MovieFanartSize = Enums.MovieFanartSize.Any
+    Public Property MovieExtrafanartsLimit() As Integer
+        Get
+            Return _movieextrafanartslimit
+        End Get
+        Set(value As Integer)
+            If value > ExtraImagesLimit OrElse value = 0 Then
+                _movieextrafanartslimit = 20
+            Else
+                _movieextrafanartslimit = value
+            End If
+        End Set
+    End Property
+    Public Property MovieExtrafanartsPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieExtrafanartsPrefSizeOnly() As Boolean = False
     Public Property MovieExtrafanartsPreselect() As Boolean = True
     Public Property MovieExtrafanartsResize() As Boolean = False
     Public Property MovieExtrafanartsWidth() As Integer = 0
-    Public Property MovieExtrathumbsCreatorAutoThumbs() As Boolean = False
-    Public Property MovieExtrathumbsCreatorNoBlackBars() As Boolean = False
-    Public Property MovieExtrathumbsCreatorNoSpoilers() As Boolean = False
-    Public Property MovieExtrathumbsCreatorUseETasFA() As Boolean = False
+    Public Property MovieExtrathumbsVideoExtraction() As Boolean = False
+    Public Property MovieExtrathumbsVideoExtractionPref() As Boolean = False
     Public Property MovieExtrathumbsEden() As Boolean = False
     Public Property MovieExtrathumbsExpertBDMV() As Boolean = False
     Public Property MovieExtrathumbsExpertSingle() As Boolean = False
@@ -177,8 +198,19 @@ Public Class Settings
     Public Property MovieExtrathumbsFrodo() As Boolean = False
     Public Property MovieExtrathumbsHeight() As Integer = 0
     Public Property MovieExtrathumbsKeepExisting() As Boolean = False
-    Public Property MovieExtrathumbsLimit() As Integer = 4
-    Public Property MovieExtrathumbsPrefSize() As Enums.MovieFanartSize = Enums.MovieFanartSize.Any
+    Public Property MovieExtrathumbsLimit() As Integer
+        Get
+            Return _movieextrathumbslimit
+        End Get
+        Set(value As Integer)
+            If value > ExtraImagesLimit OrElse value = 0 Then
+                _movieextrathumbslimit = 20
+            Else
+                _movieextrathumbslimit = value
+            End If
+        End Set
+    End Property
+    Public Property MovieExtrathumbsPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieExtrathumbsPrefSizeOnly() As Boolean = False
     Public Property MovieExtrathumbsPreselect() As Boolean = True
     Public Property MovieExtrathumbsResize() As Boolean = False
@@ -193,7 +225,7 @@ Public Class Settings
     Public Property MovieFanartHeight() As Integer = 0
     Public Property MovieFanartKeepExisting() As Boolean = False
     Public Property MovieFanartNMJ() As Boolean = False
-    Public Property MovieFanartPrefSize() As Enums.MovieFanartSize = Enums.MovieFanartSize.Any
+    Public Property MovieFanartPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieFanartPrefSizeOnly() As Boolean = False
     Public Property MovieFanartResize() As Boolean = False
     Public Property MovieFanartWidth() As Integer = 0
@@ -224,6 +256,13 @@ Public Class Settings
     Public Property MovieImagesGetEnglishImages() As Boolean = False
     Public Property MovieImagesMediaLanguageOnly() As Boolean = False
     Public Property MovieImagesNotSaveURLToNfo() As Boolean = False
+    Public Property MovieKeyArtExtended() As Boolean = False
+    Public Property MovieKeyArtHeight() As Integer = 0
+    Public Property MovieKeyArtKeepExisting() As Boolean = False
+    Public Property MovieKeyArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property MovieKeyArtPrefSizeOnly() As Boolean = False
+    Public Property MovieKeyArtResize() As Boolean = False
+    Public Property MovieKeyArtWidth() As Integer = 0
     Public Property MovieLandscapeAD() As Boolean = False
     Public Property MovieLandscapeExpertBDMV() As String = String.Empty
     Public Property MovieLandscapeExpertMulti() As String = String.Empty
@@ -231,6 +270,8 @@ Public Class Settings
     Public Property MovieLandscapeExpertVTS() As String = String.Empty
     Public Property MovieLandscapeExtended() As Boolean = False
     Public Property MovieLandscapeKeepExisting() As Boolean = False
+    Public Property MovieLandscapePrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property MovieLandscapePrefSizeOnly() As Boolean = False
     Public Property MovieLevTolerance() As Integer = 0
     Public Property MovieLockActors() As Boolean = False
     Public Property MovieLockCert() As Boolean = False
@@ -265,6 +306,7 @@ Public Class Settings
     Public Property MovieMissingExtrafanarts() As Boolean = False
     Public Property MovieMissingExtrathumbs() As Boolean = False
     Public Property MovieMissingFanart() As Boolean = False
+    Public Property MovieMissingKeyArt() As Boolean = False
     Public Property MovieMissingLandscape() As Boolean = False
     Public Property MovieMissingNFO() As Boolean = False
     Public Property MovieMissingPoster() As Boolean = False
@@ -290,7 +332,7 @@ Public Class Settings
     Public Property MoviePosterHeight() As Integer = 0
     Public Property MoviePosterKeepExisting() As Boolean = False
     Public Property MoviePosterNMJ() As Boolean = False
-    Public Property MoviePosterPrefSize() As Enums.MoviePosterSize = Enums.MoviePosterSize.Any
+    Public Property MoviePosterPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MoviePosterPrefSizeOnly() As Boolean = False
     Public Property MoviePosterResize() As Boolean = False
     Public Property MoviePosterWidth() As Integer = 0
@@ -351,7 +393,7 @@ Public Class Settings
     Public Property MovieSetBannerHeight() As Integer = 0
     Public Property MovieSetBannerKeepExisting() As Boolean = False
     Public Property MovieSetBannerMSAA() As Boolean = False
-    Public Property MovieSetBannerPrefSize() As Enums.MovieBannerSize = Enums.MovieBannerSize.Any
+    Public Property MovieSetBannerPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieSetBannerPrefSizeOnly() As Boolean = False
     Public Property MovieSetBannerResize() As Boolean = False
     Public Property MovieSetBannerWidth() As Integer = 0
@@ -362,24 +404,30 @@ Public Class Settings
     Public Property MovieSetClearArtExtended() As Boolean = False
     Public Property MovieSetClearArtKeepExisting() As Boolean = False
     Public Property MovieSetClearArtMSAA() As Boolean = False
+    Public Property MovieSetClearArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property MovieSetClearArtPrefSizeOnly() As Boolean = False
     Public Property MovieSetClearLogoExpertParent() As String = String.Empty
     Public Property MovieSetClearLogoExpertSingle() As String = String.Empty
     Public Property MovieSetClearLogoExtended() As Boolean = False
     Public Property MovieSetClearLogoKeepExisting() As Boolean = False
     Public Property MovieSetClearLogoMSAA() As Boolean = False
+    Public Property MovieSetClearLogoPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property MovieSetClearLogoPrefSizeOnly() As Boolean = False
     Public Property MovieSetClickScrape() As Boolean = False
     Public Property MovieSetClickScrapeAsk() As Boolean = False
     Public Property MovieSetDiscArtExpertParent() As String = String.Empty
     Public Property MovieSetDiscArtExpertSingle() As String = String.Empty
     Public Property MovieSetDiscArtExtended() As Boolean = False
     Public Property MovieSetDiscArtKeepExisting() As Boolean = False
+    Public Property MovieSetDiscArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property MovieSetDiscArtPrefSizeOnly() As Boolean = False
     Public Property MovieSetFanartExpertParent() As String = String.Empty
     Public Property MovieSetFanartExpertSingle() As String = String.Empty
     Public Property MovieSetFanartExtended() As Boolean = False
     Public Property MovieSetFanartHeight() As Integer = 0
     Public Property MovieSetFanartKeepExisting() As Boolean = False
     Public Property MovieSetFanartMSAA() As Boolean = False
-    Public Property MovieSetFanartPrefSize() As Enums.MovieFanartSize = Enums.MovieFanartSize.Any
+    Public Property MovieSetFanartPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieSetFanartPrefSizeOnly() As Boolean = False
     Public Property MovieSetFanartResize() As Boolean = False
     Public Property MovieSetFanartWidth() As Integer = 0
@@ -395,11 +443,20 @@ Public Class Settings
     Public Property MovieSetImagesGetBlankImages() As Boolean = False
     Public Property MovieSetImagesGetEnglishImages() As Boolean = False
     Public Property MovieSetImagesMediaLanguageOnly() As Boolean = False
+    Public Property MovieSetKeyArtExtended() As Boolean = False
+    Public Property MovieSetKeyArtHeight() As Integer = 0
+    Public Property MovieSetKeyArtKeepExisting() As Boolean = False
+    Public Property MovieSetKeyArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property MovieSetKeyArtPrefSizeOnly() As Boolean = False
+    Public Property MovieSetKeyArtResize() As Boolean = False
+    Public Property MovieSetKeyArtWidth() As Integer = 0
     Public Property MovieSetLandscapeExpertParent() As String = String.Empty
     Public Property MovieSetLandscapeExpertSingle() As String = String.Empty
     Public Property MovieSetLandscapeExtended() As Boolean = False
     Public Property MovieSetLandscapeKeepExisting() As Boolean = False
     Public Property MovieSetLandscapeMSAA() As Boolean = False
+    Public Property MovieSetLandscapePrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property MovieSetLandscapePrefSizeOnly() As Boolean = False
     Public Property MovieSetLockPlot() As Boolean = False
     Public Property MovieSetLockTitle() As Boolean = False
     Public Property MovieSetMissingBanner() As Boolean = False
@@ -407,6 +464,7 @@ Public Class Settings
     Public Property MovieSetMissingClearLogo() As Boolean = False
     Public Property MovieSetMissingDiscArt() As Boolean = False
     Public Property MovieSetMissingFanart() As Boolean = False
+    Public Property MovieSetMissingKeyArt() As Boolean = False
     Public Property MovieSetMissingLandscape() As Boolean = False
     Public Property MovieSetMissingNFO() As Boolean = False
     Public Property MovieSetMissingPoster() As Boolean = False
@@ -421,7 +479,7 @@ Public Class Settings
     Public Property MovieSetPosterHeight() As Integer = 0
     Public Property MovieSetPosterKeepExisting() As Boolean = False
     Public Property MovieSetPosterMSAA() As Boolean = False
-    Public Property MovieSetPosterPrefSize() As Enums.MoviePosterSize = Enums.MoviePosterSize.Any
+    Public Property MovieSetPosterPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieSetPosterPrefSizeOnly() As Boolean = False
     Public Property MovieSetPosterResize() As Boolean = False
     Public Property MovieSetPosterWidth() As Integer = 0
@@ -487,7 +545,7 @@ Public Class Settings
     Public Property TVAllSeasonsBannerExpert() As String = String.Empty
     Public Property TVAllSeasonsBannerHeight() As Integer = 0
     Public Property TVAllSeasonsBannerKeepExisting() As Boolean = False
-    Public Property TVAllSeasonsBannerPrefSize() As Enums.TVBannerSize = Enums.TVBannerSize.Any
+    Public Property TVAllSeasonsBannerPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVAllSeasonsBannerPrefSizeOnly() As Boolean = False
     Public Property TVAllSeasonsBannerPrefType() As Enums.TVBannerType = Enums.TVBannerType.Any
     Public Property TVAllSeasonsBannerResize() As Boolean = False
@@ -495,16 +553,18 @@ Public Class Settings
     Public Property TVAllSeasonsFanartExpert() As String = String.Empty
     Public Property TVAllSeasonsFanartHeight() As Integer = 0
     Public Property TVAllSeasonsFanartKeepExisting() As Boolean = False
-    Public Property TVAllSeasonsFanartPrefSize() As Enums.TVFanartSize = Enums.TVFanartSize.Any
+    Public Property TVAllSeasonsFanartPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVAllSeasonsFanartPrefSizeOnly() As Boolean = False
     Public Property TVAllSeasonsFanartResize() As Boolean = False
     Public Property TVAllSeasonsFanartWidth() As Integer = 0
     Public Property TVAllSeasonsLandscapeExpert() As String = String.Empty
     Public Property TVAllSeasonsLandscapeKeepExisting() As Boolean = False
+    Public Property TVAllSeasonsLandscapePrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property TVAllSeasonsLandscapePrefSizeOnly() As Boolean = False
     Public Property TVAllSeasonsPosterExpert() As String = String.Empty
     Public Property TVAllSeasonsPosterHeight() As Integer = 0
     Public Property TVAllSeasonsPosterKeepExisting() As Boolean = False
-    Public Property TVAllSeasonsPosterPrefSize() As Enums.TVPosterSize = Enums.TVPosterSize.Any
+    Public Property TVAllSeasonsPosterPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVAllSeasonsPosterPrefSizeOnly() As Boolean = False
     Public Property TVAllSeasonsPosterResize() As Boolean = False
     Public Property TVAllSeasonsPosterWidth() As Integer = 0
@@ -518,7 +578,7 @@ Public Class Settings
     Public Property TVEpisodeFanartExpert() As String = String.Empty
     Public Property TVEpisodeFanartHeight() As Integer = 0
     Public Property TVEpisodeFanartKeepExisting() As Boolean = False
-    Public Property TVEpisodeFanartPrefSize() As Enums.TVFanartSize = Enums.TVFanartSize.Any
+    Public Property TVEpisodeFanartPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVEpisodeFanartPrefSizeOnly() As Boolean = False
     Public Property TVEpisodeFanartResize() As Boolean = False
     Public Property TVEpisodeFanartWidth() As Integer = 0
@@ -537,10 +597,12 @@ Public Class Settings
     Public Property TVEpisodePosterFrodo() As Boolean = False
     Public Property TVEpisodePosterHeight() As Integer = 0
     Public Property TVEpisodePosterKeepExisting() As Boolean = False
-    Public Property TVEpisodePosterPrefSize() As Enums.TVEpisodePosterSize = Enums.TVEpisodePosterSize.Any
+    Public Property TVEpisodePosterPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVEpisodePosterPrefSizeOnly() As Boolean = False
     Public Property TVEpisodePosterResize() As Boolean = False
     Public Property TVEpisodePosterWidth() As Integer = 0
+    Public Property TVEpisodePosterVideoExtraction() As Boolean = True
+    Public Property TVEpisodePosterVideoExtractionPref() As Boolean = False
     Public Property TVEpisodePosterYAMJ() As Boolean = False
     Public Property TVEpisodeProperCase() As Boolean = True
     Public Property TVGeneralClickScrape() As Boolean = False
@@ -649,7 +711,7 @@ Public Class Settings
     Public Property TVSeasonBannerFrodo() As Boolean = False
     Public Property TVSeasonBannerHeight() As Integer = 0
     Public Property TVSeasonBannerKeepExisting() As Boolean = False
-    Public Property TVSeasonBannerPrefSize() As Enums.TVBannerSize = Enums.TVBannerSize.Any
+    Public Property TVSeasonBannerPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVSeasonBannerPrefSizeOnly() As Boolean = False
     Public Property TVSeasonBannerPrefType() As Enums.TVBannerType = Enums.TVBannerType.Any
     Public Property TVSeasonBannerResize() As Boolean = False
@@ -659,7 +721,7 @@ Public Class Settings
     Public Property TVSeasonFanartFrodo() As Boolean = False
     Public Property TVSeasonFanartHeight() As Integer = 0
     Public Property TVSeasonFanartKeepExisting() As Boolean = False
-    Public Property TVSeasonFanartPrefSize() As Enums.TVFanartSize = Enums.TVFanartSize.Any
+    Public Property TVSeasonFanartPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVSeasonFanartPrefSizeOnly() As Boolean = False
     Public Property TVSeasonFanartResize() As Boolean = False
     Public Property TVSeasonFanartWidth() As Integer = 0
@@ -668,6 +730,8 @@ Public Class Settings
     Public Property TVSeasonLandscapeExpert() As String = String.Empty
     Public Property TVSeasonLandscapeExtended() As Boolean = False
     Public Property TVSeasonLandscapeKeepExisting() As Boolean = False
+    Public Property TVSeasonLandscapePrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property TVSeasonLandscapePrefSizeOnly() As Boolean = False
     Public Property TVSeasonMissingBanner() As Boolean = False
     Public Property TVSeasonMissingFanart() As Boolean = False
     Public Property TVSeasonMissingLandscape() As Boolean = False
@@ -677,7 +741,7 @@ Public Class Settings
     Public Property TVSeasonPosterFrodo() As Boolean = False
     Public Property TVSeasonPosterHeight() As Integer = 0
     Public Property TVSeasonPosterKeepExisting() As Boolean = False
-    Public Property TVSeasonPosterPrefSize() As Enums.TVSeasonPosterSize = Enums.TVSeasonPosterSize.Any
+    Public Property TVSeasonPosterPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVSeasonPosterPrefSizeOnly() As Boolean = False
     Public Property TVSeasonPosterResize() As Boolean = False
     Public Property TVSeasonPosterWidth() As Integer = 0
@@ -691,7 +755,7 @@ Public Class Settings
     Public Property TVShowBannerFrodo() As Boolean = False
     Public Property TVShowBannerHeight() As Integer = 0
     Public Property TVShowBannerKeepExisting() As Boolean = False
-    Public Property TVShowBannerPrefSize() As Enums.TVBannerSize = Enums.TVBannerSize.Any
+    Public Property TVShowBannerPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVShowBannerPrefSizeOnly() As Boolean = False
     Public Property TVShowBannerPrefType() As Enums.TVBannerType = Enums.TVBannerType.Any
     Public Property TVShowBannerResize() As Boolean = False
@@ -701,20 +765,37 @@ Public Class Settings
     Public Property TVShowCharacterArtExpert() As String = String.Empty
     Public Property TVShowCharacterArtExtended() As Boolean = False
     Public Property TVShowCharacterArtKeepExisting() As Boolean = False
+    Public Property TVShowCharacterArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property TVShowCharacterArtPrefSizeOnly() As Boolean = False
     Public Property TVShowClearArtAD() As Boolean = False
     Public Property TVShowClearArtExpert() As String = String.Empty
     Public Property TVShowClearArtExtended() As Boolean = False
     Public Property TVShowClearArtKeepExisting() As Boolean = False
+    Public Property TVShowClearArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property TVShowClearArtPrefSizeOnly() As Boolean = False
     Public Property TVShowClearLogoAD() As Boolean = False
     Public Property TVShowClearLogoExpert() As String = String.Empty
     Public Property TVShowClearLogoExtended() As Boolean = False
     Public Property TVShowClearLogoKeepExisting() As Boolean = False
+    Public Property TVShowClearLogoPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property TVShowClearLogoPrefSizeOnly() As Boolean = False
     Public Property TVShowExtrafanartsExpert() As Boolean = False
     Public Property TVShowExtrafanartsFrodo() As Boolean = False
     Public Property TVShowExtrafanartsHeight() As Integer = 0
     Public Property TVShowExtrafanartsKeepExisting() As Boolean = False
-    Public Property TVShowExtrafanartsLimit() As Integer = 0
-    Public Property TVShowExtrafanartsPrefSize() As Enums.TVFanartSize = Enums.TVFanartSize.Any
+    Public Property TVShowExtrafanartsLimit() As Integer
+        Get
+            Return _tvshowextrafanartslimit
+        End Get
+        Set(value As Integer)
+            If value > ExtraImagesLimit OrElse value = 0 Then
+                _tvshowextrafanartslimit = 20
+            Else
+                _tvshowextrafanartslimit = value
+            End If
+        End Set
+    End Property
+    Public Property TVShowExtrafanartsPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVShowExtrafanartsPrefSizeOnly() As Boolean = False
     Public Property TVShowExtrafanartsPreselect() As Boolean = True
     Public Property TVShowExtrafanartsResize() As Boolean = False
@@ -724,17 +805,26 @@ Public Class Settings
     Public Property TVShowFanartFrodo() As Boolean = False
     Public Property TVShowFanartHeight() As Integer = 0
     Public Property TVShowFanartKeepExisting() As Boolean = False
-    Public Property TVShowFanartPrefSize() As Enums.TVFanartSize = Enums.TVFanartSize.Any
+    Public Property TVShowFanartPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVShowFanartPrefSizeOnly() As Boolean = False
     Public Property TVShowFanartResize() As Boolean = False
     Public Property TVShowFanartWidth() As Integer = 0
     Public Property TVShowFanartYAMJ() As Boolean = False
     Public Property TVShowFilterCustom() As List(Of String) = New List(Of String)
     Public Property TVShowFilterCustomIsEmpty() As Boolean = False
+    Public Property TVShowKeyArtExtended() As Boolean = False
+    Public Property TVShowKeyArtHeight() As Integer = 0
+    Public Property TVShowKeyArtKeepExisting() As Boolean = False
+    Public Property TVShowKeyArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property TVShowKeyArtPrefSizeOnly() As Boolean = False
+    Public Property TVShowKeyArtResize() As Boolean = False
+    Public Property TVShowKeyArtWidth() As Integer = 0
     Public Property TVShowLandscapeAD() As Boolean = False
     Public Property TVShowLandscapeExpert() As String = String.Empty
     Public Property TVShowLandscapeExtended() As Boolean = False
     Public Property TVShowLandscapeKeepExisting() As Boolean = False
+    Public Property TVShowLandscapePrefSize() As Enums.ImageSize = Enums.ImageSize.Any
+    Public Property TVShowLandscapePrefSizeOnly() As Boolean = False
     Public Property TVShowMatching() As List(Of regexp) = New List(Of regexp)
     Public Property TVShowMissingBanner() As Boolean = False
     Public Property TVShowMissingCharacterArt() As Boolean = False
@@ -742,6 +832,7 @@ Public Class Settings
     Public Property TVShowMissingClearLogo() As Boolean = False
     Public Property TVShowMissingExtrafanarts() As Boolean = False
     Public Property TVShowMissingFanart() As Boolean = False
+    Public Property TVShowMissingKeyArt() As Boolean = False
     Public Property TVShowMissingLandscape() As Boolean = False
     Public Property TVShowMissingNFO() As Boolean = False
     Public Property TVShowMissingPoster() As Boolean = False
@@ -755,7 +846,7 @@ Public Class Settings
     Public Property TVShowPosterFrodo() As Boolean = False
     Public Property TVShowPosterHeight() As Integer = 0
     Public Property TVShowPosterKeepExisting() As Boolean = False
-    Public Property TVShowPosterPrefSize() As Enums.TVPosterSize = Enums.TVPosterSize.Any
+    Public Property TVShowPosterPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVShowPosterPrefSizeOnly() As Boolean = False
     Public Property TVShowPosterResize() As Boolean = False
     Public Property TVShowPosterWidth() As Integer = 0
@@ -919,6 +1010,12 @@ Public Class Settings
         End Get
     End Property
 
+    Public ReadOnly Property MovieKeyArtAnyEnabled As Boolean
+        Get
+            Return MovieKeyArtExtended
+        End Get
+    End Property
+
     Public ReadOnly Property MovieLandscapeAnyEnabled As Boolean
         Get
             Return MovieLandscapeAD OrElse MovieLandscapeExtended OrElse
@@ -928,9 +1025,20 @@ Public Class Settings
 
     Public ReadOnly Property MovieMissingItemsAnyEnabled As Boolean
         Get
-            Return MovieMissingBanner OrElse MovieMissingClearArt OrElse MovieMissingClearLogo OrElse MovieMissingDiscArt OrElse MovieMissingExtrafanarts OrElse
-                MovieMissingExtrathumbs OrElse MovieMissingFanart OrElse MovieMissingLandscape OrElse MovieMissingNFO OrElse MovieMissingPoster OrElse
-                MovieMissingSubtitles OrElse MovieMissingTheme OrElse MovieMissingTrailer
+            Return MovieMissingBanner OrElse
+                MovieMissingClearArt OrElse
+                MovieMissingClearLogo OrElse
+                MovieMissingDiscArt OrElse
+                MovieMissingExtrafanarts OrElse
+                MovieMissingExtrathumbs OrElse
+                MovieMissingFanart OrElse
+                MovieMissingKeyArt OrElse
+                MovieMissingLandscape OrElse
+                MovieMissingNFO OrElse
+                MovieMissingPoster OrElse
+                MovieMissingSubtitles OrElse
+                MovieMissingTheme OrElse
+                MovieMissingTrailer
         End Get
     End Property
 
@@ -1000,6 +1108,12 @@ Public Class Settings
         End Get
     End Property
 
+    Public ReadOnly Property MovieSetKeyArtAnyEnabled As Boolean
+        Get
+            Return MovieSetKeyArtExtended
+        End Get
+    End Property
+
     Public ReadOnly Property MovieSetLandscapeAnyEnabled As Boolean
         Get
             Return (MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
@@ -1010,8 +1124,15 @@ Public Class Settings
 
     Public ReadOnly Property MovieSetMissingItemsAnyEnabled As Boolean
         Get
-            Return MovieSetMissingBanner OrElse MovieSetMissingClearArt OrElse MovieSetMissingClearLogo OrElse MovieSetMissingDiscArt OrElse
-                MovieSetMissingFanart OrElse MovieSetMissingLandscape OrElse MovieSetMissingNFO OrElse MovieSetMissingPoster
+            Return MovieSetMissingBanner OrElse
+                MovieSetMissingClearArt OrElse
+                MovieSetMissingClearLogo OrElse
+                MovieSetMissingDiscArt OrElse
+                MovieSetMissingFanart OrElse
+                MovieSetMissingKeyArt OrElse
+                MovieSetMissingLandscape OrElse
+                MovieSetMissingNFO OrElse
+                MovieSetMissingPoster
         End Get
     End Property
 
@@ -1167,6 +1288,12 @@ Public Class Settings
         End Get
     End Property
 
+    Public ReadOnly Property TVShowKeyArtAnyEnabled As Boolean
+        Get
+            Return TVShowKeyArtExtended
+        End Get
+    End Property
+
     Public ReadOnly Property TVShowLandscapeAnyEnabled As Boolean
         Get
             Return TVShowLandscapeAD OrElse TVShowLandscapeExtended OrElse
@@ -1176,9 +1303,17 @@ Public Class Settings
 
     Public ReadOnly Property TVShowMissingItemsAnyEnabled As Boolean
         Get
-            Return TVShowMissingBanner OrElse TVShowMissingCharacterArt OrElse TVShowMissingClearArt OrElse TVShowMissingClearLogo OrElse
-                TVShowMissingExtrafanarts OrElse TVShowMissingFanart OrElse TVShowMissingLandscape OrElse TVShowMissingNFO OrElse
-                TVShowMissingPoster OrElse TVShowMissingTheme
+            Return TVShowMissingBanner OrElse
+                TVShowMissingCharacterArt OrElse
+                TVShowMissingClearArt OrElse
+                TVShowMissingClearLogo OrElse
+                TVShowMissingExtrafanarts OrElse
+                TVShowMissingFanart OrElse
+                TVShowMissingKeyArt OrElse
+                TVShowMissingLandscape OrElse
+                TVShowMissingNFO OrElse
+                TVShowMissingPoster OrElse
+                TVShowMissingTheme
         End Get
     End Property
 
@@ -1234,12 +1369,12 @@ Public Class Settings
                     'old seasonposter size HD1000
                     sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "<TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>",
                                                                              "<TVSeasonPosterPrefSize>Any</TVSeasonPosterPrefSize>")
-
+                    'replace no longer used "Enums.ImageSize.Thumb" with "Enums.ImageSize.Any"
+                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Thumb<", "PrefSize>Any<")
                     Dim xmlSer As New XmlSerializer(GetType(Settings))
                     Using txtReader As TextReader = New StringReader(sSettings)
                         Master.eSettings = DirectCast(xmlSer.Deserialize(txtReader), Settings)
                     End Using
-                    'Master.eSettings = Me
                     logger.Info("Settings.xml successfully repaired")
                 End Using
             Catch ex2 As Exception
@@ -1463,26 +1598,24 @@ Public Class Settings
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle), .LabelID = 302, .LabelText = "Original Title"})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.Year), .LabelID = 278, .LabelText = "Year"})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.MPAA), .LabelID = 401, .LabelText = "MPAA"})
-            'Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = True, .Column = "Rating", .LabelID = 400, .LabelText = "Rating"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.UserRating), .LabelID = 1467, .LabelText = "User Rating"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.Top250), .LabelID = -1, .LabelText = "Top250"})
-            'Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = True, .Column = "Imdb", .LabelID = 61, .LabelText = "IMDB ID"})
-            'Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = True, .Column = "TMDB", .LabelID = 933, .LabelText = "TMDB ID"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.NfoPath), .LabelID = 150, .LabelText = "NFO"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.BannerPath), .LabelID = 838, .LabelText = "Banner"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath), .LabelID = 1096, .LabelText = "ClearArt"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath), .LabelID = 1097, .LabelText = "ClearLogo"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath), .LabelID = 1098, .LabelText = "DiscArt"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath), .LabelID = 992, .LabelText = "Extrafanarts"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath), .LabelID = 153, .LabelText = "Extrathumbs"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 16, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.FanartPath), .LabelID = 149, .LabelText = "Fanart"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 17, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath), .LabelID = 1035, .LabelText = "Landscape"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 18, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.PosterPath), .LabelID = 148, .LabelText = "Poster"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 19, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles), .LabelID = 152, .LabelText = "Subtitles"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 20, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ThemePath), .LabelID = 1118, .LabelText = "Theme"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 21, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath), .LabelID = 151, .LabelText = "Trailer"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 22, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset), .LabelID = 1295, .LabelText = "Part of a MovieSet"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 23, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed), .LabelID = 981, .LabelText = "Watched"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.UserRating), .LabelID = 1467, .LabelText = "User Rating"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.Top250), .LabelID = -1, .LabelText = "Top250"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.NfoPath), .LabelID = 150, .LabelText = "NFO"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.BannerPath), .LabelID = 838, .LabelText = "Banner"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath), .LabelID = 1096, .LabelText = "ClearArt"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath), .LabelID = 1097, .LabelText = "ClearLogo"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath), .LabelID = 1098, .LabelText = "DiscArt"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath), .LabelID = 992, .LabelText = "Extrafanarts"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath), .LabelID = 153, .LabelText = "Extrathumbs"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.FanartPath), .LabelID = 149, .LabelText = "Fanart"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath), .LabelID = 296, .LabelText = "KeyArt"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath), .LabelID = 1035, .LabelText = "Landscape"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 16, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.PosterPath), .LabelID = 148, .LabelText = "Poster"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 17, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.HasSubtitles), .LabelID = 152, .LabelText = "Subtitles"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 18, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ThemePath), .LabelID = 1118, .LabelText = "Theme"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 19, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath), .LabelID = 151, .LabelText = "Trailer"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 20, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset), .LabelID = 1295, .LabelText = "Part of a MovieSet"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 21, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed), .LabelID = 981, .LabelText = "Watched"})
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetListSorting) AndAlso (Force OrElse Master.eSettings.MovieSetGeneralMediaListSorting.Count <= 0) Then
@@ -1494,15 +1627,15 @@ Public Class Settings
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath), .LabelID = 1097, .LabelText = "ClearLogo"})
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath), .LabelID = 1098, .LabelText = "DiscArt"})
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.FanartPath), .LabelID = 149, .LabelText = "Fanart"})
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath), .LabelID = 1035, .LabelText = "Landscape"})
-            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.PosterPath), .LabelID = 148, .LabelText = "Poster"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath), .LabelID = 296, .LabelText = "KeyArt"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath), .LabelID = 1035, .LabelText = "Landscape"})
+            Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.PosterPath), .LabelID = 148, .LabelText = "Poster"})
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralEpisodeListSorting.Count <= 0) Then
             Master.eSettings.TVGeneralEpisodeListSorting.Clear()
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.Title), .LabelID = 21, .LabelText = "Title"})
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle), .LabelID = 302, .LabelText = "Original Title"})
-            'Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = "Rating", .LabelID = 400, .LabelText = "Rating"})
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.UserRating), .LabelID = 1467, .LabelText = "User Rating"})
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.NfoPath), .LabelID = 150, .LabelText = "NFO"})
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.FanartPath), .LabelID = 149, .LabelText = "Fanart"})
@@ -1528,16 +1661,16 @@ Public Class Settings
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.OriginalTitle), .LabelID = 302, .LabelText = "Original Title"})
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.Status), .LabelID = 215, .LabelText = "Status"})
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.MPAA), .LabelID = 401, .LabelText = "MPAA"})
-            'Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = True, .Column = "Rating", .LabelID = 400, .LabelText = "Rating"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.UserRating), .LabelID = 1467, .LabelText = "User Rating"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount), .LabelID = 682, .LabelText = "Episodes"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.NfoPath), .LabelID = 150, .LabelText = "NFO"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.BannerPath), .LabelID = 838, .LabelText = "Banner"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath), .LabelID = 1140, .LabelText = "CharacterArt"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath), .LabelID = 1096, .LabelText = "ClearArt"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath), .LabelID = 1097, .LabelText = "ClearLogo"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath), .LabelID = 992, .LabelText = "Extrafanarts"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.FanartPath), .LabelID = 149, .LabelText = "Fanart"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.UserRating), .LabelID = 1467, .LabelText = "User Rating"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = True, .Column = Database.Helpers.GetColumnName(Database.ColumnName.EpisodeCount), .LabelID = 682, .LabelText = "Episodes"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.NfoPath), .LabelID = 150, .LabelText = "NFO"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.BannerPath), .LabelID = 838, .LabelText = "Banner"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath), .LabelID = 1140, .LabelText = "CharacterArt"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath), .LabelID = 1096, .LabelText = "ClearArt"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath), .LabelID = 1097, .LabelText = "ClearLogo"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath), .LabelID = 992, .LabelText = "Extrafanarts"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.FanartPath), .LabelID = 149, .LabelText = "Fanart"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath), .LabelID = 296, .LabelText = "KeyArt"})
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath), .LabelID = 1035, .LabelText = "Landscape"})
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 15, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.PosterPath), .LabelID = 148, .LabelText = "Poster"})
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 16, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ThemePath), .LabelID = 1118, .LabelText = "Theme"})
@@ -1557,6 +1690,372 @@ Public Class Settings
 #End Region 'Methods
 
 #Region "Nested Types"
+
+    Public Class Helpers
+
+        Public Shared Function GetImageSettings(ByVal ContentType As Enums.ContentType, ImageType As Enums.ModifierType) As ImageSettingSpecifications
+            Select Case ContentType
+                Case Enums.ContentType.Movie
+                    Select Case ImageType
+                        Case Enums.ModifierType.MainBanner
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieBannerKeepExisting,
+                                .MaxHeight = Master.eSettings.MovieBannerHeight,
+                                .MaxWidth = Master.eSettings.MovieBannerWidth,
+                                .PrefSize = Master.eSettings.MovieBannerPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieBannerPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("BannerQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.MovieBannerResize
+                            }
+                        Case Enums.ModifierType.MainClearArt
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieClearArtKeepExisting,
+                                .PrefSize = Master.eSettings.MovieClearArtPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieClearArtPrefSizeOnly
+                            }
+                        Case Enums.ModifierType.MainClearLogo
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieClearLogoKeepExisting,
+                                .PrefSize = Master.eSettings.MovieClearLogoPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieClearLogoPrefSizeOnly
+                            }
+                        Case Enums.ModifierType.MainDiscArt
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieDiscArtKeepExisting,
+                                .PrefSize = Master.eSettings.MovieDiscArtPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieDiscArtPrefSizeOnly
+                            }
+                        Case Enums.ModifierType.MainExtrafanarts
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieExtrafanartsKeepExisting,
+                                .MaxHeight = Master.eSettings.MovieExtrafanartsHeight,
+                                .MaxWidth = Master.eSettings.MovieExtrafanartsWidth,
+                                .Limit = Master.eSettings.MovieExtrafanartsLimit,
+                                .PrefSize = Master.eSettings.MovieExtrafanartsPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieExtrafanartsPrefSizeOnly,
+                                .Preselect = Master.eSettings.MovieExtrafanartsPreselect,
+                                .Quality = CInt(AdvancedSettings.GetSetting("ExtrafanartsQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.MovieExtrafanartsResize
+                            }
+                        Case Enums.ModifierType.MainExtrathumbs
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieBannerKeepExisting,
+                                .MaxHeight = Master.eSettings.MovieExtrathumbsHeight,
+                                .MaxWidth = Master.eSettings.MovieExtrathumbsWidth,
+                                .Limit = Master.eSettings.MovieExtrathumbsLimit,
+                                .PrefSize = Master.eSettings.MovieExtrathumbsPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieExtrathumbsPrefSizeOnly,
+                                .Preselect = Master.eSettings.MovieExtrathumbsPreselect,
+                                .Quality = CInt(AdvancedSettings.GetSetting("ExtrathumbsQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.MovieExtrathumbsResize
+                            }
+                        Case Enums.ModifierType.MainFanart
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieFanartKeepExisting,
+                                .MaxHeight = Master.eSettings.MovieFanartHeight,
+                                .MaxWidth = Master.eSettings.MovieFanartWidth,
+                                .PrefSize = Master.eSettings.MovieFanartPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieFanartPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.MovieFanartResize
+                            }
+                        Case Enums.ModifierType.MainKeyArt
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieKeyArtKeepExisting,
+                                .MaxHeight = Master.eSettings.MovieKeyArtHeight,
+                                .MaxWidth = Master.eSettings.MovieKeyArtWidth,
+                                .PrefSize = Master.eSettings.MovieKeyArtPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieKeyArtPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("KeyArtQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.MovieKeyArtResize
+                            }
+                        Case Enums.ModifierType.MainLandscape
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieLandscapeKeepExisting,
+                                .PrefSize = Master.eSettings.MovieLandscapePrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieLandscapePrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("LandscapeQuality", "100", , ContentType))
+                            }
+                        Case Enums.ModifierType.MainPoster
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MoviePosterKeepExisting,
+                                .MaxHeight = Master.eSettings.MoviePosterHeight,
+                                .MaxWidth = Master.eSettings.MoviePosterWidth,
+                                .PrefSize = Master.eSettings.MoviePosterPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MoviePosterPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.MoviePosterResize
+                            }
+                    End Select
+                Case Enums.ContentType.MovieSet
+                    Select Case ImageType
+                        Case Enums.ModifierType.MainBanner
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieSetBannerKeepExisting,
+                                .MaxHeight = Master.eSettings.MovieSetBannerHeight,
+                                .MaxWidth = Master.eSettings.MovieSetBannerWidth,
+                                .PrefSize = Master.eSettings.MovieSetBannerPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieSetBannerPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("BannerQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.MovieSetBannerResize
+                            }
+                        Case Enums.ModifierType.MainClearArt
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieSetClearArtKeepExisting,
+                                .PrefSize = Master.eSettings.MovieSetClearArtPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieSetClearArtPrefSizeOnly
+                            }
+                        Case Enums.ModifierType.MainClearLogo
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieSetClearLogoKeepExisting,
+                                .PrefSize = Master.eSettings.MovieSetClearLogoPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieSetClearLogoPrefSizeOnly
+                            }
+                        Case Enums.ModifierType.MainDiscArt
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieSetDiscArtKeepExisting,
+                                .PrefSize = Master.eSettings.MovieSetDiscArtPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieSetDiscArtPrefSizeOnly
+                            }
+                        Case Enums.ModifierType.MainFanart
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieSetFanartKeepExisting,
+                                .MaxHeight = Master.eSettings.MovieSetFanartHeight,
+                                .MaxWidth = Master.eSettings.MovieSetFanartWidth,
+                                .PrefSize = Master.eSettings.MovieSetFanartPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieSetFanartPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.MovieSetFanartResize
+                            }
+                        Case Enums.ModifierType.MainKeyArt
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieSetKeyArtKeepExisting,
+                                .MaxHeight = Master.eSettings.MovieSetKeyArtHeight,
+                                .MaxWidth = Master.eSettings.MovieSetKeyArtWidth,
+                                .PrefSize = Master.eSettings.MovieSetKeyArtPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieSetKeyArtPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("KeyArtQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.MovieSetKeyArtResize
+                            }
+                        Case Enums.ModifierType.MainLandscape
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieSetLandscapeKeepExisting,
+                                .PrefSize = Master.eSettings.MovieSetLandscapePrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieSetLandscapePrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("LandscapeQuality", "100", , ContentType))
+                            }
+                        Case Enums.ModifierType.MainPoster
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.MovieSetPosterKeepExisting,
+                                .MaxHeight = Master.eSettings.MovieSetPosterHeight,
+                                .MaxWidth = Master.eSettings.MovieSetPosterWidth,
+                                .PrefSize = Master.eSettings.MovieSetPosterPrefSize,
+                                .PrefSizeOnly = Master.eSettings.MovieSetPosterPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.MovieSetPosterResize
+                            }
+                    End Select
+                Case Enums.ContentType.TVEpisode
+                    Select Case ImageType
+                        Case Enums.ModifierType.EpisodeFanart
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVEpisodeFanartKeepExisting,
+                                .MaxHeight = Master.eSettings.TVEpisodeFanartHeight,
+                                .MaxWidth = Master.eSettings.TVEpisodeFanartWidth,
+                                .PrefSize = Master.eSettings.TVEpisodeFanartPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVEpisodeFanartPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVEpisodeFanartResize
+                            }
+                        Case Enums.ModifierType.EpisodePoster
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVEpisodePosterKeepExisting,
+                                .MaxHeight = Master.eSettings.TVEpisodePosterHeight,
+                                .MaxWidth = Master.eSettings.TVEpisodePosterWidth,
+                                .PrefSize = Master.eSettings.TVEpisodePosterPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVEpisodePosterPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVEpisodePosterResize
+                            }
+                    End Select
+                Case Enums.ContentType.TVSeason
+                    Select Case ImageType
+                        Case Enums.ModifierType.AllSeasonsBanner
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVAllSeasonsBannerKeepExisting,
+                                .MaxHeight = Master.eSettings.TVAllSeasonsBannerHeight,
+                                .MaxWidth = Master.eSettings.TVAllSeasonsBannerWidth,
+                                .PrefSize = Master.eSettings.TVAllSeasonsBannerPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVAllSeasonsBannerPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("BannerQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVAllSeasonsBannerResize
+                            }
+                        Case Enums.ModifierType.AllSeasonsFanart
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVAllSeasonsFanartKeepExisting,
+                                .MaxHeight = Master.eSettings.TVAllSeasonsFanartHeight,
+                                .MaxWidth = Master.eSettings.TVAllSeasonsFanartWidth,
+                                .PrefSize = Master.eSettings.TVAllSeasonsFanartPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVAllSeasonsFanartPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVAllSeasonsFanartResize
+                            }
+                        Case Enums.ModifierType.AllSeasonsLandscape
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVAllSeasonsLandscapeKeepExisting,
+                                .PrefSize = Master.eSettings.TVAllSeasonsLandscapePrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVAllSeasonsLandscapePrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("LandscapeQuality", "100", , ContentType))
+                            }
+                        Case Enums.ModifierType.AllSeasonsPoster
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVAllSeasonsPosterKeepExisting,
+                                .MaxHeight = Master.eSettings.TVAllSeasonsPosterHeight,
+                                .MaxWidth = Master.eSettings.TVAllSeasonsPosterWidth,
+                                .PrefSize = Master.eSettings.TVAllSeasonsPosterPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVAllSeasonsPosterPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVAllSeasonsPosterResize
+                            }
+                        Case Enums.ModifierType.SeasonBanner
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVSeasonBannerKeepExisting,
+                                .MaxHeight = Master.eSettings.TVSeasonBannerHeight,
+                                .MaxWidth = Master.eSettings.TVSeasonBannerWidth,
+                                .PrefSize = Master.eSettings.TVSeasonBannerPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVSeasonBannerPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("BannerQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVSeasonBannerResize
+                            }
+                        Case Enums.ModifierType.SeasonFanart
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVSeasonFanartKeepExisting,
+                                .MaxHeight = Master.eSettings.TVSeasonFanartHeight,
+                                .MaxWidth = Master.eSettings.TVSeasonFanartWidth,
+                                .PrefSize = Master.eSettings.TVSeasonFanartPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVSeasonFanartPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVSeasonFanartResize
+                            }
+                        Case Enums.ModifierType.SeasonLandscape
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVSeasonLandscapeKeepExisting,
+                                .PrefSize = Master.eSettings.TVSeasonLandscapePrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVSeasonLandscapePrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("LandscapeQuality", "100", , ContentType))
+                            }
+                        Case Enums.ModifierType.SeasonPoster
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVSeasonPosterKeepExisting,
+                                .MaxHeight = Master.eSettings.TVSeasonPosterHeight,
+                                .MaxWidth = Master.eSettings.TVSeasonPosterWidth,
+                                .PrefSize = Master.eSettings.TVSeasonPosterPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVSeasonPosterPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVSeasonPosterResize
+                            }
+                    End Select
+                Case Enums.ContentType.TVShow
+                    Select Case ImageType
+                        Case Enums.ModifierType.MainBanner
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVShowBannerKeepExisting,
+                                .MaxHeight = Master.eSettings.TVShowBannerHeight,
+                                .MaxWidth = Master.eSettings.TVShowBannerWidth,
+                                .PrefSize = Master.eSettings.TVShowBannerPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVShowBannerPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("BannerQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVShowBannerResize
+                            }
+                        Case Enums.ModifierType.MainCharacterArt
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVShowCharacterArtKeepExisting,
+                                .PrefSize = Master.eSettings.TVShowCharacterArtPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVShowCharacterArtPrefSizeOnly
+                            }
+                        Case Enums.ModifierType.MainClearArt
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVShowClearArtKeepExisting,
+                                .PrefSize = Master.eSettings.TVShowClearArtPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVShowClearArtPrefSizeOnly
+                            }
+                        Case Enums.ModifierType.MainClearLogo
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVShowClearLogoKeepExisting,
+                                .PrefSize = Master.eSettings.TVShowClearLogoPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVShowClearLogoPrefSizeOnly
+                            }
+                        Case Enums.ModifierType.MainExtrafanarts
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVShowExtrafanartsKeepExisting,
+                                .MaxHeight = Master.eSettings.TVShowExtrafanartsHeight,
+                                .MaxWidth = Master.eSettings.TVShowExtrafanartsWidth,
+                                .Limit = Master.eSettings.TVShowExtrafanartsLimit,
+                                .PrefSize = Master.eSettings.TVShowExtrafanartsPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVShowExtrafanartsPrefSizeOnly,
+                                .Preselect = Master.eSettings.TVShowExtrafanartsPreselect,
+                                .Quality = CInt(AdvancedSettings.GetSetting("ExtrafanartsQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVShowExtrafanartsResize
+                            }
+                        Case Enums.ModifierType.MainFanart
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVShowFanartKeepExisting,
+                                .MaxHeight = Master.eSettings.TVShowFanartHeight,
+                                .MaxWidth = Master.eSettings.TVShowFanartWidth,
+                                .PrefSize = Master.eSettings.TVShowFanartPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVShowFanartPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVShowFanartResize
+                            }
+                        Case Enums.ModifierType.MainKeyArt
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVShowKeyArtKeepExisting,
+                                .MaxHeight = Master.eSettings.TVShowKeyArtHeight,
+                                .MaxWidth = Master.eSettings.TVShowKeyArtWidth,
+                                .PrefSize = Master.eSettings.TVShowKeyArtPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVShowKeyArtPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("KeyArtQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVShowKeyArtResize
+                            }
+                        Case Enums.ModifierType.MainLandscape
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVShowLandscapeKeepExisting,
+                                .PrefSize = Master.eSettings.TVShowLandscapePrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVShowLandscapePrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("LandscapeQuality", "100", , ContentType))
+                            }
+                        Case Enums.ModifierType.MainPoster
+                            Return New ImageSettingSpecifications With {
+                                .KeepExisting = Master.eSettings.TVShowPosterKeepExisting,
+                                .MaxHeight = Master.eSettings.TVShowPosterHeight,
+                                .MaxWidth = Master.eSettings.TVShowPosterWidth,
+                                .PrefSize = Master.eSettings.TVShowPosterPrefSize,
+                                .PrefSizeOnly = Master.eSettings.TVShowPosterPrefSizeOnly,
+                                .Quality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , ContentType)),
+                                .Resize = Master.eSettings.TVShowPosterResize
+                            }
+                    End Select
+            End Select
+            Return Nothing
+        End Function
+
+#Region "Nested Types"
+
+        Public Class ImageSettingSpecifications
+            Public Property KeepExisting As Boolean = False
+            Public Property Limit As Integer = 0
+            Public Property MaxHeight As Integer = 0
+            Public Property MaxWidth As Integer = 0
+            Public Property PrefSize As Enums.ImageSize = Enums.ImageSize.Any
+            Public Property PrefSizeOnly As Boolean = False
+            Public Property Preselect As Boolean = True
+            Public Property Resize As Boolean = False
+            Public Property Quality As Integer = 100
+        End Class
+
+#End Region 'Nested Types
+
+    End Class
 
     Public Class MetadataPerType
 

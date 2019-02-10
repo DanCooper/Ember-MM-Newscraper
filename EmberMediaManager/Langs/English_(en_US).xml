@@ -294,19 +294,19 @@
   <string id="293">Auto</string>
   <string id="294">Manual</string>
   <string id="295">Renamer</string>
-  <string id="296"></string>
+  <string id="296">KeyArt</string>
   <string id="297">Confirm Ownership</string>
   <string id="298">Restart Ember Media Manager?</string>
   <string id="299">Recent changes require a restart of Ember Media Manager to complete.\n\nWould you like to restart Ember Media Manager now?</string>
   <string id="300">Yes</string>
   <string id="301">Country</string>
   <string id="302">Original Title</string>
-  <string id="303"></string>
-  <string id="304"></string>
+  <string id="303">KeyArt Only</string>
+  <string id="304">Image Types</string>
   <string id="305">Save as Extrathumb</string>
   <string id="306">Extracting Frame...</string>
   <string id="307">Load Video</string>
-  <string id="308"></string>
+  <string id="308">Preselect</string>
   <string id="309">Save as Poster</string>
   <string id="310">Frame Extractor</string>
   <string id="311">Media File Manager</string>
@@ -477,10 +477,10 @@
   <string id="476">On Error</string>
   <string id="477">On New Movie Added</string>
   <string id="478">Quality:</string>
-  <string id="479">Max Width:</string>
-  <string id="480">Max Height:</string>
-  <string id="481">Automatically Resize:</string>
-  <string id="482">Preferred Size:</string>
+  <string id="479">Max Width</string>
+  <string id="480">Max Height</string>
+  <string id="481">Resize</string>
+  <string id="482">Preferred Size</string>
   <string id="483">Overwrite Existing</string>
   <string id="484">Loading Settings...</string>
   <string id="485">On Movie Scraped</string>
@@ -497,7 +497,7 @@
   <string id="496">Season Folders Pattern</string>
   <string id="497">Images</string>
   <string id="498">Do not save URLs to NFO</string>
-  <string id="499">Display "Image Select" dialog while single scraping</string>
+  <string id="499">Display "Select Images" dialog while single scraping</string>
   <string id="500">Insert DVD</string>
   <string id="501">Preparing Data</string>
   <string id="502">Creating Movie</string>
@@ -536,7 +536,7 @@
   <string id="535">Edit Source</string>
   <string id="536">Miscellaneous Options</string>
   <string id="537">Recognize VIDEO_TS{0}without VIDEO_TS folder</string>
-  <string id="538"></string>
+  <string id="538">Extract</string>
   <string id="539">MB</string>
   <string id="540">Skip files smaller than:</string>
   <string id="541">Use Fanart for Place Holder Video</string>
@@ -627,7 +627,7 @@
   <string id="626">File Type</string>
   <string id="627">Selected Items: {0}</string>
   <string id="628">Enable IFO Parsing</string>
-  <string id="629"></string>
+  <string id="629">Prefer</string>
   <string id="630">Reconnect the source and press Retry</string>
   <string id="631">Fanart as backdrop.jpg</string>
   <string id="632">Media Browser mymovies.xml</string>
@@ -664,8 +664,8 @@
   <string id="663">Edit Show</string>
   <string id="664">Edit the details for the selected show.</string>
   <string id="665">Movies sorted by</string>
-  <string id="666"></string>
-  <string id="667"></string>
+  <string id="666">Extract images from video file</string>
+  <string id="667">Prefer extracted images</string>
   <string id="668">Clean database after updating library</string>
   <string id="669">Ignore last scan time when updating library</string>
   <string id="670">Show Folder/File Name Filters</string>
@@ -728,7 +728,7 @@
   <string id="727">Episode</string>
   <string id="728">Aired</string>
   <string id="729">Credits</string>
-  <string id="730">Preferred Type:</string>
+  <string id="730">Preferred Type</string>
   <string id="731">Refreshing Show</string>
   <string id="732">&lt;h&gt;=Hours{0}&lt;m&gt;=Minutes{0}&lt;s&gt;=Seconds</string>
   <string id="733">Display Missing Episodes</string>
@@ -757,7 +757,7 @@
   <string id="756">Loading All Episodes:</string>
   <string id="757">Saving All Images:</string>
   <string id="758">Searching</string>
-  <string id="759">Select Images:</string>
+  <string id="759">Select Images</string>
   <string id="760">Downloading Show Zip:</string>
   <string id="761">Verifying TV Show Details:</string>
   <string id="762">Verifying TV Episode Details:</string>
@@ -853,7 +853,7 @@
   <string id="852">Ask On Click Scrape</string>
   <string id="853">Scraping Media (All Movies - Skip):</string>
   <string id="854">Basic setup</string>
-  <string id="855"></string>
+  <string id="855">No KeyArts found</string>
   <string id="856">Loading modules...</string>
   <string id="857">Creating GUI...</string>
   <string id="858">Loading database...</string>
@@ -932,8 +932,8 @@
   <string id="931">Open In Browser</string>
   <string id="932">TVDB API Key</string>
   <string id="933">TMDB ID</string>
-  <string id="934"></string>
-  <string id="935"></string>
+  <string id="934">Image Limit</string>
+  <string id="935">We have to limit ammount of downloaded images to a useful value to prevent useless traffic on the image providers.{0}{0}Notes: Most skins can't show more than 4 Extrathumbs.{0}It's still possible to manually select as many as you want in the "Image Select" dialog.</string>
   <string id="936">Get your API Key from www.themoviedb.org</string>
   <string id="937"></string>
   <string id="938">TheMovieDB API is missing or not valid</string>
@@ -961,7 +961,7 @@
   <string id="960">with Epsiodes</string>
   <string id="961">Season {0} Posters</string>
   <string id="962">Season {0} Fanart</string>
-  <string id="963">TV Image Selection</string>
+  <string id="963"></string>
   <string id="964">Current Image:</string>
   <string id="965">Use Plot for Plot Outline</string>
   <string id="966">Enable Images Glass Overlay</string>
@@ -1112,7 +1112,7 @@
   <string id="1020">Season {0} Landscape</string>
   <string id="1021">Select Tag</string>
   <string id="1022">There was a problem communicating with host or there are no sources configured in Kodi</string>
-  <string id="1023">Preselect in "Image Select" dialog</string>
+  <string id="1023">Preselect images in "Select Images" dialog</string>
   <string id="1024">Removed</string>
   <string id="1025">All Seasons Banner</string>
   <string id="1026">All Seasons Fanart</string>
@@ -1194,7 +1194,7 @@
   <string id="1102">No ClearArts found</string>
   <string id="1103">No ClearLogos found</string>
   <string id="1104">No DiscArts found</string>
-  <string id="1105">Only HD</string>
+  <string id="1105"></string>
   <string id="1106">A ClearArt of your preferred size could not be found. Please choose another.</string>
   <string id="1107">A ClearLogo of your preferred size could not be found. Please choose another.</string>
   <string id="1108">A DiscArt of your preferred size could not be found. Please choose another.</string>
@@ -1561,10 +1561,10 @@
   <string id="1470"></string>
   <string id="1471"></string>
   <string id="1472"></string>
-  <string id="1473">No Spoilers</string>
-  <string id="1474">Remove Black Bars</string>
-  <string id="1475">Create thumbs instead of using fanarts</string>
-  <string id="1476">Only create thumbs if no fanart found</string>
+  <string id="1473"></string>
+  <string id="1474"></string>
+  <string id="1475"></string>
+  <string id="1476"></string>
   <string id="1477">Create Thumbnails</string>
   <string id="1478">VLC x86 Path</string>
   <string id="1479">Use as Audio Player</string>

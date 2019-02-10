@@ -45,6 +45,7 @@ Public Class dlgCustomScraper
     Private mMainExtrafanartsAllowed As Boolean
     Private mMainExtrathumbsAllowed As Boolean
     Private mMainFanartAllowed As Boolean
+    Private mMainKeyArtAllowed As Boolean
     Private mMainLandscapeAllowed As Boolean
     Private mMainMetaDataAllowed As Boolean
     Private mMainNFOAllowed As Boolean
@@ -102,9 +103,7 @@ Public Class dlgCustomScraper
     Public Sub New(ByVal tContentType As Enums.ContentType)
         ' This call is required by the designer.
         InitializeComponent()
-        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
-        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
-        StartPosition = FormStartPosition.Manual
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
 
         _ContentType = tContentType
     End Sub
@@ -193,6 +192,7 @@ Public Class dlgCustomScraper
         chkMainModifierExtrafanarts.Checked = False
         chkMainModifierExtrathumbs.Checked = False
         chkMainModifierFanart.Checked = False
+        chkMainModifierKeyArt.Checked = False
         chkMainModifierLandscape.Checked = False
         chkMainModifierMetaData.Checked = False
         chkMainModifierNFO.Checked = False
@@ -286,6 +286,8 @@ Public Class dlgCustomScraper
             chkMainModifierExtrathumbs.Enabled = False
             chkMainModifierFanart.Checked = mMainFanartAllowed
             chkMainModifierFanart.Enabled = False
+            chkMainModifierKeyArt.Checked = mMainKeyArtAllowed
+            chkMainModifierKeyArt.Enabled = False
             chkMainModifierLandscape.Checked = mMainLandscapeAllowed
             chkMainModifierLandscape.Enabled = False
             chkMainModifierMetaData.Checked = mMainMetaDataAllowed
@@ -308,6 +310,7 @@ Public Class dlgCustomScraper
             chkMainModifierExtrafanarts.Enabled = mMainExtrafanartsAllowed
             chkMainModifierExtrathumbs.Enabled = mMainExtrathumbsAllowed
             chkMainModifierFanart.Enabled = mMainFanartAllowed
+            chkMainModifierKeyArt.Enabled = mMainKeyArtAllowed
             chkMainModifierLandscape.Enabled = mMainLandscapeAllowed
             chkMainModifierMetaData.Enabled = mMainMetaDataAllowed
             chkMainModifierNFO.Enabled = mMainNFOAllowed
@@ -534,6 +537,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeModifiers.MainExtrathumbs = chkMainModifierExtrathumbs.Checked
         CustomUpdater.ScrapeModifiers.MainExtrafanarts = chkMainModifierExtrafanarts.Checked
         CustomUpdater.ScrapeModifiers.MainFanart = chkMainModifierFanart.Checked
+        CustomUpdater.ScrapeModifiers.MainKeyArt = chkMainModifierKeyArt.Checked
         CustomUpdater.ScrapeModifiers.MainLandscape = chkMainModifierLandscape.Checked
         CustomUpdater.ScrapeModifiers.MainMeta = chkMainModifierMetaData.Checked
         CustomUpdater.ScrapeModifiers.MainNFO = chkMainModifierNFO.Checked
@@ -603,6 +607,7 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeModifiers.MainExtrafanarts OrElse
             CustomUpdater.ScrapeModifiers.MainExtrathumbs OrElse
             CustomUpdater.ScrapeModifiers.MainFanart OrElse
+            CustomUpdater.ScrapeModifiers.MainKeyArt OrElse
             CustomUpdater.ScrapeModifiers.MainLandscape OrElse
             CustomUpdater.ScrapeModifiers.MainMeta OrElse
             CustomUpdater.ScrapeModifiers.MainPoster OrElse
@@ -666,8 +671,8 @@ Public Class dlgCustomScraper
         With Master.eSettings
             Select Case _ContentType
                 Case Enums.ContentType.Movie
-                    NameID = "idMovie"
-                    NameTable = "movie"
+                    NameID = Database.Helpers.GetMainIdName(Database.TableName.movie)
+                    NameTable = Database.Helpers.GetTableName(Database.TableName.movie)
                     gbEpisodeScrapeModifiers.Visible = False
                     gbEpisodeScrapeOptions.Visible = False
                     gbSeasonScrapeModifiers.Visible = False
@@ -688,6 +693,7 @@ Public Class dlgCustomScraper
                     mMainExtrafanartsAllowed = .MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     mMainExtrathumbsAllowed = .MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     mMainFanartAllowed = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    mMainKeyArtAllowed = .MovieKeyArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
                     mMainLandscapeAllowed = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
                     mMainMetaDataAllowed = .MovieScraperMetaDataScan
                     mMainNFOAllowed = .MovieNFOAnyEnabled
@@ -746,8 +752,8 @@ Public Class dlgCustomScraper
                     rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count)
 
                 Case Enums.ContentType.MovieSet
-                    NameID = "idSet"
-                    NameTable = "sets"
+                    NameID = Database.Helpers.GetMainIdName(Database.TableName.movieset)
+                    NameTable = Database.Helpers.GetTableName(Database.TableName.movieset)
                     gbEpisodeScrapeModifiers.Visible = False
                     gbEpisodeScrapeOptions.Visible = False
                     gbSeasonScrapeModifiers.Visible = False
@@ -768,6 +774,7 @@ Public Class dlgCustomScraper
                     mMainExtrafanartsAllowed = False
                     mMainExtrathumbsAllowed = False
                     mMainFanartAllowed = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
+                    mMainKeyArtAllowed = False
                     mMainLandscapeAllowed = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
                     mMainMetaDataAllowed = False
                     mMainNFOAllowed = .MovieSetNFOAnyEnabled
@@ -826,8 +833,8 @@ Public Class dlgCustomScraper
                     rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows.Count)
 
                 Case Enums.ContentType.TV
-                    NameID = "idShow"
-                    NameTable = "tvshow"
+                    NameID = Database.Helpers.GetMainIdName(Database.TableName.tvshow)
+                    NameTable = Database.Helpers.GetTableName(Database.TableName.tvshow)
 
                     mEpisodeActorThumbsAllowed = .TVEpisodeActorThumbsAnyEnabled
                     mEpisodeFanartAllowed = .TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
@@ -843,6 +850,7 @@ Public Class dlgCustomScraper
                     mMainExtrafanartsAllowed = .TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
                     mMainExtrathumbsAllowed = False
                     mMainFanartAllowed = .TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+                    mMainKeyArtAllowed = .TVShowKeyArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
                     mMainLandscapeAllowed = .TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
                     mMainMetaDataAllowed = False
                     mMainNFOAllowed = .TVShowNFOAnyEnabled
@@ -910,14 +918,14 @@ Public Class dlgCustomScraper
         'check if we have "New" or "Marked" medias
         If Not String.IsNullOrEmpty(NameID) AndAlso Not String.IsNullOrEmpty(NameTable) Then
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLNewcommand.CommandText = String.Format("SELECT COUNT({0}) AS ncount FROM {1} WHERE new = 1;", NameID, NameTable)
+                SQLNewcommand.CommandText = String.Format("SELECT COUNT({0}) AS ncount FROM {1} WHERE {2} = 1;", NameID, NameTable, Database.Helpers.GetColumnName(Database.ColumnName.New))
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     SQLcount.Read()
                     rbScrapeType_New.Enabled = Convert.ToInt32(SQLcount("ncount")) > 0
                     rbScrapeType_New.Text = String.Format(String.Concat(Master.eLang.GetString(47, "New"), " ({0})"), Convert.ToInt32(SQLcount("ncount")))
                 End Using
 
-                SQLNewcommand.CommandText = String.Format("SELECT COUNT({0}) AS mcount FROM {1} WHERE mark = 1;", NameID, NameTable)
+                SQLNewcommand.CommandText = String.Format("SELECT COUNT({0}) AS mcount FROM {1} WHERE {2} = 1;", NameID, NameTable, Database.Helpers.GetColumnName(Database.ColumnName.Marked))
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     SQLcount.Read()
                     rbScrapeType_Marked.Enabled = Convert.ToInt32(SQLcount("mcount")) > 0
@@ -1071,6 +1079,7 @@ Public Class dlgCustomScraper
         chkMainModifierExtrafanarts.Click,
         chkMainModifierExtrathumbs.Click,
         chkMainModifierFanart.Click,
+        chkMainModifierKeyArt.Click,
         chkMainModifierLandscape.Click,
         chkMainModifierMetaData.Click,
         chkMainModifierNFO.Click,
@@ -1181,6 +1190,10 @@ Public Class dlgCustomScraper
         chkEpisodeModifierFanart.Text = strFanart
         chkMainModifierFanart.Text = strFanart
         chkSeasonModifierFanart.Text = strFanart
+
+        'KeyArt
+        Dim strKeyArt As String = Master.eLang.GetString(296, "KeyArt")
+        chkMainModifierKeyArt.Text = strKeyArt
 
         'Landscape
         Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")

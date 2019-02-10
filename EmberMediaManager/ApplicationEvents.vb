@@ -156,9 +156,7 @@ Namespace My
         ''' Check if Ember is already running, but only for GUI instances
         ''' </summary>
         Private Sub MyApplication_StartupNextInstance(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs) Handles Me.StartupNextInstance
-            If e.CommandLine.Count = 0 Then
-                e.BringToForeground = True
-            ElseIf e.CommandLine.Count > 0 Then
+            If e.CommandLine.Count > 0 Then
                 Dim Args() As String = e.CommandLine.ToArray
                 frmMain.fCommandLine.RunCommandLine(Args)
             End If

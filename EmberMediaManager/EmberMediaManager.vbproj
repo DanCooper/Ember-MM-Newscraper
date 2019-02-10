@@ -353,16 +353,10 @@
     <Compile Include="dlgTrailerSelect.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgTVChangeEp.Designer.vb">
-      <DependentUpon>dlgTVChangeEp.vb</DependentUpon>
+    <Compile Include="dlgTVChangeTVEpisode.Designer.vb">
+      <DependentUpon>dlgTVChangeTVEpisode.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgTVChangeEp.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgTVRegExProfiles.Designer.vb">
-      <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgTVRegExProfiles.vb">
+    <Compile Include="dlgTVChangeTVEpisode.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgSourceTVShow.Designer.vb">
@@ -494,12 +488,9 @@
       <DependentUpon>dlgTrailerSelect.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgTVChangeEp.resx">
-      <DependentUpon>dlgTVChangeEp.vb</DependentUpon>
+    <EmbeddedResource Include="dlgTVChangeTVEpisode.resx">
+      <DependentUpon>dlgTVChangeTVEpisode.vb</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgTVRegExProfiles.resx">
-      <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgSourceTVShow.resx">
       <DependentUpon>dlgSourceTVShow.vb</DependentUpon>
@@ -912,10 +903,10 @@
     <None Include="Resources\paypal.png" />
     <None Include="Resources\patreon.png" />
     <Content Include="Resources\tvdb.png" />
-    <Content Include="Themes\DarkBlue.xml">
+    <Content Include="Themes\FullHD-DarkBlue.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Themes\DarkRed.xml">
+    <Content Include="Themes\FullHD-DarkRed.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\hasBanner.png" />
@@ -5326,7 +5317,7 @@
     <Content Include="logo.ico" />
     <None Include="Resources\languages.xml" />
     <None Include="Resources\haswatched.png" />
-    <Content Include="Themes\Default.xml">
+    <Content Include="Themes\FullHD-Default.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>

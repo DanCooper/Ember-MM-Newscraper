@@ -18,103 +18,29 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Windows.Forms
 
-Namespace FormUtils
+Public Class FormsUtils
 
-    Public Class TextBox_with_Watermark
-        Inherits TextBox
+    Public Shared Sub ResizeAndMoveDialog(ByRef Dialog As Control, ByRef Form As Form)
+        'shrink dialog if bigger than the Windows working area
+        Dim iWidth As Integer = Dialog.Width
+        Dim iHeight As Integer = Dialog.Height
+        If My.Computer.Screen.WorkingArea.Width < iWidth Then
+            iWidth = My.Computer.Screen.WorkingArea.Width
+        End If
+        If My.Computer.Screen.WorkingArea.Height < iHeight Then
+            iHeight = My.Computer.Screen.WorkingArea.Height
+        End If
+        Dialog.Size = New Size(iWidth, iHeight)
+        'move the dialog to the center of Embers main dialog
+        Dim pLeft As Integer
+        Dim pTop As Integer
+        pLeft = Master.AppPos.Left + (Master.AppPos.Width - Dialog.Width) \ 2
+        pTop = Master.AppPos.Top + (Master.AppPos.Height - Dialog.Height) \ 2
+        Dialog.Location = New Point(pLeft, pTop)
+        Form.StartPosition = FormStartPosition.Manual
+    End Sub
 
-        'Declare A Few Variables
-        Dim WaterText As String
-        Dim WaterColor As Color
-        Dim WaterFont As Font
-        Dim WaterBrush As SolidBrush
-        Dim WaterContainer As Panel
-
-        Public Sub New()
-            MyBase.New()
-            StartProcess()
-        End Sub
-
-        Private Sub StartProcess()
-            'Assign Values To the Variables
-            WaterText = "Default Watermark"
-            WaterColor = Color.Gray
-            WaterFont = New Font(Font, FontStyle.Italic)
-            WaterBrush = New SolidBrush(WaterColor)
-
-            CreateWatermark()
-
-            AddHandler TextChanged, AddressOf ChangeText
-            AddHandler FontChanged, AddressOf ChangeFont
-        End Sub
-
-        Private Sub CreateWatermark()
-            WaterContainer = New Panel
-            Controls.Add(WaterContainer)
-            AddHandler WaterContainer.Click, AddressOf Clicked
-            AddHandler WaterContainer.Paint, AddressOf Painted
-        End Sub
-
-        Private Sub RemoveWatermark()
-            Controls.Remove(WaterContainer)
-        End Sub
-
-        Private Sub ChangeText(sender As Object, e As EventArgs)
-            If TextLength <= 0 Then
-                CreateWatermark()
-            ElseIf TextLength > 0 Then
-                RemoveWatermark()
-            End If
-        End Sub
-
-        Private Sub ChangeFont(sender As Object, e As EventArgs)
-            WaterFont = New Font(Font, FontStyle.Italic)
-        End Sub
-
-        Private Sub Clicked(sender As Object, e As EventArgs)
-            Focus()
-        End Sub
-
-        Private Sub Painted(sender As Object, e As PaintEventArgs)
-            Dim bHasBorder As Boolean = Not BorderStyle = BorderStyle.None
-            WaterContainer.Location = New Point(If(bHasBorder, 3, 2), If(bHasBorder, 1, 0))
-            WaterContainer.Anchor = AnchorStyles.Left Or AnchorStyles.Right
-            WaterContainer.Height = Height - If(bHasBorder, 2, 0)
-            WaterContainer.Width = Width - If(bHasBorder, 4, 1)
-            WaterBrush = New SolidBrush(WaterColor)
-
-            Dim Graphic As Graphics = e.Graphics
-            Graphic.DrawString(WaterText, WaterFont, WaterBrush, New PointF(-2.0!, 1.0!))
-        End Sub
-
-        Protected Overrides Sub OnInvalidated(e As System.Windows.Forms.InvalidateEventArgs)
-            MyBase.OnInvalidated(e)
-            WaterContainer.Invalidate()
-        End Sub
-
-        <Category("Watermark Attributes"), Description("Sets Watermark Text")> Public Property WatermarkText As String
-            Get
-                Return WaterText
-            End Get
-            Set(value As String)
-                WaterText = value
-                Invalidate()
-            End Set
-        End Property
-
-        <Category("Watermark Attributes"), Description("Sets Watermark Color")> Public Property WatermarkColor As Color
-            Get
-                Return WaterColor
-            End Get
-            Set(value As Color)
-                WaterColor = value
-                Invalidate()
-            End Set
-        End Property
-    End Class
-
-End Namespace
+End Class

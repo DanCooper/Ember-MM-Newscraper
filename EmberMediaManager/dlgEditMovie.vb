@@ -75,9 +75,7 @@ Public Class dlgEditMovie
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
-        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
-        StartPosition = FormStartPosition.Manual
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
     Private Sub Dialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -87,6 +85,7 @@ Public Class dlgEditMovie
             pbClearLogo.AllowDrop = True
             pbDiscArt.AllowDrop = True
             pbFanart.AllowDrop = True
+            pbKeyArt.AllowDrop = True
             pbLandscape.AllowDrop = True
             pbPoster.AllowDrop = True
             pnlExtrafanarts.AllowDrop = True
@@ -102,15 +101,13 @@ Public Class dlgEditMovie
                 pnlTop.BackgroundImage = iBackground
             End Using
 
-            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement, False)
-            dFileInfoEdit.TopLevel = False
-            dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
-            dFileInfoEdit.BackColor = Color.White
-            dFileInfoEdit.btnClose.Visible = False
+            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement.Movie.FileInfo) With {
+                .BackColor = Color.White,
+                .Dock = DockStyle.Fill,
+                .FormBorderStyle = FormBorderStyle.None,
+                .TopLevel = False
+            }
             pnlFileInfo.Controls.Add(dFileInfoEdit)
-            Dim oldwidth As Integer = dFileInfoEdit.Width
-            dFileInfoEdit.Width = pnlFileInfo.Width
-            dFileInfoEdit.Height = pnlFileInfo.Height
             dFileInfoEdit.Show()
 
             Data_Fill()
@@ -176,6 +173,7 @@ Public Class dlgEditMovie
         lblExtrathumbs.Text = String.Format("{0} ({1})", Master.eLang.GetString(153, "Extrathumbs"), pnlExtrafanartsList.Controls.Count)
         lblFanart.Text = Master.eLang.GetString(149, "Fanart")
         lblGenres.Text = Master.eLang.GetString(51, "Genre(s):")
+        lblKeyArt.Text = Master.eLang.GetString(296, "KeyArt")
         lblLandscape.Text = Master.eLang.GetString(1059, "Landscape")
         lblLanguage.Text = Master.eLang.GetString(610, "Language")
         lblLinkTrailer.Text = String.Concat(Master.eLang.GetString(227, "Trailer URL"), ":")
@@ -318,25 +316,27 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Function ConvertButtonToModifierType(ByVal sender As System.Object) As Enums.ModifierType
+    Private Function ConvertControlToImageType(ByVal sender As System.Object) As Enums.ModifierType
         Select Case True
-            Case sender Is btnRemoveBanner, sender Is btnSetBannerDL, sender Is btnSetBannerLocal, sender Is btnSetBannerScrape
+            Case sender Is btnRemoveBanner, sender Is btnClipboardBanner, sender Is btnDLBanner, sender Is btnLocalBanner, sender Is btnScrapeBanner, sender Is pbBanner
                 Return Enums.ModifierType.MainBanner
-            Case sender Is btnRemoveClearArt, sender Is btnSetClearArtDL, sender Is btnSetClearArtLocal, sender Is btnSetClearArtScrape
+            Case sender Is btnRemoveClearArt, sender Is btnClipboardClearArt, sender Is btnDLClearArt, sender Is btnLocalClearArt, sender Is btnScrapeClearArt, sender Is pbClearArt
                 Return Enums.ModifierType.MainClearArt
-            Case sender Is btnRemoveClearLogo, sender Is btnSetClearLogoDL, sender Is btnSetClearLogoLocal, sender Is btnSetClearLogoScrape
+            Case sender Is btnRemoveClearLogo, sender Is btnClipboardClearLogo, sender Is btnDLClearLogo, sender Is btnLocalClearLogo, sender Is btnScrapeClearLogo, sender Is pbClearLogo
                 Return Enums.ModifierType.MainClearLogo
-            Case sender Is btnRemoveDiscArt, sender Is btnSetDiscArtDL, sender Is btnSetDiscArtLocal, sender Is btnSetDiscArtScrape
+            Case sender Is btnRemoveDiscArt, sender Is btnClipboardDiscArt, sender Is btnDLDiscArt, sender Is btnLocalDiscArt, sender Is btnScrapeDiscArt, sender Is pbDiscArt
                 Return Enums.ModifierType.MainDiscArt
-            Case sender Is btnExtrafanartsRemove, sender Is btnSetExtrafanartsDL, sender Is btnSetExtrafanartsLocal, sender Is btnSetExtrafanartsScrape
+            Case sender Is btnRemoveExtrafanarts, sender Is btnClipboardExtrafanarts, sender Is btnDLExtrafanarts, sender Is btnLocalExtrafanarts, sender Is btnScrapeExtrafanarts, sender Is pnlExtrafanarts
                 Return Enums.ModifierType.MainExtrafanarts
-            Case sender Is btnExtrathumbsRemove, sender Is btnSetExtrathumbsDL, sender Is btnSetExtrathumbsLocal, sender Is btnSetExtrathumbsScrape
+            Case sender Is btnRemoveExtrathumbs, sender Is btnClipboardExtrathumbs, sender Is btnDLExtrathumbs, sender Is btnLocalExtrathumbs, sender Is btnScrapeExtrathumbs, sender Is pnlExtrathumbs
                 Return Enums.ModifierType.MainExtrathumbs
-            Case sender Is btnRemoveFanart, sender Is btnSetFanartDL, sender Is btnSetFanartLocal, sender Is btnSetFanartScrape
+            Case sender Is btnRemoveFanart, sender Is btnClipboardFanart, sender Is btnDLFanart, sender Is btnLocalFanart, sender Is btnScrapeFanart, sender Is pbFanart
                 Return Enums.ModifierType.MainFanart
-            Case sender Is btnRemoveLandscape, sender Is btnSetLandscapeDL, sender Is btnSetLandscapeLocal, sender Is btnSetLandscapeScrape
+            Case sender Is btnRemoveKeyArt, sender Is btnClipboardKeyArt, sender Is btnDLKeyArt, sender Is btnLocalKeyArt, sender Is btnScrapeKeyArt, sender Is pbKeyArt
+                Return Enums.ModifierType.MainKeyArt
+            Case sender Is btnRemoveLandscape, sender Is btnClipboardLandscape, sender Is btnDLLandscape, sender Is btnLocalLandscape, sender Is btnScrapeLandscape, sender Is pbLandscape
                 Return Enums.ModifierType.MainLandscape
-            Case sender Is btnRemovePoster, sender Is btnSetPosterDL, sender Is btnSetPosterLocal, sender Is btnSetPosterScrape
+            Case sender Is btnRemovePoster, sender Is btnClipboardPoster, sender Is btnDLPoster, sender Is btnLocalPoster, sender Is btnScrapePoster, sender Is pbPoster
                 Return Enums.ModifierType.MainPoster
             Case Else
                 Return Nothing
@@ -482,7 +482,7 @@ Public Class dlgEditMovie
 
                 'Banner
                 If Master.eSettings.MovieBannerAnyEnabled Then
-                    btnSetBannerScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+                    btnScrapeBanner.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
                     If .Banner.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainBanner)
                     End If
@@ -493,7 +493,7 @@ Public Class dlgEditMovie
 
                 'ClearArt
                 If Master.eSettings.MovieClearArtAnyEnabled Then
-                    btnSetClearArtScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
+                    btnScrapeClearArt.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
                     If .ClearArt.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainClearArt)
                     End If
@@ -504,7 +504,7 @@ Public Class dlgEditMovie
 
                 'ClearLogo
                 If Master.eSettings.MovieClearLogoAnyEnabled Then
-                    btnSetClearLogoScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
+                    btnScrapeClearLogo.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
                     If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainClearLogo)
                     End If
@@ -515,7 +515,7 @@ Public Class dlgEditMovie
 
                 'DiscArt
                 If Master.eSettings.MovieDiscArtAnyEnabled Then
-                    btnSetDiscArtScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
+                    btnScrapeDiscArt.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
                     If .DiscArt.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainDiscArt)
                     End If
@@ -526,7 +526,7 @@ Public Class dlgEditMovie
 
                 'Extrafanarts
                 If Master.eSettings.MovieExtrafanartsAnyEnabled Then
-                    btnSetExtrafanartsScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    btnScrapeExtrafanarts.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts)
                     If .Extrafanarts.Count > 0 Then
                         Dim iIndex As Integer = 0
                         For Each tImg As MediaContainers.Image In .Extrafanarts
@@ -541,7 +541,7 @@ Public Class dlgEditMovie
 
                 'Extrathumbs
                 If Master.eSettings.MovieExtrathumbsAnyEnabled Then
-                    btnSetExtrathumbsScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    btnScrapeExtrathumbs.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs)
                     If .Extrathumbs.Count > 0 Then
                         Dim iIndex As Integer = 0
                         For Each tImg As MediaContainers.Image In .Extrathumbs.OrderBy(Function(f) f.Index)
@@ -556,7 +556,7 @@ Public Class dlgEditMovie
 
                 'Fanart
                 If Master.eSettings.MovieFanartAnyEnabled Then
-                    btnSetFanartScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    btnScrapeFanart.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     If .Fanart.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainFanart)
                     End If
@@ -565,9 +565,20 @@ Public Class dlgEditMovie
                     pnlFanart.Visible = False
                 End If
 
+                'KeyArt
+                If Master.eSettings.MovieKeyArtAnyEnabled Then
+                    btnScrapeKeyArt.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainKeyArt)
+                    If .KeyArt.ImageOriginal.Image IsNot Nothing Then
+                        Image_LoadPictureBox(Enums.ModifierType.MainKeyArt)
+                    End If
+                    bNeedTab_Images = True
+                Else
+                    pnlKeyArt.Visible = False
+                End If
+
                 'Landscape
                 If Master.eSettings.MovieLandscapeAnyEnabled Then
-                    btnSetLandscapeScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
+                    btnScrapeLandscape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
                     If .Landscape.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainLandscape)
                     End If
@@ -578,7 +589,7 @@ Public Class dlgEditMovie
 
                 'Poster
                 If Master.eSettings.MoviePosterAnyEnabled Then
-                    btnSetPosterScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+                    btnScrapePoster.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
                     If .Poster.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainPoster)
                     End If
@@ -956,6 +967,35 @@ Public Class dlgEditMovie
         clbGenres.Items.AddRange(APIXML.GetGenreList.Where(Function(f) Not clbGenres.Items.Contains(f)).ToArray)
     End Sub
 
+    Private Sub Image_Clipboard_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        btnClipboardBanner.Click,
+        btnClipboardClearArt.Click,
+        btnClipboardClearLogo.Click,
+        btnClipboardDiscArt.Click,
+        btnClipboardExtrafanarts.Click,
+        btnClipboardExtrathumbs.Click,
+        btnClipboardFanart.Click,
+        btnClipboardKeyArt.Click,
+        btnClipboardLandscape.Click,
+        btnClipboardPoster.Click
+
+        Dim lstImages = FileUtils.ClipboardHandler.GetImagesFromClipboard
+        If lstImages.Count > 0 Then
+            Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+            Select Case eImageType
+                Case Enums.ModifierType.MainExtrafanarts
+                    tmpDBElement.ImagesContainer.Extrafanarts.AddRange(lstImages)
+                    Image_Extrafanarts_Refresh()
+                Case Enums.ModifierType.MainExtrathumbs
+                    tmpDBElement.ImagesContainer.Extrathumbs.AddRange(lstImages)
+                    Image_Extrathumbs_Refresh()
+                Case Else
+                    tmpDBElement.ImagesContainer.SetImageByType(lstImages(0), eImageType)
+                    Image_LoadPictureBox(eImageType)
+            End Select
+        End If
+    End Sub
+
     Private Sub Image_DoubleClick(sender As Object, e As EventArgs) Handles _
         pbBanner.DoubleClick,
         pbClearArt.DoubleClick,
@@ -963,6 +1003,7 @@ Public Class dlgEditMovie
         pbDiscArt.DoubleClick,
         pbFanart.DoubleClick,
         pbFrame.DoubleClick,
+        pbKeyArt.DoubleClick,
         pbLandscape.DoubleClick,
         pbPoster.DoubleClick
         Cursor.Current = Cursors.WaitCursor
@@ -974,49 +1015,32 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub Image_Download_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        btnSetBannerDL.Click,
-        btnSetClearArtDL.Click,
-        btnSetClearLogoDL.Click,
-        btnSetDiscArtDL.Click,
-        btnSetExtrafanartsDL.Click,
-        btnSetExtrathumbsDL.Click,
-        btnSetFanartDL.Click,
-        btnSetLandscapeDL.Click,
-        btnSetPosterDL.Click
+        btnDLBanner.Click,
+        btnDLClearArt.Click,
+        btnDLClearLogo.Click,
+        btnDLDiscArt.Click,
+        btnDLExtrafanarts.Click,
+        btnDLExtrathumbs.Click,
+        btnDLFanart.Click,
+        btnDLKeyArt.Click,
+        btnDLLandscape.Click,
+        btnDLPoster.Click
         Using dImgManual As New dlgImgManual
             Dim tImage As MediaContainers.Image
             If dImgManual.ShowDialog() = DialogResult.OK Then
                 tImage = dImgManual.Results
                 If tImage.ImageOriginal.Image IsNot Nothing Then
-                    Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
-                    Select Case modType
-                        Case Enums.ModifierType.MainBanner
-                            tmpDBElement.ImagesContainer.Banner = tImage
-                            Image_LoadPictureBox(Enums.ModifierType.MainBanner)
-                        Case Enums.ModifierType.MainClearArt
-                            tmpDBElement.ImagesContainer.ClearArt = tImage
-                            Image_LoadPictureBox(Enums.ModifierType.MainClearArt)
-                        Case Enums.ModifierType.MainClearLogo
-                            tmpDBElement.ImagesContainer.ClearLogo = tImage
-                            Image_LoadPictureBox(Enums.ModifierType.MainClearLogo)
-                        Case Enums.ModifierType.MainDiscArt
-                            tmpDBElement.ImagesContainer.DiscArt = tImage
-                            Image_LoadPictureBox(Enums.ModifierType.MainDiscArt)
+                    Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+                    Select Case eImageType
                         Case Enums.ModifierType.MainExtrafanarts
                             tmpDBElement.ImagesContainer.Extrafanarts.Add(tImage)
                             Image_Extrafanarts_Refresh()
                         Case Enums.ModifierType.MainExtrathumbs
                             tmpDBElement.ImagesContainer.Extrathumbs.Add(tImage)
-                            Image_Extrathumbs_Refresh
-                        Case Enums.ModifierType.MainFanart
-                            tmpDBElement.ImagesContainer.Fanart = tImage
-                            Image_LoadPictureBox(Enums.ModifierType.MainFanart)
-                        Case Enums.ModifierType.MainLandscape
-                            tmpDBElement.ImagesContainer.Landscape = tImage
-                            Image_LoadPictureBox(Enums.ModifierType.MainLandscape)
-                        Case Enums.ModifierType.MainPoster
-                            tmpDBElement.ImagesContainer.Poster = tImage
-                            Image_LoadPictureBox(Enums.ModifierType.MainPoster)
+                            Image_Extrathumbs_Refresh()
+                        Case Else
+                            tmpDBElement.ImagesContainer.SetImageByType(tImage, eImageType)
+                            Image_LoadPictureBox(eImageType)
                     End Select
                 End If
             End If
@@ -1048,40 +1072,24 @@ Public Class dlgEditMovie
         pbClearLogo.DragDrop,
         pbDiscArt.DragDrop,
         pbFanart.DragDrop,
+        pbKeyArt.DragDrop,
         pbLandscape.DragDrop,
         pbPoster.DragDrop,
         pnlExtrafanarts.DragDrop,
         pnlExtrathumbs.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            Select Case True
-                Case sender Is pbBanner
-                    tmpDBElement.ImagesContainer.Banner = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.MainBanner)
-                Case sender Is pbClearArt
-                    tmpDBElement.ImagesContainer.ClearArt = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.MainClearArt)
-                Case sender Is pbClearLogo
-                    tmpDBElement.ImagesContainer.ClearLogo = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.MainClearLogo)
-                Case sender Is pbDiscArt
-                    tmpDBElement.ImagesContainer.DiscArt = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.MainDiscArt)
-                Case sender Is pbFanart
-                    tmpDBElement.ImagesContainer.Fanart = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.MainFanart)
-                Case sender Is pbLandscape
-                    tmpDBElement.ImagesContainer.Landscape = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.MainLandscape)
-                Case sender Is pbPoster
-                    tmpDBElement.ImagesContainer.Poster = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.MainPoster)
-                Case sender Is pnlExtrafanarts
+            Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+            Select Case eImageType
+                Case Enums.ModifierType.MainExtrafanarts
                     tmpDBElement.ImagesContainer.Extrafanarts.Add(tImage)
                     Image_Extrafanarts_Refresh()
-                Case sender Is pnlExtrathumbs
+                Case Enums.ModifierType.MainExtrathumbs
                     tmpDBElement.ImagesContainer.Extrathumbs.Add(tImage)
                     Image_Extrathumbs_Refresh()
+                Case Else
+                    tmpDBElement.ImagesContainer.SetImageByType(tImage, eImageType)
+                    Image_LoadPictureBox(eImageType)
             End Select
         End If
     End Sub
@@ -1092,6 +1100,7 @@ Public Class dlgEditMovie
         pbClearLogo.DragEnter,
         pbDiscArt.DragEnter,
         pbFanart.DragEnter,
+        pbKeyArt.DragEnter,
         pbLandscape.DragEnter,
         pbPoster.DragEnter,
         pnlExtrafanarts.DragEnter,
@@ -1103,13 +1112,13 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub Image_Extraimages_Add(ByVal sDescription As String, ByVal iIndex As Integer, tImage As MediaContainers.Image, modType As Enums.ModifierType)
+    Private Sub Image_Extraimages_Add(ByVal Description As String, ByVal Index As Integer, Image As MediaContainers.Image, ImageType As Enums.ModifierType)
         Dim iNextTop As Integer
         Dim tLabel() As Label = Nothing
         Dim tMainPanel As New Panel
         Dim tPanel() As Panel = Nothing
         Dim tPictureBox() As PictureBox
-        Select Case modType
+        Select Case ImageType
             Case Enums.ModifierType.MainExtrafanarts
                 iNextTop = iExtrafanartsList_NextTop
                 tLabel = lblExtrafanartsList_Resolution
@@ -1125,59 +1134,59 @@ Public Class dlgEditMovie
         End Select
 
         Try
-            If tImage.ImageOriginal.Image Is Nothing Then
-                tImage.LoadAndCache(Enums.ContentType.Movie, True, True)
+            If Image.ImageOriginal.Image Is Nothing Then
+                Image.LoadAndCache(Enums.ContentType.Movie, True, True)
             End If
-            ReDim Preserve tPanel(iIndex)
-            ReDim Preserve tPictureBox(iIndex)
-            ReDim Preserve tLabel(iIndex)
+            ReDim Preserve tPanel(Index)
+            ReDim Preserve tPictureBox(Index)
+            ReDim Preserve tLabel(Index)
 
-            tPanel(iIndex) = New Panel()
-            tPictureBox(iIndex) = New PictureBox()
-            tLabel(iIndex) = New Label()
+            tPanel(Index) = New Panel()
+            tPictureBox(Index) = New PictureBox()
+            tLabel(Index) = New Label()
 
-            tLabel(iIndex).AutoSize = False
-            tLabel(iIndex).BackColor = Color.White
-            tLabel(iIndex).Location = iImageList_Location_Resolution
-            tLabel(iIndex).Name = iIndex.ToString
-            tLabel(iIndex).Size = iImageList_Size_Resolution
-            tLabel(iIndex).Tag = tImage
-            tLabel(iIndex).Text = String.Format("{0}x{1}", tImage.ImageOriginal.Image.Width, tImage.ImageOriginal.Image.Height)
-            tLabel(iIndex).TextAlign = ContentAlignment.MiddleCenter
+            tLabel(Index).AutoSize = False
+            tLabel(Index).BackColor = Color.White
+            tLabel(Index).Location = iImageList_Location_Resolution
+            tLabel(Index).Name = Index.ToString
+            tLabel(Index).Size = iImageList_Size_Resolution
+            tLabel(Index).Tag = Image
+            tLabel(Index).Text = String.Format("{0}x{1}", Image.ImageOriginal.Image.Width, Image.ImageOriginal.Image.Height)
+            tLabel(Index).TextAlign = ContentAlignment.MiddleCenter
 
-            tPictureBox(iIndex).Image = tImage.ImageOriginal.Image
-            tPictureBox(iIndex).Location = iImageList_Location_Image
-            tPictureBox(iIndex).Name = iIndex.ToString
-            tPictureBox(iIndex).Size = iImageList_Size_Image
-            tPictureBox(iIndex).SizeMode = PictureBoxSizeMode.Zoom
-            tPictureBox(iIndex).Tag = tImage
+            tPictureBox(Index).Image = Image.ImageOriginal.Image
+            tPictureBox(Index).Location = iImageList_Location_Image
+            tPictureBox(Index).Name = Index.ToString
+            tPictureBox(Index).Size = iImageList_Size_Image
+            tPictureBox(Index).SizeMode = PictureBoxSizeMode.Zoom
+            tPictureBox(Index).Tag = Image
 
-            tPanel(iIndex).BackColor = Color.White
-            tPanel(iIndex).BorderStyle = BorderStyle.FixedSingle
-            tPanel(iIndex).Left = iImageList_DistanceLeft
-            tPanel(iIndex).Name = iIndex.ToString
-            tPanel(iIndex).Size = iImageList_Size_Panel
-            tPanel(iIndex).Tag = tImage
-            tPanel(iIndex).Top = iNextTop
+            tPanel(Index).BackColor = Color.White
+            tPanel(Index).BorderStyle = BorderStyle.FixedSingle
+            tPanel(Index).Left = iImageList_DistanceLeft
+            tPanel(Index).Name = Index.ToString
+            tPanel(Index).Size = iImageList_Size_Panel
+            tPanel(Index).Tag = Image
+            tPanel(Index).Top = iNextTop
 
-            tMainPanel.Controls.Add(tPanel(iIndex))
-            tPanel(iIndex).Controls.Add(tPictureBox(iIndex))
-            tPanel(iIndex).Controls.Add(tLabel(iIndex))
-            tPanel(iIndex).BringToFront()
+            tMainPanel.Controls.Add(tPanel(Index))
+            tPanel(Index).Controls.Add(tPictureBox(Index))
+            tPanel(Index).Controls.Add(tLabel(Index))
+            tPanel(Index).BringToFront()
 
-            AddHandler tLabel(iIndex).Click, AddressOf Image_Extraimages_Click
-            AddHandler tLabel(iIndex).DoubleClick, AddressOf Image_DoubleClick
-            AddHandler tPictureBox(iIndex).Click, AddressOf Image_Extraimages_Click
-            AddHandler tPictureBox(iIndex).DoubleClick, AddressOf Image_DoubleClick
-            AddHandler tPictureBox(iIndex).MouseDown, AddressOf Image_Drag_MouseDown
-            AddHandler tPictureBox(iIndex).MouseMove, AddressOf Image_Drag_MouseMove
-            AddHandler tPictureBox(iIndex).MouseUp, AddressOf Image_Drag_MouseUp
-            AddHandler tPanel(iIndex).Click, AddressOf Image_Extraimages_Click
-            AddHandler tPanel(iIndex).DoubleClick, AddressOf Image_DoubleClick
+            AddHandler tLabel(Index).Click, AddressOf Image_Extraimages_Click
+            AddHandler tLabel(Index).DoubleClick, AddressOf Image_DoubleClick
+            AddHandler tPictureBox(Index).Click, AddressOf Image_Extraimages_Click
+            AddHandler tPictureBox(Index).DoubleClick, AddressOf Image_DoubleClick
+            AddHandler tPictureBox(Index).MouseDown, AddressOf Image_Drag_MouseDown
+            AddHandler tPictureBox(Index).MouseMove, AddressOf Image_Drag_MouseMove
+            AddHandler tPictureBox(Index).MouseUp, AddressOf Image_Drag_MouseUp
+            AddHandler tPanel(Index).Click, AddressOf Image_Extraimages_Click
+            AddHandler tPanel(Index).DoubleClick, AddressOf Image_DoubleClick
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
-        Select Case modType
+        Select Case ImageType
             Case Enums.ModifierType.MainExtrafanarts
                 iExtrafanartsList_NextTop = iNextTop + iImageList_Size_Panel.Height + iImageList_DistanceTop
                 lblExtrafanarts.Text = String.Format("{0} ({1})", Master.eLang.GetString(992, "Extrafanarts"), pnlExtrafanartsList.Controls.Count)
@@ -1194,35 +1203,35 @@ Public Class dlgEditMovie
     Private Sub Image_Extraimages_Click(sender As Object, e As EventArgs)
         Dim iIndex As Integer
         Dim tImage As MediaContainers.Image = Nothing
-        Dim tModType As Enums.ModifierType
+        Dim eImageType As Enums.ModifierType
         Select Case True
             Case TypeOf (sender) Is Label
                 iIndex = Convert.ToInt32(DirectCast(sender, Label).Name)
                 tImage = DirectCast(DirectCast(sender, Label).Tag, MediaContainers.Image)
                 If pnlExtrafanartsList.Controls.Contains(DirectCast(sender, Label).Parent) Then
-                    tModType = Enums.ModifierType.MainExtrafanarts
+                    eImageType = Enums.ModifierType.MainExtrafanarts
                 ElseIf pnlExtrathumbsList.Controls.Contains(DirectCast(sender, Label).Parent) Then
-                    tModType = Enums.ModifierType.MainExtrathumbs
+                    eImageType = Enums.ModifierType.MainExtrathumbs
                 End If
             Case TypeOf (sender) Is Panel
                 iIndex = Convert.ToInt32(DirectCast(sender, Panel).Name)
                 tImage = DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image)
                 If pnlExtrafanartsList.Controls.Contains(DirectCast(sender, Panel).Parent) Then
-                    tModType = Enums.ModifierType.MainExtrafanarts
+                    eImageType = Enums.ModifierType.MainExtrafanarts
                 ElseIf pnlExtrathumbsList.Controls.Contains(DirectCast(sender, Panel).Parent) Then
-                    tModType = Enums.ModifierType.MainExtrathumbs
+                    eImageType = Enums.ModifierType.MainExtrathumbs
                 End If
             Case TypeOf (sender) Is PictureBox
                 iIndex = Convert.ToInt32(DirectCast(sender, PictureBox).Name)
                 tImage = DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image)
                 If pnlExtrafanartsList.Controls.Contains(DirectCast(sender, PictureBox).Parent) Then
-                    tModType = Enums.ModifierType.MainExtrafanarts
+                    eImageType = Enums.ModifierType.MainExtrafanarts
                 ElseIf pnlExtrathumbsList.Controls.Contains(DirectCast(sender, PictureBox).Parent) Then
-                    tModType = Enums.ModifierType.MainExtrathumbs
+                    eImageType = Enums.ModifierType.MainExtrathumbs
                 End If
         End Select
         If tImage IsNot Nothing Then
-            Select Case tModType
+            Select Case eImageType
                 Case Enums.ModifierType.MainExtrafanarts
                     Image_Extrafanarts_DoSelect(iIndex, tImage)
                 Case Enums.ModifierType.MainExtrathumbs
@@ -1240,7 +1249,7 @@ Public Class dlgEditMovie
             Next
         End If
         currExtrafanartsList_Item = Nothing
-        btnExtrafanartsRemove.Enabled = False
+        btnRemoveExtrafanarts.Enabled = False
     End Sub
 
     Private Sub Image_Extrathumbs_DeselectAllImages()
@@ -1252,7 +1261,7 @@ Public Class dlgEditMovie
             Next
         End If
         currExtrathumbsList_Item = Nothing
-        btnExtrathumbsRemove.Enabled = False
+        btnRemoveExtrathumbs.Enabled = False
     End Sub
 
     Private Sub Image_Extrafanarts_DoSelect(ByVal iIndex As Integer, ByVal tTag As MediaContainers.Image)
@@ -1267,7 +1276,7 @@ Public Class dlgEditMovie
         lblExtrafanartsList_Resolution(iIndex).BackColor = Color.Gray
         lblExtrafanartsList_Resolution(iIndex).ForeColor = Color.White
         currExtrafanartsList_Item = tTag
-        btnExtrafanartsRemove.Enabled = True
+        btnRemoveExtrafanarts.Enabled = True
     End Sub
 
     Private Sub Image_Extrathumbs_DoSelect(ByVal iIndex As Integer, ByVal tTag As MediaContainers.Image)
@@ -1282,10 +1291,10 @@ Public Class dlgEditMovie
         lblExtrathumbsList_Resolution(iIndex).BackColor = Color.Gray
         lblExtrathumbsList_Resolution(iIndex).ForeColor = Color.White
         currExtrathumbsList_Item = tTag
-        btnExtrathumbsRemove.Enabled = True
+        btnRemoveExtrathumbs.Enabled = True
     End Sub
 
-    Private Sub Image_Extrafanarts_Refresh() Handles btnExtrafanartsRefresh.Click
+    Private Sub Image_Extrafanarts_Refresh() Handles btnRefreshExtrafanarts.Click
         Image_Extrafanarts_DeselectAllImages()
         iExtrafanartsList_NextTop = iImageList_DistanceTop
         While pnlExtrafanartsList.Controls.Count > 0
@@ -1301,7 +1310,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub Image_Extrathumbs_Refresh() Handles btnExtrathumbsRefresh.Click
+    Private Sub Image_Extrathumbs_Refresh() Handles btnRefreshExtrathumbs.Click
         Image_Extrathumbs_DeselectAllImages()
         iExtrathumbsList_NextTop = iImageList_DistanceTop
         While pnlExtrathumbsList.Controls.Count > 0
@@ -1317,42 +1326,38 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub Image_LoadPictureBox(ByVal imageType As Enums.ModifierType)
-        Dim cImage As MediaContainers.Image
+    Private Sub Image_LoadPictureBox(ByVal ImageType As Enums.ModifierType)
         Dim lblSize As Label
         Dim pbImage As PictureBox
-        Select Case imageType
+        Select Case ImageType
             Case Enums.ModifierType.MainBanner
-                cImage = tmpDBElement.ImagesContainer.Banner
-                lblSize = lblBannerSize
+                lblSize = lblSizeBanner
                 pbImage = pbBanner
             Case Enums.ModifierType.MainClearArt
-                cImage = tmpDBElement.ImagesContainer.ClearArt
-                lblSize = lblClearArtSize
+                lblSize = lblSizeClearArt
                 pbImage = pbClearArt
             Case Enums.ModifierType.MainClearLogo
-                cImage = tmpDBElement.ImagesContainer.ClearLogo
-                lblSize = lblClearLogoSize
+                lblSize = lblSizeClearLogo
                 pbImage = pbClearLogo
             Case Enums.ModifierType.MainDiscArt
-                cImage = tmpDBElement.ImagesContainer.DiscArt
-                lblSize = lblDiscArtSize
+                lblSize = lblSizeDiscArt
                 pbImage = pbDiscArt
             Case Enums.ModifierType.MainFanart
-                cImage = tmpDBElement.ImagesContainer.Fanart
-                lblSize = lblFanartSize
+                lblSize = lblSizeFanart
                 pbImage = pbFanart
+            Case Enums.ModifierType.MainKeyArt
+                lblSize = lblSizeKeyArt
+                pbImage = pbKeyArt
             Case Enums.ModifierType.MainLandscape
-                cImage = tmpDBElement.ImagesContainer.Landscape
-                lblSize = lblLandscapeSize
+                lblSize = lblSizeLandscape
                 pbImage = pbLandscape
             Case Enums.ModifierType.MainPoster
-                cImage = tmpDBElement.ImagesContainer.Poster
-                lblSize = lblPosterSize
+                lblSize = lblSizePoster
                 pbImage = pbPoster
             Case Else
                 Return
         End Select
+        Dim cImage = tmpDBElement.ImagesContainer.GetImageByType(ImageType)
         If cImage.ImageOriginal.Image IsNot Nothing Then
             pbImage.Image = cImage.ImageOriginal.Image
             pbImage.Tag = cImage
@@ -1362,15 +1367,16 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub Image_Local_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        btnSetBannerLocal.Click,
-        btnSetClearArtLocal.Click,
-        btnSetClearLogoLocal.Click,
-        btnSetDiscArtLocal.Click,
-        btnSetExtrafanartsLocal.Click,
-        btnSetFanartLocal.Click,
-        btnSetLandscapeLocal.Click,
-        btnSetPosterLocal.Click,
-        btnSetExtrathumbsLocal.Click
+        btnLocalBanner.Click,
+        btnLocalClearArt.Click,
+        btnLocalClearLogo.Click,
+        btnLocalDiscArt.Click,
+        btnLocalExtrafanarts.Click,
+        btnLocalExtrathumbs.Click,
+        btnLocalFanart.Click,
+        btnLocalKeyArt.Click,
+        btnLocalLandscape.Click,
+        btnLocalPoster.Click
         With ofdLocalFiles
             .InitialDirectory = tmpDBElement.FileItem.MainPath.FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
@@ -1380,69 +1386,53 @@ Public Class dlgEditMovie
             Dim tImage As New MediaContainers.Image
             tImage.ImageOriginal.LoadFromFile(ofdLocalFiles.FileName, True)
             If tImage.ImageOriginal.Image IsNot Nothing Then
-                Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
-                Select Case modType
-                    Case Enums.ModifierType.MainBanner
-                        tmpDBElement.ImagesContainer.Banner = tImage
-                    Case Enums.ModifierType.MainClearArt
-                        tmpDBElement.ImagesContainer.ClearArt = tImage
-                    Case Enums.ModifierType.MainClearLogo
-                        tmpDBElement.ImagesContainer.ClearLogo = tImage
-                    Case Enums.ModifierType.MainDiscArt
-                        tmpDBElement.ImagesContainer.DiscArt = tImage
+                Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+                Select Case eImageType
                     Case Enums.ModifierType.MainExtrafanarts
                         tmpDBElement.ImagesContainer.Extrafanarts.Add(tImage)
-                    Case Enums.ModifierType.MainExtrathumbs
-                        tmpDBElement.ImagesContainer.Extrathumbs.Add(tImage)
-                    Case Enums.ModifierType.MainFanart
-                        tmpDBElement.ImagesContainer.Fanart = tImage
-                    Case Enums.ModifierType.MainLandscape
-                        tmpDBElement.ImagesContainer.Landscape = tImage
-                    Case Enums.ModifierType.MainPoster
-                        tmpDBElement.ImagesContainer.Poster = tImage
-                End Select
-                Select Case modType
-                    Case Enums.ModifierType.MainExtrafanarts
                         Image_Extrafanarts_Refresh()
                     Case Enums.ModifierType.MainExtrathumbs
+                        tmpDBElement.ImagesContainer.Extrathumbs.Add(tImage)
                         Image_Extrathumbs_Refresh()
                     Case Else
-                        Image_LoadPictureBox(modType)
+                        tmpDBElement.ImagesContainer.SetImageByType(tImage, eImageType)
+                        Image_LoadPictureBox(eImageType)
                 End Select
             End If
         End If
     End Sub
 
     Private Sub Image_Remove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-            btnRemoveBanner.Click,
-            btnRemoveClearArt.Click,
-            btnRemoveClearLogo.Click,
-            btnRemoveDiscArt.Click,
-            btnExtrafanartsRemove.Click,
-            btnRemoveFanart.Click,
-            btnRemoveLandscape.Click,
-            btnRemovePoster.Click,
-            btnExtrathumbsRemove.Click
+        btnRemoveBanner.Click,
+        btnRemoveClearArt.Click,
+        btnRemoveClearLogo.Click,
+        btnRemoveDiscArt.Click,
+        btnRemoveExtrafanarts.Click,
+        btnRemoveExtrathumbs.Click,
+        btnRemoveFanart.Click,
+        btnRemoveKeyArt.Click,
+        btnRemoveLandscape.Click,
+        btnRemovePoster.Click
         Dim lblSize As Label = Nothing
         Dim pbImage As PictureBox = Nothing
-        Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
-        Select Case modType
+        Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+        Select Case eImageType
             Case Enums.ModifierType.MainBanner
-                lblSize = lblBannerSize
+                lblSize = lblSizeBanner
                 pbImage = pbBanner
-                tmpDBElement.ImagesContainer.Banner = New MediaContainers.Image
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
             Case Enums.ModifierType.MainClearArt
-                lblSize = lblClearArtSize
+                lblSize = lblSizeClearArt
                 pbImage = pbClearArt
-                tmpDBElement.ImagesContainer.ClearArt = New MediaContainers.Image
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
             Case Enums.ModifierType.MainClearLogo
-                lblSize = lblClearLogoSize
+                lblSize = lblSizeClearLogo
                 pbImage = pbClearLogo
-                tmpDBElement.ImagesContainer.ClearLogo = New MediaContainers.Image
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
             Case Enums.ModifierType.MainDiscArt
-                lblSize = lblDiscArtSize
+                lblSize = lblSizeDiscArt
                 pbImage = pbDiscArt
-                tmpDBElement.ImagesContainer.DiscArt = New MediaContainers.Image
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
             Case Enums.ModifierType.MainExtrafanarts
                 If currExtrafanartsList_Item IsNot Nothing Then
                     tmpDBElement.ImagesContainer.Extrafanarts.Remove(currExtrafanartsList_Item)
@@ -1454,17 +1444,21 @@ Public Class dlgEditMovie
                     Image_Extrathumbs_Refresh()
                 End If
             Case Enums.ModifierType.MainFanart
-                lblSize = lblFanartSize
+                lblSize = lblSizeFanart
                 pbImage = pbFanart
-                tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
+            Case Enums.ModifierType.MainKeyArt
+                lblSize = lblSizeKeyArt
+                pbImage = pbKeyArt
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
             Case Enums.ModifierType.MainLandscape
-                lblSize = lblLandscapeSize
+                lblSize = lblSizeLandscape
                 pbImage = pbLandscape
-                tmpDBElement.ImagesContainer.Landscape = New MediaContainers.Image
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
             Case Enums.ModifierType.MainPoster
-                lblSize = lblPosterSize
+                lblSize = lblSizePoster
                 pbImage = pbPoster
-                tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
             Case Else
                 Return
         End Select
@@ -1479,24 +1473,25 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub Image_Scrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        btnSetBannerScrape.Click,
-        btnSetClearArtScrape.Click,
-        btnSetClearLogoScrape.Click,
-        btnSetDiscArtScrape.Click,
-        btnSetExtrafanartsScrape.Click,
-        btnSetFanartScrape.Click,
-        btnSetLandscapeScrape.Click,
-        btnSetPosterScrape.Click,
-        btnSetExtrathumbsScrape.Click
+        btnScrapeBanner.Click,
+        btnScrapeClearArt.Click,
+        btnScrapeClearLogo.Click,
+        btnScrapeDiscArt.Click,
+        btnScrapeExtrafanarts.Click,
+        btnScrapeExtrathumbs.Click,
+        btnScrapeFanart.Click,
+        btnScrapeKeyArt.Click,
+        btnScrapeLandscape.Click,
+        btnScrapePoster.Click
         Cursor = Cursors.WaitCursor
-        Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
+        Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
-        Functions.SetScrapeModifiers(ScrapeModifiers, modType, True)
+        Functions.SetScrapeModifiers(ScrapeModifiers, eImageType, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             Dim iImageCount = 0
             Dim strNoImagesFound As String = String.Empty
-            Select Case modType
+            Select Case eImageType
                 Case Enums.ModifierType.MainBanner
                     iImageCount = aContainer.MainBanners.Count
                     strNoImagesFound = Master.eLang.GetString(1363, "No Banners found")
@@ -1512,6 +1507,9 @@ Public Class dlgEditMovie
                 Case Enums.ModifierType.MainExtrafanarts, Enums.ModifierType.MainExtrathumbs, Enums.ModifierType.MainFanart
                     iImageCount = aContainer.MainFanarts.Count
                     strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
+                Case Enums.ModifierType.MainKeyArt
+                    iImageCount = aContainer.MainKeyArts.Count
+                    strNoImagesFound = Master.eLang.GetString(855, "No KeyArts found")
                 Case Enums.ModifierType.MainLandscape
                     iImageCount = aContainer.MainLandscapes.Count
                     strNoImagesFound = Master.eLang.GetString(1197, "No Landscapes found")
@@ -1522,59 +1520,18 @@ Public Class dlgEditMovie
             If iImageCount > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                    Select Case modType
-                        Case Enums.ModifierType.MainBanner
-                            tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                            If tmpDBElement.ImagesContainer.Banner.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                        Case Enums.ModifierType.MainClearArt
-                            tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                            If tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                        Case Enums.ModifierType.MainClearLogo
-                            tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                            If tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                        Case Enums.ModifierType.MainDiscArt
-                            tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                            If tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
+                    Select Case eImageType
                         Case Enums.ModifierType.MainExtrafanarts
                             tmpDBElement.ImagesContainer.Extrafanarts = dlgImgS.Result.ImagesContainer.Extrafanarts
                             Image_Extrafanarts_Refresh()
                         Case Enums.ModifierType.MainExtrathumbs
                             tmpDBElement.ImagesContainer.Extrathumbs = dlgImgS.Result.ImagesContainer.Extrathumbs
                             Image_Extrathumbs_Refresh()
-                        Case Enums.ModifierType.MainFanart
-                            tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                            If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                        Case Enums.ModifierType.MainLandscape
-                            tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                            If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                        Case Enums.ModifierType.MainPoster
-                            tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                            If tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
+                        Case Else
+                            tmpDBElement.ImagesContainer.SetImageByType(dlgImgS.Result.ImagesContainer.GetImageByType(eImageType), eImageType)
+                            If tmpDBElement.ImagesContainer.GetImageByType(eImageType) IsNot Nothing AndAlso
+                                tmpDBElement.ImagesContainer.GetImageByType(eImageType).ImageOriginal.LoadFromMemoryStream Then
+                                Image_LoadPictureBox(eImageType)
                             Else
                                 Image_Remove_Click(sender, e)
                             End If

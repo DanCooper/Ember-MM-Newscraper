@@ -248,7 +248,7 @@ Public Class MediaExporter
     Private Function ExportImage(ByVal tImage As MediaContainers.Image, ByVal tImageType As Enums.ModifierType) As String
         Dim strPath As String = String.Empty
 
-        If File.Exists(tImage.LocalFilePath) Then
+        If tImage IsNot Nothing AndAlso File.Exists(tImage.LocalFilePath) Then
             Select Case tImageType
                 Case Enums.ModifierType.EpisodeFanart
                     If _tExportSettings.EpisodeFanarts Then

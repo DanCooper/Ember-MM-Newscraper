@@ -24,8 +24,8 @@ Partial Class dlgEditTVEpisode
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditTVEpisode))
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
@@ -131,20 +131,22 @@ Partial Class dlgEditTVEpisode
         Me.tblPoster = New System.Windows.Forms.TableLayoutPanel()
         Me.pbPoster = New System.Windows.Forms.PictureBox()
         Me.lblPoster = New System.Windows.Forms.Label()
-        Me.btnSetPosterLocal = New System.Windows.Forms.Button()
-        Me.btnSetPosterScrape = New System.Windows.Forms.Button()
-        Me.lblPosterSize = New System.Windows.Forms.Label()
-        Me.btnSetPosterDL = New System.Windows.Forms.Button()
+        Me.btnLocalPoster = New System.Windows.Forms.Button()
+        Me.btnScrapePoster = New System.Windows.Forms.Button()
+        Me.lblSizePoster = New System.Windows.Forms.Label()
+        Me.btnDLPoster = New System.Windows.Forms.Button()
         Me.btnRemovePoster = New System.Windows.Forms.Button()
+        Me.btnClipboardPoster = New System.Windows.Forms.Button()
         Me.pnlFanart = New System.Windows.Forms.Panel()
         Me.tblFanart = New System.Windows.Forms.TableLayoutPanel()
         Me.pbFanart = New System.Windows.Forms.PictureBox()
         Me.lblFanart = New System.Windows.Forms.Label()
-        Me.btnSetFanartLocal = New System.Windows.Forms.Button()
-        Me.btnSetFanartScrape = New System.Windows.Forms.Button()
-        Me.lblFanartSize = New System.Windows.Forms.Label()
-        Me.btnSetFanartDL = New System.Windows.Forms.Button()
+        Me.btnLocalFanart = New System.Windows.Forms.Button()
+        Me.btnScrapeFanart = New System.Windows.Forms.Button()
+        Me.lblSizeFanart = New System.Windows.Forms.Label()
+        Me.btnDLFanart = New System.Windows.Forms.Button()
         Me.btnRemoveFanart = New System.Windows.Forms.Button()
+        Me.btnClipboardFanart = New System.Windows.Forms.Button()
         Me.tpFrameExtraction = New System.Windows.Forms.TabPage()
         Me.tblFrameExtraction = New System.Windows.Forms.TableLayoutPanel()
         Me.pbFrame = New System.Windows.Forms.PictureBox()
@@ -1298,12 +1300,12 @@ Partial Class dlgEditTVEpisode
         Me.lvSubtitles.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup2.Header = "Local Subtitles"
-        ListViewGroup2.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
+        ListViewGroup1.Header = "Local Subtitles"
+        ListViewGroup1.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem2.Group = ListViewGroup2
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewItem1.Group = ListViewGroup1
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvSubtitles.Location = New System.Drawing.Point(3, 3)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -1371,7 +1373,8 @@ Partial Class dlgEditTVEpisode
         '
         Me.tblPoster.AutoScroll = True
         Me.tblPoster.AutoSize = True
-        Me.tblPoster.ColumnCount = 5
+        Me.tblPoster.ColumnCount = 6
+        Me.tblPoster.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblPoster.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblPoster.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblPoster.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -1380,11 +1383,12 @@ Partial Class dlgEditTVEpisode
         Me.tblPoster.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblPoster.Controls.Add(Me.pbPoster, 0, 1)
         Me.tblPoster.Controls.Add(Me.lblPoster, 0, 0)
-        Me.tblPoster.Controls.Add(Me.btnSetPosterLocal, 2, 3)
-        Me.tblPoster.Controls.Add(Me.btnSetPosterScrape, 0, 3)
-        Me.tblPoster.Controls.Add(Me.lblPosterSize, 0, 2)
-        Me.tblPoster.Controls.Add(Me.btnSetPosterDL, 1, 3)
-        Me.tblPoster.Controls.Add(Me.btnRemovePoster, 4, 3)
+        Me.tblPoster.Controls.Add(Me.btnLocalPoster, 2, 3)
+        Me.tblPoster.Controls.Add(Me.btnScrapePoster, 0, 3)
+        Me.tblPoster.Controls.Add(Me.lblSizePoster, 0, 2)
+        Me.tblPoster.Controls.Add(Me.btnDLPoster, 1, 3)
+        Me.tblPoster.Controls.Add(Me.btnRemovePoster, 5, 3)
+        Me.tblPoster.Controls.Add(Me.btnClipboardPoster, 3, 3)
         Me.tblPoster.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblPoster.Location = New System.Drawing.Point(0, 0)
         Me.tblPoster.Name = "tblPoster"
@@ -1401,7 +1405,7 @@ Partial Class dlgEditTVEpisode
         '
         Me.pbPoster.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.pbPoster.BackColor = System.Drawing.Color.White
-        Me.tblPoster.SetColumnSpan(Me.pbPoster, 5)
+        Me.tblPoster.SetColumnSpan(Me.pbPoster, 6)
         Me.pbPoster.Location = New System.Drawing.Point(3, 23)
         Me.pbPoster.Name = "pbPoster"
         Me.pbPoster.Size = New System.Drawing.Size(256, 144)
@@ -1413,58 +1417,58 @@ Partial Class dlgEditTVEpisode
         '
         Me.lblPoster.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblPoster.AutoSize = True
-        Me.tblPoster.SetColumnSpan(Me.lblPoster, 5)
+        Me.tblPoster.SetColumnSpan(Me.lblPoster, 6)
         Me.lblPoster.Location = New System.Drawing.Point(111, 3)
         Me.lblPoster.Name = "lblPoster"
         Me.lblPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblPoster.TabIndex = 2
         Me.lblPoster.Text = "Poster"
         '
-        'btnSetPosterLocal
+        'btnLocalPoster
         '
-        Me.btnSetPosterLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetPosterLocal.Image = CType(resources.GetObject("btnSetPosterLocal.Image"), System.Drawing.Image)
-        Me.btnSetPosterLocal.Location = New System.Drawing.Point(61, 193)
-        Me.btnSetPosterLocal.Name = "btnSetPosterLocal"
-        Me.btnSetPosterLocal.Size = New System.Drawing.Size(23, 23)
-        Me.btnSetPosterLocal.TabIndex = 2
-        Me.btnSetPosterLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPosterLocal.UseVisualStyleBackColor = True
+        Me.btnLocalPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnLocalPoster.Image = CType(resources.GetObject("btnLocalPoster.Image"), System.Drawing.Image)
+        Me.btnLocalPoster.Location = New System.Drawing.Point(61, 193)
+        Me.btnLocalPoster.Name = "btnLocalPoster"
+        Me.btnLocalPoster.Size = New System.Drawing.Size(23, 23)
+        Me.btnLocalPoster.TabIndex = 2
+        Me.btnLocalPoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnLocalPoster.UseVisualStyleBackColor = True
         '
-        'btnSetPosterScrape
+        'btnScrapePoster
         '
-        Me.btnSetPosterScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetPosterScrape.Image = CType(resources.GetObject("btnSetPosterScrape.Image"), System.Drawing.Image)
-        Me.btnSetPosterScrape.Location = New System.Drawing.Point(3, 193)
-        Me.btnSetPosterScrape.Name = "btnSetPosterScrape"
-        Me.btnSetPosterScrape.Size = New System.Drawing.Size(23, 23)
-        Me.btnSetPosterScrape.TabIndex = 0
-        Me.btnSetPosterScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPosterScrape.UseVisualStyleBackColor = True
+        Me.btnScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnScrapePoster.Image = CType(resources.GetObject("btnScrapePoster.Image"), System.Drawing.Image)
+        Me.btnScrapePoster.Location = New System.Drawing.Point(3, 193)
+        Me.btnScrapePoster.Name = "btnScrapePoster"
+        Me.btnScrapePoster.Size = New System.Drawing.Size(23, 23)
+        Me.btnScrapePoster.TabIndex = 0
+        Me.btnScrapePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnScrapePoster.UseVisualStyleBackColor = True
         '
-        'lblPosterSize
+        'lblSizePoster
         '
-        Me.lblPosterSize.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblPosterSize.AutoSize = True
-        Me.tblPoster.SetColumnSpan(Me.lblPosterSize, 5)
-        Me.lblPosterSize.Location = New System.Drawing.Point(85, 173)
-        Me.lblPosterSize.Name = "lblPosterSize"
-        Me.lblPosterSize.Size = New System.Drawing.Size(92, 13)
-        Me.lblPosterSize.TabIndex = 5
-        Me.lblPosterSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblPosterSize.Visible = False
+        Me.lblSizePoster.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblSizePoster.AutoSize = True
+        Me.tblPoster.SetColumnSpan(Me.lblSizePoster, 6)
+        Me.lblSizePoster.Location = New System.Drawing.Point(85, 173)
+        Me.lblSizePoster.Name = "lblSizePoster"
+        Me.lblSizePoster.Size = New System.Drawing.Size(92, 13)
+        Me.lblSizePoster.TabIndex = 5
+        Me.lblSizePoster.Text = "Size: (XXXXxXXXX)"
+        Me.lblSizePoster.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblSizePoster.Visible = False
         '
-        'btnSetPosterDL
+        'btnDLPoster
         '
-        Me.btnSetPosterDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetPosterDL.Image = CType(resources.GetObject("btnSetPosterDL.Image"), System.Drawing.Image)
-        Me.btnSetPosterDL.Location = New System.Drawing.Point(32, 193)
-        Me.btnSetPosterDL.Name = "btnSetPosterDL"
-        Me.btnSetPosterDL.Size = New System.Drawing.Size(23, 23)
-        Me.btnSetPosterDL.TabIndex = 1
-        Me.btnSetPosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPosterDL.UseVisualStyleBackColor = True
+        Me.btnDLPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnDLPoster.Image = CType(resources.GetObject("btnDLPoster.Image"), System.Drawing.Image)
+        Me.btnDLPoster.Location = New System.Drawing.Point(32, 193)
+        Me.btnDLPoster.Name = "btnDLPoster"
+        Me.btnDLPoster.Size = New System.Drawing.Size(23, 23)
+        Me.btnDLPoster.TabIndex = 1
+        Me.btnDLPoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnDLPoster.UseVisualStyleBackColor = True
         '
         'btnRemovePoster
         '
@@ -1476,6 +1480,17 @@ Partial Class dlgEditTVEpisode
         Me.btnRemovePoster.TabIndex = 3
         Me.btnRemovePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemovePoster.UseVisualStyleBackColor = True
+        '
+        'btnClipboardPoster
+        '
+        Me.btnClipboardPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnClipboardPoster.Image = CType(resources.GetObject("btnClipboardPoster.Image"), System.Drawing.Image)
+        Me.btnClipboardPoster.Location = New System.Drawing.Point(90, 193)
+        Me.btnClipboardPoster.Name = "btnClipboardPoster"
+        Me.btnClipboardPoster.Size = New System.Drawing.Size(23, 23)
+        Me.btnClipboardPoster.TabIndex = 2
+        Me.btnClipboardPoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnClipboardPoster.UseVisualStyleBackColor = True
         '
         'pnlFanart
         '
@@ -1492,7 +1507,8 @@ Partial Class dlgEditTVEpisode
         '
         Me.tblFanart.AutoScroll = True
         Me.tblFanart.AutoSize = True
-        Me.tblFanart.ColumnCount = 5
+        Me.tblFanart.ColumnCount = 6
+        Me.tblFanart.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFanart.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFanart.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFanart.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -1501,11 +1517,12 @@ Partial Class dlgEditTVEpisode
         Me.tblFanart.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblFanart.Controls.Add(Me.pbFanart, 0, 1)
         Me.tblFanart.Controls.Add(Me.lblFanart, 0, 0)
-        Me.tblFanart.Controls.Add(Me.btnSetFanartLocal, 2, 3)
-        Me.tblFanart.Controls.Add(Me.btnSetFanartScrape, 0, 3)
-        Me.tblFanart.Controls.Add(Me.lblFanartSize, 0, 2)
-        Me.tblFanart.Controls.Add(Me.btnSetFanartDL, 1, 3)
-        Me.tblFanart.Controls.Add(Me.btnRemoveFanart, 4, 3)
+        Me.tblFanart.Controls.Add(Me.btnLocalFanart, 2, 3)
+        Me.tblFanart.Controls.Add(Me.btnScrapeFanart, 0, 3)
+        Me.tblFanart.Controls.Add(Me.lblSizeFanart, 0, 2)
+        Me.tblFanart.Controls.Add(Me.btnDLFanart, 1, 3)
+        Me.tblFanart.Controls.Add(Me.btnRemoveFanart, 5, 3)
+        Me.tblFanart.Controls.Add(Me.btnClipboardFanart, 3, 3)
         Me.tblFanart.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblFanart.Location = New System.Drawing.Point(0, 0)
         Me.tblFanart.Name = "tblFanart"
@@ -1522,7 +1539,7 @@ Partial Class dlgEditTVEpisode
         '
         Me.pbFanart.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.pbFanart.BackColor = System.Drawing.Color.White
-        Me.tblFanart.SetColumnSpan(Me.pbFanart, 5)
+        Me.tblFanart.SetColumnSpan(Me.pbFanart, 6)
         Me.pbFanart.Location = New System.Drawing.Point(3, 23)
         Me.pbFanart.Name = "pbFanart"
         Me.pbFanart.Size = New System.Drawing.Size(256, 144)
@@ -1534,58 +1551,58 @@ Partial Class dlgEditTVEpisode
         '
         Me.lblFanart.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblFanart.AutoSize = True
-        Me.tblFanart.SetColumnSpan(Me.lblFanart, 5)
+        Me.tblFanart.SetColumnSpan(Me.lblFanart, 6)
         Me.lblFanart.Location = New System.Drawing.Point(111, 3)
         Me.lblFanart.Name = "lblFanart"
         Me.lblFanart.Size = New System.Drawing.Size(40, 13)
         Me.lblFanart.TabIndex = 2
         Me.lblFanart.Text = "Fanart"
         '
-        'btnSetFanartLocal
+        'btnLocalFanart
         '
-        Me.btnSetFanartLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetFanartLocal.Image = CType(resources.GetObject("btnSetFanartLocal.Image"), System.Drawing.Image)
-        Me.btnSetFanartLocal.Location = New System.Drawing.Point(61, 193)
-        Me.btnSetFanartLocal.Name = "btnSetFanartLocal"
-        Me.btnSetFanartLocal.Size = New System.Drawing.Size(23, 23)
-        Me.btnSetFanartLocal.TabIndex = 2
-        Me.btnSetFanartLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanartLocal.UseVisualStyleBackColor = True
+        Me.btnLocalFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnLocalFanart.Image = CType(resources.GetObject("btnLocalFanart.Image"), System.Drawing.Image)
+        Me.btnLocalFanart.Location = New System.Drawing.Point(61, 193)
+        Me.btnLocalFanart.Name = "btnLocalFanart"
+        Me.btnLocalFanart.Size = New System.Drawing.Size(23, 23)
+        Me.btnLocalFanart.TabIndex = 2
+        Me.btnLocalFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnLocalFanart.UseVisualStyleBackColor = True
         '
-        'btnSetFanartScrape
+        'btnScrapeFanart
         '
-        Me.btnSetFanartScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetFanartScrape.Image = CType(resources.GetObject("btnSetFanartScrape.Image"), System.Drawing.Image)
-        Me.btnSetFanartScrape.Location = New System.Drawing.Point(3, 193)
-        Me.btnSetFanartScrape.Name = "btnSetFanartScrape"
-        Me.btnSetFanartScrape.Size = New System.Drawing.Size(23, 23)
-        Me.btnSetFanartScrape.TabIndex = 0
-        Me.btnSetFanartScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanartScrape.UseVisualStyleBackColor = True
+        Me.btnScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnScrapeFanart.Image = CType(resources.GetObject("btnScrapeFanart.Image"), System.Drawing.Image)
+        Me.btnScrapeFanart.Location = New System.Drawing.Point(3, 193)
+        Me.btnScrapeFanart.Name = "btnScrapeFanart"
+        Me.btnScrapeFanart.Size = New System.Drawing.Size(23, 23)
+        Me.btnScrapeFanart.TabIndex = 0
+        Me.btnScrapeFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnScrapeFanart.UseVisualStyleBackColor = True
         '
-        'lblFanartSize
+        'lblSizeFanart
         '
-        Me.lblFanartSize.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblFanartSize.AutoSize = True
-        Me.tblFanart.SetColumnSpan(Me.lblFanartSize, 5)
-        Me.lblFanartSize.Location = New System.Drawing.Point(85, 173)
-        Me.lblFanartSize.Name = "lblFanartSize"
-        Me.lblFanartSize.Size = New System.Drawing.Size(92, 13)
-        Me.lblFanartSize.TabIndex = 5
-        Me.lblFanartSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblFanartSize.Visible = False
+        Me.lblSizeFanart.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblSizeFanart.AutoSize = True
+        Me.tblFanart.SetColumnSpan(Me.lblSizeFanart, 6)
+        Me.lblSizeFanart.Location = New System.Drawing.Point(85, 173)
+        Me.lblSizeFanart.Name = "lblSizeFanart"
+        Me.lblSizeFanart.Size = New System.Drawing.Size(92, 13)
+        Me.lblSizeFanart.TabIndex = 5
+        Me.lblSizeFanart.Text = "Size: (XXXXxXXXX)"
+        Me.lblSizeFanart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblSizeFanart.Visible = False
         '
-        'btnSetFanartDL
+        'btnDLFanart
         '
-        Me.btnSetFanartDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetFanartDL.Image = CType(resources.GetObject("btnSetFanartDL.Image"), System.Drawing.Image)
-        Me.btnSetFanartDL.Location = New System.Drawing.Point(32, 193)
-        Me.btnSetFanartDL.Name = "btnSetFanartDL"
-        Me.btnSetFanartDL.Size = New System.Drawing.Size(23, 23)
-        Me.btnSetFanartDL.TabIndex = 1
-        Me.btnSetFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanartDL.UseVisualStyleBackColor = True
+        Me.btnDLFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnDLFanart.Image = CType(resources.GetObject("btnDLFanart.Image"), System.Drawing.Image)
+        Me.btnDLFanart.Location = New System.Drawing.Point(32, 193)
+        Me.btnDLFanart.Name = "btnDLFanart"
+        Me.btnDLFanart.Size = New System.Drawing.Size(23, 23)
+        Me.btnDLFanart.TabIndex = 1
+        Me.btnDLFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnDLFanart.UseVisualStyleBackColor = True
         '
         'btnRemoveFanart
         '
@@ -1597,6 +1614,17 @@ Partial Class dlgEditTVEpisode
         Me.btnRemoveFanart.TabIndex = 3
         Me.btnRemoveFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemoveFanart.UseVisualStyleBackColor = True
+        '
+        'btnClipboardFanart
+        '
+        Me.btnClipboardFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnClipboardFanart.Image = CType(resources.GetObject("btnClipboardFanart.Image"), System.Drawing.Image)
+        Me.btnClipboardFanart.Location = New System.Drawing.Point(90, 193)
+        Me.btnClipboardFanart.Name = "btnClipboardFanart"
+        Me.btnClipboardFanart.Size = New System.Drawing.Size(23, 23)
+        Me.btnClipboardFanart.TabIndex = 2
+        Me.btnClipboardFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnClipboardFanart.UseVisualStyleBackColor = True
         '
         'tpFrameExtraction
         '
@@ -2004,19 +2032,19 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents tblPoster As TableLayoutPanel
     Friend WithEvents pbPoster As PictureBox
     Friend WithEvents lblPoster As Label
-    Friend WithEvents btnSetPosterLocal As Button
-    Friend WithEvents btnSetPosterScrape As Button
-    Friend WithEvents lblPosterSize As Label
-    Friend WithEvents btnSetPosterDL As Button
+    Friend WithEvents btnLocalPoster As Button
+    Friend WithEvents btnScrapePoster As Button
+    Friend WithEvents lblSizePoster As Label
+    Friend WithEvents btnDLPoster As Button
     Friend WithEvents btnRemovePoster As Button
     Friend WithEvents pnlFanart As Panel
     Friend WithEvents tblFanart As TableLayoutPanel
     Friend WithEvents pbFanart As PictureBox
     Friend WithEvents lblFanart As Label
-    Friend WithEvents btnSetFanartLocal As Button
-    Friend WithEvents btnSetFanartScrape As Button
-    Friend WithEvents lblFanartSize As Label
-    Friend WithEvents btnSetFanartDL As Button
+    Friend WithEvents btnLocalFanart As Button
+    Friend WithEvents btnScrapeFanart As Button
+    Friend WithEvents lblSizeFanart As Label
+    Friend WithEvents btnDLFanart As Button
     Friend WithEvents btnRemoveFanart As Button
     Friend WithEvents tpFrameExtraction As TabPage
     Friend WithEvents tblFrameExtraction As TableLayoutPanel
@@ -2058,4 +2086,6 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents tmrDelay As Timer
     Friend WithEvents btnFrameSaveAsPoster As Button
     Friend WithEvents ofdLocalFiles As OpenFileDialog
+    Friend WithEvents btnClipboardPoster As Button
+    Friend WithEvents btnClipboardFanart As Button
 End Class

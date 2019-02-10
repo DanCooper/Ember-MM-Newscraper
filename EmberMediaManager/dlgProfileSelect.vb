@@ -48,6 +48,12 @@ Public Class dlgProfileSelect
 
 #Region "Methods"
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
+    End Sub
+
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         If clbDirectories.CheckedItems.Count > 0 Then
             Master.eProfiles.Autoload = chkProfileAuto.Checked

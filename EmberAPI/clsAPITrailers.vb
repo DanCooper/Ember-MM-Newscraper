@@ -111,7 +111,7 @@ Public Class Trailers
         If Not tDBElement.FileItemSpecified Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTrailer, ForceFileCleanup)
+            For Each a In FileUtils.FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTrailer, ForceFileCleanup)
                 For Each t As String In Master.eSettings.FileSystemValidExts
                     If File.Exists(String.Concat(a, t)) Then
                         Delete(String.Concat(a, t))
@@ -763,7 +763,7 @@ Public Class Trailers
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTrailer)
+            For Each a In FileUtils.FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTrailer)
                 SaveToFile(String.Concat(a, _ext))
                 strReturn = (String.Concat(a, _ext))
             Next

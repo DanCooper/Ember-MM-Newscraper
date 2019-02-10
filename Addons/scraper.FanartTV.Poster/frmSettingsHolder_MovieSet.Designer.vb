@@ -30,10 +30,8 @@ Partial Class frmSettingsHolder_MovieSet
         Me.tblScraperImagesOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkScrapePoster = New System.Windows.Forms.CheckBox()
         Me.chkScrapeLandscape = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeClearLogoOnlyHD = New System.Windows.Forms.CheckBox()
         Me.chkScrapeDiscArt = New System.Windows.Forms.CheckBox()
         Me.chkScrapeFanart = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeClearArtOnlyHD = New System.Windows.Forms.CheckBox()
         Me.chkScrapeBanner = New System.Windows.Forms.CheckBox()
         Me.chkScrapeClearArt = New System.Windows.Forms.CheckBox()
         Me.chkScrapeClearLogo = New System.Windows.Forms.CheckBox()
@@ -119,7 +117,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.gbScraperImagesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperImagesOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperImagesOpts.Name = "gbScraperImagesOpts"
-        Me.gbScraperImagesOpts.Size = New System.Drawing.Size(432, 136)
+        Me.gbScraperImagesOpts.Size = New System.Drawing.Size(432, 90)
         Me.gbScraperImagesOpts.TabIndex = 96
         Me.gbScraperImagesOpts.TabStop = False
         Me.gbScraperImagesOpts.Text = "Images - Scraper specific"
@@ -131,26 +129,24 @@ Partial Class frmSettingsHolder_MovieSet
         Me.tblScraperImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapePoster, 1, 3)
         Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeLandscape, 1, 2)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeClearLogoOnlyHD, 0, 4)
         Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeDiscArt, 1, 0)
         Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeFanart, 1, 1)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeClearArtOnlyHD, 0, 2)
         Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeBanner, 0, 0)
         Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeClearArt, 0, 1)
-        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeClearLogo, 0, 3)
+        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapeClearLogo, 0, 2)
+        Me.tblScraperImagesOpts.Controls.Add(Me.chkScrapePoster, 2, 0)
         Me.tblScraperImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperImagesOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperImagesOpts.Name = "tblScraperImagesOpts"
-        Me.tblScraperImagesOpts.RowCount = 6
+        Me.tblScraperImagesOpts.RowCount = 3
         Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesOpts.Size = New System.Drawing.Size(426, 115)
+        Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperImagesOpts.Size = New System.Drawing.Size(426, 69)
         Me.tblScraperImagesOpts.TabIndex = 98
         '
         'chkScrapePoster
@@ -158,7 +154,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.chkScrapePoster.AutoSize = True
         Me.chkScrapePoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapePoster.Location = New System.Drawing.Point(98, 72)
+        Me.chkScrapePoster.Location = New System.Drawing.Point(173, 3)
         Me.chkScrapePoster.Name = "chkScrapePoster"
         Me.chkScrapePoster.Size = New System.Drawing.Size(58, 17)
         Me.chkScrapePoster.TabIndex = 0
@@ -171,7 +167,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.chkScrapeLandscape.AutoSize = True
         Me.chkScrapeLandscape.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeLandscape.Location = New System.Drawing.Point(98, 49)
+        Me.chkScrapeLandscape.Location = New System.Drawing.Point(87, 49)
         Me.chkScrapeLandscape.Name = "chkScrapeLandscape"
         Me.chkScrapeLandscape.Size = New System.Drawing.Size(80, 17)
         Me.chkScrapeLandscape.TabIndex = 7
@@ -179,25 +175,12 @@ Partial Class frmSettingsHolder_MovieSet
         Me.chkScrapeLandscape.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeLandscape.UseVisualStyleBackColor = True
         '
-        'chkScrapeClearLogoOnlyHD
-        '
-        Me.chkScrapeClearLogoOnlyHD.AutoSize = True
-        Me.chkScrapeClearLogoOnlyHD.Enabled = False
-        Me.chkScrapeClearLogoOnlyHD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkScrapeClearLogoOnlyHD.Location = New System.Drawing.Point(3, 95)
-        Me.chkScrapeClearLogoOnlyHD.Name = "chkScrapeClearLogoOnlyHD"
-        Me.chkScrapeClearLogoOnlyHD.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkScrapeClearLogoOnlyHD.Size = New System.Drawing.Size(89, 17)
-        Me.chkScrapeClearLogoOnlyHD.TabIndex = 8
-        Me.chkScrapeClearLogoOnlyHD.Text = "Only HD"
-        Me.chkScrapeClearLogoOnlyHD.UseVisualStyleBackColor = True
-        '
         'chkScrapeDiscArt
         '
         Me.chkScrapeDiscArt.AutoSize = True
         Me.chkScrapeDiscArt.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeDiscArt.Location = New System.Drawing.Point(98, 3)
+        Me.chkScrapeDiscArt.Location = New System.Drawing.Point(87, 3)
         Me.chkScrapeDiscArt.Name = "chkScrapeDiscArt"
         Me.chkScrapeDiscArt.Size = New System.Drawing.Size(62, 17)
         Me.chkScrapeDiscArt.TabIndex = 6
@@ -210,26 +193,13 @@ Partial Class frmSettingsHolder_MovieSet
         Me.chkScrapeFanart.AutoSize = True
         Me.chkScrapeFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeFanart.Location = New System.Drawing.Point(98, 26)
+        Me.chkScrapeFanart.Location = New System.Drawing.Point(87, 26)
         Me.chkScrapeFanart.Name = "chkScrapeFanart"
         Me.chkScrapeFanart.Size = New System.Drawing.Size(59, 17)
         Me.chkScrapeFanart.TabIndex = 1
         Me.chkScrapeFanart.Text = "Fanart"
         Me.chkScrapeFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeFanart.UseVisualStyleBackColor = True
-        '
-        'chkScrapeClearArtOnlyHD
-        '
-        Me.chkScrapeClearArtOnlyHD.AutoSize = True
-        Me.chkScrapeClearArtOnlyHD.Enabled = False
-        Me.chkScrapeClearArtOnlyHD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkScrapeClearArtOnlyHD.Location = New System.Drawing.Point(3, 49)
-        Me.chkScrapeClearArtOnlyHD.Name = "chkScrapeClearArtOnlyHD"
-        Me.chkScrapeClearArtOnlyHD.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkScrapeClearArtOnlyHD.Size = New System.Drawing.Size(89, 17)
-        Me.chkScrapeClearArtOnlyHD.TabIndex = 9
-        Me.chkScrapeClearArtOnlyHD.Text = "Only HD"
-        Me.chkScrapeClearArtOnlyHD.UseVisualStyleBackColor = True
         '
         'chkScrapeBanner
         '
@@ -262,7 +232,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.chkScrapeClearLogo.AutoSize = True
         Me.chkScrapeClearLogo.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeClearLogo.Location = New System.Drawing.Point(3, 72)
+        Me.chkScrapeClearLogo.Location = New System.Drawing.Point(3, 49)
         Me.chkScrapeClearLogo.Name = "chkScrapeClearLogo"
         Me.chkScrapeClearLogo.Size = New System.Drawing.Size(78, 17)
         Me.chkScrapeClearLogo.TabIndex = 3
@@ -276,7 +246,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.gbScraperOpts.Controls.Add(Me.tblScraperOpts)
         Me.gbScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 145)
+        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 99)
         Me.gbScraperOpts.Name = "gbScraperOpts"
         Me.gbScraperOpts.Size = New System.Drawing.Size(432, 110)
         Me.gbScraperOpts.TabIndex = 95
@@ -573,8 +543,6 @@ Partial Class frmSettingsHolder_MovieSet
     Friend WithEvents chkScrapeClearArt As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeClearLogo As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeBanner As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScrapeClearLogoOnlyHD As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScrapeClearArtOnlyHD As System.Windows.Forms.CheckBox
     Friend WithEvents lblAPIHint As System.Windows.Forms.Label
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel

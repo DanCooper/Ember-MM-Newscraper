@@ -88,9 +88,9 @@ Namespace FFmpeg
             Return Path.Combine(Functions.AppPath, "Bin", "ffprobe.exe")
         End Function
 
-        Public Shared Function ExtractImageFromVideo(ByVal videopath As String,
-                                                     ByVal position As Integer,
-                                                     ByVal loadBitmap As Boolean) As ThumbnailWithVideoDuration
+        Public Shared Function ExtractImageFromVideo(ByVal VideoFilePath As String,
+                                                     ByVal Position As Integer,
+                                                     ByVal LoadBitmap As Boolean) As ThumbnailWithVideoDuration
             Dim strPath = Path.Combine(Master.TempPath, "FFmpeg")
             If Not Directory.Exists(strPath) Then Directory.CreateDirectory(strPath)
             Dim strFullPath = Path.Combine(strPath, "frame.jpg")
@@ -101,11 +101,11 @@ Namespace FFmpeg
             ' -frames:v = Stop writing to the stream after framecount frames.                               '
             ' -y        = Overwrite output files without asking                                             '
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            Dim args = String.Format("-ss {0} -i ""{1}"" -frames:v 1 -y ""{2}""", position, videopath, strFullPath)
+            Dim args = String.Format("-ss {0} -i ""{1}"" -frames:v 1 -y ""{2}""", Position, VideoFilePath, strFullPath)
             Dim result = ExecuteFFmpeg(args)
             If File.Exists(strFullPath) Then
                 Dim nImage As New MediaContainers.Image
-                nImage.ImageOriginal.LoadFromFile(strFullPath, loadBitmap)
+                nImage.ImageOriginal.LoadFromFile(strFullPath, LoadBitmap)
                 File.Delete(strFullPath)
                 Return New ThumbnailWithVideoDuration With {
                     .Duration = GetDurationFromFFmpegOutput(result),
@@ -119,8 +119,6 @@ Namespace FFmpeg
         ''' </summary>
         ''' <param name="DBElement">Movie/Show/Episode for which thumbnails should be created</param>
         ''' <param name="ThumbCount">Number of thumbnails to generate</param>
-        ''' <param name="VideoFileDuration">Optional: The duration of videofile in seconds. Used to calculate the timeframe between thumbs. If not specified, duration will be calculated automatically</param>
-        ''' <param name="NoSpoilers">true: Don't create thumbs for second half of video. Defaults to false if not specified (create tumbnails over whole movie)</param>
         ''' <param name="Timeout">The timeout to apply to FFmpeg, in milliseconds. Defaults to 20 seconds if not specified</param>
         ''' <returns>Returns imagecontainer which contains generated thumbnails</returns>
         ''' <remarks>
@@ -134,61 +132,54 @@ Namespace FFmpeg
         ''' </remarks>
         Public Shared Function GenerateThumbnailsWithoutBars(ByVal DBElement As Database.DBElement,
                                                              ByVal ThumbCount As Integer,
-                                                             Optional ByVal VideoFileDuration As Integer = 0,
-                                                             Optional ByVal NoSpoilers As Boolean = False,
                                                              Optional ByVal Timeout As Integer = 20000) As List(Of MediaContainers.Image)
+            Dim lstThumbContainer As New List(Of MediaContainers.Image)
+            If Not DBElement.FileItemSpecified Then Return lstThumbContainer
             'set TEMP folder as savepath for thumbs
-            Dim strThumbPath As String = Path.Combine(Master.TempPath, "extrathumbs")
+            Dim strThumbPath As String = Path.Combine(Master.TempPath, "FFmpeg")
             'Retrieve the full file path to the source video file
             Dim strScanPath = GetVideoFileScanPath(DBElement.FileItem)
-            Dim lstThumbContainer As New List(Of MediaContainers.Image)
-
 
             If String.IsNullOrEmpty(strScanPath) Then
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.FileItem.FirstStackedPath))
+                logger.Warn(String.Format("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}", DBElement.FileItem.FirstStackedPath))
                 Return lstThumbContainer
             End If
 
             'Step 1: First get the duration if necessary since it is needed to calculate the timespan between thumbs
-            If VideoFileDuration = 0 Then
-                'using FFmpeg...
-                VideoFileDuration = GetDurationFromFFmpegOutput(GetMediaInfoByFFmpeg(DBElement, strScanPath))
-                ''using ffprobe...
-                'dim jsonoutput = ffmpeg.getmediainfobyffprobe(dbelement, strscanpath)
-                'if not string.isnullorempty(jsonoutput) then
-                '    dim tmpmediainfo = ffmpeg.parsemediainfobyffprobe(jsonoutput)
-                '    if tmpmediainfo.streamdetailsspecified andalso tmpmediainfo.streamdetails.videospecified andalso tmpmediainfo.streamdetails.video(0).durationspecified then
-                '    end if
-                'end if
-            End If
+            'using FFmpeg...
+            Dim iVideoDuration As Integer = GetDurationFromFFmpegOutput(GetMediaInfoByFFmpeg(DBElement, strScanPath))
+            ''using ffprobe...
+            'dim jsonoutput = ffmpeg.getmediainfobyffprobe(dbelement, strscanpath)
+            'if not string.isnullorempty(jsonoutput) then
+            '    dim tmpmediainfo = ffmpeg.parsemediainfobyffprobe(jsonoutput)
+            '    if tmpmediainfo.streamdetailsspecified andalso tmpmediainfo.streamdetails.videospecified andalso tmpmediainfo.streamdetails.video(0).durationspecified then
+            '    end if
+            'end if
+
+            'fallback to 20 images if no limit (Thumbcount) has been set
+            If ThumbCount > Settings.ExtraImagesLimit OrElse ThumbCount = 0 Then ThumbCount = Settings.ExtraImagesLimit
 
             'Step 2: Calculate timespan between thumbs
-            Dim secondsbetweenThumbs As Integer = 0
-            Dim videoThumbnailPositionStr As String = String.Empty
-            Dim output As String = String.Empty
+            Dim iSecondsBetweenThumbs As Integer = 0
+            Dim strVideoThumbnailPositionStr As String = String.Empty
+            Dim strOutput As String = String.Empty
             'video should be long enough to avoid opening credits! (=5min)
-            If VideoFileDuration < (301 + (ThumbCount * 2)) Then
+            If iVideoDuration < (301 + (ThumbCount * 2)) Then
                 'videofile should be at least 5min + thumbcount*2 long, otherwise exit and return empty imagecontainer
                 logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Duration of file is shorter than required minimum: {0} seconds. Abort automatic creation of thumbnails! ScanPath: {1}"), 300 + (ThumbCount * 2), strScanPath))
                 Return lstThumbContainer
             End If
             'calculate timeintervall for thumbnails (we always create double images, sort them later and only save the best ones)
-            If NoSpoilers AndAlso VideoFileDuration > (600 + (ThumbCount * 2)) Then
+            If iVideoDuration > (600 + (ThumbCount * 2)) Then
                 'We don't want to see spoilers in thumbs -> don't create images of second half of video, also avoid ending credits (5min)
-                secondsbetweenThumbs = CInt(((VideoFileDuration / 2) - 300) / (ThumbCount * 2))
-            ElseIf VideoFileDuration > (600 + (ThumbCount * 2)) Then
-                'don't avoid spoilers but avoid (possible) ending credits
-                secondsbetweenThumbs = CInt((VideoFileDuration - 600) / (ThumbCount * 2))
+                iSecondsBetweenThumbs = CInt(((iVideoDuration / 2) - 300) / (ThumbCount * 2))
             Else
                 'not possible to avoid spoilers and to avoid (possible) ending credits
-                secondsbetweenThumbs = CInt((VideoFileDuration - 300) / (ThumbCount * 2))
+                iSecondsBetweenThumbs = CInt((iVideoDuration - 300) / (ThumbCount * 2))
             End If
 
-            'Step 3: (Optional) Analyze video and retrieve real screensize without black bars
-            Dim cropsize As String = String.Empty
-            If Master.eSettings.MovieExtrathumbsCreatorNoBlackBars Then
-                cropsize = GetScreenSizeWithoutBars(DBElement, VideoFileDuration, strScanPath, Timeout)
-            End If
+            'Step 3: Analyze video and retrieve real screensize without black bars
+            Dim cropsize As String = GetScreenSizeWithoutBars(DBElement, iVideoDuration, strScanPath, Timeout)
 
             'Step 4: Build FFmpeg argument, which will generate the thumbs
             Dim args As String = String.Empty
@@ -207,23 +198,32 @@ Namespace FFmpeg
             '-vf select= That's where all the magic happens. This is the selector function for video filter (like the value for crop we calculated earlier & autothumbnail(scene...) & mod..)
             ' not(mod(n\,x)): Select one frame every x frames see the documentation.+
             'create x images at specific timeframe starting from x second  onwards at calculcated intervall and crop them
-            Dim tmpSpan As New TimeSpan(0, 0, (secondsbetweenThumbs))
+            Dim tmpSpan As New TimeSpan(0, 0, (iSecondsBetweenThumbs))
             For i = 1 To (ThumbCount * 2)
                 'first screenshot should be taken around 5 minutes from start to avoid credits/openening scenes
                 If i = 1 Then
                     tmpSpan = tmpSpan + TimeSpan.FromSeconds(300)
                 Else
-                    tmpSpan = tmpSpan + TimeSpan.FromSeconds(secondsbetweenThumbs)
+                    tmpSpan = tmpSpan + TimeSpan.FromSeconds(iSecondsBetweenThumbs)
                 End If
-                videoThumbnailPositionStr = tmpSpan.ToString("hh\:mm\:ss")
+                strVideoThumbnailPositionStr = tmpSpan.ToString("hh\:mm\:ss")
                 '  args = String.Format(CultureInfo.InvariantCulture, "-ss {0} -i ""{1}"" -vf {2} -frames:v 1 -vsync vfr -q:v 0 ""{3}"" -y", videoThumbnailPositionStr, ScanPath, cropsize, Path.Combine(thumbPath, "thumb" & i & ".jpg"))
                 If String.IsNullOrEmpty(cropsize) Then
-                    args = String.Format(CultureInfo.InvariantCulture, "-ss {0} -i ""{1}"" -frames:v 1 -q:v 0 ""{2}"" -y", videoThumbnailPositionStr, strScanPath, Path.Combine(strThumbPath, "thumb" & i & ".jpg"))
+                    args = String.Format(CultureInfo.InvariantCulture,
+                                         "-ss {0} -i ""{1}"" -frames:v 1 -q:v 0 ""{2}"" -y",
+                                         strVideoThumbnailPositionStr,
+                                         strScanPath,
+                                         Path.Combine(strThumbPath, String.Concat("thumb", i, ".jpg")))
                 Else
-                    args = String.Format(CultureInfo.InvariantCulture, "-ss {0} -i ""{1}"" -vf {2} -frames:v 1 -q:v 0 ""{3}"" -y", videoThumbnailPositionStr, strScanPath, cropsize, Path.Combine(strThumbPath, "thumb" & i & ".jpg"))
+                    args = String.Format(CultureInfo.InvariantCulture,
+                                         "-ss {0} -i ""{1}"" -vf {2} -frames:v 1 -q:v 0 ""{3}"" -y",
+                                         strVideoThumbnailPositionStr,
+                                         strScanPath,
+                                         cropsize,
+                                         Path.Combine(strThumbPath, String.Concat("thumb", i, ".jpg")))
                 End If
                 'logger.Info(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Args: {0}"), args))
-                output = output & ExecuteFFmpeg(args:=args, timeout:=Timeout)
+                strOutput = String.Concat(strOutput, ExecuteFFmpeg(args:=args, timeout:=Timeout))
             Next
 
             'Step 5: To find most interesting thumbs and to avoid black/white thumbs we sort all generated thumbs after size and pick the largest images (because those will contain more dynamic content)
@@ -232,31 +232,25 @@ Namespace FFmpeg
             End If
             Dim sortedThumbs = Directory.GetFiles(strThumbPath, "*.jpg").OrderByDescending(Function(f) New FileInfo(f).Length).ToList
             If sortedThumbs.Count > 0 Then
-                logger.Info(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: {0} thumbs created. File: {1}"), sortedThumbs.Count, strScanPath))
-                'remove the old ones
-                ' Images.Delete_Movie(DBElement, Enums.ModifierType.MainExtrathumbs)
-                'Step 3: load all valid extrathumbs into imagecontainer
-                For i = 1 To sortedThumbs.Count
+                logger.Info(String.Format("[FFmpeg] GenerateThumbnailsWithoutBars: {0} thumbs created. File: {1}",
+                                          sortedThumbs.Count,
+                                          strScanPath))
+                'Step 6: load all valid extrathumbs into imagecontainer
+                For i = 0 To sortedThumbs.Count - 1
                     'need no more than thumbcount images
                     If lstThumbContainer.Count < ThumbCount Then
                         Dim eImg As New MediaContainers.Image
-                        'not needed to load it here, just set localpath
-                        'eImg.ImageOriginal.FromFile(sortedThumbs(i - 1), True)
-                        eImg.LocalFilePath = sortedThumbs(i - 1)
+                        eImg.ImageOriginal.LoadFromFile(sortedThumbs(i))
                         lstThumbContainer.Add(eImg)
+                        File.Delete(sortedThumbs(i))
                     Else
                         Exit For
                     End If
                 Next
-                'Don't save here - just return filled imagecontainers and let other processes do the saving task!
-                'For Each eImg As MediaContainers.Image In DBElement.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-                '    If eImg.LoadAndCache(DBElement.ContentType, True) Then
-                '        eImg.ImageOriginal.SaveAsMovieExtrathumb(DBElement)
-                '    End If
-                'Next
             Else
                 logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: No thumbs created for {0}"), strScanPath))
             End If
+            'Sort the files by file name to get the correct order
             lstThumbContainer = lstThumbContainer.OrderBy(Function(f) f.LocalFilePath).ToList
             Return lstThumbContainer
         End Function
@@ -310,7 +304,10 @@ Namespace FFmpeg
             ' from beginning of video because often black bars are non existent in first seconds of a movie
             For i = 1 To 3
                 mc = Nothing
-                cropscanresult = ExecuteFFmpeg(String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2), Timeout)
+                cropscanresult = ExecuteFFmpeg(String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL",
+                                                             CInt(Duration / 4) * i,
+                                                             ScanPath,
+                                                             2), Timeout)
                 'Example Output:
                 '[Parsed_cropdetect_0 @ 054d2a20] x1:0 x2:1919 y1:136 y2:935 w:1920 h:800 x:0 y:1
                 '36 pts:122291 t:1.358789 crop=1920:800:0:136
@@ -529,7 +526,6 @@ Namespace FFmpeg
             End If
             Return ExecuteFFmpeg(FFmpegTaskSettings)
         End Function
-
         ''' <summary>
         ''' Execute the FFmpeg or FFprobe with the given <paramref name="_settings"/> and return the text output generated by it
         ''' </summary>
@@ -543,7 +539,6 @@ Namespace FFmpeg
             _settings.FFmpegOutput = ffmpeg.Output
             Return _settings.FFmpegOutput
         End Function
-
         ''' <summary>
         ''' Run the FFmpeg/FFprobe executable with the specified command line arguments
         ''' </summary>

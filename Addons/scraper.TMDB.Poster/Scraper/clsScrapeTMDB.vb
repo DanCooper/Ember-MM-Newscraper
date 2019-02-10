@@ -65,12 +65,11 @@ Public Class clsAPITMDB
             End If
 
             'MainFanart
-            If (FilteredModifiers.MainExtrafanarts OrElse FilteredModifiers.MainExtrathumbs OrElse FilteredModifiers.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
+            If FilteredModifiers.MainFanart AndAlso Results.Backdrops IsNot Nothing Then
                 For Each tImage In Results.Backdrops
                     Dim newImage As New MediaContainers.Image With {
                             .Height = tImage.Height,
                             .Likes = 0,
-                            .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                             .Scraper = "TMDB",
                             .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
                             .URLOriginal = _client.Config.Images.BaseUrl & "original" & tImage.FilePath,
@@ -89,7 +88,6 @@ Public Class clsAPITMDB
                     Dim newImage As New MediaContainers.Image With {
                                 .Height = tImage.Height,
                                 .Likes = 0,
-                                .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                                 .Scraper = "TMDB",
                                 .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
                                 .URLOriginal = _client.Config.Images.BaseUrl & "original" & tImage.FilePath,
@@ -128,7 +126,6 @@ Public Class clsAPITMDB
                     Dim newImage As New MediaContainers.Image With {
                             .Height = tImage.Height,
                             .Likes = 0,
-                            .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                             .Scraper = "TMDB",
                             .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
                             .URLOriginal = _client.Config.Images.BaseUrl & "original" & tImage.FilePath,
@@ -147,7 +144,6 @@ Public Class clsAPITMDB
                     Dim newImage As New MediaContainers.Image With {
                                 .Height = tImage.Height,
                                 .Likes = 0,
-                                .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                                 .Scraper = "TMDB",
                                 .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
                                 .URLOriginal = _client.Config.Images.BaseUrl & "original" & tImage.FilePath,
@@ -175,7 +171,6 @@ Public Class clsAPITMDB
                                 Dim newImage As New MediaContainers.Image With {
                                         .Height = tImage.Height,
                                         .Likes = 0,
-                                        .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                                         .Scraper = "TMDB",
                                         .Season = tSeason.SeasonNumber,
                                         .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
@@ -237,7 +232,6 @@ Public Class clsAPITMDB
                             .Episode = iEpisode,
                             .Height = tImage.Height,
                             .Likes = 0,
-                            .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
                             .Scraper = "TMDB",
                             .Season = iSeason,
                             .Language = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),

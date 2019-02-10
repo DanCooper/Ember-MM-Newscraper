@@ -18,10 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Runtime.CompilerServices
-Imports NLog
 
 <Assembly: InternalsVisibleTo("EmberAPI_Test")> 
 
@@ -30,6 +30,7 @@ Public Class ImageUtils
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
     Public Const DefaultPaddingARGB As Integer = -16777216  'This is FF000000, which is completely opaque black
 
 #End Region 'Fields
@@ -45,7 +46,6 @@ Public Class ImageUtils
         If oImage Is Nothing Then Return oImage
 
         Using sImage As New Bitmap(oImage)
-            'now overlay "DUPLICATE" image
             Using grOverlay As Graphics = Graphics.FromImage(sImage)
                 Dim oWidth As Integer = If(sImage.Width >= Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Duplicate.png")).Width, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Duplicate.png")).Width, sImage.Width)
                 Dim oheight As Integer = If(sImage.Height >= Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Duplicate.png")).Height, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Duplicate.png")).Height, sImage.Height)
@@ -58,6 +58,37 @@ Public Class ImageUtils
         End Using
     End Function
     ''' <summary>
+    ''' Adds the supplied <paramref name="genreString"/> to the given <paramref name="image"/>
+    ''' </summary>
+    ''' <param name="image">Source <c>Image</c> to manipulate</param>
+    ''' <param name="genreString"><c>String</c> to superimpose</param>
+    ''' <remarks>If an error is encountered, the source image is returned.</remarks>
+    Public Shared Function AddGenreString(ByRef image As Image, genreString As String) As Bitmap
+        If image Is Nothing OrElse image.Size.IsEmpty Then
+            logger.Error("Invalid image parameter", New StackTrace().ToString())
+            Return Nothing
+        End If
+
+        Dim bmGenre As New Bitmap(image)
+        Try
+            Using grGenre As Graphics = Graphics.FromImage(bmGenre),
+                drawFont1 As New Font("Microsoft Sans Serif", 14, FontStyle.Bold, GraphicsUnit.Pixel)
+
+                Dim drawBrush As New SolidBrush(Color.White)
+                Dim drawWidth As Single = grGenre.MeasureString(genreString, drawFont1).Width
+                Dim drawSize As Integer = Convert.ToInt32((14 * (bmGenre.Width / drawWidth)) - 0.5)
+                Using drawFont2 = New Font("Microsoft Sans Serif", If(drawSize > 14, 14, drawSize), FontStyle.Bold, GraphicsUnit.Pixel)
+                    Dim drawHeight As Single = grGenre.MeasureString(genreString, drawFont2).Height
+                    Dim iLeft As Integer = Convert.ToInt32((bmGenre.Width - grGenre.MeasureString(genreString, drawFont2).Width) / 2)
+                    grGenre.DrawString(genreString, drawFont2, drawBrush, iLeft, (bmGenre.Height - drawHeight))
+                End Using
+            End Using
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
+        Return bmGenre
+    End Function
+    ''' <summary>
     ''' Adds an overlay on the provided image to indicate that it is "missing"
     ''' </summary>
     ''' <param name="oImage">Source <c>Images</c></param>
@@ -67,7 +98,6 @@ Public Class ImageUtils
         If oImage Is Nothing OrElse oImage.Image Is Nothing Then Return oImage
 
         Using nImage As New Bitmap(GrayScale(oImage).Image)
-            'now overlay "missing" image
             Using grOverlay As Graphics = Graphics.FromImage(nImage)
                 Dim oWidth As Integer = If(nImage.Width >= Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Missing.png")).Width, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Missing.png")).Width, nImage.Width)
                 Dim oheight As Integer = If(nImage.Height >= Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Missing.png")).Height, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Missing.png")).Height, nImage.Height)
@@ -102,52 +132,24 @@ Public Class ImageUtils
             ia.SetColorMatrix(cm)
             g.DrawImage(nImage, New Rectangle(0, 0, nImage.Width, nImage.Height), 0, 0, nImage.Width, nImage.Height, GraphicsUnit.Pixel, ia)
         End Using
-
         oImage.UpdateMSfromImg(nImage)
-
         Return oImage
     End Function
     ''' <summary>
-    ''' Draw a gradiated ellipse on the supplied <paramref name="graphics"/>, defined by <paramref name="bounds"/>,
-    ''' with a line color of <paramref name="outerColor"/> and a center/fill of <paramref name="centerColor"/>.
+    ''' Resize the supplied <paramref name="image"/>, preserving proportions.
     ''' </summary>
-    ''' <param name="graphics"><c>Graphics</c> surface to draw on</param>
-    ''' <param name="bounds"><c>Rectangle</c> that defines the boundaries of the ellipse</param>
-    ''' <param name="centerColor">The center <c>Color</c></param>
-    ''' <param name="outerColor">The outer edge <c>Color</c></param>
-    ''' <remarks></remarks>
-    Public Shared Sub DrawGradEllipse(ByRef graphics As Graphics, ByVal bounds As Rectangle, ByVal centerColor As Color, ByVal outerColor As Color)
-        'Some quick-and-dirty sanity checking
-        If graphics Is Nothing OrElse (bounds.Width = 0 And bounds.Height = 0) Then Return
-
-        Try
-            Using gPath As New Drawing2D.GraphicsPath
-                gPath.AddEllipse(bounds.X, bounds.Y, bounds.Width, bounds.Height)
-                Using pgBrush = New Drawing2D.PathGradientBrush(gPath)
-                    pgBrush.CenterColor = centerColor
-                    pgBrush.SurroundColors = New Color() {outerColor, outerColor, outerColor, outerColor}
-                    graphics.FillEllipse(pgBrush, bounds.X, bounds.Y, bounds.Width, bounds.Height)
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Resize the supplied <paramref name="_image"/>, preserving proportions.
-    ''' </summary>
-    ''' <param name="_image">Source <c>Image</c> to manipulate</param>
+    ''' <param name="image">Source <c>Image</c> to manipulate</param>
     ''' <param name="maxWidth">Maximum width of resized image</param>
     ''' <param name="maxHeight">Maximum height of resized image</param>
     ''' <param name="usePadding">If <c>True</c>, background of bounding rectangle not covered by the 
-    ''' resized image will be drawn with <paramref name="PaddingARGB"/> color</param>
-    ''' <param name="PaddingARGB">Optional color to use as padding.</param>
+    ''' resized image will be drawn with <paramref name="paddingARGB"/> color</param>
+    ''' <param name="paddingARGB">Optional color to use as padding.</param>
     ''' <remarks>Image will retain the same proportions, however will resize such that it can fit 
     ''' within the <paramref name="maxWidth"/> and <paramref name="maxHeight"/>. If <paramref name="usePadding"/> is specified, 
     ''' the background of the rectangle specified by <paramref name="maxWidth"/> and <paramref name="maxHeight"/> will be filled
-    ''' by <paramref name="PaddingARGB"/></remarks>
-    Public Shared Sub ResizeImage(ByRef _image As Image, ByVal maxWidth As Integer, ByVal maxHeight As Integer, Optional ByVal usePadding As Boolean = False, Optional ByVal PaddingARGB As Integer = DefaultPaddingARGB)
-        If (_image Is Nothing) OrElse
+    ''' by <paramref name="paddingARGB"/></remarks>
+    Public Shared Sub ResizeImage(ByRef image As Image, ByVal maxWidth As Integer, ByVal maxHeight As Integer, Optional ByVal usePadding As Boolean = False, Optional ByVal paddingARGB As Integer = DefaultPaddingARGB)
+        If (image Is Nothing) OrElse
             (maxWidth <= 0) OrElse
             (maxHeight <= 0) Then
             Return
@@ -156,14 +158,14 @@ Public Class ImageUtils
         Try
             Dim sPropPerc As Single = 1.0 'no default scaling
 
-            If _image.Width > _image.Height Then
-                sPropPerc = CSng(maxWidth / _image.Width)
+            If image.Width > image.Height Then
+                sPropPerc = CSng(maxWidth / image.Width)
             Else
-                sPropPerc = CSng(maxHeight / _image.Height)
+                sPropPerc = CSng(maxHeight / image.Height)
             End If
 
             ' Get the source bitmap.
-            Using bmSource As New Bitmap(_image)
+            Using bmSource As New Bitmap(image)
                 ' Make a bitmap for the result.
                 Dim bmDest As New Bitmap(
                 Convert.ToInt32(bmSource.Width * sPropPerc),
@@ -181,7 +183,7 @@ Public Class ImageUtils
                     Dim bgBMP As Bitmap = New Bitmap(maxWidth, maxHeight)
                     Using grOverlay As Graphics = Graphics.FromImage(bgBMP)
                         grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                        grOverlay.FillRectangle(New SolidBrush(Color.FromArgb(PaddingARGB)), New RectangleF(0, 0, maxWidth, maxHeight))
+                        grOverlay.FillRectangle(New SolidBrush(Color.FromArgb(paddingARGB)), New RectangleF(0, 0, maxWidth, maxHeight))
                         Dim iLeft As Integer = Convert.ToInt32(If(bmDest.Width = maxWidth, 0, (maxWidth - bmDest.Width) / 2))
                         Dim iTop As Integer = Convert.ToInt32(If(bmDest.Height = maxHeight, 0, (maxHeight - bmDest.Height) / 2))
                         grOverlay.DrawImage(bmDest, iLeft, iTop, bmDest.Width, bmDest.Height)
@@ -189,7 +191,7 @@ Public Class ImageUtils
                     bmDest = bgBMP
                 End If
 
-                _image = bmDest
+                image = bmDest
 
             End Using
         Catch ex As Exception
@@ -200,35 +202,49 @@ Public Class ImageUtils
     ''' Copies the image from <paramref name="pbSource"/> into <paramref name="pbDestination"/>,
     ''' resizing it (if necessary) so that it is no larger than the supplied width and height.
     ''' It only shrinks, but does not grow the image.
-    '''
     ''' </summary>
     ''' <param name="pbDestination">Destination picture box</param>
     ''' <param name="pbSource">Source picture box</param>
     ''' <param name="maxHeight">Maximum height for <paramref name="pbDestination"/></param>
     ''' <param name="maxWidth">Maximum width for <paramref name="pbDestination"/></param>
     ''' <remarks>Why not use "Zoom" for fanart background? - To keep the image at the top. Zoom centers vertically.</remarks>
-    Public Shared Sub ResizePB(ByRef pbDestination As PictureBox, ByRef pbSource As PictureBox, ByVal maxHeight As Integer, ByVal maxWidth As Integer)
+    Public Shared Sub ResizePB(ByRef pbDestination As PictureBox,
+                               ByRef pbSource As PictureBox,
+                               ByVal maxHeight As Integer,
+                               ByVal maxWidth As Integer,
+                               Optional DoClip As Boolean = False)
         If pbSource Is Nothing OrElse pbSource.Image Is Nothing Then Return
 
         If pbSource.Image IsNot Nothing Then
             Try
-                If Not pbDestination.Image Is Nothing Then pbDestination.Image.Dispose()
-
-                pbDestination.SizeMode = PictureBoxSizeMode.Normal
                 Dim sPropPerc As Single = 1.0 'no default scaling
-
                 pbDestination.Size = New Size(maxWidth, maxHeight)
 
-                ' Height
-                If pbSource.Image.Height > pbDestination.Height Then
-                    ' Reduce height first
-                    sPropPerc = CSng(pbDestination.Height / pbSource.Image.Height)
-                End If
+                If Not pbDestination.Image Is Nothing Then pbDestination.Image.Dispose()
 
-                ' Width
-                If (pbSource.Image.Width * sPropPerc) > pbDestination.Width Then
-                    ' Scaled width exceeds Box's width, recalculate scale_factor
-                    sPropPerc = CSng(pbDestination.Width / pbSource.Image.Width)
+                If Not DoClip Then
+                    pbDestination.SizeMode = PictureBoxSizeMode.Normal
+                    ' Height
+                    If pbSource.Image.Height > pbDestination.Height Then
+                        ' Reduce height first
+                        sPropPerc = CSng(pbDestination.Height / pbSource.Image.Height)
+                    End If
+                    ' Width 
+                    If (pbSource.Image.Width * sPropPerc) > pbDestination.Width Then
+                        ' Scaled width exceeds Box's width, recalculate scale_factor
+                        sPropPerc = CSng(pbDestination.Width / pbSource.Image.Width)
+                    End If
+                Else
+                    pbDestination.SizeMode = PictureBoxSizeMode.CenterImage
+                    Dim dblImageAspectRatio As Double = pbSource.Image.Height / pbSource.Image.Width
+                    Dim dblDestAspectRation As Double = pbDestination.Height / pbDestination.Width
+                    If dblDestAspectRation < dblImageAspectRatio Then
+                        'Image has to be clipped in height and use the full width of destination PB
+                        sPropPerc = CSng(pbDestination.Width / pbSource.Image.Width)
+                    Else
+                        'Image has to be clipped in width and use the full height of destination PB
+                        sPropPerc = CSng(pbDestination.Height / pbSource.Image.Height)
+                    End If
                 End If
 
                 ' Get the source bitmap.
@@ -246,9 +262,11 @@ Public Class ImageUtils
                         ' Display the result.
                         pbDestination.Image = bmDest
 
-                        'tweak pb after resizing pic
-                        pbDestination.Width = pbDestination.Image.Width
-                        pbDestination.Height = pbDestination.Image.Height
+                        If Not DoClip Then
+                            'tweak pb after resizing pic
+                            pbDestination.Width = pbDestination.Image.Width
+                            pbDestination.Height = pbDestination.Image.Height
+                        End If
 
                         'Clean up
                         bmDest = Nothing
@@ -264,8 +282,6 @@ Public Class ImageUtils
             pbDestination.Left = 0
             pbDestination.Size = New Size(maxWidth, maxHeight)
         End If
-
-
     End Sub
     ''' <summary>
     ''' Apply a glass overlay on the supplied <c>PictureBox</c>
@@ -349,96 +365,10 @@ Public Class ImageUtils
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
-
         Return imgUnderlay
     End Function
 
-    'cocotus, 2013/02 Export HTML expanded: configurable resizable images
-    ' New Image methods added here (resizing/compressing)
-
-    ''' <summary>
-    ''' Compress JPEG <c>Image</c> and save result as local image
-    ''' </summary>
-    ''' <param name="Image">Image which should be compressed/encoded</param>
-    ''' <param name="OutPutFile">Savepath of recoded image</param>
-    ''' <param name="Qualitiy">Quality Setting 0-100</param>
-    Public Shared Sub JPEGCompression(ByVal Image As Image, ByVal OutPutFile As String, ByVal Qualitiy As Integer)
-        If String.IsNullOrEmpty(OutPutFile) Then Return
-
-        Dim ImageCodecs() As Imaging.ImageCodecInfo
-        Dim ImageParameters As Imaging.EncoderParameters
-
-        ImageCodecs = Imaging.ImageCodecInfo.GetImageEncoders()
-        ImageParameters = New Imaging.EncoderParameters(1)
-        ImageParameters.Param(0) = New Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, Qualitiy)
-        Image.Save(OutPutFile, ImageCodecs(1), ImageParameters)
-    End Sub
-    ''' <summary>
-    ''' Resize the supplied <c>Image</c>
-    ''' </summary>
-    ''' <param name="poImage"><c>Image</c> which should be resized</param>
-    ''' <param name="poSize"><c>Size</c> of image</param>
-    Public Shared Function ResizeImage(ByVal poImage As Image, ByVal poSize As Size) As Image
-        'TODO 2013/12/16 Dekker500 - This method fails unit tests. This STRETCHES the images, not a true resize. Don't think this is what is actually desired
-
-        If (poImage Is Nothing) _
-            OrElse (poSize.IsEmpty) _
-            OrElse (poSize.Width <= 0 OrElse poSize.Height <= 0) Then
-            Return poImage
-        End If
-        Dim ResizedImage As Image
-        Using Original As Image = DirectCast(poImage.Clone(), Image)
-            ResizedImage = New Bitmap(poSize.Width, poSize.Height, Original.PixelFormat)
-            Using oGraphic As Graphics = Graphics.FromImage(ResizedImage)
-                oGraphic.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
-                oGraphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality
-                oGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic
-                Dim oRectangle As Rectangle = New Rectangle(0, 0, poSize.Width, poSize.Height)
-                oGraphic.DrawImage(Original, oRectangle)
-            End Using
-        End Using
-
-        Return ResizedImage
-    End Function
-
-    'cocotus end
-
-    ''' <summary>
-    ''' Adds the supplied <paramref name="genreString"/> to the given <paramref name="image"/>
-    ''' </summary>
-    ''' <param name="image">Source <c>Image</c> to manipulate</param>
-    ''' <param name="genreString"><c>String</c> to superimpose</param>
-    ''' <remarks>If an error is encountered, the source image is returned.</remarks>
-    Public Shared Function AddGenreString(ByRef image As System.Drawing.Image, genreString As String) As Bitmap
-        If (image Is Nothing) OrElse (image.Size.IsEmpty) Then
-            logger.Error("Invalid image parameter", New StackTrace().ToString())
-            Return Nothing
-        End If
-
-        Dim bmGenre As New Bitmap(image)
-        Try
-            Using grGenre As Graphics = Graphics.FromImage(bmGenre),
-                drawFont1 As New Font("Microsoft Sans Serif", 14, FontStyle.Bold, GraphicsUnit.Pixel)
-
-                Dim drawBrush As New SolidBrush(Color.White)
-                Dim drawWidth As Single = grGenre.MeasureString(genreString, drawFont1).Width
-                Dim drawSize As Integer = Convert.ToInt32((14 * (bmGenre.Width / drawWidth)) - 0.5)
-                Using drawFont2 = New Font("Microsoft Sans Serif", If(drawSize > 14, 14, drawSize), FontStyle.Bold, GraphicsUnit.Pixel)
-                    Dim drawHeight As Single = grGenre.MeasureString(genreString, drawFont2).Height
-                    Dim iLeft As Integer = Convert.ToInt32((bmGenre.Width - grGenre.MeasureString(genreString, drawFont2).Width) / 2)
-                    grGenre.DrawString(genreString, drawFont2, drawBrush, iLeft, (bmGenre.Height - drawHeight))
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-        Return bmGenre
-
-    End Function
-
 #End Region 'Methods
-
-
     ''' <summary>
     ''' Contains methods for image comparison and recognition. 
     ''' </summary>
@@ -455,8 +385,6 @@ Public Class ImageUtils
             AverageHash = 0
             PHash = 1
         End Enum
-
-
         ''' <summary>
         ''' Check similarity between two given images
         ''' </summary>
@@ -479,7 +407,6 @@ Public Class ImageUtils
 
             Return CalculateHammingDistance(imagehash_1, imagehash_2)
         End Function
-
         ''' <summary>
         ''' Check similarity between two given images
         ''' </summary>
@@ -503,7 +430,6 @@ Public Class ImageUtils
 
             Return CalculateHammingDistance(imagehash_1, imagehash_2)
         End Function
-
         ''' <summary>
         ''' Check similarity between two given images
         ''' </summary>
@@ -528,7 +454,6 @@ Public Class ImageUtils
 
             Return CalculateHammingDistance(imagehash_1, imagehash_2)
         End Function
-
         ''' <summary>
         ''' Check similarity between two given hashes (of images)
         ''' </summary>
@@ -560,7 +485,6 @@ Public Class ImageUtils
                 Return False
             End If
         End Function
-
         ''' <summary>
         ''' Computes the HammingDistance between the hashcode of two images
         ''' </summary>
@@ -583,7 +507,6 @@ Public Class ImageUtils
             Loop
             Return same
         End Function
-
         ''' <summary>
         ''' Reduce size of image
         ''' </summary>
@@ -606,8 +529,6 @@ Public Class ImageUtils
             tmpcanvas.Dispose()
             Return bmp
         End Function
-
-
         ''' <summary>
         ''' Reduce color of image and convert to grayscale
         ''' </summary>
@@ -655,7 +576,6 @@ Public Class ImageUtils
         End Function
 
 #Region "AverageHash Algorithm"
-
         ''' <summary>
         ''' The algorithm used in this class is called "AverageHash"
         ''' </summary>
@@ -663,7 +583,6 @@ Public Class ImageUtils
         ''' 2015/09/22 Cocotus - First implementation
         ''' </remarks>
         Partial Class AverageHash
-
             ''' <summary>
             ''' Computes the average hash of an image according to the algorithm provided by Dr. Neal Krawetz
             ''' on his blog: http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html.
@@ -729,7 +648,6 @@ Public Class ImageUtils
                 'the final hashcode/identifier of the image
                 Return hashCode.ToString
             End Function
-
             ''' <summary>
             ''' Conversion helper used in AverageHash calculation
             ''' </summary>
@@ -737,51 +655,49 @@ Public Class ImageUtils
             ''' 2015/09/22 Cocotus - First implementation
             ''' </remarks>
             Private Shared Function BinaryToHex(ByVal binary As Integer) As Char
-                Dim ch As Char = Microsoft.VisualBasic.ChrW(32)
                 Select Case (binary)
                     Case 0
-                        ch = Microsoft.VisualBasic.ChrW(48)
+                        Return ChrW(48)
                     Case 1
-                        ch = Microsoft.VisualBasic.ChrW(49)
+                        Return ChrW(49)
                     Case 2
-                        ch = Microsoft.VisualBasic.ChrW(50)
+                        Return ChrW(50)
                     Case 3
-                        ch = Microsoft.VisualBasic.ChrW(51)
+                        Return ChrW(51)
                     Case 4
-                        ch = Microsoft.VisualBasic.ChrW(52)
+                        Return ChrW(52)
                     Case 5
-                        ch = Microsoft.VisualBasic.ChrW(53)
+                        Return ChrW(53)
                     Case 6
-                        ch = Microsoft.VisualBasic.ChrW(54)
+                        Return ChrW(54)
                     Case 7
-                        ch = Microsoft.VisualBasic.ChrW(55)
+                        Return ChrW(55)
                     Case 8
-                        ch = Microsoft.VisualBasic.ChrW(56)
+                        Return ChrW(56)
                     Case 9
-                        ch = Microsoft.VisualBasic.ChrW(57)
+                        Return ChrW(57)
                     Case 10
-                        ch = Microsoft.VisualBasic.ChrW(97)
+                        Return ChrW(97)
                     Case 11
-                        ch = Microsoft.VisualBasic.ChrW(98)
+                        Return ChrW(98)
                     Case 12
-                        ch = Microsoft.VisualBasic.ChrW(99)
+                        Return ChrW(99)
                     Case 13
-                        ch = Microsoft.VisualBasic.ChrW(100)
+                        Return ChrW(100)
                     Case 14
-                        ch = Microsoft.VisualBasic.ChrW(101)
+                        Return ChrW(101)
                     Case 15
-                        ch = Microsoft.VisualBasic.ChrW(102)
+                        Return ChrW(102)
                     Case Else
-                        ch = Microsoft.VisualBasic.ChrW(32)
+                        Return ChrW(32)
                 End Select
-                Return ch
             End Function
+
         End Class
 
 #End Region
 
 #Region "PHash Algorithm"
-
         ''' <summary>
         ''' The algorithm used in this class is called "PHash"
         ''' </summary>
@@ -790,7 +706,6 @@ Public Class ImageUtils
         ''' Its more robust but more complicated then the fast AverageHash algorithm, maybe use to compare posters?
         ''' </remarks>
         Private Class PHash
-
             ''' <summary>
             ''' Computes the PHash of an image according to the algorithm provided by Dr. Neal Krawetz
             ''' on his blog: http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html.
@@ -810,7 +725,7 @@ Public Class ImageUtils
             Public Shared Function GetPHash(imgtoHash As Image) As String
                 Dim width As Integer = 32
                 Dim height As Integer = 32
-                Dim hashCode = ""
+                Dim hashCode = String.Empty
 
                 '1.Step:Reduce size of image (shrink)
                 Dim shrinkedbmp = Shrink(imgtoHash, width, height)
@@ -864,10 +779,9 @@ Public Class ImageUtils
             End Function
 
         End Class
-
-
         'DiscreteCosineTransformation algorithm, helper class for PHash
         Partial Private Class DCT
+
             Public Shared Function GetDCT(pix As Integer(), n As Integer) As Integer()
                 Dim iMatrix As Double()() = DoubleArray(n, n)
                 For i As Integer = 0 To n - 1
@@ -889,6 +803,7 @@ Public Class ImageUtils
                 Next
                 Return newpix
             End Function
+
             Private Shared Function DoubleArray(m As Integer, n As Integer) As Double()()
                 Dim Array As Double()()
                 If m > -1 Then
@@ -904,6 +819,7 @@ Public Class ImageUtils
 
                 Return Array
             End Function
+
             Private Shared Function Coefficient(n As Integer) As Double()()
                 Dim coeff As Double()() = DoubleArray(n, n)
                 Dim sqrt As Double = 1.0 / Math.Sqrt(n)
@@ -917,6 +833,7 @@ Public Class ImageUtils
                 Next
                 Return coeff
             End Function
+
             Private Shared Function TransposingMatrix(matrix As Double()(), n As Integer) As Double()()
                 Dim nMatrix As Double()() = DoubleArray(n, n)
                 For i As Integer = 0 To n - 1
@@ -926,6 +843,7 @@ Public Class ImageUtils
                 Next
                 Return nMatrix
             End Function
+
             Private Shared Function MatrixMultiply(A As Double()(), B As Double()(), n As Integer) As Double()()
                 Dim nMatrix As Double()() = DoubleArray(n, n)
                 Dim t As Double = 0.0

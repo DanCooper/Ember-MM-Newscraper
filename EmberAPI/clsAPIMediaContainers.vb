@@ -80,7 +80,7 @@ Namespace MediaContainers
                 Return _language
             End Get
             Set(value As String)
-                _language = value
+                _language = Localization.ISOCheckLangByCode2(value)
                 _longLanguage = Localization.ISOGetLangByCode3(_language)
             End Set
         End Property
@@ -98,7 +98,7 @@ Namespace MediaContainers
                 Return _longLanguage
             End Get
             Set(value As String)
-                _longLanguage = value
+                _longLanguage = Localization.ISOCheckLangByCode2(value)
                 _language = Localization.ISOLangGetCode3ByLang(value)
             End Set
         End Property
@@ -602,6 +602,7 @@ Namespace MediaContainers
     <Serializable()>
     <XmlRoot("fileinfo")>
     Public Class FileInfo
+        Implements ICloneable
 
 #Region "Properties"
 
@@ -620,6 +621,22 @@ Namespace MediaContainers
 
 #End Region 'Properties
 
+#Region "Methods"
+
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New MemoryStream(50000)
+            Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
+
+#End Region 'Methods
+
     End Class
 
     <Serializable()>
@@ -628,17 +645,12 @@ Namespace MediaContainers
 
 #Region "Fields"
 
+        Private _language As String = String.Empty
+        Private _longLanguage As String = String.Empty
+
         Private _disctype As String = String.Empty
         Private _height As Integer = 0
-        Private _moviebannersize As Enums.MovieBannerSize = Enums.MovieBannerSize.Any
-        Private _moviefanartsize As Enums.MovieFanartSize = Enums.MovieFanartSize.Any
-        Private _moviepostersize As Enums.MoviePosterSize = Enums.MoviePosterSize.Any
-        Private _tvbannersize As Enums.TVBannerSize = Enums.TVBannerSize.Any
-        Private _tvbannertype As Enums.TVBannerType = Enums.TVBannerType.Any
-        Private _tvepisodepostersize As Enums.TVEpisodePosterSize = Enums.TVEpisodePosterSize.Any
-        Private _tvfanartsize As Enums.TVFanartSize = Enums.TVFanartSize.Any
-        Private _tvpostersize As Enums.TVPosterSize = Enums.TVPosterSize.Any
-        Private _tvseasonpostersize As Enums.TVSeasonPosterSize = Enums.TVSeasonPosterSize.Any
+        Private _imageSize As Enums.ImageSize = Enums.ImageSize.Any
 
 #End Region 'Fields 
 
@@ -679,6 +691,12 @@ Namespace MediaContainers
 
         Public Property ImageOriginal() As Images = New Images
 
+        Public ReadOnly Property ImageSize() As Enums.ImageSize
+            Get
+                Return _imageSize
+            End Get
+        End Property
+
         Public Property ImageThumb() As Images = New Images
 
         Public Property Index() As Integer = 0
@@ -696,70 +714,31 @@ Namespace MediaContainers
             End Get
         End Property
 
-        Public Property Language() As String = String.Empty
-
-        Public Property LongLang() As String = String.Empty
-
-        Public ReadOnly Property MovieBannerSize() As Enums.MovieBannerSize
+        Public Property Language() As String
             Get
-                Return _moviebannersize
+                Return _language
             End Get
+            Set(value As String)
+                _language = Localization.ISOCheckLangByCode2(value)
+                _longLanguage = Localization.ISOGetLangByCode2(_language)
+            End Set
         End Property
 
-        Public ReadOnly Property MovieFanartSize() As Enums.MovieFanartSize
+        Public Property LongLanguage() As String
             Get
-                Return _moviefanartsize
+                Return _longLanguage
             End Get
-        End Property
-
-        Public ReadOnly Property MoviePosterSize() As Enums.MoviePosterSize
-            Get
-                Return _moviepostersize
-            End Get
+            Set(value As String)
+                _longLanguage = Localization.ISOCheckLangByCode2(value)
+                _language = Localization.ISOLangGetCode2ByLang(value)
+            End Set
         End Property
 
         Public Property Scraper() As String = String.Empty
 
         Public Property Season() As Integer = -1
 
-        Public ReadOnly Property TVBannerSize() As Enums.TVBannerSize
-            Get
-                Return _tvbannersize
-            End Get
-        End Property
-
-        Public Property TVBannerType() As Enums.TVBannerType
-            Get
-                Return _tvbannertype
-            End Get
-            Set(ByVal value As Enums.TVBannerType)
-                _tvbannertype = value
-            End Set
-        End Property
-
-        Public ReadOnly Property TVEpisodePosterSize() As Enums.TVEpisodePosterSize
-            Get
-                Return _tvepisodepostersize
-            End Get
-        End Property
-
-        Public ReadOnly Property TVFanartSize() As Enums.TVFanartSize
-            Get
-                Return _tvfanartsize
-            End Get
-        End Property
-
-        Public ReadOnly Property TVPosterSize() As Enums.TVPosterSize
-            Get
-                Return _tvpostersize
-            End Get
-        End Property
-
-        Public ReadOnly Property TVSeasonPosterSize() As Enums.TVSeasonPosterSize
-            Get
-                Return _tvseasonpostersize
-            End Get
-        End Property
+        Public Property TVBannerType() As Enums.TVBannerType = Enums.TVBannerType.Any
 
         Public Property URLOriginal() As String = String.Empty
 
@@ -784,53 +763,43 @@ Namespace MediaContainers
         Private Sub DetectImageSize(ByRef heigth As Integer)
             Select Case heigth
                 Case 3000
-                    _moviepostersize = Enums.MoviePosterSize.HD3000
-                    _tvpostersize = Enums.TVPosterSize.HD3000
+                    _imageSize = Enums.ImageSize.HD3000
                 Case 2160
-                    _moviefanartsize = Enums.MovieFanartSize.UHD2160
-                    _tvepisodepostersize = Enums.TVEpisodePosterSize.UHD2160
-                    _tvfanartsize = Enums.TVFanartSize.UHD2160
+                    _imageSize = Enums.ImageSize.UHD2160
                 Case 2100
-                    _moviepostersize = Enums.MoviePosterSize.HD2100
+                    _imageSize = Enums.ImageSize.HD2100
                 Case 1500
-                    _moviepostersize = Enums.MoviePosterSize.HD1500
-                    _tvpostersize = Enums.TVPosterSize.HD1500
-                    _tvseasonpostersize = Enums.TVSeasonPosterSize.HD1500
+                    _imageSize = Enums.ImageSize.HD1500
                 Case 1440
-                    _moviefanartsize = Enums.MovieFanartSize.QHD1440
-                    _tvfanartsize = Enums.TVFanartSize.QHD1440
+                    _imageSize = Enums.ImageSize.QHD1440
                 Case 1426
-                    _moviepostersize = Enums.MoviePosterSize.HD1426
-                    _tvpostersize = Enums.TVPosterSize.HD1426
-                    _tvseasonpostersize = Enums.TVSeasonPosterSize.HD1426
+                    _imageSize = Enums.ImageSize.HD1426
                 Case 1080
-                    _moviefanartsize = Enums.MovieFanartSize.HD1080
-                    _tvepisodepostersize = Enums.TVEpisodePosterSize.HD1080
-                    _tvfanartsize = Enums.TVFanartSize.HD1080
+                    _imageSize = Enums.ImageSize.HD1080
                 Case 1000
-                    _tvpostersize = Enums.TVPosterSize.HD1000
+                    _imageSize = Enums.ImageSize.HD1000
                 Case 720
-                    _moviefanartsize = Enums.MovieFanartSize.HD720
-                    _tvepisodepostersize = Enums.TVEpisodePosterSize.HD720
-                    _tvfanartsize = Enums.TVFanartSize.HD720
+                    _imageSize = Enums.ImageSize.HD720
                 Case 578
-                    _tvseasonpostersize = Enums.TVSeasonPosterSize.HD578
+                    _imageSize = Enums.ImageSize.HD578
+                Case 562
+                    _imageSize = Enums.ImageSize.HD562
+                Case 512
+                    _imageSize = Enums.ImageSize.HD512
+                Case 310
+                    _imageSize = Enums.ImageSize.HD310
+                Case 281
+                    _imageSize = Enums.ImageSize.SD281
                 Case 225, 300 '225 = 16:9 / 300 = 4:3
-                    _tvepisodepostersize = Enums.TVEpisodePosterSize.SD225
+                    _imageSize = Enums.ImageSize.SD225
                 Case 185
-                    _moviebannersize = Enums.MovieBannerSize.HD185
-                    _tvbannersize = Enums.TVBannerSize.HD185
+                    _imageSize = Enums.ImageSize.HD185
+                Case 155
+                    _imageSize = Enums.ImageSize.SD155
                 Case 140
-                    _tvbannersize = Enums.TVBannerSize.HD140
+                    _imageSize = Enums.ImageSize.HD140
                 Case Else
-                    _moviebannersize = Enums.MovieBannerSize.Any
-                    _moviefanartsize = Enums.MovieFanartSize.Any
-                    _moviepostersize = Enums.MoviePosterSize.Any
-                    _tvbannersize = Enums.TVBannerSize.Any
-                    _tvepisodepostersize = Enums.TVEpisodePosterSize.Any
-                    _tvfanartsize = Enums.TVFanartSize.Any
-                    _tvpostersize = Enums.TVPosterSize.Any
-                    _tvseasonpostersize = Enums.TVSeasonPosterSize.Any
+                    _imageSize = Enums.ImageSize.Any
             End Select
         End Sub
 
@@ -904,27 +873,129 @@ Namespace MediaContainers
 
         Public Property Banner() As Image = New Image
 
+        Public ReadOnly Property BannerSpecified() As Boolean
+            Get
+                Return Banner IsNot Nothing
+            End Get
+        End Property
+
         Public Property CharacterArt() As Image = New Image
+
+        Public ReadOnly Property CharacterArtSpecified() As Boolean
+            Get
+                Return CharacterArt IsNot Nothing
+            End Get
+        End Property
 
         Public Property ClearArt() As Image = New Image
 
+        Public ReadOnly Property ClearArtSpecified() As Boolean
+            Get
+                Return ClearArt IsNot Nothing
+            End Get
+        End Property
+
         Public Property ClearLogo() As Image = New Image
+
+        Public ReadOnly Property ClearLogoSpecified() As Boolean
+            Get
+                Return ClearLogo IsNot Nothing
+            End Get
+        End Property
 
         Public Property DiscArt() As Image = New Image
 
+        Public ReadOnly Property DiscArtSpecified() As Boolean
+            Get
+                Return DiscArt IsNot Nothing
+            End Get
+        End Property
+
         Public Property Extrafanarts() As List(Of Image) = New List(Of Image)
+
+        Public ReadOnly Property ExtrafanartsSpecified() As Boolean
+            Get
+                Return Extrafanarts IsNot Nothing AndAlso Extrafanarts.Count > 0
+            End Get
+        End Property
 
         Public Property Extrathumbs() As List(Of Image) = New List(Of Image)
 
+        Public ReadOnly Property ExtrathumbsSpecified() As Boolean
+            Get
+                Return Extrathumbs IsNot Nothing AndAlso Extrathumbs.Count > 0
+            End Get
+        End Property
+
         Public Property Fanart() As Image = New Image
+
+        Public ReadOnly Property FanartSpecified() As Boolean
+            Get
+                Return Fanart IsNot Nothing
+            End Get
+        End Property
+
+        Public Property KeyArt() As Image = New Image
+
+        Public ReadOnly Property KeyArtSpecified() As Boolean
+            Get
+                Return KeyArt IsNot Nothing
+            End Get
+        End Property
 
         Public Property Landscape() As Image = New Image
 
+        Public ReadOnly Property LandscapeSpecified() As Boolean
+            Get
+                Return Landscape IsNot Nothing
+            End Get
+        End Property
+
         Public Property Poster() As Image = New Image
+
+        Public ReadOnly Property PosterSpecified() As Boolean
+            Get
+                Return Poster IsNot Nothing
+            End Get
+        End Property
 
 #End Region 'Properties
 
 #Region "Methods"
+
+        Public Function GetImageByType(ByVal ImageType As Enums.ModifierType) As Image
+            Select Case ImageType
+                Case Enums.ModifierType.MainBanner, Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
+                    Return Banner
+                Case Enums.ModifierType.MainCharacterArt
+                    Return CharacterArt
+                Case Enums.ModifierType.MainClearArt
+                    Return ClearArt
+                Case Enums.ModifierType.MainClearLogo
+                    Return ClearLogo
+                Case Enums.ModifierType.MainDiscArt
+                    Return DiscArt
+                Case Enums.ModifierType.MainFanart, Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.EpisodeFanart, Enums.ModifierType.SeasonFanart
+                    Return Fanart
+                Case Enums.ModifierType.MainKeyArt
+                    Return KeyArt
+                Case Enums.ModifierType.MainLandscape, Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
+                    Return Landscape
+                Case Enums.ModifierType.MainPoster, Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.EpisodePoster, Enums.ModifierType.SeasonPoster
+                    Return Poster
+            End Select
+            Return Nothing
+        End Function
+
+        Public Function GetImagesByType(ByVal ImageType As Enums.ModifierType) As List(Of Image)
+            Select Case ImageType
+                Case Enums.ModifierType.MainExtrafanarts
+                    Return Extrafanarts
+                Case Enums.ModifierType.MainExtrathumbs
+                    Return Extrathumbs
+            End Select
+            Return Nothing
+        End Function
 
         Public Sub LoadAllImages(ByVal Type As Enums.ContentType, ByVal LoadBitmap As Boolean, ByVal withExtraImages As Boolean)
             Banner.LoadAndCache(Type, True, LoadBitmap)
@@ -933,6 +1004,7 @@ Namespace MediaContainers
             ClearLogo.LoadAndCache(Type, True, LoadBitmap)
             DiscArt.LoadAndCache(Type, True, LoadBitmap)
             Fanart.LoadAndCache(Type, True, LoadBitmap)
+            KeyArt.LoadAndCache(Type, True, LoadBitmap)
             Landscape.LoadAndCache(Type, True, LoadBitmap)
             Poster.LoadAndCache(Type, True, LoadBitmap)
 
@@ -959,7 +1031,7 @@ Namespace MediaContainers
                     'Movie Banner
                     If Banner.LoadAndCache(tContentType, True) Then
                         If ForceFileCleanup Then Images.Delete_Movie(DBElement, Enums.ModifierType.MainBanner, ForceFileCleanup)
-                        Banner.LocalFilePath = Banner.ImageOriginal.Save_Movie(DBElement, Enums.ModifierType.MainBanner)
+                        Banner.LocalFilePath = Banner.ImageOriginal.Save(DBElement, Enums.ModifierType.MainBanner)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainBanner, ForceFileCleanup)
                         Banner = New Image
@@ -968,7 +1040,7 @@ Namespace MediaContainers
                     'Movie ClearArt
                     If ClearArt.LoadAndCache(tContentType, True) Then
                         If ForceFileCleanup Then Images.Delete_Movie(DBElement, Enums.ModifierType.MainClearArt, ForceFileCleanup)
-                        ClearArt.LocalFilePath = ClearArt.ImageOriginal.Save_Movie(DBElement, Enums.ModifierType.MainClearArt)
+                        ClearArt.LocalFilePath = ClearArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainClearArt)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainClearArt, ForceFileCleanup)
                         ClearArt = New Image
@@ -977,7 +1049,7 @@ Namespace MediaContainers
                     'Movie ClearLogo
                     If ClearLogo.LoadAndCache(tContentType, True) Then
                         If ForceFileCleanup Then Images.Delete_Movie(DBElement, Enums.ModifierType.MainClearLogo, ForceFileCleanup)
-                        ClearLogo.LocalFilePath = ClearLogo.ImageOriginal.Save_Movie(DBElement, Enums.ModifierType.MainClearLogo)
+                        ClearLogo.LocalFilePath = ClearLogo.ImageOriginal.Save(DBElement, Enums.ModifierType.MainClearLogo)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainClearLogo, ForceFileCleanup)
                         ClearLogo = New Image
@@ -986,7 +1058,7 @@ Namespace MediaContainers
                     'Movie DiscArt
                     If DiscArt.LoadAndCache(tContentType, True) Then
                         If ForceFileCleanup Then Images.Delete_Movie(DBElement, Enums.ModifierType.MainDiscArt, ForceFileCleanup)
-                        DiscArt.LocalFilePath = DiscArt.ImageOriginal.Save_Movie(DBElement, Enums.ModifierType.MainDiscArt)
+                        DiscArt.LocalFilePath = DiscArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainDiscArt)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainDiscArt, ForceFileCleanup)
                         DiscArt = New Image
@@ -1013,16 +1085,25 @@ Namespace MediaContainers
                     'Movie Fanart
                     If Fanart.LoadAndCache(tContentType, True) Then
                         If ForceFileCleanup Then Images.Delete_Movie(DBElement, Enums.ModifierType.MainFanart, ForceFileCleanup)
-                        Fanart.LocalFilePath = Fanart.ImageOriginal.Save_Movie(DBElement, Enums.ModifierType.MainFanart)
+                        Fanart.LocalFilePath = Fanart.ImageOriginal.Save(DBElement, Enums.ModifierType.MainFanart)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainFanart, ForceFileCleanup)
                         Fanart = New Image
                     End If
 
+                    'Movie KeyArt
+                    If KeyArt.LoadAndCache(tContentType, True) Then
+                        If ForceFileCleanup Then Images.Delete_Movie(DBElement, Enums.ModifierType.MainKeyArt, ForceFileCleanup)
+                        KeyArt.LocalFilePath = KeyArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainKeyArt)
+                    Else
+                        Images.Delete_Movie(DBElement, Enums.ModifierType.MainKeyArt, ForceFileCleanup)
+                        KeyArt = New Image
+                    End If
+
                     'Movie Landscape
                     If Landscape.LoadAndCache(tContentType, True) Then
                         If ForceFileCleanup Then Images.Delete_Movie(DBElement, Enums.ModifierType.MainLandscape, ForceFileCleanup)
-                        Landscape.LocalFilePath = Landscape.ImageOriginal.Save_Movie(DBElement, Enums.ModifierType.MainLandscape)
+                        Landscape.LocalFilePath = Landscape.ImageOriginal.Save(DBElement, Enums.ModifierType.MainLandscape)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainLandscape, ForceFileCleanup)
                         Landscape = New Image
@@ -1031,7 +1112,7 @@ Namespace MediaContainers
                     'Movie Poster
                     If Poster.LoadAndCache(tContentType, True) Then
                         If ForceFileCleanup Then Images.Delete_Movie(DBElement, Enums.ModifierType.MainPoster, ForceFileCleanup)
-                        Poster.LocalFilePath = Poster.ImageOriginal.Save_Movie(DBElement, Enums.ModifierType.MainPoster)
+                        Poster.LocalFilePath = Poster.ImageOriginal.Save(DBElement, Enums.ModifierType.MainPoster)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainPoster, ForceFileCleanup)
                         Poster = New Image
@@ -1042,7 +1123,7 @@ Namespace MediaContainers
                     'MovieSet Banner
                     If Banner.LoadAndCache(tContentType, True) Then
                         If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainBanner, True)
-                        Banner.LocalFilePath = Banner.ImageOriginal.Save_MovieSet(DBElement, Enums.ModifierType.MainBanner)
+                        Banner.LocalFilePath = Banner.ImageOriginal.Save(DBElement, Enums.ModifierType.MainBanner)
                     Else
                         Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainBanner, DBElement.MovieSet.TitleHasChanged)
                         Banner = New Image
@@ -1051,7 +1132,7 @@ Namespace MediaContainers
                     'MovieSet ClearArt
                     If ClearArt.LoadAndCache(tContentType, True) Then
                         If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearArt, True)
-                        ClearArt.LocalFilePath = ClearArt.ImageOriginal.Save_MovieSet(DBElement, Enums.ModifierType.MainClearArt)
+                        ClearArt.LocalFilePath = ClearArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainClearArt)
                     Else
                         Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearArt, DBElement.MovieSet.TitleHasChanged)
                         ClearArt = New Image
@@ -1060,7 +1141,7 @@ Namespace MediaContainers
                     'MovieSet ClearLogo
                     If ClearLogo.LoadAndCache(tContentType, True) Then
                         If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearLogo, True)
-                        ClearLogo.LocalFilePath = ClearLogo.ImageOriginal.Save_MovieSet(DBElement, Enums.ModifierType.MainClearLogo)
+                        ClearLogo.LocalFilePath = ClearLogo.ImageOriginal.Save(DBElement, Enums.ModifierType.MainClearLogo)
                     Else
                         Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearLogo, DBElement.MovieSet.TitleHasChanged)
                         ClearLogo = New Image
@@ -1069,7 +1150,7 @@ Namespace MediaContainers
                     'MovieSet DiscArt
                     If DiscArt.LoadAndCache(tContentType, True) Then
                         If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainDiscArt, True)
-                        DiscArt.LocalFilePath = DiscArt.ImageOriginal.Save_MovieSet(DBElement, Enums.ModifierType.MainDiscArt)
+                        DiscArt.LocalFilePath = DiscArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainDiscArt)
                     Else
                         Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainDiscArt, DBElement.MovieSet.TitleHasChanged)
                         DiscArt = New Image
@@ -1078,16 +1159,25 @@ Namespace MediaContainers
                     'MovieSet Fanart
                     If Fanart.LoadAndCache(tContentType, True) Then
                         If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainFanart, True)
-                        Fanart.LocalFilePath = Fanart.ImageOriginal.Save_MovieSet(DBElement, Enums.ModifierType.MainFanart)
+                        Fanart.LocalFilePath = Fanart.ImageOriginal.Save(DBElement, Enums.ModifierType.MainFanart)
                     Else
                         Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainFanart, DBElement.MovieSet.TitleHasChanged)
                         Fanart = New Image
                     End If
 
+                    'MovieSet KeyArt
+                    If KeyArt.LoadAndCache(tContentType, True) Then
+                        If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainKeyArt, True)
+                        KeyArt.LocalFilePath = KeyArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainKeyArt)
+                    Else
+                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainKeyArt, DBElement.MovieSet.TitleHasChanged)
+                        KeyArt = New Image
+                    End If
+
                     'MovieSet Landscape
                     If Landscape.LoadAndCache(tContentType, True) Then
                         If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainLandscape, True)
-                        Landscape.LocalFilePath = Landscape.ImageOriginal.Save_MovieSet(DBElement, Enums.ModifierType.MainLandscape)
+                        Landscape.LocalFilePath = Landscape.ImageOriginal.Save(DBElement, Enums.ModifierType.MainLandscape)
                     Else
                         Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainLandscape, DBElement.MovieSet.TitleHasChanged)
                         Landscape = New Image
@@ -1096,7 +1186,7 @@ Namespace MediaContainers
                     'MovieSet Poster
                     If Poster.LoadAndCache(tContentType, True) Then
                         If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainPoster, True)
-                        Poster.LocalFilePath = Poster.ImageOriginal.Save_MovieSet(DBElement, Enums.ModifierType.MainPoster)
+                        Poster.LocalFilePath = Poster.ImageOriginal.Save(DBElement, Enums.ModifierType.MainPoster)
                     Else
                         Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainPoster, DBElement.MovieSet.TitleHasChanged)
                         Poster = New Image
@@ -1106,7 +1196,7 @@ Namespace MediaContainers
 
                     'Episode Fanart
                     If Fanart.LoadAndCache(tContentType, True) Then
-                        Fanart.LocalFilePath = Fanart.ImageOriginal.Save_TVEpisode(DBElement, Enums.ModifierType.EpisodeFanart)
+                        Fanart.LocalFilePath = Fanart.ImageOriginal.Save(DBElement, Enums.ModifierType.EpisodeFanart)
                     Else
                         Images.Delete_TVEpisode(DBElement, Enums.ModifierType.EpisodeFanart)
                         Fanart = New Image
@@ -1114,7 +1204,7 @@ Namespace MediaContainers
 
                     'Episode Poster
                     If Poster.LoadAndCache(tContentType, True) Then
-                        Poster.LocalFilePath = Poster.ImageOriginal.Save_TVEpisode(DBElement, Enums.ModifierType.EpisodePoster)
+                        Poster.LocalFilePath = Poster.ImageOriginal.Save(DBElement, Enums.ModifierType.EpisodePoster)
                     Else
                         Images.Delete_TVEpisode(DBElement, Enums.ModifierType.EpisodePoster)
                         Poster = New Image
@@ -1125,9 +1215,9 @@ Namespace MediaContainers
                     'Season Banner
                     If Banner.LoadAndCache(tContentType, True) Then
                         If DBElement.TVSeason.IsAllSeasons Then
-                            Banner.LocalFilePath = Banner.ImageOriginal.Save_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsBanner)
+                            Banner.LocalFilePath = Banner.ImageOriginal.Save(DBElement, Enums.ModifierType.AllSeasonsBanner)
                         Else
-                            Banner.LocalFilePath = Banner.ImageOriginal.Save_TVSeason(DBElement, Enums.ModifierType.SeasonBanner)
+                            Banner.LocalFilePath = Banner.ImageOriginal.Save(DBElement, Enums.ModifierType.SeasonBanner)
                         End If
                     Else
                         If DBElement.TVSeason.IsAllSeasons Then
@@ -1142,9 +1232,9 @@ Namespace MediaContainers
                     'Season Fanart
                     If Fanart.LoadAndCache(tContentType, True) Then
                         If DBElement.TVSeason.IsAllSeasons Then
-                            Fanart.LocalFilePath = Fanart.ImageOriginal.Save_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsFanart)
+                            Fanart.LocalFilePath = Fanart.ImageOriginal.Save(DBElement, Enums.ModifierType.AllSeasonsFanart)
                         Else
-                            Fanart.LocalFilePath = Fanart.ImageOriginal.Save_TVSeason(DBElement, Enums.ModifierType.SeasonFanart)
+                            Fanart.LocalFilePath = Fanart.ImageOriginal.Save(DBElement, Enums.ModifierType.SeasonFanart)
                         End If
                     Else
                         If DBElement.TVSeason.IsAllSeasons Then
@@ -1159,9 +1249,9 @@ Namespace MediaContainers
                     'Season Landscape
                     If Landscape.LoadAndCache(tContentType, True) Then
                         If DBElement.TVSeason.IsAllSeasons Then
-                            Landscape.LocalFilePath = Landscape.ImageOriginal.Save_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsLandscape)
+                            Landscape.LocalFilePath = Landscape.ImageOriginal.Save(DBElement, Enums.ModifierType.AllSeasonsLandscape)
                         Else
-                            Landscape.LocalFilePath = Landscape.ImageOriginal.Save_TVSeason(DBElement, Enums.ModifierType.SeasonLandscape)
+                            Landscape.LocalFilePath = Landscape.ImageOriginal.Save(DBElement, Enums.ModifierType.SeasonLandscape)
                         End If
                     Else
                         If DBElement.TVSeason.IsAllSeasons Then
@@ -1176,9 +1266,9 @@ Namespace MediaContainers
                     'Season Poster
                     If Poster.LoadAndCache(tContentType, True) Then
                         If DBElement.TVSeason.IsAllSeasons Then
-                            Poster.LocalFilePath = Poster.ImageOriginal.Save_TVAllSeasons(DBElement, Enums.ModifierType.AllSeasonsPoster)
+                            Poster.LocalFilePath = Poster.ImageOriginal.Save(DBElement, Enums.ModifierType.AllSeasonsPoster)
                         Else
-                            Poster.LocalFilePath = Poster.ImageOriginal.Save_TVSeason(DBElement, Enums.ModifierType.SeasonPoster)
+                            Poster.LocalFilePath = Poster.ImageOriginal.Save(DBElement, Enums.ModifierType.SeasonPoster)
                         End If
                     Else
                         If DBElement.TVSeason.IsAllSeasons Then
@@ -1194,7 +1284,7 @@ Namespace MediaContainers
 
                     'Show Banner
                     If Banner.LoadAndCache(tContentType, True) Then
-                        Banner.LocalFilePath = Banner.ImageOriginal.Save_TVShow(DBElement, Enums.ModifierType.MainBanner)
+                        Banner.LocalFilePath = Banner.ImageOriginal.Save(DBElement, Enums.ModifierType.MainBanner)
                     Else
                         Images.Delete_TVShow(DBElement, Enums.ModifierType.MainBanner)
                         Banner = New Image
@@ -1202,7 +1292,7 @@ Namespace MediaContainers
 
                     'Show CharacterArt
                     If CharacterArt.LoadAndCache(tContentType, True) Then
-                        CharacterArt.LocalFilePath = CharacterArt.ImageOriginal.Save_TVShow(DBElement, Enums.ModifierType.MainCharacterArt)
+                        CharacterArt.LocalFilePath = CharacterArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainCharacterArt)
                     Else
                         Images.Delete_TVShow(DBElement, Enums.ModifierType.MainCharacterArt)
                         CharacterArt = New Image
@@ -1210,7 +1300,7 @@ Namespace MediaContainers
 
                     'Show ClearArt
                     If ClearArt.LoadAndCache(tContentType, True) Then
-                        ClearArt.LocalFilePath = ClearArt.ImageOriginal.Save_TVShow(DBElement, Enums.ModifierType.MainClearArt)
+                        ClearArt.LocalFilePath = ClearArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainClearArt)
                     Else
                         Images.Delete_TVShow(DBElement, Enums.ModifierType.MainClearArt)
                         ClearArt = New Image
@@ -1218,7 +1308,7 @@ Namespace MediaContainers
 
                     'Show ClearLogo
                     If ClearLogo.LoadAndCache(tContentType, True) Then
-                        ClearLogo.LocalFilePath = ClearLogo.ImageOriginal.Save_TVShow(DBElement, Enums.ModifierType.MainClearLogo)
+                        ClearLogo.LocalFilePath = ClearLogo.ImageOriginal.Save(DBElement, Enums.ModifierType.MainClearLogo)
                     Else
                         Images.Delete_TVShow(DBElement, Enums.ModifierType.MainClearLogo)
                         ClearLogo = New Image
@@ -1235,15 +1325,23 @@ Namespace MediaContainers
 
                     'Show Fanart
                     If Fanart.LoadAndCache(tContentType, True) Then
-                        Fanart.LocalFilePath = Fanart.ImageOriginal.Save_TVShow(DBElement, Enums.ModifierType.MainFanart)
+                        Fanart.LocalFilePath = Fanart.ImageOriginal.Save(DBElement, Enums.ModifierType.MainFanart)
                     Else
                         Images.Delete_TVShow(DBElement, Enums.ModifierType.MainFanart)
                         Fanart = New Image
                     End If
 
+                    'Show KeyArt
+                    If KeyArt.LoadAndCache(tContentType, True) Then
+                        KeyArt.LocalFilePath = KeyArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainKeyArt)
+                    Else
+                        Images.Delete_TVShow(DBElement, Enums.ModifierType.MainKeyArt)
+                        KeyArt = New Image
+                    End If
+
                     'Show Landscape
                     If Landscape.LoadAndCache(tContentType, True) Then
-                        Landscape.LocalFilePath = Landscape.ImageOriginal.Save_TVShow(DBElement, Enums.ModifierType.MainLandscape)
+                        Landscape.LocalFilePath = Landscape.ImageOriginal.Save(DBElement, Enums.ModifierType.MainLandscape)
                     Else
                         Images.Delete_TVShow(DBElement, Enums.ModifierType.MainLandscape)
                         Landscape = New Image
@@ -1251,11 +1349,43 @@ Namespace MediaContainers
 
                     'Show Poster
                     If Poster.LoadAndCache(tContentType, True) Then
-                        Poster.LocalFilePath = Poster.ImageOriginal.Save_TVShow(DBElement, Enums.ModifierType.MainPoster)
+                        Poster.LocalFilePath = Poster.ImageOriginal.Save(DBElement, Enums.ModifierType.MainPoster)
                     Else
                         Images.Delete_TVShow(DBElement, Enums.ModifierType.MainPoster)
                         Poster = New Image
                     End If
+            End Select
+        End Sub
+
+        Public Sub SetImageByType(ByRef Image As Image, ByVal ImageType As Enums.ModifierType)
+            Select Case ImageType
+                Case Enums.ModifierType.MainBanner, Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
+                    Banner = Image
+                Case Enums.ModifierType.MainCharacterArt
+                    CharacterArt = Image
+                Case Enums.ModifierType.MainClearArt
+                    ClearArt = Image
+                Case Enums.ModifierType.MainClearLogo
+                    ClearLogo = Image
+                Case Enums.ModifierType.MainDiscArt
+                    DiscArt = Image
+                Case Enums.ModifierType.MainFanart, Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.EpisodeFanart, Enums.ModifierType.SeasonFanart
+                    Fanart = Image
+                Case Enums.ModifierType.MainKeyArt
+                    KeyArt = Image
+                Case Enums.ModifierType.MainLandscape, Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
+                    Landscape = Image
+                Case Enums.ModifierType.MainPoster, Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.EpisodePoster, Enums.ModifierType.SeasonPoster
+                    Poster = Image
+            End Select
+        End Sub
+
+        Public Sub SetImagesByType(ByRef Images As List(Of Image), ByVal ImageType As Enums.ModifierType)
+            Select Case ImageType
+                Case Enums.ModifierType.MainExtrafanarts
+                    Extrafanarts = Images
+                Case Enums.ModifierType.MainExtrathumbs
+                    Extrathumbs = Images
             End Select
         End Sub
 
@@ -2323,6 +2453,8 @@ Namespace MediaContainers
 
         Public Property MainFanarts() As List(Of Image) = New List(Of Image)
 
+        Public Property MainKeyArts() As List(Of Image) = New List(Of Image)
+
         Public Property MainLandscapes() As List(Of Image) = New List(Of Image)
 
         Public Property MainPosters() As List(Of Image) = New List(Of Image)
@@ -2415,6 +2547,13 @@ Namespace MediaContainers
                 End If
             Next
 
+            For Each tImg As Image In MainKeyArts
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("mainposters", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("mainposters\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
             For Each tImg As Image In MainLandscapes
                 tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("mainlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
                 If Not String.IsNullOrEmpty(tImg.URLThumb) Then
@@ -2458,6 +2597,42 @@ Namespace MediaContainers
             Next
         End Sub
 
+        Public Function GetImagesByType(ByVal ImageType As Enums.ModifierType) As List(Of Image)
+            Select Case ImageType
+                Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
+                    Return SeasonBanners
+                Case Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.SeasonFanart
+                    Return SeasonFanarts
+                Case Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
+                    Return SeasonLandscapes
+                Case Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.SeasonPoster
+                    Return SeasonPosters
+                Case Enums.ModifierType.EpisodeFanart
+                    Return EpisodeFanarts
+                Case Enums.ModifierType.EpisodePoster
+                    Return EpisodePosters
+                Case Enums.ModifierType.MainBanner
+                    Return MainBanners
+                Case Enums.ModifierType.MainCharacterArt
+                    Return MainCharacterArts
+                Case Enums.ModifierType.MainClearArt
+                    Return MainClearArts
+                Case Enums.ModifierType.MainClearLogo
+                    Return MainClearLogos
+                Case Enums.ModifierType.MainDiscArt
+                    Return MainDiscArts
+                Case Enums.ModifierType.MainExtrafanarts, Enums.ModifierType.MainExtrathumbs, Enums.ModifierType.MainFanart
+                    Return MainFanarts
+                Case Enums.ModifierType.MainKeyArt
+                    Return MainKeyArts
+                Case Enums.ModifierType.MainLandscape
+                    Return MainLandscapes
+                Case Enums.ModifierType.MainPoster
+                    Return MainPosters
+            End Select
+            Return New List(Of Image)
+        End Function
+
         Public Sub SortAndFilter(ByVal tDBElement As Database.DBElement)
             Dim cSettings As New FilterSettings
 
@@ -2498,6 +2673,7 @@ Namespace MediaContainers
             MainClearLogos.Sort()
             MainDiscArts.Sort()
             MainFanarts.Sort()
+            MainKeyArts.Sort()
             MainLandscapes.Sort()
             MainPosters.Sort()
 
@@ -2517,6 +2693,14 @@ Namespace MediaContainers
             MainDiscArts = FilterImages(MainDiscArts, cSettings)
             'Language preference settings aren't needed for sorting fanarts since here we only care about size of image (unlike poster/banner)
             ' _mainfanarts = FilterImages(_mainfanarts, cSettings)
+            MainKeyArts = FilterImages(MainKeyArts, New FilterSettings With {
+                                       .ForcedLanguage = String.Empty,
+                                       .ForceLanguage = True,
+                                       .GetBlankImages = True,
+                                       .GetEnglishImages = False,
+                                       .MediaLanguageOnly = True,
+                                       .MediaLanguage = String.Empty
+                                       })
             MainLandscapes = FilterImages(MainLandscapes, cSettings)
             MainPosters = FilterImages(MainPosters, cSettings)
         End Sub
@@ -2525,10 +2709,10 @@ Namespace MediaContainers
             Select Case cSettings.ContentType
                 Case Enums.ContentType.Movie
                     'Movie Banner
-                    If Not Master.eSettings.MovieBannerPrefSize = Enums.MovieBannerSize.Any Then
-                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).OrderByDescending(Function(y) y.MovieBannerSize = Master.eSettings.MovieBannerPrefSize).ToList()
+                    If Not Master.eSettings.MovieBannerPrefSize = Enums.ImageSize.Any Then
+                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.MovieBannerPrefSize).ToList()
                     Else
-                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).ToList()
+                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                     'Movie ClearArt
                     MainClearArts = MainClearArts.OrderByDescending(Function(z) z.VoteAverage).ToList()
@@ -2537,25 +2721,31 @@ Namespace MediaContainers
                     'Movie DiscArt
                     MainDiscArts = MainDiscArts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.DiscType).ToList()
                     'Movie Fanart
-                    If Not Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
-                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderByDescending(Function(y) y.MovieFanartSize = Master.eSettings.MovieFanartPrefSize).ToList()
+                    If Not Master.eSettings.MovieFanartPrefSize = Enums.ImageSize.Any Then
+                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.MovieFanartPrefSize).ToList()
                     Else
-                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).ToList()
+                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
+                    End If
+                    'Movie KeyArts
+                    If Not Master.eSettings.MovieKeyArtPrefSize = Enums.ImageSize.Any Then
+                        MainKeyArts = MainKeyArts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.MovieKeyArtPrefSize).ToList()
+                    Else
+                        MainKeyArts = MainKeyArts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                     'Movie Landscape
                     MainLandscapes = MainLandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
                     'Movie Poster
-                    If Not Master.eSettings.MoviePosterPrefSize = Enums.MoviePosterSize.Any Then
-                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderByDescending(Function(y) y.MoviePosterSize = Master.eSettings.MoviePosterPrefSize).ToList()
+                    If Not Master.eSettings.MoviePosterPrefSize = Enums.ImageSize.Any Then
+                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.MoviePosterPrefSize).ToList()
                     Else
-                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).ToList()
+                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                 Case Enums.ContentType.MovieSet
                     'MovieSet Banner
-                    If Not Master.eSettings.MovieSetBannerPrefSize = Enums.MovieBannerSize.Any Then
-                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).OrderByDescending(Function(y) y.MovieBannerSize = Master.eSettings.MovieSetBannerPrefSize).ToList()
+                    If Not Master.eSettings.MovieSetBannerPrefSize = Enums.ImageSize.Any Then
+                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.MovieSetBannerPrefSize).ToList()
                     Else
-                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).ToList()
+                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                     'MovieSet ClearArt
                     MainClearArts = MainClearArts.OrderByDescending(Function(z) z.VoteAverage).ToList()
@@ -2564,25 +2754,25 @@ Namespace MediaContainers
                     'MovieSet DiscArt
                     MainDiscArts = MainDiscArts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.DiscType).ToList()
                     'MovieSet Fanart
-                    If Not Master.eSettings.MovieSetFanartPrefSize = Enums.MovieFanartSize.Any Then
-                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderByDescending(Function(y) y.MovieFanartSize = Master.eSettings.MovieSetFanartPrefSize).ToList()
+                    If Not Master.eSettings.MovieSetFanartPrefSize = Enums.ImageSize.Any Then
+                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.MovieSetFanartPrefSize).ToList()
                     Else
-                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).ToList()
+                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                     'MovieSet Landscape
                     MainLandscapes = MainLandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
                     'MovieSet Poster
-                    If Not Master.eSettings.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any Then
-                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderByDescending(Function(y) y.MoviePosterSize = Master.eSettings.MovieSetPosterPrefSize).ToList()
+                    If Not Master.eSettings.MovieSetPosterPrefSize = Enums.ImageSize.Any Then
+                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.MovieSetPosterPrefSize).ToList()
                     Else
-                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).ToList()
+                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                 Case Enums.ContentType.TV, Enums.ContentType.TVShow
                     'TVShow Banner
-                    If Not Master.eSettings.TVShowBannerPrefSize = Enums.TVBannerSize.Any Then
-                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).OrderByDescending(Function(y) y.TVBannerSize = Master.eSettings.TVShowBannerPrefSize).ToList()
+                    If Not Master.eSettings.TVShowBannerPrefSize = Enums.ImageSize.Any Then
+                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVShowBannerPrefSize).ToList()
                     Else
-                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).ToList()
+                        MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                     'TVShow CharacterArt
                     MainCharacterArts = MainCharacterArts.OrderByDescending(Function(z) z.VoteAverage).ToList()
@@ -2591,74 +2781,80 @@ Namespace MediaContainers
                     'TVShow ClearLogo
                     MainClearLogos = MainClearLogos.OrderByDescending(Function(z) z.VoteAverage).ToList()
                     'TVShow Fanart
-                    If Not Master.eSettings.TVShowFanartPrefSize = Enums.TVFanartSize.Any Then
-                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVShowFanartPrefSize).ToList()
+                    If Not Master.eSettings.TVShowFanartPrefSize = Enums.ImageSize.Any Then
+                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVShowFanartPrefSize).ToList()
                     Else
-                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
+                    End If
+                    'TVShow KeyArt
+                    If Not Master.eSettings.TVShowKeyArtPrefSize = Enums.ImageSize.Any Then
+                        MainKeyArts = MainKeyArts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVShowKeyArtPrefSize).ToList()
+                    Else
+                        MainKeyArts = MainKeyArts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                     'TVShow Landscape
                     MainLandscapes = MainLandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
                     'TVShow Poster
-                    If Not Master.eSettings.TVShowPosterPrefSize = Enums.TVPosterSize.Any Then
-                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVPosterSize).OrderByDescending(Function(y) y.TVPosterSize = Master.eSettings.TVShowPosterPrefSize).ToList()
+                    If Not Master.eSettings.TVShowPosterPrefSize = Enums.ImageSize.Any Then
+                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVShowPosterPrefSize).ToList()
                     Else
-                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVPosterSize).ToList()
+                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                 Case Enums.ContentType.TVEpisode
                     'TVShow Fanart (TVEpisode preferred sorting)
-                    If Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
-                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVEpisodeFanartPrefSize).ToList()
+                    If Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.ImageSize.Any Then
+                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVEpisodeFanartPrefSize).ToList()
                     Else
-                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                 Case Enums.ContentType.TVSeason
                     'TVShow Fanart (TVSeason preferred sorting)
-                    If Not Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
-                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVSeasonFanartPrefSize).ToList()
+                    If Not Master.eSettings.TVSeasonFanartPrefSize = Enums.ImageSize.Any Then
+                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVSeasonFanartPrefSize).ToList()
                     Else
-                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                        MainFanarts = MainFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
                     'TVShow Poster (TVSeason preferred sorting)
-                    If Not Master.eSettings.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any Then
-                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).OrderByDescending(Function(y) y.TVSeasonPosterSize = Master.eSettings.TVSeasonPosterPrefSize).ToList()
+                    If Not Master.eSettings.TVSeasonPosterPrefSize = Enums.ImageSize.Any Then
+                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVSeasonPosterPrefSize).ToList()
                     Else
-                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).ToList()
+                        MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
             End Select
 
             'Unique image containers
 
             'TVEpisode Fanart
-            If Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
-                EpisodeFanarts = EpisodeFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVEpisodeFanartPrefSize).ToList()
+            If Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.ImageSize.Any Then
+                EpisodeFanarts = EpisodeFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVEpisodeFanartPrefSize).ToList()
             Else
-                EpisodeFanarts = EpisodeFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                EpisodeFanarts = EpisodeFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
             End If
             'TVEpisode Poster
-            If Not Master.eSettings.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any Then
-                EpisodePosters = EpisodePosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVEpisodePosterSize).OrderByDescending(Function(y) y.TVEpisodePosterSize = Master.eSettings.TVEpisodePosterPrefSize).ToList()
+            If Not Master.eSettings.TVEpisodePosterPrefSize = Enums.ImageSize.Any Then
+                EpisodePosters = EpisodePosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVEpisodePosterPrefSize).ToList()
             Else
-                EpisodePosters = EpisodePosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVEpisodePosterSize).ToList()
+                EpisodePosters = EpisodePosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
             End If
             'TVSeason Banner
-            If Not Master.eSettings.TVSeasonBannerPrefSize = Enums.TVBannerSize.Any Then
-                SeasonBanners = SeasonBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).OrderByDescending(Function(y) y.TVBannerSize = Master.eSettings.TVSeasonBannerPrefSize).ToList()
+            If Not Master.eSettings.TVSeasonBannerPrefSize = Enums.ImageSize.Any Then
+                SeasonBanners = SeasonBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVSeasonBannerPrefSize).ToList()
             Else
-                SeasonBanners = SeasonBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).ToList()
+                SeasonBanners = SeasonBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
             End If
             'TVSeason Fanart
-            If Not Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
-                SeasonFanarts = SeasonFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVSeasonFanartPrefSize).ToList()
+            If Not Master.eSettings.TVSeasonFanartPrefSize = Enums.ImageSize.Any Then
+                SeasonFanarts = SeasonFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVSeasonFanartPrefSize).ToList()
             Else
-                SeasonFanarts = SeasonFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                SeasonFanarts = SeasonFanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
             End If
             'TVSeason Landscape
             SeasonLandscapes = SeasonLandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
             'TVSeason Poster
-            If Not Master.eSettings.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any Then
-                SeasonPosters = SeasonPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).OrderByDescending(Function(y) y.TVSeasonPosterSize = Master.eSettings.TVSeasonPosterPrefSize).ToList()
+            If Not Master.eSettings.TVSeasonPosterPrefSize = Enums.ImageSize.Any Then
+                SeasonPosters = SeasonPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.TVSeasonPosterPrefSize).ToList()
             Else
-                SeasonPosters = SeasonPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).ToList()
+                SeasonPosters = SeasonPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
             End If
         End Sub
 
@@ -2996,7 +3192,7 @@ Namespace MediaContainers
                 Return _language
             End Get
             Set(value As String)
-                _language = value
+                _language = Localization.ISOCheckLangByCode2(value)
                 _longLanguage = Localization.ISOGetLangByCode3(_language)
             End Set
         End Property
@@ -3014,7 +3210,7 @@ Namespace MediaContainers
                 Return _longLanguage
             End Get
             Set(value As String)
-                _longLanguage = value
+                _longLanguage = Localization.ISOCheckLangByCode2(value)
                 _language = Localization.ISOLangGetCode3ByLang(value)
             End Set
         End Property
@@ -4005,7 +4201,7 @@ Namespace MediaContainers
                 Return _language
             End Get
             Set(value As String)
-                _language = value
+                _language = Localization.ISOCheckLangByCode2(value)
                 _longLanguage = Localization.ISOGetLangByCode3(_language)
             End Set
         End Property
@@ -4023,7 +4219,7 @@ Namespace MediaContainers
                 Return _longLanguage
             End Get
             Set(value As String)
-                _longLanguage = value
+                _longLanguage = Localization.ISOCheckLangByCode2(value)
                 _language = Localization.ISOLangGetCode3ByLang(value)
             End Set
         End Property

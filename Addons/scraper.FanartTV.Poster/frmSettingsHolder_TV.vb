@@ -96,29 +96,17 @@ Public Class frmSettingsHolder_TV
 
     Private Sub chkScrapeShowClearArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowClearArt.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
-
-        Me.chkScrapeShowClearArtOnlyHD.Enabled = Me.chkScrapeShowClearArt.Checked
-
-        If Not Me.chkScrapeShowClearArt.Checked Then
-            Me.chkScrapeShowClearArtOnlyHD.Checked = False
-        End If
     End Sub
 
-    Private Sub chkScrapeShowClearArtOnlyHD_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowClearArtOnlyHD.CheckedChanged
+    Private Sub chkScrapeShowClearArtOnlyHD_CheckedChanged(sender As Object, e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub chkScrapeShowClearLogo_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowClearLogo.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
-
-        Me.chkScrapeShowClearLogoOnlyHD.Enabled = Me.chkScrapeShowClearLogo.Checked
-
-        If Not Me.chkScrapeShowClearLogo.Checked Then
-            Me.chkScrapeShowClearLogoOnlyHD.Checked = False
-        End If
     End Sub
 
-    Private Sub chkScrapeShowClearLogoOnlyHD_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowClearLogoOnlyHD.CheckedChanged
+    Private Sub chkScrapeShowClearLogoOnlyHD_CheckedChanged(sender As Object, e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -165,9 +153,7 @@ Public Class frmSettingsHolder_TV
         Me.chkScrapeSeasonPoster.Text = Master.eLang.GetString(148, "Poster")
         Me.chkScrapeShowBanner.Text = Master.eLang.GetString(838, "Banner")
         Me.chkScrapeShowClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
-        Me.chkScrapeShowClearArtOnlyHD.Text = Master.eLang.GetString(1105, "Only HD")
         Me.chkScrapeShowClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
-        Me.chkScrapeShowClearLogoOnlyHD.Text = Me.chkScrapeShowClearArtOnlyHD.Text
         Me.chkScrapeShowCharacterArt.Text = Master.eLang.GetString(1140, "CharacterArt")
         Me.chkScrapeShowFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.chkScrapeShowLandscape.Text = Master.eLang.GetString(1035, "Landscape")

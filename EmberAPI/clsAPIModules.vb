@@ -648,6 +648,7 @@ Public Class ModulesManager
         If ScrapeModifiers.MainExtrafanarts AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) Then Return True
         If ScrapeModifiers.MainExtrathumbs AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) Then Return True
         If ScrapeModifiers.MainFanart AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) Then Return True
+        If ScrapeModifiers.MainKeyArt AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) Then Return True
         If ScrapeModifiers.MainLandscape AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainLandscape) Then Return True
         If ScrapeModifiers.MainPoster AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) Then Return True
 
@@ -664,6 +665,8 @@ Public Class ModulesManager
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
             Case Enums.ModifierType.MainExtrathumbs
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
+            Case Enums.ModifierType.MainKeyArt
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster)
             Case Else
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)
         End Select
@@ -692,7 +695,12 @@ Public Class ModulesManager
             Application.DoEvents()
         End While
 
-        Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)
+        Select Case ImageType
+            Case Enums.ModifierType.MainKeyArt
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster)
+            Case Else
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)
+        End Select
 
         Return False
     End Function
@@ -709,6 +717,7 @@ Public Class ModulesManager
         If ScrapeModifiers.MainClearArt AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainClearArt) Then Return True
         If ScrapeModifiers.MainClearLogo AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainClearLogo) Then Return True
         If ScrapeModifiers.MainFanart AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) Then Return True
+        If ScrapeModifiers.MainKeyArt AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) Then Return True
         If ScrapeModifiers.MainLandscape AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainLandscape) Then Return True
         If ScrapeModifiers.MainPoster AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) Then Return True
         If ScrapeModifiers.SeasonBanner AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonBanner) Then Return True
@@ -745,6 +754,8 @@ Public Class ModulesManager
             Case Enums.ModifierType.SeasonFanart
                 If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse
                     externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonFanart) Then Return True
+            Case Enums.ModifierType.MainKeyArt
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster)
             Case Else
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)
         End Select
@@ -914,11 +925,11 @@ Public Class ModulesManager
             'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
             If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifiers.DoSearch Then
                 DBElement.ImagesContainer = New MediaContainers.ImagesContainer
-                DBElement.Movie = New MediaContainers.Movie
-
-                DBElement.Movie.Title = StringUtils.FilterTitleFromPath_Movie(DBElement.FileItem, DBElement.IsSingle, DBElement.Source.UseFolderName)
-                DBElement.Movie.VideoSource = DBElement.VideoSource
-                DBElement.Movie.Year = StringUtils.FilterYearFromPath_Movie(DBElement.FileItem, DBElement.IsSingle, DBElement.Source.UseFolderName)
+                DBElement.Movie = New MediaContainers.Movie With {
+                    .Title = StringUtils.FilterTitleFromPath_Movie(DBElement.FileItem, DBElement.IsSingle, DBElement.Source.UseFolderName),
+                    .VideoSource = DBElement.VideoSource,
+                    .Year = StringUtils.FilterYearFromPath_Movie(DBElement.FileItem, DBElement.IsSingle, DBElement.Source.UseFolderName)
+                }
             End If
 
             'create a clone of DBMovie
@@ -999,9 +1010,9 @@ Public Class ModulesManager
             Dim tmpTitle As String = DBElement.MovieSet.Title
 
             DBElement.ImagesContainer = New MediaContainers.ImagesContainer
-            DBElement.MovieSet = New MediaContainers.MovieSet
-
-            DBElement.MovieSet.Title = tmpTitle
+            DBElement.MovieSet = New MediaContainers.MovieSet With {
+                .Title = tmpTitle
+            }
         End If
 
         'create a clone of DBMovieSet
@@ -1166,7 +1177,6 @@ Public Class ModulesManager
                 logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Done] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
             Else
                 logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Done] [No Scraper Results] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
-                Return True 'TODO: need a new trigger
             End If
             Return ret.Cancelled
         Else
@@ -1200,9 +1210,9 @@ Public Class ModulesManager
                 DBElement.NfoPath = String.Empty
                 DBElement.Seasons.Clear()
                 DBElement.Theme = New MediaContainers.Theme
-                DBElement.TVShow = New MediaContainers.TVShow
-
-                DBElement.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
+                DBElement.TVShow = New MediaContainers.TVShow With {
+                    .Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
+                }
 
                 For Each sEpisode As Database.DBElement In DBElement.Episodes
                     Dim iEpisode As Integer = sEpisode.TVEpisode.Episode
@@ -1288,6 +1298,15 @@ Public Class ModulesManager
                 Application.DoEvents()
             End While
 
+            'workaround to get MainFanarts for Extranfanarts and Extrathumbs,
+            'also get MainPosters for MainKeyArts
+            If ScrapeModifiers.MainExtrafanarts OrElse ScrapeModifiers.MainExtrathumbs Then
+                ScrapeModifiers.MainFanart = True
+            End If
+            If ScrapeModifiers.MainKeyArt Then
+                ScrapeModifiers.MainPoster = True
+            End If
+
             If (modules.Count() <= 0) Then
                 logger.Info("[ModulesManager] [ScrapeImage_Movie] [Abort] No scrapers enabled")
             Else
@@ -1304,6 +1323,7 @@ Public Class ModulesManager
                             ImagesContainer.MainClearLogos.AddRange(aContainer.MainClearLogos)
                             ImagesContainer.MainDiscArts.AddRange(aContainer.MainDiscArts)
                             ImagesContainer.MainFanarts.AddRange(aContainer.MainFanarts)
+                            ImagesContainer.MainKeyArts.AddRange(aContainer.MainPosters)
                             ImagesContainer.MainLandscapes.AddRange(aContainer.MainLandscapes)
                             ImagesContainer.MainPosters.AddRange(aContainer.MainPosters)
                         End If
@@ -1342,6 +1362,11 @@ Public Class ModulesManager
             Application.DoEvents()
         End While
 
+        'workaround to get MainPosters for MainKeyArts
+        If ScrapeModifiers.MainKeyArt Then
+            ScrapeModifiers.MainPoster = True
+        End If
+
         If (modules.Count() <= 0) Then
             logger.Info("[ModulesManager] [ScrapeImage_MovieSet] [Abort] No scrapers enabled")
         Else
@@ -1358,6 +1383,7 @@ Public Class ModulesManager
                         ImagesContainer.MainClearLogos.AddRange(aContainer.MainClearLogos)
                         ImagesContainer.MainDiscArts.AddRange(aContainer.MainDiscArts)
                         ImagesContainer.MainFanarts.AddRange(aContainer.MainFanarts)
+                        ImagesContainer.MainKeyArts.AddRange(aContainer.MainPosters)
                         ImagesContainer.MainLandscapes.AddRange(aContainer.MainLandscapes)
                         ImagesContainer.MainPosters.AddRange(aContainer.MainPosters)
                     End If
@@ -1396,6 +1422,7 @@ Public Class ModulesManager
 
             'workaround to get MainFanarts for AllSeasonsFanarts, EpisodeFanarts and SeasonFanarts,
             'also get MainBanners, MainLandscapes and MainPosters for AllSeasonsBanners, AllSeasonsLandscapes and AllSeasonsPosters
+            'and MainPosters for MainKeyArts
             If ScrapeModifiers.AllSeasonsBanner Then
                 ScrapeModifiers.MainBanner = True
                 ScrapeModifiers.SeasonBanner = True
@@ -1424,6 +1451,9 @@ Public Class ModulesManager
             If ScrapeModifiers.SeasonFanart Then
                 ScrapeModifiers.MainFanart = True
             End If
+            If ScrapeModifiers.MainKeyArt Then
+                ScrapeModifiers.MainPoster = True
+            End If
 
             If (modules.Count() <= 0) Then
                 logger.Info("[ModulesManager] [ScrapeImage_TV] [Abort] No scrapers enabled")
@@ -1446,6 +1476,7 @@ Public Class ModulesManager
                             ImagesContainer.MainClearArts.AddRange(aContainer.MainClearArts)
                             ImagesContainer.MainClearLogos.AddRange(aContainer.MainClearLogos)
                             ImagesContainer.MainFanarts.AddRange(aContainer.MainFanarts)
+                            ImagesContainer.MainKeyArts.AddRange(aContainer.MainPosters)
                             ImagesContainer.MainLandscapes.AddRange(aContainer.MainLandscapes)
                             ImagesContainer.MainPosters.AddRange(aContainer.MainPosters)
                         End If

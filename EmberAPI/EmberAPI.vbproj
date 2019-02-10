@@ -180,9 +180,10 @@
     <Compile Include="clsAPICommandLine.vb" />
     <Compile Include="clsAPIFFmpeg.vb" />
     <Compile Include="clsAPIFileItem.vb" />
-    <Compile Include="clsAPIFormsUtils.vb">
+    <Compile Include="clsAPIAdvancedControls.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="clsAPIFormsUtils.vb" />
     <Compile Include="clsAPIIMDB.vb" />
     <Compile Include="clsAPIMetaData.vb" />
     <Compile Include="clsAPIProfiles.vb" />

@@ -1217,6 +1217,8 @@ Namespace Kodi
                                                   GetRemotePath(mDBElement.ImagesContainer.DiscArt.LocalFilePath), Nothing)
                     Dim mFanart As String = If(mDBElement.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                  GetRemotePath(mDBElement.ImagesContainer.Fanart.LocalFilePath), Nothing)
+                    Dim mKeyArt As String = If(mDBElement.ImagesContainer.KeyArt.LocalFilePathSpecified,
+                                                  GetRemotePath(mDBElement.ImagesContainer.KeyArt.LocalFilePath), Nothing)
                     Dim mLandscape As String = If(mDBElement.ImagesContainer.Landscape.LocalFilePathSpecified,
                                                   GetRemotePath(mDBElement.ImagesContainer.Landscape.LocalFilePath), Nothing)
                     Dim mPoster As String = If(mDBElement.ImagesContainer.Poster.LocalFilePathSpecified,
@@ -1225,14 +1227,15 @@ Namespace Kodi
                     Dim mTMDB As String = If(mDBElement.Movie.UniqueIDs.TMDbIdSpecified, mDBElement.Movie.UniqueIDs.TMDbId, Nothing)
 
                     'all image paths will be set in artwork object
-                    Dim mArtwork As New Media.Artwork.Set
-                    mArtwork.banner = mBanner
-                    mArtwork.clearart = mClearArt
-                    mArtwork.clearlogo = mClearLogo
-                    mArtwork.discart = mDiscArt
-                    mArtwork.fanart = mFanart
-                    mArtwork.landscape = mLandscape
-                    mArtwork.poster = mPoster
+                    Dim artwork As New Media.Artwork.Set
+                    artwork.banner = mBanner
+                    artwork.clearart = mClearArt
+                    artwork.clearlogo = mClearLogo
+                    artwork.discart = mDiscArt
+                    artwork.fanart = mFanart
+                    artwork.keyart = mKeyArt
+                    artwork.landscape = mLandscape
+                    artwork.poster = mPoster
                     'artwork.thumb = mPoster ' not supported in Ember?!
 
                     Dim mUniqueID As New Media.UniqueID.Set
@@ -1267,7 +1270,7 @@ Namespace Kodi
                             sorttitle:=mSortTitle,
                             set:=mSet,
                             tag:=mTagList,
-                            art:=mArtwork,
+                            art:=artwork,
                             userrating:=mUserRating,
                             dateadded:=mDateAdded,
                             uniqueid:=mUniqueID).ConfigureAwait(False)
@@ -1297,7 +1300,7 @@ Namespace Kodi
                             sorttitle:=mSortTitle,
                             set:=mSet,
                             tag:=mTagList,
-                            art:=mArtwork).ConfigureAwait(False)
+                            art:=artwork).ConfigureAwait(False)
                     End If
 
                     'not supported right now in Ember
@@ -1382,6 +1385,8 @@ Namespace Kodi
                                                   GetRemotePath_MovieSet(mDBElement.ImagesContainer.DiscArt.LocalFilePath), Nothing)
                     Dim mFanart As String = If(mDBElement.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                  GetRemotePath_MovieSet(mDBElement.ImagesContainer.Fanart.LocalFilePath), Nothing)
+                    Dim mKeyArt As String = If(mDBElement.ImagesContainer.KeyArt.LocalFilePathSpecified,
+                                                  GetRemotePath_MovieSet(mDBElement.ImagesContainer.KeyArt.LocalFilePath), Nothing)
                     Dim mLandscape As String = If(mDBElement.ImagesContainer.Landscape.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(mDBElement.ImagesContainer.Landscape.LocalFilePath), Nothing)
                     Dim mPoster As String = If(mDBElement.ImagesContainer.Poster.LocalFilePathSpecified,
@@ -1394,6 +1399,7 @@ Namespace Kodi
                     artwork.clearlogo = mClearLogo
                     artwork.discart = mDiscArt
                     artwork.fanart = mFanart
+                    artwork.keyart = mKeyArt
                     artwork.landscape = mLandscape
                     artwork.poster = mPoster
 
@@ -1781,6 +1787,8 @@ Namespace Kodi
                                                 GetRemotePath(mDBElement.ImagesContainer.ClearLogo.LocalFilePath), Nothing)
                     Dim mFanart As String = If(mDBElement.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                GetRemotePath(mDBElement.ImagesContainer.Fanart.LocalFilePath), Nothing)
+                    Dim mKeyArt As String = If(mDBElement.ImagesContainer.KeyArt.LocalFilePathSpecified,
+                                              GetRemotePath(mDBElement.ImagesContainer.KeyArt.LocalFilePath), Nothing)
                     Dim mLandscape As String = If(mDBElement.ImagesContainer.Landscape.LocalFilePathSpecified,
                                               GetRemotePath(mDBElement.ImagesContainer.Landscape.LocalFilePath), Nothing)
                     Dim mPoster As String = If(mDBElement.ImagesContainer.Poster.LocalFilePathSpecified,
@@ -1796,6 +1804,7 @@ Namespace Kodi
                     artwork.clearart = mClearArt
                     artwork.clearlogo = mClearLogo
                     artwork.fanart = mFanart
+                    artwork.keyart = mKeyArt
                     artwork.landscape = mLandscape
                     artwork.poster = mPoster
 

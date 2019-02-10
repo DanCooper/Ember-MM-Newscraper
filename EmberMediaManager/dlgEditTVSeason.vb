@@ -46,9 +46,7 @@ Public Class dlgEditTVSeason
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
-        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
-        StartPosition = FormStartPosition.Manual
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
     Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -117,15 +115,15 @@ Public Class dlgEditTVSeason
 
 #Region "Methods"
 
-    Private Function ConvertButtonToModifierType(ByVal sender As System.Object) As Enums.ModifierType
+    Private Function ConvertControlToImageType(ByVal sender As System.Object) As Enums.ModifierType
         Select Case True
-            Case sender Is btnRemoveBanner, sender Is btnSetBannerDL, sender Is btnSetBannerLocal, sender Is btnSetBannerScrape
+            Case sender Is btnRemoveBanner, sender Is btnDLBanner, sender Is btnLocalBanner, sender Is btnScrapeBanner, sender Is btnClipboardBanner
                 Return Enums.ModifierType.SeasonBanner
-            Case sender Is btnRemoveFanart, sender Is btnSetFanartDL, sender Is btnSetFanartLocal, sender Is btnSetFanartScrape
+            Case sender Is btnRemoveFanart, sender Is btnDLFanart, sender Is btnLocalFanart, sender Is btnScrapeFanart, sender Is btnClipboardFanart
                 Return Enums.ModifierType.SeasonFanart
-            Case sender Is btnRemoveLandscape, sender Is btnSetLandscapeDL, sender Is btnSetLandscapeLocal, sender Is btnSetLandscapeScrape
+            Case sender Is btnRemoveLandscape, sender Is btnDLLandscape, sender Is btnLocalLandscape, sender Is btnScrapeLandscape, sender Is btnClipboardLandscape
                 Return Enums.ModifierType.SeasonLandscape
-            Case sender Is btnRemovePoster, sender Is btnSetPosterDL, sender Is btnSetPosterLocal, sender Is btnSetPosterScrape
+            Case sender Is btnRemovePoster, sender Is btnDLPoster, sender Is btnLocalPoster, sender Is btnScrapePoster, sender Is btnClipboardPoster
                 Return Enums.ModifierType.SeasonPoster
             Case Else
                 Return Nothing
@@ -163,7 +161,7 @@ Public Class dlgEditTVSeason
                     If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)) OrElse
                         (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner) AndAlso
                         Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)) Then
-                        btnSetBannerScrape.Enabled = False
+                        btnScrapeBanner.Enabled = False
                     End If
                     If .Banner.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.SeasonBanner)
@@ -180,7 +178,7 @@ Public Class dlgEditTVSeason
                         Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)) OrElse
                     (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) AndAlso
                     Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)) Then
-                        btnSetFanartScrape.Enabled = False
+                        btnScrapeFanart.Enabled = False
                     End If
                     If .Fanart.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.SeasonFanart)
@@ -196,7 +194,7 @@ Public Class dlgEditTVSeason
                     If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)) OrElse
                         (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape) AndAlso
                         Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)) Then
-                        btnSetLandscapeScrape.Enabled = False
+                        btnScrapeLandscape.Enabled = False
                     End If
                     If .Landscape.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.SeasonLandscape)
@@ -212,7 +210,7 @@ Public Class dlgEditTVSeason
                     If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)) OrElse
                         (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster) AndAlso
                         Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)) Then
-                        btnSetPosterScrape.Enabled = False
+                        btnScrapePoster.Enabled = False
                     End If
                     If .Poster.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.SeasonPoster)
@@ -252,6 +250,20 @@ Public Class dlgEditTVSeason
         End With
     End Sub
 
+    Private Sub Image_Clipboard_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        btnClipboardBanner.Click,
+        btnClipboardFanart.Click,
+        btnClipboardLandscape.Click,
+        btnClipboardPoster.Click
+
+        Dim lstImages = FileUtils.ClipboardHandler.GetImagesFromClipboard
+        If lstImages.Count > 0 Then
+            Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+            tmpDBElement.ImagesContainer.SetImageByType(lstImages(0), eImageType)
+            Image_LoadPictureBox(eImageType)
+        End If
+    End Sub
+
     Private Sub Image_DoubleClick(sender As Object, e As EventArgs) Handles _
         pbBanner.DoubleClick,
         pbFanart.DoubleClick,
@@ -266,56 +278,68 @@ Public Class dlgEditTVSeason
     End Sub
 
     Private Sub Image_Download_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        btnSetBannerDL.Click,
-        btnSetFanartDL.Click,
-        btnSetLandscapeDL.Click,
-        btnSetPosterDL.Click
+        btnDLBanner.Click,
+        btnDLFanart.Click,
+        btnDLLandscape.Click,
+        btnDLPoster.Click
         Using dImgManual As New dlgImgManual
             Dim tImage As MediaContainers.Image
             If dImgManual.ShowDialog() = DialogResult.OK Then
                 tImage = dImgManual.Results
                 If tImage.ImageOriginal.Image IsNot Nothing Then
-                    Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
-                    Select Case modType
-                        Case Enums.ModifierType.SeasonBanner
-                            tmpDBElement.ImagesContainer.Banner = tImage
-                        Case Enums.ModifierType.SeasonFanart
-                            tmpDBElement.ImagesContainer.Fanart = tImage
-                        Case Enums.ModifierType.SeasonLandscape
-                            tmpDBElement.ImagesContainer.Landscape = tImage
-                        Case Enums.ModifierType.SeasonPoster
-                            tmpDBElement.ImagesContainer.Poster = tImage
-                    End Select
-                    Image_LoadPictureBox(modType)
+                    Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+                    tmpDBElement.ImagesContainer.SetImageByType(tImage, eImageType)
+                    Image_LoadPictureBox(eImageType)
                 End If
             End If
         End Using
     End Sub
 
-    Private Sub Image_LoadPictureBox(ByVal imageType As Enums.ModifierType)
-        Dim cImage As MediaContainers.Image
+    Private Sub Image_DragDrop(sender As Object, e As DragEventArgs) Handles _
+        pbBanner.DragDrop,
+        pbFanart.DragDrop,
+        pbLandscape.DragDrop,
+        pbPoster.DragDrop
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
+        If tImage.ImageOriginal.Image IsNot Nothing Then
+            Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+            tmpDBElement.ImagesContainer.SetImageByType(tImage, eImageType)
+            Image_LoadPictureBox(eImageType)
+        End If
+    End Sub
+
+    Private Sub Image_DragEnter(sender As Object, e As DragEventArgs) Handles _
+        pbBanner.DragEnter,
+        pbFanart.DragEnter,
+        pbLandscape.DragEnter,
+        pbPoster.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub Image_LoadPictureBox(ByVal ImageType As Enums.ModifierType)
         Dim lblSize As Label
         Dim pbImage As PictureBox
-        Select Case imageType
+        Select Case ImageType
             Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
-                cImage = tmpDBElement.ImagesContainer.Banner
-                lblSize = lblBannerSize
+                lblSize = lblSizeBanner
                 pbImage = pbBanner
             Case Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.SeasonFanart
-                cImage = tmpDBElement.ImagesContainer.Fanart
-                lblSize = lblFanartSize
+                lblSize = lblSizeFanart
                 pbImage = pbFanart
             Case Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
-                cImage = tmpDBElement.ImagesContainer.Landscape
-                lblSize = lblLandscapeSize
+                lblSize = lblSizeLandscape
                 pbImage = pbLandscape
             Case Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.SeasonPoster
-                cImage = tmpDBElement.ImagesContainer.Poster
-                lblSize = lblPosterSize
+                lblSize = lblSizePoster
                 pbImage = pbPoster
             Case Else
                 Return
         End Select
+        Dim cImage = tmpDBElement.ImagesContainer.GetImageByType(ImageType)
         If cImage.ImageOriginal.Image IsNot Nothing Then
             pbImage.Image = cImage.ImageOriginal.Image
             pbImage.Tag = cImage
@@ -325,10 +349,10 @@ Public Class dlgEditTVSeason
     End Sub
 
     Private Sub Image_Local_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        btnSetBannerLocal.Click,
-        btnSetFanartLocal.Click,
-        btnSetLandscapeLocal.Click,
-        btnSetPosterLocal.Click
+        btnLocalBanner.Click,
+        btnLocalFanart.Click,
+        btnLocalLandscape.Click,
+        btnLocalPoster.Click
         With ofdLocalFiles
             .InitialDirectory = tmpDBElement.FileItem.MainPath.FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
@@ -338,18 +362,9 @@ Public Class dlgEditTVSeason
             Dim tImage As New MediaContainers.Image
             tImage.ImageOriginal.LoadFromFile(ofdLocalFiles.FileName, True)
             If tImage.ImageOriginal.Image IsNot Nothing Then
-                Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
-                Select Case modType
-                    Case Enums.ModifierType.SeasonBanner
-                        tmpDBElement.ImagesContainer.Banner = tImage
-                    Case Enums.ModifierType.SeasonFanart
-                        tmpDBElement.ImagesContainer.Fanart = tImage
-                    Case Enums.ModifierType.SeasonLandscape
-                        tmpDBElement.ImagesContainer.Landscape = tImage
-                    Case Enums.ModifierType.SeasonPoster
-                        tmpDBElement.ImagesContainer.Poster = tImage
-                End Select
-                Image_LoadPictureBox(modType)
+                Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+                tmpDBElement.ImagesContainer.SetImageByType(tImage, eImageType)
+                Image_LoadPictureBox(eImageType)
             End If
         End If
     End Sub
@@ -359,67 +374,71 @@ Public Class dlgEditTVSeason
         btnRemoveFanart.Click,
         btnRemoveLandscape.Click,
         btnRemovePoster.Click
-        Dim lblSize As Label
-        Dim pbImage As PictureBox
-        Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
-        Select Case modType
-            Case Enums.ModifierType.MainBanner
-                lblSize = lblBannerSize
+        Dim lblSize As Label = Nothing
+        Dim pbImage As PictureBox = Nothing
+        Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
+        Select Case eImageType
+            Case Enums.ModifierType.SeasonBanner
+                lblSize = lblSizeBanner
                 pbImage = pbBanner
-                tmpDBElement.ImagesContainer.Banner = New MediaContainers.Image
-            Case Enums.ModifierType.MainFanart
-                lblSize = lblFanartSize
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
+            Case Enums.ModifierType.SeasonFanart
+                lblSize = lblSizeFanart
                 pbImage = pbFanart
-                tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
-            Case Enums.ModifierType.MainLandscape
-                lblSize = lblLandscapeSize
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
+            Case Enums.ModifierType.SeasonLandscape
+                lblSize = lblSizeLandscape
                 pbImage = pbLandscape
-                tmpDBElement.ImagesContainer.Landscape = New MediaContainers.Image
-            Case Enums.ModifierType.MainPoster
-                lblSize = lblPosterSize
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
+            Case Enums.ModifierType.SeasonPoster
+                lblSize = lblSizePoster
                 pbImage = pbPoster
-                tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
+                tmpDBElement.ImagesContainer.SetImageByType(New MediaContainers.Image, eImageType)
             Case Else
                 Return
         End Select
-        lblSize.Text = String.Empty
-        lblSize.Visible = False
-        pbImage.Image = Nothing
-        pbImage.Tag = Nothing
+        If lblSize IsNot Nothing Then
+            lblSize.Text = String.Empty
+            lblSize.Visible = False
+        End If
+        If pbImage IsNot Nothing Then
+            pbImage.Image = Nothing
+            pbImage.Tag = Nothing
+        End If
     End Sub
 
     Private Sub Image_Scrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        btnSetBannerScrape.Click,
-        btnSetFanartScrape.Click,
-        btnSetLandscapeScrape.Click,
-        btnSetPosterScrape.Click
+        btnScrapeBanner.Click,
+        btnScrapeFanart.Click,
+        btnScrapeLandscape.Click,
+        btnScrapePoster.Click
         Cursor = Cursors.WaitCursor
-        Dim modType As Enums.ModifierType = ConvertButtonToModifierType(sender)
+        Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
-        Select Case modType
+        Select Case eImageType
             Case Enums.ModifierType.SeasonBanner
                 If tmpDBElement.TVSeason.IsAllSeasons Then
-                    modType = Enums.ModifierType.AllSeasonsBanner
+                    eImageType = Enums.ModifierType.AllSeasonsBanner
                 End If
             Case Enums.ModifierType.SeasonFanart
                 If tmpDBElement.TVSeason.IsAllSeasons Then
-                    modType = Enums.ModifierType.AllSeasonsFanart
+                    eImageType = Enums.ModifierType.AllSeasonsFanart
                 End If
             Case Enums.ModifierType.SeasonLandscape
                 If tmpDBElement.TVSeason.IsAllSeasons Then
-                    modType = Enums.ModifierType.AllSeasonsLandscape
+                    eImageType = Enums.ModifierType.AllSeasonsLandscape
                 End If
             Case Enums.ModifierType.SeasonPoster
                 If tmpDBElement.TVSeason.IsAllSeasons Then
-                    modType = Enums.ModifierType.AllSeasonsPoster
+                    eImageType = Enums.ModifierType.AllSeasonsPoster
                 End If
         End Select
-        Functions.SetScrapeModifiers(ScrapeModifiers, modType, True)
+        Functions.SetScrapeModifiers(ScrapeModifiers, eImageType, True)
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             Dim iImageCount = 0
             Dim strNoImagesFound As String = String.Empty
-            Select Case modType
+            Select Case eImageType
                 Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
                     iImageCount = aContainer.SeasonBanners.Count
                     If tmpDBElement.TVSeason.IsAllSeasons Then iImageCount += aContainer.MainBanners.Count
@@ -439,80 +458,19 @@ Public Class dlgEditTVSeason
             If iImageCount > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                    Select Case modType
-                        Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
-                            tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                            If tmpDBElement.ImagesContainer.Banner.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                        Case Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.SeasonFanart
-                            tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                            If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                        Case Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
-                            tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                            If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                        Case Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.SeasonPoster
-                            tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                            If tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromMemoryStream() Then
-                                Image_LoadPictureBox(modType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                    End Select
+                    tmpDBElement.ImagesContainer.SetImageByType(dlgImgS.Result.ImagesContainer.GetImageByType(eImageType), eImageType)
+                    If tmpDBElement.ImagesContainer.GetImageByType(eImageType) IsNot Nothing AndAlso
+                        tmpDBElement.ImagesContainer.GetImageByType(eImageType).ImageOriginal.LoadFromMemoryStream Then
+                        Image_LoadPictureBox(eImageType)
+                    Else
+                        Image_Remove_Click(sender, e)
+                    End If
                 End If
             Else
                 MessageBox.Show(strNoImagesFound, String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
         Cursor = Cursors.Default
-    End Sub
-
-    Private Sub PictureBox_DragEnter(sender As Object, e As DragEventArgs) Handles _
-        pbBanner.DragEnter,
-        pbFanart.DragEnter,
-        pbLandscape.DragEnter,
-        pbPoster.DragEnter
-
-        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
-            e.Effect = DragDropEffects.Copy
-        Else
-            e.Effect = DragDropEffects.None
-        End If
-    End Sub
-
-    Private Sub PictureBox_DragDrop(sender As Object, e As DragEventArgs) Handles _
-        pbBanner.DragDrop,
-        pbFanart.DragDrop,
-        pbLandscape.DragDrop,
-        pbPoster.DragDrop
-
-        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDroppedImage(e)
-        If tImage.ImageOriginal.Image IsNot Nothing Then
-            Select Case True
-                Case sender Is pbBanner
-                    tmpDBElement.ImagesContainer.Banner = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.SeasonBanner)
-                Case sender Is pbFanart
-                    tmpDBElement.ImagesContainer.Fanart = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.SeasonFanart)
-                Case sender Is pbLandscape
-                    tmpDBElement.ImagesContainer.Landscape = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.SeasonLandscape)
-                Case sender Is pbPoster
-                    tmpDBElement.ImagesContainer.Poster = tImage
-                    Image_LoadPictureBox(Enums.ModifierType.SeasonPoster)
-            End Select
-        End If
     End Sub
 
     Private Sub TextBox_NumericOnly(sender As Object, e As KeyPressEventArgs)

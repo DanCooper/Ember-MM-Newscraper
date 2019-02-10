@@ -93,7 +93,6 @@ Namespace TVDBs
                             Dim img As New MediaContainers.Image With {
                             .Episode = tEpisode.Number,
                             .Height = tEpisode.ThumbHeight,
-                            .LongLang = If(tEpisode.Language IsNot Nothing, Localization.ISOGetLangByCode2(tEpisode.Language), String.Empty),
                             .Scraper = "TVDB",
                             .Season = tEpisode.SeasonNumber,
                             .Language = If(tEpisode.Language IsNot Nothing, tEpisode.Language, String.Empty),
@@ -109,7 +108,6 @@ Namespace TVDBs
                     If FilteredModifiers.MainBanner Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.series)
                             Dim img As New MediaContainers.Image With {.Height = 140,
-                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                        .Scraper = "TVDB",
                                                                        .Season = image.Season,
                                                                        .Language = If(image.Language IsNot Nothing, image.Language, String.Empty),
@@ -126,7 +124,6 @@ Namespace TVDBs
                     If FilteredModifiers.SeasonBanner Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.season AndAlso f.BannerPath.Contains("seasonswide"))
                             Dim img As New MediaContainers.Image With {.Height = 140,
-                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                        .Scraper = "TVDB",
                                                                        .Season = image.Season,
                                                                        .Language = If(image.Language IsNot Nothing, image.Language, String.Empty),
@@ -143,7 +140,6 @@ Namespace TVDBs
                     If FilteredModifiers.MainFanart Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.fanart)
                             alImagesContainer.MainFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height,
-                                                                                        .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                                         .Scraper = "TVDB",
                                                                                         .Season = image.Season,
                                                                                         .Language = If(image.Language IsNot Nothing, image.Language, String.Empty),
@@ -159,7 +155,6 @@ Namespace TVDBs
                     If FilteredModifiers.MainPoster Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.poster)
                             Dim img As New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height,
-                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                        .Scraper = "TVDB",
                                                                        .Season = image.Season,
                                                                        .Language = If(image.Language IsNot Nothing, image.Language, String.Empty),
@@ -176,7 +171,6 @@ Namespace TVDBs
                     If FilteredModifiers.SeasonPoster Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.season AndAlso Not f.BannerPath.Contains("seasonswide"))
                             Dim img As New MediaContainers.Image With {.Height = 578,
-                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
                                                                        .Scraper = "TVDB",
                                                                        .Season = image.Season,
                                                                        .Language = If(image.Language IsNot Nothing, image.Language, String.Empty),
@@ -227,7 +221,6 @@ Namespace TVDBs
                             Dim img As New MediaContainers.Image With {
                                 .Episode = iEpisode,
                                 .Height = tEpisode.ThumbHeight,
-                                .LongLang = If(tEpisode.Language IsNot Nothing, Localization.ISOGetLangByCode2(tEpisode.Language), String.Empty),
                                 .Scraper = "TVDB",
                                 .Season = iSeason,
                                 .Language = If(tEpisode.Language IsNot Nothing, tEpisode.Language, String.Empty),
@@ -249,32 +242,6 @@ Namespace TVDBs
 
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-        Private Structure Arguments
-
-#Region "Fields"
-
-            Dim Parameter As String
-            Dim sType As String
-
-#End Region 'Fields
-
-        End Structure
-
-        Private Structure Results
-
-#Region "Fields"
-
-            Dim Result As Object
-            Dim ResultList As List(Of MediaContainers.Image)
-
-#End Region 'Fields
-
-        End Structure
-
-#End Region 'Nested Types
 
     End Class
 

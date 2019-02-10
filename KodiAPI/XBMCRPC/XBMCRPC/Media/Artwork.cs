@@ -12,6 +12,7 @@ namespace XBMCRPC.Media
             public string extrafanart { get; set; }
             public string extrathumbs { get; set; }
             public object fanart { get; set; }
+            public string keyart { get; set; }
             public string landscape { get; set; }
             public object poster { get; set; }
             public object thumb { get; set; }

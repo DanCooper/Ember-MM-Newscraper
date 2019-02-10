@@ -493,7 +493,7 @@ Partial Class dlgImgSelect
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.KeyPreview = True
         Me.Name = "dlgImgSelect"
-        Me.Text = "Image Select"
+        Me.Text = "Select Images"
         Me.pnlImgSelect.ResumeLayout(False)
         Me.pnlImgSelect.PerformLayout()
         Me.pnlImgSelectTop.ResumeLayout(False)

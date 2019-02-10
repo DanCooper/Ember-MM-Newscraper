@@ -64,6 +64,40 @@ Namespace FileUtils
 
     End Class
 
+    Public Class ClipboardHandler
+
+#Region "Methods"
+
+        Public Shared Function GetImagesFromClipboard() As List(Of MediaContainers.Image)
+            Dim lstImages As New List(Of MediaContainers.Image)
+            Select Case True
+                Case Clipboard.ContainsImage
+                    Dim nImage As New MediaContainers.Image
+                    nImage.ImageOriginal.UpdateMSfromImg(Clipboard.GetImage)
+                    lstImages.Add(nImage)
+                Case Clipboard.ContainsText
+                    Dim nImage As New MediaContainers.Image
+                    Dim nUri = New Uri(Clipboard.GetText)
+                    Select Case True
+                        Case nUri.IsFile
+                            nImage.ImageOriginal.LoadFromFile(Clipboard.GetText, True)
+                        Case nUri.IsUnc
+                            nImage.ImageOriginal.LoadFromWeb(Clipboard.GetText, True)
+                    End Select
+                Case Clipboard.ContainsFileDropList
+                    For Each nPath In Clipboard.GetFileDropList
+                        Dim nImage As New MediaContainers.Image
+                        nImage.ImageOriginal.LoadFromFile(nPath, True)
+                        lstImages.Add(nImage)
+                    Next
+            End Select
+            Return lstImages
+        End Function
+
+#End Region 'Methods
+
+    End Class
+
     Public Class Common
 
 #Region "Fields"
@@ -204,17 +238,17 @@ Namespace FileUtils
                                 Case Enums.ContentType.Movie
                                     Dim lstFiles As New List(Of String)
                                     lstFiles.AddRange(tDBElement.FileItem.PathList)
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainBanner))
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainClearArt))
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainClearLogo))
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainDiscArt))
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainFanart))
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainLandscape))
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainNFO))
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainPoster))
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainSubtitle))
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme))
-                                    lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTrailer))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainBanner))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainClearArt))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainClearLogo))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainDiscArt))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainFanart))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainLandscape))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainNFO))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainPoster))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainSubtitle))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTheme))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTrailer))
                                     lstFiles = lstFiles.Distinct().ToList()  'remove double entries
                                     lstFiles.Sort()
                                     For Each nFile In lstFiles
@@ -225,11 +259,11 @@ Namespace FileUtils
                                 Case Enums.ContentType.TVEpisode
                                     Dim lstFiles As New List(Of String)
                                     lstFiles.AddRange(tDBElement.FileItem.PathList)
-                                    lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeFanart))
-                                    lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeNFO))
-                                    lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodePoster))
-                                    lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeSubtitle))
-                                    lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeWatchedFile))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.EpisodeFanart))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.EpisodeNFO))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.EpisodePoster))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.EpisodeSubtitle))
+                                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.EpisodeWatchedFile))
                                     lstFiles = lstFiles.Distinct().ToList()  'remove double entries
                                     lstFiles.Sort()
                                     For Each nFile In lstFiles
@@ -241,16 +275,16 @@ Namespace FileUtils
                     End If
 
 
-                Case Enums.ContentType.Movieset
+                Case Enums.ContentType.MovieSet
                     Dim lstFiles As New List(Of String)
-                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainBanner))
-                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainClearArt))
-                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainClearLogo))
-                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainDiscArt))
-                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainFanart))
-                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainLandscape))
-                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainNFO))
-                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainPoster))
+                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainBanner))
+                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainClearArt))
+                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainClearLogo))
+                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainDiscArt))
+                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainFanart))
+                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainLandscape))
+                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainNFO))
+                    lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainPoster))
                     lstFiles = lstFiles.Distinct().ToList()  'remove double entries
                     lstFiles.Sort()
                     For Each nFile In lstFiles
@@ -264,18 +298,18 @@ Namespace FileUtils
                     Next
                     Dim lstFiles As New List(Of String)
                     If tDBElement.TVSeason.IsAllSeasons Then
-                        lstFiles.AddRange(GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsBanner))
-                        lstFiles.AddRange(GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsFanart))
-                        lstFiles.AddRange(GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsLandscape))
-                        lstFiles.AddRange(GetFilenameList.TVShow(tDBElement, Enums.ModifierType.AllSeasonsPoster))
+                        lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.AllSeasonsBanner))
+                        lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.AllSeasonsFanart))
+                        lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.AllSeasonsLandscape))
+                        lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.AllSeasonsPoster))
                         lstFiles = lstFiles.Distinct().ToList()  'remove double entries
                         lstFiles.Sort()
                     Else
-                        lstFiles.AddRange(GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonBanner))
-                        lstFiles.AddRange(GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonFanart))
-                        lstFiles.AddRange(GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonLandscape))
-                        lstFiles.AddRange(GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonNFO))
-                        lstFiles.AddRange(GetFilenameList.TVSeason(tDBElement, Enums.ModifierType.SeasonPoster))
+                        lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.SeasonBanner))
+                        lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.SeasonFanart))
+                        lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.SeasonLandscape))
+                        lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.SeasonNFO))
+                        lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.SeasonPoster))
                         lstFiles = lstFiles.Distinct().ToList()  'remove double entries
                         lstFiles.Sort()
                     End If
@@ -767,44 +801,30 @@ Namespace FileUtils
         ''' <summary>
         ''' Safer method of deleting a diretory and all it's contents
         ''' </summary>
-        ''' <param name="sPath">Full path of directory to delete</param>
+        ''' <param name="Path">Full path of directory to delete</param>
         ''' <remarks>This method deletes the supplied path by recursively deleting its child directories, 
         ''' then deleting its file contents before deleting itself.</remarks>
-        Public Shared Sub DeleteDirectory(ByVal sPath As String)
-            'TODO The calls to Directory.Exists may return a false negative if the user does not have read access. If this happens
-            'TODO during a recursive call, orphan folders may be left behind, causing the final Delete to fail. Should give better
-            'TODO error messages so the log can be easier to interpret.
+        Public Shared Sub DeleteDirectory(ByVal Path As String)
+            If String.IsNullOrEmpty(Path) Then Return
             Try
-                If String.IsNullOrEmpty(sPath) Then Return
-
-                If Directory.Exists(sPath) Then
-
-                    Dim Dirs As New List(Of String)
-
+                Dim currDirectory As New DirectoryInfo(Path)
+                If currDirectory.Exists Then
                     Try
-                        Dirs.AddRange(Directory.GetDirectories(sPath))
-                    Catch
+                        For Each inDir In currDirectory.GetDirectories
+                            DeleteDirectory(inDir.FullName)
+                        Next
+                    Catch ex As Exception
+                        logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
 
-                    For Each inDir As String In Dirs
-                        DeleteDirectory(inDir)
-                    Next
-
-                    Dim fFiles As New List(Of String)
-
                     Try
-                        fFiles.AddRange(Directory.GetFiles(sPath))
-                    Catch
+                        For Each inFile In currDirectory.GetFiles
+                            DeleteDirectory(inFile.FullName)
+                        Next
+                    Catch ex As Exception
+                        logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
-
-                    For Each fFile As String In fFiles
-                        Try
-                            File.Delete(fFile)
-                        Catch
-                        End Try
-                    Next
-
-                    Directory.Delete(sPath, True)
+                    currDirectory.Delete(True)
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -895,127 +915,8 @@ Namespace FileUtils
 #End Region 'Methods
 
     End Class
-    ''' <summary>
-    ''' This module is a convenience library for sorting files into respective subdirectories.
-    ''' This module does NOT need to be instantiated!
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Module FileSorter
 
-#Region "Fields"
-
-        Dim logger As Logger = LogManager.GetCurrentClassLogger()
-
-#End Region 'Fields
-
-#Region "Events"
-        ''' <summary>
-        ''' Event that is raised when SortFiles desires the progress indicator to be updated
-        ''' </summary>
-        ''' <param name="iPercent">Percentage complete</param>
-        ''' <param name="sStatus">Message to be displayed alongside the progress indicator</param>
-        ''' <remarks></remarks>
-        Public Event ProgressUpdated(ByVal iPercent As Integer, ByVal sStatus As String)
-
-#End Region 'Events
-
-#Region "Methods"
-        ''' <summary>
-        ''' Reorganize the media files in the given folder into subfolders.
-        ''' </summary>
-        ''' <param name="strSourcePath">Path to be sorted</param>
-        ''' <remarks>Occasionally a directory will contain multiple media files (and meta-files) and 
-        ''' this method will walk through the files in that directory and move each to its own unique subdirectory.
-        ''' This will move all files with the same core name, without extension or fanart/trailer endings.</remarks>
-        Public Sub SortFiles(ByVal strSourcePath As String)
-            'TODO Need to test what happens if sPath points to an existing FILE (and not just a directory)
-            Dim iCount As Integer = 0
-
-            Try
-                If Directory.Exists(strSourcePath) Then
-                    'Get information about files in the directory
-                    Dim di As New DirectoryInfo(strSourcePath)
-                    Dim lFi As New List(Of FileInfo)
-                    Dim lMediaList As IOrderedEnumerable(Of FileInfo)
-
-                    'Create a List of files in the directory
-                    Try
-                        lFi.AddRange(di.GetFiles())
-                    Catch
-                    End Try
-
-                    'Create a list of all media files with a valid extension in the directory
-                    lMediaList = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
-                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
-
-                    'For each valid file in the directory...
-                    For Each sFile As FileInfo In lMediaList
-                        Dim nMovie As New Database.DBElement(Enums.ContentType.Movie) With {.FileItem = New FileItem(sFile.FullName), .IsSingle = False}
-                        RaiseEvent ProgressUpdated((iCount \ lMediaList.Count), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
-
-                        'create a new directory for the movie
-                        Dim strNewPath As String = Path.Combine(strSourcePath, Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(nMovie.FileItem.StackedFilename)))
-                        If Not Directory.Exists(strNewPath) Then
-                            Directory.CreateDirectory(strNewPath)
-                        End If
-
-                        'move movie to the new directory
-                        sFile.MoveTo(Path.Combine(strNewPath, Path.GetFileName(nMovie.FileItem.FirstStackedPath)))
-
-                        'search for files that belong to this movie
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainBanner, True)
-                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
-                        Next
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainCharacterArt, True)
-                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
-                        Next
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainClearArt, True)
-                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
-                        Next
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainClearLogo, True)
-                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
-                        Next
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainDiscArt, True)
-                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
-                        Next
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainFanart, True)
-                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
-                        Next
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainLandscape, True)
-                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
-                        Next
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainNFO, True)
-                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
-                        Next
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainPoster, True)
-                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
-                        Next
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainTheme, True)
-                            For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                                If File.Exists(String.Concat(a, t)) Then File.Move(String.Concat(a, t), Path.Combine(strNewPath, Path.GetFileName(String.Concat(a, t))))
-                            Next
-                        Next
-                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainTrailer, True)
-                            For Each t As String In Master.eSettings.FileSystemValidExts
-                                If File.Exists(String.Concat(a, t)) Then File.Move(String.Concat(a, t), Path.Combine(strNewPath, Path.GetFileName(String.Concat(a, t))))
-                            Next
-                        Next
-                        'TODO: search  more files like subtitles
-                        iCount += 1
-                    Next
-
-                    RaiseEvent ProgressUpdated((iCount \ lMediaList.Count), Master.eLang.GetString(362, "Done "))
-                End If
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        End Sub
-
-#End Region 'Methods
-
-    End Module
-
-    Public Class GetFilenameList
+    Public Class FileNames
 
 #Region "Fields"
 
@@ -1024,6 +925,26 @@ Namespace FileUtils
 #End Region 'Fields
 
 #Region "Methods"
+
+        Public Shared Function GetFileNames(ByVal DBElement As Database.DBElement, ByVal ModType As Enums.ModifierType, Optional Forced As Boolean = False) As List(Of String)
+            Select Case DBElement.ContentType
+                Case Enums.ContentType.Movie
+                    Return Movie(DBElement, ModType, Forced)
+                Case Enums.ContentType.MovieSet
+                    Return MovieSet(DBElement, ModType, Forced)
+                Case Enums.ContentType.TVEpisode
+                    Return TVEpisode(DBElement, ModType)
+                Case Enums.ContentType.TVSeason
+                    If DBElement.TVSeason.IsAllSeasons Then
+                        Return TVShow(DBElement, ModType)
+                    Else
+                        Return TVSeason(DBElement, ModType)
+                    End If
+                Case Enums.ContentType.TVShow
+                    Return TVShow(DBElement, ModType)
+            End Select
+            Return New List(Of String)
+        End Function
         ''' <summary>
         ''' Creates a list of filenames to save or read movie content
         ''' </summary>
@@ -1031,7 +952,7 @@ Namespace FileUtils
         ''' <param name="bForced">Enable ALL known file naming schemas. Should only be used to search files and not to save files!</param>
         ''' <returns><c>List(Of String)</c> all filenames with full path</returns>
         ''' <remarks></remarks>
-        Public Shared Function Movie(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType, Optional ByVal bForced As Boolean = False) As List(Of String)
+        Private Shared Function Movie(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType, Optional ByVal bForced As Boolean = False) As List(Of String)
             Dim FilenameList As New List(Of String)
 
             If Not dbElement.FileItemSpecified Then Return FilenameList
@@ -1508,6 +1429,74 @@ Namespace FileUtils
                         End If
                     End With
 
+                Case Enums.ModifierType.MainKeyArt
+                    With Master.eSettings
+                        If bIsVideoTS Then
+                            If bForced OrElse (.MovieUseExtended AndAlso .MovieKeyArtExtended) Then FilenameList.Add(Path.Combine(strMainPath, "keyart.jpg"))
+                            'If bForced OrElse (.MovieUseAD AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(strMainPath, "landscape.jpg"))
+                            'If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieLandscapeExpertVTS) Then
+                            '    For Each a In .MovieLandscapeExpertVTS.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            '        If .MovieUseBaseDirectoryExpertVTS Then
+                            '            FilenameList.Add(Path.Combine(Directory.GetParent(strFileParentPath).FullName, a.Replace("<filename>", strFileName)))
+                            '        Else
+                            '            FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strFileName)))
+                            '        End If
+                            '    Next
+                            'End If
+                        ElseIf bIsBDMV Then
+                            If bForced OrElse (.MovieUseExtended AndAlso .MovieKeyArtExtended) Then FilenameList.Add(Path.Combine(strMainPath, "keyart.jpg"))
+                            'If bForced OrElse (.MovieUseAD AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(strMainPath, "landscape.jpg"))
+                            'If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieLandscapeExpertBDMV) Then
+                            '    For Each a In .MovieLandscapeExpertBDMV.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            '        If .MovieUseBaseDirectoryExpertBDMV Then
+                            '            FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(strFileParentPath).FullName).FullName, a.Replace("<filename>", strFileName)))
+                            '        Else
+                            '            FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strFileName)))
+                            '        End If
+                            '    Next
+                            'End If
+                        ElseIf bIsSingle Then
+                            If bForced OrElse (.MovieUseExtended AndAlso bIsVideoTSFile AndAlso .MovieKeyArtExtended) Then FilenameList.Add(Path.Combine(strFileParentPath, "keyart.jpg"))
+                            If bForced OrElse (.MovieUseExtended AndAlso Not bIsVideoTSFile AndAlso .MovieKeyArtExtended) Then FilenameList.Add(String.Concat(strStackedFilePath, "-keyart.jpg"))
+                            'If bForced OrElse (.MovieUseAD AndAlso bIsVideoTSFile AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(strFileParentPath, "landscape.jpg"))
+                            'If bForced OrElse (.MovieUseAD AndAlso Not bIsVideoTSFile AndAlso .MovieLandscapeAD) Then FilenameList.Add(Path.Combine(strFileParentPath, "landscape.jpg"))
+                            'If .MovieUseExpert AndAlso bIsVideoTSFile AndAlso .MovieRecognizeVTSExpertVTS Then
+                            '    For Each a In .MovieLandscapeExpertVTS.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            '        FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strFileName)))
+                            '    Next
+                            'ElseIf .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieLandscapeExpertSingle) Then
+                            '    If .MovieStackExpertSingle Then
+                            '        For Each a In .MovieLandscapeExpertSingle.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            '            FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strStackedFilename)))
+
+                            '            If .MovieUnstackExpertSingle Then
+                            '                FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strFileName)))
+                            '            End If
+                            '        Next
+                            '    Else
+                            '        For Each a In .MovieLandscapeExpertSingle.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            '            FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strFileName)))
+                            '        Next
+                            '    End If
+                            'End If
+                        Else
+                            If bForced OrElse (.MovieUseExtended AndAlso .MovieKeyArtExtended) Then FilenameList.Add(String.Concat(strStackedFilePath, "-keyart.jpg"))
+                            'If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieLandscapeExpertMulti) Then
+                            '    For Each a In .MovieLandscapeExpertMulti.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            '        If .MovieStackExpertMulti Then
+                            '            FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strStackedFilename)))
+
+                            '            If .MovieUnstackExpertMulti Then
+                            '                FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strFileName)))
+                            '            End If
+                            '        Else
+                            '            FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strFileName)))
+                            '        End If
+                            '    Next
+                            'End If
+                        End If
+                    End With
+
                 Case Enums.ModifierType.MainLandscape
                     With Master.eSettings
                         If bIsVideoTS Then
@@ -1872,7 +1861,7 @@ Namespace FileUtils
         ''' <param name="mType"></param>
         ''' <returns><c>List(Of String)</c> all filenames with full path</returns>
         ''' <remarks></remarks>
-        Public Shared Function MovieSet(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType, Optional ByVal bForceOldTitle As Boolean = False) As List(Of String)
+        Private Shared Function MovieSet(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType, Optional ByVal bForceOldTitle As Boolean = False) As List(Of String)
             Dim FilenameList As New List(Of String)
 
             If String.IsNullOrEmpty(dbElement.MovieSet.Title) Then Return FilenameList
@@ -1937,6 +1926,16 @@ Namespace FileUtils
                         End If
                     End With
 
+                Case Enums.ModifierType.MainKeyArt
+                    With Master.eSettings
+                        If .MovieSetUseExtended AndAlso .MovieSetKeyArtExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-keyart.jpg")))
+                        'If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetKeyArtExpertSingle) Then
+                        '    For Each a In .MovieSetKeyArtExpertSingle.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                        '        FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<settitle>", fSetTitle)))
+                        '    Next
+                        'End If
+                    End With
+
                 Case Enums.ModifierType.MainLandscape
                     With Master.eSettings
                         If .MovieSetUseExtended AndAlso .MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-landscape.jpg")))
@@ -1973,7 +1972,7 @@ Namespace FileUtils
             Return FilenameList
         End Function
 
-        Public Shared Function TVEpisode(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
+        Private Shared Function TVEpisode(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
             If Not dbElement.FileItemSpecified Then Return FilenameList
@@ -2041,7 +2040,7 @@ Namespace FileUtils
             Return FilenameList
         End Function
 
-        Public Shared Function TVSeason(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
+        Private Shared Function TVSeason(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
             Dim bInside As Boolean = False
 
@@ -2204,7 +2203,7 @@ Namespace FileUtils
             Return FilenameList
         End Function
 
-        Public Shared Function TVShow(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
+        Private Shared Function TVShow(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
             If String.IsNullOrEmpty(dbElement.ShowPath) Then Return FilenameList
@@ -2326,6 +2325,17 @@ Namespace FileUtils
                         End If
                     End With
 
+                Case Enums.ModifierType.MainKeyArt
+                    With Master.eSettings
+                        If .TVUseExtended AndAlso .TVShowKeyArtExtended Then FilenameList.Add(Path.Combine(fShowPath, "keyart.jpg"))
+                        'If .TVUseAD AndAlso .TVShowLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "landscape.jpg"))
+                        'If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowLandscapeExpert) Then
+                        '    For Each a In .TVShowLandscapeExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                        '        FilenameList.Add(Path.Combine(fShowPath, a))
+                        '    Next
+                        'End If
+                    End With
+
                 Case Enums.ModifierType.MainLandscape
                     With Master.eSettings
                         If .TVUseExtended AndAlso .TVShowLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, "landscape.jpg"))
@@ -2378,6 +2388,128 @@ Namespace FileUtils
 #End Region 'Methods
 
     End Class
+    ''' <summary>
+    ''' This module is a convenience library for sorting files into respective subdirectories.
+    ''' This module does NOT need to be instantiated!
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Module FileSorter
+
+#Region "Fields"
+
+        Dim logger As Logger = LogManager.GetCurrentClassLogger()
+
+#End Region 'Fields
+
+#Region "Events"
+        ''' <summary>
+        ''' Event that is raised when SortFiles desires the progress indicator to be updated
+        ''' </summary>
+        ''' <param name="iPercent">Percentage complete</param>
+        ''' <param name="sStatus">Message to be displayed alongside the progress indicator</param>
+        ''' <remarks></remarks>
+        Public Event ProgressUpdated(ByVal iPercent As Integer, ByVal sStatus As String)
+
+#End Region 'Events
+
+#Region "Methods"
+        ''' <summary>
+        ''' Reorganize the media files in the given folder into subfolders.
+        ''' </summary>
+        ''' <param name="strSourcePath">Path to be sorted</param>
+        ''' <remarks>Occasionally a directory will contain multiple media files (and meta-files) and 
+        ''' this method will walk through the files in that directory and move each to its own unique subdirectory.
+        ''' This will move all files with the same core name, without extension or fanart/trailer endings.</remarks>
+        Public Sub SortFiles(ByVal strSourcePath As String)
+            'TODO Need to test what happens if sPath points to an existing FILE (and not just a directory)
+            Dim iCount As Integer = 0
+
+            Try
+                If Directory.Exists(strSourcePath) Then
+                    'Get information about files in the directory
+                    Dim di As New DirectoryInfo(strSourcePath)
+                    Dim lFi As New List(Of FileInfo)
+                    Dim lMediaList As IOrderedEnumerable(Of FileInfo)
+
+                    'Create a List of files in the directory
+                    Try
+                        lFi.AddRange(di.GetFiles())
+                    Catch
+                    End Try
+
+                    'Create a list of all media files with a valid extension in the directory
+                    lMediaList = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
+                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
+
+                    'For each valid file in the directory...
+                    For Each sFile As FileInfo In lMediaList
+                        Dim nMovie As New Database.DBElement(Enums.ContentType.Movie) With {.FileItem = New FileItem(sFile.FullName), .IsSingle = False}
+                        RaiseEvent ProgressUpdated((iCount \ lMediaList.Count), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
+
+                        'create a new directory for the movie
+                        Dim strNewPath As String = Path.Combine(strSourcePath, Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(nMovie.FileItem.StackedFilename)))
+                        If Not Directory.Exists(strNewPath) Then
+                            Directory.CreateDirectory(strNewPath)
+                        End If
+
+                        'move movie to the new directory
+                        sFile.MoveTo(Path.Combine(strNewPath, Path.GetFileName(nMovie.FileItem.FirstStackedPath)))
+
+                        'search for files that belong to this movie
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainBanner, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainCharacterArt, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainClearArt, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainClearLogo, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainDiscArt, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainFanart, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainKeyArt, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainLandscape, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainNFO, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainPoster, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainTheme, True)
+                            For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                                If File.Exists(String.Concat(a, t)) Then File.Move(String.Concat(a, t), Path.Combine(strNewPath, Path.GetFileName(String.Concat(a, t))))
+                            Next
+                        Next
+                        For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainTrailer, True)
+                            For Each t As String In Master.eSettings.FileSystemValidExts
+                                If File.Exists(String.Concat(a, t)) Then File.Move(String.Concat(a, t), Path.Combine(strNewPath, Path.GetFileName(String.Concat(a, t))))
+                            Next
+                        Next
+                        'TODO: search  more files like subtitles
+                        iCount += 1
+                    Next
+
+                    RaiseEvent ProgressUpdated((iCount \ lMediaList.Count), Master.eLang.GetString(362, "Done "))
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+        End Sub
+
+#End Region 'Methods
+
+    End Module
 
     Public Class Stacking
 

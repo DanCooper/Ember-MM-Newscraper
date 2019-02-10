@@ -46,7 +46,7 @@ Partial Class dlgHost
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.gbHostMoviesetPath = New System.Windows.Forms.GroupBox()
         Me.tblHostMoviesetPath = New System.Windows.Forms.TableLayoutPanel()
-        Me.txtHostMoviesetPath = New EmberAPI.FormUtils.TextBox_with_Watermark()
+        Me.txtHostMoviesetPath = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.tblHost = New System.Windows.Forms.TableLayoutPanel()
         Me.lblCustomRemotePath = New System.Windows.Forms.Label()
         Me.txtCustomRemotePath = New System.Windows.Forms.TextBox()
@@ -482,7 +482,7 @@ Partial Class dlgHost
     Friend WithEvents gbHostMoviesetPath As System.Windows.Forms.GroupBox
     Friend WithEvents tblHost As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblHostMoviesetPath As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents txtHostMoviesetPath As EmberAPI.FormUtils.TextBox_with_Watermark
+    Friend WithEvents txtHostMoviesetPath As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents colHostEmberSource As DataGridViewTextBoxColumn
     Friend WithEvents colHostRemoteSource As DataGridViewComboBoxColumn
     Friend WithEvents colHostContentType As DataGridViewComboBoxColumn

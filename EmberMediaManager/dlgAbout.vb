@@ -34,9 +34,7 @@ Public NotInheritable Class dlgAbout
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
-        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
-        StartPosition = FormStartPosition.Manual
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
     Private Sub dlgAbout_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
