@@ -26,63 +26,20 @@ Imports System.Xml.Serialization
 Public Class clsXMLGenres
     Implements ICloneable
 
-#Region "Fields"
-
-    Private _defaultimage As String
-    Private _genres As New List(Of genreProperty)
-    Private _mappings As New List(Of genreMapping)
-
-#End Region 'Fields
-
 #Region "Properties"
 
     <XmlElement("defaultimage")>
-    Public Property DefaultImage() As String
-        Get
-            Return _defaultimage
-        End Get
-        Set(ByVal value As String)
-            _defaultimage = value
-        End Set
-    End Property
+    Public Property DefaultImage() As String = "default.jpg"
 
     <XmlElement("genre")>
-    Public Property Genres() As List(Of genreProperty)
-        Get
-            Return _genres
-        End Get
-        Set(ByVal value As List(Of genreProperty))
-            _genres = value
-        End Set
-    End Property
+    Public Property Genres() As List(Of genreProperty) = New List(Of genreProperty)
 
     <XmlElement("mapping")>
-    Public Property Mappings() As List(Of genreMapping)
-        Get
-            Return _mappings
-        End Get
-        Set(ByVal value As List(Of genreMapping))
-            _mappings = value
-        End Set
-    End Property
+    Public Property Mappings() As List(Of genreMapping) = New List(Of genreMapping)
 
 #End Region 'Properties
 
-#Region "Constructors"
-
-    Public Sub New()
-        Clear()
-    End Sub
-
-#End Region 'Constructors
-
 #Region "Methods"
-
-    Public Sub Clear()
-        _defaultimage = "default.jpg"
-        _genres.Clear()
-        _mappings.Clear()
-    End Sub
 
     Public Function CloneDeep() As Object _
         Implements ICloneable.Clone
@@ -109,8 +66,8 @@ Public Class clsXMLGenres
     End Sub
 
     Public Sub Sort()
-        _genres.Sort()
-        _mappings.Sort()
+        Genres.Sort()
+        Mappings.Sort()
     End Sub
 
 #End Region 'Methods
@@ -121,64 +78,20 @@ End Class
 Public Class genreMapping
     Implements IComparable(Of genreMapping)
 
-
-#Region "Fields"
-
-    Private _isnew As Boolean
-    Private _mappedto As New List(Of String)
-    Private _searchstring As String
-
-#End Region 'Fields
-
 #Region "Properties"
 
     <XmlElement("searchstring")>
-    Public Property SearchString() As String
-        Get
-            Return _searchstring
-        End Get
-        Set(ByVal value As String)
-            _searchstring = value
-        End Set
-    End Property
+    Public Property SearchString() As String = String.Empty
 
     <XmlElement("mappedto")>
-    Public Property MappedTo() As List(Of String)
-        Get
-            Return _mappedto
-        End Get
-        Set(ByVal value As List(Of String))
-            _mappedto = value
-        End Set
-    End Property
+    Public Property MappedTo() As List(Of String) = New List(Of String)
 
     <XmlElement("isnew")>
-    Public Property isNew() As Boolean
-        Get
-            Return _isnew
-        End Get
-        Set(ByVal value As Boolean)
-            _isnew = value
-        End Set
-    End Property
+    Public Property isNew() As Boolean = True
 
-#End Region 'Properties
-
-#Region "Constructors"
-
-    Public Sub New()
-        Clear()
-    End Sub
-
-#End Region 'Constructors
+#End Region 'Properties 
 
 #Region "Methods"
-
-    Public Sub Clear()
-        _isnew = True
-        _mappedto.Clear()
-        _searchstring = String.Empty
-    End Sub
 
     Public Function CompareTo(ByVal other As genreMapping) As Integer _
         Implements IComparable(Of genreMapping).CompareTo
@@ -198,63 +111,20 @@ End Class
 Public Class genreProperty
     Implements IComparable(Of genreProperty)
 
-#Region "Fields"
-
-    Private _image As String
-    Private _isnew As Boolean
-    Private _name As String
-
-#End Region 'Fields
-
 #Region "Properties"
 
     <XmlElement("name")>
-    Public Property Name() As String
-        Get
-            Return _name
-        End Get
-        Set(ByVal value As String)
-            _name = value
-        End Set
-    End Property
+    Public Property Name() As String = String.Empty
 
     <XmlElement("image")>
-    Public Property Image() As String
-        Get
-            Return _image
-        End Get
-        Set(ByVal value As String)
-            _image = value
-        End Set
-    End Property
+    Public Property Image() As String = String.Empty
 
     <XmlElement("isnew")>
-    Public Property isNew() As Boolean
-        Get
-            Return _isnew
-        End Get
-        Set(ByVal value As Boolean)
-            _isnew = value
-        End Set
-    End Property
+    Public Property isNew() As Boolean = True
 
-#End Region 'Properties
-
-#Region "Constructors"
-
-    Public Sub New()
-        Clear()
-    End Sub
-
-#End Region 'Constructors
+#End Region 'Properties 
 
 #Region "Methods"
-
-    Public Sub Clear()
-        _image = String.Empty
-        _isnew = True
-        _name = String.Empty
-    End Sub
 
     Public Function CompareTo(ByVal other As genreProperty) As Integer _
         Implements IComparable(Of genreProperty).CompareTo
