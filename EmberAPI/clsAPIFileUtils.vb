@@ -909,6 +909,8 @@ Namespace FileUtils
             Dim bIsVideoTS As Boolean = dbElement.FileItem.bIsVideoTS
             Dim bIsVideoTSFile As Boolean = strFileNameWoExt.ToLower = "video_ts"
 
+            'TODO: fix NMJ file names
+
             Select Case mType
                 Case Enums.ModifierType.MainActorThumbs
                     With Master.eSettings
