@@ -4020,7 +4020,7 @@ Public Class frmMain
 
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                    SeasonPath = Functions.GetSeasonDirectoryFromShowPath(currDBElement.ShowPath, Convert.ToInt32(sRow.Cells("Season").Value))
+                    SeasonPath = FileUtils.Common.GetSeasonDirectoryFromShowPath(currDBElement.ShowPath, Convert.ToInt32(sRow.Cells("Season").Value))
 
                     Using Explorer As New Process
                         Explorer.StartInfo.FileName = "explorer.exe"
