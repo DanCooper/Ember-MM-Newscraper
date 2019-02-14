@@ -483,7 +483,7 @@ Public Class IMDB_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If Not oDBElement.Movie.UniqueIDs.IMDbIdSpecified AndAlso Not oDBElement.Movie.UniqueIDs.TMDbIdSpecified Then
                 Using dlgSearch As New dlgIMDBSearchResults_Movie(_SpecialSettings_Movie, _scraper)
-                    If dlgSearch.ShowDialog(oDBElement.Movie.Title, oDBElement.Movie.Year, oDBElement.FileItem.FirstStackedPath, FilteredOptions) = DialogResult.OK Then
+                    If dlgSearch.ShowDialog(oDBElement.Movie.Title, oDBElement.Movie.Year, oDBElement.FileItem.FirstPathFromStack, FilteredOptions) = DialogResult.OK Then
                         nMovie = _scraper.GetMovieInfo(dlgSearch.Result.UniqueIDs.IMDbId, False, FilteredOptions)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False

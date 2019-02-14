@@ -207,7 +207,7 @@ Public Class Scanner
         For Each a In FileUtils.FileNames.GetFileNames(DBElement, Enums.ModifierType.MainSubtitle, bForced)
             If Directory.Exists(a) Then
                 Try
-                    sList.AddRange(Directory.GetFiles(a, String.Concat(Path.GetFileNameWithoutExtension(DBElement.FileItem.FirstStackedPath), "*")))
+                    sList.AddRange(Directory.GetFiles(a, String.Concat(Path.GetFileNameWithoutExtension(DBElement.FileItem.FirstPathFromStack), "*")))
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
@@ -377,7 +377,7 @@ Public Class Scanner
         For Each a In FileUtils.FileNames.GetFileNames(DBElement, Enums.ModifierType.EpisodeSubtitle)
             If Directory.Exists(a) Then
                 Try
-                    sList.AddRange(Directory.GetFiles(a, String.Concat(Path.GetFileNameWithoutExtension(DBElement.FileItem.FirstStackedPath), "*")))
+                    sList.AddRange(Directory.GetFiles(a, String.Concat(Path.GetFileNameWithoutExtension(DBElement.FileItem.FirstPathFromStack), "*")))
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
@@ -610,7 +610,7 @@ Public Class Scanner
                 MetaData.UpdateFileInfo(dbElement)
             End If
         Else
-            dbElement.Movie = Info.LoadFromNFO_Movie(dbElement.FileItem.FirstStackedPath, dbElement.IsSingle)
+            dbElement.Movie = Info.LoadFromNFO_Movie(dbElement.FileItem.FirstPathFromStack, dbElement.IsSingle)
             If Not dbElement.Movie.FileInfoSpecified AndAlso dbElement.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
                 MetaData.UpdateFileInfo(dbElement)
             End If
@@ -623,7 +623,7 @@ Public Class Scanner
 
         'IMDB ID
         If Not dbElement.Movie.UniqueIDs.IMDbIDSpecified Then
-            dbElement.Movie.UniqueIDs.IMDbId = StringUtils.GetIMDBIDFromString(dbElement.FileItem.FirstStackedPath, True)
+            dbElement.Movie.UniqueIDs.IMDbId = StringUtils.GetIMDBIDFromString(dbElement.FileItem.FirstPathFromStack, True)
         End If
 
         'Title
@@ -685,7 +685,7 @@ Public Class Scanner
                 dbElement.VideoSource = vSource
                 dbElement.Movie.VideoSource = vSource
             ElseIf Not dbElement.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("VideoSourceByExtension", False, "*EmberAPP") Then
-                vSource = AdvancedSettings.GetSetting(String.Concat("VideoSourceByExtension:", Path.GetExtension(dbElement.FileItem.FirstStackedPath)), String.Empty, "*EmberAPP")
+                vSource = AdvancedSettings.GetSetting(String.Concat("VideoSourceByExtension:", Path.GetExtension(dbElement.FileItem.FirstPathFromStack)), String.Empty, "*EmberAPP")
                 If Not String.IsNullOrEmpty(vSource) Then
                     dbElement.VideoSource = vSource
                     dbElement.Movie.VideoSource = vSource
@@ -754,7 +754,7 @@ Public Class Scanner
 
         GetFolderContents_TVEpisode(dbElement)
 
-        For Each sEpisode As EpisodeItem In RegexGetTVEpisode(dbElement.FileItem.FirstStackedPath, dbElement.ShowID)
+        For Each sEpisode As EpisodeItem In RegexGetTVEpisode(dbElement.FileItem.FirstPathFromStack, dbElement.ShowID)
             Dim ToNfo As Boolean = False
 
             'It's a clone needed to prevent overwriting information of MultiEpisodes
@@ -812,7 +812,7 @@ Public Class Scanner
                 'no title so assume it's an invalid nfo, clear nfo path if exists
                 cEpisode.NfoPath = String.Empty
                 'set title based on episode file
-                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.TVEpisode.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.FileItem.FirstStackedPath, cEpisode.TVShow.Title)
+                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.TVEpisode.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.FileItem.FirstPathFromStack, cEpisode.TVShow.Title)
             End If
 
             'search local actor thumb for each actor in NFO
@@ -859,7 +859,7 @@ Public Class Scanner
                 cEpisode.VideoSource = vSource
                 cEpisode.TVEpisode.VideoSource = vSource
             ElseIf Not cEpisode.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.FileItem.FirstStackedPath)), String.Empty, "*EmberAPP")
+                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.FileItem.FirstPathFromStack)), String.Empty, "*EmberAPP")
                 If Not String.IsNullOrEmpty(vSource) Then
                     cEpisode.VideoSource = vSource
                     cEpisode.TVEpisode.VideoSource = vSource

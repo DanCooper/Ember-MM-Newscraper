@@ -1347,7 +1347,7 @@ Public Class Info
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.FileItem.FirstStackedPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.FileItem.FirstPathFromStack & ">")
         End Try
     End Sub
     ''' <summary>
@@ -1365,7 +1365,7 @@ Public Class Info
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.FileItem.FirstStackedPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.FileItem.FirstPathFromStack & ">")
         End Try
     End Sub
 

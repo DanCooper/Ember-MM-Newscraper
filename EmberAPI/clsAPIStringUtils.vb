@@ -400,7 +400,7 @@ Public Class StringUtils
         If fileItem.bIsBDMV OrElse fileItem.bIsVideoTS Then
             strRawString = fileItem.MainPath.Name
         Else
-            strRawString = If(IsSingle AndAlso UseForderName, fileItem.MainPath.Name, Path.GetFileNameWithoutExtension(fileItem.StackedFilename))
+            strRawString = If(IsSingle AndAlso UseForderName, fileItem.MainPath.Name, Path.GetFileNameWithoutExtension(fileItem.StackedFileName))
         End If
 
         'filter raw title by filter list

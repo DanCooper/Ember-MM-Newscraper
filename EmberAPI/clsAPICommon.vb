@@ -1147,38 +1147,6 @@ Public Class Functions
         Return iMod
     End Function
     ''' <summary>
-    ''' Determines the path to the desired season of a given show
-    ''' </summary>
-    ''' <param name="ShowPath">The root path for a TV show</param>
-    ''' <param name="iSeason">The desired season number for which a path is desired</param>
-    ''' <returns>A path to the TV show's desired season number, or <c>String.Empty</c> if none is found</returns>
-    ''' <remarks></remarks>
-    Public Shared Function GetSeasonDirectoryFromShowPath(ByVal ShowPath As String, ByVal iSeason As Integer) As String
-        If Directory.Exists(ShowPath) Then
-            Dim SeasonFolderPattern As New List(Of String)
-            SeasonFolderPattern.Add("(?<season>specials?)$")
-            SeasonFolderPattern.Add("^(s(eason)?)?[\W_]*(?<season>[0-9]+)$")
-            SeasonFolderPattern.Add("[^\w]s(eason)?[\W_]*(?<season>[0-9]+)")
-            Dim dInfo As New DirectoryInfo(ShowPath)
-
-            For Each sDir As DirectoryInfo In dInfo.GetDirectories
-                For Each pattern In SeasonFolderPattern
-                    For Each sMatch As Match In Regex.Matches(sDir.Name, pattern, RegexOptions.IgnoreCase)
-                        Try
-                            If (Integer.TryParse(sMatch.Groups("season").Value, 0) AndAlso iSeason = Convert.ToInt32(sMatch.Groups("season").Value)) OrElse (Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) AndAlso iSeason = 0) Then
-                                Return sDir.FullName
-                            End If
-                        Catch ex As Exception
-                            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & " Failed to determine path for season " & iSeason & " in path: " & ShowPath)
-                        End Try
-                    Next
-                Next
-            Next
-        End If
-        'no matches
-        Return String.Empty
-    End Function
-    ''' <summary>
     ''' Convert a List(of T) to a string of separated values
     ''' </summary>
     ''' <param name="source">List(of T)</param>

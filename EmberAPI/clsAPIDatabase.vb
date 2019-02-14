@@ -3011,24 +3011,24 @@ Public Class Database
                         Case Enums.DateTime.Now
                             par_dateAdded.Value = If(Not dbElement.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), dbElement.DateAdded)
                         Case Enums.DateTime.ctime
-                            Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstStackedPath)
+                            Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstPathFromStack)
                             If ctime.Year > 1601 Then
                                 par_dateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                             Else
-                                Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstStackedPath)
+                                Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstPathFromStack)
                                 par_dateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             End If
                         Case Enums.DateTime.mtime
-                            Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstStackedPath)
+                            Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstPathFromStack)
                             If mtime.Year > 1601 Then
                                 par_dateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             Else
-                                Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstStackedPath)
+                                Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstPathFromStack)
                                 par_dateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                             End If
                         Case Enums.DateTime.Newer
-                            Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstStackedPath)
-                            Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstStackedPath)
+                            Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstPathFromStack)
+                            Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstPathFromStack)
                             If mtime > ctime Then
                                 par_dateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             Else
@@ -3659,24 +3659,24 @@ Public Class Database
                         Case Enums.DateTime.Now
                             par_dateAdded.Value = If(Not dbElement.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), dbElement.DateAdded)
                         Case Enums.DateTime.ctime
-                            Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstStackedPath)
+                            Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstPathFromStack)
                             If ctime.Year > 1601 Then
                                 par_dateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                             Else
-                                Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstStackedPath)
+                                Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstPathFromStack)
                                 par_dateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             End If
                         Case Enums.DateTime.mtime
-                            Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstStackedPath)
+                            Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstPathFromStack)
                             If mtime.Year > 1601 Then
                                 par_dateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             Else
-                                Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstStackedPath)
+                                Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstPathFromStack)
                                 par_dateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                             End If
                         Case Enums.DateTime.Newer
-                            Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstStackedPath)
-                            Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstStackedPath)
+                            Dim mtime As Date = File.GetLastWriteTime(dbElement.FileItem.FirstPathFromStack)
+                            Dim ctime As Date = File.GetCreationTime(dbElement.FileItem.FirstPathFromStack)
                             If mtime > ctime Then
                                 par_dateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             Else

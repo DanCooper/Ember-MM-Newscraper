@@ -63,11 +63,11 @@ Public Class dlgRenameManual_TVEpisode
             txtFolder.Text = _DBElement.FileItem.MainPath.Name
         Else
             'TODO: fix stackMark part
-            Dim FileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.FileItem.FirstStackedPath)).Trim
-            Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstStackedPath).Replace(FileName, String.Empty).ToLower
+            Dim FileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.FileItem.FirstPathFromStack)).Trim
+            Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstPathFromStack).Replace(FileName, String.Empty).ToLower
             If Not FileName.ToLower = "video_ts" Then
                 If Not stackMark = String.Empty AndAlso _DBElement.TVEpisode.Title.ToLower.EndsWith(stackMark) Then
-                    FileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstStackedPath)
+                    FileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstPathFromStack)
                 End If
                 txtFolder.Text = _DBElement.FileItem.MainPath.Name
                 txtFile.Text = FileName

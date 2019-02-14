@@ -764,7 +764,7 @@ Public Class frmMain
     Private Sub btnPlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilePlay.Click
         If Not String.IsNullOrEmpty(txtFilePath.Text) Then
             Dim nFile = New FileItem(txtFilePath.Text)
-            If nFile.bIsOnline Then Functions.Launch(nFile.FirstStackedPath, True)
+            If nFile.bIsOnline Then Functions.Launch(nFile.FirstPathFromStack, True)
         End If
     End Sub
     ''' <summary>

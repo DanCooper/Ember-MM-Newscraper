@@ -917,7 +917,7 @@ Public Class clsAPIOMDb
                     Return GetInfo_Movie(r.Matches.Item(0).UniqueIDs.TMDbId, FilteredOptions, False)
                 Else
                     Using dlgSearch As New dlgSearchResults_Movie(_addonSettings, Me)
-                        If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.FileItem.FirstStackedPath) = DialogResult.OK Then
+                        If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.FileItem.FirstPathFromStack) = DialogResult.OK Then
                             If dlgSearch.Result.UniqueIDs.TMDbIdSpecified Then
                                 Return GetInfo_Movie(dlgSearch.Result.UniqueIDs.TMDbId, FilteredOptions, False)
                             End If

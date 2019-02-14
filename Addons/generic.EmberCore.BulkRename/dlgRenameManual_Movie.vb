@@ -63,10 +63,10 @@ Public Class dlgRenameManual_Movie
             txtFolder.Text = _DBElement.FileItem.MainPath.Name
         Else
             'TODO: fix stackMark part
-            Dim FileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.StackedFilename).Trim
-            Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstStackedPath).Replace(FileName, String.Empty).ToLower
+            Dim FileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.StackedFileName).Trim
+            Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstPathFromStack).Replace(FileName, String.Empty).ToLower
             If Not stackMark = String.Empty Then
-                FileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstStackedPath)
+                FileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstPathFromStack)
             End If
             If _DBElement.IsSingle Then
                 txtFolder.Text = _DBElement.FileItem.MainPath.Name

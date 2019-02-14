@@ -141,7 +141,7 @@ Namespace FFmpeg
             Dim strScanPath = GetVideoFileScanPath(DBElement.FileItem)
 
             If String.IsNullOrEmpty(strScanPath) Then
-                logger.Warn(String.Format("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}", DBElement.FileItem.FirstStackedPath))
+                logger.Warn(String.Format("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}", DBElement.FileItem.FirstPathFromStack))
                 Return lstThumbContainer
             End If
 
@@ -331,17 +331,17 @@ Namespace FFmpeg
                         logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Result does not contain any cropvalues? Args: {0} Output: {1}"), String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2), cropscanresult))
                     End If
                 Else
-                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.FileItem.FirstStackedPath, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
+                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.FileItem.FirstPathFromStack, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
                 End If
             Next
 
             If sortcrops.Count < 1 Then
-                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.FileItem.FirstStackedPath)
+                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.FileItem.FirstPathFromStack)
                 Return String.Empty
             Else
                 'sort list, highest resolution on top -> this one will be returned!
                 sortcrops = sortcrops.OrderByDescending(Function(X) X.Item2).ToList
-                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.FileItem.FirstStackedPath))
+                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.FileItem.FirstPathFromStack))
                 Return sortcrops(0).Item1
             End If
         End Function
@@ -653,12 +653,12 @@ Namespace FFmpeg
             If fileItem.bIsBDMV OrElse fileItem.bIsVideoTS Then
                 Return FileUtils.Common.GetLongestFromRip(fileItem)
             ElseIf fileItem.bIsDiscImage Then
-                Dim nVirtualDrive = New FileUtils.VirtualDrive(fileItem.FirstStackedPath)
+                Dim nVirtualDrive = New FileUtils.VirtualDrive(fileItem.FirstPathFromStack)
                 If nVirtualDrive.IsReady Then
                     Return FileUtils.Common.GetLongestFromRip(New FileItem(nVirtualDrive.Path))
                 End If
             ElseIf Not fileItem.bIsArchive AndAlso Not fileItem.bIsDiscStub Then
-                Return fileItem.FirstStackedPath
+                Return fileItem.FirstPathFromStack
             End If
             Return String.Empty
         End Function

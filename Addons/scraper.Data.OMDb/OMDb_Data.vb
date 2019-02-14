@@ -499,7 +499,7 @@ Public Class OMDb_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If Not oDBElement.Movie.UniqueIDs.TMDbIdSpecified Then
                 Using dlgSearch As New dlgSearchResults_Movie(_SpecialSettings_Movie, _OMDbAPI_Movie)
-                    If dlgSearch.ShowDialog(oDBElement.Movie.Title, oDBElement.FileItem.FirstStackedPath, FilteredOptions, oDBElement.Movie.Year) = DialogResult.OK Then
+                    If dlgSearch.ShowDialog(oDBElement.Movie.Title, oDBElement.FileItem.FirstPathFromStack, FilteredOptions, oDBElement.Movie.Year) = DialogResult.OK Then
                         nMovie = _OMDbAPI_Movie.GetInfo_Movie(dlgSearch.Result.UniqueIDs.IMDbId, FilteredOptions, False)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False

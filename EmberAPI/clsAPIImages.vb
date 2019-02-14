@@ -143,7 +143,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovie.FileItem.FirstStackedPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovie.FileItem.FirstPathFromStack & ">")
         End Try
     End Sub
     ''' <summary>
@@ -207,7 +207,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBTVEpisode.FileItem.FirstStackedPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBTVEpisode.FileItem.FirstPathFromStack & ">")
         End Try
     End Sub
     ''' <summary>

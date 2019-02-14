@@ -147,13 +147,13 @@ Public Class MetaData
     Private Shared Function GetFileInfo(ByVal fileItem As FileItem, ByVal contentType As Enums.ContentType) As MediaContainers.FileInfo
         Dim nFileInfo As New MediaContainers.FileInfo
 
-        If fileItem.FullPathSpecified AndAlso File.Exists(fileItem.FirstStackedPath) Then
+        If fileItem.FullPathSpecified AndAlso File.Exists(fileItem.FirstPathFromStack) Then
             Dim nStackedFiles As New List(Of MediaContainers.FileInfo)
             Dim nMediaInfo As New MediaInfo
 
             'scan Main video file to get all media informations
             If fileItem.bIsDiscImage Then
-                Dim nVirtualDrive As New FileUtils.VirtualDrive(fileItem.FirstStackedPath)
+                Dim nVirtualDrive As New FileUtils.VirtualDrive(fileItem.FirstPathFromStack)
                 If nVirtualDrive.IsReady Then
                     Dim nFileItemList As New FileItemList(nVirtualDrive.Path, contentType)
                     If nFileItemList.FileItems.Count > 0 Then
@@ -200,11 +200,11 @@ Public Class MetaData
                     nFileInfo = CombineFileInfo(nFileInfo, nAdditionalFileInfo)
                 End If
             Else
-                nFileInfo = nMediaInfo.ScanPath(fileItem.FirstStackedPath)
+                nFileInfo = nMediaInfo.ScanPath(fileItem.FirstPathFromStack)
             End If
 
             'scan all stacked video files to get the total duration
-            For Each strStackedPath In fileItem.PathList.Where(Function(f) Not f.ToString = fileItem.FirstStackedPath)
+            For Each strStackedPath In fileItem.PathList.Where(Function(f) Not f.ToString = fileItem.FirstPathFromStack)
                 Dim nAdditionalFileInfo = GetFileInfo(New FileItem(strStackedPath), contentType)
                 If nAdditionalFileInfo IsNot Nothing AndAlso nAdditionalFileInfo.StreamDetailsSpecified Then
                     nStackedFiles.Add(nAdditionalFileInfo)

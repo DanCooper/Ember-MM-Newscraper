@@ -39,7 +39,7 @@ Public Class FileItem
     Public Sub New(ByVal path As String)
         Clear()
         If path.StartsWith("stack://") Then
-            _fileinfo = New FileInfo(FileUtils.Stacking.GetFirstStackedPath(path))
+            _fileinfo = New FileInfo(FileUtils.Stacking.GetFirstPathFromStack(path))
         ElseIf Not String.IsNullOrEmpty(path) Then
             _fileinfo = New FileInfo(path)
         End If
@@ -55,6 +55,7 @@ Public Class FileItem
     Public Sub New(ByVal fileInfo As FileInfo)
         Clear()
         _fileinfo = fileInfo
+        _originalFileName = fileInfo.FullName
         _path = fileInfo.FullName
     End Sub
 
@@ -98,9 +99,9 @@ Public Class FileItem
         End Get
     End Property
 
-    Public ReadOnly Property bIsStack() As Boolean
+    Public ReadOnly Property bIsStacked() As Boolean
         Get
-            Return IsStack()
+            Return IsStacked()
         End Get
     End Property
 
@@ -162,9 +163,9 @@ Public Class FileItem
         End Get
     End Property
 
-    Public ReadOnly Property FirstStackedPath() As String
+    Public ReadOnly Property FirstPathFromStack() As String
         Get
-            Return GetFirstStackedPath()
+            Return GetFirstPathFromStack()
         End Get
     End Property
 
@@ -193,7 +194,7 @@ Public Class FileItem
     ''' Return the stacked file name and extension of a stacked file
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property StackedFilename() As String
+    Public ReadOnly Property StackedFileName() As String
         Get
             Return Path.GetFileName(FileUtils.Stacking.GetStackedPath(FullPath))
         End Get
@@ -231,12 +232,6 @@ Public Class FileItem
         End Get
     End Property
 
-    'Public ReadOnly Property StackedPath() As String
-    '    Get
-    '        Return ""
-    '    End Get
-    'End Property
-
 #End Region 'Properties
 
 #Region "Methods"
@@ -249,16 +244,16 @@ Public Class FileItem
         _originalFileName = String.Empty
     End Sub
 
-    Private Function GetPathList() As List(Of String)
-        Return FileUtils.Stacking.GetPathList(_path)
-    End Function
-
-    Private Function GetFirstStackedPath() As String
-        If bIsStack Then
-            Return FileUtils.Stacking.GetFirstStackedPath(_path)
+    Private Function GetFirstPathFromStack() As String
+        If bIsStacked Then
+            Return FileUtils.Stacking.GetFirstPathFromStack(_path)
         Else
             Return _path
         End If
+    End Function
+
+    Private Function GetPathList() As List(Of String)
+        Return FileUtils.Stacking.GetPathList(_path)
     End Function
     ''' <summary>
     ''' Returned the main folder that contains the file
@@ -305,7 +300,7 @@ Public Class FileItem
 
     Private Function IsOnline() As Boolean
         If Not bIsDirectory Then
-            If IsStack() Then
+            If IsStacked() Then
                 For Each nFile In PathList
                     If Not File.Exists(nFile) Then Return False
                 Next
@@ -314,7 +309,7 @@ Public Class FileItem
                 Return File.Exists(_path)
             End If
         Else
-            If Directory.Exists(GetFirstStackedPath) Then Return True
+            If Directory.Exists(GetFirstPathFromStack) Then Return True
         End If
         Return False
     End Function
@@ -327,7 +322,7 @@ Public Class FileItem
         Return False
     End Function
 
-    Private Function IsStack() As Boolean
+    Private Function IsStacked() As Boolean
         Return _path.StartsWith("stack://")
     End Function
 
@@ -467,24 +462,24 @@ Public Class FileItemList
 
                 If tFileItem1 IsNot Nothing Then
                     'check if VIDEO_TS
-                    Dim strPath As String = Path.Combine(tFileItem1.FirstStackedPath, "VIDEO_TS.IFO")
+                    Dim strPath As String = Path.Combine(tFileItem1.FirstPathFromStack, "VIDEO_TS.IFO")
                     If File.Exists(strPath) Then
                         'VIDEO_TS structure found, change folder to file
                         _fileitemlist(i) = New FileItem(strPath)
                     Else
-                        strPath = Path.Combine(tFileItem1.FirstStackedPath, "VIDEO_TS")
+                        strPath = Path.Combine(tFileItem1.FirstPathFromStack, "VIDEO_TS")
                         strPath = Path.Combine(strPath, "VIDEO_TS.IFO")
                         If File.Exists(strPath) Then
                             'VIDEO_TS structure found, change folder to file
                             _fileitemlist(i) = New FileItem(strPath)
                         Else
                             'check if BDMV
-                            strPath = Path.Combine(tFileItem1.FirstStackedPath, "index.bdmv")
+                            strPath = Path.Combine(tFileItem1.FirstPathFromStack, "index.bdmv")
                             If File.Exists(strPath) Then
                                 'BDMV structure found, change folder to file
                                 _fileitemlist(i) = New FileItem(strPath)
                             Else
-                                strPath = Path.Combine(tFileItem1.FirstStackedPath, "BDMV")
+                                strPath = Path.Combine(tFileItem1.FirstPathFromStack, "BDMV")
                                 strPath = Path.Combine(strPath, "index.bdmv")
                                 If File.Exists(strPath) Then
                                     'BDMV structure found, change folder to file
@@ -558,7 +553,7 @@ Public Class FileItemList
                 If iStack.Count > 1 Then
                     'have a stack, remove the items And add the stacked item
                     'dont actually stack a multipart rar set, just remove all items but the first
-                    Dim strStackedPath As String = FileUtils.Stacking.ConstructStackPath(Me, iStack)
+                    Dim strStackedPath As String = FileUtils.Stacking.ConstructStackedPath(Me, iStack)
                     _fileitemlist(i) = New FileItem(strStackedPath)
 
                     'clean up list

@@ -329,7 +329,7 @@ Public Class dlgEditTVEpisode
                     tmpDBElement.VideoSource = vSource
                     .VideoSource = tmpDBElement.VideoSource
                 ElseIf Not tmpDBElement.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                    tmpDBElement.VideoSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBElement.FileItem.FirstStackedPath)), String.Empty, "*EmberAPP")
+                    tmpDBElement.VideoSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBElement.FileItem.FirstPathFromStack)), String.Empty, "*EmberAPP")
                     .VideoSource = tmpDBElement.VideoSource
                 ElseIf .VideoSourceSpecified Then
                     tmpDBElement.VideoSource = .VideoSource
@@ -385,7 +385,7 @@ Public Class dlgEditTVEpisode
             'DiscStub
             If tmpDBElement.FileItem.bIsDiscStub Then
                 Dim DiscStub As New MediaStub.DiscStub
-                DiscStub = MediaStub.LoadDiscStub(tmpDBElement.FileItem.FirstStackedPath)
+                DiscStub = MediaStub.LoadDiscStub(tmpDBElement.FileItem.FirstPathFromStack)
                 txtMediaStubTitle.Text = DiscStub.Title
                 txtMediaStubMessage.Text = DiscStub.Message
                 bNeedTab_Other = True
@@ -496,7 +496,7 @@ Public Class dlgEditTVEpisode
 
         'DiscStub
         If tmpDBElement.FileItem.bIsDiscStub Then
-            Dim StubFile As String = tmpDBElement.FileItem.FirstStackedPath
+            Dim StubFile As String = tmpDBElement.FileItem.FirstPathFromStack
             Dim Title As String = txtMediaStubTitle.Text
             Dim Message As String = txtMediaStubMessage.Text
             MediaStub.SaveDiscStub(StubFile, Title, Message)
@@ -551,7 +551,7 @@ Public Class dlgEditTVEpisode
         btnFrameSaveAsFanart.Enabled = False
         btnFrameSaveAsPoster.Enabled = False
 
-        Dim nFrame = FFmpeg.FFmpeg.ExtractImageFromVideo(tmpDBElement.FileItem.FirstStackedPath, tbFrame.Value, True)
+        Dim nFrame = FFmpeg.FFmpeg.ExtractImageFromVideo(tmpDBElement.FileItem.FirstPathFromStack, tbFrame.Value, True)
 
         If nFrame IsNot Nothing AndAlso nFrame.Image IsNot Nothing AndAlso nFrame.Image.ImageOriginal.Image IsNot Nothing Then
             pbFrame.Image = nFrame.Image.ImageOriginal.Image
@@ -578,7 +578,7 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub FrameExtraction_LoadVideo_Click(sender As Object, e As EventArgs) Handles btnFrameLoadVideo.Click
-        Dim nFrame = FFmpeg.FFmpeg.ExtractImageFromVideo(tmpDBElement.FileItem.FirstStackedPath, 0, True)
+        Dim nFrame = FFmpeg.FFmpeg.ExtractImageFromVideo(tmpDBElement.FileItem.FirstPathFromStack, 0, True)
         If nFrame IsNot Nothing AndAlso nFrame.Duration > 0 AndAlso nFrame.Image IsNot Nothing AndAlso nFrame.Image.ImageOriginal IsNot Nothing Then
             tbFrame.Maximum = nFrame.Duration
             tbFrame.Value = 0

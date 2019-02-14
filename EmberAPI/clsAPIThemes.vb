@@ -118,7 +118,7 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.FileItem.FirstStackedPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.FileItem.FirstPathFromStack & ">")
         End Try
     End Sub
     ''' <summary>

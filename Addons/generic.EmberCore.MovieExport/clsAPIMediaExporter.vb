@@ -651,7 +651,7 @@ Public Class MediaExporter
         'Special Strings
         strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
         strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(tMovie.FileItem.MainPath.FullName)))
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.FileItem.FirstStackedPath)))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.FileItem.FirstPathFromStack)))
         strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(tMovie.FileItem.TotalSizeAsReadableString))
         strRow = strRow.Replace("<$NOW>", Date.Now.ToLongDateString) 'Save Build Date. might be useful info!
         strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.FileItem.MainPath.FullName))
@@ -779,7 +779,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
         strRow = strRow.Replace("<$COUNT_TVSEASON>", _iCounter_TVSeason.ToString)
         strRow = strRow.Replace("<$COUNT_TVEPISODE>", _iCounter_TVEpisode.ToString)
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.FileItem.FirstStackedPath)))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.FileItem.FirstPathFromStack)))
         strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(tEpisode.FileItem.TotalSizeAsReadableString))
         strRow = strRow.Replace("<$MISSING>", If(tEpisode.FileItem.IDSpecified, "false", "true"))
         strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tEpisode.FileItem.MainPath.FullName))
