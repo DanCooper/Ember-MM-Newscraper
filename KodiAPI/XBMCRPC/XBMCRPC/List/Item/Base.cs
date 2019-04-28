@@ -14,7 +14,7 @@ namespace XBMCRPC.List.Item
        public global::System.Collections.Generic.List<int> albumartistid { get; set; }
        public int albumid { get; set; }
        public string albumlabel { get; set; }
-       public global::System.Collections.Generic.List<XBMCRPC.Video.CastItem> cast { get; set; }
+       public global::System.Collections.Generic.List<XBMCRPC.Video.Cast> cast { get; set; }
        public string comment { get; set; }
        public global::System.Collections.Generic.List<string> country { get; set; }
        public string description { get; set; }

@@ -23,7 +23,6 @@ Imports System.IO
 Imports NLog
 Imports System.Xml.Serialization
 
-
 Public Class KodiInterface
     Implements Interfaces.GenericModule
 
@@ -998,7 +997,7 @@ Public Class KodiInterface
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.GetConnectionToHost) Then
                                     Await _APIKodi.VideoLibrary_Clean.ConfigureAwait(False)
-                                    While Await _APIKodi.IsScanningVideo()
+                                    While Await _APIKodi.Host_IsScanningVideo()
                                         Threading.Thread.Sleep(1000)
                                     End While
                                 Else
@@ -1013,7 +1012,7 @@ Public Class KodiInterface
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.GetConnectionToHost) Then
                                     Await _APIKodi.VideoLibrary_Scan.ConfigureAwait(False)
-                                    While Await _APIKodi.IsScanningVideo()
+                                    While Await _APIKodi.Host_IsScanningVideo()
                                         Threading.Thread.Sleep(1000)
                                     End While
                                 Else
@@ -1053,7 +1052,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation
     ''' Used at module startup(=Ember startup) to load Kodi Hosts and also set other module settings
     Sub LoadSettings()
-        _SpecialSettings.Clear()
+        _SpecialSettings = New SpecialSettings
         If File.Exists(_xmlSettingsPath) Then
             Dim xmlSer As XmlSerializer = Nothing
             Using xmlSR As StreamReader = New StreamReader(_xmlSettingsPath)
@@ -2092,353 +2091,94 @@ Public Class KodiInterface
     <XmlRoot("interface.kodi")>
     Class SpecialSettings
 
-#Region "Fields"
-
-        Private _hosts As New List(Of Host)
-        Private _sendnotifications As Boolean
-        Private _getwatchedstate As Boolean
-        Private _getwatchedstatebeforeedit_movie As Boolean
-        Private _getwatchedstatebeforeedit_tvepisode As Boolean
-        Private _getwatchedstatescrapermulti_movie As Boolean
-        Private _getwatchedstatescrapermulti_tvepisode As Boolean
-        Private _getwatchedstatescrapersingle_movie As Boolean
-        Private _getwatchedstatescrapersingle_tvepisode As Boolean
-        Private _getwatchedstatehost As String
-
-#End Region 'Fields
-
 #Region "Properties"
 
         <XmlElement("getwatchedstate")>
-        Public Property GetWatchedState() As Boolean
-            Get
-                Return _getwatchedstate
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstate = value
-            End Set
-        End Property
+        Public Property GetWatchedState() As Boolean = False
 
         <XmlElement("getwatchedstatebeforeedit_movie")>
-        Public Property GetWatchedStateBeforeEdit_Movie() As Boolean
-            Get
-                Return _getwatchedstatebeforeedit_movie
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatebeforeedit_movie = value
-            End Set
-        End Property
+        Public Property GetWatchedStateBeforeEdit_Movie() As Boolean = False
 
         <XmlElement("getwatchedstatebeforeedit_tvepisode")>
-        Public Property GetWatchedStateBeforeEdit_TVEpisode() As Boolean
-            Get
-                Return _getwatchedstatebeforeedit_tvepisode
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatebeforeedit_tvepisode = value
-            End Set
-        End Property
+        Public Property GetWatchedStateBeforeEdit_TVEpisode() As Boolean = False
 
         <XmlElement("getwatchedstatehost")>
-        Public Property GetWatchedStateHost() As String
-            Get
-                Return _getwatchedstatehost
-            End Get
-            Set(ByVal value As String)
-                _getwatchedstatehost = value
-            End Set
-        End Property
+        Public Property GetWatchedStateHost() As String = String.Empty
 
         <XmlElement("getwatchedstatescrapermulti_movie")>
-        Public Property GetWatchedStateScraperMulti_Movie() As Boolean
-            Get
-                Return _getwatchedstatescrapermulti_movie
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatescrapermulti_movie = value
-            End Set
-        End Property
+        Public Property GetWatchedStateScraperMulti_Movie() As Boolean = False
 
         <XmlElement("getwatchedstatescrapermulti_tvepisode")>
-        Public Property GetWatchedStateScraperMulti_TVEpisode() As Boolean
-            Get
-                Return _getwatchedstatescrapermulti_tvepisode
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatescrapermulti_tvepisode = value
-            End Set
-        End Property
+        Public Property GetWatchedStateScraperMulti_TVEpisode() As Boolean = False
 
         <XmlElement("getwatchedstatescrapersingle_movie")>
-        Public Property GetWatchedStateScraperSingle_Movie() As Boolean
-            Get
-                Return _getwatchedstatescrapersingle_movie
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatescrapersingle_movie = value
-            End Set
-        End Property
+        Public Property GetWatchedStateScraperSingle_Movie() As Boolean = False
 
         <XmlElement("getwatchedstatescrapersingle_tvepisode")>
-        Public Property GetWatchedStateScraperSingle_TVEpisode() As Boolean
-            Get
-                Return _getwatchedstatescrapersingle_tvepisode
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatescrapersingle_tvepisode = value
-            End Set
-        End Property
+        Public Property GetWatchedStateScraperSingle_TVEpisode() As Boolean = False
 
         <XmlElement("host")>
-        Public Property Hosts() As List(Of Host)
-            Get
-                Return _hosts
-            End Get
-            Set(ByVal value As List(Of Host))
-                _hosts = value
-            End Set
-        End Property
+        Public Property Hosts() As List(Of Host) = New List(Of Host)
 
         <XmlElement("sendnotifications")>
-        Public Property SendNotifications() As Boolean
-            Get
-                Return _sendnotifications
-            End Get
-            Set(ByVal value As Boolean)
-                _sendnotifications = value
-            End Set
-        End Property
+        Public Property SendNotifications() As Boolean = False
 
-#End Region 'Properties
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _hosts.Clear()
-            _sendnotifications = False
-            _getwatchedstate = False
-            _getwatchedstatebeforeedit_movie = False
-            _getwatchedstatebeforeedit_tvepisode = False
-            _getwatchedstatehost = String.Empty
-            _getwatchedstatescrapermulti_movie = False
-            _getwatchedstatescrapermulti_tvepisode = False
-            _getwatchedstatescrapersingle_movie = False
-            _getwatchedstatescrapersingle_tvepisode = False
-        End Sub
-
-#End Region 'Methods
+#End Region 'Properties 
 
     End Class
 
     <Serializable()>
-    Class Host
-
-#Region "Fields"
-
-        Private _address As String
-        Private _apiversioninfo As Kodi.APIKodi.APIVersionInfo
-        Private _label As String
-        Private _moviesetartworkspath As String
-        Private _password As String
-        Private _port As Integer
-        Private _realtimesync As Boolean
-        Private _sources As New List(Of Source)
-        Private _username As String
-
-#End Region 'Fields
+    Public Class Host
 
 #Region "Properties"
 
         <XmlElement("label")>
-        Public Property Label() As String
-            Get
-                Return _label
-            End Get
-            Set(ByVal value As String)
-                _label = value
-            End Set
-        End Property
+        Public Property Label() As String = "New Host"
 
         <XmlElement("address")>
-        Public Property Address() As String
-            Get
-                Return _address
-            End Get
-            Set(ByVal value As String)
-                _address = value
-            End Set
-        End Property
+        Public Property Address() As String = "localhost"
 
         <XmlElement("port")>
-        Public Property Port() As Integer
-            Get
-                Return _port
-            End Get
-            Set(ByVal value As Integer)
-                _port = value
-            End Set
-        End Property
+        Public Property Port() As Integer = 8080
 
         <XmlElement("username")>
-        Public Property Username() As String
-            Get
-                Return _username
-            End Get
-            Set(ByVal value As String)
-                _username = value
-            End Set
-        End Property
+        Public Property Username() As String = "kodi"
 
         <XmlElement("password")>
-        Public Property Password() As String
-            Get
-                Return _password
-            End Get
-            Set(ByVal value As String)
-                _password = value
-            End Set
-        End Property
+        Public Property Password() As String = String.Empty
 
         <XmlElement("realtimesync")>
-        Public Property RealTimeSync() As Boolean
-            Get
-                Return _realtimesync
-            End Get
-            Set(ByVal value As Boolean)
-                _realtimesync = value
-            End Set
-        End Property
+        Public Property RealTimeSync() As Boolean = False
 
         <XmlElement("moviesetartworkspath")>
-        Public Property MovieSetArtworksPath() As String
-            Get
-                Return _moviesetartworkspath
-            End Get
-            Set(ByVal value As String)
-                _moviesetartworkspath = value
-            End Set
-        End Property
+        Public Property MovieSetArtworksPath() As String = String.Empty
 
         <XmlElement("source")>
-        Public Property Sources() As List(Of Source)
-            Get
-                Return _sources
-            End Get
-            Set(ByVal value As List(Of Source))
-                _sources = value
-            End Set
-        End Property
+        Public Property Sources() As List(Of Source) = New List(Of Source)
 
         <XmlIgnore>
-        Public Property APIVersionInfo() As Kodi.APIKodi.APIVersionInfo
-            Get
-                Return _apiversioninfo
-            End Get
-            Set(ByVal value As Kodi.APIKodi.APIVersionInfo)
-                _apiversioninfo = value
-            End Set
-        End Property
+        Public Property APIVersionInfo() As XBMCRPC.JSONRPC.VersionResponse = New XBMCRPC.JSONRPC.VersionResponse
 
 #End Region 'Properties
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _address = "localhost"
-            _apiversioninfo = New Kodi.APIKodi.APIVersionInfo
-            _moviesetartworkspath = String.Empty
-            _label = "New Host"
-            _password = String.Empty
-            _port = 8080
-            _realtimesync = False
-            _sources.Clear()
-            _username = "kodi"
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
 
     <Serializable()>
-    Class Source
-
-
-#Region "Fields"
-
-        Private _contenttype As Enums.ContentType
-        Private _localpath As String
-        Private _remotepath As String
-
-#End Region 'Fields
+    Public Class Source
 
 #Region "Properties"
 
         <XmlElement("contenttype")>
-        Public Property ContentType() As Enums.ContentType
-            Get
-                Return _contenttype
-            End Get
-            Set(ByVal value As Enums.ContentType)
-                _contenttype = value
-            End Set
-        End Property
+        Public Property ContentType() As Enums.ContentType = Enums.ContentType.Movie
 
         <XmlElement("localpath")>
-        Public Property LocalPath() As String
-            Get
-                Return _localpath
-            End Get
-            Set(ByVal value As String)
-                _localpath = value
-            End Set
-        End Property
+        Public Property LocalPath() As String = String.Empty
 
         <XmlElement("remotepath")>
-        Public Property RemotePath() As String
-            Get
-                Return _remotepath
-            End Get
-            Set(ByVal value As String)
-                _remotepath = value
-            End Set
-        End Property
+        Public Property RemotePath() As String = String.Empty
 
-#End Region 'Properties
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _contenttype = Enums.ContentType.Movie
-            _localpath = String.Empty
-            _remotepath = String.Empty
-        End Sub
-
-#End Region 'Methods
+#End Region 'Properties 
 
     End Class
 

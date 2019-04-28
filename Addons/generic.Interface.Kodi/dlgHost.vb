@@ -34,7 +34,7 @@ Public Class dlgHost
     'all sources of current host
     Private currentHostRemoteSources As New List(Of XBMCRPC.List.Items.SourcesItem)
     'JSONRPC version of host - may be retrieved manually if user hits "Check Connection" button
-    Private JsonHostVersionInfo As Kodi.APIKodi.APIVersionInfo
+    Private JsonHostVersionInfo As XBMCRPC.JSONRPC.VersionResponse
     'List of all show and movie sources in Ember
     Private LocalSources As New Dictionary(Of String, Enums.ContentType)
     Private RemoteSources As New List(Of String)
@@ -222,7 +222,7 @@ Public Class dlgHost
         SetControlsEnabled(False)
         SetInfo()
 
-        JsonHostVersionInfo = New Kodi.APIKodi.APIVersionInfo
+        JsonHostVersionInfo = New XBMCRPC.JSONRPC.VersionResponse
         'start backgroundworker: check for JSONversion
         bwLoadInfo.RunWorkerAsync(2)
         While bwLoadInfo.IsBusy
@@ -235,7 +235,17 @@ Public Class dlgHost
         If JsonHostVersionInfo Is Nothing Then
             MessageBox.Show(Master.eLang.GetString(1434, "There was a problem communicating with host."), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
-            MessageBox.Show(Master.eLang.GetString(1435, "Connection to host successful!") & Environment.NewLine & "API-Version: " & JsonHostVersionInfo.ReadingFriendly, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show(
+                String.Format("{0}{1}{2} {3}.{4}.{5}",
+                              Master.eLang.GetString(1435, "Connection to host successful!"),
+                              Environment.NewLine,
+                              "API-Version:",
+                              JsonHostVersionInfo.version.major,
+                              JsonHostVersionInfo.version.minor,
+                              JsonHostVersionInfo.version.patch),
+                String.Empty,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information)
         End If
     End Sub
     ''' <summary>
