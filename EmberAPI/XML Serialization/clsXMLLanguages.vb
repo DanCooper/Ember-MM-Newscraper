@@ -1,13 +1,13 @@
 ﻿
 '''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="Languages")> _
-Partial Public Class clsXMLLanguages
+<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True),
+ System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="Languages")>
+Partial Public Class XMLLanguages
 
     Private languageField As New List(Of LanguagesLanguage)
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("Language")> _
+    <System.Xml.Serialization.XmlElementAttribute("Language")>
     Public Property Language() As List(Of LanguagesLanguage)
         Get
             Return languageField

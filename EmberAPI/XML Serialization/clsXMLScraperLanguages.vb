@@ -25,7 +25,7 @@ Imports System.Xml.Serialization
 
 <Serializable()>
 <XmlRoot("core.scraperlanguages")>
-Public Class clsXMLScraperLanguages
+Public Class XMLScraperLanguages
 
 #Region "Fields"
 
@@ -63,7 +63,7 @@ Public Class clsXMLScraperLanguages
 
     Public Sub Save()
         Sort()
-        Dim xmlSerial As New XmlSerializer(GetType(clsXMLScraperLanguages))
+        Dim xmlSerial As New XmlSerializer(GetType(XMLScraperLanguages))
         Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "Core.ScraperLanguages.xml"))
         xmlSerial.Serialize(xmlWriter, APIXML.ScraperLanguagesXML)
         xmlWriter.Close()

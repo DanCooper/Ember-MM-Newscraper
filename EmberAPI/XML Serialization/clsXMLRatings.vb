@@ -1,15 +1,15 @@
 ﻿
 '''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="ratings")> _
-Partial Public Class clsXMLRatings
+<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True),
+ System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="ratings")>
+Partial Public Class XMLRatings
 
     Private moviesField As New List(Of ratingsNameMovie)
 
     Private tvField As New List(Of ratingsNameTV)
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlArrayItemAttribute("name", IsNullable:=False)> _
+    <System.Xml.Serialization.XmlArrayItemAttribute("name", IsNullable:=False)>
     Public Property movies() As List(Of ratingsNameMovie)
         Get
             Return moviesField
@@ -18,7 +18,7 @@ Partial Public Class clsXMLRatings
             moviesField = value
         End Set
     End Property
-    <System.Xml.Serialization.XmlArrayItemAttribute("name", IsNullable:=False)> _
+    <System.Xml.Serialization.XmlArrayItemAttribute("name", IsNullable:=False)>
     Public Property tv() As List(Of ratingsNameTV)
         Get
             Return tvField

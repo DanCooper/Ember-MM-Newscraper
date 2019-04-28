@@ -1,13 +1,13 @@
 ﻿
 '''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="strings")> _
-Partial Public Class clsXMLLanguage
+<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True),
+ System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="strings")>
+Partial Public Class XMLLanguage
 
     Private _stringField As New List(Of LanguageString)
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("string")> _
+    <System.Xml.Serialization.XmlElementAttribute("string")>
     Public Property [string]() As List(Of LanguageString)
         Get
             Return _stringField

@@ -1,14 +1,14 @@
 ﻿'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="AdvancedSettings")> _
-Partial Public Class clsXMLAdvancedSettings
+<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True),
+ System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="AdvancedSettings")>
+Partial Public Class XMLAdvancedSettings
 
     Private _settingField As New List(Of AdvancedSettingsSetting)
 
     Private _complexSettingsField As New List(Of AdvancedSettingsComplexSettings)
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("Setting")> _
+    <System.Xml.Serialization.XmlElementAttribute("Setting")>
     Public Property Setting As List(Of AdvancedSettingsSetting)
         Get
             Return _settingField
@@ -19,7 +19,7 @@ Partial Public Class clsXMLAdvancedSettings
     End Property
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("ComplexSettings")> _
+    <System.Xml.Serialization.XmlElementAttribute("ComplexSettings")>
     Public Property ComplexSettings As List(Of AdvancedSettingsComplexSettings)
         Get
             Return _complexSettingsField

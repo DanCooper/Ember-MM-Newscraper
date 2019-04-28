@@ -23,7 +23,7 @@ Imports System.Xml.Serialization
 
 <Serializable()>
 <XmlRoot("core.genres")>
-Public Class clsXMLGenres
+Public Class XMLGenres
     Implements ICloneable
 
 #Region "Properties"
@@ -32,10 +32,10 @@ Public Class clsXMLGenres
     Public Property DefaultImage() As String = "default.jpg"
 
     <XmlElement("genre")>
-    Public Property Genres() As List(Of genreProperty) = New List(Of genreProperty)
+    Public Property Genres() As List(Of GenreProperty) = New List(Of GenreProperty)
 
     <XmlElement("mapping")>
-    Public Property Mappings() As List(Of genreMapping) = New List(Of genreMapping)
+    Public Property Mappings() As List(Of GenreMapping) = New List(Of GenreMapping)
 
 #End Region 'Properties
 
@@ -59,7 +59,7 @@ Public Class clsXMLGenres
 
     Public Sub Save()
         Sort()
-        Dim xmlSerial As New XmlSerializer(GetType(clsXMLGenres))
+        Dim xmlSerial As New XmlSerializer(GetType(XMLGenres))
         Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "Core.Genres.xml"))
         xmlSerial.Serialize(xmlWriter, APIXML.GenreXML)
         xmlWriter.Close()
@@ -75,8 +75,8 @@ Public Class clsXMLGenres
 End Class
 
 <Serializable()>
-Public Class genreMapping
-    Implements IComparable(Of genreMapping)
+Public Class GenreMapping
+    Implements IComparable(Of GenreMapping)
 
 #Region "Properties"
 
@@ -93,8 +93,8 @@ Public Class genreMapping
 
 #Region "Methods"
 
-    Public Function CompareTo(ByVal other As genreMapping) As Integer _
-        Implements IComparable(Of genreMapping).CompareTo
+    Public Function CompareTo(ByVal other As GenreMapping) As Integer _
+        Implements IComparable(Of GenreMapping).CompareTo
         Try
             Dim retVal As Integer = (SearchString).CompareTo(other.SearchString)
             Return retVal
@@ -108,8 +108,8 @@ Public Class genreMapping
 End Class
 
 <Serializable()>
-Public Class genreProperty
-    Implements IComparable(Of genreProperty)
+Public Class GenreProperty
+    Implements IComparable(Of GenreProperty)
 
 #Region "Properties"
 
@@ -120,14 +120,14 @@ Public Class genreProperty
     Public Property Image() As String = String.Empty
 
     <XmlElement("isnew")>
-    Public Property isNew() As Boolean = True
+    Public Property IsNew() As Boolean = True
 
 #End Region 'Properties 
 
 #Region "Methods"
 
-    Public Function CompareTo(ByVal other As genreProperty) As Integer _
-        Implements IComparable(Of genreProperty).CompareTo
+    Public Function CompareTo(ByVal other As GenreProperty) As Integer _
+        Implements IComparable(Of GenreProperty).CompareTo
         Try
             Dim retVal As Integer = (Name).CompareTo(other.Name)
             Return retVal
