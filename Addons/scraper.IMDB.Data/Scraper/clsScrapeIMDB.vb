@@ -1210,7 +1210,7 @@ Namespace IMDB
             End If
 
             If htmldReleaseInfo IsNot Nothing Then
-                Dim selNodes = htmldReleaseInfo.DocumentNode.SelectNodes(String.Format("//table[@id=""akas""]/tr/td[contains(text(), '{0}')]", _SpecialSettings.ForceTitleLanguage))
+                Dim selNodes = htmldReleaseInfo.DocumentNode.SelectNodes(String.Format("//tr[@class=""ipl-zebra-list__item aka-item""]/td[contains(text(), '{0}')]", _SpecialSettings.ForceTitleLanguage))
                 If selNodes IsNot Nothing Then
                     Dim filteredTitles = selNodes.Where(Function(f) Not HttpUtility.HtmlDecode(f.InnerText).ToLower.Contains("working title") AndAlso
                                                             Not HttpUtility.HtmlDecode(f.InnerText).ToLower.Contains("fake working title"))
@@ -1222,7 +1222,7 @@ Namespace IMDB
 
             'fallback
             If _SpecialSettings.FallBackWorldwide Then
-                Dim selFallback = htmldReleaseInfo.DocumentNode.SelectNodes("//table[@id=""akas""]/tr/td")
+                Dim selFallback = htmldReleaseInfo.DocumentNode.SelectNodes("//tr[@class=""ipl-zebra-list__item aka-item""]/td")
                 If selFallback IsNot Nothing Then
                     For Each nNode In selFallback
                         If HttpUtility.HtmlDecode(nNode.InnerText).ToLower.Contains("world-wide") OrElse
