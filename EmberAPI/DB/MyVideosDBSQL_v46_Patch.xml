@@ -2448,7 +2448,8 @@
         sortTitle         text,
         originalTitle     text,
         userRating        integer NOT NULL DEFAULT 0,
-        dateModified    integer
+        dateModified      integer,
+        dateAdded         integer
         );
 
         CREATE UNIQUE INDEX UniquePath

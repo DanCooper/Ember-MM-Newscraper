@@ -3495,6 +3495,8 @@ Namespace MediaContainers
 
 #Region "Fields"
 
+        Private _dateadded As String = String.Empty
+        Private _datemodified As String = String.Empty
         Private _id As String = String.Empty
         Private _rating As String = String.Empty
 
@@ -3784,6 +3786,40 @@ Namespace MediaContainers
         Public ReadOnly Property RuntimeSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Runtime) AndAlso Not Runtime = "0"
+            End Get
+        End Property
+
+        <XmlElement("dateadded")>
+        Public Property DateAdded() As String
+            Get
+                Return _dateadded
+            End Get
+            Set(ByVal value As String)
+                _dateadded = Functions.ConvertToProperDateTime(value)
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property DateAddedSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(DateAdded)
+            End Get
+        End Property
+
+        <XmlElement("datemodified")>
+        Public Property DateModified() As String
+            Get
+                Return _datemodified
+            End Get
+            Set(ByVal value As String)
+                _datemodified = Functions.ConvertToProperDateTime(value)
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property DateModifiedSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(DateModified)
             End Get
         End Property
 
