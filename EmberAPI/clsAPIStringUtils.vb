@@ -118,17 +118,17 @@ Public Class StringUtils
 
         If Not aGenres.Count = 0 Then
             For Each tGenre As String In aGenres
-                Dim gMappings As genreMapping = APIXML.GenreXML.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
+                Dim gMappings As GenreMapping = APIXML.GenreXML.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
                 If gMappings IsNot Nothing Then
                     nGernes.AddRange(gMappings.MappedTo)
                 ElseIf addNewGenres Then
                     'check if the tGenre is already existing in Gernes list
-                    Dim gProperty As genreProperty = APIXML.GenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
+                    Dim gProperty As GenreProperty = APIXML.GenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
                     If gProperty Is Nothing Then
-                        APIXML.GenreXML.Genres.Add(New genreProperty With {.Name = tGenre})
+                        APIXML.GenreXML.Genres.Add(New GenreProperty With {.Name = tGenre})
                     End If
                     'add a new mapping if tGenre is not in the Mappings list
-                    APIXML.GenreXML.Mappings.Add(New genreMapping With {.MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
+                    APIXML.GenreXML.Mappings.Add(New GenreMapping With {.MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
                     nGernes.Add(tGenre)
                 End If
             Next

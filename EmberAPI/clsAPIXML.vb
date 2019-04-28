@@ -29,10 +29,10 @@ Public Class APIXML
 #Region "Fields"
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared CertLanguagesXML As New clsXMLCertLanguages
-    Public Shared GenreXML As New clsXMLGenres
-    Public Shared RatingXML As New clsXMLRatings
-    Public Shared ScraperLanguagesXML As New clsXMLScraperLanguages
+    Public Shared CertLanguagesXML As New XMLCertLanguages
+    Public Shared GenreXML As New XMLGenres
+    Public Shared RatingXML As New XMLRatings
+    Public Shared ScraperLanguagesXML As New XMLScraperLanguages
     Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
     Public Shared alGenres As New List(Of String)
     Public Shared dLanguages As New Dictionary(Of String, String)
@@ -72,7 +72,7 @@ Public Class APIXML
                 objStreamReader = New StreamReader(gPath)
                 Dim xGenres As New XmlSerializer(GenreXML.GetType)
 
-                GenreXML = CType(xGenres.Deserialize(objStreamReader), clsXMLGenres)
+                GenreXML = CType(xGenres.Deserialize(objStreamReader), XMLGenres)
                 objStreamReader.Close()
             End If
 
@@ -121,14 +121,14 @@ Public Class APIXML
                 objStreamReader = New StreamReader(rPath)
                 Dim xRatings As New XmlSerializer(RatingXML.GetType)
 
-                RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
+                RatingXML = CType(xRatings.Deserialize(objStreamReader), XMLRatings)
                 objStreamReader.Close()
             Else
                 Dim rPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultRatings.xml")
                 objStreamReader = New StreamReader(rPathD)
                 Dim xRatings As New XmlSerializer(RatingXML.GetType)
 
-                RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
+                RatingXML = CType(xRatings.Deserialize(objStreamReader), XMLRatings)
                 objStreamReader.Close()
 
                 Try
@@ -143,14 +143,14 @@ Public Class APIXML
                 objStreamReader = New StreamReader(cPath)
                 Dim xCert As New XmlSerializer(CertLanguagesXML.GetType)
 
-                CertLanguagesXML = CType(xCert.Deserialize(objStreamReader), clsXMLCertLanguages)
+                CertLanguagesXML = CType(xCert.Deserialize(objStreamReader), XMLCertLanguages)
                 objStreamReader.Close()
             Else
                 Dim cPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultCertLanguages.xml")
                 objStreamReader = New StreamReader(cPathD)
                 Dim xCert As New XmlSerializer(CertLanguagesXML.GetType)
 
-                CertLanguagesXML = CType(xCert.Deserialize(objStreamReader), clsXMLCertLanguages)
+                CertLanguagesXML = CType(xCert.Deserialize(objStreamReader), XMLCertLanguages)
                 objStreamReader.Close()
 
                 Try
@@ -165,14 +165,14 @@ Public Class APIXML
                 objStreamReader = New StreamReader(slPath)
                 Dim xLang As New XmlSerializer(ScraperLanguagesXML.GetType)
 
-                ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), clsXMLScraperLanguages)
+                ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), XMLScraperLanguages)
                 objStreamReader.Close()
             Else
                 Dim slPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "Core.ScraperLanguages.xml")
                 objStreamReader = New StreamReader(slPathD)
                 Dim xLang As New XmlSerializer(ScraperLanguagesXML.GetType)
 
-                ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), clsXMLScraperLanguages)
+                ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), XMLScraperLanguages)
                 objStreamReader.Close()
                 ScraperLanguagesXML.Save()
             End If

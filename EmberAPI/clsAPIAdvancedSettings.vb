@@ -28,7 +28,7 @@ Public Class AdvancedSettings
 
 #Region "Fields"
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
-    Private Shared _AdvancedSettings As New clsXMLAdvancedSettings
+    Private Shared _AdvancedSettings As New XMLAdvancedSettings
 
     Private Shared _DoNotSave As Boolean = False
 
@@ -37,11 +37,11 @@ Public Class AdvancedSettings
 #End Region 'Fields
 
 #Region "Properties"
-    Public Shared Property AdvancedSettings As clsXMLAdvancedSettings
+    Public Shared Property AdvancedSettings As XMLAdvancedSettings
         Get
             Return _AdvancedSettings
         End Get
-        Set(value As clsXMLAdvancedSettings)
+        Set(value As XMLAdvancedSettings)
             _AdvancedSettings = value
         End Set
     End Property
@@ -215,7 +215,7 @@ Public Class AdvancedSettings
             If File.Exists(fname) Then
                 Dim objStreamReader As New StreamReader(fname)
                 Dim xAdvancedSettings As New XmlSerializer(_AdvancedSettings.GetType)
-                _AdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
+                _AdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), XMLAdvancedSettings)
                 objStreamReader.Close()
             End If
         Catch ex As Exception
@@ -231,14 +231,14 @@ Public Class AdvancedSettings
 
                     Dim xXMLSettings As New XmlSerializer(_AdvancedSettings.GetType)
                     Using reader As TextReader = New StringReader(sAdvancedSettings)
-                        _AdvancedSettings = CType(xXMLSettings.Deserialize(reader), clsXMLAdvancedSettings)
+                        _AdvancedSettings = CType(xXMLSettings.Deserialize(reader), XMLAdvancedSettings)
                     End Using
                 End Using
                 logger.Info("AdvancedSettings.xml successfully repaired")
             Catch ex2 As Exception
                 logger.Error(ex2, New StackFrame().GetMethod().Name)
                 File.Copy(fname, String.Concat(fname, "_backup"), True)
-                _AdvancedSettings = New clsXMLAdvancedSettings
+                _AdvancedSettings = New XMLAdvancedSettings
             End Try
         End Try
 
@@ -382,10 +382,10 @@ Public Class AdvancedSettings
         _DoNotSave = True
         aPath = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultAdvancedSettings - " & section & ".xml")
         Dim objStreamReader As New StreamReader(aPath)
-        Dim aAdvancedSettings As New clsXMLAdvancedSettings
+        Dim aAdvancedSettings As New XMLAdvancedSettings
         Dim xAdvancedSettings As New XmlSerializer(aAdvancedSettings.GetType)
 
-        aAdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
+        aAdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), XMLAdvancedSettings)
         objStreamReader.Close()
         _AdvancedSettings.Setting.AddRange(aAdvancedSettings.Setting)
         While _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = section) IsNot Nothing

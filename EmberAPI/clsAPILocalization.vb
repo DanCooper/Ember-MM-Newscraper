@@ -32,8 +32,8 @@ Public Class Localization
     Shared lang_logger As Logger = LogManager.GetLogger("LanguageString")
 
     Private Shared _htArrayStrings As New List(Of Locs)
-    Private Shared _htStrings As New clsXMLLanguage
-    Private Shared _ISOLanguages As New clsXMLLanguages
+    Private Shared _htStrings As New XMLLanguage
+    Private Shared _ISOLanguages As New XMLLanguages
 
     Private _abort As String
     Private _all As String
@@ -55,7 +55,7 @@ Public Class Localization
 
             Dim xLangsString As New XmlSerializer(_ISOLanguages.GetType)
 
-            _ISOLanguages = CType(xLangsString.Deserialize(objStreamReader), clsXMLLanguages)
+            _ISOLanguages = CType(xLangsString.Deserialize(objStreamReader), XMLLanguages)
             objStreamReader.Close()
 
             If _ISOLanguages.Language.Count = 0 Then
@@ -282,7 +282,7 @@ Public Class Localization
             If Not force AndAlso Not _htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly).AssenblyName Is Nothing Then Return
 
             If _htStrings Is Nothing Then
-                _htStrings = New clsXMLLanguage
+                _htStrings = New XMLLanguage
             Else
                 _htStrings.string.Clear()
             End If
@@ -291,7 +291,7 @@ Public Class Localization
                 Dim objStreamReader As New StreamReader(lPath)
                 Dim xLangString As New XmlSerializer(_htStrings.GetType)
 
-                _htStrings = CType(xLangString.Deserialize(objStreamReader), clsXMLLanguage)
+                _htStrings = CType(xLangString.Deserialize(objStreamReader), XMLLanguage)
                 objStreamReader.Close()
 
                 _htArrayStrings.Remove(_htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly))
@@ -327,7 +327,7 @@ Public Class Localization
 
         Dim AssenblyName As String
         Dim FileName As String
-        Dim htStrings As clsXMLLanguage
+        Dim htStrings As XMLLanguage
 
 #End Region 'Fields
 
