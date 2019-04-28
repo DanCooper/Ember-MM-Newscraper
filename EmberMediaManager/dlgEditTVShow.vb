@@ -281,23 +281,23 @@ Public Class dlgEditTVShow
 
     Private Function ConvertControlToImageType(ByVal sender As System.Object) As Enums.ModifierType
         Select Case True
-            Case sender Is btnRemoveBanner, sender Is btnDLBanner, sender Is btnLocalBanner, sender Is btnScrapeBanner, sender Is btnClipboardBanner
+            Case sender Is btnRemoveBanner, sender Is btnDLBanner, sender Is btnLocalBanner, sender Is btnScrapeBanner, sender Is btnClipboardBanner, sender Is pbBanner
                 Return Enums.ModifierType.MainBanner
-            Case sender Is btnRemoveCharacterArt, sender Is btnDLCharacterArt, sender Is btnLocalCharacterArt, sender Is btnScrapeCharacterArt, sender Is btnClipboardCharacterArt
+            Case sender Is btnRemoveCharacterArt, sender Is btnDLCharacterArt, sender Is btnLocalCharacterArt, sender Is btnScrapeCharacterArt, sender Is btnClipboardCharacterArt, sender Is pbCharacterArt
                 Return Enums.ModifierType.MainCharacterArt
-            Case sender Is btnRemoveClearArt, sender Is btnDLClearArt, sender Is btnLocalClearArt, sender Is btnScrapeClearArt, sender Is btnClipboardClearArt
+            Case sender Is btnRemoveClearArt, sender Is btnDLClearArt, sender Is btnLocalClearArt, sender Is btnScrapeClearArt, sender Is btnClipboardClearArt, sender Is pbClearArt
                 Return Enums.ModifierType.MainClearArt
-            Case sender Is btnRemoveClearLogo, sender Is btnDLClearLogo, sender Is btnLocalClearLogo, sender Is btnScrapeClearLogo, sender Is btnClipboardClearLogo
+            Case sender Is btnRemoveClearLogo, sender Is btnDLClearLogo, sender Is btnLocalClearLogo, sender Is btnScrapeClearLogo, sender Is btnClipboardClearLogo, sender Is pbClearLogo
                 Return Enums.ModifierType.MainClearLogo
-            Case sender Is btnRemoveExtrafanarts, sender Is btnDLExtrafanarts, sender Is btnLocalExtrafanarts, sender Is btnScrapeExtrafanarts, sender Is btnClipboardExtrafanarts
+            Case sender Is btnRemoveExtrafanarts, sender Is btnDLExtrafanarts, sender Is btnLocalExtrafanarts, sender Is btnScrapeExtrafanarts, sender Is btnClipboardExtrafanarts, sender Is pnlExtrafanarts
                 Return Enums.ModifierType.MainExtrafanarts
-            Case sender Is btnRemoveFanart, sender Is btnDLFanart, sender Is btnLocalFanart, sender Is btnScrapeFanart, sender Is btnClipboardFanart
+            Case sender Is btnRemoveFanart, sender Is btnDLFanart, sender Is btnLocalFanart, sender Is btnScrapeFanart, sender Is btnClipboardFanart, sender Is pbFanart
                 Return Enums.ModifierType.MainFanart
-            Case sender Is btnRemoveKeyArt, sender Is btnDLKeyArt, sender Is btnLocalKeyArt, sender Is btnScrapeKeyArt, sender Is btnClipboardKeyArt
+            Case sender Is btnRemoveKeyArt, sender Is btnDLKeyArt, sender Is btnLocalKeyArt, sender Is btnScrapeKeyArt, sender Is btnClipboardKeyArt, sender Is pbKeyArt
                 Return Enums.ModifierType.MainKeyArt
-            Case sender Is btnRemoveLandscape, sender Is btnDLLandscape, sender Is btnLocalLandscape, sender Is btnScrapeLandscape, sender Is btnClipboardLandscape
+            Case sender Is btnRemoveLandscape, sender Is btnDLLandscape, sender Is btnLocalLandscape, sender Is btnScrapeLandscape, sender Is btnClipboardLandscape, sender Is pbLandscape
                 Return Enums.ModifierType.MainLandscape
-            Case sender Is btnRemovePoster, sender Is btnDLPoster, sender Is btnLocalPoster, sender Is btnScrapePoster, sender Is btnClipboardPoster
+            Case sender Is btnRemovePoster, sender Is btnDLPoster, sender Is btnLocalPoster, sender Is btnScrapePoster, sender Is btnClipboardPoster, sender Is pbPoster
                 Return Enums.ModifierType.MainPoster
             Case Else
                 Return Nothing

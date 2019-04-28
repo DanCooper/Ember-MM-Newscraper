@@ -170,7 +170,7 @@ Public Class dlgEditMovieSet
                 Return Enums.ModifierType.MainFanart
             Case sender Is btnRemoveKeyArt, sender Is btnDLKeyArt, sender Is btnLocalKeyArt, sender Is btnScrapeKeyArt, sender Is pbKeyArt, sender Is btnClipboardKeyArt
                 Return Enums.ModifierType.MainKeyArt
-            Case sender Is btnRemoveLandscape, sender Is btnDLLandscape, sender Is btnLocalLandscape, sender Is btnScrapeLandscape, sender Is pbLandscape, sender Is btnClipboardFanart
+            Case sender Is btnRemoveLandscape, sender Is btnDLLandscape, sender Is btnLocalLandscape, sender Is btnScrapeLandscape, sender Is pbLandscape, sender Is btnClipboardLandscape
                 Return Enums.ModifierType.MainLandscape
             Case sender Is btnRemovePoster, sender Is btnDLPoster, sender Is btnLocalPoster, sender Is btnScrapePoster, sender Is pbPoster, sender Is btnClipboardPoster
                 Return Enums.ModifierType.MainPoster
@@ -390,7 +390,8 @@ Public Class dlgEditMovieSet
         dgvDatabaseList.SuspendLayout()
         bsMovies.DataSource = Nothing
         dgvDatabaseList.DataSource = Nothing
-        Master.DB.FillDataTable(dtMovies, String.Format("SELECT * FROM movie ORDER BY {0} COLLATE NOCASE;",
+        Master.DB.FillDataTable(dtMovies, String.Format("SELECT * FROM {0} ORDER BY {1} COLLATE NOCASE;",
+                                                        Database.Helpers.GetTableName(Database.TableName.movie),
                                                         Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)))
         If dtMovies.Rows.Count > 0 Then
             bsMovies.DataSource = dtMovies
@@ -744,6 +745,9 @@ Public Class dlgEditMovieSet
                 Case Enums.ModifierType.MainFanart
                     iImageCount = aContainer.MainFanarts.Count
                     strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
+                Case Enums.ModifierType.MainKeyArt
+                    iImageCount = aContainer.MainKeyArts.Count
+                    strNoImagesFound = Master.eLang.GetString(855, "No KeyArts found")
                 Case Enums.ModifierType.MainLandscape
                     iImageCount = aContainer.MainLandscapes.Count
                     strNoImagesFound = Master.eLang.GetString(1197, "No Landscapes found")
