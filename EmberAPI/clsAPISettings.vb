@@ -678,6 +678,7 @@ Public Class Settings
     Public Property TVScraperSeasonAired() As Boolean = True
     Public Property TVScraperSeasonPlot() As Boolean = True
     Public Property TVScraperSeasonTitle() As Boolean = False
+    Public Property TVScraperSeasonTitleBlacklist() As List(Of String) = New List(Of String)
     Public Property TVScraperShowActors() As Boolean = True
     Public Property TVScraperShowActorsLimit() As Integer = 0
     Public Property TVScraperShowCert() As Boolean = False
@@ -1432,7 +1433,7 @@ Public Class Settings
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MainTabSorting) AndAlso (Force OrElse Master.eSettings.GeneralMainTabSorting.Count = 0) Then
             Master.eSettings.GeneralMainTabSorting.Clear()
             Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.Movie, .DefaultList = "movielist", .Order = 0, .Title = Master.eLang.GetString(36, "Movies")})
-            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.MovieSet, .DefaultList = "moviesetlist", .Order = 1, .Title = Master.eLang.GetString(366, "Sets")})
+            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.Movieset, .DefaultList = "moviesetlist", .Order = 1, .Title = Master.eLang.GetString(366, "Sets")})
             Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist", .Order = 2, .Title = Master.eLang.GetString(653, "TV Shows")})
         End If
 
@@ -1468,7 +1469,7 @@ Public Class Settings
             Master.eSettings.MovieFilterCustom.Add("_[->] ")                    'convert underscore to space
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowFilters) AndAlso (Force OrElse (Master.eSettings.TVShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVShowFilterCustomIsEmpty)) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowFilters) AndAlso (Force OrElse (Master.eSettings.TVShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVShowFilterCustomIsEmpty)) Then
             Master.eSettings.TVShowFilterCustom.Clear()
             Master.eSettings.TVShowFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
             'would there ever be season or episode info in the show folder name??
@@ -1502,7 +1503,7 @@ Public Class Settings
             Master.eSettings.TVShowFilterCustom.Add("_[->] ")                   'convert underscore to space
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.EpFilters) AndAlso (Force OrElse (Master.eSettings.TVEpisodeFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVEpisodeFilterCustomIsEmpty)) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeFilters) AndAlso (Force OrElse (Master.eSettings.TVEpisodeFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVEpisodeFilterCustomIsEmpty)) Then
             Master.eSettings.TVEpisodeFilterCustom.Clear()
             Master.eSettings.TVEpisodeFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*")
@@ -1546,7 +1547,7 @@ Public Class Settings
             Master.eSettings.MovieSortTokens.Add("the\s")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty)) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MoviesetSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty)) Then
             Master.eSettings.MovieSetSortTokens.Clear()
             Master.eSettings.MovieSetSortTokens.Add("a\s")
             Master.eSettings.MovieSetSortTokens.Add("an\s")
@@ -1556,7 +1557,7 @@ Public Class Settings
             Master.eSettings.MovieSetSortTokens.Add("the\s")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSortTokens) AndAlso (Force OrElse (Master.eSettings.TVSortTokens.Count <= 0 AndAlso Not Master.eSettings.TVSortTokensIsEmpty)) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowSortTokens) AndAlso (Force OrElse (Master.eSettings.TVSortTokens.Count <= 0 AndAlso Not Master.eSettings.TVSortTokensIsEmpty)) Then
             Master.eSettings.TVSortTokens.Clear()
             Master.eSettings.TVSortTokens.Add("a\s")
             Master.eSettings.TVSortTokens.Add("an\s")
@@ -1579,6 +1580,37 @@ Public Class Settings
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidThemeExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidThemeExts.Count <= 0) Then
             Master.eSettings.FileSystemValidThemeExts.Clear()
             Master.eSettings.FileSystemValidThemeExts.AddRange(".flac,.m4a,.mp3,.wav,.wma".Split(","c))
+        End If
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSeasonTitleBlacklist) AndAlso (Force OrElse Master.eSettings.TVScraperSeasonTitleBlacklist.Count <= 0) Then
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Clear()
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("%{season_number}. sezóna")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("%{season_number}. évad")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("%{season_number}.ª Temporada")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("%{season_number}ª Temporada")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("%{season_number}ος κύκλος")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Kausi %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Musim ke %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Saison %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Season %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Seizoen %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Series %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Sezon %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Sezonas %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Sezonul %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Staffel %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Stagione %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Säsong %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Séria %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Tempada %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Temporada %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Сезон %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("Сезона %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("עונה %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("الموسم %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("فصل %{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("シーズン%{season_number}")
+            Master.eSettings.TVScraperSeasonTitleBlacklist.Add("第 %{season_number} 季")
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowMatching) AndAlso (Force OrElse Master.eSettings.TVShowMatching.Count <= 0) Then
@@ -1618,7 +1650,7 @@ Public Class Settings
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 21, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed), .LabelID = 981, .LabelText = "Watched"})
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetListSorting) AndAlso (Force OrElse Master.eSettings.MovieSetGeneralMediaListSorting.Count <= 0) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MoviesetListSorting) AndAlso (Force OrElse Master.eSettings.MovieSetGeneralMediaListSorting.Count <= 0) Then
             Master.eSettings.MovieSetGeneralMediaListSorting.Clear()
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ListTitle), .LabelID = 21, .LabelText = "Title"})
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.NfoPath), .LabelID = 150, .LabelText = "NFO"})
@@ -1787,7 +1819,7 @@ Public Class Settings
                                 .Resize = Master.eSettings.MoviePosterResize
                             }
                     End Select
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     Select Case ImageType
                         Case Enums.ModifierType.MainBanner
                             Return New ImageSettingSpecifications With {

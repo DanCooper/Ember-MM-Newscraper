@@ -1187,6 +1187,8 @@ Partial Class dlgSettings
         Me.txtTVScraperEpisodeGuestStarsLimit = New System.Windows.Forms.TextBox()
         Me.txtTVScraperShowGenreLimit = New System.Windows.Forms.TextBox()
         Me.txtTVScraperShowStudioLimit = New System.Windows.Forms.TextBox()
+        Me.btnTVScraperSeasonTitleBlacklist = New System.Windows.Forms.Button()
+        Me.lblTVScraperGlobalHeaderSeasonsLimit = New System.Windows.Forms.Label()
         Me.gbTVScraperMetaDataOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVScraperMetaDataOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVScraperDefFIExtOpts = New System.Windows.Forms.GroupBox()
@@ -2358,7 +2360,7 @@ Partial Class dlgSettings
         Me.pnlMovieImages.BackColor = System.Drawing.Color.White
         Me.pnlMovieImages.Controls.Add(Me.tblMovieImages)
         Me.pnlMovieImages.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.pnlMovieImages.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMovieImages.Location = New System.Drawing.Point(1200, 1200)
         Me.pnlMovieImages.Name = "pnlMovieImages"
         Me.pnlMovieImages.Size = New System.Drawing.Size(734, 526)
         Me.pnlMovieImages.TabIndex = 12
@@ -15325,7 +15327,7 @@ Partial Class dlgSettings
         Me.pnlTVScraper.Controls.Add(Me.tblTVScraper)
         Me.pnlTVScraper.Location = New System.Drawing.Point(1200, 1200)
         Me.pnlTVScraper.Name = "pnlTVScraper"
-        Me.pnlTVScraper.Size = New System.Drawing.Size(871, 566)
+        Me.pnlTVScraper.Size = New System.Drawing.Size(910, 566)
         Me.pnlTVScraper.TabIndex = 19
         Me.pnlTVScraper.Visible = False
         '
@@ -15349,7 +15351,7 @@ Partial Class dlgSettings
         Me.tblTVScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraper.Size = New System.Drawing.Size(871, 566)
+        Me.tblTVScraper.Size = New System.Drawing.Size(910, 566)
         Me.tblTVScraper.TabIndex = 6
         '
         'gbTVScraperCertificationOpts
@@ -15358,9 +15360,9 @@ Partial Class dlgSettings
         Me.gbTVScraperCertificationOpts.Controls.Add(Me.tblTVScraperCertificationOpts)
         Me.gbTVScraperCertificationOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVScraperCertificationOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbTVScraperCertificationOpts.Location = New System.Drawing.Point(422, 385)
+        Me.gbTVScraperCertificationOpts.Location = New System.Drawing.Point(461, 385)
         Me.gbTVScraperCertificationOpts.Name = "gbTVScraperCertificationOpts"
-        Me.gbTVScraperCertificationOpts.Size = New System.Drawing.Size(446, 138)
+        Me.gbTVScraperCertificationOpts.Size = New System.Drawing.Size(446, 147)
         Me.gbTVScraperCertificationOpts.TabIndex = 78
         Me.gbTVScraperCertificationOpts.TabStop = False
         Me.gbTVScraperCertificationOpts.Text = "Certification"
@@ -15385,7 +15387,7 @@ Partial Class dlgSettings
         Me.tblTVScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraperCertificationOpts.Size = New System.Drawing.Size(440, 117)
+        Me.tblTVScraperCertificationOpts.Size = New System.Drawing.Size(440, 126)
         Me.tblTVScraperCertificationOpts.TabIndex = 78
         '
         'chkTVScraperShowCertOnlyValue
@@ -15460,7 +15462,7 @@ Partial Class dlgSettings
         Me.gbTVScraperGlobalOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbTVScraperGlobalOpts.Name = "gbTVScraperGlobalOpts"
         Me.tblTVScraper.SetRowSpan(Me.gbTVScraperGlobalOpts, 3)
-        Me.gbTVScraperGlobalOpts.Size = New System.Drawing.Size(413, 520)
+        Me.gbTVScraperGlobalOpts.Size = New System.Drawing.Size(452, 529)
         Me.gbTVScraperGlobalOpts.TabIndex = 3
         Me.gbTVScraperGlobalOpts.TabStop = False
         Me.gbTVScraperGlobalOpts.Text = "Scraper Fields - Global"
@@ -15468,7 +15470,7 @@ Partial Class dlgSettings
         'tblTVScraperGlobalOpts
         '
         Me.tblTVScraperGlobalOpts.AutoSize = True
-        Me.tblTVScraperGlobalOpts.ColumnCount = 10
+        Me.tblTVScraperGlobalOpts.ColumnCount = 11
         Me.tblTVScraperGlobalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVScraperGlobalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVScraperGlobalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -15479,32 +15481,33 @@ Partial Class dlgSettings
         Me.tblTVScraperGlobalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVScraperGlobalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVScraperGlobalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeRuntime, 7, 17)
+        Me.tblTVScraperGlobalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeRuntime, 8, 17)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowRuntime, 2, 17)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.cbTVScraperShowCertLang, 3, 4)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeRating, 7, 15)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeRating, 8, 15)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowStudio, 2, 19)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowStatus, 2, 18)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodePlot, 7, 13)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodePlot, 8, 13)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowGenre, 2, 9)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowPlot, 2, 13)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeActors, 6, 2)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeActors, 7, 2)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowRating, 2, 15)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeRuntime, 6, 17)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeCredits, 6, 6)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeRuntime, 7, 17)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeCredits, 7, 6)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalHeaderShows, 1, 0)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeDirector, 6, 7)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeDirector, 7, 7)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperShowStatus, 1, 18)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodePlot, 6, 13)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodePlot, 7, 13)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperShowRuntime, 1, 17)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeAired, 6, 3)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeRating, 6, 15)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeAired, 7, 3)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeRating, 7, 15)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperShowActors, 1, 2)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperShowRating, 1, 15)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperShowStudio, 1, 19)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalHeaderEpisodes, 6, 0)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalHeaderEpisodes, 7, 0)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalHeaderShowsLock, 2, 1)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalHeaderEpisodesLock, 7, 1)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalHeaderEpisodesLock, 8, 1)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperShowPremiered, 1, 14)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalActors, 0, 2)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalAired, 0, 3)
@@ -15526,14 +15529,14 @@ Partial Class dlgSettings
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalTitle, 0, 20)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperShowTitle, 1, 20)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowTitle, 2, 20)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeTitle, 6, 20)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeTitle, 7, 20)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeTitle, 7, 20)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeTitle, 8, 20)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalGuestStars, 0, 10)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeGuestStars, 6, 10)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeGuestStars, 7, 10)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalLanguageA, 0, 21)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalLanguageV, 0, 22)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeLanguageA, 7, 21)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeLanguageV, 7, 22)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeLanguageA, 8, 21)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeLanguageV, 8, 22)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalHeaderShowsLimit, 3, 1)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalCertifications, 0, 4)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperShowCert, 1, 4)
@@ -15555,14 +15558,16 @@ Partial Class dlgSettings
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalUserRating, 0, 16)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperShowUserRating, 1, 16)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowUserRating, 2, 16)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeUserRating, 6, 16)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeUserRating, 7, 16)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeUserRating, 7, 16)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeUserRating, 8, 16)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.txtTVScraperShowActorsLimit, 3, 2)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.txtTVScraperEpisodeActorsLimit, 8, 2)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalHeaderEpisodesLimit, 8, 1)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.txtTVScraperEpisodeGuestStarsLimit, 8, 10)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.txtTVScraperEpisodeActorsLimit, 9, 2)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalHeaderEpisodesLimit, 9, 1)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.txtTVScraperEpisodeGuestStarsLimit, 9, 10)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.txtTVScraperShowGenreLimit, 3, 9)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.txtTVScraperShowStudioLimit, 3, 19)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.btnTVScraperSeasonTitleBlacklist, 6, 20)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalHeaderSeasonsLimit, 6, 1)
         Me.tblTVScraperGlobalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVScraperGlobalOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVScraperGlobalOpts.Name = "tblTVScraperGlobalOpts"
@@ -15591,7 +15596,7 @@ Partial Class dlgSettings
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraperGlobalOpts.Size = New System.Drawing.Size(407, 499)
+        Me.tblTVScraperGlobalOpts.Size = New System.Drawing.Size(446, 508)
         Me.tblTVScraperGlobalOpts.TabIndex = 6
         '
         'chkTVLockEpisodeRuntime
@@ -15599,7 +15604,7 @@ Partial Class dlgSettings
         Me.chkTVLockEpisodeRuntime.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVLockEpisodeRuntime.AutoSize = True
         Me.chkTVLockEpisodeRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVLockEpisodeRuntime.Location = New System.Drawing.Point(335, 374)
+        Me.chkTVLockEpisodeRuntime.Location = New System.Drawing.Point(374, 374)
         Me.chkTVLockEpisodeRuntime.Name = "chkTVLockEpisodeRuntime"
         Me.chkTVLockEpisodeRuntime.Size = New System.Drawing.Size(15, 14)
         Me.chkTVLockEpisodeRuntime.TabIndex = 3
@@ -15638,7 +15643,7 @@ Partial Class dlgSettings
         Me.chkTVLockEpisodeRating.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVLockEpisodeRating.AutoSize = True
         Me.chkTVLockEpisodeRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVLockEpisodeRating.Location = New System.Drawing.Point(335, 334)
+        Me.chkTVLockEpisodeRating.Location = New System.Drawing.Point(374, 334)
         Me.chkTVLockEpisodeRating.Name = "chkTVLockEpisodeRating"
         Me.chkTVLockEpisodeRating.Size = New System.Drawing.Size(15, 14)
         Me.chkTVLockEpisodeRating.TabIndex = 2
@@ -15671,7 +15676,7 @@ Partial Class dlgSettings
         Me.chkTVLockEpisodePlot.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVLockEpisodePlot.AutoSize = True
         Me.chkTVLockEpisodePlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVLockEpisodePlot.Location = New System.Drawing.Point(335, 294)
+        Me.chkTVLockEpisodePlot.Location = New System.Drawing.Point(374, 294)
         Me.chkTVLockEpisodePlot.Name = "chkTVLockEpisodePlot"
         Me.chkTVLockEpisodePlot.Size = New System.Drawing.Size(15, 14)
         Me.chkTVLockEpisodePlot.TabIndex = 1
@@ -15704,7 +15709,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeActors.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperEpisodeActors.AutoSize = True
         Me.chkTVScraperEpisodeActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperEpisodeActors.Location = New System.Drawing.Point(306, 47)
+        Me.chkTVScraperEpisodeActors.Location = New System.Drawing.Point(345, 47)
         Me.chkTVScraperEpisodeActors.Name = "chkTVScraperEpisodeActors"
         Me.chkTVScraperEpisodeActors.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodeActors.TabIndex = 0
@@ -15726,7 +15731,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeRuntime.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperEpisodeRuntime.AutoSize = True
         Me.chkTVScraperEpisodeRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperEpisodeRuntime.Location = New System.Drawing.Point(306, 374)
+        Me.chkTVScraperEpisodeRuntime.Location = New System.Drawing.Point(345, 374)
         Me.chkTVScraperEpisodeRuntime.Name = "chkTVScraperEpisodeRuntime"
         Me.chkTVScraperEpisodeRuntime.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodeRuntime.TabIndex = 9
@@ -15737,7 +15742,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeCredits.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperEpisodeCredits.AutoSize = True
         Me.chkTVScraperEpisodeCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperEpisodeCredits.Location = New System.Drawing.Point(306, 138)
+        Me.chkTVScraperEpisodeCredits.Location = New System.Drawing.Point(345, 138)
         Me.chkTVScraperEpisodeCredits.Name = "chkTVScraperEpisodeCredits"
         Me.chkTVScraperEpisodeCredits.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodeCredits.TabIndex = 8
@@ -15760,7 +15765,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeDirector.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperEpisodeDirector.AutoSize = True
         Me.chkTVScraperEpisodeDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperEpisodeDirector.Location = New System.Drawing.Point(306, 158)
+        Me.chkTVScraperEpisodeDirector.Location = New System.Drawing.Point(345, 158)
         Me.chkTVScraperEpisodeDirector.Name = "chkTVScraperEpisodeDirector"
         Me.chkTVScraperEpisodeDirector.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodeDirector.TabIndex = 7
@@ -15782,7 +15787,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodePlot.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperEpisodePlot.AutoSize = True
         Me.chkTVScraperEpisodePlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperEpisodePlot.Location = New System.Drawing.Point(306, 294)
+        Me.chkTVScraperEpisodePlot.Location = New System.Drawing.Point(345, 294)
         Me.chkTVScraperEpisodePlot.Name = "chkTVScraperEpisodePlot"
         Me.chkTVScraperEpisodePlot.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodePlot.TabIndex = 6
@@ -15804,7 +15809,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeAired.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperEpisodeAired.AutoSize = True
         Me.chkTVScraperEpisodeAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperEpisodeAired.Location = New System.Drawing.Point(306, 71)
+        Me.chkTVScraperEpisodeAired.Location = New System.Drawing.Point(345, 71)
         Me.chkTVScraperEpisodeAired.Name = "chkTVScraperEpisodeAired"
         Me.chkTVScraperEpisodeAired.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodeAired.TabIndex = 4
@@ -15815,7 +15820,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeRating.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperEpisodeRating.AutoSize = True
         Me.chkTVScraperEpisodeRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperEpisodeRating.Location = New System.Drawing.Point(306, 334)
+        Me.chkTVScraperEpisodeRating.Location = New System.Drawing.Point(345, 334)
         Me.chkTVScraperEpisodeRating.Name = "chkTVScraperEpisodeRating"
         Me.chkTVScraperEpisodeRating.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodeRating.TabIndex = 5
@@ -15860,7 +15865,7 @@ Partial Class dlgSettings
         Me.lblTVScraperGlobalHeaderEpisodes.AutoSize = True
         Me.tblTVScraperGlobalOpts.SetColumnSpan(Me.lblTVScraperGlobalHeaderEpisodes, 2)
         Me.lblTVScraperGlobalHeaderEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVScraperGlobalHeaderEpisodes.Location = New System.Drawing.Point(306, 3)
+        Me.lblTVScraperGlobalHeaderEpisodes.Location = New System.Drawing.Point(345, 3)
         Me.lblTVScraperGlobalHeaderEpisodes.Name = "lblTVScraperGlobalHeaderEpisodes"
         Me.lblTVScraperGlobalHeaderEpisodes.Size = New System.Drawing.Size(53, 13)
         Me.lblTVScraperGlobalHeaderEpisodes.TabIndex = 0
@@ -15882,7 +15887,7 @@ Partial Class dlgSettings
         Me.lblTVScraperGlobalHeaderEpisodesLock.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVScraperGlobalHeaderEpisodesLock.AutoSize = True
         Me.lblTVScraperGlobalHeaderEpisodesLock.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVScraperGlobalHeaderEpisodesLock.Location = New System.Drawing.Point(327, 23)
+        Me.lblTVScraperGlobalHeaderEpisodesLock.Location = New System.Drawing.Point(366, 23)
         Me.lblTVScraperGlobalHeaderEpisodesLock.Name = "lblTVScraperGlobalHeaderEpisodesLock"
         Me.lblTVScraperGlobalHeaderEpisodesLock.Size = New System.Drawing.Size(31, 13)
         Me.lblTVScraperGlobalHeaderEpisodesLock.TabIndex = 1
@@ -16091,7 +16096,7 @@ Partial Class dlgSettings
         Me.lblTVScraperGlobalTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVScraperGlobalTitle.AutoSize = True
         Me.lblTVScraperGlobalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblTVScraperGlobalTitle.Location = New System.Drawing.Point(3, 442)
+        Me.lblTVScraperGlobalTitle.Location = New System.Drawing.Point(3, 447)
         Me.lblTVScraperGlobalTitle.Name = "lblTVScraperGlobalTitle"
         Me.lblTVScraperGlobalTitle.Size = New System.Drawing.Size(28, 13)
         Me.lblTVScraperGlobalTitle.TabIndex = 2
@@ -16102,7 +16107,7 @@ Partial Class dlgSettings
         Me.chkTVScraperShowTitle.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperShowTitle.AutoSize = True
         Me.chkTVScraperShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperShowTitle.Location = New System.Drawing.Point(114, 442)
+        Me.chkTVScraperShowTitle.Location = New System.Drawing.Point(114, 446)
         Me.chkTVScraperShowTitle.Name = "chkTVScraperShowTitle"
         Me.chkTVScraperShowTitle.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperShowTitle.TabIndex = 0
@@ -16113,7 +16118,7 @@ Partial Class dlgSettings
         Me.chkTVLockShowTitle.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVLockShowTitle.AutoSize = True
         Me.chkTVLockShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVLockShowTitle.Location = New System.Drawing.Point(143, 442)
+        Me.chkTVLockShowTitle.Location = New System.Drawing.Point(143, 446)
         Me.chkTVLockShowTitle.Name = "chkTVLockShowTitle"
         Me.chkTVLockShowTitle.Size = New System.Drawing.Size(15, 14)
         Me.chkTVLockShowTitle.TabIndex = 0
@@ -16124,7 +16129,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeTitle.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperEpisodeTitle.AutoSize = True
         Me.chkTVScraperEpisodeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperEpisodeTitle.Location = New System.Drawing.Point(306, 442)
+        Me.chkTVScraperEpisodeTitle.Location = New System.Drawing.Point(345, 446)
         Me.chkTVScraperEpisodeTitle.Name = "chkTVScraperEpisodeTitle"
         Me.chkTVScraperEpisodeTitle.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodeTitle.TabIndex = 0
@@ -16135,7 +16140,7 @@ Partial Class dlgSettings
         Me.chkTVLockEpisodeTitle.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVLockEpisodeTitle.AutoSize = True
         Me.chkTVLockEpisodeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVLockEpisodeTitle.Location = New System.Drawing.Point(335, 442)
+        Me.chkTVLockEpisodeTitle.Location = New System.Drawing.Point(374, 446)
         Me.chkTVLockEpisodeTitle.Name = "chkTVLockEpisodeTitle"
         Me.chkTVLockEpisodeTitle.Size = New System.Drawing.Size(15, 14)
         Me.chkTVLockEpisodeTitle.TabIndex = 0
@@ -16157,7 +16162,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeGuestStars.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperEpisodeGuestStars.AutoSize = True
         Me.chkTVScraperEpisodeGuestStars.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperEpisodeGuestStars.Location = New System.Drawing.Point(306, 230)
+        Me.chkTVScraperEpisodeGuestStars.Location = New System.Drawing.Point(345, 230)
         Me.chkTVScraperEpisodeGuestStars.Name = "chkTVScraperEpisodeGuestStars"
         Me.chkTVScraperEpisodeGuestStars.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodeGuestStars.TabIndex = 3
@@ -16168,7 +16173,7 @@ Partial Class dlgSettings
         Me.lblTVScraperGlobalLanguageA.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVScraperGlobalLanguageA.AutoSize = True
         Me.lblTVScraperGlobalLanguageA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTVScraperGlobalLanguageA.Location = New System.Drawing.Point(3, 462)
+        Me.lblTVScraperGlobalLanguageA.Location = New System.Drawing.Point(3, 471)
         Me.lblTVScraperGlobalLanguageA.Name = "lblTVScraperGlobalLanguageA"
         Me.lblTVScraperGlobalLanguageA.Size = New System.Drawing.Size(98, 13)
         Me.lblTVScraperGlobalLanguageA.TabIndex = 12
@@ -16179,7 +16184,7 @@ Partial Class dlgSettings
         Me.lblTVScraperGlobalLanguageV.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVScraperGlobalLanguageV.AutoSize = True
         Me.lblTVScraperGlobalLanguageV.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTVScraperGlobalLanguageV.Location = New System.Drawing.Point(3, 482)
+        Me.lblTVScraperGlobalLanguageV.Location = New System.Drawing.Point(3, 491)
         Me.lblTVScraperGlobalLanguageV.Name = "lblTVScraperGlobalLanguageV"
         Me.lblTVScraperGlobalLanguageV.Size = New System.Drawing.Size(97, 13)
         Me.lblTVScraperGlobalLanguageV.TabIndex = 13
@@ -16190,7 +16195,7 @@ Partial Class dlgSettings
         Me.chkTVLockEpisodeLanguageA.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVLockEpisodeLanguageA.AutoSize = True
         Me.chkTVLockEpisodeLanguageA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkTVLockEpisodeLanguageA.Location = New System.Drawing.Point(335, 462)
+        Me.chkTVLockEpisodeLanguageA.Location = New System.Drawing.Point(374, 471)
         Me.chkTVLockEpisodeLanguageA.Name = "chkTVLockEpisodeLanguageA"
         Me.chkTVLockEpisodeLanguageA.Size = New System.Drawing.Size(15, 14)
         Me.chkTVLockEpisodeLanguageA.TabIndex = 14
@@ -16201,7 +16206,7 @@ Partial Class dlgSettings
         Me.chkTVLockEpisodeLanguageV.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVLockEpisodeLanguageV.AutoSize = True
         Me.chkTVLockEpisodeLanguageV.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkTVLockEpisodeLanguageV.Location = New System.Drawing.Point(335, 482)
+        Me.chkTVLockEpisodeLanguageV.Location = New System.Drawing.Point(374, 491)
         Me.chkTVLockEpisodeLanguageV.Name = "chkTVLockEpisodeLanguageV"
         Me.chkTVLockEpisodeLanguageV.Size = New System.Drawing.Size(15, 14)
         Me.chkTVLockEpisodeLanguageV.TabIndex = 15
@@ -16389,7 +16394,7 @@ Partial Class dlgSettings
         Me.chkTVScraperSeasonTitle.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperSeasonTitle.AutoSize = True
         Me.chkTVScraperSeasonTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperSeasonTitle.Location = New System.Drawing.Point(248, 442)
+        Me.chkTVScraperSeasonTitle.Location = New System.Drawing.Point(248, 446)
         Me.chkTVScraperSeasonTitle.Name = "chkTVScraperSeasonTitle"
         Me.chkTVScraperSeasonTitle.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperSeasonTitle.TabIndex = 4
@@ -16400,7 +16405,7 @@ Partial Class dlgSettings
         Me.chkTVLockSeasonTitle.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVLockSeasonTitle.AutoSize = True
         Me.chkTVLockSeasonTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVLockSeasonTitle.Location = New System.Drawing.Point(277, 442)
+        Me.chkTVLockSeasonTitle.Location = New System.Drawing.Point(277, 446)
         Me.chkTVLockSeasonTitle.Name = "chkTVLockSeasonTitle"
         Me.chkTVLockSeasonTitle.Size = New System.Drawing.Size(15, 14)
         Me.chkTVLockSeasonTitle.TabIndex = 1
@@ -16444,7 +16449,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeUserRating.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVScraperEpisodeUserRating.AutoSize = True
         Me.chkTVScraperEpisodeUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScraperEpisodeUserRating.Location = New System.Drawing.Point(306, 354)
+        Me.chkTVScraperEpisodeUserRating.Location = New System.Drawing.Point(345, 354)
         Me.chkTVScraperEpisodeUserRating.Name = "chkTVScraperEpisodeUserRating"
         Me.chkTVScraperEpisodeUserRating.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodeUserRating.TabIndex = 5
@@ -16455,7 +16460,7 @@ Partial Class dlgSettings
         Me.chkTVLockEpisodeUserRating.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVLockEpisodeUserRating.AutoSize = True
         Me.chkTVLockEpisodeUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVLockEpisodeUserRating.Location = New System.Drawing.Point(335, 354)
+        Me.chkTVLockEpisodeUserRating.Location = New System.Drawing.Point(374, 354)
         Me.chkTVLockEpisodeUserRating.Name = "chkTVLockEpisodeUserRating"
         Me.chkTVLockEpisodeUserRating.Size = New System.Drawing.Size(15, 14)
         Me.chkTVLockEpisodeUserRating.TabIndex = 2
@@ -16476,7 +16481,7 @@ Partial Class dlgSettings
         Me.txtTVScraperEpisodeActorsLimit.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.txtTVScraperEpisodeActorsLimit.Enabled = False
         Me.txtTVScraperEpisodeActorsLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVScraperEpisodeActorsLimit.Location = New System.Drawing.Point(365, 43)
+        Me.txtTVScraperEpisodeActorsLimit.Location = New System.Drawing.Point(404, 43)
         Me.txtTVScraperEpisodeActorsLimit.Name = "txtTVScraperEpisodeActorsLimit"
         Me.txtTVScraperEpisodeActorsLimit.Size = New System.Drawing.Size(39, 22)
         Me.txtTVScraperEpisodeActorsLimit.TabIndex = 22
@@ -16486,7 +16491,7 @@ Partial Class dlgSettings
         Me.lblTVScraperGlobalHeaderEpisodesLimit.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVScraperGlobalHeaderEpisodesLimit.AutoSize = True
         Me.lblTVScraperGlobalHeaderEpisodesLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVScraperGlobalHeaderEpisodesLimit.Location = New System.Drawing.Point(368, 23)
+        Me.lblTVScraperGlobalHeaderEpisodesLimit.Location = New System.Drawing.Point(407, 23)
         Me.lblTVScraperGlobalHeaderEpisodesLimit.Name = "lblTVScraperGlobalHeaderEpisodesLimit"
         Me.lblTVScraperGlobalHeaderEpisodesLimit.Size = New System.Drawing.Size(33, 13)
         Me.lblTVScraperGlobalHeaderEpisodesLimit.TabIndex = 1
@@ -16497,7 +16502,7 @@ Partial Class dlgSettings
         Me.txtTVScraperEpisodeGuestStarsLimit.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.txtTVScraperEpisodeGuestStarsLimit.Enabled = False
         Me.txtTVScraperEpisodeGuestStarsLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVScraperEpisodeGuestStarsLimit.Location = New System.Drawing.Point(365, 226)
+        Me.txtTVScraperEpisodeGuestStarsLimit.Location = New System.Drawing.Point(404, 226)
         Me.txtTVScraperEpisodeGuestStarsLimit.Name = "txtTVScraperEpisodeGuestStarsLimit"
         Me.txtTVScraperEpisodeGuestStarsLimit.Size = New System.Drawing.Size(39, 22)
         Me.txtTVScraperEpisodeGuestStarsLimit.TabIndex = 22
@@ -16522,13 +16527,36 @@ Partial Class dlgSettings
         Me.txtTVScraperShowStudioLimit.Size = New System.Drawing.Size(39, 22)
         Me.txtTVScraperShowStudioLimit.TabIndex = 22
         '
+        'btnTVScraperSeasonTitleBlacklist
+        '
+        Me.btnTVScraperSeasonTitleBlacklist.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnTVScraperSeasonTitleBlacklist.Enabled = False
+        Me.btnTVScraperSeasonTitleBlacklist.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVScraperSeasonTitleBlacklist.Location = New System.Drawing.Point(308, 442)
+        Me.btnTVScraperSeasonTitleBlacklist.Name = "btnTVScraperSeasonTitleBlacklist"
+        Me.btnTVScraperSeasonTitleBlacklist.Size = New System.Drawing.Size(28, 23)
+        Me.btnTVScraperSeasonTitleBlacklist.TabIndex = 23
+        Me.btnTVScraperSeasonTitleBlacklist.Text = "..."
+        Me.btnTVScraperSeasonTitleBlacklist.UseVisualStyleBackColor = True
+        '
+        'lblTVScraperGlobalHeaderSeasonsLimit
+        '
+        Me.lblTVScraperGlobalHeaderSeasonsLimit.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblTVScraperGlobalHeaderSeasonsLimit.AutoSize = True
+        Me.lblTVScraperGlobalHeaderSeasonsLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVScraperGlobalHeaderSeasonsLimit.Location = New System.Drawing.Point(306, 23)
+        Me.lblTVScraperGlobalHeaderSeasonsLimit.Name = "lblTVScraperGlobalHeaderSeasonsLimit"
+        Me.lblTVScraperGlobalHeaderSeasonsLimit.Size = New System.Drawing.Size(33, 13)
+        Me.lblTVScraperGlobalHeaderSeasonsLimit.TabIndex = 1
+        Me.lblTVScraperGlobalHeaderSeasonsLimit.Text = "Limit"
+        '
         'gbTVScraperMetaDataOpts
         '
         Me.gbTVScraperMetaDataOpts.AutoSize = True
         Me.gbTVScraperMetaDataOpts.Controls.Add(Me.tblTVScraperMetaDataOpts)
         Me.gbTVScraperMetaDataOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVScraperMetaDataOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTVScraperMetaDataOpts.Location = New System.Drawing.Point(422, 3)
+        Me.gbTVScraperMetaDataOpts.Location = New System.Drawing.Point(461, 3)
         Me.gbTVScraperMetaDataOpts.Name = "gbTVScraperMetaDataOpts"
         Me.gbTVScraperMetaDataOpts.Size = New System.Drawing.Size(446, 211)
         Me.gbTVScraperMetaDataOpts.TabIndex = 2
@@ -16744,7 +16772,7 @@ Partial Class dlgSettings
         Me.gbTVScraperMiscOpts.Controls.Add(Me.tblTVScraperMiscOpts)
         Me.gbTVScraperMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbTVScraperMiscOpts.Location = New System.Drawing.Point(422, 220)
+        Me.gbTVScraperMiscOpts.Location = New System.Drawing.Point(461, 220)
         Me.gbTVScraperMiscOpts.Name = "gbTVScraperMiscOpts"
         Me.gbTVScraperMiscOpts.Size = New System.Drawing.Size(446, 159)
         Me.gbTVScraperMiscOpts.TabIndex = 5
@@ -23843,4 +23871,6 @@ Partial Class dlgSettings
     Friend WithEvents txtMovieSetKeyArtHeight As TextBox
     Friend WithEvents lblMovieSetSourcesFilenamingKodiExtendedKeyArt As Label
     Friend WithEvents chkMovieSetKeyArtExtended As CheckBox
+    Friend WithEvents btnTVScraperSeasonTitleBlacklist As Button
+    Friend WithEvents lblTVScraperGlobalHeaderSeasonsLimit As Label
 End Class

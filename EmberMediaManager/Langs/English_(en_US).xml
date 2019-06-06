@@ -1202,8 +1202,8 @@
   <string id="1110">Select ClearLogo</string>
   <string id="1111">Select DiscArt</string>
   <string id="1112">Do you want to restart Ember Media Manager and load the selected profile?</string>
-  <string id="1113"></string>
-  <string id="1114"></string>
+  <string id="1113">Season Title Blacklist</string>
+  <string id="1114">This list contains patterns of season titles that should be ignored when scraping.{0}Use %{season_number} to mark the location of the season number.</string>
   <string id="1115"></string>
   <string id="1116"></string>
   <string id="1117"></string>

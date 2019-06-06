@@ -322,69 +322,14 @@ Public Class StringUtils
         Next
         Return d(n, m) - 1
     End Function
-    ''' <summary>
-    ''' Decode the supplied Base64 <c>String</c> from a standard ASCII <c>String</c> (a.k.a. uudecode)
-    ''' </summary>
-    ''' <param name="encText">Encoded Base64 <c>String</c></param>
-    ''' <returns>Standard text <c>String</c>, or Empty string if argument was Nothing</returns>
-    ''' <remarks>http://en.wikipedia.org/wiki/Base64
-    ''' Note that the decode function is tolerant of whitespace embedded within
-    ''' the string to be decoded. This is because Base64 only considers the 64 text characters as relevant,
-    ''' and ignores all else.</remarks>
-    Public Shared Function Decode(ByVal encText As String) As String
-        If String.IsNullOrEmpty(encText) Then Return String.Empty
-        Try
-            Dim dByte() As Byte
-            dByte = System.Convert.FromBase64String(encText)
-            Dim decText As String
-            decText = System.Text.Encoding.ASCII.GetString(dByte)
-            Return decText
-        Catch
-        End Try
-        Return String.Empty
-    End Function
-    ''' <summary>
-    ''' Encode the supplied <c>String</c> into a Base64 <c>String</c> (a.k.a. uudencode)
-    ''' </summary>
-    ''' <param name="decText">Text <c>String</c> to be decoded</param>
-    ''' <returns>Base64 <c>String</c>, or Empty string if argument was Nothing</returns>
-    ''' <remarks>http://en.wikipedia.org/wiki/Base64</remarks>
-    Public Shared Function Encode(ByVal decText As String) As String
-        If String.IsNullOrEmpty(decText) Then Return String.Empty
-        Dim eByte() As Byte
-        ReDim eByte(decText.Length)
-        eByte = System.Text.Encoding.ASCII.GetBytes(decText)
-        Dim encText As String
-        encText = System.Convert.ToBase64String(eByte)
-        Return encText
-    End Function
-    ''' <summary>
-    ''' Convert String to SHA1
-    ''' </summary>
-    ''' <param name="inputstring">Input string to encrypt to SHA1</param>
-    ''' <remarks>
-    ''' 2014/10/12 Cocotus - First implementation
-    ''' Used for POST-Requests to trakt.tv (encrypt password)
-    ''' </remarks>
-    ''' 
-    Public Shared Function EncryptToSHA1(ByVal inputstring As String) As String
-        Dim strToHash As String = inputstring
-        Dim Result As String = ""
-        Dim OSha1 As New _
-        System.Security.Cryptography.SHA1CryptoServiceProvider
 
-        'Step 1
-        Dim bytesToHash() As Byte _
-         = System.Text.Encoding.ASCII.GetBytes(strToHash)
-
-        'Step 2
-        bytesToHash = OSha1.ComputeHash(bytesToHash)
-
-        'Step 3
-        For Each item As Byte In bytesToHash
-            Result += item.ToString("x2")
+    Public Shared Function FilterSeasonTitle(ByVal SeasonTitle As String) As String
+        For Each nToken In Master.eSettings.TVScraperSeasonTitleBlacklist
+            If Regex.Match(SeasonTitle, nToken.Replace("%{season_number}", "\d*")).Success Then
+                Return String.Empty
+            End If
         Next
-        Return Result
+        Return SeasonTitle
     End Function
     ''' <summary>
     ''' Cleans up a movie path by stripping it down to the basic title with no additional decorations.
@@ -565,27 +510,27 @@ Public Class StringUtils
     ''' <summary>
     ''' For a given <c>Integer</c> season number, determine the appropriate season text
     ''' </summary>
-    ''' <param name="iSeason"><c>Integer</c> season value. Valid values are -1 or higher.</param>
+    ''' <param name="Season"><c>Integer</c> season value. Valid values are -1 or higher.</param>
     ''' <returns><c>String</c> title appropriate for the season</returns>
-    ''' <remarks>For <paramref name="iSeason"/> greater than 0, evaluates to (regional equivalent of) "Season XX" where XX is a 0-padded number.
+    ''' <remarks>For <paramref name="Season"/> greater than 0, evaluates to (regional equivalent of) "Season XX" where XX is a 0-padded number.
     ''' For 0, returns equivalent of "Season Specials".
     ''' For -1, returns equivalent of "* All Seasons".
     ''' For less than -1, returns equivalent of "Unknown"</remarks>
-    Public Shared Function FormatSeasonText(ByVal iSeason As Integer) As String
-        If iSeason > 0 Then
-            Return String.Concat(Master.eLang.GetString(650, "Season"), " ", iSeason.ToString.PadLeft(2, Convert.ToChar("0")))
-        ElseIf iSeason = 0 Then
+    Public Shared Function FormatSeasonTitle(ByVal Season As Integer) As String
+        If Season > 0 Then
+            Return String.Format("{0} {1}", Master.eLang.GetString(650, "Season"), Season.ToString.PadLeft(2, Convert.ToChar("0")))
+        ElseIf Season = 0 Then
             Return Master.eLang.GetString(655, "Season Specials")
-        ElseIf iSeason = -1 Then
+        ElseIf Season = -1 Then
             Return Master.eLang.GetString(1256, "* All Seasons")
         Else
             Return Master.eLang.GetString(138, "Unknown")
         End If
     End Function
 
-    Public Shared Function GetIMDBIDFromString(ByVal text As String, Optional ByVal searchrighttoleft As Boolean = False) As String
-        If String.IsNullOrEmpty(text) Then Return String.Empty
-        Return Regex.Match(text, "tt\d{6}\d*", If(searchrighttoleft, RegexOptions.RightToLeft, RegexOptions.None)).Value.Trim
+    Public Shared Function GetIMDBIDFromString(ByVal Text As String, Optional ByVal SearchRightToLeft As Boolean = False) As String
+        If String.IsNullOrEmpty(Text) Then Return String.Empty
+        Return Regex.Match(Text, "tt\d{6}\d*", If(SearchRightToLeft, RegexOptions.RightToLeft, RegexOptions.None)).Value.Trim
     End Function
 
     Public Shared Function GetURL_IMDb(ByVal dbelement As Database.DBElement) As String
@@ -616,7 +561,7 @@ Public Class StringUtils
                 If dbelement.Movie.UniqueIDs.TMDbIdSpecified Then
                     Return String.Concat("https://www.themoviedb.org/movie/", dbelement.Movie.UniqueIDs.TMDbId)
                 End If
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 If dbelement.MovieSet.UniqueIDs.TMDbIdSpecified Then
                     Return String.Concat("https://www.themoviedb.org/collection/", dbelement.MovieSet.UniqueIDs.TMDbId)
                 End If

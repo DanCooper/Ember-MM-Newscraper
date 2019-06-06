@@ -1109,26 +1109,22 @@ Public Class clsAPITMDB
             If ScrapeModifiers.withSeasons Then
 
                 'Aired
-                If FilteredOptions.bSeasonAired Then
-                    If SeasonInfo.AirDate IsNot Nothing Then
-                        Dim ScrapedDate As String = CStr(SeasonInfo.AirDate)
-                        If Not String.IsNullOrEmpty(ScrapedDate) Then
-                            Dim RelDate As Date
-                            If Date.TryParse(ScrapedDate, RelDate) Then
-                                'always save date in same date format not depending on users language setting!
-                                nSeason.Aired = RelDate.ToString("yyyy-MM-dd")
-                            Else
-                                nSeason.Aired = ScrapedDate
-                            End If
+                If FilteredOptions.bSeasonAired AndAlso SeasonInfo.AirDate IsNot Nothing Then
+                    Dim ScrapedDate As String = CStr(SeasonInfo.AirDate)
+                    If Not String.IsNullOrEmpty(ScrapedDate) Then
+                        Dim RelDate As Date
+                        If Date.TryParse(ScrapedDate, RelDate) Then
+                            'always save date in same date format not depending on users language setting!
+                            nSeason.Aired = RelDate.ToString("yyyy-MM-dd")
+                        Else
+                            nSeason.Aired = ScrapedDate
                         End If
                     End If
                 End If
 
                 'Plot
-                If FilteredOptions.bSeasonPlot Then
-                    If SeasonInfo.Overview IsNot Nothing Then
-                        nSeason.Plot = SeasonInfo.Overview
-                    End If
+                If FilteredOptions.bSeasonPlot AndAlso SeasonInfo.Overview IsNot Nothing Then
+                    nSeason.Plot = SeasonInfo.Overview
                 End If
 
                 'Season #
@@ -1137,7 +1133,7 @@ Public Class clsAPITMDB
                 End If
 
                 'Title
-                If SeasonInfo.Name IsNot Nothing Then
+                If FilteredOptions.bSeasonTitle AndAlso SeasonInfo.Name IsNot Nothing Then
                     nSeason.Title = SeasonInfo.Name
                 End If
 
@@ -1146,7 +1142,8 @@ Public Class clsAPITMDB
 
             If ScrapeModifiers.withEpisodes AndAlso SeasonInfo.Episodes IsNot Nothing Then
                 For Each aEpisode As TMDbLib.Objects.Search.TvSeasonEpisode In SeasonInfo.Episodes
-                    nTVShow.KnownEpisodes.Add(GetInfo_TVEpisode(ShowID, aEpisode.SeasonNumber, aEpisode.EpisodeNumber, FilteredOptions))
+                    Dim nEpisode = GetInfo_TVEpisode(ShowID, aEpisode.SeasonNumber, aEpisode.EpisodeNumber, FilteredOptions)
+                    If nEpisode IsNot Nothing Then nTVShow.KnownEpisodes.Add(nEpisode)
                 Next
             End If
         Else
@@ -1189,33 +1186,27 @@ Public Class clsAPITMDB
         End If
 
         'Aired
-        If FilteredOptions.bSeasonAired Then
-            If SeasonInfo.AirDate IsNot Nothing Then
-                Dim ScrapedDate As String = CStr(SeasonInfo.AirDate)
-                If Not String.IsNullOrEmpty(ScrapedDate) Then
-                    Dim RelDate As Date
-                    If Date.TryParse(ScrapedDate, RelDate) Then
-                        'always save date in same date format not depending on users language setting!
-                        nTVSeason.Aired = RelDate.ToString("yyyy-MM-dd")
-                    Else
-                        nTVSeason.Aired = ScrapedDate
-                    End If
+        If FilteredOptions.bSeasonAired AndAlso SeasonInfo.AirDate IsNot Nothing Then
+            Dim ScrapedDate As String = CStr(SeasonInfo.AirDate)
+            If Not String.IsNullOrEmpty(ScrapedDate) Then
+                Dim RelDate As Date
+                If Date.TryParse(ScrapedDate, RelDate) Then
+                    'always save date in same date format not depending on users language setting!
+                    nTVSeason.Aired = RelDate.ToString("yyyy-MM-dd")
+                Else
+                    nTVSeason.Aired = ScrapedDate
                 End If
             End If
         End If
 
         'Plot
-        If FilteredOptions.bSeasonPlot Then
-            If SeasonInfo.Overview IsNot Nothing Then
-                nTVSeason.Plot = SeasonInfo.Overview
-            End If
+        If FilteredOptions.bSeasonPlot AndAlso SeasonInfo.Overview IsNot Nothing Then
+            nTVSeason.Plot = SeasonInfo.Overview
         End If
 
         'Title
-        If FilteredOptions.bSeasonTitle Then
-            If SeasonInfo.Name IsNot Nothing Then
-                nTVSeason.Title = SeasonInfo.Name
-            End If
+        If FilteredOptions.bSeasonTitle AndAlso SeasonInfo.Name IsNot Nothing Then
+            nTVSeason.Title = SeasonInfo.Name
         End If
 
         Return nTVSeason

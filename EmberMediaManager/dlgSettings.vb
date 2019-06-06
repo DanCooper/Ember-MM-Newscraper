@@ -21,10 +21,10 @@
 ' # Dialog size: 1230; 1100
 ' # Move the panels (pnl*) from 1200;1200 to 0;0 to edit. Move it back after editing.
 
-Imports System.IO
 Imports EmberAPI
-Imports System.Net
 Imports NLog
+Imports System.IO
+Imports System.Net
 
 Public Class dlgSettings
 
@@ -39,6 +39,7 @@ Public Class dlgSettings
     Private MovieMeta As New List(Of Settings.MetadataPerType)
     Private MovieGeneralMediaListSorting As New List(Of Settings.ListSorting)
     Private MovieSetGeneralMediaListSorting As New List(Of Settings.ListSorting)
+    Private TempTVScraperSeasonTitleBlacklist As New List(Of String)
     Private TVGeneralEpisodeListSorting As New List(Of Settings.ListSorting)
     Private TVGeneralSeasonListSorting As New List(Of Settings.ListSorting)
     Private TVGeneralShowListSorting As New List(Of Settings.ListSorting)
@@ -697,7 +698,6 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtMovieSortToken.Text) Then
             If Not lstMovieSortTokens.Items.Contains(txtMovieSortToken.Text) Then
                 lstMovieSortTokens.Items.Add(txtMovieSortToken.Text)
-                sResult.NeedsReload_Movie = True
                 SetApplyButton(True)
                 txtMovieSortToken.Text = String.Empty
                 txtMovieSortToken.Focus()
@@ -709,7 +709,6 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtMovieSetSortToken.Text) Then
             If Not lstMovieSetSortTokens.Items.Contains(txtMovieSetSortToken.Text) Then
                 lstMovieSetSortTokens.Items.Add(txtMovieSetSortToken.Text)
-                sResult.NeedsReload_MovieSet = True
                 SetApplyButton(True)
                 txtMovieSetSortToken.Text = String.Empty
                 txtMovieSetSortToken.Focus()
@@ -721,7 +720,6 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtTVSortToken.Text) Then
             If Not lstTVSortTokens.Items.Contains(txtTVSortToken.Text) Then
                 lstTVSortTokens.Items.Add(txtTVSortToken.Text)
-                sResult.NeedsReload_TVShow = True
                 SetApplyButton(True)
                 txtTVSortToken.Text = String.Empty
                 txtTVSortToken.Focus()
@@ -1456,7 +1454,7 @@ Public Class dlgSettings
 
     Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowFilters, True)
             RefreshTVShowFilters()
             SetApplyButton(True)
         End If
@@ -1464,7 +1462,7 @@ Public Class dlgSettings
 
     Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.EpFilters, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeFilters, True)
             RefreshTVEpisodeFilters()
             SetApplyButton(True)
         End If
@@ -1526,7 +1524,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieSetGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MoviesetListSorting, True)
         MovieSetGeneralMediaListSorting.Clear()
         MovieSetGeneralMediaListSorting.AddRange(Master.eSettings.MovieSetGeneralMediaListSorting)
         LoadMovieSetGeneralMediaListSorting()
@@ -1600,7 +1598,6 @@ Public Class dlgSettings
     Private Sub btnMovieSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSortTokens, True)
         RefreshMovieSortTokens()
-        sResult.NeedsReload_Movie = True
         SetApplyButton(True)
     End Sub
 
@@ -1609,9 +1606,8 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieSetSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetSortTokens, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MoviesetSortTokens, True)
         RefreshMovieSetSortTokens()
-        sResult.NeedsReload_MovieSet = True
         SetApplyButton(True)
     End Sub
 
@@ -1620,9 +1616,8 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSortTokens, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowSortTokens, True)
         RefreshTVSortTokens()
-        sResult.NeedsReload_TVShow = True
         SetApplyButton(True)
     End Sub
 
@@ -1809,6 +1804,12 @@ Public Class dlgSettings
             chkTVScraperShowCertForMPAA.Enabled = True
             chkTVScraperShowCertOnlyValue.Enabled = True
         End If
+    End Sub
+
+    Private Sub chkTVScraperSeasonTitle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperSeasonTitle.CheckedChanged
+        SetApplyButton(True)
+
+        btnTVScraperSeasonTitleBlacklist.Enabled = chkTVScraperSeasonTitle.Checked
     End Sub
 
     Private Sub chkMovieScraperCertForMPAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCertForMPAA.CheckedChanged
@@ -2746,7 +2747,7 @@ Public Class dlgSettings
             If Not sett.DefaultValue = String.Empty Then
                 dgvMovieSetScraperTitleRenamer.Rows(i).Tag = True
                 dgvMovieSetScraperTitleRenamer.Rows(i).Cells(0).ReadOnly = True
-                dgvMovieSetScraperTitleRenamer.Rows(i).Cells(0).Style.SelectionForeColor = Drawing.Color.Red
+                dgvMovieSetScraperTitleRenamer.Rows(i).Cells(0).Style.SelectionForeColor = Color.Red
             Else
                 dgvMovieSetScraperTitleRenamer.Rows(i).Tag = False
             End If
@@ -3315,6 +3316,8 @@ Public Class dlgSettings
             txtTVShowExtrafanartsLimit.Text = .TVShowExtrafanartsLimit.ToString
             txtTVSourcesRegexMultiPartMatching.Text = .TVMultiPartMatching
             txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
+
+            TempTVScraperSeasonTitleBlacklist = .TVScraperSeasonTitleBlacklist
 
             FillMovieSetScraperTitleRenamer()
 
@@ -4520,7 +4523,7 @@ Public Class dlgSettings
     Private Sub RefreshMovieSources()
         Dim lvItem As ListViewItem
         lvMovieSources.Items.Clear()
-        For Each s As Database.DBSource In Master.DB.GetSources_Movie
+        For Each s As Database.DBSource In Master.DB.Load_AllSources_Movie
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
@@ -4537,7 +4540,7 @@ Public Class dlgSettings
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
         lvTVSources.Items.Clear()
-        For Each s As Database.DBSource In Master.DB.GetSources_TVShow
+        For Each s As Database.DBSource In Master.DB.Load_AllSources_TVShow
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
@@ -4708,7 +4711,6 @@ Public Class dlgSettings
             While lstMovieSortTokens.SelectedItems.Count > 0
                 lstMovieSortTokens.Items.Remove(lstMovieSortTokens.SelectedItems(0))
             End While
-            sResult.NeedsReload_Movie = True
             SetApplyButton(True)
         End If
     End Sub
@@ -4718,7 +4720,6 @@ Public Class dlgSettings
             While lstMovieSetSortTokens.SelectedItems.Count > 0
                 lstMovieSetSortTokens.Items.Remove(lstMovieSetSortTokens.SelectedItems(0))
             End While
-            sResult.NeedsReload_MovieSet = True
             SetApplyButton(True)
         End If
     End Sub
@@ -4728,7 +4729,6 @@ Public Class dlgSettings
             While lstTVSortTokens.SelectedItems.Count > 0
                 lstTVSortTokens.Items.Remove(lstTVSortTokens.SelectedItems(0))
             End While
-            sResult.NeedsReload_TVShow = True
             SetApplyButton(True)
         End If
     End Sub
@@ -5266,6 +5266,7 @@ Public Class dlgSettings
             .TVScraperShowStudio = chkTVScraperShowStudio.Checked
             Integer.TryParse(txtTVScraperShowStudioLimit.Text, .TVScraperShowStudioLimit)
             .TVScraperShowTitle = chkTVScraperShowTitle.Checked
+            .TVScraperSeasonTitleBlacklist = TempTVScraperSeasonTitleBlacklist
             .TVScraperShowUserRating = chkTVScraperShowUserRating.Checked
             .TVScraperUseDisplaySeasonEpisode = chkTVScraperUseDisplaySeasonEpisode.Checked
             .TVScraperUseMDDuration = chkTVScraperUseMDDuration.Checked
@@ -6235,6 +6236,7 @@ Public Class dlgSettings
         lblMovieScraperOutlineLimit.Text = String.Concat(strLimit, ":")
         lblTVImagesHeaderLimit.Text = strLimit
         lblTVScraperGlobalHeaderEpisodesLimit.Text = strLimit
+        lblTVScraperGlobalHeaderSeasonsLimit.Text = strLimit
         lblTVScraperGlobalHeaderShowsLimit.Text = strLimit
 
         'Lock
@@ -7875,7 +7877,6 @@ Public Class dlgSettings
         chkTVLockEpisodeTitle.CheckedChanged,
         chkTVLockEpisodeUserRating.CheckedChanged,
         chkTVLockSeasonPlot.CheckedChanged,
-        chkTVLockSeasonTitle.CheckedChanged,
         chkTVLockShowCert.CheckedChanged,
         chkTVLockShowCreators.CheckedChanged,
         chkTVLockShowGenre.CheckedChanged,
@@ -7902,7 +7903,6 @@ Public Class dlgSettings
         chkTVScraperEpisodeUserRating.CheckedChanged,
         chkTVScraperSeasonAired.CheckedChanged,
         chkTVScraperSeasonPlot.CheckedChanged,
-        chkTVScraperSeasonTitle.CheckedChanged,
         chkTVScraperShowCreators.CheckedChanged,
         chkTVScraperShowEpiGuideURL.CheckedChanged,
         chkTVScraperShowMPAA.CheckedChanged,
@@ -8125,67 +8125,69 @@ Public Class dlgSettings
         chkMovieSetKeyArtPrefSizeOnly.CheckedChanged,
         chkMovieSetKeyArtKeepExisting.CheckedChanged,
         cbMovieSetKeyArtPrefSize.SelectedIndexChanged,
-        chkMovieSetKeyArtExtended.CheckedChanged
+        chkMovieSetKeyArtExtended.CheckedChanged, chkTVLockSeasonTitle.CheckedChanged
 
         SetApplyButton(True)
     End Sub
 
     Private Sub TextBox_NumOnly_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles _
-            txtMovieBannerHeight.KeyPress,
-            txtMovieBannerWidth.KeyPress,
-            txtMovieExtrafanartsHeight.KeyPress,
-            txtMovieExtrafanartsLimit.KeyPress,
-            txtMovieExtrafanartsWidth.KeyPress,
-            txtMovieExtrathumbsHeight.KeyPress,
-            txtMovieExtrathumbsLimit.KeyPress,
-            txtMovieExtrathumbsWidth.KeyPress,
-            txtMovieFanartHeight.KeyPress,
-            txtMovieFanartWidth.KeyPress,
-            txtMovieKeyArtHeight.KeyPress,
-            txtMovieKeyArtWidth.KeyPress,
-            txtMovieLevTolerance.KeyPress,
-            txtMoviePosterHeight.KeyPress,
-            txtMoviePosterWidth.KeyPress,
-            txtMovieScraperCastLimit.KeyPress,
-            txtMovieScraperCountryLimit.KeyPress,
-            txtMovieScraperGenreLimit.KeyPress,
-            txtMovieScraperOutlineLimit.KeyPress,
-            txtMovieScraperStudioLimit.KeyPress,
-            txtMovieSetBannerHeight.KeyPress,
-            txtMovieSetBannerWidth.KeyPress,
-            txtMovieSetFanartHeight.KeyPress,
-            txtMovieSetFanartWidth.KeyPress,
-            txtMovieSetPosterHeight.KeyPress,
-            txtMovieSetPosterWidth.KeyPress,
-            txtMovieSkipLessThan.KeyPress,
-            txtProxyPort.KeyPress,
-            txtTVAllSeasonsBannerHeight.KeyPress,
-            txtTVAllSeasonsBannerWidth.KeyPress,
-            txtTVAllSeasonsFanartHeight.KeyPress,
-            txtTVAllSeasonsFanartWidth.KeyPress,
-            txtTVAllSeasonsPosterHeight.KeyPress,
-            txtTVAllSeasonsPosterWidth.KeyPress,
-            txtTVEpisodeFanartHeight.KeyPress,
-            txtTVEpisodeFanartWidth.KeyPress,
-            txtTVEpisodePosterHeight.KeyPress,
-            txtTVEpisodePosterWidth.KeyPress,
-            txtTVScraperEpisodeActorsLimit.KeyPress,
-            txtTVScraperEpisodeGuestStarsLimit.KeyPress,
-            txtTVScraperShowActorsLimit.KeyPress,
-            txtTVScraperShowGenreLimit.KeyPress,
-            txtTVScraperShowStudioLimit.KeyPress,
-            txtTVShowBannerHeight.KeyPress,
-            txtTVShowBannerWidth.KeyPress,
-            txtTVShowExtrafanartsHeight.KeyPress,
-            txtTVShowExtrafanartsLimit.KeyPress,
-            txtTVShowExtrafanartsWidth.KeyPress,
-            txtTVShowFanartHeight.KeyPress,
-            txtTVShowFanartWidth.KeyPress,
-            txtTVShowFanartWidth.KeyPress,
-            txtTVShowKeyArtHeight.KeyPress,
-            txtTVShowKeyArtWidth.KeyPress,
-            txtTVShowPosterHeight.KeyPress,
-            txtTVShowPosterWidth.KeyPress, txtMovieSetKeyArtWidth.KeyPress, txtMovieSetKeyArtHeight.KeyPress
+        txtMovieBannerHeight.KeyPress,
+        txtMovieBannerWidth.KeyPress,
+        txtMovieExtrafanartsHeight.KeyPress,
+        txtMovieExtrafanartsLimit.KeyPress,
+        txtMovieExtrafanartsWidth.KeyPress,
+        txtMovieExtrathumbsHeight.KeyPress,
+        txtMovieExtrathumbsLimit.KeyPress,
+        txtMovieExtrathumbsWidth.KeyPress,
+        txtMovieFanartHeight.KeyPress,
+        txtMovieFanartWidth.KeyPress,
+        txtMovieKeyArtHeight.KeyPress,
+        txtMovieKeyArtWidth.KeyPress,
+        txtMovieLevTolerance.KeyPress,
+        txtMoviePosterHeight.KeyPress,
+        txtMoviePosterWidth.KeyPress,
+        txtMovieScraperCastLimit.KeyPress,
+        txtMovieScraperCountryLimit.KeyPress,
+        txtMovieScraperGenreLimit.KeyPress,
+        txtMovieScraperOutlineLimit.KeyPress,
+        txtMovieScraperStudioLimit.KeyPress,
+        txtMovieSetBannerHeight.KeyPress,
+        txtMovieSetBannerWidth.KeyPress,
+        txtMovieSetFanartHeight.KeyPress,
+        txtMovieSetFanartWidth.KeyPress,
+        txtMovieSetKeyArtHeight.KeyPress,
+        txtMovieSetKeyArtWidth.KeyPress,
+        txtMovieSetPosterHeight.KeyPress,
+        txtMovieSetPosterWidth.KeyPress,
+        txtMovieSkipLessThan.KeyPress,
+        txtProxyPort.KeyPress,
+        txtTVAllSeasonsBannerHeight.KeyPress,
+        txtTVAllSeasonsBannerWidth.KeyPress,
+        txtTVAllSeasonsFanartHeight.KeyPress,
+        txtTVAllSeasonsFanartWidth.KeyPress,
+        txtTVAllSeasonsPosterHeight.KeyPress,
+        txtTVAllSeasonsPosterWidth.KeyPress,
+        txtTVEpisodeFanartHeight.KeyPress,
+        txtTVEpisodeFanartWidth.KeyPress,
+        txtTVEpisodePosterHeight.KeyPress,
+        txtTVEpisodePosterWidth.KeyPress,
+        txtTVScraperEpisodeActorsLimit.KeyPress,
+        txtTVScraperEpisodeGuestStarsLimit.KeyPress,
+        txtTVScraperShowActorsLimit.KeyPress,
+        txtTVScraperShowGenreLimit.KeyPress,
+        txtTVScraperShowStudioLimit.KeyPress,
+        txtTVShowBannerHeight.KeyPress,
+        txtTVShowBannerWidth.KeyPress,
+        txtTVShowExtrafanartsHeight.KeyPress,
+        txtTVShowExtrafanartsLimit.KeyPress,
+        txtTVShowExtrafanartsWidth.KeyPress,
+        txtTVShowFanartHeight.KeyPress,
+        txtTVShowFanartWidth.KeyPress,
+        txtTVShowFanartWidth.KeyPress,
+        txtTVShowKeyArtHeight.KeyPress,
+        txtTVShowKeyArtWidth.KeyPress,
+        txtTVShowPosterHeight.KeyPress,
+        txtTVShowPosterWidth.KeyPress
 
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
@@ -8201,6 +8203,13 @@ Public Class dlgSettings
             Dim strText As String = Master.eLang.GetString(935, "We have to limit the amount of images downloaded to a suitable value to prevent needless traffic on the image providers.{0}The limit for automatically downloaded Extrafanarts and Extrathumbs is 20.{0}{0}Notes: Most skins can't show more than 4 Extrathumbs.{0}It's still possible to manually select as many as you want in the ""Image Select"" dialog.")
             MessageBox.Show(String.Format(strText, Environment.NewLine), strTitle, MessageBoxButtons.OK, MessageBoxIcon.Information)
             tTextBox.Text = "20"
+        End If
+    End Sub
+
+    Private Sub btnTVScraperSeasonTitleBlacklist_Click(sender As Object, e As EventArgs) Handles btnTVScraperSeasonTitleBlacklist.Click
+        If dlgSettingsSeasonTitleBlacklist.ShowDialog(TempTVScraperSeasonTitleBlacklist) = DialogResult.OK Then
+            TempTVScraperSeasonTitleBlacklist = dlgSettingsSeasonTitleBlacklist.Result
+            SetApplyButton(True)
         End If
     End Sub
 
