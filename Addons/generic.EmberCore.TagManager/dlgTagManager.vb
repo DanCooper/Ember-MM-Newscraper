@@ -20,16 +20,13 @@
 
 Imports EmberAPI
 Imports NLog
-Imports System.Diagnostics
-Imports System.IO
-Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 
 Public Class dlgTagManager
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     'backgroundworker used for commandline scraping in this module
     Friend WithEvents bwLoad As New System.ComponentModel.BackgroundWorker
@@ -58,9 +55,8 @@ Public Class dlgTagManager
     Sub New()
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
-        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
-        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
-        StartPosition = FormStartPosition.Manual
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
+
         SetUp()
     End Sub
 
@@ -96,7 +92,7 @@ Public Class dlgTagManager
 
         'load current movielist-view/selection
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
-            Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
+            Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.movie)).Value))
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 lstFilteredMovies.Add(DBElement)
             End If
@@ -131,8 +127,7 @@ Public Class dlgTagManager
         pnlMain.Enabled = False
 
         'load existing tags from database into datatable
-        Master.DB.FillDataTable(dtMovieTags, String.Concat("SELECT * FROM tag ",
-                                                           "ORDER BY name COLLATE NOCASE;"))
+        dtMovieTags = Master.DB.GetTags
 
         'fill movie datagridview
         If dgvMovies.Rows.Count = 0 Then
@@ -146,15 +141,15 @@ Public Class dlgTagManager
                 For i As Integer = 0 To dgvMovies.Columns.Count - 1
                     dgvMovies.Columns(i).Visible = False
                 Next
-                dgvMovies.Columns("listTitle").Visible = True
-                dgvMovies.Columns("listTitle").Resizable = DataGridViewTriState.True
-                dgvMovies.Columns("listTitle").ReadOnly = True
-                dgvMovies.Columns("listTitle").MinimumWidth = 83
-                dgvMovies.Columns("listTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("listTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                dgvMovies.Columns("listTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                dgvMovies.Columns("ListTitle").Visible = True
+                dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                dgvMovies.Columns("ListTitle").ReadOnly = True
+                dgvMovies.Columns("ListTitle").MinimumWidth = 83
+                dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
 
-                dgvMovies.Columns("ID").ValueType = GetType(Int64)
+                dgvMovies.Columns("ID").ValueType = GetType(Long)
             End If
             dgvMovies.ResumeLayout()
         End If
@@ -162,14 +157,14 @@ Public Class dlgTagManager
         'fill listbox of tags
         If lbTags.Items.Count = 0 Then
             For Each sRow As DataRow In dtMovieTags.Rows
-                If Not String.IsNullOrEmpty(sRow.Item("name").ToString) Then
+                If Not String.IsNullOrEmpty(sRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Name)).ToString) Then
                     Dim tmpnewTag As New SyncTag
-                    tmpnewTag.ID = CInt(sRow.Item("idTag"))
-                    tmpnewTag.Name = CStr(sRow.Item("name"))
-                    Dim tmpTag = Master.DB.Load_Tag_Movie(CInt(sRow.Item("idTag")))
+                    tmpnewTag.ID = CInt(sRow.Item(Database.Helpers.GetMainIdName(Database.TableName.tag)))
+                    tmpnewTag.Name = CStr(sRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Name)))
+                    Dim tmpTag = Master.DB.Load_Tag_Movie(CLng(sRow.Item(Database.Helpers.GetMainIdName(Database.TableName.tag))))
                     tmpnewTag.Movies = tmpTag.Movies
                     globalMovieTags.Add(tmpnewTag)
-                    lbTags.Items.Add(sRow.Item("name").ToString)
+                    lbTags.Items.Add(sRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Name)).ToString)
                 End If
             Next
             'select first item in listbox
@@ -457,11 +452,11 @@ Public Class dlgTagManager
                 Return Nothing
             End If
         Next
-        Dim newtag As New SyncTag
-        newtag.Clear()
-        newtag.IsNew = True
-        newtag.Name = listname
-        Return newtag
+
+        Return New SyncTag With {
+            .IsNew = True,
+            .Name = listname
+        }
     End Function
     ''' <summary>
     ''' Save tag state to Ember database/Nfo of movies
@@ -542,7 +537,7 @@ Public Class dlgTagManager
             lstFilteredMovies.Clear()
             'load current movielist-view/selection
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
-                Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.movie)).Value))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
@@ -558,7 +553,7 @@ Public Class dlgTagManager
             lstFilteredMovies.Clear()
             'load current movielist-view/selection
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
-                Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.movie)).Value))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
@@ -573,11 +568,9 @@ Public Class dlgTagManager
         If rdMoviesAll.Checked Then
             lstFilteredMovies.Clear()
             'load current movielist-view/selection
-            Dim dtmovies As New DataTable
-            Master.DB.FillDataTable(dtmovies, String.Concat("SELECT * FROM movielist ",
-                                                            "ORDER BY listTitle COLLATE NOCASE;"))
+            Dim dtmovies = Master.DB.GetMovies
             For Each sRow As DataRow In dtmovies.Rows
-                Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow("idMovie")))
+                Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow(Database.Helpers.GetMainIdName(Database.TableName.movie))))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
@@ -595,93 +588,23 @@ End Class
 Friend Class SyncTag
     Implements IComparable(Of SyncTag)
 
-#Region "Fields"
-
-    Private _idTag As Long
-    Private _strTag As String
-    Private _newTag As Boolean
-    Private _modifiedTag As Boolean
-    Private _deletedTag As Boolean
-    Private _movies As New List(Of Database.DBElement)
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-    Public Sub New()
-        Clear()
-    End Sub
-
-#End Region
-
 #Region "Properties"
 
-    Public Property Movies() As List(Of Database.DBElement)
-        Get
-            Return _movies
-        End Get
-        Set(ByVal value As List(Of Database.DBElement))
-            _movies = value
-        End Set
-    End Property
+    Public Property Movies() As List(Of Database.DBElement) = New List(Of Database.DBElement)
 
-    Public Property Name() As String
-        Get
-            Return _strTag
-        End Get
-        Set(ByVal value As String)
-            _strTag = value
-        End Set
-    End Property
+    Public Property Name() As String = String.Empty
 
-    Public Property ID() As Long
-        Get
-            Return _idTag
-        End Get
-        Set(ByVal value As Long)
-            _idTag = value
-        End Set
-    End Property
+    Public Property ID() As Long = -1
 
-    Public Property IsNew() As Boolean
-        Get
-            Return _newTag
-        End Get
-        Set(ByVal value As Boolean)
-            _newTag = value
-        End Set
-    End Property
+    Public Property IsNew() As Boolean = False
 
-    Public Property IsModified() As Boolean
-        Get
-            Return _modifiedTag
-        End Get
-        Set(ByVal value As Boolean)
-            _modifiedTag = value
-        End Set
-    End Property
+    Public Property IsModified() As Boolean = False
 
-    Public Property IsDeleted() As Boolean
-        Get
-            Return _deletedTag
-        End Get
-        Set(ByVal value As Boolean)
-            _deletedTag = value
-        End Set
-    End Property
+    Public Property IsDeleted() As Boolean = False
 
 #End Region
 
 #Region "Methods"
-
-    Public Sub Clear()
-        _movies = New List(Of Database.DBElement)
-        _idTag = -1
-        _strTag = String.Empty
-        _newTag = False
-        _deletedTag = False
-        _modifiedTag = False
-    End Sub
 
     Public Function CompareTo(ByVal other As SyncTag) As Integer Implements IComparable(Of SyncTag).CompareTo
         Return (ID).CompareTo(other.ID)
@@ -692,4 +615,3 @@ Friend Class SyncTag
 End Class
 
 #End Region
-

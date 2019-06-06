@@ -63,7 +63,7 @@ Public Class dlgClearOrReplace
                 txtCreators.Visible = False
                 txtPremiered.Visible = False
                 txtStatus.Visible = False
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 chkActors.Visible = False
                 chkAired.Visible = False
                 chkCertifications.Visible = False
@@ -262,7 +262,7 @@ Public Class dlgClearOrReplace
                     UInteger.TryParse(txtYear.Text.Trim, uiYear)
                     nInfo.Year = CInt(uiYear)
                     _Result.GenericObject = nInfo
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     .bMainPlot = chkPlot.Checked
                 Case Enums.ContentType.TVEpisode
                     Dim nInfo = New MediaContainers.EpisodeDetails

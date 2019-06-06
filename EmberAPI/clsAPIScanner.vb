@@ -1508,7 +1508,7 @@ Public Class Scanner
 
         If Args.Scan.SpecificFolder AndAlso Not String.IsNullOrEmpty(Args.FolderPath) AndAlso Directory.Exists(Args.FolderPath) Then
             'check if FolderPath is inside of a movie source
-            For Each eSource In Master.DB.GetSources_Movie
+            For Each eSource In Master.DB.Load_AllSources_Movie
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.FolderPath.EndsWith(Path.DirectorySeparatorChar), Args.FolderPath, String.Concat(Args.FolderPath, Path.DirectorySeparatorChar)).ToLower.Trim
 
@@ -1525,7 +1525,7 @@ Public Class Scanner
             Next
 
             'check if FolderPath is inside of a tv show source
-            For Each eSource In Master.DB.GetSources_TVShow
+            For Each eSource In Master.DB.Load_AllSources_TVShow
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.FolderPath.EndsWith(Path.DirectorySeparatorChar), Args.FolderPath, String.Concat(Args.FolderPath, Path.DirectorySeparatorChar)).ToLower.Trim
 

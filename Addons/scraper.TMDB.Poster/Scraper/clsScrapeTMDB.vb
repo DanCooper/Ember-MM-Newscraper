@@ -55,7 +55,7 @@ Public Class clsAPITMDB
             If ContentType = Enums.ContentType.Movie Then
                 APIResult = Task.Run(Function() _client.GetMovieImagesAsync(CInt(TMDBID)))
                 Results = APIResult.Result
-            ElseIf ContentType = Enums.ContentType.MovieSet Then
+            ElseIf ContentType = Enums.ContentType.Movieset Then
                 APIResult = Task.Run(Function() _client.GetCollectionImagesAsync(CInt(TMDBID)))
                 Results = APIResult.Result
             End If

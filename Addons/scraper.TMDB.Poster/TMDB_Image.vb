@@ -334,10 +334,10 @@ Public Class TMDB_Image
     End Sub
 
     Sub LoadSettings_MovieSet()
-        ConfigModifier_MovieSet.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.MovieSet)
-        ConfigModifier_MovieSet.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.Movieset)
+        ConfigModifier_MovieSet.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.Movieset)
 
-        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.MovieSet)
+        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.Movieset)
         _SpecialSettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
     End Sub
 
@@ -374,7 +374,7 @@ Public Class TMDB_Image
 
         If DBMovieSet.MovieSet.UniqueIDs.TMDbIdSpecified Then
             Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_MovieSet)
-            ImagesContainer = _TMDBAPI_MovieSet.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.UniqueIDs.TMDbId, FilteredModifiers, Enums.ContentType.MovieSet)
+            ImagesContainer = _TMDBAPI_MovieSet.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.UniqueIDs.TMDbId, FilteredModifiers, Enums.ContentType.Movieset)
         End If
 
         logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Done]")
@@ -433,9 +433,9 @@ Public Class TMDB_Image
 
     Sub SaveSettings_MovieSet()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("DoPoster", ConfigModifier_MovieSet.MainPoster, , , Enums.ContentType.MovieSet)
-            settings.SetBooleanSetting("DoFanart", ConfigModifier_MovieSet.MainFanart, , , Enums.ContentType.MovieSet)
-            settings.SetSetting("APIKey", _setup_MovieSet.txtApiKey.Text, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("DoPoster", ConfigModifier_MovieSet.MainPoster, , , Enums.ContentType.Movieset)
+            settings.SetBooleanSetting("DoFanart", ConfigModifier_MovieSet.MainFanart, , , Enums.ContentType.Movieset)
+            settings.SetSetting("APIKey", _setup_MovieSet.txtApiKey.Text, , , Enums.ContentType.Movieset)
         End Using
     End Sub
 

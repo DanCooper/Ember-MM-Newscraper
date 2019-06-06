@@ -299,6 +299,18 @@
     <Compile Include="dlgProfileSelect.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgSettingsSeasonTitleBlacklist.Designer.vb">
+      <DependentUpon>dlgSettingsSeasonTitleBlacklist.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgSettingsSeasonTitleBlacklist.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgSmartPlaylist.Designer.vb">
+      <DependentUpon>dlgSmartPlaylist.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgSmartPlaylist.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgSourceMovie.Designer.vb">
       <DependentUpon>dlgSourceMovie.vb</DependentUpon>
     </Compile>
@@ -457,6 +469,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgProfileSelect.resx">
       <DependentUpon>dlgProfileSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgSettingsSeasonTitleBlacklist.resx">
+      <DependentUpon>dlgSettingsSeasonTitleBlacklist.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgSmartPlaylist.resx">
+      <DependentUpon>dlgSmartPlaylist.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgSourceMovie.resx">
       <DependentUpon>dlgSourceMovie.vb</DependentUpon>

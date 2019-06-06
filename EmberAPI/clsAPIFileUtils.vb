@@ -66,31 +66,45 @@ Namespace FileUtils
 
     Public Class ClipboardHandler
 
+#Region "Fields"
+
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
+#End Region 'Fields
+
 #Region "Methods"
 
         Public Shared Function GetImagesFromClipboard() As List(Of MediaContainers.Image)
             Dim lstImages As New List(Of MediaContainers.Image)
-            Select Case True
-                Case Clipboard.ContainsImage
-                    Dim nImage As New MediaContainers.Image
-                    nImage.ImageOriginal.UpdateMSfromImg(Clipboard.GetImage)
-                    lstImages.Add(nImage)
-                Case Clipboard.ContainsText
-                    Dim nImage As New MediaContainers.Image
-                    Dim nUri = New Uri(Clipboard.GetText)
-                    Select Case True
-                        Case nUri.IsFile
-                            nImage.ImageOriginal.LoadFromFile(Clipboard.GetText, True)
-                        Case nUri.IsUnc
-                            nImage.ImageOriginal.LoadFromWeb(Clipboard.GetText, True)
-                    End Select
-                Case Clipboard.ContainsFileDropList
-                    For Each nPath In Clipboard.GetFileDropList
+            Try
+                Select Case True
+                    Case Clipboard.ContainsImage
                         Dim nImage As New MediaContainers.Image
-                        nImage.ImageOriginal.LoadFromFile(nPath, True)
+                        nImage.ImageOriginal.UpdateMSfromImg(Clipboard.GetImage)
                         lstImages.Add(nImage)
-                    Next
-            End Select
+                    Case Clipboard.ContainsText
+                        Dim nImage As New MediaContainers.Image
+                        Dim nURI As Uri = Nothing
+                        If Uri.TryCreate(Clipboard.GetText, UriKind.Absolute, nURI) Then
+                            Select Case True
+                                Case nURI.IsFile
+                                    nImage.ImageOriginal.LoadFromFile(nURI.LocalPath, True)
+                                    lstImages.Add(nImage)
+                                Case nURI.Scheme = "http", nURI.Scheme = "https"
+                                    nImage.ImageOriginal.LoadFromWeb(nURI.AbsoluteUri, True)
+                                    lstImages.Add(nImage)
+                            End Select
+                        End If
+                    Case Clipboard.ContainsFileDropList
+                        For Each nPath In Clipboard.GetFileDropList
+                            Dim nImage As New MediaContainers.Image
+                            nImage.ImageOriginal.LoadFromFile(nPath, True)
+                            lstImages.Add(nImage)
+                        Next
+                End Select
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
             Return lstImages
         End Function
 
@@ -134,7 +148,7 @@ Namespace FileUtils
                         Return False
                     End If
 
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     For Each nMovie In dbElement.MoviesInSet
                         If Not CheckOnlineStatus(nMovie.DBMovie, showMessage) Then
                             Return False
@@ -354,7 +368,7 @@ Namespace FileUtils
                     End If
 
 
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     Dim lstFiles As New List(Of String)
                     lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainBanner))
                     lstFiles.AddRange(FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainClearArt))
@@ -867,7 +881,7 @@ Namespace FileUtils
             Select Case DBElement.ContentType
                 Case Enums.ContentType.Movie
                     Return Movie(DBElement, ModType, Forced)
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     Return MovieSet(DBElement, ModType, Forced)
                 Case Enums.ContentType.TVEpisode
                     Return TVEpisode(DBElement, ModType)
@@ -2001,17 +2015,28 @@ Namespace FileUtils
             'get first episode of season (YAMJ need that for episodes without separate season folders)
             Try
                 If Master.eSettings.TVUseYAMJ AndAlso Not bInside Then
-                    Dim dtEpisodes As New DataTable
-                    Master.DB.FillDataTable(dtEpisodes, String.Format("SELECT * FROM {0} INNER JOIN {1} ON ({1}.{2} = {0}.{2}) WHERE {3} = {4} AND {5} = {6} ORDER BY {7};",
-                                                                      Database.Helpers.GetTableName(Database.TableName.episode),
-                                                                      Database.Helpers.GetTableName(Database.TableName.file),
-                                                                      Database.Helpers.GetMainIdName(Database.TableName.episode),
-                                                                      Database.Helpers.GetMainIdName(Database.TableName.tvshow),
-                                                                      dbElement.ShowID,
-                                                                      Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber),
-                                                                      dbElement.TVSeason.Season,
-                                                                      Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber))
-                                                                      )
+                    Dim nFilter As New SmartFilter.Filter(Enums.ContentType.TVEpisode)
+                    nFilter.Rules.Add(New SmartFilter.Rule With {
+                                          .Field = Database.ColumnName.idShow,
+                                          .[Operator] = SmartFilter.Operators.Is,
+                                          .Value = dbElement.ShowID})
+                    nFilter.Rules.Add(New SmartFilter.Rule With {
+                                          .Field = Database.ColumnName.SeasonNumber,
+                                          .[Operator] = SmartFilter.Operators.Is,
+                                          .Value = dbElement.TVSeason.Season})
+                    nFilter.OrderBy.Add(New SmartFilter.Order With {
+                                            .SortedBy = Database.ColumnName.EpisodeNumber})
+                    Dim dtEpisodes = Master.DB.GetTVSeasons(nFilter)
+                    'Master.DB.FillDataTable(dtEpisodes, String.Format("SELECT * FROM {0} INNER JOIN {1} ON ({1}.{2} = {0}.{2}) WHERE {3} = {4} AND {5} = {6} ORDER BY {7};",
+                    '                                                  Database.Helpers.GetTableName(Database.TableName.episode),
+                    '                                                  Database.Helpers.GetTableName(Database.TableName.file),
+                    '                                                  Database.Helpers.GetMainIdName(Database.TableName.episode),
+                    '                                                  Database.Helpers.GetMainIdName(Database.TableName.tvshow),
+                    '                                                  dbElement.ShowID,
+                    '                                                  Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber),
+                    '                                                  dbElement.TVSeason.Season,
+                    '                                                  Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber))
+                    '                                                  )
                     If dtEpisodes.Rows.Count > 0 Then
                         strEpisodePath = dtEpisodes.Rows(0).Item(Database.Helpers.GetColumnName(Database.ColumnName.Path)).ToString
                         If Not String.IsNullOrEmpty(strEpisodePath) Then

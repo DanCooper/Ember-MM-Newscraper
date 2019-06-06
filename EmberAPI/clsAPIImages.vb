@@ -1473,7 +1473,7 @@ Public Class Images
         Dim lstModTypes As New List(Of Enums.ModifierType)
         With Options
             Select Case ContentType
-                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet, Enums.ContentType.TVShow
+                Case Enums.ContentType.Movie, Enums.ContentType.Movieset, Enums.ContentType.TVShow
                     If .MainBanner Then lstModTypes.Add(Enums.ModifierType.MainBanner)
                     If .MainCharacterArt Then lstModTypes.Add(Enums.ModifierType.MainCharacterArt)
                     If .MainClearArt Then lstModTypes.Add(Enums.ModifierType.MainClearArt)

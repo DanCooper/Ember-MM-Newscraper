@@ -932,8 +932,11 @@ Public Class Info
             'Title
             If (Not DBTVSeason.TVSeason.TitleSpecified OrElse Not Master.eSettings.TVLockSeasonTitle) AndAlso ScrapeOptions.bSeasonTitle AndAlso
                 scrapedseason.TitleSpecified AndAlso Master.eSettings.TVScraperSeasonTitle AndAlso Not new_Title Then
-                DBTVSeason.TVSeason.Title = scrapedseason.Title
-                new_Title = True
+                Dim nTitle = StringUtils.FilterSeasonTitle(scrapedseason.Title)
+                If Not String.IsNullOrEmpty(nTitle) Then
+                    DBTVSeason.TVSeason.Title = nTitle
+                    new_Title = True
+                End If
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperSeasonTitle AndAlso Not Master.eSettings.TVLockSeasonTitle Then
                 DBTVSeason.TVSeason.Title = String.Empty
             End If

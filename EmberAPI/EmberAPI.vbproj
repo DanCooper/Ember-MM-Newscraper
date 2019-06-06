@@ -187,7 +187,7 @@
     <Compile Include="clsAPIIMDB.vb" />
     <Compile Include="clsAPIMetaData.vb" />
     <Compile Include="clsAPIProfiles.vb" />
-    <Compile Include="clsAPISmartPlaylist.vb" />
+    <Compile Include="clsAPISmartFilter.vb" />
     <Compile Include="clsAPITaskManager.vb" />
     <Compile Include="clsAPIThemes.vb" />
     <Compile Include="clsAPICommon.vb" />
@@ -470,6 +470,7 @@
     </Content>
     <Content Include="Defaults\DefaultCertLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Defaults\Core.ScraperLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -525,9 +526,11 @@
     </None>
     <Content Include="Defaults\DefaultAdvancedSettings - VideoSourceMapping.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Defaults\DefaultRatings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

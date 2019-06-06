@@ -751,7 +751,7 @@ Public Class dlgCustomScraper
                     rbScrapeType_Selected.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count > 0
                     rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count)
 
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     NameID = Database.Helpers.GetMainIdName(Database.TableName.movieset)
                     NameTable = Database.Helpers.GetTableName(Database.TableName.movieset)
                     gbEpisodeScrapeModifiers.Visible = False

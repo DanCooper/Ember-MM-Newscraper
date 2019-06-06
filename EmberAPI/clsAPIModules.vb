@@ -414,7 +414,7 @@ Public Class ModulesManager
                         ScraperModule.ProcessorModule.Init(ScraperModule.AssemblyName)
 
                         For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(f) f.AssemblyName = ScraperModule.AssemblyName AndAlso
-                                                                                                      f.ContentType = Enums.ContentType.MovieSet)
+                                                                                                      f.ContentType = Enums.ContentType.Movieset)
                             ScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                             DataScraperAnyEnabled_MovieSet = DataScraperAnyEnabled_MovieSet OrElse i.ModuleEnabled
                             ScraperModule.ModuleOrder = i.ModuleOrder
@@ -441,7 +441,7 @@ Public Class ModulesManager
                         ScraperModule.ProcessorModule.Init(ScraperModule.AssemblyName)
 
                         For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(f) f.AssemblyName = ScraperModule.AssemblyName AndAlso
-                                                                                                  f.ContentType = Enums.ContentType.MovieSet)
+                                                                                                  f.ContentType = Enums.ContentType.Movieset)
                             ScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                             ImageScraperAnyEnabled_MovieSet = ImageScraperAnyEnabled_MovieSet OrElse i.ModuleEnabled
                             ScraperModule.ModuleOrder = i.ModuleOrder
@@ -2082,7 +2082,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Data_MovieSet 'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.ContentType = Enums.ContentType.MovieSet
+        Public ContentType As Enums.ContentType = Enums.ContentType.Movieset
 
 #End Region 'Fields
 
@@ -2124,7 +2124,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Image_MovieSet  'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.ContentType = Enums.ContentType.MovieSet
+        Public ContentType As Enums.ContentType = Enums.ContentType.Movieset
 
 #End Region 'Fields
 

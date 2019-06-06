@@ -194,11 +194,11 @@ Public Class TaskManager
                     End If
                 Next
 
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 For Each tID In tTaskItem.ListOfID
                     _bHasChanged = False
                     If bwTaskManager.CancellationPending Then Return
-                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(tID)
 
                     If Not tmpDBElement.IsLocked Then
                         With tTaskItem.ScrapeOptions
@@ -558,10 +558,10 @@ Public Class TaskManager
                         End If
                     Next
 
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     For Each tID In tTaskItem.ListOfID
                         If bwTaskManager.CancellationPending Then Return
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(tID)
 
                         If Not tmpDBElement.Language = strNewLanguage Then
                             tmpDBElement.Language = strNewLanguage
@@ -638,11 +638,11 @@ Public Class TaskManager
                     End If
                 Next
 
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
                     Dim bHasChanged As Boolean = False
-                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(tID)
 
                     If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsLocked Then
@@ -865,7 +865,7 @@ Public Class TaskManager
                     End Using
                 Next
 
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
 

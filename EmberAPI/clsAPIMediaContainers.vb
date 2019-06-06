@@ -809,7 +809,7 @@ Namespace MediaContainers
             Select Case tContentType
                 Case Enums.ContentType.Movie
                     doCache = Master.eSettings.MovieImagesCacheEnabled
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     doCache = Master.eSettings.MovieSetImagesCacheEnabled
                 Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                     doCache = Master.eSettings.TVImagesCacheEnabled
@@ -1118,7 +1118,7 @@ Namespace MediaContainers
                         Poster = New Image
                     End If
 
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
 
                     'MovieSet Banner
                     If Banner.LoadAndCache(tContentType, True) Then
@@ -2484,7 +2484,7 @@ Namespace MediaContainers
                         sID = "Unknown"
                     End If
                     sPath = Path.Combine(Master.TempPath, String.Concat("Movies", Path.DirectorySeparatorChar, sID))
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     sID = tDBElement.MovieSet.UniqueIDs.TMDbId
                     If String.IsNullOrEmpty(sID) Then
                         sID = "Unknown"
@@ -2656,7 +2656,7 @@ Namespace MediaContainers
                     cSettings.GetBlankImages = Master.eSettings.MovieImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieImagesGetEnglishImages
                     cSettings.MediaLanguageOnly = Master.eSettings.MovieImagesMediaLanguageOnly
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     cSettings.ForcedLanguage = Master.eSettings.MovieSetImagesForcedLanguage
                     cSettings.ForceLanguage = Master.eSettings.MovieSetImagesForceLanguage
                     cSettings.GetBlankImages = Master.eSettings.MovieSetImagesGetBlankImages
@@ -2750,7 +2750,7 @@ Namespace MediaContainers
                     Else
                         MainPosters = MainPosters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).ToList()
                     End If
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     'MovieSet Banner
                     If Not Master.eSettings.MovieSetBannerPrefSize = Enums.ImageSize.Any Then
                         MainBanners = MainBanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.ImageSize).OrderByDescending(Function(y) y.ImageSize = Master.eSettings.MovieSetBannerPrefSize).ToList()

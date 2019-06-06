@@ -844,7 +844,7 @@ Public Class Theming
         Select Case contentType
             Case Enums.ContentType.Movie
                 settings = _theme.ImagePanel.Movie
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 settings = _theme.ImagePanel.Movieset
             Case Enums.ContentType.TVEpisode
                 settings = _theme.ImagePanel.TVEpisode
@@ -900,7 +900,7 @@ Public Class Theming
         Select Case contentType
             Case Enums.ContentType.Movie
                 settings = _theme.InfoPanel.Movie
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 settings = _theme.InfoPanel.Movieset
             Case Enums.ContentType.TVEpisode
                 settings = _theme.InfoPanel.TVEpisode

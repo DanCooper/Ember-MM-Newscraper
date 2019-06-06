@@ -955,7 +955,7 @@ Public Class dlgWizard
     Private Sub RefreshSources_Movie()
         Dim lvItem As ListViewItem
         lvMovies.Items.Clear()
-        For Each s As Database.DBSource In Master.DB.GetSources_Movie
+        For Each s As Database.DBSource In Master.DB.Load_AllSources_Movie
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
@@ -972,7 +972,7 @@ Public Class dlgWizard
     Private Sub RefreshSources_TVShow()
         Dim lvItem As ListViewItem
         lvTVSources.Items.Clear()
-        For Each s As Database.DBSource In Master.DB.GetSources_TVShow
+        For Each s As Database.DBSource In Master.DB.Load_AllSources_TVShow
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)

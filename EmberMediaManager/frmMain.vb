@@ -122,23 +122,30 @@ Public Class frmMain
 
     'filter movies
     Private bDoingSearch_Movies As Boolean = False
-    Private Filter_Movies As New SmartPlaylist.Playlist(Enums.ContentType.Movie)
+    Private Filter_Movies As New SmartFilter.Filter(Enums.ContentType.Movie)
     Private filSearch_Movies As String = String.Empty
     Private currTextSearch_Movies As String = String.Empty
     Private prevTextSearch_Movies As String = String.Empty
 
     'filter moviesets
     Private bDoingSearch_MovieSets As Boolean = False
-    Private Filter_Moviesets As New SmartPlaylist.Playlist(Enums.ContentType.MovieSet)
+    Private Filter_Moviesets As New SmartFilter.Filter(Enums.ContentType.Movieset)
     Private currTextSearch_MovieSets As String = String.Empty
     Private prevTextSearch_MovieSets As String = String.Empty
 
+    'filter episodes
+    Private Filter_TVEpisodes As New SmartFilter.Filter(Enums.ContentType.TVEpisode)
+
+    'filter season
+    Private Filter_TVSeasons As New SmartFilter.Filter(Enums.ContentType.TVSeason)
+
     'filter shows
     Private bDoingSearch_TVShows As Boolean = False
-    Private Filter_TVShows As New SmartPlaylist.Playlist(Enums.ContentType.TVShow)
+    Private Filter_TVShows As New SmartFilter.Filter(Enums.ContentType.TVShow)
     Private filSearch_TVShows As String = String.Empty
     Private currTextSearch_TVShows As String = String.Empty
     Private prevTextSearch_TVShows As String = String.Empty
+
 
     Private tTheme As Theming
     Private CloseApp As Boolean = False
@@ -253,7 +260,7 @@ Public Class frmMain
         Select Case currThemeType
             Case Enums.ContentType.Movie
                 iState = InfoPanelState_Movie
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 iState = InfoPanelState_MovieSet
             Case Enums.ContentType.TVEpisode
                 iState = InfoPanelState_TVEpisode
@@ -277,7 +284,7 @@ Public Class frmMain
                     Select Case currThemeType
                         Case Enums.ContentType.Movie
                             InfoPanelState_Movie = 2
-                        Case Enums.ContentType.MovieSet
+                        Case Enums.ContentType.Movieset
                             InfoPanelState_MovieSet = 2
                         Case Enums.ContentType.TVEpisode
                             InfoPanelState_TVEpisode = 2
@@ -294,7 +301,7 @@ Public Class frmMain
                     Select Case currThemeType
                         Case Enums.ContentType.Movie
                             InfoPanelState_Movie = 0
-                        Case Enums.ContentType.MovieSet
+                        Case Enums.ContentType.Movieset
                             InfoPanelState_MovieSet = 0
                         Case Enums.ContentType.TVEpisode
                             InfoPanelState_TVEpisode = 0
@@ -318,7 +325,7 @@ Public Class frmMain
                     Select Case currThemeType
                         Case Enums.ContentType.Movie
                             InfoPanelState_Movie = 1
-                        Case Enums.ContentType.MovieSet
+                        Case Enums.ContentType.Movieset
                             InfoPanelState_MovieSet = 1
                         Case Enums.ContentType.TVEpisode
                             InfoPanelState_TVEpisode = 1
@@ -335,7 +342,7 @@ Public Class frmMain
                     Select Case currThemeType
                         Case Enums.ContentType.Movie
                             InfoPanelState_Movie = 0
-                        Case Enums.ContentType.MovieSet
+                        Case Enums.ContentType.Movieset
                             InfoPanelState_MovieSet = 0
                         Case Enums.ContentType.TVEpisode
                             InfoPanelState_TVEpisode = 0
@@ -353,7 +360,7 @@ Public Class frmMain
                 Select Case currThemeType
                     Case Enums.ContentType.Movie
                         InfoPanelState_Movie = 0
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         InfoPanelState_MovieSet = 0
                     Case Enums.ContentType.TVEpisode
                         InfoPanelState_TVEpisode = 0
@@ -446,7 +453,7 @@ Public Class frmMain
         Select Case currThemeType
             Case Enums.ContentType.Movie
                 InfoPanelState_Movie = 0
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 InfoPanelState_MovieSet = 0
             Case Enums.ContentType.TVEpisode
                 InfoPanelState_TVEpisode = 0
@@ -504,7 +511,7 @@ Public Class frmMain
         Select Case currThemeType
             Case Enums.ContentType.Movie
                 InfoPanelState_Movie = 1
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 InfoPanelState_MovieSet = 1
             Case Enums.ContentType.TVEpisode
                 InfoPanelState_TVEpisode = 1
@@ -993,7 +1000,7 @@ Public Class frmMain
         Select Case currThemeType
             Case Enums.ContentType.Movie
                 InfoPanelState_Movie = 2
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 InfoPanelState_MovieSet = 2
             Case Enums.ContentType.TVEpisode
                 InfoPanelState_TVEpisode = 2
@@ -1509,7 +1516,7 @@ Public Class frmMain
     Private Sub bwMovieSetScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieSetScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
-        Dim DBScrapeMovieSet As New Database.DBElement(Enums.ContentType.MovieSet)
+        Dim DBScrapeMovieSet As New Database.DBElement(Enums.ContentType.Movieset)
 
         logger.Trace(String.Format("[MovieSet Scraper] [Start] MovieSets Count [{0}]", Args.ScrapeList.Count.ToString))
 
@@ -1535,7 +1542,7 @@ Public Class frmMain
 
             logger.Trace(String.Format("[MovieSet Scraper] [Start] Scraping {0}", OldListTitle))
 
-            DBScrapeMovieSet = Master.DB.Load_MovieSet(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset))))
+            DBScrapeMovieSet = Master.DB.Load_Movieset(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset))))
 
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
 
@@ -2271,7 +2278,7 @@ Public Class frmMain
                     Next
                     SQLtransaction.Commit()
                 End Using
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 For Each sRow As DataRow In dtMovieSets.Rows
                     dicIDs.Add(Convert.ToInt64(sRow.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset))),
                                sRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToString)
@@ -2400,22 +2407,22 @@ Public Class frmMain
 
     Private Sub chkFilterEmpty_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterEmpty_MovieSets.Click
         If chkFilterEmpty_MovieSets.Checked Then
-            Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.MovieCount, .Operator = SmartPlaylist.Operators.Is, .Value = 0})
+            Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.MovieCount, .Operator = SmartFilter.Operators.Is, .Value = 0})
         Else
-            Filter_Moviesets.RemoveAll(Database.ColumnName.MovieCount, SmartPlaylist.Operators.Is)
+            Filter_Moviesets.RemoveAll(Database.ColumnName.MovieCount, SmartFilter.Operators.Is)
         End If
         RunFilter_MovieSets()
     End Sub
 
     Private Sub chkFilterMultiple_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMultiple_MovieSets.Click
-        Filter_GreaterThan(Database.ColumnName.MovieCount, If(chkFilterMultiple_MovieSets.Checked, 1, -1), Enums.ContentType.MovieSet)
+        Filter_GreaterThan(Database.ColumnName.MovieCount, If(chkFilterMultiple_MovieSets.Checked, 1, -1), Enums.ContentType.Movieset)
     End Sub
 
     Private Sub chkFilterOne_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterOne_MovieSets.Click
         If chkFilterOne_MovieSets.Checked Then
-            Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.MovieCount, .Operator = SmartPlaylist.Operators.Is, .Value = 1})
+            Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.MovieCount, .Operator = SmartFilter.Operators.Is, .Value = 1})
         Else
-            Filter_Moviesets.RemoveAll(Database.ColumnName.MovieCount, SmartPlaylist.Operators.Is)
+            Filter_Moviesets.RemoveAll(Database.ColumnName.MovieCount, SmartFilter.Operators.Is)
         End If
         RunFilter_MovieSets()
     End Sub
@@ -2425,7 +2432,7 @@ Public Class frmMain
     End Sub
 
     Private Sub chkFilterLock_MovieSets_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterLock_MovieSets.Click
-        Filter_Boolean(Database.ColumnName.Locked, chkFilterLock_MovieSets.Checked, Enums.ContentType.MovieSet)
+        Filter_Boolean(Database.ColumnName.Locked, chkFilterLock_MovieSets.Checked, Enums.ContentType.Movieset)
     End Sub
 
     Private Sub chkFilterLockEpisodes_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterLockEpisodes_Shows.Click
@@ -2441,7 +2448,7 @@ Public Class frmMain
     End Sub
 
     Private Sub chkFilterMark_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark_MovieSets.Click
-        Filter_Boolean(Database.ColumnName.Marked, chkFilterMark_MovieSets.Checked, Enums.ContentType.MovieSet)
+        Filter_Boolean(Database.ColumnName.Marked, chkFilterMark_MovieSets.Checked, Enums.ContentType.Movieset)
     End Sub
 
     Private Sub chkFilterMark_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark_Shows.Click
@@ -2485,7 +2492,7 @@ Public Class frmMain
     End Sub
 
     Private Sub chkFilterNew_Moviesets_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNew_MovieSets.Click
-        Filter_Boolean(Database.ColumnName.[New], chkFilterNew_MovieSets.Checked, Enums.ContentType.MovieSet)
+        Filter_Boolean(Database.ColumnName.[New], chkFilterNew_MovieSets.Checked, Enums.ContentType.Movieset)
     End Sub
 
     Private Sub chkFilterNewEpisodes_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNewEpisodes_Shows.Click
@@ -2498,7 +2505,7 @@ Public Class frmMain
 
     Private Sub chkFilterTolerance_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterTolerance_Movies.Click
         If chkFilterTolerance_Movies.Checked Then
-            Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.OutOfTolerance, .Operator = SmartPlaylist.Operators.True})
+            Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.OutOfTolerance, .Operator = SmartFilter.Operators.True})
         Else
             Filter_Movies.RemoveAll(Database.ColumnName.OutOfTolerance)
         End If
@@ -2818,7 +2825,7 @@ Public Class frmMain
         pnlFilterDataFields_Movies.Tag = "NO"
 
         If clbFilterDataFields_Movies.CheckedItems.Count > 0 Then
-            Dim filter As New List(Of SmartPlaylist.Rule)
+            Dim filter As New List(Of SmartFilter.Rule)
             txtFilterDataField_Movies.Text = String.Empty
 
             Dim lstItems As New List(Of String)
@@ -2827,9 +2834,9 @@ Public Class frmMain
             txtFilterDataField_Movies.Text = String.Join(" | ", lstItems.ToArray)
 
             For i As Integer = 0 To lstItems.Count - 1
-                Dim rule As New SmartPlaylist.Rule
+                Dim rule As New SmartFilter.Rule
                 rule.Field = Database.Helpers.GetColumnName(lstItems(i))
-                rule.Operator = If(cbFilterDataField_Movies.SelectedIndex = 0, SmartPlaylist.Operators.IsNullOrEmpty, SmartPlaylist.Operators.IsNotNullOrEmpty)
+                rule.Operator = If(cbFilterDataField_Movies.SelectedIndex = 0, SmartFilter.Operators.IsNullOrEmpty, SmartFilter.Operators.IsNotNullOrEmpty)
                 filter.Add(rule)
             Next
 
@@ -2890,7 +2897,7 @@ Public Class frmMain
     Private Sub ClearFilters_Movies(Optional ByVal Reload As Boolean = False)
         lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsMovies.RemoveFilter()
-        Filter_Movies = New SmartPlaylist.Playlist(Enums.ContentType.Movie)
+        Filter_Movies = New SmartFilter.Filter(Enums.ContentType.Movie)
         filSearch_Movies = String.Empty
 
         RemoveHandler txtSearchMovies.TextChanged, AddressOf txtSearchMovies_TextChanged
@@ -2985,7 +2992,7 @@ Public Class frmMain
     Private Sub ClearFilters_MovieSets(Optional ByVal Reload As Boolean = False)
         lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsMovieSets.RemoveFilter()
-        Filter_Moviesets = New SmartPlaylist.Playlist(Enums.ContentType.MovieSet)
+        Filter_Moviesets = New SmartFilter.Filter(Enums.ContentType.Movieset)
 
         RemoveHandler txtSearchMovieSets.TextChanged, AddressOf txtSearchMovieSets_TextChanged
         txtSearchMovieSets.Text = String.Empty
@@ -3011,7 +3018,7 @@ Public Class frmMain
     Private Sub ClearFilters_Shows(Optional ByVal Reload As Boolean = False)
         lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsTVShows.RemoveFilter()
-        Filter_TVShows = New SmartPlaylist.Playlist(Enums.ContentType.TVShow)
+        Filter_TVShows = New SmartFilter.Filter(Enums.ContentType.TVShow)
         filSearch_TVShows = String.Empty
 
         RemoveHandler txtSearchShows.TextChanged, AddressOf txtSearchShows_TextChanged
@@ -3247,7 +3254,7 @@ Public Class frmMain
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
                         If Not Convert.ToInt64(sRow.Cells("idFile").Value) = -1 Then
-                            SQLCommand.CommandText = String.Concat("SELECT strFilename FROM files WHERE idFile = ", sRow.Cells("idFile").Value.ToString, ";")
+                            SQLCommand.CommandText = String.Concat("SELECT path FROM file WHERE idFile = ", sRow.Cells("idFile").Value.ToString, ";")
                             ePath = SQLCommand.ExecuteScalar.ToString
 
                             If Not String.IsNullOrEmpty(ePath) Then
@@ -3289,19 +3296,19 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuMovieSetLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLock.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, True, String.Empty)
+        CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuMovieSetUnlock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetUnlock.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, False, String.Empty)
+        CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuMovieSetMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetMark.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
+        CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuMovieSetUnmark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetUnmark.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
+        CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuEpisodeLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeLock.Click
@@ -3586,7 +3593,7 @@ Public Class frmMain
 
         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-        Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
+        Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_Movieset(ID)
         Edit_MovieSet(tmpDBMovieSet)
     End Sub
 
@@ -3594,7 +3601,7 @@ Public Class frmMain
         dgvMovieSets.ClearSelection()
         ClearInfo()
 
-        Dim tmpDBMovieSet = New Database.DBElement(Enums.ContentType.MovieSet) With {.MovieSet = New MediaContainers.MovieSet}
+        Dim tmpDBMovieSet = New Database.DBElement(Enums.ContentType.Movieset) With {.MovieSet = New MediaContainers.MovieSet}
 
         Using dNewSet As New dlgNewSet()
             If dNewSet.ShowDialog(tmpDBMovieSet) = DialogResult.OK Then
@@ -4141,7 +4148,7 @@ Public Class frmMain
                 bClickScrapeEnabled = Master.eSettings.MovieClickScrape
                 defaultOptions = Master.eSettings.DefaultOptions_Movie
             Case sender Is dgvMovieSets
-                contentType = Enums.ContentType.MovieSet
+                contentType = Enums.ContentType.Movieset
                 bClickScrapeAsk = Master.eSettings.MovieSetClickScrapeAsk
                 bClickScrapeEnabled = Master.eSettings.MovieSetClickScrape
                 defaultOptions = Master.eSettings.DefaultOptions_MovieSet
@@ -4207,7 +4214,7 @@ Public Class frmMain
                 Select Case contentType
                     Case Enums.ContentType.Movie
                         currRow_Movie = objCell.RowIndex
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         currRow_MovieSet = objCell.RowIndex
                     Case Enums.ContentType.TVEpisode
                         currRow_TVEpisode = objCell.RowIndex
@@ -4262,7 +4269,7 @@ Public Class frmMain
                 Select Case contentType
                     Case Enums.ContentType.Movie
                         CreateScrapeList_Movie(If(bClickScrapeAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         CreateScrapeList_MovieSet(If(bClickScrapeAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
                     Case Enums.ContentType.TVEpisode
                         CreateScrapeList_TVEpisode(If(bClickScrapeAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
@@ -4295,7 +4302,7 @@ Public Class frmMain
                 dgView = DirectCast(sender, DataGridView)
                 tableName = Database.TableName.movie
             Case sender Is dgvMovieSets
-                contentType = Enums.ContentType.MovieSet
+                contentType = Enums.ContentType.Movieset
                 dgView = DirectCast(sender, DataGridView)
                 tableName = Database.TableName.movieset
             Case sender Is dgvTVEpisodes
@@ -4319,8 +4326,8 @@ Public Class frmMain
                 Case Enums.ContentType.Movie
                     Dim dbElement As Database.DBElement = Master.DB.Load_Movie(ID)
                     Edit_Movie(dbElement)
-                Case Enums.ContentType.MovieSet
-                    Dim dbElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                Case Enums.ContentType.Movieset
+                    Dim dbElement As Database.DBElement = Master.DB.Load_Movieset(ID)
                     Edit_MovieSet(dbElement)
                 Case Enums.ContentType.TVEpisode
                     Dim dbElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
@@ -4675,7 +4682,7 @@ Public Class frmMain
                 strMainId = Database.Helpers.GetMainIdName(Database.TableName.movie)
                 strSearchIn = Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)
             Case sender Is dgvMovieSets
-                contentType = Enums.ContentType.MovieSet
+                contentType = Enums.ContentType.Movieset
                 strMainId = Database.Helpers.GetMainIdName(Database.TableName.movieset)
                 strSearchIn = Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)
             Case sender Is dgvTVEpisodes
@@ -4709,8 +4716,8 @@ Public Class frmMain
                 Case Enums.ContentType.Movie
                     Dim dbElement As Database.DBElement = Master.DB.Load_Movie(lngID)
                     Edit_Movie(dbElement)
-                Case Enums.ContentType.MovieSet
-                    Dim dbElement As Database.DBElement = Master.DB.Load_MovieSet(lngID)
+                Case Enums.ContentType.Movieset
+                    Dim dbElement As Database.DBElement = Master.DB.Load_Movieset(lngID)
                     Edit_MovieSet(dbElement)
                 Case Enums.ContentType.TVEpisode
                     Dim dbElement As Database.DBElement = Master.DB.Load_TVEpisode(lngID, True)
@@ -5079,7 +5086,7 @@ Public Class frmMain
 
     Private Sub dgvMovieSets_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellEnter
         Dim currMainTabTag = GetCurrentMainTabTag()
-        If Not currMainTabTag.ContentType = Enums.ContentType.MovieSet Then Return
+        If Not currMainTabTag.ContentType = Enums.ContentType.Movieset Then Return
 
         tmrWait_TVShow.Stop()
         tmrWait_TVSeason.Stop()
@@ -5983,7 +5990,7 @@ Public Class frmMain
                 Case "movie"
                     eContentType = Enums.ContentType.Movie
                 Case "movieset"
-                    eContentType = Enums.ContentType.MovieSet
+                    eContentType = Enums.ContentType.Movieset
                 Case "tvepisode"
                     eContentType = Enums.ContentType.TVEpisode
                 Case "tvseason"
@@ -6004,7 +6011,7 @@ Public Class frmMain
                                 For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                                     nTaskItem.ListOfID.Add(Convert.ToInt64(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.movie)).Value))
                                 Next
-                            Case Enums.ContentType.MovieSet
+                            Case Enums.ContentType.Movieset
                                 For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                                     nTaskItem.ListOfID.Add(Convert.ToInt64(sRow.Cells("idSet").Value))
                                 Next
@@ -6263,15 +6270,15 @@ Public Class frmMain
         If doMovies Then
             bsMovies.DataSource = Nothing
             dgvMovies.DataSource = Nothing
-            Master.DB.FillDataTable(dtMovies, Filter_Movies.SqlQuery)
+            bsMovies.Filter = Filter_Movies.FilterForBindingSource
+            dtMovies = Master.DB.GetMovies(Filter_Movies)
         End If
 
         If doMovieSets Then
             bsMovieSets.DataSource = Nothing
             dgvMovieSets.DataSource = Nothing
-            Master.DB.FillDataTable(dtMovieSets, String.Format("SELECT * FROM '{0}' ORDER BY {1} COLLATE NOCASE;",
-                                                               currList_MovieSets,
-                                                               Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)))
+            bsMovieSets.Filter = Filter_Moviesets.FilterForBindingSource
+            dtMovieSets = Master.DB.GetMovieSets(Filter_Moviesets)
         End If
 
         If doTVShows Then
@@ -6281,9 +6288,8 @@ Public Class frmMain
             dgvTVSeasons.DataSource = Nothing
             bsTVEpisodes.DataSource = Nothing
             dgvTVEpisodes.DataSource = Nothing
-            Master.DB.FillDataTable(dtTVShows, String.Format("SELECT * FROM '{0}' ORDER BY {1} COLLATE NOCASE;",
-                                                             currList_TVShows,
-                                                             Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)))
+            bsTVShows.Filter = Filter_TVShows.FilterForBindingSource
+            dtTVShows = Master.DB.GetTVShows(Filter_TVShows)
         End If
 
 
@@ -6473,7 +6479,7 @@ Public Class frmMain
                     End If
                 Catch ex As Exception
                     logger.Warn("Default list For movieset list sorting has been loaded")
-                    Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
+                    Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MoviesetListSorting, True)
                     If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
                         For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
                             dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
@@ -6753,20 +6759,42 @@ Public Class frmMain
 
         dgvTVEpisodes.Enabled = False
 
+        Filter_TVEpisodes = New SmartFilter.Filter(Enums.ContentType.TVEpisode)
         If bIsAllSeasons Then
-            Master.DB.FillDataTable(dtTVEpisodes, String.Format("SELECT * FROM {0} WHERE {1}={2} {3} ORDER BY {4}, {5};",
-                                                                Database.Helpers.GetMainViewName(Enums.ContentType.TVEpisode),
-                                                                Database.Helpers.GetMainIdName(Database.TableName.tvshow),
-                                                                ShowID,
-                                                                If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"),
-                                                                Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber),
-                                                                Database.Helpers.GetColumnName(Database.ColumnName.EpisodeNumber)))
-            'Master.DB.FillDataTable(dtTVEpisodes, String.Concat("Select * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"), " ORDER BY season, episode;"))
+            Filter_TVEpisodes.Rules.Add(New SmartFilter.Rule With {
+                                          .Field = Database.ColumnName.idShow,
+                                          .[Operator] = SmartFilter.Operators.Is,
+                                          .Value = ShowID
+                                          })
+            Filter_TVEpisodes.OrderBy.Add(New SmartFilter.Order With {
+                                            .SortedBy = Database.ColumnName.SeasonNumber
+                                            })
         Else
-            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("Select * FROM episodelist WHERE idShow = ", ShowID, " And season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " And missing = 0"), " ORDER BY episode;"))
+            Filter_TVEpisodes.Rules.Add(New SmartFilter.Rule With {
+                                          .Field = Database.ColumnName.idShow,
+                                          .[Operator] = SmartFilter.Operators.Is,
+                                          .Value = ShowID
+                                          })
+            Filter_TVEpisodes.Rules.Add(New SmartFilter.Rule With {
+                                          .Field = Database.ColumnName.SeasonNumber,
+                                          .[Operator] = SmartFilter.Operators.Is,
+                                          .Value = Season
+                                          })
         End If
+        If Not Master.eSettings.TVDisplayMissingEpisodes Then
+            Filter_TVEpisodes.Rules.Add(New SmartFilter.Rule With {
+                                              .Field = Database.ColumnName.IsMissing,
+                                              .[Operator] = SmartFilter.Operators.False
+                                              })
+        End If
+        Filter_TVEpisodes.OrderBy.Add(New SmartFilter.Order With {
+                                            .SortedBy = Database.ColumnName.EpisodeNumber
+                                            })
+        Filter_TVEpisodes.Build()
+        dtTVEpisodes = Master.DB.GetTVEpisodes(Filter_TVEpisodes)
 
         bsTVEpisodes.DataSource = dtTVEpisodes
+        bsTVEpisodes.Filter = Filter_TVEpisodes.FilterForBindingSource
         dgvTVEpisodes.DataSource = bsTVEpisodes
 
         Try
@@ -6846,13 +6874,6 @@ Public Class frmMain
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).SortMode = DataGridViewColumnSortMode.Automatic
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).Visible = Not CheckColumnHide_TVEpisodes(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath))
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToolTipText = Master.eLang.GetString(148, "Poster")
-        'dgvTVEpisodes.Columns("rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
-        'dgvTVEpisodes.Columns("rating").MinimumWidth = 30
-        'dgvTVEpisodes.Columns("rating").Resizable = DataGridViewTriState.False
-        'dgvTVEpisodes.Columns("rating").ReadOnly = True
-        'dgvTVEpisodes.Columns("rating").SortMode = DataGridViewColumnSortMode.Automatic
-        'dgvTVEpisodes.Columns("rating").Visible = Not CheckColumnHide_TVEpisodes("rating")
-        'dgvTVEpisodes.Columns("rating").ToolTipText = Master.eLang.GetString(400, "Rating")
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).MinimumWidth = 41
         dgvTVEpisodes.Columns(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).Resizable = DataGridViewTriState.False
@@ -6899,20 +6920,37 @@ Public Class frmMain
         bsTVEpisodes.DataSource = Nothing
         dgvTVEpisodes.DataSource = Nothing
 
-        If Master.eSettings.TVDisplayMissingEpisodes Then
-            Master.DB.FillDataTable(dtTVSeasons, String.Format("Select * FROM {0} WHERE idShow={1} ORDER BY {2};",
-                                                               Database.Helpers.GetMainViewName(Enums.ContentType.TVSeason),
-                                                               ShowID,
-                                                               Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)))
-        Else
-            Master.DB.FillDataTable(dtTVSeasons, String.Concat("Select DISTINCT seasonlist.* ",
-                                                                "FROM seasonlist ",
-                                                                "LEFT OUTER JOIN episodelist On (seasonlist.idShow = episodelist.idShow) And (seasonlist.season = episodelist.season) ",
-                                                                "WHERE seasonlist.idShow = ", ShowID, " AND (episodelist.missing = 0 OR seasonlist.season = -1) ",
-                                                                "ORDER BY seasonlist.season;"))
-        End If
+        'TODO: TVDisplayMissingEpisodes handling
+        'If Master.eSettings.TVDisplayMissingEpisodes Then
+        '    Master.DB.FillDataTable(dtTVSeasons, String.Format("Select * FROM {0} WHERE idShow={1} ORDER BY {2};",
+        '                                                       Database.Helpers.GetMainViewName(Enums.ContentType.TVSeason),
+        '                                                       ShowID,
+        '                                                       Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)))
+        'Else
+        '    Master.DB.FillDataTable(dtTVSeasons, String.Concat("Select DISTINCT seasonlist.* ",
+        '                                                        "FROM seasonlist ",
+        '                                                        "LEFT OUTER JOIN episodelist On (seasonlist.idShow = episodelist.idShow) And (seasonlist.season = episodelist.season) ",
+        '                                                        "WHERE seasonlist.idShow = ", ShowID, " AND (episodelist.missing = 0 OR seasonlist.season = -1) ",
+        '                                                        "ORDER BY seasonlist.season;"))
+        'End If
+        Filter_TVSeasons = New SmartFilter.Filter(Enums.ContentType.TVSeason)
+        Filter_TVSeasons.Rules.Add(New SmartFilter.Rule With {
+                                     .Field = Database.ColumnName.idShow,
+                                     .[Operator] = SmartFilter.Operators.Is,
+                                     .Value = ShowID})
+        'Filter_TVSeasons.Rules.Add(New SmartFilter.Rule With {
+        '                           .Field = Database.ColumnName.IsMissing,
+        '                           .[Operator] = SmartFilter.Operators.IsNot,
+        '                           .Value = Master.eSettings.TVDisplayMissingEpisodes
+        '                           })
+        Filter_TVSeasons.OrderBy.Add(New SmartFilter.Order With {
+                                       .SortedBy = Database.ColumnName.SeasonNumber
+                                       })
+        Filter_TVSeasons.Build()
+        dtTVSeasons = Master.DB.GetTVSeasons(Filter_TVSeasons)
 
         bsTVSeasons.DataSource = dtTVSeasons
+        bsTVSeasons.Filter = Filter_TVSeasons.FilterForBindingSource
         dgvTVSeasons.DataSource = bsTVSeasons
 
         If dgvTVSeasons.Columns.Count > 0 Then
@@ -7802,11 +7840,11 @@ Public Class frmMain
 
     Private Sub Filter_Boolean(ByVal columnName As Database.ColumnName, ByVal value As Boolean, ByVal contentType As Enums.ContentType)
         If value Then
-            Dim rule As New SmartPlaylist.Rule With {.Field = columnName, .Operator = If(value, SmartPlaylist.Operators.True, SmartPlaylist.Operators.False)}
+            Dim rule As New SmartFilter.Rule With {.Field = columnName, .Operator = If(value, SmartFilter.Operators.True, SmartFilter.Operators.False)}
             Select Case contentType
                 Case Enums.ContentType.Movie
                     Filter_Movies.Rules.Add(rule)
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     Filter_Moviesets.Rules.Add(rule)
                 Case Enums.ContentType.TVShow
                     Filter_TVShows.Rules.Add(rule)
@@ -7815,7 +7853,7 @@ Public Class frmMain
             Select Case contentType
                 Case Enums.ContentType.Movie
                     Filter_Movies.RemoveAll(columnName)
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     Filter_Moviesets.RemoveAll(columnName)
                 Case Enums.ContentType.TVShow
                     Filter_TVShows.RemoveAll(columnName)
@@ -7824,7 +7862,7 @@ Public Class frmMain
         Select Case contentType
             Case Enums.ContentType.Movie
                 RunFilter_Movies()
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 RunFilter_MovieSets()
             Case Enums.ContentType.TVShow
                 RunFilter_TVShows()
@@ -7838,7 +7876,7 @@ Public Class frmMain
                                      ByVal columnName As Database.ColumnName,
                                      ByVal contentType As Enums.ContentType)
 
-        Dim filter As New List(Of SmartPlaylist.Rule)
+        Dim filter As New List(Of SmartFilter.Rule)
 
         filterPanel.Visible = False
         filterPanel.Tag = "NO"
@@ -7852,12 +7890,12 @@ Public Class frmMain
             textBox.Text = String.Join(" | ", lstItems.ToArray)
 
             For i As Integer = 0 To lstItems.Count - 1
-                Dim rule As New SmartPlaylist.Rule
+                Dim rule As New SmartFilter.Rule
                 rule.Field = columnName
                 If lstItems.Item(i) = Master.eLang.None Then
-                    rule.Operator = SmartPlaylist.Operators.IsNullOrEmpty
+                    rule.Operator = SmartFilter.Operators.IsNullOrEmpty
                 Else
-                    rule.Operator = SmartPlaylist.Operators.Contains
+                    rule.Operator = SmartFilter.Operators.Contains
                     rule.Value = lstItems.Item(i)
                 End If
                 filter.Add(rule)
@@ -7893,11 +7931,11 @@ Public Class frmMain
 
     Private Sub Filter_GreaterThan(ByVal columnName As Database.ColumnName, ByVal value As Integer, ByVal contentType As Enums.ContentType)
         If value > -1 Then
-            Dim rule As New SmartPlaylist.Rule With {.Field = columnName, .Operator = SmartPlaylist.Operators.GreaterThan, .Value = value}
+            Dim rule As New SmartFilter.Rule With {.Field = columnName, .Operator = SmartFilter.Operators.GreaterThan, .Value = value}
             Select Case contentType
                 Case Enums.ContentType.Movie
                     Filter_Movies.Rules.Add(rule)
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     Filter_Moviesets.Rules.Add(rule)
                 Case Enums.ContentType.TVShow
                     Filter_TVShows.Rules.Add(rule)
@@ -7906,7 +7944,7 @@ Public Class frmMain
             Select Case contentType
                 Case Enums.ContentType.Movie
                     Filter_Movies.RemoveAll(columnName)
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     Filter_Moviesets.RemoveAll(columnName)
                 Case Enums.ContentType.TVShow
                     Filter_TVShows.RemoveAll(columnName)
@@ -7915,7 +7953,7 @@ Public Class frmMain
         Select Case contentType
             Case Enums.ContentType.Movie
                 RunFilter_Movies()
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 RunFilter_MovieSets()
             Case Enums.ContentType.TVShow
                 RunFilter_TVShows()
@@ -7926,20 +7964,20 @@ Public Class frmMain
         Filter_Movies.RemoveAllMissingFilters()
         If chkFilterMissing_Movies.Checked Then
             With Master.eSettings
-                If .MovieMissingBanner Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingClearArt Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingClearLogo Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingDiscArt Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.DiscArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingExtrafanarts Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ExtrafanartsPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingExtrathumbs Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ExtrathumbsPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingFanart Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingKeyArt Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.KeyArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingLandscape Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingNFO Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingPoster Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingSubtitles Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.HasSubtitles, .Operator = SmartPlaylist.Operators.False})
-                If .MovieMissingTheme Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ThemePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieMissingTrailer Then Filter_Movies.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.TrailerPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieMissingBanner Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingClearArt Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingClearLogo Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingDiscArt Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.DiscArtPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingExtrafanarts Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ExtrafanartsPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingExtrathumbs Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ExtrathumbsPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingFanart Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingKeyArt Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.KeyArtPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingLandscape Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingNFO Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingPoster Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingSubtitles Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.HasSubtitles, .Operator = SmartFilter.Operators.False})
+                If .MovieMissingTheme Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ThemePath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieMissingTrailer Then Filter_Movies.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.TrailerPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
             End With
         End If
         RunFilter_Movies()
@@ -7949,15 +7987,15 @@ Public Class frmMain
         Filter_Moviesets.RemoveAllMissingFilters()
         If chkFilterMissing_MovieSets.Checked Then
             With Master.eSettings
-                If .MovieSetMissingBanner Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieSetMissingClearArt Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieSetMissingClearLogo Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieSetMissingDiscArt Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.DiscArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieSetMissingFanart Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieSetMissingKeyArt Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.KeyArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieSetMissingLandscape Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieSetMissingNFO Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .MovieSetMissingPoster Then Filter_Moviesets.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .MovieSetMissingBanner Then Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieSetMissingClearArt Then Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieSetMissingClearLogo Then Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieSetMissingDiscArt Then Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.DiscArtPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieSetMissingFanart Then Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieSetMissingKeyArt Then Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.KeyArtPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieSetMissingLandscape Then Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieSetMissingNFO Then Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .MovieSetMissingPoster Then Filter_Moviesets.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
             End With
         End If
         RunFilter_MovieSets()
@@ -7967,36 +8005,35 @@ Public Class frmMain
         Filter_TVShows.RemoveAllMissingFilters()
         If chkFilterMissing_Shows.Checked Then
             With Master.eSettings
-                If .TVShowMissingBanner Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .TVShowMissingCharacterArt Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.CharacterArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .TVShowMissingClearArt Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .TVShowMissingClearLogo Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .TVShowMissingExtrafanarts Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ExtrafanartsPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .TVShowMissingFanart Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .TVShowMissingKeyArt Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.KeyArtPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .TVShowMissingLandscape Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .TVShowMissingNFO Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .TVShowMissingPoster Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
-                If .TVShowMissingTheme Then Filter_TVShows.Rules.Add(New SmartPlaylist.Rule With {.Field = Database.ColumnName.ThemePath, .Operator = SmartPlaylist.Operators.IsNullOrEmpty})
+                If .TVShowMissingBanner Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.BannerPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .TVShowMissingCharacterArt Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.CharacterArtPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .TVShowMissingClearArt Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ClearArtPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .TVShowMissingClearLogo Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ClearLogoPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .TVShowMissingExtrafanarts Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ExtrafanartsPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .TVShowMissingFanart Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.FanartPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .TVShowMissingKeyArt Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.KeyArtPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .TVShowMissingLandscape Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.LandscapePath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .TVShowMissingNFO Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.NfoPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .TVShowMissingPoster Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.PosterPath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
+                If .TVShowMissingTheme Then Filter_TVShows.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.ThemePath, .Operator = SmartFilter.Operators.IsNullOrEmpty})
             End With
         End If
         RunFilter_TVShows()
     End Sub
 
-    Private Sub Filter_SearchBar(
-                                ByRef searchBar As AdvancedControls.TextBox_with_Watermark,
-                                ByRef comboBox As ComboBox,
-                                ByVal contentType As Enums.ContentType)
+    Private Sub Filter_SearchBar(ByRef searchBar As AdvancedControls.TextBox_with_Watermark,
+                                 ByRef comboBox As ComboBox,
+                                 ByVal contentType As Enums.ContentType)
 
-        Dim filter As New List(Of SmartPlaylist.Rule)
-        Dim rule As New SmartPlaylist.Rule With {
-            .Operator = SmartPlaylist.Operators.Contains,
+        Dim filter As New List(Of SmartFilter.Rule)
+        Dim rule As New SmartFilter.Rule With {
+            .Operator = SmartFilter.Operators.Contains,
             .Value = searchBar.Text}
 
         If Not String.IsNullOrEmpty(searchBar.Text) Then
             Select Case comboBox.Text
                 Case Master.eLang.GetString(100, "Actor")
-                    rule.Field = Database.ColumnName.Actor
+                    rule.Field = Database.ColumnName.ActorName
                 Case Master.eLang.GetString(301, "Country")
                     rule.Field = Database.ColumnName.Countries
                 Case Master.eLang.GetString(798, "Creator")
@@ -8024,7 +8061,7 @@ Public Class frmMain
                     Filter_Movies.RemoveAllSearchbarFilters()
                     Filter_Movies.Rules.AddRange(filter)
                     RunFilter_Movies()
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     Filter_Moviesets.RemoveAllSearchbarFilters()
                     Filter_Moviesets.Rules.AddRange(filter)
                     RunFilter_MovieSets()
@@ -8041,7 +8078,7 @@ Public Class frmMain
                         Filter_Movies.RemoveAllSearchbarFilters()
                         RunFilter_Movies()
                     End If
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     If Filter_Moviesets.ContainsAnyFromSearchBar Then
                         searchBar.Text = String.Empty
                         Filter_Moviesets.RemoveAllSearchbarFilters()
@@ -8057,13 +8094,12 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub Filter_SourceName(
-                                 ByRef checkedListBox As CheckedListBox,
-                                 ByRef filterPanel As Panel,
-                                 ByRef textBox As TextBox,
-                                 ByVal contentType As Enums.ContentType)
+    Private Sub Filter_SourceName(ByRef checkedListBox As CheckedListBox,
+                                  ByRef filterPanel As Panel,
+                                  ByRef textBox As TextBox,
+                                  ByVal contentType As Enums.ContentType)
 
-        Dim filter As New SmartPlaylist.RuleWithOperator With {.InnerCondition = SmartPlaylist.Condition.Any}
+        Dim filter As New SmartFilter.RuleWithOperator With {.InnerCondition = SmartFilter.Conditions.Any}
 
         filterPanel.Visible = False
         filterPanel.Tag = "NO"
@@ -8077,9 +8113,9 @@ Public Class frmMain
             textBox.Text = String.Join(" | ", lstItems.ToArray)
 
             For i As Integer = 0 To lstItems.Count - 1
-                Dim rule As New SmartPlaylist.Rule
+                Dim rule As New SmartFilter.Rule
                 rule.Field = Database.ColumnName.SourceName
-                rule.Operator = SmartPlaylist.Operators.Is
+                rule.Operator = SmartFilter.Operators.Is
                 rule.Value = lstItems.Item(i)
                 filter.Rules.Add(rule)
             Next
@@ -8112,18 +8148,17 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub Filter_Year(
-                           ByRef fromYear As ComboBox,
-                           ByRef fromYearMod As ComboBox,
-                           ByRef toYear As ComboBox,
-                           ByRef toYearMod As ComboBox,
-                           ByVal contentType As Enums.ContentType)
+    Private Sub Filter_Year(ByRef fromYear As ComboBox,
+                            ByRef fromYearMod As ComboBox,
+                            ByRef toYear As ComboBox,
+                            ByRef toYearMod As ComboBox,
+                            ByVal contentType As Enums.ContentType)
 
         If Not String.IsNullOrEmpty(fromYear.Text) AndAlso Not fromYear.Text = Master.eLang.All Then
-            Dim filter As New SmartPlaylist.RuleWithOperator With {.InnerCondition = SmartPlaylist.Condition.All}
-            filter.Rules.Add(New SmartPlaylist.Rule With {
+            Dim filter As New SmartFilter.RuleWithOperator With {.InnerCondition = SmartFilter.Conditions.All}
+            filter.Rules.Add(New SmartFilter.Rule With {
                                          .Field = Database.ColumnName.Year,
-                                         .Operator = SmartPlaylist.Playlist.ConvertStringToOperator(fromYearMod.Text),
+                                         .Operator = SmartFilter.Filter.ConvertStringToOperator(fromYearMod.Text),
                                          .Value = fromYear.Text
                                          })
 
@@ -8133,9 +8168,9 @@ Public Class frmMain
                     toYear.Enabled = True
 
                     If Not String.IsNullOrEmpty(toYear.Text) AndAlso Not toYear.Text = Master.eLang.All Then
-                        filter.Rules.Add(New SmartPlaylist.Rule With {
+                        filter.Rules.Add(New SmartFilter.Rule With {
                                          .Field = Database.ColumnName.Year,
-                                         .Operator = SmartPlaylist.Playlist.ConvertStringToOperator(toYearMod.Text),
+                                         .Operator = SmartFilter.Filter.ConvertStringToOperator(toYearMod.Text),
                                          .Value = toYear.Text
                                          })
                     End If
@@ -8710,7 +8745,7 @@ Public Class frmMain
                 Select Case eProgressValue.ContentType
                     Case Enums.ContentType.Movie
                         RefreshRow_Movie(eProgressValue.ID)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         RefreshRow_MovieSet(eProgressValue.ID)
                     Case Enums.ContentType.TVEpisode
                         RefreshRow_TVEpisode(eProgressValue.ID)
@@ -8933,7 +8968,7 @@ Public Class frmMain
                 Case "movie"
                     CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
                 Case "movieset"
-                    CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
+                    CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
                 Case "tvshow"
                     CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
             End Select
@@ -8959,8 +8994,7 @@ Public Class frmMain
 
     Private Sub mnuMainToolsExportMovies_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportMovies.Click
         Try
-            Dim table As New DataTable
-            Master.DB.FillDataTable(table, String.Concat("SELECT * FROM movielist;"))
+            Dim table = Master.DB.GetMovies()
             table.TableName = "movie"
 
             Dim dlgSave As New SaveFileDialog()
@@ -8979,8 +9013,7 @@ Public Class frmMain
 
     Private Sub mnuMainToolsExportTvShows_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportTvShows.Click
         Try
-            Dim table As New DataTable
-            Master.DB.FillDataTable(table, String.Concat("SELECT * FROM tvshowlist;"))
+            Dim table = Master.DB.GetTVShows()
             table.TableName = "tvshow"
 
             Dim dlgSave As New SaveFileDialog()
@@ -9267,7 +9300,7 @@ Public Class frmMain
         ShowNoInfo(False)
         ClearInfo()
 
-        currDBElement = Master.DB.Load_MovieSet(ID)
+        currDBElement = Master.DB.Load_Movieset(ID)
         FillScreenInfoWith_MovieSet()
 
         If bwLoadImages.IsBusy AndAlso Not bwLoadImages.CancellationPending Then
@@ -10086,7 +10119,7 @@ Public Class frmMain
                     End Using
                 Case "movieset"
                     SetControlsEnabled(False)
-                    Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.MovieSet)
+                    Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.Movieset)
                         Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
@@ -11259,7 +11292,7 @@ Public Class frmMain
             End If
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                    Functions.Launch(StringUtils.GetURL_TMDb(Master.DB.Load_MovieSet(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.movieset)).Value))))
+                    Functions.Launch(StringUtils.GetURL_TMDb(Master.DB.Load_Movieset(CLng(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.movieset)).Value))))
                 Next
             End If
         End If
@@ -11444,13 +11477,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -11553,7 +11586,7 @@ Public Class frmMain
                 Select Case GetCurrentMainTabTag().ContentType
                     Case Enums.ContentType.Movie
                         Return
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         Return
                     Case Enums.ContentType.TV
                         'TV Show list
@@ -11635,13 +11668,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -11740,13 +11773,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -11845,13 +11878,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -11936,13 +11969,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -12091,13 +12124,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -12188,13 +12221,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -12320,13 +12353,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -12596,7 +12629,7 @@ Public Class frmMain
             Application.DoEvents()
             bwRewriteContent.WorkerReportsProgress = True
             bwRewriteContent.WorkerSupportsCancellation = True
-            bwRewriteContent.RunWorkerAsync(New Arguments With {.ContentType = Enums.ContentType.MovieSet, .Trigger = bRewriteAll})
+            bwRewriteContent.RunWorkerAsync(New Arguments With {.ContentType = Enums.ContentType.Movieset, .Trigger = bRewriteAll})
         Else
             SetControlsEnabled(True)
         End If
@@ -12633,16 +12666,21 @@ Public Class frmMain
     ''' <summary>
     ''' Adds a new single Movie row with informations from DB
     ''' </summary>
-    ''' <param name="lngID"></param>
+    ''' <param name="MovieId"></param>
     ''' <remarks></remarks>
-    Private Sub AddRow_Movie(ByVal lngID As Long)
-        If lngID = -1 Then Return
+    Private Sub AddRow_Movie(ByVal MovieId As Long)
+        If MovieId = -1 Then Return
 
         Dim myDelegate As New Delegate_dtListAddRow(AddressOf dtListAddRow)
         Dim newRow As DataRow = Nothing
-        Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", lngID))
+        Dim nFilter = New SmartFilter.Filter(Enums.ContentType.Movie)
+        nFilter.Rules.Add(New SmartFilter.Rule With {
+                              .Field = Database.ColumnName.idMovie,
+                              .[Operator] = SmartFilter.Operators.Is,
+                              .Value = MovieId})
+
+        Dim newTable = Master.DB.GetMovies(nFilter)
         If newTable.Rows.Count = 1 Then
             newRow = newTable.Rows.Item(0)
         End If
@@ -12664,16 +12702,21 @@ Public Class frmMain
     ''' <summary>
     ''' Adds a new single MovieSet row with informations from DB
     ''' </summary>
-    ''' <param name="lngID"></param>
+    ''' <param name="MovieSetID"></param>
     ''' <remarks></remarks>
-    Private Function AddRow_MovieSet(ByVal lngID As Long) As Integer
-        If lngID = -1 Then Return -1
+    Private Function AddRow_MovieSet(ByVal MovieSetID As Long) As Integer
+        If MovieSetID = -1 Then Return -1
 
         Dim myDelegate As New Delegate_dtListAddRow(AddressOf dtListAddRow)
         Dim newRow As DataRow = Nothing
-        Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM moviesetlist WHERE idSet={0}", lngID))
+        Dim nFilter = New SmartFilter.Filter(Enums.ContentType.Movieset)
+        nFilter.Rules.Add(New SmartFilter.Rule With {
+                              .Field = Database.ColumnName.idSet,
+                              .[Operator] = SmartFilter.Operators.Is,
+                              .Value = MovieSetID})
+
+        Dim newTable = Master.DB.GetMoviesets(nFilter)
         If newTable.Rows.Count = 1 Then
             newRow = newTable.Rows.Item(0)
         End If
@@ -12692,21 +12735,26 @@ Public Class frmMain
             currRow_MovieSet = -1
         End If
 
-        Return bsMovieSets.Find("idSet", lngID)
+        Return bsMovieSets.Find("idSet", MovieSetID)
     End Function
     ''' <summary>
     ''' Adds a new single TV Show row with informations from DB
     ''' </summary>
-    ''' <param name="lngID"></param>
+    ''' <param name="ShowID"></param>
     ''' <remarks></remarks>
-    Private Sub AddRow_TVShow(ByVal lngID As Long)
-        If lngID = -1 Then Return
+    Private Sub AddRow_TVShow(ByVal ShowID As Long)
+        If ShowID = -1 Then Return
 
         Dim myDelegate As New Delegate_dtListAddRow(AddressOf dtListAddRow)
         Dim newRow As DataRow = Nothing
-        Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", lngID))
+        Dim nFilter = New SmartFilter.Filter(Enums.ContentType.TVShow)
+        nFilter.Rules.Add(New SmartFilter.Rule With {
+                              .Field = Database.ColumnName.idShow,
+                              .[Operator] = SmartFilter.Operators.Is,
+                              .Value = ShowID})
+
+        Dim newTable = Master.DB.GetTVShows(nFilter)
         If newTable.Rows.Count = 1 Then
             newRow = newTable.Rows.Item(0)
         End If
@@ -12733,14 +12781,22 @@ Public Class frmMain
     Private Sub RefreshRow_Movie(ByVal MovieID As Long)
         Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
         Dim newDRow As DataRow = Nothing
-        Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", MovieID))
+        Dim nFilter = New SmartFilter.Filter(Enums.ContentType.Movie)
+        nFilter.Rules.Add(New SmartFilter.Rule With {
+                              .Field = Database.ColumnName.idMovie,
+                              .[Operator] = SmartFilter.Operators.Is,
+                              .Value = MovieID})
+
+        Dim newTable = Master.DB.GetMovies(nFilter)
         If newTable.Rows.Count > 0 Then
             newDRow = newTable.Rows.Item(0)
         End If
 
-        Dim oldDRow As DataRow = dtMovies.Select(String.Format("idMovie = {0}", MovieID.ToString)).FirstOrDefault()
+        Dim oldDRow As DataRow = dtMovies.Select(String.Format("{0} = {1}",
+                                                               Database.Helpers.GetMainIdName(Database.TableName.movie),
+                                                               MovieID.ToString)
+                                                               ).FirstOrDefault()
 
         If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
             If InvokeRequired Then
@@ -12764,14 +12820,22 @@ Public Class frmMain
     Private Sub RefreshRow_MovieSet(ByVal MovieSetID As Long)
         Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
         Dim newDRow As DataRow = Nothing
-        Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM moviesetlist WHERE idSet={0}", MovieSetID))
+        Dim nFilter = New SmartFilter.Filter(Enums.ContentType.Movieset)
+        nFilter.Rules.Add(New SmartFilter.Rule With {
+                              .Field = Database.ColumnName.idSet,
+                              .[Operator] = SmartFilter.Operators.Is,
+                              .Value = MovieSetID})
+
+        Dim newTable = Master.DB.GetMoviesets(nFilter)
         If newTable.Rows.Count > 0 Then
             newDRow = newTable.Rows.Item(0)
         End If
 
-        Dim oldDRow As DataRow = dtMovieSets.Select(String.Format("idSet = {0}", MovieSetID.ToString)).FirstOrDefault()
+        Dim oldDRow As DataRow = dtMovieSets.Select(String.Format("{0} = {1}",
+                                                                  Database.Helpers.GetMainIdName(Database.TableName.movieset),
+                                                                  MovieSetID.ToString)
+                                                                  ).FirstOrDefault()
 
         If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
             If InvokeRequired Then
@@ -12781,7 +12845,7 @@ Public Class frmMain
             End If
         End If
 
-        If dgvMovieSets.Visible AndAlso dgvMovieSets.SelectedRows.Count > 0 AndAlso CInt(dgvMovieSets.SelectedRows(0).Cells("idSet").Value) = MovieSetID Then
+        If dgvMovieSets.Visible AndAlso dgvMovieSets.SelectedRows.Count > 0 AndAlso CInt(dgvMovieSets.SelectedRows(0).Cells(Database.Helpers.GetMainIdName(Database.TableName.movieset)).Value) = MovieSetID Then
             SelectRow_MovieSet(dgvMovieSets.SelectedRows(0).Index)
         End If
 
@@ -12796,14 +12860,22 @@ Public Class frmMain
         If dtTVEpisodes.Rows.Count > 0 Then
             Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
             Dim newDRow As DataRow = Nothing
-            Dim newTable As New DataTable
 
-            Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM episodelist WHERE idEpisode={0}", EpisodeID))
+            Dim nFilter = New SmartFilter.Filter(Enums.ContentType.TVEpisode)
+            nFilter.Rules.Add(New SmartFilter.Rule With {
+                              .Field = Database.ColumnName.idEpisode,
+                              .[Operator] = SmartFilter.Operators.Is,
+                              .Value = EpisodeID})
+
+            Dim newTable = Master.DB.GetTVEpisodes(nFilter)
             If newTable.Rows.Count > 0 Then
                 newDRow = newTable.Rows.Item(0)
             End If
 
-            Dim oldDRow As DataRow = dtTVEpisodes.Select(String.Format("idEpisode = {0}", EpisodeID.ToString)).FirstOrDefault()
+            Dim oldDRow As DataRow = dtTVEpisodes.Select(String.Format("{0} = {1}",
+                                                                       Database.Helpers.GetMainIdName(Database.TableName.episode),
+                                                                       EpisodeID.ToString)
+                                                                       ).FirstOrDefault()
 
             If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
                 Try
@@ -12817,7 +12889,7 @@ Public Class frmMain
                 End Try
             End If
 
-            If dgvTVEpisodes.Visible AndAlso dgvTVEpisodes.SelectedRows.Count > 0 AndAlso CInt(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value) = EpisodeID AndAlso currList = 2 Then
+            If dgvTVEpisodes.Visible AndAlso dgvTVEpisodes.SelectedRows.Count > 0 AndAlso CInt(dgvTVEpisodes.SelectedRows(0).Cells(Database.Helpers.GetMainIdName(Database.TableName.episode)).Value) = EpisodeID AndAlso currList = 2 Then
                 SelectRow_TVEpisode(dgvTVEpisodes.SelectedRows(0).Index)
             End If
 
@@ -12833,17 +12905,22 @@ Public Class frmMain
         If dtTVSeasons.Rows.Count > 0 Then
             Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
             Dim newDRow As DataRow = Nothing
-            Dim newTable As New DataTable
 
-            Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM {0} WHERE {1}={2}",
-                                                            Database.Helpers.GetMainViewName(Enums.ContentType.TVSeason),
-                                                            Database.Helpers.GetMainIdName(Database.TableName.season),
-                                                            SeasonID))
+            Dim nFilter = New SmartFilter.Filter(Enums.ContentType.TVSeason)
+            nFilter.Rules.Add(New SmartFilter.Rule With {
+                              .Field = Database.ColumnName.idSeason,
+                              .[Operator] = SmartFilter.Operators.Is,
+                              .Value = SeasonID})
+
+            Dim newTable = Master.DB.GetTVSeasons(nFilter)
             If newTable.Rows.Count > 0 Then
                 newDRow = newTable.Rows.Item(0)
             End If
 
-            Dim oldDRow As DataRow = dtTVSeasons.Select(String.Format("{0}={1}", Database.Helpers.GetMainIdName(Database.TableName.season), SeasonID.ToString)).FirstOrDefault()
+            Dim oldDRow As DataRow = dtTVSeasons.Select(String.Format("{0} = {1}",
+                                                                      Database.Helpers.GetMainIdName(Database.TableName.season),
+                                                                      SeasonID.ToString)
+                                                                      ).FirstOrDefault()
 
             If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
                 Try
@@ -12890,14 +12967,22 @@ Public Class frmMain
     Private Sub RefreshRow_TVShow(ByVal ShowID As Long, Optional ByVal Force As Boolean = False)
         Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
         Dim newDRow As DataRow = Nothing
-        Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", ShowID))
+        Dim nFilter = New SmartFilter.Filter(Enums.ContentType.TVShow)
+        nFilter.Rules.Add(New SmartFilter.Rule With {
+                              .Field = Database.ColumnName.idShow,
+                              .[Operator] = SmartFilter.Operators.Is,
+                              .Value = ShowID})
+
+        Dim newTable = Master.DB.GetTVShows(nFilter)
         If newTable.Rows.Count > 0 Then
             newDRow = newTable.Rows.Item(0)
         End If
 
-        Dim oldDRow As DataRow = dtTVShows.Select(String.Format("idShow = {0}", ShowID.ToString)).FirstOrDefault()
+        Dim oldDRow As DataRow = dtTVShows.Select(String.Format("{0} = {1}",
+                                                                Database.Helpers.GetMainIdName(Database.TableName.tvshow),
+                                                                ShowID.ToString)
+                                                                ).FirstOrDefault()
 
         If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
             If InvokeRequired Then
@@ -12907,7 +12992,7 @@ Public Class frmMain
             End If
         End If
 
-        If dgvTVShows.Visible AndAlso dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(dgvTVShows.SelectedRows(0).Cells("idShow").Value) = ShowID AndAlso (currList = 0 OrElse Force) Then
+        If dgvTVShows.Visible AndAlso dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(dgvTVShows.SelectedRows(0).Cells(Database.Helpers.GetMainIdName(Database.TableName.tvshow)).Value) = ShowID AndAlso (currList = 0 OrElse Force) Then
             SelectRow_TVShow(dgvTVShows.SelectedRows(0).Index)
         End If
 
@@ -12952,7 +13037,7 @@ Public Class frmMain
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function Reload_MovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
-        Dim DBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
+        Dim DBMovieSet As Database.DBElement = Master.DB.Load_Movieset(ID)
 
         fScanner.Load_MovieSet(DBMovieSet, BatchMode)
         If Not BatchMode Then RefreshRow_MovieSet(DBMovieSet.ID)
@@ -13159,7 +13244,7 @@ Public Class frmMain
     ''' <returns>reload list from database?</returns>
     ''' <remarks></remarks>
     Private Function RewriteMovieSet(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal bRewriteAll As Boolean) As Boolean
-        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
         If tmpDBElement.IsOnline Then
             Master.DB.Save_MovieSet(tmpDBElement, BatchMode, True, bRewriteAll, True)
@@ -13215,9 +13300,9 @@ Public Class frmMain
 
             If Filter_Movies.AnyRuleSpecified Then
                 lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                Filter_Movies.Match = If(rbFilterAnd_Movies.Checked, SmartPlaylist.Condition.All, SmartPlaylist.Condition.Any)
+                Filter_Movies.Match = If(rbFilterAnd_Movies.Checked, SmartFilter.Conditions.All, SmartFilter.Conditions.Any)
                 Filter_Movies.Build()
-                bsMovies.Filter = Filter_Movies.Filter
+                bsMovies.Filter = Filter_Movies.FilterForBindingSource
                 ModulesManager.Instance.RuntimeObjects.FilterMovies = bsMovies.Filter
             Else
                 If chkFilterDuplicates_Movies.Checked Then
@@ -13251,8 +13336,8 @@ Public Class frmMain
 
             If Filter_Moviesets.AnyRuleSpecified Then
                 lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                Filter_Moviesets.Match = If(rbFilterAnd_MovieSets.Checked, SmartPlaylist.Condition.All, SmartPlaylist.Condition.Any)
-                bsMovieSets.Filter = Filter_Moviesets.Filter
+                Filter_Moviesets.Match = If(rbFilterAnd_MovieSets.Checked, SmartFilter.Conditions.All, SmartFilter.Conditions.Any)
+                bsMovieSets.Filter = Filter_Moviesets.FilterForBindingSource
                 ModulesManager.Instance.RuntimeObjects.FilterMoviesets = bsMovieSets.Filter
             Else
                 lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
@@ -13285,8 +13370,8 @@ Public Class frmMain
 
             If Filter_TVShows.AnyRuleSpecified Then
                 lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
-                Filter_TVShows.Match = If(rbFilterAnd_Shows.Checked, SmartPlaylist.Condition.All, SmartPlaylist.Condition.Any)
-                bsTVShows.Filter = Filter_TVShows.Filter
+                Filter_TVShows.Match = If(rbFilterAnd_Shows.Checked, SmartFilter.Conditions.All, SmartFilter.Conditions.Any)
+                bsTVShows.Filter = Filter_TVShows.FilterForBindingSource
                 ModulesManager.Instance.RuntimeObjects.FilterTVShows = bsTVShows.Filter
             Else
                 lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
@@ -13541,8 +13626,8 @@ Public Class frmMain
         ClearInfo()
         If dgvMovieSets.Rows.Count > iRow Then
             If Not DataGridView_ColumnAnyInfoValue(dgvMovieSets, iRow) Then
-                ShowNoInfo(True, Enums.ContentType.MovieSet)
-                currDBElement = Master.DB.Load_MovieSet(Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), iRow).Value))
+                ShowNoInfo(True, Enums.ContentType.Movieset)
+                currDBElement = Master.DB.Load_Movieset(Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), iRow).Value))
                 FillScreenInfoWith_MovieSet()
             Else
                 LoadInfo_MovieSet(Convert.ToInt64(dgvMovieSets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), iRow).Value))
@@ -13680,12 +13765,12 @@ Public Class frmMain
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
                 If o.Tag Is Nothing Then
                     o.Enabled = isEnabled AndAlso ((dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie) OrElse
-                                                   (dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet) OrElse
+                                                   (dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movieset) OrElse
                                                    (dgvTVShows.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.TV))
                 ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
                     Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
                     o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((tagmenu.IfTabMovies AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie) OrElse
-                                                                           (tagmenu.IfTabMovieSets AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet) OrElse
+                                                                           (tagmenu.IfTabMovieSets AndAlso currMainTabTag.ContentType = Enums.ContentType.Movieset) OrElse
                                                                            (tagmenu.IfTabTVShows AndAlso currMainTabTag.ContentType = Enums.ContentType.TV)) AndAlso
                                                                        ((tagmenu.ForMovies AndAlso (dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies)) OrElse
                                                                         (tagmenu.ForMovieSets AndAlso (dgvMovieSets.RowCount > 0 OrElse tagmenu.IfNoMovieSets)) OrElse
@@ -13706,8 +13791,8 @@ Public Class frmMain
         mnuMainEdit.Enabled = isEnabled
         mnuScrapeMovies.Enabled = isEnabled AndAlso dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie
         mnuScrapeMovies.Visible = currMainTabTag.ContentType = Enums.ContentType.Movie
-        mnuScrapeMovieSets.Enabled = isEnabled AndAlso dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet
-        mnuScrapeMovieSets.Visible = currMainTabTag.ContentType = Enums.ContentType.MovieSet
+        mnuScrapeMovieSets.Enabled = isEnabled AndAlso dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movieset
+        mnuScrapeMovieSets.Visible = currMainTabTag.ContentType = Enums.ContentType.Movieset
         mnuScrapeTVShows.Enabled = isEnabled AndAlso dgvTVShows.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.TV
         mnuScrapeTVShows.Visible = currMainTabTag.ContentType = Enums.ContentType.TV
         mnuUpdate.Enabled = isEnabled
@@ -13758,7 +13843,7 @@ Public Class frmMain
             Case Enums.ContentType.Movie
                 nDataGridView = dgvMovies
                 strIDName = Database.Helpers.GetMainIdName(Database.TableName.movie)
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 nDataGridView = dgvMovieSets
                 strIDName = Database.Helpers.GetMainIdName(Database.TableName.movieset)
             Case Enums.ContentType.TVEpisode
@@ -13808,7 +13893,7 @@ Public Class frmMain
     Private Sub cmnuMovieSetSortMethodSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetEditSortMethodSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
+                Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_Movieset(Convert.ToInt64(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.SortMethod = CType(cmnuMovieSetEditSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
                 Master.DB.Save_MovieSet(tmpDBMovieSet, True, True, False, False)
                 RefreshRow_MovieSet(tmpDBMovieSet.ID)
@@ -13834,11 +13919,11 @@ Public Class frmMain
             'Load source list for movies
             mnuUpdateMovies.DropDownItems.Clear()
             cmnuTrayUpdateMovies.DropDownItems.Clear()
-            If Master.DB.GetSources_Movie.Count > 1 Then
+            If Master.DB.Load_AllSources_Movie.Count > 1 Then
                 mnuItem = mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
                 mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
             End If
-            For Each nSource In Master.DB.GetSources_Movie
+            For Each nSource In Master.DB.Load_AllSources_Movie
                 mnuItem = mnuUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
                 mnuItem.Tag = nSource.ID
                 mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
@@ -13850,11 +13935,11 @@ Public Class frmMain
             'Load source list for tv shows
             mnuUpdateShows.DropDownItems.Clear()
             cmnuTrayUpdateShows.DropDownItems.Clear()
-            If Master.DB.GetSources_TVShow.Count > 1 Then
+            If Master.DB.Load_AllSources_TVShow.Count > 1 Then
                 mnuItem = mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
                 mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
             End If
-            For Each nSource In Master.DB.GetSources_TVShow
+            For Each nSource In Master.DB.Load_AllSources_TVShow
                 mnuItem = mnuUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
                 mnuItem.Tag = nSource.ID
                 mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
@@ -13892,7 +13977,7 @@ Public Class frmMain
             'Load view list for moviesets
             Dim listViews_MovieSets As New Dictionary(Of String, String)
             listViews_MovieSets.Add(Master.eLang.GetString(786, "Default List"), "moviesetlist")
-            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.MovieSet, True)
+            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movieset, True)
                 listViews_MovieSets.Add(Regex.Replace(cList, "sets-", String.Empty).Trim, cList)
             Next
             RemoveHandler cbFilterLists_MovieSets.SelectedIndexChanged, AddressOf cbFilterLists_MovieSets_SelectedIndexChanged
@@ -13964,8 +14049,8 @@ Public Class frmMain
         End With
         mnuScrapeMovies.Enabled = (dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie)
         mnuScrapeMovies.Visible = currMainTabTag.ContentType = Enums.ContentType.Movie
-        mnuScrapeMovieSets.Enabled = (dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet)
-        mnuScrapeMovieSets.Visible = currMainTabTag.ContentType = Enums.ContentType.MovieSet
+        mnuScrapeMovieSets.Enabled = (dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movieset)
+        mnuScrapeMovieSets.Visible = currMainTabTag.ContentType = Enums.ContentType.Movieset
         mnuScrapeTVShows.Enabled = (dgvTVShows.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.TV)
         mnuScrapeTVShows.Visible = currMainTabTag.ContentType = Enums.ContentType.TV
         cmnuTrayScrapeMovies.Enabled = dgvMovies.RowCount > 0
@@ -14254,7 +14339,7 @@ Public Class frmMain
             Dim currMainTabTag = DirectCast(mTabPage.Tag, Settings.MainTabSorting)
             Dim mCount As Integer = Master.DB.GetViewMediaCount(currMainTabTag.DefaultList)
             Select Case currMainTabTag.ContentType
-                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movie, Enums.ContentType.Movieset
                     If mCount = -1 Then
                         mTabPage.Text = String.Format("{0} ({1})", currMainTabTag.Title, "SQL Error")
                         mTabPage.Enabled = False
@@ -14294,7 +14379,7 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub SetMovieSetCount()
         Dim currMainTabTag = GetCurrentMainTabTag()
-        If currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
+        If currMainTabTag.ContentType = Enums.ContentType.Movieset Then
             If dgvMovieSets.RowCount > 0 Then
                 tcMain.SelectedTab.Text = String.Format("{0} ({1})", currMainTabTag.Title, dgvMovieSets.RowCount)
             Else
@@ -15107,7 +15192,7 @@ Public Class frmMain
                 Case Enums.ContentType.Movie
                     lblNoInfo.Text = Master.eLang.GetString(55, "No information is available for this Movie")
                     If Not currThemeType = tType Then ApplyTheme(tType)
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     lblNoInfo.Text = Master.eLang.GetString(1154, "No information is available for this MovieSet")
                     If Not currThemeType = tType Then ApplyTheme(tType)
                 Case Enums.ContentType.TVEpisode
@@ -15208,7 +15293,7 @@ Public Class frmMain
                     SetControlsEnabled(True)
                 End If
 
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 'fixing TV-Splitter issues
                 RemoveHandler scTV.SplitterMoved, AddressOf TVSplitterMoved
                 RemoveHandler scTVSeasonsEpisodes.SplitterMoved, AddressOf TVSplitterMoved
@@ -15314,7 +15399,7 @@ Public Class frmMain
         Select Case currThemeType
             Case Enums.ContentType.Movie
                 iState = InfoPanelState_Movie
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 iState = InfoPanelState_MovieSet
             Case Enums.ContentType.TVEpisode
                 iState = InfoPanelState_TVEpisode
@@ -15488,7 +15573,7 @@ Public Class frmMain
         tmrSearchWait_MovieSets.Enabled = False
         tmrSearch_MovieSets.Enabled = False
         bDoingSearch_MovieSets = True
-        Filter_SearchBar(txtSearchMovieSets, cbSearchMovieSets, Enums.ContentType.MovieSet)
+        Filter_SearchBar(txtSearchMovieSets, cbSearchMovieSets, Enums.ContentType.Movieset)
     End Sub
 
     Private Sub tmrSearchWait_Shows_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_Shows.Tick
@@ -15587,7 +15672,7 @@ Public Class frmMain
         clbFilterCountries_Movies.Items.Add(Master.eLang.None)
         clbFilterCountries_Movies.Items.AddRange(mCountry)
 
-        If Filter_Movies.Contains(Database.ColumnName.Countries, SmartPlaylist.Operators.IsNullOrEmpty) Then
+        If Filter_Movies.Contains(Database.ColumnName.Countries, SmartFilter.Operators.IsNullOrEmpty) Then
             clbFilterCountries_Movies.SetItemChecked(0, True)
         Else
             Dim rCountrys = Filter_Movies.Rules.Where(Function(f) f.Field = Database.ColumnName.Countries)
@@ -15607,7 +15692,7 @@ Public Class frmMain
         clbFilterGenres_Movies.Items.Add(Master.eLang.None)
         clbFilterGenres_Movies.Items.AddRange(mGenre)
 
-        If Filter_Movies.Contains(Database.ColumnName.Genres, SmartPlaylist.Operators.IsNullOrEmpty) Then
+        If Filter_Movies.Contains(Database.ColumnName.Genres, SmartFilter.Operators.IsNullOrEmpty) Then
             clbFilterGenres_Movies.SetItemChecked(0, True)
         Else
             Dim rGenres = Filter_Movies.Rules.Where(Function(f) f.Field = Database.ColumnName.Genres)
@@ -15627,7 +15712,7 @@ Public Class frmMain
         clbFilterGenres_Shows.Items.Add(Master.eLang.None)
         clbFilterGenres_Shows.Items.AddRange(mGenre)
 
-        If Filter_TVShows.Contains(Database.ColumnName.Genres, SmartPlaylist.Operators.IsNullOrEmpty) Then
+        If Filter_TVShows.Contains(Database.ColumnName.Genres, SmartFilter.Operators.IsNullOrEmpty) Then
             clbFilterGenres_Shows.SetItemChecked(0, True)
         Else
             Dim rGenres = Filter_TVShows.Rules.Where(Function(f) f.Field = Database.ColumnName.Genres)
@@ -15647,7 +15732,7 @@ Public Class frmMain
         clbFilterTags_Movies.Items.Add(Master.eLang.None)
         clbFilterTags_Movies.Items.AddRange(mTag)
 
-        If Filter_Movies.Contains(Database.ColumnName.Tags, SmartPlaylist.Operators.IsNullOrEmpty) Then
+        If Filter_Movies.Contains(Database.ColumnName.Tags, SmartFilter.Operators.IsNullOrEmpty) Then
             clbFilterTags_Movies.SetItemChecked(0, True)
         Else
             Dim rTags = Filter_Movies.Rules.Where(Function(f) f.Field = Database.ColumnName.Tags)
@@ -15667,7 +15752,7 @@ Public Class frmMain
         clbFilterTags_Shows.Items.Add(Master.eLang.None)
         clbFilterTags_Shows.Items.AddRange(mTag)
 
-        If Filter_TVShows.Contains(Database.ColumnName.Tags, SmartPlaylist.Operators.IsNullOrEmpty) Then
+        If Filter_TVShows.Contains(Database.ColumnName.Tags, SmartFilter.Operators.IsNullOrEmpty) Then
             clbFilterTags_Shows.SetItemChecked(0, True)
         Else
             Dim rTags = Filter_TVShows.Rules.Where(Function(f) f.Field = Database.ColumnName.Tags)
@@ -15687,7 +15772,7 @@ Public Class frmMain
         clbFilterVideoSources_Movies.Items.Add(Master.eLang.None)
         clbFilterVideoSources_Movies.Items.AddRange(mVideoSource)
 
-        If Filter_Movies.Contains(Database.ColumnName.VideoSource, SmartPlaylist.Operators.IsNullOrEmpty) Then
+        If Filter_Movies.Contains(Database.ColumnName.VideoSource, SmartFilter.Operators.IsNullOrEmpty) Then
             clbFilterVideoSources_Movies.SetItemChecked(0, True)
         Else
             Dim rVideoSources = Filter_Movies.Rules.Where(Function(f) f.Field = Database.ColumnName.VideoSource)

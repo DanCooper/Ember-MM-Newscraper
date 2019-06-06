@@ -374,15 +374,15 @@ Public Class FanartTV_Image
     End Sub
 
     Sub LoadSettings_MovieSet()
-        _SpecialSettings_MovieSet.ApiKey = AdvancedSettings.GetSetting("ApiKey", "", , Enums.ContentType.MovieSet)
+        _SpecialSettings_MovieSet.ApiKey = AdvancedSettings.GetSetting("ApiKey", "", , Enums.ContentType.Movieset)
 
-        ConfigModifier_MovieSet.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.MovieSet)
-        ConfigModifier_MovieSet.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.MovieSet)
-        ConfigModifier_MovieSet.MainBanner = AdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.ContentType.MovieSet)
-        ConfigModifier_MovieSet.MainClearArt = AdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.ContentType.MovieSet)
-        ConfigModifier_MovieSet.MainClearLogo = AdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.ContentType.MovieSet)
-        ConfigModifier_MovieSet.MainDiscArt = AdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.ContentType.MovieSet)
-        ConfigModifier_MovieSet.MainLandscape = AdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.Movieset)
+        ConfigModifier_MovieSet.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.Movieset)
+        ConfigModifier_MovieSet.MainBanner = AdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.ContentType.Movieset)
+        ConfigModifier_MovieSet.MainClearArt = AdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.ContentType.Movieset)
+        ConfigModifier_MovieSet.MainClearLogo = AdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.ContentType.Movieset)
+        ConfigModifier_MovieSet.MainDiscArt = AdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.ContentType.Movieset)
+        ConfigModifier_MovieSet.MainLandscape = AdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.ContentType.Movieset)
     End Sub
 
     Sub LoadSettings_TV()
@@ -416,15 +416,15 @@ Public Class FanartTV_Image
 
     Sub SaveSettings_MovieSet()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("DoPoster", ConfigModifier_MovieSet.MainPoster, , , Enums.ContentType.MovieSet)
-            settings.SetBooleanSetting("DoFanart", ConfigModifier_MovieSet.MainFanart, , , Enums.ContentType.MovieSet)
-            settings.SetBooleanSetting("DoBanner", ConfigModifier_MovieSet.MainBanner, , , Enums.ContentType.MovieSet)
-            settings.SetBooleanSetting("DoClearArt", ConfigModifier_MovieSet.MainClearArt, , , Enums.ContentType.MovieSet)
-            settings.SetBooleanSetting("DoClearLogo", ConfigModifier_MovieSet.MainClearLogo, , , Enums.ContentType.MovieSet)
-            settings.SetBooleanSetting("DoDiscArt", ConfigModifier_MovieSet.MainDiscArt, , , Enums.ContentType.MovieSet)
-            settings.SetBooleanSetting("DoLandscape", ConfigModifier_MovieSet.MainLandscape, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("DoPoster", ConfigModifier_MovieSet.MainPoster, , , Enums.ContentType.Movieset)
+            settings.SetBooleanSetting("DoFanart", ConfigModifier_MovieSet.MainFanart, , , Enums.ContentType.Movieset)
+            settings.SetBooleanSetting("DoBanner", ConfigModifier_MovieSet.MainBanner, , , Enums.ContentType.Movieset)
+            settings.SetBooleanSetting("DoClearArt", ConfigModifier_MovieSet.MainClearArt, , , Enums.ContentType.Movieset)
+            settings.SetBooleanSetting("DoClearLogo", ConfigModifier_MovieSet.MainClearLogo, , , Enums.ContentType.Movieset)
+            settings.SetBooleanSetting("DoDiscArt", ConfigModifier_MovieSet.MainDiscArt, , , Enums.ContentType.Movieset)
+            settings.SetBooleanSetting("DoLandscape", ConfigModifier_MovieSet.MainLandscape, , , Enums.ContentType.Movieset)
 
-            settings.SetSetting("ApiKey", _setup_MovieSet.txtApiKey.Text, , , Enums.ContentType.MovieSet)
+            settings.SetSetting("ApiKey", _setup_MovieSet.txtApiKey.Text, , , Enums.ContentType.Movieset)
         End Using
     End Sub
 

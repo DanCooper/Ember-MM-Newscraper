@@ -226,7 +226,7 @@ Public Class frmSettingsHolder
                     Case r.Cells(1).Value.ToString.StartsWith("movie") AndAlso Not r.Cells(1).Value.ToString.StartsWith("movieset")
                         nContentType = Enums.ContentType.Movie
                     Case r.Cells(1).Value.ToString.StartsWith("movieset")
-                        nContentType = Enums.ContentType.MovieSet
+                        nContentType = Enums.ContentType.Movieset
                     Case r.Cells(1).Value.ToString.StartsWith("tvshow")
                         nContentType = Enums.ContentType.TV
                 End Select

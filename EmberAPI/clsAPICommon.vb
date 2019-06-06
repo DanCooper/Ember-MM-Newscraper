@@ -422,8 +422,8 @@ Public Class Enums
         None = 0
         Generic = 1
         Movie = 2
-        MovieSet = 3
-        Music = 4
+        Movieset = 3
+        MusicVideo = 4
         Person = 5
         TV = 6
         TVEpisode = 7
@@ -432,31 +432,32 @@ Public Class Enums
     End Enum
 
     Public Enum DefaultType As Integer
-        All = 0
-        MovieFilters = 1
-        ShowFilters = 2
-        EpFilters = 3
-        ValidExts = 4
-        TVShowMatching = 5
-        TrailerCodec = 6
-        ValidThemeExts = 7
-        ValidSubtitleExts = 8
-        MovieListSorting = 9
-        MovieSetListSorting = 10
-        TVEpisodeListSorting = 11
-        TVSeasonListSorting = 12
-        TVShowListSorting = 13
-        MovieSortTokens = 14
-        MovieSetSortTokens = 15
-        TVSortTokens = 16
-        MainTabSorting = 17
+        All
+        MainTabSorting
+        MovieFilters
+        MovieListSorting
+        MoviesetListSorting
+        MoviesetSortTokens
+        MovieSortTokens
+        TVEpisodeFilters
+        TVEpisodeListSorting
+        TVSeasonListSorting
+        TVSeasonTitleBlacklist
+        TVShowFilters
+        TVShowListSorting
+        TVShowMatching
+        TVShowSortTokens
+        TrailerCodec
+        ValidExts
+        ValidSubtitleExts
+        ValidThemeExts
     End Enum
     ''' <summary>
     ''' 0 results in using the current datetime when adding a video
     ''' 1 results in prefering to use the files mtime (if it's valid) and only using the file's ctime if the mtime isn't valid
     ''' 2 results in using the newer datetime of the file's mtime and ctime
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>Don't remove the enum integer values to keep "Now" as default value</remarks>
     Public Enum DateTime As Integer
         Now = 0
         ctime = 1
@@ -466,7 +467,7 @@ Public Class Enums
     ''' <summary>
     ''' Enum representing valid TV series ordering.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>Don't remove the enum integer values to keep "Standard" as default value</remarks>
     Public Enum EpisodeOrdering As Integer
         Standard = 0
         DVD = 1
@@ -476,12 +477,15 @@ Public Class Enums
     ''' <summary>
     ''' Enum representing Order of displaying Episodes
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>Don't remove the enum integer values to keep "Episode" as default value</remarks>
     Public Enum EpisodeSorting As Integer
         Episode = 0
         Aired = 1
     End Enum
-
+    ''' <summary>
+    ''' Known image sizes
+    ''' </summary>
+    ''' <remarks>Don't remove the enum integer values to keep the quality sorting</remarks>
     Public Enum ImageSize As Integer
         ''' <summary>
         ''' Movie Poster 2000x3000 / TVShow Poster 2000x3000
@@ -756,19 +760,19 @@ Public Class Enums
     End Enum
 
     Public Enum ScraperEventType As Integer
-        BannerItem = 0
-        CharacterArtItem = 1
-        ClearArtItem = 2
-        ClearLogoItem = 3
-        DiscArtItem = 4
-        ExtrafanartsItem = 5
-        ExtrathumbsItem = 6
-        FanartItem = 7
-        LandscapeItem = 8
-        NFOItem = 9
-        PosterItem = 10
-        ThemeItem = 11
-        TrailerItem = 12
+        BannerItem
+        CharacterArtItem
+        ClearArtItem
+        ClearLogoItem
+        DiscArtItem
+        ExtrafanartsItem
+        ExtrathumbsItem
+        FanartItem
+        LandscapeItem
+        NFOItem
+        PosterItem
+        ThemeItem
+        TrailerItem
     End Enum
     ''' <summary>
     ''' Enum representing which Movies/TVShows should be scraped,
@@ -801,20 +805,23 @@ Public Class Enums
     End Enum
 
     Public Enum SelectionType As Integer
-        All = 0
-        Selected = 1
+        All
+        Selected
     End Enum
-
+    ''' <summary>
+    ''' Movie sort methode inside of a movieset
+    ''' </summary>
+    ''' <remarks>Don't remove the enum integer values to keep "Year" as default value</remarks>
     Public Enum SortMethod_MovieSet As Integer
         Year = 0    'default in Kodi, so have to be on the first position of enumeration
         Title = 1
     End Enum
 
     Public Enum TaskManagerEventType As Integer
-        RefreshRow = 0
-        SimpleMessage = 1
-        TaskManagerEnded = 2
-        TaskManagerStarted = 3
+        RefreshRow
+        SimpleMessage
+        TaskManagerEnded
+        TaskManagerStarted
     End Enum
 
     Public Enum TaskManagerType As Integer
@@ -886,7 +893,7 @@ Public Class Enums
     ''' <summary>
     ''' Enum representing the trailer quality options
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>Don't remove the enum integer values to keep the quality sorting</remarks>
     Public Enum TrailerVideoQuality As Integer
         HD2160p = 0
         HD2160p60fps = 1
@@ -1565,7 +1572,7 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure DBMovieTag
-        Dim ID As Integer
+        Dim ID As Long
         Dim Movies As List(Of Database.DBElement)
         Dim Title As String
     End Structure

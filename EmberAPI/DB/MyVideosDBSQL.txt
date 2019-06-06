@@ -260,7 +260,6 @@ CREATE TABLE movie (
 	idSource        integer NOT NULL,
 	idFile          integer NOT NULL DEFAULT -1,
 	isSingle        bool,
-	listTitle       text,
 	hasSub          bool NOT NULL DEFAULT 0,
 	"new"           bool NOT NULL DEFAULT 0,
 	marked          bool NOT NULL DEFAULT 0,
@@ -330,7 +329,6 @@ END;
 
 CREATE TABLE movieset (
 	idSet       integer PRIMARY KEY,
-	listTitle   text NOT NULL,
 	nfoPath     text,
 	plot        text,
 	title       text,
@@ -554,7 +552,6 @@ END;
 CREATE TABLE tvshow (
 	idShow           integer PRIMARY KEY,
 	idSource         integer NOT NULL,
-	listTitle        text,
 	"new"            bool DEFAULT 0,
 	marked           bool NOT NULL DEFAULT 0,
 	path             text NOT NULL,
@@ -722,7 +719,7 @@ CREATE VIEW movielist
 	AS
 SELECT
 	movie.*,
-	CASE WHEN movie.sortTitle IS NOT '' THEN movie.sortTitle ELSE movie.listTitle END AS sortedTitle,
+	CASE WHEN movie.sortTitle IS NOT '' THEN movie.sortTitle ELSE movie.title END AS sortedTitle,
 	source.name AS source,
 	file.path AS path,
 	banner.url AS bannerPath,
@@ -892,7 +889,7 @@ CREATE VIEW tvshowlist
 	AS
 SELECT
 	tvshow.*,
-	CASE WHEN tvshow.sortTitle IS NOT '' THEN tvshow.sortTitle ELSE tvshow.listTitle END AS sortedTitle,
+	CASE WHEN tvshow.sortTitle IS NOT '' THEN tvshow.sortTitle ELSE tvshow.title END AS sortedTitle,
 	source.name AS source,
 	banner.url AS bannerPath,
 	characterart.url AS characterartPath,

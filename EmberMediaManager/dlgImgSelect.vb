@@ -2284,7 +2284,7 @@ Public Class dlgImgSelect
                 DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
                 DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
                 If DoMainExtrafanarts OrElse DoMainExtrathumbs Then noSubImages = False
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.MovieSetBannerAnyEnabled
                 DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.MovieSetClearArtAnyEnabled
                 DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.MovieSetClearLogoAnyEnabled

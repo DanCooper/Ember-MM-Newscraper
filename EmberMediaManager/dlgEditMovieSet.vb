@@ -390,9 +390,8 @@ Public Class dlgEditMovieSet
         dgvDatabaseList.SuspendLayout()
         bsMovies.DataSource = Nothing
         dgvDatabaseList.DataSource = Nothing
-        Master.DB.FillDataTable(dtMovies, String.Format("SELECT * FROM {0} ORDER BY {1} COLLATE NOCASE;",
-                                                        Database.Helpers.GetTableName(Database.TableName.movie),
-                                                        Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)))
+        dtMovies = Master.DB.GetMovies()
+
         If dtMovies.Rows.Count > 0 Then
             bsMovies.DataSource = dtMovies
             dgvDatabaseList.DataSource = bsMovies

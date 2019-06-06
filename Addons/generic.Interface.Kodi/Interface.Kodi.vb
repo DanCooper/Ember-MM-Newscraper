@@ -1072,7 +1072,7 @@ Public Class KodiInterface
             Select Case tContentType
                 Case Enums.ContentType.Movie
                     AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_Movie_Click
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_MovieSet_Click
                 Case Enums.ContentType.TVEpisode
                     AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_TVEpisode_Click
@@ -1146,7 +1146,7 @@ Public Class KodiInterface
                 Select Case tContentType
                     Case Enums.ContentType.Movie
                         AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_Movie_Click
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_MovieSet_Click
                     Case Enums.ContentType.TVEpisode
                         AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_TVEpisode_Click
@@ -1339,7 +1339,7 @@ Public Class KodiInterface
         cmnuKodi_MovieSets.DropDownItems.Clear()
         cmnuKodi_MovieSets.Image = New Bitmap(My.Resources.icon)
         cmnuKodi_MovieSets.Text = "Kodi Interface"
-        CreateContextMenu(cmnuKodi_MovieSets, Enums.ContentType.MovieSet)
+        CreateContextMenu(cmnuKodi_MovieSets, Enums.ContentType.Movieset)
         AddToolStripItem_MovieSets(cmnuSep_MovieSets)
         AddToolStripItem_MovieSets(cmnuKodi_MovieSets)
 
@@ -1714,7 +1714,7 @@ Public Class KodiInterface
         If Host IsNot Nothing Then
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idSet").Value)
-                Dim DBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                Dim DBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
                 If DBElement.MovieSet.TitleSpecified Then
                     'add job to tasklist and get everything done
                     AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_MovieSet})
