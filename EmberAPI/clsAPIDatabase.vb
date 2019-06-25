@@ -742,12 +742,7 @@ Public Class Database
                 CleanMainTable("genre", "genre_link", "idGenre")
                 'person
                 logger.Info("Cleaning person table")
-                'TODO: fix person cleanup
-                'CleanMainTable("person", "actor_link", "idPerson")
-                'CleanMainTable("person", "creator_link", "idPerson")
-                'CleanMainTable("person", "director_link", "idPerson")
-                'CleanMainTable("person", "gueststar_link", "idPerson")
-                ' CleanMainTable("person", "writer_link", "idPerson")
+                CleanPersonTable()
                 'studio
                 logger.Info("Cleaning studio table")
                 CleanMainTable("studio", "studio_link", "idStudio")
@@ -765,6 +760,27 @@ Public Class Database
             sqlCommand.CommandText = "VACUUM;"
             sqlCommand.ExecuteNonQuery()
             logger.Info("Rebulding videodatabase done")
+        End Using
+    End Sub
+
+    Private Sub CleanPersonTable()
+        Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            sqlCommand.CommandText = String.Format(String.Concat(
+                                                   "DELETE FROM {0} WHERE NOT EXISTS (SELECT 1 FROM {2} WHERE {0}.{1}={2}.{1})",
+                                                   " AND NOT EXISTS (SELECT 1 FROM {3} WHERE {0}.{1}={3}.{1})",
+                                                   " AND NOT EXISTS (SELECT 1 FROM {4} WHERE {0}.{1}={4}.{1})",
+                                                   " AND NOT EXISTS (SELECT 1 FROM {5} WHERE {0}.{1}={5}.{1})",
+                                                   " AND NOT EXISTS (SELECT 1 FROM {6} WHERE {0}.{1}={6}.{1})",
+                                                   ";"),
+                                                   Helpers.GetTableName(TableName.person),
+                                                   Helpers.GetColumnName(ColumnName.idPerson),
+                                                   Helpers.GetTableName(TableName.actor_link),
+                                                   Helpers.GetTableName(TableName.creator_link),
+                                                   Helpers.GetTableName(TableName.director_link),
+                                                   Helpers.GetTableName(TableName.gueststar_link),
+                                                   Helpers.GetTableName(TableName.writer_link)
+                                                   )
+            sqlCommand.ExecuteNonQuery()
         End Using
     End Sub
 
@@ -6890,6 +6906,8 @@ Public Class Database
                     Return "idMedia"
                 Case ColumnName.idMovie
                     Return GetMainIdName(TableName.movie)
+                Case ColumnName.idPerson
+                    Return GetMainIdName(TableName.person)
                 Case ColumnName.idSeason
                     Return GetMainIdName(TableName.season)
                 Case ColumnName.idSet

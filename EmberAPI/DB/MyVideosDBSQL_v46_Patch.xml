@@ -65,7 +65,7 @@
     <command type="DB">
       <description>rename media_type "set" to "movieset" in table art</description>
       <execute>
-        UPDATE art SET media_type='set' WHERE media_type='movieset';
+        UPDATE art SET media_type='movieset' WHERE media_type='set';
       </execute>
     </command>
     <!-- END art related modifications -->
