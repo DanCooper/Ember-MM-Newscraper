@@ -3414,7 +3414,7 @@ Public Class Database
             If dbElement.IDSpecified Then
                 sqlCommand.CommandText = String.Concat(sqlCommand.CommandText, "idSet,")
             End If
-            sqlCommand.CommandText = String.Concat("INSERT OR REPLACE INTO movieset (",
+            sqlCommand.CommandText = String.Concat(sqlCommand.CommandText,
                                                    "nfoPath,",
                                                    "plot,",
                                                    "title,",
@@ -3436,7 +3436,7 @@ Public Class Database
             Dim par_title As SQLiteParameter = sqlCommand.Parameters.Add("par_title", DbType.String, 0, "title")
             Dim par_new As SQLiteParameter = sqlCommand.Parameters.Add("par_new", DbType.Boolean, 0, "New")
             Dim par_marked As SQLiteParameter = sqlCommand.Parameters.Add("par_marked", DbType.Boolean, 0, "marked")
-            Dim par_locked As SQLiteParameter = sqlCommand.Parameters.Add("par_locked", DbType.Boolean, 0, "lcoked")
+            Dim par_locked As SQLiteParameter = sqlCommand.Parameters.Add("par_locked", DbType.Boolean, 0, "locked")
             Dim par_sortMethod As SQLiteParameter = sqlCommand.Parameters.Add("par_sortMethod", DbType.Int32, 0, "sortMethod")
             Dim par_language As SQLiteParameter = sqlCommand.Parameters.Add("par_language", DbType.String, 0, "language")
 
