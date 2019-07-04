@@ -106,6 +106,12 @@ Public Class TaskManager
                         SQLTransaction.Commit()
                     End Using
 
+                Case Enums.TaskManagerType.SetMovieset
+                    Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        SetMovieset(currTask)
+                        SQLTransaction.Commit()
+                    End Using
+
                 Case Enums.TaskManagerType.SetWatchedState
                     Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetWatchedState(currTask)
@@ -1064,6 +1070,35 @@ Public Class TaskManager
                             End Using
                         End Using
                     End Using
+                Next
+        End Select
+    End Sub
+
+    Private Sub SetMovieset(ByVal tTaskItem As TaskItem)
+        Dim nMovieset = DirectCast(tTaskItem.GenericObject, MediaContainers.SetDetails)
+        Select Case tTaskItem.ContentType
+
+            Case Enums.ContentType.Movie
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
+                    If nMovieset Is Nothing AndAlso tmpDBElement.Movie.SetsSpecified OrElse
+                        nMovieset IsNot Nothing AndAlso Not tmpDBElement.Movie.SetsSpecified OrElse
+                        nMovieset IsNot Nothing AndAlso tmpDBElement.Movie.Sets.Count > 1 OrElse
+                        nMovieset IsNot Nothing AndAlso tmpDBElement.Movie.Sets.Where(Function(f) f.ID = nMovieset.ID).Count = 0 Then
+                        tmpDBElement.Movie.Sets.Clear()
+                        If nMovieset IsNot Nothing Then tmpDBElement.Movie.Sets.Add(nMovieset)
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                         .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                         .Message = tmpDBElement.Movie.Title})
+
+                        Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                         .ContentType = tTaskItem.ContentType,
+                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .ID = tmpDBElement.ID})
+                    End If
                 Next
         End Select
     End Sub

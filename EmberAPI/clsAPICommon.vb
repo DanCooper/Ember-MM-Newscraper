@@ -837,6 +837,10 @@ Public Class Enums
         SetLanguage
         SetLockedState
         SetMarkedState
+        ''' <summary>
+        ''' Needs MediaContainer.SetDetails or Nothing as GenericObject. Nothing removes all assigned movie sets.
+        ''' </summary>
+        SetMovieset
         SetWatchedState
     End Enum
 
