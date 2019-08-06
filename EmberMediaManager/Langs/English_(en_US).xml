@@ -667,7 +667,7 @@
   <string id="666">Extract images from video file</string>
   <string id="667">Prefer extracted images</string>
   <string id="668">Clean database after updating library</string>
-  <string id="669">Ignore last scan time when updating library</string>
+  <string id="669"></string>
   <string id="670">Show Folder/File Name Filters</string>
   <string id="671">Episode Folder/File Name Filters</string>
   <string id="672">Proxy</string>
@@ -794,7 +794,7 @@
   <string id="793">&amp;Versions...</string>
   <string id="794">Search Results</string>
   <string id="795">Interface</string>
-  <string id="796">Scan in order of last write time</string>
+  <string id="796"></string>
   <string id="797">Default Episode Ordering</string>
   <string id="798">Creator</string>
   <string id="799">The ID you entered is not a valid IMDB ID.</string>

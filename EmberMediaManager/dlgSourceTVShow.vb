@@ -243,7 +243,6 @@ Public Class dlgSourceTVShow
             .ID = _id,
             .IsSingle = chkSingle.Checked,
             .Language = strLanguage,
-            .LastScan = DateTime.Now.ToString,
             .Name = txtSourceName.Text.Trim,
             .Path = strSourcePath}
 

@@ -244,7 +244,6 @@ Public Class Settings
     Public Property MovieGeneralCustomScrapeButtonModifierType() As Enums.ModifierType = Enums.ModifierType.All
     Public Property MovieGeneralCustomScrapeButtonScrapeType() As Enums.ScrapeType = Enums.ScrapeType.NewSkip
     Public Property MovieGeneralFlagLang() As String = String.Empty
-    Public Property MovieGeneralIgnoreLastScan() As Boolean = True
     Public Property MovieGeneralLanguage() As String = "en-US"
     Public Property MovieGeneralMarkNew() As Boolean = False
     Public Property MovieGeneralMediaListSorting() As List(Of ListSorting) = New List(Of ListSorting)
@@ -339,7 +338,6 @@ Public Class Settings
     Public Property MoviePosterYAMJ() As Boolean = False
     Public Property MovieProperCase() As Boolean = True
     Public Property MovieRecognizeVTSExpertVTS() As Boolean = False
-    Public Property MovieScanOrderModify() As Boolean = False
     Public Property MovieScraperCast() As Boolean = True
     Public Property MovieScraperCastLimit() As Integer = 0
     Public Property MovieScraperCastWithImgOnly() As Boolean = False
@@ -612,7 +610,6 @@ Public Class Settings
     Public Property TVGeneralCustomScrapeButtonScrapeType() As Enums.ScrapeType = Enums.ScrapeType.NewSkip
     Public Property TVGeneralEpisodeListSorting() As List(Of ListSorting) = New List(Of ListSorting)
     Public Property TVGeneralFlagLang() As String = String.Empty
-    Public Property TVGeneralIgnoreLastScan() As Boolean = True
     Public Property TVGeneralLanguage() As String = "en-US"
     Public Property TVGeneralMarkNewEpisodes() As Boolean = False
     Public Property TVGeneralMarkNewShows() As Boolean = False
@@ -656,7 +653,6 @@ Public Class Settings
     Public Property TVLockShowUserRating() As Boolean = False
     Public Property TVMetadataPerFileType() As List(Of MetadataPerType) = New List(Of MetadataPerType)
     Public Property TVMultiPartMatching() As String = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
-    Public Property TVScanOrderModify() As Boolean = False
     Public Property TVScraperCastWithImgOnly() As Boolean = False
     Public Property TVScraperCleanFields() As Boolean = False
     Public Property TVScraperDurationRuntimeFormat() As String = "<m>"

@@ -110,6 +110,7 @@ Public Class Database
         EpisodeNumber
         EpisodeOrdering
         EpisodeSorting
+        Exclude
         ExtrafanartsPath
         ExtrathumbsPath
         FanartPath
@@ -126,6 +127,7 @@ Public Class Database
         idSeason
         idSet
         idShow
+        idSource
         IsMissing
         KeyArtPath
         LandscapePath
@@ -849,7 +851,7 @@ Public Class Database
         Return GetFromLinkTable("director_link", "idPerson", "person", "idPerson", idMedia, contentType)
     End Function
     ''' <summary>
-    ''' Get a list of excluded path
+    ''' Get a list of excluded paths
     ''' </summary>
     ''' <remarks></remarks>
     Public Function GetExcludedPaths() As List(Of String)
@@ -1168,7 +1170,7 @@ Public Class Database
     '''                        will trow exception
     ''' </remarks>
     Public Sub ClearNew()
-        If (Master.DB.MyVideosDBConn IsNot Nothing) Then
+        If Master.DB.MyVideosDBConn IsNot Nothing Then
             Using sqlTransaction As SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                     sqlCommand.CommandText = "UPDATE episode SET new=0;"
@@ -1200,14 +1202,9 @@ Public Class Database
     ''' <remarks></remarks>
     Public Sub Close_MyVideos()
         CloseDatabase(_myvideosDBConn)
-        'CloseDatabase(_jobsDBConn)
-
         If _myvideosDBConn IsNot Nothing Then
             _myvideosDBConn = Nothing
         End If
-        'If _jobsDBConn IsNot Nothing Then
-        '    _jobsDBConn = Nothing
-        'End If
     End Sub
     ''' <summary>
     ''' Perform the actual closing of the given database connection
@@ -1706,10 +1703,12 @@ Public Class Database
         Select Case Filter.Type
             Case Enums.ContentType.Movie,
                  Enums.ContentType.Movieset,
+                 Enums.ContentType.Moviesource,
                  Enums.ContentType.MusicVideo,
                  Enums.ContentType.TVEpisode,
                  Enums.ContentType.TVSeason,
-                 Enums.ContentType.TVShow
+                 Enums.ContentType.TVShow,
+                 Enums.ContentType.TVShowsource
                 sqlConnection = _myvideosDBConn
         End Select
         If sqlConnection IsNot Nothing Then
@@ -2121,12 +2120,12 @@ Public Class Database
         Return ViewList
     End Function
 
-    Public Function GetMovies(Optional ByVal Filter As SmartFilter.Filter = Nothing) As DataTable
+    Public Function GetMovies(Optional ByVal filter As SmartFilter.Filter = Nothing) As DataTable
         Dim nDataTable As New DataTable
-        If Filter Is Nothing Then
-            Filter = New SmartFilter.Filter(Enums.ContentType.Movie)
+        If filter Is Nothing Then
+            filter = New SmartFilter.Filter(Enums.ContentType.Movie)
         End If
-        FillDataTable(nDataTable, Filter)
+        FillDataTable(nDataTable, filter)
 
         'Table manipulation
         'add column "listTitle" and generate the value
@@ -2138,12 +2137,12 @@ Public Class Database
         Return nDataTable
     End Function
 
-    Public Function GetMoviesets(Optional ByVal Filter As SmartFilter.Filter = Nothing) As DataTable
+    Public Function GetMoviesets(Optional ByVal filter As SmartFilter.Filter = Nothing) As DataTable
         Dim nDataTable As New DataTable
-        If Filter Is Nothing Then
-            Filter = New SmartFilter.Filter(Enums.ContentType.Movieset)
+        If filter Is Nothing Then
+            filter = New SmartFilter.Filter(Enums.ContentType.Movieset)
         End If
-        FillDataTable(nDataTable, Filter)
+        FillDataTable(nDataTable, filter)
 
         'Table manipulation
         'add column "listTitle" and generate the value
@@ -2154,10 +2153,19 @@ Public Class Database
         Return nDataTable
     End Function
 
-    Public Function GetTags(Optional ByVal Filter As SmartFilter.Filter = Nothing) As DataTable
+    Public Function GetMoviesources(Optional ByVal filter As SmartFilter.Filter = Nothing) As DataTable
         Dim nDataTable As New DataTable
-        If Filter Is Nothing Then
-            'Filter = New SmartFilter.Filter(Enums.ContentType.Movie)
+        If filter Is Nothing Then
+            filter = New SmartFilter.Filter(Enums.ContentType.Moviesource)
+        End If
+        FillDataTable(nDataTable, filter)
+        Return nDataTable
+    End Function
+
+    Public Function GetTags(Optional ByVal filter As SmartFilter.Filter = Nothing) As DataTable
+        Dim nDataTable As New DataTable
+        If filter Is Nothing Then
+            'filter = New SmartFilter.Filter(Enums.ContentType.Movie)
         End If
         FillDataTable(nDataTable, String.Format("SELECT * FROM {0} ORDER BY {1} COLLATE NOCASE;",
                                                 Helpers.GetTableName(Database.TableName.tag),
@@ -2166,24 +2174,21 @@ Public Class Database
         Return nDataTable
     End Function
 
-    Public Function GetTVEpisodes(Optional ByVal Filter As SmartFilter.Filter = Nothing) As DataTable
+    Public Function GetTVEpisodes(Optional ByVal filter As SmartFilter.Filter = Nothing) As DataTable
         Dim nDataTable As New DataTable
-        If Filter Is Nothing Then
-            Filter = New SmartFilter.Filter(Enums.ContentType.TVEpisode)
+        If filter Is Nothing Then
+            filter = New SmartFilter.Filter(Enums.ContentType.TVEpisode)
         End If
-        FillDataTable(nDataTable, Filter)
-
-        'Table manipulation
-
+        FillDataTable(nDataTable, filter)
         Return nDataTable
     End Function
 
-    Public Function GetTVSeasons(Optional ByVal Filter As SmartFilter.Filter = Nothing) As DataTable
+    Public Function GetTVSeasons(Optional ByVal filter As SmartFilter.Filter = Nothing) As DataTable
         Dim nDataTable As New DataTable
-        If Filter Is Nothing Then
-            Filter = New SmartFilter.Filter(Enums.ContentType.TVSeason)
+        If filter Is Nothing Then
+            filter = New SmartFilter.Filter(Enums.ContentType.TVSeason)
         End If
-        FillDataTable(nDataTable, Filter)
+        FillDataTable(nDataTable, filter)
 
         'Table manipulation
         'fill column "title" with generic season title if no season title has been specified
@@ -2195,12 +2200,12 @@ Public Class Database
         Return nDataTable
     End Function
 
-    Public Function GetTVShows(Optional ByVal Filter As SmartFilter.Filter = Nothing) As DataTable
+    Public Function GetTVShows(Optional ByVal filter As SmartFilter.Filter = Nothing) As DataTable
         Dim nDataTable As New DataTable
-        If Filter Is Nothing Then
-            Filter = New SmartFilter.Filter(Enums.ContentType.TVShow)
+        If filter Is Nothing Then
+            filter = New SmartFilter.Filter(Enums.ContentType.TVShow)
         End If
-        FillDataTable(nDataTable, Filter)
+        FillDataTable(nDataTable, filter)
 
         'Table manipulation
         'add column "listTitle" and generate the value
@@ -2209,6 +2214,15 @@ Public Class Database
             nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.ListTitle)) = StringUtils.SortTokens_TV(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Title)).ToString)
             'dtTVShows.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)) = StringUtils.SortTokens_TV(dtTVShows.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)).ToString)
         Next
+        Return nDataTable
+    End Function
+
+    Public Function GetTVShowources(Optional ByVal filter As SmartFilter.Filter = Nothing) As DataTable
+        Dim nDataTable As New DataTable
+        If filter Is Nothing Then
+            filter = New SmartFilter.Filter(Enums.ContentType.TVShowsource)
+        End If
+        FillDataTable(nDataTable, filter)
         Return nDataTable
     End Function
 
@@ -2590,7 +2604,6 @@ Public Class Database
                     nDBSource.Exclude = Convert.ToBoolean(SQLreader("exclude"))
                     nDBSource.GetYear = Convert.ToBoolean(SQLreader("getYear"))
                     nDBSource.Language = SQLreader("language").ToString
-                    nDBSource.LastScan = SQLreader("lastScan").ToString
                 Else
                     Return Nothing
                 End If
@@ -2615,7 +2628,6 @@ Public Class Database
                     nDBSource.EpisodeOrdering = DirectCast(Convert.ToInt32(SQLreader("episodeOrdering")), Enums.EpisodeOrdering)
                     nDBSource.Exclude = Convert.ToBoolean(SQLreader("exclude"))
                     nDBSource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("episodeSorting")), Enums.EpisodeSorting)
-                    nDBSource.LastScan = SQLreader("lastScan").ToString
                     nDBSource.IsSingle = Convert.ToBoolean(SQLreader("isSingle"))
                 Else
                     Return Nothing
@@ -3051,8 +3063,8 @@ Public Class Database
     Public Function Save_Movie(ByVal dbElement As DBElement, ByVal batchMode As Boolean, ByVal toNFO As Boolean, ByVal toDisk As Boolean, ByVal doSync As Boolean, ByVal forceFileCleanup As Boolean) As DBElement
         If dbElement.Movie Is Nothing Then Return dbElement
 
-        Dim SQLtransaction As SQLiteTransaction = Nothing
-        If Not batchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+        Dim sqlTransaction As SQLiteTransaction = Nothing
+        If Not batchMode Then sqlTransaction = _myvideosDBConn.BeginTransaction()
 
         'add the path as first to get the idFile value
         dbElement.FileItem.ID = AddFileItem(dbElement.FileItem)
@@ -3388,7 +3400,7 @@ Public Class Database
             Next
         End If
 
-        If Not batchMode Then SQLtransaction.Commit()
+        If Not batchMode Then sqlTransaction.Commit()
 
         If doSync Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Nothing, False, dbElement)
@@ -3533,17 +3545,32 @@ Public Class Database
     Public Sub Save_Source_Movie(ByVal dbSource As DBSource)
         Using sqlTransaction As SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using sqlCommand As SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                sqlCommand.CommandText = "INSERT OR REPLACE INTO moviesource ("
                 If dbSource.IDSpecified Then
-                    sqlCommand.CommandText = String.Format("UPDATE moviesource SET path=(?), name=(?), scanRecursive=(?), useFoldername=(?), isSingle=(?), lastScan=(?), exclude=(?), getYear=(?) , language=(?) WHERE idSource ={0};", dbSource.ID)
-                Else
-                    sqlCommand.CommandText = "INSERT OR REPLACE INTO moviesource (path, name, scanRecursive, useFoldername, isSingle, lastScan, exclude, getYear, language) VALUES (?,?,?,?,?,?,?,?,?);"
+                    sqlCommand.CommandText = String.Concat(sqlCommand.CommandText, "idSource,")
                 End If
+                sqlCommand.CommandText = String.Concat(sqlCommand.CommandText,
+                                                       "path,",
+                                                       "name,",
+                                                       "scanRecursive,",
+                                                       "useFoldername,",
+                                                       "isSingle,",
+                                                       "exclude,",
+                                                       "getYear,",
+                                                       "language",
+                                                       ") VALUES (?,?,?,?,?,?,?,?")
+                If dbSource.IDSpecified Then
+                    sqlCommand.CommandText = String.Concat(sqlCommand.CommandText, ",?")
+                    Dim par_idSource As SQLiteParameter = sqlCommand.Parameters.Add("par_idSource", DbType.Int64, 0, "idSource")
+                    par_idSource.Value = dbSource.ID
+                End If
+                sqlCommand.CommandText = String.Concat(sqlCommand.CommandText, "); Select LAST_INSERT_ROWID() FROM moviesource;")
+
                 Dim par_path As SQLiteParameter = sqlCommand.Parameters.Add("par_path", DbType.String, 0, "path")
                 Dim par_name As SQLiteParameter = sqlCommand.Parameters.Add("par_name", DbType.String, 0, "name")
                 Dim par_scanRecursive As SQLiteParameter = sqlCommand.Parameters.Add("par_scanRecursive", DbType.Boolean, 0, "scanRecursive")
                 Dim par_useFoldername As SQLiteParameter = sqlCommand.Parameters.Add("par_useFoldername", DbType.Boolean, 0, "useFoldername")
                 Dim par_isSingle As SQLiteParameter = sqlCommand.Parameters.Add("par_isSingle", DbType.Boolean, 0, "isSingle")
-                Dim par_lastScan As SQLiteParameter = sqlCommand.Parameters.Add("par_lastScan", DbType.String, 0, "lastScan")
                 Dim par_exclude As SQLiteParameter = sqlCommand.Parameters.Add("par_exclude", DbType.Boolean, 0, "exclude")
                 Dim par_getYear As SQLiteParameter = sqlCommand.Parameters.Add("par_getYear", DbType.Boolean, 0, "getYear")
                 Dim par_language As SQLiteParameter = sqlCommand.Parameters.Add("par_language", DbType.String, 0, "language")
@@ -3552,7 +3579,6 @@ Public Class Database
                 par_scanRecursive.Value = dbSource.ScanRecursive
                 par_useFoldername.Value = dbSource.UseFolderName
                 par_isSingle.Value = dbSource.IsSingle
-                par_lastScan.Value = DateTime.Now
                 par_exclude.Value = dbSource.Exclude
                 par_getYear.Value = dbSource.GetYear
                 If dbSource.LanguageSpecified Then
@@ -3570,11 +3596,26 @@ Public Class Database
     Public Sub Save_Source_TVShow(ByVal dbSource As DBSource)
         Using sqlTransaction As SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using sqlCommand As SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                sqlCommand.CommandText = "INSERT OR REPLACE INTO tvshowsource ("
                 If dbSource.IDSpecified Then
-                    sqlCommand.CommandText = String.Format("UPDATE tvshowsource SET path=(?), name=(?), language=(?), episodeOrdering=(?), exclude=(?), episodeSorting=(?) , isSingle=(?) WHERE idSource={0};", dbSource.ID)
-                Else
-                    sqlCommand.CommandText = "INSERT OR REPLACE INTO tvshowsource (path, name, language, episodeOrdering, exclude, episodeSorting, isSingle) VALUES (?,?,?,?,?,?,?);"
+                    sqlCommand.CommandText = String.Concat(sqlCommand.CommandText, "idSource,")
                 End If
+                sqlCommand.CommandText = String.Concat(sqlCommand.CommandText,
+                                                       "path,",
+                                                       "name,",
+                                                       "language,",
+                                                       "episodeOrdering,",
+                                                       "exclude,",
+                                                       "episodeSorting,",
+                                                       "isSingle",
+                                                       ") VALUES (?,?,?,?,?,?,?")
+                If dbSource.IDSpecified Then
+                    sqlCommand.CommandText = String.Concat(sqlCommand.CommandText, ",?")
+                    Dim par_idSource As SQLiteParameter = sqlCommand.Parameters.Add("par_idSource", DbType.Int64, 0, "idSource")
+                    par_idSource.Value = dbSource.ID
+                End If
+                sqlCommand.CommandText = String.Concat(sqlCommand.CommandText, "); Select LAST_INSERT_ROWID() FROM tvshowsource;")
+
                 Dim par_path As SQLiteParameter = sqlCommand.Parameters.Add("par_path", DbType.String, 0, "path")
                 Dim par_name As SQLiteParameter = sqlCommand.Parameters.Add("par_name", DbType.String, 0, "name")
                 Dim par_language As SQLiteParameter = sqlCommand.Parameters.Add("par_language", DbType.String, 0, "language")
@@ -6547,14 +6588,6 @@ Public Class Database
             End Get
         End Property
 
-        Public Property LastScan() As String = String.Empty
-
-        Public ReadOnly Property LastScanSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(LastScan)
-            End Get
-        End Property
-
         Public Property Name() As String = String.Empty
 
         Public ReadOnly Property NameSpecified() As Boolean
@@ -6617,6 +6650,7 @@ Public Class Database
         Public Shared Function ColumnIsBoolean(ByVal columnName As String) As Boolean
             If Not String.IsNullOrEmpty(columnName) Then
                 Dim lstColumns As String() = New String() {
+                    GetColumnName(Database.ColumnName.Exclude),
                     GetColumnName(Database.ColumnName.HasMetaData),
                     GetColumnName(Database.ColumnName.HasMovieset),
                     GetColumnName(Database.ColumnName.HasSubtitles),
@@ -6884,6 +6918,8 @@ Public Class Database
                     Return "episodes"
                 Case ColumnName.EpisodeSorting
                     Return "episodeSorting"
+                Case ColumnName.Exclude
+                    Return "exclude"
                 Case ColumnName.ExtrafanartsPath
                     Return "efanartsPath"
                 Case ColumnName.ExtrathumbsPath
@@ -6914,6 +6950,8 @@ Public Class Database
                     Return GetMainIdName(TableName.movieset)
                 Case ColumnName.idShow
                     Return GetMainIdName(TableName.tvshow)
+                Case ColumnName.idSource
+                    Return GetMainIdName(TableName.moviesource)
                 Case ColumnName.MediaType
                     Return "media_type"
                 Case ColumnName.IsMissing
@@ -6964,6 +7002,8 @@ Public Class Database
                     Return "outline"
                 Case ColumnName.OutOfTolerance
                     Return "outOfTolerance"
+                Case ColumnName.Path
+                    Return "path"
                 Case ColumnName.PlayCount
                     Return "playCount"
                 Case ColumnName.Plot
@@ -7145,12 +7185,16 @@ Public Class Database
                     Return "movielist"
                 Case Enums.ContentType.Movieset
                     Return "moviesetlist"
+                Case Enums.ContentType.Moviesource
+                    Return "moviesource"
                 Case Enums.ContentType.TVEpisode
                     Return "episodelist"
                 Case Enums.ContentType.TVSeason
                     Return "seasonlist"
                 Case Enums.ContentType.TVShow
                     Return "tvshowlist"
+                Case Enums.ContentType.TVShowsource
+                    Return "tvshowsource"
             End Select
             Return String.Empty
         End Function

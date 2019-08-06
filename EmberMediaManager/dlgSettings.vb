@@ -2935,7 +2935,6 @@ Public Class dlgSettings
                 txtMovieFanartHeight.Text = .MovieFanartHeight.ToString
                 txtMovieFanartWidth.Text = .MovieFanartWidth.ToString
             End If
-            chkMovieGeneralIgnoreLastScan.Checked = .MovieGeneralIgnoreLastScan
             chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
             chkMovieImagesCacheEnabled.Checked = .MovieImagesCacheEnabled
             chkMovieImagesDisplayImageSelect.Checked = .MovieImagesDisplayImageSelect
@@ -3041,7 +3040,6 @@ Public Class dlgSettings
             End If
             chkMovieSetScraperPlot.Checked = .MovieSetScraperPlot
             chkMovieSetScraperTitle.Checked = .MovieSetScraperTitle
-            chkMovieScanOrderModify.Checked = .MovieScanOrderModify
             chkMovieScraperCast.Checked = .MovieScraperCast
             chkMovieScraperCastWithImg.Checked = .MovieScraperCastWithImgOnly
             chkMovieScraperCert.Checked = .MovieScraperCert
@@ -3132,7 +3130,6 @@ Public Class dlgSettings
             chkTVGeneralClickScrapeAsk.Checked = .TVGeneralClickScrapeAsk
             chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
             chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
-            chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
             chkTVImagesCacheEnabled.Checked = .TVImagesCacheEnabled
             chkTVImagesDisplayImageSelect.Checked = .TVImagesDisplayImageSelect
             chkTVImagesForceLanguage.Checked = .TVImagesForceLanguage
@@ -3162,7 +3159,6 @@ Public Class dlgSettings
             chkTVLockShowStudio.Checked = .TVLockShowStudio
             chkTVLockShowTitle.Checked = .TVLockShowTitle
             chkTVLockShowUserRating.Checked = .TVLockShowUserRating
-            chkTVScanOrderModify.Checked = .TVScanOrderModify
             chkTVScraperCastWithImg.Checked = .TVScraperCastWithImgOnly
             chkTVScraperCleanFields.Checked = .TVScraperCleanFields
             chkTVScraperEpisodeActors.Checked = .TVScraperEpisodeActors
@@ -4926,7 +4922,6 @@ Public Class dlgSettings
             .MovieGeneralCustomScrapeButtonModifierType = CType(cbMovieGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value
             .MovieGeneralCustomScrapeButtonScrapeType = CType(cbMovieGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
             .MovieGeneralFlagLang = If(cbMovieLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbMovieLanguageOverlay.Text)
-            .MovieGeneralIgnoreLastScan = chkMovieGeneralIgnoreLastScan.Checked
             If Not String.IsNullOrEmpty(cbMovieGeneralLang.Text) Then
                 .MovieGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbMovieGeneralLang.Text).Abbreviation
             End If
@@ -5046,7 +5041,6 @@ Public Class dlgSettings
             .MovieSetPosterWidth = If(Not String.IsNullOrEmpty(txtMovieSetPosterWidth.Text), Convert.ToInt32(txtMovieSetPosterWidth.Text), 0)
             .MovieSetScraperPlot = chkMovieSetScraperPlot.Checked
             .MovieSetScraperTitle = chkMovieSetScraperTitle.Checked
-            .MovieScanOrderModify = chkMovieScanOrderModify.Checked
             .MovieScraperCast = chkMovieScraperCast.Checked
             Integer.TryParse(txtMovieScraperCastLimit.Text, .MovieScraperCastLimit)
             .MovieScraperCastWithImgOnly = chkMovieScraperCastWithImg.Checked
@@ -5167,7 +5161,6 @@ Public Class dlgSettings
             .TVGeneralEpisodeListSorting.Clear()
             .TVGeneralEpisodeListSorting.AddRange(TVGeneralEpisodeListSorting)
             .TVGeneralFlagLang = If(cbTVLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbTVLanguageOverlay.Text)
-            .TVGeneralIgnoreLastScan = chkTVGeneralIgnoreLastScan.Checked
             If Not String.IsNullOrEmpty(cbTVGeneralLang.Text) Then
                 .TVGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
             End If
@@ -5215,7 +5208,6 @@ Public Class dlgSettings
             .TVMetadataPerFileType.Clear()
             .TVMetadataPerFileType.AddRange(TVMeta)
             .TVMultiPartMatching = txtTVSourcesRegexMultiPartMatching.Text
-            .TVScanOrderModify = chkTVScanOrderModify.Checked
             .TVScraperCastWithImgOnly = chkTVScraperCastWithImg.Checked
             .TVScraperCleanFields = chkTVScraperCleanFields.Checked
             .TVScraperDurationRuntimeFormat = txtTVScraperDurationRuntimeFormat.Text
@@ -6693,12 +6685,10 @@ Public Class dlgSettings
         chkMovieSourcesBackdropsAuto.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         chkMovieCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
         chkMovieDisplayYear.Text = Master.eLang.GetString(464, "Display Year in List Title")
-        chkMovieGeneralIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
         chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         chkMovieLevTolerance.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
         chkMovieProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
         chkMovieRecognizeVTSExpertVTS.Text = String.Format(Master.eLang.GetString(537, "Recognize VIDEO_TS{0}without VIDEO_TS folder"), Environment.NewLine)
-        chkMovieScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
         chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
         chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
         chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
@@ -6794,8 +6784,6 @@ Public Class dlgSettings
         chkMovieUseBaseDirectoryExpertVTS.Text = chkMovieUseBaseDirectoryExpertBDMV.Text
         chkTVCleanDB.Text = chkMovieCleanDB.Text
         chkTVEpisodeProperCase.Text = chkMovieProperCase.Text
-        chkTVGeneralIgnoreLastScan.Text = chkMovieGeneralIgnoreLastScan.Text
-        chkTVScanOrderModify.Text = chkMovieScanOrderModify.Text
         chkTVScraperMetaDataScan.Text = chkMovieScraperMetaDataScan.Text
         chkTVShowProperCase.Text = chkMovieProperCase.Text
         gbMovieSetGeneralMediaListOpts.Text = gbMovieGeneralMediaListOpts.Text
@@ -7706,7 +7694,6 @@ Public Class dlgSettings
         chkMovieFanartNMJ.CheckedChanged,
         chkMovieFanartPrefSizeOnly.CheckedChanged,
         chkMovieFanartYAMJ.CheckedChanged,
-        chkMovieGeneralIgnoreLastScan.CheckedChanged,
         chkMovieGeneralMarkNew.CheckedChanged,
         chkMovieImagesCacheEnabled.CheckedChanged,
         chkMovieImagesDisplayImageSelect.CheckedChanged,
@@ -7758,7 +7745,6 @@ Public Class dlgSettings
         chkMoviePosterPrefSizeOnly.CheckedChanged,
         chkMoviePosterYAMJ.CheckedChanged,
         chkMovieRecognizeVTSExpertVTS.CheckedChanged,
-        chkMovieScanOrderModify.CheckedChanged,
         chkMovieScraperCastWithImg.CheckedChanged,
         chkMovieScraperCertForMPAAFallback.CheckedChanged,
         chkMovieScraperCertOnlyValue.CheckedChanged,
@@ -7861,7 +7847,6 @@ Public Class dlgSettings
         chkTVEpisodePosterVideoExtractionPref.CheckedChanged,
         chkTVEpisodePosterYAMJ.CheckedChanged,
         chkTVGeneralClickScrapeAsk.CheckedChanged,
-        chkTVGeneralIgnoreLastScan.CheckedChanged,
         chkTVGeneralMarkNewEpisodes.CheckedChanged,
         chkTVGeneralMarkNewShows.CheckedChanged,
         chkTVImagesCacheEnabled.CheckedChanged,
@@ -7889,7 +7874,6 @@ Public Class dlgSettings
         chkTVLockShowStudio.CheckedChanged,
         chkTVLockShowTitle.CheckedChanged,
         chkTVLockShowUserRating.CheckedChanged,
-        chkTVScanOrderModify.CheckedChanged,
         chkTVScraperCastWithImg.CheckedChanged,
         chkTVScraperCleanFields.CheckedChanged,
         chkTVScraperEpisodeAired.CheckedChanged,

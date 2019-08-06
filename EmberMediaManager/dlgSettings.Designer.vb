@@ -582,9 +582,7 @@ Partial Class dlgSettings
         Me.gbMovieSourcesMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesMiscOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieCleanDB = New System.Windows.Forms.CheckBox()
-        Me.chkMovieScanOrderModify = New System.Windows.Forms.CheckBox()
         Me.lblMovieSkipLessThan = New System.Windows.Forms.Label()
-        Me.chkMovieGeneralIgnoreLastScan = New System.Windows.Forms.CheckBox()
         Me.chkMovieSortBeforeScan = New System.Windows.Forms.CheckBox()
         Me.txtMovieSkipLessThan = New System.Windows.Forms.TextBox()
         Me.lblMovieSkipLessThanMB = New System.Windows.Forms.Label()
@@ -897,9 +895,7 @@ Partial Class dlgSettings
         Me.gbTVSourcesMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesMiscOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkTVCleanDB = New System.Windows.Forms.CheckBox()
-        Me.chkTVScanOrderModify = New System.Windows.Forms.CheckBox()
         Me.lblTVSkipLessThanMB = New System.Windows.Forms.Label()
-        Me.chkTVGeneralIgnoreLastScan = New System.Windows.Forms.CheckBox()
         Me.lblTVSkipLessThan = New System.Windows.Forms.Label()
         Me.txtTVSkipLessThan = New System.Windows.Forms.TextBox()
         Me.btnRemTVSource = New System.Windows.Forms.Button()
@@ -5659,7 +5655,7 @@ Partial Class dlgSettings
         Me.gbMovieSourcesBackdropsFolderOpts.Controls.Add(Me.tblMovieSourcesBackdropsFolderOpts)
         Me.gbMovieSourcesBackdropsFolderOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesBackdropsFolderOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSourcesBackdropsFolderOpts.Location = New System.Drawing.Point(541, 358)
+        Me.gbMovieSourcesBackdropsFolderOpts.Location = New System.Drawing.Point(541, 312)
         Me.gbMovieSourcesBackdropsFolderOpts.Name = "gbMovieSourcesBackdropsFolderOpts"
         Me.gbMovieSourcesBackdropsFolderOpts.Size = New System.Drawing.Size(301, 72)
         Me.gbMovieSourcesBackdropsFolderOpts.TabIndex = 6
@@ -8956,7 +8952,7 @@ Partial Class dlgSettings
         Me.gbMovieSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieSourcesMiscOpts.Location = New System.Drawing.Point(541, 188)
         Me.gbMovieSourcesMiscOpts.Name = "gbMovieSourcesMiscOpts"
-        Me.gbMovieSourcesMiscOpts.Size = New System.Drawing.Size(301, 164)
+        Me.gbMovieSourcesMiscOpts.Size = New System.Drawing.Size(301, 118)
         Me.gbMovieSourcesMiscOpts.TabIndex = 4
         Me.gbMovieSourcesMiscOpts.TabStop = False
         Me.gbMovieSourcesMiscOpts.Text = "Miscellaneous Options"
@@ -8969,10 +8965,8 @@ Partial Class dlgSettings
         Me.tblMovieSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkMovieCleanDB, 0, 5)
-        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkMovieScanOrderModify, 0, 4)
+        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkMovieCleanDB, 0, 3)
         Me.tblMovieSourcesMiscOpts.Controls.Add(Me.lblMovieSkipLessThan, 0, 0)
-        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkMovieGeneralIgnoreLastScan, 0, 3)
         Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkMovieSortBeforeScan, 0, 2)
         Me.tblMovieSourcesMiscOpts.Controls.Add(Me.txtMovieSkipLessThan, 1, 0)
         Me.tblMovieSourcesMiscOpts.Controls.Add(Me.lblMovieSkipLessThanMB, 2, 0)
@@ -8980,15 +8974,13 @@ Partial Class dlgSettings
         Me.tblMovieSourcesMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSourcesMiscOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieSourcesMiscOpts.Name = "tblMovieSourcesMiscOpts"
-        Me.tblMovieSourcesMiscOpts.RowCount = 7
+        Me.tblMovieSourcesMiscOpts.RowCount = 5
         Me.tblMovieSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesMiscOpts.Size = New System.Drawing.Size(295, 143)
+        Me.tblMovieSourcesMiscOpts.Size = New System.Drawing.Size(295, 97)
         Me.tblMovieSourcesMiscOpts.TabIndex = 9
         '
         'chkMovieCleanDB
@@ -8997,25 +8989,12 @@ Partial Class dlgSettings
         Me.chkMovieCleanDB.AutoSize = True
         Me.tblMovieSourcesMiscOpts.SetColumnSpan(Me.chkMovieCleanDB, 3)
         Me.chkMovieCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieCleanDB.Location = New System.Drawing.Point(3, 123)
+        Me.chkMovieCleanDB.Location = New System.Drawing.Point(3, 77)
         Me.chkMovieCleanDB.Name = "chkMovieCleanDB"
         Me.chkMovieCleanDB.Size = New System.Drawing.Size(218, 17)
         Me.chkMovieCleanDB.TabIndex = 9
         Me.chkMovieCleanDB.Text = "Clean database after updating library"
         Me.chkMovieCleanDB.UseVisualStyleBackColor = True
-        '
-        'chkMovieScanOrderModify
-        '
-        Me.chkMovieScanOrderModify.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScanOrderModify.AutoSize = True
-        Me.tblMovieSourcesMiscOpts.SetColumnSpan(Me.chkMovieScanOrderModify, 3)
-        Me.chkMovieScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieScanOrderModify.Location = New System.Drawing.Point(3, 100)
-        Me.chkMovieScanOrderModify.Name = "chkMovieScanOrderModify"
-        Me.chkMovieScanOrderModify.Size = New System.Drawing.Size(186, 17)
-        Me.chkMovieScanOrderModify.TabIndex = 8
-        Me.chkMovieScanOrderModify.Text = "Scan in order of last write time."
-        Me.chkMovieScanOrderModify.UseVisualStyleBackColor = True
         '
         'lblMovieSkipLessThan
         '
@@ -9027,19 +9006,6 @@ Partial Class dlgSettings
         Me.lblMovieSkipLessThan.Size = New System.Drawing.Size(122, 13)
         Me.lblMovieSkipLessThan.TabIndex = 0
         Me.lblMovieSkipLessThan.Text = "Skip files smaller than:"
-        '
-        'chkMovieGeneralIgnoreLastScan
-        '
-        Me.chkMovieGeneralIgnoreLastScan.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieGeneralIgnoreLastScan.AutoSize = True
-        Me.tblMovieSourcesMiscOpts.SetColumnSpan(Me.chkMovieGeneralIgnoreLastScan, 3)
-        Me.chkMovieGeneralIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieGeneralIgnoreLastScan.Location = New System.Drawing.Point(3, 77)
-        Me.chkMovieGeneralIgnoreLastScan.Name = "chkMovieGeneralIgnoreLastScan"
-        Me.chkMovieGeneralIgnoreLastScan.Size = New System.Drawing.Size(254, 17)
-        Me.chkMovieGeneralIgnoreLastScan.TabIndex = 7
-        Me.chkMovieGeneralIgnoreLastScan.Text = "Always scan all media when updating library"
-        Me.chkMovieGeneralIgnoreLastScan.UseVisualStyleBackColor = True
         '
         'chkMovieSortBeforeScan
         '
@@ -12875,7 +12841,7 @@ Partial Class dlgSettings
         Me.gbTVSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(541, 235)
         Me.gbTVSourcesMiscOpts.Name = "gbTVSourcesMiscOpts"
-        Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(278, 118)
+        Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(278, 72)
         Me.gbTVSourcesMiscOpts.TabIndex = 4
         Me.gbTVSourcesMiscOpts.TabStop = False
         Me.gbTVSourcesMiscOpts.Text = "Miscellaneous Options"
@@ -12888,22 +12854,18 @@ Partial Class dlgSettings
         Me.tblTVSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesMiscOpts.Controls.Add(Me.chkTVCleanDB, 0, 3)
-        Me.tblTVSourcesMiscOpts.Controls.Add(Me.chkTVScanOrderModify, 0, 2)
+        Me.tblTVSourcesMiscOpts.Controls.Add(Me.chkTVCleanDB, 0, 1)
         Me.tblTVSourcesMiscOpts.Controls.Add(Me.lblTVSkipLessThanMB, 2, 0)
-        Me.tblTVSourcesMiscOpts.Controls.Add(Me.chkTVGeneralIgnoreLastScan, 0, 1)
         Me.tblTVSourcesMiscOpts.Controls.Add(Me.lblTVSkipLessThan, 0, 0)
         Me.tblTVSourcesMiscOpts.Controls.Add(Me.txtTVSkipLessThan, 1, 0)
         Me.tblTVSourcesMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVSourcesMiscOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVSourcesMiscOpts.Name = "tblTVSourcesMiscOpts"
-        Me.tblTVSourcesMiscOpts.RowCount = 5
+        Me.tblTVSourcesMiscOpts.RowCount = 3
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesMiscOpts.Size = New System.Drawing.Size(272, 97)
+        Me.tblTVSourcesMiscOpts.Size = New System.Drawing.Size(272, 51)
         Me.tblTVSourcesMiscOpts.TabIndex = 7
         '
         'chkTVCleanDB
@@ -12913,28 +12875,13 @@ Partial Class dlgSettings
         Me.chkTVCleanDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.tblTVSourcesMiscOpts.SetColumnSpan(Me.chkTVCleanDB, 3)
         Me.chkTVCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVCleanDB.Location = New System.Drawing.Point(3, 77)
+        Me.chkTVCleanDB.Location = New System.Drawing.Point(3, 31)
         Me.chkTVCleanDB.Name = "chkTVCleanDB"
         Me.chkTVCleanDB.Size = New System.Drawing.Size(218, 17)
         Me.chkTVCleanDB.TabIndex = 5
         Me.chkTVCleanDB.Text = "Clean database after updating library"
         Me.chkTVCleanDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkTVCleanDB.UseVisualStyleBackColor = True
-        '
-        'chkTVScanOrderModify
-        '
-        Me.chkTVScanOrderModify.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVScanOrderModify.AutoSize = True
-        Me.chkTVScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.tblTVSourcesMiscOpts.SetColumnSpan(Me.chkTVScanOrderModify, 3)
-        Me.chkTVScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVScanOrderModify.Location = New System.Drawing.Point(3, 54)
-        Me.chkTVScanOrderModify.Name = "chkTVScanOrderModify"
-        Me.chkTVScanOrderModify.Size = New System.Drawing.Size(183, 17)
-        Me.chkTVScanOrderModify.TabIndex = 4
-        Me.chkTVScanOrderModify.Text = "Scan in order of last write time"
-        Me.chkTVScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVScanOrderModify.UseVisualStyleBackColor = True
         '
         'lblTVSkipLessThanMB
         '
@@ -12946,21 +12893,6 @@ Partial Class dlgSettings
         Me.lblTVSkipLessThanMB.Size = New System.Drawing.Size(24, 13)
         Me.lblTVSkipLessThanMB.TabIndex = 2
         Me.lblTVSkipLessThanMB.Text = "MB"
-        '
-        'chkTVGeneralIgnoreLastScan
-        '
-        Me.chkTVGeneralIgnoreLastScan.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVGeneralIgnoreLastScan.AutoSize = True
-        Me.chkTVGeneralIgnoreLastScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.tblTVSourcesMiscOpts.SetColumnSpan(Me.chkTVGeneralIgnoreLastScan, 3)
-        Me.chkTVGeneralIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVGeneralIgnoreLastScan.Location = New System.Drawing.Point(3, 31)
-        Me.chkTVGeneralIgnoreLastScan.Name = "chkTVGeneralIgnoreLastScan"
-        Me.chkTVGeneralIgnoreLastScan.Size = New System.Drawing.Size(250, 17)
-        Me.chkTVGeneralIgnoreLastScan.TabIndex = 3
-        Me.chkTVGeneralIgnoreLastScan.Text = "Ignore last scan time when updating library"
-        Me.chkTVGeneralIgnoreLastScan.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkTVGeneralIgnoreLastScan.UseVisualStyleBackColor = True
         '
         'lblTVSkipLessThan
         '
@@ -22403,7 +22335,6 @@ Partial Class dlgSettings
     Friend WithEvents btnRemTVSource As System.Windows.Forms.Button
     Friend WithEvents btnTVSourceAdd As System.Windows.Forms.Button
     Friend WithEvents chkMovieCleanDB As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieGeneralIgnoreLastScan As System.Windows.Forms.CheckBox
     Friend WithEvents pnlTVGeneral As System.Windows.Forms.Panel
     Friend WithEvents gbTVEpisodeFilterOpts As System.Windows.Forms.GroupBox
     Friend WithEvents btnTVEpisodeFilterDown As System.Windows.Forms.Button
@@ -22430,7 +22361,6 @@ Partial Class dlgSettings
     Friend WithEvents txtMovieFilter As System.Windows.Forms.TextBox
     Friend WithEvents lstMovieFilters As System.Windows.Forms.ListBox
     Friend WithEvents gbTVSourcesMiscOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents chkTVGeneralIgnoreLastScan As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVCleanDB As System.Windows.Forms.CheckBox
     Friend WithEvents gbGeneralInterface As System.Windows.Forms.GroupBox
     Friend WithEvents tcTVSources As System.Windows.Forms.TabControl
@@ -22516,8 +22446,6 @@ Partial Class dlgSettings
     Friend WithEvents chkTVSeasonFanartResize As System.Windows.Forms.CheckBox
     Friend WithEvents cbTVSeasonFanartPrefSize As System.Windows.Forms.ComboBox
     Friend WithEvents chkTVSeasonFanartKeepExisting As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTVScanOrderModify As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieScanOrderModify As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVEpisodeNoFilter As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVDisplayMissingEpisodes As System.Windows.Forms.CheckBox
     Friend WithEvents gbTVScraperMetaDataOpts As System.Windows.Forms.GroupBox

@@ -423,12 +423,14 @@ Public Class Enums
         Generic = 1
         Movie = 2
         Movieset = 3
-        MusicVideo = 4
-        Person = 5
-        TV = 6
-        TVEpisode = 7
-        TVSeason = 8
-        TVShow = 9
+        Moviesource = 4
+        MusicVideo = 5
+        Person = 6
+        TV = 7
+        TVEpisode = 8
+        TVSeason = 9
+        TVShow = 10
+        TVShowsource = 11
     End Enum
 
     Public Enum DefaultType As Integer
