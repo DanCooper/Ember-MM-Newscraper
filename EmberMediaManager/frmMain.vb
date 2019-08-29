@@ -12827,11 +12827,15 @@ Public Class frmMain
                                                                ).FirstOrDefault()
 
         If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
-            If InvokeRequired Then
-                Invoke(myDelegate, New Object() {oldDRow, newDRow})
-            Else
-                oldDRow.ItemArray = newDRow.ItemArray
-            End If
+            Try
+                If InvokeRequired Then
+                    Invoke(myDelegate, New Object() {oldDRow, newDRow})
+                Else
+                    oldDRow.ItemArray = newDRow.ItemArray
+                End If
+            Catch ex As Exception
+                'catch the situation in which a row has been removed at the same time we try to refresh the row (it's nothing to do)
+            End Try
         End If
 
         If dgvMovies.Visible AndAlso dgvMovies.SelectedRows.Count > 0 AndAlso CInt(dgvMovies.SelectedRows(0).Cells(Database.Helpers.GetMainIdName(Database.TableName.movie)).Value) = MovieID Then
@@ -12866,11 +12870,15 @@ Public Class frmMain
                                                                   ).FirstOrDefault()
 
         If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
-            If InvokeRequired Then
-                Invoke(myDelegate, New Object() {oldDRow, newDRow})
-            Else
-                oldDRow.ItemArray = newDRow.ItemArray
-            End If
+            Try
+                If InvokeRequired Then
+                    Invoke(myDelegate, New Object() {oldDRow, newDRow})
+                Else
+                    oldDRow.ItemArray = newDRow.ItemArray
+                End If
+            Catch ex As Exception
+                'catch the situation in which a row has been removed at the same time we try to refresh the row (it's nothing to do)
+            End Try
         End If
 
         If dgvMovieSets.Visible AndAlso dgvMovieSets.SelectedRows.Count > 0 AndAlso CInt(dgvMovieSets.SelectedRows(0).Cells(Database.Helpers.GetMainIdName(Database.TableName.movieset)).Value) = MovieSetID Then
@@ -12913,7 +12921,7 @@ Public Class frmMain
                         oldDRow.ItemArray = newDRow.ItemArray
                     End If
                 Catch ex As Exception
-                    'catch the situation in which the tvshow row has been removed at the same time we try to refresh the episode row (it's nothing to do)
+                    'catch the situation in which a row has been removed at the same time we try to refresh the row (it's nothing to do)
                 End Try
             End If
 
@@ -12958,7 +12966,7 @@ Public Class frmMain
                         oldDRow.ItemArray = newDRow.ItemArray
                     End If
                 Catch ex As Exception
-                    'catch the situation in which the tvshow row has been removed at the same time we try to refresh the season row (it's nothing to do)
+                    'catch the situation in which a row has been removed at the same time we try to refresh the row (it's nothing to do)
                 End Try
             End If
 
@@ -13013,11 +13021,15 @@ Public Class frmMain
                                                                 ).FirstOrDefault()
 
         If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
-            If InvokeRequired Then
-                Invoke(myDelegate, New Object() {oldDRow, newDRow})
-            Else
-                oldDRow.ItemArray = newDRow.ItemArray
-            End If
+            Try
+                If InvokeRequired Then
+                    Invoke(myDelegate, New Object() {oldDRow, newDRow})
+                Else
+                    oldDRow.ItemArray = newDRow.ItemArray
+                End If
+            Catch ex As Exception
+                'catch the situation in which a row has been removed at the same time we try to refresh the row (it's nothing to do)
+            End Try
         End If
 
         If dgvTVShows.Visible AndAlso dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(dgvTVShows.SelectedRows(0).Cells(Database.Helpers.GetMainIdName(Database.TableName.tvshow)).Value) = ShowID AndAlso (currList = 0 OrElse Force) Then
