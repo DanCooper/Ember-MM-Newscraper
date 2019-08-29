@@ -7023,7 +7023,9 @@ Public Class frmMain
 
         If Not Master.isCL Then SortingRestore_TVSeasons()
 
-        FillList_TVEpisodes(ShowID, Convert.ToInt32(dgvTVSeasons.Item(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber), 0).Value))
+        If dgvTVSeasons.RowCount > 0 Then
+            FillList_TVEpisodes(ShowID, Convert.ToInt32(dgvTVSeasons.Item(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber), 0).Value))
+        End If
 
         AddHandler dgvTVSeasons.SelectionChanged, AddressOf dgvTVSeasons_SelectionChanged
     End Sub

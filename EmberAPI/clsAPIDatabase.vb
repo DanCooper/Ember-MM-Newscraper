@@ -665,9 +665,13 @@ Public Class Database
                         End While
                     End Using
 
-                    logger.Info("Removing tvshows with no existing local episodes")
-                    sqlCommand.CommandText = "DELETE FROM tvshow WHERE NOT EXISTS (SELECT episode.idShow FROM episode WHERE episode.idShow=tvshow.idShow AND NOT episode.idFile = -1);"
-                    sqlCommand.ExecuteNonQuery()
+                    logger.Info("Removing tvshows without local episodes")
+                    sqlCommand.CommandText = "SELECT tvshow.idShow FROM tvshow WHERE NOT EXISTS (SELECT episode.idShow FROM episode WHERE episode.idShow=tvshow.idShow AND NOT episode.idFile = -1);"
+                    Using sqlReader As SQLiteDataReader = sqlCommand.ExecuteReader()
+                        While sqlReader.Read
+                            Master.DB.Delete_TVShow(CLng(sqlReader("idShow")), True)
+                        End While
+                    End Using
                     logger.Info("Removing seasons with no more existing tvshows")
                     sqlCommand.CommandText = "DELETE FROM season WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                     sqlCommand.ExecuteNonQuery()
