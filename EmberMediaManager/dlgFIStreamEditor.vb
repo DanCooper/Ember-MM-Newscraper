@@ -113,7 +113,7 @@ Public Class dlgFIStreamEditor
                 stream_a.Codec = If(cbAudioCodec.SelectedItem Is Nothing, String.Empty, cbAudioCodec.SelectedItem.ToString)
                 If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.LongLanguage = cbAudioLanguage.SelectedItem.ToString
                 If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = Localization.ISOLangGetCode3ByLang(cbAudioLanguage.SelectedItem.ToString)
-                stream_a.Channels = ConvertToInteger(cbAudioChannels.SelectedItem.ToString)
+                stream_a.Channels = If(cbAudioChannels.SelectedItem Is Nothing, 0, ConvertToInteger(cbAudioChannels.SelectedItem.ToString))
                 stream_a.Bitrate = ConvertToInteger(txtAudioBitrate.Text)
                 Return stream_a
             End If

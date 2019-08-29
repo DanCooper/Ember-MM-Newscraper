@@ -453,6 +453,7 @@ Public Class Enums
         ValidExts
         ValidSubtitleExts
         ValidThemeExts
+        VideosourceMappingByRegex
     End Enum
     ''' <summary>
     ''' 0 results in using the current datetime when adding a video

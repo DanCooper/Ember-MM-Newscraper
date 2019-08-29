@@ -36,6 +36,8 @@ Public Class dlgSettings
     Private currText As String = String.Empty
     Private dHelp As New Dictionary(Of String, String)
     Private didApply As Boolean = False
+    Private GeneralVideoSourceByExtension As New List(Of Settings.VideoSourceByExtension)
+    Private GeneralVideoSourceByRegex As New List(Of Settings.VideoSourceByRegex)
     Private MovieMeta As New List(Of Settings.MetadataPerType)
     Private MovieGeneralMediaListSorting As New List(Of Settings.ListSorting)
     Private MovieSetGeneralMediaListSorting As New List(Of Settings.ListSorting)
@@ -352,6 +354,13 @@ Public Class dlgSettings
              .Type = Master.eLang.GetString(390, "Options"),
              .Panel = pnlProxy,
              .Order = 300})
+        SettingsPanels.Add(New Containers.SettingsPanel With {
+             .Name = "pnlVideoSourceMapping",
+             .Text = Master.eLang.GetString(784, "Video Source Mapping"),
+             .ImageIndex = 12,
+             .Type = Master.eLang.GetString(390, "Options"),
+             .Panel = pnlGeneralVideoSourceMapping,
+             .Order = 400})
         AddScraperPanels()
     End Sub
 
@@ -1498,6 +1507,14 @@ Public Class dlgSettings
             RefreshFileSystemValidThemeExts()
             SetApplyButton(True)
         End If
+    End Sub
+
+    Private Sub btnGeneralVideoSourceMappingByRegexDefaults_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGeneralVideoSourceMappingByRegexDefaults.Click
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.VideosourceMappingByRegex, True)
+        GeneralVideoSourceByRegex.Clear()
+        GeneralVideoSourceByRegex.AddRange(Master.eSettings.GeneralVideoSourceByRegex)
+        FillGeneralVideoSourceMappingByRegex()
+        SetApplyButton(True)
     End Sub
 
     Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingReset.Click
@@ -2773,6 +2790,46 @@ Public Class dlgSettings
         End Using
     End Sub
 
+    Private Sub FillGeneralVideoSourceMappingByExtension()
+        dgvGeneralVideoSourceMappingByExtension.Rows.Clear()
+        For Each sett In GeneralVideoSourceByExtension
+            Dim i As Integer = dgvGeneralVideoSourceMappingByExtension.Rows.Add(New Object() {sett.Extension, sett.VideoSource})
+        Next
+        dgvGeneralVideoSourceMappingByExtension.ClearSelection()
+    End Sub
+
+    Private Sub FillGeneralVideoSourceMappingByRegex()
+        dgvGeneralVideoSourceMappingByRegex.Rows.Clear()
+        For Each sett In GeneralVideoSourceByRegex
+            Dim i As Integer = dgvGeneralVideoSourceMappingByRegex.Rows.Add(New Object() {sett.Regexp, sett.Videosource})
+        Next
+        dgvGeneralVideoSourceMappingByRegex.ClearSelection()
+    End Sub
+
+    Private Sub SaveGeneralVideoSourceByExtension()
+        Master.eSettings.GeneralVideoSourceByExtension.Clear()
+        For Each r As DataGridViewRow In dgvGeneralVideoSourceMappingByExtension.Rows
+            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) Then
+                Master.eSettings.GeneralVideoSourceByExtension.Add(New Settings.VideoSourceByExtension With {
+                                                                   .Extension = r.Cells(0).Value.ToString,
+                                                                   .VideoSource = If(r.Cells(1).Value IsNot Nothing, r.Cells(1).Value.ToString, String.Empty)
+                                                                   })
+            End If
+        Next
+    End Sub
+
+    Private Sub SaveGeneralVideoSourceByRegex()
+        Master.eSettings.GeneralVideoSourceByRegex.Clear()
+        For Each r As DataGridViewRow In dgvGeneralVideoSourceMappingByRegex.Rows
+            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) Then
+                Master.eSettings.GeneralVideoSourceByRegex.Add(New Settings.VideoSourceByRegex With {
+                                                               .Regexp = r.Cells(0).Value.ToString,
+                                                               .Videosource = If(r.Cells(1).Value IsNot Nothing, r.Cells(1).Value.ToString, String.Empty)
+                                                               })
+            End If
+        Next
+    End Sub
+
     Private Sub FillList(ByVal sType As String)
         Dim pNode As New TreeNode
         Dim cNode As New TreeNode
@@ -2781,8 +2838,9 @@ Public Class dlgSettings
         RemoveCurrPanel()
 
         For Each pPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(s) s.Type = sType AndAlso String.IsNullOrEmpty(s.Parent)).OrderBy(Function(s) s.Order)
-            pNode = New TreeNode(pPanel.Text, pPanel.ImageIndex, pPanel.ImageIndex)
-            pNode.Name = pPanel.Name
+            pNode = New TreeNode(pPanel.Text, pPanel.ImageIndex, pPanel.ImageIndex) With {
+                .Name = pPanel.Name
+            }
             For Each cPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(p) p.Type = sType AndAlso p.Parent = pNode.Name).OrderBy(Function(s) s.Order)
                 cNode = New TreeNode(cPanel.Text, cPanel.ImageIndex, cPanel.ImageIndex)
                 cNode.Name = cPanel.Name
@@ -2891,6 +2949,8 @@ Public Class dlgSettings
             chkGeneralDisplayImgDims.Checked = .GeneralShowImgDims
             chkGeneralDisplayImgNames.Checked = .GeneralShowImgNames
             chkGeneralSourceFromFolder.Checked = .GeneralSourceFromFolder
+            chkGeneralVideoSourceMappingByExtensionEnabled.Checked = .GeneralVideoSourceByExtensionEnabled
+            chkGeneralVideoSourceMappingByRegexEnabled.Checked = .GeneralVideoSourceByRegexEnabled
             chkMovieActorThumbsKeepExisting.Checked = .MovieActorThumbsKeepExisting
             chkMovieSourcesBackdropsAuto.Checked = .MovieBackdropsAuto
             chkMovieBannerKeepExisting.Checked = .MovieBannerKeepExisting
@@ -3322,6 +3382,13 @@ Public Class dlgSettings
                 txtMovieLevTolerance.Enabled = True
                 txtMovieLevTolerance.Text = .MovieLevTolerance.ToString
             End If
+
+
+            GeneralVideoSourceByExtension.AddRange(Master.eSettings.GeneralVideoSourceByExtension)
+            FillGeneralVideoSourceMappingByExtension()
+
+            GeneralVideoSourceByRegex.AddRange(Master.eSettings.GeneralVideoSourceByRegex)
+            FillGeneralVideoSourceMappingByRegex()
 
             MovieMeta.AddRange(.MovieMetadataPerFileType)
             LoadMovieMetadata()
@@ -4856,6 +4923,8 @@ Public Class dlgSettings
             .GeneralShowImgNames = chkGeneralDisplayImgNames.Checked
             .GeneralSourceFromFolder = chkGeneralSourceFromFolder.Checked
             .GeneralTheme = cbGeneralTheme.Text
+            .GeneralVideoSourceByExtensionEnabled = chkGeneralVideoSourceMappingByExtensionEnabled.Checked
+            .GeneralVideoSourceByRegexEnabled = chkGeneralVideoSourceMappingByRegexEnabled.Checked
             .MovieActorThumbsKeepExisting = chkMovieActorThumbsKeepExisting.Checked
             '.MovieActorThumbsQual = Me.tbMovieActorThumbsQual.value
             .MovieBackdropsPath = txtMovieSourcesBackdropsFolderPath.Text
@@ -5347,6 +5416,8 @@ Public Class dlgSettings
             If .TVSortTokens.Count <= 0 Then .TVSortTokensIsEmpty = True
 
             SaveMovieSetScraperTitleRenamer()
+            SaveGeneralVideoSourceByExtension()
+            SaveGeneralVideoSourceByRegex()
 
             If Not String.IsNullOrEmpty(txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(txtProxyPort.Text) Then
                 .ProxyURI = txtProxyURI.Text
@@ -5921,6 +5992,7 @@ Public Class dlgSettings
 
         'Defaults
         Dim strDefaults As String = Master.eLang.GetString(713, "Defaults")
+        btnGeneralVideoSourceMappingByRegexDefaults.Text = strDefaults
         gbMovieSourcesFilenamingBoxeeDefaultsOpts.Text = strDefaults
         gbMovieSourcesFilenamingNMTDefaultsOpts.Text = strDefaults
         gbMovieSourcesFilenamingKodiDefaultsOpts.Text = strDefaults
@@ -6122,6 +6194,10 @@ Public Class dlgSettings
         lblTVSourcesFilenamingKodiDefaultsFanart.Text = strFanart
         lblTVSourcesFilenamingNMTDefaultsFanart.Text = strFanart
 
+        'File Extension
+        Dim strFileExtension As String = Master.eLang.GetString(775, "File Extension")
+        colGeneralVideoSourceMappingByExtensionFileExtension.HeaderText = strFileExtension
+
         'File Naming
         Dim strFilenaming As String = Master.eLang.GetString(471, "File Naming")
         gbMovieSourcesFilenamingOpts.Text = strFilenaming
@@ -6244,6 +6320,14 @@ Public Class dlgSettings
         gbGeneralMainWindowOpts.Text = strMainWindow
         gbMovieGeneralMainWindowOpts.Text = strMainWindow
         gbTVGeneralMainWindowOpts.Text = strMainWindow
+
+        'Mapping by File Extension
+        Dim strByFileExtension As String = Master.eLang.GetString(763, "Mapping by File Extension")
+        gbGeneralVideoSourceMappingByExtension.Text = strByFileExtension
+
+        'Mapping by Regex
+        Dim strByRegex As String = Master.eLang.GetString(764, "Mapping by Regex")
+        gbGeneralVideoSourceMappingByRegex.Text = strByRegex
 
         'Max Height
         Dim strMaxHeight As String = Master.eLang.GetString(480, "Max Height")
@@ -6454,6 +6538,10 @@ Public Class dlgSettings
         Dim strRecursive = Master.eLang.GetString(411, "Recursive")
         colMovieSourcesRecur.Text = strRecursive
 
+        'Regex
+        Dim strRegex As String = Master.eLang.GetString(699, "Regex")
+        colGeneralVideoSourceMappingByRegexRegex.HeaderText = strRegex
+
         'Release Date
         Dim strReleaseDate As String = Master.eLang.GetString(57, "Release Date")
         lblMovieScraperGlobalReleaseDate.Text = strReleaseDate
@@ -6618,6 +6706,11 @@ Public Class dlgSettings
         Dim strUseOriginalTitleAsTitle As String = Master.eLang.GetString(240, "Use Original Title as Title")
         chkMovieScraperOriginalTitleAsTitle.Text = strUseOriginalTitleAsTitle
         chkTVScraperShowOriginalTitleAsTitle.Text = strUseOriginalTitleAsTitle
+
+        'VideoSource
+        Dim strVideoSource As String = Master.eLang.GetString(824, "Video Source")
+        colGeneralVideoSourceMappingByExtensionVideoSource.HeaderText = strVideoSource
+        colGeneralVideoSourceMappingByRegexVideoSource.HeaderText = strVideoSource
 
         'Watched
         Dim strWatched As String = Master.eLang.GetString(981, "Watched")
@@ -7643,6 +7736,8 @@ Public Class dlgSettings
         chkGeneralImagesGlassOverlay.CheckedChanged,
         chkGeneralOverwriteNfo.CheckedChanged,
         chkGeneralSourceFromFolder.CheckedChanged,
+        chkGeneralVideoSourceMappingByExtensionEnabled.CheckedChanged,
+        chkGeneralVideoSourceMappingByRegexEnabled.CheckedChanged,
         chkMovieActorThumbsEden.CheckedChanged,
         chkMovieActorThumbsFrodo.CheckedChanged,
         chkMovieActorThumbsKeepExisting.CheckedChanged,
@@ -7962,6 +8057,12 @@ Public Class dlgSettings
         chkTVShowPosterPrefSizeOnly.CheckedChanged,
         chkTVShowPosterYAMJ.CheckedChanged,
         chkTVShowThemeKeepExisting.CheckedChanged,
+        dgvGeneralVideoSourceMappingByExtension.CellValueChanged,
+        dgvGeneralVideoSourceMappingByExtension.RowsAdded,
+        dgvGeneralVideoSourceMappingByExtension.RowsRemoved,
+        dgvGeneralVideoSourceMappingByRegex.CellValueChanged,
+        dgvGeneralVideoSourceMappingByRegex.RowsAdded,
+        dgvGeneralVideoSourceMappingByRegex.RowsRemoved,
         txtGeneralImageFilterFanartMatchRate.TextChanged,
         txtGeneralImageFilterPosterMatchRate.TextChanged,
         txtGeneralVirtualDriveBinPath.TextChanged,

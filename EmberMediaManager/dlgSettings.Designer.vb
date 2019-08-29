@@ -30,6 +30,8 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.gbGeneralMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblGeneralMisc = New System.Windows.Forms.TableLayoutPanel()
         Me.chkGeneralImageFilterAutoscraper = New System.Windows.Forms.CheckBox()
@@ -1336,6 +1338,21 @@ Partial Class dlgSettings
         Me.chkMovieScraperCollectionsExtendedInfo = New System.Windows.Forms.CheckBox()
         Me.tsSettingsTopMenu = New System.Windows.Forms.ToolStrip()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
+        Me.pnlGeneralVideoSourceMapping = New System.Windows.Forms.Panel()
+        Me.tblGeneralVideoSourceMapping = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbGeneralVideoSourceMappingByRegex = New System.Windows.Forms.GroupBox()
+        Me.tblGeneralVideoSourceMappingByRegex = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnGeneralVideoSourceMappingByRegexDefaults = New System.Windows.Forms.Button()
+        Me.chkGeneralVideoSourceMappingByRegexEnabled = New System.Windows.Forms.CheckBox()
+        Me.dgvGeneralVideoSourceMappingByRegex = New System.Windows.Forms.DataGridView()
+        Me.colGeneralVideoSourceMappingByRegexRegex = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colGeneralVideoSourceMappingByRegexVideoSource = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.gbGeneralVideoSourceMappingByExtension = New System.Windows.Forms.GroupBox()
+        Me.tblGeneralVideoSourceMappingByExtension = New System.Windows.Forms.TableLayoutPanel()
+        Me.dgvGeneralVideoSourceMappingByExtension = New System.Windows.Forms.DataGridView()
+        Me.colGeneralVideoSourceMappingByExtensionFileExtension = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colGeneralVideoSourceMappingByExtensionVideoSource = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.chkGeneralVideoSourceMappingByExtensionEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlMovieTrailers = New System.Windows.Forms.Panel()
         Me.tblMovieTrailers = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieTrailerOpts = New System.Windows.Forms.GroupBox()
@@ -1831,6 +1848,14 @@ Partial Class dlgSettings
         Me.tblMovieScraper.SuspendLayout
         Me.gbMovieScraperCollectionOpts.SuspendLayout
         Me.tblMovieScraperCollectionOpts.SuspendLayout
+        Me.pnlGeneralVideoSourceMapping.SuspendLayout
+        Me.tblGeneralVideoSourceMapping.SuspendLayout
+        Me.gbGeneralVideoSourceMappingByRegex.SuspendLayout
+        Me.tblGeneralVideoSourceMappingByRegex.SuspendLayout
+        CType(Me.dgvGeneralVideoSourceMappingByRegex, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.gbGeneralVideoSourceMappingByExtension.SuspendLayout
+        Me.tblGeneralVideoSourceMappingByExtension.SuspendLayout
+        CType(Me.dgvGeneralVideoSourceMappingByExtension, System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlMovieTrailers.SuspendLayout
         Me.tblMovieTrailers.SuspendLayout
         Me.gbMovieTrailerOpts.SuspendLayout
@@ -2358,7 +2383,7 @@ Partial Class dlgSettings
         Me.pnlMovieImages.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.pnlMovieImages.Location = New System.Drawing.Point(1200, 1200)
         Me.pnlMovieImages.Name = "pnlMovieImages"
-        Me.pnlMovieImages.Size = New System.Drawing.Size(734, 526)
+        Me.pnlMovieImages.Size = New System.Drawing.Size(859, 526)
         Me.pnlMovieImages.TabIndex = 12
         Me.pnlMovieImages.Visible = False
         '
@@ -2383,7 +2408,7 @@ Partial Class dlgSettings
         Me.tblMovieImages.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMovieImages.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMovieImages.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMovieImages.Size = New System.Drawing.Size(734, 526)
+        Me.tblMovieImages.Size = New System.Drawing.Size(859, 526)
         Me.tblMovieImages.TabIndex = 17
         '
         'gbMovieImagesOpts
@@ -3737,6 +3762,7 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(9, "settingscheck.png")
         Me.ilSettings.Images.SetKeyName(10, "settingsx.png")
         Me.ilSettings.Images.SetKeyName(11, "note.png")
+        Me.ilSettings.Images.SetKeyName(12, "dvd.png")
         '
         'tvSettingsList
         '
@@ -18461,6 +18487,203 @@ Partial Class dlgSettings
         Me.pnlSettingsMain.Size = New System.Drawing.Size(958, 834)
         Me.pnlSettingsMain.TabIndex = 9
         '
+        'pnlGeneralVideoSourceMapping
+        '
+        Me.pnlGeneralVideoSourceMapping.AutoSize = True
+        Me.pnlGeneralVideoSourceMapping.BackColor = System.Drawing.Color.White
+        Me.pnlGeneralVideoSourceMapping.Controls.Add(Me.pnlMovieGeneral)
+        Me.pnlGeneralVideoSourceMapping.Controls.Add(Me.tblGeneralVideoSourceMapping)
+        Me.pnlGeneralVideoSourceMapping.Location = New System.Drawing.Point(1200, 1200)
+        Me.pnlGeneralVideoSourceMapping.Name = "pnlGeneralVideoSourceMapping"
+        Me.pnlGeneralVideoSourceMapping.Size = New System.Drawing.Size(1947, 1829)
+        Me.pnlGeneralVideoSourceMapping.TabIndex = 19
+        Me.pnlGeneralVideoSourceMapping.Visible = False
+        '
+        'tblGeneralVideoSourceMapping
+        '
+        Me.tblGeneralVideoSourceMapping.AutoScroll = True
+        Me.tblGeneralVideoSourceMapping.AutoSize = True
+        Me.tblGeneralVideoSourceMapping.ColumnCount = 4
+        Me.tblGeneralVideoSourceMapping.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralVideoSourceMapping.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblGeneralVideoSourceMapping.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralVideoSourceMapping.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralVideoSourceMapping.Controls.Add(Me.gbGeneralVideoSourceMappingByRegex, 0, 0)
+        Me.tblGeneralVideoSourceMapping.Controls.Add(Me.gbGeneralVideoSourceMappingByExtension, 2, 0)
+        Me.tblGeneralVideoSourceMapping.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblGeneralVideoSourceMapping.Location = New System.Drawing.Point(0, 0)
+        Me.tblGeneralVideoSourceMapping.Name = "tblGeneralVideoSourceMapping"
+        Me.tblGeneralVideoSourceMapping.RowCount = 2
+        Me.tblGeneralVideoSourceMapping.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralVideoSourceMapping.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralVideoSourceMapping.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblGeneralVideoSourceMapping.Size = New System.Drawing.Size(1947, 1829)
+        Me.tblGeneralVideoSourceMapping.TabIndex = 1
+        '
+        'gbGeneralVideoSourceMappingByRegex
+        '
+        Me.gbGeneralVideoSourceMappingByRegex.AutoSize = True
+        Me.gbGeneralVideoSourceMappingByRegex.Controls.Add(Me.tblGeneralVideoSourceMappingByRegex)
+        Me.gbGeneralVideoSourceMappingByRegex.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGeneralVideoSourceMappingByRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbGeneralVideoSourceMappingByRegex.Location = New System.Drawing.Point(3, 3)
+        Me.gbGeneralVideoSourceMappingByRegex.Name = "gbGeneralVideoSourceMappingByRegex"
+        Me.gbGeneralVideoSourceMappingByRegex.Size = New System.Drawing.Size(512, 479)
+        Me.gbGeneralVideoSourceMappingByRegex.TabIndex = 7
+        Me.gbGeneralVideoSourceMappingByRegex.TabStop = False
+        Me.gbGeneralVideoSourceMappingByRegex.Text = "Mapping by Regex"
+        '
+        'tblGeneralVideoSourceMappingByRegex
+        '
+        Me.tblGeneralVideoSourceMappingByRegex.AutoSize = True
+        Me.tblGeneralVideoSourceMappingByRegex.ColumnCount = 1
+        Me.tblGeneralVideoSourceMappingByRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralVideoSourceMappingByRegex.Controls.Add(Me.btnGeneralVideoSourceMappingByRegexDefaults, 0, 2)
+        Me.tblGeneralVideoSourceMappingByRegex.Controls.Add(Me.chkGeneralVideoSourceMappingByRegexEnabled, 0, 0)
+        Me.tblGeneralVideoSourceMappingByRegex.Controls.Add(Me.dgvGeneralVideoSourceMappingByRegex, 0, 1)
+        Me.tblGeneralVideoSourceMappingByRegex.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblGeneralVideoSourceMappingByRegex.Location = New System.Drawing.Point(3, 18)
+        Me.tblGeneralVideoSourceMappingByRegex.Name = "tblGeneralVideoSourceMappingByRegex"
+        Me.tblGeneralVideoSourceMappingByRegex.RowCount = 3
+        Me.tblGeneralVideoSourceMappingByRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralVideoSourceMappingByRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralVideoSourceMappingByRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralVideoSourceMappingByRegex.Size = New System.Drawing.Size(506, 458)
+        Me.tblGeneralVideoSourceMappingByRegex.TabIndex = 0
+        '
+        'btnGeneralVideoSourceMappingByRegexDefaults
+        '
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.Image = CType(resources.GetObject("btnGeneralVideoSourceMappingByRegexDefaults.Image"), System.Drawing.Image)
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.Location = New System.Drawing.Point(398, 432)
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.Name = "btnGeneralVideoSourceMappingByRegexDefaults"
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.Size = New System.Drawing.Size(105, 23)
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.TabIndex = 2
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.Text = "Defaults"
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnGeneralVideoSourceMappingByRegexDefaults.UseVisualStyleBackColor = True
+        '
+        'chkGeneralVideoSourceMappingByRegexEnabled
+        '
+        Me.chkGeneralVideoSourceMappingByRegexEnabled.AutoSize = True
+        Me.chkGeneralVideoSourceMappingByRegexEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGeneralVideoSourceMappingByRegexEnabled.Location = New System.Drawing.Point(3, 3)
+        Me.chkGeneralVideoSourceMappingByRegexEnabled.Name = "chkGeneralVideoSourceMappingByRegexEnabled"
+        Me.chkGeneralVideoSourceMappingByRegexEnabled.Size = New System.Drawing.Size(68, 17)
+        Me.chkGeneralVideoSourceMappingByRegexEnabled.TabIndex = 5
+        Me.chkGeneralVideoSourceMappingByRegexEnabled.Text = "Enabled"
+        Me.chkGeneralVideoSourceMappingByRegexEnabled.UseVisualStyleBackColor = True
+        '
+        'dgvGeneralVideoSourceMappingByRegex
+        '
+        Me.dgvGeneralVideoSourceMappingByRegex.AllowUserToResizeRows = False
+        Me.dgvGeneralVideoSourceMappingByRegex.BackgroundColor = System.Drawing.Color.White
+        Me.dgvGeneralVideoSourceMappingByRegex.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvGeneralVideoSourceMappingByRegex.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvGeneralVideoSourceMappingByRegex.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colGeneralVideoSourceMappingByRegexRegex, Me.colGeneralVideoSourceMappingByRegexVideoSource})
+        Me.dgvGeneralVideoSourceMappingByRegex.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvGeneralVideoSourceMappingByRegex.Location = New System.Drawing.Point(3, 26)
+        Me.dgvGeneralVideoSourceMappingByRegex.MultiSelect = False
+        Me.dgvGeneralVideoSourceMappingByRegex.Name = "dgvGeneralVideoSourceMappingByRegex"
+        Me.dgvGeneralVideoSourceMappingByRegex.RowHeadersWidth = 25
+        Me.dgvGeneralVideoSourceMappingByRegex.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.dgvGeneralVideoSourceMappingByRegex.ShowCellErrors = False
+        Me.dgvGeneralVideoSourceMappingByRegex.ShowCellToolTips = False
+        Me.dgvGeneralVideoSourceMappingByRegex.ShowRowErrors = False
+        Me.dgvGeneralVideoSourceMappingByRegex.Size = New System.Drawing.Size(500, 400)
+        Me.dgvGeneralVideoSourceMappingByRegex.TabIndex = 1
+        '
+        'colGeneralVideoSourceMappingByRegexRegex
+        '
+        Me.colGeneralVideoSourceMappingByRegexRegex.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colGeneralVideoSourceMappingByRegexRegex.HeaderText = "Regex"
+        Me.colGeneralVideoSourceMappingByRegexRegex.Name = "colGeneralVideoSourceMappingByRegexRegex"
+        '
+        'colGeneralVideoSourceMappingByRegexVideoSource
+        '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.colGeneralVideoSourceMappingByRegexVideoSource.DefaultCellStyle = DataGridViewCellStyle1
+        Me.colGeneralVideoSourceMappingByRegexVideoSource.HeaderText = "VideoSource"
+        Me.colGeneralVideoSourceMappingByRegexVideoSource.Name = "colGeneralVideoSourceMappingByRegexVideoSource"
+        Me.colGeneralVideoSourceMappingByRegexVideoSource.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colGeneralVideoSourceMappingByRegexVideoSource.Width = 150
+        '
+        'gbGeneralVideoSourceMappingByExtension
+        '
+        Me.gbGeneralVideoSourceMappingByExtension.AutoSize = True
+        Me.gbGeneralVideoSourceMappingByExtension.Controls.Add(Me.tblGeneralVideoSourceMappingByExtension)
+        Me.gbGeneralVideoSourceMappingByExtension.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGeneralVideoSourceMappingByExtension.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbGeneralVideoSourceMappingByExtension.Location = New System.Drawing.Point(541, 3)
+        Me.gbGeneralVideoSourceMappingByExtension.Name = "gbGeneralVideoSourceMappingByExtension"
+        Me.gbGeneralVideoSourceMappingByExtension.Size = New System.Drawing.Size(312, 479)
+        Me.gbGeneralVideoSourceMappingByExtension.TabIndex = 7
+        Me.gbGeneralVideoSourceMappingByExtension.TabStop = False
+        Me.gbGeneralVideoSourceMappingByExtension.Text = "Mapping by File Extension"
+        '
+        'tblGeneralVideoSourceMappingByExtension
+        '
+        Me.tblGeneralVideoSourceMappingByExtension.AutoSize = True
+        Me.tblGeneralVideoSourceMappingByExtension.ColumnCount = 1
+        Me.tblGeneralVideoSourceMappingByExtension.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblGeneralVideoSourceMappingByExtension.Controls.Add(Me.dgvGeneralVideoSourceMappingByExtension, 0, 1)
+        Me.tblGeneralVideoSourceMappingByExtension.Controls.Add(Me.chkGeneralVideoSourceMappingByExtensionEnabled, 0, 0)
+        Me.tblGeneralVideoSourceMappingByExtension.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblGeneralVideoSourceMappingByExtension.Location = New System.Drawing.Point(3, 18)
+        Me.tblGeneralVideoSourceMappingByExtension.Name = "tblGeneralVideoSourceMappingByExtension"
+        Me.tblGeneralVideoSourceMappingByExtension.RowCount = 2
+        Me.tblGeneralVideoSourceMappingByExtension.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralVideoSourceMappingByExtension.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblGeneralVideoSourceMappingByExtension.Size = New System.Drawing.Size(306, 458)
+        Me.tblGeneralVideoSourceMappingByExtension.TabIndex = 0
+        '
+        'dgvGeneralVideoSourceMappingByExtension
+        '
+        Me.dgvGeneralVideoSourceMappingByExtension.AllowUserToResizeRows = False
+        Me.dgvGeneralVideoSourceMappingByExtension.BackgroundColor = System.Drawing.Color.White
+        Me.dgvGeneralVideoSourceMappingByExtension.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvGeneralVideoSourceMappingByExtension.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvGeneralVideoSourceMappingByExtension.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colGeneralVideoSourceMappingByExtensionFileExtension, Me.colGeneralVideoSourceMappingByExtensionVideoSource})
+        Me.dgvGeneralVideoSourceMappingByExtension.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvGeneralVideoSourceMappingByExtension.Location = New System.Drawing.Point(3, 26)
+        Me.dgvGeneralVideoSourceMappingByExtension.MultiSelect = False
+        Me.dgvGeneralVideoSourceMappingByExtension.Name = "dgvGeneralVideoSourceMappingByExtension"
+        Me.dgvGeneralVideoSourceMappingByExtension.RowHeadersWidth = 25
+        Me.dgvGeneralVideoSourceMappingByExtension.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.dgvGeneralVideoSourceMappingByExtension.ShowCellErrors = False
+        Me.dgvGeneralVideoSourceMappingByExtension.ShowCellToolTips = False
+        Me.dgvGeneralVideoSourceMappingByExtension.ShowRowErrors = False
+        Me.dgvGeneralVideoSourceMappingByExtension.Size = New System.Drawing.Size(300, 429)
+        Me.dgvGeneralVideoSourceMappingByExtension.TabIndex = 6
+        '
+        'colGeneralVideoSourceMappingByExtensionFileExtension
+        '
+        Me.colGeneralVideoSourceMappingByExtensionFileExtension.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colGeneralVideoSourceMappingByExtensionFileExtension.HeaderText = "File Extension"
+        Me.colGeneralVideoSourceMappingByExtensionFileExtension.Name = "colGeneralVideoSourceMappingByExtensionFileExtension"
+        '
+        'colGeneralVideoSourceMappingByExtensionVideoSource
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.colGeneralVideoSourceMappingByExtensionVideoSource.DefaultCellStyle = DataGridViewCellStyle2
+        Me.colGeneralVideoSourceMappingByExtensionVideoSource.HeaderText = "VideoSource"
+        Me.colGeneralVideoSourceMappingByExtensionVideoSource.Name = "colGeneralVideoSourceMappingByExtensionVideoSource"
+        Me.colGeneralVideoSourceMappingByExtensionVideoSource.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colGeneralVideoSourceMappingByExtensionVideoSource.Width = 150
+        '
+        'chkGeneralVideoSourceMappingByExtensionEnabled
+        '
+        Me.chkGeneralVideoSourceMappingByExtensionEnabled.AutoSize = True
+        Me.chkGeneralVideoSourceMappingByExtensionEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGeneralVideoSourceMappingByExtensionEnabled.Location = New System.Drawing.Point(3, 3)
+        Me.chkGeneralVideoSourceMappingByExtensionEnabled.Name = "chkGeneralVideoSourceMappingByExtensionEnabled"
+        Me.chkGeneralVideoSourceMappingByExtensionEnabled.Size = New System.Drawing.Size(68, 17)
+        Me.chkGeneralVideoSourceMappingByExtensionEnabled.TabIndex = 5
+        Me.chkGeneralVideoSourceMappingByExtensionEnabled.Text = "Enabled"
+        Me.chkGeneralVideoSourceMappingByExtensionEnabled.UseVisualStyleBackColor = True
+        '
         'pnlMovieTrailers
         '
         Me.pnlMovieTrailers.AutoSize = True
@@ -21602,23 +21825,23 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(1214, 1061)
-        Me.Controls.Add(Me.pnlTVGeneral)
+        Me.Controls.Add(Me.pnlProxy)
+        Me.Controls.Add(Me.pnlGeneralVideoSourceMapping)
+        Me.Controls.Add(Me.pnlMovieScraper)
         Me.Controls.Add(Me.pnlMovieSources)
+        Me.Controls.Add(Me.pnlMovieSetSources)
+        Me.Controls.Add(Me.pnlTVGeneral)
+        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVThemes)
-        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlMovieScraper)
-        Me.Controls.Add(Me.pnlMovieSetSources)
         Me.Controls.Add(Me.pnlMovieThemes)
         Me.Controls.Add(Me.pnlMovieTrailers)
-        Me.Controls.Add(Me.pnlProxy)
         Me.Controls.Add(Me.pnlFileSystem)
         Me.Controls.Add(Me.pnlMovieSetGeneral)
         Me.Controls.Add(Me.pnlMovieSetScraper)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlMovieSetImages)
-        Me.Controls.Add(Me.pnlMovieGeneral)
         Me.Controls.Add(Me.pnlMovieImages)
         Me.Controls.Add(Me.scSettings)
         Me.DoubleBuffered = True
@@ -22108,6 +22331,20 @@ Partial Class dlgSettings
         Me.gbMovieScraperCollectionOpts.PerformLayout
         Me.tblMovieScraperCollectionOpts.ResumeLayout(False)
         Me.tblMovieScraperCollectionOpts.PerformLayout
+        Me.pnlGeneralVideoSourceMapping.ResumeLayout(False)
+        Me.pnlGeneralVideoSourceMapping.PerformLayout
+        Me.tblGeneralVideoSourceMapping.ResumeLayout(False)
+        Me.tblGeneralVideoSourceMapping.PerformLayout
+        Me.gbGeneralVideoSourceMappingByRegex.ResumeLayout(False)
+        Me.gbGeneralVideoSourceMappingByRegex.PerformLayout
+        Me.tblGeneralVideoSourceMappingByRegex.ResumeLayout(False)
+        Me.tblGeneralVideoSourceMappingByRegex.PerformLayout
+        CType(Me.dgvGeneralVideoSourceMappingByRegex, System.ComponentModel.ISupportInitialize).EndInit
+        Me.gbGeneralVideoSourceMappingByExtension.ResumeLayout(False)
+        Me.gbGeneralVideoSourceMappingByExtension.PerformLayout
+        Me.tblGeneralVideoSourceMappingByExtension.ResumeLayout(False)
+        Me.tblGeneralVideoSourceMappingByExtension.PerformLayout
+        CType(Me.dgvGeneralVideoSourceMappingByExtension, System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlMovieTrailers.ResumeLayout(False)
         Me.pnlMovieTrailers.PerformLayout
         Me.tblMovieTrailers.ResumeLayout(False)
@@ -23801,4 +24038,19 @@ Partial Class dlgSettings
     Friend WithEvents chkMovieSetKeyArtExtended As CheckBox
     Friend WithEvents btnTVScraperSeasonTitleBlacklist As Button
     Friend WithEvents lblTVScraperGlobalHeaderSeasonsLimit As Label
+    Friend WithEvents pnlGeneralVideoSourceMapping As Panel
+    Friend WithEvents tblGeneralVideoSourceMapping As TableLayoutPanel
+    Friend WithEvents dgvGeneralVideoSourceMappingByRegex As DataGridView
+    Friend WithEvents chkGeneralVideoSourceMappingByExtensionEnabled As CheckBox
+    Friend WithEvents dgvGeneralVideoSourceMappingByExtension As DataGridView
+    Friend WithEvents btnGeneralVideoSourceMappingByRegexDefaults As Button
+    Friend WithEvents gbGeneralVideoSourceMappingByRegex As GroupBox
+    Friend WithEvents tblGeneralVideoSourceMappingByRegex As TableLayoutPanel
+    Friend WithEvents chkGeneralVideoSourceMappingByRegexEnabled As CheckBox
+    Friend WithEvents gbGeneralVideoSourceMappingByExtension As GroupBox
+    Friend WithEvents tblGeneralVideoSourceMappingByExtension As TableLayoutPanel
+    Friend WithEvents colGeneralVideoSourceMappingByRegexRegex As DataGridViewTextBoxColumn
+    Friend WithEvents colGeneralVideoSourceMappingByRegexVideoSource As DataGridViewTextBoxColumn
+    Friend WithEvents colGeneralVideoSourceMappingByExtensionFileExtension As DataGridViewTextBoxColumn
+    Friend WithEvents colGeneralVideoSourceMappingByExtensionVideoSource As DataGridViewTextBoxColumn
 End Class

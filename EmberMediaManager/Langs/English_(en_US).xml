@@ -761,9 +761,9 @@
   <string id="760">Downloading Show Zip:</string>
   <string id="761">Verifying TV Show Details:</string>
   <string id="762">Verifying TV Episode Details:</string>
-  <string id="763">Search String</string>
-  <string id="764">Source Name</string>
-  <string id="765">Map Video Source by File Extension</string>
+  <string id="763">Mapping by File Extension</string>
+  <string id="764">Mapping by Regex</string>
+  <string id="765"></string>
   <string id="766">(Re)Scrape Show</string>
   <string id="767">Change TV Show</string>
   <string id="768">Delete TV Show</string>

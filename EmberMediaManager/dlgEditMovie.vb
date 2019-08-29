@@ -446,18 +446,6 @@ Public Class dlgEditMovie
             'UserRating
             txtUserRating.Text = .UserRating.ToString
             'Videosource
-            If tmpDBElement.FileItemSpecified AndAlso Not .VideoSourceSpecified Then
-                Dim vSource As String = APIXML.GetVideoSource(tmpDBElement.FileItem, False)
-                If Not String.IsNullOrEmpty(vSource) Then
-                    tmpDBElement.VideoSource = vSource
-                    .VideoSource = tmpDBElement.VideoSource
-                ElseIf Not tmpDBElement.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                    tmpDBElement.VideoSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBElement.FileItem.FirstPathFromStack)), String.Empty, "*EmberAPP")
-                    .VideoSource = tmpDBElement.VideoSource
-                ElseIf .VideoSourceSpecified Then
-                    tmpDBElement.VideoSource = .VideoSource
-                End If
-            End If
             Videosources_Fill()
             'Watched/Lastplayed
             chkWatched.Checked = .LastPlayedSpecified

@@ -524,10 +524,6 @@
     <None Include="DB\JobsDatabaseSQL_v1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="Defaults\DefaultAdvancedSettings - VideoSourceMapping.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Defaults\DefaultRatings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

@@ -678,19 +678,13 @@ Public Class Scanner
             End If
 
             'VideoSource
-            Dim vSource As String = APIXML.GetVideoSource(dbElement.FileItem, False)
-            dbElement.VideoSource = String.Empty
-            If Not String.IsNullOrEmpty(vSource) Then
-                dbElement.VideoSource = vSource
-                dbElement.Movie.VideoSource = vSource
-            ElseIf Not dbElement.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("VideoSourceByExtension", False, "*EmberAPP") Then
-                vSource = AdvancedSettings.GetSetting(String.Concat("VideoSourceByExtension:", Path.GetExtension(dbElement.FileItem.FirstPathFromStack)), String.Empty, "*EmberAPP")
-                If Not String.IsNullOrEmpty(vSource) Then
-                    dbElement.VideoSource = vSource
-                    dbElement.Movie.VideoSource = vSource
-                End If
-            End If
-            If Not dbElement.VideoSourceSpecified AndAlso dbElement.Movie.VideoSourceSpecified Then
+            Dim strVideosource = FileUtils.Common.GetVideosource(dbElement.FileItem, False)
+            If Not String.IsNullOrEmpty(strVideosource) Then
+                'use the value that was obtained from the file
+                dbElement.VideoSource = strVideosource
+                dbElement.Movie.VideoSource = strVideosource
+            Else
+                'use the value from NFO
                 dbElement.VideoSource = dbElement.Movie.VideoSource
             End If
 
@@ -852,19 +846,13 @@ Public Class Scanner
             End If
 
             'VideoSource
-            Dim vSource As String = APIXML.GetVideoSource(cEpisode.FileItem, True)
-            cEpisode.VideoSource = String.Empty
-            If Not String.IsNullOrEmpty(vSource) Then
-                cEpisode.VideoSource = vSource
-                cEpisode.TVEpisode.VideoSource = vSource
-            ElseIf Not cEpisode.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.FileItem.FirstPathFromStack)), String.Empty, "*EmberAPP")
-                If Not String.IsNullOrEmpty(vSource) Then
-                    cEpisode.VideoSource = vSource
-                    cEpisode.TVEpisode.VideoSource = vSource
-                End If
-            End If
-            If Not cEpisode.VideoSourceSpecified AndAlso cEpisode.TVEpisode.VideoSourceSpecified Then
+            Dim strVideosource = FileUtils.Common.GetVideosource(cEpisode.FileItem, True)
+            If Not String.IsNullOrEmpty(strVideosource) Then
+                'use the value that was obtained from the file
+                cEpisode.VideoSource = strVideosource
+                cEpisode.TVEpisode.VideoSource = strVideosource
+            Else
+                'use the value from NFO
                 cEpisode.VideoSource = cEpisode.TVEpisode.VideoSource
             End If
 

@@ -102,6 +102,10 @@ Public Class Settings
     Public Property GeneralSplitterDistanceTVSeason() As Integer = 200
     Public Property GeneralSplitterDistanceTVShow() As Integer = 200
     Public Property GeneralTheme() As String = "FullHD-Default"
+    Public Property GeneralVideoSourceByExtension() As List(Of VideoSourceByExtension) = New List(Of VideoSourceByExtension)
+    Public Property GeneralVideoSourceByExtensionEnabled() As Boolean = False
+    Public Property GeneralVideoSourceByRegex As List(Of VideoSourceByRegex) = New List(Of VideoSourceByRegex)
+    Public Property GeneralVideoSourceByRegexEnabled As Boolean = True
     Public Property GeneralVirtualDriveLetter() As String = String.Empty
     Public Property GeneralVirtualDriveBinPath() As String = String.Empty
     Public Property GeneralWindowLoc() As Point = New Point(10, 10)
@@ -1433,6 +1437,31 @@ Public Class Settings
             Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist", .Order = 2, .Title = Master.eLang.GetString(653, "TV Shows")})
         End If
 
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.VideosourceMappingByRegex) AndAlso (Force OrElse Master.eSettings.GeneralVideoSourceByRegex.Count = 0) Then
+            Master.eSettings.GeneralVideoSourceByRegex.Clear()
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]3dbd[\W_]", .Videosource = "3dbd"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]azhd|amazon[\W_]", .Videosource = "amazon"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_](b[dr][-\s]?rip|blu[-\s]?ray)[\W_]", .Videosource = "bluray"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd25[\W_]", .Videosource = "bluray"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd50[\W_]", .Videosource = "bluray"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd5[\W_]", .Videosource = "dvd"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd9[\W_]", .Videosource = "dvd"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_](sd[-\s]?)?dvd([-\s]?rip)?[\W_]", .Videosource = "dvd"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?dvd[\W_]", .Videosource = "hddvd"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?tv[\W_]", .Videosource = "hdtv"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ithd|itunes[\W_]", .Videosource = "itunes"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]nfu?hd|netflix[\W_]", .Videosource = "netflix"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]pdtv[\W_]", .Videosource = "sdtv"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dsr[\W_]", .Videosource = "sdtv"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ntsc[\W_]", .Videosource = "sdtv"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]sd[-\s]?tv[\W_]", .Videosource = "sdtv"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]tvrip[\W_]", .Videosource = "sdtv"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]vhs[\W_]", .Videosource = "vhs"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hddl[\W_]", .Videosource = "webdl"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?dl[\W_]", .Videosource = "webdl"})
+            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?rip[\W_]", .Videosource = "webdl"})
+        End If
+
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
             Master.eSettings.MovieFilterCustom.Clear()
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]\(?\d{4}\)?.*")    'year in brakets
@@ -2070,6 +2099,9 @@ Public Class Settings
 #Region "Nested Types"
 
         Public Class ImageSettingSpecifications
+
+#Region "Properties"
+
             Public Property KeepExisting As Boolean = False
             Public Property Limit As Integer = 0
             Public Property MaxHeight As Integer = 0
@@ -2079,6 +2111,9 @@ Public Class Settings
             Public Property Preselect As Boolean = True
             Public Property Resize As Boolean = False
             Public Property Quality As Integer = 100
+
+#End Region 'Properties
+
         End Class
 
 #End Region 'Nested Types
@@ -2087,73 +2122,17 @@ Public Class Settings
 
     Public Class MetadataPerType
 
-#Region "Fields"
-
-        Private _filetype As String
-        Private _metadata As MediaContainers.FileInfo
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property FileType() As String
-            Get
-                Return _filetype
-            End Get
-            Set(ByVal value As String)
-                _filetype = value
-            End Set
-        End Property
+        Public Property FileType() As String = String.Empty
 
-        Public Property MetaData() As MediaContainers.FileInfo
-            Get
-                Return _metadata
-            End Get
-            Set(ByVal value As MediaContainers.FileInfo)
-                _metadata = value
-            End Set
-        End Property
+        Public Property MetaData() As MediaContainers.FileInfo = New MediaContainers.FileInfo
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _filetype = String.Empty
-            _metadata = New MediaContainers.FileInfo
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
     Public Class ListSorting
-
-#Region "Fields"
-
-        Private _column As String
-        Private _displayindex As Integer
-        Private _hide As Boolean
-        Private _labelid As Integer
-        Private _labeltext As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
 
 #Region "Properties"
         ''' <summary>
@@ -2162,79 +2141,35 @@ Public Class Settings
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property Column() As String
-            Get
-                Return _column
-            End Get
-            Set(ByVal value As String)
-                _column = value
-            End Set
-        End Property
-
-        Public Property DisplayIndex() As Integer
-            Get
-                Return _displayindex
-            End Get
-            Set(ByVal value As Integer)
-                _displayindex = value
-            End Set
-        End Property
+        Public Property Column() As String = String.Empty
         ''' <summary>
-        ''' Hide or show column in media lists
+        ''' Position of the column in the media list
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property DisplayIndex() As Integer = -1
+        ''' <summary>
+        ''' Hide or show column in the media list
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property Hide() As Boolean
-            Get
-                Return _hide
-            End Get
-            Set(ByVal value As Boolean)
-                _hide = value
-            End Set
-        End Property
+        Public Property Hide() As Boolean = False
         ''' <summary>
         ''' ID of string in Master.eLangs.GetString
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property LabelID() As Integer
-            Get
-                Return _labelid
-            End Get
-            Set(ByVal value As Integer)
-                _labelid = value
-            End Set
-        End Property
+        Public Property LabelID() As Integer = -1
         ''' <summary>
         ''' Default text for the LabelID in Master.eLangs.GetString
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property LabelText() As String
-            Get
-                Return _labeltext
-            End Get
-            Set(ByVal value As String)
-                _labeltext = value
-            End Set
-        End Property
+        Public Property LabelText() As String = String.Empty
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _column = String.Empty
-            _displayindex = -1
-            _hide = False
-            _labelid = 1
-            _labeltext = String.Empty
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
@@ -2253,75 +2188,61 @@ Public Class Settings
 
     Public Class regexp
 
-#Region "Fields"
-
-        Private _bydate As Boolean
-        Private _defaultSeason As Integer
-        Private _id As Integer
-        Private _regexp As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property byDate() As Boolean
-            Get
-                Return _bydate
-            End Get
-            Set(ByVal value As Boolean)
-                _bydate = value
-            End Set
-        End Property
+        Public Property byDate() As Boolean = False
 
-        Public Property defaultSeason() As Integer
-            Get
-                Return _defaultSeason
-            End Get
-            Set(ByVal value As Integer)
-                _defaultSeason = value
-            End Set
-        End Property
+        Public Property defaultSeason() As Integer = -2 '-1 is reserved for "* All Seasons" entry
 
-        Public Property ID() As Integer
-            Get
-                Return _id
-            End Get
-            Set(ByVal value As Integer)
-                _id = value
-            End Set
-        End Property
+        Public Property ID() As Integer = -1
 
-        Public Property Regexp() As String
-            Get
-                Return _regexp
-            End Get
-            Set(ByVal value As String)
-                _regexp = value
-            End Set
-        End Property
+        Public Property Regexp() As String = String.Empty
 
 #End Region 'Properties
 
-#Region "Methods"
+    End Class
 
-        Public Sub Clear()
-            _bydate = False
-            _defaultSeason = -2 '-1 is reserved for "* All Seasons" entry
-            _id = -1
-            _regexp = String.Empty
-        End Sub
+    Public Class VideoSourceByExtension
 
-#End Region 'Methods
+#Region "Fields"
+
+        Private _extension As String = String.Empty
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        <XmlAttribute>
+        Public Property Extension() As String
+            Get
+                Return _extension
+            End Get
+            Set(value As String)
+                _extension = StringUtils.CleanFileExtension(value)
+            End Set
+        End Property
+
+        <XmlText>
+        Public Property VideoSource() As String = String.Empty
+
+#End Region 'Properties
 
     End Class
+
+    Public Class VideoSourceByRegex
+
+#Region "Properties"
+
+        <XmlAttribute>
+        Public Property Regexp As String = String.Empty
+
+        <XmlText>
+        Public Property Videosource As String = String.Empty
+
+#End Region 'Properties
+
+    End Class
+
 
 #End Region 'Nested Types
 

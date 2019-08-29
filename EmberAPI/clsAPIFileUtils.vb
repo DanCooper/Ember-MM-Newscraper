@@ -513,6 +513,42 @@ Namespace FileUtils
             Return -1
         End Function
 
+        Public Shared Function GetVideosource(ByVal fileItem As FileItem, ByVal isEpisode As Boolean) As String
+
+            'by FileItem
+            If fileItem.bIsBDMV Then Return "bluray"
+            If fileItem.bIsVideoTS Then Return "dvd"
+            If Path.GetFileName(fileItem.FirstPathFromStack).ToLower = "video_ts.ifo" Then Return "dvd"
+
+            'by file name/path and regex mapping
+            If Master.eSettings.GeneralVideoSourceByRegexEnabled Then
+                Dim strPath As String = String.Empty
+                If isEpisode Then
+                    strPath = Path.GetFileName(fileItem.FirstPathFromStack).ToLower
+                Else
+                    strPath = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(fileItem.FirstPathFromStack).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(fileItem.FirstPathFromStack).ToLower), Path.GetFileName(fileItem.FirstPathFromStack).ToLower)
+                End If
+                Dim lstMapping As New List(Of AdvancedSettingsComplexSettingsTableItem)
+                lstMapping = AdvancedSettings.GetComplexSetting("VideoSourceMapping")
+                If Not lstMapping Is Nothing Then
+                    For Each k In lstMapping
+                        If Regex.IsMatch(strPath, k.Name) Then
+                            Return k.Value
+                        End If
+                    Next
+                End If
+            End If
+
+            'by file extension
+            If Master.eSettings.GeneralVideoSourceByExtensionEnabled Then
+                Dim strExtension = Path.GetExtension(fileItem.FirstPathFromStack)
+                Dim nVideosource = Master.eSettings.GeneralVideoSourceByExtension.FirstOrDefault(Function(f) f.Extension = strExtension)
+                If nVideosource IsNot Nothing Then Return nVideosource.VideoSource
+            End If
+
+            Return String.Empty
+        End Function
+
         Public Shared Sub InstallNewFiles(ByVal fname As String)
             Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(fname)
             For Each _cmd As Containers.CommandsNoTransactionCommand In _cmds.noTransaction

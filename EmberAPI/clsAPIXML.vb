@@ -33,7 +33,6 @@ Public Class APIXML
     Public Shared GenreXML As New XMLGenres
     Public Shared RatingXML As New XMLRatings
     Public Shared ScraperLanguagesXML As New XMLScraperLanguages
-    Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
     Public Shared alGenres As New List(Of String)
     Public Shared dLanguages As New Dictionary(Of String, String)
     Public Shared dStudios As New Dictionary(Of String, String)
@@ -397,35 +396,6 @@ Public Class APIXML
         If imgLanguage Is Nothing Then imgLanguage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
 
         Return imgLanguage
-    End Function
-
-    Public Shared Function GetVideoSource(ByVal tFileItem As FileItem, ByVal isTV As Boolean) As String
-        Dim strName As String = String.Empty
-
-        If tFileItem.bIsBDMV Then
-            Return "bluray"
-        ElseIf tFileItem.bIsVideoTS Then
-            Return "dvd"
-        ElseIf Path.GetFileName(tFileItem.FirstPathFromStack).ToLower = "video_ts.ifo" Then
-            Return "dvd"
-        Else
-            If isTV Then
-                strName = Path.GetFileName(tFileItem.FirstPathFromStack).ToLower
-            Else
-                strName = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(tFileItem.FirstPathFromStack).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(tFileItem.FirstPathFromStack).ToLower), Path.GetFileName(tFileItem.FirstPathFromStack).ToLower)
-            End If
-            Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            mySources = AdvancedSettings.GetComplexSetting("MovieSources")
-            If Not mySources Is Nothing Then
-                For Each k In mySources
-                    If Regex.IsMatch(strName, k.Name) Then
-                        Return k.Value
-                    End If
-                Next
-            End If
-        End If
-
-        Return String.Empty
     End Function
 
     Public Shared Function GetGenreImage(ByVal strGenre As String) As Image

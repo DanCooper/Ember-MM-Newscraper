@@ -149,6 +149,14 @@ Public Class StringUtils
         Return Not bNoChanges
     End Function
     ''' <summary>
+    ''' If necessary add a leading point to a file extension
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Function CleanFileExtension(ByVal extension As String) As String
+        If Not String.IsNullOrEmpty(extension.Trim) AndAlso Not extension.Trim.StartsWith(".") Then Return String.Concat(".", extension.Trim)
+        Return extension.Trim
+    End Function
+    ''' <summary>
     ''' Removes invalid token from the given filename string
     ''' </summary>
     ''' <param name="fName"><c>String</c> filename to clean</param>
