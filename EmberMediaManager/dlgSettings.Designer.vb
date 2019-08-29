@@ -30,8 +30,8 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.gbGeneralMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblGeneralMisc = New System.Windows.Forms.TableLayoutPanel()
         Me.chkGeneralImageFilterAutoscraper = New System.Windows.Forms.CheckBox()
@@ -283,13 +283,13 @@ Partial Class dlgSettings
         Me.lstFileSystemNoStackExts = New System.Windows.Forms.ListBox()
         Me.btnFileSystemNoStackExtsAdd = New System.Windows.Forms.Button()
         Me.txtFileSystemNoStackExts = New System.Windows.Forms.TextBox()
-        Me.gbFileSystemExcludedDirs = New System.Windows.Forms.GroupBox()
-        Me.tblFileSystemExcludedDirs = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnFileSystemExcludedDirsRemove = New System.Windows.Forms.Button()
-        Me.lstFileSystemExcludedDirs = New System.Windows.Forms.ListBox()
-        Me.txtFileSystemExcludedDirs = New System.Windows.Forms.TextBox()
-        Me.btnFileSystemExcludedDirsAdd = New System.Windows.Forms.Button()
-        Me.btnFileSystemExcludedDirsBrowse = New System.Windows.Forms.Button()
+        Me.gbFileSystemExcludedPaths = New System.Windows.Forms.GroupBox()
+        Me.tblFileSystemExcludedPaths = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnFileSystemExcludedPathsRemove = New System.Windows.Forms.Button()
+        Me.lstFileSystemExcludedPaths = New System.Windows.Forms.ListBox()
+        Me.txtFileSystemExcludedPaths = New System.Windows.Forms.TextBox()
+        Me.btnFileSystemExcludedPathsAdd = New System.Windows.Forms.Button()
+        Me.btnFileSystemExcludedPathsBrowse = New System.Windows.Forms.Button()
         Me.gbFileSystemValidSubtitlesExts = New System.Windows.Forms.GroupBox()
         Me.tblFileSystemValidSubtitlesExts = New System.Windows.Forms.TableLayoutPanel()
         Me.btnFileSystemValidSubtitlesExtsRemove = New System.Windows.Forms.Button()
@@ -1644,8 +1644,8 @@ Partial Class dlgSettings
         Me.tblFileSystemValidVideoExts.SuspendLayout
         Me.gbFileSystemNoStackExts.SuspendLayout
         Me.tblFileSystemNoStackExts.SuspendLayout
-        Me.gbFileSystemExcludedDirs.SuspendLayout
-        Me.tblFileSystemExcludedDirs.SuspendLayout
+        Me.gbFileSystemExcludedPaths.SuspendLayout
+        Me.tblFileSystemExcludedPaths.SuspendLayout
         Me.gbFileSystemValidSubtitlesExts.SuspendLayout
         Me.tblFileSystemValidSubtitlesExts.SuspendLayout
         Me.gbFileSystemValidThemeExts.SuspendLayout
@@ -4983,7 +4983,7 @@ Partial Class dlgSettings
         Me.tblFileSystem.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFileSystem.Controls.Add(Me.gbFileSystemValidVideoExts, 0, 0)
         Me.tblFileSystem.Controls.Add(Me.gbFileSystemNoStackExts, 2, 0)
-        Me.tblFileSystem.Controls.Add(Me.gbFileSystemExcludedDirs, 0, 2)
+        Me.tblFileSystem.Controls.Add(Me.gbFileSystemExcludedPaths, 0, 2)
         Me.tblFileSystem.Controls.Add(Me.gbFileSystemValidSubtitlesExts, 1, 0)
         Me.tblFileSystem.Controls.Add(Me.gbFileSystemValidThemeExts, 1, 1)
         Me.tblFileSystem.Dock = System.Windows.Forms.DockStyle.Fill
@@ -5164,95 +5164,95 @@ Partial Class dlgSettings
         Me.txtFileSystemNoStackExts.Size = New System.Drawing.Size(50, 22)
         Me.txtFileSystemNoStackExts.TabIndex = 1
         '
-        'gbFileSystemExcludedDirs
+        'gbFileSystemExcludedPaths
         '
-        Me.gbFileSystemExcludedDirs.AutoSize = True
-        Me.tblFileSystem.SetColumnSpan(Me.gbFileSystemExcludedDirs, 3)
-        Me.gbFileSystemExcludedDirs.Controls.Add(Me.tblFileSystemExcludedDirs)
-        Me.gbFileSystemExcludedDirs.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.gbFileSystemExcludedDirs.Location = New System.Drawing.Point(3, 355)
-        Me.gbFileSystemExcludedDirs.Name = "gbFileSystemExcludedDirs"
-        Me.gbFileSystemExcludedDirs.Size = New System.Drawing.Size(528, 138)
-        Me.gbFileSystemExcludedDirs.TabIndex = 4
-        Me.gbFileSystemExcludedDirs.TabStop = False
-        Me.gbFileSystemExcludedDirs.Text = "Excluded Directories"
+        Me.gbFileSystemExcludedPaths.AutoSize = True
+        Me.tblFileSystem.SetColumnSpan(Me.gbFileSystemExcludedPaths, 3)
+        Me.gbFileSystemExcludedPaths.Controls.Add(Me.tblFileSystemExcludedPaths)
+        Me.gbFileSystemExcludedPaths.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbFileSystemExcludedPaths.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbFileSystemExcludedPaths.Location = New System.Drawing.Point(3, 355)
+        Me.gbFileSystemExcludedPaths.Name = "gbFileSystemExcludedPaths"
+        Me.gbFileSystemExcludedPaths.Size = New System.Drawing.Size(528, 138)
+        Me.gbFileSystemExcludedPaths.TabIndex = 4
+        Me.gbFileSystemExcludedPaths.TabStop = False
+        Me.gbFileSystemExcludedPaths.Text = "Excluded Paths"
         '
-        'tblFileSystemExcludedDirs
+        'tblFileSystemExcludedPaths
         '
-        Me.tblFileSystemExcludedDirs.AutoSize = True
-        Me.tblFileSystemExcludedDirs.ColumnCount = 5
-        Me.tblFileSystemExcludedDirs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFileSystemExcludedDirs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFileSystemExcludedDirs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFileSystemExcludedDirs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFileSystemExcludedDirs.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFileSystemExcludedDirs.Controls.Add(Me.btnFileSystemExcludedDirsRemove, 3, 1)
-        Me.tblFileSystemExcludedDirs.Controls.Add(Me.lstFileSystemExcludedDirs, 0, 0)
-        Me.tblFileSystemExcludedDirs.Controls.Add(Me.txtFileSystemExcludedDirs, 0, 1)
-        Me.tblFileSystemExcludedDirs.Controls.Add(Me.btnFileSystemExcludedDirsAdd, 2, 1)
-        Me.tblFileSystemExcludedDirs.Controls.Add(Me.btnFileSystemExcludedDirsBrowse, 1, 1)
-        Me.tblFileSystemExcludedDirs.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblFileSystemExcludedDirs.Location = New System.Drawing.Point(3, 18)
-        Me.tblFileSystemExcludedDirs.Name = "tblFileSystemExcludedDirs"
-        Me.tblFileSystemExcludedDirs.RowCount = 3
-        Me.tblFileSystemExcludedDirs.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFileSystemExcludedDirs.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFileSystemExcludedDirs.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFileSystemExcludedDirs.Size = New System.Drawing.Size(522, 117)
-        Me.tblFileSystemExcludedDirs.TabIndex = 7
+        Me.tblFileSystemExcludedPaths.AutoSize = True
+        Me.tblFileSystemExcludedPaths.ColumnCount = 5
+        Me.tblFileSystemExcludedPaths.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFileSystemExcludedPaths.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFileSystemExcludedPaths.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFileSystemExcludedPaths.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFileSystemExcludedPaths.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFileSystemExcludedPaths.Controls.Add(Me.btnFileSystemExcludedPathsRemove, 3, 1)
+        Me.tblFileSystemExcludedPaths.Controls.Add(Me.lstFileSystemExcludedPaths, 0, 0)
+        Me.tblFileSystemExcludedPaths.Controls.Add(Me.txtFileSystemExcludedPaths, 0, 1)
+        Me.tblFileSystemExcludedPaths.Controls.Add(Me.btnFileSystemExcludedPathsAdd, 2, 1)
+        Me.tblFileSystemExcludedPaths.Controls.Add(Me.btnFileSystemExcludedPathsBrowse, 1, 1)
+        Me.tblFileSystemExcludedPaths.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFileSystemExcludedPaths.Location = New System.Drawing.Point(3, 18)
+        Me.tblFileSystemExcludedPaths.Name = "tblFileSystemExcludedPaths"
+        Me.tblFileSystemExcludedPaths.RowCount = 3
+        Me.tblFileSystemExcludedPaths.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFileSystemExcludedPaths.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFileSystemExcludedPaths.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFileSystemExcludedPaths.Size = New System.Drawing.Size(522, 117)
+        Me.tblFileSystemExcludedPaths.TabIndex = 7
         '
-        'btnFileSystemExcludedDirsRemove
+        'btnFileSystemExcludedPathsRemove
         '
-        Me.btnFileSystemExcludedDirsRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnFileSystemExcludedDirsRemove.Image = CType(resources.GetObject("btnFileSystemExcludedDirsRemove.Image"), System.Drawing.Image)
-        Me.btnFileSystemExcludedDirsRemove.Location = New System.Drawing.Point(490, 91)
-        Me.btnFileSystemExcludedDirsRemove.Name = "btnFileSystemExcludedDirsRemove"
-        Me.btnFileSystemExcludedDirsRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnFileSystemExcludedDirsRemove.TabIndex = 6
-        Me.btnFileSystemExcludedDirsRemove.UseVisualStyleBackColor = True
+        Me.btnFileSystemExcludedPathsRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnFileSystemExcludedPathsRemove.Image = CType(resources.GetObject("btnFileSystemExcludedPathsRemove.Image"), System.Drawing.Image)
+        Me.btnFileSystemExcludedPathsRemove.Location = New System.Drawing.Point(490, 91)
+        Me.btnFileSystemExcludedPathsRemove.Name = "btnFileSystemExcludedPathsRemove"
+        Me.btnFileSystemExcludedPathsRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnFileSystemExcludedPathsRemove.TabIndex = 6
+        Me.btnFileSystemExcludedPathsRemove.UseVisualStyleBackColor = True
         '
-        'lstFileSystemExcludedDirs
+        'lstFileSystemExcludedPaths
         '
-        Me.tblFileSystemExcludedDirs.SetColumnSpan(Me.lstFileSystemExcludedDirs, 4)
-        Me.lstFileSystemExcludedDirs.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lstFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lstFileSystemExcludedDirs.FormattingEnabled = True
-        Me.lstFileSystemExcludedDirs.Location = New System.Drawing.Point(3, 3)
-        Me.lstFileSystemExcludedDirs.Name = "lstFileSystemExcludedDirs"
-        Me.lstFileSystemExcludedDirs.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstFileSystemExcludedDirs.Size = New System.Drawing.Size(510, 82)
-        Me.lstFileSystemExcludedDirs.Sorted = True
-        Me.lstFileSystemExcludedDirs.TabIndex = 1
+        Me.tblFileSystemExcludedPaths.SetColumnSpan(Me.lstFileSystemExcludedPaths, 4)
+        Me.lstFileSystemExcludedPaths.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lstFileSystemExcludedPaths.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstFileSystemExcludedPaths.FormattingEnabled = True
+        Me.lstFileSystemExcludedPaths.Location = New System.Drawing.Point(3, 3)
+        Me.lstFileSystemExcludedPaths.Name = "lstFileSystemExcludedPaths"
+        Me.lstFileSystemExcludedPaths.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstFileSystemExcludedPaths.Size = New System.Drawing.Size(510, 82)
+        Me.lstFileSystemExcludedPaths.Sorted = True
+        Me.lstFileSystemExcludedPaths.TabIndex = 1
         '
-        'txtFileSystemExcludedDirs
+        'txtFileSystemExcludedPaths
         '
-        Me.txtFileSystemExcludedDirs.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFileSystemExcludedDirs.Location = New System.Drawing.Point(3, 91)
-        Me.txtFileSystemExcludedDirs.Name = "txtFileSystemExcludedDirs"
-        Me.txtFileSystemExcludedDirs.Size = New System.Drawing.Size(410, 22)
-        Me.txtFileSystemExcludedDirs.TabIndex = 4
+        Me.txtFileSystemExcludedPaths.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtFileSystemExcludedPaths.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFileSystemExcludedPaths.Location = New System.Drawing.Point(3, 91)
+        Me.txtFileSystemExcludedPaths.Name = "txtFileSystemExcludedPaths"
+        Me.txtFileSystemExcludedPaths.Size = New System.Drawing.Size(410, 22)
+        Me.txtFileSystemExcludedPaths.TabIndex = 4
         '
-        'btnFileSystemExcludedDirsAdd
+        'btnFileSystemExcludedPathsAdd
         '
-        Me.btnFileSystemExcludedDirsAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnFileSystemExcludedDirsAdd.Image = CType(resources.GetObject("btnFileSystemExcludedDirsAdd.Image"), System.Drawing.Image)
-        Me.btnFileSystemExcludedDirsAdd.Location = New System.Drawing.Point(450, 91)
-        Me.btnFileSystemExcludedDirsAdd.Name = "btnFileSystemExcludedDirsAdd"
-        Me.btnFileSystemExcludedDirsAdd.Size = New System.Drawing.Size(23, 23)
-        Me.btnFileSystemExcludedDirsAdd.TabIndex = 5
-        Me.btnFileSystemExcludedDirsAdd.UseVisualStyleBackColor = True
+        Me.btnFileSystemExcludedPathsAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFileSystemExcludedPathsAdd.Image = CType(resources.GetObject("btnFileSystemExcludedPathsAdd.Image"), System.Drawing.Image)
+        Me.btnFileSystemExcludedPathsAdd.Location = New System.Drawing.Point(450, 91)
+        Me.btnFileSystemExcludedPathsAdd.Name = "btnFileSystemExcludedPathsAdd"
+        Me.btnFileSystemExcludedPathsAdd.Size = New System.Drawing.Size(23, 23)
+        Me.btnFileSystemExcludedPathsAdd.TabIndex = 5
+        Me.btnFileSystemExcludedPathsAdd.UseVisualStyleBackColor = True
         '
-        'btnFileSystemExcludedDirsBrowse
+        'btnFileSystemExcludedPathsBrowse
         '
-        Me.btnFileSystemExcludedDirsBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnFileSystemExcludedDirsBrowse.Location = New System.Drawing.Point(419, 91)
-        Me.btnFileSystemExcludedDirsBrowse.Name = "btnFileSystemExcludedDirsBrowse"
-        Me.btnFileSystemExcludedDirsBrowse.Size = New System.Drawing.Size(25, 23)
-        Me.btnFileSystemExcludedDirsBrowse.TabIndex = 7
-        Me.btnFileSystemExcludedDirsBrowse.Text = "..."
-        Me.btnFileSystemExcludedDirsBrowse.UseVisualStyleBackColor = True
+        Me.btnFileSystemExcludedPathsBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFileSystemExcludedPathsBrowse.Location = New System.Drawing.Point(419, 91)
+        Me.btnFileSystemExcludedPathsBrowse.Name = "btnFileSystemExcludedPathsBrowse"
+        Me.btnFileSystemExcludedPathsBrowse.Size = New System.Drawing.Size(25, 23)
+        Me.btnFileSystemExcludedPathsBrowse.TabIndex = 7
+        Me.btnFileSystemExcludedPathsBrowse.Text = "..."
+        Me.btnFileSystemExcludedPathsBrowse.UseVisualStyleBackColor = True
         '
         'gbFileSystemValidSubtitlesExts
         '
@@ -18603,8 +18603,8 @@ Partial Class dlgSettings
         '
         'colGeneralVideoSourceMappingByRegexVideoSource
         '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.colGeneralVideoSourceMappingByRegexVideoSource.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.colGeneralVideoSourceMappingByRegexVideoSource.DefaultCellStyle = DataGridViewCellStyle3
         Me.colGeneralVideoSourceMappingByRegexVideoSource.HeaderText = "VideoSource"
         Me.colGeneralVideoSourceMappingByRegexVideoSource.Name = "colGeneralVideoSourceMappingByRegexVideoSource"
         Me.colGeneralVideoSourceMappingByRegexVideoSource.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
@@ -18666,8 +18666,8 @@ Partial Class dlgSettings
         '
         'colGeneralVideoSourceMappingByExtensionVideoSource
         '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.colGeneralVideoSourceMappingByExtensionVideoSource.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.colGeneralVideoSourceMappingByExtensionVideoSource.DefaultCellStyle = DataGridViewCellStyle4
         Me.colGeneralVideoSourceMappingByExtensionVideoSource.HeaderText = "VideoSource"
         Me.colGeneralVideoSourceMappingByExtensionVideoSource.Name = "colGeneralVideoSourceMappingByExtensionVideoSource"
         Me.colGeneralVideoSourceMappingByExtensionVideoSource.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
@@ -21940,10 +21940,10 @@ Partial Class dlgSettings
         Me.gbFileSystemNoStackExts.PerformLayout
         Me.tblFileSystemNoStackExts.ResumeLayout(False)
         Me.tblFileSystemNoStackExts.PerformLayout
-        Me.gbFileSystemExcludedDirs.ResumeLayout(False)
-        Me.gbFileSystemExcludedDirs.PerformLayout
-        Me.tblFileSystemExcludedDirs.ResumeLayout(False)
-        Me.tblFileSystemExcludedDirs.PerformLayout
+        Me.gbFileSystemExcludedPaths.ResumeLayout(False)
+        Me.gbFileSystemExcludedPaths.PerformLayout
+        Me.tblFileSystemExcludedPaths.ResumeLayout(False)
+        Me.tblFileSystemExcludedPaths.PerformLayout
         Me.gbFileSystemValidSubtitlesExts.ResumeLayout(False)
         Me.gbFileSystemValidSubtitlesExts.PerformLayout
         Me.tblFileSystemValidSubtitlesExts.ResumeLayout(False)
@@ -23153,11 +23153,11 @@ Partial Class dlgSettings
     Friend WithEvents gbTVScraperMiscOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkTVScraperUseSRuntimeForEp As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperCollectionsAuto As System.Windows.Forms.CheckBox
-    Friend WithEvents gbFileSystemExcludedDirs As System.Windows.Forms.GroupBox
-    Friend WithEvents btnFileSystemExcludedDirsRemove As System.Windows.Forms.Button
-    Friend WithEvents btnFileSystemExcludedDirsAdd As System.Windows.Forms.Button
-    Friend WithEvents txtFileSystemExcludedDirs As System.Windows.Forms.TextBox
-    Friend WithEvents lstFileSystemExcludedDirs As System.Windows.Forms.ListBox
+    Friend WithEvents gbFileSystemExcludedPaths As System.Windows.Forms.GroupBox
+    Friend WithEvents btnFileSystemExcludedPathsRemove As System.Windows.Forms.Button
+    Friend WithEvents btnFileSystemExcludedPathsAdd As System.Windows.Forms.Button
+    Friend WithEvents txtFileSystemExcludedPaths As System.Windows.Forms.TextBox
+    Friend WithEvents lstFileSystemExcludedPaths As System.Windows.Forms.ListBox
     Friend WithEvents gbMovieSetSourcesMiscOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieSetCleanFiles As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetCleanDB As System.Windows.Forms.CheckBox
@@ -23336,7 +23336,7 @@ Partial Class dlgSettings
     Friend WithEvents tblFileSystemValidThemeExts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblFileSystemNoStackExts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblFileSystemValidSubtitlesExts As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents tblFileSystemExcludedDirs As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblFileSystemExcludedPaths As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblProxy As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblProxyOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblProxyCredsOpts As System.Windows.Forms.TableLayoutPanel
@@ -23901,7 +23901,7 @@ Partial Class dlgSettings
     Friend WithEvents colMovieGeneralMediaListSortingLabel As ColumnHeader
     Friend WithEvents colMovieGeneralMediaListSortingHide As ColumnHeader
     Friend WithEvents btnMovieGeneralMediaListSortingReset As Button
-    Friend WithEvents btnFileSystemExcludedDirsBrowse As Button
+    Friend WithEvents btnFileSystemExcludedPathsBrowse As Button
     Friend WithEvents lblMovieSourcesFilenamingKodiExtendedKeyArt As Label
     Friend WithEvents chkMovieKeyArtExtended As CheckBox
     Friend WithEvents lblTVSourcesFilenamingKodiExtendedKeyArt As Label

@@ -553,60 +553,60 @@ Public Class dlgSettings
         txtMovieFilter.Focus()
     End Sub
 
-    Private Sub btnFileSystemExcludedDirsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemExcludedDirsAdd.Click
-        If Not String.IsNullOrEmpty(txtFileSystemExcludedDirs.Text) Then
-            If Not lstFileSystemExcludedDirs.Items.Contains(txtFileSystemExcludedDirs.Text.ToLower) Then
-                AddExcludedDir(txtFileSystemExcludedDirs.Text)
-                RefreshFileSystemExcludeDirs()
-                txtFileSystemExcludedDirs.Text = String.Empty
-                txtFileSystemExcludedDirs.Focus()
+    Private Sub btnFileSystemExcludedPathsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemExcludedPathsAdd.Click
+        If Not String.IsNullOrEmpty(txtFileSystemExcludedPaths.Text) Then
+            If Not lstFileSystemExcludedPaths.Items.Contains(txtFileSystemExcludedPaths.Text.ToLower) Then
+                AddExcludedPath(txtFileSystemExcludedPaths.Text)
+                RefreshFileSystemExcludedPaths()
+                txtFileSystemExcludedPaths.Text = String.Empty
+                txtFileSystemExcludedPaths.Focus()
             End If
         End If
     End Sub
 
-    Private Sub btnFileSystemExcludedDirsBrowse_Click(sender As Object, e As EventArgs) Handles btnFileSystemExcludedDirsBrowse.Click
+    Private Sub btnFileSystemExcludedPathsBrowse_Click(sender As Object, e As EventArgs) Handles btnFileSystemExcludedPathsBrowse.Click
         With fbdBrowse
             If .ShowDialog = DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                    txtFileSystemExcludedDirs.Text = .SelectedPath.ToString
+                    txtFileSystemExcludedPaths.Text = .SelectedPath.ToString
                 End If
             End If
         End With
     End Sub
 
-    Private Sub btnFileSystemExcludedDirsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemExcludedDirsRemove.Click
-        RemoveExcludeDir()
-        RefreshFileSystemExcludeDirs()
+    Private Sub btnFileSystemExcludedPathsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemExcludedPathsRemove.Click
+        RemoveExcludedPath()
+        RefreshFileSystemExcludedPaths()
     End Sub
 
-    Private Sub lstFileSystemExcludedDirs_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemExcludedDirs.KeyDown
+    Private Sub lstFileSystemExcludedPaths_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemExcludedPaths.KeyDown
         If e.KeyCode = Keys.Delete Then
-            RemoveExcludeDir()
-            RefreshFileSystemExcludeDirs()
+            RemoveExcludedPath()
+            RefreshFileSystemExcludedPaths()
         End If
     End Sub
 
-    Private Sub AddExcludedDir(ByVal path As String)
+    Private Sub AddExcludedPath(ByVal path As String)
         Master.DB.AddExcludedPath(path)
         SetApplyButton(True)
         sResult.NeedsDBClean_Movie = True
         sResult.NeedsDBClean_TV = True
     End Sub
 
-    Private Sub RemoveExcludeDir()
-        If lstFileSystemExcludedDirs.SelectedItems.Count > 0 Then
-            lstFileSystemExcludedDirs.BeginUpdate()
+    Private Sub RemoveExcludedPath()
+        If lstFileSystemExcludedPaths.SelectedItems.Count > 0 Then
+            lstFileSystemExcludedPaths.BeginUpdate()
 
             Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                While lstFileSystemExcludedDirs.SelectedItems.Count > 0
-                    Master.DB.RemoveExcludedPath(lstFileSystemExcludedDirs.SelectedItems(0).ToString, True)
-                    lstFileSystemExcludedDirs.Items.Remove(lstFileSystemExcludedDirs.SelectedItems(0))
+                While lstFileSystemExcludedPaths.SelectedItems.Count > 0
+                    Master.DB.RemoveExcludedPath(lstFileSystemExcludedPaths.SelectedItems(0).ToString, True)
+                    lstFileSystemExcludedPaths.Items.Remove(lstFileSystemExcludedPaths.SelectedItems(0))
                 End While
                 SQLTransaction.Commit()
             End Using
 
-            lstFileSystemExcludedDirs.EndUpdate()
-            lstFileSystemExcludedDirs.Refresh()
+            lstFileSystemExcludedPaths.EndUpdate()
+            lstFileSystemExcludedPaths.Refresh()
 
             SetApplyButton(True)
             sResult.NeedsDBUpdate_Movie = True
@@ -3605,7 +3605,7 @@ Public Class dlgSettings
             RefreshTVShowFilters()
             RefreshTVEpisodeFilters()
             RefreshMovieFilters()
-            RefreshFileSystemExcludeDirs()
+            RefreshFileSystemExcludedPaths()
             RefreshFileSystemValidExts()
             RefreshFileSystemValidSubtitlesExts()
             RefreshFileSystemValidThemeExts()
@@ -4616,9 +4616,9 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub RefreshFileSystemExcludeDirs()
-        lstFileSystemExcludedDirs.Items.Clear()
-        lstFileSystemExcludedDirs.Items.AddRange(Master.DB.GetExcludedPaths.ToArray)
+    Private Sub RefreshFileSystemExcludedPaths()
+        lstFileSystemExcludedPaths.Items.Clear()
+        lstFileSystemExcludedPaths.Items.AddRange(Master.DB.GetExcludedPaths.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemValidExts()
@@ -6813,7 +6813,7 @@ Public Class dlgSettings
         chkTVScraperUseSRuntimeForEp.Text = Master.eLang.GetString(1262, "Use Show Runtime for Episodes if no Episode Runtime can be found")
         dgvMovieSetScraperTitleRenamer.Columns(0).HeaderText = Master.eLang.GetString(1277, "From")
         dgvMovieSetScraperTitleRenamer.Columns(1).HeaderText = Master.eLang.GetString(1278, "To")
-        gbFileSystemExcludedDirs.Text = Master.eLang.GetString(1273, "Excluded Directories")
+        gbFileSystemExcludedPaths.Text = Master.eLang.GetString(1273, "Excluded Paths")
         gbFileSystemNoStackExts.Text = Master.eLang.GetString(530, "No Stack Extensions")
         gbFileSystemValidVideoExts.Text = Master.eLang.GetString(534, "Valid Video Extensions")
         gbFileSystemValidSubtitlesExts.Text = Master.eLang.GetString(1284, "Valid Subtitles Extensions")
