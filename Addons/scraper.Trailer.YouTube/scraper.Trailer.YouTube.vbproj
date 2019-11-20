@@ -155,8 +155,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Scraper\clsScrapeYouTube.vb" />
-    <Compile Include="YouTube_Trailer.vb" />
+    <Compile Include="clsAddon.vb" />
+    <Compile Include="addon.youtube.com.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmSettingsHolder.resx">

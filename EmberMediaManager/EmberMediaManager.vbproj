@@ -395,6 +395,24 @@
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Data.Designer.vb">
+      <DependentUpon>frmMovie_Data.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Data.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_FileNaming.Designer.vb">
+      <DependentUpon>frmMovie_FileNaming.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_FileNaming.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Image.Designer.vb">
+      <DependentUpon>frmMovie_Image.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Image.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -522,6 +540,15 @@
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Data.resx">
+      <DependentUpon>frmMovie_Data.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_FileNaming.resx">
+      <DependentUpon>frmMovie_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Image.resx">
+      <DependentUpon>frmMovie_Image.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

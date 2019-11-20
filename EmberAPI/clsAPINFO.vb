@@ -1676,6 +1676,7 @@ Public Class Info
                 '
                 Dim aVres() = New Dictionary(Of Integer, String) From
                         {
+                        {0, "unknown"},
                         {426, "240"},
                         {480, "360"},
                         {640, "480"},

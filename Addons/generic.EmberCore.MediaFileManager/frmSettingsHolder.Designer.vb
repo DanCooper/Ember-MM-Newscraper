@@ -26,6 +26,7 @@ Partial Class frmSettingsHolder
         Me.lvPaths = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.lblName = New System.Windows.Forms.Label()
         Me.lblPath = New System.Windows.Forms.Label()
         Me.txtName = New System.Windows.Forms.TextBox()
@@ -47,10 +48,9 @@ Partial Class frmSettingsHolder
         Me.txtTeraCopyPath = New System.Windows.Forms.TextBox()
         Me.btnTeraCopyPathBrowse = New System.Windows.Forms.Button()
         Me.lblTeraCopyLink = New System.Windows.Forms.LinkLabel()
-        Me.ofdBrowse = New System.Windows.Forms.OpenFileDialog()
         Me.lblType = New System.Windows.Forms.Label()
         Me.cbType = New System.Windows.Forms.ComboBox()
-        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ofdBrowse = New System.Windows.Forms.OpenFileDialog()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
@@ -66,6 +66,7 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.SetColumnSpan(Me.lvPaths, 4)
         Me.lvPaths.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvPaths.FullRowSelect = True
+        Me.lvPaths.HideSelection = False
         Me.lvPaths.Location = New System.Drawing.Point(3, 3)
         Me.lvPaths.Name = "lvPaths"
         Me.lvPaths.Size = New System.Drawing.Size(499, 216)
@@ -82,6 +83,10 @@ Partial Class frmSettingsHolder
         '
         Me.ColumnHeader2.Text = "Path"
         Me.ColumnHeader2.Width = 270
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Type"
         '
         'lblName
         '
@@ -311,7 +316,7 @@ Partial Class frmSettingsHolder
         Me.TableLayoutPanel1.SetColumnSpan(Me.chkTeraCopyEnable, 3)
         Me.chkTeraCopyEnable.Location = New System.Drawing.Point(3, 3)
         Me.chkTeraCopyEnable.Name = "chkTeraCopyEnable"
-        Me.chkTeraCopyEnable.Size = New System.Drawing.Size(191, 17)
+        Me.chkTeraCopyEnable.Size = New System.Drawing.Size(190, 17)
         Me.chkTeraCopyEnable.TabIndex = 0
         Me.chkTeraCopyEnable.Text = "Use TeraCopy to copy/move files"
         Me.chkTeraCopyEnable.UseVisualStyleBackColor = True
@@ -323,7 +328,7 @@ Partial Class frmSettingsHolder
         Me.lblTeraCopyPath.Location = New System.Drawing.Point(3, 30)
         Me.lblTeraCopyPath.Name = "lblTeraCopyPath"
         Me.lblTeraCopyPath.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.lblTeraCopyPath.Size = New System.Drawing.Size(117, 13)
+        Me.lblTeraCopyPath.Size = New System.Drawing.Size(116, 13)
         Me.lblTeraCopyPath.TabIndex = 1
         Me.lblTeraCopyPath.Text = "Path to TeraCopy:"
         '
@@ -331,7 +336,7 @@ Partial Class frmSettingsHolder
         '
         Me.txtTeraCopyPath.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTeraCopyPath.Enabled = False
-        Me.txtTeraCopyPath.Location = New System.Drawing.Point(126, 26)
+        Me.txtTeraCopyPath.Location = New System.Drawing.Point(125, 26)
         Me.txtTeraCopyPath.Name = "txtTeraCopyPath"
         Me.txtTeraCopyPath.ReadOnly = True
         Me.txtTeraCopyPath.Size = New System.Drawing.Size(320, 22)
@@ -341,7 +346,7 @@ Partial Class frmSettingsHolder
         '
         Me.btnTeraCopyPathBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.btnTeraCopyPathBrowse.Enabled = False
-        Me.btnTeraCopyPathBrowse.Location = New System.Drawing.Point(449, 27)
+        Me.btnTeraCopyPathBrowse.Location = New System.Drawing.Point(448, 27)
         Me.btnTeraCopyPathBrowse.Margin = New System.Windows.Forms.Padding(0)
         Me.btnTeraCopyPathBrowse.Name = "btnTeraCopyPathBrowse"
         Me.btnTeraCopyPathBrowse.Size = New System.Drawing.Size(24, 20)
@@ -357,9 +362,9 @@ Partial Class frmSettingsHolder
         Me.TableLayoutPanel1.SetColumnSpan(Me.lblTeraCopyLink, 2)
         Me.lblTeraCopyLink.ForeColor = System.Drawing.SystemColors.GrayText
         Me.lblTeraCopyLink.LinkArea = New System.Windows.Forms.LinkArea(13, 12)
-        Me.lblTeraCopyLink.Location = New System.Drawing.Point(126, 51)
+        Me.lblTeraCopyLink.Location = New System.Drawing.Point(125, 51)
         Me.lblTeraCopyLink.Name = "lblTeraCopyLink"
-        Me.lblTeraCopyLink.Size = New System.Drawing.Size(195, 20)
+        Me.lblTeraCopyLink.Size = New System.Drawing.Size(194, 20)
         Me.lblTeraCopyLink.TabIndex = 12
         Me.lblTeraCopyLink.TabStop = True
         Me.lblTeraCopyLink.Text = "supported by TeraCopy 2.0 and above"
@@ -372,7 +377,7 @@ Partial Class frmSettingsHolder
         Me.lblType.AutoSize = True
         Me.lblType.Location = New System.Drawing.Point(3, 286)
         Me.lblType.Name = "lblType"
-        Me.lblType.Size = New System.Drawing.Size(30, 13)
+        Me.lblType.Size = New System.Drawing.Size(29, 13)
         Me.lblType.TabIndex = 5
         Me.lblType.Text = "Type"
         Me.lblType.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -386,10 +391,6 @@ Partial Class frmSettingsHolder
         Me.cbType.Name = "cbType"
         Me.cbType.Size = New System.Drawing.Size(121, 21)
         Me.cbType.TabIndex = 11
-        '
-        'ColumnHeader3
-        '
-        Me.ColumnHeader3.Text = "Type"
         '
         'frmSettingsHolder
         '
@@ -406,7 +407,7 @@ Partial Class frmSettingsHolder
         Me.Name = "frmSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Settings for Media File Manager"
+        Me.Text = "Settings for File Manager"
         Me.pnlSettingsTop.ResumeLayout(False)
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)

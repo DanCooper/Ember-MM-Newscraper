@@ -22,7 +22,7 @@ Imports NLog
 Imports EmberAPI
 
 Public Class OFDB_Data
-    Implements Interfaces.ScraperModule_Data_Movie
+    Implements Interfaces.IScraperModule_Data_Movie
 
 
 #Region "Fields"
@@ -30,9 +30,8 @@ Public Class OFDB_Data
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Public Shared ConfigScrapeOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
-    Public Shared _AssemblyName As String
+    Public Shared _SettingsPanelID_Movie As String = String.Empty
 
-    Private _Name As String = "OFDB_Data"
     Private _scraper As New OFDB.Scraper
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
@@ -41,31 +40,16 @@ Public Class OFDB_Data
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_Data_Movie.ModuleSettingsChanged
-
-    Public Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_Movie.ScraperEvent
-
-    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Data_Movie.ScraperSetupChanged
-
-    Public Event SetupNeedsRestart() Implements Interfaces.ScraperModule_Data_Movie.SetupNeedsRestart
+    Public Event NeedsRestart() Implements Interfaces.IScraperModule_Data_Movie.NeedsRestart_Movie
+    Public Event ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.IScraperModule_Data_Movie.ScraperEvent_Movie
+    Public Event SettingsChanged_Movie() Implements Interfaces.IScraperModule_Data_Movie.SettingsChanged_Movie
+    Public Event StateChanged_Movie(ByVal SettingsPanelID As String, ByVal State As Boolean, ByVal DiffOrder As Integer) Implements Interfaces.IScraperModule_Data_Movie.StateChanged_Movie
 
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Data_Movie.ModuleName
-        Get
-            Return _Name
-        End Get
-    End Property
-
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Data_Movie.ModuleVersion
-        Get
-            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
-        End Get
-    End Property
-
-    Property ScraperEnabled() As Boolean Implements Interfaces.ScraperModule_Data_Movie.ScraperEnabled
+    Property Enabled() As Boolean Implements Interfaces.IScraperModule_Data_Movie.Enabled
         Get
             Return _ScraperEnabled
         End Get
@@ -77,30 +61,29 @@ Public Class OFDB_Data
 #End Region 'Properties
 
 #Region "Methods"
-    Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
+    Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.IScraperModule_Data_Movie.GetMovieStudio
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
+    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.IScraperModule_Data_Movie.GetTMDBID
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged_Movie()
     End Sub
 
-    Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        ScraperEnabled = state
-        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
+    Private Sub Handle_SetupScraperChanged(ByVal State As Boolean, ByVal DiffOrder As Integer)
+        Enabled = State
+        RaiseEvent StateChanged_Movie(_SettingsPanelID_Movie, State, DiffOrder)
     End Sub
 
-    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Data_Movie.Init
-        _AssemblyName = sAssemblyName
+    Sub Init() Implements Interfaces.IScraperModule_Data_Movie.Init_Movie
         LoadSettings()
     End Sub
 
-    Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_Movie.InjectSetupScraper
-        Dim SPanel As New Containers.SettingsPanel
+    Function InjectSettingsPanel(ByVal SettingsPanelID As String) As Containers.SettingsPanel Implements Interfaces.IScraperModule_Data_Movie.InjectSettingsPanel_Movie
+        _SettingsPanelID_Movie = SettingsPanelID
         _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
@@ -112,18 +95,16 @@ Public Class OFDB_Data
 
         _setup.orderChanged()
 
-        SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = "OFDB"
-        SPanel.Prefix = "OFDBMovieInfo_"
-        SPanel.Order = 110
-        SPanel.Parent = "pnlMovieData"
-        SPanel.Type = Master.eLang.GetString(36, "Movies")
-        SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
-        SPanel.Panel = _setup.pnlSettings
-
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-        Return SPanel
+
+        Return New Containers.SettingsPanel With {
+            .ImageIndex = If(_ScraperEnabled, 9, 10),
+            .Order = 110,
+            .Panel = _setup.pnlSettings,
+            .Title = "OFDb.de",
+            .Type = Enums.SettingsPanelType.MovieData
+        }
     End Function
 
     Sub LoadSettings()
@@ -145,10 +126,10 @@ Public Class OFDB_Data
     End Sub
 
     Private Sub Handle_PostModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged_Movie()
     End Sub
 
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.IScraperModule_Data_Movie.SaveSetupScraper
         ConfigScrapeOptions.bMainCertifications = _setup.chkCertifications.Checked
         ConfigScrapeOptions.bMainTitle = _setup.chkTitle.Checked
         ConfigScrapeOptions.bMainOutline = _setup.chkOutline.Checked
@@ -169,7 +150,7 @@ Public Class OFDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper_Movie(ByRef oDBMovie As Database.DBElement, ByRef Modifier As Structures.ScrapeModifiers, ByRef Type As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
+    Function Scraper_Movie(ByRef oDBMovie As Database.DBElement, ByRef Modifier As Structures.ScrapeModifiers, ByRef Type As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.IScraperModule_Data_Movie.Scraper_Movie
         logger.Trace("[OFDB_Data] [Scraper_Movie] [Start]")
 
         LoadSettings()
@@ -191,7 +172,7 @@ Public Class OFDB_Data
         Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
     End Function
 
-    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged
+    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.IScraperModule_Data_Movie.ScraperOrderChanged
         _setup.orderChanged()
     End Sub
 

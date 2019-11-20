@@ -33,7 +33,7 @@ Public Class frmSettingsHolder
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged()
+    Public Event SettingsChanged()
     Public Event SetupNeedsRestart()
 
 #End Region 'Events
@@ -97,7 +97,7 @@ Public Class frmSettingsHolder
         dgvMainTab.Rows(i).Tag = False
         dgvMainTab.CurrentCell = dgvMainTab.Rows(i).Cells(0)
         dgvMainTab.BeginEdit(True)
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnMainTabDown_Click(sender As Object, e As EventArgs) Handles btnMainTabDown.Click
@@ -108,13 +108,13 @@ Public Class frmSettingsHolder
             dgvMainTab.Rows.Insert(currIndex + 1, currRow)
             dgvMainTab.CurrentCell = dgvMainTab(0, currIndex + 1)
         End If
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnMainTabRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMainTabRemove.Click
         If dgvMainTab.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvMainTab.Rows(dgvMainTab.SelectedCells(0).RowIndex).Tag) Then
             dgvMainTab.Rows.RemoveAt(dgvMainTab.SelectedCells(0).RowIndex)
-            RaiseEvent ModuleSettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 
@@ -126,7 +126,7 @@ Public Class frmSettingsHolder
             dgvMainTab.Rows.Insert(currIndex - 1, currRow)
             dgvMainTab.CurrentCell = dgvMainTab(0, currIndex - 1)
         End If
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub cbCustomMediaList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCustomMediaList.SelectedIndexChanged
@@ -164,7 +164,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub dgvMainTabs_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMainTab.CurrentCellDirtyStateChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub dgvMainTabs_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMainTab.SelectionChanged

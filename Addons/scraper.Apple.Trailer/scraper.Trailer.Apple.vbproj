@@ -123,12 +123,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Apple_Trailer.vb" />
-    <Compile Include="frmSettingsHolder.vb">
+    <Compile Include="addon.trailers.apple.com.vb" />
+    <Compile Include="frmSettingsPanel.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSettingsHolder.Designer.vb">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel.Designer.vb">
+      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -146,11 +146,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Scraper\clsScrapeTrailerApple.vb" />
+    <Compile Include="clsAddon.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmSettingsHolder.resx">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel.resx">
+      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

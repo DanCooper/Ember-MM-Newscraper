@@ -30,7 +30,7 @@ Public Class dlgHost
     'backgroundworker used for JSON request(s) like Populate Sources/Check Connection in this form
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     'current edited host
-    Private _currentHost As KodiInterface.Host = Nothing
+    Private _currentHost As Addon.Host = Nothing
     'all sources of current host
     Private currentHostRemoteSources As New List(Of XBMCRPC.List.Items.SourcesItem)
     'JSONRPC version of host - may be retrieved manually if user hits "Check Connection" button
@@ -43,11 +43,11 @@ Public Class dlgHost
 
 #Region "Properties"
 
-    Public Property Result As KodiInterface.Host
+    Public Property Result As Addon.Host
         Get
             Return _currentHost
         End Get
-        Set(value As KodiInterface.Host)
+        Set(value As Addon.Host)
             _currentHost = value
         End Set
     End Property
@@ -56,7 +56,7 @@ Public Class dlgHost
 
 #Region "Constructors"
 
-    Sub New(ByVal Host As KodiInterface.Host)
+    Sub New(ByVal Host As Addon.Host)
         ' This call is required by the designer.
         InitializeComponent()
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
@@ -90,7 +90,7 @@ Public Class dlgHost
             txtHostMoviesetPath.Text = _currentHost.MovieSetArtworksPath
         Else
             'new host entry (should not be possible)
-            _currentHost = New KodiInterface.Host
+            _currentHost = New Addon.Host
         End If
         'load sources of selected host and display values in datagrid
         PopulateHostSources()
@@ -354,7 +354,7 @@ Public Class dlgHost
         If dgvHostSources.Rows.Count > 0 Then
             For i = 0 To dgvHostSources.Rows.Count - 1
                 If Not String.IsNullOrEmpty(CStr(dgvHostSources.Rows(i).Cells(0).Value)) AndAlso Not String.IsNullOrEmpty(CStr(dgvHostSources.Rows(i).Cells(1).Value)) Then
-                    Dim nSource As New KodiInterface.Source
+                    Dim nSource As New Addon.Source
                     nSource.ContentType = CType(dgvHostSources.Rows(i).Cells(2).Value, Enums.ContentType)
                     nSource.LocalPath = CStr(dgvHostSources.Rows(i).Cells(0).Value)
                     nSource.RemotePath = CStr(dgvHostSources.Rows(i).Cells(1).Value)

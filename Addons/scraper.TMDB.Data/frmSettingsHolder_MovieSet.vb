@@ -24,11 +24,11 @@ Public Class frmSettingsHolder_MovieSet
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged()
+    Public Event SettingsChanged()
 
-    Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
+    Public Event StateChanged(ByVal state As Boolean, ByVal difforder As Integer)
 
-    Public Event SetupNeedsRestart()
+    Public Event NeedsRestart()
 
 #End Region 'Events
 
@@ -56,7 +56,7 @@ Public Class frmSettingsHolder_MovieSet
         If order < ModulesManager.Instance.externalScrapersModules_Data_MovieSet.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_MovieSet.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_MovieSet.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
+            RaiseEvent StateChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
@@ -66,7 +66,7 @@ Public Class frmSettingsHolder_MovieSet
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_MovieSet.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_MovieSet.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
+            RaiseEvent StateChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
@@ -85,27 +85,27 @@ Public Class frmSettingsHolder_MovieSet
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
+        RaiseEvent StateChanged(chkEnabled.Checked, 0)
     End Sub
 
     Private Sub chkGetAdult_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGetAdultItems.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkPlot_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkPlot.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkTitle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitle.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkFallBackEng_CheckedChanged(sender As Object, e As EventArgs) Handles chkFallBackEng.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub txtTMDBApiKey_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtApiKey.TextChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Sub orderChanged()

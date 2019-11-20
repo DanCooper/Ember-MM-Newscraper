@@ -170,22 +170,22 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmSettingsHolder_TV.Designer.vb">
-      <DependentUpon>frmSettingsHolder_TV.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel_TV.Designer.vb">
+      <DependentUpon>frmSettingsPanel_TV.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsHolder_TV.vb">
+    <Compile Include="frmSettingsPanel_TV.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSettingsHolder_MovieSet.Designer.vb">
-      <DependentUpon>frmSettingsHolder_MovieSet.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel_MovieSet.Designer.vb">
+      <DependentUpon>frmSettingsPanel_MovieSet.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsHolder_MovieSet.vb">
+    <Compile Include="frmSettingsPanel_MovieSet.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSettingsHolder_Movie.Designer.vb">
-      <DependentUpon>frmSettingsHolder_Movie.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel_Movie.Designer.vb">
+      <DependentUpon>frmSettingsPanel_Movie.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsHolder_Movie.vb">
+    <Compile Include="frmSettingsPanel_Movie.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -203,20 +203,20 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Scraper\clsScrapeTMDB.vb" />
-    <Compile Include="TMDB_Image.vb" />
+    <Compile Include="clsAddon.vb" />
+    <Compile Include="addon.themoviedb.org.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmSettingsHolder_TV.resx">
-      <DependentUpon>frmSettingsHolder_TV.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel_TV.resx">
+      <DependentUpon>frmSettingsPanel_TV.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSettingsHolder_MovieSet.resx">
-      <DependentUpon>frmSettingsHolder_MovieSet.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel_MovieSet.resx">
+      <DependentUpon>frmSettingsPanel_MovieSet.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSettingsHolder_Movie.resx">
-      <DependentUpon>frmSettingsHolder_Movie.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel_Movie.resx">
+      <DependentUpon>frmSettingsPanel_Movie.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

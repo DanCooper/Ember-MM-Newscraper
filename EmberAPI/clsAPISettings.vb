@@ -49,6 +49,7 @@ Public Class Settings
     Public Property FileSystemValidExts() As List(Of String) = New List(Of String)
     Public Property FileSystemValidSubtitlesExts() As List(Of String) = New List(Of String)
     Public Property FileSystemValidThemeExts() As List(Of String) = New List(Of String)
+    Public Property GeneralAudioCodecMapping As List(Of CodecMapping) = New List(Of CodecMapping)
     Public Property GeneralCheckUpdates() As Boolean = False
     Public Property GeneralDateAddedIgnoreNFO() As Boolean = False
     Public Property GeneralDateTime() As Enums.DateTime = Enums.DateTime.Now
@@ -102,6 +103,7 @@ Public Class Settings
     Public Property GeneralSplitterDistanceTVSeason() As Integer = 200
     Public Property GeneralSplitterDistanceTVShow() As Integer = 200
     Public Property GeneralTheme() As String = "FullHD-Default"
+    Public Property GeneralVideoCodecMapping As List(Of CodecMapping) = New List(Of CodecMapping)
     Public Property GeneralVideoSourceByExtension() As List(Of VideoSourceByExtension) = New List(Of VideoSourceByExtension)
     Public Property GeneralVideoSourceByExtensionEnabled() As Boolean = False
     Public Property GeneralVideoSourceByRegex As List(Of VideoSourceByRegex) = New List(Of VideoSourceByRegex)
@@ -2120,13 +2122,16 @@ Public Class Settings
 
     End Class
 
-    Public Class MetadataPerType
+    Public Class CodecMapping
 
 #Region "Properties"
 
-        Public Property FileType() As String = String.Empty
+        <XmlAttribute>
+        Public Property Codec As String = String.Empty
 
-        Public Property MetaData() As MediaContainers.FileInfo = New MediaContainers.FileInfo
+        Public Property Mapping As String = String.Empty
+
+        Public Property AdditionalFeatures As String = String.Empty
 
 #End Region 'Properties
 
@@ -2181,6 +2186,18 @@ Public Class Settings
         Public Property DefaultList As String = String.Empty
         Public Property Order As Integer = -1
         Public Property Title As String = String.Empty
+
+#End Region 'Properties
+
+    End Class
+
+    Public Class MetadataPerType
+
+#Region "Properties"
+
+        Public Property FileType() As String = String.Empty
+
+        Public Property MetaData() As MediaContainers.FileInfo = New MediaContainers.FileInfo
 
 #End Region 'Properties
 

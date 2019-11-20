@@ -309,7 +309,7 @@
   <string id="308">Preselect</string>
   <string id="309">Save as Poster</string>
   <string id="310">Frame Extractor</string>
-  <string id="311">Media File Manager</string>
+  <string id="311">File Manager</string>
   <string id="312">Move To</string>
   <string id="313">Copy To</string>
   <string id="314">Move {0} Movie(s) To {1}</string>
@@ -333,7 +333,7 @@
   <string id="332">Use TeraCopy to copy/move files</string>
   <string id="333">Path to TeraCopy:</string>
   <string id="334">Template</string>
-  <string id="335">Movie List Exporter</string>
+  <string id="335">Website Creator</string>
   <string id="336">Export Movie List</string>
   <string id="337">Please Choose/Install a Template First</string>
   <string id="338">Select path</string>
@@ -800,7 +800,7 @@
   <string id="799">The ID you entered is not a valid IMDB ID.</string>
   <string id="800">Preferred Quality:</string>
   <string id="801">TVDB Mirror</string>
-  <string id="802">Modules</string>
+  <string id="802">Addons</string>
   <string id="803">Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.</string>
   <string id="804">And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.</string>
   <string id="805">Send to PasteBin.com</string>

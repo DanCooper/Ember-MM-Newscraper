@@ -161,20 +161,20 @@
     <Compile Include="frmAuthorize.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSettingsHolder_Movie.Designer.vb">
-      <DependentUpon>frmSettingsHolder_Movie.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel_Movie.Designer.vb">
+      <DependentUpon>frmSettingsPanel_Movie.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsHolder_Movie.vb">
+    <Compile Include="frmSettingsPanel_Movie.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSettingsHolder_TV.Designer.vb">
-      <DependentUpon>frmSettingsHolder_TV.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel_TV.Designer.vb">
+      <DependentUpon>frmSettingsPanel_TV.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsHolder_TV.vb">
+    <Compile Include="frmSettingsPanel_TV.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Trakttv_Data.vb" />
-    <Compile Include="clsAPITrakt.vb" />
+    <Compile Include="addon.trakt.tv.vb" />
+    <Compile Include="clsAddon.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -195,11 +195,11 @@
     <EmbeddedResource Include="frmAuthorize.resx">
       <DependentUpon>frmAuthorize.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSettingsHolder_Movie.resx">
-      <DependentUpon>frmSettingsHolder_Movie.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel_Movie.resx">
+      <DependentUpon>frmSettingsPanel_Movie.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSettingsHolder_TV.resx">
-      <DependentUpon>frmSettingsHolder_TV.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel_TV.resx">
+      <DependentUpon>frmSettingsPanel_TV.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

@@ -38,7 +38,33 @@ Namespace MediaContainers
 
 #Region "Properties"
         ''' <summary>
-        ''' Bitrate in kb/s
+        ''' Additional audio features like (Dolby) "Atmos" or (DTS:)"X"
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlElement("additionalfeatures")>
+        Public Property AdditionalFeatures As String = String.Empty
+
+        <XmlIgnore>
+        Public ReadOnly Property AdditionalFeaturesSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(AdditionalFeatures)
+            End Get
+        End Property
+        ''' <summary>
+        ''' Resolution in bits (8, 16, 20, 24)
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlElement("bitdepth")>
+        Public Property BitDepth() As Integer = 0
+
+        <XmlIgnore>
+        Public ReadOnly Property BitDepthSpecified() As Boolean
+            Get
+                Return Not BitDepth = 0
+            End Get
+        End Property
+        ''' <summary>
+        ''' Bitrate in kb/s (16, 24, 32)
         ''' </summary>
         ''' <returns></returns>
         <XmlElement("bitrate")>
@@ -4162,20 +4188,7 @@ Namespace MediaContainers
             End Get
         End Property
         ''' <summary>
-        ''' Bit rate in bits per second
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlElement("bitrate")>
-        Public Property Bitrate() As Integer = 0
-
-        <XmlIgnore>
-        Public ReadOnly Property BitrateSpecified() As Boolean
-            Get
-                Return Not Bitrate = 0
-            End Get
-        End Property
-        ''' <summary>
-        ''' Bit depth in bits per sample
+        ''' Resolution in bits (16, 24, 24)
         ''' </summary>
         ''' <returns></returns>
         <XmlElement("bitdepth")>
@@ -4185,6 +4198,19 @@ Namespace MediaContainers
         Public ReadOnly Property BitDepthSpecified() As Boolean
             Get
                 Return Not BitDepth = 0
+            End Get
+        End Property
+        ''' <summary>
+        ''' Bit rate in bits per second ()
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlElement("bitrate")>
+        Public Property Bitrate() As Integer = 0
+
+        <XmlIgnore>
+        Public ReadOnly Property BitrateSpecified() As Boolean
+            Get
+                Return Not Bitrate = 0
             End Get
         End Property
 

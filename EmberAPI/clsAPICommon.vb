@@ -128,133 +128,49 @@ Public Class Containers
 
     Public Class SettingsPanel
 
-#Region "Fields"
-
-        Dim _imageindex As Integer
-        Dim _image As Image
-        Dim _name As String
-        Dim _order As Integer
-        Dim _panel As Panel
-        Dim _parent As String
-        Dim _prefix As String
-        Dim _text As String
-        Dim _type As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-        ''' <summary>
-        ''' Overload the default New() method to provide proper initialization of fields
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property ImageIndex() As Integer
-            Get
-                Return _imageindex
-            End Get
-            Set(ByVal value As Integer)
-                _imageindex = value
-            End Set
-        End Property
+        Public Property Contains() As Enums.SettingsPanelType = Enums.SettingsPanelType.None
+
+        Public Property ImageIndex() As Integer = 0
 
         <XmlIgnore()>
-        Public Property Image() As Image
-            Get
-                Return _image
-            End Get
-            Set(ByVal value As Image)
-                _image = value
-            End Set
-        End Property
+        Public Property Image() As Image = Nothing
 
-        Public Property Name() As String
-            Get
-                Return _name
-            End Get
-            Set(ByVal value As String)
-                _name = value
-            End Set
-        End Property
-
-        Public Property Order() As Integer
-            Get
-                Return _order
-            End Get
-            Set(ByVal value As Integer)
-                _order = value
-            End Set
-        End Property
-
+        Public Property Order() As Integer = 0
         <XmlIgnore()>
-        Public Property Panel() As Panel
-            Get
-                Return _panel
-            End Get
-            Set(ByVal value As Panel)
-                _panel = value
-            End Set
-        End Property
+        Public Property Panel() As Panel = New Panel
 
-        Public Property Parent() As String
-            Get
-                Return _parent
-            End Get
-            Set(ByVal value As String)
-                _parent = value
-            End Set
-        End Property
+        Public Property SettingsPanelID As String
+        ''' <summary>
+        ''' Language-dependent title of the module
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Title As String = String.Empty
 
-        Public Property Prefix() As String
-            Get
-                Return _prefix
-            End Get
-            Set(ByVal value As String)
-                _prefix = value
-            End Set
-        End Property
+        Public Property Type() As Enums.SettingsPanelType = Enums.SettingsPanelType.Addon
 
-        Public Property Text() As String
-            Get
-                Return _text
-            End Get
-            Set(ByVal value As String)
-                _text = value
-            End Set
-        End Property
 
-        Public Property Type() As String
-            Get
-                Return _type
-            End Get
-            Set(ByVal value As String)
-                _type = value
-            End Set
-        End Property
 
-#End Region 'Properties
+#End Region 'Properties 
 
-#Region "Methods"
+#Region "Nested Types"
 
-        Public Sub Clear()
-            _imageindex = 0
-            _image = Nothing
-            _name = String.Empty
-            _order = 0
-            _panel = New Panel
-            _parent = String.Empty
-            _prefix = String.Empty
-            _text = String.Empty
-            _type = String.Empty
-        End Sub
+        Public Class OrderState
+            ''' <summary>
+            ''' Current position of the settings panel (0 to n)
+            ''' </summary>
+            ''' <returns></returns>
+            Public Property Position As Integer
+            ''' <summary>
+            ''' Total count of all settings panels of this type
+            ''' </summary>
+            ''' <returns></returns>
+            Public Property TotalCount As Integer
 
-#End Region 'Methods
+        End Class
+
+#End Region 'Nested Types
 
     End Class
 
@@ -435,6 +351,7 @@ Public Class Enums
 
     Public Enum DefaultType As Integer
         All
+        AudioCodecMapping
         MainTabSorting
         MovieFilters
         MovieListSorting
@@ -453,6 +370,7 @@ Public Class Enums
         ValidExts
         ValidSubtitleExts
         ValidThemeExts
+        VideoCodecMapping
         VideosourceMappingByRegex
     End Enum
     ''' <summary>
@@ -810,6 +728,37 @@ Public Class Enums
     Public Enum SelectionType As Integer
         All
         Selected
+    End Enum
+
+    Public Enum SettingsPanelType As Integer
+        Core
+        Addon
+        Movie
+        MovieData
+        MovieFileNaming
+        MovieGUI
+        MovieImage
+        MovieSource
+        Movieset
+        MoviesetData
+        MoviesetFileNaming
+        MoviesetSource
+        MoviesetGUI
+        MoviesetImage
+        MovieTheme
+        MovieTrailer
+        None
+        Options
+        OptionsConnection
+        OptionsFileSystem
+        OptionsGeneral
+        TV
+        TVData
+        TVFileNaming
+        TVSource
+        TVGUI
+        TVImage
+        TVTheme
     End Enum
     ''' <summary>
     ''' Movie sort methode inside of a movieset

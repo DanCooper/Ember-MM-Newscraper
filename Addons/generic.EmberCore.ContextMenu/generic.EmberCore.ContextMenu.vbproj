@@ -152,13 +152,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmSettingsHolder.Designer.vb">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel.Designer.vb">
+      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsHolder.vb">
+    <Compile Include="frmSettingsPanel.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="genericContextMenu.vb" />
+    <Compile Include="core.contextmenu.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -176,8 +176,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmSettingsHolder.resx">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel.resx">
+      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

@@ -135,13 +135,13 @@
     <Compile Include="dlgHost.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSettingsHolder.Designer.vb">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel.Designer.vb">
+      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsHolder.vb">
+    <Compile Include="frmSettingsPanel.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Interface.Kodi.vb" />
+    <Compile Include="addon.kodiinterface.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -162,8 +162,8 @@
     <EmbeddedResource Include="dlgHost.resx">
       <DependentUpon>dlgHost.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSettingsHolder.resx">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel.resx">
+      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

@@ -942,6 +942,8 @@ Public Class Database
                                 If Not DBNull.Value.Equals(SQLreader("audioChannels")) Then audio.Channels = CInt(SQLreader("audioChannels"))
                                 If Not DBNull.Value.Equals(SQLreader("audioBitrate")) Then audio.Bitrate = CInt(SQLreader("audioBitrate"))
                                 If Not DBNull.Value.Equals(SQLreader("audioLanguage")) Then audio.Language = SQLreader("audioLanguage").ToString
+                                If Not DBNull.Value.Equals(SQLreader("audioBitDepth")) Then audio.BitDepth = CInt(SQLreader("audioBitDepth"))
+                                If Not DBNull.Value.Equals(SQLreader("audioAdditionalFeatures")) Then audio.AdditionalFeatures = SQLreader("audioAdditionalFeatures").ToString
                                 nFileInfo.StreamDetails.Audio.Add(audio)
                             Case 2 'subtitle stream
                                 Dim subtitle As New MediaContainers.Subtitle
@@ -4515,17 +4517,19 @@ Public Class Database
                         par_idFile.Value = fileItem.ID
                         par_streamType.Value = 0 'video stream
                         par_videoCodec.Value = fileInfo.StreamDetails.Video(i).Codec
+                        par_videoBitrate.Value = fileInfo.StreamDetails.Video(i).Bitrate
                         par_videoLanguage.Value = fileInfo.StreamDetails.Video(i).Language
                         par_videoMultiViewLayout.Value = fileInfo.StreamDetails.Video(i).MultiViewLayout
                         par_videoScantype.Value = fileInfo.StreamDetails.Video(i).Scantype
                         par_videoStereoMode.Value = fileInfo.StreamDetails.Video(i).StereoMode
                         par_videoAspect.Value = fileInfo.StreamDetails.Video(i).Aspect
-                        par_videoBitrate.Value = fileInfo.StreamDetails.Video(i).Bitrate
                         par_videoDuration.Value = fileInfo.StreamDetails.Video(i).Duration
                         par_videoHeight.Value = fileInfo.StreamDetails.Video(i).Height
                         par_videoMultiViewCount.Value = fileInfo.StreamDetails.Video(i).MultiViewCount
                         par_videoWidth.Value = fileInfo.StreamDetails.Video(i).Width
-                        par_videoBitDepth.Value = fileInfo.StreamDetails.Video(i).BitDepth
+                        If fileInfo.StreamDetails.Video(i).BitDepthSpecified Then 'has to be NOTHING instead of "0"
+                            par_videoBitDepth.Value = fileInfo.StreamDetails.Video(i).BitDepth
+                        End If
                         par_videoChromaSubsampling.Value = fileInfo.StreamDetails.Video(i).ChromaSubsampling
                         par_videoColourPrimaries.Value = fileInfo.StreamDetails.Video(i).ColourPrimaries
                         sqlCommand.ExecuteNonQuery()
@@ -4540,8 +4544,10 @@ Public Class Database
                                                            "audioCodec,",
                                                            "audioChannels,",
                                                            "audioBitrate,",
-                                                           "audioLanguage",
-                                                           ") VALUES (?,?,?,?,?,?)")
+                                                           "audioLanguage,",
+                                                           "audioBitDepth,",
+                                                           "audioAdditionalFeatures",
+                                                           ") VALUES (?,?,?,?,?,?,?,?)")
 
                     Dim par_idFile As SQLiteParameter = sqlCommand.Parameters.Add("par_idFile", DbType.Int64, 0, "idFile")
                     Dim par_streamType As SQLiteParameter = sqlCommand.Parameters.Add("par_streamType", DbType.Int32, 0, "streamType")
@@ -4549,6 +4555,8 @@ Public Class Database
                     Dim par_audioChannels As SQLiteParameter = sqlCommand.Parameters.Add("par_audioChannels", DbType.Int32, 0, "audioChannels")
                     Dim par_audioBitrate As SQLiteParameter = sqlCommand.Parameters.Add("par_audioBitrate", DbType.Int32, 0, "audioBitrate")
                     Dim par_audioLanguage As SQLiteParameter = sqlCommand.Parameters.Add("par_audioLanguage", DbType.String, 0, "audioLanguage")
+                    Dim par_audioBitDepth As SQLiteParameter = sqlCommand.Parameters.Add("par_audioBitDepth", DbType.Int32, 0, "audioBitDepth")
+                    Dim par_audioAdditionalFeatures As SQLiteParameter = sqlCommand.Parameters.Add("par_audioAdditionalFeatures", DbType.String, 0, "audioAdditionalFeatures")
 
                     For i As Integer = 0 To fileInfo.StreamDetails.Audio.Count - 1
                         par_idFile.Value = fileItem.ID
@@ -4557,6 +4565,10 @@ Public Class Database
                         par_audioLanguage.Value = fileInfo.StreamDetails.Audio(i).Language
                         par_audioBitrate.Value = fileInfo.StreamDetails.Audio(i).Bitrate
                         par_audioChannels.Value = fileInfo.StreamDetails.Audio(i).Channels
+                        If fileInfo.StreamDetails.Audio(i).BitDepthSpecified Then 'has to be NOTHING instead of "0"
+                            par_audioBitDepth.Value = fileInfo.StreamDetails.Audio(i).BitDepth
+                        End If
+                        par_audioAdditionalFeatures.Value = fileInfo.StreamDetails.Audio(i).AdditionalFeatures
                         sqlCommand.ExecuteNonQuery()
                     Next
                 End Using
@@ -5918,7 +5930,7 @@ Public Class Database
 
                             'String values
                             par_audioCodec.Value = SQLreader("Audio_Codec").ToString
-                            par_audioLanguage.Value = SQLreader("Audio_Codec").ToString
+                            par_audioLanguage.Value = SQLreader("Audio_Language").ToString
 
                             'Integer or NULL values
                             If Integer.TryParse(SQLreader("Audio_Bitrate").ToString, 0) Then
@@ -6080,7 +6092,7 @@ Public Class Database
 
                             'String values
                             par_audioCodec.Value = SQLreader("Audio_Codec").ToString
-                            par_audioLanguage.Value = SQLreader("Audio_Codec").ToString
+                            par_audioLanguage.Value = SQLreader("Audio_Language").ToString
 
                             'Integer or NULL values
                             If Integer.TryParse(SQLreader("Audio_Bitrate").ToString, 0) Then

@@ -26,18 +26,19 @@ Public Class dlgWorker
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
-
-    Private _client As clsAPITrakt
-    Private _contenttype As Enums.ContentType
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwGetWatchedState As New ComponentModel.BackgroundWorker
+
+    Private _Client As clsAPITrakt
+    Private _ContentType As Enums.ContentType
+
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+    Public Event GenericEvent(ByVal ModuleEventType As Enums.ModuleEventType, ByRef Parameters As List(Of Object))
 
 #End Region 'Events
 
@@ -49,9 +50,9 @@ Public Class dlgWorker
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
         Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
         StartPosition = FormStartPosition.Manual
-        _client = apitrakt
-        _contenttype = contenttype
-        SetUp()
+        _Client = apitrakt
+        _ContentType = contenttype
+        Setup()
     End Sub
 
     Private Sub btnCancel_Click() Handles btnCancel.Click
@@ -72,11 +73,11 @@ Public Class dlgWorker
 
     Private Sub bwGetWatchedState_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwGetWatchedState.DoWork
         Dim iItemsSynced As Integer
-        Select Case _contenttype
+        Select Case _ContentType
             Case Enums.ContentType.Movie
                 Dim lstWatchedMovies As IEnumerable(Of Objects.Get.Watched.TraktWatchedMovie) = Nothing
                 bwGetWatchedState.ReportProgress(1)
-                lstWatchedMovies = _client.GetWatched_Movies
+                lstWatchedMovies = _Client.GetWatched_Movies
                 If bwGetWatchedState.CancellationPending Then
                     e.Result = New Results With {.Cancelled = bwGetWatchedState.CancellationPending}
                     Return
@@ -108,9 +109,9 @@ Public Class dlgWorker
                                         Master.DB.Save_Movie(tDBElement, False, True, False, True, False)
                                         bwGetWatchedState.ReportProgress(4, tDBElement.ID)
                                         iItemsSynced += 1
-                                        logger.Trace(String.Format("[TraktWorker] GetPlaycount_AllMovies: ""{0}"" | Synced to Ember", tDBElement.Movie.Title))
+                                        _Logger.Trace(String.Format("[TraktWorker] GetPlaycount_AllMovies: ""{0}"" | Synced to Ember", tDBElement.Movie.Title))
                                     Else
-                                        logger.Warn(String.Format("[TraktWorker] GetPlaycount_AllMovies: ""{0}"" | NOT Synced to Ember, media was offline", tDBElement.Movie.Title))
+                                        _Logger.Warn(String.Format("[TraktWorker] GetPlaycount_AllMovies: ""{0}"" | NOT Synced to Ember, media was offline", tDBElement.Movie.Title))
                                     End If
                                 Next
                             End If
@@ -125,7 +126,7 @@ Public Class dlgWorker
             Case Enums.ContentType.TVEpisode
                 Dim lstWatchedShows As IEnumerable(Of Objects.Get.Watched.TraktWatchedShow) = Nothing
                 bwGetWatchedState.ReportProgress(1)
-                lstWatchedShows = _client.GetWatched_TVShows
+                lstWatchedShows = _Client.GetWatched_TVShows
                 If bwGetWatchedState.CancellationPending Then
                     e.Result = New Results With {.Cancelled = bwGetWatchedState.CancellationPending}
                     Return
@@ -166,13 +167,13 @@ Public Class dlgWorker
                                                         bwGetWatchedState.ReportProgress(4, tDBTVEpisode.ID)
                                                         lstTVShowIDsToRefresh.Add(nTVShow.ID)
                                                         iItemsSynced += 1
-                                                        logger.Trace(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",
+                                                        _Logger.Trace(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",
                                                                                    tDBTVEpisode.TVShow.Title,
                                                                                    tDBTVEpisode.TVEpisode.Season,
                                                                                    tDBTVEpisode.TVEpisode.Episode,
                                                                                    tDBTVEpisode.TVEpisode.Title))
                                                     Else
-                                                        logger.Warn(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}: S{1}E{2} - {3}"" | NOT Synced to Ember, media was offline",
+                                                        _Logger.Warn(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}: S{1}E{2} - {3}"" | NOT Synced to Ember, media was offline",
                                                                                    tDBTVEpisode.TVShow.Title,
                                                                                    tDBTVEpisode.TVEpisode.Season,
                                                                                    tDBTVEpisode.TVEpisode.Episode,
@@ -180,7 +181,7 @@ Public Class dlgWorker
                                                     End If
                                                 Next
                                             Else
-                                                logger.Warn(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}"" | NOT Synced to Ember, tv show was offline", nTVShow.TVShow.Title))
+                                                _Logger.Warn(String.Format("[TraktWorker] GetPlaycount_AllTVEpisodes: ""{0}"" | NOT Synced to Ember, tv show was offline", nTVShow.TVShow.Title))
                                             End If
                                         Next
                                     Next
@@ -225,7 +226,7 @@ Public Class dlgWorker
             Case 4
                 'update entry in media list
                 'e.UserState = media ID
-                Select Case _contenttype
+                Select Case _ContentType
                     Case Enums.ContentType.Movie
                         RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {CLng(e.UserState)}))
                     Case Enums.ContentType.TVEpisode
@@ -267,12 +268,12 @@ Public Class dlgWorker
         End If
     End Sub
 
-    Private Sub SetUp()
+    Private Sub Setup()
         btnCancel.Text = Master.eLang.Cancel
         btnStart.Text = Master.eLang.GetString(1443, "Start Syncing")
         lblCurrentItemInfo.Text = String.Empty
         lblOverallStateInfo.Text = String.Empty
-        Select Case _contenttype
+        Select Case _ContentType
             Case Enums.ContentType.Movie
                 lblTitle.Text = "Trakt movie watched state syncing"
             Case Enums.ContentType.TVEpisode

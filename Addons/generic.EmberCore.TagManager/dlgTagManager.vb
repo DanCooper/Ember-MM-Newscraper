@@ -26,27 +26,27 @@ Public Class dlgTagManager
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
-
-    'backgroundworker used for commandline scraping in this module
-    Friend WithEvents bwLoad As New System.ComponentModel.BackgroundWorker
-
-    'started Ember from commandline?
-    Private isCL As Boolean = False
-
-    'datatable which contains all tags in Ember database, loaded at module startup
-    Private dtMovieTags As New DataTable
-    'list of movies / movie view
-    Private lstFilteredMovies As New List(Of Database.DBElement)
-
-    'reflects the current(modified) tag collection which will be saved to database/NFO
-    Private globalMovieTags As New List(Of SyncTag)
-
-    'binding for movie datagridview
-    Private bsMovies As New BindingSource
-
-    'Not used at moment
-    'Friend WithEvents bwLoadMovies As New System.ComponentModel.BackgroundWorker
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
+    ''' <summary>
+    ''' started Ember from commandline?
+    ''' </summary>
+    Private _IsCommandLine As Boolean = False
+    ''' <summary>
+    ''' datatable which contains all tags In Ember database, loaded at Module startup
+    ''' </summary>
+    Private _DTMovieTags As New DataTable
+    ''' <summary>
+    ''' list of movies / movie view
+    ''' </summary>
+    Private _LstFilteredMovies As New List(Of Database.DBElement)
+    ''' <summary>
+    ''' reflects the current(modified) tag collection which will be saved to database/NFO
+    ''' </summary>
+    Private _GlobalMovieTags As New List(Of SyncTag)
+    ''' <summary>
+    ''' binding for movie datagridview
+    ''' </summary>
+    Private _BSsMovies As New BindingSource
 
 #End Region 'Fields
 
@@ -56,8 +56,7 @@ Public Class dlgTagManager
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
         FormsUtils.ResizeAndMoveDialog(Me, Me)
-
-        SetUp()
+        Setup()
     End Sub
 
 #End Region 'Constructors
@@ -74,7 +73,7 @@ Public Class dlgTagManager
     ''' - load existing movies in background
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
-    Sub SetUp()
+    Private Sub Setup()
         lblTopTitle.Text = Text
         OK_Button.Text = Master.eLang.Close
         lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
@@ -94,10 +93,9 @@ Public Class dlgTagManager
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
             Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.movie)).Value))
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
-                lstFilteredMovies.Add(DBElement)
+                _LstFilteredMovies.Add(DBElement)
             End If
         Next
-
         RefreshModule()
     End Sub
 
@@ -122,22 +120,22 @@ Public Class dlgTagManager
         'clear globals, set back controls
         lbMoviesInTag.Items.Clear()
         lbTags.Items.Clear()
-        globalMovieTags.Clear()
-        dtMovieTags.Clear()
+        _GlobalMovieTags.Clear()
+        _DTMovieTags.Clear()
         pnlMain.Enabled = False
 
         'load existing tags from database into datatable
-        dtMovieTags = Master.DB.GetTags
+        _DTMovieTags = Master.DB.GetTags
 
         'fill movie datagridview
         If dgvMovies.Rows.Count = 0 Then
             dgvMovies.SuspendLayout()
-            bsMovies.DataSource = Nothing
+            _BSsMovies.DataSource = Nothing
             dgvMovies.DataSource = Nothing
-            If lstFilteredMovies.Count > 0 Then
+            If _LstFilteredMovies.Count > 0 Then
                 'If Me.dtMovies.Rows.Count > 0 Then
-                bsMovies.DataSource = lstFilteredMovies
-                dgvMovies.DataSource = bsMovies
+                _BSsMovies.DataSource = _LstFilteredMovies
+                dgvMovies.DataSource = _BSsMovies
                 For i As Integer = 0 To dgvMovies.Columns.Count - 1
                     dgvMovies.Columns(i).Visible = False
                 Next
@@ -156,14 +154,14 @@ Public Class dlgTagManager
 
         'fill listbox of tags
         If lbTags.Items.Count = 0 Then
-            For Each sRow As DataRow In dtMovieTags.Rows
+            For Each sRow As DataRow In _DTMovieTags.Rows
                 If Not String.IsNullOrEmpty(sRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Name)).ToString) Then
                     Dim tmpnewTag As New SyncTag
                     tmpnewTag.ID = CInt(sRow.Item(Database.Helpers.GetMainIdName(Database.TableName.tag)))
                     tmpnewTag.Name = CStr(sRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Name)))
                     Dim tmpTag = Master.DB.Load_Tag_Movie(CLng(sRow.Item(Database.Helpers.GetMainIdName(Database.TableName.tag))))
                     tmpnewTag.Movies = tmpTag.Movies
-                    globalMovieTags.Add(tmpnewTag)
+                    _GlobalMovieTags.Add(tmpnewTag)
                     lbTags.Items.Add(sRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Name)).ToString)
                 End If
             Next
@@ -190,7 +188,7 @@ Public Class dlgTagManager
         lbMoviesInTag.SuspendLayout()
         lbMoviesInTag.Items.Clear()
 
-        For Each movielist In globalMovieTags
+        For Each movielist In _GlobalMovieTags
             If movielist.Name = lbTags.SelectedItem.ToString Then
                 For Each tMovie In movielist.Movies
                     lbMoviesInTag.Items.Add(tMovie.Movie.Title)
@@ -218,7 +216,7 @@ Public Class dlgTagManager
         lbMoviesInTag.Items.Clear()
         lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
         'add tag to listbox (if its not marked for delete!)
-        For Each tmptag In globalMovieTags
+        For Each tmptag In _GlobalMovieTags
             If tmptag.IsDeleted = False Then
                 lbTags.Items.Add(tmptag.Name)
             End If
@@ -242,7 +240,7 @@ Public Class dlgTagManager
         If lbMoviesInTag.SelectedItems.Count > 0 Then
             For Each selectedmovie In lbMoviesInTag.SelectedItems
                 'update globaltaglist
-                For Each _tag In globalMovieTags
+                For Each _tag In _GlobalMovieTags
                     If _tag.Name = lbTags.SelectedItem.ToString Then
                         For Each movie In _tag.Movies
                             If movie.Movie.Title = selectedmovie.ToString Then
@@ -272,7 +270,7 @@ Public Class dlgTagManager
 
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                     'add new movie to tag in globaltaglist
-                    For Each _tag In globalMovieTags
+                    For Each _tag In _GlobalMovieTags
                         If _tag.Name = lbTags.SelectedItem.ToString Then
                             If Not _tag.Movies Is Nothing Then
                                 Dim alreadyintag As Boolean = False
@@ -289,7 +287,7 @@ Public Class dlgTagManager
                                 End If
                                 Exit For
                             Else
-                                logger.Info("[" & _tag.Name & "] " & tmpMovie.Movie.Title & " is null! Error when trying to add movie to tag!")
+                                _Logger.Info("[" & _tag.Name & "] " & tmpMovie.Movie.Title & " is null! Error when trying to add movie to tag!")
                             End If
                         End If
                     Next
@@ -319,7 +317,7 @@ Public Class dlgTagManager
             lblCurrentTag.Text = lbTags.SelectedItem.ToString
             Dim foundlist As Boolean = False
             'search selected tag in globaltags
-            For Each movieinlist In globalMovieTags
+            For Each movieinlist In _GlobalMovieTags
                 If movieinlist.Name = lbTags.SelectedItem.ToString Then
 
                     'add all movies from tag into listbox
@@ -337,7 +335,7 @@ Public Class dlgTagManager
             Next
 
             If foundlist = False Then
-                logger.Info("[" & lbTags.SelectedItem.ToString & "] No tag selected!")
+                _Logger.Info("[" & lbTags.SelectedItem.ToString & "] No tag selected!")
                 lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
                 btnEditTag.Enabled = False
                 btnRemoveTag.Enabled = False
@@ -367,11 +365,11 @@ Public Class dlgTagManager
     Private Sub btnRemoveTag_Click(sender As Object, e As EventArgs) Handles btnRemoveTag.Click
         If lbTags.SelectedItems.Count > 0 Then
             Dim strtag As String = lbTags.SelectedItem.ToString
-            For Each _tag In globalMovieTags
+            For Each _tag In _GlobalMovieTags
                 If _tag.Name = strtag Then
                     _tag.IsDeleted = True
                     If _tag.IsNew = True Then
-                        globalMovieTags.Remove(_tag)
+                        _GlobalMovieTags.Remove(_tag)
                     End If
                     btnglobalTagsSync.Enabled = True
                     Exit For
@@ -399,7 +397,7 @@ Public Class dlgTagManager
             'only update if both names(old and new) are available, also don't edit if newname is already a used tagname
             If Not String.IsNullOrEmpty(strtag) AndAlso Not String.IsNullOrEmpty(newtagname) AndAlso Not lbTags.Items.Contains(newtagname) Then
                 'update listname in globallist
-                For Each _tag In globalMovieTags
+                For Each _tag In _GlobalMovieTags
                     If _tag.Name = strtag Then
                         _tag.Name = newtagname
                         _tag.IsModified = True
@@ -431,11 +429,11 @@ Public Class dlgTagManager
         If Not newTag Is Nothing Then
             btnglobalTagsSync.Enabled = True
             'add created tag to existing globaltaglist
-            globalMovieTags.Add(newTag)
+            _GlobalMovieTags.Add(newTag)
             'since globaltaglist was updated, we need to load globaltaglist again to reflect changes
             LoadLists()
         Else
-            logger.Info("New tag could not be created!")
+            _Logger.Info("New tag could not be created!")
         End If
     End Sub
     ''' <summary>
@@ -447,7 +445,7 @@ Public Class dlgTagManager
     ''' </remarks>
     Private Function CreateNewTag(ByVal listname As String) As SyncTag
         'check if tag already exists
-        For Each _list In globalMovieTags
+        For Each _list In _GlobalMovieTags
             If _list.Name = listname Then
                 Return Nothing
             End If
@@ -468,7 +466,7 @@ Public Class dlgTagManager
     ''' 
     Private Sub btnglobalMovieTagsSync_Click(sender As Object, e As EventArgs) Handles btnglobalTagsSync.Click
         'tag object will be written to Ember database/NFO (if it was edited)
-        For Each list In globalMovieTags
+        For Each list In _GlobalMovieTags
             'Check if information is stored...
             If Not list.Name Is Nothing Then
 
@@ -534,12 +532,12 @@ Public Class dlgTagManager
 
     Private Sub rdMoviesFiltered_CheckedChanged(sender As Object, e As EventArgs) Handles rdMoviesFiltered.CheckedChanged
         If rdMoviesFiltered.Checked Then
-            lstFilteredMovies.Clear()
+            _LstFilteredMovies.Clear()
             'load current movielist-view/selection
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.movie)).Value))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
-                    lstFilteredMovies.Add(DBElement)
+                    _LstFilteredMovies.Add(DBElement)
                 End If
             Next
             dgvMovies.DataSource = Nothing
@@ -550,12 +548,12 @@ Public Class dlgTagManager
 
     Private Sub rdMoviesSelected_CheckedChanged(sender As Object, e As EventArgs) Handles rdMoviesSelected.CheckedChanged
         If rdMoviesSelected.Checked Then
-            lstFilteredMovies.Clear()
+            _LstFilteredMovies.Clear()
             'load current movielist-view/selection
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(Database.Helpers.GetMainIdName(Database.TableName.movie)).Value))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
-                    lstFilteredMovies.Add(DBElement)
+                    _LstFilteredMovies.Add(DBElement)
                 End If
             Next
             dgvMovies.DataSource = Nothing
@@ -566,13 +564,13 @@ Public Class dlgTagManager
 
     Private Sub rdMoviesAll_CheckedChanged(sender As Object, e As EventArgs) Handles rdMoviesAll.CheckedChanged
         If rdMoviesAll.Checked Then
-            lstFilteredMovies.Clear()
+            _LstFilteredMovies.Clear()
             'load current movielist-view/selection
             Dim dtmovies = Master.DB.GetMovies
             For Each sRow As DataRow In dtmovies.Rows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow(Database.Helpers.GetMainIdName(Database.TableName.movie))))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
-                    lstFilteredMovies.Add(DBElement)
+                    _LstFilteredMovies.Add(DBElement)
                 End If
             Next
             dgvMovies.DataSource = Nothing
@@ -614,4 +612,4 @@ Friend Class SyncTag
 
 End Class
 
-#End Region
+#End Region 'Nested Types

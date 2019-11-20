@@ -20,52 +20,51 @@
 
 Imports EmberAPI
 Imports NLog
-Imports TraktApiSharp
-Imports System.Text.RegularExpressions
 Imports System.Threading.Tasks
+Imports TraktApiSharp
 
 Public Class clsAPITrakt
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
-    Private _client As TraktClient
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
+    Private _Client As TraktClient
 
 #End Region 'Fields
+
+#Region "Properties"
+
+    ReadOnly Property AccessToken() As String
+        Get
+            Return _Client.Authorization.AccessToken
+        End Get
+    End Property
+
+    ReadOnly Property Created() As Date
+        Get
+            Return _Client.Authorization.Created
+        End Get
+    End Property
+
+    ReadOnly Property ExpiresInSeconds() As Integer
+        Get
+            Return _Client.Authorization.ExpiresInSeconds
+        End Get
+    End Property
+
+    ReadOnly Property RefreshToken() As String
+        Get
+            Return _Client.Authorization.RefreshToken
+        End Get
+    End Property
+
+#End Region 'Properties
 
 #Region "Delegates"
 
     Public Delegate Function ShowProgress(ByVal iProgress As Integer, ByVal strMessage As String) As Boolean
 
 #End Region 'Delegates
-
-#Region "Properties"
-
-    ReadOnly Property AccessToken() As String
-        Get
-            Return _client.Authorization.AccessToken
-        End Get
-    End Property
-
-    ReadOnly Property Created() As Date
-        Get
-            Return _client.Authorization.Created
-        End Get
-    End Property
-
-    ReadOnly Property ExpiresInSeconds() As Integer
-        Get
-            Return _client.Authorization.ExpiresInSeconds
-        End Get
-    End Property
-
-    ReadOnly Property RefreshToken() As String
-        Get
-            Return _client.Authorization.RefreshToken
-        End Get
-    End Property
-
-#End Region 'Properties
 
 #Region "Events"
 
@@ -77,17 +76,17 @@ Public Class clsAPITrakt
 
     Public Function CheckConnection() As Boolean
         Try
-            Dim APIResult = Task.Run(Function() _client.Authentication.CheckIfAuthorizationIsExpiredOrWasRevokedAsync(True))
+            Dim APIResult = Task.Run(Function() _Client.Authentication.CheckIfAuthorizationIsExpiredOrWasRevokedAsync(True))
             If APIResult.Result.First AndAlso APIResult.Result.Second IsNot Nothing Then
-                _client.Authorization = APIResult.Result.Second
+                _Client.Authorization = APIResult.Result.Second
                 RaiseEvent NewTokenCreated()
-            ElseIf APIResult.Result.First OrElse _client.Authorization.IsExpired OrElse Not _client.Authorization.IsValid Then
-                CreateAPI(New Addon.AddonSettings, _client.ClientId, _client.ClientSecret)
+            ElseIf APIResult.Result.First OrElse _Client.Authorization.IsExpired OrElse Not _Client.Authorization.IsValid Then
+                CreateAPI(New Addon.AddonSettings, _Client.ClientId, _Client.ClientSecret)
             End If
         Catch ex As Exception
-            CreateAPI(New Addon.AddonSettings, _client.ClientId, _client.ClientSecret)
+            CreateAPI(New Addon.AddonSettings, _Client.ClientId, _Client.ClientSecret)
         End Try
-        Return Not _client.Authorization.IsExpired AndAlso _client.Authorization.IsValid
+        Return Not _Client.Authorization.IsExpired AndAlso _Client.Authorization.IsValid
     End Function
 
     Public Sub CreateAPI(ByVal tAddonSettings As Addon.AddonSettings, ByVal clientId As String, ByVal clientSecret As String)
@@ -102,49 +101,49 @@ Public Class clsAPITrakt
             dCreatedAt = Functions.ConvertFromUnixTimestamp(iCreatedAt)
         End If
 
-        _client = New TraktClient(clientId, clientSecret)
-        _client.Authorization = Authentication.TraktAuthorization.CreateWith(dCreatedAt, iExpiresIn, tAddonSettings.APIAccessToken, tAddonSettings.APIRefreshToken)
+        _Client = New TraktClient(clientId, clientSecret)
+        _Client.Authorization = Authentication.TraktAuthorization.CreateWith(dCreatedAt, iExpiresIn, tAddonSettings.APIAccessToken, tAddonSettings.APIRefreshToken)
 
-        If Not _client.IsValidForUseWithAuthorization Then
-            If _client.Authorization.IsRefreshPossible Then
+        If Not _Client.IsValidForUseWithAuthorization Then
+            If _Client.Authorization.IsRefreshPossible Then
                 RefreshAuthorization()
             End If
         End If
 
-        If Not _client.IsValidForUseWithAuthorization Then
+        If Not _Client.IsValidForUseWithAuthorization Then
             Try
-                Dim strActivationURL = _client.OAuth.CreateAuthorizationUrl()
-                Using dAuthorize As New frmAuthorize
+                Dim strActivationURL = _Client.OAuth.CreateAuthorizationUrl()
+                Using dAuthorize As New dlgAuthorize
                     If dAuthorize.ShowDialog(strActivationURL) = DialogResult.OK Then
-                        Dim APIResult = Task.Run(Function() _client.OAuth.GetAuthorizationAsync(dAuthorize.Result))
+                        Dim APIResult = Task.Run(Function() _Client.OAuth.GetAuthorizationAsync(dAuthorize.Result))
                         APIResult.Wait()
-                        If _client.IsValidForUseWithAuthorization Then
+                        If _Client.IsValidForUseWithAuthorization Then
                             RaiseEvent NewTokenCreated()
                         End If
                     End If
                 End Using
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End If
     End Sub
 
     Public Function RefreshAuthorization() As Boolean
-        If _client.Authorization.IsRefreshPossible Then
+        If _Client.Authorization.IsRefreshPossible Then
             Try
-                Dim APIResult = Task.Run(Function() _client.OAuth.RefreshAuthorizationAsync)
+                Dim APIResult = Task.Run(Function() _Client.OAuth.RefreshAuthorizationAsync)
                 If APIResult.Result.IsValid Then
-                    _client.Authorization = APIResult.Result
+                    _Client.Authorization = APIResult.Result
                     RaiseEvent NewTokenCreated()
                     Return True
                 End If
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-                _client.Authorization = New Authentication.TraktAuthorization
-                CreateAPI(New Addon.AddonSettings, _client.ClientId, _client.ClientSecret)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Client.Authorization = New Authentication.TraktAuthorization
+                CreateAPI(New Addon.AddonSettings, _Client.ClientId, _Client.ClientSecret)
             End Try
         Else
-            _client.Authorization = New Authentication.TraktAuthorization
+            _Client.Authorization = New Authentication.TraktAuthorization
             CreateAPI(New Addon.AddonSettings, String.Empty, String.Empty)
         End If
         Return False
@@ -275,65 +274,65 @@ Public Class clsAPITrakt
         Dim nSearchResults As Objects.Basic.TraktPaginationListResult(Of Objects.Basic.TraktSearchResult) = Nothing
         Dim nContentType As Enums.ContentType = If(bForceTVShowID, Enums.ContentType.TVShow, tDBElement.ContentType)
 
-        If _client IsNot Nothing Then
+        If _Client IsNot Nothing Then
             Select Case nContentType
                 Case Enums.ContentType.Movie
                     'search by IMDB ID
-                    If tDBElement.Movie.UniqueIDs.IMDbIDSpecified Then
-                        nSearchResults = Await _client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.Movie.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Movie)
+                    If tDBElement.Movie.UniqueIDs.IMDbIdSpecified Then
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.Movie.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Movie)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by TMDB ID
                     If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.Movie.UniqueIDs.TMDbIdSpecified Then
-                        nSearchResults = Await _client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.Movie.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Movie)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.Movie.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Movie)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     If nSearchResults IsNot Nothing AndAlso nSearchResults.ItemCount = 1 AndAlso nSearchResults(0).Movie IsNot Nothing Then
                         Return nSearchResults(0).Movie.Ids.Trakt
                     Else
-                        logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! IMDB: {0} / TMDB: {1}", tDBElement.Movie.UniqueIDs.IMDbId, tDBElement.Movie.UniqueIDs.TMDbId))
+                        _Logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! IMDB: {0} / TMDB: {1}", tDBElement.Movie.UniqueIDs.IMDbId, tDBElement.Movie.UniqueIDs.TMDbId))
                     End If
                 Case Enums.ContentType.TVEpisode
                     'search by TVDB ID
                     If tDBElement.TVEpisode.UniqueIDs.TVDbIdSpecified Then
-                        nSearchResults = Await _client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.TVEpisode.UniqueIDs.TVDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.TVEpisode.UniqueIDs.TVDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by IMDB ID
                     If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.TVEpisode.UniqueIDs.IMDbIdSpecified Then
-                        nSearchResults = Await _client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.TVEpisode.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.TVEpisode.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by TMDB ID
                     If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.TVEpisode.UniqueIDs.TMDbIdSpecified Then
-                        nSearchResults = Await _client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.TVEpisode.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.TVEpisode.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     If nSearchResults IsNot Nothing AndAlso nSearchResults.ItemCount = 1 AndAlso nSearchResults(0).Episode IsNot Nothing Then
                         Return nSearchResults(0).Episode.Ids.Trakt
                     Else
-                        logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! TVDB: {0} / IMDB: {1} / TMDB: {2}", tDBElement.TVEpisode.UniqueIDs.TVDbIdSpecified, tDBElement.TVEpisode.UniqueIDs.IMDbId, tDBElement.TVEpisode.UniqueIDs.TMDbId))
+                        _Logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! TVDB: {0} / IMDB: {1} / TMDB: {2}", tDBElement.TVEpisode.UniqueIDs.TVDbIdSpecified, tDBElement.TVEpisode.UniqueIDs.IMDbId, tDBElement.TVEpisode.UniqueIDs.TMDbId))
                     End If
                 Case Enums.ContentType.TVShow
                     'search by TVDB ID
-                    If tDBElement.TVShow.UniqueIDs.TVDbIDSpecified Then
-                        nSearchResults = Await _client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.TVShow.UniqueIDs.TVDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
+                    If tDBElement.TVShow.UniqueIDs.TVDbIdSpecified Then
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.TVShow.UniqueIDs.TVDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by IMDB ID
                     If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.TVShow.UniqueIDs.IMDbIdSpecified Then
-                        nSearchResults = Await _client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.TVShow.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.TVShow.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by TMDB ID
                     If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.TVShow.UniqueIDs.TMDbIdSpecified Then
-                        nSearchResults = Await _client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.TVShow.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.TVShow.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     If nSearchResults IsNot Nothing AndAlso nSearchResults.ItemCount = 1 AndAlso nSearchResults(0).Show IsNot Nothing Then
                         Return nSearchResults(0).Show.Ids.Trakt
                     Else
-                        logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! TVDB: {0} / IMDB: {1} / TMDB: {2}", tDBElement.TVShow.UniqueIDs.TVDbId, tDBElement.TVShow.UniqueIDs.IMDbId, tDBElement.TVShow.UniqueIDs.TMDbId))
+                        _Logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! TVDB: {0} / IMDB: {1} / TMDB: {2}", tDBElement.TVShow.UniqueIDs.TVDbId, tDBElement.TVShow.UniqueIDs.IMDbId, tDBElement.TVShow.UniqueIDs.TMDbId))
                     End If
             End Select
         End If
@@ -411,7 +410,7 @@ Public Class clsAPITrakt
 
     Public Function GetWatched_Movies() As IEnumerable(Of Objects.Get.Watched.TraktWatchedMovie)
         If CheckConnection() Then
-            Dim APIResult = Task.Run(Function() _client.Sync.GetWatchedMoviesAsync())
+            Dim APIResult = Task.Run(Function() _Client.Sync.GetWatchedMoviesAsync())
             If APIResult.Exception Is Nothing Then
                 Return APIResult.Result
             End If
@@ -425,7 +424,7 @@ Public Class clsAPITrakt
             If bGetFullInformation Then
                 nOptions = New Requests.Params.TraktExtendedInfo With {.Full = True}
             End If
-            Dim APIResult = Task.Run(Function() _client.Sync.GetWatchedShowsAsync(nOptions))
+            Dim APIResult = Task.Run(Function() _Client.Sync.GetWatchedShowsAsync(nOptions))
             If APIResult.Exception Is Nothing Then
                 Return APIResult.Result
             End If

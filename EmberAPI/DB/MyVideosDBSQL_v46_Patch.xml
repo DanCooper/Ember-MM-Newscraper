@@ -641,6 +641,8 @@
         audioChannels           integer,
         audioBitrate            integer,
         audioLanguage           text,
+        audioBitDepth           integer,
+        audioAdditionalFeatures text,
         subtitleLanguage        text,
         subtitleForced          boolean,
         subtitlePath            text

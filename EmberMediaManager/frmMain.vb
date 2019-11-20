@@ -8647,9 +8647,9 @@ Public Class frmMain
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
                         Dim strModuleName As String = CStr(_params(1))
                         Dim oParameters As List(Of Object) = CType(_params(2), List(Of Object))
-                        Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalGenericModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = strModuleName)
+                        Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalGenericModules.FirstOrDefault(Function(y) y.AssemblyName = strModuleName)
                         If gModule IsNot Nothing Then
-                            gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, oParameters, Nothing, Nothing)
+                            gModule.ProcessorModule.Run(Enums.ModuleEventType.CommandLine, oParameters, Nothing, Nothing)
                         End If
                     Case "scrapemovies"
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)

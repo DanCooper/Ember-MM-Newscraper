@@ -72,6 +72,8 @@ Public Class MetaData
 
                 'audio streams
                 For i = 0 To mainFileInfo.StreamDetails.Audio.Count - 1
+                    If Not mainFileInfo.StreamDetails.Audio(i).AdditionalFeaturesSpecified AndAlso otherFileInfo.StreamDetails.Audio(i).AdditionalFeaturesSpecified Then mainFileInfo.StreamDetails.Audio(i).AdditionalFeatures = otherFileInfo.StreamDetails.Audio(i).AdditionalFeatures
+                    If Not mainFileInfo.StreamDetails.Audio(i).BitDepthSpecified AndAlso otherFileInfo.StreamDetails.Audio(i).BitDepthSpecified Then mainFileInfo.StreamDetails.Audio(i).BitDepth = otherFileInfo.StreamDetails.Audio(i).BitDepth
                     If Not mainFileInfo.StreamDetails.Audio(i).BitrateSpecified AndAlso otherFileInfo.StreamDetails.Audio(i).BitrateSpecified Then mainFileInfo.StreamDetails.Audio(i).Bitrate = otherFileInfo.StreamDetails.Audio(i).Bitrate
                     If Not mainFileInfo.StreamDetails.Audio(i).ChannelsSpecified AndAlso otherFileInfo.StreamDetails.Audio(i).ChannelsSpecified Then mainFileInfo.StreamDetails.Audio(i).Channels = otherFileInfo.StreamDetails.Audio(i).Channels
                     If Not mainFileInfo.StreamDetails.Audio(i).CodecSpecified AndAlso otherFileInfo.StreamDetails.Audio(i).CodecSpecified Then mainFileInfo.StreamDetails.Audio(i).Codec = otherFileInfo.StreamDetails.Audio(i).Codec
@@ -253,29 +255,22 @@ Public Class MetaData
                 If nFileInfo.StreamDetails.AudioSpecified Then
                     'do the audio codec mapping
                     For Each stream In nFileInfo.StreamDetails.Audio.Where(Function(f) f.CodecSpecified)
-                        Dim lstMappings As New List(Of AdvancedSettingsComplexSettingsTableItem)
-                        lstMappings = AdvancedSettings.GetComplexSetting("AudioFormatConverts")
-                        If Not lstMappings Is Nothing Then
-                            For Each k In lstMappings
-                                If stream.Codec.ToLower = k.Name.ToLower Then
-                                    stream.Codec = k.Value
-                                End If
-                            Next
-                        End If
+                        For Each mapping In Master.eSettings.GeneralAudioCodecMapping
+                            If stream.Codec = mapping.Codec Then
+                                stream.AdditionalFeatures = mapping.AdditionalFeatures
+                                stream.Codec = mapping.Mapping
+                            End If
+                        Next
                     Next
                 End If
                 If nFileInfo.StreamDetails.VideoSpecified Then
                     'do the video codec mapping
                     For Each stream In nFileInfo.StreamDetails.Video.Where(Function(f) f.CodecSpecified)
-                        Dim lstMappings As New List(Of AdvancedSettingsComplexSettingsTableItem)
-                        lstMappings = AdvancedSettings.GetComplexSetting("VideoFormatConverts")
-                        If Not lstMappings Is Nothing Then
-                            For Each k In lstMappings
-                                If stream.Codec.ToLower = k.Name.ToLower Then
-                                    stream.Codec = k.Value
-                                End If
-                            Next
-                        End If
+                        For Each mapping In Master.eSettings.GeneralVideoCodecMapping
+                            If stream.Codec = mapping.Codec Then
+                                stream.Codec = mapping.Mapping
+                            End If
+                        Next
                     Next
                 End If
             End If

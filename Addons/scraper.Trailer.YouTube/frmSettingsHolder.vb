@@ -23,69 +23,42 @@ Imports EmberAPI
 
 Public Class frmSettingsHolder
 
-#Region "Fields"
-
-#End Region 'Fields
-
-#Region "Properties"
-
-#End Region 'Properties
-
 #Region "Events"
 
-    Public Event ModuleSettingsChanged()
+    Public Event NeedsRestart()
+    Public Event SettingsChanged()
+    Public Event StateChanged(ByVal State As Boolean, ByVal DiffOrder As Integer)
 
-    Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-
-    Public Event SetupNeedsRestart()
-
-#End Region 'Events
+#End Region 'Events 
 
 #Region "Methods"
-    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = YouTube_Trailer._AssemblyName).ModuleOrder
-        If order < ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count - 1 Then
-            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = YouTube_Trailer._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
-            orderChanged()
-        End If
-    End Sub
-
-    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = YouTube_Trailer._AssemblyName).ModuleOrder
-        If order > 0 Then
-            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = YouTube_Trailer._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
-            orderChanged()
-        End If
-    End Sub
-
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
-    End Sub
 
     Public Sub New()
         InitializeComponent()
-        Me.SetUp()
+        Setup()
     End Sub
 
-    Sub orderChanged()
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = YouTube_Trailer._AssemblyName).ModuleOrder
-        If ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count > 1 Then
-            btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count - 1)
-            btnUp.Enabled = (order > 0)
-        Else
-            btnDown.Enabled = False
-            btnUp.Enabled = False
-        End If
+    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+        RaiseEvent StateChanged(chkEnabled.Checked, 1)
     End Sub
 
-    Sub SetUp()
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
-        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+        RaiseEvent StateChanged(chkEnabled.Checked, -1)
+    End Sub
+
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent StateChanged(chkEnabled.Checked, 0)
+    End Sub
+
+    Public Sub OrderChanged(ByVal OrderState As Containers.SettingsPanel.OrderState)
+        btnDown.Enabled = OrderState.Position < OrderState.TotalCount - 1
+        btnUp.Enabled = OrderState.Position > 0
+    End Sub
+
+    Sub Setup()
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
+        lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods

@@ -24,21 +24,11 @@ Public Class frmSettingsHolder_TV
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged()
+    Public Event NeedsRestart()
+    Public Event SettingsChanged()
+    Public Event StateChanged(ByVal State As Boolean, ByVal DiffOrder As Integer)
 
-    Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-
-    Public Event SetupNeedsRestart()
-
-#End Region 'Events
-
-#Region "Fields"
-
-#End Region 'Fields
-
-#Region "Properties"
-
-#End Region 'Properties
+#End Region 'Events 
 
 #Region "Methods"
 
@@ -56,8 +46,8 @@ Public Class frmSettingsHolder_TV
         If order < ModulesManager.Instance.externalScrapersModules_Data_TV.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder = order + 1
-            RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
-            orderChanged()
+            RaiseEvent StateChanged(chkEnabled.Checked, 1)
+            OrderChanged()
         End If
     End Sub
 
@@ -66,8 +56,8 @@ Public Class frmSettingsHolder_TV
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder = order - 1
-            RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
-            orderChanged()
+            RaiseEvent StateChanged(chkEnabled.Checked, -1)
+            OrderChanged()
         End If
     End Sub
 
@@ -85,10 +75,10 @@ Public Class frmSettingsHolder_TV
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
+        RaiseEvent StateChanged(chkEnabled.Checked, 0)
     End Sub
 
-    Private Sub SettingsChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
+    Private Sub Apply(ByVal sender As Object, ByVal e As EventArgs) Handles _
         chkFallBackEng.CheckedChanged,
         chkGetAdultItems.CheckedChanged,
         chkScraperEpisodeActors.CheckedChanged,
@@ -116,14 +106,14 @@ Public Class frmSettingsHolder_TV
         chkScraperShowStudios.CheckedChanged,
         chkScraperShowTitle.CheckedChanged
 
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub txtTMDBApiKey_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtApiKey.TextChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
-    Sub orderChanged()
+    Public Sub OrderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder
         If ModulesManager.Instance.externalScrapersModules_Data_TV.Count > 1 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Data_TV.Count - 1)

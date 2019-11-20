@@ -165,19 +165,19 @@
     <Compile Include="dlgWorker.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAuthorize.Designer.vb">
-      <DependentUpon>frmAuthorize.vb</DependentUpon>
+    <Compile Include="dlgAuthorize.Designer.vb">
+      <DependentUpon>dlgAuthorize.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmAuthorize.vb">
+    <Compile Include="dlgAuthorize.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSettingsHolder.Designer.vb">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel.Designer.vb">
+      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsHolder.vb">
+    <Compile Include="frmSettingsPanel.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Interface.Trakt.vb" />
+    <Compile Include="addon.trakt.tv.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -198,11 +198,11 @@
     <EmbeddedResource Include="dlgWorker.resx">
       <DependentUpon>dlgWorker.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmAuthorize.resx">
-      <DependentUpon>frmAuthorize.vb</DependentUpon>
+    <EmbeddedResource Include="dlgAuthorize.resx">
+      <DependentUpon>dlgAuthorize.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSettingsHolder.resx">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel.resx">
+      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

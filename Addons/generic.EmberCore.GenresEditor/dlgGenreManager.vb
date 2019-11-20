@@ -18,19 +18,20 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Windows.Forms
-Imports System.IO
 Imports EmberAPI
 Imports NLog
 Imports System.Drawing
+Imports System.IO
+Imports System.Windows.Forms
 
 Public Class dlgGenreManager
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
+
     Friend WithEvents bwCleanDatabase As New System.ComponentModel.BackgroundWorker
-    Private tmpGenreXML As XMLGenres
+    Private _TmpGenreXML As XMLGenres
 
 #End Region 'Fields
 
@@ -43,9 +44,9 @@ Public Class dlgGenreManager
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
         Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
         StartPosition = FormStartPosition.Manual
-        SetUp()
+        Setup()
         Master.DB.LoadAllGenres()
-        tmpGenreXML = CType(APIXML.GenreXML.CloneDeep, XMLGenres)
+        _TmpGenreXML = CType(APIXML.GenreXML.CloneDeep, XMLGenres)
         PopulateGenres()
     End Sub
 
@@ -57,7 +58,7 @@ Public Class dlgGenreManager
         Dim strGenre As String = InputBox(Master.eLang.GetString(640, "Enter the new Genre"), Master.eLang.GetString(641, "New Genre"))
         If Not String.IsNullOrEmpty(strGenre) Then
             Dim gProperty As New GenreProperty With {.IsNew = False, .Name = strGenre}
-            tmpGenreXML.Genres.Add(gProperty)
+            _TmpGenreXML.Genres.Add(gProperty)
             Dim iRow As Integer = dgvGenres.Rows.Add(New Object() {False, strGenre})
             dgvGenres.Rows(iRow).Tag = gProperty
             dgvGenres.CurrentCell = dgvGenres.Rows(iRow).Cells(1)
@@ -74,7 +75,7 @@ Public Class dlgGenreManager
     End Sub
 
     Private Sub btnGenreConfirmAll_Click(sender As Object, e As EventArgs) Handles btnGenreConfirmAll.Click
-        For Each gProperty As GenreProperty In tmpGenreXML.Genres.Where(Function(f) f.IsNew)
+        For Each gProperty As GenreProperty In _TmpGenreXML.Genres.Where(Function(f) f.IsNew)
             gProperty.IsNew = False
         Next
         dgvGenres.Refresh()
@@ -84,8 +85,8 @@ Public Class dlgGenreManager
         If MsgBox(Master.eLang.GetString(661, "This will remove the Genre from all Mappings. Are you sure?"), MsgBoxStyle.YesNo, Master.eLang.GetString(662, "Remove Genre")) = MsgBoxResult.Yes Then
             If dgvGenres.SelectedRows.Count > 0 Then 'AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
                 Dim gProperty As GenreProperty = DirectCast(dgvGenres.SelectedRows(0).Tag, GenreProperty)
-                tmpGenreXML.Genres.Remove(gProperty)
-                For Each gMapping As GenreMapping In tmpGenreXML.Mappings
+                _TmpGenreXML.Genres.Remove(gProperty)
+                For Each gMapping As GenreMapping In _TmpGenreXML.Mappings
                     If gMapping.MappedTo.Contains(gProperty.Name) Then
                         gMapping.MappedTo.Remove(gProperty.Name)
                     End If
@@ -123,7 +124,7 @@ Public Class dlgGenreManager
         Dim strSearchString As String = InputBox(Master.eLang.GetString(1000, "Enter the new Mapping"), Master.eLang.GetString(1005, "New Mapping"))
         If Not String.IsNullOrEmpty(strSearchString) Then
             Dim gMapping As New GenreMapping With {.SearchString = strSearchString}
-            tmpGenreXML.Mappings.Add(gMapping)
+            _TmpGenreXML.Mappings.Add(gMapping)
             Dim iRow As Integer = dgvMappings.Rows.Add(New Object() {strSearchString})
             dgvMappings.Rows(iRow).Tag = gMapping
             dgvMappings.CurrentCell = dgvMappings.Rows(iRow).Cells(0)
@@ -140,7 +141,7 @@ Public Class dlgGenreManager
     End Sub
 
     Private Sub btnMappingConfirmAll_Click(sender As Object, e As EventArgs) Handles btnMappingConfirmAll.Click
-        For Each gMapping As GenreMapping In tmpGenreXML.Mappings.Where(Function(f) f.isNew)
+        For Each gMapping As GenreMapping In _TmpGenreXML.Mappings.Where(Function(f) f.isNew)
             gMapping.isNew = False
         Next
         dgvMappings.Refresh()
@@ -148,7 +149,7 @@ Public Class dlgGenreManager
 
     Private Sub btnMappingRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMappingRemove.Click
         If dgvMappings.SelectedCells.Count > 0 Then
-            tmpGenreXML.Mappings.Remove(DirectCast(dgvMappings.SelectedRows(0).Tag, GenreMapping))
+            _TmpGenreXML.Mappings.Remove(DirectCast(dgvMappings.SelectedRows(0).Tag, GenreMapping))
             dgvMappings.Rows.RemoveAt(dgvMappings.SelectedCells(0).RowIndex)
         End If
     End Sub
@@ -237,7 +238,7 @@ Public Class dlgGenreManager
             Dim gProperty As GenreProperty = DirectCast(dgvGenres.CurrentRow.Tag, GenreProperty)
             Dim strNewName As String = dgvGenres.CurrentRow.Cells(1).Value.ToString
             If Not gProperty.Name = strNewName Then
-                For Each tMapping As GenreMapping In tmpGenreXML.Mappings.Where(Function(f) f.MappedTo.Contains(gProperty.Name))
+                For Each tMapping As GenreMapping In _TmpGenreXML.Mappings.Where(Function(f) f.MappedTo.Contains(gProperty.Name))
                     While tMapping.MappedTo.Contains(gProperty.Name)
                         tMapping.MappedTo.Remove(gProperty.Name)
                     End While
@@ -353,11 +354,11 @@ Public Class dlgGenreManager
     End Sub
 
     Private Sub PopulateGenres()
-        tmpGenreXML.Sort()
+        _TmpGenreXML.Sort()
         cbMappingFilter.Items.Clear()
         dgvGenres.Rows.Clear()
         cbMappingFilter.Items.Add(Master.eLang.GetString(639, "< All >"))
-        For Each gProperty As GenreProperty In tmpGenreXML.Genres
+        For Each gProperty As GenreProperty In _TmpGenreXML.Genres
             cbMappingFilter.Items.Add(gProperty.Name)
             Dim iRow As Integer = dgvGenres.Rows.Add(New Object() {False, gProperty.Name})
             dgvGenres.Rows(iRow).Tag = gProperty
@@ -370,13 +371,13 @@ Public Class dlgGenreManager
         dgvMappings.Rows.Clear()
         GenreClearSelection()
         If cbMappingFilter.SelectedItem.ToString = Master.eLang.GetString(639, "< All >") Then
-            For Each gMapping As GenreMapping In tmpGenreXML.Mappings
+            For Each gMapping As GenreMapping In _TmpGenreXML.Mappings
                 Dim iRow As Integer = dgvMappings.Rows.Add(New Object() {gMapping.SearchString})
                 dgvMappings.Rows(iRow).Tag = gMapping
             Next
         Else
             btnMappingRemove.Enabled = False
-            For Each gMapping As GenreMapping In tmpGenreXML.Mappings.Where(Function(f) f.MappedTo.Contains(cbMappingFilter.SelectedItem.ToString))
+            For Each gMapping As GenreMapping In _TmpGenreXML.Mappings.Where(Function(f) f.MappedTo.Contains(cbMappingFilter.SelectedItem.ToString))
                 Dim i As Integer = dgvMappings.Rows.Add(New Object() {gMapping.SearchString})
                 dgvMappings.Rows(i).Tag = gMapping
             Next
@@ -384,11 +385,11 @@ Public Class dlgGenreManager
     End Sub
 
     Public Sub SaveChanges()
-        APIXML.GenreXML = tmpGenreXML
+        APIXML.GenreXML = _TmpGenreXML
         APIXML.GenreXML.Save()
     End Sub
 
-    Private Sub SetUp()
+    Private Sub Setup()
         Text = Master.eLang.GetString(782, "Genre Manager")
         btnCancel.Text = Master.eLang.Cancel
         btnGenreAdd.Text = Master.eLang.GetString(28, "Add")
@@ -409,9 +410,5 @@ Public Class dlgGenreManager
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-#End Region 'Nested Types
 
 End Class

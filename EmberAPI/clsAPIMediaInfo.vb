@@ -125,26 +125,30 @@ Public Class MediaInfo
         Return 0
     End Function
 
-    Private Function ConvertAudioFormat(ByVal sCodecID As String, ByVal sFormat As String, ByVal sCodecHint As String, ByVal sProfile As String) As String
-        Dim strCodec As String = String.Empty
-        If sFormat.ToLower.Contains("dts") AndAlso (sProfile.ToLower.Contains("hra / core") OrElse sProfile.ToLower.Contains("ma / core")) Then
-            strCodec = sProfile
-        ElseIf sFormat.ToLower.Contains("atmos / truehd") Then
-            strCodec = sFormat
-        ElseIf sProfile.ToLower.Contains("truehd+atmos") Then
-            strCodec = sProfile
-        ElseIf sProfile.ToLower.Contains("e-ac-3+atmos") Then
-            strCodec = "e-ac-3+atmos"
-        ElseIf Not String.IsNullOrEmpty(sCodecID) AndAlso Not Integer.TryParse(sCodecID, 0) AndAlso Not sCodecID.ToLower.Contains("a_pcm") AndAlso Not sCodecID.Contains("00001000-0000-0100-8000-00AA00389B71") Then
-            strCodec = sCodecID
-        ElseIf Not String.IsNullOrEmpty(sCodecHint) Then
-            strCodec = sCodecHint
-        ElseIf sFormat.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(sProfile) Then
-            strCodec = String.Concat("mp", sProfile.Replace("Layer", String.Empty).Trim).Trim
-        ElseIf Not String.IsNullOrEmpty(sFormat) Then
-            strCodec = sFormat
+    Private Function ConvertAudioFormat(ByVal codecID As String,
+                                        ByVal format As String,
+                                        ByVal codecHint As String,
+                                        ByVal profile As String,
+                                        ByVal additionalFeatures As String) As String
+        If format.ToLower.Contains("dts") AndAlso (profile.ToLower.Contains("hra / core") OrElse profile.ToLower.Contains("ma / core")) Then
+            Return profile
+        ElseIf additionalFeatures.ToLower.Contains("xll") Then
+            Return String.Format("{0} {1}", format, additionalFeatures).Trim
+        ElseIf format.ToLower.Contains("atmos / truehd") Then
+            Return format
+        ElseIf profile.ToLower.Contains("truehd+atmos") Then
+            Return profile
+        ElseIf profile.ToLower.Contains("e-ac-3+atmos") Then
+            Return "e-ac-3+atmos"
+        ElseIf Not String.IsNullOrEmpty(codecID) AndAlso Not Integer.TryParse(codecID, 0) AndAlso Not codecID.ToLower.Contains("a_pcm") AndAlso Not codecID.Contains("00001000-0000-0100-8000-00AA00389B71") Then
+            Return codecID
+        ElseIf Not String.IsNullOrEmpty(codecHint) Then
+            Return codecHint
+        ElseIf format.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(profile) Then
+            Return String.Concat("mp", profile.Replace("Layer", String.Empty).Trim).Trim
+        Else
+            Return format
         End If
-        Return strCodec.ToLower
     End Function
 
     Private Function ConvertBitDepth(ByVal bitdepth As String) As Integer
@@ -214,16 +218,16 @@ Public Class MediaInfo
         Return 0
     End Function
 
-    Private Function ConvertVideoFormat(ByVal sCodecID As String, ByVal sFormat As String, ByVal sVersion As String) As String
-        Dim strCodec As String = String.Empty
+    Private Function ConvertVideoFormat(ByVal sCodecID As String,
+                                        ByVal sFormat As String,
+                                        ByVal sVersion As String) As String
         If Not String.IsNullOrEmpty(sCodecID) AndAlso Not Integer.TryParse(sCodecID, 0) Then
-            strCodec = sCodecID
+            Return sCodecID
         ElseIf sFormat.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(sVersion) Then
-            strCodec = String.Concat("mpeg", sVersion.Replace("Version", String.Empty).Trim, "video").Trim
-        ElseIf Not String.IsNullOrEmpty(sFormat) Then
-            strCodec = sFormat
+            Return String.Concat("mpeg", sVersion.Replace("Version", String.Empty).Trim, "video").Trim
+        Else
+            Return sFormat
         End If
-        Return strCodec.ToLower
     End Function
 
     Private Function ConvertVideoMultiViewCount(ByVal multiViewCount As String) As Integer
@@ -321,15 +325,13 @@ Public Class MediaInfo
             For i As Integer = 0 To intAudioStreamsCount - 1
                 Dim nAudio As New MediaContainers.Audio
                 'Audio General
+                nAudio.BitDepth = ConvertBitDepth(Get_(StreamKind.Audio, i, "BitDepth"))
                 nAudio.Bitrate = ConvertBitrate(Get_(StreamKind.Audio, i, "BitRate"), Get_(StreamKind.Audio, i, "BitRate_Maximum"))
                 nAudio.Channels = ConvertAudioChannels(Get_(StreamKind.Audio, i, "Channel(s)_Original"))
                 If Not nAudio.ChannelsSpecified Then
                     nAudio.Channels = ConvertAudioChannels(Get_(StreamKind.Audio, i, "Channel(s)"))
                 End If
-                nAudio.Codec = ConvertAudioFormat(Get_(StreamKind.Audio, i, "CodecID"),
-                                                  Get_(StreamKind.Audio, i, "Format"),
-                                                  Get_(StreamKind.Audio, i, "CodecID/Hint"),
-                                                  Get_(StreamKind.Audio, i, "Format_Profile"))
+                nAudio.Codec = Get_(StreamKind.Audio, i, "Format/String").ToLower
                 'Audio Language
                 Dim strLanguage = Get_(StreamKind.Audio, i, "Language/String")
                 If Not String.IsNullOrEmpty(strLanguage) Then
@@ -363,7 +365,7 @@ Public Class MediaInfo
                 nVideo.ChromaSubsampling = Get_(StreamKind.Visual, i, "ChromaSubsampling")
                 nVideo.Codec = ConvertVideoFormat(Get_(StreamKind.Visual, i, "CodecID"),
                                                   Get_(StreamKind.Visual, i, "Format"),
-                                                  Get_(StreamKind.Visual, i, "Format_Version"))
+                                                  Get_(StreamKind.Visual, i, "Format_Version")).ToLower
                 nVideo.Duration = ConvertVideoDuration(Get_(StreamKind.Visual, i, "Duration/String3"), Get_(StreamKind.General, 0, "Duration/String3"))
                 nVideo.Height = ConvertVideoWidthOrHeight(Get_(StreamKind.Visual, i, "Height"))
                 nVideo.MultiViewCount = ConvertVideoMultiViewCount(Get_(StreamKind.Visual, i, "MultiView_Count"))
