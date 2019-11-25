@@ -185,6 +185,7 @@
     </Compile>
     <Compile Include="clsAPIFormsUtils.vb" />
     <Compile Include="clsAPIIMDB.vb" />
+    <Compile Include="clsAPILogger.vb" />
     <Compile Include="clsAPIMetaData.vb" />
     <Compile Include="clsAPIProfiles.vb" />
     <Compile Include="clsAPISmartFilter.vb" />
@@ -202,7 +203,7 @@
     <Compile Include="clsAPIMediaContainers.vb" />
     <Compile Include="clsAPIMediaInfo.vb" />
     <Compile Include="clsAPIMediaStub.vb" />
-    <Compile Include="clsAPIModules.vb" />
+    <Compile Include="clsAPIAddons.vb" />
     <Compile Include="clsAPINFO.vb" />
     <Compile Include="clsAPINumUtils.vb" />
     <Compile Include="clsAPIScanner.vb" />
@@ -529,10 +530,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Settings\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>

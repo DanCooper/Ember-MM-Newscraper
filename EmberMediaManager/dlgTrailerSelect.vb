@@ -320,7 +320,7 @@ Public Class dlgTrailerSelect
     Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            If Not ModulesManager.Instance.ScrapeTrailer_Movie(tmpDBElement, Enums.ModifierType.MainTrailer, nList) Then
+            If Not AddonsManager.Instance.ScrapeTrailer_Movie(tmpDBElement, Enums.ModifierType.MainTrailer, nList) Then
                 Args.bType = True
             Else
                 Args.bType = False

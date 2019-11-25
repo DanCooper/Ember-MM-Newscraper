@@ -632,14 +632,6 @@ Public Class Scanner
             dbElement.Movie.Title = StringUtils.FilterTitleFromPath_Movie(dbElement.FileItem, dbElement.IsSingle, dbElement.Source.UseFolderName)
         End If
 
-        'ListTitle
-        Dim tTitle As String = StringUtils.SortTokens_Movie(dbElement.Movie.Title)
-        If Master.eSettings.MovieDisplayYear AndAlso dbElement.Movie.YearSpecified Then
-            dbElement.ListTitle = String.Format("{0} ({1})", tTitle, dbElement.Movie.Year)
-        Else
-            dbElement.ListTitle = tTitle
-        End If
-
         If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
             For Each a In FileUtils.FileNames.GetFileNames(dbElement, Enums.ModifierType.MainWatchedFile)
                 If dbElement.Movie.PlayCountSpecified Then
@@ -656,7 +648,7 @@ Public Class Scanner
             Next
         End If
 
-        If dbElement.ListTitleSpecified Then
+        If dbElement.Movie.TitleSpecified Then
             'search local actor thumb for each actor in NFO
             If dbElement.Movie.ActorsSpecified AndAlso dbElement.ActorThumbsSpecified Then
                 For Each actor In dbElement.Movie.Actors
@@ -698,7 +690,7 @@ Public Class Scanner
     End Sub
 
     Public Sub Load_MovieSet(ByRef dbElement As Database.DBElement, ByVal batchMode As Boolean)
-        Dim OldTitle As String = dbElement.MovieSet.Title
+        Dim OldTitle As String = dbElement.Movieset.Title
 
         GetFolderContents_MovieSet(dbElement)
 
@@ -706,28 +698,20 @@ Public Class Scanner
             Dim sNFO As String = Info.GetNfoPath_MovieSet(dbElement)
             If Not String.IsNullOrEmpty(sNFO) Then
                 dbElement.NfoPath = sNFO
-                dbElement.MovieSet = Info.LoadFromNFO_MovieSet(sNFO)
+                dbElement.Movieset = Info.LoadFromNFO_MovieSet(sNFO)
             End If
         Else
-            dbElement.MovieSet = Info.LoadFromNFO_MovieSet(dbElement.NfoPath)
-        End If
-
-        'ListTitle
-        Dim tTitle As String = StringUtils.SortTokens_MovieSet(dbElement.MovieSet.Title)
-        If Not String.IsNullOrEmpty(tTitle) Then
-            dbElement.ListTitle = tTitle
-        Else
-            dbElement.ListTitle = OldTitle
+            dbElement.Movieset = Info.LoadFromNFO_MovieSet(dbElement.NfoPath)
         End If
 
         'Language
-        If dbElement.MovieSet.LanguageSpecified Then
-            dbElement.Language = dbElement.MovieSet.Language
+        If dbElement.Movieset.LanguageSpecified Then
+            dbElement.Language = dbElement.Movieset.Language
         End If
 
         'Lock state
-        If dbElement.MovieSet.Locked Then
-            dbElement.IsLocked = dbElement.MovieSet.Locked
+        If dbElement.Movieset.Locked Then
+            dbElement.IsLocked = dbElement.Movieset.Locked
         End If
 
         dbElement = Master.DB.Save_MovieSet(dbElement, batchMode, False, False, True)
@@ -773,7 +757,7 @@ Public Class Scanner
                     End If
 
                     'Scrape episode data
-                    If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.eSettings.DefaultOptions_TV, False) Then
+                    If Not AddonsManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.eSettings.DefaultOptions_TV, False) Then
                         If cEpisode.TVEpisode.TitleSpecified Then
                             ToNfo = True
 
@@ -795,7 +779,7 @@ Public Class Scanner
                 If Not cEpisode.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then ScrapeModifiers.EpisodeFanart = True
                 If Not cEpisode.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.TVEpisodePosterAnyEnabled Then ScrapeModifiers.EpisodePoster = True
                 If ScrapeModifiers.EpisodeFanart OrElse ScrapeModifiers.EpisodePoster Then
-                    If Not ModulesManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifiers, False) Then
+                    If Not AddonsManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifiers, False) Then
                         Images.SetPreferredImages(cEpisode, SearchResultsContainer, ScrapeModifiers)
                     End If
                 End If
@@ -927,15 +911,7 @@ Public Class Scanner
                     dbElement.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(dbElement.ShowPath)
                 End If
 
-                'ListTitle
-                Dim tTitle As String = StringUtils.SortTokens_TV(dbElement.TVShow.Title)
-                If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(dbElement.TVShow.Status) Then
-                    dbElement.ListTitle = String.Format("{0} ({1})", tTitle, dbElement.TVShow.Status)
-                Else
-                    dbElement.ListTitle = tTitle
-                End If
-
-                If dbElement.ListTitleSpecified Then
+                If dbElement.TVShow.TitleSpecified Then
                     'search local actor thumb for each actor in NFO
                     If dbElement.TVShow.ActorsSpecified AndAlso dbElement.ActorThumbsSpecified Then
                         For Each actor In dbElement.TVShow.Actors
@@ -997,7 +973,7 @@ Public Class Scanner
                                 Else
                                     'Scrape season info
                                     If isNew AndAlso tmpSeason.TVShow.UniqueIDsSpecified AndAlso tmpSeason.ShowIDSpecified Then
-                                        ModulesManager.Instance.ScrapeData_TVSeason(tmpSeason, Master.eSettings.DefaultOptions_TV, False)
+                                        AddonsManager.Instance.ScrapeData_TVSeason(tmpSeason, Master.eSettings.DefaultOptions_TV, False)
                                     End If
                                 End If
 
@@ -1012,7 +988,7 @@ Public Class Scanner
                                     If Not tmpSeason.ImagesContainer.Landscape.LocalFilePathSpecified AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled Then ScrapeModifiers.SeasonLandscape = True
                                     If Not tmpSeason.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.TVSeasonPosterAnyEnabled Then ScrapeModifiers.SeasonPoster = True
                                     If ScrapeModifiers.SeasonBanner OrElse ScrapeModifiers.SeasonFanart OrElse ScrapeModifiers.SeasonLandscape OrElse ScrapeModifiers.SeasonPoster Then
-                                        If Not ModulesManager.Instance.ScrapeImage_TV(tmpSeason, SearchResultsContainer, ScrapeModifiers, False) Then
+                                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpSeason, SearchResultsContainer, ScrapeModifiers, False) Then
                                             Images.SetPreferredImages(tmpSeason, SearchResultsContainer, ScrapeModifiers)
                                         End If
                                     End If
@@ -1050,7 +1026,7 @@ Public Class Scanner
 
             'process new episodes
             For Each nEpisode In newEpisodesList
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.DuringUpdateDB_TV, Nothing, Nothing, False, nEpisode)
+                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.DuringUpdateDB_TV, Nothing, Nothing, False, nEpisode)
             Next
 
             'sync new episodes
@@ -1584,9 +1560,9 @@ Public Class Scanner
 
         Select Case tProgressValue.EventType
             Case Enums.ScannerEventType.Added_Movie
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newmovie", 3, Master.eLang.GetString(817, "New Movie Added"), tProgressValue.Message, Nothing}))
+                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newmovie", 3, Master.eLang.GetString(817, "New Movie Added"), tProgressValue.Message, Nothing}))
             Case Enums.ScannerEventType.Added_TVEpisode
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newep", 4, Master.eLang.GetString(818, "New Episode Added"), tProgressValue.Message, Nothing}))
+                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newep", 4, Master.eLang.GetString(818, "New Episode Added"), tProgressValue.Message, Nothing}))
         End Select
     End Sub
 
@@ -1595,11 +1571,11 @@ Public Class Scanner
             Dim Args As Arguments = DirectCast(e.Result, Arguments)
             If Args.Scan.Movies Then
                 Dim params As New List(Of Object)(New Object() {False, False, False, True, Args.SourceID})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_Movie, params, Nothing)
+                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_Movie, params, Nothing)
             End If
             If Args.Scan.TV Then
                 Dim params As New List(Of Object)(New Object() {False, False, False, True, Args.SourceID})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_TV, params, Nothing)
+                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_TV, params, Nothing)
             End If
             RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.ScannerEventType.ScannerEnded})
         End If

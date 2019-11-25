@@ -570,8 +570,8 @@ Public Class StringUtils
                     Return String.Concat("https://www.themoviedb.org/movie/", dbelement.Movie.UniqueIDs.TMDbId)
                 End If
             Case Enums.ContentType.Movieset
-                If dbelement.MovieSet.UniqueIDs.TMDbIdSpecified Then
-                    Return String.Concat("https://www.themoviedb.org/collection/", dbelement.MovieSet.UniqueIDs.TMDbId)
+                If dbelement.Movieset.UniqueIDs.TMDbIdSpecified Then
+                    Return String.Concat("https://www.themoviedb.org/collection/", dbelement.Movieset.UniqueIDs.TMDbId)
                 End If
             Case Enums.ContentType.TVEpisode
                 If dbelement.TVShow.UniqueIDs.TMDbIdSpecified AndAlso dbelement.TVEpisode.SeasonSpecified AndAlso dbelement.TVEpisode.EpisodeSpecified Then
@@ -674,26 +674,6 @@ Public Class StringUtils
             End If
         End If
         Return False
-    End Function
-
-    Public Shared Function ListTitle_Movie(ByVal MovieTitle As String, ByVal MovieYear As String) As String
-        Dim ListTitle As String = MovieTitle
-        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(MovieYear) Then
-            ListTitle = String.Format("{0} ({1})", SortTokens_Movie(MovieTitle.Trim), MovieYear.Trim)
-        Else
-            ListTitle = SortTokens_Movie(MovieTitle.Trim)
-        End If
-        Return ListTitle
-    End Function
-
-    Public Shared Function ListTitle_TVShow(ByVal TVShowTitle As String, ByVal Status As String) As String
-        Dim ListTitle As String = TVShowTitle
-        If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(Status) Then
-            ListTitle = String.Format("{0} ({1})", SortTokens_TV(TVShowTitle.Trim), Status.Trim)
-        Else
-            ListTitle = SortTokens_TV(TVShowTitle.Trim)
-        End If
-        Return ListTitle
     End Function
     ''' <summary>
     ''' Determines whether the supplied character is valid for a numeric-only field such as a text-box.

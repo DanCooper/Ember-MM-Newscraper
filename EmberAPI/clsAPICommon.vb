@@ -731,7 +731,6 @@ Public Class Enums
     End Enum
 
     Public Enum SettingsPanelType As Integer
-        Core
         Addon
         Movie
         MovieData
@@ -1636,7 +1635,7 @@ Public Class Structures
         Dim NeedsDBUpdate_Movie As Boolean
         Dim NeedsDBUpdate_TV As Boolean
         Dim NeedsReload_Movie As Boolean
-        Dim NeedsReload_MovieSet As Boolean
+        Dim NeedsReload_Movieset As Boolean
         Dim NeedsReload_TVEpisode As Boolean
         Dim NeedsReload_TVShow As Boolean
         Dim NeedsRestart As Boolean

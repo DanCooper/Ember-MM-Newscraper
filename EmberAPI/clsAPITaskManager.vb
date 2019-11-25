@@ -208,13 +208,13 @@ Public Class TaskManager
 
                     If Not tmpDBElement.IsLocked Then
                         With tTaskItem.ScrapeOptions
-                            DataField_ClearString(.bMainPlot, tmpDBElement.MovieSet.Plot)
+                            DataField_ClearString(.bMainPlot, tmpDBElement.Movieset.Plot)
                         End With
 
                         If _bHasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                     .Message = tmpDBElement.MovieSet.Title})
+                                                     .Message = tmpDBElement.Movieset.Title})
 
                             Master.DB.Save_MovieSet(tmpDBElement, True, True, False, True)
 
@@ -515,7 +515,7 @@ Public Class TaskManager
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
 
-                    If Not ModulesManager.Instance.ScrapeData_TVShow(tmpDBElement, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, True) Then
+                    If Not AddonsManager.Instance.ScrapeData_TVShow(tmpDBElement, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, True) Then
                         For Each nMissingSeason In tmpDBElement.Seasons.Where(Function(f) Not f.IDSpecified)
                             Master.DB.Save_TVSeason(nMissingSeason, True, False, False)
                             bNewSeasons = True
@@ -573,7 +573,7 @@ Public Class TaskManager
                             tmpDBElement.Language = strNewLanguage
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                         .Message = tmpDBElement.MovieSet.Title})
+                                                         .Message = tmpDBElement.Movieset.Title})
 
                             Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False)
 
@@ -665,7 +665,7 @@ Public Class TaskManager
                     If bHasChanged Then
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                     .Message = tmpDBElement.MovieSet.Title})
+                                                     .Message = tmpDBElement.Movieset.Title})
 
                         Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False)
 

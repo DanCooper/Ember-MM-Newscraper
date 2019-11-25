@@ -474,7 +474,7 @@ Public Class dlgEditMovie
 
                 'Banner
                 If Master.eSettings.MovieBannerAnyEnabled Then
-                    btnScrapeBanner.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+                    btnScrapeBanner.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
                     If .Banner.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainBanner)
                     End If
@@ -485,7 +485,7 @@ Public Class dlgEditMovie
 
                 'ClearArt
                 If Master.eSettings.MovieClearArtAnyEnabled Then
-                    btnScrapeClearArt.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
+                    btnScrapeClearArt.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
                     If .ClearArt.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainClearArt)
                     End If
@@ -496,7 +496,7 @@ Public Class dlgEditMovie
 
                 'ClearLogo
                 If Master.eSettings.MovieClearLogoAnyEnabled Then
-                    btnScrapeClearLogo.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
+                    btnScrapeClearLogo.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
                     If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainClearLogo)
                     End If
@@ -507,7 +507,7 @@ Public Class dlgEditMovie
 
                 'DiscArt
                 If Master.eSettings.MovieDiscArtAnyEnabled Then
-                    btnScrapeDiscArt.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
+                    btnScrapeDiscArt.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
                     If .DiscArt.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainDiscArt)
                     End If
@@ -518,7 +518,7 @@ Public Class dlgEditMovie
 
                 'Extrafanarts
                 If Master.eSettings.MovieExtrafanartsAnyEnabled Then
-                    btnScrapeExtrafanarts.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts)
+                    btnScrapeExtrafanarts.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts)
                     If .Extrafanarts.Count > 0 Then
                         Dim iIndex As Integer = 0
                         For Each tImg As MediaContainers.Image In .Extrafanarts
@@ -533,7 +533,7 @@ Public Class dlgEditMovie
 
                 'Extrathumbs
                 If Master.eSettings.MovieExtrathumbsAnyEnabled Then
-                    btnScrapeExtrathumbs.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs)
+                    btnScrapeExtrathumbs.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs)
                     If .Extrathumbs.Count > 0 Then
                         Dim iIndex As Integer = 0
                         For Each tImg As MediaContainers.Image In .Extrathumbs.OrderBy(Function(f) f.Index)
@@ -548,7 +548,7 @@ Public Class dlgEditMovie
 
                 'Fanart
                 If Master.eSettings.MovieFanartAnyEnabled Then
-                    btnScrapeFanart.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    btnScrapeFanart.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     If .Fanart.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainFanart)
                     End If
@@ -559,7 +559,7 @@ Public Class dlgEditMovie
 
                 'KeyArt
                 If Master.eSettings.MovieKeyArtAnyEnabled Then
-                    btnScrapeKeyArt.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainKeyArt)
+                    btnScrapeKeyArt.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainKeyArt)
                     If .KeyArt.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainKeyArt)
                     End If
@@ -570,7 +570,7 @@ Public Class dlgEditMovie
 
                 'Landscape
                 If Master.eSettings.MovieLandscapeAnyEnabled Then
-                    btnScrapeLandscape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
+                    btnScrapeLandscape.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
                     If .Landscape.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainLandscape)
                     End If
@@ -581,7 +581,7 @@ Public Class dlgEditMovie
 
                 'Poster
                 If Master.eSettings.MoviePosterAnyEnabled Then
-                    btnScrapePoster.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+                    btnScrapePoster.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
                     If .Poster.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainPoster)
                     End If
@@ -613,7 +613,7 @@ Public Class dlgEditMovie
 
             'Theme
             If Master.eSettings.MovieThemeAnyEnabled Then
-                btnSetThemeScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
+                btnSetThemeScrape.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
                 If tmpDBElement.Theme.LocalFilePathSpecified OrElse tmpDBElement.Theme.URLAudioStreamSpecified Then
                     Theme_Load(tmpDBElement.Theme)
                 End If
@@ -624,7 +624,7 @@ Public Class dlgEditMovie
 
             'Trailer
             If Master.eSettings.MovieTrailerAnyEnabled Then
-                btnSetTrailerScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
+                btnSetTrailerScrape.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
                 If tmpDBElement.Trailer.LocalFilePathSpecified OrElse tmpDBElement.Trailer.URLVideoStreamSpecified Then
                     Trailer_Load(tmpDBElement.Trailer)
                 End If
@@ -665,8 +665,6 @@ Public Class dlgEditMovie
                 .Language = "en-US"
                 .Movie.Language = .Language
             End If
-            'ListTitle
-            .ListTitle = StringUtils.ListTitle_Movie(txtTitle.Text, txtYear.Text)
             'Videosource
             .VideoSource = cbVideoSource.Text.Trim
             .Movie.VideoSource = .VideoSource
@@ -1010,7 +1008,7 @@ Public Class dlgEditMovie
         Cursor.Current = Cursors.WaitCursor
         Dim tImage As MediaContainers.Image = DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image)
         If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-            ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
+            AddonsManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
         End If
         Cursor.Current = Cursors.Default
     End Sub
@@ -1489,7 +1487,7 @@ Public Class dlgEditMovie
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
         Functions.SetScrapeModifiers(ScrapeModifiers, eImageType, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             Dim iImageCount = 0
             Dim strNoImagesFound As String = String.Empty
             Select Case eImageType
@@ -1844,7 +1842,7 @@ Public Class dlgEditMovie
     Private Sub Theme_Scrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeScrape.Click
         Dim dThemeSelect As dlgThemeSelect
         Dim tList As New List(Of MediaContainers.Theme)
-        If Not ModulesManager.Instance.ScrapeTheme_Movie(tmpDBElement, Enums.ModifierType.MainTheme, tList) Then
+        If Not AddonsManager.Instance.ScrapeTheme_Movie(tmpDBElement, Enums.ModifierType.MainTheme, tList) Then
             If tList.Count > 0 Then
                 dThemeSelect = New dlgThemeSelect()
                 If dThemeSelect.ShowDialog(tmpDBElement, tList, True) = DialogResult.OK Then

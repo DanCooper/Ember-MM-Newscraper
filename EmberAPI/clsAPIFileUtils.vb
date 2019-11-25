@@ -1855,9 +1855,9 @@ Namespace FileUtils
         Private Shared Function MovieSet(ByVal dbElement As Database.DBElement, ByVal mType As Enums.ModifierType, Optional ByVal bForceOldTitle As Boolean = False) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            If String.IsNullOrEmpty(dbElement.MovieSet.Title) Then Return FilenameList
+            If String.IsNullOrEmpty(dbElement.Movieset.Title) Then Return FilenameList
 
-            Dim strSetTitle As String = If(bForceOldTitle, dbElement.MovieSet.OldTitle, dbElement.MovieSet.Title)
+            Dim strSetTitle As String = If(bForceOldTitle, dbElement.Movieset.OldTitle, dbElement.Movieset.Title)
             For Each cInvalid As Char In Path.GetInvalidFileNameChars
                 strSetTitle = strSetTitle.Replace(cInvalid, "-")
             Next

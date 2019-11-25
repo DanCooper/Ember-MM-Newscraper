@@ -20,10 +20,27 @@
 
 Public Class Interfaces
 
-#Region "Nested Interfaces"
+#Region "Enums"
 
-    ' Interfaces for external Modules
-    Public Interface IGenericModule
+    Public Enum InterfaceType As Integer
+        Data_Movie
+        Data_Movieset
+        Data_TV
+        Generic
+        Image_Movie
+        Image_Movieset
+        Image_TV
+        Theme_Movie
+        Theme_TV
+        Trailer_Movie
+    End Enum
+
+#End Region 'Enums
+
+#Region "Interfaces"
+
+    ' Interfaces for external addons
+    Public Interface IGenericAddon
 
 #Region "Properties"
 
@@ -91,7 +108,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface IScraperModule_Data_Movie
+    Public Interface IScraperAddon_Data_Movie
 
 #Region "Properties"
 
@@ -116,7 +133,7 @@ Public Class Interfaces
 
         Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef Studios As List(Of String)) As ModuleResult
 
-        Function GetTMDBID(ByVal IMDBID As String, ByRef TMDBID As String) As ModuleResult
+        Function GetTMDbID(ByVal IMDBID As String, ByRef TMDBID As String) As ModuleResult
 
         Sub Init()
 
@@ -132,7 +149,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface IScraperModule_Data_MovieSet
+    Public Interface IScraperAddon_Data_MovieSet
 
 #Region "Properties"
 
@@ -171,7 +188,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface IScraperModule_Data_TV
+    Public Interface IScraperAddon_Data_TV
 
 #Region "Properties"
 
@@ -212,7 +229,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface IScraperModule_Image_Movie
+    Public Interface IScraperAddon_Image_Movie
 
 #Region "Properties"
 
@@ -251,7 +268,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface IScraperModule_Image_Movieset
+    Public Interface IScraperAddon_Image_Movieset
 
 #Region "Properties"
 
@@ -290,7 +307,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface IScraperModule_Image_TV
+    Public Interface IScraperAddon_Image_TV
 
 #Region "Properties"
 
@@ -329,7 +346,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface IScraperModule_Theme_Movie
+    Public Interface IScraperAddon_Theme_Movie
 
 #Region "Properties"
 
@@ -366,7 +383,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface IScraperModule_Theme_TV
+    Public Interface IScraperAddon_Theme_TV
 
 #Region "Properties"
 
@@ -403,7 +420,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface IScraperModule_Trailer_Movie
+    Public Interface IScraperAddon_Trailer_Movie
 
 #Region "Properties"
 
@@ -440,7 +457,7 @@ Public Class Interfaces
 
     End Interface
 
-#End Region 'Nested Interfaces
+#End Region 'Interfaces
 
 #Region "Nested Types"
     ''' <summary>

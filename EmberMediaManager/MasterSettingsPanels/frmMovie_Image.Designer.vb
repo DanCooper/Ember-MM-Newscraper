@@ -132,10 +132,11 @@ Partial Class frmMovie_Image
         Me.pnlSettings.AutoSize = True
         Me.pnlSettings.BackColor = System.Drawing.Color.White
         Me.pnlSettings.Controls.Add(Me.tblSettings)
+        Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(859, 526)
+        Me.pnlSettings.Size = New System.Drawing.Size(937, 596)
         Me.pnlSettings.TabIndex = 13
         Me.pnlSettings.Visible = False
         '
@@ -160,7 +161,7 @@ Partial Class frmMovie_Image
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettings.Size = New System.Drawing.Size(859, 526)
+        Me.tblSettings.Size = New System.Drawing.Size(937, 596)
         Me.tblSettings.TabIndex = 17
         '
         'gbMovieImagesOpts
@@ -1330,7 +1331,7 @@ Partial Class frmMovie_Image
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(937, 596)
         Me.Controls.Add(Me.pnlSettings)
         Me.Name = "frmMovie_Image"
         Me.Text = "frmMovie_Image"

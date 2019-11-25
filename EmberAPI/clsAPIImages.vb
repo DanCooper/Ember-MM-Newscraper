@@ -155,7 +155,7 @@ Public Class Images
     Public Shared Sub Delete_MovieSet(ByVal DBMovieSet As Database.DBElement,
                                       ByVal ImageType As Enums.ModifierType,
                                       Optional ByVal ForceOldTitle As Boolean = False)
-        If Not DBMovieSet.MovieSet.TitleSpecified Then Return
+        If Not DBMovieSet.Movieset.TitleSpecified Then Return
         Try
             For Each a In FileUtils.FileNames.GetFileNames(DBMovieSet, ImageType, ForceOldTitle)
                 If File.Exists(a) Then
@@ -163,7 +163,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovieSet.Movieset.Title & ">")
         End Try
     End Sub
     ''' <summary>

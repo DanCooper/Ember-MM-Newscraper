@@ -104,7 +104,7 @@ Public Class frmMovie_Data
     End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.IMasterSettingsPanel.InjectSettingsPanel
-        LoadSettings()
+        Settings_Load()
 
         Return New Containers.SettingsPanel With {
             .Contains = Enums.SettingsPanelType.MovieData,
@@ -112,7 +112,7 @@ Public Class frmMovie_Data
             .Order = 400,
             .Panel = pnlSettings,
             .SettingsPanelID = "Movie_Data",
-            .Title = Master.eLang.GetString(556, "Scrapers - Data"),
+            .Title = Master.eLang.GetString(556, "NFO"),
             .Type = Enums.SettingsPanelType.Movie
         }
     End Function
@@ -364,7 +364,7 @@ Public Class frmMovie_Data
         Next
     End Sub
 
-    Public Sub LoadSettings()
+    Public Sub Settings_Load()
         With Master.eSettings
             chkMovieLockActors.Checked = .MovieLockActors
             chkMovieLockCert.Checked = .MovieLockCert

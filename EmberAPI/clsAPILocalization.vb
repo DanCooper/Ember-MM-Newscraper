@@ -37,6 +37,7 @@ Public Class Localization
 
     Private _abort As String
     Private _all As String
+    Private _apply As String
     Private _cancel As String
     Private _close As String
     Private _disabled As String
@@ -81,6 +82,12 @@ Public Class Localization
     Public ReadOnly Property All() As String
         Get
             Return _all
+        End Get
+    End Property
+
+    Public ReadOnly Property Apply() As String
+        Get
+            Return _apply
         End Get
     End Property
 
@@ -210,6 +217,7 @@ Public Class Localization
         _ISOLanguages.Language.Clear()
         _abort = "Abort"
         _all = "All"
+        _apply = "Apply"
         _cancel = "Cancel"
         _close = "Close"
         _disabled = "[Disabled]"
@@ -298,6 +306,7 @@ Public Class Localization
                 _htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = _htStrings, .FileName = lPath})
                 _abort = GetString(442, Master.eLang.Abort)
                 _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
+                _apply = GetString(276, Master.eLang.Apply)
                 _cancel = GetString(167, Master.eLang.Cancel)
                 _close = GetString(19, Master.eLang.Close)
                 _disabled = GetString(571, Master.eLang.Disabled)

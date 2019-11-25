@@ -349,7 +349,7 @@ Public Class dlgEditTVEpisode
 
                 'Fanart
                 If Master.eSettings.TVEpisodeFanartAnyEnabled Then
-                    btnScrapeFanart.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
+                    btnScrapeFanart.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
                     If .Fanart.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.EpisodeFanart)
                     End If
@@ -360,7 +360,7 @@ Public Class dlgEditTVEpisode
 
                 'Poster
                 If Master.eSettings.TVEpisodePosterAnyEnabled Then
-                    btnScrapePoster.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+                    btnScrapePoster.Enabled = AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
                     If .Poster.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.EpisodePoster)
                     End If
@@ -714,7 +714,7 @@ Public Class dlgEditTVEpisode
         Cursor.Current = Cursors.WaitCursor
         Dim tImage As MediaContainers.Image = DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image)
         If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-            ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
+            AddonsManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
         End If
         Cursor.Current = Cursors.Default
     End Sub
@@ -833,7 +833,7 @@ Public Class dlgEditTVEpisode
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
         Functions.SetScrapeModifiers(ScrapeModifiers, eImageType, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             Dim iImageCount = 0
             Dim strNoImagesFound As String = String.Empty
             Select Case eImageType

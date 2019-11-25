@@ -1148,73 +1148,73 @@ Namespace MediaContainers
 
                     'MovieSet Banner
                     If Banner.LoadAndCache(tContentType, True) Then
-                        If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainBanner, True)
+                        If DBElement.Movieset.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainBanner, True)
                         Banner.LocalFilePath = Banner.ImageOriginal.Save(DBElement, Enums.ModifierType.MainBanner)
                     Else
-                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainBanner, DBElement.MovieSet.TitleHasChanged)
+                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainBanner, DBElement.Movieset.TitleHasChanged)
                         Banner = New Image
                     End If
 
                     'MovieSet ClearArt
                     If ClearArt.LoadAndCache(tContentType, True) Then
-                        If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearArt, True)
+                        If DBElement.Movieset.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearArt, True)
                         ClearArt.LocalFilePath = ClearArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainClearArt)
                     Else
-                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearArt, DBElement.MovieSet.TitleHasChanged)
+                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearArt, DBElement.Movieset.TitleHasChanged)
                         ClearArt = New Image
                     End If
 
                     'MovieSet ClearLogo
                     If ClearLogo.LoadAndCache(tContentType, True) Then
-                        If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearLogo, True)
+                        If DBElement.Movieset.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearLogo, True)
                         ClearLogo.LocalFilePath = ClearLogo.ImageOriginal.Save(DBElement, Enums.ModifierType.MainClearLogo)
                     Else
-                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearLogo, DBElement.MovieSet.TitleHasChanged)
+                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearLogo, DBElement.Movieset.TitleHasChanged)
                         ClearLogo = New Image
                     End If
 
                     'MovieSet DiscArt
                     If DiscArt.LoadAndCache(tContentType, True) Then
-                        If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainDiscArt, True)
+                        If DBElement.Movieset.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainDiscArt, True)
                         DiscArt.LocalFilePath = DiscArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainDiscArt)
                     Else
-                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainDiscArt, DBElement.MovieSet.TitleHasChanged)
+                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainDiscArt, DBElement.Movieset.TitleHasChanged)
                         DiscArt = New Image
                     End If
 
                     'MovieSet Fanart
                     If Fanart.LoadAndCache(tContentType, True) Then
-                        If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainFanart, True)
+                        If DBElement.Movieset.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainFanart, True)
                         Fanart.LocalFilePath = Fanart.ImageOriginal.Save(DBElement, Enums.ModifierType.MainFanart)
                     Else
-                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainFanart, DBElement.MovieSet.TitleHasChanged)
+                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainFanart, DBElement.Movieset.TitleHasChanged)
                         Fanart = New Image
                     End If
 
                     'MovieSet KeyArt
                     If KeyArt.LoadAndCache(tContentType, True) Then
-                        If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainKeyArt, True)
+                        If DBElement.Movieset.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainKeyArt, True)
                         KeyArt.LocalFilePath = KeyArt.ImageOriginal.Save(DBElement, Enums.ModifierType.MainKeyArt)
                     Else
-                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainKeyArt, DBElement.MovieSet.TitleHasChanged)
+                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainKeyArt, DBElement.Movieset.TitleHasChanged)
                         KeyArt = New Image
                     End If
 
                     'MovieSet Landscape
                     If Landscape.LoadAndCache(tContentType, True) Then
-                        If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainLandscape, True)
+                        If DBElement.Movieset.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainLandscape, True)
                         Landscape.LocalFilePath = Landscape.ImageOriginal.Save(DBElement, Enums.ModifierType.MainLandscape)
                     Else
-                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainLandscape, DBElement.MovieSet.TitleHasChanged)
+                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainLandscape, DBElement.Movieset.TitleHasChanged)
                         Landscape = New Image
                     End If
 
                     'MovieSet Poster
                     If Poster.LoadAndCache(tContentType, True) Then
-                        If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainPoster, True)
+                        If DBElement.Movieset.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainPoster, True)
                         Poster.LocalFilePath = Poster.ImageOriginal.Save(DBElement, Enums.ModifierType.MainPoster)
                     Else
-                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainPoster, DBElement.MovieSet.TitleHasChanged)
+                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainPoster, DBElement.Movieset.TitleHasChanged)
                         Poster = New Image
                     End If
 
@@ -2178,7 +2178,7 @@ Namespace MediaContainers
 
         Public ReadOnly Property ListTitle() As String
             Get
-                Return DBMovie.ListTitle
+                Return StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
             End Get
         End Property
 
@@ -2511,7 +2511,7 @@ Namespace MediaContainers
                     End If
                     sPath = Path.Combine(Master.TempPath, String.Concat("Movies", Path.DirectorySeparatorChar, sID))
                 Case Enums.ContentType.Movieset
-                    sID = tDBElement.MovieSet.UniqueIDs.TMDbId
+                    sID = tDBElement.Movieset.UniqueIDs.TMDbId
                     If String.IsNullOrEmpty(sID) Then
                         sID = "Unknown"
                     End If

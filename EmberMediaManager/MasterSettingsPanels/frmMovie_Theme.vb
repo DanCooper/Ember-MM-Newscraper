@@ -21,32 +21,22 @@
 Imports EmberAPI
 
 Public Class frmMovie_Theme
-    Implements Interfaces.MasterSettingsPanel
+    Implements Interfaces.IMasterSettingsPanel
 
 #Region "Events"
 
-    Public Event NeedsDBClean_Movie() Implements Interfaces.MasterSettingsPanel.NeedsDBClean_Movie
-    Public Event NeedsDBClean_TV() Implements Interfaces.MasterSettingsPanel.NeedsDBClean_TV
-    Public Event NeedsDBUpdate_Movie() Implements Interfaces.MasterSettingsPanel.NeedsDBUpdate_Movie
-    Public Event NeedsDBUpdate_TV() Implements Interfaces.MasterSettingsPanel.NeedsDBUpdate_TV
-    Public Event NeedsReload_Movie() Implements Interfaces.MasterSettingsPanel.NeedsReload_Movie
-    Public Event NeedsReload_MovieSet() Implements Interfaces.MasterSettingsPanel.NeedsReload_MovieSet
-    Public Event NeedsReload_TVEpisode() Implements Interfaces.MasterSettingsPanel.NeedsReload_TVEpisode
-    Public Event NeedsReload_TVShow() Implements Interfaces.MasterSettingsPanel.NeedsReload_TVShow
-    Public Event NeedsRestart() Implements Interfaces.MasterSettingsPanel.NeedsRestart
-    Public Event SettingsChanged() Implements Interfaces.MasterSettingsPanel.SettingsChanged
+    Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
+    Public Event NeedsDBClean_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_TV
+    Public Event NeedsDBUpdate_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
+    Public Event NeedsDBUpdate_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
+    Public Event NeedsReload_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsReload_Movie
+    Public Event NeedsReload_MovieSet() Implements Interfaces.IMasterSettingsPanel.NeedsReload_MovieSet
+    Public Event NeedsReload_TVEpisode() Implements Interfaces.IMasterSettingsPanel.NeedsReload_TVEpisode
+    Public Event NeedsReload_TVShow() Implements Interfaces.IMasterSettingsPanel.NeedsReload_TVShow
+    Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
+    Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events
-
-#Region "Properties"
-
-    Public ReadOnly Property Order() As Integer Implements Interfaces.MasterSettingsPanel.Order
-        Get
-            Return _intOrder
-        End Get
-    End Property
-
-#End Region 'Properties
+#End Region 'Events 
 
 #Region "Handles"
 
@@ -103,31 +93,27 @@ Public Class frmMovie_Theme
 
 #Region "Interface Methodes"
 
-    Public Sub DoDispose() Implements Interfaces.MasterSettingsPanel.DoDispose
+    Public Sub DoDispose() Implements Interfaces.IMasterSettingsPanel.DoDispose
         Dispose()
     End Sub
 
-    Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.MasterSettingsPanel.InjectSettingsPanel
-        LoadSettings()
+    Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.IMasterSettingsPanel.InjectSettingsPanel
+        Settings_Load()
 
-        Dim nSettingsPanel As New Containers.SettingsPanel With {
-            .ImageIndex = _intImageIndex,
-            .Name = _strName,
-            .Order = _intOrder,
+        Return New Containers.SettingsPanel With {
+            .Contains = Enums.SettingsPanelType.MovieTheme,
+            .ImageIndex = 11,
+            .Order = 700,
             .Panel = pnlSettings,
-            .Type = _ePanelType
+            .SettingsPanelID = "Movie_Theme",
+            .Title = Master.eLang.GetString(1285, "Themes"),
+            .Type = Enums.SettingsPanelType.Movie
         }
-
-        Return nSettingsPanel
     End Function
 
-    Public Sub LoadSettings()
+    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
         With Master.eSettings
-        End With
-    End Sub
-
-    Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
+            .MovieThemeKeepExisting = ChkKeepExisting.Checked
         End With
     End Sub
 
@@ -135,8 +121,19 @@ Public Class frmMovie_Theme
 
 #Region "Methods"
 
-    Private Sub Setup()
+    Public Sub Settings_Load()
+        With Master.eSettings
+            ChkKeepExisting.Checked = .MovieThemeKeepExisting
+        End With
+    End Sub
 
+    Private Sub Setup()
+        ChkKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
+        GbOpts.Text = Master.eLang.GetString(1285, "Themes")
+    End Sub
+
+    Private Sub ChkKeepExisting_CheckedChanged(sender As Object, e As EventArgs) Handles ChkKeepExisting.CheckedChanged
+        Handle_SettingsChanged()
     End Sub
 
 #End Region 'Methods

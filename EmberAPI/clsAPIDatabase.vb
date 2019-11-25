@@ -1416,7 +1416,7 @@ Public Class Database
     Public Sub Delete_Movie(ByVal idMovie As Long, ByVal batchMode As Boolean)
         If Not idMovie = -1 Then
             Dim nDBElement As DBElement = Load_Movie(idMovie)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_Movie, Nothing, Nothing, False, nDBElement)
+            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_Movie, Nothing, Nothing, False, nDBElement)
 
             Dim sqlTransaction As SQLiteTransaction = Nothing
             If Not batchMode Then sqlTransaction = _myvideosDBConn.BeginTransaction()
@@ -1456,8 +1456,8 @@ Public Class Database
             If lstMoviesToEdit.Count > 0 Then
                 For Each movie In lstMoviesToEdit
                     movie.Movie.RemoveSet(idMovieset)
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, movie)
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, movie)
+                    AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, movie)
+                    AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, movie)
                     Save_Movie(movie, batchMode, True, False, True, False)
                     RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {movie.ID}))
                 Next
@@ -1559,7 +1559,7 @@ Public Class Database
         Dim bHasRemoved As Boolean = False
 
         Dim _tvepisodeDB As Database.DBElement = Load_TVEpisode(idEpisode, True)
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVEpisode, Nothing, Nothing, False, _tvepisodeDB)
+        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVEpisode, Nothing, Nothing, False, _tvepisodeDB)
 
         If Not batchMode Then sqlTransaction = _myvideosDBConn.BeginTransaction()
         Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1678,7 +1678,7 @@ Public Class Database
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function Delete_TVShow(ByVal idShow As Long, ByVal batchMode As Boolean) As Boolean
         Dim _tvshowDB As DBElement = Load_TVShow_Full(idShow)
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVShow, Nothing, Nothing, False, _tvshowDB)
+        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVShow, Nothing, Nothing, False, _tvshowDB)
 
         Try
             Dim SQLtransaction As SQLiteTransaction = Nothing
@@ -1810,9 +1810,9 @@ Public Class Database
         For Each nSet In Load_AllMoviesets()
             nList.Add(New MediaContainers.SetDetails With {
                       .ID = nSet.ID,
-                      .Plot = nSet.MovieSet.Plot,
-                      .Title = nSet.MovieSet.Title,
-                      .TMDbId = nSet.MovieSet.UniqueIDs.TMDbId
+                      .Plot = nSet.Movieset.Plot,
+                      .Title = nSet.Movieset.Title,
+                      .TMDbId = nSet.Movieset.UniqueIDs.TMDbId
                       })
         Next
         Return nList
@@ -2417,7 +2417,6 @@ Public Class Database
 
                     dbElement.IsMarked = Convert.ToBoolean(sqlReader("marked"))
                     dbElement.IsLocked = Convert.ToBoolean(sqlReader("locked"))
-                    dbElement.ListTitle = StringUtils.SortTokens_Movie(sqlReader("title").ToString)
                     dbElement.OutOfTolerance = Convert.ToBoolean(sqlReader("outOfTolerance"))
                     dbElement.IsMarkCustom1 = Convert.ToBoolean(sqlReader("markCustom1"))
                     dbElement.IsMarkCustom2 = Convert.ToBoolean(sqlReader("markCustom2"))
@@ -2539,10 +2538,9 @@ Public Class Database
 
                     dbElement.IsMarked = Convert.ToBoolean(SQLreader("marked"))
                     dbElement.IsLocked = Convert.ToBoolean(SQLreader("locked"))
-                    dbElement.ListTitle = StringUtils.SortTokens_MovieSet(SQLreader("title").ToString)
                     dbElement.SortMethod = DirectCast(Convert.ToInt32(SQLreader("sortMethod")), Enums.SortMethod_MovieSet)
 
-                    With dbElement.MovieSet
+                    With dbElement.Movieset
                         If Not DBNull.Value.Equals(SQLreader("plot")) Then .Plot = SQLreader("plot").ToString
                         If Not DBNull.Value.Equals(SQLreader("title")) Then .Title = SQLreader("title").ToString
                         If Not DBNull.Value.Equals(SQLreader("language")) Then .Language = SQLreader("language").ToString
@@ -2588,7 +2586,7 @@ Public Class Database
         dbElement.ImagesContainer.Poster.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "poster")
 
         'UniqueIDs
-        dbElement.MovieSet.UniqueIDs = GetUniqueIDsForItem(dbElement.ID, dbElement.ContentType)
+        dbElement.Movieset.UniqueIDs = GetUniqueIDsForItem(dbElement.ID, dbElement.ContentType)
 
         Return dbElement
     End Function
@@ -2844,7 +2842,6 @@ Public Class Database
 
                     dbElement.IsMarked = Convert.ToBoolean(SQLreader("marked"))
                     dbElement.IsLocked = Convert.ToBoolean(SQLreader("locked"))
-                    dbElement.ListTitle = StringUtils.SortTokens_TV(SQLreader("title").ToString)
                     dbElement.EpisodeOrdering = DirectCast(Convert.ToInt32(SQLreader("episodeOrdering")), Enums.EpisodeOrdering)
                     dbElement.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("episodeSorting")), Enums.EpisodeSorting)
 
@@ -3409,7 +3406,7 @@ Public Class Database
         If Not batchMode Then sqlTransaction.Commit()
 
         If doSync Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Nothing, False, dbElement)
+            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Nothing, False, dbElement)
         End If
 
         Return dbElement
@@ -3422,7 +3419,7 @@ Public Class Database
     ''' <param name="bToDisk">Create NFO and Images</param>
     ''' <returns>Database.DBElement object</returns>
     Public Function Save_MovieSet(ByVal dbElement As DBElement, ByVal bBatchMode As Boolean, ByVal bToNFO As Boolean, ByVal bToDisk As Boolean, ByVal bDoSync As Boolean) As DBElement
-        If dbElement.MovieSet Is Nothing Then Return dbElement
+        If dbElement.Movieset Is Nothing Then Return dbElement
 
         Dim sqlTransaction As SQLiteTransaction = Nothing
         If Not bBatchMode Then sqlTransaction = _myvideosDBConn.BeginTransaction()
@@ -3470,9 +3467,9 @@ Public Class Database
             par_marked.Value = dbElement.IsMarked
             par_new.Value = Not dbElement.IDSpecified
             par_nfoPath.Value = dbElement.NfoPath
-            par_plot.Value = dbElement.MovieSet.Plot
+            par_plot.Value = dbElement.Movieset.Plot
             par_sortMethod.Value = dbElement.SortMethod
-            par_title.Value = dbElement.MovieSet.Title
+            par_title.Value = dbElement.Movieset.Title
 
             If Not dbElement.IDSpecified Then
                 If Master.eSettings.MovieSetGeneralMarkNew Then
@@ -3484,7 +3481,7 @@ Public Class Database
                         dbElement.ID = Convert.ToInt64(rdrMovieSet(0))
                     Else
                         logger.Error("Something very wrong here: Save_MovieSet", dbElement.ToString, "Error")
-                        dbElement.ListTitle = "ERROR"
+                        dbElement.Movieset.Title = "ERROR"
                         Return dbElement
                     End If
                 End Using
@@ -3505,19 +3502,19 @@ Public Class Database
         SetArtForItem(dbElement.ID, dbElement.ContentType, "poster", dbElement.ImagesContainer.Poster)
 
         'UniqueIDs 
-        SetUniqueIDsForItem(dbElement.ID, dbElement.ContentType, dbElement.MovieSet.UniqueIDs)
+        SetUniqueIDsForItem(dbElement.ID, dbElement.ContentType, dbElement.Movieset.UniqueIDs)
 
         'save set informations to movies
         For Each tMovie In dbElement.MoviesInSet
             tMovie.DBMovie.Movie.AddSet(New MediaContainers.SetDetails With {
                                             .ID = dbElement.ID,
                                             .Order = tMovie.Order,
-                                            .Plot = dbElement.MovieSet.Plot,
-                                            .Title = dbElement.MovieSet.Title,
-                                            .TMDbId = dbElement.MovieSet.UniqueIDs.TMDbId
+                                            .Plot = dbElement.Movieset.Plot,
+                                            .Title = dbElement.Movieset.Title,
+                                            .TMDbId = dbElement.Movieset.UniqueIDs.TMDbId
                                             })
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
+            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
+            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
             Save_Movie(tMovie.DBMovie, True, True, False, True, False)
             RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.DBMovie.ID}))
         Next
@@ -3532,8 +3529,8 @@ Public Class Database
                         'movie is no longer a part of this set
                         Dim tMovie As DBElement = Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
                         tMovie.Movie.RemoveSet(dbElement.ID)
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie)
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie)
+                        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie)
+                        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie)
                         Save_Movie(tMovie, True, True, False, True, False)
                         RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.ID}))
                     End If
@@ -3543,7 +3540,7 @@ Public Class Database
 
         If Not bBatchMode Then sqlTransaction.Commit()
 
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_MovieSet, Nothing, Nothing, False, dbElement)
+        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_MovieSet, Nothing, Nothing, False, dbElement)
 
         Return dbElement
     End Function
@@ -3772,7 +3769,7 @@ Public Class Database
         Next
 
         For Each tEpisode As DBElement In newEpisodesList
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.DuringUpdateDB_TV, Nothing, Nothing, False, tEpisode)
+            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.DuringUpdateDB_TV, Nothing, Nothing, False, tEpisode)
         Next
 
         For Each tEpisode As DBElement In newEpisodesList
@@ -4048,7 +4045,7 @@ Public Class Database
         If Not bBatchMode Then SQLtransaction.Commit()
 
         If dbElement.FileItemSpecified AndAlso bDoSync Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, Nothing, False, dbElement)
+            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, Nothing, False, dbElement)
         End If
 
         Return dbElement
@@ -4147,7 +4144,7 @@ Public Class Database
         If Not bBatchMode Then SQLtransaction.Commit()
 
         If bDoSync Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVSeason, Nothing, Nothing, False, dbElement)
+            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVSeason, Nothing, Nothing, False, dbElement)
         End If
 
         Return dbElement
@@ -4376,7 +4373,7 @@ Public Class Database
 
         If Not bBatchMode Then SQLtransaction.Commit()
 
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVShow, Nothing, Nothing, False, dbElement)
+        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVShow, Nothing, Nothing, False, dbElement)
 
         Return dbElement
     End Function
@@ -6294,7 +6291,7 @@ Public Class Database
                 Case Enums.ContentType.Movie
                     Movie = New MediaContainers.Movie
                 Case Enums.ContentType.Movieset
-                    MovieSet = New MediaContainers.MovieSet
+                    Movieset = New MediaContainers.MovieSet
                 Case Enums.ContentType.TVEpisode
                     TVEpisode = New MediaContainers.EpisodeDetails
                 Case Enums.ContentType.TVSeason
@@ -6378,7 +6375,7 @@ Public Class Database
                     Case Enums.ContentType.Movie
                         If MovieSpecified Then Movie.Locked = value
                     Case Enums.ContentType.Movieset
-                        If MovieSetSpecified Then MovieSet.Locked = value
+                        If MoviesetSpecified Then Movieset.Locked = value
                     Case Enums.ContentType.TVEpisode
                         If TVEpisodeSpecified Then TVEpisode.Locked = value
                     Case Enums.ContentType.TVSeason
@@ -6417,14 +6414,6 @@ Public Class Database
             End Get
         End Property
 
-        Public Property ListTitle() As String = String.Empty
-
-        Public ReadOnly Property ListTitleSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(ListTitle)
-            End Get
-        End Property
-
         Public Property Movie() As MediaContainers.Movie = Nothing
 
         Public ReadOnly Property MovieSpecified() As Boolean
@@ -6441,11 +6430,11 @@ Public Class Database
             End Get
         End Property
 
-        Public Property MovieSet() As MediaContainers.MovieSet = Nothing
+        Public Property Movieset() As MediaContainers.MovieSet = Nothing
 
-        Public ReadOnly Property MovieSetSpecified() As Boolean
+        Public ReadOnly Property MoviesetSpecified() As Boolean
             Get
-                Return MovieSet IsNot Nothing
+                Return Movieset IsNot Nothing
             End Get
         End Property
 

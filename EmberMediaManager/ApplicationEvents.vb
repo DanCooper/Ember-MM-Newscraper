@@ -145,7 +145,7 @@ Namespace My
             ' Force initialization of languages for main
             Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
 
-            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading Translations..."))
             APIXML.CacheXMLs()
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1164, "Loading Main Form. Please wait..."))

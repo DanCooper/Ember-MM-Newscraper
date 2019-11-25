@@ -685,21 +685,21 @@ Public Class dlgCustomScraper
                     mEpisodeNFOAllowed = False
                     mEpisodePosterAllowed = False
                     mMainActorThumbsAllowed = .MovieActorThumbsAnyEnabled
-                    mMainBannerAllowed = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+                    mMainBannerAllowed = .MovieBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
                     mMainCharacterArtAllowed = False
-                    mMainClearArtAllowed = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
-                    mMainClearLogoAllowed = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
-                    mMainDiscArtAllowed = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
-                    mMainExtrafanartsAllowed = .MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-                    mMainExtrathumbsAllowed = .MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-                    mMainFanartAllowed = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-                    mMainKeyArtAllowed = .MovieKeyArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
-                    mMainLandscapeAllowed = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
+                    mMainClearArtAllowed = .MovieClearArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
+                    mMainClearLogoAllowed = .MovieClearLogoAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
+                    mMainDiscArtAllowed = .MovieDiscArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
+                    mMainExtrafanartsAllowed = .MovieExtrafanartsAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    mMainExtrathumbsAllowed = .MovieExtrathumbsAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    mMainFanartAllowed = .MovieFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    mMainKeyArtAllowed = .MovieKeyArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+                    mMainLandscapeAllowed = .MovieLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
                     mMainMetaDataAllowed = .MovieScraperMetaDataScan
                     mMainNFOAllowed = .MovieNFOAnyEnabled
-                    mMainPosterAllowed = .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
-                    mMainThemeAllowed = .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
-                    mMainTrailerAllowed = .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
+                    mMainPosterAllowed = .MoviePosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+                    mMainThemeAllowed = .MovieThemeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
+                    mMainTrailerAllowed = .MovieTrailerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
                     mSeasonBannerAllowed = False
                     mSeasonFanartAllowed = False
                     mSeasonLandscapeAllowed = False
@@ -746,10 +746,10 @@ Public Class dlgCustomScraper
                     chkMainModifierAll.Checked = True
                     chkMainOptionsAll.Checked = True
 
-                    rbScrapeType_Filter.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows.Count > 0
-                    rbScrapeType_Filter.Text = String.Format(String.Concat(Master.eLang.GetString(624, "Current Filter"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows.Count)
-                    rbScrapeType_Selected.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count > 0
-                    rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count)
+                    rbScrapeType_Filter.Enabled = AddonsManager.Instance.RuntimeObjects.MediaListMovies.Rows.Count > 0
+                    rbScrapeType_Filter.Text = String.Format(String.Concat(Master.eLang.GetString(624, "Current Filter"), " ({0})"), AddonsManager.Instance.RuntimeObjects.MediaListMovies.Rows.Count)
+                    rbScrapeType_Selected.Enabled = AddonsManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count > 0
+                    rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), AddonsManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count)
 
                 Case Enums.ContentType.Movieset
                     NameID = Database.Helpers.GetMainIdName(Database.TableName.movieset)
@@ -766,19 +766,19 @@ Public Class dlgCustomScraper
                     mEpisodeNFOAllowed = False
                     mEpisodePosterAllowed = False
                     mMainActorThumbsAllowed = False
-                    mMainBannerAllowed = .MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
+                    mMainBannerAllowed = .MovieSetBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
                     mMainCharacterArtAllowed = False
-                    mMainClearArtAllowed = .MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
-                    mMainClearLogoAllowed = .MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
-                    mMainDiscArtAllowed = .MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
+                    mMainClearArtAllowed = .MovieSetClearArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
+                    mMainClearLogoAllowed = .MovieSetClearLogoAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
+                    mMainDiscArtAllowed = .MovieSetDiscArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
                     mMainExtrafanartsAllowed = False
                     mMainExtrathumbsAllowed = False
-                    mMainFanartAllowed = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
+                    mMainFanartAllowed = .MovieSetFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
                     mMainKeyArtAllowed = False
-                    mMainLandscapeAllowed = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
+                    mMainLandscapeAllowed = .MovieSetLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
                     mMainMetaDataAllowed = False
                     mMainNFOAllowed = .MovieSetNFOAnyEnabled
-                    mMainPosterAllowed = .MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
+                    mMainPosterAllowed = .MovieSetPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
                     mMainThemeAllowed = False
                     mMainTrailerAllowed = False
                     mSeasonBannerAllowed = False
@@ -827,40 +827,40 @@ Public Class dlgCustomScraper
                     chkMainModifierAll.Checked = True
                     chkMainOptionsAll.Checked = True
 
-                    rbScrapeType_Filter.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.Rows.Count > 0
-                    rbScrapeType_Filter.Text = String.Format(String.Concat(Master.eLang.GetString(624, "Current Filter"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.Rows.Count)
-                    rbScrapeType_Selected.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows.Count > 0
-                    rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows.Count)
+                    rbScrapeType_Filter.Enabled = AddonsManager.Instance.RuntimeObjects.MediaListMovieSets.Rows.Count > 0
+                    rbScrapeType_Filter.Text = String.Format(String.Concat(Master.eLang.GetString(624, "Current Filter"), " ({0})"), AddonsManager.Instance.RuntimeObjects.MediaListMovieSets.Rows.Count)
+                    rbScrapeType_Selected.Enabled = AddonsManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows.Count > 0
+                    rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), AddonsManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows.Count)
 
                 Case Enums.ContentType.TV
                     NameID = Database.Helpers.GetMainIdName(Database.TableName.tvshow)
                     NameTable = Database.Helpers.GetTableName(Database.TableName.tvshow)
 
                     mEpisodeActorThumbsAllowed = .TVEpisodeActorThumbsAnyEnabled
-                    mEpisodeFanartAllowed = .TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
+                    mEpisodeFanartAllowed = .TVEpisodeFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
                     mEpisodeMetaDataAllowed = .TVScraperMetaDataScan
                     mEpisodeNFOAllowed = .TVEpisodeNFOAnyEnabled
-                    mEpisodePosterAllowed = .TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+                    mEpisodePosterAllowed = .TVEpisodePosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
                     mMainActorThumbsAllowed = .TVShowActorThumbsAnyEnabled
-                    mMainBannerAllowed = .TVShowBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
-                    mMainCharacterArtAllowed = .TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
-                    mMainClearArtAllowed = .TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
-                    mMainClearLogoAllowed = .TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
+                    mMainBannerAllowed = .TVShowBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
+                    mMainCharacterArtAllowed = .TVShowCharacterArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
+                    mMainClearArtAllowed = .TVShowClearArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
+                    mMainClearLogoAllowed = .TVShowClearLogoAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
                     mMainDiscArtAllowed = False
-                    mMainExtrafanartsAllowed = .TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+                    mMainExtrafanartsAllowed = .TVShowExtrafanartsAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
                     mMainExtrathumbsAllowed = False
-                    mMainFanartAllowed = .TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
-                    mMainKeyArtAllowed = .TVShowKeyArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
-                    mMainLandscapeAllowed = .TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
+                    mMainFanartAllowed = .TVShowFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+                    mMainKeyArtAllowed = .TVShowKeyArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
+                    mMainLandscapeAllowed = .TVShowLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
                     mMainMetaDataAllowed = False
                     mMainNFOAllowed = .TVShowNFOAnyEnabled
-                    mMainPosterAllowed = .TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
-                    mMainThemeAllowed = .TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
+                    mMainPosterAllowed = .TVShowPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
+                    mMainThemeAllowed = .TvShowThemeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
                     mMainTrailerAllowed = False
-                    mSeasonBannerAllowed = .TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
-                    mSeasonFanartAllowed = .TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
-                    mSeasonLandscapeAllowed = .TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
-                    mSeasonPosterAllowed = .TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
+                    mSeasonBannerAllowed = .TVSeasonBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
+                    mSeasonFanartAllowed = .TVSeasonFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
+                    mSeasonLandscapeAllowed = .TVSeasonLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
+                    mSeasonPosterAllowed = .TVSeasonPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
 
                     oEpisodeActorsAllowed = .TVScraperEpisodeActors
                     oEpisodeAiredAllowed = .TVScraperEpisodeAired
@@ -908,10 +908,10 @@ Public Class dlgCustomScraper
                     chkSeasonModifierAll.Checked = True
                     chkSeasonOptionsAll.Checked = True
 
-                    rbScrapeType_Filter.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListTVShows.Rows.Count > 0
-                    rbScrapeType_Filter.Text = String.Format(String.Concat(Master.eLang.GetString(624, "Current Filter"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListTVShows.Rows.Count)
-                    rbScrapeType_Selected.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows.Count > 0
-                    rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows.Count)
+                    rbScrapeType_Filter.Enabled = AddonsManager.Instance.RuntimeObjects.MediaListTVShows.Rows.Count > 0
+                    rbScrapeType_Filter.Text = String.Format(String.Concat(Master.eLang.GetString(624, "Current Filter"), " ({0})"), AddonsManager.Instance.RuntimeObjects.MediaListTVShows.Rows.Count)
+                    rbScrapeType_Selected.Enabled = AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows.Count > 0
+                    rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows.Count)
             End Select
         End With
 

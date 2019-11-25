@@ -395,18 +395,6 @@ Public Class Info
         'UniqueID
         'TODO: set the default uniqueid
 
-        'set ListTitle at the end of merging
-        If DBMovie.Movie.TitleSpecified Then
-            Dim tTitle As String = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
-            If Master.eSettings.MovieDisplayYear AndAlso DBMovie.Movie.YearSpecified Then
-                DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
-            Else
-                DBMovie.ListTitle = tTitle
-            End If
-        Else
-            DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.FileItem, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
-        End If
-
         Return DBMovie
     End Function
 
@@ -420,22 +408,22 @@ Public Class Info
 
             'UniqueIDs
             If scrapedmovieset.UniqueIDsSpecified Then
-                DBMovieSet.MovieSet.UniqueIDs.AddRange(scrapedmovieset.UniqueIDs)
+                DBMovieSet.Movieset.UniqueIDs.AddRange(scrapedmovieset.UniqueIDs)
             End If
 
             'Plot
-            If (Not DBMovieSet.MovieSet.PlotSpecified OrElse Not Master.eSettings.MovieSetLockPlot) AndAlso ScrapeOptions.bMainPlot AndAlso
+            If (Not DBMovieSet.Movieset.PlotSpecified OrElse Not Master.eSettings.MovieSetLockPlot) AndAlso ScrapeOptions.bMainPlot AndAlso
                 scrapedmovieset.PlotSpecified AndAlso Master.eSettings.MovieSetScraperPlot AndAlso Not new_Plot Then
-                DBMovieSet.MovieSet.Plot = scrapedmovieset.Plot
+                DBMovieSet.Movieset.Plot = scrapedmovieset.Plot
                 new_Plot = True
                 'ElseIf Master.eSettings.MovieSetScraperCleanFields AndAlso Not Master.eSettings.MovieSetScraperPlot AndAlso Not Master.eSettings.MovieSetLockPlot Then
                 '    DBMovieSet.MovieSet.Plot = String.Empty
             End If
 
             'Title
-            If (Not DBMovieSet.MovieSet.TitleSpecified OrElse Not Master.eSettings.MovieSetLockTitle) AndAlso ScrapeOptions.bMainTitle AndAlso
+            If (Not DBMovieSet.Movieset.TitleSpecified OrElse Not Master.eSettings.MovieSetLockTitle) AndAlso ScrapeOptions.bMainTitle AndAlso
                  scrapedmovieset.TitleSpecified AndAlso Master.eSettings.MovieSetScraperTitle AndAlso Not new_Title Then
-                DBMovieSet.MovieSet.Title = scrapedmovieset.Title
+                DBMovieSet.Movieset.Title = scrapedmovieset.Title
                 new_Title = True
                 'ElseIf Master.eSettings.MovieSetScraperCleanFields AndAlso Not Master.eSettings.MovieSetScraperTitle AndAlso Not Master.eSettings.MovieSetLockTitle Then
                 '    DBMovieSet.MovieSet.Title = String.Empty
@@ -444,26 +432,8 @@ Public Class Info
 
         'set Title
         For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
-            DBMovieSet.MovieSet.Title = DBMovieSet.MovieSet.Title.Replace(sett.Name.Substring(21), sett.Value)
+            DBMovieSet.Movieset.Title = DBMovieSet.Movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
         Next
-
-        'set ListTitle at the end of merging
-        If DBMovieSet.MovieSet.TitleSpecified Then
-            Dim tTitle As String = StringUtils.SortTokens_MovieSet(DBMovieSet.MovieSet.Title)
-            DBMovieSet.ListTitle = tTitle
-        Else
-            'If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-            '    DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
-            'ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-            '    DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
-            'Else
-            '    If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
-            '        DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(DBMovie.Filename).Name)
-            '    Else
-            '        DBMovie.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBMovie.Filename))
-            '    End If
-            'End If
-        End If
 
         Return DBMovieSet
     End Function
@@ -759,12 +729,6 @@ Public Class Info
 
         'UniqueID
         'TODO: set the default uniqueid
-
-        'set ListTitle at the end of merging
-        If DBTV.TVShow.TitleSpecified Then
-            DBTV.ListTitle = StringUtils.SortTokens_TV(DBTV.TVShow.Title)
-        End If
-
 
         'Seasons
         For Each aKnownSeason As Integer In KnownSeasonsIndex
@@ -1359,7 +1323,7 @@ Public Class Info
     ''' <param name="DBMovieSet"></param>
     ''' <remarks></remarks>
     Public Shared Sub DeleteNFO_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ForceFileCleanup As Boolean, Optional bForceOldTitle As Boolean = False)
-        If Not DBMovieSet.MovieSet.TitleSpecified Then Return
+        If Not DBMovieSet.Movieset.TitleSpecified Then Return
 
         Try
             For Each a In FileUtils.FileNames.GetFileNames(DBMovieSet, Enums.ModifierType.MainNFO, bForceOldTitle)
@@ -2058,7 +2022,7 @@ Public Class Info
             Try
                 Dim params As New List(Of Object)(New Object() {xmlShow})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFORead_TVShow, params, doContinue, False)
+                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFORead_TVShow, params, doContinue, False)
 
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -2141,7 +2105,7 @@ Public Class Info
             Try
                 Dim params As New List(Of Object)(New Object() {dbElement})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_Movie, params, doContinue, False)
+                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_Movie, params, doContinue, False)
                 If Not doContinue Then Return
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -2213,8 +2177,8 @@ Public Class Info
             'Catch ex As Exception
             'End Try
 
-            If Not String.IsNullOrEmpty(dbElement.MovieSet.Title) Then
-                If dbElement.MovieSet.TitleHasChanged Then DeleteNFO_MovieSet(dbElement, False, True)
+            If Not String.IsNullOrEmpty(dbElement.Movieset.Title) Then
+                If dbElement.Movieset.TitleHasChanged Then DeleteNFO_MovieSet(dbElement, False, True)
 
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MovieSet))
                 Dim doesExist As Boolean = False
@@ -2238,7 +2202,7 @@ Public Class Info
                         End If
                         Using xmlSW As New StreamWriter(a)
                             dbElement.NfoPath = a
-                            xmlSer.Serialize(xmlSW, dbElement.MovieSet)
+                            xmlSer.Serialize(xmlSW, dbElement.Movieset)
                         End Using
                         If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
                     End If
@@ -2349,7 +2313,7 @@ Public Class Info
         Try
             Dim params As New List(Of Object)(New Object() {dbElement})
             Dim doContinue As Boolean = True
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_TVShow, params, doContinue, False)
+            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_TVShow, params, doContinue, False)
             If Not doContinue Then Return
         Catch ex As Exception
         End Try

@@ -44,7 +44,7 @@ Public Class Settings
 #Region "Properties"
     <XmlArray("EmberModules")>
     <XmlArrayItem("Module")>
-    Public Property EmberModules() As List(Of ModulesManager._XMLEmberModuleClass) = New List(Of ModulesManager._XMLEmberModuleClass)
+    Public Property Addons() As List(Of AddonsManager.XMLAddonClass) = New List(Of AddonsManager.XMLAddonClass)
     Public Property FileSystemNoStackExts() As List(Of String) = New List(Of String)
     Public Property FileSystemValidExts() As List(Of String) = New List(Of String)
     Public Property FileSystemValidSubtitlesExts() As List(Of String) = New List(Of String)
@@ -170,7 +170,6 @@ Public Class Settings
     Public Property MovieDiscArtKeepExisting() As Boolean = False
     Public Property MovieDiscArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieDiscArtPrefSizeOnly() As Boolean = False
-    Public Property MovieDisplayYear() As Boolean = False
     Public Property MovieExtrafanartsEden() As Boolean = False
     Public Property MovieExtrafanartsExpertBDMV() As Boolean = False
     Public Property MovieExtrafanartsExpertSingle() As Boolean = False
@@ -391,7 +390,6 @@ Public Class Settings
     Public Property MovieScraperUserRating() As Boolean = True
     Public Property MovieScraperXBMCTrailerFormat() As Boolean = False
     Public Property MovieScraperYear() As Boolean = True
-    Public Property MovieSetBannerExpertParent() As String = String.Empty
     Public Property MovieSetBannerExpertSingle() As String = String.Empty
     Public Property MovieSetBannerExtended() As Boolean = False
     Public Property MovieSetBannerHeight() As Integer = 0
@@ -403,14 +401,12 @@ Public Class Settings
     Public Property MovieSetBannerWidth() As Integer = 0
     Public Property MovieSetCleanDB() As Boolean = False
     Public Property MovieSetCleanFiles() As Boolean = False
-    Public Property MovieSetClearArtExpertParent() As String = String.Empty
     Public Property MovieSetClearArtExpertSingle() As String = String.Empty
     Public Property MovieSetClearArtExtended() As Boolean = False
     Public Property MovieSetClearArtKeepExisting() As Boolean = False
     Public Property MovieSetClearArtMSAA() As Boolean = False
     Public Property MovieSetClearArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieSetClearArtPrefSizeOnly() As Boolean = False
-    Public Property MovieSetClearLogoExpertParent() As String = String.Empty
     Public Property MovieSetClearLogoExpertSingle() As String = String.Empty
     Public Property MovieSetClearLogoExtended() As Boolean = False
     Public Property MovieSetClearLogoKeepExisting() As Boolean = False
@@ -419,13 +415,11 @@ Public Class Settings
     Public Property MovieSetClearLogoPrefSizeOnly() As Boolean = False
     Public Property MovieSetClickScrape() As Boolean = False
     Public Property MovieSetClickScrapeAsk() As Boolean = False
-    Public Property MovieSetDiscArtExpertParent() As String = String.Empty
     Public Property MovieSetDiscArtExpertSingle() As String = String.Empty
     Public Property MovieSetDiscArtExtended() As Boolean = False
     Public Property MovieSetDiscArtKeepExisting() As Boolean = False
     Public Property MovieSetDiscArtPrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieSetDiscArtPrefSizeOnly() As Boolean = False
-    Public Property MovieSetFanartExpertParent() As String = String.Empty
     Public Property MovieSetFanartExpertSingle() As String = String.Empty
     Public Property MovieSetFanartExtended() As Boolean = False
     Public Property MovieSetFanartHeight() As Integer = 0
@@ -454,7 +448,6 @@ Public Class Settings
     Public Property MovieSetKeyArtPrefSizeOnly() As Boolean = False
     Public Property MovieSetKeyArtResize() As Boolean = False
     Public Property MovieSetKeyArtWidth() As Integer = 0
-    Public Property MovieSetLandscapeExpertParent() As String = String.Empty
     Public Property MovieSetLandscapeExpertSingle() As String = String.Empty
     Public Property MovieSetLandscapeExtended() As Boolean = False
     Public Property MovieSetLandscapeKeepExisting() As Boolean = False
@@ -472,12 +465,10 @@ Public Class Settings
     Public Property MovieSetMissingLandscape() As Boolean = False
     Public Property MovieSetMissingNFO() As Boolean = False
     Public Property MovieSetMissingPoster() As Boolean = False
-    Public Property MovieSetNFOExpertParent() As String = String.Empty
     Public Property MovieSetNFOExpertSingle() As String = String.Empty
     Public Property MovieSetPathExpertSingle() As String = String.Empty
     Public Property MovieSetPathExtended() As String = String.Empty
     Public Property MovieSetPathMSAA() As String = String.Empty
-    Public Property MovieSetPosterExpertParent() As String = String.Empty
     Public Property MovieSetPosterExpertSingle() As String = String.Empty
     Public Property MovieSetPosterExtended() As Boolean = False
     Public Property MovieSetPosterHeight() As Integer = 0
@@ -574,7 +565,6 @@ Public Class Settings
     Public Property TVAllSeasonsPosterWidth() As Integer = 0
     Public Property TVCleanDB() As Boolean = False
     Public Property TVDisplayMissingEpisodes() As Boolean = True
-    Public Property TVDisplayStatus() As Boolean = False
     Public Property TVEpisodeActorThumbsExpert() As Boolean = False
     Public Property TVEpisodeActorThumbsExtExpert() As String = ".jpg"
     Public Property TVEpisodeActorThumbsFrodo() As Boolean = False
@@ -1072,11 +1062,22 @@ Public Class Settings
         End Get
     End Property
 
+    Public ReadOnly Property MoviesetArtworkPaths() As List(Of String)
+        Get
+            Dim lstPaths As New List(Of String)
+            If Not String.IsNullOrEmpty(MovieSetPathExpertSingle) Then lstPaths.Add(MovieSetPathExpertSingle)
+            If Not String.IsNullOrEmpty(MovieSetPathExtended) Then lstPaths.Add(MovieSetPathExtended)
+            If Not String.IsNullOrEmpty(MovieSetPathMSAA) Then lstPaths.Add(MovieSetPathMSAA)
+            lstPaths = lstPaths.Distinct().ToList() 'remove double entries
+            Return lstPaths
+        End Get
+    End Property
+
     Public ReadOnly Property MovieSetBannerAnyEnabled As Boolean
         Get
             Return (MovieSetBannerExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
                 (MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
+                (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))
         End Get
     End Property
 
@@ -1084,7 +1085,7 @@ Public Class Settings
         Get
             Return (MovieSetClearArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
                 (MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle))))
+                (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle))
         End Get
     End Property
 
@@ -1092,14 +1093,14 @@ Public Class Settings
         Get
             Return (MovieSetClearLogoExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
                 (MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearLogoExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle))))
+                (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle))
         End Get
     End Property
 
     Public ReadOnly Property MovieSetDiscArtAnyEnabled As Boolean
         Get
             Return (MovieSetDiscArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetDiscArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetDiscArtExpertSingle))))
+                (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetDiscArtExpertSingle))
         End Get
     End Property
 
@@ -1107,7 +1108,7 @@ Public Class Settings
         Get
             Return (MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
                 (MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetFanartExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetFanartExpertSingle))))
+                (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetFanartExpertSingle))
         End Get
     End Property
 
@@ -1121,7 +1122,7 @@ Public Class Settings
         Get
             Return (MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
                 (MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetLandscapeExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle))))
+                (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle))
         End Get
     End Property
 
@@ -1141,7 +1142,7 @@ Public Class Settings
 
     Public ReadOnly Property MovieSetNFOAnyEnabled As Boolean
         Get
-            Return (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetNFOExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetNFOExpertSingle))))
+            Return (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetNFOExpertSingle))
         End Get
     End Property
 
@@ -1149,7 +1150,7 @@ Public Class Settings
         Get
             Return (MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
                 (MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-                (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
+                (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))
         End Get
     End Property
 
@@ -1431,37 +1432,71 @@ Public Class Settings
         End Try
     End Sub
 
+    Public Function GetDefaultsForList_AudioCodecMapping() As List(Of CodecMapping)
+        Dim nList As New List(Of CodecMapping)
+        nList.Add(New CodecMapping With {.Codec = "aac lc", .Mapping = "aac", .AdditionalFeatures = ""})
+        nList.Add(New CodecMapping With {.Codec = "ac-3 mlp fba 16-ch", .Mapping = "truehd", .AdditionalFeatures = "atmos"})
+        nList.Add(New CodecMapping With {.Codec = "ac-3", .Mapping = "ac3", .AdditionalFeatures = ""})
+        nList.Add(New CodecMapping With {.Codec = "dts xbr", .Mapping = "dtshd_hra", .AdditionalFeatures = ""})
+        nList.Add(New CodecMapping With {.Codec = "dts xll x", .Mapping = "dtshd_ma", .AdditionalFeatures = "x"})
+        nList.Add(New CodecMapping With {.Codec = "dts xll", .Mapping = "dtshd_ma", .AdditionalFeatures = ""})
+        nList.Add(New CodecMapping With {.Codec = "dts", .Mapping = "dca", .AdditionalFeatures = ""})
+        nList.Add(New CodecMapping With {.Codec = "e-ac-3", .Mapping = "eac3", .AdditionalFeatures = ""})
+        nList.Add(New CodecMapping With {.Codec = "mlp fba", .Mapping = "truehd", .AdditionalFeatures = ""})
+        Return nList
+    End Function
+
+    Public Function GetDefaultsForList_VideoCodecMapping() As List(Of CodecMapping)
+        Dim nList As New List(Of CodecMapping)
+        nList.Add(New CodecMapping With {.Codec = "avc", .Mapping = "h264"})
+        nList.Add(New CodecMapping With {.Codec = "hvc1", .Mapping = "hevc"})
+        nList.Add(New CodecMapping With {.Codec = "v_mpeg2", .Mapping = "h264"})
+        nList.Add(New CodecMapping With {.Codec = "v_mpegh/iso/hevc", .Mapping = "hevc"})
+        nList.Add(New CodecMapping With {.Codec = "v_ms/vfw/fourcc / dx50", .Mapping = "dx50"})
+        nList.Add(New CodecMapping With {.Codec = "v_ms/vfw/fourcc / xvid", .Mapping = "xvid"})
+        nList.Add(New CodecMapping With {.Codec = "v_vp7", .Mapping = "vp7"})
+        nList.Add(New CodecMapping With {.Codec = "v_vp8", .Mapping = "vp8"})
+        nList.Add(New CodecMapping With {.Codec = "v_vp9", .Mapping = "vp9"})
+        nList.Add(New CodecMapping With {.Codec = "x264", .Mapping = "h264"})
+        Return nList
+    End Function
+
+    Public Function GetDefaultsForList_VideoSourceMappingByRegex() As List(Of VideoSourceByRegex)
+        Dim nList As New List(Of VideoSourceByRegex)
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]3dbd[\W_]", .Videosource = "3dbd"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]azhd|amazon[\W_]", .Videosource = "amazon"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_](b[dr][-\s]?rip|blu[-\s]?ray)[\W_]", .Videosource = "bluray"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd25[\W_]", .Videosource = "bluray"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd50[\W_]", .Videosource = "bluray"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd5[\W_]", .Videosource = "dvd"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd9[\W_]", .Videosource = "dvd"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_](sd[-\s]?)?dvd([-\s]?rip)?[\W_]", .Videosource = "dvd"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?dvd[\W_]", .Videosource = "hddvd"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?tv[\W_]", .Videosource = "hdtv"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ithd|itunes[\W_]", .Videosource = "itunes"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]nfu?hd|netflix[\W_]", .Videosource = "netflix"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]pdtv[\W_]", .Videosource = "sdtv"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dsr[\W_]", .Videosource = "sdtv"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ntsc[\W_]", .Videosource = "sdtv"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]sd[-\s]?tv[\W_]", .Videosource = "sdtv"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]tvrip[\W_]", .Videosource = "sdtv"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]vhs[\W_]", .Videosource = "vhs"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hddl[\W_]", .Videosource = "webdl"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?dl[\W_]", .Videosource = "webdl"})
+        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?rip[\W_]", .Videosource = "webdl"})
+        Return nList
+    End Function
+
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.AudioCodecMapping) AndAlso (Force OrElse Master.eSettings.GeneralAudioCodecMapping.Count = 0) Then
+            Master.eSettings.GeneralAudioCodecMapping = GetDefaultsForList_AudioCodecMapping()
+        End If
+
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MainTabSorting) AndAlso (Force OrElse Master.eSettings.GeneralMainTabSorting.Count = 0) Then
             Master.eSettings.GeneralMainTabSorting.Clear()
             Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.Movie, .DefaultList = "movielist", .Order = 0, .Title = Master.eLang.GetString(36, "Movies")})
             Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.Movieset, .DefaultList = "moviesetlist", .Order = 1, .Title = Master.eLang.GetString(366, "Sets")})
             Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist", .Order = 2, .Title = Master.eLang.GetString(653, "TV Shows")})
-        End If
-
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.VideosourceMappingByRegex) AndAlso (Force OrElse Master.eSettings.GeneralVideoSourceByRegex.Count = 0) Then
-            Master.eSettings.GeneralVideoSourceByRegex.Clear()
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]3dbd[\W_]", .Videosource = "3dbd"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]azhd|amazon[\W_]", .Videosource = "amazon"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_](b[dr][-\s]?rip|blu[-\s]?ray)[\W_]", .Videosource = "bluray"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd25[\W_]", .Videosource = "bluray"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd50[\W_]", .Videosource = "bluray"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd5[\W_]", .Videosource = "dvd"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd9[\W_]", .Videosource = "dvd"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_](sd[-\s]?)?dvd([-\s]?rip)?[\W_]", .Videosource = "dvd"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?dvd[\W_]", .Videosource = "hddvd"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?tv[\W_]", .Videosource = "hdtv"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ithd|itunes[\W_]", .Videosource = "itunes"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]nfu?hd|netflix[\W_]", .Videosource = "netflix"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]pdtv[\W_]", .Videosource = "sdtv"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dsr[\W_]", .Videosource = "sdtv"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ntsc[\W_]", .Videosource = "sdtv"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]sd[-\s]?tv[\W_]", .Videosource = "sdtv"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]tvrip[\W_]", .Videosource = "sdtv"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]vhs[\W_]", .Videosource = "vhs"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hddl[\W_]", .Videosource = "webdl"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?dl[\W_]", .Videosource = "webdl"})
-            Master.eSettings.GeneralVideoSourceByRegex.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?rip[\W_]", .Videosource = "webdl"})
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
@@ -1594,21 +1629,6 @@ Public Class Settings
             Master.eSettings.TVSortTokens.Add("the\s")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
-            Master.eSettings.FileSystemValidExts.Clear()
-            Master.eSettings.FileSystemValidExts.AddRange(".avi,.bdmv,.divx,.mkv,.iso,.mpg,.mp4,.mpeg,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.ifo,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb,.webm,.disc,.3gpp".Split(","c))
-        End If
-
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidSubtitleExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidSubtitlesExts.Count <= 0) Then
-            Master.eSettings.FileSystemValidSubtitlesExts.Clear()
-            Master.eSettings.FileSystemValidSubtitlesExts.AddRange(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass".Split(","c))
-        End If
-
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidThemeExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidThemeExts.Count <= 0) Then
-            Master.eSettings.FileSystemValidThemeExts.Clear()
-            Master.eSettings.FileSystemValidThemeExts.AddRange(".flac,.m4a,.mp3,.wav,.wma".Split(","c))
-        End If
-
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSeasonTitleBlacklist) AndAlso (Force OrElse Master.eSettings.TVScraperSeasonTitleBlacklist.Count <= 0) Then
             Master.eSettings.TVScraperSeasonTitleBlacklist.Clear()
             Master.eSettings.TVScraperSeasonTitleBlacklist.Add("%{season_number}. sezóna")
@@ -1735,16 +1755,30 @@ Public Class Settings
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 16, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.ThemePath), .LabelID = 1118, .LabelText = "Theme"})
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 17, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.HasWatched), .LabelID = 981, .LabelText = "Watched"})
         End If
-    End Sub
 
-    Public Function GetMovieSetsArtworkPaths() As List(Of String)
-        Dim Paths As New List(Of String)
-        If Not String.IsNullOrEmpty(MovieSetPathExpertSingle) Then Paths.Add(MovieSetPathExpertSingle)
-        If Not String.IsNullOrEmpty(MovieSetPathExtended) Then Paths.Add(MovieSetPathExtended)
-        If Not String.IsNullOrEmpty(MovieSetPathMSAA) Then Paths.Add(MovieSetPathMSAA)
-        Paths = Paths.Distinct().ToList() 'remove double entries
-        Return Paths
-    End Function
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
+            Master.eSettings.FileSystemValidExts.Clear()
+            Master.eSettings.FileSystemValidExts.AddRange(".avi,.bdmv,.divx,.mkv,.iso,.mpg,.mp4,.mpeg,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.ifo,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb,.webm,.disc,.3gpp".Split(","c))
+        End If
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidSubtitleExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidSubtitlesExts.Count <= 0) Then
+            Master.eSettings.FileSystemValidSubtitlesExts.Clear()
+            Master.eSettings.FileSystemValidSubtitlesExts.AddRange(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass".Split(","c))
+        End If
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidThemeExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidThemeExts.Count <= 0) Then
+            Master.eSettings.FileSystemValidThemeExts.Clear()
+            Master.eSettings.FileSystemValidThemeExts.AddRange(".flac,.m4a,.mp3,.wav,.wma".Split(","c))
+        End If
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.VideoCodecMapping) AndAlso (Force OrElse Master.eSettings.GeneralVideoCodecMapping.Count = 0) Then
+            Master.eSettings.GeneralVideoCodecMapping = GetDefaultsForList_VideoCodecMapping()
+        End If
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.VideosourceMappingByRegex) AndAlso (Force OrElse Master.eSettings.GeneralVideoSourceByRegex.Count = 0) Then
+            Master.eSettings.GeneralVideoSourceByRegex = GetDefaultsForList_VideoSourceMappingByRegex()
+        End If
+    End Sub
 
 #End Region 'Methods
 
