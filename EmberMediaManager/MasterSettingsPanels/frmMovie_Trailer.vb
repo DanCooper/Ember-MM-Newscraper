@@ -111,7 +111,7 @@ Public Class frmMovie_Trailer
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .MovieTrailerDefaultSearch = txtMovieTrailerDefaultSearch.Text
             .MovieTrailerKeepExisting = chkMovieTrailerKeepExisting.Checked

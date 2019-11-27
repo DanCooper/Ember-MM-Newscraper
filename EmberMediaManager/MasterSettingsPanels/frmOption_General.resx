@@ -117,4 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="txtThemeHints.Text" xml:space="preserve">
+    <value>If you want to use custom Themes you can copy one of the defaults from the ".\Themes" folder in your ".\Profiles\PROFILENAME\Themes" folder, restart Ember Media Manager and select it here.
+
+Default Themes will allways be overwritten during Ember Media Manager updates.
+
+
+Feel free to share your custom Themes with other users.</value>
+  </data>
 </root>

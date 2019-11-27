@@ -24,28 +24,28 @@ Partial Class frmOption_Connection
     Private Sub InitializeComponent()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbProxyOpts = New System.Windows.Forms.GroupBox()
-        Me.tblProxyOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbProxyCredsOpts = New System.Windows.Forms.GroupBox()
-        Me.tblProxyCredsOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.txtProxyDomain = New System.Windows.Forms.TextBox()
-        Me.chkProxyCredsEnable = New System.Windows.Forms.CheckBox()
-        Me.lblProxyDomain = New System.Windows.Forms.Label()
-        Me.lblProxyUsername = New System.Windows.Forms.Label()
-        Me.txtProxyPassword = New System.Windows.Forms.TextBox()
-        Me.txtProxyUsername = New System.Windows.Forms.TextBox()
-        Me.lblProxyPassword = New System.Windows.Forms.Label()
-        Me.chkProxyEnable = New System.Windows.Forms.CheckBox()
+        Me.gbProxy = New System.Windows.Forms.GroupBox()
+        Me.tblProxy = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbCredentials = New System.Windows.Forms.GroupBox()
+        Me.tblCredentials = New System.Windows.Forms.TableLayoutPanel()
+        Me.txtCredentialsDomain = New System.Windows.Forms.TextBox()
+        Me.chkCredentialsEnabled = New System.Windows.Forms.CheckBox()
+        Me.lblCredentialsDomain = New System.Windows.Forms.Label()
+        Me.lblCredentialsUsername = New System.Windows.Forms.Label()
+        Me.txtCredentialsPassword = New System.Windows.Forms.TextBox()
+        Me.txtCredentialsUsername = New System.Windows.Forms.TextBox()
+        Me.lblCredentialsPassword = New System.Windows.Forms.Label()
+        Me.chkProxyEnabled = New System.Windows.Forms.CheckBox()
         Me.txtProxyPort = New System.Windows.Forms.TextBox()
         Me.lblProxyPort = New System.Windows.Forms.Label()
         Me.lblProxyURI = New System.Windows.Forms.Label()
         Me.txtProxyURI = New System.Windows.Forms.TextBox()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
-        Me.gbProxyOpts.SuspendLayout()
-        Me.tblProxyOpts.SuspendLayout()
-        Me.gbProxyCredsOpts.SuspendLayout()
-        Me.tblProxyCredsOpts.SuspendLayout()
+        Me.gbProxy.SuspendLayout()
+        Me.tblProxy.SuspendLayout()
+        Me.gbCredentials.SuspendLayout()
+        Me.tblCredentials.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -67,7 +67,7 @@ Partial Class frmOption_Connection
         Me.tblSettings.ColumnCount = 2
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettings.Controls.Add(Me.gbProxyOpts, 0, 0)
+        Me.tblSettings.Controls.Add(Me.gbProxy, 0, 0)
         Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettings.Location = New System.Drawing.Point(0, 0)
         Me.tblSettings.Name = "tblSettings"
@@ -77,176 +77,176 @@ Partial Class frmOption_Connection
         Me.tblSettings.Size = New System.Drawing.Size(800, 450)
         Me.tblSettings.TabIndex = 1
         '
-        'gbProxyOpts
+        'gbProxy
         '
-        Me.gbProxyOpts.AutoSize = True
-        Me.gbProxyOpts.Controls.Add(Me.tblProxyOpts)
-        Me.gbProxyOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbProxyOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbProxyOpts.Name = "gbProxyOpts"
-        Me.gbProxyOpts.Size = New System.Drawing.Size(362, 226)
-        Me.gbProxyOpts.TabIndex = 0
-        Me.gbProxyOpts.TabStop = False
-        Me.gbProxyOpts.Text = "Proxy"
+        Me.gbProxy.AutoSize = True
+        Me.gbProxy.Controls.Add(Me.tblProxy)
+        Me.gbProxy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbProxy.Location = New System.Drawing.Point(3, 3)
+        Me.gbProxy.Name = "gbProxy"
+        Me.gbProxy.Size = New System.Drawing.Size(362, 226)
+        Me.gbProxy.TabIndex = 0
+        Me.gbProxy.TabStop = False
+        Me.gbProxy.Text = "Proxy"
         '
-        'tblProxyOpts
+        'tblProxy
         '
-        Me.tblProxyOpts.AutoSize = True
-        Me.tblProxyOpts.ColumnCount = 4
-        Me.tblProxyOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblProxyOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblProxyOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblProxyOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblProxyOpts.Controls.Add(Me.gbProxyCredsOpts, 0, 4)
-        Me.tblProxyOpts.Controls.Add(Me.chkProxyEnable, 0, 0)
-        Me.tblProxyOpts.Controls.Add(Me.txtProxyPort, 1, 3)
-        Me.tblProxyOpts.Controls.Add(Me.lblProxyPort, 0, 3)
-        Me.tblProxyOpts.Controls.Add(Me.lblProxyURI, 0, 1)
-        Me.tblProxyOpts.Controls.Add(Me.txtProxyURI, 0, 2)
-        Me.tblProxyOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblProxyOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblProxyOpts.Name = "tblProxyOpts"
-        Me.tblProxyOpts.RowCount = 6
-        Me.tblProxyOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblProxyOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblProxyOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblProxyOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblProxyOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblProxyOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblProxyOpts.Size = New System.Drawing.Size(356, 205)
-        Me.tblProxyOpts.TabIndex = 1
+        Me.tblProxy.AutoSize = True
+        Me.tblProxy.ColumnCount = 4
+        Me.tblProxy.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblProxy.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblProxy.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblProxy.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblProxy.Controls.Add(Me.gbCredentials, 0, 4)
+        Me.tblProxy.Controls.Add(Me.chkProxyEnabled, 0, 0)
+        Me.tblProxy.Controls.Add(Me.txtProxyPort, 1, 3)
+        Me.tblProxy.Controls.Add(Me.lblProxyPort, 0, 3)
+        Me.tblProxy.Controls.Add(Me.lblProxyURI, 0, 1)
+        Me.tblProxy.Controls.Add(Me.txtProxyURI, 0, 2)
+        Me.tblProxy.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblProxy.Location = New System.Drawing.Point(3, 18)
+        Me.tblProxy.Name = "tblProxy"
+        Me.tblProxy.RowCount = 6
+        Me.tblProxy.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblProxy.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblProxy.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblProxy.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblProxy.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblProxy.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblProxy.Size = New System.Drawing.Size(356, 205)
+        Me.tblProxy.TabIndex = 1
         '
-        'gbProxyCredsOpts
+        'gbCredentials
         '
-        Me.gbProxyCredsOpts.AutoSize = True
-        Me.tblProxyOpts.SetColumnSpan(Me.gbProxyCredsOpts, 3)
-        Me.gbProxyCredsOpts.Controls.Add(Me.tblProxyCredsOpts)
-        Me.gbProxyCredsOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbProxyCredsOpts.Enabled = False
-        Me.gbProxyCredsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbProxyCredsOpts.Location = New System.Drawing.Point(3, 102)
-        Me.gbProxyCredsOpts.Name = "gbProxyCredsOpts"
-        Me.gbProxyCredsOpts.Size = New System.Drawing.Size(350, 100)
-        Me.gbProxyCredsOpts.TabIndex = 5
-        Me.gbProxyCredsOpts.TabStop = False
-        Me.gbProxyCredsOpts.Text = "Credentials"
+        Me.gbCredentials.AutoSize = True
+        Me.tblProxy.SetColumnSpan(Me.gbCredentials, 3)
+        Me.gbCredentials.Controls.Add(Me.tblCredentials)
+        Me.gbCredentials.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbCredentials.Enabled = False
+        Me.gbCredentials.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbCredentials.Location = New System.Drawing.Point(3, 102)
+        Me.gbCredentials.Name = "gbCredentials"
+        Me.gbCredentials.Size = New System.Drawing.Size(350, 100)
+        Me.gbCredentials.TabIndex = 5
+        Me.gbCredentials.TabStop = False
+        Me.gbCredentials.Text = "Credentials"
         '
-        'tblProxyCredsOpts
+        'tblCredentials
         '
-        Me.tblProxyCredsOpts.AutoSize = True
-        Me.tblProxyCredsOpts.ColumnCount = 5
-        Me.tblProxyCredsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblProxyCredsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblProxyCredsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblProxyCredsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblProxyCredsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblProxyCredsOpts.Controls.Add(Me.txtProxyDomain, 1, 2)
-        Me.tblProxyCredsOpts.Controls.Add(Me.chkProxyCredsEnable, 0, 0)
-        Me.tblProxyCredsOpts.Controls.Add(Me.lblProxyDomain, 0, 2)
-        Me.tblProxyCredsOpts.Controls.Add(Me.lblProxyUsername, 0, 1)
-        Me.tblProxyCredsOpts.Controls.Add(Me.txtProxyPassword, 3, 1)
-        Me.tblProxyCredsOpts.Controls.Add(Me.txtProxyUsername, 1, 1)
-        Me.tblProxyCredsOpts.Controls.Add(Me.lblProxyPassword, 2, 1)
-        Me.tblProxyCredsOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblProxyCredsOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblProxyCredsOpts.Name = "tblProxyCredsOpts"
-        Me.tblProxyCredsOpts.RowCount = 4
-        Me.tblProxyCredsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblProxyCredsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblProxyCredsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblProxyCredsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblProxyCredsOpts.Size = New System.Drawing.Size(344, 79)
-        Me.tblProxyCredsOpts.TabIndex = 1
+        Me.tblCredentials.AutoSize = True
+        Me.tblCredentials.ColumnCount = 5
+        Me.tblCredentials.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblCredentials.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblCredentials.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblCredentials.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblCredentials.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblCredentials.Controls.Add(Me.txtCredentialsDomain, 1, 2)
+        Me.tblCredentials.Controls.Add(Me.chkCredentialsEnabled, 0, 0)
+        Me.tblCredentials.Controls.Add(Me.lblCredentialsDomain, 0, 2)
+        Me.tblCredentials.Controls.Add(Me.lblCredentialsUsername, 0, 1)
+        Me.tblCredentials.Controls.Add(Me.txtCredentialsPassword, 3, 1)
+        Me.tblCredentials.Controls.Add(Me.txtCredentialsUsername, 1, 1)
+        Me.tblCredentials.Controls.Add(Me.lblCredentialsPassword, 2, 1)
+        Me.tblCredentials.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblCredentials.Location = New System.Drawing.Point(3, 18)
+        Me.tblCredentials.Name = "tblCredentials"
+        Me.tblCredentials.RowCount = 4
+        Me.tblCredentials.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblCredentials.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblCredentials.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblCredentials.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblCredentials.Size = New System.Drawing.Size(344, 79)
+        Me.tblCredentials.TabIndex = 1
         '
-        'txtProxyDomain
+        'txtCredentialsDomain
         '
-        Me.txtProxyDomain.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblProxyCredsOpts.SetColumnSpan(Me.txtProxyDomain, 3)
-        Me.txtProxyDomain.Enabled = False
-        Me.txtProxyDomain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProxyDomain.Location = New System.Drawing.Point(70, 54)
-        Me.txtProxyDomain.Name = "txtProxyDomain"
-        Me.txtProxyDomain.Size = New System.Drawing.Size(271, 22)
-        Me.txtProxyDomain.TabIndex = 6
+        Me.txtCredentialsDomain.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tblCredentials.SetColumnSpan(Me.txtCredentialsDomain, 3)
+        Me.txtCredentialsDomain.Enabled = False
+        Me.txtCredentialsDomain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCredentialsDomain.Location = New System.Drawing.Point(70, 54)
+        Me.txtCredentialsDomain.Name = "txtCredentialsDomain"
+        Me.txtCredentialsDomain.Size = New System.Drawing.Size(271, 22)
+        Me.txtCredentialsDomain.TabIndex = 6
         '
-        'chkProxyCredsEnable
+        'chkCredentialsEnabled
         '
-        Me.chkProxyCredsEnable.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkProxyCredsEnable.AutoSize = True
-        Me.tblProxyCredsOpts.SetColumnSpan(Me.chkProxyCredsEnable, 4)
-        Me.chkProxyCredsEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkProxyCredsEnable.Location = New System.Drawing.Point(3, 3)
-        Me.chkProxyCredsEnable.Name = "chkProxyCredsEnable"
-        Me.chkProxyCredsEnable.Size = New System.Drawing.Size(122, 17)
-        Me.chkProxyCredsEnable.TabIndex = 0
-        Me.chkProxyCredsEnable.Text = "Enable Credentials"
-        Me.chkProxyCredsEnable.UseVisualStyleBackColor = True
+        Me.chkCredentialsEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkCredentialsEnabled.AutoSize = True
+        Me.tblCredentials.SetColumnSpan(Me.chkCredentialsEnabled, 4)
+        Me.chkCredentialsEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCredentialsEnabled.Location = New System.Drawing.Point(3, 3)
+        Me.chkCredentialsEnabled.Name = "chkCredentialsEnabled"
+        Me.chkCredentialsEnabled.Size = New System.Drawing.Size(122, 17)
+        Me.chkCredentialsEnabled.TabIndex = 0
+        Me.chkCredentialsEnabled.Text = "Enable Credentials"
+        Me.chkCredentialsEnabled.UseVisualStyleBackColor = True
         '
-        'lblProxyDomain
+        'lblCredentialsDomain
         '
-        Me.lblProxyDomain.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblProxyDomain.AutoSize = True
-        Me.lblProxyDomain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblProxyDomain.Location = New System.Drawing.Point(3, 58)
-        Me.lblProxyDomain.Name = "lblProxyDomain"
-        Me.lblProxyDomain.Size = New System.Drawing.Size(50, 13)
-        Me.lblProxyDomain.TabIndex = 5
-        Me.lblProxyDomain.Text = "Domain:"
+        Me.lblCredentialsDomain.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblCredentialsDomain.AutoSize = True
+        Me.lblCredentialsDomain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCredentialsDomain.Location = New System.Drawing.Point(3, 58)
+        Me.lblCredentialsDomain.Name = "lblCredentialsDomain"
+        Me.lblCredentialsDomain.Size = New System.Drawing.Size(50, 13)
+        Me.lblCredentialsDomain.TabIndex = 5
+        Me.lblCredentialsDomain.Text = "Domain:"
         '
-        'lblProxyUsername
+        'lblCredentialsUsername
         '
-        Me.lblProxyUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblProxyUsername.AutoSize = True
-        Me.lblProxyUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblProxyUsername.Location = New System.Drawing.Point(3, 30)
-        Me.lblProxyUsername.Name = "lblProxyUsername"
-        Me.lblProxyUsername.Size = New System.Drawing.Size(61, 13)
-        Me.lblProxyUsername.TabIndex = 1
-        Me.lblProxyUsername.Text = "Username:"
+        Me.lblCredentialsUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblCredentialsUsername.AutoSize = True
+        Me.lblCredentialsUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCredentialsUsername.Location = New System.Drawing.Point(3, 30)
+        Me.lblCredentialsUsername.Name = "lblCredentialsUsername"
+        Me.lblCredentialsUsername.Size = New System.Drawing.Size(61, 13)
+        Me.lblCredentialsUsername.TabIndex = 1
+        Me.lblCredentialsUsername.Text = "Username:"
         '
-        'txtProxyPassword
+        'txtCredentialsPassword
         '
-        Me.txtProxyPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtProxyPassword.Enabled = False
-        Me.txtProxyPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProxyPassword.Location = New System.Drawing.Point(241, 26)
-        Me.txtProxyPassword.Name = "txtProxyPassword"
-        Me.txtProxyPassword.Size = New System.Drawing.Size(100, 22)
-        Me.txtProxyPassword.TabIndex = 4
-        Me.txtProxyPassword.UseSystemPasswordChar = True
+        Me.txtCredentialsPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtCredentialsPassword.Enabled = False
+        Me.txtCredentialsPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCredentialsPassword.Location = New System.Drawing.Point(241, 26)
+        Me.txtCredentialsPassword.Name = "txtCredentialsPassword"
+        Me.txtCredentialsPassword.Size = New System.Drawing.Size(100, 22)
+        Me.txtCredentialsPassword.TabIndex = 4
+        Me.txtCredentialsPassword.UseSystemPasswordChar = True
         '
-        'txtProxyUsername
+        'txtCredentialsUsername
         '
-        Me.txtProxyUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtProxyUsername.Enabled = False
-        Me.txtProxyUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProxyUsername.Location = New System.Drawing.Point(70, 26)
-        Me.txtProxyUsername.Name = "txtProxyUsername"
-        Me.txtProxyUsername.Size = New System.Drawing.Size(100, 22)
-        Me.txtProxyUsername.TabIndex = 2
+        Me.txtCredentialsUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtCredentialsUsername.Enabled = False
+        Me.txtCredentialsUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCredentialsUsername.Location = New System.Drawing.Point(70, 26)
+        Me.txtCredentialsUsername.Name = "txtCredentialsUsername"
+        Me.txtCredentialsUsername.Size = New System.Drawing.Size(100, 22)
+        Me.txtCredentialsUsername.TabIndex = 2
         '
-        'lblProxyPassword
+        'lblCredentialsPassword
         '
-        Me.lblProxyPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblProxyPassword.AutoSize = True
-        Me.lblProxyPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblProxyPassword.Location = New System.Drawing.Point(176, 30)
-        Me.lblProxyPassword.Name = "lblProxyPassword"
-        Me.lblProxyPassword.Size = New System.Drawing.Size(59, 13)
-        Me.lblProxyPassword.TabIndex = 3
-        Me.lblProxyPassword.Text = "Password:"
+        Me.lblCredentialsPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblCredentialsPassword.AutoSize = True
+        Me.lblCredentialsPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCredentialsPassword.Location = New System.Drawing.Point(176, 30)
+        Me.lblCredentialsPassword.Name = "lblCredentialsPassword"
+        Me.lblCredentialsPassword.Size = New System.Drawing.Size(59, 13)
+        Me.lblCredentialsPassword.TabIndex = 3
+        Me.lblCredentialsPassword.Text = "Password:"
         '
-        'chkProxyEnable
+        'chkProxyEnabled
         '
-        Me.chkProxyEnable.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkProxyEnable.AutoSize = True
-        Me.chkProxyEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkProxyEnable.Location = New System.Drawing.Point(3, 3)
-        Me.chkProxyEnable.Name = "chkProxyEnable"
-        Me.chkProxyEnable.Size = New System.Drawing.Size(91, 17)
-        Me.chkProxyEnable.TabIndex = 0
-        Me.chkProxyEnable.Text = "Enable Proxy"
-        Me.chkProxyEnable.UseVisualStyleBackColor = True
+        Me.chkProxyEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkProxyEnabled.AutoSize = True
+        Me.chkProxyEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkProxyEnabled.Location = New System.Drawing.Point(3, 3)
+        Me.chkProxyEnabled.Name = "chkProxyEnabled"
+        Me.chkProxyEnabled.Size = New System.Drawing.Size(91, 17)
+        Me.chkProxyEnabled.TabIndex = 0
+        Me.chkProxyEnabled.Text = "Enable Proxy"
+        Me.chkProxyEnabled.UseVisualStyleBackColor = True
         '
         'txtProxyPort
         '
@@ -283,7 +283,7 @@ Partial Class frmOption_Connection
         'txtProxyURI
         '
         Me.txtProxyURI.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblProxyOpts.SetColumnSpan(Me.txtProxyURI, 3)
+        Me.tblProxy.SetColumnSpan(Me.txtProxyURI, 3)
         Me.txtProxyURI.Enabled = False
         Me.txtProxyURI.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtProxyURI.Location = New System.Drawing.Point(3, 46)
@@ -303,14 +303,14 @@ Partial Class frmOption_Connection
         Me.pnlSettings.PerformLayout()
         Me.tblSettings.ResumeLayout(False)
         Me.tblSettings.PerformLayout()
-        Me.gbProxyOpts.ResumeLayout(False)
-        Me.gbProxyOpts.PerformLayout()
-        Me.tblProxyOpts.ResumeLayout(False)
-        Me.tblProxyOpts.PerformLayout()
-        Me.gbProxyCredsOpts.ResumeLayout(False)
-        Me.gbProxyCredsOpts.PerformLayout()
-        Me.tblProxyCredsOpts.ResumeLayout(False)
-        Me.tblProxyCredsOpts.PerformLayout()
+        Me.gbProxy.ResumeLayout(False)
+        Me.gbProxy.PerformLayout()
+        Me.tblProxy.ResumeLayout(False)
+        Me.tblProxy.PerformLayout()
+        Me.gbCredentials.ResumeLayout(False)
+        Me.gbCredentials.PerformLayout()
+        Me.tblCredentials.ResumeLayout(False)
+        Me.tblCredentials.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -318,18 +318,18 @@ Partial Class frmOption_Connection
 
     Friend WithEvents pnlSettings As Panel
     Friend WithEvents tblSettings As TableLayoutPanel
-    Friend WithEvents gbProxyOpts As GroupBox
-    Friend WithEvents tblProxyOpts As TableLayoutPanel
-    Friend WithEvents gbProxyCredsOpts As GroupBox
-    Friend WithEvents tblProxyCredsOpts As TableLayoutPanel
-    Friend WithEvents txtProxyDomain As TextBox
-    Friend WithEvents chkProxyCredsEnable As CheckBox
-    Friend WithEvents lblProxyDomain As Label
-    Friend WithEvents lblProxyUsername As Label
-    Friend WithEvents txtProxyPassword As TextBox
-    Friend WithEvents txtProxyUsername As TextBox
-    Friend WithEvents lblProxyPassword As Label
-    Friend WithEvents chkProxyEnable As CheckBox
+    Friend WithEvents gbProxy As GroupBox
+    Friend WithEvents tblProxy As TableLayoutPanel
+    Friend WithEvents gbCredentials As GroupBox
+    Friend WithEvents tblCredentials As TableLayoutPanel
+    Friend WithEvents txtCredentialsDomain As TextBox
+    Friend WithEvents chkCredentialsEnabled As CheckBox
+    Friend WithEvents lblCredentialsDomain As Label
+    Friend WithEvents lblCredentialsUsername As Label
+    Friend WithEvents txtCredentialsPassword As TextBox
+    Friend WithEvents txtCredentialsUsername As TextBox
+    Friend WithEvents lblCredentialsPassword As Label
+    Friend WithEvents chkProxyEnabled As CheckBox
     Friend WithEvents txtProxyPort As TextBox
     Friend WithEvents lblProxyPort As Label
     Friend WithEvents lblProxyURI As Label

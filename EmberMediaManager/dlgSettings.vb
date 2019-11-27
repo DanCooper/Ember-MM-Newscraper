@@ -30,7 +30,7 @@ Public Class dlgSettings
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _AddonsSettingsPanels As New List(Of Containers.SettingsPanel)
+    Private _AllSettingsPanels As New List(Of Containers.SettingsPanel)
     Private _CurrPanel As New Panel
     Private _CurrButton As New ButtonTag
     Private _DidApply As Boolean = False
@@ -57,11 +57,11 @@ Public Class dlgSettings
     Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Functions.PNLDoubleBuffer(pnlSettingsMain)
         Setup()
-        _AddonsSettingsPanels.Clear()
+        _AllSettingsPanels.Clear()
         _MasterSettingsPanels.Clear()
-        SettingsPanels_AddMasterPanels()
-        SettingsPanels_AddAddonPanels()
-        SettingsPanels_ReorderAllPanels()
+        SettingsPanels_Add_MasterPanels()
+        SettingsPanels_Add_AddonPanels()
+        SettingsPanels_Reorder_AddonPanels()
         TopMenu_AddButtons()
 
         Dim iBackground As New Bitmap(pnlSettingsTop.Width, pnlSettingsTop.Height)
@@ -176,14 +176,14 @@ Public Class dlgSettings
     Private Sub Button_Cancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         If Not _DidApply Then _Results.DidCancel = True
         Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage, True)
-        SettingsPanels_RemoveAllPanels()
+        SettingsPanels_Remove_AllPanels()
         Close()
     End Sub
 
     Private Sub Button_OK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         _NoUpdate = True
         Settings_Save_All(False)
-        SettingsPanels_RemoveAllPanels()
+        SettingsPanels_Remove_AllPanels()
         Close()
     End Sub
 
@@ -233,7 +233,7 @@ Public Class dlgSettings
         SuspendLayout()
 
         'Get the panel that has been changed
-        tSettingsPanel = _AddonsSettingsPanels.FirstOrDefault(Function(f) f.SettingsPanelID = SettingsPanelID)
+        tSettingsPanel = _AllSettingsPanels.FirstOrDefault(Function(f) f.SettingsPanelID = SettingsPanelID)
         If tSettingsPanel IsNot Nothing Then
             Try
                 Dim t() As TreeNode = tvSettingsList.Nodes.Find(SettingsPanelID, True)
@@ -243,12 +243,12 @@ Public Class dlgSettings
                         Dim i As Integer = t(0).Index
                         If DiffOrder < 0 AndAlso t(0).PrevNode IsNot Nothing Then
                             'move down prev node
-                            oSettingsPanel = _AddonsSettingsPanels.FirstOrDefault(Function(f) f.SettingsPanelID = t(0).PrevNode.Name)
+                            oSettingsPanel = _AllSettingsPanels.FirstOrDefault(Function(f) f.SettingsPanelID = t(0).PrevNode.Name)
                             If oSettingsPanel IsNot Nothing Then oSettingsPanel.Order = i ' + (DiffOrder * -1)
                         End If
                         If DiffOrder > 0 AndAlso t(0).NextNode IsNot Nothing Then
                             'move up next node
-                            oSettingsPanel = _AddonsSettingsPanels.FirstOrDefault(Function(f) f.SettingsPanelID = t(0).NextNode.Name)
+                            oSettingsPanel = _AllSettingsPanels.FirstOrDefault(Function(f) f.SettingsPanelID = t(0).NextNode.Name)
                             If oSettingsPanel IsNot Nothing Then oSettingsPanel.Order = i ' + (DiffOrder * -1)
                         End If
                         p.Nodes.Remove(t(0))
@@ -265,21 +265,15 @@ Public Class dlgSettings
                 _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End If
-        SettingsPanels_ReorderAllPanels()
+        SettingsPanels_Reorder_AddonPanels()
         ResumeLayout()
         Button_Apply_SetEnabled(True)
-    End Sub
-
-    Private Sub RemoveCurrPanel()
-        If pnlSettingsMain.Controls.Count > 0 Then
-            pnlSettingsMain.Controls.Remove(_CurrPanel)
-        End If
     End Sub
 
     Private Sub Settings_Save_All(ByVal IsApply As Boolean)
         'MasterSettingsPanels
         For Each s In _MasterSettingsPanels
-            s.SaveSetup()
+            s.SaveSettings()
         Next
 
         'AddonSettingsPanels
@@ -356,7 +350,7 @@ Public Class dlgSettings
         AddonsManager.Instance.Settings_Save()
     End Sub
 
-    Private Sub SettingsPanels_AddMasterPanels()
+    Private Sub SettingsPanels_Add_MasterPanels()
         _MasterSettingsPanels.Add(frmMovie_Data)
         _MasterSettingsPanels.Add(frmMovie_FileNaming)
         _MasterSettingsPanels.Add(frmMovie_GUI)
@@ -371,7 +365,7 @@ Public Class dlgSettings
         _MasterSettingsPanels.Add(frmOption_AVCodecMapping)
         _MasterSettingsPanels.Add(frmOption_Connection)
         _MasterSettingsPanels.Add(frmOption_FileSystem)
-        _MasterSettingsPanels.Add(frmOption_GUI)
+        _MasterSettingsPanels.Add(frmOption_General)
         _MasterSettingsPanels.Add(frmOption_VideoSourceMapping)
         _MasterSettingsPanels.Add(frmTV_Data)
         _MasterSettingsPanels.Add(frmTV_FileNaming)
@@ -383,7 +377,7 @@ Public Class dlgSettings
         For Each s As Interfaces.IMasterSettingsPanel In _MasterSettingsPanels
             Dim nPanel As Containers.SettingsPanel = s.InjectSettingsPanel()
             If nPanel IsNot Nothing Then
-                _AddonsSettingsPanels.Add(nPanel)
+                _AllSettingsPanels.Add(nPanel)
                 AddHandler s.NeedsDBClean_Movie, AddressOf Handle_NeedsDBClean_Movie
                 AddHandler s.NeedsDBClean_TV, AddressOf Handle_NeedsDBClean_TV
                 AddHandler s.NeedsDBUpdate_Movie, AddressOf Handle_NeedsDBUpdate_Movie
@@ -398,9 +392,10 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub SettingsPanels_AddAddonPanels()
+    Private Sub SettingsPanels_Add_AddonPanels()
         Dim nSettingsPanel As Containers.SettingsPanel = Nothing
-        Dim iPanelCounter As Integer = 0
+        'Use 9000 as panel order beginning to show all generic panels after MasterPanels
+        Dim iPanelCounter As Integer = 9000
         For Each s As AddonsManager.GenericAddon In AddonsManager.Instance.GenericAddons.OrderBy(Function(f) f.AssemblyName)
             s.ProcessorModule.InjectSettingsPanel()
             nSettingsPanel = s.ProcessorModule.SettingsPanel
@@ -411,7 +406,7 @@ Public Class dlgSettings
                     ilSettings.Images.Add(nSettingsPanel.SettingsPanelID, nSettingsPanel.Image)
                     nSettingsPanel.ImageIndex = ilSettings.Images.IndexOfKey(nSettingsPanel.SettingsPanelID)
                 End If
-                _AddonsSettingsPanels.Add(nSettingsPanel)
+                _AllSettingsPanels.Add(nSettingsPanel)
                 iPanelCounter += 1
                 AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -425,7 +420,7 @@ Public Class dlgSettings
             If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
                 nSettingsPanel.Order = iPanelCounter
                 nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AddonsSettingsPanels.Add(nSettingsPanel)
+                _AllSettingsPanels.Add(nSettingsPanel)
                 iPanelCounter += 1
                 AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -439,7 +434,7 @@ Public Class dlgSettings
             If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
                 nSettingsPanel.Order = iPanelCounter
                 nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AddonsSettingsPanels.Add(nSettingsPanel)
+                _AllSettingsPanels.Add(nSettingsPanel)
                 iPanelCounter += 1
                 AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -453,7 +448,7 @@ Public Class dlgSettings
             If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
                 nSettingsPanel.Order = iPanelCounter
                 nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AddonsSettingsPanels.Add(nSettingsPanel)
+                _AllSettingsPanels.Add(nSettingsPanel)
                 iPanelCounter += 1
                 AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -467,7 +462,7 @@ Public Class dlgSettings
             If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
                 nSettingsPanel.Order = iPanelCounter
                 nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AddonsSettingsPanels.Add(nSettingsPanel)
+                _AllSettingsPanels.Add(nSettingsPanel)
                 iPanelCounter += 1
                 AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -481,7 +476,7 @@ Public Class dlgSettings
             If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
                 nSettingsPanel.Order = iPanelCounter
                 nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AddonsSettingsPanels.Add(nSettingsPanel)
+                _AllSettingsPanels.Add(nSettingsPanel)
                 iPanelCounter += 1
                 AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -495,7 +490,7 @@ Public Class dlgSettings
             If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
                 nSettingsPanel.Order = iPanelCounter
                 nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AddonsSettingsPanels.Add(nSettingsPanel)
+                _AllSettingsPanels.Add(nSettingsPanel)
                 iPanelCounter += 1
                 AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -509,7 +504,7 @@ Public Class dlgSettings
             If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
                 nSettingsPanel.Order = iPanelCounter
                 nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AddonsSettingsPanels.Add(nSettingsPanel)
+                _AllSettingsPanels.Add(nSettingsPanel)
                 iPanelCounter += 1
                 AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -523,7 +518,7 @@ Public Class dlgSettings
             If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
                 nSettingsPanel.Order = iPanelCounter
                 nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AddonsSettingsPanels.Add(nSettingsPanel)
+                _AllSettingsPanels.Add(nSettingsPanel)
                 iPanelCounter += 1
                 AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -537,7 +532,7 @@ Public Class dlgSettings
             If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
                 nSettingsPanel.Order = iPanelCounter
                 nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AddonsSettingsPanels.Add(nSettingsPanel)
+                _AllSettingsPanels.Add(nSettingsPanel)
                 iPanelCounter += 1
                 AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -546,7 +541,7 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub SettingsPanels_RemoveAllPanels()
+    Private Sub SettingsPanels_Remove_AllPanels()
         'MasterSettingsPanels
         For Each s As Interfaces.IMasterSettingsPanel In _MasterSettingsPanels
             RemoveHandler s.NeedsDBClean_Movie, AddressOf Handle_NeedsDBClean_Movie
@@ -615,7 +610,13 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub SettingsPanels_ReorderAllPanels()
+    Private Sub SettingsPanels_Remove_CurrPanel()
+        If pnlSettingsMain.Controls.Count > 0 Then
+            pnlSettingsMain.Controls.Remove(_CurrPanel)
+        End If
+    End Sub
+
+    Private Sub SettingsPanels_Reorder_AddonPanels()
         Dim iPosition As Integer = 0
         For Each s In AddonsManager.Instance.ScraperAddons_Data_Movie.OrderBy(Function(f) f.ProcessorModule.SettingsPanel.Order)
             s.ProcessorModule.Order = s.ProcessorModule.SettingsPanel.Order
@@ -790,7 +791,7 @@ Public Class dlgSettings
         TreeView_Fill(_CurrButton.PanelType)
     End Sub
 
-    Private Sub TreeView_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvSettingsList.AfterSelect
+    Private Sub TreeView_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles tvSettingsList.AfterSelect
         If Not tvSettingsList.SelectedNode.ImageIndex = -1 Then
             pbSettingsCurrent.Image = ilSettings.Images(tvSettingsList.SelectedNode.ImageIndex)
         Else
@@ -798,9 +799,9 @@ Public Class dlgSettings
         End If
         lblSettingsCurrent.Text = String.Format("{0} - {1}", _CurrButton.Title, tvSettingsList.SelectedNode.Text)
 
-        RemoveCurrPanel()
+        SettingsPanels_Remove_CurrPanel()
 
-        _CurrPanel = _AddonsSettingsPanels.FirstOrDefault(Function(p) p.SettingsPanelID = tvSettingsList.SelectedNode.Name).Panel
+        _CurrPanel = _AllSettingsPanels.FirstOrDefault(Function(p) p.SettingsPanelID = tvSettingsList.SelectedNode.Name).Panel
         _CurrPanel.Location = New Point(0, 0)
         _CurrPanel.Dock = DockStyle.Fill
         pnlSettingsMain.Controls.Add(_CurrPanel)
@@ -812,11 +813,11 @@ Public Class dlgSettings
         Dim pNode As New TreeNode
 
         tvSettingsList.Nodes.Clear()
-        RemoveCurrPanel()
+        SettingsPanels_Remove_CurrPanel()
 
-        For Each MainPanel As Containers.SettingsPanel In _AddonsSettingsPanels.Where(Function(m) m.Type = PanelType).OrderBy(Function(s) s.Order)
+        For Each MainPanel As Containers.SettingsPanel In _AllSettingsPanels.Where(Function(m) m.Type = PanelType).OrderBy(Function(s) s.Order)
             pNode = New TreeNode(MainPanel.Title, MainPanel.ImageIndex, MainPanel.ImageIndex) With {.Name = MainPanel.SettingsPanelID}
-            For Each SubPanel As Containers.SettingsPanel In _AddonsSettingsPanels.Where(Function(s) s.Type = MainPanel.Contains).OrderBy(Function(s) s.Order)
+            For Each SubPanel As Containers.SettingsPanel In _AllSettingsPanels.Where(Function(s) s.Type = MainPanel.Contains).OrderBy(Function(s) s.Order)
                 pNode.Nodes.Add(New TreeNode(SubPanel.Title, SubPanel.ImageIndex, SubPanel.ImageIndex) With {.Name = SubPanel.SettingsPanelID})
             Next
             tvSettingsList.Nodes.Add(pNode)

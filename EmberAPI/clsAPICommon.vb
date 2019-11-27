@@ -367,7 +367,7 @@ Public Class Enums
         TVShowMatching
         TVShowSortTokens
         TrailerCodec
-        ValidExts
+        ValidVideoExts
         ValidSubtitleExts
         ValidThemeExts
         VideoCodecMapping
@@ -379,10 +379,22 @@ Public Class Enums
     ''' 2 results in using the newer datetime of the file's mtime and ctime
     ''' </summary>
     ''' <remarks>Don't remove the enum integer values to keep "Now" as default value</remarks>
-    Public Enum DateTime As Integer
+    Public Enum DateTimeStamp As Integer
+        ''' <summary>
+        ''' Current Time
+        ''' </summary>
         Now = 0
+        ''' <summary>
+        ''' Last Change Time
+        ''' </summary>
         ctime = 1
+        ''' <summary>
+        ''' Last Modification Time
+        ''' </summary>
         mtime = 2
+        ''' <summary>
+        ''' Newer Time of ctime and mtime 
+        ''' </summary>
         Newer = 3
     End Enum
     ''' <summary>
@@ -893,7 +905,7 @@ Public Class Functions
     ''' <returns><c>True</c> if we are running a 64-bit instance</returns>
     ''' <remarks>Note that the value of IntPtr.Size is 4 in a 32-bit process, and 8 in a 64-bit process</remarks>
     Public Shared Function Check64Bit() As Boolean
-        Return (IntPtr.Size = 8)
+        Return IntPtr.Size = 8
     End Function
     ''' <summary>
     ''' Determine whether this instance is intended as a beta test version
@@ -1041,6 +1053,15 @@ Public Class Functions
         '    logger.Error(GetType(Functions),ex.Message, ex.StackTrace, "Error")
         'End Try
         Return "Unavailable"
+    End Function
+
+    Public Shared Function GetDateTimeStampOptions() As List(Of KeyValuePair(Of String, Enums.DateTimeStamp))
+        Return New Dictionary(Of String, Enums.DateTimeStamp) From {
+            {Master.eLang.GetString(1210, "Current DateTime when adding"), Enums.DateTimeStamp.Now},
+            {Master.eLang.GetString(1227, "ctime (fallback to mtime)"), Enums.DateTimeStamp.ctime},
+            {Master.eLang.GetString(1211, "mtime (fallback to ctime)"), Enums.DateTimeStamp.mtime},
+            {Master.eLang.GetString(1212, "Newer of mtime and ctime"), Enums.DateTimeStamp.Newer}
+        }.ToList
     End Function
 
     ''' <summary>

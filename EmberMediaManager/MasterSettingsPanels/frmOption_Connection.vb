@@ -112,16 +112,17 @@ Public Class frmOption_Connection
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
-            If Not String.IsNullOrEmpty(txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(txtProxyPort.Text) Then
+            Dim iPort As Integer
+            If Not String.IsNullOrEmpty(txtProxyURI.Text) AndAlso Integer.TryParse(txtProxyPort.Text.Trim, iPort) Then
+                .ProxyPort = iPort
                 .ProxyURI = txtProxyURI.Text
-                .ProxyPort = Convert.ToInt32(txtProxyPort.Text)
 
-                If Not String.IsNullOrEmpty(txtProxyUsername.Text) AndAlso Not String.IsNullOrEmpty(txtProxyPassword.Text) Then
-                    .ProxyCredentials.UserName = txtProxyUsername.Text
-                    .ProxyCredentials.Password = txtProxyPassword.Text
-                    .ProxyCredentials.Domain = txtProxyDomain.Text
+                If Not String.IsNullOrEmpty(txtCredentialsUsername.Text) AndAlso Not String.IsNullOrEmpty(txtCredentialsPassword.Text) Then
+                    .ProxyCredentials.Domain = txtCredentialsDomain.Text
+                    .ProxyCredentials.Password = txtCredentialsPassword.Text
+                    .ProxyCredentials.UserName = txtCredentialsUsername.Text
                 Else
                     .ProxyCredentials = New NetworkCredential
                 End If
@@ -139,59 +140,72 @@ Public Class frmOption_Connection
     Public Sub Settings_Load()
         With Master.eSettings
             If Not String.IsNullOrEmpty(.ProxyURI) AndAlso .ProxyPort >= 0 Then
-                chkProxyEnable.Checked = True
+                chkProxyEnabled.Checked = True
                 txtProxyURI.Text = .ProxyURI
                 txtProxyPort.Text = .ProxyPort.ToString
 
                 If Not String.IsNullOrEmpty(.ProxyCredentials.UserName) Then
-                    chkProxyCredsEnable.Checked = True
-                    txtProxyUsername.Text = .ProxyCredentials.UserName
-                    txtProxyPassword.Text = .ProxyCredentials.Password
-                    txtProxyDomain.Text = .ProxyCredentials.Domain
+                    chkCredentialsEnabled.Checked = True
+                    txtCredentialsUsername.Text = .ProxyCredentials.UserName
+                    txtCredentialsPassword.Text = .ProxyCredentials.Password
+                    txtCredentialsDomain.Text = .ProxyCredentials.Domain
                 End If
             End If
         End With
     End Sub
 
     Private Sub Setup()
-        chkProxyCredsEnable.Text = Master.eLang.GetString(677, "Enable Credentials")
-        chkProxyEnable.Text = Master.eLang.GetString(673, "Enable Proxy")
-        gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
-        gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
-        lblProxyDomain.Text = Master.eLang.GetString(678, "Domain:")
-        lblProxyPassword.Text = Master.eLang.GetString(426, "Password:")
+        chkCredentialsEnabled.Text = Master.eLang.GetString(677, "Enable Credentials")
+        chkProxyEnabled.Text = Master.eLang.GetString(673, "Enable Proxy")
+        gbCredentials.Text = Master.eLang.GetString(676, "Credentials")
+        gbProxy.Text = Master.eLang.GetString(672, "Proxy")
+        lblCredentialsDomain.Text = Master.eLang.GetString(678, "Domain:")
+        lblCredentialsPassword.Text = Master.eLang.GetString(426, "Password:")
+        lblCredentialsUsername.Text = Master.eLang.GetString(425, "Username:")
         lblProxyPort.Text = Master.eLang.GetString(675, "Proxy Port:")
         lblProxyURI.Text = Master.eLang.GetString(674, "Proxy URL:")
-        lblProxyUsername.Text = Master.eLang.GetString(425, "Username:")
     End Sub
 
-    Private Sub chkProxyCredsEnable_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
-        txtProxyUsername.Enabled = chkProxyCredsEnable.Checked
-        txtProxyPassword.Enabled = chkProxyCredsEnable.Checked
-        txtProxyDomain.Enabled = chkProxyCredsEnable.Checked
+    Private Sub Enable_ApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
+        txtCredentialsDomain.TextChanged,
+        txtCredentialsPassword.TextChanged,
+        txtCredentialsUsername.TextChanged,
+        txtProxyURI.TextChanged
 
-        If Not chkProxyCredsEnable.Checked Then
-            txtProxyUsername.Text = String.Empty
-            txtProxyPassword.Text = String.Empty
-            txtProxyDomain.Text = String.Empty
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub CredentialsEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkCredentialsEnabled.CheckedChanged
+        txtCredentialsUsername.Enabled = chkCredentialsEnabled.Checked
+        txtCredentialsPassword.Enabled = chkCredentialsEnabled.Checked
+        txtCredentialsDomain.Enabled = chkCredentialsEnabled.Checked
+
+        If Not chkCredentialsEnabled.Checked Then
+            txtCredentialsUsername.Text = String.Empty
+            txtCredentialsPassword.Text = String.Empty
+            txtCredentialsDomain.Text = String.Empty
         End If
+        Handle_SettingsChanged()
     End Sub
 
-    Private Sub chkProxyEnable_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
-        txtProxyURI.Enabled = chkProxyEnable.Checked
-        txtProxyPort.Enabled = chkProxyEnable.Checked
-        gbProxyCredsOpts.Enabled = chkProxyEnable.Checked
+    Private Sub ProxyEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkProxyEnabled.CheckedChanged
+        txtProxyURI.Enabled = chkProxyEnabled.Checked
+        txtProxyPort.Enabled = chkProxyEnabled.Checked
+        gbCredentials.Enabled = chkProxyEnabled.Checked
 
-        If Not chkProxyEnable.Checked Then
+        If Not chkProxyEnabled.Checked Then
             txtProxyURI.Text = String.Empty
             txtProxyPort.Text = String.Empty
-            chkProxyCredsEnable.Checked = False
-            txtProxyUsername.Text = String.Empty
-            txtProxyPassword.Text = String.Empty
-            txtProxyDomain.Text = String.Empty
+            chkCredentialsEnabled.Checked = False
+            txtCredentialsUsername.Text = String.Empty
+            txtCredentialsPassword.Text = String.Empty
+            txtCredentialsDomain.Text = String.Empty
         End If
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub TextBox_NumOnly_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtProxyPort.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
 #End Region 'Methods

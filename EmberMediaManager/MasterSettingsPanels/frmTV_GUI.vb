@@ -113,7 +113,7 @@ Public Class frmTV_GUI
 
         Return New Containers.SettingsPanel With {
             .Contains = Enums.SettingsPanelType.TVGUI,
-            .ImageIndex = 2,
+            .ImageIndex = 0,
             .Order = 100,
             .Panel = pnlSettings,
             .SettingsPanelID = "TV_GUI",
@@ -122,7 +122,7 @@ Public Class frmTV_GUI
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .TVDisplayMissingEpisodes = chkTVDisplayMissingEpisodes.Checked
             .TVEpisodeFilterCustom.Clear()

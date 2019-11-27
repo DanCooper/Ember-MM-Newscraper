@@ -118,7 +118,7 @@ Public Class frmTV_Image
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .TVAllSeasonsBannerHeight = If(Not String.IsNullOrEmpty(txtTVAllSeasonsBannerHeight.Text), Convert.ToInt32(txtTVAllSeasonsBannerHeight.Text), 0)
             .TVAllSeasonsBannerKeepExisting = chkTVAllSeasonsBannerKeepExisting.Checked
@@ -875,7 +875,7 @@ Public Class frmTV_Image
     Private Sub TextBox_Limit_Leave(sender As Object, e As EventArgs)
         Dim iLimit As Integer
         Dim tTextBox = CType(sender, TextBox)
-        If Not Integer.TryParse(tTextBox.Text, iLimit) OrElse iLimit > Settings.ExtraImagesLimit OrElse iLimit = 0 Then
+        If Not Integer.TryParse(tTextBox.Text, iLimit) OrElse iLimit > Settings._ExtraImagesLimit OrElse iLimit = 0 Then
             Dim strTitle As String = Master.eLang.GetString(934, "Image Limit")
             Dim strText As String = Master.eLang.GetString(935, "We have to limit the amount of images downloaded to a suitable value to prevent needless traffic on the image providers.{0}The limit for automatically downloaded Extrafanarts and Extrathumbs is 20.{0}{0}Notes: Most skins can't show more than 4 Extrathumbs.{0}It's still possible to manually select as many as you want in the ""Image Select"" dialog.")
             MessageBox.Show(String.Format(strText, Environment.NewLine), strTitle, MessageBoxButtons.OK, MessageBoxIcon.Information)

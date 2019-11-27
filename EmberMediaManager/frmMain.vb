@@ -3967,7 +3967,7 @@ Public Class frmMain
         If dgvMovieSets.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifiers)
+            CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movieset, ScrapeModifiers)
         End If
     End Sub
 
@@ -4171,7 +4171,7 @@ Public Class frmMain
                 contentType = Enums.ContentType.Movieset
                 bClickScrapeAsk = Master.eSettings.MovieSetClickScrapeAsk
                 bClickScrapeEnabled = Master.eSettings.MovieSetClickScrape
-                defaultOptions = Master.eSettings.DefaultOptions_MovieSet
+                defaultOptions = Master.eSettings.DefaultOptions_Movieset
             Case sender Is dgvTVEpisodes
                 contentType = Enums.ContentType.TVEpisode
                 bClickScrapeAsk = Master.eSettings.TVGeneralClickScrapeAsk
@@ -6064,12 +6064,12 @@ Public Class frmMain
                     Case DialogResult.Retry 'Rescrape
                         Dim ScrapeModifier As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
-                        CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifier)
+                        CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movieset, ScrapeModifier)
                     Case DialogResult.Abort 'Change MovieSet
                         Dim ScrapeModifier As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
-                        CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifier)
+                        CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movieset, ScrapeModifier)
                     Case Else
                         If InfoCleared Then LoadInfo_MovieSet(DBMovieSet.ID)
                 End Select
@@ -8664,7 +8664,7 @@ Public Class frmMain
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
-                        CreateScrapeList_MovieSet(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions_MovieSet, ScrapeModifiers)
+                        CreateScrapeList_MovieSet(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions_Movieset, ScrapeModifiers)
                         While bwMovieSetScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -9510,7 +9510,7 @@ Public Class frmMain
         If Master.eSettings.MovieSetGeneralCustomScrapeButtonEnabled Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.MovieSetGeneralCustomScrapeButtonModifierType, True)
-            CreateScrapeList_MovieSet(Master.eSettings.MovieSetGeneralCustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifiers)
+            CreateScrapeList_MovieSet(Master.eSettings.MovieSetGeneralCustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions_Movieset, ScrapeModifiers)
         Else
             mnuScrapeMovieSets.ShowDropDown()
         End If
@@ -9615,7 +9615,7 @@ Public Class frmMain
                     mnuScrapeOptionOriginalTitle.Visible = False
                     mnuScrapeOptionOutline.Enabled = False
                     mnuScrapeOptionOutline.Visible = False
-                    mnuScrapeOptionPlot.Enabled = .MovieSetScraperPlot
+                    mnuScrapeOptionPlot.Enabled = .MoviesetScraperPlot
                     mnuScrapeOptionPlot.Visible = True
                     mnuScrapeOptionPremiered.Enabled = False
                     mnuScrapeOptionPremiered.Visible = False
@@ -9631,7 +9631,7 @@ Public Class frmMain
                     mnuScrapeOptionStudios.Visible = False
                     mnuScrapeOptionTagline.Enabled = False
                     mnuScrapeOptionTagline.Visible = False
-                    mnuScrapeOptionTitle.Enabled = .MovieSetScraperTitle
+                    mnuScrapeOptionTitle.Enabled = .MoviesetScraperTitle
                     mnuScrapeOptionTitle.Visible = True
                     mnuScrapeOptionTop250.Enabled = False
                     mnuScrapeOptionTop250.Visible = False
@@ -10124,7 +10124,7 @@ Public Class frmMain
                 Case "movie"
                     CreateScrapeList_Movie(Type, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
                 Case "movieset"
-                    CreateScrapeList_MovieSet(Type, Master.eSettings.DefaultOptions_MovieSet, ScrapeModifiers)
+                    CreateScrapeList_MovieSet(Type, Master.eSettings.DefaultOptions_Movieset, ScrapeModifiers)
                 Case "tvepisode"
                     CreateScrapeList_TVEpisode(Type, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
                 Case "tvseason"

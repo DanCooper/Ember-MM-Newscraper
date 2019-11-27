@@ -467,10 +467,10 @@
     <Compile Include="MasterSettingsPanels\frmOption_FileSystem.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MasterSettingsPanels\frmOption_GUI.Designer.vb">
-      <DependentUpon>frmOption_GUI.vb</DependentUpon>
+    <Compile Include="MasterSettingsPanels\frmOption_General.Designer.vb">
+      <DependentUpon>frmOption_General.vb</DependentUpon>
     </Compile>
-    <Compile Include="MasterSettingsPanels\frmOption_GUI.vb">
+    <Compile Include="MasterSettingsPanels\frmOption_General.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MasterSettingsPanels\frmOption_Connection.Designer.vb">
@@ -685,8 +685,8 @@
     <EmbeddedResource Include="MasterSettingsPanels\frmOption_FileSystem.resx">
       <DependentUpon>frmOption_FileSystem.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MasterSettingsPanels\frmOption_GUI.resx">
-      <DependentUpon>frmOption_GUI.vb</DependentUpon>
+    <EmbeddedResource Include="MasterSettingsPanels\frmOption_General.resx">
+      <DependentUpon>frmOption_General.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmOption_Connection.resx">
       <DependentUpon>frmOption_Connection.vb</DependentUpon>

@@ -119,7 +119,7 @@ Public Class frmMovieset_FileNaming
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .MovieSetCleanDB = chkMovieSetCleanDB.Checked
             .MovieSetCleanFiles = chkMovieSetCleanFiles.Checked

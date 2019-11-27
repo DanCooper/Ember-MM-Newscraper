@@ -121,7 +121,7 @@ Public Class frmTV_Data
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .TVLockEpisodeLanguageA = chkTVLockEpisodeLanguageA.Checked
             .TVLockEpisodeLanguageV = chkTVLockEpisodeLanguageV.Checked

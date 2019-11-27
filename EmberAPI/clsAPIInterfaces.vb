@@ -102,7 +102,7 @@ Public Class Interfaces
 
         Function InjectSettingsPanel() As Containers.SettingsPanel
 
-        Sub SaveSetup()
+        Sub SaveSettings()
 
 #End Region 'Methods
 

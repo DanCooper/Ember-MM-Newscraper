@@ -117,7 +117,7 @@ Public Class frmMovie_Data
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .MovieLockActors = chkMovieLockActors.Checked
             .MovieLockCert = chkMovieLockCert.Checked

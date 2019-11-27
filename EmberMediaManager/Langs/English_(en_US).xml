@@ -528,7 +528,7 @@
   <string id="527">Place Holder Folder/Movie Name:</string>
   <string id="528">Search Movie</string>
   <string id="529">Enable Trailer Support</string>
-  <string id="530">No Stack Extensions</string>
+  <string id="530"></string>
   <string id="531">Bulk Creator</string>
   <string id="532">Condition</string>
   <string id="533">Create</string>
@@ -557,7 +557,7 @@
   <string id="556">NFO</string>
   <string id="557">Video Codec Mapping</string>
   <string id="558">Wide</string>
-  <string id="559"></string>
+  <string id="559">Import Options</string>
   <string id="560">TV Show Options</string>
   <string id="561">Save YAMJ Compatible Sets to NFO</string>
   <string id="562">Reloading Show</string>
@@ -667,7 +667,7 @@
   <string id="666">Extract images from video file</string>
   <string id="667">Prefer extracted images</string>
   <string id="668">Clean database after updating library</string>
-  <string id="669"></string>
+  <string id="669">Show News and Information after Start</string>
   <string id="670">Show Folder/File Name Filters</string>
   <string id="671">Episode Folder/File Name Filters</string>
   <string id="672">Proxy</string>
@@ -763,7 +763,7 @@
   <string id="762">Verifying TV Episode Details:</string>
   <string id="763">Mapping by File Extension</string>
   <string id="764">Mapping by Regex</string>
-  <string id="765"></string>
+  <string id="765">Browse</string>
   <string id="766">(Re)Scrape Show</string>
   <string id="767">Change TV Show</string>
   <string id="768">Delete TV Show</string>
@@ -924,7 +924,7 @@
   <string id="923">Select Format</string>
   <string id="924">Getting available formats...</string>
   <string id="925">Available Video Formats</string>
-  <string id="926"></string>
+  <string id="926">Full Path</string>
   <string id="927">A Fanart of your preferred size could not be found. Please choose another.</string>
   <string id="928">A Poster of your preferred size could not be found. Please choose another.</string>
   <string id="929">No Preferred Size</string>
@@ -1350,7 +1350,7 @@
   <string id="1258">Store themes in movie directory</string>
   <string id="1259">Store themes in a custom path</string>
   <string id="1260">Store themes in sub directories</string>
-  <string id="1261">Configuration ISO Filescanning</string>
+  <string id="1261">Virtual Drive</string>
   <string id="1262">Use Show Runtime for Episodes if no Episode Runtime can be found</string>
   <string id="1263">TMDB Collection ID found</string>
   <string id="1264">Should the Collection ID of the movie "{0}" be used as ID for this Collection?</string>
@@ -1548,7 +1548,7 @@
   <string id="1457">Autoscraper</string>
   <string id="1458">Imagedialog</string>
   <string id="1459">Activate ImageFilter to avoid duplicate images</string>
-  <string id="1460">Match Tolerance should be between 0 - 10 | 0 = 100% identical images, 10= different images</string>
+  <string id="1460">Match Tolerance should be between 0 - 10 | 0 = 100% identical images, 10 = different images</string>
   <string id="1461">All movies</string>
   <string id="1462">Filtered movies</string>
   <string id="1463">Selected movies</string>

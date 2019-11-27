@@ -119,8 +119,10 @@ Public Class frmMovie_Source
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
+            .GeneralDateAddedIgnoreNFO = chkGeneralDateAddedIgnoreNFO.Checked
+            .GeneralDateTime = CType(cbGeneralDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTimeStamp)).Value
             .MovieCleanDB = chkMovieCleanDB.Checked
             If Not String.IsNullOrEmpty(cbMovieGeneralLang.Text) Then
                 .MovieGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbMovieGeneralLang.Text).Abbreviation
@@ -135,6 +137,8 @@ Public Class frmMovie_Source
             .MovieSortBeforeScan = chkMovieSortBeforeScan.Checked
             .MovieGeneralMarkNew = chkMovieGeneralMarkNew.Checked
             .MovieProperCase = chkMovieProperCase.Checked
+            .GeneralSourceFromFolder = chkGeneralSourceFromFolder.Checked
+            .GeneralOverwriteNfo = chkGeneralOverwriteNfo.Checked
         End With
     End Sub
 
@@ -144,11 +148,15 @@ Public Class frmMovie_Source
 
     Public Sub Settings_Load()
         With Master.eSettings
+            cbGeneralDateTime.SelectedValue = .GeneralDateTime
+            chkGeneralDateAddedIgnoreNFO.Checked = .GeneralDateAddedIgnoreNFO
             chkMovieCleanDB.Checked = .MovieCleanDB
             chkMovieSortBeforeScan.Checked = .MovieSortBeforeScan
             txtMovieSkipLessThan.Text = .MovieSkipLessThan.ToString
             chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
             chkMovieProperCase.Checked = .MovieProperCase
+            chkGeneralSourceFromFolder.Checked = .GeneralSourceFromFolder
+            chkGeneralOverwriteNfo.Checked = .GeneralOverwriteNfo
 
             cbMovieGeneralLang.Items.Clear()
             cbMovieGeneralLang.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
@@ -176,12 +184,14 @@ Public Class frmMovie_Source
     End Sub
 
     Private Sub Setup()
+        chkGeneralDateAddedIgnoreNFO.Text = Master.eLang.GetString(1209, "Ignore <dateadded> from NFO")
+        gbGeneralDateAdded.Text = Master.eLang.GetString(792, "Adding Date")
         lblMovieSourcesDefaultsLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
         gbMovieSourcesDefaultsOpts.Text = Master.eLang.GetString(252, "Defaults for new Sources")
         colMovieSourcesExclude.Text = Master.eLang.GetString(264, "Exclude")
         colMovieSourcesGetYear.Text = Master.eLang.GetString(586, "Get Year")
         colMovieSourcesLanguage.Text = Master.eLang.GetString(610, "Language")
-        gbMovieSourcesMiscOpts.Text = Master.eLang.GetString(429, "Miscellaneous")
+        gbImportOpts.Text = Master.eLang.GetString(559, "Import Options")
         colMovieSourcesName.Text = Master.eLang.GetString(232, "Name")
         colMovieSourcesPath.Text = Master.eLang.GetString(410, "Path")
         colMovieSourcesRecur.Text = Master.eLang.GetString(411, "Recursive")
@@ -197,6 +207,11 @@ Public Class frmMovie_Source
         chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         chkMovieProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
         gbMovieGeneralFiltersOpts.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
+        chkGeneralSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
+        chkGeneralOverwriteNfo.Text = Master.eLang.GetString(433, "Overwrite Non-conforming nfos")
+        lblGeneralOverwriteNfo.Text = Master.eLang.GetString(434, "(If unchecked, non-conforming nfos will be renamed to <filename>.info)")
+
+        LoadGeneralDateTime()
     End Sub
 
     Private Sub btnMovieFilterAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
@@ -317,6 +332,12 @@ Public Class frmMovie_Source
 
     Private Sub lvMovieSources_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
         If e.KeyCode = Keys.Delete Then RemoveMovieSource()
+    End Sub
+
+    Private Sub LoadGeneralDateTime()
+        cbGeneralDateTime.DataSource = Functions.GetDateTimeStampOptions()
+        cbGeneralDateTime.DisplayMember = "Key"
+        cbGeneralDateTime.ValueMember = "Value"
     End Sub
 
     Private Sub RefreshMovieSources()

@@ -157,7 +157,7 @@ Namespace FFmpeg
             'end if
 
             'fallback to 20 images if no limit (Thumbcount) has been set
-            If ThumbCount > Settings.ExtraImagesLimit OrElse ThumbCount = 0 Then ThumbCount = Settings.ExtraImagesLimit
+            If ThumbCount > Settings._ExtraImagesLimit OrElse ThumbCount = 0 Then ThumbCount = Settings._ExtraImagesLimit
 
             'Step 2: Calculate timespan between thumbs
             Dim iSecondsBetweenThumbs As Integer = 0

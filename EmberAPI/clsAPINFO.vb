@@ -413,7 +413,7 @@ Public Class Info
 
             'Plot
             If (Not DBMovieSet.Movieset.PlotSpecified OrElse Not Master.eSettings.MovieSetLockPlot) AndAlso ScrapeOptions.bMainPlot AndAlso
-                scrapedmovieset.PlotSpecified AndAlso Master.eSettings.MovieSetScraperPlot AndAlso Not new_Plot Then
+                scrapedmovieset.PlotSpecified AndAlso Master.eSettings.MoviesetScraperPlot AndAlso Not new_Plot Then
                 DBMovieSet.Movieset.Plot = scrapedmovieset.Plot
                 new_Plot = True
                 'ElseIf Master.eSettings.MovieSetScraperCleanFields AndAlso Not Master.eSettings.MovieSetScraperPlot AndAlso Not Master.eSettings.MovieSetLockPlot Then
@@ -422,7 +422,7 @@ Public Class Info
 
             'Title
             If (Not DBMovieSet.Movieset.TitleSpecified OrElse Not Master.eSettings.MovieSetLockTitle) AndAlso ScrapeOptions.bMainTitle AndAlso
-                 scrapedmovieset.TitleSpecified AndAlso Master.eSettings.MovieSetScraperTitle AndAlso Not new_Title Then
+                 scrapedmovieset.TitleSpecified AndAlso Master.eSettings.MoviesetScraperTitle AndAlso Not new_Title Then
                 DBMovieSet.Movieset.Title = scrapedmovieset.Title
                 new_Title = True
                 'ElseIf Master.eSettings.MovieSetScraperCleanFields AndAlso Not Master.eSettings.MovieSetScraperTitle AndAlso Not Master.eSettings.MovieSetLockTitle Then

@@ -111,7 +111,7 @@ Public Class frmMovieset_GUI
 
         Return New Containers.SettingsPanel With {
             .Contains = Enums.SettingsPanelType.MoviesetGUI,
-            .ImageIndex = 2,
+            .ImageIndex = 0,
             .Order = 100,
             .Panel = pnlSettings,
             .SettingsPanelID = "Movieset_GUI",
@@ -120,7 +120,7 @@ Public Class frmMovieset_GUI
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .MovieSetClickScrape = chkMovieSetClickScrape.Checked
             .MovieSetClickScrapeAsk = chkMovieSetClickScrapeAsk.Checked

@@ -806,7 +806,7 @@ Public Class dlgCustomScraper
                     oMainMPAAAllowed = False
                     oMainOriginalTitleAllowed = False
                     oMainOutlineAllowed = False
-                    oMainPlotAllowed = .MovieSetScraperPlot
+                    oMainPlotAllowed = .MoviesetScraperPlot
                     oMainPremieredAllowed = False
                     oMainProducersAllowed = False
                     oMainRatingAllowed = False
@@ -815,7 +815,7 @@ Public Class dlgCustomScraper
                     oMainStatusAllowed = False
                     oMainStudiosAllowed = False
                     oMainTaglineAllowed = False
-                    oMainTitleAllowed = .MovieSetScraperTitle
+                    oMainTitleAllowed = .MoviesetScraperTitle
                     oMainTop250Allowed = False
                     oMainTrailerAllowed = False
                     oMainWritersAllowed = False

@@ -111,12 +111,12 @@ Public Class frmMovieset_Data
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .MovieSetLockPlot = chkMovieSetLockPlot.Checked
             .MovieSetLockTitle = chkMovieSetLockTitle.Checked
-            .MovieSetScraperPlot = chkMovieSetScraperPlot.Checked
-            .MovieSetScraperTitle = chkMovieSetScraperTitle.Checked
+            .MoviesetScraperPlot = chkMovieSetScraperPlot.Checked
+            .MoviesetScraperTitle = chkMovieSetScraperTitle.Checked
         End With
 
         SaveMovieSetScraperTitleRenamer()
@@ -130,8 +130,8 @@ Public Class frmMovieset_Data
         With Master.eSettings
             chkMovieSetLockPlot.Checked = .MovieSetLockPlot
             chkMovieSetLockTitle.Checked = .MovieSetLockTitle
-            chkMovieSetScraperPlot.Checked = .MovieSetScraperPlot
-            chkMovieSetScraperTitle.Checked = .MovieSetScraperTitle
+            chkMovieSetScraperPlot.Checked = .MoviesetScraperPlot
+            chkMovieSetScraperTitle.Checked = .MoviesetScraperTitle
         End With
 
         FillMovieSetScraperTitleRenamer()

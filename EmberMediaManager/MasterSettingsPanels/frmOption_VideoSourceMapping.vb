@@ -23,13 +23,6 @@ Imports EmberAPI
 Public Class frmOption_VideoSourceMapping
     Implements Interfaces.IMasterSettingsPanel
 
-#Region "Fields"
-
-    Private _TmpVideoSourceByExtension As New List(Of Settings.VideoSourceByExtension)
-    Private _TmpVideoSourceByRegex As New List(Of Settings.VideoSourceByRegex)
-
-#End Region 'Fields
-
 #Region "Events"
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
@@ -118,7 +111,7 @@ Public Class frmOption_VideoSourceMapping
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .GeneralVideoSourceByExtensionEnabled = chkByExtensionEnabled.Checked
             .GeneralVideoSourceByRegexEnabled = chkRegexEnabled.Checked
@@ -136,11 +129,8 @@ Public Class frmOption_VideoSourceMapping
             chkByExtensionEnabled.Checked = .GeneralVideoSourceByExtensionEnabled
             chkRegexEnabled.Checked = .GeneralVideoSourceByRegexEnabled
 
-            _TmpVideoSourceByExtension.AddRange(.GeneralVideoSourceByExtension)
-            DataGridView_Fill_ByExtension()
-
-            _TmpVideoSourceByRegex.AddRange(.GeneralVideoSourceByRegex)
-            DataGridView_Fill_ByRegex()
+            DataGridView_Fill_ByExtension(.GeneralVideoSourceByExtension)
+            DataGridView_Fill_ByRegex(.GeneralVideoSourceByRegex)
         End With
     End Sub
 
@@ -156,29 +146,7 @@ Public Class frmOption_VideoSourceMapping
         End With
     End Sub
 
-    Private Sub DataGridView_Fill_ByExtension()
-        dgvByExtension.Rows.Clear()
-        For Each sett In _TmpVideoSourceByExtension
-            Dim i As Integer = dgvByExtension.Rows.Add(New Object() {
-                                                       sett.Extension,
-                                                       sett.VideoSource
-                                                       })
-        Next
-        dgvByExtension.ClearSelection()
-    End Sub
-
-    Private Sub DataGridView_Fill_ByRegex()
-        dgvByRegex.Rows.Clear()
-        For Each sett In _TmpVideoSourceByRegex
-            Dim i As Integer = dgvByRegex.Rows.Add(New Object() {
-                                                   sett.Regexp,
-                                                   sett.Videosource
-                                                   })
-        Next
-        dgvByRegex.ClearSelection()
-    End Sub
-
-    Private Sub Enable_ApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
+    Private Sub Enable_ApplyButton() Handles _
         chkByExtensionEnabled.CheckedChanged,
         chkRegexEnabled.CheckedChanged,
         dgvByExtension.CellValueChanged,
@@ -191,9 +159,30 @@ Public Class frmOption_VideoSourceMapping
         Handle_SettingsChanged()
     End Sub
 
+    Private Sub DataGridView_Fill_ByExtension(ByVal List As List(Of Settings.VideoSourceByExtension))
+        dgvByExtension.Rows.Clear()
+        For Each sett In List
+            Dim i As Integer = dgvByExtension.Rows.Add(New Object() {
+                                                       sett.Extension,
+                                                       sett.VideoSource
+                                                       })
+        Next
+        dgvByExtension.ClearSelection()
+    End Sub
+
+    Private Sub DataGridView_Fill_ByRegex(ByVal List As List(Of Settings.VideoSourceByRegex))
+        dgvByRegex.Rows.Clear()
+        For Each sett In List
+            Dim i As Integer = dgvByRegex.Rows.Add(New Object() {
+                                                   sett.Regexp,
+                                                   sett.Videosource
+                                                   })
+        Next
+        dgvByRegex.ClearSelection()
+    End Sub
+
     Private Sub LoadDefaults_ByRegex(ByVal sender As Object, ByVal e As EventArgs) Handles btnByRegexDefaults.Click
-        _TmpVideoSourceByRegex = Master.eSettings.GetDefaultsForList_VideoSourceMappingByRegex()
-        DataGridView_Fill_ByRegex()
+        DataGridView_Fill_ByRegex(Master.eSettings.GetDefaultsForList_VideoSourceMappingsByRegex())
         Handle_SettingsChanged()
     End Sub
 

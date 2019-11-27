@@ -23,13 +23,6 @@ Imports EmberAPI
 Public Class frmOption_AVCodecMapping
     Implements Interfaces.IMasterSettingsPanel
 
-#Region "Fields"
-
-    Private _TmpAudioCodecMapping As New List(Of Settings.CodecMapping)
-    Private _TmpVideoCodecMapping As New List(Of Settings.CodecMapping)
-
-#End Region 'Fields
-
 #Region "Events"
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
@@ -118,7 +111,7 @@ Public Class frmOption_AVCodecMapping
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             Save_Audio()
             Save_Video()
@@ -131,11 +124,8 @@ Public Class frmOption_AVCodecMapping
 
     Public Sub Settings_Load()
         With Master.eSettings
-            _TmpAudioCodecMapping.AddRange(Master.eSettings.GeneralAudioCodecMapping)
-            DataGridView_Fill_Audio()
-
-            _TmpVideoCodecMapping.AddRange(Master.eSettings.GeneralVideoCodecMapping)
-            DataGridView_Fill_Video()
+            DataGridView_Fill_Audio(Master.eSettings.GeneralAudioCodecMapping)
+            DataGridView_Fill_Video(Master.eSettings.GeneralVideoCodecMapping)
         End With
     End Sub
 
@@ -153,29 +143,6 @@ Public Class frmOption_AVCodecMapping
         End With
     End Sub
 
-    Private Sub DataGridView_Fill_Audio()
-        dgvAudio.Rows.Clear()
-        For Each sett In _TmpAudioCodecMapping
-            Dim i As Integer = dgvAudio.Rows.Add(New Object() {
-                                                 sett.Codec,
-                                                 sett.Mapping,
-                                                 sett.AdditionalFeatures
-                                                 })
-        Next
-        dgvAudio.ClearSelection()
-    End Sub
-
-    Private Sub DataGridView_Fill_Video()
-        dgvVideo.Rows.Clear()
-        For Each sett In _TmpVideoCodecMapping
-            Dim i As Integer = dgvVideo.Rows.Add(New Object() {
-                                                 sett.Codec,
-                                                 sett.Mapping
-                                                 })
-        Next
-        dgvVideo.ClearSelection()
-    End Sub
-
     Private Sub Enable_ApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
         dgvAudio.CellValueChanged,
         dgvAudio.RowsAdded,
@@ -187,15 +154,36 @@ Public Class frmOption_AVCodecMapping
         Handle_SettingsChanged()
     End Sub
 
+    Private Sub DataGridView_Fill_Audio(ByVal List As List(Of Settings.CodecMapping))
+        dgvAudio.Rows.Clear()
+        For Each sett In List
+            Dim i As Integer = dgvAudio.Rows.Add(New Object() {
+                                                 sett.Codec,
+                                                 sett.Mapping,
+                                                 sett.AdditionalFeatures
+                                                 })
+        Next
+        dgvAudio.ClearSelection()
+    End Sub
+
+    Private Sub DataGridView_Fill_Video(ByVal List As List(Of Settings.CodecMapping))
+        dgvVideo.Rows.Clear()
+        For Each sett In List
+            Dim i As Integer = dgvVideo.Rows.Add(New Object() {
+                                                 sett.Codec,
+                                                 sett.Mapping
+                                                 })
+        Next
+        dgvVideo.ClearSelection()
+    End Sub
+
     Private Sub LoadDefaults_Audio(ByVal sender As Object, ByVal e As EventArgs) Handles btnAudioDefaults.Click
-        _TmpAudioCodecMapping = Master.eSettings.GetDefaultsForList_AudioCodecMapping()
-        DataGridView_Fill_Audio()
+        DataGridView_Fill_Audio(Master.eSettings.GetDefaultsForList_AudioCodecMappings())
         Handle_SettingsChanged()
     End Sub
 
     Private Sub LoadDefaults_Video(ByVal sender As Object, ByVal e As EventArgs) Handles btnVideoDefaults.Click
-        _TmpVideoCodecMapping = Master.eSettings.GetDefaultsForList_VideoCodecMapping()
-        DataGridView_Fill_Video()
+        DataGridView_Fill_Video(Master.eSettings.GetDefaultsForList_VideoCodecMappings())
         Handle_SettingsChanged()
     End Sub
 

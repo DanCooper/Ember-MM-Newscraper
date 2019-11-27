@@ -119,18 +119,15 @@ Public Class frmOption_FileSystem
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
-            .GeneralVirtualDriveLetter = cbGeneralVirtualDriveLetter.Text
-            .GeneralVirtualDriveBinPath = txtGeneralVirtualDriveBinPath.Text
-            .FileSystemNoStackExts.Clear()
-            .FileSystemNoStackExts.AddRange(lstFileSystemNoStackExts.Items.OfType(Of String).ToList)
-            .FileSystemValidExts.Clear()
-            .FileSystemValidExts.AddRange(lstFileSystemValidVideoExts.Items.OfType(Of String).ToList)
-            .FileSystemValidSubtitlesExts.Clear()
-            .FileSystemValidSubtitlesExts.AddRange(lstFileSystemValidSubtitlesExts.Items.OfType(Of String).ToList)
-            .FileSystemValidThemeExts.Clear()
-            .FileSystemValidThemeExts.AddRange(lstFileSystemValidThemeExts.Items.OfType(Of String).ToList)
+            .GeneralVirtualDriveLetter = cbVirtualDriveDriveLetter.Text
+            .GeneralVirtualDriveBinPath = txtVirtualDrivePath.Text
+
+            Save_ExcludedPaths()
+            Save_ValidSubtitleExtensions()
+            Save_ValidThemeExtensions()
+            Save_ValidVideoExtensions()
         End With
     End Sub
 
@@ -140,273 +137,216 @@ Public Class frmOption_FileSystem
 
     Public Sub Settings_Load()
         With Master.eSettings
-            lstFileSystemNoStackExts.Items.AddRange(.FileSystemNoStackExts.ToArray)
-            cbGeneralVirtualDriveLetter.SelectedItem = .GeneralVirtualDriveLetter
-            txtGeneralVirtualDriveBinPath.Text = .GeneralVirtualDriveBinPath
-        End With
+            cbVirtualDriveDriveLetter.SelectedItem = .GeneralVirtualDriveLetter
+            txtVirtualDrivePath.Text = .GeneralVirtualDriveBinPath
 
-        RefreshFileSystemExcludedPaths()
-        RefreshFileSystemValidExts()
-        RefreshFileSystemValidSubtitlesExts()
-        RefreshFileSystemValidThemeExts()
+            DataGridView_Fill_ExcludedPaths(Master.DB.GetExcludedPaths)
+            DataGridView_Fill_ValidSubtitleExtensions(.FileSystemValidSubtitlesExts)
+            DataGridView_Fill_ValidThemeExtensions(.FileSystemValidThemeExts)
+            DataGridView_Fill_ValidVideoExtensions(.FileSystemValidExts)
+        End With
     End Sub
 
     Private Sub Setup()
-        gbFileSystemExcludedPaths.Text = Master.eLang.GetString(1273, "Excluded Paths")
-        gbFileSystemNoStackExts.Text = Master.eLang.GetString(530, "No Stack Extensions")
-        gbFileSystemValidVideoExts.Text = Master.eLang.GetString(534, "Valid Video Extensions")
-        gbFileSystemValidSubtitlesExts.Text = Master.eLang.GetString(1284, "Valid Subtitles Extensions")
-        gbFileSystemValidThemeExts.Text = Master.eLang.GetString(1081, "Valid Theme Extensions")
-        gbGeneralVirtualDrive.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
-        lblGeneralVirtualDriveLetter.Text = Master.eLang.GetString(989, "Driveletter")
-        lblGeneralVirtualDrivePath.Text = Master.eLang.GetString(990, "Path to VCDMount.exe (Virtual CloneDrive)")
-    End Sub
-
-    Private Sub btnFileSystemExcludedPathsAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If Not String.IsNullOrEmpty(txtFileSystemExcludedPaths.Text) Then
-            If Not lstFileSystemExcludedPaths.Items.Contains(txtFileSystemExcludedPaths.Text.ToLower) Then
-                AddExcludedPath(txtFileSystemExcludedPaths.Text)
-                RefreshFileSystemExcludedPaths()
-                txtFileSystemExcludedPaths.Text = String.Empty
-                txtFileSystemExcludedPaths.Focus()
-            End If
-        End If
-    End Sub
-
-    Private Sub btnFileSystemExcludedPathsBrowse_Click(sender As Object, e As EventArgs)
-        With fbdBrowse
-            If .ShowDialog = DialogResult.OK Then
-                If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                    txtFileSystemExcludedPaths.Text = .SelectedPath.ToString
-                End If
-            End If
+        With Master.eLang
+            colExcludedPathsBrowse.HeaderText = .GetString(765, "Browse")
+            colExcludedPathsPath.HeaderText = .GetString(926, "Full Path")
+            gbExcludedPaths.Text = .GetString(1273, "Excluded Paths")
+            gbValidSubtitlesExtensions.Text = .GetString(1284, "Valid Subtitles Extensions")
+            gbValidThemeExtensions.Text = .GetString(1081, "Valid Theme Extensions")
+            gbValidVideoExtensions.Text = .GetString(534, "Valid Video Extensions")
+            gbVirtualDrive.Text = .GetString(1261, "Virtual Drive")
+            lblVirtualDriveDriveLetter.Text = .GetString(989, "Driveletter")
+            lblVirtualDriveDrivePath.Text = .GetString(990, "Path to VCDMount.exe (Virtual CloneDrive)")
         End With
     End Sub
 
-    Private Sub btnFileSystemExcludedPathsRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
-        RemoveExcludedPath()
-        RefreshFileSystemExcludedPaths()
+    Private Sub Enable_ApplyButton() Handles _
+        cbVirtualDriveDriveLetter.SelectedIndexChanged,
+        txtVirtualDrivePath.TextChanged
+
+        Handle_SettingsChanged()
     End Sub
 
-    Private Sub lstFileSystemExcludedPaths_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then
-            RemoveExcludedPath()
-            RefreshFileSystemExcludedPaths()
+    Private Sub DataGridView_ExcludedPaths_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvExcludedPaths.CellClick
+        If e.ColumnIndex = 1 Then
+            Try
+                With fbdBrowse
+                    If dgvExcludedPaths.Rows(e.RowIndex).Cells(0).Value IsNot Nothing AndAlso
+                        Not String.IsNullOrEmpty(dgvExcludedPaths.Rows(e.RowIndex).Cells(0).Value.ToString) Then
+                        .SelectedPath = dgvExcludedPaths.Rows(e.RowIndex).Cells(0).Value.ToString
+                    Else
+                        .SelectedPath = String.Empty
+                    End If
+                    If .ShowDialog = DialogResult.OK Then
+                        If Not String.IsNullOrEmpty(.SelectedPath) Then
+                            dgvExcludedPaths.Rows.Add(New Object() { .SelectedPath})
+                        End If
+                    End If
+                End With
+            Catch ex As Exception
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
         End If
     End Sub
 
-    Private Sub AddExcludedPath(ByVal path As String)
-        Master.DB.AddExcludedPath(path)
-        Handle_SettingsChanged()
+    Private Sub DataGridView_Fill_ExcludedPaths(ByVal List As List(Of String))
+        dgvExcludedPaths.Rows.Clear()
+        For Each path In List
+            Dim i As Integer = dgvExcludedPaths.Rows.Add(New Object() {path})
+        Next
+        dgvExcludedPaths.ClearSelection()
+    End Sub
+
+    Private Sub DataGridView_ExcludedPaths_RowsAdded() Handles dgvExcludedPaths.RowsAdded
         Handle_NeedsDBClean_Movie()
         Handle_NeedsDBClean_TV()
+        Handle_SettingsChanged()
     End Sub
 
-    Private Sub RemoveExcludedPath()
-        If lstFileSystemExcludedPaths.SelectedItems.Count > 0 Then
-            lstFileSystemExcludedPaths.BeginUpdate()
+    Private Sub DataGridView_ExcludedPaths_RowsRemoved() Handles dgvExcludedPaths.RowsRemoved
+        Handle_NeedsDBUpdate_Movie()
+        Handle_NeedsDBUpdate_TV()
+        Handle_SettingsChanged()
+    End Sub
 
-            Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                While lstFileSystemExcludedPaths.SelectedItems.Count > 0
-                    Master.DB.RemoveExcludedPath(lstFileSystemExcludedPaths.SelectedItems(0).ToString, True)
-                    lstFileSystemExcludedPaths.Items.Remove(lstFileSystemExcludedPaths.SelectedItems(0))
-                End While
-                SQLTransaction.Commit()
-            End Using
+    Private Sub DataGridView_Fill_ValidSubtitleExtensions(ByVal List As List(Of String))
+        dgvValidSubtitleExtensions.Rows.Clear()
+        For Each ext In List
+            Dim i As Integer = dgvValidSubtitleExtensions.Rows.Add(New Object() {ext})
+        Next
+        dgvValidSubtitleExtensions.ClearSelection()
+    End Sub
 
-            lstFileSystemExcludedPaths.EndUpdate()
-            lstFileSystemExcludedPaths.Refresh()
+    Private Sub DataGridView_Fill_ValidThemeExtensions(ByVal List As List(Of String))
+        dgvValidThemeExtensions.Rows.Clear()
+        For Each ext In List
+            Dim i As Integer = dgvValidThemeExtensions.Rows.Add(New Object() {ext})
+        Next
+        dgvValidThemeExtensions.ClearSelection()
+    End Sub
 
-            Handle_SettingsChanged()
-            Handle_NeedsDBUpdate_Movie()
-            Handle_NeedsDBUpdate_TV()
+    Private Sub DataGridView_Fill_ValidVideoExtensions(ByVal List As List(Of String))
+        dgvValidVideoExtensions.Rows.Clear()
+        For Each ext In List
+            Dim i As Integer = dgvValidVideoExtensions.Rows.Add(New Object() {ext})
+        Next
+        dgvValidVideoExtensions.ClearSelection()
+    End Sub
+
+    Private Sub DataGridView_ValidExtensions_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles _
+        dgvValidSubtitleExtensions.CellEndEdit,
+        dgvValidThemeExtensions.CellEndEdit,
+        dgvValidVideoExtensions.CellEndEdit
+
+        Dim currDGV = DirectCast(sender, DataGridView)
+        If currDGV.Rows(e.RowIndex).Cells(0).Value IsNot Nothing AndAlso
+            Not String.IsNullOrEmpty(currDGV.Rows(e.RowIndex).Cells(0).Value.ToString.Trim) AndAlso
+            Not currDGV.Rows(e.RowIndex).Cells(0).Value.ToString.Trim.StartsWith(".") Then
+            currDGV.Rows(e.RowIndex).Cells(0).Value = String.Concat(".", currDGV.Rows(e.RowIndex).Cells(0).Value.ToString.Trim)
         End If
     End Sub
 
-    Private Sub btnFileSystemValidVideoExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If Not String.IsNullOrEmpty(txtFileSystemValidVideoExts.Text) Then
-            If Not txtFileSystemValidVideoExts.Text.Substring(0, 1) = "." Then txtFileSystemValidVideoExts.Text = String.Concat(".", txtFileSystemValidVideoExts.Text)
-            If Not lstFileSystemValidVideoExts.Items.Contains(txtFileSystemValidVideoExts.Text.ToLower) Then
-                lstFileSystemValidVideoExts.Items.Add(txtFileSystemValidVideoExts.Text.ToLower)
-                Handle_SettingsChanged()
-                Handle_NeedsDBUpdate_Movie()
-                Handle_NeedsDBUpdate_TV()
-                txtFileSystemValidVideoExts.Text = String.Empty
-                txtFileSystemValidVideoExts.Focus()
+    Private Sub DataGridView_ValidSubtitleExtensions_RowsAdded_RowsRemoved() Handles dgvValidSubtitleExtensions.RowsAdded, dgvValidSubtitleExtensions.RowsRemoved
+        Handle_NeedsReload_Movie()
+        Handle_NeedsReload_TVEpisode()
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub DataGridView_ValidThemeExtensions_RowsAdded_RowsRemoved() Handles dgvValidThemeExtensions.RowsAdded, dgvValidThemeExtensions.RowsRemoved
+        Handle_NeedsReload_Movie()
+        Handle_NeedsReload_TVShow()
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub DataGridView_ValidVideoExtensions_RowsAdded() Handles dgvValidVideoExtensions.RowsAdded
+        Handle_NeedsDBUpdate_Movie()
+        Handle_NeedsDBUpdate_TV()
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub DataGridView_ValidVideoExtensions_RowsRemoved() Handles dgvValidVideoExtensions.RowsRemoved
+        Handle_NeedsDBClean_Movie()
+        Handle_NeedsDBClean_TV()
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub LoadDefaults_ValidSubtitleExtensions(ByVal sender As Object, ByVal e As EventArgs) Handles btnValidSubtitleExtensionsDefaults.Click
+        If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"),
+                           Master.eLang.GetString(104, "Are You Sure?"),
+                           MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question) = DialogResult.Yes Then
+            DataGridView_Fill_ValidSubtitleExtensions(Master.eSettings.GetDefaultsForList_ValidSubtitleExtensions())
+            Handle_SettingsChanged()
+        End If
+    End Sub
+
+    Private Sub LoadDefaults_ValidThemeExtensions(ByVal sender As Object, ByVal e As EventArgs) Handles btnValidThemeExtensionsDefaults.Click
+        If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"),
+                           Master.eLang.GetString(104, "Are You Sure?"),
+                           MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question) = DialogResult.Yes Then
+            DataGridView_Fill_ValidThemeExtensions(Master.eSettings.GetDefaultsForList_ValidThemeExtensions())
+            Handle_SettingsChanged()
+        End If
+    End Sub
+
+    Private Sub LoadDefaults_ValidVideoExtensions(ByVal sender As Object, ByVal e As EventArgs) Handles btnValidVideoExtensionsDefaults.Click
+        If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"),
+                           Master.eLang.GetString(104, "Are You Sure?"),
+                           MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question) = DialogResult.Yes Then
+            DataGridView_Fill_ValidVideoExtensions(Master.eSettings.GetDefaultsForList_ValidVideoExtensions())
+            Handle_SettingsChanged()
+        End If
+    End Sub
+
+    Private Sub Save_ExcludedPaths()
+        For Each path In Master.DB.GetExcludedPaths
+            Master.DB.RemoveExcludedPath(path, False)
+        Next
+        For Each r As DataGridViewRow In dgvExcludedPaths.Rows
+            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
+                Master.DB.AddExcludedPath((r.Cells(0).Value.ToString.Trim))
             End If
-        End If
+        Next
     End Sub
 
-    Private Sub btnFileSystemValidSubtitlesExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If Not String.IsNullOrEmpty(txtFileSystemValidSubtitlesExts.Text) Then
-            If Not txtFileSystemValidSubtitlesExts.Text.Substring(0, 1) = "." Then txtFileSystemValidSubtitlesExts.Text = String.Concat(".", txtFileSystemValidSubtitlesExts.Text)
-            If Not lstFileSystemValidSubtitlesExts.Items.Contains(txtFileSystemValidSubtitlesExts.Text.ToLower) Then
-                lstFileSystemValidSubtitlesExts.Items.Add(txtFileSystemValidSubtitlesExts.Text.ToLower)
-                Handle_SettingsChanged()
-                Handle_NeedsDBUpdate_Movie()
-                Handle_NeedsReload_TVEpisode()
-                txtFileSystemValidSubtitlesExts.Text = String.Empty
-                txtFileSystemValidSubtitlesExts.Focus()
+    Private Sub Save_ValidSubtitleExtensions()
+        Master.eSettings.FileSystemValidSubtitlesExts.Clear()
+        For Each r As DataGridViewRow In dgvValidSubtitleExtensions.Rows
+            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
+                Master.eSettings.FileSystemValidExts.Add(r.Cells(0).Value.ToString.Trim)
             End If
-        End If
+        Next
     End Sub
 
-    Private Sub btnFileSystemValidThemeExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If Not String.IsNullOrEmpty(txtFileSystemValidThemeExts.Text) Then
-            If Not txtFileSystemValidThemeExts.Text.Substring(0, 1) = "." Then txtFileSystemValidThemeExts.Text = String.Concat(".", txtFileSystemValidThemeExts.Text)
-            If Not lstFileSystemValidThemeExts.Items.Contains(txtFileSystemValidThemeExts.Text.ToLower) Then
-                lstFileSystemValidThemeExts.Items.Add(txtFileSystemValidThemeExts.Text.ToLower)
-                Handle_SettingsChanged()
-                Handle_NeedsReload_Movie()
-                Handle_NeedsReload_TVShow()
-                txtFileSystemValidThemeExts.Text = String.Empty
-                txtFileSystemValidThemeExts.Focus()
+    Private Sub Save_ValidThemeExtensions()
+        Master.eSettings.FileSystemValidThemeExts.Clear()
+        For Each r As DataGridViewRow In dgvValidThemeExtensions.Rows
+            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
+                Master.eSettings.FileSystemValidExts.Add(r.Cells(0).Value.ToString.Trim)
             End If
-        End If
+        Next
     End Sub
 
-    Private Sub btnFileSystemNoStackExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If Not String.IsNullOrEmpty(txtFileSystemNoStackExts.Text) Then
-            If Not txtFileSystemNoStackExts.Text.Substring(0, 1) = "." Then txtFileSystemNoStackExts.Text = String.Concat(".", txtFileSystemNoStackExts.Text)
-            If Not lstFileSystemNoStackExts.Items.Contains(txtFileSystemNoStackExts.Text) Then
-                lstFileSystemNoStackExts.Items.Add(txtFileSystemNoStackExts.Text)
-                Handle_SettingsChanged()
-                Handle_NeedsDBUpdate_Movie()
-                Handle_NeedsDBUpdate_TV()
-                txtFileSystemNoStackExts.Text = String.Empty
-                txtFileSystemNoStackExts.Focus()
+    Private Sub Save_ValidVideoExtensions()
+        Master.eSettings.FileSystemValidExts.Clear()
+        For Each r As DataGridViewRow In dgvValidVideoExtensions.Rows
+            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
+                Master.eSettings.FileSystemValidExts.Add(r.Cells(0).Value.ToString.Trim)
             End If
-        End If
+        Next
     End Sub
 
-    Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidExts, True)
-            RefreshFileSystemValidExts()
-            Handle_SettingsChanged()
-        End If
-    End Sub
-
-    Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidSubtitleExts, True)
-            RefreshFileSystemValidSubtitlesExts()
-            Handle_SettingsChanged()
-        End If
-    End Sub
-
-    Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidThemeExts, True)
-            RefreshFileSystemValidThemeExts()
-            Handle_SettingsChanged()
-        End If
-    End Sub
-
-    Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
-        RemoveFileSystemValidExts()
-    End Sub
-
-    Private Sub btnFileSystemValidSubtitlesExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
-        RemoveFileSystemValidSubtitlesExts()
-    End Sub
-
-    Private Sub btnFileSystemValidThemeExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
-        RemoveFileSystemValidThemeExts()
-    End Sub
-
-    Private Sub btnFileSystemNoStackExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
-        RemoveFileSystemNoStackExts()
-    End Sub
-
-    Private Sub lstFileSystemValidExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then RemoveFileSystemValidExts()
-    End Sub
-
-    Private Sub lstFileSystemValidSubtitlesExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then RemoveFileSystemValidSubtitlesExts()
-    End Sub
-
-    Private Sub lstFileSystemValidThemeExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then RemoveFileSystemValidThemeExts()
-    End Sub
-
-    Private Sub lstFileSystemNoStackExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then RemoveFileSystemNoStackExts()
-    End Sub
-
-    Private Sub RefreshFileSystemExcludedPaths()
-        lstFileSystemExcludedPaths.Items.Clear()
-        lstFileSystemExcludedPaths.Items.AddRange(Master.DB.GetExcludedPaths.ToArray)
-    End Sub
-
-    Private Sub RefreshFileSystemValidExts()
-        lstFileSystemValidVideoExts.Items.Clear()
-        lstFileSystemValidVideoExts.Items.AddRange(Master.eSettings.FileSystemValidExts.ToArray)
-    End Sub
-
-    Private Sub RefreshFileSystemValidSubtitlesExts()
-        lstFileSystemValidSubtitlesExts.Items.Clear()
-        lstFileSystemValidSubtitlesExts.Items.AddRange(Master.eSettings.FileSystemValidSubtitlesExts.ToArray)
-    End Sub
-
-    Private Sub RefreshFileSystemValidThemeExts()
-        lstFileSystemValidThemeExts.Items.Clear()
-        lstFileSystemValidThemeExts.Items.AddRange(Master.eSettings.FileSystemValidThemeExts.ToArray)
-    End Sub
-
-    Private Sub RemoveFileSystemValidExts()
-        If lstFileSystemValidVideoExts.Items.Count > 0 AndAlso lstFileSystemValidVideoExts.SelectedItems.Count > 0 Then
-            While lstFileSystemValidVideoExts.SelectedItems.Count > 0
-                lstFileSystemValidVideoExts.Items.Remove(lstFileSystemValidVideoExts.SelectedItems(0))
-            End While
-            Handle_SettingsChanged()
-            Handle_NeedsDBClean_Movie()
-            Handle_NeedsDBClean_TV()
-        End If
-    End Sub
-
-    Private Sub RemoveFileSystemValidSubtitlesExts()
-        If lstFileSystemValidSubtitlesExts.Items.Count > 0 AndAlso lstFileSystemValidSubtitlesExts.SelectedItems.Count > 0 Then
-            While lstFileSystemValidSubtitlesExts.SelectedItems.Count > 0
-                lstFileSystemValidSubtitlesExts.Items.Remove(lstFileSystemValidSubtitlesExts.SelectedItems(0))
-            End While
-            Handle_SettingsChanged()
-            Handle_NeedsReload_Movie()
-            Handle_NeedsReload_TVEpisode()
-        End If
-    End Sub
-
-    Private Sub RemoveFileSystemValidThemeExts()
-        If lstFileSystemValidThemeExts.Items.Count > 0 AndAlso lstFileSystemValidThemeExts.SelectedItems.Count > 0 Then
-            While lstFileSystemValidThemeExts.SelectedItems.Count > 0
-                lstFileSystemValidThemeExts.Items.Remove(lstFileSystemValidThemeExts.SelectedItems(0))
-            End While
-            Handle_SettingsChanged()
-            Handle_NeedsReload_Movie()
-            Handle_NeedsReload_TVEpisode()
-        End If
-    End Sub
-
-    Private Sub RemoveFileSystemNoStackExts()
-        If lstFileSystemNoStackExts.Items.Count > 0 AndAlso lstFileSystemNoStackExts.SelectedItems.Count > 0 Then
-            While lstFileSystemNoStackExts.SelectedItems.Count > 0
-                lstFileSystemNoStackExts.Items.Remove(lstFileSystemNoStackExts.SelectedItems(0))
-            End While
-            Handle_SettingsChanged()
-            Handle_NeedsDBUpdate_Movie()
-            Handle_NeedsDBUpdate_TV()
-        End If
-    End Sub
-
-    Private Sub btnGeneralDaemonPathBrowse_Click(sender As Object, e As EventArgs)
+    Private Sub VirtualDrive_PathBrowse_Click(sender As Object, e As EventArgs) Handles btnVirtualDrivePathBrowse.Click
         Try
             With fileBrowse
                 .Filter = "Virtual CloneDrive|VCDMount.exe"
+                .InitialDirectory = "C:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive"
                 If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.FileName) AndAlso File.Exists(.FileName) Then
-                        txtGeneralVirtualDriveBinPath.Text = .FileName
-                        Handle_SettingsChanged()
+                        txtVirtualDrivePath.Text = .FileName
                     End If
                 End If
             End With

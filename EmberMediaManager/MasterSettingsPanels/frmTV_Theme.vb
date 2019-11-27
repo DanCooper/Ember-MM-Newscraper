@@ -111,7 +111,7 @@ Public Class frmTV_Theme
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .TVShowThemeKeepExisting = chkTVShowThemeKeepExisting.Checked
         End With

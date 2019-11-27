@@ -121,7 +121,7 @@ Public Class frmTV_Source
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .TVCleanDB = chkTVCleanDB.Checked
             If Not String.IsNullOrEmpty(cbTVGeneralLang.Text) Then

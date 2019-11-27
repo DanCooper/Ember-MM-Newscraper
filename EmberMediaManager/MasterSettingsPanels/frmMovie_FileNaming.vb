@@ -112,7 +112,7 @@ Public Class frmMovie_FileNaming
         }
     End Function
 
-    Public Sub SaveSetup() Implements Interfaces.IMasterSettingsPanel.SaveSetup
+    Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings
             .MovieBackdropsPath = txtMovieSourcesBackdropsFolderPath.Text
             If Not String.IsNullOrEmpty(txtMovieSourcesBackdropsFolderPath.Text) Then

@@ -32,27 +32,26 @@ Public Class Settings
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Const ExtraImagesLimit As Integer = 20
-    Private _movieextrafanartslimit As Integer = 4
-    Private _movieextrathumbslimit As Integer = 4
-    Private _tvshowextrafanartslimit As Integer  = 4
+    Public Const _ExtraImagesLimit As Integer = 20
+    Private _MovieExtrafanartsLimit As Integer = 4
+    Private _MovieExtrathumbsLimit As Integer = 4
+    Private _TVShowExtrafanartsLimit As Integer = 4
 
 #End Region 'Fields 
 
 #Region "Properties"
-    <XmlArray("EmberModules")>
-    <XmlArrayItem("Module")>
+    <XmlArray("Addons")>
+    <XmlArrayItem("Addon")>
     Public Property Addons() As List(Of AddonsManager.XMLAddonClass) = New List(Of AddonsManager.XMLAddonClass)
-    Public Property FileSystemNoStackExts() As List(Of String) = New List(Of String)
     Public Property FileSystemValidExts() As List(Of String) = New List(Of String)
     Public Property FileSystemValidSubtitlesExts() As List(Of String) = New List(Of String)
     Public Property FileSystemValidThemeExts() As List(Of String) = New List(Of String)
     Public Property GeneralAudioCodecMapping As List(Of CodecMapping) = New List(Of CodecMapping)
     Public Property GeneralCheckUpdates() As Boolean = False
     Public Property GeneralDateAddedIgnoreNFO() As Boolean = False
-    Public Property GeneralDateTime() As Enums.DateTime = Enums.DateTime.Now
+    Public Property GeneralDateTime() As Enums.DateTimeStamp = Enums.DateTimeStamp.Now
     Public Property GeneralDigitGrpSymbolVotes() As Boolean = False
     Public Property GeneralDisplayBanner() As Boolean = True
     Public Property GeneralDisplayCharacterArt() As Boolean = True
@@ -179,13 +178,13 @@ Public Class Settings
     Public Property MovieExtrafanartsKeepExisting() As Boolean = False
     Public Property MovieExtrafanartsLimit() As Integer
         Get
-            Return _movieextrafanartslimit
+            Return _MovieExtrafanartsLimit
         End Get
         Set(value As Integer)
-            If value > ExtraImagesLimit OrElse value = 0 Then
-                _movieextrafanartslimit = 20
+            If value > _ExtraImagesLimit OrElse value = 0 Then
+                _MovieExtrafanartsLimit = 20
             Else
-                _movieextrafanartslimit = value
+                _MovieExtrafanartsLimit = value
             End If
         End Set
     End Property
@@ -205,13 +204,13 @@ Public Class Settings
     Public Property MovieExtrathumbsKeepExisting() As Boolean = False
     Public Property MovieExtrathumbsLimit() As Integer
         Get
-            Return _movieextrathumbslimit
+            Return _MovieExtrathumbsLimit
         End Get
         Set(value As Integer)
-            If value > ExtraImagesLimit OrElse value = 0 Then
-                _movieextrathumbslimit = 20
+            If value > _ExtraImagesLimit OrElse value = 0 Then
+                _MovieExtrathumbsLimit = 20
             Else
-                _movieextrathumbslimit = value
+                _MovieExtrathumbsLimit = value
             End If
         End Set
     End Property
@@ -478,8 +477,8 @@ Public Class Settings
     Public Property MovieSetPosterPrefSizeOnly() As Boolean = False
     Public Property MovieSetPosterResize() As Boolean = False
     Public Property MovieSetPosterWidth() As Integer = 0
-    Public Property MovieSetScraperPlot() As Boolean = True
-    Public Property MovieSetScraperTitle() As Boolean = True
+    Public Property MoviesetScraperPlot() As Boolean = True
+    Public Property MoviesetScraperTitle() As Boolean = True
     Public Property MovieSetSortTokens() As List(Of String) = New List(Of String)
     Public Property MovieSetSortTokensIsEmpty() As Boolean = False
     Public Property MovieSetUseExpert() As Boolean = False
@@ -778,13 +777,13 @@ Public Class Settings
     Public Property TVShowExtrafanartsKeepExisting() As Boolean = False
     Public Property TVShowExtrafanartsLimit() As Integer
         Get
-            Return _tvshowextrafanartslimit
+            Return _TVShowExtrafanartsLimit
         End Get
         Set(value As Integer)
-            If value > ExtraImagesLimit OrElse value = 0 Then
-                _tvshowextrafanartslimit = 20
+            If value > _ExtraImagesLimit OrElse value = 0 Then
+                _TVShowExtrafanartsLimit = 20
             Else
-                _tvshowextrafanartslimit = value
+                _TVShowExtrafanartsLimit = value
             End If
         End Set
     End Property
@@ -899,12 +898,12 @@ Public Class Settings
         End Get
     End Property
 
-    Public ReadOnly Property DefaultOptions_MovieSet As Structures.ScrapeOptions
+    Public ReadOnly Property DefaultOptions_Movieset As Structures.ScrapeOptions
         Get
             Dim scrapeOptions As New Structures.ScrapeOptions
             With scrapeOptions
-                .bMainPlot = MovieSetScraperPlot
-                .bMainTitle = MovieSetScraperTitle
+                .bMainPlot = MoviesetScraperPlot
+                .bMainTitle = MoviesetScraperTitle
             End With
             Return scrapeOptions
         End Get
@@ -1356,8 +1355,8 @@ Public Class Settings
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-            logger.Info("An attempt is made to repair the Settings.xml")
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Info("An attempt is made to repair the Settings.xml")
             Try
                 Using srSettings As New StreamReader(configpath)
                     Dim sSettings As String = srSettings.ReadToEnd
@@ -1379,10 +1378,10 @@ Public Class Settings
                     Using txtReader As TextReader = New StringReader(sSettings)
                         Master.eSettings = DirectCast(xmlSer.Deserialize(txtReader), Settings)
                     End Using
-                    logger.Info("Settings.xml successfully repaired")
+                    _Logger.Info("Settings.xml successfully repaired")
                 End Using
             Catch ex2 As Exception
-                logger.Error(ex2, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex2, New StackFrame().GetMethod().Name)
                 File.Copy(configpath, String.Concat(configpath, "_backup"), True)
                 Master.eSettings = New Settings
             End Try
@@ -1428,68 +1427,90 @@ Public Class Settings
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Public Function GetDefaultsForList_AudioCodecMapping() As List(Of CodecMapping)
-        Dim nList As New List(Of CodecMapping)
-        nList.Add(New CodecMapping With {.Codec = "aac lc", .Mapping = "aac", .AdditionalFeatures = ""})
-        nList.Add(New CodecMapping With {.Codec = "ac-3 mlp fba 16-ch", .Mapping = "truehd", .AdditionalFeatures = "atmos"})
-        nList.Add(New CodecMapping With {.Codec = "ac-3", .Mapping = "ac3", .AdditionalFeatures = ""})
-        nList.Add(New CodecMapping With {.Codec = "dts xbr", .Mapping = "dtshd_hra", .AdditionalFeatures = ""})
-        nList.Add(New CodecMapping With {.Codec = "dts xll x", .Mapping = "dtshd_ma", .AdditionalFeatures = "x"})
-        nList.Add(New CodecMapping With {.Codec = "dts xll", .Mapping = "dtshd_ma", .AdditionalFeatures = ""})
-        nList.Add(New CodecMapping With {.Codec = "dts", .Mapping = "dca", .AdditionalFeatures = ""})
-        nList.Add(New CodecMapping With {.Codec = "e-ac-3", .Mapping = "eac3", .AdditionalFeatures = ""})
-        nList.Add(New CodecMapping With {.Codec = "mlp fba", .Mapping = "truehd", .AdditionalFeatures = ""})
-        Return nList
+    Public Function GetDefaultsForList_AudioCodecMappings() As List(Of CodecMapping)
+        Return New List(Of CodecMapping) From {
+            New CodecMapping With {.Codec = "aac lc", .Mapping = "aac", .AdditionalFeatures = ""},
+            New CodecMapping With {.Codec = "ac-3 mlp fba 16-ch", .Mapping = "truehd", .AdditionalFeatures = "atmos"},
+            New CodecMapping With {.Codec = "ac-3", .Mapping = "ac3", .AdditionalFeatures = ""},
+            New CodecMapping With {.Codec = "dts xbr", .Mapping = "dtshd_hra", .AdditionalFeatures = ""},
+            New CodecMapping With {.Codec = "dts xll x", .Mapping = "dtshd_ma", .AdditionalFeatures = "x"},
+            New CodecMapping With {.Codec = "dts xll", .Mapping = "dtshd_ma", .AdditionalFeatures = ""},
+            New CodecMapping With {.Codec = "dts", .Mapping = "dca", .AdditionalFeatures = ""},
+            New CodecMapping With {.Codec = "e-ac-3", .Mapping = "eac3", .AdditionalFeatures = ""},
+            New CodecMapping With {.Codec = "mlp fba", .Mapping = "truehd", .AdditionalFeatures = ""}
+        }
     End Function
 
-    Public Function GetDefaultsForList_VideoCodecMapping() As List(Of CodecMapping)
-        Dim nList As New List(Of CodecMapping)
-        nList.Add(New CodecMapping With {.Codec = "avc", .Mapping = "h264"})
-        nList.Add(New CodecMapping With {.Codec = "hvc1", .Mapping = "hevc"})
-        nList.Add(New CodecMapping With {.Codec = "v_mpeg2", .Mapping = "h264"})
-        nList.Add(New CodecMapping With {.Codec = "v_mpegh/iso/hevc", .Mapping = "hevc"})
-        nList.Add(New CodecMapping With {.Codec = "v_ms/vfw/fourcc / dx50", .Mapping = "dx50"})
-        nList.Add(New CodecMapping With {.Codec = "v_ms/vfw/fourcc / xvid", .Mapping = "xvid"})
-        nList.Add(New CodecMapping With {.Codec = "v_vp7", .Mapping = "vp7"})
-        nList.Add(New CodecMapping With {.Codec = "v_vp8", .Mapping = "vp8"})
-        nList.Add(New CodecMapping With {.Codec = "v_vp9", .Mapping = "vp9"})
-        nList.Add(New CodecMapping With {.Codec = "x264", .Mapping = "h264"})
-        Return nList
+    Public Function GetDefaultsForList_ValidSubtitleExtensions() As List(Of String)
+        Return New List(Of String) From {
+            ".aqt", ".ass", ".idx", ".jss", ".mpl", ".rt", ".sami", ".smi", ".srt", ".ssa", ".sst", ".sub"
+        }
     End Function
 
-    Public Function GetDefaultsForList_VideoSourceMappingByRegex() As List(Of VideoSourceByRegex)
-        Dim nList As New List(Of VideoSourceByRegex)
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]3dbd[\W_]", .Videosource = "3dbd"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]azhd|amazon[\W_]", .Videosource = "amazon"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_](b[dr][-\s]?rip|blu[-\s]?ray)[\W_]", .Videosource = "bluray"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd25[\W_]", .Videosource = "bluray"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd50[\W_]", .Videosource = "bluray"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd5[\W_]", .Videosource = "dvd"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd9[\W_]", .Videosource = "dvd"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_](sd[-\s]?)?dvd([-\s]?rip)?[\W_]", .Videosource = "dvd"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?dvd[\W_]", .Videosource = "hddvd"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?tv[\W_]", .Videosource = "hdtv"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ithd|itunes[\W_]", .Videosource = "itunes"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]nfu?hd|netflix[\W_]", .Videosource = "netflix"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]pdtv[\W_]", .Videosource = "sdtv"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dsr[\W_]", .Videosource = "sdtv"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ntsc[\W_]", .Videosource = "sdtv"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]sd[-\s]?tv[\W_]", .Videosource = "sdtv"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]tvrip[\W_]", .Videosource = "sdtv"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]vhs[\W_]", .Videosource = "vhs"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hddl[\W_]", .Videosource = "webdl"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?dl[\W_]", .Videosource = "webdl"})
-        nList.Add(New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?rip[\W_]", .Videosource = "webdl"})
-        Return nList
+    Public Function GetDefaultsForList_ValidThemeExtensions() As List(Of String)
+        Return New List(Of String) From {
+            ".flac", ".m4a", ".mp3", ".wav", ".wma"
+        }
+    End Function
+
+    Public Function GetDefaultsForList_ValidVideoExtensions() As List(Of String)
+        Return New List(Of String) From {
+            ".3gpp", ".asf", ".asx", ".avi", ".avs", ".bdmv", ".bin", ".cue", ".dat", ".disc",
+            ".divx", ".dvb", ".dvr-ms", ".evo", ".flv", ".ifo", ".img", ".iso", ".m2t", ".m2ts",
+            ".m4v", ".mkv", ".mov", ".mp4", ".mpeg", ".mpg", ".mts", ".nsv", ".nut", ".ogg",
+            ".ogm", ".ogv", ".ram", ".rar", ".rmvb", ".swf", ".ts", ".viv", ".vob", ".webm",
+            ".wma", ".wmv"
+        }
+    End Function
+
+    Public Function GetDefaultsForList_VideoCodecMappings() As List(Of CodecMapping)
+        Return New List(Of CodecMapping) From {
+            New CodecMapping With {.Codec = "avc", .Mapping = "h264"},
+            New CodecMapping With {.Codec = "hvc1", .Mapping = "hevc"},
+            New CodecMapping With {.Codec = "v_mpeg2", .Mapping = "h264"},
+            New CodecMapping With {.Codec = "v_mpegh/iso/hevc", .Mapping = "hevc"},
+            New CodecMapping With {.Codec = "v_ms/vfw/fourcc / dx50", .Mapping = "dx50"},
+            New CodecMapping With {.Codec = "v_ms/vfw/fourcc / xvid", .Mapping = "xvid"},
+            New CodecMapping With {.Codec = "v_vp7", .Mapping = "vp7"},
+            New CodecMapping With {.Codec = "v_vp8", .Mapping = "vp8"},
+            New CodecMapping With {.Codec = "v_vp9", .Mapping = "vp9"},
+            New CodecMapping With {.Codec = "x264", .Mapping = "h264"}
+        }
+    End Function
+
+    Public Function GetDefaultsForList_VideoSourceMappingsByRegex() As List(Of VideoSourceByRegex)
+        Return New List(Of VideoSourceByRegex) From {
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]3dbd[\W_]", .Videosource = "3dbd"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]azhd|amazon[\W_]", .Videosource = "amazon"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_](b[dr][-\s]?rip|blu[-\s]?ray)[\W_]", .Videosource = "bluray"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd25[\W_]", .Videosource = "bluray"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd50[\W_]", .Videosource = "bluray"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd5[\W_]", .Videosource = "dvd"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd9[\W_]", .Videosource = "dvd"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_](sd[-\s]?)?dvd([-\s]?rip)?[\W_]", .Videosource = "dvd"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?dvd[\W_]", .Videosource = "hddvd"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?tv[\W_]", .Videosource = "hdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ithd|itunes[\W_]", .Videosource = "itunes"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]nfu?hd|netflix[\W_]", .Videosource = "netflix"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]pdtv[\W_]", .Videosource = "sdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dsr[\W_]", .Videosource = "sdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ntsc[\W_]", .Videosource = "sdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]sd[-\s]?tv[\W_]", .Videosource = "sdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]tvrip[\W_]", .Videosource = "sdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]vhs[\W_]", .Videosource = "vhs"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hddl[\W_]", .Videosource = "webdl"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?dl[\W_]", .Videosource = "webdl"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?rip[\W_]", .Videosource = "webdl"}
+        }
     End Function
 
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.AudioCodecMapping) AndAlso (Force OrElse Master.eSettings.GeneralAudioCodecMapping.Count = 0) Then
-            Master.eSettings.GeneralAudioCodecMapping = GetDefaultsForList_AudioCodecMapping()
+            Master.eSettings.GeneralAudioCodecMapping = GetDefaultsForList_AudioCodecMappings()
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MainTabSorting) AndAlso (Force OrElse Master.eSettings.GeneralMainTabSorting.Count = 0) Then
@@ -1756,27 +1777,24 @@ Public Class Settings
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 17, .Hide = False, .Column = Database.Helpers.GetColumnName(Database.ColumnName.HasWatched), .LabelID = 981, .LabelText = "Watched"})
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
-            Master.eSettings.FileSystemValidExts.Clear()
-            Master.eSettings.FileSystemValidExts.AddRange(".avi,.bdmv,.divx,.mkv,.iso,.mpg,.mp4,.mpeg,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.ifo,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb,.webm,.disc,.3gpp".Split(","c))
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidVideoExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
+            Master.eSettings.FileSystemValidExts = GetDefaultsForList_ValidVideoExtensions()
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidSubtitleExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidSubtitlesExts.Count <= 0) Then
-            Master.eSettings.FileSystemValidSubtitlesExts.Clear()
-            Master.eSettings.FileSystemValidSubtitlesExts.AddRange(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass".Split(","c))
+            Master.eSettings.FileSystemValidSubtitlesExts = GetDefaultsForList_ValidSubtitleExtensions()
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidThemeExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidThemeExts.Count <= 0) Then
-            Master.eSettings.FileSystemValidThemeExts.Clear()
-            Master.eSettings.FileSystemValidThemeExts.AddRange(".flac,.m4a,.mp3,.wav,.wma".Split(","c))
+            Master.eSettings.FileSystemValidThemeExts = GetDefaultsForList_ValidThemeExtensions()
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.VideoCodecMapping) AndAlso (Force OrElse Master.eSettings.GeneralVideoCodecMapping.Count = 0) Then
-            Master.eSettings.GeneralVideoCodecMapping = GetDefaultsForList_VideoCodecMapping()
+            Master.eSettings.GeneralVideoCodecMapping = GetDefaultsForList_VideoCodecMappings()
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.VideosourceMappingByRegex) AndAlso (Force OrElse Master.eSettings.GeneralVideoSourceByRegex.Count = 0) Then
-            Master.eSettings.GeneralVideoSourceByRegex = GetDefaultsForList_VideoSourceMappingByRegex()
+            Master.eSettings.GeneralVideoSourceByRegex = GetDefaultsForList_VideoSourceMappingsByRegex()
         End If
     End Sub
 
