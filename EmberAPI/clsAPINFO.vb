@@ -1427,67 +1427,6 @@ Public Class Info
         Return String.Empty
     End Function
 
-    ''' <summary>
-    ''' Return the "best" or the "prefered language" audio stream of the videofile
-    ''' </summary>
-    ''' <param name="fileInfo"><c>MediaInfo.FileInfo</c> The Mediafile-container of the videofile</param>
-    ''' <returns>The best <c>MediaInfo.Audio</c> stream information of the videofile</returns>
-    ''' <remarks>
-    ''' This is used to determine which audio stream information should be displayed in Ember main view (icon display)
-    ''' The audiostream with most channels will be returned - if there are 2 or more streams which have the same "highest" channelcount then either the "DTSHD" stream or the one with highest bitrate will be returned
-    ''' 
-    ''' 2014/08/12 cocotus - Should work better: If there's more than one audiostream which highest channelcount, the one with highest bitrate or the DTSHD stream will be returned
-    ''' </remarks>
-    Public Shared Function GetBestAudio(ByVal fileInfo As MediaContainers.FileInfo, ByVal contentType As Enums.ContentType) As MediaContainers.Audio
-        Dim nBestAudio As New MediaContainers.Audio
-        Dim nFilteredAudio As New MediaContainers.FileInfo
-        Dim bGetPrefLanguage As Boolean = False
-        Dim bHasPrefLanguage As Boolean = False
-        Dim strPrefLanguage As String = String.Empty
-        Dim iHighestBitrate As Integer = 0
-        Dim iHighestChannels As Integer = 0
-
-        Select Case contentType
-            Case Enums.ContentType.Movie
-                If Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralFlagLang) Then
-                    bGetPrefLanguage = True
-                    strPrefLanguage = Master.eSettings.MovieGeneralFlagLang.ToLower
-                End If
-            Case Enums.ContentType.TVEpisode
-                If Not String.IsNullOrEmpty(Master.eSettings.TVGeneralFlagLang) Then
-                    bGetPrefLanguage = True
-                    strPrefLanguage = Master.eSettings.TVGeneralFlagLang.ToLower
-                End If
-        End Select
-
-        If bGetPrefLanguage AndAlso fileInfo.StreamDetails.Audio.Where(Function(f) f.LongLanguage.ToLower = strPrefLanguage).Count > 0 Then
-            For Each Stream As MediaContainers.Audio In fileInfo.StreamDetails.Audio
-                If Stream.LongLanguage.ToLower = strPrefLanguage Then
-                    nFilteredAudio.StreamDetails.Audio.Add(Stream)
-                End If
-            Next
-        Else
-            nFilteredAudio.StreamDetails.Audio.AddRange(fileInfo.StreamDetails.Audio)
-        End If
-
-        For Each miAudio As MediaContainers.Audio In nFilteredAudio.StreamDetails.Audio
-            If miAudio.ChannelsSpecified Then
-                If miAudio.Channels >= iHighestChannels AndAlso (miAudio.Bitrate > iHighestBitrate OrElse miAudio.Bitrate = 0) Then
-                    iHighestBitrate = miAudio.Bitrate
-                    iHighestChannels = miAudio.Channels
-                    nBestAudio.Bitrate = miAudio.Bitrate
-                    nBestAudio.Channels = miAudio.Channels
-                    nBestAudio.Codec = miAudio.Codec
-                    nBestAudio.Language = miAudio.Language
-                    nBestAudio.LongLanguage = miAudio.LongLanguage
-                End If
-            End If
-            If bGetPrefLanguage AndAlso miAudio.LongLanguage.ToLower = strPrefLanguage Then nBestAudio.HasPreferred = True
-        Next
-
-        Return nBestAudio
-    End Function
-
     Public Shared Function GetBestVideo(ByVal miFIV As MediaContainers.FileInfo) As MediaContainers.Video
         Dim nBestVideo = miFIV.StreamDetails.Video.OrderBy(Function(f) f.Width).Reverse.FirstOrDefault
         If nBestVideo IsNot Nothing Then
@@ -1805,7 +1744,7 @@ Public Class Info
                 If Not String.IsNullOrEmpty(path) Then
 
                     'go ahead and rename it now, will still be picked up in getimdbfromnonconf
-                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                    If Not Master.eSettings.Movie.SourceSettings.OverWriteNfo Then
                         RenameNonConfNFO_Movie(path, True)
                     End If
 
@@ -1908,7 +1847,7 @@ Public Class Info
 
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
-                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                    If Not Master.eSettings.TVEpisode.SourceSettings.OverWriteNfo Then
                         RenameNonConfNFO_TVEpisode(path, True)
                     End If
                 End If
@@ -1917,7 +1856,7 @@ Public Class Info
                 logger.Error(ex, New StackFrame().GetMethod().Name)
 
                 'not really anything else to do with non-conforming nfos aside from rename them
-                If Not Master.eSettings.GeneralOverwriteNfo Then
+                If Not Master.eSettings.TVEpisode.SourceSettings.OverWriteNfo Then
                     RenameNonConfNFO_TVEpisode(path, True)
                 End If
             End Try
@@ -1973,7 +1912,7 @@ Public Class Info
 
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
-                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                    If Not Master.eSettings.TVEpisode.SourceSettings.OverWriteNfo Then
                         RenameNonConfNFO_TVEpisode(path, True)
                     End If
                 End If
@@ -1982,7 +1921,7 @@ Public Class Info
                 logger.Error(ex, New StackFrame().GetMethod().Name)
 
                 'not really anything else to do with non-conforming nfos aside from rename them
-                If Not Master.eSettings.GeneralOverwriteNfo Then
+                If Not Master.eSettings.TVEpisode.SourceSettings.OverWriteNfo Then
                     RenameNonConfNFO_TVEpisode(path, True)
                 End If
             End Try
@@ -2005,7 +1944,7 @@ Public Class Info
                     End Using
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
-                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                    If Not Master.eSettings.TVShow.SourceSettings.OverWriteNfo Then
                         RenameNonConfNFO_TVShow(path)
                     End If
                 End If
@@ -2014,7 +1953,7 @@ Public Class Info
                 logger.Error(ex, New StackFrame().GetMethod().Name)
 
                 'not really anything else to do with non-conforming nfos aside from rename them
-                If Not Master.eSettings.GeneralOverwriteNfo Then
+                If Not Master.eSettings.TVShow.SourceSettings.OverWriteNfo Then
                     RenameNonConfNFO_TVShow(path)
                 End If
             End Try
@@ -2131,7 +2070,7 @@ Public Class Info
                 End If
 
                 'digit grouping symbol for Votes count
-                If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                If Master.eSettings.Options.General.DigitGrpSymbolVotesEnabled Then
                     If tMovie.VotesSpecified Then
                         Dim vote As String = Double.Parse(tMovie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         If vote IsNot Nothing Then tMovie.Votes = vote
@@ -2139,7 +2078,7 @@ Public Class Info
                 End If
 
                 For Each a In FileUtils.FileNames.GetFileNames(dbElement, Enums.ModifierType.MainNFO)
-                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                    If Not Master.eSettings.Movie.SourceSettings.OverWriteNfo Then
                         RenameNonConfNFO_Movie(a, False)
                     End If
 
@@ -2229,7 +2168,7 @@ Public Class Info
                 Dim sBuilder As New StringBuilder
 
                 For Each a In FileUtils.FileNames.GetFileNames(dbElement, Enums.ModifierType.EpisodeNFO)
-                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                    If Not Master.eSettings.TVEpisode.SourceSettings.OverWriteNfo Then
                         RenameNonConfNFO_TVEpisode(a, False)
                     End If
 
@@ -2268,7 +2207,7 @@ Public Class Info
                             For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season).OrderBy(Function(e) e.Episode)
 
                                 'digit grouping symbol for Votes count
-                                If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                                If Master.eSettings.Options.General.DigitGrpSymbolVotesEnabled Then
                                     If tvEp.VotesSpecified Then
                                         Dim vote As String = Double.Parse(tvEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                                         If vote IsNot Nothing Then tvEp.Votes = vote
@@ -2337,7 +2276,7 @@ Public Class Info
                 End If
 
                 'digit grouping symbol for Votes count
-                If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                If Master.eSettings.Options.General.DigitGrpSymbolVotesEnabled Then
                     If tTVShow.VotesSpecified Then
                         Dim vote As String = Double.Parse(tTVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         If vote IsNot Nothing Then tTVShow.Votes = vote
@@ -2345,7 +2284,7 @@ Public Class Info
                 End If
 
                 For Each a In FileUtils.FileNames.GetFileNames(dbElement, Enums.ModifierType.MainNFO)
-                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                    If Not Master.eSettings.TVShow.SourceSettings.OverWriteNfo Then
                         RenameNonConfNFO_TVShow(a)
                     End If
 

@@ -563,13 +563,13 @@ Public Class Renamer
 
         'ListTitle
         If _DBElement.Movie.TitleSpecified Then
-            MovieFile.ListTitle = StringUtils.SortTokens_Movie(_DBElement.Movie.Title)
+            MovieFile.ListTitle = StringUtils.SortTokens(_DBElement.Movie.Title)
         End If
 
         'MovieSets
         If _DBElement.Movie.SetsSpecified Then
             MovieFile.Collection = _DBElement.Movie.Sets.Item(0).Title
-            MovieFile.CollectionListTitle = StringUtils.SortTokens_MovieSet(_DBElement.Movie.Sets.Item(0).Title)
+            MovieFile.CollectionListTitle = StringUtils.SortTokens(_DBElement.Movie.Sets.Item(0).Title)
         End If
 
         'MPAA
@@ -591,7 +591,7 @@ Public Class Renamer
         If _DBElement.Movie.SortTitleSpecified Then
             MovieFile.SortTitle = _DBElement.Movie.SortTitle
         Else
-            MovieFile.SortTitle = StringUtils.SortTokens_Movie(_DBElement.Movie.Title)
+            MovieFile.SortTitle = StringUtils.SortTokens(_DBElement.Movie.Title)
         End If
 
         'Title
@@ -618,7 +618,7 @@ Public Class Renamer
             End If
 
             If _DBElement.Movie.FileInfo.StreamDetails.AudioSpecified Then
-                Dim tAud As MediaContainers.Audio = Info.GetBestAudio(_DBElement.Movie.FileInfo, _DBElement.ContentType)
+                Dim tAud As MediaContainers.Audio = MetaData.GetBestAudio(_DBElement.Movie.FileInfo, String.Empty, _DBElement.ContentType)
 
                 'Audio Channels
                 If tAud.ChannelsSpecified Then
@@ -810,7 +810,7 @@ Public Class Renamer
 
         'Show ListTitle
         If _DBElement.TVShow.TitleSpecified Then
-            EpisodeFile.ListTitle = StringUtils.SortTokens_TV(_DBElement.TVShow.Title)
+            EpisodeFile.ListTitle = StringUtils.SortTokens(_DBElement.TVShow.Title)
         End If
 
         'Show Title
@@ -832,7 +832,7 @@ Public Class Renamer
             End If
 
             If _DBElement.TVEpisode.FileInfo.StreamDetails.AudioSpecified Then
-                Dim tAud As MediaContainers.Audio = Info.GetBestAudio(_DBElement.TVEpisode.FileInfo, _DBElement.ContentType)
+                Dim tAud As MediaContainers.Audio = MetaData.GetBestAudio(_DBElement.TVEpisode.FileInfo, String.Empty, _DBElement.ContentType)
 
                 'Audio Channels
                 If tAud.ChannelsSpecified Then
@@ -948,7 +948,7 @@ Public Class Renamer
 
         'ListTitle
         If _DBElement.TVShow.TitleSpecified Then
-            ShowFile.ListTitle = StringUtils.SortTokens_TV(_DBElement.TVShow.Title)
+            ShowFile.ListTitle = StringUtils.SortTokens(_DBElement.TVShow.Title)
         End If
 
         'MPAA

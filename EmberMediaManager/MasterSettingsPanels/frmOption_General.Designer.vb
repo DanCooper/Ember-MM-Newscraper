@@ -25,6 +25,11 @@ Partial Class frmOption_General
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOption_General))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbSortTokens = New System.Windows.Forms.GroupBox()
+        Me.tblSortTokens = New System.Windows.Forms.TableLayoutPanel()
+        Me.dgvSortTokens = New System.Windows.Forms.DataGridView()
+        Me.colSortTokens = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btnSortTokensDefaults = New System.Windows.Forms.Button()
         Me.gbInterface = New System.Windows.Forms.GroupBox()
         Me.tblInterface = New System.Windows.Forms.TableLayoutPanel()
         Me.lblInterfaceLanguage = New System.Windows.Forms.Label()
@@ -65,8 +70,12 @@ Partial Class frmOption_General
         Me.lblImageFilterFanartMatchRate = New System.Windows.Forms.Label()
         Me.chkImageFilterFanart = New System.Windows.Forms.CheckBox()
         Me.chkShowNews = New System.Windows.Forms.CheckBox()
+        Me.chkDisplayStudioText = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
+        Me.gbSortTokens.SuspendLayout()
+        Me.tblSortTokens.SuspendLayout()
+        CType(Me.dgvSortTokens, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbInterface.SuspendLayout()
         Me.tblInterface.SuspendLayout()
         Me.gbMainWindow.SuspendLayout()
@@ -83,7 +92,7 @@ Partial Class frmOption_General
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(678, 509)
+        Me.pnlSettings.Size = New System.Drawing.Size(722, 594)
         Me.pnlSettings.TabIndex = 11
         Me.pnlSettings.Visible = False
         '
@@ -95,6 +104,7 @@ Partial Class frmOption_General
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.Controls.Add(Me.gbSortTokens, 0, 1)
         Me.tblSettings.Controls.Add(Me.gbInterface, 0, 0)
         Me.tblSettings.Controls.Add(Me.gbMainWindow, 1, 0)
         Me.tblSettings.Controls.Add(Me.gbMiscellaneous, 1, 1)
@@ -107,8 +117,74 @@ Partial Class frmOption_General
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettings.Size = New System.Drawing.Size(678, 509)
+        Me.tblSettings.Size = New System.Drawing.Size(722, 594)
         Me.tblSettings.TabIndex = 17
+        '
+        'gbSortTokens
+        '
+        Me.gbSortTokens.AutoSize = True
+        Me.gbSortTokens.Controls.Add(Me.tblSortTokens)
+        Me.gbSortTokens.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbSortTokens.Location = New System.Drawing.Point(3, 256)
+        Me.gbSortTokens.Name = "gbSortTokens"
+        Me.gbSortTokens.Size = New System.Drawing.Size(228, 221)
+        Me.gbSortTokens.TabIndex = 72
+        Me.gbSortTokens.TabStop = False
+        Me.gbSortTokens.Text = "Sort Tokens to Ignore"
+        '
+        'tblSortTokens
+        '
+        Me.tblSortTokens.AutoSize = True
+        Me.tblSortTokens.ColumnCount = 1
+        Me.tblSortTokens.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSortTokens.Controls.Add(Me.dgvSortTokens, 0, 0)
+        Me.tblSortTokens.Controls.Add(Me.btnSortTokensDefaults, 0, 1)
+        Me.tblSortTokens.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSortTokens.Location = New System.Drawing.Point(3, 18)
+        Me.tblSortTokens.Name = "tblSortTokens"
+        Me.tblSortTokens.RowCount = 2
+        Me.tblSortTokens.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblSortTokens.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSortTokens.Size = New System.Drawing.Size(222, 200)
+        Me.tblSortTokens.TabIndex = 11
+        '
+        'dgvSortTokens
+        '
+        Me.dgvSortTokens.AllowUserToResizeRows = False
+        Me.dgvSortTokens.BackgroundColor = System.Drawing.Color.White
+        Me.dgvSortTokens.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvSortTokens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvSortTokens.ColumnHeadersVisible = False
+        Me.dgvSortTokens.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colSortTokens})
+        Me.dgvSortTokens.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvSortTokens.Location = New System.Drawing.Point(3, 3)
+        Me.dgvSortTokens.Name = "dgvSortTokens"
+        Me.dgvSortTokens.RowHeadersWidth = 25
+        Me.dgvSortTokens.ShowCellErrors = False
+        Me.dgvSortTokens.ShowCellToolTips = False
+        Me.dgvSortTokens.ShowRowErrors = False
+        Me.dgvSortTokens.Size = New System.Drawing.Size(216, 165)
+        Me.dgvSortTokens.TabIndex = 10
+        '
+        'colSortTokens
+        '
+        Me.colSortTokens.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colSortTokens.HeaderText = "Sort Tokens"
+        Me.colSortTokens.Name = "colSortTokens"
+        '
+        'btnSortTokensDefaults
+        '
+        Me.btnSortTokensDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnSortTokensDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSortTokensDefaults.Image = CType(resources.GetObject("btnSortTokensDefaults.Image"), System.Drawing.Image)
+        Me.btnSortTokensDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSortTokensDefaults.Location = New System.Drawing.Point(114, 174)
+        Me.btnSortTokensDefaults.Name = "btnSortTokensDefaults"
+        Me.btnSortTokensDefaults.Size = New System.Drawing.Size(105, 23)
+        Me.btnSortTokensDefaults.TabIndex = 2
+        Me.btnSortTokensDefaults.Text = "Defaults"
+        Me.btnSortTokensDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSortTokensDefaults.UseVisualStyleBackColor = True
         '
         'gbInterface
         '
@@ -117,8 +193,7 @@ Partial Class frmOption_General
         Me.gbInterface.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbInterface.Location = New System.Drawing.Point(3, 3)
         Me.gbInterface.Name = "gbInterface"
-        Me.tblSettings.SetRowSpan(Me.gbInterface, 2)
-        Me.gbInterface.Size = New System.Drawing.Size(228, 455)
+        Me.gbInterface.Size = New System.Drawing.Size(228, 247)
         Me.gbInterface.TabIndex = 0
         Me.gbInterface.TabStop = False
         Me.gbInterface.Text = "Interface"
@@ -144,7 +219,7 @@ Partial Class frmOption_General
         Me.tblInterface.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblInterface.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblInterface.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblInterface.Size = New System.Drawing.Size(222, 434)
+        Me.tblInterface.Size = New System.Drawing.Size(222, 226)
         Me.tblInterface.TabIndex = 17
         '
         'lblInterfaceLanguage
@@ -198,7 +273,7 @@ Partial Class frmOption_General
         Me.txtThemeHints.Multiline = True
         Me.txtThemeHints.Name = "txtThemeHints"
         Me.txtThemeHints.ReadOnly = True
-        Me.txtThemeHints.Size = New System.Drawing.Size(216, 334)
+        Me.txtThemeHints.Size = New System.Drawing.Size(216, 126)
         Me.txtThemeHints.TabIndex = 2
         Me.txtThemeHints.Text = resources.GetString("txtThemeHints.Text")
         '
@@ -209,7 +284,7 @@ Partial Class frmOption_General
         Me.gbMainWindow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMainWindow.Location = New System.Drawing.Point(237, 3)
         Me.gbMainWindow.Name = "gbMainWindow"
-        Me.gbMainWindow.Size = New System.Drawing.Size(359, 228)
+        Me.gbMainWindow.Size = New System.Drawing.Size(359, 247)
         Me.gbMainWindow.TabIndex = 14
         Me.gbMainWindow.TabStop = False
         Me.gbMainWindow.Text = "Main Window"
@@ -230,13 +305,14 @@ Partial Class frmOption_General
         Me.tblGeneralMainWindow.Controls.Add(Me.chkDoubleClickScrape, 0, 0)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkDisplayClearLogo, 0, 7)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkDisplayBanner, 0, 4)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkImagesGlassOverlay, 1, 1)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkDisplayCharacterArt, 0, 5)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkDisplayGenresText, 0, 1)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkDisplayLangFlags, 0, 3)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkDisplayPoster, 1, 8)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkDisplayLandscape, 1, 7)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkDisplayKeyArt, 1, 6)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkDisplayLangFlags, 1, 3)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkImagesGlassOverlay, 0, 3)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkDisplayStudioText, 1, 1)
         Me.tblGeneralMainWindow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGeneralMainWindow.Location = New System.Drawing.Point(3, 18)
         Me.tblGeneralMainWindow.Name = "tblGeneralMainWindow"
@@ -251,7 +327,7 @@ Partial Class frmOption_General
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralMainWindow.Size = New System.Drawing.Size(353, 207)
+        Me.tblGeneralMainWindow.Size = New System.Drawing.Size(353, 226)
         Me.tblGeneralMainWindow.TabIndex = 17
         '
         'chkDisplayImageDimension
@@ -269,7 +345,7 @@ Partial Class frmOption_General
         '
         Me.chkDisplayFanartSmall.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkDisplayFanartSmall.AutoSize = True
-        Me.chkDisplayFanartSmall.Location = New System.Drawing.Point(174, 118)
+        Me.chkDisplayFanartSmall.Location = New System.Drawing.Point(180, 118)
         Me.chkDisplayFanartSmall.Name = "chkDisplayFanartSmall"
         Me.chkDisplayFanartSmall.Size = New System.Drawing.Size(129, 17)
         Me.chkDisplayFanartSmall.TabIndex = 11
@@ -291,7 +367,7 @@ Partial Class frmOption_General
         '
         Me.chkDisplayImageNames.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkDisplayImageNames.AutoSize = True
-        Me.chkDisplayImageNames.Location = New System.Drawing.Point(174, 49)
+        Me.chkDisplayImageNames.Location = New System.Drawing.Point(180, 49)
         Me.chkDisplayImageNames.Name = "chkDisplayImageNames"
         Me.chkDisplayImageNames.Size = New System.Drawing.Size(134, 17)
         Me.chkDisplayImageNames.TabIndex = 20
@@ -302,7 +378,7 @@ Partial Class frmOption_General
         '
         Me.chkDisplayFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkDisplayFanart.AutoSize = True
-        Me.chkDisplayFanart.Location = New System.Drawing.Point(174, 95)
+        Me.chkDisplayFanart.Location = New System.Drawing.Point(180, 95)
         Me.chkDisplayFanart.Name = "chkDisplayFanart"
         Me.chkDisplayFanart.Size = New System.Drawing.Size(99, 17)
         Me.chkDisplayFanart.TabIndex = 7
@@ -358,7 +434,7 @@ Partial Class frmOption_General
         '
         Me.chkImagesGlassOverlay.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkImagesGlassOverlay.AutoSize = True
-        Me.chkImagesGlassOverlay.Location = New System.Drawing.Point(174, 26)
+        Me.chkImagesGlassOverlay.Location = New System.Drawing.Point(3, 72)
         Me.chkImagesGlassOverlay.Name = "chkImagesGlassOverlay"
         Me.chkImagesGlassOverlay.Size = New System.Drawing.Size(171, 17)
         Me.chkImagesGlassOverlay.TabIndex = 12
@@ -391,7 +467,7 @@ Partial Class frmOption_General
         '
         Me.chkDisplayLangFlags.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkDisplayLangFlags.AutoSize = True
-        Me.chkDisplayLangFlags.Location = New System.Drawing.Point(3, 72)
+        Me.chkDisplayLangFlags.Location = New System.Drawing.Point(180, 72)
         Me.chkDisplayLangFlags.Name = "chkDisplayLangFlags"
         Me.chkDisplayLangFlags.Size = New System.Drawing.Size(147, 17)
         Me.chkDisplayLangFlags.TabIndex = 8
@@ -402,7 +478,7 @@ Partial Class frmOption_General
         '
         Me.chkDisplayPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkDisplayPoster.AutoSize = True
-        Me.chkDisplayPoster.Location = New System.Drawing.Point(174, 187)
+        Me.chkDisplayPoster.Location = New System.Drawing.Point(180, 187)
         Me.chkDisplayPoster.Name = "chkDisplayPoster"
         Me.chkDisplayPoster.Size = New System.Drawing.Size(98, 17)
         Me.chkDisplayPoster.TabIndex = 6
@@ -413,7 +489,7 @@ Partial Class frmOption_General
         '
         Me.chkDisplayLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkDisplayLandscape.AutoSize = True
-        Me.chkDisplayLandscape.Location = New System.Drawing.Point(174, 164)
+        Me.chkDisplayLandscape.Location = New System.Drawing.Point(180, 164)
         Me.chkDisplayLandscape.Name = "chkDisplayLandscape"
         Me.chkDisplayLandscape.Size = New System.Drawing.Size(120, 17)
         Me.chkDisplayLandscape.TabIndex = 18
@@ -424,7 +500,7 @@ Partial Class frmOption_General
         '
         Me.chkDisplayKeyArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkDisplayKeyArt.AutoSize = True
-        Me.chkDisplayKeyArt.Location = New System.Drawing.Point(174, 141)
+        Me.chkDisplayKeyArt.Location = New System.Drawing.Point(180, 141)
         Me.chkDisplayKeyArt.Name = "chkDisplayKeyArt"
         Me.chkDisplayKeyArt.Size = New System.Drawing.Size(98, 17)
         Me.chkDisplayKeyArt.TabIndex = 18
@@ -436,7 +512,7 @@ Partial Class frmOption_General
         Me.gbMiscellaneous.AutoSize = True
         Me.gbMiscellaneous.Controls.Add(Me.tblGeneralMisc)
         Me.gbMiscellaneous.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMiscellaneous.Location = New System.Drawing.Point(237, 237)
+        Me.gbMiscellaneous.Location = New System.Drawing.Point(237, 256)
         Me.gbMiscellaneous.Name = "gbMiscellaneous"
         Me.gbMiscellaneous.Size = New System.Drawing.Size(359, 221)
         Me.gbMiscellaneous.TabIndex = 1
@@ -629,11 +705,22 @@ Partial Class frmOption_General
         Me.chkShowNews.Text = "Show News and Information after Start"
         Me.chkShowNews.UseVisualStyleBackColor = True
         '
+        'chkDisplayStudioText
+        '
+        Me.chkDisplayStudioText.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkDisplayStudioText.AutoSize = True
+        Me.chkDisplayStudioText.Location = New System.Drawing.Point(180, 26)
+        Me.chkDisplayStudioText.Name = "chkDisplayStudioText"
+        Me.chkDisplayStudioText.Size = New System.Drawing.Size(163, 17)
+        Me.chkDisplayStudioText.TabIndex = 12
+        Me.chkDisplayStudioText.Text = "Allways Display Studio Text"
+        Me.chkDisplayStudioText.UseVisualStyleBackColor = True
+        '
         'frmOption_General
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(678, 509)
+        Me.ClientSize = New System.Drawing.Size(722, 594)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.Name = "frmOption_General"
@@ -642,6 +729,10 @@ Partial Class frmOption_General
         Me.pnlSettings.PerformLayout()
         Me.tblSettings.ResumeLayout(False)
         Me.tblSettings.PerformLayout()
+        Me.gbSortTokens.ResumeLayout(False)
+        Me.gbSortTokens.PerformLayout()
+        Me.tblSortTokens.ResumeLayout(False)
+        CType(Me.dgvSortTokens, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbInterface.ResumeLayout(False)
         Me.gbInterface.PerformLayout()
         Me.tblInterface.ResumeLayout(False)
@@ -701,4 +792,10 @@ Partial Class frmOption_General
     Friend WithEvents chkImageFilterFanart As CheckBox
     Friend WithEvents txtThemeHints As TextBox
     Friend WithEvents chkShowNews As CheckBox
+    Friend WithEvents gbSortTokens As GroupBox
+    Friend WithEvents tblSortTokens As TableLayoutPanel
+    Friend WithEvents dgvSortTokens As DataGridView
+    Friend WithEvents colSortTokens As DataGridViewTextBoxColumn
+    Friend WithEvents btnSortTokensDefaults As Button
+    Friend WithEvents chkDisplayStudioText As CheckBox
 End Class

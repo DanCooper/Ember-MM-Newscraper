@@ -653,7 +653,7 @@ Namespace FFmpeg
             If fileItem.bIsBDMV OrElse fileItem.bIsVideoTS Then
                 Return FileUtils.Common.GetLongestFromRip(fileItem)
             ElseIf fileItem.bIsDiscImage Then
-                Dim nVirtualDrive = New FileUtils.VirtualDrive(fileItem.FirstPathFromStack)
+                Dim nVirtualDrive = New FileUtils.VirtualCloneDrive(fileItem.FirstPathFromStack)
                 If nVirtualDrive.IsReady Then
                     Return FileUtils.Common.GetLongestFromRip(New FileItem(nVirtualDrive.Path))
                 End If

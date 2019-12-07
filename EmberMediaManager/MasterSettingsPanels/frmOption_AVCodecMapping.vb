@@ -123,9 +123,9 @@ Public Class frmOption_AVCodecMapping
 #Region "Methods"
 
     Public Sub Settings_Load()
-        With Master.eSettings
-            DataGridView_Fill_Audio(Master.eSettings.GeneralAudioCodecMapping)
-            DataGridView_Fill_Video(Master.eSettings.GeneralVideoCodecMapping)
+        With Master.eSettings.Options.AVCodecMapping
+            DataGridView_Fill_Audio(.Audio)
+            DataGridView_Fill_Video(.Video)
         End With
     End Sub
 
@@ -154,7 +154,7 @@ Public Class frmOption_AVCodecMapping
         Handle_SettingsChanged()
     End Sub
 
-    Private Sub DataGridView_Fill_Audio(ByVal List As List(Of Settings.CodecMapping))
+    Private Sub DataGridView_Fill_Audio(ByVal List As List(Of AVCodecMapping.CodecMapping))
         dgvAudio.Rows.Clear()
         For Each sett In List
             Dim i As Integer = dgvAudio.Rows.Add(New Object() {
@@ -166,7 +166,7 @@ Public Class frmOption_AVCodecMapping
         dgvAudio.ClearSelection()
     End Sub
 
-    Private Sub DataGridView_Fill_Video(ByVal List As List(Of Settings.CodecMapping))
+    Private Sub DataGridView_Fill_Video(ByVal List As List(Of AVCodecMapping.CodecMapping))
         dgvVideo.Rows.Clear()
         For Each sett In List
             Dim i As Integer = dgvVideo.Rows.Add(New Object() {
@@ -188,28 +188,32 @@ Public Class frmOption_AVCodecMapping
     End Sub
 
     Private Sub Save_Audio()
-        Master.eSettings.GeneralAudioCodecMapping.Clear()
-        For Each r As DataGridViewRow In dgvAudio.Rows
-            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) Then
-                Master.eSettings.GeneralAudioCodecMapping.Add(New Settings.CodecMapping With {
-                                                              .Codec = r.Cells(0).Value.ToString,
-                                                              .Mapping = If(r.Cells(1).Value IsNot Nothing, r.Cells(1).Value.ToString, String.Empty),
-                                                              .AdditionalFeatures = If(r.Cells(2).Value IsNot Nothing, r.Cells(2).Value.ToString, String.Empty)
-                                                              })
-            End If
-        Next
+        With Master.eSettings.Options.AVCodecMapping.Audio
+            .Clear()
+            For Each r As DataGridViewRow In dgvAudio.Rows
+                If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) Then
+                    .Add(New AVCodecMapping.CodecMapping With {
+                         .Codec = r.Cells(0).Value.ToString,
+                         .Mapping = If(r.Cells(1).Value IsNot Nothing, r.Cells(1).Value.ToString, String.Empty),
+                         .AdditionalFeatures = If(r.Cells(2).Value IsNot Nothing, r.Cells(2).Value.ToString, String.Empty)
+                         })
+                End If
+            Next
+        End With
     End Sub
 
     Private Sub Save_Video()
-        Master.eSettings.GeneralVideoCodecMapping.Clear()
-        For Each r As DataGridViewRow In dgvVideo.Rows
-            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) Then
-                Master.eSettings.GeneralVideoCodecMapping.Add(New Settings.CodecMapping With {
-                                                              .Codec = r.Cells(0).Value.ToString,
-                                                              .Mapping = If(r.Cells(1).Value IsNot Nothing, r.Cells(1).Value.ToString, String.Empty)
-                                                              })
-            End If
-        Next
+        With Master.eSettings.Options.AVCodecMapping.Video
+            .Clear()
+            For Each r As DataGridViewRow In dgvVideo.Rows
+                If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) Then
+                    .Add(New AVCodecMapping.CodecMapping With {
+                         .Codec = r.Cells(0).Value.ToString,
+                         .Mapping = If(r.Cells(1).Value IsNot Nothing, r.Cells(1).Value.ToString, String.Empty)
+                         })
+                End If
+            Next
+        End With
     End Sub
 
 #End Region 'Methods

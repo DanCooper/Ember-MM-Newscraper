@@ -2137,8 +2137,8 @@ Public Class Database
         'add column "listTitle" and generate the value
         nDataTable.Columns.Add(Helpers.GetColumnName(ColumnName.ListTitle))
         For i As Integer = 0 To nDataTable.Rows.Count - 1
-            nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.ListTitle)) = StringUtils.SortTokens_Movie(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Title)).ToString)
-            nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)) = StringUtils.SortTokens_Movie(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)).ToString)
+            nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.ListTitle)) = StringUtils.SortTokens(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Title)).ToString)
+            nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)) = StringUtils.SortTokens(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)).ToString)
         Next
         Return nDataTable
     End Function
@@ -2154,7 +2154,7 @@ Public Class Database
         'add column "listTitle" and generate the value
         nDataTable.Columns.Add(Helpers.GetColumnName(ColumnName.ListTitle))
         For i As Integer = 0 To nDataTable.Rows.Count - 1
-            nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.ListTitle)) = StringUtils.SortTokens_MovieSet(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Title)).ToString)
+            nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.ListTitle)) = StringUtils.SortTokens(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Title)).ToString)
         Next
         Return nDataTable
     End Function
@@ -2217,7 +2217,7 @@ Public Class Database
         'add column "listTitle" and generate the value
         nDataTable.Columns.Add(Helpers.GetColumnName(ColumnName.ListTitle))
         For i As Integer = 0 To nDataTable.Rows.Count - 1
-            nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.ListTitle)) = StringUtils.SortTokens_TV(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Title)).ToString)
+            nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.ListTitle)) = StringUtils.SortTokens(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Title)).ToString)
             'dtTVShows.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)) = StringUtils.SortTokens_TV(dtTVShows.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)).ToString)
         Next
         Return nDataTable
@@ -3165,11 +3165,11 @@ Public Class Database
 
             'DateAdded
             Try
-                If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso dbElement.Movie.DateAddedSpecified Then
+                If Not Master.eSettings.Movie.SourceSettings.DateAddedIgnoreNfo AndAlso dbElement.Movie.DateAddedSpecified Then
                     Dim DateTimeAdded As Date = Date.ParseExact(dbElement.Movie.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     par_dateAdded.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                 Else
-                    Select Case Master.eSettings.GeneralDateTime
+                    Select Case Master.eSettings.Movie.SourceSettings.DateAddedDateTime
                         Case Enums.DateTimeStamp.Now
                             par_dateAdded.Value = If(Not dbElement.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), dbElement.DateAdded)
                         Case Enums.DateTimeStamp.ctime
@@ -3316,7 +3316,7 @@ Public Class Database
             par_idSource.Value = dbElement.Source.ID
 
             If Not dbElement.IDSpecified Then
-                If Master.eSettings.MovieGeneralMarkNew Then
+                If Master.eSettings.Movie.SourceSettings.MarkNew Then
                     par_marked.Value = True
                     dbElement.IsMarked = True
                 End If
@@ -3863,11 +3863,11 @@ Public Class Database
 
             'DateAdded
             Try
-                If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso dbElement.TVEpisode.DateAddedSpecified Then
+                If Not Master.eSettings.TVEpisode.SourceSettings.DateAddedIgnoreNfo AndAlso dbElement.TVEpisode.DateAddedSpecified Then
                     Dim DateTimeAdded As Date = Date.ParseExact(dbElement.TVEpisode.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     par_dateAdded.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                 Else
-                    Select Case Master.eSettings.GeneralDateTime
+                    Select Case Master.eSettings.TVEpisode.SourceSettings.DateAddedDateTime
                         Case Enums.DateTimeStamp.Now
                             par_dateAdded.Value = If(Not dbElement.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), dbElement.DateAdded)
                         Case Enums.DateTimeStamp.ctime
@@ -4224,7 +4224,7 @@ Public Class Database
 
             'DateAdded
             Try
-                If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso dbElement.TVShow.DateAddedSpecified Then
+                If Not Master.eSettings.TVShow.SourceSettings.DateAddedIgnoreNfo AndAlso dbElement.TVShow.DateAddedSpecified Then
                     Dim DateTimeAdded As Date = Date.ParseExact(dbElement.TVShow.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     par_dateAdded.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                 Else

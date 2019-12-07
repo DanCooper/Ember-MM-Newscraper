@@ -355,18 +355,18 @@ Public Class FileItemList
         Clear()
     End Sub
 
-    Public Sub New(ByVal strPath As String, ByVal tContentType As Enums.ContentType)
+    Public Sub New(ByVal Path As String, ByVal tContentType As Enums.ContentType)
         Clear()
 
         Dim intSkipLessThan As Integer = 0
         Select Case tContentType
             Case Enums.ContentType.Movie
-                intSkipLessThan = Master.eSettings.MovieSkipLessThan
+                intSkipLessThan = Master.eSettings.Movie.SourceSettings.SkipLessThan
             Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                intSkipLessThan = Master.eSettings.TVSkipLessThan
+                intSkipLessThan = Master.eSettings.TVEpisode.SourceSettings.SkipLessThan
         End Select
 
-        Dim diPath As DirectoryInfo = New DirectoryInfo(strPath)
+        Dim diPath As DirectoryInfo = New DirectoryInfo(Path)
         'get all paths
         Dim lstDirectories = diPath.GetDirectories.Where(Function(f) FileUtils.Common.IsValidDir(f, tContentType))
         For Each nDirectoryInfo In lstDirectories

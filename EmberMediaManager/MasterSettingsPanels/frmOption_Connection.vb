@@ -113,7 +113,7 @@ Public Class frmOption_Connection
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
-        With Master.eSettings
+        With Master.eSettings.Options.Connection
             Dim iPort As Integer
             If Not String.IsNullOrEmpty(txtProxyURI.Text) AndAlso Integer.TryParse(txtProxyPort.Text.Trim, iPort) Then
                 .ProxyPort = iPort
@@ -138,7 +138,7 @@ Public Class frmOption_Connection
 #Region "Methods"
 
     Public Sub Settings_Load()
-        With Master.eSettings
+        With Master.eSettings.Options.Connection
             If Not String.IsNullOrEmpty(.ProxyURI) AndAlso .ProxyPort >= 0 Then
                 chkProxyEnabled.Checked = True
                 txtProxyURI.Text = .ProxyURI

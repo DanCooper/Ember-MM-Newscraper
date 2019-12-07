@@ -112,9 +112,9 @@ Public Class frmOption_VideoSourceMapping
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
-        With Master.eSettings
-            .GeneralVideoSourceByExtensionEnabled = chkByExtensionEnabled.Checked
-            .GeneralVideoSourceByRegexEnabled = chkRegexEnabled.Checked
+        With Master.eSettings.Options.VideoSourceMapping
+            .ByExtensionEnabled = chkByExtensionEnabled.Checked
+            .ByRegexEnabled = chkRegexEnabled.Checked
             Save_ByExtension()
             Save_ByRegex()
         End With
@@ -125,12 +125,12 @@ Public Class frmOption_VideoSourceMapping
 #Region "Methods"
 
     Public Sub Settings_Load()
-        With Master.eSettings
-            chkByExtensionEnabled.Checked = .GeneralVideoSourceByExtensionEnabled
-            chkRegexEnabled.Checked = .GeneralVideoSourceByRegexEnabled
+        With Master.eSettings.Options.VideoSourceMapping
+            chkByExtensionEnabled.Checked = .ByExtensionEnabled
+            chkRegexEnabled.Checked = .ByRegexEnabled
 
-            DataGridView_Fill_ByExtension(.GeneralVideoSourceByExtension)
-            DataGridView_Fill_ByRegex(.GeneralVideoSourceByRegex)
+            DataGridView_Fill_ByExtension(.ByExtension)
+            DataGridView_Fill_ByRegex(.ByRegex)
         End With
     End Sub
 
@@ -159,7 +159,7 @@ Public Class frmOption_VideoSourceMapping
         Handle_SettingsChanged()
     End Sub
 
-    Private Sub DataGridView_Fill_ByExtension(ByVal List As List(Of Settings.VideoSourceByExtension))
+    Private Sub DataGridView_Fill_ByExtension(ByVal List As List(Of VideoSourceMapping.VideoSourceByExtension))
         dgvByExtension.Rows.Clear()
         For Each sett In List
             Dim i As Integer = dgvByExtension.Rows.Add(New Object() {
@@ -170,7 +170,7 @@ Public Class frmOption_VideoSourceMapping
         dgvByExtension.ClearSelection()
     End Sub
 
-    Private Sub DataGridView_Fill_ByRegex(ByVal List As List(Of Settings.VideoSourceByRegex))
+    Private Sub DataGridView_Fill_ByRegex(ByVal List As List(Of VideoSourceMapping.VideoSourceByRegex))
         dgvByRegex.Rows.Clear()
         For Each sett In List
             Dim i As Integer = dgvByRegex.Rows.Add(New Object() {
@@ -181,33 +181,37 @@ Public Class frmOption_VideoSourceMapping
         dgvByRegex.ClearSelection()
     End Sub
 
-    Private Sub LoadDefaults_ByRegex(ByVal sender As Object, ByVal e As EventArgs) Handles btnByRegexDefaults.Click
+    Private Sub LoadDefaults_ByRegex() Handles btnByRegexDefaults.Click
         DataGridView_Fill_ByRegex(Master.eSettings.GetDefaultsForList_VideoSourceMappingsByRegex())
         Handle_SettingsChanged()
     End Sub
 
     Private Sub Save_ByExtension()
-        Master.eSettings.GeneralVideoSourceByExtension.Clear()
-        For Each r As DataGridViewRow In dgvByExtension.Rows
-            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) Then
-                Master.eSettings.GeneralVideoSourceByExtension.Add(New Settings.VideoSourceByExtension With {
-                                                                   .Extension = r.Cells(0).Value.ToString,
-                                                                   .VideoSource = If(r.Cells(1).Value IsNot Nothing, r.Cells(1).Value.ToString, String.Empty)
-                                                                   })
-            End If
-        Next
+        With Master.eSettings.Options.VideoSourceMapping.ByExtension
+            .Clear()
+            For Each r As DataGridViewRow In dgvByExtension.Rows
+                If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) Then
+                    .Add(New VideoSourceMapping.VideoSourceByExtension With {
+                         .Extension = r.Cells(0).Value.ToString,
+                         .VideoSource = If(r.Cells(1).Value IsNot Nothing, r.Cells(1).Value.ToString, String.Empty)
+                         })
+                End If
+            Next
+        End With
     End Sub
 
     Private Sub Save_ByRegex()
-        Master.eSettings.GeneralVideoSourceByRegex.Clear()
-        For Each r As DataGridViewRow In dgvByRegex.Rows
-            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) Then
-                Master.eSettings.GeneralVideoSourceByRegex.Add(New Settings.VideoSourceByRegex With {
-                                                               .Regexp = r.Cells(0).Value.ToString,
-                                                               .Videosource = If(r.Cells(1).Value IsNot Nothing, r.Cells(1).Value.ToString, String.Empty)
-                                                               })
-            End If
-        Next
+        With Master.eSettings.Options.VideoSourceMapping.ByRegex
+            .Clear()
+            For Each r As DataGridViewRow In dgvByRegex.Rows
+                If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) Then
+                    .Add(New VideoSourceMapping.VideoSourceByRegex With {
+                         .Regexp = r.Cells(0).Value.ToString,
+                         .Videosource = If(r.Cells(1).Value IsNot Nothing, r.Cells(1).Value.ToString, String.Empty)
+                         })
+                End If
+            Next
+        End With
     End Sub
 
 #End Region 'Methods

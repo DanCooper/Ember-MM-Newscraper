@@ -442,7 +442,7 @@ Namespace FileUtils
         Public Shared Function GetOpenFileDialogFilter_Theme() As String
             Dim lstValidExtensions As New List(Of String)
 
-            For Each nExtension In Master.eSettings.FileSystemValidThemeExts
+            For Each nExtension In Master.eSettings.Options.FileSystem.ValidThemeExtensions
                 lstValidExtensions.Add(String.Concat("*", nExtension))
             Next
 
@@ -452,7 +452,7 @@ Namespace FileUtils
         Public Shared Function GetOpenFileDialogFilter_Video(ByVal strDescription As String) As String
             Dim lstValidExtensions As New List(Of String)
 
-            For Each nExtension In Master.eSettings.FileSystemValidExts
+            For Each nExtension In Master.eSettings.Options.FileSystem.ValidVideoExtensions
                 lstValidExtensions.Add(String.Concat("*", nExtension))
             Next
 
@@ -521,28 +521,26 @@ Namespace FileUtils
             If Path.GetFileName(fileItem.FirstPathFromStack).ToLower = "video_ts.ifo" Then Return "dvd"
 
             'by file name/path and regex mapping
-            If Master.eSettings.GeneralVideoSourceByRegexEnabled Then
+            If Master.eSettings.Options.VideoSourceMapping.ByRegexEnabled Then
                 Dim strPath As String = String.Empty
                 If isEpisode Then
                     strPath = Path.GetFileName(fileItem.FirstPathFromStack).ToLower
                 Else
-                    strPath = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(fileItem.FirstPathFromStack).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(fileItem.FirstPathFromStack).ToLower), Path.GetFileName(fileItem.FirstPathFromStack).ToLower)
+                    strPath = If(Master.eSettings.Movie.SourceSettings.VideoSourceFromFolder, String.Concat(Directory.GetParent(fileItem.FirstPathFromStack).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(fileItem.FirstPathFromStack).ToLower), Path.GetFileName(fileItem.FirstPathFromStack).ToLower)
                 End If
-                Dim lstMapping As New List(Of AdvancedSettingsComplexSettingsTableItem)
-                lstMapping = AdvancedSettings.GetComplexSetting("VideoSourceMapping")
-                If Not lstMapping Is Nothing Then
-                    For Each k In lstMapping
-                        If Regex.IsMatch(strPath, k.Name) Then
-                            Return k.Value
+                If Master.eSettings.Options.VideoSourceMapping.ByRegexSpecified Then
+                    For Each m In Master.eSettings.Options.VideoSourceMapping.ByRegex
+                        If Regex.IsMatch(strPath, m.Regexp) Then
+                            Return m.Videosource
                         End If
                     Next
                 End If
             End If
 
             'by file extension
-            If Master.eSettings.GeneralVideoSourceByExtensionEnabled Then
+            If Master.eSettings.Options.VideoSourceMapping.ByExtensionEnabled Then
                 Dim strExtension = Path.GetExtension(fileItem.FirstPathFromStack)
-                Dim nVideosource = Master.eSettings.GeneralVideoSourceByExtension.FirstOrDefault(Function(f) f.Extension = strExtension)
+                Dim nVideosource = Master.eSettings.Options.VideoSourceMapping.ByExtension.FirstOrDefault(Function(f) f.Extension = strExtension)
                 If nVideosource IsNot Nothing Then Return nVideosource.VideoSource
             End If
 
@@ -619,9 +617,9 @@ Namespace FileUtils
                 Dim intSkipLessThan As Integer = 0
                 Select Case contentType
                     Case Enums.ContentType.Movie
-                        intSkipLessThan = Master.eSettings.MovieSkipLessThan
+                        intSkipLessThan = Master.eSettings.Movie.SourceSettings.SkipLessThan
                     Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                        intSkipLessThan = Master.eSettings.TVSkipLessThan
+                        intSkipLessThan = Master.eSettings.TVEpisode.SourceSettings.SkipLessThan
                 End Select
 
                 For Each s As String In Master.DB.GetExcludedPaths
@@ -630,7 +628,7 @@ Namespace FileUtils
                         Return False
                     End If
                 Next
-                If Not Master.eSettings.FileSystemValidExts.Contains(file.Extension.ToLower) Then
+                If Not Master.eSettings.Options.FileSystem.ValidVideoExtensions.Contains(file.Extension.ToLower) Then
                     logger.Trace(String.Format("[FileUtils] [IsValidFile] [NotValidFileContains] File ""{0}"" has been skipped (valid video file extension list does not contain ""{1}"")", file.FullName, file.Extension))
                     Return False
                 End If
@@ -2449,8 +2447,8 @@ Namespace FileUtils
                     End Try
 
                     'Create a list of all media files with a valid extension in the directory
-                    lMediaList = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
-                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
+                    lMediaList = lFi.Where(Function(f) Master.eSettings.Options.FileSystem.ValidVideoExtensions.Contains(f.Extension.ToLower) AndAlso
+                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Not Master.eSettings.Movie.SourceSettings.SkipLessThanSpecified OrElse f.Length >= Master.eSettings.Movie.SourceSettings.SkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
 
                     'For each valid file in the directory...
                     For Each sFile As FileInfo In lMediaList
@@ -2498,12 +2496,12 @@ Namespace FileUtils
                             If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
                         Next
                         For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainTheme, True)
-                            For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                            For Each t As String In Master.eSettings.Options.FileSystem.ValidThemeExtensions
                                 If File.Exists(String.Concat(a, t)) Then File.Move(String.Concat(a, t), Path.Combine(strNewPath, Path.GetFileName(String.Concat(a, t))))
                             Next
                         Next
                         For Each a In FileNames.GetFileNames(nMovie, Enums.ModifierType.MainTrailer, True)
-                            For Each t As String In Master.eSettings.FileSystemValidExts
+                            For Each t As String In Master.eSettings.Options.FileSystem.ValidVideoExtensions
                                 If File.Exists(String.Concat(a, t)) Then File.Move(String.Concat(a, t), Path.Combine(strNewPath, Path.GetFileName(String.Concat(a, t))))
                             Next
                         Next
@@ -2634,13 +2632,13 @@ Namespace FileUtils
 
     End Class
 
-    Public Class VirtualDrive
+    Public Class VirtualCloneDrive
 
 #Region "Fields"
 
         Shared logger As Logger = LogManager.GetCurrentClassLogger()
         Private fiImage As FileInfo
-        Private fiVirtualCloneDrive As FileInfo = New FileInfo(Master.eSettings.GeneralVirtualDriveBinPath)
+        Private fiVirtualCloneDriveBin As FileInfo = New FileInfo(Master.eSettings.Options.FileSystem.VirtualDriveBinPath)
 
 #End Region 'Fields
 
@@ -2663,12 +2661,12 @@ Namespace FileUtils
 #Region "Methods"
 
         Private Sub LoadDiscImage()
-            Dim strDriveLetter As String = Master.eSettings.GeneralVirtualDriveLetter
-            If Not String.IsNullOrEmpty(strDriveLetter) AndAlso fiVirtualCloneDrive.Exists AndAlso fiImage.Exists Then
+            Dim strDriveLetter As String = Master.eSettings.Options.FileSystem.VirtualDriveDriveLetter
+            If Not String.IsNullOrEmpty(strDriveLetter) AndAlso fiVirtualCloneDriveBin.Exists AndAlso fiImage.Exists Then
                 'Unmount e.g. ""C:\Program Files\Elaborate Bytes\VirtualCloneDrive\VCDMount.exe" /u"
-                Functions.Run_Process(fiVirtualCloneDrive.FullName, "/u", False, True)
+                Functions.Run_Process(fiVirtualCloneDriveBin.FullName, "/u", False, True)
                 'Mount ISO on virtual drive, e.g. ""C:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe" "U:\isotest\test2iso.ISO""
-                Functions.Run_Process(fiVirtualCloneDrive.FullName, String.Format("""{0}""", fiImage.FullName), False, True)
+                Functions.Run_Process(fiVirtualCloneDriveBin.FullName, String.Format("""{0}""", fiImage.FullName), False, True)
 
                 Dim diVirtualDrive = New DriveInfo(String.Concat(strDriveLetter, ":\"))
 
@@ -2692,7 +2690,7 @@ Namespace FileUtils
         End Sub
 
         Public Sub UnmountDiscImage()
-            Functions.Run_Process(fiVirtualCloneDrive.FullName, "/u", False, True)
+            Functions.Run_Process(fiVirtualCloneDriveBin.FullName, "/u", False, True)
             IsReady = False
             Path = String.Empty
         End Sub

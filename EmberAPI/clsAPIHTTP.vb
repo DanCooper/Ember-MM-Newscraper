@@ -369,18 +369,21 @@ Public Class HTTP
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub PrepareProxy()
-        If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
-            Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
-            wProxy.BypassProxyOnLocal = True
-            'TODO Dekker500 - Verify if this Password/empty clause is required. Proxies can have usernames but blank passwords, no?
-            If Not String.IsNullOrEmpty(Master.eSettings.ProxyCredentials.UserName) AndAlso
-            Not String.IsNullOrEmpty(Master.eSettings.ProxyCredentials.Password) Then
-                wProxy.Credentials = Master.eSettings.ProxyCredentials
-            Else
-                wProxy.Credentials = CredentialCache.DefaultCredentials
+        With Master.eSettings.Options.Connection
+            If .ProxyURISpecified AndAlso .ProxyPortSpecified Then
+                Dim wProxy As New WebProxy(.ProxyURI, .ProxyPort) With {
+                    .BypassProxyOnLocal = True
+                }
+                'TODO Dekker500 - Verify if this Password/empty clause is required. Proxies can have usernames but blank passwords, no?
+                If Not String.IsNullOrEmpty(Master.eSettings.Options.Connection.ProxyCredentials.UserName) AndAlso
+                Not String.IsNullOrEmpty(Master.eSettings.Options.Connection.ProxyCredentials.Password) Then
+                    wProxy.Credentials = Master.eSettings.Options.Connection.ProxyCredentials
+                Else
+                    wProxy.Credentials = CredentialCache.DefaultCredentials
+                End If
+                wrRequest.Proxy = wProxy
             End If
-            wrRequest.Proxy = wProxy
-        End If
+        End With
     End Sub
     ''' <summary>
     ''' Commands a thread to be spawned to download the image contained at the given URL

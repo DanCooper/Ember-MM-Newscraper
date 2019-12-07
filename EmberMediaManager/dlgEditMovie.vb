@@ -1879,7 +1879,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub Trailer_Local_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetTrailerLocal.Click
-        Dim strValidExtesions As String() = Master.eSettings.FileSystemValidExts.ToArray
+        Dim strValidExtesions As String() = Master.eSettings.Options.FileSystem.ValidVideoExtensions.ToArray
         With ofdLocalFiles
             .InitialDirectory = tmpDBElement.FileItem.MainPath.FullName
             .Filter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))

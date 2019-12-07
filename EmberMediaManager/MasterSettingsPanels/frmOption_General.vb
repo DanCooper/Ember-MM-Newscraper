@@ -115,21 +115,34 @@ Public Class frmOption_General
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
+        With Manager.mSettings.MainOptions.GuiSettings
+            .DoubleClickScrapeEnabled = chkDoubleClickScrape.Checked
+            .DisplayBanner = chkDisplayBanner.Checked
+            .DisplayCharacterArt = chkDisplayCharacterArt.Checked
+            .DisplayClearArt = chkDisplayClearArt.Checked
+            .DisplayClearLogo = chkDisplayClearLogo.Checked
+            .DisplayDiscArt = chkDisplayDiscArt.Checked
+            .DisplayFanart = chkDisplayFanart.Checked
+            .DisplayFanartSmall = chkDisplayFanartSmall.Checked
+            .DisplayKeyArt = chkDisplayKeyArt.Checked
+            .DisplayLandscape = chkDisplayLandscape.Checked
+            .DisplayPoster = chkDisplayPoster.Checked
+            .ShowImgGlassOverlay = chkImagesGlassOverlay.Checked
+            .ShowGenresText = chkDisplayGenresText.Checked
+            .ShowStudioText = chkDisplayStudioText.Checked
+            .ShowLangFlags = chkDisplayLangFlags.Checked
+            .ShowImgDimensions = chkDisplayImageDimension.Checked
+            .ShowImgNames = chkDisplayImageNames.Checked
+            .Theme = cbTheme.Text
+        End With
+        With Master.eSettings.Options.General
+            .CheckForUpdates = chkCheckForUpdates.Checked
+            .DigitGrpSymbolVotesEnabled = chkDigitGrpSymbolVotes.Checked
+            .Language = cbInterfaceLanguage.Text
+            .ShowNews = chkShowNews.Checked
+        End With
+
         With Master.eSettings
-            .GeneralCheckUpdates = chkCheckForUpdates.Checked
-            .GeneralDigitGrpSymbolVotes = chkDigitGrpSymbolVotes.Checked
-            .GeneralDoubleClickScrape = chkDoubleClickScrape.Checked
-            .GeneralDisplayBanner = chkDisplayBanner.Checked
-            .GeneralDisplayCharacterArt = chkDisplayCharacterArt.Checked
-            .GeneralDisplayClearArt = chkDisplayClearArt.Checked
-            .GeneralDisplayClearLogo = chkDisplayClearLogo.Checked
-            .GeneralDisplayDiscArt = chkDisplayDiscArt.Checked
-            .GeneralDisplayFanart = chkDisplayFanart.Checked
-            .GeneralDisplayFanartSmall = chkDisplayFanartSmall.Checked
-            .GeneralDisplayKeyArt = chkDisplayKeyArt.Checked
-            .GeneralDisplayLandscape = chkDisplayLandscape.Checked
-            .GeneralDisplayPoster = chkDisplayPoster.Checked
-            .GeneralImagesGlassOverlay = chkImagesGlassOverlay.Checked
             .GeneralImageFilter = chkImageFilter.Checked
             .GeneralImageFilterAutoscraper = chkImageFilterAutoscraper.Checked
             .GeneralImageFilterFanart = chkImageFilterFanart.Checked
@@ -145,13 +158,8 @@ Public Class frmOption_General
             Else
                 .GeneralImageFilterPosterMatchTolerance = 1
             End If
-            .GeneralLanguage = cbInterfaceLanguage.Text
-            .GeneralShowGenresText = chkDisplayGenresText.Checked
-            .GeneralShowLangFlags = chkDisplayLangFlags.Checked
-            .GeneralShowImgDims = chkDisplayImageDimension.Checked
-            .GeneralShowImgNames = chkDisplayImageNames.Checked
-            .GeneralTheme = cbTheme.Text
         End With
+        Save_SortTokens()
     End Sub
 
 #End Region 'Interface Methodes
@@ -159,13 +167,37 @@ Public Class frmOption_General
 #Region "Methods"
 
     Public Sub Settings_Load()
-        With Master.eSettings
+        With Manager.mSettings.MainOptions.GuiSettings
+            cbTheme.SelectedItem = .Theme
+            chkDoubleClickScrape.Checked = .DoubleClickScrapeEnabled
+            chkDisplayBanner.Checked = .DisplayBanner
+            chkDisplayCharacterArt.Checked = .DisplayCharacterArt
+            chkDisplayClearArt.Checked = .DisplayClearArt
+            chkDisplayClearLogo.Checked = .DisplayClearLogo
+            chkDisplayDiscArt.Checked = .DisplayDiscArt
+            chkDisplayFanart.Checked = .DisplayFanart
+            chkDisplayFanartSmall.Checked = .DisplayFanartSmall
+            chkDisplayKeyArt.Checked = .DisplayKeyArt
+            chkDisplayLandscape.Checked = .DisplayLandscape
+            chkDisplayPoster.Checked = .DisplayPoster
+            chkImagesGlassOverlay.Checked = .ShowImgGlassOverlay
+            chkDisplayGenresText.Checked = .ShowGenresText
+            chkDisplayStudioText.Checked = .ShowStudioText
+            chkDisplayLangFlags.Checked = .ShowLangFlags
+            chkDisplayImageDimension.Checked = .ShowImgDimensions
+            chkDisplayImageNames.Checked = .ShowImgNames
+        End With
+        With Master.eSettings.Options.General
             RemoveHandler cbInterfaceLanguage.SelectedIndexChanged, AddressOf InterfaceLanguage_SelectedIndexChanged
-            cbInterfaceLanguage.SelectedItem = .GeneralLanguage
+            cbInterfaceLanguage.SelectedItem = .Language
             AddHandler cbInterfaceLanguage.SelectedIndexChanged, AddressOf InterfaceLanguage_SelectedIndexChanged
-            cbTheme.SelectedItem = .GeneralTheme
-            chkCheckForUpdates.Checked = .GeneralCheckUpdates
-            chkDigitGrpSymbolVotes.Checked = .GeneralDigitGrpSymbolVotes
+            chkCheckForUpdates.Checked = .CheckForUpdates
+            chkDigitGrpSymbolVotes.Checked = .DigitGrpSymbolVotesEnabled
+            chkShowNews.Checked = .ShowNews
+
+            DataGridView_Fill_SortTokens(.SortTokens)
+        End With
+        With Master.eSettings
             chkImageFilter.Checked = .GeneralImageFilter
             chkImageFilterAutoscraper.Checked = .GeneralImageFilterAutoscraper
             txtImageFilterFanartMatchRate.Enabled = .GeneralImageFilterFanart
@@ -173,30 +205,16 @@ Public Class frmOption_General
             chklImageFilterImageDialog.Checked = .GeneralImageFilterImagedialog
             chkImageFilterPoster.Checked = .GeneralImageFilterPoster
             txtImageFilterPosterMatchRate.Enabled = .GeneralImageFilterPoster
-            chkDoubleClickScrape.Checked = .GeneralDoubleClickScrape
-            chkDisplayBanner.Checked = .GeneralDisplayBanner
-            chkDisplayCharacterArt.Checked = .GeneralDisplayCharacterArt
-            chkDisplayClearArt.Checked = .GeneralDisplayClearArt
-            chkDisplayClearLogo.Checked = .GeneralDisplayClearLogo
-            chkDisplayDiscArt.Checked = .GeneralDisplayDiscArt
-            chkDisplayFanart.Checked = .GeneralDisplayFanart
-            chkDisplayFanartSmall.Checked = .GeneralDisplayFanartSmall
-            chkDisplayKeyArt.Checked = .GeneralDisplayKeyArt
-            chkDisplayLandscape.Checked = .GeneralDisplayLandscape
-            chkDisplayPoster.Checked = .GeneralDisplayPoster
-            chkImagesGlassOverlay.Checked = .GeneralImagesGlassOverlay
-            chkDisplayGenresText.Checked = .GeneralShowGenresText
-            chkDisplayLangFlags.Checked = .GeneralShowLangFlags
-            chkDisplayImageDimension.Checked = .GeneralShowImgDims
-            chkDisplayImageNames.Checked = .GeneralShowImgNames
             txtImageFilterPosterMatchRate.Text = .GeneralImageFilterPosterMatchTolerance.ToString
             txtImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
+
         End With
     End Sub
 
     Private Sub Setup()
         With Master.eLang
             btnDigitGrpSymbolSettings.Text = .GetString(420, "Settings")
+            btnSortTokensDefaults.Text = .GetString(713, "Defaults")
             chkCheckForUpdates.Text = .GetString(432, "Check for Updates")
             chkDigitGrpSymbolVotes.Text = .GetString(1387, "Use digit grouping symbol for Votes count")
             chkDisplayBanner.Text = .GetString(1146, "Display Banner")
@@ -223,6 +241,7 @@ Public Class frmOption_General
             gbInterface.Text = .GetString(795, "Interface")
             gbMainWindow.Text = .GetString(1152, "Main Window")
             gbMiscellaneous.Text = .GetString(429, "Miscellaneous")
+            gbSortTokens.Text = .GetString(463, "Sort Tokens to Ignore")
             lblImageFilterFanartMatchRate.Text = .GetString(149, "Fanart") & " " & .GetString(461, "Mismatch Tolerance:")
             lblImageFilterPosterMatchRate.Text = .GetString(148, "Poster") & " " & .GetString(461, "Mismatch Tolerance:")
             lblInterfaceLanguage.Text = .GetString(430, "Interface Language:")
@@ -248,7 +267,11 @@ Public Class frmOption_General
         chkDisplayLandscape.CheckedChanged,
         chkDisplayLangFlags.CheckedChanged,
         chkDisplayPoster.CheckedChanged,
-        chkDoubleClickScrape.CheckedChanged
+        chkDisplayStudioText.CheckedChanged,
+        chkDoubleClickScrape.CheckedChanged,
+        dgvSortTokens.CellValueChanged,
+        dgvSortTokens.RowsAdded,
+        dgvSortTokens.RowsRemoved
 
         CheckHideSettings()
         Handle_SettingsChanged()
@@ -273,6 +296,14 @@ Public Class frmOption_General
             chkDisplayImageDimension.Enabled = False
             chkDisplayImageNames.Enabled = False
         End If
+    End Sub
+
+    Private Sub DataGridView_Fill_SortTokens(ByVal List As List(Of String))
+        dgvSortTokens.Rows.Clear()
+        For Each token In List
+            dgvSortTokens.Rows.Add(New Object() {token})
+        Next
+        dgvSortTokens.ClearSelection()
     End Sub
 
     Private Sub DigitalGroupSymbolSettings_Click(sender As Object, e As EventArgs) Handles btnDigitGrpSymbolSettings.Click
@@ -366,6 +397,22 @@ Public Class frmOption_General
 
         Dim diCustom As DirectoryInfo = New DirectoryInfo(Path.Combine(Master.SettingsPath, "Themes"))
         If diCustom.Exists Then cbTheme.Items.AddRange(diCustom.GetFiles("*.xml").Cast(Of FileInfo)().Select(Function(f) Path.GetFileNameWithoutExtension(f.Name)).ToArray)
+    End Sub
+
+    Private Sub LoadDefaults_SortTokens() Handles btnSortTokensDefaults.Click
+        DataGridView_Fill_SortTokens(Master.eSettings.GetDefaultsForList_SortTokens())
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub Save_SortTokens()
+        With Master.eSettings.Options.General.SortTokens
+            .Clear()
+            For Each r As DataGridViewRow In dgvSortTokens.Rows
+                If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
+                    .Add(r.Cells(0).Value.ToString.Trim)
+                End If
+            Next
+        End With
     End Sub
 
     Private Sub TextBox_NumOnly_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles _

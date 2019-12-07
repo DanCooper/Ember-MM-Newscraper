@@ -2178,7 +2178,7 @@ Namespace MediaContainers
 
         Public ReadOnly Property ListTitle() As String
             Get
-                Return StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
+                Return StringUtils.SortTokens(DBMovie.Movie.Title)
             End Get
         End Property
 

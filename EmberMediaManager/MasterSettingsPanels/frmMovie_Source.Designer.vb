@@ -27,30 +27,30 @@ Partial Class frmMovie_Source
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieGeneralFiltersOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieGeneralFiltersOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnMovieFilterRemove = New System.Windows.Forms.Button()
-        Me.btnMovieFilterDown = New System.Windows.Forms.Button()
-        Me.btnMovieFilterUp = New System.Windows.Forms.Button()
-        Me.chkMovieProperCase = New System.Windows.Forms.CheckBox()
-        Me.lstMovieFilters = New System.Windows.Forms.ListBox()
-        Me.btnMovieFilterAdd = New System.Windows.Forms.Button()
-        Me.txtMovieFilter = New System.Windows.Forms.TextBox()
-        Me.btnMovieFilterReset = New System.Windows.Forms.Button()
-        Me.gbImportOpts = New System.Windows.Forms.GroupBox()
+        Me.chkTitleProperCase = New System.Windows.Forms.CheckBox()
+        Me.gbImportOptions = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesMiscOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkMovieGeneralMarkNew = New System.Windows.Forms.CheckBox()
-        Me.chkMovieCleanDB = New System.Windows.Forms.CheckBox()
+        Me.chkMarkNew = New System.Windows.Forms.CheckBox()
+        Me.chkCleanDB = New System.Windows.Forms.CheckBox()
         Me.lblMovieSkipLessThan = New System.Windows.Forms.Label()
-        Me.chkMovieSortBeforeScan = New System.Windows.Forms.CheckBox()
-        Me.txtMovieSkipLessThan = New System.Windows.Forms.TextBox()
+        Me.chkSortBeforeScan = New System.Windows.Forms.CheckBox()
+        Me.txtSkipLessThan = New System.Windows.Forms.TextBox()
         Me.lblMovieSkipLessThanMB = New System.Windows.Forms.Label()
         Me.chkMovieSkipStackedSizeCheck = New System.Windows.Forms.CheckBox()
-        Me.gbMovieSourcesDefaultsOpts = New System.Windows.Forms.GroupBox()
+        Me.chkVideoSourceFromFolder = New System.Windows.Forms.CheckBox()
+        Me.chkOverwriteNfo = New System.Windows.Forms.CheckBox()
+        Me.lblGeneralOverwriteNfo = New System.Windows.Forms.Label()
+        Me.gbSourcesDefaults = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesDefaultsOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblMovieSourcesDefaultsLanguage = New System.Windows.Forms.Label()
         Me.cbMovieGeneralLang = New System.Windows.Forms.ComboBox()
         Me.btnMovieSourceRemove = New System.Windows.Forms.Button()
         Me.btnMovieSourceEdit = New System.Windows.Forms.Button()
         Me.btnMovieSourceAdd = New System.Windows.Forms.Button()
+        Me.gbGeneralDateAdded = New System.Windows.Forms.GroupBox()
+        Me.tblGeneralDateAdded = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkDateAddedIgnoreNFO = New System.Windows.Forms.CheckBox()
+        Me.cbDateAddedDateTime = New System.Windows.Forms.ComboBox()
         Me.lvMovieSources = New System.Windows.Forms.ListView()
         Me.colMovieSourcesID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colMovieSourcesName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -61,33 +61,34 @@ Partial Class frmMovie_Source
         Me.colMovieSourcesSingle = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colMovieSourcesExclude = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colMovieSourcesGetYear = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.gbGeneralDateAdded = New System.Windows.Forms.GroupBox()
-        Me.tblGeneralDateAdded = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkGeneralDateAddedIgnoreNFO = New System.Windows.Forms.CheckBox()
-        Me.cbGeneralDateTime = New System.Windows.Forms.ComboBox()
-        Me.chkGeneralSourceFromFolder = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralOverwriteNfo = New System.Windows.Forms.CheckBox()
-        Me.lblGeneralOverwriteNfo = New System.Windows.Forms.Label()
+        Me.btnTitleFilterDefaults = New System.Windows.Forms.Button()
+        Me.lblTitleFilter = New System.Windows.Forms.Label()
+        Me.dgvTitleFilter = New System.Windows.Forms.DataGridView()
+        Me.colVideoExtensions = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
         Me.gbMovieGeneralFiltersOpts.SuspendLayout()
         Me.tblMovieGeneralFiltersOpts.SuspendLayout()
-        Me.gbImportOpts.SuspendLayout()
+        Me.gbImportOptions.SuspendLayout()
         Me.tblMovieSourcesMiscOpts.SuspendLayout()
-        Me.gbMovieSourcesDefaultsOpts.SuspendLayout()
+        Me.gbSourcesDefaults.SuspendLayout()
         Me.tblMovieSourcesDefaultsOpts.SuspendLayout()
         Me.gbGeneralDateAdded.SuspendLayout()
         Me.tblGeneralDateAdded.SuspendLayout()
+        CType(Me.dgvTitleFilter, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlSettings
         '
         Me.pnlSettings.AutoSize = True
+        Me.pnlSettings.Controls.Add(Me.dgvTitleFilter)
+        Me.pnlSettings.Controls.Add(Me.btnTitleFilterDefaults)
+        Me.pnlSettings.Controls.Add(Me.lblTitleFilter)
         Me.pnlSettings.Controls.Add(Me.tblSettings)
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(833, 544)
+        Me.pnlSettings.Size = New System.Drawing.Size(1185, 858)
         Me.pnlSettings.TabIndex = 0
         '
         'tblSettings
@@ -95,40 +96,38 @@ Partial Class frmMovie_Source
         Me.tblSettings.AutoScroll = True
         Me.tblSettings.AutoSize = True
         Me.tblSettings.BackColor = System.Drawing.Color.White
-        Me.tblSettings.ColumnCount = 2
+        Me.tblSettings.ColumnCount = 3
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.Controls.Add(Me.gbMovieGeneralFiltersOpts, 0, 5)
-        Me.tblSettings.Controls.Add(Me.gbImportOpts, 0, 4)
-        Me.tblSettings.Controls.Add(Me.gbMovieSourcesDefaultsOpts, 0, 0)
+        Me.tblSettings.Controls.Add(Me.gbImportOptions, 0, 4)
+        Me.tblSettings.Controls.Add(Me.gbSourcesDefaults, 0, 0)
         Me.tblSettings.Controls.Add(Me.btnMovieSourceRemove, 1, 3)
         Me.tblSettings.Controls.Add(Me.btnMovieSourceEdit, 1, 2)
         Me.tblSettings.Controls.Add(Me.btnMovieSourceAdd, 1, 1)
-        Me.tblSettings.Controls.Add(Me.lvMovieSources, 0, 1)
         Me.tblSettings.Controls.Add(Me.gbGeneralDateAdded, 1, 4)
-        Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettings.Controls.Add(Me.lvMovieSources, 0, 1)
         Me.tblSettings.Location = New System.Drawing.Point(0, 0)
         Me.tblSettings.Name = "tblSettings"
-        Me.tblSettings.RowCount = 6
+        Me.tblSettings.RowCount = 7
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettings.Size = New System.Drawing.Size(833, 544)
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.Size = New System.Drawing.Size(970, 445)
         Me.tblSettings.TabIndex = 0
         '
         'gbMovieGeneralFiltersOpts
         '
         Me.gbMovieGeneralFiltersOpts.AutoSize = True
         Me.gbMovieGeneralFiltersOpts.Controls.Add(Me.tblMovieGeneralFiltersOpts)
-        Me.gbMovieGeneralFiltersOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieGeneralFiltersOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieGeneralFiltersOpts.Location = New System.Drawing.Point(3, 336)
+        Me.gbMovieGeneralFiltersOpts.Location = New System.Drawing.Point(3, 398)
         Me.gbMovieGeneralFiltersOpts.Name = "gbMovieGeneralFiltersOpts"
-        Me.gbMovieGeneralFiltersOpts.Size = New System.Drawing.Size(583, 205)
+        Me.gbMovieGeneralFiltersOpts.Size = New System.Drawing.Size(180, 44)
         Me.gbMovieGeneralFiltersOpts.TabIndex = 12
         Me.gbMovieGeneralFiltersOpts.TabStop = False
         Me.gbMovieGeneralFiltersOpts.Text = "Folder/File Name Filters"
@@ -143,14 +142,7 @@ Partial Class frmMovie_Source
         Me.tblMovieGeneralFiltersOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieGeneralFiltersOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieGeneralFiltersOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieGeneralFiltersOpts.Controls.Add(Me.btnMovieFilterRemove, 4, 2)
-        Me.tblMovieGeneralFiltersOpts.Controls.Add(Me.btnMovieFilterDown, 3, 2)
-        Me.tblMovieGeneralFiltersOpts.Controls.Add(Me.btnMovieFilterUp, 2, 2)
-        Me.tblMovieGeneralFiltersOpts.Controls.Add(Me.chkMovieProperCase, 0, 0)
-        Me.tblMovieGeneralFiltersOpts.Controls.Add(Me.lstMovieFilters, 0, 1)
-        Me.tblMovieGeneralFiltersOpts.Controls.Add(Me.btnMovieFilterAdd, 1, 2)
-        Me.tblMovieGeneralFiltersOpts.Controls.Add(Me.txtMovieFilter, 0, 2)
-        Me.tblMovieGeneralFiltersOpts.Controls.Add(Me.btnMovieFilterReset, 4, 0)
+        Me.tblMovieGeneralFiltersOpts.Controls.Add(Me.chkTitleProperCase, 0, 0)
         Me.tblMovieGeneralFiltersOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieGeneralFiltersOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieGeneralFiltersOpts.Name = "tblMovieGeneralFiltersOpts"
@@ -159,105 +151,31 @@ Partial Class frmMovie_Source
         Me.tblMovieGeneralFiltersOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneralFiltersOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneralFiltersOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieGeneralFiltersOpts.Size = New System.Drawing.Size(577, 184)
+        Me.tblMovieGeneralFiltersOpts.Size = New System.Drawing.Size(174, 23)
         Me.tblMovieGeneralFiltersOpts.TabIndex = 10
         '
-        'btnMovieFilterRemove
+        'chkProperCase
         '
-        Me.btnMovieFilterRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnMovieFilterRemove.Image = CType(resources.GetObject("btnMovieFilterRemove.Image"), System.Drawing.Image)
-        Me.btnMovieFilterRemove.Location = New System.Drawing.Point(200, 158)
-        Me.btnMovieFilterRemove.Name = "btnMovieFilterRemove"
-        Me.btnMovieFilterRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnMovieFilterRemove.TabIndex = 6
-        Me.btnMovieFilterRemove.UseVisualStyleBackColor = True
+        Me.chkTitleProperCase.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTitleProperCase.AutoSize = True
+        Me.tblMovieGeneralFiltersOpts.SetColumnSpan(Me.chkTitleProperCase, 4)
+        Me.chkTitleProperCase.Location = New System.Drawing.Point(3, 3)
+        Me.chkTitleProperCase.Name = "chkProperCase"
+        Me.chkTitleProperCase.Size = New System.Drawing.Size(168, 17)
+        Me.chkTitleProperCase.TabIndex = 0
+        Me.chkTitleProperCase.Text = "Convert Title to Proper Case"
+        Me.chkTitleProperCase.UseVisualStyleBackColor = True
         '
-        'btnMovieFilterDown
+        'gbImportOptions
         '
-        Me.btnMovieFilterDown.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnMovieFilterDown.Image = CType(resources.GetObject("btnMovieFilterDown.Image"), System.Drawing.Image)
-        Me.btnMovieFilterDown.Location = New System.Drawing.Point(171, 158)
-        Me.btnMovieFilterDown.Name = "btnMovieFilterDown"
-        Me.btnMovieFilterDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnMovieFilterDown.TabIndex = 5
-        Me.btnMovieFilterDown.UseVisualStyleBackColor = True
-        '
-        'btnMovieFilterUp
-        '
-        Me.btnMovieFilterUp.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnMovieFilterUp.Image = CType(resources.GetObject("btnMovieFilterUp.Image"), System.Drawing.Image)
-        Me.btnMovieFilterUp.Location = New System.Drawing.Point(142, 158)
-        Me.btnMovieFilterUp.Name = "btnMovieFilterUp"
-        Me.btnMovieFilterUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnMovieFilterUp.TabIndex = 4
-        Me.btnMovieFilterUp.UseVisualStyleBackColor = True
-        '
-        'chkMovieProperCase
-        '
-        Me.chkMovieProperCase.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieProperCase.AutoSize = True
-        Me.tblMovieGeneralFiltersOpts.SetColumnSpan(Me.chkMovieProperCase, 4)
-        Me.chkMovieProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieProperCase.Location = New System.Drawing.Point(3, 6)
-        Me.chkMovieProperCase.Name = "chkMovieProperCase"
-        Me.chkMovieProperCase.Size = New System.Drawing.Size(181, 17)
-        Me.chkMovieProperCase.TabIndex = 0
-        Me.chkMovieProperCase.Text = "Convert Names to Proper Case"
-        Me.chkMovieProperCase.UseVisualStyleBackColor = True
-        '
-        'lstMovieFilters
-        '
-        Me.tblMovieGeneralFiltersOpts.SetColumnSpan(Me.lstMovieFilters, 5)
-        Me.lstMovieFilters.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lstMovieFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lstMovieFilters.FormattingEnabled = True
-        Me.lstMovieFilters.Location = New System.Drawing.Point(3, 32)
-        Me.lstMovieFilters.Name = "lstMovieFilters"
-        Me.lstMovieFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstMovieFilters.Size = New System.Drawing.Size(220, 120)
-        Me.lstMovieFilters.TabIndex = 1
-        '
-        'btnMovieFilterAdd
-        '
-        Me.btnMovieFilterAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnMovieFilterAdd.Image = CType(resources.GetObject("btnMovieFilterAdd.Image"), System.Drawing.Image)
-        Me.btnMovieFilterAdd.Location = New System.Drawing.Point(113, 158)
-        Me.btnMovieFilterAdd.Name = "btnMovieFilterAdd"
-        Me.btnMovieFilterAdd.Size = New System.Drawing.Size(23, 23)
-        Me.btnMovieFilterAdd.TabIndex = 3
-        Me.btnMovieFilterAdd.UseVisualStyleBackColor = True
-        '
-        'txtMovieFilter
-        '
-        Me.txtMovieFilter.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieFilter.Location = New System.Drawing.Point(3, 158)
-        Me.txtMovieFilter.Name = "txtMovieFilter"
-        Me.txtMovieFilter.Size = New System.Drawing.Size(104, 22)
-        Me.txtMovieFilter.TabIndex = 2
-        '
-        'btnMovieFilterReset
-        '
-        Me.btnMovieFilterReset.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnMovieFilterReset.Image = CType(resources.GetObject("btnMovieFilterReset.Image"), System.Drawing.Image)
-        Me.btnMovieFilterReset.Location = New System.Drawing.Point(200, 3)
-        Me.btnMovieFilterReset.Name = "btnMovieFilterReset"
-        Me.btnMovieFilterReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnMovieFilterReset.TabIndex = 8
-        Me.btnMovieFilterReset.UseVisualStyleBackColor = True
-        '
-        'gbImportOpts
-        '
-        Me.gbImportOpts.AutoSize = True
-        Me.gbImportOpts.Controls.Add(Me.tblMovieSourcesMiscOpts)
-        Me.gbImportOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbImportOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbImportOpts.Location = New System.Drawing.Point(3, 189)
-        Me.gbImportOpts.Name = "gbImportOpts"
-        Me.gbImportOpts.Size = New System.Drawing.Size(583, 141)
-        Me.gbImportOpts.TabIndex = 11
-        Me.gbImportOpts.TabStop = False
-        Me.gbImportOpts.Text = "Import Options"
+        Me.gbImportOptions.AutoSize = True
+        Me.gbImportOptions.Controls.Add(Me.tblMovieSourcesMiscOpts)
+        Me.gbImportOptions.Location = New System.Drawing.Point(3, 251)
+        Me.gbImportOptions.Name = "gbImportOptions"
+        Me.gbImportOptions.Size = New System.Drawing.Size(693, 141)
+        Me.gbImportOptions.TabIndex = 11
+        Me.gbImportOptions.TabStop = False
+        Me.gbImportOptions.Text = "Import Options"
         '
         'tblMovieSourcesMiscOpts
         '
@@ -267,15 +185,15 @@ Partial Class frmMovie_Source
         Me.tblMovieSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkMovieGeneralMarkNew, 0, 4)
-        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkMovieCleanDB, 0, 3)
+        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkMarkNew, 0, 4)
+        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkCleanDB, 0, 3)
         Me.tblMovieSourcesMiscOpts.Controls.Add(Me.lblMovieSkipLessThan, 0, 0)
-        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkMovieSortBeforeScan, 0, 2)
-        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.txtMovieSkipLessThan, 1, 0)
+        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkSortBeforeScan, 0, 2)
+        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.txtSkipLessThan, 1, 0)
         Me.tblMovieSourcesMiscOpts.Controls.Add(Me.lblMovieSkipLessThanMB, 2, 0)
         Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkMovieSkipStackedSizeCheck, 0, 1)
-        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkGeneralSourceFromFolder, 3, 4)
-        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkGeneralOverwriteNfo, 3, 2)
+        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkVideoSourceFromFolder, 3, 4)
+        Me.tblMovieSourcesMiscOpts.Controls.Add(Me.chkOverwriteNfo, 3, 2)
         Me.tblMovieSourcesMiscOpts.Controls.Add(Me.lblGeneralOverwriteNfo, 3, 3)
         Me.tblMovieSourcesMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSourcesMiscOpts.Location = New System.Drawing.Point(3, 18)
@@ -286,72 +204,66 @@ Partial Class frmMovie_Source
         Me.tblMovieSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesMiscOpts.Size = New System.Drawing.Size(577, 120)
+        Me.tblMovieSourcesMiscOpts.Size = New System.Drawing.Size(687, 120)
         Me.tblMovieSourcesMiscOpts.TabIndex = 9
         '
-        'chkMovieGeneralMarkNew
+        'chkMarkNew
         '
-        Me.chkMovieGeneralMarkNew.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieGeneralMarkNew.AutoSize = True
-        Me.chkMovieGeneralMarkNew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieGeneralMarkNew.Location = New System.Drawing.Point(3, 100)
-        Me.chkMovieGeneralMarkNew.Name = "chkMovieGeneralMarkNew"
-        Me.chkMovieGeneralMarkNew.Size = New System.Drawing.Size(117, 17)
-        Me.chkMovieGeneralMarkNew.TabIndex = 10
-        Me.chkMovieGeneralMarkNew.Text = "Mark New Movies"
-        Me.chkMovieGeneralMarkNew.UseVisualStyleBackColor = True
+        Me.chkMarkNew.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMarkNew.AutoSize = True
+        Me.chkMarkNew.Location = New System.Drawing.Point(3, 100)
+        Me.chkMarkNew.Name = "chkMarkNew"
+        Me.chkMarkNew.Size = New System.Drawing.Size(117, 17)
+        Me.chkMarkNew.TabIndex = 10
+        Me.chkMarkNew.Text = "Mark New Movies"
+        Me.chkMarkNew.UseVisualStyleBackColor = True
         '
-        'chkMovieCleanDB
+        'chkCleanDB
         '
-        Me.chkMovieCleanDB.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieCleanDB.AutoSize = True
-        Me.tblMovieSourcesMiscOpts.SetColumnSpan(Me.chkMovieCleanDB, 3)
-        Me.chkMovieCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieCleanDB.Location = New System.Drawing.Point(3, 77)
-        Me.chkMovieCleanDB.Name = "chkMovieCleanDB"
-        Me.chkMovieCleanDB.Size = New System.Drawing.Size(218, 17)
-        Me.chkMovieCleanDB.TabIndex = 9
-        Me.chkMovieCleanDB.Text = "Clean database after updating library"
-        Me.chkMovieCleanDB.UseVisualStyleBackColor = True
+        Me.chkCleanDB.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkCleanDB.AutoSize = True
+        Me.tblMovieSourcesMiscOpts.SetColumnSpan(Me.chkCleanDB, 3)
+        Me.chkCleanDB.Location = New System.Drawing.Point(3, 77)
+        Me.chkCleanDB.Name = "chkCleanDB"
+        Me.chkCleanDB.Size = New System.Drawing.Size(218, 17)
+        Me.chkCleanDB.TabIndex = 9
+        Me.chkCleanDB.Text = "Clean database after updating library"
+        Me.chkCleanDB.UseVisualStyleBackColor = True
         '
         'lblMovieSkipLessThan
         '
         Me.lblMovieSkipLessThan.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSkipLessThan.AutoSize = True
-        Me.lblMovieSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSkipLessThan.Location = New System.Drawing.Point(3, 7)
         Me.lblMovieSkipLessThan.Name = "lblMovieSkipLessThan"
         Me.lblMovieSkipLessThan.Size = New System.Drawing.Size(122, 13)
         Me.lblMovieSkipLessThan.TabIndex = 0
         Me.lblMovieSkipLessThan.Text = "Skip files smaller than:"
         '
-        'chkMovieSortBeforeScan
+        'chkSortBeforeScan
         '
-        Me.chkMovieSortBeforeScan.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSortBeforeScan.AutoSize = True
-        Me.tblMovieSourcesMiscOpts.SetColumnSpan(Me.chkMovieSortBeforeScan, 3)
-        Me.chkMovieSortBeforeScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieSortBeforeScan.Location = New System.Drawing.Point(3, 54)
-        Me.chkMovieSortBeforeScan.Name = "chkMovieSortBeforeScan"
-        Me.chkMovieSortBeforeScan.Size = New System.Drawing.Size(273, 17)
-        Me.chkMovieSortBeforeScan.TabIndex = 6
-        Me.chkMovieSortBeforeScan.Text = "Sort files into folders before each library update"
-        Me.chkMovieSortBeforeScan.UseVisualStyleBackColor = True
+        Me.chkSortBeforeScan.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkSortBeforeScan.AutoSize = True
+        Me.tblMovieSourcesMiscOpts.SetColumnSpan(Me.chkSortBeforeScan, 3)
+        Me.chkSortBeforeScan.Location = New System.Drawing.Point(3, 54)
+        Me.chkSortBeforeScan.Name = "chkSortBeforeScan"
+        Me.chkSortBeforeScan.Size = New System.Drawing.Size(273, 17)
+        Me.chkSortBeforeScan.TabIndex = 6
+        Me.chkSortBeforeScan.Text = "Sort files into folders before each library update"
+        Me.chkSortBeforeScan.UseVisualStyleBackColor = True
         '
-        'txtMovieSkipLessThan
+        'txtSkipLessThan
         '
-        Me.txtMovieSkipLessThan.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieSkipLessThan.Location = New System.Drawing.Point(131, 3)
-        Me.txtMovieSkipLessThan.Name = "txtMovieSkipLessThan"
-        Me.txtMovieSkipLessThan.Size = New System.Drawing.Size(51, 22)
-        Me.txtMovieSkipLessThan.TabIndex = 1
+        Me.txtSkipLessThan.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtSkipLessThan.Location = New System.Drawing.Point(131, 3)
+        Me.txtSkipLessThan.Name = "txtSkipLessThan"
+        Me.txtSkipLessThan.Size = New System.Drawing.Size(51, 22)
+        Me.txtSkipLessThan.TabIndex = 1
         '
         'lblMovieSkipLessThanMB
         '
         Me.lblMovieSkipLessThanMB.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSkipLessThanMB.AutoSize = True
-        Me.lblMovieSkipLessThanMB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSkipLessThanMB.Location = New System.Drawing.Point(188, 7)
         Me.lblMovieSkipLessThanMB.Name = "lblMovieSkipLessThanMB"
         Me.lblMovieSkipLessThanMB.Size = New System.Drawing.Size(24, 13)
@@ -363,7 +275,6 @@ Partial Class frmMovie_Source
         Me.chkMovieSkipStackedSizeCheck.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieSkipStackedSizeCheck.AutoSize = True
         Me.tblMovieSourcesMiscOpts.SetColumnSpan(Me.chkMovieSkipStackedSizeCheck, 3)
-        Me.chkMovieSkipStackedSizeCheck.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieSkipStackedSizeCheck.Location = New System.Drawing.Point(3, 31)
         Me.chkMovieSkipStackedSizeCheck.Name = "chkMovieSkipStackedSizeCheck"
         Me.chkMovieSkipStackedSizeCheck.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
@@ -372,19 +283,51 @@ Partial Class frmMovie_Source
         Me.chkMovieSkipStackedSizeCheck.Text = "Skip Size Check of Stacked Files"
         Me.chkMovieSkipStackedSizeCheck.UseVisualStyleBackColor = True
         '
-        'gbMovieSourcesDefaultsOpts
+        'chkSourceFromFolder
         '
-        Me.gbMovieSourcesDefaultsOpts.AutoSize = True
-        Me.tblSettings.SetColumnSpan(Me.gbMovieSourcesDefaultsOpts, 2)
-        Me.gbMovieSourcesDefaultsOpts.Controls.Add(Me.tblMovieSourcesDefaultsOpts)
-        Me.gbMovieSourcesDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSourcesDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbMovieSourcesDefaultsOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbMovieSourcesDefaultsOpts.Name = "gbMovieSourcesDefaultsOpts"
-        Me.gbMovieSourcesDefaultsOpts.Size = New System.Drawing.Size(827, 48)
-        Me.gbMovieSourcesDefaultsOpts.TabIndex = 10
-        Me.gbMovieSourcesDefaultsOpts.TabStop = False
-        Me.gbMovieSourcesDefaultsOpts.Text = "Defaults for new Sources"
+        Me.chkVideoSourceFromFolder.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkVideoSourceFromFolder.AutoSize = True
+        Me.chkVideoSourceFromFolder.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkVideoSourceFromFolder.Location = New System.Drawing.Point(282, 100)
+        Me.chkVideoSourceFromFolder.Name = "chkSourceFromFolder"
+        Me.chkVideoSourceFromFolder.Size = New System.Drawing.Size(290, 17)
+        Me.chkVideoSourceFromFolder.TabIndex = 11
+        Me.chkVideoSourceFromFolder.Text = "Search in the full path for VideoSource information"
+        Me.chkVideoSourceFromFolder.UseVisualStyleBackColor = True
+        '
+        'chkOverwriteNfo
+        '
+        Me.chkOverwriteNfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkOverwriteNfo.AutoSize = True
+        Me.chkOverwriteNfo.Location = New System.Drawing.Point(282, 54)
+        Me.chkOverwriteNfo.Name = "chkOverwriteNfo"
+        Me.chkOverwriteNfo.Size = New System.Drawing.Size(191, 17)
+        Me.chkOverwriteNfo.TabIndex = 12
+        Me.chkOverwriteNfo.Text = "Overwrite Non-conforming nfos"
+        Me.chkOverwriteNfo.UseVisualStyleBackColor = True
+        '
+        'lblGeneralOverwriteNfo
+        '
+        Me.lblGeneralOverwriteNfo.AutoSize = True
+        Me.lblGeneralOverwriteNfo.Location = New System.Drawing.Point(282, 74)
+        Me.lblGeneralOverwriteNfo.Name = "lblGeneralOverwriteNfo"
+        Me.lblGeneralOverwriteNfo.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.lblGeneralOverwriteNfo.Size = New System.Drawing.Size(402, 13)
+        Me.lblGeneralOverwriteNfo.TabIndex = 13
+        Me.lblGeneralOverwriteNfo.Text = "(If unchecked, non-conforming nfos will be renamed to <filename>.info)"
+        Me.lblGeneralOverwriteNfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'gbSourcesDefaults
+        '
+        Me.gbSourcesDefaults.AutoSize = True
+        Me.tblSettings.SetColumnSpan(Me.gbSourcesDefaults, 2)
+        Me.gbSourcesDefaults.Controls.Add(Me.tblMovieSourcesDefaultsOpts)
+        Me.gbSourcesDefaults.Location = New System.Drawing.Point(3, 3)
+        Me.gbSourcesDefaults.Name = "gbSourcesDefaults"
+        Me.gbSourcesDefaults.Size = New System.Drawing.Size(280, 48)
+        Me.gbSourcesDefaults.TabIndex = 10
+        Me.gbSourcesDefaults.TabStop = False
+        Me.gbSourcesDefaults.Text = "Defaults for new Sources"
         '
         'tblMovieSourcesDefaultsOpts
         '
@@ -401,14 +344,13 @@ Partial Class frmMovie_Source
         Me.tblMovieSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMovieSourcesDefaultsOpts.Size = New System.Drawing.Size(821, 27)
+        Me.tblMovieSourcesDefaultsOpts.Size = New System.Drawing.Size(274, 27)
         Me.tblMovieSourcesDefaultsOpts.TabIndex = 0
         '
         'lblMovieSourcesDefaultsLanguage
         '
         Me.lblMovieSourcesDefaultsLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesDefaultsLanguage.AutoSize = True
-        Me.lblMovieSourcesDefaultsLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMovieSourcesDefaultsLanguage.Location = New System.Drawing.Point(3, 7)
         Me.lblMovieSourcesDefaultsLanguage.Name = "lblMovieSourcesDefaultsLanguage"
         Me.lblMovieSourcesDefaultsLanguage.Size = New System.Drawing.Size(102, 13)
@@ -420,7 +362,6 @@ Partial Class frmMovie_Source
         '
         Me.cbMovieGeneralLang.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.cbMovieGeneralLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieGeneralLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbMovieGeneralLang.Location = New System.Drawing.Point(111, 3)
         Me.cbMovieGeneralLang.Name = "cbMovieGeneralLang"
         Me.cbMovieGeneralLang.Size = New System.Drawing.Size(160, 21)
@@ -429,10 +370,9 @@ Partial Class frmMovie_Source
         'btnMovieSourceRemove
         '
         Me.btnMovieSourceRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnMovieSourceRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnMovieSourceRemove.Image = CType(resources.GetObject("btnMovieSourceRemove.Image"), System.Drawing.Image)
         Me.btnMovieSourceRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieSourceRemove.Location = New System.Drawing.Point(592, 160)
+        Me.btnMovieSourceRemove.Location = New System.Drawing.Point(729, 222)
         Me.btnMovieSourceRemove.Name = "btnMovieSourceRemove"
         Me.btnMovieSourceRemove.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieSourceRemove.TabIndex = 4
@@ -442,10 +382,9 @@ Partial Class frmMovie_Source
         '
         'btnMovieSourceEdit
         '
-        Me.btnMovieSourceEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnMovieSourceEdit.Image = CType(resources.GetObject("btnMovieSourceEdit.Image"), System.Drawing.Image)
         Me.btnMovieSourceEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieSourceEdit.Location = New System.Drawing.Point(592, 86)
+        Me.btnMovieSourceEdit.Location = New System.Drawing.Point(729, 86)
         Me.btnMovieSourceEdit.Name = "btnMovieSourceEdit"
         Me.btnMovieSourceEdit.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieSourceEdit.TabIndex = 3
@@ -455,10 +394,9 @@ Partial Class frmMovie_Source
         '
         'btnMovieSourceAdd
         '
-        Me.btnMovieSourceAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnMovieSourceAdd.Image = CType(resources.GetObject("btnMovieSourceAdd.Image"), System.Drawing.Image)
         Me.btnMovieSourceAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieSourceAdd.Location = New System.Drawing.Point(592, 57)
+        Me.btnMovieSourceAdd.Location = New System.Drawing.Point(729, 57)
         Me.btnMovieSourceAdd.Name = "btnMovieSourceAdd"
         Me.btnMovieSourceAdd.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieSourceAdd.TabIndex = 2
@@ -466,17 +404,65 @@ Partial Class frmMovie_Source
         Me.btnMovieSourceAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnMovieSourceAdd.UseVisualStyleBackColor = True
         '
+        'gbGeneralDateAdded
+        '
+        Me.gbGeneralDateAdded.AutoSize = True
+        Me.gbGeneralDateAdded.Controls.Add(Me.tblGeneralDateAdded)
+        Me.gbGeneralDateAdded.Location = New System.Drawing.Point(729, 251)
+        Me.gbGeneralDateAdded.Name = "gbGeneralDateAdded"
+        Me.gbGeneralDateAdded.Size = New System.Drawing.Size(238, 71)
+        Me.gbGeneralDateAdded.TabIndex = 17
+        Me.gbGeneralDateAdded.TabStop = False
+        Me.gbGeneralDateAdded.Text = "Adding Date"
+        '
+        'tblGeneralDateAdded
+        '
+        Me.tblGeneralDateAdded.AutoSize = True
+        Me.tblGeneralDateAdded.ColumnCount = 2
+        Me.tblGeneralDateAdded.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralDateAdded.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralDateAdded.Controls.Add(Me.chkDateAddedIgnoreNFO, 0, 1)
+        Me.tblGeneralDateAdded.Controls.Add(Me.cbDateAddedDateTime, 0, 0)
+        Me.tblGeneralDateAdded.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblGeneralDateAdded.Location = New System.Drawing.Point(3, 18)
+        Me.tblGeneralDateAdded.Name = "tblGeneralDateAdded"
+        Me.tblGeneralDateAdded.RowCount = 3
+        Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralDateAdded.Size = New System.Drawing.Size(232, 50)
+        Me.tblGeneralDateAdded.TabIndex = 17
+        '
+        'chkGeneralDateAddedIgnoreNFO
+        '
+        Me.chkDateAddedIgnoreNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkDateAddedIgnoreNFO.AutoSize = True
+        Me.chkDateAddedIgnoreNFO.Location = New System.Drawing.Point(3, 30)
+        Me.chkDateAddedIgnoreNFO.Name = "chkGeneralDateAddedIgnoreNFO"
+        Me.chkDateAddedIgnoreNFO.Size = New System.Drawing.Size(188, 17)
+        Me.chkDateAddedIgnoreNFO.TabIndex = 10
+        Me.chkDateAddedIgnoreNFO.Text = "Ignore <dateadded> from NFO"
+        Me.chkDateAddedIgnoreNFO.UseVisualStyleBackColor = True
+        '
+        'cbGeneralDateTime
+        '
+        Me.cbDateAddedDateTime.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbDateAddedDateTime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbDateAddedDateTime.FormattingEnabled = True
+        Me.cbDateAddedDateTime.Location = New System.Drawing.Point(3, 3)
+        Me.cbDateAddedDateTime.Name = "cbGeneralDateTime"
+        Me.cbDateAddedDateTime.Size = New System.Drawing.Size(226, 21)
+        Me.cbDateAddedDateTime.TabIndex = 11
+        '
         'lvMovieSources
         '
         Me.lvMovieSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colMovieSourcesID, Me.colMovieSourcesName, Me.colMovieSourcesPath, Me.colMovieSourcesLanguage, Me.colMovieSourcesRecur, Me.colMovieSourcesFolder, Me.colMovieSourcesSingle, Me.colMovieSourcesExclude, Me.colMovieSourcesGetYear})
-        Me.lvMovieSources.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lvMovieSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvMovieSources.FullRowSelect = True
         Me.lvMovieSources.HideSelection = False
         Me.lvMovieSources.Location = New System.Drawing.Point(3, 57)
         Me.lvMovieSources.Name = "lvMovieSources"
         Me.tblSettings.SetRowSpan(Me.lvMovieSources, 3)
-        Me.lvMovieSources.Size = New System.Drawing.Size(583, 126)
+        Me.lvMovieSources.Size = New System.Drawing.Size(720, 108)
         Me.lvMovieSources.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvMovieSources.TabIndex = 1
         Me.lvMovieSources.UseCompatibleStateImageBehavior = False
@@ -524,102 +510,61 @@ Partial Class frmMovie_Source
         '
         Me.colMovieSourcesGetYear.Text = "Get Year"
         '
-        'gbGeneralDateAdded
+        'btnTitleFilterDefaults
         '
-        Me.gbGeneralDateAdded.AutoSize = True
-        Me.gbGeneralDateAdded.Controls.Add(Me.tblGeneralDateAdded)
-        Me.gbGeneralDateAdded.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbGeneralDateAdded.Location = New System.Drawing.Point(592, 189)
-        Me.gbGeneralDateAdded.Name = "gbGeneralDateAdded"
-        Me.gbGeneralDateAdded.Size = New System.Drawing.Size(238, 71)
-        Me.gbGeneralDateAdded.TabIndex = 17
-        Me.gbGeneralDateAdded.TabStop = False
-        Me.gbGeneralDateAdded.Text = "Adding Date"
+        Me.btnTitleFilterDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnTitleFilterDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnTitleFilterDefaults.Image = CType(resources.GetObject("btnTitleFilterDefaults.Image"), System.Drawing.Image)
+        Me.btnTitleFilterDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnTitleFilterDefaults.Location = New System.Drawing.Point(432, 778)
+        Me.btnTitleFilterDefaults.Name = "btnTitleFilterDefaults"
+        Me.btnTitleFilterDefaults.Size = New System.Drawing.Size(105, 23)
+        Me.btnTitleFilterDefaults.TabIndex = 5
+        Me.btnTitleFilterDefaults.Text = "Defaults"
+        Me.btnTitleFilterDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnTitleFilterDefaults.UseVisualStyleBackColor = True
         '
-        'tblGeneralDateAdded
+        'lblTitleFilter
         '
-        Me.tblGeneralDateAdded.AutoSize = True
-        Me.tblGeneralDateAdded.ColumnCount = 2
-        Me.tblGeneralDateAdded.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralDateAdded.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralDateAdded.Controls.Add(Me.chkGeneralDateAddedIgnoreNFO, 0, 1)
-        Me.tblGeneralDateAdded.Controls.Add(Me.cbGeneralDateTime, 0, 0)
-        Me.tblGeneralDateAdded.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblGeneralDateAdded.Location = New System.Drawing.Point(3, 18)
-        Me.tblGeneralDateAdded.Name = "tblGeneralDateAdded"
-        Me.tblGeneralDateAdded.RowCount = 3
-        Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralDateAdded.Size = New System.Drawing.Size(232, 50)
-        Me.tblGeneralDateAdded.TabIndex = 17
+        Me.lblTitleFilter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTitleFilter.AutoSize = True
+        Me.lblTitleFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTitleFilter.Location = New System.Drawing.Point(197, 783)
+        Me.lblTitleFilter.Name = "lblTitleFilter"
+        Me.lblTitleFilter.Size = New System.Drawing.Size(218, 13)
+        Me.lblTitleFilter.TabIndex = 6
+        Me.lblTitleFilter.Text = "Use ALT + UP / DOWN to move the columns"
         '
-        'chkGeneralDateAddedIgnoreNFO
+        'dgvTitleFilter
         '
-        Me.chkGeneralDateAddedIgnoreNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGeneralDateAddedIgnoreNFO.AutoSize = True
-        Me.chkGeneralDateAddedIgnoreNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDateAddedIgnoreNFO.Location = New System.Drawing.Point(3, 30)
-        Me.chkGeneralDateAddedIgnoreNFO.Name = "chkGeneralDateAddedIgnoreNFO"
-        Me.chkGeneralDateAddedIgnoreNFO.Size = New System.Drawing.Size(188, 17)
-        Me.chkGeneralDateAddedIgnoreNFO.TabIndex = 10
-        Me.chkGeneralDateAddedIgnoreNFO.Text = "Ignore <dateadded> from NFO"
-        Me.chkGeneralDateAddedIgnoreNFO.UseVisualStyleBackColor = True
+        Me.dgvTitleFilter.AllowUserToResizeRows = False
+        Me.dgvTitleFilter.BackgroundColor = System.Drawing.Color.White
+        Me.dgvTitleFilter.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvTitleFilter.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvTitleFilter.ColumnHeadersVisible = False
+        Me.dgvTitleFilter.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colVideoExtensions})
+        Me.dgvTitleFilter.Location = New System.Drawing.Point(200, 557)
+        Me.dgvTitleFilter.Name = "dgvTitleFilter"
+        Me.dgvTitleFilter.RowHeadersWidth = 25
+        Me.dgvTitleFilter.ShowCellErrors = False
+        Me.dgvTitleFilter.ShowCellToolTips = False
+        Me.dgvTitleFilter.ShowRowErrors = False
+        Me.dgvTitleFilter.Size = New System.Drawing.Size(160, 194)
+        Me.dgvTitleFilter.TabIndex = 7
         '
-        'cbGeneralDateTime
+        'colVideoExtensions
         '
-        Me.cbGeneralDateTime.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbGeneralDateTime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbGeneralDateTime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbGeneralDateTime.FormattingEnabled = True
-        Me.cbGeneralDateTime.Location = New System.Drawing.Point(3, 3)
-        Me.cbGeneralDateTime.Name = "cbGeneralDateTime"
-        Me.cbGeneralDateTime.Size = New System.Drawing.Size(226, 21)
-        Me.cbGeneralDateTime.TabIndex = 11
-        '
-        'chkGeneralSourceFromFolder
-        '
-        Me.chkGeneralSourceFromFolder.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGeneralSourceFromFolder.AutoSize = True
-        Me.chkGeneralSourceFromFolder.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkGeneralSourceFromFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralSourceFromFolder.Location = New System.Drawing.Point(282, 100)
-        Me.chkGeneralSourceFromFolder.Name = "chkGeneralSourceFromFolder"
-        Me.chkGeneralSourceFromFolder.Size = New System.Drawing.Size(242, 17)
-        Me.chkGeneralSourceFromFolder.TabIndex = 11
-        Me.chkGeneralSourceFromFolder.Text = "Include Folder Name in Source Type Check"
-        Me.chkGeneralSourceFromFolder.UseVisualStyleBackColor = True
-        '
-        'chkGeneralOverwriteNfo
-        '
-        Me.chkGeneralOverwriteNfo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGeneralOverwriteNfo.AutoSize = True
-        Me.chkGeneralOverwriteNfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralOverwriteNfo.Location = New System.Drawing.Point(282, 54)
-        Me.chkGeneralOverwriteNfo.Name = "chkGeneralOverwriteNfo"
-        Me.chkGeneralOverwriteNfo.Size = New System.Drawing.Size(191, 17)
-        Me.chkGeneralOverwriteNfo.TabIndex = 12
-        Me.chkGeneralOverwriteNfo.Text = "Overwrite Non-conforming nfos"
-        Me.chkGeneralOverwriteNfo.UseVisualStyleBackColor = True
-        '
-        'lblGeneralOverwriteNfo
-        '
-        Me.lblGeneralOverwriteNfo.AutoSize = True
-        Me.lblGeneralOverwriteNfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralOverwriteNfo.Location = New System.Drawing.Point(282, 74)
-        Me.lblGeneralOverwriteNfo.Name = "lblGeneralOverwriteNfo"
-        Me.lblGeneralOverwriteNfo.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.lblGeneralOverwriteNfo.Size = New System.Drawing.Size(314, 12)
-        Me.lblGeneralOverwriteNfo.TabIndex = 13
-        Me.lblGeneralOverwriteNfo.Text = "(If unchecked, non-conforming nfos will be renamed to <filename>.info)"
-        Me.lblGeneralOverwriteNfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.colVideoExtensions.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colVideoExtensions.HeaderText = "Extension"
+        Me.colVideoExtensions.Name = "colVideoExtensions"
         '
         'frmMovie_Source
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(833, 544)
+        Me.ClientSize = New System.Drawing.Size(1185, 858)
         Me.Controls.Add(Me.pnlSettings)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.Name = "frmMovie_Source"
         Me.Text = "frmMovie_Source"
         Me.pnlSettings.ResumeLayout(False)
@@ -630,18 +575,19 @@ Partial Class frmMovie_Source
         Me.gbMovieGeneralFiltersOpts.PerformLayout()
         Me.tblMovieGeneralFiltersOpts.ResumeLayout(False)
         Me.tblMovieGeneralFiltersOpts.PerformLayout()
-        Me.gbImportOpts.ResumeLayout(False)
-        Me.gbImportOpts.PerformLayout()
+        Me.gbImportOptions.ResumeLayout(False)
+        Me.gbImportOptions.PerformLayout()
         Me.tblMovieSourcesMiscOpts.ResumeLayout(False)
         Me.tblMovieSourcesMiscOpts.PerformLayout()
-        Me.gbMovieSourcesDefaultsOpts.ResumeLayout(False)
-        Me.gbMovieSourcesDefaultsOpts.PerformLayout()
+        Me.gbSourcesDefaults.ResumeLayout(False)
+        Me.gbSourcesDefaults.PerformLayout()
         Me.tblMovieSourcesDefaultsOpts.ResumeLayout(False)
         Me.tblMovieSourcesDefaultsOpts.PerformLayout()
         Me.gbGeneralDateAdded.ResumeLayout(False)
         Me.gbGeneralDateAdded.PerformLayout()
         Me.tblGeneralDateAdded.ResumeLayout(False)
         Me.tblGeneralDateAdded.PerformLayout()
+        CType(Me.dgvTitleFilter, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -662,34 +608,31 @@ Partial Class frmMovie_Source
     Friend WithEvents btnMovieSourceAdd As Button
     Friend WithEvents btnMovieSourceEdit As Button
     Friend WithEvents btnMovieSourceRemove As Button
-    Friend WithEvents gbMovieSourcesDefaultsOpts As GroupBox
+    Friend WithEvents gbSourcesDefaults As GroupBox
     Friend WithEvents tblMovieSourcesDefaultsOpts As TableLayoutPanel
     Friend WithEvents cbMovieGeneralLang As ComboBox
     Friend WithEvents lblMovieSourcesDefaultsLanguage As Label
-    Friend WithEvents gbImportOpts As GroupBox
+    Friend WithEvents gbImportOptions As GroupBox
     Friend WithEvents tblMovieSourcesMiscOpts As TableLayoutPanel
-    Friend WithEvents chkMovieCleanDB As CheckBox
+    Friend WithEvents chkCleanDB As CheckBox
     Friend WithEvents lblMovieSkipLessThan As Label
-    Friend WithEvents chkMovieSortBeforeScan As CheckBox
-    Friend WithEvents txtMovieSkipLessThan As TextBox
+    Friend WithEvents chkSortBeforeScan As CheckBox
+    Friend WithEvents txtSkipLessThan As TextBox
     Friend WithEvents lblMovieSkipLessThanMB As Label
     Friend WithEvents chkMovieSkipStackedSizeCheck As CheckBox
     Friend WithEvents gbMovieGeneralFiltersOpts As GroupBox
     Friend WithEvents tblMovieGeneralFiltersOpts As TableLayoutPanel
-    Friend WithEvents btnMovieFilterRemove As Button
-    Friend WithEvents btnMovieFilterDown As Button
-    Friend WithEvents btnMovieFilterUp As Button
-    Friend WithEvents chkMovieProperCase As CheckBox
-    Friend WithEvents lstMovieFilters As ListBox
-    Friend WithEvents btnMovieFilterAdd As Button
-    Friend WithEvents txtMovieFilter As TextBox
-    Friend WithEvents btnMovieFilterReset As Button
-    Friend WithEvents chkMovieGeneralMarkNew As CheckBox
+    Friend WithEvents chkTitleProperCase As CheckBox
+    Friend WithEvents chkMarkNew As CheckBox
     Friend WithEvents gbGeneralDateAdded As GroupBox
     Friend WithEvents tblGeneralDateAdded As TableLayoutPanel
-    Friend WithEvents chkGeneralDateAddedIgnoreNFO As CheckBox
-    Friend WithEvents cbGeneralDateTime As ComboBox
-    Friend WithEvents chkGeneralSourceFromFolder As CheckBox
-    Friend WithEvents chkGeneralOverwriteNfo As CheckBox
+    Friend WithEvents chkDateAddedIgnoreNFO As CheckBox
+    Friend WithEvents cbDateAddedDateTime As ComboBox
+    Friend WithEvents chkVideoSourceFromFolder As CheckBox
+    Friend WithEvents chkOverwriteNfo As CheckBox
     Friend WithEvents lblGeneralOverwriteNfo As Label
+    Friend WithEvents btnTitleFilterDefaults As Button
+    Friend WithEvents lblTitleFilter As Label
+    Friend WithEvents dgvTitleFilter As DataGridView
+    Friend WithEvents colVideoExtensions As DataGridViewTextBoxColumn
 End Class

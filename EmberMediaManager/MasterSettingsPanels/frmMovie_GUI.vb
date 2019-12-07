@@ -28,8 +28,6 @@ Public Class frmMovie_GUI
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private MovieGeneralMediaListSorting As New List(Of Settings.ListSorting)
-
 #End Region 'Fields
 
 #Region "Events"
@@ -121,28 +119,25 @@ Public Class frmMovie_GUI
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
+        With Manager.mSettings.Movie.GuiSettings
+            .ClickScrapeEnabled = chkClickScrapeEnabled.Checked
+            .ClickScrapeShowResults = chkClickScrapeShowResults.Checked
+            .CustomScrapeButtonEnabled = rbCustomScrapeButtonEnabled.Checked
+            .CustomScrapeButtonModifierType = CType(cbCustomScrapeButtonType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value
+            .CustomScrapeButtonScrapeType = CType(cbCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
+            .PreferredAudioLanguage = If(cbLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbLanguageOverlay.Text)
+            Save_MediaListSorting()
+        End With
         With Master.eSettings
-            .MovieClickScrape = chkMovieClickScrape.Checked
-            .MovieClickScrapeAsk = chkMovieClickScrapeAsk.Checked
-            If .MovieFilterCustom.Count <= 0 Then .MovieFilterCustomIsEmpty = True
-            .MovieGeneralCustomMarker1Color = btnMovieGeneralCustomMarker1.BackColor.ToArgb
-            .MovieGeneralCustomMarker2Color = btnMovieGeneralCustomMarker2.BackColor.ToArgb
-            .MovieGeneralCustomMarker3Color = btnMovieGeneralCustomMarker3.BackColor.ToArgb
-            .MovieGeneralCustomMarker4Color = btnMovieGeneralCustomMarker4.BackColor.ToArgb
-            .MovieGeneralCustomMarker1Name = txtMovieGeneralCustomMarker1.Text
-            .MovieGeneralCustomMarker2Name = txtMovieGeneralCustomMarker2.Text
-            .MovieGeneralCustomMarker3Name = txtMovieGeneralCustomMarker3.Text
-            .MovieGeneralCustomMarker4Name = txtMovieGeneralCustomMarker4.Text
-            .MovieGeneralCustomScrapeButtonEnabled = rbMovieGeneralCustomScrapeButtonEnabled.Checked
-            .MovieGeneralCustomScrapeButtonModifierType = CType(cbMovieGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value
-            .MovieGeneralCustomScrapeButtonScrapeType = CType(cbMovieGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
-            .MovieGeneralFlagLang = If(cbMovieLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbMovieLanguageOverlay.Text)
-            .MovieGeneralMediaListSorting.Clear()
-            .MovieGeneralMediaListSorting.AddRange(MovieGeneralMediaListSorting)
-            .MovieLevTolerance = If(Not String.IsNullOrEmpty(txtMovieLevTolerance.Text), Convert.ToInt32(txtMovieLevTolerance.Text), 0)
-            .MovieSortTokens.Clear()
-            .MovieSortTokens.AddRange(lstMovieSortTokens.Items.OfType(Of String).ToList)
-            If .MovieSortTokens.Count <= 0 Then .MovieSortTokensIsEmpty = True
+            .MovieGeneralCustomMarker1Color = btnCustomMarker1.BackColor.ToArgb
+            .MovieGeneralCustomMarker2Color = btnCustomMarker2.BackColor.ToArgb
+            .MovieGeneralCustomMarker3Color = btnCustomMarker3.BackColor.ToArgb
+            .MovieGeneralCustomMarker4Color = btnCustomMarker4.BackColor.ToArgb
+            .MovieGeneralCustomMarker1Name = txtCustomMarker1.Text
+            .MovieGeneralCustomMarker2Name = txtCustomMarker2.Text
+            .MovieGeneralCustomMarker3Name = txtCustomMarker3.Text
+            .MovieGeneralCustomMarker4Name = txtCustomMarker4.Text
+            .MovieLevTolerance = If(Not String.IsNullOrEmpty(txtLevTolerance.Text), Convert.ToInt32(txtLevTolerance.Text), 0)
         End With
     End Sub
 
@@ -151,274 +146,202 @@ Public Class frmMovie_GUI
 #Region "Methods"
 
     Public Sub Settings_Load()
+        With Manager.mSettings.Movie.GuiSettings
+            cbCustomScrapeButtonScrapeType.SelectedValue = .CustomScrapeButtonScrapeType
+            cbCustomScrapeButtonType.SelectedValue = .CustomScrapeButtonModifierType
+            cbLanguageOverlay.SelectedItem = If(.PreferredAudioLanguageSpecified, .PreferredAudioLanguage, Master.eLang.Disabled)
+            chkClickScrapeEnabled.Checked = .ClickScrapeEnabled
+            chkClickScrapeShowResults.Checked = .ClickScrapeShowResults
+            chkClickScrapeShowResults.Enabled = chkClickScrapeEnabled.Checked
+            rbCustomScrapeButtonDisabled.Checked = Not .CustomScrapeButtonEnabled
+            rbCustomScrapeButtonEnabled.Checked = .CustomScrapeButtonEnabled
+            DataGridView_Fill_MediaListSorting(.MediaListSorting)
+        End With
         With Master.eSettings
-            btnMovieGeneralCustomMarker1.BackColor = Color.FromArgb(.MovieGeneralCustomMarker1Color)
-            btnMovieGeneralCustomMarker2.BackColor = Color.FromArgb(.MovieGeneralCustomMarker2Color)
-            btnMovieGeneralCustomMarker3.BackColor = Color.FromArgb(.MovieGeneralCustomMarker3Color)
-            btnMovieGeneralCustomMarker4.BackColor = Color.FromArgb(.MovieGeneralCustomMarker4Color)
-            cbMovieGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieGeneralCustomScrapeButtonModifierType
-            cbMovieGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieGeneralCustomScrapeButtonScrapeType
-            cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
-            chkMovieClickScrape.Checked = .MovieClickScrape
-            chkMovieClickScrapeAsk.Checked = .MovieClickScrapeAsk
-            If .MovieGeneralCustomScrapeButtonEnabled Then
-                rbMovieGeneralCustomScrapeButtonEnabled.Checked = True
-            Else
-                rbMovieGeneralCustomScrapeButtonDisabled.Checked = True
-            End If
-            txtMovieGeneralCustomMarker1.Text = .MovieGeneralCustomMarker1Name
-            txtMovieGeneralCustomMarker2.Text = .MovieGeneralCustomMarker2Name
-            txtMovieGeneralCustomMarker3.Text = .MovieGeneralCustomMarker3Name
-            txtMovieGeneralCustomMarker4.Text = .MovieGeneralCustomMarker4Name
+            btnCustomMarker1.BackColor = Color.FromArgb(.MovieGeneralCustomMarker1Color)
+            btnCustomMarker2.BackColor = Color.FromArgb(.MovieGeneralCustomMarker2Color)
+            btnCustomMarker3.BackColor = Color.FromArgb(.MovieGeneralCustomMarker3Color)
+            btnCustomMarker4.BackColor = Color.FromArgb(.MovieGeneralCustomMarker4Color)
+            txtCustomMarker1.Text = .MovieGeneralCustomMarker1Name
+            txtCustomMarker2.Text = .MovieGeneralCustomMarker2Name
+            txtCustomMarker3.Text = .MovieGeneralCustomMarker3Name
+            txtCustomMarker4.Text = .MovieGeneralCustomMarker4Name
 
             If .MovieLevTolerance > 0 Then
-                chkMovieLevTolerance.Checked = True
-                txtMovieLevTolerance.Enabled = True
-                txtMovieLevTolerance.Text = .MovieLevTolerance.ToString
+                chkLevTolerance.Checked = True
+                txtLevTolerance.Enabled = True
+                txtLevTolerance.Text = .MovieLevTolerance.ToString
             End If
-            chkMovieClickScrapeAsk.Enabled = chkMovieClickScrape.Checked
-
-            MovieGeneralMediaListSorting.AddRange(.MovieGeneralMediaListSorting)
-
-            LoadMovieGeneralMediaListSorting()
-            RefreshMovieSortTokens()
         End With
     End Sub
 
     Private Sub Setup()
-        chkMovieClickScrapeAsk.Text = Master.eLang.GetString(852, "Show Results Dialog")
-        colMovieGeneralMediaListSortingLabel.Text = Master.eLang.GetString(1331, "Column")
-        lblMovieLanguageOverlay.Text = String.Concat(Master.eLang.GetString(436, "Display best Audio Stream with the following Language"), ":")
-        chkMovieClickScrape.Text = Master.eLang.GetString(849, "Enable Click-Scrape")
-        colMovieGeneralMediaListSortingHide.Text = Master.eLang.GetString(465, "Hide")
-        gbMovieGeneralMainWindowOpts.Text = Master.eLang.GetString(1152, "Main Window")
-        gbMovieGeneralMiscOpts.Text = Master.eLang.GetString(429, "Miscellaneous")
-        gbMovieGeneralMediaListSorting.Text = Master.eLang.GetString(490, "Movie List Sorting")
-        gbMovieGeneralMediaListSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
-        chkMovieLevTolerance.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
-        gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
-        gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
-        lblMovieGeneralCustomMarker1.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #1")
-        lblMovieGeneralCustomMarker2.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #2")
-        lblMovieGeneralCustomMarker3.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #3")
-        lblMovieGeneralCustomMarker4.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #4")
-        lblMovieLevTolerance.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
+        With Master.eLang
+            chkClickScrapeEnabled.Text = .GetString(849, "Enable Click-Scrape")
+            chkClickScrapeShowResults.Text = .GetString(852, "Show Results Dialog")
+            chkLevTolerance.Text = .GetString(462, "Check Title Match Confidence")
+            colMediaListSorting_Show.HeaderText = .GetString(465, "Show")
+            colMediaListSorting_Column.HeaderText = .GetString(1331, "Column")
+            gbCustomMarker.Text = .GetString(1190, "Custom Marker")
+            gbMainWindow.Text = .GetString(1152, "Main Window")
+            gbMediaList.Text = .GetString(460, "Media List")
+            lblCustomMarker1.Text = String.Concat(.GetString(1191, "Custom"), " #1")
+            lblCustomMarker2.Text = String.Concat(.GetString(1191, "Custom"), " #2")
+            lblCustomMarker3.Text = String.Concat(.GetString(1191, "Custom"), " #3")
+            lblCustomMarker4.Text = String.Concat(.GetString(1191, "Custom"), " #4")
+            lblLanguageOverlay.Text = String.Concat(.GetString(436, "Display best Audio Stream with the following Language"), ":")
+            lblLevTolerance.Text = .GetString(461, "Mismatch Tolerance:")
+        End With
 
-        LoadCustomScraperButtonModifierTypes_Movie()
+        Load_AutoSizeModes()
+        Load_CustomScraperButton_ModifierTypes()
+        Load_CustomScraperButton_ScrapeTypes()
+        Load_Languages()
     End Sub
 
-    Private Sub btnMovieSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If Not String.IsNullOrEmpty(txtMovieSortToken.Text) Then
-            If Not lstMovieSortTokens.Items.Contains(txtMovieSortToken.Text) Then
-                lstMovieSortTokens.Items.Add(txtMovieSortToken.Text)
-                Handle_SettingsChanged()
-                txtMovieSortToken.Text = String.Empty
-                txtMovieSortToken.Focus()
+    Private Sub Enable_ApplyButton() Handles _
+        cbCustomScrapeButtonScrapeType.SelectedIndexChanged,
+        cbCustomScrapeButtonType.SelectedIndexChanged,
+        cbLanguageOverlay.SelectedIndexChanged,
+        chkClickScrapeShowResults.CheckedChanged,
+        dgvMediaListSorting.CellValueChanged,
+        txtCustomMarker1.TextChanged,
+        txtCustomMarker2.TextChanged,
+        txtCustomMarker3.TextChanged,
+        txtCustomMarker4.TextChanged,
+        txtLevTolerance.TextChanged
+
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub ClickScrape_CheckedChanged() Handles chkClickScrapeEnabled.CheckedChanged
+        chkClickScrapeShowResults.Enabled = chkClickScrapeEnabled.Checked
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub CustomMarker_Click(sender As Object, e As EventArgs) Handles _
+        btnCustomMarker1.Click,
+        btnCustomMarker2.Click,
+        btnCustomMarker3.Click,
+        btnCustomMarker4.Click
+
+        With cdColor
+            If .ShowDialog = DialogResult.OK Then
+                If Not .Color = Nothing Then
+                    Select Case True
+                        Case sender Is btnCustomMarker1
+                            btnCustomMarker1.BackColor = .Color
+                        Case sender Is btnCustomMarker2
+                            btnCustomMarker2.BackColor = .Color
+                        Case sender Is btnCustomMarker3
+                            btnCustomMarker3.BackColor = .Color
+                        Case sender Is btnCustomMarker4
+                            btnCustomMarker4.BackColor = .Color
+                    End Select
+                    Handle_SettingsChanged()
+                End If
             End If
+        End With
+    End Sub
+
+    Private Sub CustomScrapeButtonDisabled_CheckedChanged() Handles rbCustomScrapeButtonDisabled.CheckedChanged
+        If rbCustomScrapeButtonDisabled.Checked Then
+            cbCustomScrapeButtonType.Enabled = False
+            cbCustomScrapeButtonScrapeType.Enabled = False
+            txtCustomScrapeButtonModifierType.Enabled = False
+            txtCustomScrapeButtonScrapeType.Enabled = False
         End If
+        Handle_SettingsChanged()
     End Sub
 
-    Private Sub btnMovieGeneralCustomMarker1_Click(sender As Object, e As EventArgs)
-        With cdColor
-            If .ShowDialog = DialogResult.OK Then
-                If Not .Color = Nothing Then
-                    btnMovieGeneralCustomMarker1.BackColor = .Color
-                    Handle_SettingsChanged()
-                End If
-            End If
-        End With
-    End Sub
-
-    Private Sub btnMovieGeneralCustomMarker2_Click(sender As Object, e As EventArgs)
-        With cdColor
-            If .ShowDialog = DialogResult.OK Then
-                If Not .Color = Nothing Then
-                    btnMovieGeneralCustomMarker2.BackColor = .Color
-                    Handle_SettingsChanged()
-                End If
-            End If
-        End With
-    End Sub
-
-    Private Sub btnMovieGeneralCustomMarker3_Click(sender As Object, e As EventArgs)
-        With cdColor
-            If .ShowDialog = DialogResult.OK Then
-                If Not .Color = Nothing Then
-                    btnMovieGeneralCustomMarker3.BackColor = .Color
-                    Handle_SettingsChanged()
-                End If
-            End If
-        End With
-    End Sub
-
-    Private Sub btnMovieGeneralCustomMarker4_Click(sender As Object, e As EventArgs)
-        With cdColor
-            If .ShowDialog = DialogResult.OK Then
-                If Not .Color = Nothing Then
-                    btnMovieGeneralCustomMarker4.BackColor = .Color
-                    Handle_SettingsChanged()
-                End If
-            End If
-        End With
-    End Sub
-
-    Private Sub btnMovieGeneralMediaListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Try
-            If lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not lvMovieGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvMovieGeneralMediaListSorting.SuspendLayout()
-                    Dim iIndex As Integer = MovieGeneralMediaListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = lvMovieGeneralMediaListSorting.SelectedIndices(0)
-                    MovieGeneralMediaListSorting.Remove(selItem)
-                    MovieGeneralMediaListSorting.Insert(iIndex - 1, selItem)
-
-                    RenumberMovieGeneralMediaListSorting()
-                    LoadMovieGeneralMediaListSorting()
-
-                    If Not selIndex - 3 < 0 Then
-                        lvMovieGeneralMediaListSorting.TopItem = lvMovieGeneralMediaListSorting.Items(selIndex - 3)
-                    End If
-                    lvMovieGeneralMediaListSorting.Items(selIndex - 1).Selected = True
-                    lvMovieGeneralMediaListSorting.ResumeLayout()
-                End If
-
-                Handle_SettingsChanged()
-                lvMovieGeneralMediaListSorting.Focus()
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub btnMovieGeneralMediaListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Try
-            If lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems(0).Index < (lvMovieGeneralMediaListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvMovieGeneralMediaListSorting.SuspendLayout()
-                    Dim iIndex As Integer = MovieGeneralMediaListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = lvMovieGeneralMediaListSorting.SelectedIndices(0)
-                    MovieGeneralMediaListSorting.Remove(selItem)
-                    MovieGeneralMediaListSorting.Insert(iIndex + 1, selItem)
-
-                    RenumberMovieGeneralMediaListSorting()
-                    LoadMovieGeneralMediaListSorting()
-
-                    If Not selIndex - 2 < 0 Then
-                        lvMovieGeneralMediaListSorting.TopItem = lvMovieGeneralMediaListSorting.Items(selIndex - 2)
-                    End If
-                    lvMovieGeneralMediaListSorting.Items(selIndex + 1).Selected = True
-                    lvMovieGeneralMediaListSorting.ResumeLayout()
-                End If
-
-                Handle_SettingsChanged()
-                lvMovieGeneralMediaListSorting.Focus()
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub lvMovieGeneralMediaListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs)
-        If lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
-
-            If selItem IsNot Nothing Then
-                lvMovieGeneralMediaListSorting.SuspendLayout()
-                selItem.Hide = Not selItem.Hide
-                Dim topIndex As Integer = lvMovieGeneralMediaListSorting.TopItem.Index
-                Dim selIndex As Integer = lvMovieGeneralMediaListSorting.SelectedIndices(0)
-
-                LoadMovieGeneralMediaListSorting()
-
-                lvMovieGeneralMediaListSorting.TopItem = lvMovieGeneralMediaListSorting.Items(topIndex)
-                lvMovieGeneralMediaListSorting.Items(selIndex).Selected = True
-                lvMovieGeneralMediaListSorting.ResumeLayout()
-            End If
-
-            Handle_SettingsChanged()
-            lvMovieGeneralMediaListSorting.Focus()
+    Private Sub CustomScrapeButtonEnabled_CheckedChanged() Handles rbCustomScrapeButtonEnabled.CheckedChanged
+        If rbCustomScrapeButtonEnabled.Checked Then
+            cbCustomScrapeButtonType.Enabled = True
+            cbCustomScrapeButtonScrapeType.Enabled = True
+            txtCustomScrapeButtonModifierType.Enabled = True
+            txtCustomScrapeButtonScrapeType.Enabled = True
         End If
-    End Sub
-
-    Private Sub btnMovieGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieListSorting, True)
-        MovieGeneralMediaListSorting.Clear()
-        MovieGeneralMediaListSorting.AddRange(Master.eSettings.MovieGeneralMediaListSorting)
-        LoadMovieGeneralMediaListSorting()
         Handle_SettingsChanged()
     End Sub
 
-    Private Sub btnMovieSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
-        RemoveMovieSortToken()
-    End Sub
-
-    Private Sub btnMovieSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSortTokens, True)
-        RefreshMovieSortTokens()
-        Handle_SettingsChanged()
-    End Sub
-
-    Private Sub chkMovieClickScrape_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        chkMovieClickScrapeAsk.Enabled = chkMovieClickScrape.Checked
-        Handle_SettingsChanged()
-    End Sub
-    Private Sub chkMovieLevTolerance_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
-
-        txtMovieLevTolerance.Enabled = chkMovieLevTolerance.Checked
-        If Not chkMovieLevTolerance.Checked Then txtMovieLevTolerance.Text = String.Empty
-    End Sub
-
-    Private Sub chkMovieProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
-        Handle_NeedsReload_Movie()
-    End Sub
-
-    Private Sub LoadLangs()
-        cbMovieLanguageOverlay.Items.Add(Master.eLang.Disabled)
-        cbMovieLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
-    End Sub
-
-    Private Sub LoadMovieGeneralMediaListSorting()
-        Dim lvItem As ListViewItem
-        lvMovieGeneralMediaListSorting.Items.Clear()
-        For Each rColumn As Settings.ListSorting In MovieGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
-            lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
-            lvItem.SubItems.Add(rColumn.Column)
-            lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
-            lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvMovieGeneralMediaListSorting.Items.Add(lvItem)
+    Private Sub DataGridView_Fill_MediaListSorting(ByVal List As List(Of GuiSettings.ListSorting))
+        dgvMediaListSorting.Rows.Clear()
+        For Each item In List
+            Dim currRow As Integer = dgvMediaListSorting.Rows.Add(New Object() {
+                                                                  item.DisplayIndex,
+                                                                  item.Show,
+                                                                  Master.eLang.GetString(item.LabelID, item.LabelText),
+                                                                  item.AutoSizeMode
+                                                                  })
+            dgvMediaListSorting.Rows(currRow).Tag = item
         Next
+        dgvMediaListSorting.Sort(dgvMediaListSorting.Columns(0), ComponentModel.ListSortDirection.Ascending)
+        dgvMediaListSorting.ClearSelection()
     End Sub
 
-    Private Sub LoadCustomScraperButtonModifierTypes_Movie()
-        Dim items As New Dictionary(Of String, Enums.ModifierType)
-        items.Add(Master.eLang.GetString(70, "All Items"), Enums.ModifierType.All)
-        items.Add(Master.eLang.GetString(973, "Actor Thumbs Only"), Enums.ModifierType.MainActorThumbs)
-        items.Add(Master.eLang.GetString(1060, "Banner Only"), Enums.ModifierType.MainBanner)
-        items.Add(Master.eLang.GetString(1122, "ClearArt Only"), Enums.ModifierType.MainClearArt)
-        items.Add(Master.eLang.GetString(1123, "ClearLogo Only"), Enums.ModifierType.MainClearLogo)
-        items.Add(Master.eLang.GetString(1124, "DiscArt Only"), Enums.ModifierType.MainDiscArt)
-        items.Add(Master.eLang.GetString(975, "Extrafanarts Only"), Enums.ModifierType.MainExtrafanarts)
-        items.Add(Master.eLang.GetString(74, "Extrathumbs Only"), Enums.ModifierType.MainExtrathumbs)
-        items.Add(Master.eLang.GetString(73, "Fanart Only"), Enums.ModifierType.MainFanart)
-        items.Add(Master.eLang.GetString(303, "KeyArt Only"), Enums.ModifierType.MainKeyArt)
-        items.Add(Master.eLang.GetString(1061, "Landscape Only"), Enums.ModifierType.MainLandscape)
-        items.Add(Master.eLang.GetString(76, "Meta Data Only"), Enums.ModifierType.MainMeta)
-        items.Add(Master.eLang.GetString(71, "NFO Only"), Enums.ModifierType.MainNFO)
-        items.Add(Master.eLang.GetString(72, "Poster Only"), Enums.ModifierType.MainPoster)
-        items.Add(Master.eLang.GetString(1125, "Theme Only"), Enums.ModifierType.MainTheme)
-        items.Add(Master.eLang.GetString(75, "Trailer Only"), Enums.ModifierType.MainTrailer)
-        cbMovieGeneralCustomScrapeButtonModifierType.DataSource = items.ToList
-        cbMovieGeneralCustomScrapeButtonModifierType.DisplayMember = "Key"
-        cbMovieGeneralCustomScrapeButtonModifierType.ValueMember = "Value"
+    Private Sub DataGridView_MediaListSorting_KeyDown(sender As Object, e As KeyEventArgs) Handles dgvMediaListSorting.KeyDown
+        Dim dgvList As DataGridView = DirectCast(sender, DataGridView)
+        Dim currRowIndex As Integer = dgvList.CurrentRow.Index
+        Select Case True
+            Case e.Alt And e.KeyCode = Keys.Down AndAlso Not currRowIndex = dgvList.Rows.Count - 1
+                dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) + 1
+                dgvList.Rows(currRowIndex + 1).Cells(0).Value = currRowIndex
+                e.Handled = True
+            Case e.Alt And e.KeyCode = Keys.Up AndAlso Not currRowIndex = 0
+                dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) - 1
+                dgvList.Rows(currRowIndex - 1).Cells(0).Value = currRowIndex
+                e.Handled = True
+        End Select
+        dgvList.Sort(dgvList.Columns(0), ComponentModel.ListSortDirection.Ascending)
     End Sub
 
-    Private Sub LoadCustomScraperButtonScrapeTypes()
+    Private Sub LevTolerance_CheckedChanged() Handles chkLevTolerance.CheckedChanged
+        txtLevTolerance.Enabled = chkLevTolerance.Checked
+        If Not chkLevTolerance.Checked Then txtLevTolerance.Text = String.Empty
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub Load_AutoSizeModes()
+        Dim items As New Dictionary(Of String, DataGridViewAutoSizeColumnMode) From {
+            {"AllCells", DataGridViewAutoSizeColumnMode.AllCells},
+            {"AllCellsExceptHeader", DataGridViewAutoSizeColumnMode.AllCellsExceptHeader},
+            {"ColumnHeader", DataGridViewAutoSizeColumnMode.ColumnHeader},
+            {"DisplayedCells", DataGridViewAutoSizeColumnMode.DisplayedCells},
+            {"DisplayedCellsExceptHeader", DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader},
+            {"Fill", DataGridViewAutoSizeColumnMode.Fill},
+            {"None", DataGridViewAutoSizeColumnMode.None},
+            {"NotSet", DataGridViewAutoSizeColumnMode.NotSet}
+        }
+        DirectCast(dgvMediaListSorting.Columns(3), DataGridViewComboBoxColumn).DataSource = items.ToList
+        DirectCast(dgvMediaListSorting.Columns(3), DataGridViewComboBoxColumn).DisplayMember = "Key"
+        DirectCast(dgvMediaListSorting.Columns(3), DataGridViewComboBoxColumn).ValueMember = "Value"
+    End Sub
+
+    Private Sub Load_CustomScraperButton_ModifierTypes()
+        Dim items As New Dictionary(Of String, Enums.ModifierType) From {
+            {Master.eLang.GetString(70, "All Items"), Enums.ModifierType.All},
+            {Master.eLang.GetString(973, "Actor Thumbs Only"), Enums.ModifierType.MainActorThumbs},
+            {Master.eLang.GetString(1060, "Banner Only"), Enums.ModifierType.MainBanner},
+            {Master.eLang.GetString(1122, "ClearArt Only"), Enums.ModifierType.MainClearArt},
+            {Master.eLang.GetString(1123, "ClearLogo Only"), Enums.ModifierType.MainClearLogo},
+            {Master.eLang.GetString(1124, "DiscArt Only"), Enums.ModifierType.MainDiscArt},
+            {Master.eLang.GetString(975, "Extrafanarts Only"), Enums.ModifierType.MainExtrafanarts},
+            {Master.eLang.GetString(74, "Extrathumbs Only"), Enums.ModifierType.MainExtrathumbs},
+            {Master.eLang.GetString(73, "Fanart Only"), Enums.ModifierType.MainFanart},
+            {Master.eLang.GetString(303, "KeyArt Only"), Enums.ModifierType.MainKeyArt},
+            {Master.eLang.GetString(1061, "Landscape Only"), Enums.ModifierType.MainLandscape},
+            {Master.eLang.GetString(76, "Meta Data Only"), Enums.ModifierType.MainMeta},
+            {Master.eLang.GetString(71, "NFO Only"), Enums.ModifierType.MainNFO},
+            {Master.eLang.GetString(72, "Poster Only"), Enums.ModifierType.MainPoster},
+            {Master.eLang.GetString(1125, "Theme Only"), Enums.ModifierType.MainTheme},
+            {Master.eLang.GetString(75, "Trailer Only"), Enums.ModifierType.MainTrailer}
+        }
+        cbCustomScrapeButtonType.DataSource = items.ToList
+        cbCustomScrapeButtonType.DisplayMember = "Key"
+        cbCustomScrapeButtonType.ValueMember = "Value"
+    End Sub
+
+    Private Sub Load_CustomScraperButton_ScrapeTypes()
         Dim strAll As String = Master.eLang.GetString(68, "All")
         Dim strFilter As String = Master.eLang.GetString(624, "Current Filter")
         Dim strMarked As String = Master.eLang.GetString(48, "Marked")
@@ -429,69 +352,56 @@ Public Class frmMovie_GUI
         Dim strAuto As String = Master.eLang.GetString(69, "Automatic (Force Best Match)")
         Dim strSkip As String = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
 
-        Dim items As New Dictionary(Of String, Enums.ScrapeType)
-        items.Add(String.Concat(strAll, " - ", strAuto), Enums.ScrapeType.AllAuto)
-        items.Add(String.Concat(strAll, " - ", strAsk), Enums.ScrapeType.AllAsk)
-        items.Add(String.Concat(strAll, " - ", strSkip), Enums.ScrapeType.AllSkip)
-        items.Add(String.Concat(strMissing, " - ", strAuto), Enums.ScrapeType.MissingAuto)
-        items.Add(String.Concat(strMissing, " - ", strAsk), Enums.ScrapeType.MissingAsk)
-        items.Add(String.Concat(strMissing, " - ", strSkip), Enums.ScrapeType.MissingSkip)
-        items.Add(String.Concat(strNew, " - ", strAuto), Enums.ScrapeType.NewAuto)
-        items.Add(String.Concat(strNew, " - ", strAsk), Enums.ScrapeType.NewAsk)
-        items.Add(String.Concat(strNew, " - ", strSkip), Enums.ScrapeType.NewSkip)
-        items.Add(String.Concat(strMarked, " - ", strAuto), Enums.ScrapeType.MarkedAuto)
-        items.Add(String.Concat(strMarked, " - ", strAsk), Enums.ScrapeType.MarkedAsk)
-        items.Add(String.Concat(strMarked, " - ", strSkip), Enums.ScrapeType.MarkedSkip)
-        items.Add(String.Concat(strFilter, " - ", strAuto), Enums.ScrapeType.FilterAuto)
-        items.Add(String.Concat(strFilter, " - ", strAsk), Enums.ScrapeType.FilterAsk)
-        items.Add(String.Concat(strFilter, " - ", strSkip), Enums.ScrapeType.FilterSkip)
-        cbMovieGeneralCustomScrapeButtonScrapeType.DataSource = items.ToList
-        cbMovieGeneralCustomScrapeButtonScrapeType.DisplayMember = "Key"
-        cbMovieGeneralCustomScrapeButtonScrapeType.ValueMember = "Value"
+        Dim items As New Dictionary(Of String, Enums.ScrapeType) From {
+            {String.Concat(strAll, " - ", strAuto), Enums.ScrapeType.AllAuto},
+            {String.Concat(strAll, " - ", strAsk), Enums.ScrapeType.AllAsk},
+            {String.Concat(strAll, " - ", strSkip), Enums.ScrapeType.AllSkip},
+            {String.Concat(strMissing, " - ", strAuto), Enums.ScrapeType.MissingAuto},
+            {String.Concat(strMissing, " - ", strAsk), Enums.ScrapeType.MissingAsk},
+            {String.Concat(strMissing, " - ", strSkip), Enums.ScrapeType.MissingSkip},
+            {String.Concat(strNew, " - ", strAuto), Enums.ScrapeType.NewAuto},
+            {String.Concat(strNew, " - ", strAsk), Enums.ScrapeType.NewAsk},
+            {String.Concat(strNew, " - ", strSkip), Enums.ScrapeType.NewSkip},
+            {String.Concat(strMarked, " - ", strAuto), Enums.ScrapeType.MarkedAuto},
+            {String.Concat(strMarked, " - ", strAsk), Enums.ScrapeType.MarkedAsk},
+            {String.Concat(strMarked, " - ", strSkip), Enums.ScrapeType.MarkedSkip},
+            {String.Concat(strFilter, " - ", strAuto), Enums.ScrapeType.FilterAuto},
+            {String.Concat(strFilter, " - ", strAsk), Enums.ScrapeType.FilterAsk},
+            {String.Concat(strFilter, " - ", strSkip), Enums.ScrapeType.FilterSkip}
+        }
+        cbCustomScrapeButtonScrapeType.DataSource = items.ToList
+        cbCustomScrapeButtonScrapeType.DisplayMember = "Key"
+        cbCustomScrapeButtonScrapeType.ValueMember = "Value"
     End Sub
 
-    Private Sub lstMovieSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then RemoveMovieSortToken()
+    Private Sub Load_Languages()
+        cbLanguageOverlay.Items.Add(Master.eLang.Disabled)
+        cbLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
     End Sub
 
-    Private Sub RefreshMovieSortTokens()
-        lstMovieSortTokens.Items.Clear()
-        lstMovieSortTokens.Items.AddRange(Master.eSettings.MovieSortTokens.ToArray)
-    End Sub
-
-    Private Sub RemoveMovieSortToken()
-        If lstMovieSortTokens.Items.Count > 0 AndAlso lstMovieSortTokens.SelectedItems.Count > 0 Then
-            While lstMovieSortTokens.SelectedItems.Count > 0
-                lstMovieSortTokens.Items.Remove(lstMovieSortTokens.SelectedItems(0))
-            End While
-            Handle_SettingsChanged()
-        End If
-    End Sub
-
-    Private Sub RenumberMovieGeneralMediaListSorting()
-        For i As Integer = 0 To MovieGeneralMediaListSorting.Count - 1
-            MovieGeneralMediaListSorting(i).DisplayIndex = i
-        Next
-    End Sub
-
-    Private Sub rbMovieGeneralCustomScrapeButtonDisabled_CheckedChanged(sender As Object, e As EventArgs)
-        If rbMovieGeneralCustomScrapeButtonDisabled.Checked Then
-            cbMovieGeneralCustomScrapeButtonModifierType.Enabled = False
-            cbMovieGeneralCustomScrapeButtonScrapeType.Enabled = False
-            txtMovieGeneralCustomScrapeButtonModifierType.Enabled = False
-            txtMovieGeneralCustomScrapeButtonScrapeType.Enabled = False
-        End If
+    Private Sub LoadDefaults_MediaListSorting() Handles btnMediaListSortingDefaults.Click
+        DataGridView_Fill_MediaListSorting(Manager.mSettings.GetDefaultsForList_MediaListSorting_Movie())
         Handle_SettingsChanged()
     End Sub
 
-    Private Sub rbMovieGeneralCustomScrapeButtonEnabled_CheckedChanged(sender As Object, e As EventArgs)
-        If rbMovieGeneralCustomScrapeButtonEnabled.Checked Then
-            cbMovieGeneralCustomScrapeButtonModifierType.Enabled = True
-            cbMovieGeneralCustomScrapeButtonScrapeType.Enabled = True
-            txtMovieGeneralCustomScrapeButtonModifierType.Enabled = True
-            txtMovieGeneralCustomScrapeButtonScrapeType.Enabled = True
-        End If
-        Handle_SettingsChanged()
+    Private Sub Save_MediaListSorting()
+        With Manager.mSettings.Movie.GuiSettings.MediaListSorting
+            .Clear()
+            For Each r As DataGridViewRow In dgvMediaListSorting.Rows
+                .Add(New GuiSettings.ListSorting With {
+                     .AutoSizeMode = DirectCast(r.Cells(3).Value, DataGridViewAutoSizeColumnMode),
+                     .Column = DirectCast(r.Tag, GuiSettings.ListSorting).Column,
+                     .DisplayIndex = DirectCast(r.Cells(0).Value, Integer),
+                     .LabelID = DirectCast(r.Tag, GuiSettings.ListSorting).LabelID,
+                     .LabelText = DirectCast(r.Tag, GuiSettings.ListSorting).LabelText,
+                     .Show = DirectCast(r.Cells(1).Value, Boolean)
+                     })
+            Next
+        End With
+    End Sub
+
+    Private Sub TextBox_NumOnly_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtLevTolerance.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
 #End Region 'Methods

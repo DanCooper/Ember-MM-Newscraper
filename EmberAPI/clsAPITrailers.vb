@@ -112,7 +112,7 @@ Public Class Trailers
 
         Try
             For Each a In FileUtils.FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTrailer, ForceFileCleanup)
-                For Each t As String In Master.eSettings.FileSystemValidExts
+                For Each t As String In Master.eSettings.Options.FileSystem.ValidVideoExtensions
                     If File.Exists(String.Concat(a, t)) Then
                         Delete(String.Concat(a, t))
                     End If

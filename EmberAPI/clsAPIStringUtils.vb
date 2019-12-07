@@ -79,7 +79,7 @@ Public Class StringUtils
     ''' <c>String.Empty</c> is returned if the name is empty or Nothing.
     ''' The value of <paramref name="name"/> is returned if no filter is passed</returns>
     ''' <remarks></remarks>
-    Public Shared Function ApplyFilters(ByVal name As String, ByRef filters As List(Of String)) As String
+    Public Shared Function ApplyFilters(ByVal name As String, ByRef filters As TitleFilterSpecification) As String
         If String.IsNullOrEmpty(name) Then Return String.Empty
         If filters Is Nothing OrElse filters.Count = 0 Then Return name
         Dim newName As String = name
@@ -357,10 +357,10 @@ Public Class StringUtils
         End If
 
         'filter raw title by filter list
-        Dim strTitle As String = ApplyFilters(strRawString, Master.eSettings.MovieFilterCustom)
+        Dim strTitle As String = ApplyFilters(strRawString, Master.eSettings.Movie.SourceSettings.TitleFilter)
 
         'Convert String To Proper Case
-        If Master.eSettings.MovieProperCase Then
+        If Master.eSettings.Movie.SourceSettings.TitleProperCase Then
             strTitle = ConvertToProperCase(strTitle)
         End If
 
@@ -388,7 +388,7 @@ Public Class StringUtils
         Dim strRawTitle As String = Path.GetFileNameWithoutExtension(strPath)
 
         'filter raw title by filter list
-        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVEpisodeFilterCustom)
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVEpisode.SourceSettings.TitleFilter)
 
         'remove the tv show name from the episode title
         If Not String.IsNullOrEmpty(strTVShowName) Then strTitle = strTitle.Replace(strTVShowName.Trim, String.Empty).Trim
@@ -418,7 +418,7 @@ Public Class StringUtils
         Dim strRawTitle As String = New DirectoryInfo(strPath).Name
 
         'filter raw title by filter list
-        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVShowFilterCustom)
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVShow.SourceSettings.TitleFilter)
 
         'Convert String To Proper Case
         If Master.eSettings.TVShowProperCase Then
@@ -793,25 +793,25 @@ Public Class StringUtils
         Return String.Concat(nOutline.Substring(0, lastPeriod + 1), "..") 'Note only 2 periods required, since one is already there
     End Function
 
-    Private Shared Function SortTokens(ByVal strTitle As String, ByVal lstTokenList As List(Of String)) As String
-        For Each strToken As String In lstTokenList
+    Private Shared Function SortTokens(ByVal Title As String, ByVal TokenList As List(Of String)) As String
+        For Each strToken As String In TokenList
             Try
-                Dim mToken As Match = Regex.Match(strTitle, String.Concat("(^", strToken, ")(.*)"), RegexOptions.IgnoreCase)
+                Dim mToken As Match = Regex.Match(Title, String.Concat("(^", strToken, ")(.*)"), RegexOptions.IgnoreCase)
                 If mToken.Success AndAlso mToken.Groups.Count = 3 Then
                     Return String.Format("{0}, {1}", mToken.Groups(2).Value.Trim, mToken.Groups(1).Value.Trim)
                 End If
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & strTitle & " generated an error message")
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & Title & " generated an error message")
             End Try
         Next
-        Return strTitle
+        Return Title
     End Function
     ''' <summary>
     ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
     ''' sort tokens (<c>Master.eSettings.MovieSortTokens"</c>) then remove it from the front
     ''' of the string and move it to the end after a comma.
     ''' </summary>
-    ''' <param name="strTitle"><c>String</c> to clean up</param>
+    ''' <param name="Title"><c>String</c> to clean up</param>
     ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
     ''' <remarks>This function will take a string such as "The Movie" and return "Movie, The".
     ''' The default tokens are:
@@ -821,44 +821,8 @@ Public Class StringUtils
     '''    <item>the</item>
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function SortTokens_Movie(ByVal strTitle As String) As String
-        Return SortTokens(strTitle, Master.eSettings.MovieSortTokens)
-    End Function
-    ''' <summary>
-    ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
-    ''' sort tokens (<c>Master.eSettings.MovieSetSortTokens"</c>) then remove it from the front
-    ''' of the string and move it to the end after a comma.
-    ''' </summary>
-    ''' <param name="strTitle"><c>String</c> to clean up</param>
-    ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
-    ''' <remarks>This function will take a string such as "The MovieSet" and return "MovieSet, The".
-    ''' The default tokens are:
-    '''  <list>
-    '''    <item>a</item>
-    '''    <item>an</item>
-    '''    <item>the</item>
-    ''' </list>
-    ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function SortTokens_MovieSet(ByVal strTitle As String) As String
-        Return SortTokens(strTitle, Master.eSettings.MovieSetSortTokens)
-    End Function
-    ''' <summary>
-    ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
-    ''' sort tokens (<c>Master.eSettings.SortTokens"</c>) then remove it from the front
-    ''' of the string and move it to the end after a comma.
-    ''' </summary>
-    ''' <param name="strTitle"><c>String</c> to clean up</param>
-    ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
-    ''' <remarks>This function will take a string such as "The Show" and return "Show, The".
-    ''' The default tokens are:
-    '''  <list>
-    '''    <item>a</item>
-    '''    <item>an</item>
-    '''    <item>the</item>
-    ''' </list>
-    ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function SortTokens_TV(ByVal strTitle As String) As String
-        Return SortTokens(strTitle, Master.eSettings.TVSortTokens)
+    Public Shared Function SortTokens(ByVal Title As String) As String
+        Return SortTokens(Title, Master.eSettings.Options.General.SortTokens)
     End Function
     ''' <summary>
     ''' Converts a string indicating a size into an actual <c>Size</c> object

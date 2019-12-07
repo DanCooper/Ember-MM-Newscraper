@@ -22,8 +22,8 @@ Partial Class frmOption_VideoSourceMapping
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOption_VideoSourceMapping))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
@@ -137,8 +137,8 @@ Partial Class frmOption_VideoSourceMapping
         '
         'colByExtensionVideoSource
         '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.colByExtensionVideoSource.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.colByExtensionVideoSource.DefaultCellStyle = DataGridViewCellStyle1
         Me.colByExtensionVideoSource.HeaderText = "VideoSource"
         Me.colByExtensionVideoSource.Name = "colByExtensionVideoSource"
         Me.colByExtensionVideoSource.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
@@ -224,8 +224,8 @@ Partial Class frmOption_VideoSourceMapping
         '
         'colByRegexVideoSource
         '
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.colByRegexVideoSource.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.colByRegexVideoSource.DefaultCellStyle = DataGridViewCellStyle2
         Me.colByRegexVideoSource.HeaderText = "VideoSource"
         Me.colByRegexVideoSource.Name = "colByRegexVideoSource"
         Me.colByRegexVideoSource.Resizable = System.Windows.Forms.DataGridViewTriState.[True]

@@ -70,7 +70,7 @@ Public Class dlgSourceMovie
         Return ShowDialog()
     End Function
 
-    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
+    Private Sub btnBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBrowse.Click
         With fbdBrowse
             If Not String.IsNullOrEmpty(txtSourcePath.Text) Then
                 .SelectedPath = txtSourcePath.Text
@@ -85,7 +85,7 @@ Public Class dlgSourceMovie
         End With
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
         DialogResult = DialogResult.Cancel
     End Sub
 
@@ -158,7 +158,7 @@ Public Class dlgSourceMovie
         End If
     End Sub
 
-    Private Sub chkSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingle.CheckedChanged
+    Private Sub chkSingle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkSingle.CheckedChanged
         chkUseFolderName.Enabled = chkSingle.Checked
 
         If Not chkSingle.Checked Then chkUseFolderName.Checked = False
@@ -172,7 +172,7 @@ Public Class dlgSourceMovie
         End If
     End Sub
 
-    Private Sub dlgSourceMovie_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub dlgSourceMovie_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         SetUp()
 
         If Not _id = -1 Then
@@ -202,11 +202,11 @@ Public Class dlgSourceMovie
             End If
         Else
             If cbSourceLanguage.Items.Count > 0 Then
-                Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieGeneralLanguage)
+                Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.Movie.SourceSettings.DefaultLanguage)
                 If tLanguage IsNot Nothing Then
                     cbSourceLanguage.Text = tLanguage.Description
                 Else
-                    tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.MovieGeneralLanguage))
+                    tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.Movie.SourceSettings.DefaultLanguage))
                     If tLanguage IsNot Nothing Then
                         cbSourceLanguage.Text = tLanguage.Description
                     Else
@@ -217,12 +217,12 @@ Public Class dlgSourceMovie
         End If
     End Sub
 
-    Private Sub dlgSourceMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgSourceMovie_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         Activate()
         txtSourcePath.Focus()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         Dim strSourcePath As String = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
         Dim strLanguage As String = "en-US"
         If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
@@ -265,13 +265,13 @@ Public Class dlgSourceMovie
         cbSourceLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
     End Sub
 
-    Private Sub tmrName_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrName.Tick
+    Private Sub tmrName_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrName.Tick
         tmrWait.Enabled = False
         CheckConditions()
         tmrName.Enabled = False
     End Sub
 
-    Private Sub tmrPathWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPathWait.Tick
+    Private Sub tmrPathWait_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrPathWait.Tick
         If strPrevPath = strCurrPath Then
             tmrPath.Enabled = True
         Else
@@ -293,13 +293,13 @@ Public Class dlgSourceMovie
         End If
     End Sub
 
-    Private Sub tmrPath_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPath.Tick
+    Private Sub tmrPath_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrPath.Tick
         tmrPathWait.Enabled = False
         CheckConditions()
         tmrPath.Enabled = False
     End Sub
 
-    Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
+    Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrWait.Tick
         If strPrevName = strCurrName Then
             tmrName.Enabled = True
         Else
@@ -307,11 +307,11 @@ Public Class dlgSourceMovie
         End If
     End Sub
 
-    Private Sub txtSourceName_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSourceName.KeyPress
+    Private Sub txtSourceName_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtSourceName.KeyPress
         bAutoName = False
     End Sub
 
-    Private Sub txtSourceName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourceName.TextChanged
+    Private Sub txtSourceName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtSourceName.TextChanged
         OK_Button.Enabled = False
         strCurrName = txtSourceName.Text
 
@@ -329,7 +329,7 @@ Public Class dlgSourceMovie
         End Try
     End Sub
 
-    Private Sub txtSourcePath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourcePath.TextChanged
+    Private Sub txtSourcePath_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtSourcePath.TextChanged
         OK_Button.Enabled = False
         strCurrPath = txtSourcePath.Text
         tmrPathWait.Enabled = False

@@ -120,9 +120,9 @@ Public Class frmOption_FileSystem
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
-        With Master.eSettings
-            .GeneralVirtualDriveLetter = cbVirtualDriveDriveLetter.Text
-            .GeneralVirtualDriveBinPath = txtVirtualDrivePath.Text
+        With Master.eSettings.Options.FileSystem
+            .VirtualDriveDriveLetter = cbVirtualDriveDriveLetter.Text
+            .VirtualDriveBinPath = txtVirtualDrivePath.Text
 
             Save_ExcludedPaths()
             Save_ValidSubtitleExtensions()
@@ -136,14 +136,14 @@ Public Class frmOption_FileSystem
 #Region "Methods"
 
     Public Sub Settings_Load()
-        With Master.eSettings
-            cbVirtualDriveDriveLetter.SelectedItem = .GeneralVirtualDriveLetter
-            txtVirtualDrivePath.Text = .GeneralVirtualDriveBinPath
+        With Master.eSettings.Options.FileSystem
+            cbVirtualDriveDriveLetter.SelectedItem = .VirtualDriveDriveLetter
+            txtVirtualDrivePath.Text = .VirtualDriveBinPath
 
             DataGridView_Fill_ExcludedPaths(Master.DB.GetExcludedPaths)
-            DataGridView_Fill_ValidSubtitleExtensions(.FileSystemValidSubtitlesExts)
-            DataGridView_Fill_ValidThemeExtensions(.FileSystemValidThemeExts)
-            DataGridView_Fill_ValidVideoExtensions(.FileSystemValidExts)
+            DataGridView_Fill_ValidSubtitleExtensions(.ValidSubtitleExtensions)
+            DataGridView_Fill_ValidThemeExtensions(.ValidThemeExtensions)
+            DataGridView_Fill_ValidVideoExtensions(.ValidVideoExtensions)
         End With
     End Sub
 
@@ -313,30 +313,36 @@ Public Class frmOption_FileSystem
     End Sub
 
     Private Sub Save_ValidSubtitleExtensions()
-        Master.eSettings.FileSystemValidSubtitlesExts.Clear()
-        For Each r As DataGridViewRow In dgvValidSubtitleExtensions.Rows
-            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
-                Master.eSettings.FileSystemValidExts.Add(r.Cells(0).Value.ToString.Trim)
-            End If
-        Next
+        With Master.eSettings.Options.FileSystem.ValidSubtitleExtensions
+            .Clear()
+            For Each r As DataGridViewRow In dgvValidSubtitleExtensions.Rows
+                If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
+                    .Add(r.Cells(0).Value.ToString.Trim)
+                End If
+            Next
+        End With
     End Sub
 
     Private Sub Save_ValidThemeExtensions()
-        Master.eSettings.FileSystemValidThemeExts.Clear()
-        For Each r As DataGridViewRow In dgvValidThemeExtensions.Rows
-            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
-                Master.eSettings.FileSystemValidExts.Add(r.Cells(0).Value.ToString.Trim)
-            End If
-        Next
+        With Master.eSettings.Options.FileSystem.ValidThemeExtensions
+            .Clear()
+            For Each r As DataGridViewRow In dgvValidThemeExtensions.Rows
+                If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
+                    .Add(r.Cells(0).Value.ToString.Trim)
+                End If
+            Next
+        End With
     End Sub
 
     Private Sub Save_ValidVideoExtensions()
-        Master.eSettings.FileSystemValidExts.Clear()
-        For Each r As DataGridViewRow In dgvValidVideoExtensions.Rows
-            If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
-                Master.eSettings.FileSystemValidExts.Add(r.Cells(0).Value.ToString.Trim)
-            End If
-        Next
+        With Master.eSettings.Options.FileSystem.ValidVideoExtensions
+            .Clear()
+            For Each r As DataGridViewRow In dgvValidVideoExtensions.Rows
+                If r.Cells(0).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(0).Value.ToString.Trim) Then
+                    .Add(r.Cells(0).Value.ToString.Trim)
+                End If
+            Next
+        End With
     End Sub
 
     Private Sub VirtualDrive_PathBrowse_Click(sender As Object, e As EventArgs) Handles btnVirtualDrivePathBrowse.Click

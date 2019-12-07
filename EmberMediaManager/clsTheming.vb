@@ -773,12 +773,12 @@ Public Class Theming
         Dim diCustom As DirectoryInfo = New DirectoryInfo(Path.Combine(Master.SettingsPath, "Themes"))
         If diDefaults.Exists Then lstFiles.AddRange(diDefaults.GetFiles("*.xml"))
         If diCustom.Exists Then lstFiles.AddRange(diCustom.GetFiles("*.xml"))
-        Dim fiTheme = lstFiles.FirstOrDefault(Function(f) f.Name = String.Format("{0}.xml", Master.eSettings.GeneralTheme))
+        Dim fiTheme = lstFiles.FirstOrDefault(Function(f) f.Name = String.Format("{0}.xml", Manager.mSettings.MainOptions.GuiSettings.Theme))
         If fiTheme IsNot Nothing AndAlso fiTheme.Exists Then
             _theme = Load(fiTheme.FullName)
         Else
             _theme = Load(String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, "FullHD-Default.xml"))
-            Master.eSettings.GeneralTheme = "FullHD-Default"
+            Manager.mSettings.MainOptions.GuiSettings.Theme = "FullHD-Default"
         End If
     End Sub
 

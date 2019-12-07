@@ -196,6 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="clsSettings.vb" />
     <Compile Include="clsTheming.vb" />
     <Compile Include="dlgAbout.Designer.vb">
       <DependentUpon>dlgAbout.vb</DependentUpon>
@@ -299,6 +300,7 @@
     <Compile Include="dlgProfileSelect.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="clsManager.vb" />
     <Compile Include="MasterSettingsPanels\frmMovie_Data.Designer.vb">
       <DependentUpon>frmMovie_Data.vb</DependentUpon>
     </Compile>
@@ -339,6 +341,12 @@
       <DependentUpon>frmMovie_Trailer.vb</DependentUpon>
     </Compile>
     <Compile Include="MasterSettingsPanels\frmMovie_Trailer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_GUI.Designer.vb">
+      <DependentUpon>frmOption_GUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_GUI.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MasterSettingsPanels\frmTV_Data_dlgSeasonTitleBlacklist.Designer.vb">
@@ -616,6 +624,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Trailer.resx">
       <DependentUpon>frmMovie_Trailer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmOption_GUI.resx">
+      <DependentUpon>frmOption_GUI.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmTV_Data_dlgSeasonTitleBlacklist.resx">
       <DependentUpon>frmTV_Data_dlgSeasonTitleBlacklist.vb</DependentUpon>

@@ -27,12 +27,13 @@ Public Class AdvancedSettings
     Implements IDisposable
 
 #Region "Fields"
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
+
     Private Shared _AdvancedSettings As New XMLAdvancedSettings
 
     Private Shared _DoNotSave As Boolean = False
 
-    Private _disposed As Boolean = False
+    Private _Disposed As Boolean = False
 
 #End Region 'Fields
 
@@ -54,7 +55,7 @@ Public Class AdvancedSettings
             Dim configpath As String = Path.Combine(Master.SettingsPath, "AdvancedSettings.xml")
             Load(configpath)
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -75,7 +76,7 @@ Public Class AdvancedSettings
             If Not _DoNotSave Then
                 Save()
             End If
-            _disposed = True
+            _Disposed = True
         End If
     End Sub
 
@@ -102,7 +103,7 @@ Public Class AdvancedSettings
             End If
 
         Catch ex As Exception
-            logger.Info(ex, New StackFrame().GetMethod().Name)
+            _Logger.Info(ex, New StackFrame().GetMethod().Name)
             Return defvalue
         End Try
     End Function
@@ -126,14 +127,14 @@ Public Class AdvancedSettings
             End If
 
         Catch ex As Exception
-            logger.Info(ex, "Key: " & key & " DefValue: " & defvalue & "  Assembly: " & Assembly & New StackFrame().GetMethod().Name)
+            _Logger.Info(ex, "Key: " & key & " DefValue: " & defvalue & "  Assembly: " & Assembly & New StackFrame().GetMethod().Name)
             Return defvalue
         End Try
     End Function
 
     Public Sub CleanSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
-        If _disposed Then
-            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanSetting on disposed object")
+        If _Disposed Then
+            _Logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanSetting on disposed object")
         End If
         Dim Assembly As String = cAssembly
         If Assembly = String.Empty Then
@@ -150,8 +151,8 @@ Public Class AdvancedSettings
     End Sub
 
     Public Sub ClearComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
-        If _disposed Then
-            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanComplexSetting on disposed object")
+        If _Disposed Then
+            _Logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanComplexSetting on disposed object")
         End If
         Try
             Dim Assembly As String = cAssembly
@@ -179,14 +180,14 @@ Public Class AdvancedSettings
             Dim v = _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
             Return If(v Is Nothing, Nothing, v.Table.Item)
         Catch ex As Exception
-            logger.Info(ex, New StackFrame().GetMethod().Name)
+            _Logger.Info(ex, New StackFrame().GetMethod().Name)
             Return Nothing
         End Try
     End Function
 
     Public Function SetComplexSetting(ByVal key As String, ByVal value As List(Of AdvancedSettingsComplexSettingsTableItem), Optional ByVal cAssembly As String = "") As Boolean
-        If _disposed Then
-            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.SetComplexSetting on disposed object")
+        If _Disposed Then
+            _Logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.SetComplexSetting on disposed object")
         End If
         Try
             Dim Assembly As String = cAssembly
@@ -204,7 +205,7 @@ Public Class AdvancedSettings
             End If
 
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return True
     End Function
@@ -219,8 +220,8 @@ Public Class AdvancedSettings
                 objStreamReader.Close()
             End If
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-            logger.Info("An attempt is made to repair the AdvancedSettings.xml")
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Info("An attempt is made to repair the AdvancedSettings.xml")
             Try
                 Using srAdvancedSettings As New StreamReader(fname)
                     Dim sAdvancedSettings As String = srAdvancedSettings.ReadToEnd
@@ -234,39 +235,19 @@ Public Class AdvancedSettings
                         _AdvancedSettings = CType(xXMLSettings.Deserialize(reader), XMLAdvancedSettings)
                     End Using
                 End Using
-                logger.Info("AdvancedSettings.xml successfully repaired")
+                _Logger.Info("AdvancedSettings.xml successfully repaired")
             Catch ex2 As Exception
-                logger.Error(ex2, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex2, New StackFrame().GetMethod().Name)
                 File.Copy(fname, String.Concat(fname, "_backup"), True)
                 _AdvancedSettings = New XMLAdvancedSettings
             End Try
         End Try
-
-        'Add complex settings to general advancedsettings.xml if those settings don't exist
-        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = GetComplexSetting("VideoFormatConverts", "*EmberAPP")
-        If formatconversions Is Nothing Then
-            Using settings = New AdvancedSettings()
-                settings.SetDefaults("VideoFormatConverts")
-            End Using
-        End If
-        formatconversions = GetComplexSetting("AudioFormatConverts", "*EmberAPP")
-        If formatconversions Is Nothing Then
-            Using settings = New AdvancedSettings()
-                settings.SetDefaults("AudioFormatConverts")
-            End Using
-        End If
-        formatconversions = GetComplexSetting("VideoSourceMapping", "*EmberAPP")
-        If formatconversions Is Nothing Then
-            Using settings = New AdvancedSettings()
-                settings.SetDefaults("VideoSourceMapping")
-            End Using
-        End If
         _DoNotSave = False
     End Sub
 
     Private Sub Save()
-        If _disposed Then
-            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.Save on disposed object")
+        If _Disposed Then
+            _Logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.Save on disposed object")
         End If
         Try
             If _DoNotSave Then
@@ -290,12 +271,12 @@ Public Class AdvancedSettings
 
 
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
     Public Function SetBooleanSetting(ByVal key As String, ByVal value As Boolean, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False, Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As Boolean
-        If _disposed Then
+        If _Disposed Then
             Throw New ObjectDisposedException("AdvancedSettings.SetBooleanSetting on disposed object")
         End If
         Try
@@ -327,13 +308,13 @@ Public Class AdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return True
     End Function
 
     Public Function SetSetting(ByVal key As String, ByVal value As String, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False, Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As Boolean
-        If _disposed Then
+        If _Disposed Then
             Throw New ObjectDisposedException("AdvancedSettings.SetSetting on disposed object")
         End If
         Try
@@ -366,7 +347,7 @@ Public Class AdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return True
     End Function
@@ -375,8 +356,8 @@ Public Class AdvancedSettings
         If String.IsNullOrEmpty(section) Then Return
 
         Dim aPath As String
-        If _disposed Then
-            logger.Error(New StackFrame().GetMethod().Name, "AdvancedSettings.SetDefaults on disposed object")
+        If _Disposed Then
+            _Logger.Error(New StackFrame().GetMethod().Name, "AdvancedSettings.SetDefaults on disposed object")
             Throw New ObjectDisposedException("AdvancedSettings.SetDefaults on disposed object")
         End If
         _DoNotSave = True

@@ -213,7 +213,7 @@ Public Class WebsiteCreator
         Directory.CreateDirectory(_StrBuildPath)
 
         If strTemplatePath IsNot Nothing Then
-            Dim htmlPath As String = Path.Combine(strTemplatePath, String.Concat(Master.eSettings.GeneralLanguage, ".html"))
+            Dim htmlPath As String = Path.Combine(strTemplatePath, String.Concat(Master.eSettings.Options.General.Language, ".html"))
             If Not File.Exists(htmlPath) Then
                 htmlPath = Path.Combine(strTemplatePath, String.Concat("English_(en_US).html"))
             End If
@@ -465,7 +465,7 @@ Public Class WebsiteCreator
             End If
 
             If fInfo.StreamDetails.Audio.Count > 0 Then
-                tAud = Info.GetBestAudio(fInfo, contentType)
+                tAud = MetaData.GetBestAudio(fInfo, String.Empty, contentType)
 
                 nInfo.audBitrate = tAud.Bitrate.ToString
                 nInfo.audChannels = tAud.Channels.ToString
@@ -578,7 +578,7 @@ Public Class WebsiteCreator
                     fiAV = tDBElement.TVEpisode.FileInfo
             End Select
             Dim tVideo As MediaContainers.Video = Info.GetBestVideo(fiAV)
-            Dim tAudio As MediaContainers.Audio = Info.GetBestAudio(fiAV, tContentType)
+            Dim tAudio As MediaContainers.Audio = MetaData.GetBestAudio(fiAV, String.Empty, tContentType)
 
             Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = Info.GetResolutionFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
             If vresFlag IsNot Nothing Then
@@ -688,7 +688,7 @@ Public Class WebsiteCreator
         strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tMovie.Movie.UniqueIDs.IMDbId))
         strRow = strRow.Replace("<$LANGUAGE>", StringUtils.HtmlEncode(tMovie.Movie.Language))
         strRow = strRow.Replace("<$LASTPLAYED>", StringUtils.HtmlEncode(tMovie.Movie.LastPlayed))
-        strRow = strRow.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(StringUtils.SortTokens_Movie(tMovie.Movie.Title)))
+        strRow = strRow.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(StringUtils.SortTokens(tMovie.Movie.Title)))
         strRow = strRow.Replace("<$MPAA>", StringUtils.HtmlEncode(tMovie.Movie.MPAA))
         strRow = strRow.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(tMovie.Movie.OriginalTitle))
         strRow = strRow.Replace("<$OUTLINE>", StringUtils.HtmlEncode(tMovie.Movie.Outline))
@@ -933,7 +933,7 @@ Public Class WebsiteCreator
         strRow = strRow.Replace("<$GENRES>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Genres.ToArray)))
         strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tShow.TVShow.UniqueIDs.IMDbId))
         strRow = strRow.Replace("<$LANGUAGE>", StringUtils.HtmlEncode(tShow.TVShow.Language))
-        strRow = strRow.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(StringUtils.SortTokens_TV(tShow.TVShow.Title)))
+        strRow = strRow.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(StringUtils.SortTokens(tShow.TVShow.Title)))
         strRow = strRow.Replace("<$MPAA>", StringUtils.HtmlEncode(tShow.TVShow.MPAA))
         strRow = strRow.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(tShow.TVShow.OriginalTitle))
         strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tShow.TVShow.Plot))

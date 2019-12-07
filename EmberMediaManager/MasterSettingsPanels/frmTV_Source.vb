@@ -122,8 +122,18 @@ Public Class frmTV_Source
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
+        With Master.eSettings.TVShow.SourceSettings
+            .CleanDBAfterUpdate = chkTVCleanDB.Checked
+        End With
+        With Master.eSettings.TVEpisode.SourceSettings
+            If Not String.IsNullOrEmpty(txtTVSkipLessThan.Text) AndAlso Integer.TryParse(txtTVSkipLessThan.Text, 0) Then
+                .SkipLessThan = Convert.ToInt32(txtTVSkipLessThan.Text)
+            Else
+                .SkipLessThan = 0
+            End If
+        End With
+
         With Master.eSettings
-            .TVCleanDB = chkTVCleanDB.Checked
             If Not String.IsNullOrEmpty(cbTVGeneralLang.Text) Then
                 .TVGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
             End If
@@ -131,11 +141,17 @@ Public Class frmTV_Source
             .TVScraperOptionsOrdering = CType(cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.EpisodeOrdering)).Value
             .TVShowMatching.Clear()
             .TVShowMatching.AddRange(TVShowMatching)
-            If Not String.IsNullOrEmpty(txtTVSkipLessThan.Text) AndAlso Integer.TryParse(txtTVSkipLessThan.Text, 0) Then
-                .TVSkipLessThan = Convert.ToInt32(txtTVSkipLessThan.Text)
-            Else
-                .TVSkipLessThan = 0
-            End If
+            .TVEpisodeFilterCustom.Clear()
+            .TVEpisodeFilterCustom.AddRange(lstTVEpisodeFilter.Items.OfType(Of String).ToList)
+            If .TVEpisodeFilterCustom.Count <= 0 Then .TVEpisodeFilterCustomIsEmpty = True
+            .TVEpisodeNoFilter = chkTVEpisodeNoFilter.Checked
+            .TVEpisodeProperCase = chkTVEpisodeProperCase.Checked
+            .TVGeneralMarkNewEpisodes = chkTVGeneralMarkNewEpisodes.Checked
+            .TVGeneralMarkNewShows = chkTVGeneralMarkNewShows.Checked
+            .TVShowFilterCustom.Clear()
+            .TVShowFilterCustom.AddRange(lstTVShowFilter.Items.OfType(Of String).ToList)
+            If .TVShowFilterCustom.Count <= 0 Then .TVShowFilterCustomIsEmpty = True
+            .TVShowProperCase = chkTVShowProperCase.Checked
         End With
     End Sub
 
@@ -144,11 +160,15 @@ Public Class frmTV_Source
 #Region "Methods"
 
     Public Sub Settings_Load()
+        With Master.eSettings.TVShow.SourceSettings
+            chkTVCleanDB.Checked = .CleanDBAfterUpdate
+        End With
+        With Master.eSettings.TVEpisode.SourceSettings
+            txtTVSkipLessThan.Text = .SkipLessThan.ToString
+        End With
         With Master.eSettings
             cbTVScraperOptionsOrdering.SelectedValue = .TVScraperOptionsOrdering
-            chkTVCleanDB.Checked = .TVCleanDB
             txtTVSourcesRegexMultiPartMatching.Text = .TVMultiPartMatching
-            txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
 
             Try
                 cbTVGeneralLang.Items.Clear()
@@ -173,6 +193,12 @@ Public Class frmTV_Source
             Catch ex As Exception
                 _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
+
+            chkTVEpisodeNoFilter.Checked = .TVEpisodeNoFilter
+            chkTVEpisodeProperCase.Checked = .TVEpisodeProperCase
+            chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
+            chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
+            chkTVShowProperCase.Checked = .TVShowProperCase
 
             TVShowMatching.AddRange(.TVShowMatching)
             LoadTVShowMatching()
@@ -209,8 +235,43 @@ Public Class frmTV_Source
         chkTVCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
         lblTVSkipLessThan.Text = Master.eLang.GetString(540, "Skip files smaller than:")
         lblTVSkipLessThanMB.Text = Master.eLang.GetString(539, "MB")
+        chkTVEpisodeNoFilter.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
+        chkTVGeneralMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
+        chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
+        gbTVEpisodeFilterOpts.Text = Master.eLang.GetString(671, "Episode Folder/File Name Filters")
+        gbTVShowFilterOpts.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
+        chkTVEpisodeProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
+        chkTVShowProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
 
         LoadTVScraperOptionsOrdering()
+    End Sub
+
+    Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs)
+        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowFilters, True)
+
+            Handle_SettingsChanged()
+        End If
+    End Sub
+
+    Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs)
+        If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeFilters, True)
+
+            Handle_SettingsChanged()
+        End If
+    End Sub
+
+    Private Sub chkTVEpisodeNoFilter_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Handle_SettingsChanged()
+
+        chkTVEpisodeProperCase.Enabled = Not chkTVEpisodeNoFilter.Checked
+        lstTVEpisodeFilter.Enabled = Not chkTVEpisodeNoFilter.Checked
+        txtTVEpisodeFilter.Enabled = Not chkTVEpisodeNoFilter.Checked
+        btnTVEpisodeFilterAdd.Enabled = Not chkTVEpisodeNoFilter.Checked
+        btnTVEpisodeFilterUp.Enabled = Not chkTVEpisodeNoFilter.Checked
+        btnTVEpisodeFilterDown.Enabled = Not chkTVEpisodeNoFilter.Checked
+        btnTVEpisodeFilterRemove.Enabled = Not chkTVEpisodeNoFilter.Checked
     End Sub
 
     Private Sub btnTVSourcesRegexTVShowMatchingAdd_Click(ByVal sender As Object, ByVal e As EventArgs)

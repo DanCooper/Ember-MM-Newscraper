@@ -22,24 +22,24 @@ Partial Class frmOption_AVCodecMapping
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOption_AVCodecMapping))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOption_AVCodecMapping))
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
         Me.gbAudio = New System.Windows.Forms.GroupBox()
         Me.tblAudio = New System.Windows.Forms.TableLayoutPanel()
         Me.dgvAudio = New System.Windows.Forms.DataGridView()
+        Me.colAudioDetected = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colAudioMappedCodec = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colAudioAdditionalFeatures = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.btnAudioDefaults = New System.Windows.Forms.Button()
         Me.gbVideo = New System.Windows.Forms.GroupBox()
         Me.tblVideo = New System.Windows.Forms.TableLayoutPanel()
         Me.dgvVideo = New System.Windows.Forms.DataGridView()
-        Me.btnVideoDefaults = New System.Windows.Forms.Button()
-        Me.colAudioDetected = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colAudioMappedCodec = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colAudioAdditionalFeatures = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colVideoDetected = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colVideoMappedCodec = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btnVideoDefaults = New System.Windows.Forms.Button()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
         Me.gbAudio.SuspendLayout()
@@ -58,7 +58,7 @@ Partial Class frmOption_AVCodecMapping
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(544, 221)
+        Me.pnlSettings.Size = New System.Drawing.Size(555, 235)
         Me.pnlSettings.TabIndex = 1
         '
         'tblSettings
@@ -76,7 +76,7 @@ Partial Class frmOption_AVCodecMapping
         Me.tblSettings.Name = "tblSettings"
         Me.tblSettings.RowCount = 1
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettings.Size = New System.Drawing.Size(544, 221)
+        Me.tblSettings.Size = New System.Drawing.Size(555, 235)
         Me.tblSettings.TabIndex = 10
         '
         'gbAudio
@@ -87,7 +87,7 @@ Partial Class frmOption_AVCodecMapping
         Me.gbAudio.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbAudio.Location = New System.Drawing.Point(3, 3)
         Me.gbAudio.Name = "gbAudio"
-        Me.gbAudio.Size = New System.Drawing.Size(266, 215)
+        Me.gbAudio.Size = New System.Drawing.Size(271, 229)
         Me.gbAudio.TabIndex = 0
         Me.gbAudio.TabStop = False
         Me.gbAudio.Text = "Audio Codec Mapping"
@@ -102,12 +102,12 @@ Partial Class frmOption_AVCodecMapping
         Me.tblAudio.Controls.Add(Me.dgvAudio, 0, 0)
         Me.tblAudio.Controls.Add(Me.btnAudioDefaults, 0, 1)
         Me.tblAudio.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblAudio.Location = New System.Drawing.Point(3, 16)
+        Me.tblAudio.Location = New System.Drawing.Point(3, 18)
         Me.tblAudio.Name = "tblAudio"
         Me.tblAudio.RowCount = 2
         Me.tblAudio.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblAudio.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblAudio.Size = New System.Drawing.Size(260, 196)
+        Me.tblAudio.Size = New System.Drawing.Size(265, 208)
         Me.tblAudio.TabIndex = 0
         '
         'dgvAudio
@@ -127,85 +127,8 @@ Partial Class frmOption_AVCodecMapping
         Me.dgvAudio.ShowCellErrors = False
         Me.dgvAudio.ShowCellToolTips = False
         Me.dgvAudio.ShowRowErrors = False
-        Me.dgvAudio.Size = New System.Drawing.Size(254, 161)
+        Me.dgvAudio.Size = New System.Drawing.Size(259, 173)
         Me.dgvAudio.TabIndex = 1
-        '
-        'btnAudioDefaults
-        '
-        Me.btnAudioDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnAudioDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAudioDefaults.Image = CType(resources.GetObject("btnAudioDefaults.Image"), System.Drawing.Image)
-        Me.btnAudioDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAudioDefaults.Location = New System.Drawing.Point(152, 170)
-        Me.btnAudioDefaults.Name = "btnAudioDefaults"
-        Me.btnAudioDefaults.Size = New System.Drawing.Size(105, 23)
-        Me.btnAudioDefaults.TabIndex = 8
-        Me.btnAudioDefaults.Text = "Defaults"
-        Me.btnAudioDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnAudioDefaults.UseVisualStyleBackColor = True
-        '
-        'gbVideo
-        '
-        Me.gbVideo.AutoSize = True
-        Me.gbVideo.Controls.Add(Me.tblVideo)
-        Me.gbVideo.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbVideo.Location = New System.Drawing.Point(275, 3)
-        Me.gbVideo.Name = "gbVideo"
-        Me.gbVideo.Size = New System.Drawing.Size(266, 215)
-        Me.gbVideo.TabIndex = 1
-        Me.gbVideo.TabStop = False
-        Me.gbVideo.Text = "Video Codec Mapping"
-        '
-        'tblVideo
-        '
-        Me.tblVideo.AutoSize = True
-        Me.tblVideo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tblVideo.BackColor = System.Drawing.Color.White
-        Me.tblVideo.ColumnCount = 1
-        Me.tblVideo.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblVideo.Controls.Add(Me.dgvVideo, 0, 0)
-        Me.tblVideo.Controls.Add(Me.btnVideoDefaults, 0, 1)
-        Me.tblVideo.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblVideo.Location = New System.Drawing.Point(3, 16)
-        Me.tblVideo.Name = "tblVideo"
-        Me.tblVideo.RowCount = 2
-        Me.tblVideo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblVideo.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblVideo.Size = New System.Drawing.Size(260, 196)
-        Me.tblVideo.TabIndex = 0
-        '
-        'dgvVideo
-        '
-        Me.dgvVideo.AllowUserToResizeColumns = False
-        Me.dgvVideo.AllowUserToResizeRows = False
-        Me.dgvVideo.BackgroundColor = System.Drawing.Color.White
-        Me.dgvVideo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.dgvVideo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvVideo.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colVideoDetected, Me.colVideoMappedCodec})
-        Me.dgvVideo.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvVideo.Location = New System.Drawing.Point(3, 3)
-        Me.dgvVideo.Name = "dgvVideo"
-        Me.dgvVideo.RowHeadersWidth = 25
-        Me.dgvVideo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvVideo.ShowCellErrors = False
-        Me.dgvVideo.ShowCellToolTips = False
-        Me.dgvVideo.ShowRowErrors = False
-        Me.dgvVideo.Size = New System.Drawing.Size(254, 161)
-        Me.dgvVideo.TabIndex = 5
-        '
-        'btnVideoDefaults
-        '
-        Me.btnVideoDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnVideoDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnVideoDefaults.Image = CType(resources.GetObject("btnVideoDefaults.Image"), System.Drawing.Image)
-        Me.btnVideoDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnVideoDefaults.Location = New System.Drawing.Point(152, 170)
-        Me.btnVideoDefaults.Name = "btnVideoDefaults"
-        Me.btnVideoDefaults.Size = New System.Drawing.Size(105, 23)
-        Me.btnVideoDefaults.TabIndex = 9
-        Me.btnVideoDefaults.Text = "Defaults"
-        Me.btnVideoDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnVideoDefaults.UseVisualStyleBackColor = True
         '
         'colAudioDetected
         '
@@ -228,6 +151,69 @@ Partial Class frmOption_AVCodecMapping
         Me.colAudioAdditionalFeatures.HeaderText = "Additional Features"
         Me.colAudioAdditionalFeatures.Name = "colAudioAdditionalFeatures"
         '
+        'btnAudioDefaults
+        '
+        Me.btnAudioDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnAudioDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAudioDefaults.Image = CType(resources.GetObject("btnAudioDefaults.Image"), System.Drawing.Image)
+        Me.btnAudioDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAudioDefaults.Location = New System.Drawing.Point(157, 182)
+        Me.btnAudioDefaults.Name = "btnAudioDefaults"
+        Me.btnAudioDefaults.Size = New System.Drawing.Size(105, 23)
+        Me.btnAudioDefaults.TabIndex = 8
+        Me.btnAudioDefaults.Text = "Defaults"
+        Me.btnAudioDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnAudioDefaults.UseVisualStyleBackColor = True
+        '
+        'gbVideo
+        '
+        Me.gbVideo.AutoSize = True
+        Me.gbVideo.Controls.Add(Me.tblVideo)
+        Me.gbVideo.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbVideo.Location = New System.Drawing.Point(280, 3)
+        Me.gbVideo.Name = "gbVideo"
+        Me.gbVideo.Size = New System.Drawing.Size(272, 229)
+        Me.gbVideo.TabIndex = 1
+        Me.gbVideo.TabStop = False
+        Me.gbVideo.Text = "Video Codec Mapping"
+        '
+        'tblVideo
+        '
+        Me.tblVideo.AutoSize = True
+        Me.tblVideo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.tblVideo.BackColor = System.Drawing.Color.White
+        Me.tblVideo.ColumnCount = 1
+        Me.tblVideo.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblVideo.Controls.Add(Me.dgvVideo, 0, 0)
+        Me.tblVideo.Controls.Add(Me.btnVideoDefaults, 0, 1)
+        Me.tblVideo.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblVideo.Location = New System.Drawing.Point(3, 18)
+        Me.tblVideo.Name = "tblVideo"
+        Me.tblVideo.RowCount = 2
+        Me.tblVideo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblVideo.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblVideo.Size = New System.Drawing.Size(266, 208)
+        Me.tblVideo.TabIndex = 0
+        '
+        'dgvVideo
+        '
+        Me.dgvVideo.AllowUserToResizeColumns = False
+        Me.dgvVideo.AllowUserToResizeRows = False
+        Me.dgvVideo.BackgroundColor = System.Drawing.Color.White
+        Me.dgvVideo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvVideo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvVideo.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colVideoDetected, Me.colVideoMappedCodec})
+        Me.dgvVideo.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvVideo.Location = New System.Drawing.Point(3, 3)
+        Me.dgvVideo.Name = "dgvVideo"
+        Me.dgvVideo.RowHeadersWidth = 25
+        Me.dgvVideo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvVideo.ShowCellErrors = False
+        Me.dgvVideo.ShowCellToolTips = False
+        Me.dgvVideo.ShowRowErrors = False
+        Me.dgvVideo.Size = New System.Drawing.Size(260, 173)
+        Me.dgvVideo.TabIndex = 5
+        '
         'colVideoDetected
         '
         Me.colVideoDetected.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
@@ -243,12 +229,27 @@ Partial Class frmOption_AVCodecMapping
         Me.colVideoMappedCodec.Name = "colVideoMappedCodec"
         Me.colVideoMappedCodec.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         '
+        'btnVideoDefaults
+        '
+        Me.btnVideoDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnVideoDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnVideoDefaults.Image = CType(resources.GetObject("btnVideoDefaults.Image"), System.Drawing.Image)
+        Me.btnVideoDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnVideoDefaults.Location = New System.Drawing.Point(158, 182)
+        Me.btnVideoDefaults.Name = "btnVideoDefaults"
+        Me.btnVideoDefaults.Size = New System.Drawing.Size(105, 23)
+        Me.btnVideoDefaults.TabIndex = 9
+        Me.btnVideoDefaults.Text = "Defaults"
+        Me.btnVideoDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnVideoDefaults.UseVisualStyleBackColor = True
+        '
         'frmOption_AVCodecMapping
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(544, 221)
+        Me.ClientSize = New System.Drawing.Size(555, 235)
         Me.Controls.Add(Me.pnlSettings)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.Name = "frmOption_AVCodecMapping"
         Me.Text = "frmOption_AVCodecMapping"
         Me.pnlSettings.ResumeLayout(False)

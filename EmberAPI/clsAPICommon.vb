@@ -356,8 +356,7 @@ Public Class Enums
         MovieFilters
         MovieListSorting
         MoviesetListSorting
-        MoviesetSortTokens
-        MovieSortTokens
+        SortTokens
         TVEpisodeFilters
         TVEpisodeListSorting
         TVSeasonListSorting
@@ -365,7 +364,6 @@ Public Class Enums
         TVShowFilters
         TVShowListSorting
         TVShowMatching
-        TVShowSortTokens
         TrailerCodec
         ValidVideoExts
         ValidSubtitleExts

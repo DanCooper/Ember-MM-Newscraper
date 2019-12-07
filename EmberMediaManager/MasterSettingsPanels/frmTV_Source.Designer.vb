@@ -79,6 +79,29 @@ Partial Class frmTV_Source
         Me.txtTVSourcesRegexTVShowMatchingDefaultSeason = New System.Windows.Forms.TextBox()
         Me.lblTVSourcesRegexTVShowMatchingByDate = New System.Windows.Forms.Label()
         Me.chkTVSourcesRegexTVShowMatchingByDate = New System.Windows.Forms.CheckBox()
+        Me.chkTVGeneralMarkNewShows = New System.Windows.Forms.CheckBox()
+        Me.chkTVGeneralMarkNewEpisodes = New System.Windows.Forms.CheckBox()
+        Me.gbTVShowFilterOpts = New System.Windows.Forms.GroupBox()
+        Me.tblTVShowFilterOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnTVShowFilterRemove = New System.Windows.Forms.Button()
+        Me.btnTVShowFilterDown = New System.Windows.Forms.Button()
+        Me.btnTVShowFilterReset = New System.Windows.Forms.Button()
+        Me.btnTVShowFilterUp = New System.Windows.Forms.Button()
+        Me.chkTVShowProperCase = New System.Windows.Forms.CheckBox()
+        Me.lstTVShowFilter = New System.Windows.Forms.ListBox()
+        Me.btnTVShowFilterAdd = New System.Windows.Forms.Button()
+        Me.txtTVShowFilter = New System.Windows.Forms.TextBox()
+        Me.gbTVEpisodeFilterOpts = New System.Windows.Forms.GroupBox()
+        Me.tblTVEpisodeFilterOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnTVEpisodeFilterRemove = New System.Windows.Forms.Button()
+        Me.btnTVEpisodeFilterDown = New System.Windows.Forms.Button()
+        Me.btnTVEpisodeFilterReset = New System.Windows.Forms.Button()
+        Me.btnTVEpisodeFilterUp = New System.Windows.Forms.Button()
+        Me.chkTVEpisodeNoFilter = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodeProperCase = New System.Windows.Forms.CheckBox()
+        Me.btnTVEpisodeFilterAdd = New System.Windows.Forms.Button()
+        Me.lstTVEpisodeFilter = New System.Windows.Forms.ListBox()
+        Me.txtTVEpisodeFilter = New System.Windows.Forms.TextBox()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
         Me.tcTVSources.SuspendLayout()
@@ -95,6 +118,10 @@ Partial Class frmTV_Source
         Me.gbTVSourcesRegexTVShowMatching.SuspendLayout()
         Me.tblTVSourcesRegexTVShowMatching.SuspendLayout()
         Me.tblTVSourcesRegexTVShowMatchingEdit.SuspendLayout()
+        Me.gbTVShowFilterOpts.SuspendLayout()
+        Me.tblTVShowFilterOpts.SuspendLayout()
+        Me.gbTVEpisodeFilterOpts.SuspendLayout()
+        Me.tblTVEpisodeFilterOpts.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -105,7 +132,7 @@ Partial Class frmTV_Source
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(800, 450)
+        Me.pnlSettings.Size = New System.Drawing.Size(898, 658)
         Me.pnlSettings.TabIndex = 12
         Me.pnlSettings.Visible = False
         '
@@ -123,7 +150,7 @@ Partial Class frmTV_Source
         Me.tblSettings.RowCount = 2
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettings.Size = New System.Drawing.Size(800, 450)
+        Me.tblSettings.Size = New System.Drawing.Size(898, 658)
         Me.tblSettings.TabIndex = 1
         '
         'tcTVSources
@@ -157,6 +184,8 @@ Partial Class frmTV_Source
         Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblTVSourcesGeneral.Controls.Add(Me.gbTVEpisodeFilterOpts, 0, 6)
+        Me.tblTVSourcesGeneral.Controls.Add(Me.gbTVShowFilterOpts, 0, 6)
         Me.tblTVSourcesGeneral.Controls.Add(Me.lvTVSources, 0, 0)
         Me.tblTVSourcesGeneral.Controls.Add(Me.gbTVSourcesMiscOpts, 1, 4)
         Me.tblTVSourcesGeneral.Controls.Add(Me.btnRemTVSource, 2, 2)
@@ -237,9 +266,9 @@ Partial Class frmTV_Source
         Me.gbTVSourcesMiscOpts.Controls.Add(Me.tblTVSourcesMiscOpts)
         Me.gbTVSourcesMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(351, 235)
+        Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(335, 235)
         Me.gbTVSourcesMiscOpts.Name = "gbTVSourcesMiscOpts"
-        Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(468, 72)
+        Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(484, 95)
         Me.gbTVSourcesMiscOpts.TabIndex = 4
         Me.gbTVSourcesMiscOpts.TabStop = False
         Me.gbTVSourcesMiscOpts.Text = "Miscellaneous Options"
@@ -252,6 +281,8 @@ Partial Class frmTV_Source
         Me.tblTVSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesMiscOpts.Controls.Add(Me.chkTVGeneralMarkNewEpisodes, 0, 2)
+        Me.tblTVSourcesMiscOpts.Controls.Add(Me.chkTVGeneralMarkNewShows, 0, 2)
         Me.tblTVSourcesMiscOpts.Controls.Add(Me.chkTVCleanDB, 0, 1)
         Me.tblTVSourcesMiscOpts.Controls.Add(Me.lblTVSkipLessThanMB, 2, 0)
         Me.tblTVSourcesMiscOpts.Controls.Add(Me.lblTVSkipLessThan, 0, 0)
@@ -263,7 +294,7 @@ Partial Class frmTV_Source
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesMiscOpts.Size = New System.Drawing.Size(462, 51)
+        Me.tblTVSourcesMiscOpts.Size = New System.Drawing.Size(478, 74)
         Me.tblTVSourcesMiscOpts.TabIndex = 7
         '
         'chkTVCleanDB
@@ -286,7 +317,7 @@ Partial Class frmTV_Source
         Me.lblTVSkipLessThanMB.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSkipLessThanMB.AutoSize = True
         Me.lblTVSkipLessThanMB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVSkipLessThanMB.Location = New System.Drawing.Point(188, 7)
+        Me.lblTVSkipLessThanMB.Location = New System.Drawing.Point(257, 7)
         Me.lblTVSkipLessThanMB.Name = "lblTVSkipLessThanMB"
         Me.lblTVSkipLessThanMB.Size = New System.Drawing.Size(24, 13)
         Me.lblTVSkipLessThanMB.TabIndex = 2
@@ -307,7 +338,7 @@ Partial Class frmTV_Source
         '
         Me.txtTVSkipLessThan.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSkipLessThan.Location = New System.Drawing.Point(131, 3)
+        Me.txtTVSkipLessThan.Location = New System.Drawing.Point(136, 3)
         Me.txtTVSkipLessThan.Name = "txtTVSkipLessThan"
         Me.txtTVSkipLessThan.Size = New System.Drawing.Size(51, 22)
         Me.txtTVSkipLessThan.TabIndex = 0
@@ -359,9 +390,9 @@ Partial Class frmTV_Source
         Me.gbTVSourcesDefaultsOpts.Controls.Add(Me.tblTVSourcesDefaultsOpts)
         Me.gbTVSourcesDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbTVSourcesDefaultsOpts.Location = New System.Drawing.Point(351, 114)
+        Me.gbTVSourcesDefaultsOpts.Location = New System.Drawing.Point(335, 114)
         Me.gbTVSourcesDefaultsOpts.Name = "gbTVSourcesDefaultsOpts"
-        Me.gbTVSourcesDefaultsOpts.Size = New System.Drawing.Size(468, 115)
+        Me.gbTVSourcesDefaultsOpts.Size = New System.Drawing.Size(484, 115)
         Me.gbTVSourcesDefaultsOpts.TabIndex = 4
         Me.gbTVSourcesDefaultsOpts.TabStop = False
         Me.gbTVSourcesDefaultsOpts.Text = "Defaults for new Sources"
@@ -385,7 +416,7 @@ Partial Class frmTV_Source
         Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesDefaultsOpts.Size = New System.Drawing.Size(462, 94)
+        Me.tblTVSourcesDefaultsOpts.Size = New System.Drawing.Size(478, 94)
         Me.tblTVSourcesDefaultsOpts.TabIndex = 5
         '
         'cbTVGeneralLang
@@ -774,11 +805,304 @@ Partial Class frmTV_Source
         Me.chkTVSourcesRegexTVShowMatchingByDate.TabIndex = 10
         Me.chkTVSourcesRegexTVShowMatchingByDate.UseVisualStyleBackColor = True
         '
+        'chkTVGeneralMarkNewShows
+        '
+        Me.chkTVGeneralMarkNewShows.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVGeneralMarkNewShows.AutoSize = True
+        Me.chkTVGeneralMarkNewShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVGeneralMarkNewShows.Location = New System.Drawing.Point(136, 54)
+        Me.chkTVGeneralMarkNewShows.Name = "chkTVGeneralMarkNewShows"
+        Me.chkTVGeneralMarkNewShows.Size = New System.Drawing.Size(115, 17)
+        Me.chkTVGeneralMarkNewShows.TabIndex = 6
+        Me.chkTVGeneralMarkNewShows.Text = "Mark New Shows"
+        Me.chkTVGeneralMarkNewShows.UseVisualStyleBackColor = True
+        '
+        'chkTVGeneralMarkNewEpisodes
+        '
+        Me.chkTVGeneralMarkNewEpisodes.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVGeneralMarkNewEpisodes.AutoSize = True
+        Me.chkTVGeneralMarkNewEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVGeneralMarkNewEpisodes.Location = New System.Drawing.Point(3, 54)
+        Me.chkTVGeneralMarkNewEpisodes.Name = "chkTVGeneralMarkNewEpisodes"
+        Me.chkTVGeneralMarkNewEpisodes.Size = New System.Drawing.Size(127, 17)
+        Me.chkTVGeneralMarkNewEpisodes.TabIndex = 7
+        Me.chkTVGeneralMarkNewEpisodes.Text = "Mark New Episodes"
+        Me.chkTVGeneralMarkNewEpisodes.UseVisualStyleBackColor = True
+        '
+        'gbTVShowFilterOpts
+        '
+        Me.gbTVShowFilterOpts.AutoSize = True
+        Me.gbTVShowFilterOpts.Controls.Add(Me.tblTVShowFilterOpts)
+        Me.gbTVShowFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbTVShowFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVShowFilterOpts.Location = New System.Drawing.Point(335, 336)
+        Me.gbTVShowFilterOpts.Name = "gbTVShowFilterOpts"
+        Me.gbTVShowFilterOpts.Size = New System.Drawing.Size(358, 203)
+        Me.gbTVShowFilterOpts.TabIndex = 5
+        Me.gbTVShowFilterOpts.TabStop = False
+        Me.gbTVShowFilterOpts.Text = "Show Folder/File Name Filters"
+        '
+        'tblTVShowFilterOpts
+        '
+        Me.tblTVShowFilterOpts.AutoSize = True
+        Me.tblTVShowFilterOpts.ColumnCount = 6
+        Me.tblTVShowFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVShowFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVShowFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVShowFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVShowFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVShowFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVShowFilterOpts.Controls.Add(Me.btnTVShowFilterRemove, 4, 2)
+        Me.tblTVShowFilterOpts.Controls.Add(Me.btnTVShowFilterDown, 3, 2)
+        Me.tblTVShowFilterOpts.Controls.Add(Me.btnTVShowFilterReset, 4, 0)
+        Me.tblTVShowFilterOpts.Controls.Add(Me.btnTVShowFilterUp, 2, 2)
+        Me.tblTVShowFilterOpts.Controls.Add(Me.chkTVShowProperCase, 0, 0)
+        Me.tblTVShowFilterOpts.Controls.Add(Me.lstTVShowFilter, 0, 1)
+        Me.tblTVShowFilterOpts.Controls.Add(Me.btnTVShowFilterAdd, 1, 2)
+        Me.tblTVShowFilterOpts.Controls.Add(Me.txtTVShowFilter, 0, 2)
+        Me.tblTVShowFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTVShowFilterOpts.Location = New System.Drawing.Point(3, 18)
+        Me.tblTVShowFilterOpts.Name = "tblTVShowFilterOpts"
+        Me.tblTVShowFilterOpts.RowCount = 4
+        Me.tblTVShowFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVShowFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVShowFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVShowFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVShowFilterOpts.Size = New System.Drawing.Size(352, 182)
+        Me.tblTVShowFilterOpts.TabIndex = 5
+        '
+        'btnTVShowFilterRemove
+        '
+        Me.btnTVShowFilterRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVShowFilterRemove.Image = CType(resources.GetObject("btnTVShowFilterRemove.Image"), System.Drawing.Image)
+        Me.btnTVShowFilterRemove.Location = New System.Drawing.Point(294, 133)
+        Me.btnTVShowFilterRemove.Name = "btnTVShowFilterRemove"
+        Me.btnTVShowFilterRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVShowFilterRemove.TabIndex = 7
+        Me.btnTVShowFilterRemove.UseVisualStyleBackColor = True
+        '
+        'btnTVShowFilterDown
+        '
+        Me.btnTVShowFilterDown.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnTVShowFilterDown.Image = CType(resources.GetObject("btnTVShowFilterDown.Image"), System.Drawing.Image)
+        Me.btnTVShowFilterDown.Location = New System.Drawing.Point(262, 133)
+        Me.btnTVShowFilterDown.Name = "btnTVShowFilterDown"
+        Me.btnTVShowFilterDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVShowFilterDown.TabIndex = 6
+        Me.btnTVShowFilterDown.UseVisualStyleBackColor = True
+        '
+        'btnTVShowFilterReset
+        '
+        Me.btnTVShowFilterReset.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVShowFilterReset.Image = CType(resources.GetObject("btnTVShowFilterReset.Image"), System.Drawing.Image)
+        Me.btnTVShowFilterReset.Location = New System.Drawing.Point(294, 3)
+        Me.btnTVShowFilterReset.Name = "btnTVShowFilterReset"
+        Me.btnTVShowFilterReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVShowFilterReset.TabIndex = 2
+        Me.btnTVShowFilterReset.UseVisualStyleBackColor = True
+        '
+        'btnTVShowFilterUp
+        '
+        Me.btnTVShowFilterUp.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnTVShowFilterUp.Image = CType(resources.GetObject("btnTVShowFilterUp.Image"), System.Drawing.Image)
+        Me.btnTVShowFilterUp.Location = New System.Drawing.Point(233, 133)
+        Me.btnTVShowFilterUp.Name = "btnTVShowFilterUp"
+        Me.btnTVShowFilterUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVShowFilterUp.TabIndex = 5
+        Me.btnTVShowFilterUp.UseVisualStyleBackColor = True
+        '
+        'chkTVShowProperCase
+        '
+        Me.chkTVShowProperCase.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVShowProperCase.AutoSize = True
+        Me.tblTVShowFilterOpts.SetColumnSpan(Me.chkTVShowProperCase, 4)
+        Me.chkTVShowProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVShowProperCase.Location = New System.Drawing.Point(3, 6)
+        Me.chkTVShowProperCase.Name = "chkTVShowProperCase"
+        Me.chkTVShowProperCase.Size = New System.Drawing.Size(181, 17)
+        Me.chkTVShowProperCase.TabIndex = 0
+        Me.chkTVShowProperCase.Text = "Convert Names to Proper Case"
+        Me.chkTVShowProperCase.UseVisualStyleBackColor = True
+        '
+        'lstTVShowFilter
+        '
+        Me.tblTVShowFilterOpts.SetColumnSpan(Me.lstTVShowFilter, 5)
+        Me.lstTVShowFilter.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lstTVShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstTVShowFilter.FormattingEnabled = True
+        Me.lstTVShowFilter.Location = New System.Drawing.Point(3, 32)
+        Me.lstTVShowFilter.Name = "lstTVShowFilter"
+        Me.lstTVShowFilter.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstTVShowFilter.Size = New System.Drawing.Size(314, 95)
+        Me.lstTVShowFilter.TabIndex = 1
+        '
+        'btnTVShowFilterAdd
+        '
+        Me.btnTVShowFilterAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnTVShowFilterAdd.Image = CType(resources.GetObject("btnTVShowFilterAdd.Image"), System.Drawing.Image)
+        Me.btnTVShowFilterAdd.Location = New System.Drawing.Point(204, 133)
+        Me.btnTVShowFilterAdd.Name = "btnTVShowFilterAdd"
+        Me.btnTVShowFilterAdd.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVShowFilterAdd.TabIndex = 4
+        Me.btnTVShowFilterAdd.UseVisualStyleBackColor = True
+        '
+        'txtTVShowFilter
+        '
+        Me.txtTVShowFilter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtTVShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVShowFilter.Location = New System.Drawing.Point(3, 133)
+        Me.txtTVShowFilter.Name = "txtTVShowFilter"
+        Me.txtTVShowFilter.Size = New System.Drawing.Size(195, 22)
+        Me.txtTVShowFilter.TabIndex = 3
+        '
+        'gbTVEpisodeFilterOpts
+        '
+        Me.gbTVEpisodeFilterOpts.AutoSize = True
+        Me.gbTVEpisodeFilterOpts.Controls.Add(Me.tblTVEpisodeFilterOpts)
+        Me.gbTVEpisodeFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbTVEpisodeFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVEpisodeFilterOpts.Location = New System.Drawing.Point(3, 336)
+        Me.gbTVEpisodeFilterOpts.Name = "gbTVEpisodeFilterOpts"
+        Me.gbTVEpisodeFilterOpts.Size = New System.Drawing.Size(326, 203)
+        Me.gbTVEpisodeFilterOpts.TabIndex = 6
+        Me.gbTVEpisodeFilterOpts.TabStop = False
+        Me.gbTVEpisodeFilterOpts.Text = "Episode Folder/File Name Filters"
+        '
+        'tblTVEpisodeFilterOpts
+        '
+        Me.tblTVEpisodeFilterOpts.AutoSize = True
+        Me.tblTVEpisodeFilterOpts.ColumnCount = 6
+        Me.tblTVEpisodeFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVEpisodeFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVEpisodeFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVEpisodeFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVEpisodeFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVEpisodeFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVEpisodeFilterOpts.Controls.Add(Me.btnTVEpisodeFilterRemove, 4, 3)
+        Me.tblTVEpisodeFilterOpts.Controls.Add(Me.btnTVEpisodeFilterDown, 3, 3)
+        Me.tblTVEpisodeFilterOpts.Controls.Add(Me.btnTVEpisodeFilterReset, 4, 1)
+        Me.tblTVEpisodeFilterOpts.Controls.Add(Me.btnTVEpisodeFilterUp, 2, 3)
+        Me.tblTVEpisodeFilterOpts.Controls.Add(Me.chkTVEpisodeNoFilter, 0, 0)
+        Me.tblTVEpisodeFilterOpts.Controls.Add(Me.chkTVEpisodeProperCase, 0, 1)
+        Me.tblTVEpisodeFilterOpts.Controls.Add(Me.btnTVEpisodeFilterAdd, 1, 3)
+        Me.tblTVEpisodeFilterOpts.Controls.Add(Me.lstTVEpisodeFilter, 0, 2)
+        Me.tblTVEpisodeFilterOpts.Controls.Add(Me.txtTVEpisodeFilter, 0, 3)
+        Me.tblTVEpisodeFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTVEpisodeFilterOpts.Location = New System.Drawing.Point(3, 18)
+        Me.tblTVEpisodeFilterOpts.Name = "tblTVEpisodeFilterOpts"
+        Me.tblTVEpisodeFilterOpts.RowCount = 5
+        Me.tblTVEpisodeFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVEpisodeFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVEpisodeFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVEpisodeFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVEpisodeFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVEpisodeFilterOpts.Size = New System.Drawing.Size(320, 182)
+        Me.tblTVEpisodeFilterOpts.TabIndex = 5
+        '
+        'btnTVEpisodeFilterRemove
+        '
+        Me.btnTVEpisodeFilterRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVEpisodeFilterRemove.Image = CType(resources.GetObject("btnTVEpisodeFilterRemove.Image"), System.Drawing.Image)
+        Me.btnTVEpisodeFilterRemove.Location = New System.Drawing.Point(294, 156)
+        Me.btnTVEpisodeFilterRemove.Name = "btnTVEpisodeFilterRemove"
+        Me.btnTVEpisodeFilterRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVEpisodeFilterRemove.TabIndex = 8
+        Me.btnTVEpisodeFilterRemove.UseVisualStyleBackColor = True
+        '
+        'btnTVEpisodeFilterDown
+        '
+        Me.btnTVEpisodeFilterDown.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnTVEpisodeFilterDown.Image = CType(resources.GetObject("btnTVEpisodeFilterDown.Image"), System.Drawing.Image)
+        Me.btnTVEpisodeFilterDown.Location = New System.Drawing.Point(262, 156)
+        Me.btnTVEpisodeFilterDown.Name = "btnTVEpisodeFilterDown"
+        Me.btnTVEpisodeFilterDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVEpisodeFilterDown.TabIndex = 7
+        Me.btnTVEpisodeFilterDown.UseVisualStyleBackColor = True
+        '
+        'btnTVEpisodeFilterReset
+        '
+        Me.btnTVEpisodeFilterReset.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVEpisodeFilterReset.Image = CType(resources.GetObject("btnTVEpisodeFilterReset.Image"), System.Drawing.Image)
+        Me.btnTVEpisodeFilterReset.Location = New System.Drawing.Point(294, 26)
+        Me.btnTVEpisodeFilterReset.Name = "btnTVEpisodeFilterReset"
+        Me.btnTVEpisodeFilterReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVEpisodeFilterReset.TabIndex = 3
+        Me.btnTVEpisodeFilterReset.UseVisualStyleBackColor = True
+        '
+        'btnTVEpisodeFilterUp
+        '
+        Me.btnTVEpisodeFilterUp.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnTVEpisodeFilterUp.Image = CType(resources.GetObject("btnTVEpisodeFilterUp.Image"), System.Drawing.Image)
+        Me.btnTVEpisodeFilterUp.Location = New System.Drawing.Point(233, 156)
+        Me.btnTVEpisodeFilterUp.Name = "btnTVEpisodeFilterUp"
+        Me.btnTVEpisodeFilterUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVEpisodeFilterUp.TabIndex = 6
+        Me.btnTVEpisodeFilterUp.UseVisualStyleBackColor = True
+        '
+        'chkTVEpisodeNoFilter
+        '
+        Me.chkTVEpisodeNoFilter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVEpisodeNoFilter.AutoSize = True
+        Me.chkTVEpisodeNoFilter.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.tblTVEpisodeFilterOpts.SetColumnSpan(Me.chkTVEpisodeNoFilter, 5)
+        Me.chkTVEpisodeNoFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkTVEpisodeNoFilter.Location = New System.Drawing.Point(3, 3)
+        Me.chkTVEpisodeNoFilter.Name = "chkTVEpisodeNoFilter"
+        Me.chkTVEpisodeNoFilter.Size = New System.Drawing.Size(222, 17)
+        Me.chkTVEpisodeNoFilter.TabIndex = 0
+        Me.chkTVEpisodeNoFilter.Text = "Build Episode Title Instead of Filtering"
+        Me.chkTVEpisodeNoFilter.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkTVEpisodeNoFilter.UseVisualStyleBackColor = True
+        '
+        'chkTVEpisodeProperCase
+        '
+        Me.chkTVEpisodeProperCase.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVEpisodeProperCase.AutoSize = True
+        Me.tblTVEpisodeFilterOpts.SetColumnSpan(Me.chkTVEpisodeProperCase, 4)
+        Me.chkTVEpisodeProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVEpisodeProperCase.Location = New System.Drawing.Point(3, 29)
+        Me.chkTVEpisodeProperCase.Name = "chkTVEpisodeProperCase"
+        Me.chkTVEpisodeProperCase.Size = New System.Drawing.Size(181, 17)
+        Me.chkTVEpisodeProperCase.TabIndex = 1
+        Me.chkTVEpisodeProperCase.Text = "Convert Names to Proper Case"
+        Me.chkTVEpisodeProperCase.UseVisualStyleBackColor = True
+        '
+        'btnTVEpisodeFilterAdd
+        '
+        Me.btnTVEpisodeFilterAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnTVEpisodeFilterAdd.Image = CType(resources.GetObject("btnTVEpisodeFilterAdd.Image"), System.Drawing.Image)
+        Me.btnTVEpisodeFilterAdd.Location = New System.Drawing.Point(204, 156)
+        Me.btnTVEpisodeFilterAdd.Name = "btnTVEpisodeFilterAdd"
+        Me.btnTVEpisodeFilterAdd.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVEpisodeFilterAdd.TabIndex = 5
+        Me.btnTVEpisodeFilterAdd.UseVisualStyleBackColor = True
+        '
+        'lstTVEpisodeFilter
+        '
+        Me.tblTVEpisodeFilterOpts.SetColumnSpan(Me.lstTVEpisodeFilter, 5)
+        Me.lstTVEpisodeFilter.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lstTVEpisodeFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstTVEpisodeFilter.FormattingEnabled = True
+        Me.lstTVEpisodeFilter.Location = New System.Drawing.Point(3, 55)
+        Me.lstTVEpisodeFilter.Name = "lstTVEpisodeFilter"
+        Me.lstTVEpisodeFilter.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstTVEpisodeFilter.Size = New System.Drawing.Size(314, 95)
+        Me.lstTVEpisodeFilter.TabIndex = 2
+        '
+        'txtTVEpisodeFilter
+        '
+        Me.txtTVEpisodeFilter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtTVEpisodeFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVEpisodeFilter.Location = New System.Drawing.Point(3, 156)
+        Me.txtTVEpisodeFilter.Name = "txtTVEpisodeFilter"
+        Me.txtTVEpisodeFilter.Size = New System.Drawing.Size(195, 22)
+        Me.txtTVEpisodeFilter.TabIndex = 4
+        '
         'frmTV_Source
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(898, 658)
         Me.Controls.Add(Me.pnlSettings)
         Me.Name = "frmTV_Source"
         Me.Text = "frmTV_Source"
@@ -812,6 +1136,14 @@ Partial Class frmTV_Source
         Me.tblTVSourcesRegexTVShowMatching.PerformLayout()
         Me.tblTVSourcesRegexTVShowMatchingEdit.ResumeLayout(False)
         Me.tblTVSourcesRegexTVShowMatchingEdit.PerformLayout()
+        Me.gbTVShowFilterOpts.ResumeLayout(False)
+        Me.gbTVShowFilterOpts.PerformLayout()
+        Me.tblTVShowFilterOpts.ResumeLayout(False)
+        Me.tblTVShowFilterOpts.PerformLayout()
+        Me.gbTVEpisodeFilterOpts.ResumeLayout(False)
+        Me.gbTVEpisodeFilterOpts.PerformLayout()
+        Me.tblTVEpisodeFilterOpts.ResumeLayout(False)
+        Me.tblTVEpisodeFilterOpts.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -873,4 +1205,27 @@ Partial Class frmTV_Source
     Friend WithEvents txtTVSourcesRegexTVShowMatchingDefaultSeason As TextBox
     Friend WithEvents lblTVSourcesRegexTVShowMatchingByDate As Label
     Friend WithEvents chkTVSourcesRegexTVShowMatchingByDate As CheckBox
+    Friend WithEvents chkTVGeneralMarkNewShows As CheckBox
+    Friend WithEvents chkTVGeneralMarkNewEpisodes As CheckBox
+    Friend WithEvents gbTVShowFilterOpts As GroupBox
+    Friend WithEvents tblTVShowFilterOpts As TableLayoutPanel
+    Friend WithEvents btnTVShowFilterRemove As Button
+    Friend WithEvents btnTVShowFilterDown As Button
+    Friend WithEvents btnTVShowFilterReset As Button
+    Friend WithEvents btnTVShowFilterUp As Button
+    Friend WithEvents chkTVShowProperCase As CheckBox
+    Friend WithEvents lstTVShowFilter As ListBox
+    Friend WithEvents btnTVShowFilterAdd As Button
+    Friend WithEvents txtTVShowFilter As TextBox
+    Friend WithEvents gbTVEpisodeFilterOpts As GroupBox
+    Friend WithEvents tblTVEpisodeFilterOpts As TableLayoutPanel
+    Friend WithEvents btnTVEpisodeFilterRemove As Button
+    Friend WithEvents btnTVEpisodeFilterDown As Button
+    Friend WithEvents btnTVEpisodeFilterReset As Button
+    Friend WithEvents btnTVEpisodeFilterUp As Button
+    Friend WithEvents chkTVEpisodeNoFilter As CheckBox
+    Friend WithEvents chkTVEpisodeProperCase As CheckBox
+    Friend WithEvents btnTVEpisodeFilterAdd As Button
+    Friend WithEvents lstTVEpisodeFilter As ListBox
+    Friend WithEvents txtTVEpisodeFilter As TextBox
 End Class

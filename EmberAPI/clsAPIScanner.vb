@@ -213,7 +213,7 @@ Public Class Scanner
             End If
         Next
         For Each fFile As String In sList
-            For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
+            For Each ext In Master.eSettings.Options.FileSystem.ValidSubtitleExtensions
                 If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
                     DBElement.Subtitles.Add(New MediaContainers.Subtitle With {.Path = fFile, .Forced = isForced})
@@ -223,7 +223,7 @@ Public Class Scanner
 
         'theme
         For Each a In FileUtils.FileNames.GetFileNames(DBElement, Enums.ModifierType.MainTheme, bForced)
-            For Each ext As String In Master.eSettings.FileSystemValidThemeExts
+            For Each ext As String In Master.eSettings.Options.FileSystem.ValidThemeExtensions
                 If File.Exists(String.Concat(a, ext)) Then
                     DBElement.Theme.LocalFilePath = String.Concat(a, ext)
                     Exit For
@@ -234,7 +234,7 @@ Public Class Scanner
 
         'trailer
         For Each a In FileUtils.FileNames.GetFileNames(DBElement, Enums.ModifierType.MainTrailer, bForced)
-            For Each ext As String In Master.eSettings.FileSystemValidExts
+            For Each ext As String In Master.eSettings.Options.FileSystem.ValidVideoExtensions
                 If File.Exists(String.Concat(a, ext)) Then
                     DBElement.Trailer.LocalFilePath = String.Concat(a, ext)
                     Exit For
@@ -383,7 +383,7 @@ Public Class Scanner
             End If
         Next
         For Each fFile As String In sList
-            For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
+            For Each ext In Master.eSettings.Options.FileSystem.ValidSubtitleExtensions
                 If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
                     DBElement.Subtitles.Add(New MediaContainers.Subtitle With {.Path = fFile, .Forced = isForced})
@@ -588,7 +588,7 @@ Public Class Scanner
 
         'theme
         For Each a In FileUtils.FileNames.GetFileNames(DBElement, Enums.ModifierType.MainTheme)
-            For Each ext As String In Master.eSettings.FileSystemValidThemeExts
+            For Each ext As String In Master.eSettings.Options.FileSystem.ValidThemeExtensions
                 If File.Exists(String.Concat(a, ext)) Then
                     DBElement.Theme.LocalFilePath = String.Concat(a, ext)
                     Exit For
@@ -1491,7 +1491,7 @@ Public Class Scanner
                 For Each nSource As DataRow In dtSources.Rows
                     Dim sSource As Database.DBSource = Master.DB.Load_Source_Movie(CLng(nSource.Item(Database.Helpers.GetMainIdName(Database.TableName.moviesource))))
                     Try
-                        If Master.eSettings.MovieSortBeforeScan OrElse sSource.IsSingle Then
+                        If Master.eSettings.Movie.SourceSettings.SortBeforeScan OrElse sSource.IsSingle Then
                             FileUtils.SortFiles(nSource.Item(Database.Helpers.GetColumnName(Database.ColumnName.Path)).ToString)
                         End If
                     Catch ex As Exception
@@ -1540,15 +1540,15 @@ Public Class Scanner
         End If
 
         'no separate MovieSet scanning possible, so we clean MovieSets when movies were scanned
-        If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse
+        If (Master.eSettings.Movie.SourceSettings.CleanDBAfterUpdate AndAlso Args.Scan.Movies) OrElse
             (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse
-            (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
+            (Master.eSettings.TVShow.SourceSettings.CleanDBAfterUpdate AndAlso Args.Scan.TV) Then
             bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.CleaningDatabase, .Message = String.Empty})
             'remove any db entries that no longer exist
-            Master.DB.Clean(
-                Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies,
-                Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets,
-                Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceID)
+            Master.DB.Clean(Master.eSettings.Movie.SourceSettings.CleanDBAfterUpdate AndAlso Args.Scan.Movies,
+                            Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets,
+                            Master.eSettings.TVShow.SourceSettings.CleanDBAfterUpdate AndAlso Args.Scan.TV, Args.SourceID
+                            )
         End If
 
         e.Result = Args

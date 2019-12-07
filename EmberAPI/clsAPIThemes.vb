@@ -111,7 +111,7 @@ Public Class Themes
 
         Try
             For Each a In FileUtils.FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTheme, ForceFileCleanup)
-                For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                For Each t As String In Master.eSettings.Options.FileSystem.ValidThemeExtensions
                     If File.Exists(String.Concat(a, t)) Then
                         Delete(String.Concat(a, t))
                     End If
@@ -131,7 +131,7 @@ Public Class Themes
 
         Try
             For Each a In FileUtils.FileNames.GetFileNames(DBTVShow, Enums.ModifierType.MainTheme) ', ForceFileCleanup)
-                For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                For Each t As String In Master.eSettings.Options.FileSystem.ValidThemeExtensions
                     If File.Exists(String.Concat(a, t)) Then
                         Delete(String.Concat(a, t))
                     End If

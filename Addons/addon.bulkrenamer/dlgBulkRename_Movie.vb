@@ -140,7 +140,7 @@ Public Class dlgBulkRenamer_Movie
                                         If _currMovie.IDSpecified AndAlso _currMovie.FileItemSpecified Then
                                             Dim MovieFile As Renamer.FileRename = Renamer.GetInfo_Movie(_currMovie)
                                             _FFRenamer.Add_Movie(MovieFile)
-                                            bwLoadInfo.ReportProgress(iProg, StringUtils.SortTokens_Movie(_currMovie.Movie.Title))
+                                            bwLoadInfo.ReportProgress(iProg, StringUtils.SortTokens(_currMovie.Movie.Title))
                                         End If
                                     End If
                                 End If

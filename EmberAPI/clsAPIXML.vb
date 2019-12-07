@@ -181,10 +181,10 @@ Public Class APIXML
         End Try
     End Sub
 
-    Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.FileInfo, ByVal contentType As Enums.ContentType, ByVal videoSource As String) As Image()
+    Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.FileInfo, ByVal PreferredLanguage As String, ByVal contentType As Enums.ContentType, ByVal videoSource As String, ByVal ShowLangFlags As Boolean) As Image()
         Dim iReturn(19) As Image
         Dim tVideo As MediaContainers.Video = Info.GetBestVideo(fiAV)
-        Dim tAudio As MediaContainers.Audio = Info.GetBestAudio(fiAV, contentType)
+        Dim tAudio As MediaContainers.Audio = MetaData.GetBestAudio(fiAV, PreferredLanguage, contentType)
 
         If lFlags.Count > 0 OrElse dLanguages.Count > 0 Then
             Try
@@ -271,7 +271,7 @@ Public Class APIXML
                     End If
                 End If
 
-                If Master.eSettings.GeneralShowLangFlags Then
+                If ShowLangFlags Then
                     'Audio Language Flags has range iReturn(5) to iReturn(11)
                     Dim aIcon As Integer = 5
                     Dim hasMoreA As Boolean = fiAV.StreamDetails.Audio.Count > 7
@@ -586,57 +586,18 @@ Public Class APIXML
     End Enum
 
     Public Class Flag
-        Private _name As String
-        Private _image As Image
-        Private _path As String
-        Private _type As FlagType
 
-        Public Property Name() As String
-            Get
-                Return _name
-            End Get
-            Set(ByVal value As String)
-                _name = value
-            End Set
-        End Property
+#Region "Properties"
 
-        Public Property Image() As Image
-            Get
-                Return _image
-            End Get
-            Set(ByVal value As Image)
-                _image = value
-            End Set
-        End Property
+        Public Property Name() As String = String.Empty
 
-        Public Property Path() As String
-            Get
-                Return _path
-            End Get
-            Set(ByVal value As String)
-                _path = value
-            End Set
-        End Property
+        Public Property Image() As Image = Nothing
 
-        Public Property Type() As FlagType
-            Get
-                Return _type
-            End Get
-            Set(ByVal value As FlagType)
-                _type = value
-            End Set
-        End Property
+        Public Property Path() As String = String.Empty
 
-        Public Sub New()
-            Clear()
-        End Sub
+        Public Property Type() As FlagType = FlagType.VideoCodec
 
-        Public Sub Clear()
-            _name = String.Empty
-            _image = Nothing
-            _path = String.Empty
-            _type = FlagType.VideoCodec
-        End Sub
+#End Region 'Properties
 
     End Class
 

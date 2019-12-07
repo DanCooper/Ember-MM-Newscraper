@@ -145,6 +145,58 @@ Public Class MetaData
                 Return String.Empty
         End Select
     End Function
+    ''' <summary>
+    ''' Return the "best" or the "prefered language" audio stream of the videofile
+    ''' </summary>
+    ''' <param name="fileInfo"><c>MediaInfo.FileInfo</c> The Mediafile-container of the videofile</param>
+    ''' <returns>The best <c>MediaInfo.Audio</c> stream information of the videofile</returns>
+    ''' <remarks>
+    ''' This is used to determine which audio stream information should be displayed in Ember main view (icon display)
+    ''' The audiostream with most channels will be returned - if there are 2 or more streams which have the same "highest" channelcount then either the "DTSHD" stream or the one with highest bitrate will be returned
+    ''' 
+    ''' 2014/08/12 cocotus - Should work better: If there's more than one audiostream which highest channelcount, the one with highest bitrate or the DTSHD stream will be returned
+    ''' </remarks>
+    Public Shared Function GetBestAudio(ByVal fileInfo As MediaContainers.FileInfo, ByVal PreferredLanguage As String, ByVal contentType As Enums.ContentType) As MediaContainers.Audio
+        Dim nBestAudio As New MediaContainers.Audio
+        Dim nFilteredAudio As New MediaContainers.FileInfo
+        Dim bGetPrefLanguage As Boolean = False
+        Dim bHasPrefLanguage As Boolean = False
+        Dim strPrefLanguage As String = String.Empty
+        Dim iHighestBitrate As Integer = 0
+        Dim iHighestChannels As Integer = 0
+
+        If Not String.IsNullOrEmpty(PreferredLanguage) Then
+            bGetPrefLanguage = True
+            strPrefLanguage = PreferredLanguage.ToLower
+        End If
+
+        If bGetPrefLanguage AndAlso fileInfo.StreamDetails.Audio.Where(Function(f) f.LongLanguage.ToLower = strPrefLanguage).Count > 0 Then
+            For Each Stream As MediaContainers.Audio In fileInfo.StreamDetails.Audio
+                If Stream.LongLanguage.ToLower = strPrefLanguage Then
+                    nFilteredAudio.StreamDetails.Audio.Add(Stream)
+                End If
+            Next
+        Else
+            nFilteredAudio.StreamDetails.Audio.AddRange(fileInfo.StreamDetails.Audio)
+        End If
+
+        For Each miAudio As MediaContainers.Audio In nFilteredAudio.StreamDetails.Audio
+            If miAudio.ChannelsSpecified Then
+                If miAudio.Channels >= iHighestChannels AndAlso (miAudio.Bitrate > iHighestBitrate OrElse miAudio.Bitrate = 0) Then
+                    iHighestBitrate = miAudio.Bitrate
+                    iHighestChannels = miAudio.Channels
+                    nBestAudio.Bitrate = miAudio.Bitrate
+                    nBestAudio.Channels = miAudio.Channels
+                    nBestAudio.Codec = miAudio.Codec
+                    nBestAudio.Language = miAudio.Language
+                    nBestAudio.LongLanguage = miAudio.LongLanguage
+                End If
+            End If
+            If bGetPrefLanguage AndAlso miAudio.LongLanguage.ToLower = strPrefLanguage Then nBestAudio.HasPreferred = True
+        Next
+
+        Return nBestAudio
+    End Function
 
     Private Shared Function GetFileInfo(ByVal fileItem As FileItem, ByVal contentType As Enums.ContentType) As MediaContainers.FileInfo
         Dim nFileInfo As New MediaContainers.FileInfo
@@ -155,7 +207,7 @@ Public Class MetaData
 
             'scan Main video file to get all media informations
             If fileItem.bIsDiscImage Then
-                Dim nVirtualDrive As New FileUtils.VirtualDrive(fileItem.FirstPathFromStack)
+                Dim nVirtualDrive As New FileUtils.VirtualCloneDrive(fileItem.FirstPathFromStack)
                 If nVirtualDrive.IsReady Then
                     Dim nFileItemList As New FileItemList(nVirtualDrive.Path, contentType)
                     If nFileItemList.FileItems.Count > 0 Then
@@ -255,7 +307,7 @@ Public Class MetaData
                 If nFileInfo.StreamDetails.AudioSpecified Then
                     'do the audio codec mapping
                     For Each stream In nFileInfo.StreamDetails.Audio.Where(Function(f) f.CodecSpecified)
-                        For Each mapping In Master.eSettings.GeneralAudioCodecMapping
+                        For Each mapping In Master.eSettings.Options.AVCodecMapping.Audio
                             If stream.Codec = mapping.Codec Then
                                 stream.AdditionalFeatures = mapping.AdditionalFeatures
                                 stream.Codec = mapping.Mapping
@@ -266,7 +318,7 @@ Public Class MetaData
                 If nFileInfo.StreamDetails.VideoSpecified Then
                     'do the video codec mapping
                     For Each stream In nFileInfo.StreamDetails.Video.Where(Function(f) f.CodecSpecified)
-                        For Each mapping In Master.eSettings.GeneralVideoCodecMapping
+                        For Each mapping In Master.eSettings.Options.AVCodecMapping.Video
                             If stream.Codec = mapping.Codec Then
                                 stream.Codec = mapping.Mapping
                             End If

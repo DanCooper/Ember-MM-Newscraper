@@ -141,9 +141,10 @@ Namespace My
 
             Master.fLoading.SetLoadingMesg("Loading settings...")
             Master.eSettings.Load()
+            Manager.mSettings.Load()
 
             ' Force initialization of languages for main
-            Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
+            Master.eLang.LoadAllLanguage(Master.eSettings.Options.General.Language)
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading Translations..."))
             APIXML.CacheXMLs()

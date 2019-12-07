@@ -81,7 +81,6 @@ Partial Class frmOption_Connection
         '
         Me.gbProxy.AutoSize = True
         Me.gbProxy.Controls.Add(Me.tblProxy)
-        Me.gbProxy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbProxy.Location = New System.Drawing.Point(3, 3)
         Me.gbProxy.Name = "gbProxy"
         Me.gbProxy.Size = New System.Drawing.Size(362, 226)
@@ -123,7 +122,6 @@ Partial Class frmOption_Connection
         Me.gbCredentials.Controls.Add(Me.tblCredentials)
         Me.gbCredentials.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbCredentials.Enabled = False
-        Me.gbCredentials.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbCredentials.Location = New System.Drawing.Point(3, 102)
         Me.gbCredentials.Name = "gbCredentials"
         Me.gbCredentials.Size = New System.Drawing.Size(350, 100)
@@ -163,7 +161,6 @@ Partial Class frmOption_Connection
         Me.txtCredentialsDomain.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.tblCredentials.SetColumnSpan(Me.txtCredentialsDomain, 3)
         Me.txtCredentialsDomain.Enabled = False
-        Me.txtCredentialsDomain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCredentialsDomain.Location = New System.Drawing.Point(70, 54)
         Me.txtCredentialsDomain.Name = "txtCredentialsDomain"
         Me.txtCredentialsDomain.Size = New System.Drawing.Size(271, 22)
@@ -174,7 +171,6 @@ Partial Class frmOption_Connection
         Me.chkCredentialsEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkCredentialsEnabled.AutoSize = True
         Me.tblCredentials.SetColumnSpan(Me.chkCredentialsEnabled, 4)
-        Me.chkCredentialsEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkCredentialsEnabled.Location = New System.Drawing.Point(3, 3)
         Me.chkCredentialsEnabled.Name = "chkCredentialsEnabled"
         Me.chkCredentialsEnabled.Size = New System.Drawing.Size(122, 17)
@@ -186,7 +182,6 @@ Partial Class frmOption_Connection
         '
         Me.lblCredentialsDomain.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblCredentialsDomain.AutoSize = True
-        Me.lblCredentialsDomain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCredentialsDomain.Location = New System.Drawing.Point(3, 58)
         Me.lblCredentialsDomain.Name = "lblCredentialsDomain"
         Me.lblCredentialsDomain.Size = New System.Drawing.Size(50, 13)
@@ -197,7 +192,6 @@ Partial Class frmOption_Connection
         '
         Me.lblCredentialsUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblCredentialsUsername.AutoSize = True
-        Me.lblCredentialsUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCredentialsUsername.Location = New System.Drawing.Point(3, 30)
         Me.lblCredentialsUsername.Name = "lblCredentialsUsername"
         Me.lblCredentialsUsername.Size = New System.Drawing.Size(61, 13)
@@ -208,7 +202,6 @@ Partial Class frmOption_Connection
         '
         Me.txtCredentialsPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtCredentialsPassword.Enabled = False
-        Me.txtCredentialsPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCredentialsPassword.Location = New System.Drawing.Point(241, 26)
         Me.txtCredentialsPassword.Name = "txtCredentialsPassword"
         Me.txtCredentialsPassword.Size = New System.Drawing.Size(100, 22)
@@ -219,7 +212,6 @@ Partial Class frmOption_Connection
         '
         Me.txtCredentialsUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtCredentialsUsername.Enabled = False
-        Me.txtCredentialsUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCredentialsUsername.Location = New System.Drawing.Point(70, 26)
         Me.txtCredentialsUsername.Name = "txtCredentialsUsername"
         Me.txtCredentialsUsername.Size = New System.Drawing.Size(100, 22)
@@ -229,7 +221,6 @@ Partial Class frmOption_Connection
         '
         Me.lblCredentialsPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblCredentialsPassword.AutoSize = True
-        Me.lblCredentialsPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCredentialsPassword.Location = New System.Drawing.Point(176, 30)
         Me.lblCredentialsPassword.Name = "lblCredentialsPassword"
         Me.lblCredentialsPassword.Size = New System.Drawing.Size(59, 13)
@@ -240,7 +231,6 @@ Partial Class frmOption_Connection
         '
         Me.chkProxyEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkProxyEnabled.AutoSize = True
-        Me.chkProxyEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkProxyEnabled.Location = New System.Drawing.Point(3, 3)
         Me.chkProxyEnabled.Name = "chkProxyEnabled"
         Me.chkProxyEnabled.Size = New System.Drawing.Size(91, 17)
@@ -252,7 +242,6 @@ Partial Class frmOption_Connection
         '
         Me.txtProxyPort.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtProxyPort.Enabled = False
-        Me.txtProxyPort.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtProxyPort.Location = New System.Drawing.Point(100, 74)
         Me.txtProxyPort.Name = "txtProxyPort"
         Me.txtProxyPort.Size = New System.Drawing.Size(51, 22)
@@ -262,7 +251,6 @@ Partial Class frmOption_Connection
         '
         Me.lblProxyPort.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblProxyPort.AutoSize = True
-        Me.lblProxyPort.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblProxyPort.Location = New System.Drawing.Point(3, 78)
         Me.lblProxyPort.Name = "lblProxyPort"
         Me.lblProxyPort.Size = New System.Drawing.Size(61, 13)
@@ -273,7 +261,6 @@ Partial Class frmOption_Connection
         '
         Me.lblProxyURI.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblProxyURI.AutoSize = True
-        Me.lblProxyURI.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblProxyURI.Location = New System.Drawing.Point(3, 26)
         Me.lblProxyURI.Name = "lblProxyURI"
         Me.lblProxyURI.Size = New System.Drawing.Size(58, 13)
@@ -285,7 +272,6 @@ Partial Class frmOption_Connection
         Me.txtProxyURI.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.tblProxy.SetColumnSpan(Me.txtProxyURI, 3)
         Me.txtProxyURI.Enabled = False
-        Me.txtProxyURI.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtProxyURI.Location = New System.Drawing.Point(3, 46)
         Me.txtProxyURI.Name = "txtProxyURI"
         Me.txtProxyURI.Size = New System.Drawing.Size(267, 22)
@@ -297,6 +283,7 @@ Partial Class frmOption_Connection
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
         Me.Controls.Add(Me.pnlSettings)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.Name = "frmOption_Connection"
         Me.Text = "frmOption_Proxy"
         Me.pnlSettings.ResumeLayout(False)
