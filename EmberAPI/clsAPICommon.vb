@@ -18,12 +18,12 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
+Imports System.Drawing
 Imports System.IO
 Imports System.Text.RegularExpressions
-Imports System.Xml.Serialization
-Imports System.Drawing
 Imports System.Windows.Forms
-Imports NLog
+Imports System.Xml.Serialization
 
 Public Class Containers
 
@@ -339,14 +339,14 @@ Public Class Enums
         Generic = 1
         Movie = 2
         Movieset = 3
-        Moviesource = 4
-        MusicVideo = 5
-        Person = 6
-        TV = 7
-        TVEpisode = 8
-        TVSeason = 9
-        TVShow = 10
-        TVShowsource = 11
+        MusicVideo = 4
+        Person = 5
+        Source_Movie = 6
+        Source_TVShow = 7
+        TV = 8
+        TVEpisode = 9
+        TVSeason = 10
+        TVShow = 11
     End Enum
 
     Public Enum DefaultType As Integer
@@ -647,7 +647,6 @@ Public Class Enums
         ScraperSingle_TVEpisode
         ShowMovie
         ShowTVShow
-        SyncModuleSettings
         Sync_Movie
         Sync_MovieSet
         Sync_TVEpisode
@@ -760,7 +759,8 @@ Public Class Enums
         Options
         OptionsConnection
         OptionsFileSystem
-        OptionsGeneral
+        OptionsGlobal
+        OptionsGUI
         TV
         TVData
         TVFileNaming
@@ -776,33 +776,6 @@ Public Class Enums
     Public Enum SortMethod_MovieSet As Integer
         Year = 0    'default in Kodi, so have to be on the first position of enumeration
         Title = 1
-    End Enum
-
-    Public Enum TaskManagerEventType As Integer
-        RefreshRow
-        SimpleMessage
-        TaskManagerEnded
-        TaskManagerStarted
-    End Enum
-
-    Public Enum TaskManagerType As Integer
-        ''' <summary>
-        ''' only to set nothing after init
-        ''' </summary>
-        None
-        DataFields_ClearOrReplace
-        CopyBackdrops
-        DoTitleCheck
-        GetMissingEpisodes
-        Reload
-        SetLanguage
-        SetLockedState
-        SetMarkedState
-        ''' <summary>
-        ''' Needs MediaContainer.SetDetails or Nothing as GenericObject. Nothing removes all assigned movie sets.
-        ''' </summary>
-        SetMovieset
-        SetWatchedState
     End Enum
 
     Public Enum TVBannerType As Integer
@@ -1551,13 +1524,6 @@ Public Class Structures
         Dim Title As String
     End Structure
 
-    Public Structure ScanOrClean
-        Dim Movies As Boolean
-        Dim MovieSets As Boolean
-        Dim SpecificFolder As Boolean
-        Dim TV As Boolean
-    End Structure
-
     Public Structure ScrapeModifiers
         Dim AllSeasonsBanner As Boolean
         Dim AllSeasonsFanart As Boolean
@@ -1647,18 +1613,35 @@ Public Class Structures
         Dim bSeasonTitle As Boolean
     End Structure
 
-    Public Structure SettingsResult
-        Dim DidCancel As Boolean
-        Dim NeedsDBClean_Movie As Boolean
-        Dim NeedsDBClean_TV As Boolean
-        Dim NeedsDBUpdate_Movie As Boolean
-        Dim NeedsDBUpdate_TV As Boolean
-        Dim NeedsReload_Movie As Boolean
-        Dim NeedsReload_Movieset As Boolean
-        Dim NeedsReload_TVEpisode As Boolean
-        Dim NeedsReload_TVShow As Boolean
-        Dim NeedsRestart As Boolean
-    End Structure
+    Public Class SettingsResult
+
+#Region "Properties"
+
+        Public ReadOnly Property AnythingToDo As Boolean
+            Get
+                Return NeedsDBClean_Movie OrElse
+                    NeedsDBClean_TV OrElse
+                    NeedsDBUpdate_Movie.Count > 0 OrElse
+                    NeedsDBUpdate_TV.Count > 0 OrElse
+                    NeedsReload_Movie OrElse
+                    NeedsReload_Movieset OrElse
+                    NeedsReload_TVEpisode OrElse
+                    NeedsReload_TVShow
+            End Get
+        End Property
+        Public Property DidCancel As Boolean
+        Public Property NeedsDBClean_Movie As Boolean
+        Public Property NeedsDBClean_TV As Boolean
+        Public Property NeedsDBUpdate_Movie As New List(Of Long)
+        Public Property NeedsDBUpdate_TV As New List(Of Long)
+        Public Property NeedsReload_Movie As Boolean
+        Public Property NeedsReload_Movieset As Boolean
+        Public Property NeedsReload_TVEpisode As Boolean
+        Public Property NeedsReload_TVShow As Boolean
+        Public Property NeedsRestart As Boolean
+
+#End Region 'Properties
+    End Class
 
     Public Structure ModulesMenus
         Dim ForMovies As Boolean

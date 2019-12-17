@@ -406,9 +406,9 @@ Partial Class frmTV_GUI
         Me.lblMediaListSorting_TVEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMediaListSorting_TVEpisode.Location = New System.Drawing.Point(3, 360)
         Me.lblMediaListSorting_TVEpisode.Name = "lblMediaListSorting_TVEpisode"
-        Me.lblMediaListSorting_TVEpisode.Size = New System.Drawing.Size(218, 13)
+        Me.lblMediaListSorting_TVEpisode.Size = New System.Drawing.Size(201, 13)
         Me.lblMediaListSorting_TVEpisode.TabIndex = 3
-        Me.lblMediaListSorting_TVEpisode.Text = "Use ALT + UP / DOWN to move the columns"
+        Me.lblMediaListSorting_TVEpisode.Text = "Use ALT + UP / DOWN to move the rows"
         '
         'gbMediaListSorting_TVSeason
         '
@@ -536,9 +536,9 @@ Partial Class frmTV_GUI
         Me.lblMediaListSorting_TVSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMediaListSorting_TVSeason.Location = New System.Drawing.Point(3, 360)
         Me.lblMediaListSorting_TVSeason.Name = "lblMediaListSorting_TVSeason"
-        Me.lblMediaListSorting_TVSeason.Size = New System.Drawing.Size(218, 13)
+        Me.lblMediaListSorting_TVSeason.Size = New System.Drawing.Size(201, 13)
         Me.lblMediaListSorting_TVSeason.TabIndex = 3
-        Me.lblMediaListSorting_TVSeason.Text = "Use ALT + UP / DOWN to move the columns"
+        Me.lblMediaListSorting_TVSeason.Text = "Use ALT + UP / DOWN to move the rows"
         '
         'gbMediaListSorting_TVShow
         '
@@ -666,9 +666,9 @@ Partial Class frmTV_GUI
         Me.lblMediaListSorting_TVShow.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMediaListSorting_TVShow.Location = New System.Drawing.Point(3, 360)
         Me.lblMediaListSorting_TVShow.Name = "lblMediaListSorting_TVShow"
-        Me.lblMediaListSorting_TVShow.Size = New System.Drawing.Size(218, 13)
+        Me.lblMediaListSorting_TVShow.Size = New System.Drawing.Size(201, 13)
         Me.lblMediaListSorting_TVShow.TabIndex = 3
-        Me.lblMediaListSorting_TVShow.Text = "Use ALT + UP / DOWN to move the columns"
+        Me.lblMediaListSorting_TVShow.Text = "Use ALT + UP / DOWN to move the rows"
         '
         'gbMainWindow
         '

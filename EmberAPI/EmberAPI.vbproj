@@ -177,7 +177,6 @@
   <ItemGroup>
     <Compile Include="clsAPIAdvancedSettings.vb" />
     <Compile Include="clsAPIApple.vb" />
-    <Compile Include="clsAPICommandLine.vb" />
     <Compile Include="clsAPIFFmpeg.vb" />
     <Compile Include="clsAPIFileItem.vb" />
     <Compile Include="clsAPIAdvancedControls.vb">
@@ -187,6 +186,7 @@
     <Compile Include="clsAPIIMDB.vb" />
     <Compile Include="clsAPILogger.vb" />
     <Compile Include="clsAPIMetaData.vb" />
+    <Compile Include="clsAPIEvents.vb" />
     <Compile Include="clsAPIProfiles.vb" />
     <Compile Include="clsAPISmartFilter.vb" />
     <Compile Include="clsAPITaskManager.vb" />
@@ -250,7 +250,6 @@
     <Compile Include="XML Serialization\clsXMLGenres.vb" />
     <Compile Include="XML Serialization\clsXMLLanguage.vb" />
     <Compile Include="XML Serialization\clsXMLLanguages.vb" />
-    <Compile Include="XML Serialization\clsXMLRatings.vb" />
     <Compile Include="XML Serialization\clsXMLMovieCertLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLScraperLanguages.vb" />
   </ItemGroup>
@@ -476,48 +475,8 @@
     <Content Include="Defaults\Core.ScraperLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Defaults\DefaultGenre.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Defaults\DefaultLanguage.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Defaults\DefaultLanguageMore.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Defaults\Duplicate.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\Defaults\HasLanguage.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\Missing.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\Overlay.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\Overlay2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\Puzzle.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\questionmark.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="NLog Notes.txt" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -355,16 +355,29 @@ End Class
 <Serializable()>
 Public Class MainGuiSettings
 
+    Public Property DisplayAudioChannelsFlag() As Boolean = True
+    Public Property DisplayAudioSourceFlag() As Boolean = True
     Public Property DisplayBanner() As Boolean = True
     Public Property DisplayCharacterArt() As Boolean = True
     Public Property DisplayClearArt() As Boolean = True
     Public Property DisplayClearLogo() As Boolean = True
     Public Property DisplayDiscArt() As Boolean = True
+    Public Property DisplayFanartAsBackground() As Boolean = True
     Public Property DisplayFanart() As Boolean = True
-    Public Property DisplayFanartSmall() As Boolean = True
+    Public Property DisplayGenreFlags() As Boolean = True
+    Public Property DisplayGenreText() As Boolean = True
+    Public Property DisplayImgageDimensions() As Boolean = True
+    Public Property DisplayImgageGlassOverlay() As Boolean = False
+    Public Property DisplayImgageNames() As Boolean = True
     Public Property DisplayKeyArt() As Boolean = True
     Public Property DisplayLandscape() As Boolean = True
+    Public Property DisplayLanguageFlags() As Boolean = True
     Public Property DisplayPoster() As Boolean = True
+    Public Property DisplayStudioFlag() As Boolean = True
+    Public Property DisplayStudioName() As Boolean = False
+    Public Property DisplayVideoCodecFlag() As Boolean = True
+    Public Property DisplayVideoResolutionFlag() As Boolean = True
+    Public Property DisplayVideoSourceFlag() As Boolean = True
     Public Property DoubleClickScrapeEnabled() As Boolean = False
     Public Property FilterPanelIsRaised_Movie() As Boolean = False
     Public Property FilterPanelIsRaised_Movieset() As Boolean = False
@@ -384,12 +397,6 @@ Public Class MainGuiSettings
     Public Property MainFilterSortOrder_TVEpisode() As Integer = 0
     Public Property MainFilterSortOrder_TVSeason() As Integer = 0
     Public Property MainFilterSortOrder_TVShow() As Integer = 0
-    Public Property ShowGenresText() As Boolean = True
-    Public Property ShowImgDimensions() As Boolean = True
-    Public Property ShowImgGlassOverlay() As Boolean = False
-    Public Property ShowImgNames() As Boolean = True
-    Public Property ShowLangFlags() As Boolean = True
-    Public Property ShowStudioText() As Boolean = False
     Public Property SplitterDistance_MediaList() As Integer = 550
     Public Property SplitterDistance_TVSeason() As Integer = 200
     Public Property SplitterDistance_TVShow() As Integer = 200

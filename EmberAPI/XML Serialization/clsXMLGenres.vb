@@ -61,7 +61,7 @@ Public Class XMLGenres
         Sort()
         Dim xmlSerial As New XmlSerializer(GetType(XMLGenres))
         Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "Core.Genres.xml"))
-        xmlSerial.Serialize(xmlWriter, APIXML.GenreXML)
+        xmlSerial.Serialize(xmlWriter, APIXML.GenreMapping)
         xmlWriter.Close()
     End Sub
 

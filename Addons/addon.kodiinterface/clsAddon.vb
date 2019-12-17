@@ -1186,7 +1186,7 @@ Namespace Kodi
 
                     'digit grouping symbol for Votes count
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(mDBElement.Movie.Votes), mDBElement.Movie.Votes, Nothing)
-                    If Master.eSettings.Options.General.DigitGrpSymbolVotesEnabled Then
+                    If Master.eSettings.Options.Global.DigitGrpSymbolVotesEnabled Then
                         If mDBElement.Movie.VotesSpecified Then
                             Dim strVotes As String = Double.Parse(mDBElement.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                             If strVotes IsNot Nothing Then
@@ -1508,7 +1508,7 @@ Namespace Kodi
 
                     'digit grouping symbol for Votes count
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(mDBElement.TVEpisode.Votes), mDBElement.TVEpisode.Votes, Nothing)
-                    If Master.eSettings.Options.General.DigitGrpSymbolVotesEnabled Then
+                    If Master.eSettings.Options.Global.DigitGrpSymbolVotesEnabled Then
                         If mDBElement.TVEpisode.VotesSpecified Then
                             Dim vote As String = Double.Parse(mDBElement.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                             If vote IsNot Nothing Then
@@ -1787,7 +1787,7 @@ Namespace Kodi
 
                     'digit grouping symbol for Votes count
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(mDBElement.TVShow.Votes), mDBElement.TVShow.Votes, Nothing)
-                    If Master.eSettings.Options.General.DigitGrpSymbolVotesEnabled Then
+                    If Master.eSettings.Options.Global.DigitGrpSymbolVotesEnabled Then
                         If mDBElement.TVShow.VotesSpecified Then
                             Dim vote As String = Double.Parse(mDBElement.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                             If vote IsNot Nothing Then

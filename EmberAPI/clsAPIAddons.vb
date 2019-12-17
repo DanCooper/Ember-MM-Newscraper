@@ -87,73 +87,76 @@ Public Class AddonsManager
     Private Sub BuildVersionList()
         VersionList.Clear()
         VersionList.Add(New VersionItem With {
-                        .AssemblyFileName = "Ember Application",
+                        .AssemblyFileName = "Ember Media Manager",
                         .Version = My.Application.Info.Version.ToString()
                         })
         VersionList.Add(New VersionItem With {
-                        .AssemblyFileName = "*EmberAPI",
+                        .AssemblyFileName = "EmberAPI",
                         .Version = Functions.EmberAPIVersion()
                         })
+        Dim tmpAddonsList As New List(Of VersionItem)
         For Each _externalScraperModule As ScraperAddon_Data_Movie In ScraperAddons_Data_Movie
-            VersionList.Add(New VersionItem With {
+            tmpAddonsList.Add(New VersionItem With {
                             .AssemblyFileName = _externalScraperModule.AssemblyFileName,
                             .Version = _externalScraperModule.AssemblyVersion
                             })
         Next
         For Each _externalScraperModule As ScraperAddon_Data_Movieset In ScraperAddons_Data_Movieset
-            VersionList.Add(New VersionItem With {
+            tmpAddonsList.Add(New VersionItem With {
                             .AssemblyFileName = _externalScraperModule.AssemblyFileName,
                             .Version = _externalScraperModule.AssemblyVersion
                             })
         Next
         For Each _externalScraperModule As ScraperAddon_Data_TV In ScraperAddons_Data_TV
-            VersionList.Add(New VersionItem With {
+            tmpAddonsList.Add(New VersionItem With {
                             .AssemblyFileName = _externalScraperModule.AssemblyFileName,
                             .Version = _externalScraperModule.AssemblyVersion
                             })
         Next
         For Each _externalScraperModule As ScraperAddon_Image_Movie In ScraperAddons_Image_Movie
-            VersionList.Add(New VersionItem With {
+            tmpAddonsList.Add(New VersionItem With {
                             .AssemblyFileName = _externalScraperModule.AssemblyFileName,
                             .Version = _externalScraperModule.AssemblyVersion
                             })
         Next
         For Each _externalScraperModule As ScraperAddon_Image_MovieSet In ScraperAddons_Image_Movieset
-            VersionList.Add(New VersionItem With {
+            tmpAddonsList.Add(New VersionItem With {
                             .AssemblyFileName = _externalScraperModule.AssemblyFileName,
                             .Version = _externalScraperModule.AssemblyVersion
                             })
         Next
         For Each _externalScraperModule As ScraperAddon_Image_TV In ScraperAddons_Image_TV
-            VersionList.Add(New VersionItem With {
+            tmpAddonsList.Add(New VersionItem With {
                             .AssemblyFileName = _externalScraperModule.AssemblyFileName,
                             .Version = _externalScraperModule.AssemblyVersion
                             })
         Next
         For Each _externalScraperModule As ScraperAddon_Theme_Movie In ScraperAddons_Theme_Movie
-            VersionList.Add(New VersionItem With {
+            tmpAddonsList.Add(New VersionItem With {
                             .AssemblyFileName = _externalScraperModule.AssemblyFileName,
                             .Version = _externalScraperModule.AssemblyVersion
                             })
         Next
         For Each _externalTVThemeScraperModule As ScraperAddon_Theme_TV In ScraperAddons_Theme_TV
-            VersionList.Add(New VersionItem With {
+            tmpAddonsList.Add(New VersionItem With {
                             .AssemblyFileName = _externalTVThemeScraperModule.AssemblyFileName,
                             .Version = _externalTVThemeScraperModule.AssemblyVersion
                             })
         Next
         For Each _externalScraperModule As ScraperAddon_Trailer_Movie In ScraperAddons_Trailer_Movie
-            VersionList.Add(New VersionItem With {
+            tmpAddonsList.Add(New VersionItem With {
                             .AssemblyFileName = _externalScraperModule.AssemblyFileName,
                             .Version = _externalScraperModule.AssemblyVersion
                             })
         Next
         For Each _externalModule As GenericAddon In GenericAddons
-            VersionList.Add(New VersionItem With {
+            tmpAddonsList.Add(New VersionItem With {
                             .AssemblyFileName = _externalModule.AssemblyFileName,
                             .Version = _externalModule.AssemblyVersion
                             })
         Next
+        tmpAddonsList = tmpAddonsList.Distinct.ToList
+        VersionList.AddRange(tmpAddonsList.OrderBy(Function(f) f.AssemblyFileName))
     End Sub
 
     Private Sub bwLoadAddons_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadAddons.DoWork
@@ -2008,15 +2011,12 @@ Public Class AddonsManager
         Private _ListMovies As String
         Private _ListTVShows As String
         Private _LoadMedia As LoadMedia
-        Private _OpenImageViewer As OpenImageViewer
 
 #End Region 'Fields
 
 #Region "Delegates"
 
-        Delegate Sub LoadMedia(ByVal Scan As Structures.ScanOrClean, ByVal SourceID As Long)
-        'all runtime object including Function (delegate) that need to be exposed to Modules
-        Delegate Sub OpenImageViewer(ByVal _Image As Image)
+        Delegate Sub LoadMedia(ByVal Scan As Scanner.ScanOrCleanOptions, ByVal SourceID As Long)
 
 #End Region 'Delegates
 
@@ -2072,28 +2072,6 @@ Public Class AddonsManager
         Public Property TrayMenu() As ContextMenuStrip
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub DelegateLoadMedia(ByRef lm As LoadMedia)
-            'Setup from EmberAPP
-            _LoadMedia = lm
-        End Sub
-
-        Public Sub DelegateOpenImageViewer(ByRef IV As OpenImageViewer)
-            _OpenImageViewer = IV
-        End Sub
-
-        Public Sub InvokeLoadMedia(ByVal Scan As Structures.ScanOrClean, Optional ByVal SourceID As Long = -1)
-            'Invoked from Modules
-            _LoadMedia.Invoke(Scan, SourceID)
-        End Sub
-
-        Public Sub InvokeOpenImageViewer(ByRef _image As Image)
-            _OpenImageViewer.Invoke(_image)
-        End Sub
-
-#End Region 'Methods
 
     End Class
 

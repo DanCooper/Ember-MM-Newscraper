@@ -576,14 +576,14 @@ Public Class Theming
         'MediaList settings
         If Not _theme.MediaList.BackColor.IsEmpty Then
             frmMain.dgvMovies.BackgroundColor = _theme.MediaList.BackColor
-            frmMain.dgvMovieSets.BackgroundColor = _theme.MediaList.BackColor
+            frmMain.dgvMoviesets.BackgroundColor = _theme.MediaList.BackColor
             frmMain.dgvTVEpisodes.BackgroundColor = _theme.MediaList.BackColor
             frmMain.dgvTVSeasons.BackgroundColor = _theme.MediaList.BackColor
             frmMain.dgvTVShows.BackgroundColor = _theme.MediaList.BackColor
         End If
         If Not _theme.MediaList.GridColor.IsEmpty Then
             frmMain.dgvMovies.GridColor = _theme.MediaList.GridColor
-            frmMain.dgvMovieSets.GridColor = _theme.MediaList.GridColor
+            frmMain.dgvMoviesets.GridColor = _theme.MediaList.GridColor
             frmMain.dgvTVEpisodes.GridColor = _theme.MediaList.GridColor
             frmMain.dgvTVSeasons.GridColor = _theme.MediaList.GridColor
         End If
@@ -913,8 +913,8 @@ Public Class Theming
         End Select
 
         frmMain.pnlInfoPanel.BackColor = settings.BackColor
-        frmMain.IPMid = settings.PosMid
-        frmMain.IPUp = settings.PosUp
+        frmMain.InfoPanelMidHeight = settings.PosMid
+        frmMain.InfoPanelUpHeight = settings.PosUp
 
         For Each xCon In _availablecontrols
             Dim nControl = frmMain.pnlInfoPanel.Controls(xCon.Name)

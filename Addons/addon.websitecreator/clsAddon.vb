@@ -33,6 +33,7 @@ Public Class WebsiteCreator
 
     Public Delegate Function ShowProgress(ByVal title As String, ByVal operation As String) As Boolean
 
+    Private Shared _AudioVideoFlags As List(Of Flag) = New List(Of Flag)
     Private _IntCounter_Global As Integer
     Private _IntCounter_TVEpisode As Integer
     Private _IntCounter_TVSeason As Integer
@@ -193,7 +194,31 @@ Public Class WebsiteCreator
         Return HTMLBodyPart
     End Function
 
+    Public Shared Sub CacheFlags()
+        'Audio/Video flags
+        Dim fPath As String = Path.Combine(Functions.AppPath, "Addons\addon.websitecreator\Images\Flags")
+        If Directory.Exists(fPath) Then
+            Dim cFileName As String = String.Empty
+            Dim fType As Flag.FlagType = Flag.FlagType.Unknown
+            Try
+                For Each lFile As String In Directory.GetFiles(fPath, "*.png")
+                    cFileName = Path.GetFileNameWithoutExtension(lFile)
+                    If cFileName.Contains("_") Then
+                        fType = GetFlagTypeFromString(cFileName.Substring(0, cFileName.IndexOf("_")))
+                        If Not fType = Flag.FlagType.Unknown Then
+                            Using fsImage As New FileStream(lFile, FileMode.Open, FileAccess.Read)
+                                _AudioVideoFlags.Add(New Flag With {.Name = cFileName.Remove(0, cFileName.IndexOf("_") + 1), .Image = Image.FromStream(fsImage), .Path = lFile, .Type = fType})
+                            End Using
+                        End If
+                    End If
+                Next
+            Catch
+            End Try
+        End If
+    End Sub
+
     Public Function CreateTemplate(ByVal strTemplatePath As String, ByVal MovieList As List(Of Database.DBElement), ByVal TVShowList As List(Of Database.DBElement), Optional ByVal BuildPath As String = "", Optional ByVal sfunction As ShowProgress = Nothing) As String
+        CacheFlags()
         _LstMovieList = MovieList
         _LstTVShowList = TVShowList
 
@@ -213,7 +238,7 @@ Public Class WebsiteCreator
         Directory.CreateDirectory(_StrBuildPath)
 
         If strTemplatePath IsNot Nothing Then
-            Dim htmlPath As String = Path.Combine(strTemplatePath, String.Concat(Master.eSettings.Options.General.Language, ".html"))
+            Dim htmlPath As String = Path.Combine(strTemplatePath, String.Concat(Master.eSettings.Options.Global.Language, ".html"))
             If Not File.Exists(htmlPath) Then
                 htmlPath = Path.Combine(strTemplatePath, String.Concat("English_(en_US).html"))
             End If
@@ -471,7 +496,7 @@ Public Class WebsiteCreator
                 nInfo.audChannels = tAud.Channels.ToString
                 nInfo.audLanguage = tAud.Language
                 nInfo.audLongLanguage = tAud.LongLanguage
-                nInfo.audDetails = String.Format("{0}ch / {1}", If(tAud.ChannelsSpecified, Master.eLang.GetString(138, "Unknown"), tAud.Channels.ToString), If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec)).ToUpper
+                nInfo.audDetails = String.Format("{0} / {1}", If(Not tAud.ChannelsSpecified, Master.eLang.GetString(138, "Unknown"), String.Concat(tAud.Channels.ToString, "ch")), If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec)).ToUpper
             End If
 
             If fInfo.StreamDetails.Subtitle.Count > 0 Then
@@ -494,6 +519,25 @@ Public Class WebsiteCreator
         End If
 
         Return nInfo
+    End Function
+
+    Public Shared Function GetFlagTypeFromString(ByVal sType As String) As Flag.FlagType
+        Select Case sType
+            Case "vchan"
+                Return Flag.FlagType.VideoChan
+            Case "vcodec"
+                Return Flag.FlagType.VideoCodec
+            Case "vres"
+                Return Flag.FlagType.VideoResolution
+            Case "vsource"
+                Return Flag.FlagType.VideoSource
+            Case "acodec"
+                Return Flag.FlagType.AudioCodec
+            Case "achan"
+                Return Flag.FlagType.AudioChan
+            Case Else
+                Return Flag.FlagType.Unknown
+        End Select
     End Function
 
     Private Function GetDetailAudioInfo(ByVal fInfo As MediaContainers.FileInfo) As AVSInfo
@@ -569,7 +613,7 @@ Public Class WebsiteCreator
     End Sub
 
     Private Function ProcessPattern_Flags(ByVal tDBElement As Database.DBElement, ByVal strRow As String, ByVal tContentType As Enums.ContentType) As String
-        If APIXML.lFlags.Count > 0 Then
+        If _AudioVideoFlags.Count > 0 Then
             Dim fiAV As New MediaContainers.FileInfo
             Select Case tContentType
                 Case Enums.ContentType.Movie
@@ -580,52 +624,56 @@ Public Class WebsiteCreator
             Dim tVideo As MediaContainers.Video = Info.GetBestVideo(fiAV)
             Dim tAudio As MediaContainers.Audio = MetaData.GetBestAudio(fiAV, String.Empty, tContentType)
 
-            Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = Info.GetResolutionFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
+            'VideoResolution flags
+            Dim vresFlag As Flag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = Info.GetResolutionFromDimensions(tVideo).ToLower AndAlso f.Type = Flag.FlagType.VideoResolution)
             If vresFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
             Else
-                vresFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoResolution)
+                vresFlag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = Flag.FlagType.VideoResolution)
                 If vresFlag IsNot Nothing Then
                     strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
                 End If
             End If
 
-            'Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = APIXML.GetFileSource(AVMovie.Filename) AndAlso f.Type = APIXML.FlagType.VideoSource)
-            Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name.ToLower = tDBElement.VideoSource AndAlso f.Type = APIXML.FlagType.VideoSource)
+            'VideoSource flags
+            Dim vsourceFlag As Flag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name.ToLower = tDBElement.VideoSource AndAlso f.Type = Flag.FlagType.VideoSource)
             If vsourceFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_VSOURCE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
             Else
-                vsourceFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoSource)
+                vsourceFlag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = Flag.FlagType.VideoSource)
                 If vsourceFlag IsNot Nothing Then
                     strRow = strRow.Replace("<$FLAG_VSOURCE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
                 End If
             End If
 
-            Dim vcodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = APIXML.FlagType.VideoCodec)
+            'VideoCodec flags
+            Dim vcodecFlag As Flag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = Flag.FlagType.VideoCodec)
             If vcodecFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_VTYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
             Else
-                vcodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoCodec)
+                vcodecFlag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = Flag.FlagType.VideoCodec)
                 If vcodecFlag IsNot Nothing Then
                     strRow = strRow.Replace("<$FLAG_VTYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
                 End If
             End If
 
-            Dim acodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = APIXML.FlagType.AudioCodec)
+            'AudioCodec flags
+            Dim acodecFlag As Flag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = Flag.FlagType.AudioCodec)
             If acodecFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_ATYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
             Else
-                acodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioCodec)
+                acodecFlag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = Flag.FlagType.AudioCodec)
                 If acodecFlag IsNot Nothing Then
                     strRow = strRow.Replace("<$FLAG_ATYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
                 End If
             End If
 
-            Dim achanFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels.ToString AndAlso f.Type = APIXML.FlagType.AudioChan)
+            'AudioChannels flags
+            Dim achanFlag As Flag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels.ToString AndAlso f.Type = Flag.FlagType.AudioChan)
             If achanFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_ACHAN>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
             Else
-                achanFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioChan)
+                achanFlag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = Flag.FlagType.AudioChan)
                 If achanFlag IsNot Nothing Then
                     strRow = strRow.Replace("<$FLAG_ACHAN>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
                 End If
@@ -813,7 +861,7 @@ Public Class WebsiteCreator
         strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tEpisode.TVEpisode.Season)))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tEpisode.TVEpisode.Title))
         strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tEpisode.TVEpisode.UniqueIDs.TMDbId))
-        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tEpisode.TVEpisode.ID))
+        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tEpisode.TVEpisode.UniqueIDs.TVDbId))
         strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tEpisode.TVEpisode.VideoSource))
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.TVEpisode.VotesSpecified, Double.Parse(tEpisode.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
@@ -884,8 +932,8 @@ Public Class WebsiteCreator
         strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tSeason.TVSeason.Plot))
         strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tSeason.TVSeason.Season)))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tSeason.TVSeason.Title))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tSeason.TVSeason.TMDB))
-        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tSeason.TVSeason.TVDB))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tSeason.TVSeason.UniqueIDs.TMDbId))
+        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tSeason.TVSeason.UniqueIDs.TVDbId))
 
         Return strRow
     End Function
@@ -956,9 +1004,9 @@ Public Class WebsiteCreator
             CopyDirectory(TemplateSource, _StrBuildPath, True)
 
             If _ExportSettings.Flags Then
-                Directory.CreateDirectory(Path.Combine(_StrBuildPath, "exportdata", "flags"))
-                Dim FlagSource As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
-                CopyDirectory(FlagSource, Path.Combine(_StrBuildPath, "exportdata", "flags"), True)
+                Directory.CreateDirectory(Path.Combine(_StrBuildPath, "flags"))
+                Dim FlagSource As String = Path.Combine(Functions.AppPath, "Addons\addon.websitecreator\Images\Flags")
+                CopyDirectory(FlagSource, Path.Combine(_StrBuildPath, "flags"), True)
             End If
 
             Dim strIndexFile As String = Path.Combine(_StrBuildPath, If(Not String.IsNullOrEmpty(_ExportSettings.Filename), _ExportSettings.Filename, "index.html"))
@@ -1164,6 +1212,36 @@ Public Class WebsiteCreator
         Public Property SeasonPosters_MaxWidth() As Integer = -1
 
 #End Region 'Properties 
+
+    End Class
+
+    Public Class Flag
+
+#Region "Properties"
+
+        Public Property Name() As String = String.Empty
+
+        Public Property Image() As Image = Nothing
+
+        Public Property Path() As String = String.Empty
+
+        Public Property Type() As FlagType = FlagType.VideoCodec
+
+#End Region 'Properties
+
+#Region "Nested Types"
+
+        Public Enum FlagType
+            AudioChan
+            AudioCodec
+            Unknown
+            VideoChan
+            VideoCodec
+            VideoResolution
+            VideoSource
+        End Enum
+
+#End Region 'Nested Types
 
     End Class
 

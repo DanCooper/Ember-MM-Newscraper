@@ -24,12 +24,12 @@ Public Class TaskManager
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _bHasChanged As Boolean
-    Private TaskList As New Queue(Of TaskItem)
+    Private _HasChanged As Boolean
+    Private _TaskList As New Queue(Of TaskItem)
 
-    Friend WithEvents bwTaskManager As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwTaskManager As New ComponentModel.BackgroundWorker
 
 #End Region 'Fields
 
@@ -52,7 +52,7 @@ Public Class TaskManager
 #Region "Methods"
 
     Public Sub AddTask(ByVal tTaskItem As TaskItem)
-        TaskList.Enqueue(tTaskItem)
+        _TaskList.Enqueue(tTaskItem)
         If Not bwTaskManager.IsBusy Then
             RunTaskManager()
         Else
@@ -60,59 +60,62 @@ Public Class TaskManager
         End If
     End Sub
 
-    Private Sub bwTaskManager_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTaskManager.DoWork
-        While TaskList.Count > 0
+    Private Sub bwTaskManager_DoWork(ByVal sender As Object, ByVal e As ComponentModel.DoWorkEventArgs) Handles bwTaskManager.DoWork
+        While _TaskList.Count > 0
             If bwTaskManager.CancellationPending Then Return
 
-            Dim currTask As TaskItem = TaskList.Dequeue()
+            Dim currTask As TaskItem = _TaskList.Dequeue()
 
-            Select Case currTask.TaskType
-                Case Enums.TaskManagerType.DataFields_ClearOrReplace
+            Select Case currTask.TypeOfTask
+                Case TaskItem.TaskType.DataFields_ClearOrReplace
                     Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         DataFields_ClearOrReplace(currTask)
                         SQLTransaction.Commit()
                     End Using
 
-                Case Enums.TaskManagerType.CopyBackdrops
+                Case TaskItem.TaskType.CopyBackdrops
                     CopyBackdrops(currTask)
 
-                Case Enums.TaskManagerType.DoTitleCheck
+                Case TaskItem.TaskType.DoTitleCheck
                     Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         DoTitleCheck(currTask)
                         SQLTransaction.Commit()
                     End Using
 
-                Case Enums.TaskManagerType.GetMissingEpisodes
+                Case TaskItem.TaskType.GetMissingEpisodes
                     Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         GetMissingEpisodes(currTask)
                         SQLTransaction.Commit()
                     End Using
 
-                Case Enums.TaskManagerType.SetLanguage
+                Case TaskItem.TaskType.Scan
+                    DoScan(currTask)
+
+                Case TaskItem.TaskType.SetLanguage
                     Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetLanguage(currTask)
                         SQLTransaction.Commit()
                     End Using
 
-                Case Enums.TaskManagerType.SetLockedState
+                Case TaskItem.TaskType.SetLockedState
                     Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetLockedState(currTask)
                         SQLTransaction.Commit()
                     End Using
 
-                Case Enums.TaskManagerType.SetMarkedState
+                Case TaskItem.TaskType.SetMarkedState
                     Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetMarkedState(currTask)
                         SQLTransaction.Commit()
                     End Using
 
-                Case Enums.TaskManagerType.SetMovieset
+                Case TaskItem.TaskType.SetMovieset
                     Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetMovieset(currTask)
                         SQLTransaction.Commit()
                     End Using
 
-                Case Enums.TaskManagerType.SetWatchedState
+                Case TaskItem.TaskType.SetWatchedState
                     Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetWatchedState(currTask)
                         SQLTransaction.Commit()
@@ -121,13 +124,13 @@ Public Class TaskManager
         End While
     End Sub
 
-    Private Sub bwTaskManager_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTaskManager.ProgressChanged
+    Private Sub bwTaskManager_ProgressChanged(ByVal sender As Object, ByVal e As ComponentModel.ProgressChangedEventArgs) Handles bwTaskManager.ProgressChanged
         Dim tProgressValue As ProgressValue = DirectCast(e.UserState, ProgressValue)
         RaiseEvent ProgressUpdate(tProgressValue)
     End Sub
 
-    Private Sub bwTaskManager_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTaskManager.RunWorkerCompleted
-        RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.TaskManagerEventType.TaskManagerEnded})
+    Private Sub bwTaskManager_RunWorkerCompleted(ByVal sender As Object, ByVal e As ComponentModel.RunWorkerCompletedEventArgs) Handles bwTaskManager.RunWorkerCompleted
+        RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = EventType.TaskManagerEnded})
     End Sub
 
     Public Sub Cancel()
@@ -154,7 +157,7 @@ Public Class TaskManager
                 End If
 
                 For Each tID In tTaskItem.ListOfID
-                    _bHasChanged = False
+                    _HasChanged = False
                     If bwTaskManager.CancellationPending Then Return
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
 
@@ -185,16 +188,16 @@ Public Class TaskManager
                             DataField_CompareIntegers(.bMainYear, tmpDBElement.Movie.Year, nInfo.Year)
                         End With
 
-                        If _bHasChanged Then
+                        If _HasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = tmpDBElement.Movie.Title})
 
                             Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                         End If
                     End If
@@ -202,7 +205,7 @@ Public Class TaskManager
 
             Case Enums.ContentType.Movieset
                 For Each tID In tTaskItem.ListOfID
-                    _bHasChanged = False
+                    _HasChanged = False
                     If bwTaskManager.CancellationPending Then Return
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(tID)
 
@@ -211,16 +214,16 @@ Public Class TaskManager
                             DataField_ClearString(.bMainPlot, tmpDBElement.Movieset.Plot)
                         End With
 
-                        If _bHasChanged Then
+                        If _HasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = tmpDBElement.Movieset.Title})
 
-                            Master.DB.Save_MovieSet(tmpDBElement, True, True, False, True)
+                            Master.DB.Save_Movieset(tmpDBElement, True, True, False, True)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                         End If
                     End If
@@ -236,7 +239,7 @@ Public Class TaskManager
                 End If
 
                 For Each tID In tTaskItem.ListOfID
-                    _bHasChanged = False
+                    _HasChanged = False
                     If bwTaskManager.CancellationPending Then Return
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(tID, False)
 
@@ -256,16 +259,16 @@ Public Class TaskManager
                             tmpDBElement.TVEpisode.VideoSource = tmpDBElement.VideoSource
                         End With
 
-                        If _bHasChanged Then
+                        If _HasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = tmpDBElement.TVEpisode.Title})
 
                             Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                         End If
                     End If
@@ -281,7 +284,7 @@ Public Class TaskManager
                 End If
 
                 For Each tID In tTaskItem.ListOfID
-                    _bHasChanged = False
+                    _HasChanged = False
                     If bwTaskManager.CancellationPending Then Return
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(tID, True, False)
 
@@ -293,16 +296,16 @@ Public Class TaskManager
                             DataField_ClearString(.bSeasonTitle, tmpDBElement.TVSeason.Title)
                         End With
 
-                        If _bHasChanged Then
+                        If _HasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShow.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.TVSeason.Season.ToString)})
 
                             Master.DB.Save_TVSeason(tmpDBElement, True, False, True)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                         End If
                     End If
@@ -318,7 +321,7 @@ Public Class TaskManager
                 End If
 
                 For Each tID In tTaskItem.ListOfID
-                    _bHasChanged = False
+                    _HasChanged = False
                     If bwTaskManager.CancellationPending Then Return
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(tID, False, False, False)
 
@@ -342,16 +345,16 @@ Public Class TaskManager
                             DataField_CompareIntegers(.bMainUserRating, tmpDBElement.TVShow.UserRating, nInfo.UserRating)
                         End With
 
-                        If _bHasChanged Then
+                        If _HasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = tmpDBElement.TVShow.Title})
 
                             Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                         End If
                     End If
@@ -362,42 +365,42 @@ Public Class TaskManager
     Private Sub DataField_ClearList(bEnabled As Boolean, ByRef currList As List(Of String))
         If bEnabled AndAlso currList.Count > 0 Then
             currList.Clear()
-            _bHasChanged = True
+            _HasChanged = True
         End If
     End Sub
 
     Private Sub DataField_ClearList(bEnabled As Boolean, ByRef currList As List(Of MediaContainers.Person))
         If bEnabled AndAlso currList.Count > 0 Then
             currList.Clear()
-            _bHasChanged = True
+            _HasChanged = True
         End If
     End Sub
 
     Private Sub DataField_ClearString(bEnabled As Boolean, ByRef currString As String)
         If bEnabled AndAlso Not String.IsNullOrEmpty(currString) Then
             currString = String.Empty
-            _bHasChanged = True
+            _HasChanged = True
         End If
     End Sub
 
     Private Sub DataField_CompareIntegers(bEnabled As Boolean, ByRef currInteger As Integer, newInteger As Integer)
         If bEnabled AndAlso Not currInteger = newInteger Then
             currInteger = newInteger
-            _bHasChanged = True
+            _HasChanged = True
         End If
     End Sub
 
     Private Sub DataField_CompareLists(bEnabled As Boolean, ByRef currList As List(Of String), newList As List(Of String))
         If bEnabled AndAlso (Not currList.Count = newList.Count OrElse Not currList.Count = 0 OrElse Not newList.Count = 0) Then
             currList = newList
-            _bHasChanged = True
+            _HasChanged = True
         End If
     End Sub
 
     Private Sub DataField_CompareStrings(bEnabled As Boolean, ByRef currString As String, newString As String)
         If bEnabled AndAlso Not currString = newString Then
             currString = newString
-            _bHasChanged = True
+            _HasChanged = True
         End If
     End Sub
 
@@ -411,7 +414,7 @@ Public Class TaskManager
                         While SQLreader.Read
                             If bwTaskManager.CancellationPending Then Return
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                         .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                         .EventType = EventType.SimpleMessage,
                                                          .Message = SQLreader("listTitle").ToString})
 
                             FileUtils.Common.CopyFanartToBackdropsPath(SQLreader("fanartPath").ToString, Enums.ContentType.Movie)
@@ -420,6 +423,16 @@ Public Class TaskManager
                 End Using
 
         End Select
+    End Sub
+
+    Private Sub DoScan(ByVal tTaskItem As TaskItem)
+        Dim fScanner As New Scanner
+        For Each id In tTaskItem.ListOfID
+            fScanner.Start(tTaskItem.ScanOrCleanOptions, id, tTaskItem.CommonStringValue)
+        Next
+        While fScanner.IsBusy
+            Threading.Thread.Sleep(50)
+        End While
     End Sub
 
     Private Sub DoTitleCheck(ByVal tTaskItem As TaskItem)
@@ -477,7 +490,7 @@ Public Class TaskManager
                                         SQLCommand_Update.ExecuteNonQuery()
                                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                          .ContentType = tTaskItem.ContentType,
-                                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                         .EventType = EventType.RefreshRow,
                                                                          .ID = CLng(SQLReader_GetMovies("idMovie"))})
                                     End If
                                 ElseIf bLevFail_OldValue Then
@@ -486,7 +499,7 @@ Public Class TaskManager
                                     SQLCommand_Update.ExecuteNonQuery()
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                      .ContentType = tTaskItem.ContentType,
-                                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                     .EventType = EventType.RefreshRow,
                                                                      .ID = CLng(SQLReader_GetMovies("idMovie"))})
                                 End If
                             End While
@@ -507,7 +520,7 @@ Public Class TaskManager
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(tID, True, True, True)
 
                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                 .EventType = EventType.SimpleMessage,
                                                  .Message = tmpDBElement.TVShow.Title})
 
                     Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -527,7 +540,7 @@ Public Class TaskManager
 
                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                  .ContentType = tTaskItem.ContentType,
-                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                 .EventType = EventType.RefreshRow,
                                                  .ID = tmpDBElement.ID})
 
                 Next
@@ -538,7 +551,7 @@ Public Class TaskManager
     Private Sub SetLanguage(ByVal tTaskItem As TaskItem)
         If String.IsNullOrEmpty(tTaskItem.CommonStringValue) Then Return
 
-        Dim nLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = tTaskItem.CommonStringValue)
+        Dim nLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = tTaskItem.CommonStringValue)
         If nLanguage IsNot Nothing AndAlso Not String.IsNullOrEmpty(nLanguage.Abbreviation) Then
             Dim strNewLanguage As String = nLanguage.Abbreviation
 
@@ -552,14 +565,14 @@ Public Class TaskManager
                         If Not tmpDBElement.Language = strNewLanguage Then
                             tmpDBElement.Language = strNewLanguage
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                         .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                         .EventType = EventType.SimpleMessage,
                                                          .Message = tmpDBElement.Movie.Title})
 
                             Master.DB.Save_Movie(tmpDBElement, True, True, False, False, False)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .ContentType = tTaskItem.ContentType,
-                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .EventType = EventType.RefreshRow,
                                                          .ID = tmpDBElement.ID})
                         End If
                     Next
@@ -572,14 +585,14 @@ Public Class TaskManager
                         If Not tmpDBElement.Language = strNewLanguage Then
                             tmpDBElement.Language = strNewLanguage
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                         .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                         .EventType = EventType.SimpleMessage,
                                                          .Message = tmpDBElement.Movieset.Title})
 
-                            Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False)
+                            Master.DB.Save_Movieset(tmpDBElement, True, True, False, False)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .ContentType = tTaskItem.ContentType,
-                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .EventType = EventType.RefreshRow,
                                                          .ID = tmpDBElement.ID})
                         End If
                     Next
@@ -592,14 +605,14 @@ Public Class TaskManager
                         If Not tmpDBElement.Language = strNewLanguage Then
                             tmpDBElement.Language = strNewLanguage
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                         .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                         .EventType = EventType.SimpleMessage,
                                                          .Message = tmpDBElement.TVShow.Title})
 
                             Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .ContentType = tTaskItem.ContentType,
-                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .EventType = EventType.RefreshRow,
                                                          .ID = tmpDBElement.ID})
                         End If
                     Next
@@ -632,14 +645,14 @@ Public Class TaskManager
 
                     If bHasChanged Then
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = tmpDBElement.Movie.Title})
 
                         Master.DB.Save_Movie(tmpDBElement, True, True, False, False, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                     End If
                 Next
@@ -664,14 +677,14 @@ Public Class TaskManager
 
                     If bHasChanged Then
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = tmpDBElement.Movieset.Title})
 
-                        Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False)
+                        Master.DB.Save_Movieset(tmpDBElement, True, True, False, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                     End If
                 Next
@@ -700,14 +713,14 @@ Public Class TaskManager
                         lstTVSeasonIDs.Add(Master.DB.GetTVSeasonIDFromEpisode(tmpDBElement))
                         lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = tmpDBElement.TVEpisode.Title})
 
                         Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                     End If
                 Next
@@ -719,13 +732,13 @@ Public Class TaskManager
                     For Each nTVSeasonID In lstTVSeasonIDs
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVSeason,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = nTVSeasonID})
                     Next
                     For Each nTVShowID In lstTVShowIDs
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVShow,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = nTVShowID})
                     Next
                 End If
@@ -752,14 +765,14 @@ Public Class TaskManager
                     If bHasChanged Then
                         lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShow.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.TVSeason.Season.ToString)})
 
                         Master.DB.Save_TVSeason(tmpDBElement, True, True, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                     End If
                 Next
@@ -770,7 +783,7 @@ Public Class TaskManager
                     For Each nTVShowID In lstTVShowIDs
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVShow,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = nTVShowID})
                     Next
                 End If
@@ -801,12 +814,11 @@ Public Class TaskManager
                         nTVSeason.IsLocked = tmpDBElement.IsLocked
                     Next
                     If lstSeasonsIDs.Count > 0 Then
-                        SetLockedState(New TaskItem With {
+                        SetLockedState(New TaskItem(TaskItem.TaskType.SetLockedState) With {
                                        .CommonBooleanValue = tmpDBElement.IsLocked,
                                        .ContentType = Enums.ContentType.TVSeason,
-                                       .ListOfID = lstSeasonsIDs,
-                                       .TaskType = Enums.TaskManagerType.SetLockedState},
-                                       True)
+                                       .ListOfID = lstSeasonsIDs
+                                       }, True)
                     End If
 
                     'Episode handling
@@ -815,24 +827,23 @@ Public Class TaskManager
                         lstEpisodeIDs.Add(nTVEpisode.ID)
                     Next
                     If lstEpisodeIDs.Count > 0 Then
-                        SetLockedState(New TaskItem With {
+                        SetLockedState(New TaskItem(TaskItem.TaskType.SetLockedState) With {
                                        .CommonBooleanValue = tmpDBElement.IsLocked,
                                        .ContentType = Enums.ContentType.TVEpisode,
-                                       .ListOfID = lstEpisodeIDs,
-                                       .TaskType = Enums.TaskManagerType.SetLockedState},
-                                       True)
+                                       .ListOfID = lstEpisodeIDs
+                                       }, True)
                     End If
 
                     If bHasChanged Then
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = tmpDBElement.TVShow.Title})
 
                         Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                     End If
                 Next
@@ -856,14 +867,14 @@ Public Class TaskManager
                             Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
                                 While SQLReader_Get.Read
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .EventType = EventType.SimpleMessage,
                                                                  .Message = SQLReader_Get("title").ToString})
                                     par_id.Value = tID
                                     par_marked.Value = tTaskItem.CommonBooleanValue
                                     SQLCommand_Update.ExecuteNonQuery()
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                  .ContentType = tTaskItem.ContentType,
-                                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                 .EventType = EventType.RefreshRow,
                                                                  .ID = tID})
                                 End While
                             End Using
@@ -885,14 +896,14 @@ Public Class TaskManager
                             Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
                                 While SQLReader_Get.Read
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .EventType = EventType.SimpleMessage,
                                                                  .Message = SQLReader_Get("title").ToString})
                                     par_id.Value = tID
                                     par_marked.Value = tTaskItem.CommonBooleanValue
                                     SQLCommand_Update.ExecuteNonQuery()
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                  .ContentType = tTaskItem.ContentType,
-                                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                 .EventType = EventType.RefreshRow,
                                                                  .ID = tID})
                                 End While
                             End Using
@@ -916,7 +927,7 @@ Public Class TaskManager
                             Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
                                 While SQLReader_Get.Read
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .EventType = EventType.SimpleMessage,
                                                                  .Message = SQLReader_Get("title").ToString})
                                     par_id.Value = tID
                                     par_marked.Value = tTaskItem.CommonBooleanValue
@@ -925,7 +936,7 @@ Public Class TaskManager
                                     lstTVShowIDs.Add(CLng(SQLReader_Get("idShow")))
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                  .ContentType = tTaskItem.ContentType,
-                                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                 .EventType = EventType.RefreshRow,
                                                                  .ID = tID})
                                 End While
                             End Using
@@ -940,13 +951,13 @@ Public Class TaskManager
                     For Each nTVSeasonID In lstTVSeasonIDs
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVSeason,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = nTVSeasonID})
                     Next
                     For Each nTVShowID In lstTVShowIDs
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVShow,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = nTVShowID})
                     Next
                 End If
@@ -959,11 +970,11 @@ Public Class TaskManager
                     'first proceed all episodes in this season
                     Dim intSeason As Integer = -1
                     Dim lngShowID As Long = -1
-                    Dim nTaskItem As New TaskItem With {
+                    Dim nTaskItem As New TaskItem(TaskItem.TaskType.SetMarkedState) With {
                         .CommonBooleanValue = tTaskItem.CommonBooleanValue,
                         .ContentType = Enums.ContentType.TVEpisode,
-                        .ListOfID = New List(Of Long),
-                        .TaskType = Enums.TaskManagerType.SetMarkedState}
+                        .ListOfID = New List(Of Long)
+                    }
 
                     Using SQLCommand_Get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand_Get.CommandText = String.Format("SELECT idShow, season FROM season WHERE idSeason={0};", tID)
@@ -998,7 +1009,7 @@ Public Class TaskManager
                             Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
                                 While SQLReader_Get.Read
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .EventType = EventType.SimpleMessage,
                                                                  .Message = SQLReader_Get("title").ToString})
                                     par_id.Value = tID
                                     par_marked.Value = tTaskItem.CommonBooleanValue
@@ -1006,7 +1017,7 @@ Public Class TaskManager
                                     lstTVShowIDs.Add(CLng(SQLReader_Get("idShow")))
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                  .ContentType = tTaskItem.ContentType,
-                                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                 .EventType = EventType.RefreshRow,
                                                                  .ID = tID})
                                 End While
                             End Using
@@ -1020,7 +1031,7 @@ Public Class TaskManager
                     For Each nTVShowID In lstTVShowIDs
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVShow,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = nTVShowID})
                     Next
                 End If
@@ -1030,11 +1041,11 @@ Public Class TaskManager
                     If bwTaskManager.CancellationPending Then Return
 
                     'first proceed all seasons in this tv show (episodes will be handled by seasons)
-                    Dim nTaskItem As New TaskItem With {
+                    Dim nTaskItem As New TaskItem(TaskItem.TaskType.SetMarkedState) With {
                         .CommonBooleanValue = tTaskItem.CommonBooleanValue,
                         .ContentType = Enums.ContentType.TVSeason,
-                        .ListOfID = New List(Of Long),
-                        .TaskType = Enums.TaskManagerType.SetMarkedState}
+                        .ListOfID = New List(Of Long)
+                    }
 
                     Using SQLCommand_Get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand_Get.CommandText = String.Format("SELECT idSeason FROM season WHERE idShow={0};", tID)
@@ -1057,14 +1068,14 @@ Public Class TaskManager
                             Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
                                 While SQLReader_Get.Read
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .EventType = EventType.SimpleMessage,
                                                                  .Message = SQLReader_Get("title").ToString})
                                     par_id.Value = tID
                                     par_marked.Value = tTaskItem.CommonBooleanValue
                                     SQLCommand_Update.ExecuteNonQuery()
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                  .ContentType = tTaskItem.ContentType,
-                                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                 .EventType = EventType.RefreshRow,
                                                                  .ID = tID})
                                 End While
                             End Using
@@ -1089,14 +1100,14 @@ Public Class TaskManager
                         tmpDBElement.Movie.Sets.Clear()
                         If nMovieset IsNot Nothing Then tmpDBElement.Movie.Sets.Add(nMovieset)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                         .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                         .EventType = EventType.SimpleMessage,
                                                          .Message = tmpDBElement.Movie.Title})
 
                         Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .ContentType = tTaskItem.ContentType,
-                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .EventType = EventType.RefreshRow,
                                                          .ID = tmpDBElement.ID})
                     End If
                 Next
@@ -1128,14 +1139,14 @@ Public Class TaskManager
 
                     If bHasChanged Then
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = tmpDBElement.Movie.Title})
 
                         Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                     End If
                 Next
@@ -1166,14 +1177,14 @@ Public Class TaskManager
                         lstTVSeasonIDs.Add(Master.DB.GetTVSeasonIDFromEpisode(tmpDBElement))
                         lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                     .EventType = EventType.SimpleMessage,
                                                      .Message = tmpDBElement.TVEpisode.Title})
 
                         Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                     End If
                 Next
@@ -1185,13 +1196,13 @@ Public Class TaskManager
                     For Each nTVSeasonID In lstTVSeasonIDs
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVSeason,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = nTVSeasonID})
                     Next
                     For Each nTVShowID In lstTVShowIDs
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVShow,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = nTVShowID})
                     Next
                 End If
@@ -1222,26 +1233,26 @@ Public Class TaskManager
 
                             If bHasChanged Then
                                 bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .EventType = EventType.SimpleMessage,
                                                              .Message = tmpDBElement.TVEpisode.Title})
 
                                 Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
 
                                 bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                              .ContentType = Enums.ContentType.TVEpisode,
-                                                             .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                             .EventType = EventType.RefreshRow,
                                                              .ID = tmpDBElement.ID})
                             End If
                         Next
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement_TVSeason.ID})
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVShow,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tmpDBElement_TVSeason.ShowID})
                     End If
                 Next
@@ -1270,14 +1281,14 @@ Public Class TaskManager
 
                         If bHasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                         .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                         .EventType = EventType.SimpleMessage,
                                                          .Message = tmpDBElement.TVEpisode.Title})
 
                             Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .ContentType = Enums.ContentType.TVEpisode,
-                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .EventType = EventType.RefreshRow,
                                                          .ID = tmpDBElement.ID})
                         End If
                     Next
@@ -1285,13 +1296,13 @@ Public Class TaskManager
                     For Each tSeason In tmpDBElement_TVShow.Seasons.OrderBy(Function(f) f.TVSeason.Season)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVSeason,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .EventType = EventType.RefreshRow,
                                                      .ID = tSeason.ID})
                     Next
 
                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                  .ContentType = tTaskItem.ContentType,
-                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                 .EventType = EventType.RefreshRow,
                                                  .ID = tmpDBElement_TVShow.ID})
                 Next
         End Select
@@ -1301,10 +1312,11 @@ Public Class TaskManager
         While bwTaskManager.IsBusy
             Threading.Thread.Sleep(50)
         End While
-        RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.TaskManagerEventType.TaskManagerStarted, .Message = "TaskManager is running"})
-        bwTaskManager = New System.ComponentModel.BackgroundWorker
-        bwTaskManager.WorkerReportsProgress = True
-        bwTaskManager.WorkerSupportsCancellation = True
+        RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = EventType.TaskManagerStarted, .Message = "TaskManager is running"})
+        bwTaskManager = New ComponentModel.BackgroundWorker With {
+            .WorkerReportsProgress = True,
+            .WorkerSupportsCancellation = True
+        }
         bwTaskManager.RunWorkerAsync()
     End Sub
 
@@ -1317,7 +1329,7 @@ Public Class TaskManager
 #Region "Fields"
 
         Dim ContentType As Enums.ContentType
-        Dim EventType As Enums.TaskManagerEventType
+        Dim EventType As EventType
         Dim ID As Long
         Dim Message As String
 
@@ -1325,22 +1337,76 @@ Public Class TaskManager
 
     End Structure
 
-    Public Structure TaskItem
+    Public Class TaskItem
 
 #Region "Fields"
 
-        Dim CommonBooleanValue As Boolean
-        Dim CommonStringValue As String
-        Dim ContentType As Enums.ContentType
-        Dim ListOfID As List(Of Long)
-        Dim GenericObject As Object
-        Dim ScrapeOptions As Structures.ScrapeOptions
-        Dim TaskType As Enums.TaskManagerType
+        Public ReadOnly TypeOfTask As TaskType = TaskType.None
 
-#End Region
+#End Region 'Fields
 
-    End Structure
+#Region "Properties"
 
-#End Region
+        Public Property CommonBooleanValue As Boolean
+
+        Public Property CommonStringValue As String
+
+        Public Property ContentType As Enums.ContentType = Enums.ContentType.None
+
+        Public Property GenericObject As Object = Nothing
+
+        Public Property ListOfID As List(Of Long) = New List(Of Long)
+
+        Public Property ScanOrCleanOptions As Scanner.ScanOrCleanOptions = New Scanner.ScanOrCleanOptions
+
+        Public Property ScrapeOptions As Structures.ScrapeOptions = New Structures.ScrapeOptions
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New(ByVal type As TaskType)
+            TypeOfTask = type
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Nested Types"
+
+        Public Enum TaskType As Integer
+            ''' <summary>
+            ''' only to set nothing after init
+            ''' </summary>
+            None
+            DataFields_ClearOrReplace
+            Clean
+            CopyBackdrops
+            DoTitleCheck
+            GetMissingEpisodes
+            Reload
+            RewriteContent
+            Scan
+            SetLanguage
+            SetLockedState
+            SetMarkedState
+            ''' <summary>
+            ''' Needs MediaContainer.SetDetails or Nothing as GenericObject. Nothing removes all assigned movie sets.
+            ''' </summary>
+            SetMovieset
+            SetWatchedState
+        End Enum
+
+#End Region 'Nested Types
+
+    End Class
+
+    Public Enum EventType As Integer
+        RefreshRow
+        SimpleMessage
+        TaskManagerEnded
+        TaskManagerStarted
+    End Enum
+
+#End Region 'Nested Types
 
 End Class

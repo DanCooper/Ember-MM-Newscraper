@@ -38,8 +38,8 @@ Public Class frmTV_GUI
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
     Public Event NeedsDBClean_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_TV
-    Public Event NeedsDBUpdate_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
-    Public Event NeedsDBUpdate_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
+    Public Event NeedsDBUpdate_Movie(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
+    Public Event NeedsDBUpdate_TV(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
     Public Event NeedsReload_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsReload_Movie
     Public Event NeedsReload_MovieSet() Implements Interfaces.IMasterSettingsPanel.NeedsReload_MovieSet
     Public Event NeedsReload_TVEpisode() Implements Interfaces.IMasterSettingsPanel.NeedsReload_TVEpisode
@@ -59,12 +59,12 @@ Public Class frmTV_GUI
         RaiseEvent NeedsDBClean_TV()
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_Movie()
-        RaiseEvent NeedsDBUpdate_Movie()
+    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_Movie(id)
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_TV()
-        RaiseEvent NeedsDBUpdate_TV()
+    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_TV(id)
     End Sub
 
     Private Sub Handle_NeedsReload_Movie()
@@ -177,27 +177,35 @@ Public Class frmTV_GUI
     End Sub
 
     Private Sub Setup()
-        'Column
-        Dim strColumn As String = Master.eLang.GetString(1331, "Column")
-        colMediaListSorting_Column_TVEpisode.HeaderText = strColumn
-        colMediaListSorting_Column_TVSeason.HeaderText = strColumn
-        colMediaListSorting_Column_TVShow.HeaderText = strColumn
+        With Master.eLang
+            'Column
+            Dim strColumn As String = .GetString(1331, "Column")
+            colMediaListSorting_Column_TVEpisode.HeaderText = strColumn
+            colMediaListSorting_Column_TVSeason.HeaderText = strColumn
+            colMediaListSorting_Column_TVShow.HeaderText = strColumn
 
-        'Show
-        Dim strShow As String = Master.eLang.GetString(465, "Show")
-        colMediaListSorting_Show_TVEpisode.HeaderText = strShow
-        colMediaListSorting_Show_TVSeason.HeaderText = strShow
-        colMediaListSorting_Show_TVShow.HeaderText = strShow
+            'Show
+            Dim strShow As String = .GetString(465, "Show")
+            colMediaListSorting_Show_TVEpisode.HeaderText = strShow
+            colMediaListSorting_Show_TVSeason.HeaderText = strShow
+            colMediaListSorting_Show_TVShow.HeaderText = strShow
 
-        chkClickScrapeEnabled_TVShow.Text = Master.eLang.GetString(849, "Enable Click-Scrape")
-        chkClickScrapeShowResults_TVShow.Text = Master.eLang.GetString(852, "Show Results Dialog")
-        chkDisplayMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
-        gbMainWindow.Text = Master.eLang.GetString(1152, "Main Window")
-        gbMediaList.Text = Master.eLang.GetString(460, "Media List")
-        gbMediaListSorting_TVEpisode.Text = Master.eLang.GetString(682, "Episodes")
-        gbMediaListSorting_TVSeason.Text = Master.eLang.GetString(681, "Seasons")
-        gbMediaListSorting_TVShow.Text = Master.eLang.GetString(653, "TV Shows")
-        lblLanguageOverlay.Text = String.Concat(Master.eLang.GetString(436, "Display best Audio Stream with the following Language"), ":")
+            'Use ALT + UP / DOWN to move the rows
+            Dim strUseArrows As String = .GetString(456, "Use ALT + UP / DOWN to move the rows")
+            lblMediaListSorting_TVEpisode.Text = strUseArrows
+            lblMediaListSorting_TVSeason.Text = strUseArrows
+            lblMediaListSorting_TVShow.Text = strUseArrows
+
+            chkClickScrapeEnabled_TVShow.Text = .GetString(849, "Enable Click-Scrape")
+            chkClickScrapeShowResults_TVShow.Text = .GetString(852, "Show Results Dialog")
+            chkDisplayMissingEpisodes.Text = .GetString(733, "Display Missing Episodes")
+            gbMainWindow.Text = .GetString(1152, "Main Window")
+            gbMediaList.Text = .GetString(460, "Media List")
+            gbMediaListSorting_TVEpisode.Text = .GetString(682, "Episodes")
+            gbMediaListSorting_TVSeason.Text = .GetString(681, "Seasons")
+            gbMediaListSorting_TVShow.Text = .GetString(653, "TV Shows")
+            lblLanguageOverlay.Text = String.Concat(.GetString(436, "Display best Audio Stream with the following Language"), ":")
+        End With
 
         Load_AutoSizeModes()
         Load_CustomScraperButton_ModifierTypes()

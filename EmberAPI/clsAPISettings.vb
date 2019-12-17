@@ -49,7 +49,11 @@ Public Class Settings
 
     Public Property Movie() As MovieSettings = New MovieSettings
 
+    Public Property Movieset() As MoviesetSettings = New MoviesetSettings
+
     Public Property TVEpisode As TVEpisodeSettings = New TVEpisodeSettings
+
+    Public Property TVSeason As TVSeasonSettings = New TVSeasonSettings
 
     Public Property TVShow As TVShowSettings = New TVShowSettings
 
@@ -188,7 +192,6 @@ Public Class Settings
     Public Property MovieFanartResize() As Boolean = False
     Public Property MovieFanartWidth() As Integer = 0
     Public Property MovieFanartYAMJ() As Boolean = False
-    Public Property MovieFilterCustomIsEmpty() As Boolean = False
     Public Property MovieGeneralCustomMarker1Color() As Integer = -32704
     Public Property MovieGeneralCustomMarker1Name() As String = String.Empty
     Public Property MovieGeneralCustomMarker2Color() As Integer = -16776961
@@ -324,7 +327,6 @@ Public Class Settings
     Public Property MovieScraperRuntime() As Boolean = True
     Public Property MovieScraperStudio() As Boolean = True
     Public Property MovieScraperStudioLimit() As Integer = 0
-    Public Property MovieScraperStudioWithImgOnly() As Boolean = False
     Public Property MovieScraperTagline() As Boolean = True
     Public Property MovieScraperTitle() As Boolean = True
     Public Property MovieScraperTop250() As Boolean = True
@@ -504,8 +506,6 @@ Public Class Settings
     Public Property TVEpisodeFanartPrefSizeOnly() As Boolean = False
     Public Property TVEpisodeFanartResize() As Boolean = False
     Public Property TVEpisodeFanartWidth() As Integer = 0
-    Public Property TVEpisodeFilterCustom() As List(Of String) = New List(Of String)
-    Public Property TVEpisodeFilterCustomIsEmpty() As Boolean = False
     Public Property TVEpisodeMissingFanart() As Boolean = False
     Public Property TVEpisodeMissingNFO() As Boolean = False
     Public Property TVEpisodeMissingPoster() As Boolean = False
@@ -513,7 +513,6 @@ Public Class Settings
     Public Property TVEpisodeNFOExpert() As String = String.Empty
     Public Property TVEpisodeNFOFrodo() As Boolean = False
     Public Property TVEpisodeNFOYAMJ() As Boolean = False
-    Public Property TVEpisodeNoFilter() As Boolean = True
     Public Property TVEpisodePosterBoxee() As Boolean = False
     Public Property TVEpisodePosterExpert() As String = String.Empty
     Public Property TVEpisodePosterFrodo() As Boolean = False
@@ -526,8 +525,6 @@ Public Class Settings
     Public Property TVEpisodePosterVideoExtraction() As Boolean = True
     Public Property TVEpisodePosterVideoExtractionPref() As Boolean = False
     Public Property TVEpisodePosterYAMJ() As Boolean = False
-    Public Property TVEpisodeProperCase() As Boolean = True
-    Public Property TVGeneralLanguage() As String = "en-US"
     Public Property TVGeneralMarkNewEpisodes() As Boolean = False
     Public Property TVGeneralMarkNewShows() As Boolean = False
     Public Property TVImagesCacheEnabled() As Boolean = True
@@ -567,7 +564,6 @@ Public Class Settings
     Public Property TVLockShowTitle() As Boolean = False
     Public Property TVLockShowUserRating() As Boolean = False
     Public Property TVMetadataPerFileType() As List(Of MetadataPerType) = New List(Of MetadataPerType)
-    Public Property TVMultiPartMatching() As String = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
     Public Property TVScraperCastWithImgOnly() As Boolean = False
     Public Property TVScraperCleanFields() As Boolean = False
     Public Property TVScraperDurationRuntimeFormat() As String = "<m>"
@@ -585,7 +581,6 @@ Public Class Settings
     Public Property TVScraperEpisodeTitle() As Boolean = True
     Public Property TVScraperEpisodeUserRating() As Boolean = True
     Public Property TVScraperMetaDataScan() As Boolean = True
-    Public Property TVScraperOptionsOrdering() As Enums.EpisodeOrdering = Enums.EpisodeOrdering.Standard
     Public Property TVScraperSeasonAired() As Boolean = True
     Public Property TVScraperSeasonPlot() As Boolean = True
     Public Property TVScraperSeasonTitle() As Boolean = False
@@ -722,8 +717,6 @@ Public Class Settings
     Public Property TVShowFanartResize() As Boolean = False
     Public Property TVShowFanartWidth() As Integer = 0
     Public Property TVShowFanartYAMJ() As Boolean = False
-    Public Property TVShowFilterCustom() As List(Of String) = New List(Of String)
-    Public Property TVShowFilterCustomIsEmpty() As Boolean = False
     Public Property TVShowKeyArtExtended() As Boolean = False
     Public Property TVShowKeyArtHeight() As Integer = 0
     Public Property TVShowKeyArtKeepExisting() As Boolean = False
@@ -763,7 +756,6 @@ Public Class Settings
     Public Property TVShowPosterResize() As Boolean = False
     Public Property TVShowPosterWidth() As Integer = 0
     Public Property TVShowPosterYAMJ() As Boolean = False
-    Public Property TVShowProperCase() As Boolean = True
     Public Property TVShowThemeKeepExisting() As Boolean = False
     Public Property TVShowThemeTvTunesCustom() As Boolean = False
     Public Property TVShowThemeTvTunesCustomPath() As String = String.Empty
@@ -1475,108 +1467,20 @@ Public Class Settings
             Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist", .Order = 2, .Title = Master.eLang.GetString(653, "TV Shows")})
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Not Master.eSettings.Movie.SourceSettings.TitleFilterSpecified AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Clear()
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]\(?\d{4}\)?.*")    'year in brakets
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]tt\d*")            'IMDB ID
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]blu[\W_]?ray.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]bd[\W_]?rip.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]3d.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]dvd.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]720.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]1080.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]1440.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]2160.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]4k.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]ac3.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]dts.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]divx.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]xvid.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]dc[\W_]?.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]extended.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]hd(tv)?.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]unrated.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]uncut.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]german.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]\[offline\].*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("(?i)[\W_]ntsc.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("\.[->] ")                   'convert dots to space
-            Master.eSettings.Movie.SourceSettings.TitleFilter.Add("_[->] ")                    'convert underscore to space
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse Not Master.eSettings.Movie.SourceSettings.TitleFiltersSpecified) Then
+            Master.eSettings.Movie.SourceSettings.TitleFilters = Master.eSettings.Movie.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.Movie)
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowFilters) AndAlso (Force OrElse (Master.eSettings.TVShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVShowFilterCustomIsEmpty)) Then
-            Master.eSettings.TVShowFilterCustom.Clear()
-            Master.eSettings.TVShowFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
-            'would there ever be season or episode info in the show folder name??
-            'Master.eSettings.TVShowFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*e[0-9]+(\])*")
-            'Master.eSettings.TVShowFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+x[0-9]+(\])*")
-            'Master.eSettings.TVShowFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
-            'Master.eSettings.TVShowFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dvd.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]1080.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]1440.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]2160.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]4k.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]ac3.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dts.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]divx.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]xvid.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]extended.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]unrated.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]uncut.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]\[offline\].*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]ntsc.*")
-            Master.eSettings.TVShowFilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.TVShowFilterCustom.Add("\.[->] ")                  'convert dots to space
-            Master.eSettings.TVShowFilterCustom.Add("_[->] ")                   'convert underscore to space
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeFilters) AndAlso (Force OrElse Master.eSettings.TVEpisode.SourceSettings.TitleFiltersSpecified) Then
+            Master.eSettings.TVEpisode.SourceSettings.TitleFilters = Master.eSettings.TVEpisode.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.TVEpisode)
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeFilters) AndAlso (Force OrElse (Master.eSettings.TVEpisodeFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVEpisodeFilterCustomIsEmpty)) Then
-            Master.eSettings.TVEpisodeFilterCustom.Clear()
-            Master.eSettings.TVEpisodeFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dvd.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]1080.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]1440.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]2160.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]4k.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]ac3.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dts.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]divx.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]xvid.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]extended.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]unrated.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]uncut.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]\[offline\].*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]ntsc.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("\.[->] ")               'convert dots to space
-            Master.eSettings.TVEpisodeFilterCustom.Add("_[->] ")                'convert underscore to space
-            Master.eSettings.TVEpisodeFilterCustom.Add(" - [->] ")              'convert space-minus-space to space
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowFilters) AndAlso (Force OrElse Not Master.eSettings.TVShow.SourceSettings.TitleFiltersSpecified) Then
+            Master.eSettings.TVShow.SourceSettings.TitleFilters = Master.eSettings.TVShow.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.TVShow)
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.SortTokens) AndAlso (Force OrElse Not Master.eSettings.Options.General.SortTokensSpecified) Then
-            Master.eSettings.Options.General.SortTokens = GetDefaultsForList_SortTokens()
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.SortTokens) AndAlso (Force OrElse Not Master.eSettings.Options.Global.SortTokensSpecified) Then
+            Master.eSettings.Options.Global.SortTokens = GetDefaultsForList_SortTokens()
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSeasonTitleBlacklist) AndAlso (Force OrElse Master.eSettings.TVScraperSeasonTitleBlacklist.Count <= 0) Then
@@ -2157,7 +2061,7 @@ End Class
 
 
 <Serializable()>
-Public Class GeneralSettings
+Public Class GlobalSettings
 
 #Region "Properties"
 
@@ -2191,7 +2095,28 @@ Public Class MovieSettings
 
     ' Public Property Filenaming As FilenamingSettings_Movie
 
-    ' Public Property ImageSettings() As ImageSettings_Movie
+    'Public Property ImageSettings() As ImageSettings_Movie
+
+    Public Property SourceSettings As SourceSettings = New SourceSettings
+
+    'Public Property ThemeSettings() As ThemeSettings
+
+    ' Public Property TrailerSettings() As TrailerSettings
+
+#End Region 'Properties
+
+End Class
+
+<Serializable()>
+Public Class MoviesetSettings
+
+#Region "Properties"
+
+    'Public Property DataSettings() As DataSettings_Movie
+
+    ' Public Property Filenaming As FilenamingSettings_Movie
+
+    'Public Property ImageSettings() As ImageSettings_Movie
 
     Public Property SourceSettings As SourceSettings = New SourceSettings
 
@@ -2216,7 +2141,7 @@ Public Class Options
 
     'Public Property GUI As GUISettings
 
-    Public Property General As GeneralSettings = New GeneralSettings
+    Public Property [Global] As GlobalSettings = New GlobalSettings
 
     Public Property VideoSourceMapping As VideoSourceMapping = New VideoSourceMapping
 
@@ -2294,7 +2219,13 @@ Public Class SourceSettings
 
 #Region "Properties"
 
-    Public Property CleanDBAfterUpdate As Boolean = False
+    Public Property AutoScrapeOnImportEnabled As Boolean = False
+
+    Public Property AutoScrapeOnImportScrapeType As Enums.ScrapeType = Enums.ScrapeType.SingleAuto
+
+    Public Property AutoScrapeOnImportMissingItemsOnly As Boolean = False
+
+    Public Property CleanLibraryAfterUpdate As Boolean = False
 
     Public Property DateAddedDateTime As Enums.DateTimeStamp = Enums.DateTimeStamp.Now
 
@@ -2313,14 +2244,18 @@ Public Class SourceSettings
         End Get
     End Property
 
-    Public Property MarkNew As Boolean = False
+    Public Property MarkNewAsCustom As Boolean = False
+
+    Public Property MarkNewAsMarked As Boolean = False
+
+    Public Property MarkNewAsNew As Boolean = True
 
     Public Property MultiPartMatching As String = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
 
     <XmlIgnore>
     Public ReadOnly Property MultiPartMatchingSpecified As Boolean
         Get
-            Return MultiPartMatching.Count > 0
+            Return Not String.IsNullOrEmpty(MultiPartMatching)
         End Get
     End Property
 
@@ -2337,24 +2272,32 @@ Public Class SourceSettings
 
     Public Property SortBeforeScan As Boolean
 
-    Public Property TitleFilter As TitleFilterSpecification = New TitleFilterSpecification
+    Public Property TitleFilters As TitleFilterSpecification = New TitleFilterSpecification
 
     <XmlIgnore>
-    Public ReadOnly Property TitleFilterSpecified As Boolean
+    Public ReadOnly Property TitleFiltersSpecified As Boolean
         Get
-            Return TitleFilter.Count > 0
+            Return TitleFilters.Count > 0
         End Get
     End Property
 
-    Public Property TitleFilterIsEmpty As Boolean
+    Public Property TitleFiltersEnabled As Boolean = True
 
     Public Property TitleProperCase As Boolean = True
 
     Public Property TVShowMatching As RegexEpisodeSpecification = New RegexEpisodeSpecification
 
+    Public Property UnmarkNewAfterScraping As Boolean = True
+
+    Public Property UnmarkNewBeforeDBUpdate As Boolean = True
+
+    Public Property UnmarkNewOnExit As Boolean = True
+
+    Public Property UnmarkNewWithNFO As Boolean = False
+
     Public Property VideoSourceFromFolder As Boolean = False
 
-#End Region 'Properties
+#End Region 'Properties 
 
 End Class
 
@@ -2372,99 +2315,107 @@ Public Class TitleFilterSpecification
 
 #Region "Methods"
 
-    Public Sub SetDefaults(ByVal ContentType As Enums.ContentType, ByVal Force As Boolean)
+    Public Function GetDefaults(ByVal ContentType As Enums.ContentType) As TitleFilterSpecification
         Select Case ContentType
             Case Enums.ContentType.Movie
-                Clear()
-                Add("(?i)[\W_]\(?\d{4}\)?.*")    'year in brakets
-                Add("(?i)[\W_]tt\d*")            'IMDB ID
-                Add("(?i)[\W_]blu[\W_]?ray.*")
-                Add("(?i)[\W_]bd[\W_]?rip.*")
-                Add("(?i)[\W_]3d.*")
-                Add("(?i)[\W_]dvd.*")
-                Add("(?i)[\W_]720.*")
-                Add("(?i)[\W_]1080.*")
-                Add("(?i)[\W_]1440.*")
-                Add("(?i)[\W_]2160.*")
-                Add("(?i)[\W_]4k.*")
-                Add("(?i)[\W_]ac3.*")
-                Add("(?i)[\W_]dts.*")
-                Add("(?i)[\W_]divx.*")
-                Add("(?i)[\W_]xvid.*")
-                Add("(?i)[\W_]dc[\W_]?.*")
-                Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-                Add("(?i)[\W_]extended.*")
-                Add("(?i)[\W_]hd(tv)?.*")
-                Add("(?i)[\W_]unrated.*")
-                Add("(?i)[\W_]uncut.*")
-                Add("(?i)[\W_]german.*")
-                Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-                Add("(?i)[\W_]\[offline\].*")
-                Add("(?i)[\W_]ntsc.*")
-                Add("[\W_]PAL[\W_]?.*")
-                Add("\.[->] ")                   'convert dots to space
-                Add("_[->] ")                    'convert underscore to space
+                Return New TitleFilterSpecification From {
+                    "(?i)[\W_]\(?\d{4}\)?.*",               'year in brakets
+                    "(?i)[\W_]tt\d*",                       'IMDB ID
+                    "(?i)[\W_]blu[\W_]?ray.*",
+                    "(?i)[\W_]bd[\W_]?rip.*",
+                    "(?i)[\W_]3d.*",
+                    "(?i)[\W_]dvd.*",
+                    "(?i)[\W_]720.*",
+                    "(?i)[\W_]1080.*",
+                    "(?i)[\W_]1440.*",
+                    "(?i)[\W_]2160.*",
+                    "(?i)[\W_]4k.*",
+                    "(?i)[\W_]ac3.*",
+                    "(?i)[\W_]dts.*",
+                    "(?i)[\W_]divx.*",
+                    "(?i)[\W_]xvid.*",
+                    "(?i)[\W_]dc[\W_]?.*",
+                    "(?i)[\W_]dir(ector'?s?)?\s?cut.*",
+                    "(?i)[\W_]extended.*",
+                    "(?i)[\W_]hd(tv)?.*",
+                    "(?i)[\W_]unrated.*",
+                    "(?i)[\W_]uncut.*",
+                    "(?i)[\W_]german.*",
+                    "(?i)[\W_]([a-z]{3}|multi)[sd]ub.*",
+                    "(?i)[\W_]\[offline\].*",
+                    "(?i)[\W_]ntsc.*",
+                    "[\W_]PAL[\W_]?.*",                     'convert dots to space
+                    "\.[->] ", "_[->] "                     'convert underscore to space
+                }
             Case Enums.ContentType.TVEpisode
-                Clear()
-                Add("[\W_]\(?\d{4}\)?.*")
-                Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*")
-                Add("(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*")
-                Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
-                Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
-                Add("(?i)[\W_]blu[\W_]?ray.*")
-                Add("(?i)[\W_]bd[\W_]?rip.*")
-                Add("(?i)[\W_]dvd.*")
-                Add("(?i)[\W_]720.*")
-                Add("(?i)[\W_]1080.*")
-                Add("(?i)[\W_]1440.*")
-                Add("(?i)[\W_]2160.*")
-                Add("(?i)[\W_]4k.*")
-                Add("(?i)[\W_]ac3.*")
-                Add("(?i)[\W_]dts.*")
-                Add("(?i)[\W_]divx.*")
-                Add("(?i)[\W_]xvid.*")
-                Add("(?i)[\W_]dc[\W_]?.*")
-                Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-                Add("(?i)[\W_]extended.*")
-                Add("(?i)[\W_]hd(tv)?.*")
-                Add("(?i)[\W_]unrated.*")
-                Add("(?i)[\W_]uncut.*")
-                Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-                Add("(?i)[\W_]\[offline\].*")
-                Add("(?i)[\W_]ntsc.*")
-                Add("[\W_]PAL[\W_]?.*")
-                Add("\.[->] ")               'convert dots to space
-                Add("_[->] ")                'convert underscore to space
-                Add(" - [->] ")              'convert space-minus-space to space
+                Return New TitleFilterSpecification From {
+                    "[\W_]\(?\d{4}\)?.*",
+                    "(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*",
+                    "(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*",
+                    "(?i)[\W_]blu[\W_]?ray.*",
+                    "(?i)[\W_]bd[\W_]?rip.*",
+                    "(?i)[\W_]dvd.*",
+                    "(?i)[\W_]720.*",
+                    "(?i)[\W_]1080.*",
+                    "(?i)[\W_]1440.*",
+                    "(?i)[\W_]2160.*",
+                    "(?i)[\W_]4k.*",
+                    "(?i)[\W_]ac3.*",
+                    "(?i)[\W_]dts.*",
+                    "(?i)[\W_]divx.*",
+                    "(?i)[\W_]xvid.*",
+                    "(?i)[\W_]dc[\W_]?.*",
+                    "(?i)[\W_]dir(ector'?s?)?\s?cut.*",
+                    "(?i)[\W_]extended.*",
+                    "(?i)[\W_]hd(tv)?.*",
+                    "(?i)[\W_]unrated.*",
+                    "(?i)[\W_]uncut.*",
+                    "(?i)[\W_]([a-z]{3}|multi)[sd]ub.*",
+                    "(?i)[\W_]\[offline\].*",
+                    "(?i)[\W_]ntsc.*",
+                    "[\W_]PAL[\W_]?.*",
+                    "\.[->] ",                              'convert dots to space
+                    "_[->] ",                               'convert underscore to space
+                    " - [->] "                              'convert space-minus-space to space
+                }
             Case Enums.ContentType.TVShow
-                Clear()
-                Add("[\W_]\(?\d{4}\)?.*")
-                Add("(?i)[\W_]blu[\W_]?ray.*")
-                Add("(?i)[\W_]bd[\W_]?rip.*")
-                Add("(?i)[\W_]dvd.*")
-                Add("(?i)[\W_]720.*")
-                Add("(?i)[\W_]1080.*")
-                Add("(?i)[\W_]1440.*")
-                Add("(?i)[\W_]2160.*")
-                Add("(?i)[\W_]4k.*")
-                Add("(?i)[\W_]ac3.*")
-                Add("(?i)[\W_]dts.*")
-                Add("(?i)[\W_]divx.*")
-                Add("(?i)[\W_]xvid.*")
-                Add("(?i)[\W_]dc[\W_]?.*")
-                Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-                Add("(?i)[\W_]extended.*")
-                Add("(?i)[\W_]hd(tv)?.*")
-                Add("(?i)[\W_]unrated.*")
-                Add("(?i)[\W_]uncut.*")
-                Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-                Add("(?i)[\W_]\[offline\].*")
-                Add("(?i)[\W_]ntsc.*")
-                Add("[\W_]PAL[\W_]?.*")
-                Add("\.[->] ")                  'convert dots to space
-                Add("_[->] ")                   'convert underscore to space
+                Return New TitleFilterSpecification From {
+                    "[\W_]\(?\d{4}\,?.*",
+                    "(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*",
+                    "(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*",
+                    "(?i,[\W_]blu[\W_]?ray.*",
+                    "(?i,[\W_]bd[\W_]?rip.*",
+                    "(?i,[\W_]dvd.*",
+                    "(?i,[\W_]720.*",
+                    "(?i,[\W_]1080.*",
+                    "(?i,[\W_]1440.*",
+                    "(?i,[\W_]2160.*",
+                    "(?i,[\W_]4k.*",
+                    "(?i,[\W_]ac3.*",
+                    "(?i,[\W_]dts.*",
+                    "(?i,[\W_]divx.*",
+                    "(?i,[\W_]xvid.*",
+                    "(?i,[\W_]dc[\W_]?.*",
+                    "(?i,[\W_]dir(ector'?s?,?\s?cut.*",
+                    "(?i,[\W_]extended.*",
+                    "(?i,[\W_]hd(tv,?.*",
+                    "(?i,[\W_]unrated.*",
+                    "(?i,[\W_]uncut.*",
+                    "(?i,[\W_]([a-z]{3}|multi,[sd]ub.*",
+                    "(?i,[\W_]\[offline\].*",
+                    "(?i,[\W_]ntsc.*",
+                    "[\W_]PAL[\W_]?.*",
+                    "\.[->] ",                              'convert dots to space
+                    "_[->] ",                               'convert underscore to space
+                    " - [->] "                              'convert space-minus-space to space
+                }
         End Select
-    End Sub
+        Return New TitleFilterSpecification
+    End Function
 
 #End Region 'Methods
 
@@ -2472,6 +2423,25 @@ End Class
 
 <Serializable()>
 Public Class TVEpisodeSettings
+
+#Region "Properties"
+
+    'Public Property DataSettings As DataSettings_TV
+
+    'Public Property Filenaming As FilenamingSettings_TV
+
+    'Public Property ImageSettings() As ImageSettings_TV
+
+    Public Property SourceSettings As SourceSettings = New SourceSettings
+
+    'Public Property ThemeSettings() As ThemeSettings
+
+#End Region 'Properties
+
+End Class
+
+<Serializable()>
+Public Class TVSeasonSettings
 
 #Region "Properties"
 

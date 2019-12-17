@@ -22,19 +22,9 @@ Imports EmberAPI
 
 Public Class dlgClearOrReplace
 
-#Region "Fields"
-
-    Private _Result As New TaskManager.TaskItem
-
-#End Region 'Fields
-
 #Region "Properties"
 
-    Public ReadOnly Property Result As TaskManager.TaskItem
-        Get
-            Return _Result
-        End Get
-    End Property
+    Public Result As New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.DataFields_ClearOrReplace)
 
 #End Region 'Properties
 
@@ -49,8 +39,7 @@ Public Class dlgClearOrReplace
     Public Overloads Function ShowDialog(ByVal tContentType As Enums.ContentType) As DialogResult
         SetUp()
 
-        _Result.ContentType = tContentType
-        _Result.TaskType = Enums.TaskManagerType.DataFields_ClearOrReplace
+        Result.ContentType = tContentType
         Select Case tContentType
             Case Enums.ContentType.Movie
                 chkAired.Visible = False
@@ -219,8 +208,9 @@ Public Class dlgClearOrReplace
     End Sub
 
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
-        With _Result.ScrapeOptions
-            Select Case _Result.ContentType
+        Dim nScrapeOptions As New Structures.ScrapeOptions
+        With nScrapeOptions
+            Select Case Result.ContentType
                 Case Enums.ContentType.Movie
                     Dim nInfo = New MediaContainers.Movie
                     .bMainActors = chkActors.Checked
@@ -261,7 +251,7 @@ Public Class dlgClearOrReplace
                     Dim uiYear As UInteger = 0
                     UInteger.TryParse(txtYear.Text.Trim, uiYear)
                     nInfo.Year = CInt(uiYear)
-                    _Result.GenericObject = nInfo
+                    Result.GenericObject = nInfo
                 Case Enums.ContentType.Movieset
                     .bMainPlot = chkPlot.Checked
                 Case Enums.ContentType.TVEpisode
@@ -283,14 +273,14 @@ Public Class dlgClearOrReplace
                     nInfo.UserRating = CInt(uiUserRating)
                     .bEpisodeVideoSource = chkVideoSource.Checked
                     nInfo.VideoSource = txtVideoSource.Text.Trim
-                    _Result.GenericObject = nInfo
+                    Result.GenericObject = nInfo
                 Case Enums.ContentType.TVSeason
                     Dim nInfo = New MediaContainers.SeasonDetails
                     .bSeasonAired = chkAired.Checked
                     nInfo.Aired = txtAired.Text.Trim
                     .bSeasonPlot = chkPlot.Checked
                     .bSeasonTitle = chkTitle.Checked
-                    _Result.GenericObject = nInfo
+                    Result.GenericObject = nInfo
                 Case Enums.ContentType.TVShow
                     Dim nInfo = New MediaContainers.TVShow
                     .bMainActors = chkActors.Checked
@@ -320,9 +310,10 @@ Public Class dlgClearOrReplace
                     Dim uiUserRating As UInteger = 0
                     UInteger.TryParse(txtUserRating.Text.Trim, uiUserRating)
                     nInfo.UserRating = CInt(uiUserRating)
-                    _Result.GenericObject = nInfo
+                    Result.GenericObject = nInfo
             End Select
         End With
+        Result.ScrapeOptions = nScrapeOptions
         DialogResult = DialogResult.OK
     End Sub
 

@@ -29,7 +29,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared logger As Logger = LogManager.GetCurrentClassLogger()
+        Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -48,8 +48,8 @@ Namespace FileUtils
                     Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader()
                         While SQLReader.Read()
                             Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt32(SQLReader("idMovie")))
-                            Dim fScanner As New Scanner
-                            fScanner.GetFolderContents_Movie(tmpMovie, True)
+                            Dim nScanner As New Scanner
+                            nScanner.GetFolderContents_Movie(tmpMovie, True)
                             Master.DB.Save_Movie(tmpMovie, True, True, True, True, True)
                         End While
                     End Using

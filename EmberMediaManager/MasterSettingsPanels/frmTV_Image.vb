@@ -34,8 +34,8 @@ Public Class frmTV_Image
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
     Public Event NeedsDBClean_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_TV
-    Public Event NeedsDBUpdate_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
-    Public Event NeedsDBUpdate_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
+    Public Event NeedsDBUpdate_Movie(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
+    Public Event NeedsDBUpdate_TV(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
     Public Event NeedsReload_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsReload_Movie
     Public Event NeedsReload_MovieSet() Implements Interfaces.IMasterSettingsPanel.NeedsReload_MovieSet
     Public Event NeedsReload_TVEpisode() Implements Interfaces.IMasterSettingsPanel.NeedsReload_TVEpisode
@@ -45,7 +45,7 @@ Public Class frmTV_Image
 
 #End Region 'Events 
 
-#Region "Handles"
+#Region "Event Methods"
 
     Private Sub Handle_NeedsDBClean_Movie()
         RaiseEvent NeedsDBClean_Movie()
@@ -55,12 +55,12 @@ Public Class frmTV_Image
         RaiseEvent NeedsDBClean_TV()
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_Movie()
-        RaiseEvent NeedsDBUpdate_Movie()
+    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_Movie(id)
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_TV()
-        RaiseEvent NeedsDBUpdate_TV()
+    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_TV(id)
     End Sub
 
     Private Sub Handle_NeedsReload_Movie()
@@ -87,7 +87,7 @@ Public Class frmTV_Image
         RaiseEvent SettingsChanged()
     End Sub
 
-#End Region 'Handles
+#End Region 'Event Methods
 
 #Region "Constructors"
 
@@ -158,7 +158,7 @@ Public Class frmTV_Image
             .TVImagesCacheEnabled = chkTVImagesCacheEnabled.Checked
             .TVImagesDisplayImageSelect = chkTVImagesDisplayImageSelect.Checked
             If Not String.IsNullOrEmpty(cbTVImagesForcedLanguage.Text) Then
-                .TVImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbTVImagesForcedLanguage.Text).Abbrevation_MainLanguage
+                .TVImagesForcedLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Name = cbTVImagesForcedLanguage.Text).Abbrevation_MainLanguage
             End If
             .TVImagesForceLanguage = chkTVImagesForceLanguage.Checked
             .TVImagesGetBlankImages = chkTVImagesGetBlankImages.Checked
@@ -380,22 +380,22 @@ Public Class frmTV_Image
 
             Try
                 cbTVImagesForcedLanguage.Items.Clear()
-                cbTVImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Name).Distinct.ToArray)
+                cbTVImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages Select lLang.Name).Distinct.ToArray)
                 If cbTVImagesForcedLanguage.Items.Count > 0 Then
                     If Not String.IsNullOrEmpty(.TVImagesForcedLanguage) Then
-                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .TVImagesForcedLanguage)
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .TVImagesForcedLanguage)
                         If tLanguage IsNot Nothing Then
                             cbTVImagesForcedLanguage.Text = tLanguage.Name
                         Else
-                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.TVImagesForcedLanguage))
+                            tLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.TVImagesForcedLanguage))
                             If tLanguage IsNot Nothing Then
                                 cbTVImagesForcedLanguage.Text = tLanguage.Name
                             Else
-                                cbTVImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                                cbTVImagesForcedLanguage.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
                             End If
                         End If
                     Else
-                        cbTVImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                        cbTVImagesForcedLanguage.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
                     End If
                 End If
             Catch ex As Exception

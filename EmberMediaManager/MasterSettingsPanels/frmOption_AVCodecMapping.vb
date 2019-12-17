@@ -27,8 +27,8 @@ Public Class frmOption_AVCodecMapping
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
     Public Event NeedsDBClean_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_TV
-    Public Event NeedsDBUpdate_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
-    Public Event NeedsDBUpdate_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
+    Public Event NeedsDBUpdate_Movie(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
+    Public Event NeedsDBUpdate_TV(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
     Public Event NeedsReload_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsReload_Movie
     Public Event NeedsReload_MovieSet() Implements Interfaces.IMasterSettingsPanel.NeedsReload_MovieSet
     Public Event NeedsReload_TVEpisode() Implements Interfaces.IMasterSettingsPanel.NeedsReload_TVEpisode
@@ -48,12 +48,12 @@ Public Class frmOption_AVCodecMapping
         RaiseEvent NeedsDBClean_TV()
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_Movie()
-        RaiseEvent NeedsDBUpdate_Movie()
+    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_Movie(id)
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_TV()
-        RaiseEvent NeedsDBUpdate_TV()
+    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_TV(id)
     End Sub
 
     Private Sub Handle_NeedsReload_Movie()
@@ -103,7 +103,7 @@ Public Class frmOption_AVCodecMapping
         Return New Containers.SettingsPanel With {
             .Contains = Enums.SettingsPanelType.None,
             .ImageIndex = 13,
-            .Order = 400,
+            .Order = 500,
             .Panel = pnlSettings,
             .SettingsPanelID = "Option_AVCodecMapping",
             .Title = Master.eLang.GetString(785, "Audio & Video Codec Mapping"),

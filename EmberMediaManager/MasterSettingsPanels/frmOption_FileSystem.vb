@@ -35,8 +35,8 @@ Public Class frmOption_FileSystem
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
     Public Event NeedsDBClean_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_TV
-    Public Event NeedsDBUpdate_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
-    Public Event NeedsDBUpdate_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
+    Public Event NeedsDBUpdate_Movie(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
+    Public Event NeedsDBUpdate_TV(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
     Public Event NeedsReload_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsReload_Movie
     Public Event NeedsReload_MovieSet() Implements Interfaces.IMasterSettingsPanel.NeedsReload_MovieSet
     Public Event NeedsReload_TVEpisode() Implements Interfaces.IMasterSettingsPanel.NeedsReload_TVEpisode
@@ -56,12 +56,12 @@ Public Class frmOption_FileSystem
         RaiseEvent NeedsDBClean_TV()
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_Movie()
-        RaiseEvent NeedsDBUpdate_Movie()
+    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_Movie(id)
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_TV()
-        RaiseEvent NeedsDBUpdate_TV()
+    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_TV(id)
     End Sub
 
     Private Sub Handle_NeedsReload_Movie()
@@ -111,7 +111,7 @@ Public Class frmOption_FileSystem
         Return New Containers.SettingsPanel With {
             .Contains = Enums.SettingsPanelType.OptionsFileSystem,
             .ImageIndex = 4,
-            .Order = 200,
+            .Order = 300,
             .Panel = pnlSettings,
             .SettingsPanelID = "Option_FileSystem",
             .Title = Master.eLang.GetString(553, "File System"),
@@ -205,8 +205,8 @@ Public Class frmOption_FileSystem
     End Sub
 
     Private Sub DataGridView_ExcludedPaths_RowsRemoved() Handles dgvExcludedPaths.RowsRemoved
-        Handle_NeedsDBUpdate_Movie()
-        Handle_NeedsDBUpdate_TV()
+        Handle_NeedsDBUpdate_Movie(-1)
+        Handle_NeedsDBUpdate_TV(-1)
         Handle_SettingsChanged()
     End Sub
 
@@ -260,8 +260,8 @@ Public Class frmOption_FileSystem
     End Sub
 
     Private Sub DataGridView_ValidVideoExtensions_RowsAdded() Handles dgvValidVideoExtensions.RowsAdded
-        Handle_NeedsDBUpdate_Movie()
-        Handle_NeedsDBUpdate_TV()
+        Handle_NeedsDBUpdate_Movie(-1)
+        Handle_NeedsDBUpdate_TV(-1)
         Handle_SettingsChanged()
     End Sub
 
@@ -271,7 +271,7 @@ Public Class frmOption_FileSystem
         Handle_SettingsChanged()
     End Sub
 
-    Private Sub LoadDefaults_ValidSubtitleExtensions(ByVal sender As Object, ByVal e As EventArgs) Handles btnValidSubtitleExtensionsDefaults.Click
+    Private Sub LoadDefaults_ValidSubtitleExtensions() Handles btnValidSubtitleExtensionsDefaults.Click
         If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"),
                            Master.eLang.GetString(104, "Are You Sure?"),
                            MessageBoxButtons.YesNo,
@@ -281,7 +281,7 @@ Public Class frmOption_FileSystem
         End If
     End Sub
 
-    Private Sub LoadDefaults_ValidThemeExtensions(ByVal sender As Object, ByVal e As EventArgs) Handles btnValidThemeExtensionsDefaults.Click
+    Private Sub LoadDefaults_ValidThemeExtensions() Handles btnValidThemeExtensionsDefaults.Click
         If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"),
                            Master.eLang.GetString(104, "Are You Sure?"),
                            MessageBoxButtons.YesNo,
@@ -291,7 +291,7 @@ Public Class frmOption_FileSystem
         End If
     End Sub
 
-    Private Sub LoadDefaults_ValidVideoExtensions(ByVal sender As Object, ByVal e As EventArgs) Handles btnValidVideoExtensionsDefaults.Click
+    Private Sub LoadDefaults_ValidVideoExtensions() Handles btnValidVideoExtensionsDefaults.Click
         If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"),
                            Master.eLang.GetString(104, "Are You Sure?"),
                            MessageBoxButtons.YesNo,

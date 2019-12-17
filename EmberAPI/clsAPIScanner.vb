@@ -18,16 +18,16 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
-Imports NLog
 
 Public Class Scanner
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public _filePaths As New List(Of String)
     Public _TVShowPaths As New Hashtable
@@ -130,7 +130,7 @@ Public Class Scanner
                 Try
                     efList.AddRange(Directory.GetFiles(a, "*.jpg"))
                 Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
                 If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
             End If
@@ -149,7 +149,7 @@ Public Class Scanner
                 Try
                     etList.AddRange(Directory.GetFiles(a, "*.jpg"))
                 Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
                 If etList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
             End If
@@ -208,7 +208,7 @@ Public Class Scanner
                 Try
                     sList.AddRange(Directory.GetFiles(a, String.Concat(Path.GetFileNameWithoutExtension(DBElement.FileItem.FirstPathFromStack), "*")))
                 Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
         Next
@@ -342,7 +342,7 @@ Public Class Scanner
                 Try
                     DBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
                 Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
         Next
@@ -378,7 +378,7 @@ Public Class Scanner
                 Try
                     sList.AddRange(Directory.GetFiles(a, String.Concat(Path.GetFileNameWithoutExtension(DBElement.FileItem.FirstPathFromStack), "*")))
                 Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
         Next
@@ -490,7 +490,7 @@ Public Class Scanner
                 Try
                     DBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
                 Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
         Next
@@ -534,7 +534,7 @@ Public Class Scanner
                 Try
                     efList.AddRange(Directory.GetFiles(a, "*.jpg"))
                 Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
                 If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
             End If
@@ -621,7 +621,7 @@ Public Class Scanner
         End If
 
         'IMDB ID
-        If Not dbElement.Movie.UniqueIDs.IMDbIDSpecified Then
+        If Not dbElement.Movie.UniqueIDs.IMDbIdSpecified Then
             dbElement.Movie.UniqueIDs.IMDbId = StringUtils.GetIMDBIDFromString(dbElement.FileItem.FirstPathFromStack, True)
         End If
 
@@ -714,7 +714,7 @@ Public Class Scanner
             dbElement.IsLocked = dbElement.Movieset.Locked
         End If
 
-        dbElement = Master.DB.Save_MovieSet(dbElement, batchMode, False, False, True)
+        dbElement = Master.DB.Save_Movieset(dbElement, batchMode, False, False, True)
     End Sub
 
     Public Function Load_TVEpisode(ByVal dbElement As Database.DBElement, ByVal isNew As Boolean, ByVal batchMode As Boolean, reportProgress As Boolean) As SeasonAndEpisodeItems
@@ -789,7 +789,7 @@ Public Class Scanner
                 'no title so assume it's an invalid nfo, clear nfo path if exists
                 cEpisode.NfoPath = String.Empty
                 'set title based on episode file
-                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.TVEpisode.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.FileItem.FirstPathFromStack, cEpisode.TVShow.Title)
+                If Master.eSettings.TVEpisode.SourceSettings.TitleFiltersEnabled AndAlso Master.eSettings.TVEpisode.SourceSettings.TitleFiltersSpecified Then cEpisode.TVEpisode.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.FileItem.FirstPathFromStack, cEpisode.TVShow.Title)
             End If
 
             'search local actor thumb for each actor in NFO
@@ -874,7 +874,7 @@ Public Class Scanner
 
         If Not isNew Then
             For Each eEpisode As EpisodeItem In EpisodesToRemoveList
-                Master.DB.Delete_TVEpisode(eEpisode.idEpisode, False, False, batchMode)
+                Master.DB.Remove_TVEpisode(eEpisode.idEpisode, False, False, batchMode)
             Next
         End If
 
@@ -1157,22 +1157,22 @@ Public Class Scanner
                 If rShow.byDate Then
                     If Not RegexGetAiredDate(sMatch, eItem) Then Continue For
                     retEpisodeItemsList.Add(eItem)
-                    logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found date based match {0} ({1}) [{2}]", path, eItem.Aired, rShow.Regexp))
+                    _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found date based match {0} ({1}) [{2}]", path, eItem.Aired, rShow.Regexp))
                 Else
                     If Not RegexGetSeasonAndEpisodeNumber(sMatch, eItem, defaultSeason) Then
-                        logger.Warn(String.Format("[Scanner] [RegexGetTVEpisode] Can't get a proper season and episode number for file {0} [{1}]", path, rShow.Regexp))
+                        _Logger.Warn(String.Format("[Scanner] [RegexGetTVEpisode] Can't get a proper season and episode number for file {0} [{1}]", path, rShow.Regexp))
                         Continue For
                     End If
                     retEpisodeItemsList.Add(eItem)
-                    logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found episode match {0} (s{1}e{2}{3}) [{4}]", path, eItem.Season, eItem.Episode, If(Not eItem.SubEpisode = -1, String.Concat(".", eItem.SubEpisode), String.Empty), rShow.Regexp))
+                    _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found episode match {0} (s{1}e{2}{3}) [{4}]", path, eItem.Season, eItem.Episode, If(Not eItem.SubEpisode = -1, String.Concat(".", eItem.SubEpisode), String.Empty), rShow.Regexp))
                 End If
 
                 ' Grab the remainder from first regexp run
                 ' as second run might modify or empty it.
                 Dim remainder As String = sMatch.Groups(3).Value.ToString
 
-                If Not String.IsNullOrEmpty(Master.eSettings.TVMultiPartMatching) Then
-                    Dim reg2 As Regex = New Regex(Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase)
+                If Master.eSettings.TVEpisode.SourceSettings.MultiPartMatchingSpecified Then
+                    Dim reg2 As Regex = New Regex(Master.eSettings.TVEpisode.SourceSettings.MultiPartMatching, RegexOptions.IgnoreCase)
 
                     ' check the remainder of the string for any further episodes.
                     If Not rShow.byDate Then
@@ -1184,7 +1184,7 @@ Public Class Scanner
                                 eItem = New EpisodeItem
                                 RegexGetSeasonAndEpisodeNumber(reg.Match(remainder), eItem, defaultSeason)
                                 retEpisodeItemsList.Add(eItem)
-                                logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Adding new season {0}, multipart episode {1} [{2}]", eItem.Season, eItem.Episode, rShow.Regexp))
+                                _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Adding new season {0}, multipart episode {1} [{2}]", eItem.Season, eItem.Episode, rShow.Regexp))
                                 remainder = reg.Match(remainder).Groups(3).Value
                             ElseIf (regexp2pos < regexppos AndAlso regexp2pos <> -1) OrElse (regexp2pos >= 0 AndAlso regexppos = -1) Then
                                 Dim endPattern As String = String.Empty
@@ -1209,7 +1209,7 @@ Public Class Scanner
                                 End If
 
                                 retEpisodeItemsList.Add(eItem)
-                                logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TVMultiPartMatching))
+                                _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TVEpisode.SourceSettings.MultiPartMatching))
                                 remainder = remainder.Substring(reg2.Match(remainder).Length)
                             End If
                         End While
@@ -1339,7 +1339,7 @@ Public Class Scanner
                     Try
                         inList = dInfo.GetDirectories.Where(Function(f) FileUtils.Common.IsValidDir(f, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name)
                     Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name)
+                        _Logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
 
                     For Each sDirs As DirectoryInfo In inList
@@ -1379,10 +1379,11 @@ Public Class Scanner
         End If
     End Sub
 
-    Public Sub Start(ByVal scanOptions As Structures.ScanOrClean, ByVal idSource As Long, ByVal folderPath As String)
-        bwPrelim = New System.ComponentModel.BackgroundWorker
-        bwPrelim.WorkerReportsProgress = True
-        bwPrelim.WorkerSupportsCancellation = True
+    Public Sub Start(ByVal scanOptions As ScanOrCleanOptions, ByVal idSource As Long, ByVal folderPath As String)
+        bwPrelim = New System.ComponentModel.BackgroundWorker With {
+            .WorkerReportsProgress = True,
+            .WorkerSupportsCancellation = True
+        }
         bwPrelim.RunWorkerAsync(New Arguments With {
                                 .FolderPath = folderPath,
                                 .Scan = scanOptions,
@@ -1392,8 +1393,10 @@ Public Class Scanner
 
     Private Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Dim bAlreadyClearedNew_Movie As Boolean
+        Dim bAlreadyClearedNew_Movieset As Boolean
+        Dim bAlreadyClearedNew_TV As Boolean
         _filePaths = Master.DB.GetAllFilePaths
-        Master.DB.ClearNew()
 
         If Args.Scan.SpecificFolder AndAlso Not String.IsNullOrEmpty(Args.FolderPath) AndAlso Directory.Exists(Args.FolderPath) Then
             'check if FolderPath is inside of a movie source
@@ -1402,13 +1405,22 @@ Public Class Scanner
                 Dim tFolder As String = If(Args.FolderPath.EndsWith(Path.DirectorySeparatorChar), Args.FolderPath, String.Concat(Args.FolderPath, Path.DirectorySeparatorChar)).ToLower.Trim
 
                 If tFolder.StartsWith(tSource) Then
+                    Args.Scan.Movies = True
+                    If Master.eSettings.Movie.SourceSettings.UnmarkNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movie Then
+                        Master.DB.ClearNew(Enums.ContentType.Movie)
+                        bAlreadyClearedNew_Movie = True
+                    End If
+                    If Master.eSettings.Movieset.SourceSettings.UnmarkNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movieset Then
+                        Master.DB.ClearNew(Enums.ContentType.Movieset)
+                        bAlreadyClearedNew_Movieset = True
+                    End If
+
                     Using sqlTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         Using sqlCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             ScanSourceDirectory_Movie(eSource, Args.FolderPath)
                         End Using
                         sqlTransaction.Commit()
                     End Using
-                    Args.Scan.Movies = True
                     Exit For
                 End If
             Next
@@ -1419,8 +1431,21 @@ Public Class Scanner
                 Dim tFolder As String = If(Args.FolderPath.EndsWith(Path.DirectorySeparatorChar), Args.FolderPath, String.Concat(Args.FolderPath, Path.DirectorySeparatorChar)).ToLower.Trim
 
                 If tFolder.StartsWith(tSource) Then
-                    _TVShowPaths = Master.DB.GetAllTVShowPaths
+                    Args.Scan.TV = True
+                    If Not bAlreadyClearedNew_TV Then
+                        If Master.eSettings.TVEpisode.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                            Master.DB.ClearNew(Enums.ContentType.TVEpisode)
+                        End If
+                        If Master.eSettings.TVSeason.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                            Master.DB.ClearNew(Enums.ContentType.TVSeason)
+                        End If
+                        If Master.eSettings.TVShow.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                            Master.DB.ClearNew(Enums.ContentType.TVShow)
+                        End If
+                        bAlreadyClearedNew_TV = True
+                    End If
 
+                    _TVShowPaths = Master.DB.GetAllTVShowPaths
                     If Args.FolderPath.ToLower = eSource.Path.ToLower Then
                         'Args.Folder is a tv show source folder -> scan the whole source
                         ScanSourceDirectory_TV(eSource)
@@ -1469,23 +1494,30 @@ Public Class Scanner
                             End If
                         End If
                     End If
-                    Args.Scan.TV = True
                     Exit For
                 End If
             Next
         End If
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.Movies Then
+            If Master.eSettings.Movie.SourceSettings.UnmarkNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movie Then
+                Master.DB.ClearNew(Enums.ContentType.Movie)
+                bAlreadyClearedNew_Movie = True
+            End If
+            If Master.eSettings.Movieset.SourceSettings.UnmarkNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movieset Then
+                Master.DB.ClearNew(Enums.ContentType.Movieset)
+                bAlreadyClearedNew_Movieset = True
+            End If
             Using sqlTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Dim dtSources As New DataTable
-                Dim nSmartFilter As New SmartFilter.Filter(Enums.ContentType.Moviesource)
+                Dim nSmartFilter As New SmartFilter.Filter(Enums.ContentType.Source_Movie)
 
                 If Not Args.SourceID = -1 Then
                     nSmartFilter.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.idSource, .Operator = SmartFilter.Operators.Is, .Value = Args.SourceID})
-                    dtSources = Master.DB.GetMoviesources(nSmartFilter)
+                    dtSources = Master.DB.GetSources_Movie(nSmartFilter)
                 Else
                     nSmartFilter.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.Exclude, .Operator = SmartFilter.Operators.False})
-                    dtSources = Master.DB.GetMoviesources(nSmartFilter)
+                    dtSources = Master.DB.GetSources_Movie(nSmartFilter)
                 End If
 
                 For Each nSource As DataRow In dtSources.Rows
@@ -1495,7 +1527,7 @@ Public Class Scanner
                             FileUtils.SortFiles(nSource.Item(Database.Helpers.GetColumnName(Database.ColumnName.Path)).ToString)
                         End If
                     Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name)
+                        _Logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                     bwPrelim.ReportProgress(-1, New ProgressValue With {
                                             .EventType = Enums.ScannerEventType.CurrentSource,
@@ -1513,17 +1545,30 @@ Public Class Scanner
         End If
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.TV Then
+            If Not bAlreadyClearedNew_TV Then
+                If Master.eSettings.TVEpisode.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                    Master.DB.ClearNew(Enums.ContentType.TVEpisode)
+                End If
+                If Master.eSettings.TVSeason.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                    Master.DB.ClearNew(Enums.ContentType.TVSeason)
+                End If
+                If Master.eSettings.TVShow.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                    Master.DB.ClearNew(Enums.ContentType.TVShow)
+                End If
+                bAlreadyClearedNew_TV = True
+            End If
+
             _TVShowPaths = Master.DB.GetAllTVShowPaths
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Dim dtSources As New DataTable
-                Dim nSmartFilter As New SmartFilter.Filter(Enums.ContentType.TVShowsource)
+                Dim nSmartFilter As New SmartFilter.Filter(Enums.ContentType.Source_TVShow)
 
                 If Not Args.SourceID = -1 Then
                     nSmartFilter.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.idSource, .Operator = SmartFilter.Operators.Is, .Value = Args.SourceID})
-                    dtSources = Master.DB.GetTVShowources(nSmartFilter)
+                    dtSources = Master.DB.GetSources_TVShow(nSmartFilter)
                 Else
                     nSmartFilter.Rules.Add(New SmartFilter.Rule With {.Field = Database.ColumnName.Exclude, .Operator = SmartFilter.Operators.False})
-                    dtSources = Master.DB.GetTVShowources(nSmartFilter)
+                    dtSources = Master.DB.GetSources_TVShow(nSmartFilter)
                 End If
 
                 For Each nSource As DataRow In dtSources.Rows
@@ -1540,14 +1585,14 @@ Public Class Scanner
         End If
 
         'no separate MovieSet scanning possible, so we clean MovieSets when movies were scanned
-        If (Master.eSettings.Movie.SourceSettings.CleanDBAfterUpdate AndAlso Args.Scan.Movies) OrElse
+        If (Master.eSettings.Movie.SourceSettings.CleanLibraryAfterUpdate AndAlso Args.Scan.Movies) OrElse
             (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse
-            (Master.eSettings.TVShow.SourceSettings.CleanDBAfterUpdate AndAlso Args.Scan.TV) Then
+            (Master.eSettings.TVShow.SourceSettings.CleanLibraryAfterUpdate AndAlso Args.Scan.TV) Then
             bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.CleaningDatabase, .Message = String.Empty})
             'remove any db entries that no longer exist
-            Master.DB.Clean(Master.eSettings.Movie.SourceSettings.CleanDBAfterUpdate AndAlso Args.Scan.Movies,
-                            Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets,
-                            Master.eSettings.TVShow.SourceSettings.CleanDBAfterUpdate AndAlso Args.Scan.TV, Args.SourceID
+            Master.DB.Clean(Master.eSettings.Movie.SourceSettings.CleanLibraryAfterUpdate AndAlso Args.Scan.Movies,
+                            Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Moviesets,
+                            Master.eSettings.TVShow.SourceSettings.CleanLibraryAfterUpdate AndAlso Args.Scan.TV, Args.SourceID
                             )
         End If
 
@@ -1590,21 +1635,8 @@ Public Class Scanner
 #Region "Fields"
 
         Dim FolderPath As String
-        Dim Scan As Structures.ScanOrClean
+        Dim Scan As ScanOrCleanOptions
         Dim SourceID As Long
-
-#End Region 'Fields
-
-    End Structure
-
-    Public Structure ProgressValue
-
-#Region "Fields"
-
-        Dim ContentType As Enums.ContentType
-        Dim EventType As Enums.ScannerEventType
-        Dim ID As Long
-        Dim Message As String
 
 #End Region 'Fields
 
@@ -1625,6 +1657,35 @@ Public Class Scanner
         Public Property Season() As Integer = -2
 
         Public Property SubEpisode() As Integer = -1
+
+#End Region 'Properties
+
+    End Class
+
+    Public Structure ProgressValue
+
+#Region "Fields"
+
+        Dim ContentType As Enums.ContentType
+        Dim EventType As Enums.ScannerEventType
+        Dim ID As Long
+        Dim Message As String
+
+#End Region 'Fields
+
+    End Structure
+
+    Public Class ScanOrCleanOptions
+
+#Region "Properties"
+
+        Public Property Movies As Boolean
+
+        Public Property Moviesets As Boolean
+
+        Public Property SpecificFolder As Boolean
+
+        Public Property TV As Boolean
 
 #End Region 'Properties
 

@@ -51,6 +51,10 @@ Public Class dlgSettings
         FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
+    Private Sub Dialog_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        SettingsPanels_Remove_AllPanels()
+    End Sub
+
     Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Functions.PNLDoubleBuffer(pnlSettingsMain)
         Setup()
@@ -157,8 +161,8 @@ Public Class dlgSettings
         Button_Apply_SetEnabled(False)
         If _Results.NeedsDBClean_Movie OrElse
             _Results.NeedsDBClean_TV OrElse
-            _Results.NeedsDBUpdate_Movie OrElse
-            _Results.NeedsDBUpdate_TV OrElse
+            _Results.NeedsDBUpdate_Movie.Count > 0 OrElse
+            _Results.NeedsDBUpdate_TV.Count > 0 OrElse
             _Results.NeedsReload_Movie OrElse
             _Results.NeedsReload_Movieset OrElse
             _Results.NeedsReload_TVShow Then
@@ -172,15 +176,13 @@ Public Class dlgSettings
 
     Private Sub Button_Cancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         If Not _DidApply Then _Results.DidCancel = True
-        Master.eLang.LoadAllLanguage(Master.eSettings.Options.General.Language, True)
-        SettingsPanels_Remove_AllPanels()
+        Master.eLang.LoadAllLanguage(Master.eSettings.Options.Global.Language, True)
         Close()
     End Sub
 
     Private Sub Button_OK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         _NoUpdate = True
         Settings_Save_All(False)
-        SettingsPanels_Remove_AllPanels()
         Close()
     End Sub
 
@@ -192,12 +194,12 @@ Public Class dlgSettings
         _Results.NeedsDBClean_TV = True
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_Movie()
-        _Results.NeedsDBUpdate_Movie = True
+    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
+        _Results.NeedsDBUpdate_Movie.Add(id)
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_TV()
-        _Results.NeedsDBUpdate_TV = True
+    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
+        _Results.NeedsDBUpdate_TV.Add(id)
     End Sub
 
     Private Sub Handle_NeedsReload_Movie()
@@ -362,13 +364,15 @@ Public Class dlgSettings
         _MasterSettingsPanels.Add(frmOption_AVCodecMapping)
         _MasterSettingsPanels.Add(frmOption_Connection)
         _MasterSettingsPanels.Add(frmOption_FileSystem)
-        _MasterSettingsPanels.Add(frmOption_General)
+        _MasterSettingsPanels.Add(frmOption_Global)
+        _MasterSettingsPanels.Add(frmOption_GUI)
         _MasterSettingsPanels.Add(frmOption_VideoSourceMapping)
         _MasterSettingsPanels.Add(frmTV_Data)
         _MasterSettingsPanels.Add(frmTV_FileNaming)
         _MasterSettingsPanels.Add(frmTV_GUI)
         _MasterSettingsPanels.Add(frmTV_Image)
         _MasterSettingsPanels.Add(frmTV_Source)
+        _MasterSettingsPanels.Add(frmTV_Source_Regex)
         _MasterSettingsPanels.Add(frmTV_Theme)
 
         For Each s As Interfaces.IMasterSettingsPanel In _MasterSettingsPanels

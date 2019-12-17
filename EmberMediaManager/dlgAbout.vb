@@ -73,7 +73,7 @@ Public NotInheritable Class dlgAbout
         SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or
                  ControlStyles.ResizeRedraw Or ControlStyles.UserPaint, True)
 
-        Dim VersionNumber As String = Master.Version
+        Dim VersionNumber As String = Master.VersionAsString
 
         CredList.Add(New CredLine With {.Text = String.Concat("Ember Media Manager"), .Font = New Font("Microsoft Sans Serif", 24, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = VersionNumber, .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Bold)})

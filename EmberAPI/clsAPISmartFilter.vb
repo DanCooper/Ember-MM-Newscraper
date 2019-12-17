@@ -454,7 +454,11 @@ Namespace SmartFilter
         <XmlIgnore()>
         Public ReadOnly Property FilterForBindingSource As String
             Get
-                Return String.Empty  '_whereclause
+                If RulesSpecified OrElse RulesWithOperatorSpecified Then
+                    BuildCriteria()
+                    Return _whereclause
+                End If
+                Return String.Empty
             End Get
         End Property
         ''' <summary>

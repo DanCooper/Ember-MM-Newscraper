@@ -85,8 +85,16 @@ Public Class Interfaces
 
         Event NeedsDBClean_Movie()
         Event NeedsDBClean_TV()
-        Event NeedsDBUpdate_Movie()
-        Event NeedsDBUpdate_TV()
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="ID">ID of the source or -1 for all sources</param>
+        Event NeedsDBUpdate_Movie(ByVal id As Long)
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="ID">ID of the source or -1 for all sources</param>
+        Event NeedsDBUpdate_TV(ByVal id As Long)
         Event NeedsReload_Movie()
         Event NeedsReload_MovieSet()
         Event NeedsReload_TVEpisode()

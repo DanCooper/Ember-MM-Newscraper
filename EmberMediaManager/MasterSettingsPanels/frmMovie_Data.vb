@@ -33,8 +33,8 @@ Public Class frmMovie_Data
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
     Public Event NeedsDBClean_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_TV
-    Public Event NeedsDBUpdate_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
-    Public Event NeedsDBUpdate_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
+    Public Event NeedsDBUpdate_Movie(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
+    Public Event NeedsDBUpdate_TV(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
     Public Event NeedsReload_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsReload_Movie
     Public Event NeedsReload_MovieSet() Implements Interfaces.IMasterSettingsPanel.NeedsReload_MovieSet
     Public Event NeedsReload_TVEpisode() Implements Interfaces.IMasterSettingsPanel.NeedsReload_TVEpisode
@@ -54,12 +54,12 @@ Public Class frmMovie_Data
         RaiseEvent NeedsDBClean_TV()
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_Movie()
-        RaiseEvent NeedsDBUpdate_Movie()
+    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_Movie(id)
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_TV()
-        RaiseEvent NeedsDBUpdate_TV()
+    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_TV(id)
     End Sub
 
     Private Sub Handle_NeedsReload_Movie()
@@ -155,7 +155,7 @@ Public Class frmMovie_Data
                 If cbMovieScraperCertLang.SelectedIndex = 0 Then
                     .MovieScraperCertLang = Master.eLang.All
                 Else
-                    .MovieScraperCertLang = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbMovieScraperCertLang.Text).abbreviation
+                    .MovieScraperCertLang = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.name = cbMovieScraperCertLang.Text).abbreviation
                 End If
             End If
             .MovieMetadataPerFileType.Clear()
@@ -191,7 +191,6 @@ Public Class frmMovie_Data
             .MovieScraperRelease = chkMovieScraperRelease.Checked
             .MovieScraperRuntime = chkMovieScraperRuntime.Checked
             .MovieScraperStudio = chkMovieScraperStudio.Checked
-            .MovieScraperStudioWithImgOnly = chkMovieScraperStudioWithImg.Checked
             Integer.TryParse(txtMovieScraperStudioLimit.Text, .MovieScraperStudioLimit)
             .MovieScraperTagline = chkMovieScraperTagline.Checked
             .MovieScraperTitle = chkMovieScraperTitle.Checked
@@ -252,13 +251,11 @@ Public Class frmMovie_Data
     End Sub
 
     Private Sub chkMovieScraperStudio_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
-        chkMovieScraperStudioWithImg.Enabled = chkMovieScraperStudio.Checked
         txtMovieScraperStudioLimit.Enabled = chkMovieScraperStudio.Checked
         If Not chkMovieScraperStudio.Checked Then
-            chkMovieScraperStudioWithImg.Checked = False
             txtMovieScraperStudioLimit.Text = "0"
         End If
+        Handle_SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperCountry_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
@@ -420,7 +417,6 @@ Public Class frmMovie_Data
             chkMovieScraperRelease.Checked = .MovieScraperRelease
             chkMovieScraperRuntime.Checked = .MovieScraperRuntime
             chkMovieScraperStudio.Checked = .MovieScraperStudio
-            chkMovieScraperStudioWithImg.Checked = .MovieScraperStudioWithImgOnly
             chkMovieScraperTagline.Checked = .MovieScraperTagline
             chkMovieScraperTitle.Checked = .MovieScraperTitle
             chkMovieScraperUserRating.Checked = .MovieScraperUserRating
@@ -442,12 +438,12 @@ Public Class frmMovie_Data
             Try
                 cbMovieScraperCertLang.Items.Clear()
                 cbMovieScraperCertLang.Items.Add(Master.eLang.All)
-                cbMovieScraperCertLang.Items.AddRange((From lLang In APIXML.CertLanguagesXML.Language Select lLang.name).ToArray)
+                cbMovieScraperCertLang.Items.AddRange((From lLang In APIXML.CertificationLanguages.Language Select lLang.name).ToArray)
                 If cbMovieScraperCertLang.Items.Count > 0 Then
                     If .MovieScraperCertLang = Master.eLang.All Then
                         cbMovieScraperCertLang.SelectedIndex = 0
                     ElseIf Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
-                        Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang)
+                        Dim tLanguage As CertLanguages = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang)
                         If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
                             cbMovieScraperCertLang.Text = tLanguage.name
                         Else
@@ -544,7 +540,6 @@ Public Class frmMovie_Data
         chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Plot Outline")
         chkMovieScraperPlotForOutlineIfEmpty.Text = Master.eLang.GetString(958, "Only if Plot Outline is empty")
-        chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
         chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         chkMovieScraperXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "Save YouTube-Trailer-Links in XBMC compatible format")
         chkMovieScraperCollectionsYAMJCompatibleSets.Text = Master.eLang.GetString(561, "Save YAMJ Compatible Sets to NFO")

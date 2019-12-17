@@ -59,11 +59,11 @@ Public Class dlgNewSet
         SetUp()
 
         If cbLanguage.Items.Count > 0 Then
-            Dim tLang As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.Movie.SourceSettings.DefaultLanguage) 'TODO: switch to Movieset default Language
+            Dim tLang As languageProperty = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.Movie.SourceSettings.DefaultLanguage) 'TODO: switch to Movieset default Language
             If tLang IsNot Nothing Then
                 cbLanguage.Text = tLang.Description
             Else
-                tLang = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.Movie.SourceSettings.DefaultLanguage))
+                tLang = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.Movie.SourceSettings.DefaultLanguage))
                 If tLang IsNot Nothing Then
                     cbLanguage.Text = tLang.Description
                 End If
@@ -78,7 +78,7 @@ Public Class dlgNewSet
 
     Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         tmpDBElement.Movieset.Title = txtTitle.Text.Trim
-        tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbLanguage.Text).Abbreviation
+        tmpDBElement.Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbLanguage.Text).Abbreviation
 
         DialogResult = DialogResult.OK
     End Sub
@@ -118,7 +118,7 @@ Public Class dlgNewSet
         lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
 
         cbLanguage.Items.Clear()
-        cbLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
+        cbLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages Select lLang.Description).ToArray)
     End Sub
 
 #End Region 'Methods

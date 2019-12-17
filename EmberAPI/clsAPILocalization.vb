@@ -43,6 +43,7 @@ Public Class Localization
     Private _disabled As String
     Private _none As String
     Private _ok As String
+    Private _skip As String
 
 #End Region 'Fields
 
@@ -118,6 +119,12 @@ Public Class Localization
     Public ReadOnly Property OK() As String
         Get
             Return _ok
+        End Get
+    End Property
+
+    Public ReadOnly Property Skip() As String
+        Get
+            Return _skip
         End Get
     End Property
 
@@ -223,6 +230,7 @@ Public Class Localization
         _disabled = "[Disabled]"
         _none = "[none]"
         _ok = "OK"
+        _skip = "Skip"
     End Sub
 
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
@@ -312,6 +320,7 @@ Public Class Localization
                 _disabled = GetString(571, Master.eLang.Disabled)
                 _none = GetString(570, Master.eLang.None)
                 _ok = GetString(179, Master.eLang.OK)
+                _skip = GetString(549, Master.eLang.Skip)
             Else
                 Dim tLocs As Locs = _htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly)
                 If tLocs.htStrings IsNot Nothing Then

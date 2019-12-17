@@ -34,7 +34,6 @@ Public Class dlgTrailerSelect
     Friend WithEvents bwParseTrailer As New System.ComponentModel.BackgroundWorker
 
     Private tmpDBElement As Database.DBElement
-    Private _result As New MediaContainers.Trailer
     Private tArray As New List(Of String)
     Private tURL As String = String.Empty
     Private nList As New List(Of MediaContainers.Trailer)
@@ -46,13 +45,6 @@ Public Class dlgTrailerSelect
 #Region "Properties"
 
     Public Property Result As MediaContainers.Trailer
-        Get
-            Return _result
-        End Get
-        Set(value As MediaContainers.Trailer)
-            _result = value
-        End Set
-    End Property
 
 #End Region 'Properties
 
@@ -397,7 +389,7 @@ Public Class dlgTrailerSelect
         End If
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSkip.Click
         If bwDownloadTrailer.IsBusy Then bwDownloadTrailer.CancelAsync()
 
         While bwDownloadTrailer.IsBusy
@@ -421,12 +413,12 @@ Public Class dlgTrailerSelect
         Process.Start(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         BeginDownload(True)
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
-        OK_Button.Enabled = isEnabled
+        btnOK.Enabled = isEnabled
         btnBrowseLocalTrailer.Enabled = isEnabled
         btnClearManualTrailerLink.Enabled = isEnabled
         btnPlayInBrowser.Enabled = isEnabled
@@ -440,7 +432,7 @@ Public Class dlgTrailerSelect
 
     Private Sub SetEnabled()
         If StringUtils.isValidURL(txtManualTrailerLink.Text) OrElse lvTrailers.SelectedItems.Count > 0 OrElse txtLocalTrailer.Text.Length > 0 Then
-            OK_Button.Enabled = True
+            btnOK.Enabled = True
             If txtLocalTrailer.Text.Length > 0 Then
                 btnPlayInBrowser.Enabled = False
             Else
@@ -448,23 +440,23 @@ Public Class dlgTrailerSelect
             End If
             If txtLocalTrailer.Text.Length > 0 Then
                 If _noDownload Then
-                    OK_Button.Text = Master.eLang.GetString(913, "Set To Nfo")
+                    btnOK.Text = Master.eLang.GetString(913, "Set To Nfo")
                 Else
-                    OK_Button.Text = Master.eLang.GetString(911, "Copy")
+                    btnOK.Text = Master.eLang.GetString(911, "Copy")
                 End If
             Else
                 If _noDownload Then
-                    OK_Button.Text = Master.eLang.GetString(913, "Set To Nfo")
+                    btnOK.Text = Master.eLang.GetString(913, "Set To Nfo")
                 Else
-                    OK_Button.Text = Master.eLang.GetString(373, "Download")
+                    btnOK.Text = Master.eLang.GetString(373, "Download")
                 End If
             End If
         Else
-            OK_Button.Enabled = False
+            btnOK.Enabled = False
             If _noDownload Then
-                OK_Button.Text = Master.eLang.GetString(913, "Set To Nfo")
+                btnOK.Text = Master.eLang.GetString(913, "Set To Nfo")
             Else
-                OK_Button.Text = Master.eLang.GetString(373, "Download")
+                btnOK.Text = Master.eLang.GetString(373, "Download")
             End If
             btnPlayInBrowser.Enabled = False
         End If
@@ -481,7 +473,7 @@ Public Class dlgTrailerSelect
 
     Private Sub SetUp()
         Text = Master.eLang.GetString(915, "Select Trailer to Download")
-        OK_Button.Text = Master.eLang.GetString(373, "Download")
+        btnOK.Text = Master.eLang.GetString(373, "Download")
         colDescription.Text = Master.eLang.GetString(979, "Description")
         colDuration.Text = Master.eLang.GetString(609, "Duration")
         colVideoQuality.Text = Master.eLang.GetString(1138, "Quality")
@@ -489,7 +481,7 @@ Public Class dlgTrailerSelect
         btnPlayInBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
         btnTrailerScrape.Text = Master.eLang.GetString(1171, "Scrape Trailers")
         btnYouTubeSearch.Text = Master.eLang.GetString(977, "Search")
-        Cancel_Button.Text = Master.eLang.Cancel
+        btnSkip.Text = Master.eLang.Skip
         gbManualTrailer.Text = Master.eLang.GetString(916, "Manual Trailer Entry")
         gbYouTubeSearch.Text = Master.eLang.GetString(978, "Search On YouTube")
         lblLocalTrailer.Text = String.Concat(Master.eLang.GetString(920, "Local Trailer"), ":")

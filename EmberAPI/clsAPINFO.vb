@@ -107,7 +107,7 @@ Public Class Info
                     DBMovie.Movie.Certifications = scrapedmovie.Certifications
                     new_Certification = True
                 Else
-                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
+                    Dim CertificationLanguage = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
                     If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
                         For Each tCert In scrapedmovie.Certifications
                             If tCert.StartsWith(CertificationLanguage.name) Then
@@ -262,14 +262,6 @@ Public Class Info
 
                 Dim _studios As New List(Of String)
                 _studios.AddRange(scrapedmovie.Studios)
-
-                If Master.eSettings.MovieScraperStudioWithImgOnly Then
-                    For i = _studios.Count - 1 To 0 Step -1
-                        If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
-                            _studios.RemoveAt(i)
-                        End If
-                    Next
-                End If
 
                 FilterCountLimit(Master.eSettings.MovieScraperStudioLimit, _studios)
 
@@ -512,7 +504,7 @@ Public Class Info
                     DBTV.TVShow.Certifications = scrapedshow.Certifications
                     new_Certification = True
                 Else
-                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
+                    Dim CertificationLanguage = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
                     If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
                         For Each tCert In scrapedshow.Certifications
                             If tCert.StartsWith(CertificationLanguage.name) Then
@@ -1226,12 +1218,12 @@ Public Class Info
 
             'changes a LongLanguage to Alpha2 code
             If mNFO.LanguageSpecified Then
-                Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
+                Dim Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
                 If Language IsNot Nothing Then
                     mNFO.Language = Language.Abbreviation
                 Else
                     'check if it's a valid Alpha2 code or remove the information the use the source default language
-                    Dim ShortLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
+                    Dim ShortLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
                     If ShortLanguage Is Nothing Then
                         mNFO.Language = String.Empty
                     End If
@@ -1274,12 +1266,12 @@ Public Class Info
 
             'changes a LongLanguage to Alpha2 code
             If mNFO.LanguageSpecified Then
-                Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
+                Dim Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
                 If Language IsNot Nothing Then
                     mNFO.Language = Language.Abbreviation
                 Else
                     'check if it's a valid Alpha2 code or remove the information the use the source default language
-                    Dim ShortLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
+                    Dim ShortLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
                     If ShortLanguage Is Nothing Then
                         mNFO.Language = String.Empty
                     End If
@@ -2070,7 +2062,7 @@ Public Class Info
                 End If
 
                 'digit grouping symbol for Votes count
-                If Master.eSettings.Options.General.DigitGrpSymbolVotesEnabled Then
+                If Master.eSettings.Options.Global.DigitGrpSymbolVotesEnabled Then
                     If tMovie.VotesSpecified Then
                         Dim vote As String = Double.Parse(tMovie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         If vote IsNot Nothing Then tMovie.Votes = vote
@@ -2207,7 +2199,7 @@ Public Class Info
                             For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season).OrderBy(Function(e) e.Episode)
 
                                 'digit grouping symbol for Votes count
-                                If Master.eSettings.Options.General.DigitGrpSymbolVotesEnabled Then
+                                If Master.eSettings.Options.Global.DigitGrpSymbolVotesEnabled Then
                                     If tvEp.VotesSpecified Then
                                         Dim vote As String = Double.Parse(tvEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                                         If vote IsNot Nothing Then tvEp.Votes = vote
@@ -2276,7 +2268,7 @@ Public Class Info
                 End If
 
                 'digit grouping symbol for Votes count
-                If Master.eSettings.Options.General.DigitGrpSymbolVotesEnabled Then
+                If Master.eSettings.Options.Global.DigitGrpSymbolVotesEnabled Then
                     If tTVShow.VotesSpecified Then
                         Dim vote As String = Double.Parse(tTVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         If vote IsNot Nothing Then tTVShow.Votes = vote

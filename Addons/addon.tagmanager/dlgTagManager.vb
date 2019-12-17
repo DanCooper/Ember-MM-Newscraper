@@ -490,7 +490,7 @@ Public Class dlgTagManager
                     Master.DB.Save_Tag_Movie(tmpDBMovieTag, True, False, True, True)
                 ElseIf list.IsDeleted = True Then
                     'remove tag from database/nfo
-                    Master.DB.Delete_Tag(tmpDBMovieTag.ID, False)
+                    Master.DB.Remove_Tag(tmpDBMovieTag.ID, False)
                 ElseIf list.IsModified = True Then
                     'save tag to database
                     Master.DB.Save_Tag_Movie(tmpDBMovieTag, False, False, True, True)

@@ -28,14 +28,16 @@ Public Class frmMovie_Source
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
+    Private _TmpSources As New Dictionary(Of Database.DBSource, State)
+
 #End Region 'Fields
 
 #Region "Events"
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
     Public Event NeedsDBClean_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_TV
-    Public Event NeedsDBUpdate_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
-    Public Event NeedsDBUpdate_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
+    Public Event NeedsDBUpdate_Movie(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
+    Public Event NeedsDBUpdate_TV(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
     Public Event NeedsReload_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsReload_Movie
     Public Event NeedsReload_MovieSet() Implements Interfaces.IMasterSettingsPanel.NeedsReload_MovieSet
     Public Event NeedsReload_TVEpisode() Implements Interfaces.IMasterSettingsPanel.NeedsReload_TVEpisode
@@ -55,12 +57,12 @@ Public Class frmMovie_Source
         RaiseEvent NeedsDBClean_TV()
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_Movie()
-        RaiseEvent NeedsDBUpdate_Movie()
+    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_Movie(id)
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_TV()
-        RaiseEvent NeedsDBUpdate_TV()
+    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_TV(id)
     End Sub
 
     Private Sub Handle_NeedsReload_Movie()
@@ -94,7 +96,6 @@ Public Class frmMovie_Source
     Public Sub New()
         InitializeComponent()
         Setup()
-        lvMovieSources.ListViewItemSorter = New ListViewItemComparer(1)
     End Sub
 
 #End Region 'Constructors 
@@ -114,20 +115,25 @@ Public Class frmMovie_Source
             .Order = 200,
             .Panel = pnlSettings,
             .SettingsPanelID = "Movie_Source",
-            .Title = Master.eLang.GetString(602, "Sources"),
+            .Title = Master.eLang.GetString(621, "Sources & Import Options"),
             .Type = Enums.SettingsPanelType.Movie
         }
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings.Movie.SourceSettings
+            .AutoScrapeOnImportEnabled = chkAutoScrapeOnImportEnabled.Checked
+            .AutoScrapeOnImportMissingItemsOnly = chkAutoScrapeOnImportMissingItemsOnly.Checked
+            .AutoScrapeOnImportScrapeType = CType(cbAutoScrapeOnImportScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
+            .CleanLibraryAfterUpdate = chkCleanLibraryAfterUpdate.Checked
             .DateAddedIgnoreNfo = chkDateAddedIgnoreNFO.Checked
             .DateAddedDateTime = CType(cbDateAddedDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTimeStamp)).Value
-            .CleanDBAfterUpdate = chkCleanDB.Checked
-            If Not String.IsNullOrEmpty(cbMovieGeneralLang.Text) Then
-                .DefaultLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbMovieGeneralLang.Text).Abbreviation
+            If Not String.IsNullOrEmpty(cbSourcesDefaultsLanguage.Text) Then
+                .DefaultLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbSourcesDefaultsLanguage.Text).Abbreviation
             End If
-            .MarkNew = chkMarkNew.Checked
+            .MarkNewAsCustom = chkMarkAsCustom.Checked
+            .MarkNewAsMarked = chkMarkAsMarked.Checked
+            .MarkNewAsNew = chkMarkAsNew.Checked
             .OverWriteNfo = chkOverwriteNfo.Checked
             If Not String.IsNullOrEmpty(txtSkipLessThan.Text) AndAlso Integer.TryParse(txtSkipLessThan.Text, 0) Then
                 .SkipLessThan = Convert.ToInt32(txtSkipLessThan.Text)
@@ -135,14 +141,16 @@ Public Class frmMovie_Source
                 .SkipLessThan = 0
             End If
             .SortBeforeScan = chkSortBeforeScan.Checked
-            If .TitleFilter.Count <= 0 Then .TitleFilterIsEmpty = True
-            .TitleFilter.Clear()
-            '.MovieFilterCustom.AddRange(lstMovieFilters.Items.OfType(Of String).ToList)
+            .TitleFiltersEnabled = chkTitleFiltersEnabled.Checked
             .TitleProperCase = chkTitleProperCase.Checked
+            .UnmarkNewAfterScraping = chkUnmarkNewAfterScraping.Checked
+            .UnmarkNewBeforeDBUpdate = chkUnmarkNewBeforeDBUpdate.Checked
+            .UnmarkNewOnExit = chkUnmarkNewOnExit.Checked
+            .UnmarkNewWithNFO = chkUnmarkNewWithNFO.Checked
             .VideoSourceFromFolder = chkVideoSourceFromFolder.Checked
         End With
-        With Master.eSettings
-        End With
+        Save_Sources()
+        Save_TitleFilters()
     End Sub
 
 #End Region 'Interface Methodes
@@ -151,67 +159,250 @@ Public Class frmMovie_Source
 
     Public Sub Settings_Load()
         With Master.eSettings.Movie.SourceSettings
-            If cbMovieGeneralLang.Items.Count > 0 Then
+            cbAutoScrapeOnImportScrapeType.SelectedValue = .AutoScrapeOnImportScrapeType
+            cbDateAddedDateTime.SelectedValue = .DateAddedDateTime
+            If cbSourcesDefaultsLanguage.Items.Count > 0 Then
                 If Not String.IsNullOrEmpty(.DefaultLanguage) Then
-                    Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = .DefaultLanguage)
+                    Dim tLanguage As languageProperty = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = .DefaultLanguage)
                     If tLanguage IsNot Nothing Then
-                        cbMovieGeneralLang.Text = tLanguage.Description
+                        cbSourcesDefaultsLanguage.Text = tLanguage.Description
                     Else
-                        tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.DefaultLanguage))
+                        tLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.DefaultLanguage))
                         If tLanguage IsNot Nothing Then
-                            cbMovieGeneralLang.Text = tLanguage.Description
+                            cbSourcesDefaultsLanguage.Text = tLanguage.Description
                         Else
-                            cbMovieGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                            cbSourcesDefaultsLanguage.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
                         End If
                     End If
                 Else
-                    cbMovieGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                    cbSourcesDefaultsLanguage.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
                 End If
             End If
-            cbDateAddedDateTime.SelectedValue = .DateAddedDateTime
-            chkCleanDB.Checked = .CleanDBAfterUpdate
+            chkCleanLibraryAfterUpdate.Checked = .CleanLibraryAfterUpdate
             chkDateAddedIgnoreNFO.Checked = .DateAddedIgnoreNfo
-            chkMarkNew.Checked = .MarkNew
             chkOverwriteNfo.Checked = .OverWriteNfo
             chkTitleProperCase.Checked = .TitleProperCase
             chkSortBeforeScan.Checked = .SortBeforeScan
             txtSkipLessThan.Text = .SkipLessThan.ToString
             chkVideoSourceFromFolder.Checked = .VideoSourceFromFolder
+            chkTitleFiltersEnabled.Checked = .TitleFiltersEnabled
+            dgvTitleFilters.Enabled = .TitleFiltersEnabled
+            lblTitleFilters.Enabled = .TitleFiltersEnabled
+            btnTitleFilterDefaults.Enabled = .TitleFiltersEnabled
+
+            DataGridView_Fill_TitleFilters(.TitleFilters)
         End With
 
-        RefreshMovieSources()
+        For Each source In Master.DB.Load_AllSources_Movie
+            _TmpSources.Add(source, State.Existing)
+        Next
+
+        DataGridView_Fill_Sources()
     End Sub
 
     Private Sub Setup()
-        btnMovieSourceAdd.Text = Master.eLang.GetString(407, "Add Source")
-        btnMovieSourceEdit.Text = Master.eLang.GetString(535, "Edit Source")
-        btnMovieSourceRemove.Text = Master.eLang.GetString(30, "Remove")
-        chkDateAddedIgnoreNFO.Text = Master.eLang.GetString(1209, "Ignore <dateadded> from NFO")
-        chkOverwriteNfo.Text = Master.eLang.GetString(433, "Overwrite Non-conforming nfos")
-        chkVideoSourceFromFolder.Text = Master.eLang.GetString(711, "Search in the full path for VideoSource information")
-        chkCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
-        chkMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
-        chkTitleProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
-        chkSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
-        colMovieSourcesExclude.Text = Master.eLang.GetString(264, "Exclude")
-        colMovieSourcesFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
-        colMovieSourcesGetYear.Text = Master.eLang.GetString(586, "Get Year")
-        colMovieSourcesLanguage.Text = Master.eLang.GetString(610, "Language")
-        colMovieSourcesName.Text = Master.eLang.GetString(232, "Name")
-        colMovieSourcesPath.Text = Master.eLang.GetString(410, "Path")
-        colMovieSourcesRecur.Text = Master.eLang.GetString(411, "Recursive")
-        colMovieSourcesSingle.Text = Master.eLang.GetString(413, "Single Video")
-        gbGeneralDateAdded.Text = Master.eLang.GetString(792, "Adding Date")
-        gbImportOptions.Text = Master.eLang.GetString(559, "Import Options")
-        gbMovieGeneralFiltersOpts.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
-        gbSourcesDefaults.Text = Master.eLang.GetString(252, "Defaults for new Sources")
-        lblGeneralOverwriteNfo.Text = Master.eLang.GetString(434, "(If unchecked, non-conforming nfos will be renamed to <filename>.info)")
-        lblMovieSkipLessThan.Text = Master.eLang.GetString(540, "Skip files smaller than:")
-        lblMovieSkipLessThanMB.Text = Master.eLang.GetString(539, "MB")
-        lblMovieSourcesDefaultsLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
+        With Master.eLang
+            chkCleanLibraryAfterUpdate.Text = .GetString(668, "Clean database after Library Update")
+            chkDateAddedIgnoreNFO.Text = .GetString(1209, "Ignore <dateadded> from NFO")
+            chkMarkAsMarked.Text = .GetString(459, "Mark as ""Marked""")
+            chkOverwriteNfo.Text = .GetString(433, "Overwrite invalid NFOs")
+            chkSortBeforeScan.Text = .GetString(712, "Sort files into folder before each Library Update")
+            chkTitleFiltersEnabled.Text = .GetString(451, "Enable Title Filters")
+            chkTitleProperCase.Text = .GetString(452, "Convert Names to Proper Case")
+            chkVideoSourceFromFolder.Text = .GetString(711, "Search in the full path for VideoSource information")
+            cmnuSourcesAdd.Text = .GetString(407, "Add Source")
+            cmnuSourcesEdit.Text = .GetString(535, "Edit Source")
+            cmnuSourcesMarkToRemove.Text = .GetString(493, "Mark to Remove")
+            cmnuSourcesReject.Text = .GetString(494, "Reject Remove Marker")
+            colSourcesExclude.HeaderText = .GetString(264, "Exclude")
+            colSourcesGetYear.HeaderText = .GetString(586, "Get Year")
+            colSourcesIsSingle.HeaderText = .GetString(413, "Single Video")
+            colSourcesLanguage.HeaderText = .GetString(610, "Language")
+            colSourcesName.HeaderText = .GetString(232, "Name")
+            colSourcesPath.HeaderText = .GetString(410, "Path")
+            colSourcesRecursive.HeaderText = .GetString(411, "Recursive")
+            colSourcesUseFolderName.HeaderText = .GetString(412, "Use Folder Name")
+            gbImportOptions.Text = .GetString(559, "Import Options")
+            gbSourcesDefaults.Text = .GetString(252, "Defaults for new Sources")
+            gbTitleCleanup.Text = Master.eLang.GetString(455, "Title Cleanup")
+            lblDateAdded.Text = .GetString(792, "Default value for <dateadded>")
+            lblOverwriteNfo.Text = .GetString(434, "(If unchecked, invalid NFOs will be renamed to <filename>.info)")
+            lblSkipLessThan.Text = String.Concat(.GetString(540, "Skip files smaller than"), ":")
+            lblSkipLessThanMB.Text = .GetString(539, "MB")
+            lblSourcesDefaultsLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
+            lblTitleFilters.Text = .GetString(456, "Use ALT + UP / DOWN to move the rows")
+        End With
 
         Load_GeneralDateTime()
+        Load_ScrapeTypes()
         Load_ScraperLanguages()
+    End Sub
+
+    Private Sub DataGridView_CellPainting(ByVal sender As Object, ByVal e As DataGridViewCellPaintingEventArgs) Handles dgvSources.CellPainting
+        Dim dgvList As DataGridView = DirectCast(sender, DataGridView)
+        If dgvList IsNot Nothing AndAlso e.RowIndex >= 0 Then
+            Select Case True
+                Case CInt(dgvList.Rows(e.RowIndex).Cells(0).Value) = 0
+                    '0 = existing and unedited source
+                    e.CellStyle.BackColor = SystemColors.Window
+                    e.CellStyle.ForeColor = SystemColors.WindowText
+                    e.CellStyle.SelectionBackColor = SystemColors.Highlight
+                    e.CellStyle.SelectionForeColor = SystemColors.HighlightText
+                Case CInt(dgvList.Rows(e.RowIndex).Cells(0).Value) = 1
+                    '1 = new source
+                    e.CellStyle.BackColor = Color.LightGreen
+                    e.CellStyle.ForeColor = Color.Black
+                    e.CellStyle.SelectionBackColor = Color.Green
+                    e.CellStyle.SelectionForeColor = Color.White
+                Case CInt(dgvList.Rows(e.RowIndex).Cells(0).Value) = 2
+                    '2 = edited source
+                    e.CellStyle.BackColor = Color.PeachPuff
+                    e.CellStyle.ForeColor = Color.Black
+                    e.CellStyle.SelectionBackColor = Color.DarkOrange
+                    e.CellStyle.SelectionForeColor = Color.Black
+                Case CInt(dgvList.Rows(e.RowIndex).Cells(0).Value) = 3
+                    '3 = source is marked to remove
+                    e.CellStyle.BackColor = Color.LightCoral
+                    e.CellStyle.ForeColor = Color.Black
+                    e.CellStyle.SelectionBackColor = Color.Red
+                    e.CellStyle.SelectionForeColor = Color.White
+                Case CInt(dgvList.Rows(e.RowIndex).Cells(0).Value) = 4
+                    '4 = edited and marked to remove source
+                    e.CellStyle.BackColor = Color.LightCoral
+                    e.CellStyle.ForeColor = Color.Black
+                    e.CellStyle.SelectionBackColor = Color.Red
+                    e.CellStyle.SelectionForeColor = Color.White
+            End Select
+        End If
+    End Sub
+
+    Private Sub DataGridView_ContextMenu_Add(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSourcesAdd.Click
+        Using dlgSource As New dlgSource_Movie(_TmpSources.Keys.ToList)
+            If dlgSource.ShowDialog() = DialogResult.OK AndAlso dlgSource.Result IsNot Nothing Then
+                _TmpSources.Add(dlgSource.Result, State.New)
+                DataGridView_Fill_Sources()
+                Handle_SettingsChanged()
+            End If
+        End Using
+    End Sub
+
+    Private Sub DataGridView_ContextMenu_Edit(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSourcesEdit.Click
+        If dgvSources.SelectedRows.Count = 1 Then
+            Dim lngID As Long = CLng(dgvSources.SelectedRows(0).Cells(1).Value)
+            Dim kSource = _TmpSources.FirstOrDefault(Function(f) f.Key.ID = lngID)
+            Using dlgSource As New dlgSource_Movie(_TmpSources.Keys.ToList)
+                If dlgSource.ShowDialog(lngID) = DialogResult.OK AndAlso dlgSource.Result IsNot Nothing Then
+                    _TmpSources.Remove(kSource.Key)
+                    _TmpSources.Add(dlgSource.Result, State.Edited)
+                    DataGridView_Fill_Sources()
+                    Handle_SettingsChanged()
+                End If
+            End Using
+        End If
+    End Sub
+
+    Private Sub DataGridView_ContextMenu_MarkToRemove(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSourcesMarkToRemove.Click
+        If dgvSources.SelectedRows.Count > 0 Then
+            For Each row As DataGridViewRow In dgvSources.SelectedRows
+                Select Case True
+                    Case CInt(row.Cells(0).Value) = State.Existing
+                        '0 = existing and unedited source: set it to "existing and unedited source is marked to remove"
+                        row.Cells(0).Value = State.ExistingToRemove
+                    Case CInt(row.Cells(0).Value) = State.[New]
+                        '1 = new source: remove it instant
+                        dgvSources.Rows.Remove(row)
+                    Case CInt(row.Cells(0).Value) = State.Edited
+                        '2 = existing and edited source: set it to "existing and edited source is marked to remove"
+                        row.Cells(0).Value = State.EditedToRemove
+                End Select
+            Next
+            dgvSources.Invalidate()
+        End If
+    End Sub
+
+    Private Sub DataGridView_ContextMenu_Reject(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSourcesReject.Click
+        If dgvSources.SelectedRows.Count > 0 Then
+            For Each row As DataGridViewRow In dgvSources.SelectedRows
+                Select Case True
+                    Case CInt(row.Cells(0).Value) = State.ExistingToRemove
+                        '3 = existing and unedited source is marked to remove: set it back to "existing and unedited source"
+                        row.Cells(0).Value = State.Existing
+                    Case CInt(row.Cells(0).Value) = State.EditedToRemove
+                        '4 = existing and edited source is marked to remove: set it back to "existing and edited source"
+                        row.Cells(0).Value = State.Edited
+                End Select
+            Next
+            dgvSources.Invalidate()
+        End If
+    End Sub
+
+    Private Sub DataGridView_Fill_Sources()
+        dgvSources.Rows.Clear()
+        For Each source In _TmpSources
+            dgvSources.Rows.Add(New Object() {
+                                source.Value,
+                                source.Key.ID,
+                                source.Key.Name,
+                                source.Key.Path,
+                                source.Key.Language,
+                                source.Key.ScanRecursive,
+                                source.Key.UseFolderName,
+                                source.Key.IsSingle,
+                                source.Key.Exclude,
+                                source.Key.GetYear
+                                })
+        Next
+
+        dgvSources.ClearSelection()
+        dgvSources.Invalidate()
+    End Sub
+
+    Private Sub DataGridView_Fill_TitleFilters(ByVal List As List(Of String))
+        dgvTitleFilters.Rows.Clear()
+        Dim iIndex As Integer = 0
+        For Each item In List
+            dgvTitleFilters.Rows.Add(New Object() {iIndex, item})
+            iIndex += 1
+        Next
+        dgvTitleFilters.ClearSelection()
+    End Sub
+
+    Private Sub DataGridView_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles dgvSources.MouseDown
+        If e.Button = MouseButtons.Right And dgvSources.RowCount > 0 Then
+            Dim dgvHTI As DataGridView.HitTestInfo = dgvSources.HitTest(e.X, e.Y)
+            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+                If Not dgvSources.Rows(dgvHTI.RowIndex).Selected Then
+                    dgvSources.ClearSelection()
+                    dgvSources.Rows(dgvHTI.RowIndex).Selected = True
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub DataGridView_TitleFilters_KeyDown(sender As Object, e As KeyEventArgs) Handles dgvTitleFilters.KeyDown
+        Dim dgvList As DataGridView = DirectCast(sender, DataGridView)
+        Dim currRowIndex As Integer = dgvList.CurrentRow.Index
+        Dim currRowIsNew As Boolean = dgvList.CurrentRow.IsNewRow
+        If Not currRowIsNew Then
+            Select Case True
+                Case e.Alt And e.KeyCode = Keys.Down AndAlso Not currRowIndex = dgvList.Rows.Count - 1 AndAlso Not dgvList.Rows(currRowIndex + 1).IsNewRow
+                    dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) + 1
+                    dgvList.Rows(currRowIndex + 1).Cells(0).Value = currRowIndex
+                    currRowIndex += 1
+                    e.Handled = True
+                Case e.Alt And e.KeyCode = Keys.Up AndAlso Not currRowIndex = 0
+                    dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) - 1
+                    dgvList.Rows(currRowIndex - 1).Cells(0).Value = currRowIndex
+                    currRowIndex -= 1
+                    e.Handled = True
+                Case Else
+                    Return
+            End Select
+            dgvList.Sort(dgvList.Columns(0), ComponentModel.ListSortDirection.Ascending)
+            If Not dgvList.SelectedRows(0).State.HasFlag(DataGridViewElementStates.Displayed) Then
+                dgvList.FirstDisplayedScrollingRowIndex = currRowIndex
+            End If
+        End If
     End Sub
 
     Private Sub Load_GeneralDateTime()
@@ -220,142 +411,115 @@ Public Class frmMovie_Source
         cbDateAddedDateTime.ValueMember = "Value"
     End Sub
 
+    Private Sub Load_ScrapeTypes()
+        Dim strAll As String = Master.eLang.GetString(68, "All")
+        Dim strFilter As String = Master.eLang.GetString(624, "Current Filter")
+        Dim strMarked As String = Master.eLang.GetString(48, "Marked")
+        Dim strMissing As String = Master.eLang.GetString(40, "Missing Items")
+        Dim strNew As String = Master.eLang.GetString(47, "New")
+
+        Dim strAsk As String = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+        Dim strAuto As String = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+        Dim strSkip As String = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
+
+        Dim items As New Dictionary(Of String, Enums.ScrapeType) From {
+            {String.Concat(strAll, " - ", strAuto), Enums.ScrapeType.AllAuto},
+            {String.Concat(strAll, " - ", strAsk), Enums.ScrapeType.AllAsk},
+            {String.Concat(strAll, " - ", strSkip), Enums.ScrapeType.AllSkip},
+            {String.Concat(strMissing, " - ", strAuto), Enums.ScrapeType.MissingAuto},
+            {String.Concat(strMissing, " - ", strAsk), Enums.ScrapeType.MissingAsk},
+            {String.Concat(strMissing, " - ", strSkip), Enums.ScrapeType.MissingSkip},
+            {String.Concat(strNew, " - ", strAuto), Enums.ScrapeType.NewAuto},
+            {String.Concat(strNew, " - ", strAsk), Enums.ScrapeType.NewAsk},
+            {String.Concat(strNew, " - ", strSkip), Enums.ScrapeType.NewSkip},
+            {String.Concat(strMarked, " - ", strAuto), Enums.ScrapeType.MarkedAuto},
+            {String.Concat(strMarked, " - ", strAsk), Enums.ScrapeType.MarkedAsk},
+            {String.Concat(strMarked, " - ", strSkip), Enums.ScrapeType.MarkedSkip},
+            {String.Concat(strFilter, " - ", strAuto), Enums.ScrapeType.FilterAuto},
+            {String.Concat(strFilter, " - ", strAsk), Enums.ScrapeType.FilterAsk},
+            {String.Concat(strFilter, " - ", strSkip), Enums.ScrapeType.FilterSkip}
+        }
+        cbAutoScrapeOnImportScrapeType.DataSource = items.ToList
+        cbAutoScrapeOnImportScrapeType.DisplayMember = "Key"
+        cbAutoScrapeOnImportScrapeType.ValueMember = "Value"
+    End Sub
+
     Private Sub Load_ScraperLanguages()
-        cbMovieGeneralLang.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
+        cbSourcesDefaultsLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages Select lLang.Description).ToArray)
     End Sub
 
-
-
-
-
-
-    Private Sub btnMovieSourceEdit_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If lvMovieSources.SelectedItems.Count > 0 Then
-            Using dMovieSource As New dlgSourceMovie
-                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = DialogResult.OK Then
-                    RefreshMovieSources()
-                    RaiseEvent NeedsReload_Movie()  'TODO: Check if we have to use Reload or DBUpdate
-                    Handle_SettingsChanged()
-                End If
-            End Using
+    Private Sub LoadDefaults_TitleFilters() Handles btnTitleFilterDefaults.Click
+        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default filter list?"),
+                           Master.eLang.GetString(104, "Are You Sure?"),
+                           MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question) = DialogResult.Yes Then
+            DataGridView_Fill_TitleFilters(Master.eSettings.Movie.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.Movie))
+            Handle_SettingsChanged()
         End If
     End Sub
 
-    Private Sub btnMovieSourceAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Using dSource As New dlgSourceMovie
-            If dSource.ShowDialog = DialogResult.OK Then
-                RefreshMovieSources()
-                Handle_SettingsChanged()
-                RaiseEvent NeedsDBUpdate_Movie()
-            End If
-        End Using
-    End Sub
-
-    Private Sub btnMovieSourceRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
-        RemoveMovieSource()
-    End Sub
-
-    Private Sub lvMovieSources_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs)
-        lvMovieSources.ListViewItemSorter = New ListViewItemComparer(e.Column)
-    End Sub
-
-    Private Sub lvMovieSources_DoubleClick(ByVal sender As Object, ByVal e As EventArgs)
-        If lvMovieSources.SelectedItems.Count > 0 Then
-            Using dMovieSource As New dlgSourceMovie
-                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = DialogResult.OK Then
-                    RefreshMovieSources()
-                    RaiseEvent NeedsReload_Movie()  'TODO: Check if we have to use Reload or DBUpdate
-                    Handle_SettingsChanged()
-                End If
-            End Using
-        End If
-    End Sub
-
-    Private Sub lvMovieSources_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then RemoveMovieSource()
-    End Sub
-
-    Private Sub RefreshMovieSources()
-        Dim lvItem As ListViewItem
-        lvMovieSources.Items.Clear()
-        For Each s As Database.DBSource In Master.DB.Load_AllSources_Movie
-            lvItem = New ListViewItem(CStr(s.ID))
-            lvItem.SubItems.Add(s.Name)
-            lvItem.SubItems.Add(s.Path)
-            lvItem.SubItems.Add(s.Language)
-            lvItem.SubItems.Add(If(s.ScanRecursive, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvItem.SubItems.Add(If(s.UseFolderName, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvItem.SubItems.Add(If(s.IsSingle, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvItem.SubItems.Add(If(s.Exclude, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvItem.SubItems.Add(If(s.GetYear, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvMovieSources.Items.Add(lvItem)
+    Private Sub Save_Sources()
+        For Each r As DataGridViewRow In dgvSources.Rows
+            Select Case True
+                Case CInt(r.Cells(0).Value) = State.Existing
+                    '0 = existing and unedited source 
+                Case CInt(r.Cells(0).Value) = State.[New]
+                    '1 = new source
+                    RaiseEvent NeedsDBUpdate_Movie(Master.DB.Save_Source_Movie(_TmpSources.Keys.FirstOrDefault(Function(f) f.ID = CLng(r.Cells(1).Value))))
+                Case CInt(r.Cells(0).Value) = State.Edited
+                    '2 = existing and edited source
+                    Master.DB.Save_Source_Movie(_TmpSources.Keys.FirstOrDefault(Function(f) f.ID = CLng(r.Cells(1).Value)))
+                    RaiseEvent NeedsReload_Movie()
+                Case CInt(r.Cells(0).Value) = State.ExistingToRemove
+                    '3 = existing and unedited source is marked to remove
+                    Master.DB.Remove_Source_Movie(CLng(r.Cells(1).Value), False)
+                Case CInt(r.Cells(0).Value) = State.EditedToRemove
+                    '4 = existing and edited source is marked to remove
+                    Master.DB.Remove_Source_Movie(CLng(r.Cells(1).Value), False)
+            End Select
         Next
+        DataGridView_Fill_Sources()
     End Sub
 
-    Private Sub RemoveMovieSource()
-        If lvMovieSources.SelectedItems.Count > 0 Then
-            If MessageBox.Show(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                lvMovieSources.BeginUpdate()
-
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "idSource")
-                        While lvMovieSources.SelectedItems.Count > 0
-                            parSource.Value = lvMovieSources.SelectedItems(0).SubItems(0).Text
-                            SQLcommand.CommandText = String.Concat("DELETE FROM moviesource WHERE idSource = (?);")
-                            SQLcommand.ExecuteNonQuery()
-                            lvMovieSources.Items.Remove(lvMovieSources.SelectedItems(0))
-                        End While
-                    End Using
-                    SQLtransaction.Commit()
-                End Using
-
-                lvMovieSources.Sort()
-                lvMovieSources.EndUpdate()
-                lvMovieSources.Refresh()
-
-                Handle_SettingsChanged()
-            End If
-        End If
+    Private Sub Save_TitleFilters()
+        With Master.eSettings.Movie.SourceSettings.TitleFilters
+            .Clear()
+            For Each r As DataGridViewRow In dgvTitleFilters.Rows
+                If r.Cells(1).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(1).Value.ToString.Trim) Then .Add(r.Cells(1).Value.ToString)
+            Next
+        End With
     End Sub
 
-    Private Sub chkMovieProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitleProperCase.CheckedChanged
+    Private Sub SkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtSkipLessThan.TextChanged
+        RaiseEvent NeedsDBClean_Movie()
+        RaiseEvent NeedsDBUpdate_Movie(-1)
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub TitleFilters_Enabled_CheckedChanged(sender As Object, e As EventArgs) Handles chkTitleFiltersEnabled.CheckedChanged
+        dgvTitleFilters.Enabled = chkTitleFiltersEnabled.Checked
+        lblTitleFilters.Enabled = chkTitleFiltersEnabled.Checked
+        btnTitleFilterDefaults.Enabled = chkTitleFiltersEnabled.Checked
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub TitleProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitleProperCase.CheckedChanged
         Handle_NeedsReload_Movie()
         Handle_SettingsChanged()
     End Sub
 
-    Private Sub txtMovieSkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
-        RaiseEvent NeedsDBClean_Movie()
-        RaiseEvent NeedsDBUpdate_Movie()
-    End Sub
-
 #End Region 'Methods
 
-#Region "Nested Classes"
+#Region "Nested Types"
 
-    Class ListViewItemComparer
-        Implements IComparer
-        Private col As Integer
+    Private Enum State As Integer
+        Existing = 0
+        [New] = 1
+        Edited = 2
+        ExistingToRemove = 3
+        EditedToRemove = 4
+    End Enum
 
-        Public Sub New()
-            col = 0
-        End Sub
-
-        Public Sub New(ByVal column As Integer)
-            col = column
-        End Sub
-
-        Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer _
-           Implements IComparer.Compare
-            Return [String].Compare(CType(x, ListViewItem).SubItems(col).Text, CType(y, ListViewItem).SubItems(col).Text)
-        End Function
-    End Class
-
-    Private Sub LoadDefaults_ValidVideoExtensions(sender As Object, e As EventArgs)
-
-    End Sub
-
-#End Region 'Nested Classes
+#End Region 'Nested Types
 
 End Class

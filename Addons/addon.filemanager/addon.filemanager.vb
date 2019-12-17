@@ -415,14 +415,14 @@ Public Class Generic
                                         Select Case tMItem.OwnerItem.Tag.ToString
                                             Case "MOVE"
                                                 DirectoryMove(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(316, "Moving Movie"))
-                                                Master.DB.Delete_Movie(movieID, False)
+                                                Master.DB.Remove_Movie(movieID, False)
                                             Case "COPY"
                                                 DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(317, "Copying Movie"))
                                         End Select
                                     End If
                                 End If
                             Next
-                            If Not _AddonSettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.Movies = True})
+                            'If Not _AddonSettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Scanner.ScanOrCleanOptions With {.Movies = True}) 'TODO
                         ElseIf ContentType = Enums.ContentType.TVShow Then
                             Dim FileDelete As New FileUtils.Delete
                             For Each tShowID As Long In MediaToWork
@@ -434,14 +434,14 @@ Public Class Generic
                                         Select Case tMItem.OwnerItem.Tag.ToString
                                             Case "MOVE"
                                                 DirectoryMove(mShow.ShowPath, Path.Combine(dstPath, Path.GetFileName(mShow.ShowPath)), Master.eLang.GetString(899, "Moving TV Show"))
-                                                Master.DB.Delete_TVShow(tShowID, False)
+                                                Master.DB.Remove_TVShow(tShowID, False)
                                             Case "COPY"
                                                 DirectoryCopy(mShow.ShowPath, Path.Combine(dstPath, Path.GetFileName(mShow.ShowPath)), Master.eLang.GetString(900, "Copying TV Show"))
                                         End Select
                                     End If
                                 End If
                             Next
-                            If Not _AddonSettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.TV = True})
+                            'If Not _AddonSettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Scanner.ScanOrCleanOptions With {.TV = True}) 'TODO
                         End If
                         If _AddonSettings.TeraCopy Then mTeraCopy.RunTeraCopy(_AddonSettings.TeraCopyPath, dstPath, doMove)
                     End If

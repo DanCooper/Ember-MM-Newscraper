@@ -32,29 +32,31 @@ Public Class Master
 
     Public Shared AppPos As New Drawing.Rectangle
     Public Shared DB As New Database
-    Public Shared SettingsPath As String = Path.Combine(Functions.AppPath, "Profiles\Default")
-    Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared eLang As New Localization
     Public Shared eProfiles As New Profiles
     Public Shared eSettings As New Settings
+    Public Shared Events As New Events
+    Public Shared SettingsPath As String = Path.Combine(Functions.AppPath, "Profiles\Default")
+    Public Shared TaskManager As New TaskManager
+    Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public Shared ReadOnly Property is32Bit() As Boolean
+    Public Shared ReadOnly Property Is32Bit() As Boolean
         Get
             Return IntPtr.Size = 4
         End Get
     End Property
 
-    Public Shared ReadOnly Property Version() As String
+    Public Shared ReadOnly Property VersionAsString() As String
         Get
             Return String.Format("Version {0}.{1}.{2} {3}",
                                  My.Application.Info.Version.Major,
                                  My.Application.Info.Version.Minor,
                                  My.Application.Info.Version.Build,
-                                 If(is32Bit, "x86", "x64"))
+                                 If(Is32Bit, "x86", "x64"))
         End Get
     End Property
 

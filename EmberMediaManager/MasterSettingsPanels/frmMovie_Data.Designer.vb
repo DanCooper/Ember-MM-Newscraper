@@ -117,7 +117,6 @@ Partial Class frmMovie_Data
         Me.tblMovieScraperMiscOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieScraperCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCleanFields = New System.Windows.Forms.CheckBox()
-        Me.chkMovieScraperStudioWithImg = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCastWithImg = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperDetailView = New System.Windows.Forms.CheckBox()
         Me.lblMovieScraperOutlineLimit = New System.Windows.Forms.Label()
@@ -211,7 +210,7 @@ Partial Class frmMovie_Data
         Me.gbMovieScraperGlobalOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieScraperGlobalOpts.Name = "gbMovieScraperGlobalOpts"
         Me.tblSettings.SetRowSpan(Me.gbMovieScraperGlobalOpts, 4)
-        Me.gbMovieScraperGlobalOpts.Size = New System.Drawing.Size(243, 622)
+        Me.gbMovieScraperGlobalOpts.Size = New System.Drawing.Size(243, 599)
         Me.gbMovieScraperGlobalOpts.TabIndex = 1
         Me.gbMovieScraperGlobalOpts.TabStop = False
         Me.gbMovieScraperGlobalOpts.Text = "Scraper Fields - Global"
@@ -336,7 +335,7 @@ Partial Class frmMovie_Data
         Me.tblMovieScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperGlobalOpts.Size = New System.Drawing.Size(237, 601)
+        Me.tblMovieScraperGlobalOpts.Size = New System.Drawing.Size(237, 578)
         Me.tblMovieScraperGlobalOpts.TabIndex = 0
         '
         'chkMovieLockCollectionID
@@ -1216,7 +1215,7 @@ Partial Class frmMovie_Data
         Me.gbMovieScraperCertificationOpts.Controls.Add(Me.tblMovieScraperCertificationOpts)
         Me.gbMovieScraperCertificationOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieScraperCertificationOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbMovieScraperCertificationOpts.Location = New System.Drawing.Point(252, 411)
+        Me.gbMovieScraperCertificationOpts.Location = New System.Drawing.Point(252, 388)
         Me.gbMovieScraperCertificationOpts.Name = "gbMovieScraperCertificationOpts"
         Me.gbMovieScraperCertificationOpts.Size = New System.Drawing.Size(446, 118)
         Me.gbMovieScraperCertificationOpts.TabIndex = 77
@@ -1317,7 +1316,7 @@ Partial Class frmMovie_Data
         Me.gbMovieScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperMiscOpts.Location = New System.Drawing.Point(252, 172)
         Me.gbMovieScraperMiscOpts.Name = "gbMovieScraperMiscOpts"
-        Me.gbMovieScraperMiscOpts.Size = New System.Drawing.Size(446, 233)
+        Me.gbMovieScraperMiscOpts.Size = New System.Drawing.Size(446, 210)
         Me.gbMovieScraperMiscOpts.TabIndex = 0
         Me.gbMovieScraperMiscOpts.TabStop = False
         Me.gbMovieScraperMiscOpts.Text = "Miscellaneous"
@@ -1330,21 +1329,20 @@ Partial Class frmMovie_Data
         Me.tblMovieScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCleanPlotOutline, 0, 6)
+        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCleanPlotOutline, 0, 5)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCleanFields, 0, 0)
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperStudioWithImg, 0, 3)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCastWithImg, 0, 2)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperDetailView, 0, 1)
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.lblMovieScraperOutlineLimit, 1, 4)
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.txtMovieScraperOutlineLimit, 2, 4)
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperPlotForOutline, 0, 4)
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperXBMCTrailerFormat, 0, 8)
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperPlotForOutlineIfEmpty, 0, 5)
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperOriginalTitleAsTitle, 0, 7)
+        Me.tblMovieScraperMiscOpts.Controls.Add(Me.lblMovieScraperOutlineLimit, 1, 3)
+        Me.tblMovieScraperMiscOpts.Controls.Add(Me.txtMovieScraperOutlineLimit, 2, 3)
+        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperPlotForOutline, 0, 3)
+        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperXBMCTrailerFormat, 0, 7)
+        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperPlotForOutlineIfEmpty, 0, 4)
+        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperOriginalTitleAsTitle, 0, 6)
         Me.tblMovieScraperMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieScraperMiscOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieScraperMiscOpts.Name = "tblMovieScraperMiscOpts"
-        Me.tblMovieScraperMiscOpts.RowCount = 10
+        Me.tblMovieScraperMiscOpts.RowCount = 9
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -1354,8 +1352,7 @@ Partial Class frmMovie_Data
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperMiscOpts.Size = New System.Drawing.Size(440, 212)
+        Me.tblMovieScraperMiscOpts.Size = New System.Drawing.Size(440, 189)
         Me.tblMovieScraperMiscOpts.TabIndex = 78
         '
         'chkMovieScraperCleanPlotOutline
@@ -1364,7 +1361,7 @@ Partial Class frmMovie_Data
         Me.chkMovieScraperCleanPlotOutline.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperCleanPlotOutline, 3)
         Me.chkMovieScraperCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieScraperCleanPlotOutline.Location = New System.Drawing.Point(3, 146)
+        Me.chkMovieScraperCleanPlotOutline.Location = New System.Drawing.Point(3, 123)
         Me.chkMovieScraperCleanPlotOutline.Name = "chkMovieScraperCleanPlotOutline"
         Me.chkMovieScraperCleanPlotOutline.Size = New System.Drawing.Size(121, 17)
         Me.chkMovieScraperCleanPlotOutline.TabIndex = 76
@@ -1382,19 +1379,6 @@ Partial Class frmMovie_Data
         Me.chkMovieScraperCleanFields.TabIndex = 79
         Me.chkMovieScraperCleanFields.Text = "Cleanup disabled fields"
         Me.chkMovieScraperCleanFields.UseVisualStyleBackColor = True
-        '
-        'chkMovieScraperStudioWithImg
-        '
-        Me.chkMovieScraperStudioWithImg.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperStudioWithImg.AutoSize = True
-        Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperStudioWithImg, 3)
-        Me.chkMovieScraperStudioWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieScraperStudioWithImg.Location = New System.Drawing.Point(3, 72)
-        Me.chkMovieScraperStudioWithImg.Name = "chkMovieScraperStudioWithImg"
-        Me.chkMovieScraperStudioWithImg.Size = New System.Drawing.Size(196, 17)
-        Me.chkMovieScraperStudioWithImg.TabIndex = 82
-        Me.chkMovieScraperStudioWithImg.Text = "Scrape Only Studios With Images"
-        Me.chkMovieScraperStudioWithImg.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCastWithImg
         '
@@ -1427,7 +1411,7 @@ Partial Class frmMovie_Data
         Me.lblMovieScraperOutlineLimit.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieScraperOutlineLimit.AutoSize = True
         Me.lblMovieScraperOutlineLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMovieScraperOutlineLimit.Location = New System.Drawing.Point(199, 99)
+        Me.lblMovieScraperOutlineLimit.Location = New System.Drawing.Point(199, 76)
         Me.lblMovieScraperOutlineLimit.Name = "lblMovieScraperOutlineLimit"
         Me.lblMovieScraperOutlineLimit.Size = New System.Drawing.Size(34, 13)
         Me.lblMovieScraperOutlineLimit.TabIndex = 70
@@ -1439,7 +1423,7 @@ Partial Class frmMovie_Data
         Me.txtMovieScraperOutlineLimit.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieScraperOutlineLimit.Enabled = False
         Me.txtMovieScraperOutlineLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieScraperOutlineLimit.Location = New System.Drawing.Point(239, 95)
+        Me.txtMovieScraperOutlineLimit.Location = New System.Drawing.Point(239, 72)
         Me.txtMovieScraperOutlineLimit.Name = "txtMovieScraperOutlineLimit"
         Me.txtMovieScraperOutlineLimit.Size = New System.Drawing.Size(54, 22)
         Me.txtMovieScraperOutlineLimit.TabIndex = 69
@@ -1449,7 +1433,7 @@ Partial Class frmMovie_Data
         Me.chkMovieScraperPlotForOutline.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieScraperPlotForOutline.AutoSize = True
         Me.chkMovieScraperPlotForOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieScraperPlotForOutline.Location = New System.Drawing.Point(3, 97)
+        Me.chkMovieScraperPlotForOutline.Location = New System.Drawing.Point(3, 74)
         Me.chkMovieScraperPlotForOutline.Name = "chkMovieScraperPlotForOutline"
         Me.chkMovieScraperPlotForOutline.Size = New System.Drawing.Size(134, 17)
         Me.chkMovieScraperPlotForOutline.TabIndex = 68
@@ -1461,7 +1445,7 @@ Partial Class frmMovie_Data
         Me.chkMovieScraperXBMCTrailerFormat.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperXBMCTrailerFormat, 3)
         Me.chkMovieScraperXBMCTrailerFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkMovieScraperXBMCTrailerFormat.Location = New System.Drawing.Point(3, 192)
+        Me.chkMovieScraperXBMCTrailerFormat.Location = New System.Drawing.Point(3, 169)
         Me.chkMovieScraperXBMCTrailerFormat.Name = "chkMovieScraperXBMCTrailerFormat"
         Me.chkMovieScraperXBMCTrailerFormat.Size = New System.Drawing.Size(302, 17)
         Me.chkMovieScraperXBMCTrailerFormat.TabIndex = 83
@@ -1473,7 +1457,7 @@ Partial Class frmMovie_Data
         Me.chkMovieScraperPlotForOutlineIfEmpty.AutoSize = True
         Me.chkMovieScraperPlotForOutlineIfEmpty.Enabled = False
         Me.chkMovieScraperPlotForOutlineIfEmpty.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMovieScraperPlotForOutlineIfEmpty.Location = New System.Drawing.Point(3, 123)
+        Me.chkMovieScraperPlotForOutlineIfEmpty.Location = New System.Drawing.Point(3, 100)
         Me.chkMovieScraperPlotForOutlineIfEmpty.Name = "chkMovieScraperPlotForOutlineIfEmpty"
         Me.chkMovieScraperPlotForOutlineIfEmpty.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkMovieScraperPlotForOutlineIfEmpty.Size = New System.Drawing.Size(190, 17)
@@ -1487,7 +1471,7 @@ Partial Class frmMovie_Data
         Me.chkMovieScraperOriginalTitleAsTitle.AutoSize = True
         Me.chkMovieScraperOriginalTitleAsTitle.Enabled = False
         Me.chkMovieScraperOriginalTitleAsTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieScraperOriginalTitleAsTitle.Location = New System.Drawing.Point(3, 169)
+        Me.chkMovieScraperOriginalTitleAsTitle.Location = New System.Drawing.Point(3, 146)
         Me.chkMovieScraperOriginalTitleAsTitle.Name = "chkMovieScraperOriginalTitleAsTitle"
         Me.chkMovieScraperOriginalTitleAsTitle.Size = New System.Drawing.Size(152, 17)
         Me.chkMovieScraperOriginalTitleAsTitle.TabIndex = 68
@@ -1732,7 +1716,7 @@ Partial Class frmMovie_Data
         Me.gbMovieScraperCollectionOpts.Controls.Add(Me.tblMovieScraperCollectionOpts)
         Me.gbMovieScraperCollectionOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieScraperCollectionOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbMovieScraperCollectionOpts.Location = New System.Drawing.Point(252, 535)
+        Me.gbMovieScraperCollectionOpts.Location = New System.Drawing.Point(252, 512)
         Me.gbMovieScraperCollectionOpts.Name = "gbMovieScraperCollectionOpts"
         Me.gbMovieScraperCollectionOpts.Size = New System.Drawing.Size(446, 90)
         Me.gbMovieScraperCollectionOpts.TabIndex = 78
@@ -1935,7 +1919,6 @@ Partial Class frmMovie_Data
     Friend WithEvents tblMovieScraperMiscOpts As TableLayoutPanel
     Friend WithEvents chkMovieScraperCleanPlotOutline As CheckBox
     Friend WithEvents chkMovieScraperCleanFields As CheckBox
-    Friend WithEvents chkMovieScraperStudioWithImg As CheckBox
     Friend WithEvents chkMovieScraperCastWithImg As CheckBox
     Friend WithEvents chkMovieScraperDetailView As CheckBox
     Friend WithEvents lblMovieScraperOutlineLimit As Label

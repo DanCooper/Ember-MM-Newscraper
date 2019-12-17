@@ -112,7 +112,7 @@
   <string id="111">Unable to load directories. Please check settings.</string>
   <string id="112">Runtime: {0}</string>
   <string id="113">Now select the default language you would like Ember to look for when scraping TV Show items.</string>
-  <string id="114">* This MUST be enabled to use extrathumbs and file naming options like movie.tbn, fanart.jpg, etc.</string>
+  <string id="114"></string>
   <string id="115">Add Regex</string>
   <string id="116">Performing Preliminary Tasks (Gathering Data)...</string>
   <string id="117">Unknown Movie ({0})</string>
@@ -197,10 +197,10 @@
   <string id="196">Do you want to save changes?</string>
   <string id="197">Save?</string>
   <string id="198">Movie Source</string>
-  <string id="199">Source Name:</string>
-  <string id="200">Source Path:</string>
+  <string id="199">Source Name</string>
+  <string id="200">Source Path</string>
   <string id="201">Source Options</string>
-  <string id="202">Movies are in separate folders *</string>
+  <string id="202">Movies are in separate folders</string>
   <string id="203">Use Folder Name for Initial Listing</string>
   <string id="204">Scan Recursively</string>
   <string id="205">Select the parent folder for your movie folders/files.</string>
@@ -431,8 +431,8 @@
   <string id="430">Interface Language:</string>
   <string id="431">Language (Audio)</string>
   <string id="432">Check for Updates</string>
-  <string id="433">Overwrite Non-conforming nfos</string>
-  <string id="434">(If unchecked, non-conforming nfos will be renamed to &lt;filename&gt;.info)</string>
+  <string id="433">Overwrite invalid NFOs</string>
+  <string id="434">(If unchecked, invalid NFOs will be renamed to &lt;filename&gt;.info)</string>
   <string id="435">Language (Video)</string>
   <string id="436">Display best Audio Stream with the following Language</string>
   <string id="437">Clean Files</string>
@@ -449,15 +449,15 @@
   <string id="448">Folder already exist. Overwrite?</string>
   <string id="449">Install Template</string>
   <string id="450">File/Folder in use! Can Not overwrite</string>
-  <string id="451">Folder/File Name Filters</string>
+  <string id="451">Enable Title Filters</string>
   <string id="452">Convert Names to Proper Case</string>
   <string id="453">Always Display Genre Text</string>
   <string id="454">Mapping</string>
-  <string id="455">Display Fanart</string>
-  <string id="456">Display Poster</string>
-  <string id="457">Display Image Dimensions</string>
+  <string id="455">Title Cleanup</string>
+  <string id="456">Use ALT + UP / DOWN to move the rows</string>
+  <string id="457">Image Dimensions</string>
   <string id="458">Help</string>
-  <string id="459">Mark New Movies</string>
+  <string id="459">Mark as "Marked"</string>
   <string id="460">Media List</string>
   <string id="461">Mismatch Tolerance:</string>
   <string id="462">Check Title Match Confidence</string>
@@ -487,12 +487,12 @@
   <string id="486">On New Episode Added</string>
   <string id="487">Notifications</string>
   <string id="488">Global Scraper Fields</string>
-  <string id="489">Display Language Flags</string>
-  <string id="490"></string>
-  <string id="491"></string>
-  <string id="492"></string>
-  <string id="493"></string>
-  <string id="494"></string>
+  <string id="489">Language Flags</string>
+  <string id="490">Global</string>
+  <string id="491">Always Display Studio Name</string>
+  <string id="492">Display in Main Window</string>
+  <string id="493">Mark to Remove</string>
+  <string id="494">Reject Remove Marker</string>
   <string id="495">Show Folders Pattern</string>
   <string id="496">Season Folders Pattern</string>
   <string id="497">Images</string>
@@ -538,7 +538,7 @@
   <string id="537">Recognize VIDEO_TS{0}without VIDEO_TS folder</string>
   <string id="538">Extract</string>
   <string id="539">MB</string>
-  <string id="540">Skip files smaller than:</string>
+  <string id="540">Skip files smaller than</string>
   <string id="541">Use Fanart for Place Holder Video</string>
   <string id="542">Place Holder Video Tagline:</string>
   <string id="543">Text Color:</string>
@@ -547,7 +547,7 @@
   <string id="546">Tagline background Color:</string>
   <string id="547">Use Ember Overlay</string>
   <string id="548">Select Font...</string>
-  <string id="549">Mark New Shows</string>
+  <string id="549">Skip</string>
   <string id="550">Tagline Top:</string>
   <string id="551">Information</string>
   <string id="552">Select the folder where you wish to store your backdrops...</string>
@@ -619,7 +619,7 @@
   <string id="618">Audio Stream</string>
   <string id="619">Subtitle Stream</string>
   <string id="620">Theme</string>
-  <string id="621">Mark New Episodes</string>
+  <string id="621">Sources &amp; Import Options</string>
   <string id="622">Scraping Media (Current Filter - Ask):</string>
   <string id="623">Scraping Media (Current Filter - Auto):</string>
   <string id="624">Current Filter</string>
@@ -666,10 +666,10 @@
   <string id="665">Movies sorted by</string>
   <string id="666">Extract images from video file</string>
   <string id="667">Prefer extracted images</string>
-  <string id="668">Clean database after updating library</string>
+  <string id="668">Clean database after Library Update</string>
   <string id="669">Show News and Information after Start</string>
-  <string id="670">Show Folder/File Name Filters</string>
-  <string id="671">Episode Folder/File Name Filters</string>
+  <string id="670"></string>
+  <string id="671"></string>
   <string id="672">Proxy</string>
   <string id="673">Enable Proxy</string>
   <string id="674">Proxy URL:</string>
@@ -710,7 +710,7 @@
   <string id="709">Clean Database</string>
   <string id="710">Force Title Language:</string>
   <string id="711">Search in the full path for VideoSource information</string>
-  <string id="712">Sort files into folders before each library update</string>
+  <string id="712">Sort files into folders before each Library Update</string>
   <string id="713">Defaults</string>
   <string id="714">Confirm Items To Be Deleted</string>
   <string id="715">Toggle All Files</string>
@@ -732,7 +732,7 @@
   <string id="731">Refreshing Show</string>
   <string id="732">&lt;h&gt;=Hours{0}&lt;m&gt;=Minutes{0}&lt;s&gt;=Seconds</string>
   <string id="733">Display Missing Episodes</string>
-  <string id="734">Build Episode Title Instead of Filtering</string>
+  <string id="734"></string>
   <string id="735">All Seasons Posters</string>
   <string id="736">Only Get Images for the Media Language</string>
   <string id="737">Also Get English Images</string>
@@ -790,7 +790,7 @@
   <string id="789">Fanart.tv Personal API Key</string>
   <string id="790">These settings are specific to this module.{0}Please refer to the global settings for more options.</string>
   <string id="791">Scraper Fields - Scraper specific</string>
-  <string id="792">Adding Date</string>
+  <string id="792">Default value for &lt;dateadded&gt;</string>
   <string id="793">&amp;Versions...</string>
   <string id="794">Search Results</string>
   <string id="795">Interface</string>
@@ -838,9 +838,9 @@
   <string id="837">Short Titles</string>
   <string id="838">Banner</string>
   <string id="839">Absolute</string>
-  <string id="840">Are you sure you want to reset to the default list of show filters?</string>
-  <string id="841">Are you sure you want to reset to the default list of episode filters?</string>
-  <string id="842">Are you sure you want to reset to the default list of movie filters?</string>
+  <string id="840">Are you sure you want to reset to the default filter list?</string>
+  <string id="841"></string>
+  <string id="842"></string>
   <string id="843">Are you sure you want to reset to the default list of valid video extensions?</string>
   <string id="844">Are you sure you want to reset to the default list of show regex?</string>
   <string id="845">&gt;&gt; No Item Selected &lt;&lt;</string>
@@ -965,7 +965,7 @@
   <string id="964">Current Image:</string>
   <string id="965">Use Plot for Plot Outline</string>
   <string id="966">Enable Images Glass Overlay</string>
-  <string id="967">Display Small Fanart</string>
+  <string id="967">Fanart as Background</string>
   <string id="968">
     Created By: Jason Schnitzler
     -8
@@ -1137,7 +1137,7 @@
   <string id="1045">Scraping Media (Current Filter - Skip):</string>
   <string id="1046">Include Adult Items</string>
   <string id="1047">Not Found</string>
-  <string id="1048">Selected folder contains a single TV Show</string>
+  <string id="1048">Folder contains a single TV Show</string>
   <string id="1049">Save as Fanart</string>
   <string id="1050">Save as Extrafanart</string>
   <string id="1051">Edit Genres</string>
@@ -1235,12 +1235,12 @@
   <string id="1143"></string>
   <string id="1144"></string>
   <string id="1145"></string>
-  <string id="1146">Display Banner</string>
-  <string id="1147">Display CharacterArt</string>
-  <string id="1148">Display ClearArt</string>
-  <string id="1149">Display ClearLogo</string>
-  <string id="1150">Display DiscArt</string>
-  <string id="1151">Display Landscape</string>
+  <string id="1146"></string>
+  <string id="1147"></string>
+  <string id="1148"></string>
+  <string id="1149"></string>
+  <string id="1150"></string>
+  <string id="1151"></string>
   <string id="1152">Main Window</string>
   <string id="1153">Scraped</string>
   <string id="1154">No information is available for this MovieSet</string>
@@ -1344,7 +1344,7 @@
   <string id="1252"></string>
   <string id="1253">Scraperresults</string>
   <string id="1254">Only data in selected tabs will be used!</string>
-  <string id="1255">Display Image Names</string>
+  <string id="1255">Image Names</string>
   <string id="1256">* All Seasons</string>
   <string id="1257">Country-Tag: Save country abbreviation(s) instead of full name(s)</string>
   <string id="1258">Store themes in movie directory</string>
@@ -1369,7 +1369,7 @@
   <string id="1277">From</string>
   <string id="1278">To</string>
   <string id="1279">Title Renamer</string>
-  <string id="1280">Scrape Only Studios With Images</string>
+  <string id="1280"></string>
   <string id="1281">Open IMDB-Page</string>
   <string id="1282">Open TMDB-Page</string>
   <string id="1283">Are you sure you want to reset to the default list of valid subtitle extensions?</string>
@@ -1390,7 +1390,7 @@
   <string id="1298">Rewrite Movie Content</string>
   <string id="1299">Cancel Rewriting</string>
   <string id="1300">Canceling Rewriting...</string>
-  <string id="1301">Mark New MovieSets</string>
+  <string id="1301"></string>
   <string id="1302">Trakt.tv Manager</string>
   <string id="1303">Sync Playcount</string>
   <string id="1304">List Viewer</string>

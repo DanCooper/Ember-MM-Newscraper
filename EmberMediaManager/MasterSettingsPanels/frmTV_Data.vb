@@ -37,8 +37,8 @@ Public Class frmTV_Data
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
     Public Event NeedsDBClean_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_TV
-    Public Event NeedsDBUpdate_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
-    Public Event NeedsDBUpdate_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
+    Public Event NeedsDBUpdate_Movie(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
+    Public Event NeedsDBUpdate_TV(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
     Public Event NeedsReload_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsReload_Movie
     Public Event NeedsReload_MovieSet() Implements Interfaces.IMasterSettingsPanel.NeedsReload_MovieSet
     Public Event NeedsReload_TVEpisode() Implements Interfaces.IMasterSettingsPanel.NeedsReload_TVEpisode
@@ -58,12 +58,12 @@ Public Class frmTV_Data
         RaiseEvent NeedsDBClean_TV()
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_Movie()
-        RaiseEvent NeedsDBUpdate_Movie()
+    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_Movie(id)
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_TV()
-        RaiseEvent NeedsDBUpdate_TV()
+    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_TV(id)
     End Sub
 
     Private Sub Handle_NeedsReload_Movie()
@@ -177,7 +177,7 @@ Public Class frmTV_Data
                 If cbTVScraperShowCertLang.SelectedIndex = 0 Then
                     .TVScraperShowCertLang = Master.eLang.All
                 Else
-                    .TVScraperShowCertLang = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbTVScraperShowCertLang.Text).abbreviation
+                    .TVScraperShowCertLang = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.name = cbTVScraperShowCertLang.Text).abbreviation
                 End If
             End If
             .TVScraperShowEpiGuideURL = chkTVScraperShowEpiGuideURL.Checked
@@ -281,12 +281,12 @@ Public Class frmTV_Data
             Try
                 cbTVScraperShowCertLang.Items.Clear()
                 cbTVScraperShowCertLang.Items.Add(Master.eLang.All)
-                cbTVScraperShowCertLang.Items.AddRange((From lLang In APIXML.CertLanguagesXML.Language Select lLang.name).ToArray)
+                cbTVScraperShowCertLang.Items.AddRange((From lLang In APIXML.CertificationLanguages.Language Select lLang.name).ToArray)
                 If cbTVScraperShowCertLang.Items.Count > 0 Then
                     If .TVScraperShowCertLang = Master.eLang.All Then
                         cbTVScraperShowCertLang.SelectedIndex = 0
                     ElseIf Not String.IsNullOrEmpty(.TVScraperShowCertLang) Then
-                        Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .TVScraperShowCertLang)
+                        Dim tLanguage As CertLanguages = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVScraperShowCertLang)
                         If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
                             cbTVScraperShowCertLang.Text = tLanguage.name
                         Else

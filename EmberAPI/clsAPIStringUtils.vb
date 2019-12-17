@@ -118,17 +118,17 @@ Public Class StringUtils
 
         If Not aGenres.Count = 0 Then
             For Each tGenre As String In aGenres
-                Dim gMappings As GenreMapping = APIXML.GenreXML.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
+                Dim gMappings As GenreMapping = APIXML.GenreMapping.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
                 If gMappings IsNot Nothing Then
                     nGernes.AddRange(gMappings.MappedTo)
                 ElseIf addNewGenres Then
                     'check if the tGenre is already existing in Gernes list
-                    Dim gProperty As GenreProperty = APIXML.GenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
+                    Dim gProperty As GenreProperty = APIXML.GenreMapping.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
                     If gProperty Is Nothing Then
-                        APIXML.GenreXML.Genres.Add(New GenreProperty With {.Name = tGenre})
+                        APIXML.GenreMapping.Genres.Add(New GenreProperty With {.Name = tGenre})
                     End If
                     'add a new mapping if tGenre is not in the Mappings list
-                    APIXML.GenreXML.Mappings.Add(New GenreMapping With {.MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
+                    APIXML.GenreMapping.Mappings.Add(New GenreMapping With {.MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
                     nGernes.Add(tGenre)
                 End If
             Next
@@ -345,7 +345,7 @@ Public Class StringUtils
     ''' <param name="strPath"><c>String</c> full file path (including file extension) to get title from</param>
     ''' <returns>The filtered title as a <c>String</c></returns>
     ''' <remarks></remarks>
-    Public Shared Function FilterTitleFromPath_Movie(ByVal fileItem As FileItem, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
+    Public Shared Function FilterTitleFromPath_Movie(ByVal fileItem As FileItem, ByVal isSingle As Boolean, ByVal useFolderName As Boolean) As String
         If fileItem Is Nothing Then Return String.Empty
 
         'get raw title from path
@@ -353,11 +353,11 @@ Public Class StringUtils
         If fileItem.bIsBDMV OrElse fileItem.bIsVideoTS Then
             strRawString = fileItem.MainPath.Name
         Else
-            strRawString = If(IsSingle AndAlso UseForderName, fileItem.MainPath.Name, Path.GetFileNameWithoutExtension(fileItem.StackedFileName))
+            strRawString = If(isSingle AndAlso useFolderName, fileItem.MainPath.Name, Path.GetFileNameWithoutExtension(fileItem.StackedFileName))
         End If
 
         'filter raw title by filter list
-        Dim strTitle As String = ApplyFilters(strRawString, Master.eSettings.Movie.SourceSettings.TitleFilter)
+        Dim strTitle As String = ApplyFilters(strRawString, Master.eSettings.Movie.SourceSettings.TitleFilters)
 
         'Convert String To Proper Case
         If Master.eSettings.Movie.SourceSettings.TitleProperCase Then
@@ -374,27 +374,27 @@ Public Class StringUtils
     ''' <summary>
     ''' Cleans up a tv episode path by stripping it down to the basic title with no additional decorations.
     ''' </summary>
-    ''' <param name="strPath"><c>String</c> full file path (including file extension) to get title from</param>
-    ''' <param name="strTVShowName">The <c>String</c> TV Show name to remove it from TV Episode title</param>
+    ''' <param name="path"><c>String</c> full file path (including file extension) to get title from</param>
+    ''' <param name="tvshowTitle">The <c>String</c> TV Show name to remove it from TV Episode title</param>
     ''' <returns>The filtered title as a <c>String</c></returns>
     ''' <remarks></remarks>
-    Public Shared Function FilterTitleFromPath_TVEpisode(ByVal strPath As String, ByVal strTVShowName As String) As String
-        If String.IsNullOrEmpty(strPath) Then Return String.Empty
+    Public Shared Function FilterTitleFromPath_TVEpisode(ByVal path As String, ByVal tvshowTitle As String) As String
+        If String.IsNullOrEmpty(path) Then Return String.Empty
 
         'removing stack markers
-        strPath = FileUtils.Common.RemoveStackingMarkers(strPath)
+        path = FileUtils.Common.RemoveStackingMarkers(path)
 
         'get raw title from path
-        Dim strRawTitle As String = Path.GetFileNameWithoutExtension(strPath)
+        Dim strRawTitle As String = IO.Path.GetFileNameWithoutExtension(path)
 
         'filter raw title by filter list
-        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVEpisode.SourceSettings.TitleFilter)
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVEpisode.SourceSettings.TitleFilters)
 
         'remove the tv show name from the episode title
-        If Not String.IsNullOrEmpty(strTVShowName) Then strTitle = strTitle.Replace(strTVShowName.Trim, String.Empty).Trim
+        If Not String.IsNullOrEmpty(tvshowTitle) Then strTitle = strTitle.Replace(tvshowTitle.Trim, String.Empty).Trim
 
         'Convert String To Proper Case
-        If Master.eSettings.TVEpisodeProperCase Then
+        If Master.eSettings.TVEpisode.SourceSettings.TitleProperCase Then
             strTitle = ConvertToProperCase(strTitle)
         End If
 
@@ -408,20 +408,20 @@ Public Class StringUtils
     ''' <summary>
     ''' Cleans up a tv show path by stripping it down to the basic title with no additional decorations.
     ''' </summary>
-    ''' <param name="strPath"><c>String</c> full tv show main path to get title from</param>
+    ''' <param name="path"><c>String</c> full tv show main path to get title from</param>
     ''' <returns>The filtered name as a <c>String</c></returns>
     ''' <remarks></remarks>
-    Public Shared Function FilterTitleFromPath_TVShow(ByVal strPath As String) As String
-        If String.IsNullOrEmpty(strPath) Then Return String.Empty
+    Public Shared Function FilterTitleFromPath_TVShow(ByVal path As String) As String
+        If String.IsNullOrEmpty(path) Then Return String.Empty
 
         'get raw title from path
-        Dim strRawTitle As String = New DirectoryInfo(strPath).Name
+        Dim strRawTitle As String = New DirectoryInfo(path).Name
 
         'filter raw title by filter list
-        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVShow.SourceSettings.TitleFilter)
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVShow.SourceSettings.TitleFilters)
 
         'Convert String To Proper Case
-        If Master.eSettings.TVShowProperCase Then
+        If Master.eSettings.TVShow.SourceSettings.TitleProperCase Then
             strTitle = ConvertToProperCase(strTitle)
         End If
 
@@ -822,7 +822,7 @@ Public Class StringUtils
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
     Public Shared Function SortTokens(ByVal Title As String) As String
-        Return SortTokens(Title, Master.eSettings.Options.General.SortTokens)
+        Return SortTokens(Title, Master.eSettings.Options.Global.SortTokens)
     End Function
     ''' <summary>
     ''' Converts a string indicating a size into an actual <c>Size</c> object

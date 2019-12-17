@@ -28,7 +28,7 @@ Public Class frmTV_Source
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private TVShowMatching As New List(Of Settings.regexp)
+    Private _TmpSources As New Dictionary(Of Database.DBSource, State)
 
 #End Region 'Fields
 
@@ -36,8 +36,8 @@ Public Class frmTV_Source
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
     Public Event NeedsDBClean_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_TV
-    Public Event NeedsDBUpdate_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
-    Public Event NeedsDBUpdate_TV() Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
+    Public Event NeedsDBUpdate_Movie(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_Movie
+    Public Event NeedsDBUpdate_TV(ByVal id As Long) Implements Interfaces.IMasterSettingsPanel.NeedsDBUpdate_TV
     Public Event NeedsReload_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsReload_Movie
     Public Event NeedsReload_MovieSet() Implements Interfaces.IMasterSettingsPanel.NeedsReload_MovieSet
     Public Event NeedsReload_TVEpisode() Implements Interfaces.IMasterSettingsPanel.NeedsReload_TVEpisode
@@ -45,7 +45,7 @@ Public Class frmTV_Source
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events 
+#End Region 'Events
 
 #Region "Handles"
 
@@ -57,12 +57,12 @@ Public Class frmTV_Source
         RaiseEvent NeedsDBClean_TV()
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_Movie()
-        RaiseEvent NeedsDBUpdate_Movie()
+    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_Movie(id)
     End Sub
 
-    Private Sub Handle_NeedsDBUpdate_TV()
-        RaiseEvent NeedsDBUpdate_TV()
+    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
+        RaiseEvent NeedsDBUpdate_TV(id)
     End Sub
 
     Private Sub Handle_NeedsReload_Movie()
@@ -96,10 +96,9 @@ Public Class frmTV_Source
     Public Sub New()
         InitializeComponent()
         Setup()
-        lvTVSources.ListViewItemSorter = New ListViewItemComparer(1)
     End Sub
 
-#End Region 'Constructors 
+#End Region 'Constructors
 
 #Region "Interface Methodes"
 
@@ -116,43 +115,48 @@ Public Class frmTV_Source
             .Order = 200,
             .Panel = pnlSettings,
             .SettingsPanelID = "TV_Source",
-            .Title = Master.eLang.GetString(602, "Sources"),
+            .Title = Master.eLang.GetString(621, "Sources & Import Options"),
             .Type = Enums.SettingsPanelType.TV
         }
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
-        With Master.eSettings.TVShow.SourceSettings
-            .CleanDBAfterUpdate = chkTVCleanDB.Checked
-        End With
         With Master.eSettings.TVEpisode.SourceSettings
-            If Not String.IsNullOrEmpty(txtTVSkipLessThan.Text) AndAlso Integer.TryParse(txtTVSkipLessThan.Text, 0) Then
-                .SkipLessThan = Convert.ToInt32(txtTVSkipLessThan.Text)
+            .DateAddedIgnoreNfo = chkDateAddedIgnoreNFO.Checked
+            .DateAddedDateTime = CType(cbDateAddedDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTimeStamp)).Value
+            .OverWriteNfo = chkOverwriteNfo.Checked
+            If Not String.IsNullOrEmpty(txtSkipLessThan.Text) AndAlso Integer.TryParse(txtSkipLessThan.Text, 0) Then
+                .SkipLessThan = Convert.ToInt32(txtSkipLessThan.Text)
             Else
                 .SkipLessThan = 0
             End If
+            .TitleFiltersEnabled = chkTitleFiltersEnabled_TVEpisode.Checked
+            .TitleProperCase = chkTitleProperCase_TVEpisode.Checked
+        End With
+
+        With Master.eSettings.TVShow.SourceSettings
+            .CleanLibraryAfterUpdate = chkCleanLibraryAfterUpdate.Checked
+            .DateAddedIgnoreNfo = chkDateAddedIgnoreNFO.Checked
+            .DateAddedDateTime = CType(cbDateAddedDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTimeStamp)).Value
+            If Not String.IsNullOrEmpty(cbSourcesDefaultsEpisodeOrdering.Text) Then
+                .DefaultEpisodeOrdering = CType(cbSourcesDefaultsEpisodeOrdering.SelectedItem, KeyValuePair(Of String, Enums.EpisodeOrdering)).Value
+            End If
+            If Not String.IsNullOrEmpty(cbSourcesDefaultsLanguage.Text) Then
+                .DefaultLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbSourcesDefaultsLanguage.Text).Abbreviation
+            End If
+            .OverWriteNfo = chkOverwriteNfo.Checked
+            .TitleFiltersEnabled = chkTitleFiltersEnabled_TVShow.Checked
+            .TitleProperCase = chkTitleProperCase_TVShow.Checked
         End With
 
         With Master.eSettings
-            If Not String.IsNullOrEmpty(cbTVGeneralLang.Text) Then
-                .TVGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
-            End If
-            .TVMultiPartMatching = txtTVSourcesRegexMultiPartMatching.Text
-            .TVScraperOptionsOrdering = CType(cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.EpisodeOrdering)).Value
-            .TVShowMatching.Clear()
-            .TVShowMatching.AddRange(TVShowMatching)
-            .TVEpisodeFilterCustom.Clear()
-            .TVEpisodeFilterCustom.AddRange(lstTVEpisodeFilter.Items.OfType(Of String).ToList)
-            If .TVEpisodeFilterCustom.Count <= 0 Then .TVEpisodeFilterCustomIsEmpty = True
-            .TVEpisodeNoFilter = chkTVEpisodeNoFilter.Checked
-            .TVEpisodeProperCase = chkTVEpisodeProperCase.Checked
-            .TVGeneralMarkNewEpisodes = chkTVGeneralMarkNewEpisodes.Checked
-            .TVGeneralMarkNewShows = chkTVGeneralMarkNewShows.Checked
-            .TVShowFilterCustom.Clear()
-            .TVShowFilterCustom.AddRange(lstTVShowFilter.Items.OfType(Of String).ToList)
-            If .TVShowFilterCustom.Count <= 0 Then .TVShowFilterCustomIsEmpty = True
-            .TVShowProperCase = chkTVShowProperCase.Checked
+            .TVGeneralMarkNewEpisodes = chkMarkAsMarked_TVEpisode.Checked
+            .TVGeneralMarkNewShows = chkMarkAsMarked_TVShow.Checked
         End With
+
+        Save_Sources()
+        Save_TitleFilters_TVEpisode()
+        Save_TitleFilters_TVShow()
     End Sub
 
 #End Region 'Interface Methodes
@@ -160,436 +164,393 @@ Public Class frmTV_Source
 #Region "Methods"
 
     Public Sub Settings_Load()
-        With Master.eSettings.TVShow.SourceSettings
-            chkTVCleanDB.Checked = .CleanDBAfterUpdate
-        End With
         With Master.eSettings.TVEpisode.SourceSettings
-            txtTVSkipLessThan.Text = .SkipLessThan.ToString
+            chkTitleFiltersEnabled_TVEpisode.Checked = .TitleFiltersEnabled
+            chkTitleProperCase_TVEpisode.Checked = .TitleProperCase
+            txtSkipLessThan.Text = .SkipLessThan.ToString
+            DataGridView_Fill_TitleFilters_TVEpisode(.TitleFilters)
         End With
-        With Master.eSettings
-            cbTVScraperOptionsOrdering.SelectedValue = .TVScraperOptionsOrdering
-            txtTVSourcesRegexMultiPartMatching.Text = .TVMultiPartMatching
 
-            Try
-                cbTVGeneralLang.Items.Clear()
-                cbTVGeneralLang.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
-                If cbTVGeneralLang.Items.Count > 0 Then
-                    If Not String.IsNullOrEmpty(.TVGeneralLanguage) Then
-                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = .TVGeneralLanguage)
-                        If tLanguage IsNot Nothing AndAlso tLanguage.Description IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.Description) Then
-                            cbTVGeneralLang.Text = tLanguage.Description
-                        Else
-                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.TVGeneralLanguage))
-                            If tLanguage IsNot Nothing Then
-                                cbTVGeneralLang.Text = tLanguage.Description
-                            Else
-                                cbTVGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
-                            End If
-                        End If
+        With Master.eSettings.TVShow.SourceSettings
+            cbDateAddedDateTime.SelectedValue = .DateAddedDateTime
+            cbSourcesDefaultsEpisodeOrdering.SelectedValue = .DefaultEpisodeOrdering
+            If cbSourcesDefaultsLanguage.Items.Count > 0 Then
+                If Not String.IsNullOrEmpty(.DefaultLanguage) Then
+                    Dim tLanguage As languageProperty = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = .DefaultLanguage)
+                    If tLanguage IsNot Nothing Then
+                        cbSourcesDefaultsLanguage.Text = tLanguage.Description
                     Else
-                        cbTVGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                        tLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.DefaultLanguage))
+                        If tLanguage IsNot Nothing Then
+                            cbSourcesDefaultsLanguage.Text = tLanguage.Description
+                        Else
+                            cbSourcesDefaultsLanguage.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                        End If
                     End If
+                Else
+                    cbSourcesDefaultsLanguage.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
                 End If
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-
-            chkTVEpisodeNoFilter.Checked = .TVEpisodeNoFilter
-            chkTVEpisodeProperCase.Checked = .TVEpisodeProperCase
-            chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
-            chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
-            chkTVShowProperCase.Checked = .TVShowProperCase
-
-            TVShowMatching.AddRange(.TVShowMatching)
-            LoadTVShowMatching()
+            End If
+            chkCleanLibraryAfterUpdate.Checked = .CleanLibraryAfterUpdate
+            chkDateAddedIgnoreNFO.Checked = .DateAddedIgnoreNfo
+            chkOverwriteNfo.Checked = .OverWriteNfo
+            chkTitleProperCase_TVShow.Checked = .TitleProperCase
+            DataGridView_Fill_TitleFilters_TVShow(.TitleFilters)
         End With
 
-        RefreshTVSources()
+
+        With Master.eSettings
+            chkMarkAsMarked_TVEpisode.Checked = .TVGeneralMarkNewEpisodes
+            chkMarkAsMarked_TVShow.Checked = .TVGeneralMarkNewShows
+        End With
+
+        For Each source In Master.DB.Load_AllSources_TVShow
+            _TmpSources.Add(source, State.Existing)
+        Next
+
+        DataGridView_Fill_Sources()
     End Sub
 
     Private Sub Setup()
-        lblTVSourcesDefaultsOrdering.Text = String.Concat(Master.eLang.GetString(797, "Default Episode Ordering"), ":")
-        lblTVSourcesDefaultsLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
-        gbTVSourcesDefaultsOpts.Text = Master.eLang.GetString(252, "Defaults for new Sources")
-        colTVSourcesExclude.Text = Master.eLang.GetString(264, "Exclude")
-        colTVSourcesLanguage.Text = Master.eLang.GetString(610, "Language")
-        gbTVSourcesMiscOpts.Text = Master.eLang.GetString(429, "Miscellaneous")
-        colTVSourcesName.Text = Master.eLang.GetString(232, "Name")
-        colTVSourcesOrdering.Text = Master.eLang.GetString(1167, "Ordering")
-        colTVSourcesPath.Text = Master.eLang.GetString(410, "Path")
-        colTVSourcesSorting.Text = Master.eLang.GetString(895, "Sorting")
-        btnRemTVSource.Text = Master.eLang.GetString(30, "Remove")
-        btnTVSourcesRegexTVShowMatchingAdd.Tag = String.Empty
-        btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(690, "Edit Regex")
-        btnTVSourcesRegexTVShowMatchingClear.Text = Master.eLang.GetString(123, "Clear")
-        btnTVSourcesRegexTVShowMatchingEdit.Text = Master.eLang.GetString(690, "Edit Regex")
-        btnTVSourcesRegexTVShowMatchingRemove.Text = Master.eLang.GetString(30, "Remove")
-        btnTVSourceEdit.Text = Master.eLang.GetString(535, "Edit Source")
-        gbTVSourcesRegexTVShowMatching.Text = Master.eLang.GetString(691, "Show Match Regex")
-        lblTVSourcesRegexTVShowMatchingByDate.Text = Master.eLang.GetString(698, "by Date")
-        lblTVSourcesRegexTVShowMatchingRegex.Text = Master.eLang.GetString(699, "Regex")
-        lblTVSourcesRegexTVShowMatchingDefaultSeason.Text = Master.eLang.GetString(695, "Default Season")
-        tpTVSourcesGeneral.Text = Master.eLang.GetString(38, "General")
-        tpTVSourcesRegex.Text = Master.eLang.GetString(699, "Regex")
-        btnTVSourceAdd.Text = Master.eLang.GetString(407, "Add Source")
-        chkTVCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
-        lblTVSkipLessThan.Text = Master.eLang.GetString(540, "Skip files smaller than:")
-        lblTVSkipLessThanMB.Text = Master.eLang.GetString(539, "MB")
-        chkTVEpisodeNoFilter.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
-        chkTVGeneralMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
-        chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
-        gbTVEpisodeFilterOpts.Text = Master.eLang.GetString(671, "Episode Folder/File Name Filters")
-        gbTVShowFilterOpts.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
-        chkTVEpisodeProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
-        chkTVShowProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
+        With Master.eLang
+            chkCleanLibraryAfterUpdate.Text = .GetString(668, "Clean database after Library Update")
+            chkDateAddedIgnoreNFO.Text = .GetString(1209, "Ignore <dateadded> from NFO")
+            chkOverwriteNfo.Text = .GetString(433, "Overwrite invalid NFOs")
+            chkMarkAsMarked_TVEpisode.Text = .GetString(621, "Mark New Episodes")
+            chkMarkAsMarked_TVShow.Text = .GetString(549, "Mark New Shows")
+            chkTitleFiltersEnabled_TVEpisode.Text = .GetString(451, "Enable Title Filters")
+            chkTitleFiltersEnabled_TVShow.Text = .GetString(451, "Enable Title Filters")
+            chkTitleProperCase_TVEpisode.Text = .GetString(452, "Convert Names to Proper Case")
+            chkTitleProperCase_TVShow.Text = .GetString(452, "Convert Names to Proper Case")
+            cmnuSourcesAdd.Text = .GetString(407, "Add Source")
+            cmnuSourcesEdit.Text = .GetString(535, "Edit Source")
+            cmnuSourcesMarkToRemove.Text = .GetString(493, "Mark to Remove")
+            cmnuSourcesReject.Text = .GetString(494, "Reject Remove Marker")
+            colSourcesEpisodeOrdering.HeaderText = .GetString(1167, "Ordering")
+            colSourcesExclude.HeaderText = .GetString(264, "Exclude")
+            colSourcesIsSingle.HeaderText = .GetString(1053, "Single TV Show")
+            colSourcesLanguage.HeaderText = .GetString(610, "Language")
+            colSourcesName.HeaderText = .GetString(232, "Name")
+            colSourcesPath.HeaderText = .GetString(410, "Path")
+            colSourcesSorting.HeaderText = .GetString(895, "Sorting")
+            gbImportOptions.Text = .GetString(559, "Import Options")
+            gbSourcesDefaults.Text = .GetString(252, "Defaults for new Sources")
+            gbTitleCleanup.Text = Master.eLang.GetString(455, "Title Cleanup")
+            lblDateAdded.Text = .GetString(792, "Default value for <dateadded>")
+            lblOverwriteNfo.Text = .GetString(434, "(If unchecked, invalid NFOs will be renamed to <filename>.info)")
+            lblSkipLessThan.Text = String.Concat(.GetString(540, "Skip files smaller than"), ":")
+            lblSkipLessThanMB.Text = .GetString(539, "MB")
+            lblSourcesDefaultsEpisodeOrdering.Text = String.Concat(.GetString(797, "Default Episode Ordering"), ":")
+            lblSourcesDefaultsLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
+            lblTitleFilters_TVEpisode.Text = .GetString(456, "Use ALT + UP / DOWN to move the rows")
+            lblTitleFilters_TVShow.Text = .GetString(456, "Use ALT + UP / DOWN to move the rows")
+        End With
 
-        LoadTVScraperOptionsOrdering()
+        Load_EpisodeOrdering()
+        Load_GeneralDateTime()
+        Load_ScraperLanguages()
     End Sub
 
-    Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowFilters, True)
-
-            Handle_SettingsChanged()
+    Private Sub DataGridView_CellPainting(ByVal sender As Object, ByVal e As DataGridViewCellPaintingEventArgs) Handles dgvSources.CellPainting
+        Dim dgvList As DataGridView = DirectCast(sender, DataGridView)
+        If dgvList IsNot Nothing AndAlso e.RowIndex >= 0 Then
+            Select Case True
+                Case CInt(dgvList.Rows(e.RowIndex).Cells(0).Value) = 0
+                    '0 = existing and unedited source
+                    e.CellStyle.BackColor = SystemColors.Window
+                    e.CellStyle.ForeColor = SystemColors.WindowText
+                    e.CellStyle.SelectionBackColor = SystemColors.Highlight
+                    e.CellStyle.SelectionForeColor = SystemColors.HighlightText
+                Case CInt(dgvList.Rows(e.RowIndex).Cells(0).Value) = 1
+                    '1 = new source
+                    e.CellStyle.BackColor = Color.LightGreen
+                    e.CellStyle.ForeColor = Color.Black
+                    e.CellStyle.SelectionBackColor = Color.Green
+                    e.CellStyle.SelectionForeColor = Color.White
+                Case CInt(dgvList.Rows(e.RowIndex).Cells(0).Value) = 2
+                    '2 = edited source
+                    e.CellStyle.BackColor = Color.PeachPuff
+                    e.CellStyle.ForeColor = Color.Black
+                    e.CellStyle.SelectionBackColor = Color.DarkOrange
+                    e.CellStyle.SelectionForeColor = Color.Black
+                Case CInt(dgvList.Rows(e.RowIndex).Cells(0).Value) = 3
+                    '3 = source is marked to remove
+                    e.CellStyle.BackColor = Color.LightCoral
+                    e.CellStyle.ForeColor = Color.Black
+                    e.CellStyle.SelectionBackColor = Color.Red
+                    e.CellStyle.SelectionForeColor = Color.White
+                Case CInt(dgvList.Rows(e.RowIndex).Cells(0).Value) = 4
+                    '4 = edited and marked to remove source
+                    e.CellStyle.BackColor = Color.LightCoral
+                    e.CellStyle.ForeColor = Color.Black
+                    e.CellStyle.SelectionBackColor = Color.Red
+                    e.CellStyle.SelectionForeColor = Color.White
+            End Select
         End If
     End Sub
 
-    Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeFilters, True)
-
-            Handle_SettingsChanged()
-        End If
-    End Sub
-
-    Private Sub chkTVEpisodeNoFilter_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
-
-        chkTVEpisodeProperCase.Enabled = Not chkTVEpisodeNoFilter.Checked
-        lstTVEpisodeFilter.Enabled = Not chkTVEpisodeNoFilter.Checked
-        txtTVEpisodeFilter.Enabled = Not chkTVEpisodeNoFilter.Checked
-        btnTVEpisodeFilterAdd.Enabled = Not chkTVEpisodeNoFilter.Checked
-        btnTVEpisodeFilterUp.Enabled = Not chkTVEpisodeNoFilter.Checked
-        btnTVEpisodeFilterDown.Enabled = Not chkTVEpisodeNoFilter.Checked
-        btnTVEpisodeFilterRemove.Enabled = Not chkTVEpisodeNoFilter.Checked
-    End Sub
-
-    Private Sub btnTVSourcesRegexTVShowMatchingAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If String.IsNullOrEmpty(btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then
-            Dim lID = (From lRegex As Settings.regexp In TVShowMatching Select lRegex.ID).Max
-            TVShowMatching.Add(New Settings.regexp With {
-                               .ID = Convert.ToInt32(lID) + 1,
-                               .Regexp = txtTVSourcesRegexTVShowMatchingRegex.Text,
-                               .defaultSeason = If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text) OrElse Not Integer.TryParse(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0), -2, CInt(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text)),
-                               .byDate = chkTVSourcesRegexTVShowMatchingByDate.Checked})
-        Else
-            Dim selRex = From lRegex As Settings.regexp In TVShowMatching Where lRegex.ID = Convert.ToInt32(btnTVSourcesRegexTVShowMatchingAdd.Tag)
-            If selRex.Count > 0 Then
-                selRex(0).Regexp = txtTVSourcesRegexTVShowMatchingRegex.Text
-                selRex(0).defaultSeason = CInt(If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text), "-2", txtTVSourcesRegexTVShowMatchingDefaultSeason.Text))
-                selRex(0).byDate = chkTVSourcesRegexTVShowMatchingByDate.Checked
-            End If
-        End If
-
-        ClearTVShowMatching()
-        Handle_SettingsChanged()
-        LoadTVShowMatching()
-    End Sub
-
-    Private Sub btnTVSourceAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Using dSource As New dlgSourceTVShow
-            If dSource.ShowDialog = DialogResult.OK Then
-                RefreshTVSources()
+    Private Sub DataGridView_ContextMenu_Add(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSourcesAdd.Click
+        Using dlgSource As New dlgSource_TVShow(_TmpSources.Keys.ToList)
+            If dlgSource.ShowDialog() = DialogResult.OK AndAlso dlgSource.Result IsNot Nothing Then
+                _TmpSources.Add(dlgSource.Result, State.New)
+                DataGridView_Fill_Sources()
                 Handle_SettingsChanged()
-                Handle_NeedsDBUpdate_TV()
             End If
         End Using
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingClear_Click(ByVal sender As Object, ByVal e As EventArgs)
-        ClearTVShowMatching()
-    End Sub
-
-    Private Sub btnTVSourcesRegexTVShowMatchingEdit_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 Then EditTVShowMatching(lvTVSourcesRegexTVShowMatching.SelectedItems(0))
-    End Sub
-
-    Private Sub btnTVSourceEdit_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If lvTVSources.SelectedItems.Count > 0 Then
-            Using dTVSource As New dlgSourceTVShow
-                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = DialogResult.OK Then
-                    RefreshTVSources()
-                    Handle_NeedsReload_TVShow()
+    Private Sub DataGridView_ContextMenu_Edit(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSourcesEdit.Click
+        If dgvSources.SelectedRows.Count = 1 Then
+            Dim lngID As Long = CLng(dgvSources.SelectedRows(0).Cells(1).Value)
+            Dim kSource = _TmpSources.FirstOrDefault(Function(f) f.Key.ID = lngID)
+            Using dlgSource As New dlgSource_TVShow(_TmpSources.Keys.ToList)
+                If dlgSource.ShowDialog(lngID) = DialogResult.OK AndAlso dlgSource.Result IsNot Nothing Then
+                    _TmpSources.Remove(kSource.Key)
+                    _TmpSources.Add(dlgSource.Result, State.Edited)
+                    DataGridView_Fill_Sources()
                     Handle_SettingsChanged()
                 End If
             End Using
         End If
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingUp_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Try
-            If lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso Not lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.regexp = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvTVSourcesRegexTVShowMatching.SuspendLayout()
-                    Dim iIndex As Integer = TVShowMatching.IndexOf(selItem)
-                    Dim selIndex As Integer = lvTVSourcesRegexTVShowMatching.SelectedIndices(0)
-                    TVShowMatching.Remove(selItem)
-                    TVShowMatching.Insert(iIndex - 1, selItem)
-
-                    RenumberTVShowMatching()
-                    LoadTVShowMatching()
-
-                    lvTVSourcesRegexTVShowMatching.Items(selIndex - 1).Selected = True
-                    lvTVSourcesRegexTVShowMatching.ResumeLayout()
-                End If
-
-                Handle_SettingsChanged()
-                lvTVSourcesRegexTVShowMatching.Focus()
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub btnTVSourcesRegexTVShowMatchingDown_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Try
-            If lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index < (lvTVSourcesRegexTVShowMatching.Items.Count - 1) Then
-                Dim selItem As Settings.regexp = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvTVSourcesRegexTVShowMatching.SuspendLayout()
-                    Dim iIndex As Integer = TVShowMatching.IndexOf(selItem)
-                    Dim selIndex As Integer = lvTVSourcesRegexTVShowMatching.SelectedIndices(0)
-                    TVShowMatching.Remove(selItem)
-                    TVShowMatching.Insert(iIndex + 1, selItem)
-
-                    RenumberTVShowMatching()
-                    LoadTVShowMatching()
-
-                    lvTVSourcesRegexTVShowMatching.Items(selIndex + 1).Selected = True
-                    lvTVSourcesRegexTVShowMatching.ResumeLayout()
-                End If
-
-                Handle_SettingsChanged()
-                lvTVSourcesRegexTVShowMatching.Focus()
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowMatching, True)
-            TVShowMatching.Clear()
-            TVShowMatching.AddRange(Master.eSettings.TVShowMatching)
-            LoadTVShowMatching()
-            Handle_SettingsChanged()
+    Private Sub DataGridView_ContextMenu_MarkToRemove(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSourcesMarkToRemove.Click
+        If dgvSources.SelectedRows.Count > 0 Then
+            For Each row As DataGridViewRow In dgvSources.SelectedRows
+                Select Case True
+                    Case CInt(row.Cells(0).Value) = State.Existing
+                        '0 = existing and unedited source: set it to "existing and unedited source is marked to remove"
+                        row.Cells(0).Value = State.ExistingToRemove
+                    Case CInt(row.Cells(0).Value) = State.[New]
+                        '1 = new source: remove it instant
+                        dgvSources.Rows.Remove(row)
+                    Case CInt(row.Cells(0).Value) = State.Edited
+                        '2 = existing and edited source: set it to "existing and edited source is marked to remove"
+                        row.Cells(0).Value = State.EditedToRemove
+                End Select
+            Next
+            dgvSources.Invalidate()
         End If
     End Sub
 
-    Private Sub btnTVSourcesRegexMultiPartMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        txtTVSourcesRegexMultiPartMatching.Text = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
-        Handle_SettingsChanged()
+    Private Sub DataGridView_ContextMenu_Reject(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSourcesReject.Click
+        If dgvSources.SelectedRows.Count > 0 Then
+            For Each row As DataGridViewRow In dgvSources.SelectedRows
+                Select Case True
+                    Case CInt(row.Cells(0).Value) = State.ExistingToRemove
+                        '3 = existing and unedited source is marked to remove: set it back to "existing and unedited source"
+                        row.Cells(0).Value = State.Existing
+                    Case CInt(row.Cells(0).Value) = State.EditedToRemove
+                        '4 = existing and edited source is marked to remove: set it back to "existing and edited source"
+                        row.Cells(0).Value = State.Edited
+                End Select
+            Next
+            dgvSources.Invalidate()
+        End If
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
-        RemoveTVShowMatching()
-    End Sub
-
-    Private Sub btnRemTVSource_Click(ByVal sender As Object, ByVal e As EventArgs)
-        RemoveTVSource()
-    End Sub
-
-    Private Sub ClearTVShowMatching()
-        btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(115, "Add Regex")
-        btnTVSourcesRegexTVShowMatchingAdd.Tag = String.Empty
-        btnTVSourcesRegexTVShowMatchingAdd.Enabled = False
-        txtTVSourcesRegexTVShowMatchingRegex.Text = String.Empty
-        txtTVSourcesRegexTVShowMatchingDefaultSeason.Text = String.Empty
-        chkTVSourcesRegexTVShowMatchingByDate.Checked = False
-    End Sub
-
-    Private Sub EditTVShowMatching(ByVal lItem As ListViewItem)
-        btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(124, "Update Regex")
-        btnTVSourcesRegexTVShowMatchingAdd.Tag = lItem.Text
-
-        txtTVSourcesRegexTVShowMatchingRegex.Text = lItem.SubItems(1).Text.ToString
-        txtTVSourcesRegexTVShowMatchingDefaultSeason.Text = If(Not lItem.SubItems(2).Text = "-2", lItem.SubItems(2).Text, String.Empty)
-
-        Select Case lItem.SubItems(3).Text
-            Case "Yes"
-                chkTVSourcesRegexTVShowMatchingByDate.Checked = True
-            Case "No"
-                chkTVSourcesRegexTVShowMatchingByDate.Checked = False
-        End Select
-    End Sub
-
-    Private Sub LoadTVShowMatching()
-        Dim lvItem As ListViewItem
-        lvTVSourcesRegexTVShowMatching.Items.Clear()
-        For Each rShow As Settings.regexp In TVShowMatching
-            lvItem = New ListViewItem(rShow.ID.ToString)
-            lvItem.SubItems.Add(rShow.Regexp)
-            lvItem.SubItems.Add(If(Not rShow.defaultSeason.ToString = "-2", rShow.defaultSeason.ToString, String.Empty))
-            lvItem.SubItems.Add(If(rShow.byDate, "Yes", "No"))
-            lvTVSourcesRegexTVShowMatching.Items.Add(lvItem)
+    Private Sub DataGridView_Fill_Sources()
+        dgvSources.Rows.Clear()
+        For Each source In _TmpSources
+            dgvSources.Rows.Add(New Object() {
+                                source.Value,
+                                source.Key.ID,
+                                source.Key.Name,
+                                source.Key.Path,
+                                source.Key.Language,
+                                source.Key.EpisodeOrdering,
+                                source.Key.EpisodeSorting,
+                                source.Key.IsSingle,
+                                source.Key.Exclude
+                                })
         Next
+
+        dgvSources.ClearSelection()
+        dgvSources.Invalidate()
     End Sub
 
-    Private Sub LoadTVScraperOptionsOrdering()
+    Private Sub DataGridView_Fill_TitleFilters_TVEpisode(ByVal List As List(Of String))
+        dgvTitleFilters_TVEpisode.Rows.Clear()
+        Dim iIndex As Integer = 0
+        For Each item In List
+            dgvTitleFilters_TVEpisode.Rows.Add(New Object() {iIndex, item})
+            iIndex += 1
+        Next
+        dgvTitleFilters_TVEpisode.ClearSelection()
+    End Sub
+
+    Private Sub DataGridView_Fill_TitleFilters_TVShow(ByVal List As List(Of String))
+        dgvTitleFilters_TVShow.Rows.Clear()
+        Dim iIndex As Integer = 0
+        For Each item In List
+            dgvTitleFilters_TVShow.Rows.Add(New Object() {iIndex, item})
+            iIndex += 1
+        Next
+        dgvTitleFilters_TVShow.ClearSelection()
+    End Sub
+
+    Private Sub DataGridView_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles dgvSources.MouseDown
+        If e.Button = MouseButtons.Right And dgvSources.RowCount > 0 Then
+            Dim dgvHTI As DataGridView.HitTestInfo = dgvSources.HitTest(e.X, e.Y)
+            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+                If Not dgvSources.Rows(dgvHTI.RowIndex).Selected Then
+                    dgvSources.ClearSelection()
+                    dgvSources.Rows(dgvHTI.RowIndex).Selected = True
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub DataGridView_TitleFilters_KeyDown(sender As Object, e As KeyEventArgs) Handles dgvTitleFilters_TVEpisode.KeyDown, dgvTitleFilters_TVShow.KeyDown
+        Dim dgvList As DataGridView = DirectCast(sender, DataGridView)
+        Dim currRowIndex As Integer = dgvList.CurrentRow.Index
+        Dim currRowIsNew As Boolean = dgvList.CurrentRow.IsNewRow
+        If Not currRowIsNew Then
+            Select Case True
+                Case e.Alt And e.KeyCode = Keys.Down AndAlso Not currRowIndex = dgvList.Rows.Count - 1 AndAlso Not dgvList.Rows(currRowIndex + 1).IsNewRow
+                    dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) + 1
+                    dgvList.Rows(currRowIndex + 1).Cells(0).Value = currRowIndex
+                    currRowIndex += 1
+                    e.Handled = True
+                Case e.Alt And e.KeyCode = Keys.Up AndAlso Not currRowIndex = 0
+                    dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) - 1
+                    dgvList.Rows(currRowIndex - 1).Cells(0).Value = currRowIndex
+                    currRowIndex -= 1
+                    e.Handled = True
+                Case Else
+                    Return
+            End Select
+            dgvList.Sort(dgvList.Columns(0), ComponentModel.ListSortDirection.Ascending)
+            If Not dgvList.SelectedRows(0).State.HasFlag(DataGridViewElementStates.Displayed) Then
+                dgvList.FirstDisplayedScrollingRowIndex = currRowIndex
+            End If
+        End If
+    End Sub
+
+    Private Sub Load_EpisodeOrdering()
         Dim items As New Dictionary(Of String, Enums.EpisodeOrdering)
         items.Add(Master.eLang.GetString(438, "Standard"), Enums.EpisodeOrdering.Standard)
         items.Add(Master.eLang.GetString(1067, "DVD"), Enums.EpisodeOrdering.DVD)
         items.Add(Master.eLang.GetString(839, "Absolute"), Enums.EpisodeOrdering.Absolute)
         items.Add(Master.eLang.GetString(1332, "Day Of Year"), Enums.EpisodeOrdering.DayOfYear)
-        cbTVScraperOptionsOrdering.DataSource = items.ToList
-        cbTVScraperOptionsOrdering.DisplayMember = "Key"
-        cbTVScraperOptionsOrdering.ValueMember = "Value"
+        cbSourcesDefaultsEpisodeOrdering.DataSource = items.ToList
+        cbSourcesDefaultsEpisodeOrdering.DisplayMember = "Key"
+        cbSourcesDefaultsEpisodeOrdering.ValueMember = "Value"
     End Sub
 
-    Private Sub lvTVSourcesRegexTVShowMatching_DoubleClick(ByVal sender As Object, ByVal e As EventArgs)
-        If lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 Then EditTVShowMatching(lvTVSourcesRegexTVShowMatching.SelectedItems(0))
+    Private Sub Load_GeneralDateTime()
+        cbDateAddedDateTime.DataSource = Functions.GetDateTimeStampOptions()
+        cbDateAddedDateTime.DisplayMember = "Key"
+        cbDateAddedDateTime.ValueMember = "Value"
     End Sub
 
-    Private Sub lvTVSourcesRegexTVShowMatching_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then RemoveTVShowMatching()
+    Private Sub Load_ScraperLanguages()
+        cbSourcesDefaultsLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages Select lLang.Description).ToArray)
     End Sub
 
-    Private Sub lvTVSourcesRegexTVShowMatching_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
-        If Not String.IsNullOrEmpty(btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then ClearTVShowMatching()
-    End Sub
-
-    Private Sub lvTVSources_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs)
-        lvTVSources.ListViewItemSorter = New ListViewItemComparer(e.Column)
-    End Sub
-
-    Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As EventArgs)
-        If lvTVSources.SelectedItems.Count > 0 Then
-            Using dTVSource As New dlgSourceTVShow
-                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = DialogResult.OK Then
-                    RefreshTVSources()
-                    Handle_NeedsReload_TVShow()
-                    Handle_SettingsChanged()
-                End If
-            End Using
+    Private Sub LoadDefaults_TitleFilters_TVEpisode() Handles btnTitleFilterDefaults_TVepisode.Click
+        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default filter list?"),
+                           Master.eLang.GetString(104, "Are You Sure?"),
+                           MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question) = DialogResult.Yes Then
+            DataGridView_Fill_TitleFilters_TVEpisode(Master.eSettings.TVEpisode.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.TVEpisode))
+            Handle_SettingsChanged()
         End If
     End Sub
 
-    Private Sub lvTVSources_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then RemoveTVSource()
-    End Sub
-
-    Private Sub RefreshTVSources()
-        Dim lvItem As ListViewItem
-        lvTVSources.Items.Clear()
-        For Each s As Database.DBSource In Master.DB.Load_AllSources_TVShow
-            lvItem = New ListViewItem(CStr(s.ID))
-            lvItem.SubItems.Add(s.Name)
-            lvItem.SubItems.Add(s.Path)
-            lvItem.SubItems.Add(s.Language)
-            lvItem.SubItems.Add(s.EpisodeOrdering.ToString)
-            lvItem.SubItems.Add(If(s.Exclude, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvItem.SubItems.Add(s.EpisodeSorting.ToString)
-            lvItem.SubItems.Add(If(s.IsSingle, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvTVSources.Items.Add(lvItem)
-        Next
-    End Sub
-
-    Private Sub RemoveTVShowMatching()
-        Dim ID As Integer
-        For Each lItem As ListViewItem In lvTVSourcesRegexTVShowMatching.SelectedItems
-            ID = Convert.ToInt32(lItem.Text)
-            Dim selRex = From lRegex As Settings.regexp In TVShowMatching Where lRegex.ID = ID
-            If selRex.Count > 0 Then
-                TVShowMatching.Remove(selRex(0))
-                Handle_SettingsChanged()
-            End If
-        Next
-        LoadTVShowMatching()
-    End Sub
-
-    Private Sub RemoveTVSource()
-        If lvTVSources.SelectedItems.Count > 0 Then
-            If MessageBox.Show(Master.eLang.GetString(1033, "Are you sure you want to remove the selected sources? This will remove the tv shows from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                lvTVSources.BeginUpdate()
-
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.Int64, 0, "idSource")
-                        While lvTVSources.SelectedItems.Count > 0
-                            parSource.Value = lvTVSources.SelectedItems(0).SubItems(0).Text
-                            SQLcommand.CommandText = String.Concat("DELETE FROM tvshowsource WHERE idSource = (?);")
-                            SQLcommand.ExecuteNonQuery()
-                            lvTVSources.Items.Remove(lvTVSources.SelectedItems(0))
-                        End While
-                    End Using
-                    SQLtransaction.Commit()
-                End Using
-
-                lvTVSources.Sort()
-                lvTVSources.EndUpdate()
-                lvTVSources.Refresh()
-
-                Handle_SettingsChanged()
-            End If
+    Private Sub LoadDefaults_TitleFilters_TVShow() Handles btnTitleFilterDefaults_TVShow.Click
+        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default filter list?"),
+                           Master.eLang.GetString(104, "Are You Sure?"),
+                           MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question) = DialogResult.Yes Then
+            DataGridView_Fill_TitleFilters_TVShow(Master.eSettings.TVShow.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.TVShow))
+            Handle_SettingsChanged()
         End If
     End Sub
 
-    Private Sub RenumberTVShowMatching()
-        For i As Integer = 0 To TVShowMatching.Count - 1
-            TVShowMatching(i).ID = i
+    Private Sub Save_Sources()
+        For Each r As DataGridViewRow In dgvSources.Rows
+            Select Case True
+                Case CInt(r.Cells(0).Value) = State.Existing
+                    '0 = existing and unedited source 
+                Case CInt(r.Cells(0).Value) = State.[New]
+                    '1 = new source
+                    RaiseEvent NeedsDBUpdate_TV(Master.DB.Save_Source_TVShow(_TmpSources.Keys.FirstOrDefault(Function(f) f.ID = CLng(r.Cells(1).Value))))
+                Case CInt(r.Cells(0).Value) = State.Edited
+                    '2 = existing and edited source
+                    Master.DB.Save_Source_TVShow(_TmpSources.Keys.FirstOrDefault(Function(f) f.ID = CLng(r.Cells(1).Value)))
+                    RaiseEvent NeedsReload_TVShow()
+                Case CInt(r.Cells(0).Value) = State.ExistingToRemove
+                    '3 = existing and unedited source is marked to remove
+                    Master.DB.Remove_Source_TVShow(CLng(r.Cells(1).Value), False)
+                Case CInt(r.Cells(0).Value) = State.EditedToRemove
+                    '4 = existing and edited source is marked to remove
+                    Master.DB.Remove_Source_TVShow(CLng(r.Cells(1).Value), False)
+            End Select
         Next
+        DataGridView_Fill_Sources()
     End Sub
 
-    Private Sub txtTVSourcesRegexTVShowMatchingRegex_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
-        ValidateTVShowMatching()
+    Private Sub Save_TitleFilters_TVEpisode()
+        With Master.eSettings.TVEpisode.SourceSettings.TitleFilters
+            .Clear()
+            For Each r As DataGridViewRow In dgvTitleFilters_TVEpisode.Rows
+                If r.Cells(1).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(1).Value.ToString.Trim) Then .Add(r.Cells(1).Value.ToString)
+            Next
+        End With
     End Sub
 
-    Private Sub txtTVSourcesRegexTVShowMatchingDefaultSeason_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
-        ValidateTVShowMatching()
+    Private Sub Save_TitleFilters_TVShow()
+        With Master.eSettings.TVShow.SourceSettings.TitleFilters
+            .Clear()
+            For Each r As DataGridViewRow In dgvTitleFilters_TVShow.Rows
+                If r.Cells(1).Value IsNot Nothing AndAlso Not String.IsNullOrEmpty(r.Cells(1).Value.ToString.Trim) Then .Add(r.Cells(1).Value.ToString)
+            Next
+        End With
     End Sub
 
-    Private Sub txtTVSkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub SkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtSkipLessThan.TextChanged
+        RaiseEvent NeedsDBClean_TV()
+        RaiseEvent NeedsDBUpdate_TV(-1)
         Handle_SettingsChanged()
-        Handle_NeedsDBClean_TV()
-        Handle_NeedsDBUpdate_TV()
     End Sub
 
-    Private Sub ValidateTVShowMatching()
-        If Not String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingRegex.Text) AndAlso
-            (String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text.Trim) OrElse Integer.TryParse(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0) AndAlso
-            CInt(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text.Trim) >= 0) Then
-            btnTVSourcesRegexTVShowMatchingAdd.Enabled = True
-        Else
-            btnTVSourcesRegexTVShowMatchingAdd.Enabled = False
-        End If
+    Private Sub TitleFilters_Enabled_TVEpisode_CheckedChanged(sender As Object, e As EventArgs) Handles chkTitleFiltersEnabled_TVEpisode.CheckedChanged
+        dgvTitleFilters_TVEpisode.Enabled = chkTitleFiltersEnabled_TVEpisode.Checked
+        lblTitleFilters_TVEpisode.Enabled = chkTitleFiltersEnabled_TVEpisode.Checked
+        btnTitleFilterDefaults_TVepisode.Enabled = chkTitleFiltersEnabled_TVEpisode.Checked
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub TitleFilters_Enabled_TVShow_CheckedChanged(sender As Object, e As EventArgs) Handles chkTitleFiltersEnabled_TVShow.CheckedChanged
+        dgvTitleFilters_TVShow.Enabled = chkTitleFiltersEnabled_TVShow.Checked
+        lblTitleFilters_TVShow.Enabled = chkTitleFiltersEnabled_TVShow.Checked
+        btnTitleFilterDefaults_TVShow.Enabled = chkTitleFiltersEnabled_TVShow.Checked
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub TitleProperCase_TVEpisode_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitleProperCase_TVEpisode.CheckedChanged
+        Handle_NeedsReload_TVEpisode()
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub TitleProperCase_TVShow_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitleProperCase_TVShow.CheckedChanged
+        Handle_NeedsReload_TVShow()
+        Handle_SettingsChanged()
     End Sub
 
 #End Region 'Methods
 
-#Region "Nested Classes"
+#Region "Nested Types"
 
-    Class ListViewItemComparer
-        Implements IComparer
-        Private col As Integer
+    Private Enum State As Integer
+        Existing = 0
+        [New] = 1
+        Edited = 2
+        ExistingToRemove = 3
+        EditedToRemove = 4
+    End Enum
 
-        Public Sub New()
-            col = 0
-        End Sub
-
-        Public Sub New(ByVal column As Integer)
-            col = column
-        End Sub
-
-        Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer _
-           Implements IComparer.Compare
-            Return [String].Compare(CType(x, ListViewItem).SubItems(col).Text, CType(y, ListViewItem).SubItems(col).Text)
-        End Function
-    End Class
-
-#End Region 'Nested Classes
+#End Region 'Nested Types
 
 End Class

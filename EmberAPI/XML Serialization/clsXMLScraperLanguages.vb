@@ -65,7 +65,7 @@ Public Class XMLScraperLanguages
         Sort()
         Dim xmlSerial As New XmlSerializer(GetType(XMLScraperLanguages))
         Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "Core.ScraperLanguages.xml"))
-        xmlSerial.Serialize(xmlWriter, APIXML.ScraperLanguagesXML)
+        xmlSerial.Serialize(xmlWriter, APIXML.ScraperLanguages)
         xmlWriter.Close()
     End Sub
 

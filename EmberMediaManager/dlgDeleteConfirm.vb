@@ -112,13 +112,13 @@ Public Class dlgDeleteConfirm
                     If (nDeleteResults.bHasRemoved OrElse nMainNode.Checked) AndAlso Not _ContentType = Enums.ContentType.TVSeason Then
                         Select Case _ContentType
                             Case Enums.ContentType.Movie
-                                Master.DB.Delete_Movie(Convert.ToInt64(nMainNode.Tag), True)
+                                Master.DB.Remove_Movie(Convert.ToInt64(nMainNode.Tag), True)
                             Case Enums.ContentType.Movieset
-                                Master.DB.Delete_MovieSet(Convert.ToInt64(nMainNode.Tag), True)
+                                Master.DB.Remove_MovieSet(Convert.ToInt64(nMainNode.Tag), True)
                             Case Enums.ContentType.TVEpisode
-                                Master.DB.Delete_TVEpisode(Convert.ToInt64(nMainNode.Tag), False, False, True)
+                                Master.DB.Remove_TVEpisode(Convert.ToInt64(nMainNode.Tag), False, False, True)
                             Case Enums.ContentType.TVShow
-                                Master.DB.Delete_TVShow(Convert.ToInt64(nMainNode.Tag), True)
+                                Master.DB.Remove_TVShow(Convert.ToInt64(nMainNode.Tag), True)
                         End Select
                     ElseIf nDeleteResults.bNeedsReload Then
                         'TODO: Reload

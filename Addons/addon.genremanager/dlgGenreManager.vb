@@ -46,7 +46,7 @@ Public Class dlgGenreManager
         StartPosition = FormStartPosition.Manual
         Setup()
         Master.DB.LoadAllGenres()
-        _TmpGenreXML = CType(APIXML.GenreXML.CloneDeep, XMLGenres)
+        _TmpGenreXML = CType(APIXML.GenreMapping.CloneDeep, XMLGenres)
         PopulateGenres()
     End Sub
 
@@ -385,8 +385,8 @@ Public Class dlgGenreManager
     End Sub
 
     Public Sub SaveChanges()
-        APIXML.GenreXML = _TmpGenreXML
-        APIXML.GenreXML.Save()
+        APIXML.GenreMapping = _TmpGenreXML
+        APIXML.GenreMapping.Save()
     End Sub
 
     Private Sub Setup()

@@ -27,15 +27,15 @@ Partial Class frmMovieset_GUI
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMediaList = New System.Windows.Forms.GroupBox()
         Me.tblMediaList = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkClickScrapeShowResults = New System.Windows.Forms.CheckBox()
         Me.dgvMediaListSorting = New System.Windows.Forms.DataGridView()
         Me.colMediaListSorting_DisplayIndex = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colMediaListSorting_Show = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.colMediaListSorting_Column = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colMediaListSorting_AutoSizeMode = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.chkClickScrapeEnabled = New System.Windows.Forms.CheckBox()
         Me.btnMediaListSortingDefaults = New System.Windows.Forms.Button()
         Me.lblMediaList = New System.Windows.Forms.Label()
-        Me.chkClickScrapeShowResults = New System.Windows.Forms.CheckBox()
-        Me.chkClickScrapeEnabled = New System.Windows.Forms.CheckBox()
         Me.gbCustomScrapeButton = New System.Windows.Forms.GroupBox()
         Me.tblCustomScrapeButton = New System.Windows.Forms.TableLayoutPanel()
         Me.cbCustomScrapeButtonScrapeType = New System.Windows.Forms.ComboBox()
@@ -121,6 +121,18 @@ Partial Class frmMovieset_GUI
         Me.tblMediaList.Size = New System.Drawing.Size(335, 339)
         Me.tblMediaList.TabIndex = 0
         '
+        'chkClickScrapeShowResults
+        '
+        Me.chkClickScrapeShowResults.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkClickScrapeShowResults.AutoSize = True
+        Me.tblMediaList.SetColumnSpan(Me.chkClickScrapeShowResults, 2)
+        Me.chkClickScrapeShowResults.Location = New System.Drawing.Point(135, 3)
+        Me.chkClickScrapeShowResults.Name = "chkClickScrapeShowResults"
+        Me.chkClickScrapeShowResults.Size = New System.Drawing.Size(132, 17)
+        Me.chkClickScrapeShowResults.TabIndex = 64
+        Me.chkClickScrapeShowResults.Text = "Show Results Dialog"
+        Me.chkClickScrapeShowResults.UseVisualStyleBackColor = True
+        '
         'dgvMediaListSorting
         '
         Me.dgvMediaListSorting.AllowUserToAddRows = False
@@ -168,6 +180,17 @@ Partial Class frmMovieset_GUI
         Me.colMediaListSorting_AutoSizeMode.HeaderText = "AutoSizeMode"
         Me.colMediaListSorting_AutoSizeMode.Name = "colMediaListSorting_AutoSizeMode"
         '
+        'chkClickScrapeEnabled
+        '
+        Me.chkClickScrapeEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkClickScrapeEnabled.AutoSize = True
+        Me.chkClickScrapeEnabled.Location = New System.Drawing.Point(3, 3)
+        Me.chkClickScrapeEnabled.Name = "chkClickScrapeEnabled"
+        Me.chkClickScrapeEnabled.Size = New System.Drawing.Size(126, 17)
+        Me.chkClickScrapeEnabled.TabIndex = 65
+        Me.chkClickScrapeEnabled.Text = "Enable Click-Scrape"
+        Me.chkClickScrapeEnabled.UseVisualStyleBackColor = True
+        '
         'btnMediaListSortingDefaults
         '
         Me.btnMediaListSortingDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -190,32 +213,9 @@ Partial Class frmMovieset_GUI
         Me.lblMediaList.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMediaList.Location = New System.Drawing.Point(3, 318)
         Me.lblMediaList.Name = "lblMediaList"
-        Me.lblMediaList.Size = New System.Drawing.Size(218, 13)
+        Me.lblMediaList.Size = New System.Drawing.Size(201, 13)
         Me.lblMediaList.TabIndex = 3
-        Me.lblMediaList.Text = "Use ALT + UP / DOWN to move the columns"
-        '
-        'chkClickScrapeShowResults
-        '
-        Me.chkClickScrapeShowResults.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkClickScrapeShowResults.AutoSize = True
-        Me.tblMediaList.SetColumnSpan(Me.chkClickScrapeShowResults, 2)
-        Me.chkClickScrapeShowResults.Location = New System.Drawing.Point(135, 3)
-        Me.chkClickScrapeShowResults.Name = "chkClickScrapeShowResults"
-        Me.chkClickScrapeShowResults.Size = New System.Drawing.Size(132, 17)
-        Me.chkClickScrapeShowResults.TabIndex = 64
-        Me.chkClickScrapeShowResults.Text = "Show Results Dialog"
-        Me.chkClickScrapeShowResults.UseVisualStyleBackColor = True
-        '
-        'chkClickScrapeEnabled
-        '
-        Me.chkClickScrapeEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkClickScrapeEnabled.AutoSize = True
-        Me.chkClickScrapeEnabled.Location = New System.Drawing.Point(3, 3)
-        Me.chkClickScrapeEnabled.Name = "chkClickScrapeEnabled"
-        Me.chkClickScrapeEnabled.Size = New System.Drawing.Size(126, 17)
-        Me.chkClickScrapeEnabled.TabIndex = 65
-        Me.chkClickScrapeEnabled.Text = "Enable Click-Scrape"
-        Me.chkClickScrapeEnabled.UseVisualStyleBackColor = True
+        Me.lblMediaList.Text = "Use ALT + UP / DOWN to move the rows"
         '
         'gbCustomScrapeButton
         '
