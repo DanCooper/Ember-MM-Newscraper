@@ -19,10 +19,8 @@
 ' ################################################################################
 
 Imports NLog
-Imports System.Drawing
 Imports System.IO
 Imports System.Net
-Imports System.Windows.Forms
 Imports System.Xml.Serialization
 
 <Serializable()>
@@ -730,7 +728,6 @@ Public Class Settings
     Public Property TVShowLandscapeKeepExisting() As Boolean = False
     Public Property TVShowLandscapePrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property TVShowLandscapePrefSizeOnly() As Boolean = False
-    Public Property TVShowMatching() As List(Of regexp) = New List(Of regexp)
     Public Property TVShowMissingBanner() As Boolean = False
     Public Property TVShowMissingCharacterArt() As Boolean = False
     Public Property TVShowMissingClearArt() As Boolean = False
@@ -1487,15 +1484,8 @@ Public Class Settings
             Master.eSettings.TVScraperSeasonTitleBlacklist = GetDefaultsForList_Blacklist_SeasonTitles()
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowMatching) AndAlso (Force OrElse Master.eSettings.TVShowMatching.Count <= 0) Then
-            Master.eSettings.TVShowMatching.Clear()
-            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 0, .byDate = False, .defaultSeason = -2, .Regexp = "s([0-9]+)[ ._-]*e([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"})
-            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 1, .byDate = False, .defaultSeason = 1, .Regexp = "[\\._ -]()e(?:p[ ._-]?)?([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"})
-            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 2, .byDate = True, .defaultSeason = -2, .Regexp = "([0-9]{4})[.-]([0-9]{2})[.-]([0-9]{2})"})
-            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 3, .byDate = True, .defaultSeason = -2, .Regexp = "([0-9]{2})[.-]([0-9]{2})[.-]([0-9]{4})"})
-            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 4, .byDate = False, .defaultSeason = -2, .Regexp = "[\\\/._ \[\(-]([0-9]+)x([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"})
-            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 5, .byDate = False, .defaultSeason = -2, .Regexp = "[\\\/._ -]([0-9]+)([0-9][0-9](?:(?:[a-i]|\.[1-9])(?![0-9]))?)([._ -][^\\\/]*)$"})
-            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 6, .byDate = False, .defaultSeason = 1, .Regexp = "[\\\/._ -]p(?:ar)?t[_. -]()([ivx]+|[0-9]+)([._ -][^\\\/]*)$"})
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeMatching) AndAlso (Force OrElse Not Master.eSettings.TVEpisode.SourceSettings.EpisodeMatchingSepcified) Then
+            Master.eSettings.TVEpisode.SourceSettings.EpisodeMatching = Master.eSettings.TVEpisode.SourceSettings.EpisodeMatching.GetDefaults(Enums.ContentType.TVEpisode)
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidSubtitleExts) AndAlso (Force OrElse Not Master.eSettings.Options.FileSystem.ValidSubtitleExtensionsSpecified) Then
@@ -1920,23 +1910,6 @@ Public Class Settings
 
     End Class
 
-    Public Class regexp
-
-#Region "Properties"
-
-        Public Property byDate() As Boolean = False
-
-        Public Property defaultSeason() As Integer = -2 '-1 is reserved for "* All Seasons" entry
-
-        Public Property ID() As Integer = -1
-
-        Public Property Regexp() As String = String.Empty
-
-#End Region 'Properties
-
-    End Class
-
-
 #End Region 'Nested Types
 
 End Class
@@ -2150,64 +2123,74 @@ Public Class Options
 End Class
 
 <Serializable()>
-Public Class RegexEpisodeSpecification
-    Inherits List(Of RegexEpisodeItemSpecification)
-
-#Region "Constructors"
-
-    Public Sub New()
-        Clear()
-    End Sub
-
-#End Region 'Constructors
+Public Class EpisodeMatchingSpecification
+    Inherits List(Of EpisodeMatchingSpecificationItem)
 
 #Region "Methods"
 
-    Public Sub SetDefaults()
-        Clear()
-        Add(New RegexEpisodeItemSpecification With {.ID = 0, .ByDate = False, .DefaultSeason = -1, .Regexp = "s([0-9]+)[ ._-]*e([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"})
-        Add(New RegexEpisodeItemSpecification With {.ID = 1, .ByDate = False, .DefaultSeason = 1, .Regexp = "[\\._ -]()e(?:p[ ._-]?)?([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"})
-        Add(New RegexEpisodeItemSpecification With {.ID = 2, .ByDate = True, .DefaultSeason = -1, .Regexp = "([0-9]{4})[.-]([0-9]{2})[.-]([0-9]{2})"})
-        Add(New RegexEpisodeItemSpecification With {.ID = 3, .ByDate = True, .DefaultSeason = -1, .Regexp = "([0-9]{2})[.-]([0-9]{2})[.-]([0-9]{4})"})
-        Add(New RegexEpisodeItemSpecification With {.ID = 4, .ByDate = False, .DefaultSeason = -1, .Regexp = "[\\\/._ \[\(-]([0-9]+)x([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"})
-        Add(New RegexEpisodeItemSpecification With {.ID = 5, .ByDate = False, .DefaultSeason = -1, .Regexp = "[\\\/._ -]([0-9]+)([0-9][0-9](?:(?:[a-i]|\.[1-9])(?![0-9]))?)([._ -][^\\\/]*)$"})
-        Add(New RegexEpisodeItemSpecification With {.ID = 6, .ByDate = False, .DefaultSeason = 1, .Regexp = "[\\\/._ -]p(?:ar)?t[_. -]()([ivx]+|[0-9]+)([._ -][^\\\/]*)$"})
-        Add(New RegexEpisodeItemSpecification With {.ID = 7, .ByDate = False, .DefaultSeason = -1, .Regexp = "[Ss]([0-9]+)[ ._-]*[Ee]([0-9]+)([^\\/]*)(?:(?:[\\/]VIDEO_TS)?[\\/]VIDEO_TS\.IFO)$"})
-        Add(New RegexEpisodeItemSpecification With {.ID = 8, .ByDate = False, .DefaultSeason = -1, .Regexp = "[Ss]([0-9]+)[ ._-]*[Ee]([0-9]+)([^\\/]*)(?:(?:[\\/]bdmv)?[\\/]index\.bdmv)$"})
-    End Sub
+    Public Function GetDefaults(ByVal type As Enums.ContentType) As EpisodeMatchingSpecification
+        Select Case type
+            Case Enums.ContentType.TVEpisode
+                Return New EpisodeMatchingSpecification From {
+                    New EpisodeMatchingSpecificationItem With {.ByDate = False, .DefaultSeason = -1, .RegExp = "s([0-9]+)[ ._-]*e([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"},
+                    New EpisodeMatchingSpecificationItem With {.ByDate = False, .DefaultSeason = 1, .RegExp = "[\\._ -]()e(?:p[ ._-]?)?([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"},
+                    New EpisodeMatchingSpecificationItem With {.ByDate = True, .DefaultSeason = -1, .RegExp = "([0-9]{4},[.-]([0-9]{2},[.-]([0-9]{2})"},
+                    New EpisodeMatchingSpecificationItem With {.ByDate = True, .DefaultSeason = -1, .RegExp = "([0-9]{2},[.-]([0-9]{2},[.-]([0-9]{4})"},
+                    New EpisodeMatchingSpecificationItem With {.ByDate = False, .DefaultSeason = -1, .RegExp = "[\\\/._ \[\(-]([0-9]+)x([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"},
+                    New EpisodeMatchingSpecificationItem With {.ByDate = False, .DefaultSeason = -1, .RegExp = "[\\\/._ -]([0-9]+)([0-9][0-9](?:(?:[a-i]|\.[1-9])(?![0-9]))?)([._ -][^\\\/]*)$"},
+                    New EpisodeMatchingSpecificationItem With {.ByDate = False, .DefaultSeason = 1, .RegExp = "[\\\/._ -]p(?:ar)?t[_. -]()([ivx]+|[0-9]+)([._ -][^\\\/]*)$"},
+                    New EpisodeMatchingSpecificationItem With {.ByDate = False, .DefaultSeason = -1, .RegExp = "[Ss]([0-9]+)[ ._-]*[Ee]([0-9]+)([^\\/]*)(?:(?:[\\/]VIDEO_TS)?[\\/]VIDEO_TS\.IFO)$"},
+                    New EpisodeMatchingSpecificationItem With {.ByDate = False, .DefaultSeason = -1, .RegExp = "[Ss]([0-9]+)[ ._-]*[Ee]([0-9]+)([^\\/]*)(?:(?:[\\/]bdmv)?[\\/]index\.bdmv)$"}
+                }
+        End Select
+        Return New EpisodeMatchingSpecification
+    End Function
 
 #End Region 'Methods
 
 End Class
 
 <Serializable()>
-Public Class RegexEpisodeItemSpecification
+Public Class EpisodeMatchingSpecificationItem
 
 #Region "Properties"
 
-    Public Property ByDate() As Boolean
-    Public Property DefaultSeason() As Integer
-    Public Property ID() As Integer
-    Public Property Regexp() As String
+    Public Property ByDate() As Boolean = False
+
+    Public Property DefaultSeason() As Integer = -1
+
+    <XmlIgnore>
+    Public ReadOnly Property DefaultSeasonSpecified() As Boolean
+        Get
+            Return DefaultSeason >= 0
+        End Get
+    End Property
+
+    Public Property RegExp() As String = String.Empty
 
 #End Region 'Properties
 
-#Region "Constructors"
+End Class
 
-    Public Sub New()
-        Clear()
-    End Sub
+<Serializable()>
+Public Class EpisodeMultipartMatchingSpecification
 
-#End Region 'Constructors
+#Region "Properties"
+
+    Public Property Regex As String = String.Empty
+
+#End Region 'Properties 
 
 #Region "Methods"
 
-    Public Sub Clear()
-        ByDate = False
-        DefaultSeason = -1
-        ID = -1
-        Regexp = String.Empty
-    End Sub
+    Public Function GetDefaults(ByVal type As Enums.ContentType) As String
+        Select Case type
+            Case Enums.ContentType.TVEpisode
+                Return "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
+            Case Else
+        End Select
+        Return String.Empty
+    End Function
 
 #End Region 'Methods
 
@@ -2235,6 +2218,24 @@ Public Class SourceSettings
 
     Public Property DefaultEpisodeOrdering() As Enums.EpisodeOrdering = Enums.EpisodeOrdering.Standard
 
+    Public Property EpisodeMatching As EpisodeMatchingSpecification = New EpisodeMatchingSpecification
+
+    <XmlIgnore>
+    Public ReadOnly Property EpisodeMatchingSepcified As Boolean
+        Get
+            Return EpisodeMatching.Count > 0
+        End Get
+    End Property
+
+    Public Property EpisodeMultiPartMatching As EpisodeMultipartMatchingSpecification = New EpisodeMultipartMatchingSpecification
+
+    <XmlIgnore>
+    Public ReadOnly Property EpisodeMultiPartMatchingSpecified As Boolean
+        Get
+            Return Not String.IsNullOrEmpty(EpisodeMultiPartMatching.Regex)
+        End Get
+    End Property
+
     Public Property LevTolerance() As Integer = 0
 
     <XmlIgnore()>
@@ -2251,15 +2252,6 @@ Public Class SourceSettings
     Public Property MarkNewAsNew As Boolean = True
 
     Public Property MarkNewAsNewWithoutNFO As Boolean = False
-
-    Public Property MultiPartMatching As String = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
-
-    <XmlIgnore>
-    Public ReadOnly Property MultiPartMatchingSpecified As Boolean
-        Get
-            Return Not String.IsNullOrEmpty(MultiPartMatching)
-        End Get
-    End Property
 
     Public Property OverWriteNfo As Boolean = False
 
@@ -2287,8 +2279,6 @@ Public Class SourceSettings
 
     Public Property TitleProperCase As Boolean = True
 
-    Public Property TVShowMatching As RegexEpisodeSpecification = New RegexEpisodeSpecification
-
     Public Property UnmarkNewAfterScraping As Boolean = True
 
     Public Property UnmarkNewBeforeDBUpdate As Boolean = True
@@ -2315,8 +2305,8 @@ Public Class TitleFilterSpecification
 
 #Region "Methods"
 
-    Public Function GetDefaults(ByVal ContentType As Enums.ContentType) As TitleFilterSpecification
-        Select Case ContentType
+    Public Function GetDefaults(ByVal type As Enums.ContentType) As TitleFilterSpecification
+        Select Case type
             Case Enums.ContentType.Movie
                 Return New TitleFilterSpecification From {
                     "(?i)[\W_]\(?\d{4}\)?.*",               'year in brakets

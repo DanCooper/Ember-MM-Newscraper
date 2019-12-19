@@ -493,8 +493,8 @@ Public Class frmTV_Data
     End Sub
 
     Private Sub btnTVScraperSeasonTitleBlacklist_Click(sender As Object, e As EventArgs) Handles btnTVScraperSeasonTitleBlacklist.Click
-        If frmTV_Data_dlgSeasonTitleBlacklist.ShowDialog(TempTVScraperSeasonTitleBlacklist) = DialogResult.OK Then
-            TempTVScraperSeasonTitleBlacklist = frmTV_Data_dlgSeasonTitleBlacklist.Result
+        If frmTV_Data_SeasonTitleBlacklist.ShowDialog(TempTVScraperSeasonTitleBlacklist) = DialogResult.OK Then
+            TempTVScraperSeasonTitleBlacklist = frmTV_Data_SeasonTitleBlacklist.Result
             RaiseEvent SettingsChanged()
         End If
     End Sub

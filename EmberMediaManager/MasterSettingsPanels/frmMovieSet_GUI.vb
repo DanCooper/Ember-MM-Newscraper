@@ -170,15 +170,13 @@ Public Class frmMovieset_GUI
         Dim dgvList As DataGridView = DirectCast(sender, DataGridView)
         Dim currRowIndex As Integer = dgvList.CurrentRow.Index
         Select Case True
-            Case e.Alt And e.KeyCode = Keys.Down AndAlso Not currRowIndex = dgvList.Rows.Count - 1
-                dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) + 1
-                dgvList.Rows(currRowIndex + 1).Cells(0).Value = currRowIndex
-                'Handle_SettingsChanged()
-                e.Handled = True
             Case e.Alt And e.KeyCode = Keys.Up AndAlso Not currRowIndex = 0
                 dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) - 1
                 dgvList.Rows(currRowIndex - 1).Cells(0).Value = currRowIndex
-                'Handle_SettingsChanged()
+                e.Handled = True
+            Case e.Alt And e.KeyCode = Keys.Down AndAlso Not currRowIndex = dgvList.Rows.Count - 1
+                dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) + 1
+                dgvList.Rows(currRowIndex + 1).Cells(0).Value = currRowIndex
                 e.Handled = True
         End Select
         dgvList.Sort(dgvList.Columns(0), ComponentModel.ListSortDirection.Ascending)

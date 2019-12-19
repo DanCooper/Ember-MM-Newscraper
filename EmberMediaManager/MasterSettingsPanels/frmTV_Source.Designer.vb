@@ -177,7 +177,7 @@ Partial Class frmTV_Source
         Me.gbSources.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbSources.Location = New System.Drawing.Point(3, 3)
         Me.gbSources.Name = "gbSources"
-        Me.gbSources.Size = New System.Drawing.Size(1251, 188)
+        Me.gbSources.Size = New System.Drawing.Size(1251, 205)
         Me.gbSources.TabIndex = 19
         Me.gbSources.TabStop = False
         Me.gbSources.Text = "Sources"
@@ -198,7 +198,7 @@ Partial Class frmTV_Source
         Me.tblSources.RowCount = 2
         Me.tblSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSources.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblSources.Size = New System.Drawing.Size(1245, 167)
+        Me.tblSources.Size = New System.Drawing.Size(1245, 184)
         Me.tblSources.TabIndex = 0
         '
         'gbSourcesDefaults
@@ -298,7 +298,7 @@ Partial Class frmTV_Source
         Me.dgvSources.ShowCellErrors = False
         Me.dgvSources.ShowCellToolTips = False
         Me.dgvSources.ShowRowErrors = False
-        Me.dgvSources.Size = New System.Drawing.Size(1239, 107)
+        Me.dgvSources.Size = New System.Drawing.Size(1239, 124)
         Me.dgvSources.TabIndex = 11
         '
         'colSourcesStatus
@@ -411,7 +411,7 @@ Partial Class frmTV_Source
         Me.gbImportOptions.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.gbImportOptions.Controls.Add(Me.tblImportOptions)
         Me.gbImportOptions.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbImportOptions.Location = New System.Drawing.Point(3, 197)
+        Me.gbImportOptions.Location = New System.Drawing.Point(3, 214)
         Me.gbImportOptions.Name = "gbImportOptions"
         Me.gbImportOptions.Size = New System.Drawing.Size(1251, 446)
         Me.gbImportOptions.TabIndex = 20

@@ -29,8 +29,7 @@ Public Class frmTV_FileNaming
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private TVShowMatching As New List(Of Settings.regexp)
-    Private TempTVScraperSeasonTitleBlacklist As New List(Of String)
+    Private _TmpSeasonTitleBlacklist As New List(Of String)
 
 #End Region 'Fields
 

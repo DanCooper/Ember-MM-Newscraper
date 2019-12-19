@@ -1143,39 +1143,39 @@ Public Class Scanner
     Public Shared Function RegexGetTVEpisode(ByVal path As String, ByVal showID As Long) As List(Of EpisodeItem)
         Dim retEpisodeItemsList As New List(Of EpisodeItem)
 
-        For Each rShow As Settings.regexp In Master.eSettings.TVShowMatching
-            Dim reg As Regex = New Regex(rShow.Regexp, RegexOptions.IgnoreCase)
+        For Each rShow In Master.eSettings.TVEpisode.SourceSettings.EpisodeMatching
+            Dim reg As Regex = New Regex(rShow.RegExp, RegexOptions.IgnoreCase)
 
             Dim regexppos As Integer
             Dim regexp2pos As Integer
 
             If reg.IsMatch(path.ToLower) Then
                 Dim eItem As New EpisodeItem
-                Dim defaultSeason As Integer = rShow.defaultSeason
+                Dim defaultSeason As Integer = rShow.DefaultSeason
                 Dim sMatch As Match = reg.Match(path.ToLower)
 
-                If rShow.byDate Then
+                If rShow.ByDate Then
                     If Not RegexGetAiredDate(sMatch, eItem) Then Continue For
                     retEpisodeItemsList.Add(eItem)
-                    _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found date based match {0} ({1}) [{2}]", path, eItem.Aired, rShow.Regexp))
+                    _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found date based match {0} ({1}) [{2}]", path, eItem.Aired, rShow.RegExp))
                 Else
                     If Not RegexGetSeasonAndEpisodeNumber(sMatch, eItem, defaultSeason) Then
-                        _Logger.Warn(String.Format("[Scanner] [RegexGetTVEpisode] Can't get a proper season and episode number for file {0} [{1}]", path, rShow.Regexp))
+                        _Logger.Warn(String.Format("[Scanner] [RegexGetTVEpisode] Can't get a proper season and episode number for file {0} [{1}]", path, rShow.RegExp))
                         Continue For
                     End If
                     retEpisodeItemsList.Add(eItem)
-                    _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found episode match {0} (s{1}e{2}{3}) [{4}]", path, eItem.Season, eItem.Episode, If(Not eItem.SubEpisode = -1, String.Concat(".", eItem.SubEpisode), String.Empty), rShow.Regexp))
+                    _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found episode match {0} (s{1}e{2}{3}) [{4}]", path, eItem.Season, eItem.Episode, If(Not eItem.SubEpisode = -1, String.Concat(".", eItem.SubEpisode), String.Empty), rShow.RegExp))
                 End If
 
                 ' Grab the remainder from first regexp run
                 ' as second run might modify or empty it.
                 Dim remainder As String = sMatch.Groups(3).Value.ToString
 
-                If Master.eSettings.TVEpisode.SourceSettings.MultiPartMatchingSpecified Then
-                    Dim reg2 As Regex = New Regex(Master.eSettings.TVEpisode.SourceSettings.MultiPartMatching, RegexOptions.IgnoreCase)
+                If Master.eSettings.TVEpisode.SourceSettings.EpisodeMultiPartMatchingSpecified Then
+                    Dim reg2 As Regex = New Regex(Master.eSettings.TVEpisode.SourceSettings.EpisodeMultiPartMatching.Regex, RegexOptions.IgnoreCase)
 
                     ' check the remainder of the string for any further episodes.
-                    If Not rShow.byDate Then
+                    If Not rShow.ByDate Then
                         ' we want "long circuit" OR below so that both offsets are evaluated
                         While reg2.IsMatch(remainder) OrElse reg.IsMatch(remainder)
                             regexppos = If(reg.IsMatch(remainder), reg.Match(remainder).Index, -1)
@@ -1184,7 +1184,7 @@ Public Class Scanner
                                 eItem = New EpisodeItem
                                 RegexGetSeasonAndEpisodeNumber(reg.Match(remainder), eItem, defaultSeason)
                                 retEpisodeItemsList.Add(eItem)
-                                _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Adding new season {0}, multipart episode {1} [{2}]", eItem.Season, eItem.Episode, rShow.Regexp))
+                                _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Adding new season {0}, multipart episode {1} [{2}]", eItem.Season, eItem.Episode, rShow.RegExp))
                                 remainder = reg.Match(remainder).Groups(3).Value
                             ElseIf (regexp2pos < regexppos AndAlso regexp2pos <> -1) OrElse (regexp2pos >= 0 AndAlso regexppos = -1) Then
                                 Dim endPattern As String = String.Empty
@@ -1209,7 +1209,7 @@ Public Class Scanner
                                 End If
 
                                 retEpisodeItemsList.Add(eItem)
-                                _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TVEpisode.SourceSettings.MultiPartMatching))
+                                _Logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TVEpisode.SourceSettings.EpisodeMultiPartMatching))
                                 remainder = remainder.Substring(reg2.Match(remainder).Length)
                             End If
                         End While

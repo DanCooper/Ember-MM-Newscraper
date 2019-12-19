@@ -360,16 +360,19 @@ Public Class frmMovie_Source
         Dim currRowIsNew As Boolean = dgvList.CurrentRow.IsNewRow
         If Not currRowIsNew Then
             Select Case True
-                Case e.Alt And e.KeyCode = Keys.Down AndAlso Not currRowIndex = dgvList.Rows.Count - 1 AndAlso Not dgvList.Rows(currRowIndex + 1).IsNewRow
-                    dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) + 1
-                    dgvList.Rows(currRowIndex + 1).Cells(0).Value = currRowIndex
-                    currRowIndex += 1
-                    e.Handled = True
                 Case e.Alt And e.KeyCode = Keys.Up AndAlso Not currRowIndex = 0
                     dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) - 1
                     dgvList.Rows(currRowIndex - 1).Cells(0).Value = currRowIndex
                     currRowIndex -= 1
                     e.Handled = True
+                Case e.Alt And e.KeyCode = Keys.Down AndAlso Not currRowIndex = dgvList.Rows.Count - 1 AndAlso Not dgvList.Rows(currRowIndex + 1).IsNewRow
+                    dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) + 1
+                    dgvList.Rows(currRowIndex + 1).Cells(0).Value = currRowIndex
+                    currRowIndex += 1
+                    e.Handled = True
+                Case e.Alt And e.KeyCode = Keys.Down
+                    e.Handled = True
+                    Return
                 Case Else
                     Return
             End Select

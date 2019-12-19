@@ -236,17 +236,17 @@ Public Class frmMovie_GUI
         dgvMediaListSorting.ClearSelection()
     End Sub
 
-    Private Sub DataGridView_MediaListSorting_KeyDown(sender As Object, e As KeyEventArgs) Handles dgvMediaListSorting.KeyDown
+    Private Sub DataGridView_KeyDown(sender As Object, e As KeyEventArgs) Handles dgvMediaListSorting.KeyDown
         Dim dgvList As DataGridView = DirectCast(sender, DataGridView)
         Dim currRowIndex As Integer = dgvList.CurrentRow.Index
         Select Case True
-            Case e.Alt And e.KeyCode = Keys.Down AndAlso Not currRowIndex = dgvList.Rows.Count - 1
-                dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) + 1
-                dgvList.Rows(currRowIndex + 1).Cells(0).Value = currRowIndex
-                e.Handled = True
             Case e.Alt And e.KeyCode = Keys.Up AndAlso Not currRowIndex = 0
                 dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) - 1
                 dgvList.Rows(currRowIndex - 1).Cells(0).Value = currRowIndex
+                e.Handled = True
+            Case e.Alt And e.KeyCode = Keys.Down AndAlso Not currRowIndex = dgvList.Rows.Count - 1
+                dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) + 1
+                dgvList.Rows(currRowIndex + 1).Cells(0).Value = currRowIndex
                 e.Handled = True
         End Select
         dgvList.Sort(dgvList.Columns(0), ComponentModel.ListSortDirection.Ascending)

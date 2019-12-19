@@ -359,11 +359,11 @@ Public Class Enums
         SortTokens
         TVEpisodeFilters
         TVEpisodeListSorting
+        TVEpisodeMatching
         TVSeasonListSorting
         TVSeasonTitleBlacklist
         TVShowFilters
         TVShowListSorting
-        TVShowMatching
         TrailerCodec
         ValidVideoExts
         ValidSubtitleExts

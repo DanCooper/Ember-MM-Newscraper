@@ -668,8 +668,8 @@
   <string id="667">Prefer extracted images</string>
   <string id="668">Clean database after Library Update</string>
   <string id="669">Show News and Information after Start</string>
-  <string id="670"></string>
-  <string id="671"></string>
+  <string id="670">Episode Matching</string>
+  <string id="671">Episode Multipart Matching</string>
   <string id="672">Proxy</string>
   <string id="673">Enable Proxy</string>
   <string id="674">Proxy URL:</string>
@@ -689,9 +689,9 @@
   <string id="688">Episode Fanart</string>
   <string id="689">[MISSING]</string>
   <string id="690">Edit Regex</string>
-  <string id="691">Show Match Regex</string>
-  <string id="692">Season Match Regex:</string>
-  <string id="693">Episode Match Regex:</string>
+  <string id="691"></string>
+  <string id="692"></string>
+  <string id="693"></string>
   <string id="694">Apply To</string>
   <string id="695">Default Season</string>
   <string id="696">Season Regex</string>
@@ -842,7 +842,7 @@
   <string id="841"></string>
   <string id="842"></string>
   <string id="843">Are you sure you want to reset to the default list of valid video extensions?</string>
-  <string id="844">Are you sure you want to reset to the default list of show regex?</string>
+  <string id="844">Are you sure you want to reset to the default list of Episode Matching?</string>
   <string id="845">&gt;&gt; No Item Selected &lt;&lt;</string>
   <string id="846">Movie Search Results</string>
   <string id="847">Manual ID Entry</string>

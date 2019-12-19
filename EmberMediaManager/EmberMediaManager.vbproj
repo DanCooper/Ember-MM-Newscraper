@@ -351,10 +351,10 @@
     <Compile Include="MasterSettingsPanels\frmOption_GUI.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MasterSettingsPanels\frmTV_Data_dlgSeasonTitleBlacklist.Designer.vb">
-      <DependentUpon>frmTV_Data_dlgSeasonTitleBlacklist.vb</DependentUpon>
+    <Compile Include="MasterSettingsPanels\frmTV_Data_SeasonTitleBlacklist.Designer.vb">
+      <DependentUpon>frmTV_Data_SeasonTitleBlacklist.vb</DependentUpon>
     </Compile>
-    <Compile Include="MasterSettingsPanels\frmTV_Data_dlgSeasonTitleBlacklist.vb">
+    <Compile Include="MasterSettingsPanels\frmTV_Data_SeasonTitleBlacklist.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgSmartPlaylist.Designer.vb">
@@ -636,8 +636,8 @@
     <EmbeddedResource Include="MasterSettingsPanels\frmOption_GUI.resx">
       <DependentUpon>frmOption_GUI.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Data_dlgSeasonTitleBlacklist.resx">
-      <DependentUpon>frmTV_Data_dlgSeasonTitleBlacklist.vb</DependentUpon>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Data_SeasonTitleBlacklist.resx">
+      <DependentUpon>frmTV_Data_SeasonTitleBlacklist.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgSmartPlaylist.resx">
       <DependentUpon>dlgSmartPlaylist.vb</DependentUpon>

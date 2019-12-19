@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmTV_Data_dlgSeasonTitleBlacklist
+Partial Class frmTV_Data_SeasonTitleBlacklist
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
@@ -22,7 +22,7 @@ Partial Class frmTV_Data_dlgSeasonTitleBlacklist
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTV_Data_dlgSeasonTitleBlacklist))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTV_Data_SeasonTitleBlacklist))
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.tblTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlMain = New System.Windows.Forms.Panel()

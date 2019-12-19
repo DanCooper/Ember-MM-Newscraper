@@ -21,7 +21,7 @@
 Imports EmberAPI
 Imports System.Text.RegularExpressions
 
-Public Class frmTV_Data_dlgSeasonTitleBlacklist
+Public Class frmTV_Data_SeasonTitleBlacklist
 
 #Region "Fields"
 

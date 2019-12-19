@@ -23,12 +23,6 @@ Imports EmberAPI
 Public Class frmTV_Source_Regex
     Implements Interfaces.IMasterSettingsPanel
 
-#Region "Fields"
-
-    Private TVShowMatching As New List(Of Settings.regexp)
-
-#End Region 'Fields
-
 #Region "Events"
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
@@ -75,13 +69,9 @@ Public Class frmTV_Source_Regex
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings.TVEpisode.SourceSettings
-            .MultiPartMatching = txtTVSourcesRegexMultiPartMatching.Text
+            .EpisodeMultiPartMatching.Regex = txtEpisodeMultipartMatching.Text
         End With
-
-        With Master.eSettings
-            .TVShowMatching.Clear()
-            .TVShowMatching.AddRange(TVShowMatching)
-        End With
+        Save_EpisodeMatching()
     End Sub
 
 #End Region 'Interface Methodes
@@ -90,204 +80,95 @@ Public Class frmTV_Source_Regex
 
     Public Sub Settings_Load()
         With Master.eSettings.TVEpisode.SourceSettings
-            txtTVSourcesRegexMultiPartMatching.Text = .MultiPartMatching
-        End With
-        With Master.eSettings
-            TVShowMatching.AddRange(.TVShowMatching)
-            LoadTVShowMatching()
+            txtEpisodeMultipartMatching.Text = .EpisodeMultiPartMatching.Regex
+
+            DataGridView_Fill_EpisodeMatching(.EpisodeMatching)
         End With
     End Sub
 
     Private Sub Setup()
-        btnTVSourcesRegexTVShowMatchingAdd.Tag = String.Empty
-        btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(690, "Edit Regex")
-        btnTVSourcesRegexTVShowMatchingClear.Text = Master.eLang.GetString(123, "Clear")
-        btnTVSourcesRegexTVShowMatchingEdit.Text = Master.eLang.GetString(690, "Edit Regex")
-        btnTVSourcesRegexTVShowMatchingRemove.Text = Master.eLang.GetString(30, "Remove")
-        gbTVSourcesRegexTVShowMatching.Text = Master.eLang.GetString(691, "Show Match Regex")
-        lblTVSourcesRegexTVShowMatchingByDate.Text = Master.eLang.GetString(698, "by Date")
-        lblTVSourcesRegexTVShowMatchingRegex.Text = Master.eLang.GetString(699, "Regex")
-        lblTVSourcesRegexTVShowMatchingDefaultSeason.Text = Master.eLang.GetString(695, "Default Season")
+        With Master.eLang
+            colEpisodeMatchingByDate.HeaderText = .GetString(698, "by Date")
+            colEpisodeMatchingDefaultSeason.HeaderText = .GetString(695, "Default Season")
+            colEpisodeMatchingRegex.HeaderText = .GetString(699, "Regex")
+            gbEpisodeMatching.Text = .GetString(670, "Episode Matching")
+            gbEpisodeMultipartMatching.Text = .GetString(671, "Episode Multipart Matching")
+        End With
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If String.IsNullOrEmpty(btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then
-            Dim lID = (From lRegex As Settings.regexp In TVShowMatching Select lRegex.ID).Max
-            TVShowMatching.Add(New Settings.regexp With {
-                               .ID = Convert.ToInt32(lID) + 1,
-                               .Regexp = txtTVSourcesRegexTVShowMatchingRegex.Text,
-                               .defaultSeason = If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text) OrElse Not Integer.TryParse(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0), -2, CInt(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text)),
-                               .byDate = chkTVSourcesRegexTVShowMatchingByDate.Checked})
-        Else
-            Dim selRex = From lRegex As Settings.regexp In TVShowMatching Where lRegex.ID = Convert.ToInt32(btnTVSourcesRegexTVShowMatchingAdd.Tag)
-            If selRex.Count > 0 Then
-                selRex(0).Regexp = txtTVSourcesRegexTVShowMatchingRegex.Text
-                selRex(0).defaultSeason = CInt(If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text), "-2", txtTVSourcesRegexTVShowMatchingDefaultSeason.Text))
-                selRex(0).byDate = chkTVSourcesRegexTVShowMatchingByDate.Checked
+    Private Sub DataGridView_Fill_EpisodeMatching(ByVal List As EpisodeMatchingSpecification)
+        dgvEpisodeMatching.Rows.Clear()
+        Dim i As Integer
+        For Each item In List
+            dgvEpisodeMatching.Rows.Add(New Object() {
+                                        i,
+                                        item.RegExp,
+                                        item.DefaultSeason,
+                                        item.ByDate
+                                        })
+            i += 1
+        Next
+        dgvEpisodeMatching.Sort(dgvEpisodeMatching.Columns(0), ComponentModel.ListSortDirection.Ascending)
+        dgvEpisodeMatching.ClearSelection()
+    End Sub
+
+    Private Sub DataGridView_KeyDown(sender As Object, e As KeyEventArgs) Handles dgvEpisodeMatching.KeyDown
+        Dim dgvList As DataGridView = DirectCast(sender, DataGridView)
+        Dim currRowIndex As Integer = dgvList.CurrentRow.Index
+        Dim currRowIsNew As Boolean = dgvList.CurrentRow.IsNewRow
+        If Not currRowIsNew Then
+            Select Case True
+                Case e.Alt And e.KeyCode = Keys.Up AndAlso Not currRowIndex = 0
+                    dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) - 1
+                    dgvList.Rows(currRowIndex - 1).Cells(0).Value = currRowIndex
+                    currRowIndex -= 1
+                    e.Handled = True
+                Case e.Alt And e.KeyCode = Keys.Down AndAlso Not currRowIndex = dgvList.Rows.Count - 1 AndAlso Not dgvList.Rows(currRowIndex + 1).IsNewRow
+                    dgvList.CurrentRow.Cells(0).Value = DirectCast(dgvList.CurrentRow.Cells(0).Value, Integer) + 1
+                    dgvList.Rows(currRowIndex + 1).Cells(0).Value = currRowIndex
+                    currRowIndex += 1
+                    e.Handled = True
+                Case e.Alt And e.KeyCode = Keys.Down
+                    e.Handled = True
+                    Return
+                Case Else
+                    Return
+            End Select
+            dgvList.Sort(dgvList.Columns(0), ComponentModel.ListSortDirection.Ascending)
+            If Not dgvList.SelectedRows(0).State.HasFlag(DataGridViewElementStates.Displayed) Then
+                dgvList.FirstDisplayedScrollingRowIndex = currRowIndex
             End If
         End If
+    End Sub
 
-        ClearTVShowMatching()
-        LoadTVShowMatching()
+    Private Sub LoadDefaults_EpisodeMatching() Handles btnEpisodeMatchingDefaults.Click
+        If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of Episode Matching?"),
+                           Master.eLang.GetString(104, "Are You Sure?"),
+                           MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question) = DialogResult.Yes Then
+            DataGridView_Fill_EpisodeMatching(Master.eSettings.TVEpisode.SourceSettings.EpisodeMatching.GetDefaults(Enums.ContentType.TVEpisode))
+            RaiseEvent SettingsChanged()
+        End If
+    End Sub
+
+    Private Sub LoadDefaults_EpisodeMultipartMatching() Handles btnEpisodeMultipartMatchingDefaults.Click
+        txtEpisodeMultipartMatching.Text = Master.eSettings.TVEpisode.SourceSettings.EpisodeMultiPartMatching.GetDefaults(Enums.ContentType.TVEpisode)
         RaiseEvent SettingsChanged()
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingClear_Click(ByVal sender As Object, ByVal e As EventArgs)
-        ClearTVShowMatching()
-    End Sub
-
-    Private Sub btnTVSourcesRegexTVShowMatchingEdit_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 Then EditTVShowMatching(lvTVSourcesRegexTVShowMatching.SelectedItems(0))
-    End Sub
-
-    Private Sub btnTVSourcesRegexTVShowMatchingUp_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso Not lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index = 0 Then
-            Dim selItem As Settings.regexp = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
-
-            If selItem IsNot Nothing Then
-                lvTVSourcesRegexTVShowMatching.SuspendLayout()
-                Dim iIndex As Integer = TVShowMatching.IndexOf(selItem)
-                Dim selIndex As Integer = lvTVSourcesRegexTVShowMatching.SelectedIndices(0)
-                TVShowMatching.Remove(selItem)
-                TVShowMatching.Insert(iIndex - 1, selItem)
-
-                RenumberTVShowMatching()
-                LoadTVShowMatching()
-
-                lvTVSourcesRegexTVShowMatching.Items(selIndex - 1).Selected = True
-                lvTVSourcesRegexTVShowMatching.ResumeLayout()
-            End If
-
-            lvTVSourcesRegexTVShowMatching.Focus()
-            RaiseEvent SettingsChanged()
-        End If
-    End Sub
-
-    Private Sub btnTVSourcesRegexTVShowMatchingDown_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index < (lvTVSourcesRegexTVShowMatching.Items.Count - 1) Then
-            Dim selItem As Settings.regexp = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
-
-            If selItem IsNot Nothing Then
-                lvTVSourcesRegexTVShowMatching.SuspendLayout()
-                Dim iIndex As Integer = TVShowMatching.IndexOf(selItem)
-                Dim selIndex As Integer = lvTVSourcesRegexTVShowMatching.SelectedIndices(0)
-                TVShowMatching.Remove(selItem)
-                TVShowMatching.Insert(iIndex + 1, selItem)
-
-                RenumberTVShowMatching()
-                LoadTVShowMatching()
-
-                lvTVSourcesRegexTVShowMatching.Items(selIndex + 1).Selected = True
-                lvTVSourcesRegexTVShowMatching.ResumeLayout()
-            End If
-
-            lvTVSourcesRegexTVShowMatching.Focus()
-            RaiseEvent SettingsChanged()
-        End If
-    End Sub
-
-    Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowMatching, True)
-            TVShowMatching.Clear()
-            TVShowMatching.AddRange(Master.eSettings.TVShowMatching)
-            LoadTVShowMatching()
-            RaiseEvent SettingsChanged()
-        End If
-    End Sub
-
-    Private Sub btnTVSourcesRegexMultiPartMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        txtTVSourcesRegexMultiPartMatching.Text = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
-        RaiseEvent SettingsChanged()
-    End Sub
-
-    Private Sub btnTVSourcesRegexTVShowMatchingRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
-        RemoveTVShowMatching()
-    End Sub
-
-    Private Sub ClearTVShowMatching()
-        btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(115, "Add Regex")
-        btnTVSourcesRegexTVShowMatchingAdd.Tag = String.Empty
-        btnTVSourcesRegexTVShowMatchingAdd.Enabled = False
-        txtTVSourcesRegexTVShowMatchingRegex.Text = String.Empty
-        txtTVSourcesRegexTVShowMatchingDefaultSeason.Text = String.Empty
-        chkTVSourcesRegexTVShowMatchingByDate.Checked = False
-    End Sub
-
-    Private Sub EditTVShowMatching(ByVal lItem As ListViewItem)
-        btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(124, "Update Regex")
-        btnTVSourcesRegexTVShowMatchingAdd.Tag = lItem.Text
-
-        txtTVSourcesRegexTVShowMatchingRegex.Text = lItem.SubItems(1).Text.ToString
-        txtTVSourcesRegexTVShowMatchingDefaultSeason.Text = If(Not lItem.SubItems(2).Text = "-2", lItem.SubItems(2).Text, String.Empty)
-
-        Select Case lItem.SubItems(3).Text
-            Case "Yes"
-                chkTVSourcesRegexTVShowMatchingByDate.Checked = True
-            Case "No"
-                chkTVSourcesRegexTVShowMatchingByDate.Checked = False
-        End Select
-    End Sub
-
-    Private Sub LoadTVShowMatching()
-        Dim lvItem As ListViewItem
-        lvTVSourcesRegexTVShowMatching.Items.Clear()
-        For Each rShow As Settings.regexp In TVShowMatching
-            lvItem = New ListViewItem(rShow.ID.ToString)
-            lvItem.SubItems.Add(rShow.Regexp)
-            lvItem.SubItems.Add(If(Not rShow.defaultSeason.ToString = "-2", rShow.defaultSeason.ToString, String.Empty))
-            lvItem.SubItems.Add(If(rShow.byDate, "Yes", "No"))
-            lvTVSourcesRegexTVShowMatching.Items.Add(lvItem)
-        Next
-    End Sub
-
-    Private Sub RemoveTVShowMatching()
-        Dim ID As Integer
-        For Each lItem As ListViewItem In lvTVSourcesRegexTVShowMatching.SelectedItems
-            ID = Convert.ToInt32(lItem.Text)
-            Dim selRex = From lRegex As Settings.regexp In TVShowMatching Where lRegex.ID = ID
-            If selRex.Count > 0 Then
-                TVShowMatching.Remove(selRex(0))
-                RaiseEvent SettingsChanged()
-            End If
-        Next
-        LoadTVShowMatching()
-    End Sub
-
-    Private Sub txtTVSourcesRegexTVShowMatchingRegex_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
-        ValidateTVShowMatching()
-    End Sub
-
-    Private Sub txtTVSourcesRegexTVShowMatchingDefaultSeason_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
-        ValidateTVShowMatching()
-    End Sub
-
-    Private Sub ValidateTVShowMatching()
-        If Not String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingRegex.Text) AndAlso
-            (String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text.Trim) OrElse Integer.TryParse(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0) AndAlso
-            CInt(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text.Trim) >= 0) Then
-            btnTVSourcesRegexTVShowMatchingAdd.Enabled = True
-        Else
-            btnTVSourcesRegexTVShowMatchingAdd.Enabled = False
-        End If
-    End Sub
-
-    Private Sub RenumberTVShowMatching()
-        For i As Integer = 0 To TVShowMatching.Count - 1
-            TVShowMatching(i).ID = i
-        Next
-    End Sub
-
-    Private Sub lvTVSourcesRegexTVShowMatching_DoubleClick(ByVal sender As Object, ByVal e As EventArgs)
-        If lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 Then EditTVShowMatching(lvTVSourcesRegexTVShowMatching.SelectedItems(0))
-    End Sub
-
-    Private Sub lvTVSourcesRegexTVShowMatching_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then RemoveTVShowMatching()
-    End Sub
-
-    Private Sub lvTVSourcesRegexTVShowMatching_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
-        If Not String.IsNullOrEmpty(btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then ClearTVShowMatching()
+    Private Sub Save_EpisodeMatching()
+        With Master.eSettings.TVEpisode.SourceSettings.EpisodeMatching
+            .Clear()
+            For Each r As DataGridViewRow In dgvEpisodeMatching.Rows
+                If Not r.IsNewRow AndAlso Not String.IsNullOrEmpty(r.Cells(1).Value.ToString.Trim) Then
+                    .Add(New EpisodeMatchingSpecificationItem With {
+                         .ByDate = DirectCast(r.Cells(3).Value, Boolean),
+                         .DefaultSeason = If(Integer.TryParse(r.Cells(2).Value.ToString, 0), CInt(r.Cells(2).Value), -1),
+                         .RegExp = r.Cells(1).Value.ToString.Trim
+                         })
+                End If
+            Next
+        End With
     End Sub
 
 #End Region 'Methods
