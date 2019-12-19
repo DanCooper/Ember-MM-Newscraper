@@ -44,51 +44,7 @@ Public Class frmMovieset_FileNaming
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events 
-
-#Region "Handles"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Handles
+#End Region 'Events
 
 #Region "Constructors"
 
@@ -280,7 +236,7 @@ Public Class frmMovieset_FileNaming
     End Sub
 
     Private Sub chkMovieSetUseExtended_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         btnMovieSetPathExtendedBrowse.Enabled = chkMovieSetUseExtended.Checked
         chkMovieSetBannerExtended.Enabled = chkMovieSetUseExtended.Checked
@@ -315,7 +271,7 @@ Public Class frmMovieset_FileNaming
     End Sub
 
     Private Sub chkMovieSetUseMSAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         btnMovieSetPathMSAABrowse.Enabled = chkMovieSetUseMSAA.Checked
         chkMovieSetBannerMSAA.Enabled = chkMovieSetUseMSAA.Checked
@@ -389,7 +345,7 @@ Public Class frmMovieset_FileNaming
     End Sub
 
     Private Sub chkMovieSetUseExpert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         btnMovieSetPathExpertSingleBrowse.Enabled = chkMovieSetUseExpert.Checked
         txtMovieSetBannerExpertSingle.Enabled = chkMovieSetUseExpert.Checked

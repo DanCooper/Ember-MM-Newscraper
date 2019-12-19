@@ -112,7 +112,7 @@
   <string id="111">Unable to load directories. Please check settings.</string>
   <string id="112">Runtime: {0}</string>
   <string id="113">Now select the default language you would like Ember to look for when scraping TV Show items.</string>
-  <string id="114"></string>
+  <string id="114">Only if no valid NFO exists</string>
   <string id="115">Add Regex</string>
   <string id="116">Performing Preliminary Tasks (Gathering Data)...</string>
   <string id="117">Unknown Movie ({0})</string>
@@ -528,7 +528,7 @@
   <string id="527">Place Holder Folder/Movie Name:</string>
   <string id="528">Search Movie</string>
   <string id="529">Enable Trailer Support</string>
-  <string id="530"></string>
+  <string id="530">Mark as "New"</string>
   <string id="531">Bulk Creator</string>
   <string id="532">Condition</string>
   <string id="533">Create</string>
@@ -557,7 +557,7 @@
   <string id="556">NFO</string>
   <string id="557">Video Codec Mapping</string>
   <string id="558">Wide</string>
-  <string id="559">Import Settings</string>
+  <string id="559">Import Options</string>
   <string id="560">TV Show Options</string>
   <string id="561">Save YAMJ Compatible Sets to NFO</string>
   <string id="562">Reloading Show</string>

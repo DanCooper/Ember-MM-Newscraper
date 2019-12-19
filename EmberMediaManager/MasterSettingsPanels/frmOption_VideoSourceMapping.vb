@@ -36,51 +36,7 @@ Public Class frmOption_VideoSourceMapping
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events 
-
-#Region "Handles"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Handles
+#End Region 'Events
 
 #Region "Constructors"
 
@@ -156,7 +112,7 @@ Public Class frmOption_VideoSourceMapping
         dgvByRegex.RowsAdded,
         dgvByRegex.RowsRemoved
 
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_Fill_ByExtension(ByVal List As List(Of VideoSourceMapping.VideoSourceByExtension))
@@ -183,7 +139,7 @@ Public Class frmOption_VideoSourceMapping
 
     Private Sub LoadDefaults_ByRegex() Handles btnByRegexDefaults.Click
         DataGridView_Fill_ByRegex(Master.eSettings.GetDefaultsForList_VideoSourceMappingsByRegex())
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub Save_ByExtension()

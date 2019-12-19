@@ -36,51 +36,7 @@ Public Class frmMovie_Theme
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events 
-
-#Region "Event MEthods"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Event Methods
+#End Region 'Events  
 
 #Region "Constructors"
 
@@ -133,7 +89,7 @@ Public Class frmMovie_Theme
     End Sub
 
     Private Sub ChkKeepExisting_CheckedChanged(sender As Object, e As EventArgs) Handles ChkKeepExisting.CheckedChanged
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
 #End Region 'Methods

@@ -2244,11 +2244,13 @@ Public Class SourceSettings
         End Get
     End Property
 
-    Public Property MarkNewAsCustom As Boolean = False
-
     Public Property MarkNewAsMarked As Boolean = False
 
+    Public Property MarkNewAsMarkedWithoutNFO As Boolean = False
+
     Public Property MarkNewAsNew As Boolean = True
+
+    Public Property MarkNewAsNewWithoutNFO As Boolean = False
 
     Public Property MultiPartMatching As String = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
 
@@ -2292,8 +2294,6 @@ Public Class SourceSettings
     Public Property UnmarkNewBeforeDBUpdate As Boolean = True
 
     Public Property UnmarkNewOnExit As Boolean = True
-
-    Public Property UnmarkNewWithNFO As Boolean = False
 
     Public Property VideoSourceFromFolder As Boolean = False
 

@@ -46,51 +46,7 @@ Public Class frmTV_Data
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events 
-
-#Region "Handles"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Handles
+#End Region 'Events
 
 #Region "Constructors"
 
@@ -383,7 +339,7 @@ Public Class frmTV_Data
                     LoadTVMetadata()
                     txtTVScraperDefFIExt.Text = String.Empty
                     txtTVScraperDefFIExt.Focus()
-                    Handle_SettingsChanged()
+                    RaiseEvent SettingsChanged()
                 End If
             End If
         End Using
@@ -397,7 +353,7 @@ Public Class frmTV_Data
                         If dFileInfo.ShowDialog = DialogResult.OK Then
                             tMetadata.MetaData = dFileInfo.Result
                             LoadTVMetadata()
-                            Handle_SettingsChanged()
+                            RaiseEvent SettingsChanged()
                         End If
                     End Using
                     Exit For
@@ -413,7 +369,7 @@ Public Class frmTV_Data
     Private Sub chkTVScraperShowStudio_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         txtTVScraperShowStudioLimit.Enabled = chkTVScraperShowStudio.Checked
         If Not chkTVScraperShowStudio.Checked Then txtTVScraperShowStudioLimit.Text = "0"
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
     Private Sub TVScraperActors_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         chkTVScraperCastWithImg.Enabled = chkTVScraperEpisodeActors.Checked OrElse chkTVScraperEpisodeGuestStars.Checked OrElse chkTVScraperShowActors.Checked
@@ -430,11 +386,11 @@ Public Class frmTV_Data
         If Not chkTVScraperEpisodeActors.Checked Then txtTVScraperEpisodeActorsLimit.Text = "0"
         If Not chkTVScraperEpisodeGuestStars.Checked Then txtTVScraperEpisodeGuestStarsLimit.Text = "0"
         If Not chkTVScraperShowActors.Checked Then txtTVScraperShowActorsLimit.Text = "0"
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkTVScraperShowCert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         If Not chkTVScraperShowCert.Checked Then
             cbTVScraperShowCertLang.Enabled = False
@@ -452,12 +408,12 @@ Public Class frmTV_Data
     End Sub
 
     Private Sub chkTVScraperSeasonTitle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperSeasonTitle.Click
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
         btnTVScraperSeasonTitleBlacklist.Enabled = chkTVScraperSeasonTitle.Checked
     End Sub
 
     Private Sub chkTVScraperShowCertForMPAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         If Not chkTVScraperShowCertForMPAA.Checked Then
             chkTVScraperShowCertForMPAAFallback.Enabled = False
@@ -471,13 +427,13 @@ Public Class frmTV_Data
     Private Sub chkTVScraperShowGenre_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         txtTVScraperShowGenreLimit.Enabled = chkTVScraperShowGenre.Checked
         If Not chkTVScraperShowGenre.Checked Then txtTVScraperShowGenreLimit.Text = "0"
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkTVScraperShowOriginalTitle_CheckedChanged(sender As Object, e As EventArgs)
         chkTVScraperShowOriginalTitleAsTitle.Enabled = chkTVScraperShowOriginalTitle.Checked
         If Not chkTVScraperShowOriginalTitle.Checked Then chkTVScraperShowOriginalTitleAsTitle.Checked = False
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkTVScraperShowRuntime_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
@@ -485,12 +441,12 @@ Public Class frmTV_Data
         If Not chkTVScraperShowRuntime.Checked Then
             chkTVScraperUseSRuntimeForEp.Checked = False
         End If
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkTVScraperUseMDDuration_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         txtTVScraperDurationRuntimeFormat.Enabled = chkTVScraperUseMDDuration.Checked
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub LoadTVMetadata()
@@ -521,7 +477,7 @@ Public Class frmTV_Data
                 If x.FileType = lstTVScraperDefFIExt.SelectedItems(0).ToString Then
                     TVMeta.Remove(x)
                     LoadTVMetadata()
-                    Handle_SettingsChanged()
+                    RaiseEvent SettingsChanged()
                     Exit For
                 End If
             Next
@@ -539,7 +495,7 @@ Public Class frmTV_Data
     Private Sub btnTVScraperSeasonTitleBlacklist_Click(sender As Object, e As EventArgs) Handles btnTVScraperSeasonTitleBlacklist.Click
         If frmTV_Data_dlgSeasonTitleBlacklist.ShowDialog(TempTVScraperSeasonTitleBlacklist) = DialogResult.OK Then
             TempTVScraperSeasonTitleBlacklist = frmTV_Data_dlgSeasonTitleBlacklist.Result
-            Handle_SettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 

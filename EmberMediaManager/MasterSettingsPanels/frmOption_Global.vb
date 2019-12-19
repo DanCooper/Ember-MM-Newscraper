@@ -37,51 +37,7 @@ Public Class frmOption_Global
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events  
-
-#Region "Handles"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Handles
+#End Region 'Events
 
 #Region "Constructors"
 
@@ -190,7 +146,7 @@ Public Class frmOption_Global
         dgvSortTokens.RowsAdded,
         dgvSortTokens.RowsRemoved
 
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_Fill_SortTokens(ByVal List As List(Of String))
@@ -213,7 +169,7 @@ Public Class frmOption_Global
             chkImageFilterPoster.Enabled = True
             chkImageFilterFanart.Enabled = True
         End If
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub ImageFilter_CheckedChanged(sender As Object, e As EventArgs) Handles chkImageFilter.CheckedChanged
@@ -225,13 +181,13 @@ Public Class frmOption_Global
         lblImageFilterPosterMatchRate.Enabled = chkImageFilter.Checked
         txtImageFilterFanartMatchRate.Enabled = chkImageFilter.Checked
         txtImageFilterPosterMatchRate.Enabled = chkImageFilter.Checked
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub ImageFilter_Fanart_CheckedChanged(sender As Object, e As EventArgs) Handles chkImageFilterFanart.CheckedChanged
         lblImageFilterFanartMatchRate.Enabled = chkImageFilterFanart.Checked
         txtImageFilterFanartMatchRate.Enabled = chkImageFilterFanart.Checked
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub ImageFilter_FanartMatchRate_TextChanged(sender As Object, e As EventArgs) Handles txtImageFilterFanartMatchRate.TextChanged
@@ -254,18 +210,18 @@ Public Class frmOption_Global
                                 MessageBoxIcon.Warning)
             End If
         End If
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub ImageFilter_Poster_CheckedChanged(sender As Object, e As EventArgs) Handles chkImageFilterPoster.CheckedChanged
         lblImageFilterPosterMatchRate.Enabled = chkImageFilterPoster.Checked
         txtImageFilterPosterMatchRate.Enabled = chkImageFilterPoster.Checked
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub LoadDefaults_SortTokens() Handles btnSortTokensDefaults.Click
         DataGridView_Fill_SortTokens(Master.eSettings.GetDefaultsForList_SortTokens())
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub Save_SortTokens()

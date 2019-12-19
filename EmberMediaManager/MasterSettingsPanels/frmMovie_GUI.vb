@@ -43,51 +43,7 @@ Public Class frmMovie_GUI
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events 
-
-#Region "Handles"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Handles
+#End Region 'Events  
 
 #Region "Constructors"
 
@@ -212,12 +168,12 @@ Public Class frmMovie_GUI
         txtCustomMarker4.TextChanged,
         txtLevTolerance.TextChanged
 
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub ClickScrape_CheckedChanged() Handles chkClickScrapeEnabled.CheckedChanged
         chkClickScrapeShowResults.Enabled = chkClickScrapeEnabled.Checked
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub CustomMarker_Click(sender As Object, e As EventArgs) Handles _
@@ -239,7 +195,7 @@ Public Class frmMovie_GUI
                         Case sender Is btnCustomMarker4
                             btnCustomMarker4.BackColor = .Color
                     End Select
-                    Handle_SettingsChanged()
+                    RaiseEvent SettingsChanged()
                 End If
             End If
         End With
@@ -252,7 +208,7 @@ Public Class frmMovie_GUI
             txtCustomScrapeButtonModifierType.Enabled = False
             txtCustomScrapeButtonScrapeType.Enabled = False
         End If
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub CustomScrapeButtonEnabled_CheckedChanged() Handles rbCustomScrapeButtonEnabled.CheckedChanged
@@ -262,7 +218,7 @@ Public Class frmMovie_GUI
             txtCustomScrapeButtonModifierType.Enabled = True
             txtCustomScrapeButtonScrapeType.Enabled = True
         End If
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_Fill_MediaListSorting(ByVal List As List(Of GuiSettings.ListSorting))
@@ -299,7 +255,7 @@ Public Class frmMovie_GUI
     Private Sub LevTolerance_CheckedChanged() Handles chkLevTolerance.CheckedChanged
         txtLevTolerance.Enabled = chkLevTolerance.Checked
         If Not chkLevTolerance.Checked Then txtLevTolerance.Text = String.Empty
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub Load_AutoSizeModes()
@@ -382,7 +338,7 @@ Public Class frmMovie_GUI
 
     Private Sub LoadDefaults_MediaListSorting() Handles btnMediaListSortingDefaults.Click
         DataGridView_Fill_MediaListSorting(Manager.mSettings.GetDefaultsForList_MediaListSorting_Movie())
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub Save_MediaListSorting()

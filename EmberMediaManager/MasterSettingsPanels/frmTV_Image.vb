@@ -43,51 +43,7 @@ Public Class frmTV_Image
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events 
-
-#Region "Event Methods"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Event Methods
+#End Region 'Events
 
 #Region "Constructors"
 
@@ -481,7 +437,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVAllSeasonsBannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVAllSeasonsBannerWidth.Enabled = chkTVAllSeasonsBannerResize.Checked
         txtTVAllSeasonsBannerHeight.Enabled = chkTVAllSeasonsBannerResize.Checked
@@ -493,7 +449,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVAllSeasonsFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVAllSeasonsFanartWidth.Enabled = chkTVAllSeasonsFanartResize.Checked
         txtTVAllSeasonsFanartHeight.Enabled = chkTVAllSeasonsFanartResize.Checked
@@ -505,7 +461,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVAllSeasonsosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVAllSeasonsPosterWidth.Enabled = chkTVAllSeasonsPosterResize.Checked
         txtTVAllSeasonsPosterHeight.Enabled = chkTVAllSeasonsPosterResize.Checked
@@ -517,7 +473,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVEpisodeFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVEpisodeFanartWidth.Enabled = chkTVEpisodeFanartResize.Checked
         txtTVEpisodeFanartHeight.Enabled = chkTVEpisodeFanartResize.Checked
@@ -529,7 +485,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVEpisodePosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVEpisodePosterWidth.Enabled = chkTVEpisodePosterResize.Checked
         txtTVEpisodePosterHeight.Enabled = chkTVEpisodePosterResize.Checked
@@ -541,7 +497,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVEpisodePosterVideoExtraction_CheckedChanged(sender As Object, e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
         chkTVEpisodePosterVideoExtractionPref.Enabled = chkTVEpisodePosterVideoExtraction.Checked
         If Not chkTVEpisodePosterVideoExtraction.Checked Then
             chkTVEpisodePosterVideoExtractionPref.Checked = False
@@ -549,7 +505,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVShowExtrafanartsResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVShowExtrafanartsWidth.Enabled = chkTVShowExtrafanartsResize.Checked
         txtTVShowExtrafanartsHeight.Enabled = chkTVShowExtrafanartsResize.Checked
@@ -561,7 +517,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVShowbannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVShowBannerWidth.Enabled = chkTVShowBannerResize.Checked
         txtTVShowBannerHeight.Enabled = chkTVShowBannerResize.Checked
@@ -573,7 +529,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVShowFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVShowFanartWidth.Enabled = chkTVShowFanartResize.Checked
         txtTVShowFanartHeight.Enabled = chkTVShowFanartResize.Checked
@@ -585,7 +541,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVShowKeyArtResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVShowKeyArtWidth.Enabled = chkTVShowKeyArtResize.Checked
         txtTVShowKeyArtHeight.Enabled = chkTVShowKeyArtResize.Checked
@@ -597,7 +553,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVShowPosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVShowPosterWidth.Enabled = chkTVShowPosterResize.Checked
         txtTVShowPosterHeight.Enabled = chkTVShowPosterResize.Checked
@@ -609,7 +565,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVSeasonbannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVSeasonBannerWidth.Enabled = chkTVSeasonBannerResize.Checked
         txtTVSeasonBannerHeight.Enabled = chkTVSeasonBannerResize.Checked
@@ -621,7 +577,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVSeasonFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVSeasonFanartWidth.Enabled = chkTVSeasonFanartResize.Checked
         txtTVSeasonFanartHeight.Enabled = chkTVSeasonFanartResize.Checked
@@ -633,7 +589,7 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVSeasonPosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtTVSeasonPosterWidth.Enabled = chkTVSeasonPosterResize.Checked
         txtTVSeasonPosterHeight.Enabled = chkTVSeasonPosterResize.Checked
@@ -645,13 +601,13 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub chkTVImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         cbTVImagesForcedLanguage.Enabled = chkTVImagesForceLanguage.Checked
     End Sub
 
     Private Sub chkTVImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkTVImagesGetBlankImages.Enabled = chkTVImagesMediaLanguageOnly.Checked
         chkTVImagesGetEnglishImages.Enabled = chkTVImagesMediaLanguageOnly.Checked
@@ -863,7 +819,7 @@ Public Class frmTV_Image
         txtTVShowPosterHeight.TextChanged,
         txtTVShowPosterWidth.TextChanged
 
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub TextBox_NumOnly_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles _

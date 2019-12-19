@@ -43,51 +43,7 @@ Public Class frmMovieset_GUI
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events 
-
-#Region "Handles"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Handles
+#End Region 'Events
 
 #Region "Constructors"
 
@@ -167,12 +123,12 @@ Public Class frmMovieset_GUI
         chkClickScrapeShowResults.CheckedChanged,
         dgvMediaListSorting.CellValueChanged
 
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub ClickScrape_CheckedChanged() Handles chkClickScrapeEnabled.CheckedChanged
         chkClickScrapeShowResults.Enabled = chkClickScrapeEnabled.Checked
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub CustomScrapeButtonDisabled_CheckedChanged() Handles rbCustomScrapeButtonDisabled.CheckedChanged
@@ -182,7 +138,7 @@ Public Class frmMovieset_GUI
             txtCustomScrapeButtonModifierType.Enabled = False
             txtCustomScrapeButtonScrapeType.Enabled = False
         End If
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub CustomScrapeButtonEnabled_CheckedChanged() Handles rbCustomScrapeButtonEnabled.CheckedChanged
@@ -192,7 +148,7 @@ Public Class frmMovieset_GUI
             txtCustomScrapeButtonModifierType.Enabled = True
             txtCustomScrapeButtonScrapeType.Enabled = True
         End If
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_Fill_MediaListSorting(ByVal List As List(Of GuiSettings.ListSorting))
@@ -297,7 +253,7 @@ Public Class frmMovieset_GUI
 
     Private Sub LoadDefaults_MediaListSorting() Handles btnMediaListSortingDefaults.Click
         DataGridView_Fill_MediaListSorting(Manager.mSettings.GetDefaultsForList_MediaListSorting_Movieset())
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub Save_MediaListSorting()

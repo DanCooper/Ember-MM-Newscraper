@@ -45,51 +45,7 @@ Public Class frmTV_Source
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events
-
-#Region "Handles"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Handles
+#End Region 'Events  
 
 #Region "Constructors"
 
@@ -124,6 +80,10 @@ Public Class frmTV_Source
         With Master.eSettings.TVEpisode.SourceSettings
             .DateAddedIgnoreNfo = chkDateAddedIgnoreNFO.Checked
             .DateAddedDateTime = CType(cbDateAddedDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTimeStamp)).Value
+            .MarkNewAsMarked = chkMarkAsMarked_TVEpisode.Checked
+            .MarkNewAsMarkedWithoutNFO = chkMarkAsMarkedWithoutNFO_TVEpisode.Checked
+            .MarkNewAsNew = chkMarkAsNew_TVEpisode.Checked
+            .MarkNewAsNewWithoutNFO = chkMarkAsNewWithoutNFO_TVEpisode.Checked
             .OverWriteNfo = chkOverwriteNfo.Checked
             If Not String.IsNullOrEmpty(txtSkipLessThan.Text) AndAlso Integer.TryParse(txtSkipLessThan.Text, 0) Then
                 .SkipLessThan = Convert.ToInt32(txtSkipLessThan.Text)
@@ -144,14 +104,18 @@ Public Class frmTV_Source
             If Not String.IsNullOrEmpty(cbSourcesDefaultsLanguage.Text) Then
                 .DefaultLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbSourcesDefaultsLanguage.Text).Abbreviation
             End If
+            .MarkNewAsMarked = chkMarkAsMarked_TVShow.Checked
+            .MarkNewAsMarkedWithoutNFO = chkMarkAsMarkedWithoutNFO_TVShow.Checked
+            .MarkNewAsNew = chkMarkAsNew_TVShow.Checked
+            .MarkNewAsNewWithoutNFO = chkMarkAsNewWithoutNFO_TVShow.Checked
             .OverWriteNfo = chkOverwriteNfo.Checked
             .TitleFiltersEnabled = chkTitleFiltersEnabled_TVShow.Checked
             .TitleProperCase = chkTitleProperCase_TVShow.Checked
         End With
 
         With Master.eSettings
-            .TVGeneralMarkNewEpisodes = chkMarkAsMarked_TVEpisode.Checked
-            .TVGeneralMarkNewShows = chkMarkAsMarked_TVShow.Checked
+            .TVGeneralMarkNewEpisodes = chkMarkAsNew_TVEpisode.Checked
+            .TVGeneralMarkNewShows = chkMarkAsNew_TVShow.Checked
         End With
 
         Save_Sources()
@@ -165,9 +129,19 @@ Public Class frmTV_Source
 
     Public Sub Settings_Load()
         With Master.eSettings.TVEpisode.SourceSettings
+            btnTitleFilterDefaults_TVEpisode.Enabled = .TitleFiltersEnabled
+            chkMarkAsMarked_TVEpisode.Checked = .MarkNewAsMarked
+            chkMarkAsMarkedWithoutNFO_TVEpisode.Enabled = .MarkNewAsMarked
+            chkMarkAsMarkedWithoutNFO_TVEpisode.Checked = .MarkNewAsMarkedWithoutNFO
+            chkMarkAsNew_TVEpisode.Checked = .MarkNewAsNew
+            chkMarkAsNewWithoutNFO_TVEpisode.Enabled = .MarkNewAsNew
+            chkMarkAsNewWithoutNFO_TVEpisode.Checked = .MarkNewAsNewWithoutNFO
             chkTitleFiltersEnabled_TVEpisode.Checked = .TitleFiltersEnabled
             chkTitleProperCase_TVEpisode.Checked = .TitleProperCase
+            dgvTitleFilters_TVEpisode.Enabled = .TitleFiltersEnabled
+            lblTitleFilters_TVEpisode.Enabled = .TitleFiltersEnabled
             txtSkipLessThan.Text = .SkipLessThan.ToString
+
             DataGridView_Fill_TitleFilters_TVEpisode(.TitleFilters)
         End With
 
@@ -191,17 +165,27 @@ Public Class frmTV_Source
                     cbSourcesDefaultsLanguage.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
                 End If
             End If
+            btnTitleFilterDefaults_TVShow.Enabled = .TitleFiltersEnabled
             chkCleanLibraryAfterUpdate.Checked = .CleanLibraryAfterUpdate
             chkDateAddedIgnoreNFO.Checked = .DateAddedIgnoreNfo
+            chkMarkAsMarked_TVShow.Checked = .MarkNewAsMarked
+            chkMarkAsMarkedWithoutNFO_TVShow.Enabled = .MarkNewAsMarked
+            chkMarkAsMarkedWithoutNFO_TVShow.Checked = .MarkNewAsMarkedWithoutNFO
+            chkMarkAsNew_TVShow.Checked = .MarkNewAsNew
+            chkMarkAsNewWithoutNFO_TVShow.Enabled = .MarkNewAsNew
+            chkMarkAsNewWithoutNFO_TVShow.Checked = .MarkNewAsNewWithoutNFO
             chkOverwriteNfo.Checked = .OverWriteNfo
             chkTitleProperCase_TVShow.Checked = .TitleProperCase
+            dgvTitleFilters_TVShow.Enabled = .TitleFiltersEnabled
+            lblTitleFilters_TVShow.Enabled = .TitleFiltersEnabled
+
             DataGridView_Fill_TitleFilters_TVShow(.TitleFilters)
         End With
 
 
         With Master.eSettings
-            chkMarkAsMarked_TVEpisode.Checked = .TVGeneralMarkNewEpisodes
-            chkMarkAsMarked_TVShow.Checked = .TVGeneralMarkNewShows
+            chkMarkAsNew_TVEpisode.Checked = .TVGeneralMarkNewEpisodes
+            chkMarkAsNew_TVShow.Checked = .TVGeneralMarkNewShows
         End With
 
         For Each source In Master.DB.Load_AllSources_TVShow
@@ -216,12 +200,19 @@ Public Class frmTV_Source
             chkCleanLibraryAfterUpdate.Text = .GetString(668, "Clean database after Library Update")
             chkDateAddedIgnoreNFO.Text = .GetString(1209, "Ignore <dateadded> from NFO")
             chkOverwriteNfo.Text = .GetString(433, "Overwrite invalid NFOs")
-            chkMarkAsMarked_TVEpisode.Text = .GetString(621, "Mark New Episodes")
-            chkMarkAsMarked_TVShow.Text = .GetString(549, "Mark New Shows")
+            chkMarkAsMarked_TVEpisode.Text = .GetString(459, "Mark as ""Marked""")
+            chkMarkAsMarked_TVShow.Text = .GetString(459, "Mark as ""Marked""")
+            chkMarkAsMarkedWithoutNFO_TVEpisode.Text = .GetString(114, "Only if no valid NFO exists")
+            chkMarkAsMarkedWithoutNFO_TVShow.Text = .GetString(114, "Only if no valid NFO exists")
+            chkMarkAsNew_TVEpisode.Text = .GetString(530, "Mark as ""New""")
+            chkMarkAsNew_TVShow.Text = .GetString(530, "Mark as ""New""")
+            chkMarkAsNewWithoutNFO_TVEpisode.Text = .GetString(114, "Only if no valid NFO exists")
+            chkMarkAsNewWithoutNFO_TVShow.Text = .GetString(114, "Only if no valid NFO exists")
             chkTitleFiltersEnabled_TVEpisode.Text = .GetString(451, "Enable Title Filters")
             chkTitleFiltersEnabled_TVShow.Text = .GetString(451, "Enable Title Filters")
             chkTitleProperCase_TVEpisode.Text = .GetString(452, "Convert Names to Proper Case")
             chkTitleProperCase_TVShow.Text = .GetString(452, "Convert Names to Proper Case")
+            chkVideoSourceFromFolder.Text = .GetString(711, "Search in the full path for VideoSource information")
             cmnuSourcesAdd.Text = .GetString(407, "Add Source")
             cmnuSourcesEdit.Text = .GetString(535, "Edit Source")
             cmnuSourcesMarkToRemove.Text = .GetString(493, "Mark to Remove")
@@ -249,6 +240,26 @@ Public Class frmTV_Source
         Load_EpisodeOrdering()
         Load_GeneralDateTime()
         Load_ScraperLanguages()
+    End Sub
+
+    Private Sub EnableApplyButton() Handles _
+            cbDateAddedDateTime.SelectedIndexChanged,
+            cbSourcesDefaultsEpisodeOrdering.SelectedIndexChanged,
+            cbSourcesDefaultsLanguage.SelectedIndexChanged,
+            chkCleanLibraryAfterUpdate.CheckedChanged,
+            chkDateAddedIgnoreNFO.CheckedChanged,
+            chkMarkAsMarkedWithoutNFO_TVEpisode.CheckedChanged,
+            chkMarkAsMarkedWithoutNFO_TVShow.CheckedChanged,
+            chkMarkAsNewWithoutNFO_TVEpisode.CheckedChanged,
+            chkMarkAsNewWithoutNFO_TVShow.CheckedChanged,
+            chkOverwriteNfo.CheckedChanged,
+            chkTitleProperCase_TVEpisode.CheckedChanged,
+            chkTitleProperCase_TVShow.CheckedChanged,
+            chkUnmarkNewBeforeDBUpdate.CheckedChanged,
+            chkUnmarkNewOnExit.CheckedChanged,
+            chkVideoSourceFromFolder.CheckedChanged
+
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_CellPainting(ByVal sender As Object, ByVal e As DataGridViewCellPaintingEventArgs) Handles dgvSources.CellPainting
@@ -294,7 +305,7 @@ Public Class frmTV_Source
             If dlgSource.ShowDialog() = DialogResult.OK AndAlso dlgSource.Result IsNot Nothing Then
                 _TmpSources.Add(dlgSource.Result, State.New)
                 DataGridView_Fill_Sources()
-                Handle_SettingsChanged()
+                RaiseEvent SettingsChanged()
             End If
         End Using
     End Sub
@@ -308,7 +319,7 @@ Public Class frmTV_Source
                     _TmpSources.Remove(kSource.Key)
                     _TmpSources.Add(dlgSource.Result, State.Edited)
                     DataGridView_Fill_Sources()
-                    Handle_SettingsChanged()
+                    RaiseEvent SettingsChanged()
                 End If
             End Using
         End If
@@ -448,13 +459,13 @@ Public Class frmTV_Source
         cbSourcesDefaultsLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages Select lLang.Description).ToArray)
     End Sub
 
-    Private Sub LoadDefaults_TitleFilters_TVEpisode() Handles btnTitleFilterDefaults_TVepisode.Click
+    Private Sub LoadDefaults_TitleFilters_TVEpisode() Handles btnTitleFilterDefaults_TVEpisode.Click
         If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default filter list?"),
                            Master.eLang.GetString(104, "Are You Sure?"),
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
             DataGridView_Fill_TitleFilters_TVEpisode(Master.eSettings.TVEpisode.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.TVEpisode))
-            Handle_SettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 
@@ -464,8 +475,32 @@ Public Class frmTV_Source
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
             DataGridView_Fill_TitleFilters_TVShow(Master.eSettings.TVShow.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.TVShow))
-            Handle_SettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
+    End Sub
+
+    Private Sub MarkAsMarked_TVEpisode_CheckedChanged() Handles chkMarkAsMarked_TVEpisode.CheckedChanged
+        chkMarkAsMarkedWithoutNFO_TVEpisode.Enabled = chkMarkAsMarked_TVEpisode.Checked
+        If Not chkMarkAsMarked_TVEpisode.Checked Then chkMarkAsMarkedWithoutNFO_TVEpisode.Checked = False
+        RaiseEvent SettingsChanged()
+    End Sub
+
+    Private Sub MarkAsMarked_TVShow_CheckedChanged() Handles chkMarkAsMarked_TVShow.CheckedChanged
+        chkMarkAsMarkedWithoutNFO_TVShow.Enabled = chkMarkAsMarked_TVShow.Checked
+        If Not chkMarkAsMarked_TVShow.Checked Then chkMarkAsMarkedWithoutNFO_TVShow.Checked = False
+        RaiseEvent SettingsChanged()
+    End Sub
+
+    Private Sub MarkAsNew_TVEpisode_CheckedChanged() Handles chkMarkAsNew_TVEpisode.CheckedChanged
+        chkMarkAsNewWithoutNFO_TVEpisode.Enabled = chkMarkAsNew_TVEpisode.Checked
+        If Not chkMarkAsNew_TVEpisode.Checked Then chkMarkAsNewWithoutNFO_TVEpisode.Checked = False
+        RaiseEvent SettingsChanged()
+    End Sub
+
+    Private Sub MarkAsNew_TVShow_CheckedChanged() Handles chkMarkAsNew_TVShow.CheckedChanged
+        chkMarkAsNewWithoutNFO_TVShow.Enabled = chkMarkAsNew_TVShow.Checked
+        If Not chkMarkAsNew_TVShow.Checked Then chkMarkAsNewWithoutNFO_TVShow.Checked = False
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub Save_Sources()
@@ -509,34 +544,35 @@ Public Class frmTV_Source
         End With
     End Sub
 
-    Private Sub SkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtSkipLessThan.TextChanged
+    Private Sub SkipLessThan_TextChanged(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtSkipLessThan.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
         RaiseEvent NeedsDBClean_TV()
         RaiseEvent NeedsDBUpdate_TV(-1)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub TitleFilters_Enabled_TVEpisode_CheckedChanged(sender As Object, e As EventArgs) Handles chkTitleFiltersEnabled_TVEpisode.CheckedChanged
         dgvTitleFilters_TVEpisode.Enabled = chkTitleFiltersEnabled_TVEpisode.Checked
         lblTitleFilters_TVEpisode.Enabled = chkTitleFiltersEnabled_TVEpisode.Checked
-        btnTitleFilterDefaults_TVepisode.Enabled = chkTitleFiltersEnabled_TVEpisode.Checked
-        Handle_SettingsChanged()
+        btnTitleFilterDefaults_TVEpisode.Enabled = chkTitleFiltersEnabled_TVEpisode.Checked
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub TitleFilters_Enabled_TVShow_CheckedChanged(sender As Object, e As EventArgs) Handles chkTitleFiltersEnabled_TVShow.CheckedChanged
         dgvTitleFilters_TVShow.Enabled = chkTitleFiltersEnabled_TVShow.Checked
         lblTitleFilters_TVShow.Enabled = chkTitleFiltersEnabled_TVShow.Checked
         btnTitleFilterDefaults_TVShow.Enabled = chkTitleFiltersEnabled_TVShow.Checked
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub TitleProperCase_TVEpisode_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitleProperCase_TVEpisode.CheckedChanged
-        Handle_NeedsReload_TVEpisode()
-        Handle_SettingsChanged()
+        RaiseEvent NeedsReload_TVEpisode()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub TitleProperCase_TVShow_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitleProperCase_TVShow.CheckedChanged
-        Handle_NeedsReload_TVShow()
-        Handle_SettingsChanged()
+        RaiseEvent NeedsReload_TVShow()
+        RaiseEvent SettingsChanged()
     End Sub
 
 #End Region 'Methods

@@ -37,51 +37,7 @@ Public Class frmMovie_FileNaming
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events
-
-#Region "Event Methods"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Event Methods
+#End Region 'Events 
 
 #Region "Constructors"
 
@@ -584,7 +540,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieUseAD_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkMovieBannerAD.Enabled = chkMovieUseAD.Checked
         chkMovieClearArtAD.Enabled = chkMovieUseAD.Checked
@@ -608,7 +564,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieUseBoxee_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkMovieFanartBoxee.Enabled = chkMovieUseBoxee.Checked
         chkMovieNFOBoxee.Enabled = chkMovieUseBoxee.Checked
@@ -626,7 +582,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieUseKodiExtended_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkMovieBannerExtended.Enabled = chkMovieUseExtended.Checked
         chkMovieClearArtExtended.Enabled = chkMovieUseExtended.Checked
@@ -653,7 +609,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieUseFrodo_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkMovieActorThumbsFrodo.Enabled = chkMovieUseFrodo.Checked
         chkMovieExtrafanartsFrodo.Enabled = chkMovieUseFrodo.Checked
@@ -685,7 +641,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieUseEden_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkMovieActorThumbsEden.Enabled = chkMovieUseEden.Checked
         chkMovieExtrafanartsEden.Enabled = chkMovieUseEden.Checked
@@ -717,7 +673,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieUseYAMJ_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkMovieBannerYAMJ.Enabled = chkMovieUseYAMJ.Checked
         chkMovieFanartYAMJ.Enabled = chkMovieUseYAMJ.Checked
@@ -743,7 +699,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieUseNMJ_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkMovieBannerNMJ.Enabled = chkMovieUseNMJ.Checked
         chkMovieFanartNMJ.Enabled = chkMovieUseNMJ.Checked
@@ -767,7 +723,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieThemeTvTunesCustom_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtMovieThemeTvTunesCustomPath.Enabled = chkMovieThemeTvTunesCustom.Checked
         btnMovieThemeTvTunesCustomPathBrowse.Enabled = chkMovieThemeTvTunesCustom.Checked
@@ -786,7 +742,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieThemeTvTunesEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkMovieThemeTvTunesCustom.Enabled = chkMovieThemeTvTunesEnabled.Checked
         chkMovieThemeTvTunesMoviePath.Enabled = chkMovieThemeTvTunesEnabled.Checked
@@ -802,7 +758,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieThemeTvTunesMoviePath_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         If chkMovieThemeTvTunesMoviePath.Checked Then
             chkMovieThemeTvTunesCustom.Enabled = False
@@ -818,7 +774,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieThemeTvTunesSub_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtMovieThemeTvTunesSubDir.Enabled = chkMovieThemeTvTunesSub.Checked
 
@@ -838,11 +794,11 @@ Public Class frmMovie_FileNaming
     Private Sub chkMovieYAMJWatchedFile_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         txtMovieYAMJWatchedFolder.Enabled = chkMovieYAMJWatchedFile.Checked
         btnMovieYAMJWatchedFilesBrowse.Enabled = chkMovieYAMJWatchedFile.Checked
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub txtMovieBackdropsPath_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         If String.IsNullOrEmpty(txtMovieSourcesBackdropsFolderPath.Text) Then
             chkMovieSourcesBackdropsAuto.Checked = False
@@ -875,7 +831,7 @@ Public Class frmMovie_FileNaming
     End Sub
 
     Private Sub chkMovieUseExpert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkMovieActorthumbsExpertBDMV.Enabled = chkMovieUseExpert.Checked
         chkMovieActorthumbsExpertMulti.Enabled = chkMovieUseExpert.Checked
@@ -938,12 +894,12 @@ Public Class frmMovie_FileNaming
 
     Private Sub chkMovieStackExpertSingle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         chkMovieUnstackExpertSingle.Enabled = chkMovieStackExpertSingle.Checked AndAlso chkMovieStackExpertSingle.Enabled
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieStackExpertMulti_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         chkMovieUnstackExpertMulti.Enabled = chkMovieStackExpertMulti.Checked AndAlso chkMovieStackExpertMulti.Enabled
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub pbMovieSourcesADInfo_Click(sender As Object, e As EventArgs)

@@ -42,51 +42,7 @@ Public Class frmMovie_Data
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events
-
-#Region "Event Methods"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Event Methods
+#End Region 'Events 
 
 #Region "Constructors"
 
@@ -223,7 +179,7 @@ Public Class frmMovie_Data
                     LoadMovieMetadata()
                     txtMovieScraperDefFIExt.Text = String.Empty
                     txtMovieScraperDefFIExt.Focus()
-                    Handle_SettingsChanged()
+                    RaiseEvent SettingsChanged()
                 End If
             End If
         End Using
@@ -237,7 +193,7 @@ Public Class frmMovie_Data
                         If dFileInfo.ShowDialog = DialogResult.OK Then
                             tMetadata.MetaData = dFileInfo.Result
                             LoadMovieMetadata()
-                            Handle_SettingsChanged()
+                            RaiseEvent SettingsChanged()
                         End If
                     End Using
                     Exit For
@@ -255,17 +211,16 @@ Public Class frmMovie_Data
         If Not chkMovieScraperStudio.Checked Then
             txtMovieScraperStudioLimit.Text = "0"
         End If
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperCountry_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
         txtMovieScraperCountryLimit.Enabled = chkMovieScraperCountry.Checked
         If Not chkMovieScraperCountry.Checked Then txtMovieScraperCountryLimit.Text = "0"
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperCast_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
 
         chkMovieScraperCastWithImg.Enabled = chkMovieScraperCast.Checked
         txtMovieScraperCastLimit.Enabled = chkMovieScraperCast.Checked
@@ -274,10 +229,10 @@ Public Class frmMovie_Data
             chkMovieScraperCastWithImg.Checked = False
             txtMovieScraperCastLimit.Text = "0"
         End If
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperCert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
 
         If Not chkMovieScraperCert.Checked Then
             cbMovieScraperCertLang.Enabled = False
@@ -292,10 +247,10 @@ Public Class frmMovie_Data
             chkMovieScraperCertForMPAA.Enabled = True
             chkMovieScraperCertOnlyValue.Enabled = True
         End If
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperCertForMPAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
 
         If Not chkMovieScraperCertForMPAA.Checked Then
             chkMovieScraperCertForMPAAFallback.Enabled = False
@@ -303,16 +258,16 @@ Public Class frmMovie_Data
         Else
             chkMovieScraperCertForMPAAFallback.Enabled = True
         End If
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperGenre_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
         txtMovieScraperGenreLimit.Enabled = chkMovieScraperGenre.Checked
         If Not chkMovieScraperGenre.Checked Then txtMovieScraperGenreLimit.Text = "0"
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperPlotForOutline_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
 
         txtMovieScraperOutlineLimit.Enabled = chkMovieScraperPlotForOutline.Checked
         chkMovieScraperPlotForOutlineIfEmpty.Enabled = chkMovieScraperPlotForOutline.Checked
@@ -321,37 +276,38 @@ Public Class frmMovie_Data
             chkMovieScraperPlotForOutlineIfEmpty.Checked = False
             chkMovieScraperPlotForOutlineIfEmpty.Enabled = False
         End If
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperOriginalTitle_CheckedChanged(sender As Object, e As EventArgs)
-        Handle_SettingsChanged()
 
         chkMovieScraperOriginalTitleAsTitle.Enabled = chkMovieScraperOriginalTitle.Checked
         If Not chkMovieScraperOriginalTitle.Checked Then chkMovieScraperOriginalTitleAsTitle.Checked = False
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperPlot_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
 
         chkMovieScraperPlotForOutline.Enabled = chkMovieScraperPlot.Checked
         If Not chkMovieScraperPlot.Checked Then
             chkMovieScraperPlotForOutline.Checked = False
             txtMovieScraperOutlineLimit.Enabled = False
         End If
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperCollectionID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
 
         chkMovieScraperCollectionsAuto.Enabled = chkMovieScraperCollectionID.Checked
         If Not chkMovieScraperCollectionID.Checked Then
             chkMovieScraperCollectionsAuto.Checked = False
         End If
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieScraperUseMDDuration_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         txtMovieScraperDurationRuntimeFormat.Enabled = chkMovieScraperUseMDDuration.Checked
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub LoadMovieMetadata()
@@ -479,7 +435,7 @@ Public Class frmMovie_Data
                 If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
                     MovieMeta.Remove(x)
                     LoadMovieMetadata()
-                    Handle_SettingsChanged()
+                    RaiseEvent SettingsChanged()
                     Exit For
                 End If
             Next

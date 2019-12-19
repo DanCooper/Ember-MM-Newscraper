@@ -44,50 +44,6 @@ Public Class frmTV_Source_Regex
 
 #End Region 'Events
 
-#Region "Handles"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Handles
-
 #Region "Constructors"
 
     Public Sub New()
@@ -172,8 +128,8 @@ Public Class frmTV_Source_Regex
         End If
 
         ClearTVShowMatching()
-        Handle_SettingsChanged()
         LoadTVShowMatching()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnTVSourcesRegexTVShowMatchingClear_Click(ByVal sender As Object, ByVal e As EventArgs)
@@ -202,8 +158,8 @@ Public Class frmTV_Source_Regex
                 lvTVSourcesRegexTVShowMatching.ResumeLayout()
             End If
 
-            Handle_SettingsChanged()
             lvTVSourcesRegexTVShowMatching.Focus()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 
@@ -225,8 +181,8 @@ Public Class frmTV_Source_Regex
                 lvTVSourcesRegexTVShowMatching.ResumeLayout()
             End If
 
-            Handle_SettingsChanged()
             lvTVSourcesRegexTVShowMatching.Focus()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 
@@ -236,13 +192,13 @@ Public Class frmTV_Source_Regex
             TVShowMatching.Clear()
             TVShowMatching.AddRange(Master.eSettings.TVShowMatching)
             LoadTVShowMatching()
-            Handle_SettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 
     Private Sub btnTVSourcesRegexMultiPartMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs)
         txtTVSourcesRegexMultiPartMatching.Text = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnTVSourcesRegexTVShowMatchingRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
@@ -292,7 +248,7 @@ Public Class frmTV_Source_Regex
             Dim selRex = From lRegex As Settings.regexp In TVShowMatching Where lRegex.ID = ID
             If selRex.Count > 0 Then
                 TVShowMatching.Remove(selRex(0))
-                Handle_SettingsChanged()
+                RaiseEvent SettingsChanged()
             End If
         Next
         LoadTVShowMatching()

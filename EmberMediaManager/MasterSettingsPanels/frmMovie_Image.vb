@@ -36,51 +36,7 @@ Public Class frmMovie_Image
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events
-
-#Region "Event Methods"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Event Methods
+#End Region 'Events 
 
 #Region "Constructors"
 
@@ -293,7 +249,7 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMovieBannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtMovieBannerWidth.Enabled = chkMovieBannerResize.Checked
         txtMovieBannerHeight.Enabled = chkMovieBannerResize.Checked
@@ -305,7 +261,7 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMovieExtrafanartsResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtMovieExtrafanartsWidth.Enabled = chkMovieExtrafanartsResize.Checked
         txtMovieExtrafanartsHeight.Enabled = chkMovieExtrafanartsResize.Checked
@@ -317,7 +273,7 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMovieExtrathumbsResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtMovieExtrathumbsWidth.Enabled = chkMovieExtrathumbsResize.Checked
         txtMovieExtrathumbsHeight.Enabled = chkMovieExtrathumbsResize.Checked
@@ -329,7 +285,7 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMovieFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtMovieFanartWidth.Enabled = chkMovieFanartResize.Checked
         txtMovieFanartHeight.Enabled = chkMovieFanartResize.Checked
@@ -341,13 +297,13 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMovieImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         cbMovieImagesForcedLanguage.Enabled = chkMovieImagesForceLanguage.Checked
     End Sub
 
     Private Sub chkMovieImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         chkMovieImagesGetBlankImages.Enabled = chkMovieImagesMediaLanguageOnly.Checked
         chkMovieImagesGetEnglishImages.Enabled = chkMovieImagesMediaLanguageOnly.Checked
@@ -362,11 +318,11 @@ Public Class frmMovie_Image
         If Not chkMovieExtrathumbsVideoExtraction.Checked Then
             chkMovieExtrathumbsVideoExtractionPref.Checked = False
         End If
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMovieKeyArtResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtMovieKeyArtWidth.Enabled = chkMovieKeyArtResize.Checked
         txtMovieKeyArtHeight.Enabled = chkMovieKeyArtResize.Checked
@@ -378,7 +334,7 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMoviePosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
 
         txtMoviePosterWidth.Enabled = chkMoviePosterResize.Checked
         txtMoviePosterHeight.Enabled = chkMoviePosterResize.Checked

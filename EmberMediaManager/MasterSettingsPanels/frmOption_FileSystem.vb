@@ -44,51 +44,7 @@ Public Class frmOption_FileSystem
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events 
-
-#Region "Handles"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Handles
+#End Region 'Events
 
 #Region "Constructors"
 
@@ -165,7 +121,7 @@ Public Class frmOption_FileSystem
         cbVirtualDriveDriveLetter.SelectedIndexChanged,
         txtVirtualDrivePath.TextChanged
 
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_ExcludedPaths_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvExcludedPaths.CellClick
@@ -199,15 +155,15 @@ Public Class frmOption_FileSystem
     End Sub
 
     Private Sub DataGridView_ExcludedPaths_RowsAdded() Handles dgvExcludedPaths.RowsAdded
-        Handle_NeedsDBClean_Movie()
-        Handle_NeedsDBClean_TV()
-        Handle_SettingsChanged()
+        RaiseEvent NeedsDBClean_Movie()
+        RaiseEvent NeedsDBClean_TV()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_ExcludedPaths_RowsRemoved() Handles dgvExcludedPaths.RowsRemoved
-        Handle_NeedsDBUpdate_Movie(-1)
-        Handle_NeedsDBUpdate_TV(-1)
-        Handle_SettingsChanged()
+        RaiseEvent NeedsDBUpdate_Movie(-1)
+        RaiseEvent NeedsDBUpdate_TV(-1)
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_Fill_ValidSubtitleExtensions(ByVal List As List(Of String))
@@ -248,27 +204,27 @@ Public Class frmOption_FileSystem
     End Sub
 
     Private Sub DataGridView_ValidSubtitleExtensions_RowsAdded_RowsRemoved() Handles dgvValidSubtitleExtensions.RowsAdded, dgvValidSubtitleExtensions.RowsRemoved
-        Handle_NeedsReload_Movie()
-        Handle_NeedsReload_TVEpisode()
-        Handle_SettingsChanged()
+        RaiseEvent NeedsReload_Movie()
+        RaiseEvent NeedsReload_TVEpisode()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_ValidThemeExtensions_RowsAdded_RowsRemoved() Handles dgvValidThemeExtensions.RowsAdded, dgvValidThemeExtensions.RowsRemoved
-        Handle_NeedsReload_Movie()
-        Handle_NeedsReload_TVShow()
-        Handle_SettingsChanged()
+        RaiseEvent NeedsReload_Movie()
+        RaiseEvent NeedsReload_TVShow()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_ValidVideoExtensions_RowsAdded() Handles dgvValidVideoExtensions.RowsAdded
-        Handle_NeedsDBUpdate_Movie(-1)
-        Handle_NeedsDBUpdate_TV(-1)
-        Handle_SettingsChanged()
+        RaiseEvent NeedsDBUpdate_Movie(-1)
+        RaiseEvent NeedsDBUpdate_TV(-1)
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_ValidVideoExtensions_RowsRemoved() Handles dgvValidVideoExtensions.RowsRemoved
-        Handle_NeedsDBClean_Movie()
-        Handle_NeedsDBClean_TV()
-        Handle_SettingsChanged()
+        RaiseEvent NeedsDBClean_Movie()
+        RaiseEvent NeedsDBClean_TV()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub LoadDefaults_ValidSubtitleExtensions() Handles btnValidSubtitleExtensionsDefaults.Click
@@ -277,7 +233,7 @@ Public Class frmOption_FileSystem
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
             DataGridView_Fill_ValidSubtitleExtensions(Master.eSettings.GetDefaultsForList_ValidSubtitleExtensions())
-            Handle_SettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 
@@ -287,7 +243,7 @@ Public Class frmOption_FileSystem
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
             DataGridView_Fill_ValidThemeExtensions(Master.eSettings.GetDefaultsForList_ValidThemeExtensions())
-            Handle_SettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 
@@ -297,7 +253,7 @@ Public Class frmOption_FileSystem
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
             DataGridView_Fill_ValidVideoExtensions(Master.eSettings.GetDefaultsForList_ValidVideoExtensions())
-            Handle_SettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 

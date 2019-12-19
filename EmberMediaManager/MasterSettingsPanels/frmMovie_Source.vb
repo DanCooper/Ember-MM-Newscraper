@@ -47,50 +47,6 @@ Public Class frmMovie_Source
 
 #End Region 'Events
 
-#Region "Handles"
-
-    Private Sub Handle_NeedsDBClean_Movie()
-        RaiseEvent NeedsDBClean_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsDBClean_TV()
-        RaiseEvent NeedsDBClean_TV()
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_Movie(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_Movie(id)
-    End Sub
-
-    Private Sub Handle_NeedsDBUpdate_TV(ByVal id As Long)
-        RaiseEvent NeedsDBUpdate_TV(id)
-    End Sub
-
-    Private Sub Handle_NeedsReload_Movie()
-        RaiseEvent NeedsReload_Movie()
-    End Sub
-
-    Private Sub Handle_NeedsReload_MovieSet()
-        RaiseEvent NeedsReload_MovieSet()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVEpisode()
-        RaiseEvent NeedsReload_TVEpisode()
-    End Sub
-
-    Private Sub Handle_NeedsReload_TVShow()
-        RaiseEvent NeedsReload_TVShow()
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-#End Region 'Handles
-
 #Region "Constructors"
 
     Public Sub New()
@@ -122,18 +78,16 @@ Public Class frmMovie_Source
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
         With Master.eSettings.Movie.SourceSettings
-            .AutoScrapeOnImportEnabled = chkAutoScrapeOnImportEnabled.Checked
-            .AutoScrapeOnImportMissingItemsOnly = chkAutoScrapeOnImportMissingItemsOnly.Checked
-            .AutoScrapeOnImportScrapeType = CType(cbAutoScrapeOnImportScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
             .CleanLibraryAfterUpdate = chkCleanLibraryAfterUpdate.Checked
             .DateAddedIgnoreNfo = chkDateAddedIgnoreNFO.Checked
             .DateAddedDateTime = CType(cbDateAddedDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTimeStamp)).Value
             If Not String.IsNullOrEmpty(cbSourcesDefaultsLanguage.Text) Then
                 .DefaultLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbSourcesDefaultsLanguage.Text).Abbreviation
             End If
-            .MarkNewAsCustom = chkMarkAsCustom.Checked
             .MarkNewAsMarked = chkMarkAsMarked.Checked
+            .MarkNewAsMarkedWithoutNFO = chkMarkAsMarkedWithoutNFO.Checked
             .MarkNewAsNew = chkMarkAsNew.Checked
+            .MarkNewAsNewWithoutNFO = chkMarkAsNewWithoutNFO.Checked
             .OverWriteNfo = chkOverwriteNfo.Checked
             If Not String.IsNullOrEmpty(txtSkipLessThan.Text) AndAlso Integer.TryParse(txtSkipLessThan.Text, 0) Then
                 .SkipLessThan = Convert.ToInt32(txtSkipLessThan.Text)
@@ -143,10 +97,8 @@ Public Class frmMovie_Source
             .SortBeforeScan = chkSortBeforeScan.Checked
             .TitleFiltersEnabled = chkTitleFiltersEnabled.Checked
             .TitleProperCase = chkTitleProperCase.Checked
-            .UnmarkNewAfterScraping = chkUnmarkNewAfterScraping.Checked
             .UnmarkNewBeforeDBUpdate = chkUnmarkNewBeforeDBUpdate.Checked
             .UnmarkNewOnExit = chkUnmarkNewOnExit.Checked
-            .UnmarkNewWithNFO = chkUnmarkNewWithNFO.Checked
             .VideoSourceFromFolder = chkVideoSourceFromFolder.Checked
         End With
         Save_Sources()
@@ -159,7 +111,6 @@ Public Class frmMovie_Source
 
     Public Sub Settings_Load()
         With Master.eSettings.Movie.SourceSettings
-            cbAutoScrapeOnImportScrapeType.SelectedValue = .AutoScrapeOnImportScrapeType
             cbDateAddedDateTime.SelectedValue = .DateAddedDateTime
             If cbSourcesDefaultsLanguage.Items.Count > 0 Then
                 If Not String.IsNullOrEmpty(.DefaultLanguage) Then
@@ -178,17 +129,23 @@ Public Class frmMovie_Source
                     cbSourcesDefaultsLanguage.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
                 End If
             End If
+            btnTitleFilterDefaults.Enabled = .TitleFiltersEnabled
             chkCleanLibraryAfterUpdate.Checked = .CleanLibraryAfterUpdate
             chkDateAddedIgnoreNFO.Checked = .DateAddedIgnoreNfo
+            chkMarkAsMarked.Checked = .MarkNewAsMarked
+            chkMarkAsMarkedWithoutNFO.Enabled = .MarkNewAsMarked
+            chkMarkAsMarkedWithoutNFO.Checked = .MarkNewAsMarkedWithoutNFO
+            chkMarkAsNew.Checked = .MarkNewAsNew
+            chkMarkAsNewWithoutNFO.Enabled = .MarkNewAsNew
+            chkMarkAsNewWithoutNFO.Checked = .MarkNewAsNewWithoutNFO
             chkOverwriteNfo.Checked = .OverWriteNfo
-            chkTitleProperCase.Checked = .TitleProperCase
             chkSortBeforeScan.Checked = .SortBeforeScan
-            txtSkipLessThan.Text = .SkipLessThan.ToString
-            chkVideoSourceFromFolder.Checked = .VideoSourceFromFolder
             chkTitleFiltersEnabled.Checked = .TitleFiltersEnabled
+            chkTitleProperCase.Checked = .TitleProperCase
+            chkVideoSourceFromFolder.Checked = .VideoSourceFromFolder
             dgvTitleFilters.Enabled = .TitleFiltersEnabled
             lblTitleFilters.Enabled = .TitleFiltersEnabled
-            btnTitleFilterDefaults.Enabled = .TitleFiltersEnabled
+            txtSkipLessThan.Text = .SkipLessThan.ToString
 
             DataGridView_Fill_TitleFilters(.TitleFilters)
         End With
@@ -205,6 +162,9 @@ Public Class frmMovie_Source
             chkCleanLibraryAfterUpdate.Text = .GetString(668, "Clean database after Library Update")
             chkDateAddedIgnoreNFO.Text = .GetString(1209, "Ignore <dateadded> from NFO")
             chkMarkAsMarked.Text = .GetString(459, "Mark as ""Marked""")
+            chkMarkAsMarkedWithoutNFO.Text = .GetString(114, "Only if no valid NFO exists")
+            chkMarkAsNew.Text = .GetString(530, "Mark as ""New""")
+            chkMarkAsNewWithoutNFO.Text = .GetString(114, "Only if no valid NFO exists")
             chkOverwriteNfo.Text = .GetString(433, "Overwrite invalid NFOs")
             chkSortBeforeScan.Text = .GetString(712, "Sort files into folder before each Library Update")
             chkTitleFiltersEnabled.Text = .GetString(451, "Enable Title Filters")
@@ -234,8 +194,23 @@ Public Class frmMovie_Source
         End With
 
         Load_GeneralDateTime()
-        Load_ScrapeTypes()
         Load_ScraperLanguages()
+    End Sub
+
+    Private Sub EnableApplyButton() Handles _
+            cbDateAddedDateTime.SelectedIndexChanged,
+            cbSourcesDefaultsLanguage.SelectedIndexChanged,
+            chkCleanLibraryAfterUpdate.CheckedChanged,
+            chkDateAddedIgnoreNFO.CheckedChanged,
+            chkMarkAsMarkedWithoutNFO.CheckedChanged,
+            chkMarkAsNewWithoutNFO.CheckedChanged,
+            chkOverwriteNfo.CheckedChanged,
+            chkTitleProperCase.CheckedChanged,
+            chkUnmarkNewBeforeDBUpdate.CheckedChanged,
+            chkUnmarkNewOnExit.CheckedChanged,
+            chkVideoSourceFromFolder.CheckedChanged
+
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub DataGridView_CellPainting(ByVal sender As Object, ByVal e As DataGridViewCellPaintingEventArgs) Handles dgvSources.CellPainting
@@ -281,7 +256,7 @@ Public Class frmMovie_Source
             If dlgSource.ShowDialog() = DialogResult.OK AndAlso dlgSource.Result IsNot Nothing Then
                 _TmpSources.Add(dlgSource.Result, State.New)
                 DataGridView_Fill_Sources()
-                Handle_SettingsChanged()
+                RaiseEvent SettingsChanged()
             End If
         End Using
     End Sub
@@ -295,7 +270,7 @@ Public Class frmMovie_Source
                     _TmpSources.Remove(kSource.Key)
                     _TmpSources.Add(dlgSource.Result, State.Edited)
                     DataGridView_Fill_Sources()
-                    Handle_SettingsChanged()
+                    RaiseEvent SettingsChanged()
                 End If
             End Using
         End If
@@ -411,39 +386,6 @@ Public Class frmMovie_Source
         cbDateAddedDateTime.ValueMember = "Value"
     End Sub
 
-    Private Sub Load_ScrapeTypes()
-        Dim strAll As String = Master.eLang.GetString(68, "All")
-        Dim strFilter As String = Master.eLang.GetString(624, "Current Filter")
-        Dim strMarked As String = Master.eLang.GetString(48, "Marked")
-        Dim strMissing As String = Master.eLang.GetString(40, "Missing Items")
-        Dim strNew As String = Master.eLang.GetString(47, "New")
-
-        Dim strAsk As String = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-        Dim strAuto As String = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-        Dim strSkip As String = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
-
-        Dim items As New Dictionary(Of String, Enums.ScrapeType) From {
-            {String.Concat(strAll, " - ", strAuto), Enums.ScrapeType.AllAuto},
-            {String.Concat(strAll, " - ", strAsk), Enums.ScrapeType.AllAsk},
-            {String.Concat(strAll, " - ", strSkip), Enums.ScrapeType.AllSkip},
-            {String.Concat(strMissing, " - ", strAuto), Enums.ScrapeType.MissingAuto},
-            {String.Concat(strMissing, " - ", strAsk), Enums.ScrapeType.MissingAsk},
-            {String.Concat(strMissing, " - ", strSkip), Enums.ScrapeType.MissingSkip},
-            {String.Concat(strNew, " - ", strAuto), Enums.ScrapeType.NewAuto},
-            {String.Concat(strNew, " - ", strAsk), Enums.ScrapeType.NewAsk},
-            {String.Concat(strNew, " - ", strSkip), Enums.ScrapeType.NewSkip},
-            {String.Concat(strMarked, " - ", strAuto), Enums.ScrapeType.MarkedAuto},
-            {String.Concat(strMarked, " - ", strAsk), Enums.ScrapeType.MarkedAsk},
-            {String.Concat(strMarked, " - ", strSkip), Enums.ScrapeType.MarkedSkip},
-            {String.Concat(strFilter, " - ", strAuto), Enums.ScrapeType.FilterAuto},
-            {String.Concat(strFilter, " - ", strAsk), Enums.ScrapeType.FilterAsk},
-            {String.Concat(strFilter, " - ", strSkip), Enums.ScrapeType.FilterSkip}
-        }
-        cbAutoScrapeOnImportScrapeType.DataSource = items.ToList
-        cbAutoScrapeOnImportScrapeType.DisplayMember = "Key"
-        cbAutoScrapeOnImportScrapeType.ValueMember = "Value"
-    End Sub
-
     Private Sub Load_ScraperLanguages()
         cbSourcesDefaultsLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages Select lLang.Description).ToArray)
     End Sub
@@ -454,8 +396,20 @@ Public Class frmMovie_Source
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
             DataGridView_Fill_TitleFilters(Master.eSettings.Movie.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.Movie))
-            Handle_SettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
+    End Sub
+
+    Private Sub MarkAsMarked_CheckedChanged() Handles chkMarkAsMarked.CheckedChanged
+        chkMarkAsMarkedWithoutNFO.Enabled = chkMarkAsMarked.Checked
+        If Not chkMarkAsMarked.Checked Then chkMarkAsMarkedWithoutNFO.Checked = False
+        RaiseEvent SettingsChanged()
+    End Sub
+
+    Private Sub MarkAsNew_CheckedChanged() Handles chkMarkAsNew.CheckedChanged
+        chkMarkAsNewWithoutNFO.Enabled = chkMarkAsNew.Checked
+        If Not chkMarkAsNew.Checked Then chkMarkAsNewWithoutNFO.Checked = False
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub Save_Sources()
@@ -490,22 +444,23 @@ Public Class frmMovie_Source
         End With
     End Sub
 
-    Private Sub SkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtSkipLessThan.TextChanged
+    Private Sub SkipLessThan_TextChanged(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtSkipLessThan.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
         RaiseEvent NeedsDBClean_Movie()
         RaiseEvent NeedsDBUpdate_Movie(-1)
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub TitleFilters_Enabled_CheckedChanged(sender As Object, e As EventArgs) Handles chkTitleFiltersEnabled.CheckedChanged
         dgvTitleFilters.Enabled = chkTitleFiltersEnabled.Checked
         lblTitleFilters.Enabled = chkTitleFiltersEnabled.Checked
         btnTitleFilterDefaults.Enabled = chkTitleFiltersEnabled.Checked
-        Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub TitleProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitleProperCase.CheckedChanged
-        Handle_NeedsReload_Movie()
-        Handle_SettingsChanged()
+        RaiseEvent NeedsReload_Movie()
+        RaiseEvent SettingsChanged()
     End Sub
 
 #End Region 'Methods

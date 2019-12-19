@@ -50,25 +50,17 @@ Partial Class frmMovie_Source
         Me.cmnuSourcesReject = New System.Windows.Forms.ToolStripMenuItem()
         Me.gbImportOptions = New System.Windows.Forms.GroupBox()
         Me.tblImportOptions = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbAutoScrapeOnImport = New System.Windows.Forms.GroupBox()
-        Me.tblAutoScrapeOnImport = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkAutoScrapeOnImportEnabled = New System.Windows.Forms.CheckBox()
-        Me.chkAutoScrapeOnImportMissingItemsOnly = New System.Windows.Forms.CheckBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.cbAutoScrapeOnImportScrapeType = New System.Windows.Forms.ComboBox()
         Me.gbUnmarkNew = New System.Windows.Forms.GroupBox()
         Me.tblUnmarkNew = New System.Windows.Forms.TableLayoutPanel()
         Me.chkUnmarkNewBeforeDBUpdate = New System.Windows.Forms.CheckBox()
-        Me.chkUnmarkNewAfterScraping = New System.Windows.Forms.CheckBox()
         Me.chkUnmarkNewOnExit = New System.Windows.Forms.CheckBox()
-        Me.chkUnmarkNewWithNFO = New System.Windows.Forms.CheckBox()
         Me.lblSkipLessThan = New System.Windows.Forms.Label()
         Me.gbMarkNew = New System.Windows.Forms.GroupBox()
         Me.tblMarkNew = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMarkAsNew = New System.Windows.Forms.CheckBox()
         Me.chkMarkAsMarked = New System.Windows.Forms.CheckBox()
-        Me.chkMarkAsCustom = New System.Windows.Forms.CheckBox()
-        Me.cbMarkAsCustom = New System.Windows.Forms.ComboBox()
+        Me.chkMarkAsNewWithoutNFO = New System.Windows.Forms.CheckBox()
+        Me.chkMarkAsMarkedWithoutNFO = New System.Windows.Forms.CheckBox()
         Me.gbTitleCleanup = New System.Windows.Forms.GroupBox()
         Me.tblTitleCleanup = New System.Windows.Forms.TableLayoutPanel()
         Me.chkTitleProperCase = New System.Windows.Forms.CheckBox()
@@ -98,8 +90,6 @@ Partial Class frmMovie_Source
         Me.cmnuSources.SuspendLayout()
         Me.gbImportOptions.SuspendLayout()
         Me.tblImportOptions.SuspendLayout()
-        Me.gbAutoScrapeOnImport.SuspendLayout()
-        Me.tblAutoScrapeOnImport.SuspendLayout()
         Me.gbUnmarkNew.SuspendLayout()
         Me.tblUnmarkNew.SuspendLayout()
         Me.gbMarkNew.SuspendLayout()
@@ -117,7 +107,7 @@ Partial Class frmMovie_Source
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(1048, 680)
+        Me.pnlSettings.Size = New System.Drawing.Size(910, 561)
         Me.pnlSettings.TabIndex = 0
         '
         'tblSettings
@@ -137,7 +127,7 @@ Partial Class frmMovie_Source
         Me.tblSettings.RowCount = 2
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettings.Size = New System.Drawing.Size(1048, 680)
+        Me.tblSettings.Size = New System.Drawing.Size(910, 561)
         Me.tblSettings.TabIndex = 0
         '
         'gbSources
@@ -148,7 +138,7 @@ Partial Class frmMovie_Source
         Me.gbSources.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbSources.Location = New System.Drawing.Point(3, 3)
         Me.gbSources.Name = "gbSources"
-        Me.gbSources.Size = New System.Drawing.Size(1042, 268)
+        Me.gbSources.Size = New System.Drawing.Size(904, 226)
         Me.gbSources.TabIndex = 18
         Me.gbSources.TabStop = False
         Me.gbSources.Text = "Sources"
@@ -157,11 +147,11 @@ Partial Class frmMovie_Source
         '
         Me.tblSources.AutoSize = True
         Me.tblSources.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tblSources.ColumnCount = 4
+        Me.tblSources.ColumnCount = 1
         Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSources.Controls.Add(Me.gbSourcesDefaults, 0, 0)
         Me.tblSources.Controls.Add(Me.dgvSources, 0, 1)
         Me.tblSources.Dock = System.Windows.Forms.DockStyle.Fill
@@ -169,20 +159,19 @@ Partial Class frmMovie_Source
         Me.tblSources.Name = "tblSources"
         Me.tblSources.RowCount = 2
         Me.tblSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSources.Size = New System.Drawing.Size(1036, 247)
+        Me.tblSources.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblSources.Size = New System.Drawing.Size(898, 205)
         Me.tblSources.TabIndex = 0
         '
         'gbSourcesDefaults
         '
         Me.gbSourcesDefaults.AutoSize = True
         Me.gbSourcesDefaults.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tblSources.SetColumnSpan(Me.gbSourcesDefaults, 4)
         Me.gbSourcesDefaults.Controls.Add(Me.tblSourcesDefaults)
         Me.gbSourcesDefaults.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbSourcesDefaults.Location = New System.Drawing.Point(3, 3)
         Me.gbSourcesDefaults.Name = "gbSourcesDefaults"
-        Me.gbSourcesDefaults.Size = New System.Drawing.Size(1030, 48)
+        Me.gbSourcesDefaults.Size = New System.Drawing.Size(892, 48)
         Me.gbSourcesDefaults.TabIndex = 10
         Me.gbSourcesDefaults.TabStop = False
         Me.gbSourcesDefaults.Text = "Defaults for new Sources"
@@ -202,7 +191,7 @@ Partial Class frmMovie_Source
         Me.tblSourcesDefaults.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSourcesDefaults.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSourcesDefaults.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSourcesDefaults.Size = New System.Drawing.Size(1024, 27)
+        Me.tblSourcesDefaults.Size = New System.Drawing.Size(886, 27)
         Me.tblSourcesDefaults.TabIndex = 0
         '
         'lblSourcesDefaultsLanguage
@@ -235,7 +224,6 @@ Partial Class frmMovie_Source
         Me.dgvSources.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvSources.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.dgvSources.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colSourcesStatus, Me.colSourcesID, Me.colSourcesName, Me.colSourcesPath, Me.colSourcesLanguage, Me.colSourcesRecursive, Me.colSourcesUseFolderName, Me.colSourcesIsSingle, Me.colSourcesExclude, Me.colSourcesGetYear})
-        Me.tblSources.SetColumnSpan(Me.dgvSources, 4)
         Me.dgvSources.ContextMenuStrip = Me.cmnuSources
         Me.dgvSources.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvSources.Location = New System.Drawing.Point(3, 57)
@@ -246,7 +234,7 @@ Partial Class frmMovie_Source
         Me.dgvSources.ShowCellErrors = False
         Me.dgvSources.ShowCellToolTips = False
         Me.dgvSources.ShowRowErrors = False
-        Me.dgvSources.Size = New System.Drawing.Size(1030, 191)
+        Me.dgvSources.Size = New System.Drawing.Size(892, 145)
         Me.dgvSources.TabIndex = 11
         '
         'colSourcesStatus
@@ -369,9 +357,9 @@ Partial Class frmMovie_Source
         Me.gbImportOptions.AutoSize = True
         Me.gbImportOptions.Controls.Add(Me.tblImportOptions)
         Me.gbImportOptions.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbImportOptions.Location = New System.Drawing.Point(3, 277)
+        Me.gbImportOptions.Location = New System.Drawing.Point(3, 235)
         Me.gbImportOptions.Name = "gbImportOptions"
-        Me.gbImportOptions.Size = New System.Drawing.Size(1042, 400)
+        Me.gbImportOptions.Size = New System.Drawing.Size(904, 323)
         Me.gbImportOptions.TabIndex = 11
         Me.gbImportOptions.TabStop = False
         Me.gbImportOptions.Text = "Import Options"
@@ -384,8 +372,7 @@ Partial Class frmMovie_Source
         Me.tblImportOptions.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblImportOptions.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblImportOptions.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblImportOptions.Controls.Add(Me.gbAutoScrapeOnImport, 0, 9)
-        Me.tblImportOptions.Controls.Add(Me.gbUnmarkNew, 1, 8)
+        Me.tblImportOptions.Controls.Add(Me.gbUnmarkNew, 2, 8)
         Me.tblImportOptions.Controls.Add(Me.lblSkipLessThan, 0, 1)
         Me.tblImportOptions.Controls.Add(Me.gbMarkNew, 0, 8)
         Me.tblImportOptions.Controls.Add(Me.gbTitleCleanup, 3, 0)
@@ -402,8 +389,7 @@ Partial Class frmMovie_Source
         Me.tblImportOptions.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblImportOptions.Location = New System.Drawing.Point(3, 18)
         Me.tblImportOptions.Name = "tblImportOptions"
-        Me.tblImportOptions.RowCount = 10
-        Me.tblImportOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblImportOptions.RowCount = 9
         Me.tblImportOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblImportOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblImportOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -414,95 +400,18 @@ Partial Class frmMovie_Source
         Me.tblImportOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblImportOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblImportOptions.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblImportOptions.Size = New System.Drawing.Size(1036, 379)
+        Me.tblImportOptions.Size = New System.Drawing.Size(898, 302)
         Me.tblImportOptions.TabIndex = 9
-        '
-        'gbAutoScrapeOnImport
-        '
-        Me.gbAutoScrapeOnImport.AutoSize = True
-        Me.gbAutoScrapeOnImport.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tblImportOptions.SetColumnSpan(Me.gbAutoScrapeOnImport, 3)
-        Me.gbAutoScrapeOnImport.Controls.Add(Me.tblAutoScrapeOnImport)
-        Me.gbAutoScrapeOnImport.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbAutoScrapeOnImport.Location = New System.Drawing.Point(3, 305)
-        Me.gbAutoScrapeOnImport.Name = "gbAutoScrapeOnImport"
-        Me.gbAutoScrapeOnImport.Size = New System.Drawing.Size(562, 71)
-        Me.gbAutoScrapeOnImport.TabIndex = 8
-        Me.gbAutoScrapeOnImport.TabStop = False
-        Me.gbAutoScrapeOnImport.Text = "Auto-Scraping"
-        '
-        'tblAutoScrapeOnImport
-        '
-        Me.tblAutoScrapeOnImport.AutoSize = True
-        Me.tblAutoScrapeOnImport.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tblAutoScrapeOnImport.ColumnCount = 3
-        Me.tblAutoScrapeOnImport.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblAutoScrapeOnImport.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblAutoScrapeOnImport.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblAutoScrapeOnImport.Controls.Add(Me.chkAutoScrapeOnImportEnabled, 0, 0)
-        Me.tblAutoScrapeOnImport.Controls.Add(Me.chkAutoScrapeOnImportMissingItemsOnly, 0, 1)
-        Me.tblAutoScrapeOnImport.Controls.Add(Me.Label1, 1, 0)
-        Me.tblAutoScrapeOnImport.Controls.Add(Me.cbAutoScrapeOnImportScrapeType, 2, 0)
-        Me.tblAutoScrapeOnImport.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblAutoScrapeOnImport.Location = New System.Drawing.Point(3, 18)
-        Me.tblAutoScrapeOnImport.Name = "tblAutoScrapeOnImport"
-        Me.tblAutoScrapeOnImport.RowCount = 2
-        Me.tblAutoScrapeOnImport.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblAutoScrapeOnImport.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblAutoScrapeOnImport.Size = New System.Drawing.Size(556, 50)
-        Me.tblAutoScrapeOnImport.TabIndex = 0
-        '
-        'chkAutoScrapeOnImportEnabled
-        '
-        Me.chkAutoScrapeOnImportEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkAutoScrapeOnImportEnabled.AutoSize = True
-        Me.chkAutoScrapeOnImportEnabled.Location = New System.Drawing.Point(3, 5)
-        Me.chkAutoScrapeOnImportEnabled.Name = "chkAutoScrapeOnImportEnabled"
-        Me.chkAutoScrapeOnImportEnabled.Size = New System.Drawing.Size(138, 17)
-        Me.chkAutoScrapeOnImportEnabled.TabIndex = 0
-        Me.chkAutoScrapeOnImportEnabled.Text = "Enable Auto-Scraping"
-        Me.chkAutoScrapeOnImportEnabled.UseVisualStyleBackColor = True
-        '
-        'chkAutoScrapeOnImportMissingItemsOnly
-        '
-        Me.chkAutoScrapeOnImportMissingItemsOnly.AutoSize = True
-        Me.chkAutoScrapeOnImportMissingItemsOnly.Location = New System.Drawing.Point(3, 30)
-        Me.chkAutoScrapeOnImportMissingItemsOnly.Name = "chkAutoScrapeOnImportMissingItemsOnly"
-        Me.chkAutoScrapeOnImportMissingItemsOnly.Size = New System.Drawing.Size(123, 17)
-        Me.chkAutoScrapeOnImportMissingItemsOnly.TabIndex = 0
-        Me.chkAutoScrapeOnImportMissingItemsOnly.Text = "Only Missing Items"
-        Me.chkAutoScrapeOnImportMissingItemsOnly.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(147, 7)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(40, 13)
-        Me.Label1.TabIndex = 1
-        Me.Label1.Text = "Label1"
-        '
-        'cbAutoScrapeOnImportScrapeType
-        '
-        Me.cbAutoScrapeOnImportScrapeType.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.cbAutoScrapeOnImportScrapeType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbAutoScrapeOnImportScrapeType.FormattingEnabled = True
-        Me.cbAutoScrapeOnImportScrapeType.Location = New System.Drawing.Point(193, 3)
-        Me.cbAutoScrapeOnImportScrapeType.Name = "cbAutoScrapeOnImportScrapeType"
-        Me.cbAutoScrapeOnImportScrapeType.Size = New System.Drawing.Size(360, 21)
-        Me.cbAutoScrapeOnImportScrapeType.TabIndex = 2
         '
         'gbUnmarkNew
         '
         Me.gbUnmarkNew.AutoSize = True
         Me.gbUnmarkNew.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tblImportOptions.SetColumnSpan(Me.gbUnmarkNew, 2)
         Me.gbUnmarkNew.Controls.Add(Me.tblUnmarkNew)
         Me.gbUnmarkNew.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbUnmarkNew.Location = New System.Drawing.Point(365, 186)
+        Me.gbUnmarkNew.Location = New System.Drawing.Point(234, 186)
         Me.gbUnmarkNew.Name = "gbUnmarkNew"
-        Me.gbUnmarkNew.Size = New System.Drawing.Size(200, 113)
+        Me.gbUnmarkNew.Size = New System.Drawing.Size(171, 113)
         Me.gbUnmarkNew.TabIndex = 9
         Me.gbUnmarkNew.TabStop = False
         Me.gbUnmarkNew.Text = "Remove the marker ""New"""
@@ -514,18 +423,15 @@ Partial Class frmMovie_Source
         Me.tblUnmarkNew.ColumnCount = 1
         Me.tblUnmarkNew.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblUnmarkNew.Controls.Add(Me.chkUnmarkNewBeforeDBUpdate, 0, 0)
-        Me.tblUnmarkNew.Controls.Add(Me.chkUnmarkNewAfterScraping, 0, 1)
-        Me.tblUnmarkNew.Controls.Add(Me.chkUnmarkNewOnExit, 0, 3)
-        Me.tblUnmarkNew.Controls.Add(Me.chkUnmarkNewWithNFO, 0, 2)
+        Me.tblUnmarkNew.Controls.Add(Me.chkUnmarkNewOnExit, 0, 1)
         Me.tblUnmarkNew.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblUnmarkNew.Location = New System.Drawing.Point(3, 18)
         Me.tblUnmarkNew.Name = "tblUnmarkNew"
-        Me.tblUnmarkNew.RowCount = 4
+        Me.tblUnmarkNew.RowCount = 2
         Me.tblUnmarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblUnmarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblUnmarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblUnmarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblUnmarkNew.Size = New System.Drawing.Size(194, 92)
+        Me.tblUnmarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblUnmarkNew.Size = New System.Drawing.Size(165, 92)
         Me.tblUnmarkNew.TabIndex = 0
         '
         'chkUnmarkNewBeforeDBUpdate
@@ -538,35 +444,15 @@ Partial Class frmMovie_Source
         Me.chkUnmarkNewBeforeDBUpdate.Text = "Before any Library Update"
         Me.chkUnmarkNewBeforeDBUpdate.UseVisualStyleBackColor = True
         '
-        'chkUnmarkNewAfterScraping
-        '
-        Me.chkUnmarkNewAfterScraping.AutoSize = True
-        Me.chkUnmarkNewAfterScraping.Location = New System.Drawing.Point(3, 26)
-        Me.chkUnmarkNewAfterScraping.Name = "chkUnmarkNewAfterScraping"
-        Me.chkUnmarkNewAfterScraping.Size = New System.Drawing.Size(182, 17)
-        Me.chkUnmarkNewAfterScraping.TabIndex = 0
-        Me.chkUnmarkNewAfterScraping.Text = "After Auto-Scraping on Import"
-        Me.chkUnmarkNewAfterScraping.UseVisualStyleBackColor = True
-        '
         'chkUnmarkNewOnExit
         '
         Me.chkUnmarkNewOnExit.AutoSize = True
-        Me.chkUnmarkNewOnExit.Location = New System.Drawing.Point(3, 72)
+        Me.chkUnmarkNewOnExit.Location = New System.Drawing.Point(3, 26)
         Me.chkUnmarkNewOnExit.Name = "chkUnmarkNewOnExit"
         Me.chkUnmarkNewOnExit.Size = New System.Drawing.Size(63, 17)
         Me.chkUnmarkNewOnExit.TabIndex = 0
         Me.chkUnmarkNewOnExit.Text = "On Exit"
         Me.chkUnmarkNewOnExit.UseVisualStyleBackColor = True
-        '
-        'chkUnmarkNewWithNFO
-        '
-        Me.chkUnmarkNewWithNFO.AutoSize = True
-        Me.chkUnmarkNewWithNFO.Location = New System.Drawing.Point(3, 49)
-        Me.chkUnmarkNewWithNFO.Name = "chkUnmarkNewWithNFO"
-        Me.chkUnmarkNewWithNFO.Size = New System.Drawing.Size(166, 17)
-        Me.chkUnmarkNewWithNFO.TabIndex = 0
-        Me.chkUnmarkNewWithNFO.Text = "If a valid NFO already exists"
-        Me.chkUnmarkNewWithNFO.UseVisualStyleBackColor = True
         '
         'lblSkipLessThan
         '
@@ -582,35 +468,36 @@ Partial Class frmMovie_Source
         '
         Me.gbMarkNew.AutoSize = True
         Me.gbMarkNew.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.tblImportOptions.SetColumnSpan(Me.gbMarkNew, 2)
         Me.gbMarkNew.Controls.Add(Me.tblMarkNew)
         Me.gbMarkNew.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMarkNew.Location = New System.Drawing.Point(3, 186)
         Me.gbMarkNew.Name = "gbMarkNew"
-        Me.gbMarkNew.Size = New System.Drawing.Size(356, 113)
+        Me.gbMarkNew.Size = New System.Drawing.Size(225, 113)
         Me.gbMarkNew.TabIndex = 8
         Me.gbMarkNew.TabStop = False
-        Me.gbMarkNew.Text = "Mark newly added Movies"
+        Me.gbMarkNew.Text = "Mark newly added"
         '
         'tblMarkNew
         '
         Me.tblMarkNew.AutoSize = True
         Me.tblMarkNew.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tblMarkNew.ColumnCount = 2
-        Me.tblMarkNew.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMarkNew.ColumnCount = 1
         Me.tblMarkNew.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMarkNew.Controls.Add(Me.chkMarkAsNew, 0, 0)
-        Me.tblMarkNew.Controls.Add(Me.chkMarkAsMarked, 0, 1)
-        Me.tblMarkNew.Controls.Add(Me.chkMarkAsCustom, 0, 2)
-        Me.tblMarkNew.Controls.Add(Me.cbMarkAsCustom, 1, 2)
+        Me.tblMarkNew.Controls.Add(Me.chkMarkAsMarked, 0, 2)
+        Me.tblMarkNew.Controls.Add(Me.chkMarkAsNewWithoutNFO, 0, 1)
+        Me.tblMarkNew.Controls.Add(Me.chkMarkAsMarkedWithoutNFO, 0, 4)
         Me.tblMarkNew.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMarkNew.Location = New System.Drawing.Point(3, 18)
         Me.tblMarkNew.Name = "tblMarkNew"
-        Me.tblMarkNew.RowCount = 4
+        Me.tblMarkNew.RowCount = 5
         Me.tblMarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMarkNew.Size = New System.Drawing.Size(350, 92)
+        Me.tblMarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMarkNew.Size = New System.Drawing.Size(219, 92)
         Me.tblMarkNew.TabIndex = 0
         '
         'chkMarkAsNew
@@ -626,43 +513,44 @@ Partial Class frmMovie_Source
         'chkMarkAsMarked
         '
         Me.chkMarkAsMarked.AutoSize = True
-        Me.chkMarkAsMarked.Location = New System.Drawing.Point(3, 26)
+        Me.chkMarkAsMarked.Location = New System.Drawing.Point(3, 49)
         Me.chkMarkAsMarked.Name = "chkMarkAsMarked"
         Me.chkMarkAsMarked.Size = New System.Drawing.Size(116, 17)
         Me.chkMarkAsMarked.TabIndex = 0
         Me.chkMarkAsMarked.Text = "Mark as ""Marked"""
         Me.chkMarkAsMarked.UseVisualStyleBackColor = True
         '
-        'chkMarkAsCustom
+        'chkMarkAsNewWithoutNFO
         '
-        Me.chkMarkAsCustom.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMarkAsCustom.AutoSize = True
-        Me.chkMarkAsCustom.Location = New System.Drawing.Point(3, 51)
-        Me.chkMarkAsCustom.Name = "chkMarkAsCustom"
-        Me.chkMarkAsCustom.Size = New System.Drawing.Size(158, 17)
-        Me.chkMarkAsCustom.TabIndex = 0
-        Me.chkMarkAsCustom.Text = "Mark as ""Custom Marked"""
-        Me.chkMarkAsCustom.UseVisualStyleBackColor = True
+        Me.chkMarkAsNewWithoutNFO.AutoSize = True
+        Me.chkMarkAsNewWithoutNFO.Location = New System.Drawing.Point(3, 26)
+        Me.chkMarkAsNewWithoutNFO.Name = "chkMarkAsNewWithoutNFO"
+        Me.chkMarkAsNewWithoutNFO.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.chkMarkAsNewWithoutNFO.Size = New System.Drawing.Size(181, 17)
+        Me.chkMarkAsNewWithoutNFO.TabIndex = 0
+        Me.chkMarkAsNewWithoutNFO.Text = "Only if no valid NFO exists"
+        Me.chkMarkAsNewWithoutNFO.UseVisualStyleBackColor = True
         '
-        'cbMarkAsCustom
+        'chkMarkAsMarkedWithoutNFO
         '
-        Me.cbMarkAsCustom.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.cbMarkAsCustom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMarkAsCustom.FormattingEnabled = True
-        Me.cbMarkAsCustom.Location = New System.Drawing.Point(167, 49)
-        Me.cbMarkAsCustom.Name = "cbMarkAsCustom"
-        Me.cbMarkAsCustom.Size = New System.Drawing.Size(180, 21)
-        Me.cbMarkAsCustom.TabIndex = 2
+        Me.chkMarkAsMarkedWithoutNFO.AutoSize = True
+        Me.chkMarkAsMarkedWithoutNFO.Location = New System.Drawing.Point(3, 72)
+        Me.chkMarkAsMarkedWithoutNFO.Name = "chkMarkAsMarkedWithoutNFO"
+        Me.chkMarkAsMarkedWithoutNFO.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.chkMarkAsMarkedWithoutNFO.Size = New System.Drawing.Size(181, 17)
+        Me.chkMarkAsMarkedWithoutNFO.TabIndex = 0
+        Me.chkMarkAsMarkedWithoutNFO.Text = "Only if no valid NFO exists"
+        Me.chkMarkAsMarkedWithoutNFO.UseVisualStyleBackColor = True
         '
-        'gbMovieGeneralFiltersOpts
+        'gbTitleCleanup
         '
         Me.gbTitleCleanup.AutoSize = True
         Me.gbTitleCleanup.Controls.Add(Me.tblTitleCleanup)
         Me.gbTitleCleanup.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbTitleCleanup.Location = New System.Drawing.Point(571, 3)
-        Me.gbTitleCleanup.Name = "gbMovieGeneralFiltersOpts"
-        Me.tblImportOptions.SetRowSpan(Me.gbTitleCleanup, 10)
-        Me.gbTitleCleanup.Size = New System.Drawing.Size(462, 373)
+        Me.gbTitleCleanup.Location = New System.Drawing.Point(411, 3)
+        Me.gbTitleCleanup.Name = "gbTitleCleanup"
+        Me.tblImportOptions.SetRowSpan(Me.gbTitleCleanup, 9)
+        Me.gbTitleCleanup.Size = New System.Drawing.Size(484, 296)
         Me.gbTitleCleanup.TabIndex = 12
         Me.gbTitleCleanup.TabStop = False
         Me.gbTitleCleanup.Text = "Title Cleanup"
@@ -686,7 +574,7 @@ Partial Class frmMovie_Source
         Me.tblTitleCleanup.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTitleCleanup.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblTitleCleanup.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTitleCleanup.Size = New System.Drawing.Size(456, 352)
+        Me.tblTitleCleanup.Size = New System.Drawing.Size(478, 275)
         Me.tblTitleCleanup.TabIndex = 10
         '
         'chkTitleProperCase
@@ -717,7 +605,7 @@ Partial Class frmMovie_Source
         Me.dgvTitleFilters.ShowCellErrors = False
         Me.dgvTitleFilters.ShowCellToolTips = False
         Me.dgvTitleFilters.ShowRowErrors = False
-        Me.dgvTitleFilters.Size = New System.Drawing.Size(450, 271)
+        Me.dgvTitleFilters.Size = New System.Drawing.Size(472, 194)
         Me.dgvTitleFilters.TabIndex = 7
         '
         'colTitleFiltersIndex
@@ -738,7 +626,7 @@ Partial Class frmMovie_Source
         Me.btnTitleFilterDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnTitleFilterDefaults.Image = CType(resources.GetObject("btnTitleFilterDefaults.Image"), System.Drawing.Image)
         Me.btnTitleFilterDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnTitleFilterDefaults.Location = New System.Drawing.Point(348, 326)
+        Me.btnTitleFilterDefaults.Location = New System.Drawing.Point(370, 249)
         Me.btnTitleFilterDefaults.Name = "btnTitleFilterDefaults"
         Me.btnTitleFilterDefaults.Size = New System.Drawing.Size(105, 23)
         Me.btnTitleFilterDefaults.TabIndex = 5
@@ -746,13 +634,13 @@ Partial Class frmMovie_Source
         Me.btnTitleFilterDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnTitleFilterDefaults.UseVisualStyleBackColor = True
         '
-        'lblTitleFilter
+        'lblTitleFilters
         '
         Me.lblTitleFilters.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTitleFilters.AutoSize = True
         Me.lblTitleFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTitleFilters.Location = New System.Drawing.Point(3, 331)
-        Me.lblTitleFilters.Name = "lblTitleFilter"
+        Me.lblTitleFilters.Location = New System.Drawing.Point(3, 254)
+        Me.lblTitleFilters.Name = "lblTitleFilters"
         Me.lblTitleFilters.Size = New System.Drawing.Size(201, 13)
         Me.lblTitleFilters.TabIndex = 6
         Me.lblTitleFilters.Text = "Use ALT + UP / DOWN to move the rows"
@@ -772,7 +660,7 @@ Partial Class frmMovie_Source
         'txtSkipLessThan
         '
         Me.txtSkipLessThan.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtSkipLessThan.Location = New System.Drawing.Point(365, 26)
+        Me.txtSkipLessThan.Location = New System.Drawing.Point(177, 26)
         Me.txtSkipLessThan.Name = "txtSkipLessThan"
         Me.txtSkipLessThan.Size = New System.Drawing.Size(51, 22)
         Me.txtSkipLessThan.TabIndex = 1
@@ -781,7 +669,7 @@ Partial Class frmMovie_Source
         '
         Me.lblSkipLessThanMB.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblSkipLessThanMB.AutoSize = True
-        Me.lblSkipLessThanMB.Location = New System.Drawing.Point(422, 30)
+        Me.lblSkipLessThanMB.Location = New System.Drawing.Point(234, 30)
         Me.lblSkipLessThanMB.Name = "lblSkipLessThanMB"
         Me.lblSkipLessThanMB.Size = New System.Drawing.Size(24, 13)
         Me.lblSkipLessThanMB.TabIndex = 2
@@ -791,6 +679,7 @@ Partial Class frmMovie_Source
         '
         Me.chkSortBeforeScan.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkSortBeforeScan.AutoSize = True
+        Me.tblImportOptions.SetColumnSpan(Me.chkSortBeforeScan, 3)
         Me.chkSortBeforeScan.Location = New System.Drawing.Point(3, 3)
         Me.chkSortBeforeScan.Name = "chkSortBeforeScan"
         Me.chkSortBeforeScan.Size = New System.Drawing.Size(276, 17)
@@ -802,6 +691,7 @@ Partial Class frmMovie_Source
         '
         Me.chkOverwriteNfo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkOverwriteNfo.AutoSize = True
+        Me.tblImportOptions.SetColumnSpan(Me.chkOverwriteNfo, 3)
         Me.chkOverwriteNfo.Location = New System.Drawing.Point(3, 54)
         Me.chkOverwriteNfo.Name = "chkOverwriteNfo"
         Me.chkOverwriteNfo.Size = New System.Drawing.Size(144, 17)
@@ -812,6 +702,7 @@ Partial Class frmMovie_Source
         'lblOverwriteNfo
         '
         Me.lblOverwriteNfo.AutoSize = True
+        Me.tblImportOptions.SetColumnSpan(Me.lblOverwriteNfo, 3)
         Me.lblOverwriteNfo.Location = New System.Drawing.Point(3, 74)
         Me.lblOverwriteNfo.Name = "lblOverwriteNfo"
         Me.lblOverwriteNfo.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
@@ -825,6 +716,7 @@ Partial Class frmMovie_Source
         Me.chkVideoSourceFromFolder.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkVideoSourceFromFolder.AutoSize = True
         Me.chkVideoSourceFromFolder.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.tblImportOptions.SetColumnSpan(Me.chkVideoSourceFromFolder, 3)
         Me.chkVideoSourceFromFolder.Location = New System.Drawing.Point(3, 90)
         Me.chkVideoSourceFromFolder.Name = "chkVideoSourceFromFolder"
         Me.chkVideoSourceFromFolder.Size = New System.Drawing.Size(290, 17)
@@ -848,6 +740,7 @@ Partial Class frmMovie_Source
         '
         Me.chkDateAddedIgnoreNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkDateAddedIgnoreNFO.AutoSize = True
+        Me.tblImportOptions.SetColumnSpan(Me.chkDateAddedIgnoreNFO, 3)
         Me.chkDateAddedIgnoreNFO.Location = New System.Drawing.Point(3, 113)
         Me.chkDateAddedIgnoreNFO.Name = "chkDateAddedIgnoreNFO"
         Me.chkDateAddedIgnoreNFO.Size = New System.Drawing.Size(188, 17)
@@ -867,20 +760,20 @@ Partial Class frmMovie_Source
         '
         'cbDateAddedDateTime
         '
-        Me.cbDateAddedDateTime.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.tblImportOptions.SetColumnSpan(Me.cbDateAddedDateTime, 2)
+        Me.cbDateAddedDateTime.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cbDateAddedDateTime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbDateAddedDateTime.FormattingEnabled = True
-        Me.cbDateAddedDateTime.Location = New System.Drawing.Point(365, 136)
+        Me.cbDateAddedDateTime.Location = New System.Drawing.Point(177, 136)
         Me.cbDateAddedDateTime.Name = "cbDateAddedDateTime"
-        Me.cbDateAddedDateTime.Size = New System.Drawing.Size(200, 21)
+        Me.cbDateAddedDateTime.Size = New System.Drawing.Size(228, 21)
         Me.cbDateAddedDateTime.TabIndex = 11
         '
         'frmMovie_Source
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1048, 680)
+        Me.ClientSize = New System.Drawing.Size(910, 561)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.Name = "frmMovie_Source"
@@ -903,10 +796,6 @@ Partial Class frmMovie_Source
         Me.gbImportOptions.PerformLayout()
         Me.tblImportOptions.ResumeLayout(False)
         Me.tblImportOptions.PerformLayout()
-        Me.gbAutoScrapeOnImport.ResumeLayout(False)
-        Me.gbAutoScrapeOnImport.PerformLayout()
-        Me.tblAutoScrapeOnImport.ResumeLayout(False)
-        Me.tblAutoScrapeOnImport.PerformLayout()
         Me.gbUnmarkNew.ResumeLayout(False)
         Me.gbUnmarkNew.PerformLayout()
         Me.tblUnmarkNew.ResumeLayout(False)
@@ -951,21 +840,12 @@ Partial Class frmMovie_Source
     Friend WithEvents gbUnmarkNew As GroupBox
     Friend WithEvents tblUnmarkNew As TableLayoutPanel
     Friend WithEvents chkUnmarkNewBeforeDBUpdate As CheckBox
-    Friend WithEvents chkUnmarkNewAfterScraping As CheckBox
     Friend WithEvents chkUnmarkNewOnExit As CheckBox
-    Friend WithEvents chkUnmarkNewWithNFO As CheckBox
+    Friend WithEvents chkMarkAsNewWithoutNFO As CheckBox
     Friend WithEvents gbMarkNew As GroupBox
     Friend WithEvents tblMarkNew As TableLayoutPanel
     Friend WithEvents chkMarkAsNew As CheckBox
     Friend WithEvents chkMarkAsMarked As CheckBox
-    Friend WithEvents chkMarkAsCustom As CheckBox
-    Friend WithEvents cbMarkAsCustom As ComboBox
-    Friend WithEvents gbAutoScrapeOnImport As GroupBox
-    Friend WithEvents tblAutoScrapeOnImport As TableLayoutPanel
-    Friend WithEvents chkAutoScrapeOnImportEnabled As CheckBox
-    Friend WithEvents chkAutoScrapeOnImportMissingItemsOnly As CheckBox
-    Friend WithEvents Label1 As Label
-    Friend WithEvents cbAutoScrapeOnImportScrapeType As ComboBox
     Friend WithEvents gbSources As GroupBox
     Friend WithEvents tblSources As TableLayoutPanel
     Friend WithEvents dgvSources As DataGridView
@@ -990,4 +870,5 @@ Partial Class frmMovie_Source
     Friend WithEvents colSourcesGetYear As DataGridViewCheckBoxColumn
     Friend WithEvents chkTitleFiltersEnabled As CheckBox
     Friend WithEvents cbDateAddedDateTime As ComboBox
+    Friend WithEvents chkMarkAsMarkedWithoutNFO As CheckBox
 End Class
