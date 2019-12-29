@@ -120,7 +120,6 @@ Partial Class frmOption_AVCodecMapping
         Me.dgvAudio.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colAudioDetected, Me.colAudioMappedCodec, Me.colAudioAdditionalFeatures})
         Me.dgvAudio.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvAudio.Location = New System.Drawing.Point(3, 3)
-        Me.dgvAudio.MultiSelect = False
         Me.dgvAudio.Name = "dgvAudio"
         Me.dgvAudio.RowHeadersWidth = 25
         Me.dgvAudio.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect

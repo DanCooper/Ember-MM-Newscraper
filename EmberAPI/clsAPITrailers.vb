@@ -136,7 +136,7 @@ Public Class Trailers
         trlResult = Nothing
 
         'If Any trailer quality, take the first one in TrailerList
-        If Master.eSettings.MovieTrailerPrefVideoQual = Enums.TrailerVideoQuality.Any Then
+        If Master.eSettings.Movie.TrailerSettings.PreferredVideoQuality = Enums.TrailerVideoQuality.Any Then
             trlResult = TrailerList.First
             If YouTube.UrlUtils.IsYouTubeURL(trlResult.URLWebsite) Then
                 Dim sYouTube As New YouTube.Scraper
@@ -241,7 +241,7 @@ Public Class Trailers
                     sYouTube.GetVideoLinks(nTrailer.URLWebsite)
 
                     'try to get preferred quality
-                    ytTrailer = sYouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual)
+                    ytTrailer = sYouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.Movie.TrailerSettings.PreferredVideoQuality)
 
                     'try to get the best quality for search a Trailer that satisfies the minimum quality
                     If ytTrailer Is Nothing Then
@@ -296,9 +296,9 @@ Public Class Trailers
                     sIMDb.GetVideoLinks(nTrailer.URLWebsite)
 
                     'try to get preferred quality
-                    If sIMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefVideoQual) Then
-                        nTrailer.URLVideoStream = sIMDb.VideoLinks(Master.eSettings.MovieTrailerPrefVideoQual).URL
-                        nTrailer.Quality = Master.eSettings.MovieTrailerPrefVideoQual
+                    If sIMDb.VideoLinks.ContainsKey(Master.eSettings.Movie.TrailerSettings.PreferredVideoQuality) Then
+                        nTrailer.URLVideoStream = sIMDb.VideoLinks(Master.eSettings.Movie.TrailerSettings.PreferredVideoQuality).URL
+                        nTrailer.Quality = Master.eSettings.Movie.TrailerSettings.PreferredVideoQuality
                     Else
                         If sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD2160p60fps) Then
                             nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD2160p60fps).URL
@@ -348,7 +348,7 @@ Public Class Trailers
                     End If
                 End If
 
-                If nTrailer.Quality = Master.eSettings.MovieTrailerPrefVideoQual Then
+                If nTrailer.Quality = Master.eSettings.Movie.TrailerSettings.PreferredVideoQuality Then
                     trlResult = nTrailer
                     Exit For
                 End If
@@ -357,7 +357,7 @@ Public Class Trailers
 
         'no preferred Trailer quality found, try to get one that has the minimum quality
         If trlResult Is Nothing Then
-            Select Case Master.eSettings.MovieTrailerMinVideoQual
+            Select Case Master.eSettings.Movie.TrailerSettings.MinimumVideoQuality
                 Case Enums.TrailerVideoQuality.HD2160p60fps
                     If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
                         trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)

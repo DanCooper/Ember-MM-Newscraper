@@ -232,7 +232,7 @@ Public Class frmOption_FileSystem
                            Master.eLang.GetString(104, "Are You Sure?"),
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
-            DataGridView_Fill_ValidSubtitleExtensions(Master.eSettings.GetDefaultsForList_ValidSubtitleExtensions())
+            DataGridView_Fill_ValidSubtitleExtensions(Master.eSettings.Options.FileSystem.ValidSubtitleExtensions.GetDefaults(Enums.DefaultType.ValidSubtitleExts))
             RaiseEvent SettingsChanged()
         End If
     End Sub
@@ -242,7 +242,7 @@ Public Class frmOption_FileSystem
                            Master.eLang.GetString(104, "Are You Sure?"),
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
-            DataGridView_Fill_ValidThemeExtensions(Master.eSettings.GetDefaultsForList_ValidThemeExtensions())
+            DataGridView_Fill_ValidThemeExtensions(Master.eSettings.Options.FileSystem.ValidThemeExtensions.GetDefaults(Enums.DefaultType.ValidThemeExts))
             RaiseEvent SettingsChanged()
         End If
     End Sub
@@ -252,7 +252,7 @@ Public Class frmOption_FileSystem
                            Master.eLang.GetString(104, "Are You Sure?"),
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
-            DataGridView_Fill_ValidVideoExtensions(Master.eSettings.GetDefaultsForList_ValidVideoExtensions())
+            DataGridView_Fill_ValidVideoExtensions(Master.eSettings.Options.FileSystem.ValidVideoExtensions.GetDefaults(Enums.DefaultType.ValidVideoExts))
             RaiseEvent SettingsChanged()
         End If
     End Sub

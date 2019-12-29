@@ -458,17 +458,17 @@ Public Class Scraper
 
         If ID.ToLower.StartsWith("tt") Then
             'search movie by IMDB ID
-            APIResult = Task.Run(Function() _Client.GetMovieAsync(ID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
+            APIResult = Task.Run(Function() _Client.GetMovieAsync(ID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Keywords Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
             If _AddonSettings.FallBackEng Then
-                APIResultE = Task.Run(Function() _ClientEN.GetMovieAsync(ID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
+                APIResultE = Task.Run(Function() _ClientEN.GetMovieAsync(ID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Keywords Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
             Else
                 APIResultE = APIResult
             End If
         ElseIf Integer.TryParse(ID, intTMDBID) Then
             'search movie by TMDB ID
-            APIResult = Task.Run(Function() _Client.GetMovieAsync(intTMDBID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
+            APIResult = Task.Run(Function() _Client.GetMovieAsync(intTMDBID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Keywords Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
             If _AddonSettings.FallBackEng Then
-                APIResultE = Task.Run(Function() _ClientEN.GetMovieAsync(intTMDBID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
+                APIResultE = Task.Run(Function() _ClientEN.GetMovieAsync(intTMDBID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Keywords Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
             Else
                 APIResultE = APIResult
             End If
@@ -531,31 +531,37 @@ Public Class Scraper
         If bwTMDB.CancellationPending Then Return Nothing
 
         'Collection ID
-        If FilteredOptions.bMainCollectionID Then
-            If Result.BelongsToCollection Is Nothing Then
-                If _AddonSettings.FallBackEng AndAlso ResultE.BelongsToCollection IsNot Nothing Then
-                    Dim nFullMovieSetInfo = GetInfo_MovieSet(ResultE.BelongsToCollection.Id.ToString,
-                                                                 New Structures.ScrapeOptions With {.bMainPlot = True, .bMainTitle = True},
-                                                                 False)
+        If Result.BelongsToCollection Is Nothing Then
+            If _AddonSettings.FallBackEng AndAlso ResultE.BelongsToCollection IsNot Nothing Then
+                Dim nFullMovieSetInfo = GetInfo_MovieSet(
+                        ResultE.BelongsToCollection.Id.ToString,
+                        New Structures.ScrapeOptions With {.bMainPlot = True, .bMainTitle = True},
+                        False)
+                nMovie.UniqueIDs.TMDbCollectionId = nFullMovieSetInfo.UniqueIDs.TMDbId
+                If FilteredOptions.bMainCollection Then
                     nMovie.AddSet(New MediaContainers.SetDetails With {
-                                      .ID = -1,
-                                      .Order = -1,
-                                      .Plot = nFullMovieSetInfo.Plot,
-                                      .Title = nFullMovieSetInfo.Title,
-                                      .TMDbId = nFullMovieSetInfo.UniqueIDs.TMDbId})
-                    nMovie.UniqueIDs.TMDbCollectionId = nFullMovieSetInfo.UniqueIDs.TMDbId
-                End If
-            Else
-                Dim nFullMovieSetInfo = GetInfo_MovieSet(Result.BelongsToCollection.Id.ToString,
-                                                             New Structures.ScrapeOptions With {.bMainPlot = True, .bMainTitle = True},
-                                                             False)
-                nMovie.AddSet(New MediaContainers.SetDetails With {
                                   .ID = -1,
                                   .Order = -1,
                                   .Plot = nFullMovieSetInfo.Plot,
                                   .Title = nFullMovieSetInfo.Title,
-                                  .TMDbId = nFullMovieSetInfo.UniqueIDs.TMDbId})
-                nMovie.UniqueIDs.TMDbCollectionId = nFullMovieSetInfo.UniqueIDs.TMDbId
+                                  .TMDbId = nFullMovieSetInfo.UniqueIDs.TMDbId
+                                  })
+                End If
+            End If
+        Else
+            Dim nFullMovieSetInfo = GetInfo_MovieSet(
+                    Result.BelongsToCollection.Id.ToString,
+                    New Structures.ScrapeOptions With {.bMainPlot = True, .bMainTitle = True},
+                    False)
+            nMovie.UniqueIDs.TMDbCollectionId = nFullMovieSetInfo.UniqueIDs.TMDbId
+            If FilteredOptions.bMainCollection Then
+                nMovie.AddSet(New MediaContainers.SetDetails With {
+                              .ID = -1,
+                              .Order = -1,
+                              .Plot = nFullMovieSetInfo.Plot,
+                              .Title = nFullMovieSetInfo.Title,
+                              .TMDbId = nFullMovieSetInfo.UniqueIDs.TMDbId
+                              })
             End If
         End If
 
@@ -573,13 +579,13 @@ Public Class Scraper
         If bwTMDB.CancellationPending Then Return Nothing
 
         'Director / Writer
-        If FilteredOptions.bMainDirectors OrElse FilteredOptions.bMainWriters Then
+        If FilteredOptions.bMainDirectors OrElse FilteredOptions.bMainCredits Then
             If Result.Credits IsNot Nothing AndAlso Result.Credits.Crew IsNot Nothing Then
                 For Each aCrew As TMDbLib.Objects.General.Crew In Result.Credits.Crew
                     If FilteredOptions.bMainDirectors AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
                         nMovie.Directors.Add(aCrew.Name)
                     End If
-                    If FilteredOptions.bMainWriters AndAlso aCrew.Department = "Writing" AndAlso (aCrew.Job = "Author" OrElse aCrew.Job = "Screenplay" OrElse aCrew.Job = "Writer") Then
+                    If FilteredOptions.bMainCredits AndAlso aCrew.Department = "Writing" AndAlso (aCrew.Job = "Author" OrElse aCrew.Job = "Screenplay" OrElse aCrew.Job = "Writer") Then
                         nMovie.Credits.Add(aCrew.Name)
                     End If
                 Next
@@ -645,15 +651,8 @@ Public Class Scraper
 
         If bwTMDB.CancellationPending Then Return Nothing
 
-        'Rating
-        If FilteredOptions.bMainRating Then
-            nMovie.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "themoviedb", .Value = Result.VoteAverage, .Votes = Result.VoteCount})
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'ReleaseDate
-        If FilteredOptions.bMainRelease Then
+        'Premiered
+        If FilteredOptions.bMainPremiered Then
             Dim ScrapedDate As String = String.Empty
             If Result.ReleaseDate Is Nothing OrElse (Result.ReleaseDate IsNot Nothing AndAlso String.IsNullOrEmpty(CStr(Result.ReleaseDate))) Then
                 If _AddonSettings.FallBackEng AndAlso ResultE.ReleaseDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(ResultE.ReleaseDate)) Then
@@ -666,11 +665,18 @@ Public Class Scraper
                 Dim RelDate As Date
                 If Date.TryParse(ScrapedDate, RelDate) Then
                     'always save date in same date format not depending on users language setting!
-                    nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
+                    nMovie.Premiered = RelDate.ToString("yyyy-MM-dd")
                 Else
-                    nMovie.ReleaseDate = ScrapedDate
+                    nMovie.Premiered = ScrapedDate
                 End If
             End If
+        End If
+
+        If bwTMDB.CancellationPending Then Return Nothing
+
+        'Rating
+        If FilteredOptions.bMainRatings Then
+            nMovie.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "themoviedb", .Value = Result.VoteAverage, .Votes = Result.VoteCount})
         End If
 
         If bwTMDB.CancellationPending Then Return Nothing
@@ -712,6 +718,17 @@ Public Class Scraper
 
         If bwTMDB.CancellationPending Then Return Nothing
 
+        'Tags
+        If FilteredOptions.bMainTags Then
+            If Result.Keywords IsNot Nothing AndAlso Result.Keywords.Keywords.Count > 0 Then
+                For Each cTag In Result.Keywords.Keywords
+                    nMovie.Tags.Add(cTag.Name)
+                Next
+            End If
+        End If
+
+        If bwTMDB.CancellationPending Then Return Nothing
+
         'Title
         If FilteredOptions.bMainTitle Then
             If Result.Title Is Nothing OrElse (Result.Title IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Title)) Then
@@ -743,19 +760,6 @@ Public Class Scraper
                         Exit For
                     End If
                 Next
-            End If
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'Year
-        If FilteredOptions.bMainYear Then
-            If Result.ReleaseDate Is Nothing OrElse (Result.ReleaseDate IsNot Nothing AndAlso String.IsNullOrEmpty(CStr(Result.ReleaseDate))) Then
-                If _AddonSettings.FallBackEng AndAlso ResultE.ReleaseDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(ResultE.ReleaseDate)) Then
-                    nMovie.Year = ResultE.ReleaseDate.Value.Year
-                End If
-            Else
-                nMovie.Year = Result.ReleaseDate.Value.Year
             End If
         End If
 
@@ -859,9 +863,9 @@ Public Class Scraper
             Dim APIResultE As Task(Of TMDbLib.Objects.TvShows.TvShow)
 
             'search movie by TMDB ID
-            APIResult = Task.Run(Function() _Client.GetTvShowAsync(CInt(intTMDBID), TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or TMDbLib.Objects.TvShows.TvShowMethods.Credits Or TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds))
+            APIResult = Task.Run(Function() _Client.GetTvShowAsync(CInt(intTMDBID), TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or TMDbLib.Objects.TvShows.TvShowMethods.Credits Or TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds Or TMDbLib.Objects.TvShows.TvShowMethods.Keywords))
             If _AddonSettings.FallBackEng Then
-                APIResultE = Task.Run(Function() _ClientEN.GetTvShowAsync(CInt(intTMDBID), TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or TMDbLib.Objects.TvShows.TvShowMethods.Credits Or TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds))
+                APIResultE = Task.Run(Function() _ClientEN.GetTvShowAsync(CInt(intTMDBID), TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or TMDbLib.Objects.TvShows.TvShowMethods.Credits Or TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds Or TMDbLib.Objects.TvShows.TvShowMethods.Keywords))
             Else
                 APIResultE = APIResult
             End If
@@ -1028,7 +1032,7 @@ Public Class Scraper
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Rating
-            If FilteredOptions.bMainRating Then
+            If FilteredOptions.bMainRatings Then
                 nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "themoviedb", .Value = Result.VoteAverage, .Votes = Result.VoteCount})
             End If
 
@@ -1242,7 +1246,7 @@ Public Class Scraper
         End If
 
         'Rating
-        If FilteredOptions.bMainRating Then
+        If FilteredOptions.bMainRatings Then
             nTVEpisode.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "themoviedb", .Value = EpisodeInfo.VoteAverage, .Votes = EpisodeInfo.VoteCount})
         End If
 

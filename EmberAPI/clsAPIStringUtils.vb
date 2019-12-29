@@ -79,7 +79,7 @@ Public Class StringUtils
     ''' <c>String.Empty</c> is returned if the name is empty or Nothing.
     ''' The value of <paramref name="name"/> is returned if no filter is passed</returns>
     ''' <remarks></remarks>
-    Public Shared Function ApplyFilters(ByVal name As String, ByRef filters As TitleFilterSpecification) As String
+    Public Shared Function ApplyFilters(ByVal name As String, ByRef filters As ExtendedListOfString) As String
         If String.IsNullOrEmpty(name) Then Return String.Empty
         If filters Is Nothing OrElse filters.Count = 0 Then Return name
         Dim newName As String = name
@@ -473,9 +473,9 @@ Public Class StringUtils
         Dim strMask As String = String.Empty
         Select Case contentType
             Case Enums.ContentType.Movie
-                strMask = Master.eSettings.MovieScraperDurationRuntimeFormat
+                strMask = Master.eSettings.Movie.DataSettings.MetadataScan.DurationForRuntimeFormat
             Case Enums.ContentType.TVEpisode
-                strMask = Master.eSettings.TVScraperDurationRuntimeFormat
+                strMask = Master.eSettings.TVEpisode.DataSettings.MetadataScan.DurationForRuntimeFormat
             Case Else
                 Return String.Empty
         End Select
@@ -607,6 +607,11 @@ Public Class StringUtils
         Return String.Empty
     End Function
 
+    Public Shared Function GetYearFromString(ByVal input As String) As Integer
+        Dim nDate As New Date
+        If Date.TryParse(input, nDate) Then Return nDate.Year
+        Return 0
+    End Function
     ''' <summary>
     ''' Converts a string to an HTML-encoded string.
     ''' </summary>

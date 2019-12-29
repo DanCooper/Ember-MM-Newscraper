@@ -24,7 +24,7 @@ Partial Class frmTV_Source_Regex
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTV_Source_Regex))
         Me.pnlSettings = New System.Windows.Forms.Panel()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
         Me.gbEpisodeMultipartMatching = New System.Windows.Forms.GroupBox()
         Me.tblEpisodeMultipartMatching = New System.Windows.Forms.TableLayoutPanel()
         Me.txtEpisodeMultipartMatching = New System.Windows.Forms.TextBox()
@@ -32,14 +32,14 @@ Partial Class frmTV_Source_Regex
         Me.gbEpisodeMatching = New System.Windows.Forms.GroupBox()
         Me.tblEpisodeMatching = New System.Windows.Forms.TableLayoutPanel()
         Me.dgvEpisodeMatching = New System.Windows.Forms.DataGridView()
-        Me.btnEpisodeMatchingDefaults = New System.Windows.Forms.Button()
-        Me.lblEpisodeMatching = New System.Windows.Forms.Label()
         Me.colEpisodeMatchingIndex = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colEpisodeMatchingRegex = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colEpisodeMatchingDefaultSeason = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colEpisodeMatchingByDate = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.btnEpisodeMatchingDefaults = New System.Windows.Forms.Button()
+        Me.lblEpisodeMatching = New System.Windows.Forms.Label()
         Me.pnlSettings.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.tblSettings.SuspendLayout()
         Me.gbEpisodeMultipartMatching.SuspendLayout()
         Me.tblEpisodeMultipartMatching.SuspendLayout()
         Me.gbEpisodeMatching.SuspendLayout()
@@ -52,31 +52,31 @@ Partial Class frmTV_Source_Regex
         Me.pnlSettings.AutoSize = True
         Me.pnlSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlSettings.BackColor = System.Drawing.Color.White
-        Me.pnlSettings.Controls.Add(Me.TableLayoutPanel1)
+        Me.pnlSettings.Controls.Add(Me.tblSettings)
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(652, 441)
         Me.pnlSettings.TabIndex = 0
         '
-        'TableLayoutPanel1
+        'tblSettings
         '
-        Me.TableLayoutPanel1.AutoScroll = True
-        Me.TableLayoutPanel1.AutoSize = True
-        Me.TableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.TableLayoutPanel1.ColumnCount = 1
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.Controls.Add(Me.gbEpisodeMultipartMatching, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.gbEpisodeMatching, 0, 0)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 3
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(652, 441)
-        Me.TableLayoutPanel1.TabIndex = 0
+        Me.tblSettings.AutoScroll = True
+        Me.tblSettings.AutoSize = True
+        Me.tblSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.tblSettings.ColumnCount = 1
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.Controls.Add(Me.gbEpisodeMultipartMatching, 0, 1)
+        Me.tblSettings.Controls.Add(Me.gbEpisodeMatching, 0, 0)
+        Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettings.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettings.Name = "tblSettings"
+        Me.tblSettings.RowCount = 3
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.Size = New System.Drawing.Size(652, 441)
+        Me.tblSettings.TabIndex = 0
         '
         'gbEpisodeMultipartMatching
         '
@@ -181,31 +181,6 @@ Partial Class frmTV_Source_Regex
         Me.dgvEpisodeMatching.Size = New System.Drawing.Size(634, 300)
         Me.dgvEpisodeMatching.TabIndex = 12
         '
-        'btnEpisodeMatchingDefaults
-        '
-        Me.btnEpisodeMatchingDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnEpisodeMatchingDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnEpisodeMatchingDefaults.Image = CType(resources.GetObject("btnEpisodeMatchingDefaults.Image"), System.Drawing.Image)
-        Me.btnEpisodeMatchingDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEpisodeMatchingDefaults.Location = New System.Drawing.Point(532, 309)
-        Me.btnEpisodeMatchingDefaults.Name = "btnEpisodeMatchingDefaults"
-        Me.btnEpisodeMatchingDefaults.Size = New System.Drawing.Size(105, 23)
-        Me.btnEpisodeMatchingDefaults.TabIndex = 5
-        Me.btnEpisodeMatchingDefaults.Text = "Defaults"
-        Me.btnEpisodeMatchingDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEpisodeMatchingDefaults.UseVisualStyleBackColor = True
-        '
-        'lblEpisodeMatching
-        '
-        Me.lblEpisodeMatching.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblEpisodeMatching.AutoSize = True
-        Me.lblEpisodeMatching.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblEpisodeMatching.Location = New System.Drawing.Point(3, 314)
-        Me.lblEpisodeMatching.Name = "lblEpisodeMatching"
-        Me.lblEpisodeMatching.Size = New System.Drawing.Size(201, 13)
-        Me.lblEpisodeMatching.TabIndex = 6
-        Me.lblEpisodeMatching.Text = "Use ALT + UP / DOWN to move the rows"
-        '
         'colEpisodeMatchingIndex
         '
         Me.colEpisodeMatchingIndex.HeaderText = "Index"
@@ -236,6 +211,31 @@ Partial Class frmTV_Source_Regex
         Me.colEpisodeMatchingByDate.Name = "colEpisodeMatchingByDate"
         Me.colEpisodeMatchingByDate.Width = 52
         '
+        'btnEpisodeMatchingDefaults
+        '
+        Me.btnEpisodeMatchingDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnEpisodeMatchingDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnEpisodeMatchingDefaults.Image = CType(resources.GetObject("btnEpisodeMatchingDefaults.Image"), System.Drawing.Image)
+        Me.btnEpisodeMatchingDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEpisodeMatchingDefaults.Location = New System.Drawing.Point(532, 309)
+        Me.btnEpisodeMatchingDefaults.Name = "btnEpisodeMatchingDefaults"
+        Me.btnEpisodeMatchingDefaults.Size = New System.Drawing.Size(105, 23)
+        Me.btnEpisodeMatchingDefaults.TabIndex = 5
+        Me.btnEpisodeMatchingDefaults.Text = "Defaults"
+        Me.btnEpisodeMatchingDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEpisodeMatchingDefaults.UseVisualStyleBackColor = True
+        '
+        'lblEpisodeMatching
+        '
+        Me.lblEpisodeMatching.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblEpisodeMatching.AutoSize = True
+        Me.lblEpisodeMatching.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblEpisodeMatching.Location = New System.Drawing.Point(3, 314)
+        Me.lblEpisodeMatching.Name = "lblEpisodeMatching"
+        Me.lblEpisodeMatching.Size = New System.Drawing.Size(201, 13)
+        Me.lblEpisodeMatching.TabIndex = 6
+        Me.lblEpisodeMatching.Text = "Use ALT + UP / DOWN to move the rows"
+        '
         'frmTV_Source_Regex
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -247,8 +247,8 @@ Partial Class frmTV_Source_Regex
         Me.Text = "frmTV_Source_Regex"
         Me.pnlSettings.ResumeLayout(False)
         Me.pnlSettings.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
+        Me.tblSettings.ResumeLayout(False)
+        Me.tblSettings.PerformLayout()
         Me.gbEpisodeMultipartMatching.ResumeLayout(False)
         Me.gbEpisodeMultipartMatching.PerformLayout()
         Me.tblEpisodeMultipartMatching.ResumeLayout(False)
@@ -264,7 +264,7 @@ Partial Class frmTV_Source_Regex
     End Sub
 
     Friend WithEvents pnlSettings As Panel
-    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents tblSettings As TableLayoutPanel
     Friend WithEvents gbEpisodeMatching As GroupBox
     Friend WithEvents tblEpisodeMatching As TableLayoutPanel
     Friend WithEvents gbEpisodeMultipartMatching As GroupBox

@@ -279,22 +279,16 @@ Public Class MetaData
     End Function
 
     Public Shared Sub UpdateFileInfo(ByRef dbElement As Database.DBElement)
-        Dim bLockAudioLanguages As Boolean
-        Dim bLockVideoLanguages As Boolean
-        Dim bUseRuntimeFormat As Boolean
+        Dim nSettings As New DataSpecificationItem_Metadata
         Dim currentFileInfo As New MediaContainers.FileInfo
         Dim nFileInfo As New MediaContainers.FileInfo
 
         Select Case dbElement.ContentType
             Case Enums.ContentType.Movie
-                bLockAudioLanguages = Master.eSettings.MovieLockLanguageA
-                bLockVideoLanguages = Master.eSettings.MovieLockLanguageV
-                bUseRuntimeFormat = Master.eSettings.MovieScraperUseMDDuration
+                nSettings = Master.eSettings.Movie.DataSettings.MetadataScan
                 currentFileInfo = dbElement.Movie.FileInfo
             Case Enums.ContentType.TVEpisode
-                bLockAudioLanguages = Master.eSettings.TVLockEpisodeLanguageA
-                bLockVideoLanguages = Master.eSettings.TVLockEpisodeLanguageV
-                bUseRuntimeFormat = Master.eSettings.TVScraperUseMDDuration
+                nSettings = Master.eSettings.TVEpisode.DataSettings.MetadataScan
                 currentFileInfo = dbElement.TVEpisode.FileInfo
             Case Else
                 Exit Sub
@@ -329,7 +323,7 @@ Public Class MetaData
 
             If nFileInfo.StreamDetailsSpecified Then
                 ' overwrite only if it get something from Mediainfo 
-                If bLockAudioLanguages Then
+                If nSettings.LockAudioLanguage Then
                     'sets old language setting if setting is enabled (lock language)
                     'First make sure that there is no completely new audio source scanned of the movie --> if so (i.e. more streams) then update!
                     If nFileInfo.StreamDetails.Audio.Count = currentFileInfo.StreamDetails.Audio.Count Then
@@ -342,7 +336,7 @@ Public Class MetaData
                         Next
                     End If
                 End If
-                If bLockVideoLanguages Then
+                If nSettings.LockVideoLanguage Then
                     'sets old language setting if setting is enabled (lock language)
                     'First make sure that there is no completely new video source scanned of the movie --> if so (i.e. more streams) then update!
                     If nFileInfo.StreamDetails.Video.Count = currentFileInfo.StreamDetails.Video.Count Then
@@ -356,7 +350,7 @@ Public Class MetaData
                     End If
                 End If
             End If
-            If nFileInfo.StreamDetails.VideoSpecified AndAlso bUseRuntimeFormat Then
+            If nFileInfo.StreamDetails.VideoSpecified AndAlso nSettings.DurationForRuntimeEnabled Then
                 Dim tVid As MediaContainers.Video = Info.GetBestVideo(currentFileInfo)
                 If tVid.DurationSpecified Then
                     Select Case dbElement.ContentType

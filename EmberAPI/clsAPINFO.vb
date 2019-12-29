@@ -37,357 +37,323 @@ Public Class Info
     ''' <summary>
     ''' Returns the "merged" result of each data scraper results
     ''' </summary>
-    ''' <param name="DBMovie">Movie to be scraped</param>
-    ''' <param name="ScrapedList"><c>List(Of MediaContainers.Movie)</c> which contains unfiltered results of each data scraper</param>
+    ''' <param name="dbElement">Movie to be scraped</param>
+    ''' <param name="scrapedList"><c>List(Of MediaContainers.Movie)</c> which contains unfiltered results of each data scraper</param>
     ''' <returns>The scrape result of movie (after applying various global scraper settings here)</returns>
     ''' <remarks>
     ''' This is used to determine the result of data scraping by going through all scraperesults of every data scraper and applying global data scraper settings here!
     ''' 
     ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
     ''' </remarks>
-    Public Shared Function MergeDataScraperResults_Movie(ByVal DBMovie As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.Movie), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions) As Database.DBElement
+    Public Shared Function MergeDataScraperResults_Movie(ByVal dbElement As Database.DBElement, ByVal scrapedList As List(Of MediaContainers.Movie), ByVal scrapeType As Enums.ScrapeType, ByVal scrapeOptions As Structures.ScrapeOptions) As Database.DBElement
+        With Master.eSettings.Movie.DataSettings
+            'protects the first scraped result against overwriting
+            Dim new_Actors As Boolean = False
+            Dim new_Certification As Boolean = False
+            Dim new_Collection As Boolean = False
+            Dim new_Countries As Boolean = False
+            Dim new_Credits As Boolean = False
+            Dim new_Directors As Boolean = False
+            Dim new_Genres As Boolean = False
+            Dim new_MPAA As Boolean = False
+            Dim new_OriginalTitle As Boolean = False
+            Dim new_Outline As Boolean = False
+            Dim new_Plot As Boolean = False
+            Dim new_Premiered As Boolean = False
+            Dim new_Runtime As Boolean = False
+            Dim new_Studios As Boolean = False
+            Dim new_Tagline As Boolean = False
+            Dim new_Tags As Boolean = False
+            Dim new_Title As Boolean = False
+            Dim new_Top250 As Boolean = False
+            Dim new_Trailer As Boolean = False
+            Dim new_UserRatings As Boolean = False
 
-        'protects the first scraped result against overwriting
-        Dim new_Actors As Boolean = False
-        Dim new_Certification As Boolean = False
-        Dim new_CollectionID As Boolean = False
-        Dim new_Collections As Boolean = False
-        Dim new_Countries As Boolean = False
-        Dim new_Credits As Boolean = False
-        Dim new_Directors As Boolean = False
-        Dim new_Genres As Boolean = False
-        Dim new_MPAA As Boolean = False
-        Dim new_OriginalTitle As Boolean = False
-        Dim new_Outline As Boolean = False
-        Dim new_Plot As Boolean = False
-        Dim new_ReleaseDate As Boolean = False
-        Dim new_Runtime As Boolean = False
-        Dim new_Studio As Boolean = False
-        Dim new_Tagline As Boolean = False
-        Dim new_Title As Boolean = False
-        Dim new_Top250 As Boolean = False
-        Dim new_Trailer As Boolean = False
-        Dim new_UserRating As Boolean = False
-        Dim new_Year As Boolean = False
-
-        'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
-        If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
-            PreviewDataScraperResults_Movie(ScrapedList)
-        End If
-
-        For Each scrapedmovie In ScrapedList
-
-            'UniqueIDs
-            If scrapedmovie.UniqueIDsSpecified Then
-                DBMovie.Movie.UniqueIDs.AddRange(scrapedmovie.UniqueIDs)
-            End If
-
-            'Actors
-            If (Not DBMovie.Movie.ActorsSpecified OrElse Not Master.eSettings.MovieLockActors) AndAlso ScrapeOptions.bMainActors AndAlso
-                scrapedmovie.ActorsSpecified AndAlso Master.eSettings.MovieScraperCast AndAlso Not new_Actors Then
-                If Master.eSettings.MovieScraperCastWithImgOnly Then
-                    FilterOnlyPersonsWithImage(scrapedmovie.Actors)
-                End If
-                FilterCountLimit(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors)
-                'added check if there's any actors left to add, if not then try with results of following scraper...
-                If scrapedmovie.ActorsSpecified Then
-                    ReorderPersons(scrapedmovie.Actors)
-                    DBMovie.Movie.Actors = scrapedmovie.Actors
-                    new_Actors = True
+            For Each scrapedmovie In scrapedList
+                'UniqueIDs
+                If scrapedmovie.UniqueIDsSpecified Then
+                    dbElement.Movie.UniqueIDs.AddRange(scrapedmovie.UniqueIDs)
                 End If
 
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCast AndAlso Not Master.eSettings.MovieLockActors Then
-                DBMovie.Movie.Actors.Clear()
-            End If
+                'Actors
+                If (Not dbElement.Movie.ActorsSpecified OrElse Not .Actors.Locked) AndAlso scrapeOptions.bMainActors AndAlso
+                    scrapedmovie.ActorsSpecified AndAlso .Actors.Enabled AndAlso Not new_Actors Then
+                    If .Actors.WithImageOnly Then
+                        FilterOnlyPersonsWithImage(scrapedmovie.Actors)
+                    End If
+                    FilterCountLimit(.Actors.Limit, scrapedmovie.Actors)
+                    'added check if there's any actors left to add, if not then try with results of following scraper...
+                    If scrapedmovie.ActorsSpecified Then
+                        ReorderPersons(scrapedmovie.Actors)
+                        dbElement.Movie.Actors = scrapedmovie.Actors
+                        new_Actors = True
+                    End If
 
-            'Certification
-            If (Not DBMovie.Movie.CertificationsSpecified OrElse Not Master.eSettings.MovieLockCert) AndAlso ScrapeOptions.bMainCertifications AndAlso
-                scrapedmovie.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCert AndAlso Not new_Certification Then
-                If Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
-                    DBMovie.Movie.Certifications = scrapedmovie.Certifications
-                    new_Certification = True
-                Else
-                    Dim CertificationLanguage = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
-                    If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
-                        For Each tCert In scrapedmovie.Certifications
-                            If tCert.StartsWith(CertificationLanguage.name) Then
-                                DBMovie.Movie.Certifications.Clear()
-                                DBMovie.Movie.Certifications.Add(tCert)
-                                new_Certification = True
-                                Exit For
-                            End If
-                        Next
+                ElseIf .ClearDisabledFields AndAlso Not .Actors.Enabled AndAlso Not .Actors.Locked Then
+                    dbElement.Movie.Actors.Clear()
+                End If
+
+                'Certification
+                If (Not dbElement.Movie.CertificationsSpecified OrElse Not .Certifications.Locked) AndAlso scrapeOptions.bMainCertifications AndAlso
+                    scrapedmovie.CertificationsSpecified AndAlso .Certifications.Enabled AndAlso Not new_Certification Then
+                    If .Certifications.Filter = Master.eLang.All Then
+                        dbElement.Movie.Certifications = scrapedmovie.Certifications
+                        new_Certification = True
                     Else
-                        logger.Error("Movie Certification Language (Limit) not found. Please check your settings!")
+                        Dim CertificationLanguage = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .Certifications.Filter)
+                        If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
+                            For Each tCert In scrapedmovie.Certifications
+                                If tCert.StartsWith(CertificationLanguage.name) Then
+                                    dbElement.Movie.Certifications.Clear()
+                                    dbElement.Movie.Certifications.Add(tCert)
+                                    new_Certification = True
+                                    Exit For
+                                End If
+                            Next
+                        Else
+                            logger.Error("Movie Certification Language (Limit) not found. Please check your settings!")
+                        End If
                     End If
+                ElseIf .ClearDisabledFields AndAlso Not .Certifications.Enabled AndAlso Not .Certifications.Locked Then
+                    dbElement.Movie.Certifications.Clear()
                 End If
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCert AndAlso Not Master.eSettings.MovieLockCert Then
-                DBMovie.Movie.Certifications.Clear()
-            End If
 
-            'Credits
-            If (Not DBMovie.Movie.CreditsSpecified OrElse Not Master.eSettings.MovieLockCredits) AndAlso
-                scrapedmovie.CreditsSpecified AndAlso Master.eSettings.MovieScraperCredits AndAlso Not new_Credits Then
-                DBMovie.Movie.Credits = scrapedmovie.Credits
-                new_Credits = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCredits AndAlso Not Master.eSettings.MovieLockCredits Then
-                DBMovie.Movie.Credits.Clear()
-            End If
+                'Collection
+                If OverwriteValue(scrapeOptions.bMainCollection, new_Collection, dbElement.Movie.SetsSpecified, scrapedmovie.SetsSpecified, .Collection) AndAlso .Collection.AutoAddToCollection Then
+                    dbElement.Movie.Sets.Clear()
+                    For Each movieset In scrapedmovie.Sets
+                        If Not String.IsNullOrEmpty(movieset.Title) Then
+                            For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:")) 'TODO: TitleRenamer
+                                movieset.Title = movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
+                            Next
+                        End If
+                    Next
+                    dbElement.Movie.Sets.AddRange(scrapedmovie.Sets)
+                    new_Collection = True
+                End If
 
-            'Collection ID
-            If (Not DBMovie.Movie.UniqueIDs.TMDbCollectionIdSpecified OrElse Not Master.eSettings.MovieLockCollectionID) AndAlso ScrapeOptions.bMainCollectionID AndAlso
-                scrapedmovie.UniqueIDs.TMDbCollectionIdSpecified AndAlso Master.eSettings.MovieScraperCollectionID AndAlso Not new_CollectionID Then
-                DBMovie.Movie.UniqueIDs.TMDbCollectionId = scrapedmovie.UniqueIDs.TMDbCollectionId
-                new_CollectionID = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCollectionID AndAlso Not Master.eSettings.MovieLockCollectionID Then
-                DBMovie.Movie.UniqueIDs.TMDbCollectionId = String.Empty
-            End If
+                'Countries
+                If (Not dbElement.Movie.CountriesSpecified OrElse Not .Countries.Locked) AndAlso scrapeOptions.bMainCountries AndAlso
+                    scrapedmovie.CountriesSpecified AndAlso .Countries.Enabled AndAlso Not new_Countries Then
+                    FilterCountLimit(.Countries.Limit, scrapedmovie.Countries)
+                    dbElement.Movie.Countries = scrapedmovie.Countries
+                    new_Countries = True
+                ElseIf ClearDatafield(.Countries, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Countries.Clear()
+                End If
 
-            'Collections
-            If (Not DBMovie.Movie.SetsSpecified OrElse Not Master.eSettings.MovieLockCollections) AndAlso
-                scrapedmovie.SetsSpecified AndAlso Master.eSettings.MovieScraperCollectionsAuto AndAlso Not new_Collections Then
-                DBMovie.Movie.Sets.Clear()
-                For Each movieset In scrapedmovie.Sets
-                    If Not String.IsNullOrEmpty(movieset.Title) Then
-                        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
-                            movieset.Title = movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
-                        Next
+                'Credits
+                If OverwriteValue(scrapeOptions.bMainCredits, new_Credits, dbElement.Movie.CreditsSpecified, scrapedmovie.CreditsSpecified, .Credits) Then
+                    dbElement.Movie.Credits = scrapedmovie.Credits
+                    new_Credits = True
+                ElseIf ClearDatafield(.Credits, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Credits.Clear()
+                End If
+
+                'Directors
+                If OverwriteValue(scrapeOptions.bMainDirectors, new_Directors, dbElement.Movie.DirectorsSpecified, scrapedmovie.DirectorsSpecified, .Directors) Then
+                    dbElement.Movie.Directors = scrapedmovie.Directors
+                    new_Directors = True
+                ElseIf ClearDatafield(.Directors, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Directors.Clear()
+                End If
+
+                'Genres
+                If OverwriteValue(scrapeOptions.bMainGenres, new_Genres, dbElement.Movie.GenresSpecified, scrapedmovie.GenresSpecified, .Genres) Then
+                    StringUtils.GenreFilter(scrapedmovie.Genres)
+                    FilterCountLimit(.Genres.Limit, scrapedmovie.Genres)
+                    dbElement.Movie.Genres = scrapedmovie.Genres
+                    new_Genres = True
+                ElseIf ClearDatafield(.Genres, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Genres.Clear()
+                End If
+
+                'MPAA
+                If OverwriteValue(scrapeOptions.bMainMPAA, new_MPAA, dbElement.Movie.MPAASpecified, scrapedmovie.MPAASpecified, .MPAA) Then
+                    dbElement.Movie.MPAA = scrapedmovie.MPAA
+                    new_MPAA = True
+                ElseIf ClearDatafield(.MPAA, Enums.ContentType.Movie) Then
+                    dbElement.Movie.MPAA = String.Empty
+                End If
+
+                'Originaltitle
+                If OverwriteValue(scrapeOptions.bMainOriginalTitle, new_OriginalTitle, dbElement.Movie.OriginalTitleSpecified, scrapedmovie.OriginalTitleSpecified, .OriginalTitle) Then
+                    dbElement.Movie.OriginalTitle = scrapedmovie.OriginalTitle
+                    new_OriginalTitle = True
+                ElseIf ClearDatafield(.OriginalTitle, Enums.ContentType.Movie) Then
+                    dbElement.Movie.OriginalTitle = String.Empty
+                End If
+
+                'Outline
+                If OverwriteValue(scrapeOptions.bMainOutline, new_Outline, dbElement.Movie.OutlineSpecified, scrapedmovie.OutlineSpecified, .Outline) Then
+                    dbElement.Movie.Outline = scrapedmovie.Outline
+                    new_Outline = True
+                ElseIf ClearDatafield(.Outline, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Outline = String.Empty
+                End If
+                'check if brackets should be removed...
+                If .CleanPlotAndOutline Then
+                    dbElement.Movie.Outline = StringUtils.RemoveBrackets(dbElement.Movie.Outline)
+                End If
+
+                'Plot
+                If OverwriteValue(scrapeOptions.bMainPlot, new_Plot, dbElement.Movie.PlotSpecified, scrapedmovie.PlotSpecified, .Plot) Then
+                    dbElement.Movie.Plot = scrapedmovie.Plot
+                    new_Plot = True
+                ElseIf ClearDatafield(.Plot, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Plot = String.Empty
+                End If
+                'check if brackets should be removed...
+                If .CleanPlotAndOutline Then
+                    dbElement.Movie.Plot = StringUtils.RemoveBrackets(dbElement.Movie.Plot)
+                End If
+
+                'Premiered
+                If OverwriteValue(scrapeOptions.bMainPremiered, new_Premiered, dbElement.Movie.PremieredSpecified, scrapedmovie.PremieredSpecified, .Premiered) Then
+                    dbElement.Movie.Premiered = NumUtils.DateToISO8601Date(scrapedmovie.Premiered)
+                    new_Premiered = True
+                ElseIf ClearDatafield(.Premiered, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Premiered = String.Empty
+                End If
+
+                'Ratings
+                If OverwriteValue(scrapeOptions.bMainRatings, new_UserRatings, dbElement.Movie.RatingsSpecified, scrapedmovie.RatingsSpecified, .Ratings) Then
+                    For Each nRating In scrapedmovie.Ratings
+                        'remove old rating(s) from the same source
+                        dbElement.Movie.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
+                        dbElement.Movie.Ratings.Add(nRating)
+                    Next
+                ElseIf ClearDatafield(.Ratings, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Ratings.Clear()
+                    dbElement.Movie.Rating = String.Empty
+                    dbElement.Movie.Votes = String.Empty
+                End If
+
+                'Runtime
+                If OverwriteValue(scrapeOptions.bMainRuntime, new_Runtime, dbElement.Movie.RuntimeSpecified, scrapedmovie.RuntimeSpecified, .Runtime) Then
+                    dbElement.Movie.Runtime = scrapedmovie.Runtime
+                    new_Runtime = True
+                ElseIf ClearDatafield(.Runtime, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Runtime = String.Empty
+                End If
+
+                'Studios
+                If OverwriteValue(scrapeOptions.bMainStudios, new_Studios, dbElement.Movie.StudiosSpecified, scrapedmovie.StudiosSpecified, .Studios) Then
+                    dbElement.Movie.Studios.Clear()
+
+                    Dim _studios As New List(Of String)
+                    _studios.AddRange(scrapedmovie.Studios)
+
+                    FilterCountLimit(.Studios.Limit, _studios)
+
+                    dbElement.Movie.Studios.AddRange(_studios)
+                    'added check if there's any studios left to add, if not then try with results of following scraper...
+                    If _studios.Count > 0 Then
+                        new_Studios = True
                     End If
-                Next
-                DBMovie.Movie.Sets.AddRange(scrapedmovie.Sets)
-                new_Collections = True
-            End If
 
-            'Countries
-            If (Not DBMovie.Movie.CountriesSpecified OrElse Not Master.eSettings.MovieLockCountry) AndAlso ScrapeOptions.bMainCountries AndAlso
-                scrapedmovie.CountriesSpecified AndAlso Master.eSettings.MovieScraperCountry AndAlso Not new_Countries Then
-                FilterCountLimit(Master.eSettings.MovieScraperCountryLimit, scrapedmovie.Countries)
-                DBMovie.Movie.Countries = scrapedmovie.Countries
-                new_Countries = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCountry AndAlso Not Master.eSettings.MovieLockCountry Then
-                DBMovie.Movie.Countries.Clear()
-            End If
-
-            'Directors
-            If (Not DBMovie.Movie.DirectorsSpecified OrElse Not Master.eSettings.MovieLockDirector) AndAlso ScrapeOptions.bMainDirectors AndAlso
-                scrapedmovie.DirectorsSpecified AndAlso Master.eSettings.MovieScraperDirector AndAlso Not new_Directors Then
-                DBMovie.Movie.Directors = scrapedmovie.Directors
-                new_Directors = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperDirector AndAlso Not Master.eSettings.MovieLockDirector Then
-                DBMovie.Movie.Directors.Clear()
-            End If
-
-            'Genres
-            If (Not DBMovie.Movie.GenresSpecified OrElse Not Master.eSettings.MovieLockGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
-                scrapedmovie.GenresSpecified AndAlso Master.eSettings.MovieScraperGenre AndAlso Not new_Genres Then
-                StringUtils.GenreFilter(scrapedmovie.Genres)
-                FilterCountLimit(Master.eSettings.MovieScraperGenreLimit, scrapedmovie.Genres)
-                DBMovie.Movie.Genres = scrapedmovie.Genres
-                new_Genres = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperGenre AndAlso Not Master.eSettings.MovieLockGenre Then
-                DBMovie.Movie.Genres.Clear()
-            End If
-
-            'MPAA
-            If (Not DBMovie.Movie.MPAASpecified OrElse Not Master.eSettings.MovieLockMPAA) AndAlso ScrapeOptions.bMainMPAA AndAlso
-                scrapedmovie.MPAASpecified AndAlso Master.eSettings.MovieScraperMPAA AndAlso Not new_MPAA Then
-                DBMovie.Movie.MPAA = scrapedmovie.MPAA
-                new_MPAA = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperMPAA AndAlso Not Master.eSettings.MovieLockMPAA Then
-                DBMovie.Movie.MPAA = String.Empty
-            End If
-
-            'Originaltitle
-            If (Not DBMovie.Movie.OriginalTitleSpecified OrElse Not Master.eSettings.MovieLockOriginalTitle) AndAlso ScrapeOptions.bMainOriginalTitle AndAlso
-                scrapedmovie.OriginalTitleSpecified AndAlso Master.eSettings.MovieScraperOriginalTitle AndAlso Not new_OriginalTitle Then
-                DBMovie.Movie.OriginalTitle = scrapedmovie.OriginalTitle
-                new_OriginalTitle = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOriginalTitle AndAlso Not Master.eSettings.MovieLockOriginalTitle Then
-                DBMovie.Movie.OriginalTitle = String.Empty
-            End If
-
-            'Outline
-            If (Not DBMovie.Movie.OutlineSpecified OrElse Not Master.eSettings.MovieLockOutline) AndAlso ScrapeOptions.bMainOutline AndAlso
-                scrapedmovie.OutlineSpecified AndAlso Master.eSettings.MovieScraperOutline AndAlso Not new_Outline Then
-                DBMovie.Movie.Outline = scrapedmovie.Outline
-                new_Outline = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOutline AndAlso Not Master.eSettings.MovieLockOutline Then
-                DBMovie.Movie.Outline = String.Empty
-            End If
-            'check if brackets should be removed...
-            If Master.eSettings.MovieScraperCleanPlotOutline Then
-                DBMovie.Movie.Outline = StringUtils.RemoveBrackets(DBMovie.Movie.Outline)
-            End If
-
-            'Plot
-            If (Not DBMovie.Movie.PlotSpecified OrElse Not Master.eSettings.MovieLockPlot) AndAlso ScrapeOptions.bMainPlot AndAlso
-                scrapedmovie.PlotSpecified AndAlso Master.eSettings.MovieScraperPlot AndAlso Not new_Plot Then
-                DBMovie.Movie.Plot = scrapedmovie.Plot
-                new_Plot = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperPlot AndAlso Not Master.eSettings.MovieLockPlot Then
-                DBMovie.Movie.Plot = String.Empty
-            End If
-            'check if brackets should be removed...
-            If Master.eSettings.MovieScraperCleanPlotOutline Then
-                DBMovie.Movie.Plot = StringUtils.RemoveBrackets(DBMovie.Movie.Plot)
-            End If
-
-            'Ratings
-            If (Not DBMovie.Movie.RatingsSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bMainRating AndAlso
-                 scrapedmovie.RatingsSpecified AndAlso Master.eSettings.MovieScraperRating Then
-                For Each nRating In scrapedmovie.Ratings
-                    'remove old rating(s) from the same source
-                    DBMovie.Movie.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
-                    DBMovie.Movie.Ratings.Add(nRating)
-                Next
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRating AndAlso Not Master.eSettings.MovieLockRating Then
-                DBMovie.Movie.Ratings.Clear()
-                DBMovie.Movie.Rating = String.Empty
-                DBMovie.Movie.Votes = String.Empty
-            End If
-
-            'ReleaseDate
-            If (Not DBMovie.Movie.ReleaseDateSpecified OrElse Not Master.eSettings.MovieLockReleaseDate) AndAlso ScrapeOptions.bMainRelease AndAlso
-                scrapedmovie.ReleaseDateSpecified AndAlso Master.eSettings.MovieScraperRelease AndAlso Not new_ReleaseDate Then
-                DBMovie.Movie.ReleaseDate = NumUtils.DateToISO8601Date(scrapedmovie.ReleaseDate)
-                new_ReleaseDate = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRelease AndAlso Not Master.eSettings.MovieLockReleaseDate Then
-                DBMovie.Movie.ReleaseDate = String.Empty
-            End If
-
-            'Studios
-            If (Not DBMovie.Movie.StudiosSpecified OrElse Not Master.eSettings.MovieLockStudio) AndAlso ScrapeOptions.bMainStudios AndAlso
-                scrapedmovie.StudiosSpecified AndAlso Master.eSettings.MovieScraperStudio AndAlso Not new_Studio Then
-                DBMovie.Movie.Studios.Clear()
-
-                Dim _studios As New List(Of String)
-                _studios.AddRange(scrapedmovie.Studios)
-
-                FilterCountLimit(Master.eSettings.MovieScraperStudioLimit, _studios)
-
-                DBMovie.Movie.Studios.AddRange(_studios)
-                'added check if there's any studios left to add, if not then try with results of following scraper...
-                If _studios.Count > 0 Then
-                    new_Studio = True
+                ElseIf ClearDatafield(.Studios, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Studios.Clear()
                 End If
 
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperStudio AndAlso Not Master.eSettings.MovieLockStudio Then
-                DBMovie.Movie.Studios.Clear()
-            End If
-
-            'Tagline
-            If (Not DBMovie.Movie.TaglineSpecified OrElse Not Master.eSettings.MovieLockTagline) AndAlso ScrapeOptions.bMainTagline AndAlso
-                scrapedmovie.TaglineSpecified AndAlso Master.eSettings.MovieScraperTagline AndAlso Not new_Tagline Then
-                DBMovie.Movie.Tagline = scrapedmovie.Tagline
-                new_Tagline = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTagline AndAlso Not Master.eSettings.MovieLockTagline Then
-                DBMovie.Movie.Tagline = String.Empty
-            End If
-
-            'Title
-            If (Not DBMovie.Movie.TitleSpecified OrElse Not Master.eSettings.MovieLockTitle) AndAlso ScrapeOptions.bMainTitle AndAlso
-                scrapedmovie.TitleSpecified AndAlso Master.eSettings.MovieScraperTitle AndAlso Not new_Title Then
-                DBMovie.Movie.Title = scrapedmovie.Title
-                new_Title = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTitle AndAlso Not Master.eSettings.MovieLockTitle Then
-                DBMovie.Movie.Title = String.Empty
-            End If
-
-            'Top250 (special handling: no check if "scrapedmovie.Top250Specified" and only set "new_Top250 = True" if a value over 0 has been set)
-            If (Not DBMovie.Movie.Top250Specified OrElse Not Master.eSettings.MovieLockTop250) AndAlso ScrapeOptions.bMainTop250 AndAlso
-                Master.eSettings.MovieScraperTop250 AndAlso Not new_Top250 Then
-                DBMovie.Movie.Top250 = scrapedmovie.Top250
-                new_Top250 = If(scrapedmovie.Top250Specified, True, False)
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTop250 AndAlso Not Master.eSettings.MovieLockTop250 Then
-                DBMovie.Movie.Top250 = 0
-            End If
-
-            'Trailer
-            If (Not DBMovie.Movie.TrailerSpecified OrElse Not Master.eSettings.MovieLockTrailer) AndAlso ScrapeOptions.bMainTrailer AndAlso
-                scrapedmovie.TrailerSpecified AndAlso Master.eSettings.MovieScraperTrailer AndAlso Not new_Trailer Then
-                If Master.eSettings.MovieScraperXBMCTrailerFormat AndAlso YouTube.UrlUtils.IsYouTubeURL(scrapedmovie.Trailer) Then
-                    DBMovie.Movie.Trailer = StringUtils.ConvertFromYouTubeURLToKodiTrailerFormat(scrapedmovie.Trailer)
-                Else
-                    DBMovie.Movie.Trailer = scrapedmovie.Trailer
+                'Tagline
+                If OverwriteValue(scrapeOptions.bMainTagline, new_Tagline, dbElement.Movie.TaglineSpecified, scrapedmovie.TaglineSpecified, .Tagline) Then
+                    dbElement.Movie.Tagline = scrapedmovie.Tagline
+                    new_Tagline = True
+                ElseIf ClearDatafield(.Tagline, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Tagline = String.Empty
                 End If
-                new_Trailer = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTrailer AndAlso Not Master.eSettings.MovieLockTrailer Then
-                DBMovie.Movie.Trailer = String.Empty
+
+                'Tags
+                If OverwriteValue(scrapeOptions.bMainTags, new_Tags, dbElement.Movie.TagsSpecified, scrapedmovie.TagsSpecified, .Tags) Then
+                    dbElement.Movie.Tags = scrapedmovie.Tags
+                    'TODO: add Whitelist
+                ElseIf ClearDatafield(.Tags, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Tags.Clear()
+                End If
+
+                'Title
+                If OverwriteValue(scrapeOptions.bMainTitle, new_Title, dbElement.Movie.TitleSpecified, scrapedmovie.TitleSpecified, .Title) Then
+                    dbElement.Movie.Title = scrapedmovie.Title
+                    new_Title = True
+                ElseIf ClearDatafield(.Title, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Title = String.Empty
+                End If
+
+                'Top250 (special handling: no check if "scrapedmovie.Top250Specified" and only set "new_Top250 = True" if a value > 0 has been set)
+                'otherwise a movie that's no longer in the Top250 list can't be corrected
+                If OverwriteValue(scrapeOptions.bMainTop250, new_Top250, dbElement.Movie.Top250Specified, True, .Top250) Then
+                    dbElement.Movie.Top250 = scrapedmovie.Top250
+                    new_Top250 = If(scrapedmovie.Top250Specified, True, False)
+                ElseIf ClearDatafield(.Top250, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Top250 = 0
+                End If
+
+                'Trailer
+                If OverwriteValue(scrapeOptions.bMainTrailer, new_Trailer, dbElement.Movie.TrailerSpecified, scrapedmovie.TrailerSpecified, .TrailerLink) Then
+                    If .TrailerLink.SaveKodiCompatible AndAlso YouTube.UrlUtils.IsYouTubeURL(scrapedmovie.Trailer) Then
+                        dbElement.Movie.Trailer = StringUtils.ConvertFromYouTubeURLToKodiTrailerFormat(scrapedmovie.Trailer)
+                    Else
+                        dbElement.Movie.Trailer = scrapedmovie.Trailer
+                    End If
+                    new_Trailer = True
+                ElseIf ClearDatafield(.TrailerLink, Enums.ContentType.Movie) Then
+                    dbElement.Movie.Trailer = String.Empty
+                End If
+
+                'User Rating
+                If OverwriteValue(scrapeOptions.bMainUserRating, new_UserRatings, dbElement.Movie.UserRatingSpecified, scrapedmovie.UserRatingSpecified, .UserRating) Then
+                    dbElement.Movie.UserRating = scrapedmovie.UserRating
+                    new_UserRatings = True
+                ElseIf ClearDatafield(.UserRating, Enums.ContentType.Movie) Then
+                    dbElement.Movie.UserRating = 0
+                End If
+            Next
+
+            'Certification for MPAA
+            If dbElement.Movie.CertificationsSpecified AndAlso .CertificationsForMPAA AndAlso
+                (Not .CertificationsForMPAAFallback AndAlso (Not dbElement.Movie.MPAASpecified OrElse Not .MPAA.Locked) OrElse
+                 Not new_MPAA AndAlso (Not dbElement.Movie.MPAASpecified OrElse Not .MPAA.Locked)) Then
+                Dim tmpstring As String = String.Empty
+                tmpstring = If(Master.eSettings.Movie.DataSettings.Certifications.Filter = "us", StringUtils.USACertToMPAA(String.Join(" / ", dbElement.Movie.Certifications.ToArray)), If(.CertificationsOnlyValue, String.Join(" / ", dbElement.Movie.Certifications.ToArray).Split(Convert.ToChar(":"))(1), String.Join(" / ", dbElement.Movie.Certifications.ToArray)))
+                'only update DBMovie if scraped result is not empty/nothing!
+                If Not String.IsNullOrEmpty(tmpstring) Then
+                    dbElement.Movie.MPAA = tmpstring
+                End If
             End If
 
-            'User Rating
-            If (Not DBMovie.Movie.UserRatingSpecified OrElse Not Master.eSettings.MovieLockUserRating) AndAlso ScrapeOptions.bMainUserRating AndAlso
-                scrapedmovie.UserRatingSpecified AndAlso Master.eSettings.MovieScraperUserRating AndAlso Not new_UserRating Then
-                DBMovie.Movie.UserRating = scrapedmovie.UserRating
-                new_UserRating = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperUserRating AndAlso Not Master.eSettings.MovieLockUserRating Then
-                DBMovie.Movie.UserRating = 0
+            'MPAA value if MPAA is not available
+            If Not dbElement.Movie.MPAASpecified AndAlso .MPAANotRatedValueSpecified Then
+                dbElement.Movie.MPAA = .MPAANotRatedValue
             End If
 
-            'Year
-            If (Not DBMovie.Movie.YearSpecified OrElse Not Master.eSettings.MovieLockYear) AndAlso ScrapeOptions.bMainYear AndAlso
-                scrapedmovie.YearSpecified AndAlso Master.eSettings.MovieScraperYear AndAlso Not new_Year Then
-                DBMovie.Movie.Year = scrapedmovie.Year
-                new_Year = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperYear AndAlso Not Master.eSettings.MovieLockYear Then
-                DBMovie.Movie.Year = 0
+            'OriginalTitle as Title
+            If (Not dbElement.Movie.TitleSpecified OrElse Not .Title.Locked) AndAlso .Title.UseOriginalTitle AndAlso dbElement.Movie.OriginalTitleSpecified Then
+                dbElement.Movie.Title = dbElement.Movie.OriginalTitle
             End If
 
-            'Runtime
-            If (Not DBMovie.Movie.RuntimeSpecified OrElse Not Master.eSettings.MovieLockRuntime) AndAlso ScrapeOptions.bMainRuntime AndAlso
-                scrapedmovie.RuntimeSpecified AndAlso Master.eSettings.MovieScraperRuntime AndAlso Not new_Runtime Then
-                DBMovie.Movie.Runtime = scrapedmovie.Runtime
-                new_Runtime = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRuntime AndAlso Not Master.eSettings.MovieLockRuntime Then
-                DBMovie.Movie.Runtime = String.Empty
+            'Plot for Outline
+            If ((Not dbElement.Movie.OutlineSpecified OrElse Not .Outline.Locked) AndAlso .Outline.UsePlot AndAlso Not .Outline.UsePlotAsFallback) OrElse
+                (Not dbElement.Movie.OutlineSpecified AndAlso .Outline.UsePlot AndAlso .Outline.UsePlotAsFallback) Then
+                dbElement.Movie.Outline = StringUtils.ShortenOutline(dbElement.Movie.Plot, .Outline.Limit)
             End If
 
-        Next
-
-        'Certification for MPAA
-        If DBMovie.Movie.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCertForMPAA AndAlso
-            (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (Not DBMovie.Movie.MPAASpecified OrElse Not Master.eSettings.MovieLockMPAA) OrElse
-             Not new_MPAA AndAlso (Not DBMovie.Movie.MPAASpecified OrElse Not Master.eSettings.MovieLockMPAA)) Then
-            Dim tmpstring As String = String.Empty
-            tmpstring = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(String.Join(" / ", DBMovie.Movie.Certifications.ToArray)), If(Master.eSettings.MovieScraperCertOnlyValue, String.Join(" / ", DBMovie.Movie.Certifications.ToArray).Split(Convert.ToChar(":"))(1), String.Join(" / ", DBMovie.Movie.Certifications.ToArray)))
-            'only update DBMovie if scraped result is not empty/nothing!
-            If Not String.IsNullOrEmpty(tmpstring) Then
-                DBMovie.Movie.MPAA = tmpstring
+            'Rating/Votes
+            'TODO: set the default rating/votes
+            If (Not dbElement.Movie.RatingSpecified OrElse Not .Ratings.Locked) AndAlso scrapeOptions.bMainRatings AndAlso
+                    dbElement.Movie.RatingsSpecified AndAlso .Ratings.Enabled Then
+                dbElement.Movie.Rating = dbElement.Movie.Ratings.Item(0).Value.ToString
+                dbElement.Movie.Votes = NumUtils.CleanVotes(dbElement.Movie.Ratings.Item(0).Votes.ToString)
+            ElseIf .ClearDisabledFields AndAlso Not .Ratings.Enabled AndAlso Not .Ratings.Locked Then
+                dbElement.Movie.Ratings.Clear()
+                dbElement.Movie.Rating = String.Empty
+                dbElement.Movie.Votes = String.Empty
             End If
-        End If
 
-        'MPAA value if MPAA is not available
-        If Not DBMovie.Movie.MPAASpecified AndAlso Not String.IsNullOrEmpty(Master.eSettings.MovieScraperMPAANotRated) Then
-            DBMovie.Movie.MPAA = Master.eSettings.MovieScraperMPAANotRated
-        End If
-
-        'OriginalTitle as Title
-        If (Not DBMovie.Movie.TitleSpecified OrElse Not Master.eSettings.MovieLockTitle) AndAlso Master.eSettings.MovieScraperOriginalTitleAsTitle AndAlso DBMovie.Movie.OriginalTitleSpecified Then
-            DBMovie.Movie.Title = DBMovie.Movie.OriginalTitle
-        End If
-
-        'Plot for Outline
-        If ((Not DBMovie.Movie.OutlineSpecified OrElse Not Master.eSettings.MovieLockOutline) AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Not Master.eSettings.MovieScraperPlotForOutlineIfEmpty) OrElse
-            (Not DBMovie.Movie.OutlineSpecified AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Master.eSettings.MovieScraperPlotForOutlineIfEmpty) Then
-            DBMovie.Movie.Outline = StringUtils.ShortenOutline(DBMovie.Movie.Plot, Master.eSettings.MovieScraperOutlineLimit)
-        End If
-
-        'Rating/Votes
-        'TODO: set the default rating/votes
-        If (Not DBMovie.Movie.RatingSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bMainRating AndAlso
-                DBMovie.Movie.RatingsSpecified AndAlso Master.eSettings.MovieScraperRating Then
-            DBMovie.Movie.Rating = DBMovie.Movie.Ratings.Item(0).Value.ToString
-            DBMovie.Movie.Votes = NumUtils.CleanVotes(DBMovie.Movie.Ratings.Item(0).Votes.ToString)
-        ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRating AndAlso Not Master.eSettings.MovieLockRating Then
-            DBMovie.Movie.Ratings.Clear()
-            DBMovie.Movie.Rating = String.Empty
-            DBMovie.Movie.Votes = String.Empty
-        End If
-
-        'UniqueID
-        'TODO: set the default uniqueid
-
-        Return DBMovie
+            'UniqueID
+            'TODO: set the default uniqueid
+        End With
+        Return dbElement
     End Function
 
     Public Shared Function MergeDataScraperResults_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.MovieSet), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions) As Database.DBElement
@@ -596,7 +562,7 @@ Public Class Info
             End If
 
             'Ratings
-            If (Not DBTV.TVShow.RatingsSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
+            If (Not DBTV.TVShow.RatingsSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRatings AndAlso
                  scrapedshow.RatingsSpecified AndAlso Master.eSettings.TVScraperShowRating Then
                 For Each nRating In scrapedshow.Ratings
                     'remove old rating(s) from the same source
@@ -695,7 +661,7 @@ Public Class Info
 
         'Certification for MPAA
         If DBTV.TVShow.CertificationsSpecified AndAlso Master.eSettings.TVScraperShowCertForMPAA AndAlso
-            (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (Not DBTV.TVShow.MPAASpecified OrElse Not Master.eSettings.TVLockShowMPAA) OrElse
+            (Not Master.eSettings.TVScraperShowCertForMPAAFallback AndAlso (Not DBTV.TVShow.MPAASpecified OrElse Not Master.eSettings.TVLockShowMPAA) OrElse
              Not new_MPAA AndAlso (Not DBTV.TVShow.MPAASpecified OrElse Not Master.eSettings.TVLockShowMPAA)) Then
 
             Dim tmpstring As String = String.Empty
@@ -1168,33 +1134,12 @@ Public Class Info
 
         Return DBTVEpisode
     End Function
-    ''' <summary>
-    ''' Open MovieDataScraperPreview Window
-    ''' </summary>
-    ''' <param name="ScrapedList"><c>List(Of MediaContainers.Movie)</c> which contains unfiltered results of each data scraper</param>
-    ''' <remarks>
-    ''' 2014/09/13 Cocotus - First implementation: Display all scrapedresults in preview window, so that user can select the information which should be used
-    ''' </remarks>
-    Public Shared Sub PreviewDataScraperResults_Movie(ByRef ScrapedList As List(Of MediaContainers.Movie))
-        Try
-            Application.DoEvents()
-            'Open/Show preview window
-            Using dlgMovieDataScraperPreview As New dlgMovieDataScraperPreview(ScrapedList)
-                Select Case dlgMovieDataScraperPreview.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        'For now nothing here
-                End Select
-            End Using
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
 
     Public Shared Function CleanNFO_Movies(ByVal mNFO As MediaContainers.Movie) As MediaContainers.Movie
         If mNFO IsNot Nothing Then
             mNFO.Outline = mNFO.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-            mNFO.ReleaseDate = NumUtils.DateToISO8601Date(mNFO.ReleaseDate)
+            mNFO.Premiered = NumUtils.DateToISO8601Date(mNFO.Premiered)
             mNFO.Votes = NumUtils.CleanVotes(mNFO.Votes)
             If mNFO.FileInfoSpecified Then
                 If mNFO.FileInfo.StreamDetails.AudioSpecified Then
@@ -1290,6 +1235,22 @@ Public Class Info
         Else
             Return mNFO
         End If
+    End Function
+
+    Private Shared Function ClearDatafield(ByVal settings As DataSpecificationItem, ByVal type As Enums.ContentType) As Boolean
+        Select Case type
+            Case Enums.ContentType.Movie
+                Return Master.eSettings.Movie.DataSettings.ClearDisabledFields AndAlso Not settings.Enabled AndAlso Not settings.Locked
+            Case Enums.ContentType.Movieset
+                Return Master.eSettings.Movieset.DataSettings.ClearDisabledFields AndAlso Not settings.Enabled AndAlso Not settings.Locked
+            Case Enums.ContentType.TVEpisode
+                Return Master.eSettings.TVEpisode.DataSettings.ClearDisabledFields AndAlso Not settings.Enabled AndAlso Not settings.Locked
+            Case Enums.ContentType.TVSeason
+                Return Master.eSettings.TVSeason.DataSettings.ClearDisabledFields AndAlso Not settings.Enabled AndAlso Not settings.Locked
+            Case Enums.ContentType.TVShow
+                Return Master.eSettings.TVShow.DataSettings.ClearDisabledFields AndAlso Not settings.Enabled AndAlso Not settings.Locked
+        End Select
+        Return False
     End Function
     ''' <summary>
     ''' Delete all movie NFOs
@@ -1409,12 +1370,7 @@ Public Class Info
         If strOutput.ToString.Trim.Length > 0 Then
             Return strOutput.ToString
         Else
-            Select Case dbElement.ContentType
-                Case Enums.ContentType.Movie
-                    Return Master.eLang.GetString(419, "Meta Data is not available for this movie. Try rescanning.")
-                Case Enums.ContentType.TVEpisode
-                    Return Master.eLang.GetString(504, "Meta Data is not available for this episode. Try rescanning.")
-            End Select
+            Return Master.eLang.GetString(419, "Metadata is not available. Try rescanning.")
         End If
         Return String.Empty
     End Function
@@ -1965,6 +1921,18 @@ Public Class Info
         End If
 
         Return xmlShow
+    End Function
+
+    Private Shared Function OverwriteValue(ByVal scrapeOptionEnabled As Boolean,
+                                           ByVal alreadyNewSet As Boolean,
+                                           ByVal oldSpecified As Boolean,
+                                           ByVal newSpecified As Boolean,
+                                           ByVal settings As DataSpecificationItem) As Boolean
+        Return scrapeOptionEnabled AndAlso
+            Not alreadyNewSet AndAlso
+            newSpecified AndAlso
+            settings.Enabled AndAlso
+            (Not oldSpecified OrElse Not settings.Locked)
     End Function
 
     Private Shared Sub RenameNonConfNFO_Movie(ByVal path As String, ByVal isChecked As Boolean)

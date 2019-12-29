@@ -24,13 +24,15 @@ Partial Class frmTV_Theme
     Private Sub InitializeComponent()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbTVThemeOpts = New System.Windows.Forms.GroupBox()
-        Me.tblTVThemeOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkTVShowThemeKeepExisting = New System.Windows.Forms.CheckBox()
+        Me.gbThemes = New System.Windows.Forms.GroupBox()
+        Me.tblThemes = New System.Windows.Forms.TableLayoutPanel()
+        Me.txtDefaultSearchParameter = New System.Windows.Forms.TextBox()
+        Me.chkKeepExisting = New System.Windows.Forms.CheckBox()
+        Me.lblDefaultSearchParameter = New System.Windows.Forms.Label()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
-        Me.gbTVThemeOpts.SuspendLayout()
-        Me.tblTVThemeOpts.SuspendLayout()
+        Me.gbThemes.SuspendLayout()
+        Me.tblThemes.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -42,7 +44,7 @@ Partial Class frmTV_Theme
         Me.pnlSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(800, 450)
+        Me.pnlSettings.Size = New System.Drawing.Size(223, 121)
         Me.pnlSettings.TabIndex = 24
         Me.pnlSettings.Visible = False
         '
@@ -53,73 +55,94 @@ Partial Class frmTV_Theme
         Me.tblSettings.ColumnCount = 2
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettings.Controls.Add(Me.gbTVThemeOpts, 0, 0)
+        Me.tblSettings.Controls.Add(Me.gbThemes, 0, 0)
         Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettings.Location = New System.Drawing.Point(0, 0)
         Me.tblSettings.Name = "tblSettings"
         Me.tblSettings.RowCount = 2
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettings.Size = New System.Drawing.Size(800, 450)
+        Me.tblSettings.Size = New System.Drawing.Size(223, 121)
         Me.tblSettings.TabIndex = 4
         '
-        'gbTVThemeOpts
+        'gbThemes
         '
-        Me.gbTVThemeOpts.AutoSize = True
-        Me.gbTVThemeOpts.Controls.Add(Me.tblTVThemeOpts)
-        Me.gbTVThemeOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbTVThemeOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbTVThemeOpts.Name = "gbTVThemeOpts"
-        Me.gbTVThemeOpts.Size = New System.Drawing.Size(106, 44)
-        Me.gbTVThemeOpts.TabIndex = 2
-        Me.gbTVThemeOpts.TabStop = False
-        Me.gbTVThemeOpts.Text = "Themes"
+        Me.gbThemes.AutoSize = True
+        Me.gbThemes.Controls.Add(Me.tblThemes)
+        Me.gbThemes.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbThemes.Location = New System.Drawing.Point(3, 3)
+        Me.gbThemes.Name = "gbThemes"
+        Me.gbThemes.Size = New System.Drawing.Size(194, 92)
+        Me.gbThemes.TabIndex = 2
+        Me.gbThemes.TabStop = False
+        Me.gbThemes.Text = "Themes"
         '
-        'tblTVThemeOpts
+        'tblThemes
         '
-        Me.tblTVThemeOpts.AutoSize = True
-        Me.tblTVThemeOpts.ColumnCount = 2
-        Me.tblTVThemeOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVThemeOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVThemeOpts.Controls.Add(Me.chkTVShowThemeKeepExisting, 0, 0)
-        Me.tblTVThemeOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVThemeOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblTVThemeOpts.Name = "tblTVThemeOpts"
-        Me.tblTVThemeOpts.RowCount = 2
-        Me.tblTVThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVThemeOpts.Size = New System.Drawing.Size(100, 23)
-        Me.tblTVThemeOpts.TabIndex = 3
+        Me.tblThemes.AutoSize = True
+        Me.tblThemes.ColumnCount = 1
+        Me.tblThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblThemes.Controls.Add(Me.txtDefaultSearchParameter, 0, 2)
+        Me.tblThemes.Controls.Add(Me.chkKeepExisting, 0, 0)
+        Me.tblThemes.Controls.Add(Me.lblDefaultSearchParameter, 0, 1)
+        Me.tblThemes.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblThemes.Location = New System.Drawing.Point(3, 18)
+        Me.tblThemes.Name = "tblThemes"
+        Me.tblThemes.RowCount = 3
+        Me.tblThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblThemes.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblThemes.Size = New System.Drawing.Size(188, 71)
+        Me.tblThemes.TabIndex = 3
         '
-        'chkTVShowThemeKeepExisting
+        'txtDefaultSearchParameter
         '
-        Me.chkTVShowThemeKeepExisting.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVShowThemeKeepExisting.AutoSize = True
-        Me.chkTVShowThemeKeepExisting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVShowThemeKeepExisting.Location = New System.Drawing.Point(3, 3)
-        Me.chkTVShowThemeKeepExisting.Name = "chkTVShowThemeKeepExisting"
-        Me.chkTVShowThemeKeepExisting.Size = New System.Drawing.Size(94, 17)
-        Me.chkTVShowThemeKeepExisting.TabIndex = 4
-        Me.chkTVShowThemeKeepExisting.Text = "Keep existing"
-        Me.chkTVShowThemeKeepExisting.UseVisualStyleBackColor = True
+        Me.txtDefaultSearchParameter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtDefaultSearchParameter.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.txtDefaultSearchParameter.Location = New System.Drawing.Point(3, 46)
+        Me.txtDefaultSearchParameter.Name = "txtDefaultSearchParameter"
+        Me.txtDefaultSearchParameter.Size = New System.Drawing.Size(182, 22)
+        Me.txtDefaultSearchParameter.TabIndex = 13
+        '
+        'chkKeepExisting
+        '
+        Me.chkKeepExisting.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkKeepExisting.AutoSize = True
+        Me.chkKeepExisting.Location = New System.Drawing.Point(3, 3)
+        Me.chkKeepExisting.Name = "chkKeepExisting"
+        Me.chkKeepExisting.Size = New System.Drawing.Size(94, 17)
+        Me.chkKeepExisting.TabIndex = 4
+        Me.chkKeepExisting.Text = "Keep existing"
+        Me.chkKeepExisting.UseVisualStyleBackColor = True
+        '
+        'lblDefaultSearchParameter
+        '
+        Me.lblDefaultSearchParameter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblDefaultSearchParameter.AutoSize = True
+        Me.lblDefaultSearchParameter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDefaultSearchParameter.Location = New System.Drawing.Point(3, 26)
+        Me.lblDefaultSearchParameter.Name = "lblDefaultSearchParameter"
+        Me.lblDefaultSearchParameter.Size = New System.Drawing.Size(139, 13)
+        Me.lblDefaultSearchParameter.TabIndex = 12
+        Me.lblDefaultSearchParameter.Text = "Default Search Parameter:"
         '
         'frmTV_Theme
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(223, 121)
         Me.Controls.Add(Me.pnlSettings)
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.Name = "frmTV_Theme"
         Me.Text = "frmTV_Theme"
         Me.pnlSettings.ResumeLayout(False)
         Me.pnlSettings.PerformLayout()
         Me.tblSettings.ResumeLayout(False)
         Me.tblSettings.PerformLayout()
-        Me.gbTVThemeOpts.ResumeLayout(False)
-        Me.gbTVThemeOpts.PerformLayout()
-        Me.tblTVThemeOpts.ResumeLayout(False)
-        Me.tblTVThemeOpts.PerformLayout()
+        Me.gbThemes.ResumeLayout(False)
+        Me.gbThemes.PerformLayout()
+        Me.tblThemes.ResumeLayout(False)
+        Me.tblThemes.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -127,7 +150,9 @@ Partial Class frmTV_Theme
 
     Friend WithEvents pnlSettings As Panel
     Friend WithEvents tblSettings As TableLayoutPanel
-    Friend WithEvents gbTVThemeOpts As GroupBox
-    Friend WithEvents tblTVThemeOpts As TableLayoutPanel
-    Friend WithEvents chkTVShowThemeKeepExisting As CheckBox
+    Friend WithEvents gbThemes As GroupBox
+    Friend WithEvents tblThemes As TableLayoutPanel
+    Friend WithEvents chkKeepExisting As CheckBox
+    Friend WithEvents lblDefaultSearchParameter As Label
+    Friend WithEvents txtDefaultSearchParameter As TextBox
 End Class

@@ -68,8 +68,9 @@ Public Class frmMovie_Theme
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
-        With Master.eSettings
-            .MovieThemeKeepExisting = ChkKeepExisting.Checked
+        With Master.eSettings.Movie.ThemeSettings
+            .DefaultSearchParameter = txtDefaultSearchParameter.Text.Trim
+            .KeepExisting = chkKeepExisting.Checked
         End With
     End Sub
 
@@ -78,17 +79,24 @@ Public Class frmMovie_Theme
 #Region "Methods"
 
     Public Sub Settings_Load()
-        With Master.eSettings
-            ChkKeepExisting.Checked = .MovieThemeKeepExisting
+        With Master.eSettings.Movie.ThemeSettings
+            chkKeepExisting.Checked = .KeepExisting
+            txtDefaultSearchParameter.Text = .DefaultSearchParameter
         End With
     End Sub
 
     Private Sub Setup()
-        ChkKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
-        GbOpts.Text = Master.eLang.GetString(1285, "Themes")
+        With Master.eLang
+            chkKeepExisting.Text = .GetString(971, "Keep existing")
+            gbThemes.Text = .GetString(1285, "Themes")
+            lblDefaultSearchParameter.Text = String.Concat(.GetString(1172, "Default Search Parameter"), ":")
+        End With
     End Sub
 
-    Private Sub ChkKeepExisting_CheckedChanged(sender As Object, e As EventArgs) Handles ChkKeepExisting.CheckedChanged
+    Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
+        chkKeepExisting.CheckedChanged,
+        txtDefaultSearchParameter.TextChanged
+
         RaiseEvent SettingsChanged()
     End Sub
 

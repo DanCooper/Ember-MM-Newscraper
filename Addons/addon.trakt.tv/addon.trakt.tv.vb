@@ -126,7 +126,7 @@ Public Class Data_Movie
         _PnlSettingsPanel = New frmSettingsPanel_Data_Movie
         _PnlSettingsPanel.chkEnabled.Checked = _Enabled
 
-        _PnlSettingsPanel.chkRating.Checked = _ConfigScrapeOptions.bMainRating
+        _PnlSettingsPanel.chkRating.Checked = _ConfigScrapeOptions.bMainRatings
         _PnlSettingsPanel.chkUserRating.Checked = _ConfigScrapeOptions.bMainUserRating
 
         AddHandler _PnlSettingsPanel.NeedsRestart, AddressOf Handle_NeedsRestart
@@ -174,7 +174,7 @@ Public Class Data_Movie
     End Function
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.IScraperAddon_Data_Movie.SaveSetup
-        _ConfigScrapeOptions.bMainRating = _PnlSettingsPanel.chkRating.Checked
+        _ConfigScrapeOptions.bMainRatings = _PnlSettingsPanel.chkRating.Checked
         _ConfigScrapeOptions.bMainUserRating = _PnlSettingsPanel.chkUserRating.Checked
 
         Settings_Save()
@@ -192,7 +192,7 @@ Public Class Data_Movie
 #Region "Methods"
 
     Sub Settings_Load()
-        _ConfigScrapeOptions.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True)
+        _ConfigScrapeOptions.bMainRatings = AdvancedSettings.GetBooleanSetting("DoRating", True)
         _ConfigScrapeOptions.bMainUserRating = AdvancedSettings.GetBooleanSetting("DoUserRating", True)
         _AddonSettings.APIAccessToken = AdvancedSettings.GetSetting("APIAccessToken", String.Empty, , Enums.ContentType.Movie)
         _AddonSettings.APICreated = AdvancedSettings.GetSetting("APICreatedAt", "0", , Enums.ContentType.Movie)
@@ -202,7 +202,7 @@ Public Class Data_Movie
 
     Sub Settings_Save()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.bMainRating, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.bMainRatings, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoUserRating", _ConfigScrapeOptions.bMainUserRating, , , Enums.ContentType.Movie)
             settings.SetSetting("APIAccessToken", _AddonSettings.APIAccessToken, , , Enums.ContentType.Movie)
             settings.SetSetting("APICreatedAt", _AddonSettings.APICreated, , , Enums.ContentType.Movie)
@@ -302,7 +302,7 @@ Public Class Data_TV
         _PnlSettingsPanel = New frmSettingsPanel_Data_TV
         _PnlSettingsPanel.chkEnabled.Checked = IsEnabled
 
-        _PnlSettingsPanel.chkScraperShowRating.Checked = _ConfigScrapeOptions.bMainRating
+        _PnlSettingsPanel.chkScraperShowRating.Checked = _ConfigScrapeOptions.bMainRatings
         _PnlSettingsPanel.chkScraperShowUserRating.Checked = _ConfigScrapeOptions.bMainUserRating
         _PnlSettingsPanel.chkScraperEpisodeRating.Checked = _ConfigScrapeOptions.bEpisodeRating
         _PnlSettingsPanel.chkScraperEpisodeUserRating.Checked = _ConfigScrapeOptions.bEpisodeUserRating
@@ -397,7 +397,7 @@ Public Class Data_TV
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.IScraperAddon_Data_TV.SaveSetup
         _ConfigScrapeOptions.bEpisodeRating = _PnlSettingsPanel.chkScraperEpisodeRating.Checked
         _ConfigScrapeOptions.bEpisodeUserRating = _PnlSettingsPanel.chkScraperEpisodeUserRating.Checked
-        _ConfigScrapeOptions.bMainRating = _PnlSettingsPanel.chkScraperShowRating.Checked
+        _ConfigScrapeOptions.bMainRatings = _PnlSettingsPanel.chkScraperShowRating.Checked
         _ConfigScrapeOptions.bMainUserRating = _PnlSettingsPanel.chkScraperShowUserRating.Checked
 
         Settings_Load()
@@ -416,7 +416,7 @@ Public Class Data_TV
     Sub Settings_Load()
         _ConfigScrapeOptions.bEpisodeRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
         _ConfigScrapeOptions.bEpisodeUserRating = AdvancedSettings.GetBooleanSetting("DoUserRating", True, , Enums.ContentType.TVEpisode)
-        _ConfigScrapeOptions.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
+        _ConfigScrapeOptions.bMainRatings = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
         _ConfigScrapeOptions.bMainUserRating = AdvancedSettings.GetBooleanSetting("DoUserRating", True, , Enums.ContentType.TVShow)
         _AddonSettings.APIAccessToken = AdvancedSettings.GetSetting("APIAccessToken", String.Empty, , Enums.ContentType.TV)
         _AddonSettings.APICreated = AdvancedSettings.GetSetting("APICreatedAt", "0", , Enums.ContentType.TV)
@@ -428,7 +428,7 @@ Public Class Data_TV
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.bEpisodeRating, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoUserRating", _ConfigScrapeOptions.bEpisodeUserRating, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.bMainRating, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.bMainRatings, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoUserRating", _ConfigScrapeOptions.bMainUserRating, , , Enums.ContentType.TVShow)
             settings.SetSetting("APIAccessToken", _AddonSettings.APIAccessToken, , , Enums.ContentType.TV)
             settings.SetSetting("APICreatedAt", _AddonSettings.APICreated, , , Enums.ContentType.TV)

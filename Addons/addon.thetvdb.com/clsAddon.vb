@@ -206,7 +206,7 @@ Public Class Scraper
         If bwTVDB.CancellationPending Then Return Nothing
 
         'Rating
-        If FilteredOptions.bMainRating Then
+        If FilteredOptions.bMainRatings Then
             nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "thetvdb", .Value = TVShowInfo.Series.Rating, .Votes = TVShowInfo.Series.RatingCount})
         End If
 

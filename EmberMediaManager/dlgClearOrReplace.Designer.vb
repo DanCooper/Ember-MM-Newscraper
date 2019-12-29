@@ -33,7 +33,6 @@ Partial Class dlgClearOrReplace
         Me.chkOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.chkOutline = New System.Windows.Forms.CheckBox()
         Me.chkRating = New System.Windows.Forms.CheckBox()
-        Me.chkReleaseDate = New System.Windows.Forms.CheckBox()
         Me.chkRuntime = New System.Windows.Forms.CheckBox()
         Me.chkStudios = New System.Windows.Forms.CheckBox()
         Me.chkTagline = New System.Windows.Forms.CheckBox()
@@ -41,7 +40,6 @@ Partial Class dlgClearOrReplace
         Me.chkTop250 = New System.Windows.Forms.CheckBox()
         Me.chkTrailer = New System.Windows.Forms.CheckBox()
         Me.chkWriters = New System.Windows.Forms.CheckBox()
-        Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkVideoSource = New System.Windows.Forms.CheckBox()
         Me.chkUserRating = New System.Windows.Forms.CheckBox()
         Me.txtVideoSource = New System.Windows.Forms.TextBox()
@@ -51,9 +49,20 @@ Partial Class dlgClearOrReplace
         Me.chkGuestStars = New System.Windows.Forms.CheckBox()
         Me.chkCreators = New System.Windows.Forms.CheckBox()
         Me.chkPremiered = New System.Windows.Forms.CheckBox()
+        Me.txtPremiered = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtUserRating = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtAired = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.chkStatus = New System.Windows.Forms.CheckBox()
         Me.txtStatus = New System.Windows.Forms.TextBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
+        Me.txtCertifications = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtCountries = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtCreators = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtDirectors = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtGenres = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtStudios = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtTags = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtWriters = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.chkPlot = New System.Windows.Forms.CheckBox()
         Me.lblActors = New System.Windows.Forms.Label()
         Me.lblGuestStars = New System.Windows.Forms.Label()
@@ -70,19 +79,6 @@ Partial Class dlgClearOrReplace
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
-        Me.txtPremiered = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtReleaseDate = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtUserRating = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtYear = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtAired = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtCertifications = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtCountries = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtCreators = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtDirectors = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtGenres = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtStudios = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtTags = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
-        Me.txtWriters = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.tblMain.SuspendLayout()
         Me.pnlMain.SuspendLayout()
         Me.pnlBottom.SuspendLayout()
@@ -105,40 +101,36 @@ Partial Class dlgClearOrReplace
         Me.tblMain.Controls.Add(Me.chkOriginalTitle, 0, 9)
         Me.tblMain.Controls.Add(Me.chkOutline, 0, 11)
         Me.tblMain.Controls.Add(Me.chkRating, 0, 13)
-        Me.tblMain.Controls.Add(Me.chkReleaseDate, 0, 14)
-        Me.tblMain.Controls.Add(Me.chkRuntime, 0, 15)
-        Me.tblMain.Controls.Add(Me.chkStudios, 0, 17)
-        Me.tblMain.Controls.Add(Me.chkTagline, 0, 18)
-        Me.tblMain.Controls.Add(Me.chkTags, 0, 19)
-        Me.tblMain.Controls.Add(Me.chkTop250, 0, 21)
-        Me.tblMain.Controls.Add(Me.chkTrailer, 0, 22)
-        Me.tblMain.Controls.Add(Me.chkWriters, 0, 25)
-        Me.tblMain.Controls.Add(Me.chkYear, 0, 26)
-        Me.tblMain.Controls.Add(Me.chkVideoSource, 0, 24)
-        Me.tblMain.Controls.Add(Me.chkUserRating, 0, 23)
-        Me.tblMain.Controls.Add(Me.txtVideoSource, 1, 24)
-        Me.tblMain.Controls.Add(Me.txtTagline, 1, 18)
+        Me.tblMain.Controls.Add(Me.chkRuntime, 0, 14)
+        Me.tblMain.Controls.Add(Me.chkStudios, 0, 16)
+        Me.tblMain.Controls.Add(Me.chkTagline, 0, 17)
+        Me.tblMain.Controls.Add(Me.chkTags, 0, 18)
+        Me.tblMain.Controls.Add(Me.chkTop250, 0, 20)
+        Me.tblMain.Controls.Add(Me.chkTrailer, 0, 21)
+        Me.tblMain.Controls.Add(Me.chkWriters, 0, 24)
+        Me.tblMain.Controls.Add(Me.chkVideoSource, 0, 23)
+        Me.tblMain.Controls.Add(Me.chkUserRating, 0, 22)
+        Me.tblMain.Controls.Add(Me.txtVideoSource, 1, 23)
+        Me.tblMain.Controls.Add(Me.txtTagline, 1, 17)
         Me.tblMain.Controls.Add(Me.txtMPAA, 1, 8)
         Me.tblMain.Controls.Add(Me.chkAired, 0, 1)
         Me.tblMain.Controls.Add(Me.chkGuestStars, 0, 7)
         Me.tblMain.Controls.Add(Me.chkCreators, 0, 4)
         Me.tblMain.Controls.Add(Me.chkPremiered, 0, 12)
         Me.tblMain.Controls.Add(Me.txtPremiered, 1, 12)
-        Me.tblMain.Controls.Add(Me.txtReleaseDate, 1, 14)
-        Me.tblMain.Controls.Add(Me.txtUserRating, 1, 23)
-        Me.tblMain.Controls.Add(Me.txtYear, 1, 26)
+        Me.tblMain.Controls.Add(Me.txtUserRating, 1, 22)
         Me.tblMain.Controls.Add(Me.txtAired, 1, 1)
-        Me.tblMain.Controls.Add(Me.chkStatus, 0, 16)
-        Me.tblMain.Controls.Add(Me.txtStatus, 1, 16)
-        Me.tblMain.Controls.Add(Me.chkTitle, 0, 20)
+        Me.tblMain.Controls.Add(Me.chkStatus, 0, 15)
+        Me.tblMain.Controls.Add(Me.txtStatus, 1, 15)
+        Me.tblMain.Controls.Add(Me.chkTitle, 0, 19)
         Me.tblMain.Controls.Add(Me.txtCertifications, 1, 2)
         Me.tblMain.Controls.Add(Me.txtCountries, 1, 3)
         Me.tblMain.Controls.Add(Me.txtCreators, 1, 4)
         Me.tblMain.Controls.Add(Me.txtDirectors, 1, 5)
         Me.tblMain.Controls.Add(Me.txtGenres, 1, 6)
-        Me.tblMain.Controls.Add(Me.txtStudios, 1, 17)
-        Me.tblMain.Controls.Add(Me.txtTags, 1, 19)
-        Me.tblMain.Controls.Add(Me.txtWriters, 1, 25)
+        Me.tblMain.Controls.Add(Me.txtStudios, 1, 16)
+        Me.tblMain.Controls.Add(Me.txtTags, 1, 18)
+        Me.tblMain.Controls.Add(Me.txtWriters, 1, 24)
         Me.tblMain.Controls.Add(Me.chkPlot, 0, 10)
         Me.tblMain.Controls.Add(Me.lblActors, 1, 0)
         Me.tblMain.Controls.Add(Me.lblGuestStars, 1, 7)
@@ -146,16 +138,14 @@ Partial Class dlgClearOrReplace
         Me.tblMain.Controls.Add(Me.lblPlot, 1, 10)
         Me.tblMain.Controls.Add(Me.lblOutline, 1, 11)
         Me.tblMain.Controls.Add(Me.lblRating, 1, 13)
-        Me.tblMain.Controls.Add(Me.lblRuntime, 1, 15)
-        Me.tblMain.Controls.Add(Me.lblTitle, 1, 20)
-        Me.tblMain.Controls.Add(Me.lblTop250, 1, 21)
-        Me.tblMain.Controls.Add(Me.lblTrailer, 1, 22)
+        Me.tblMain.Controls.Add(Me.lblRuntime, 1, 14)
+        Me.tblMain.Controls.Add(Me.lblTitle, 1, 19)
+        Me.tblMain.Controls.Add(Me.lblTop250, 1, 20)
+        Me.tblMain.Controls.Add(Me.lblTrailer, 1, 21)
         Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMain.Location = New System.Drawing.Point(0, 0)
         Me.tblMain.Name = "tblMain"
-        Me.tblMain.RowCount = 28
-        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.RowCount = 26
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -285,22 +275,11 @@ Partial Class dlgClearOrReplace
         Me.chkRating.Text = "Rating / Votes"
         Me.chkRating.UseVisualStyleBackColor = True
         '
-        'chkReleaseDate
-        '
-        Me.chkReleaseDate.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkReleaseDate.AutoSize = True
-        Me.chkReleaseDate.Location = New System.Drawing.Point(3, 350)
-        Me.chkReleaseDate.Name = "chkReleaseDate"
-        Me.chkReleaseDate.Size = New System.Drawing.Size(91, 17)
-        Me.chkReleaseDate.TabIndex = 22
-        Me.chkReleaseDate.Text = "Release Date"
-        Me.chkReleaseDate.UseVisualStyleBackColor = True
-        '
         'chkRuntime
         '
         Me.chkRuntime.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkRuntime.AutoSize = True
-        Me.chkRuntime.Location = New System.Drawing.Point(3, 375)
+        Me.chkRuntime.Location = New System.Drawing.Point(3, 349)
         Me.chkRuntime.Name = "chkRuntime"
         Me.chkRuntime.Size = New System.Drawing.Size(65, 17)
         Me.chkRuntime.TabIndex = 24
@@ -311,7 +290,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkStudios.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkStudios.AutoSize = True
-        Me.chkStudios.Location = New System.Drawing.Point(3, 425)
+        Me.chkStudios.Location = New System.Drawing.Point(3, 399)
         Me.chkStudios.Name = "chkStudios"
         Me.chkStudios.Size = New System.Drawing.Size(61, 17)
         Me.chkStudios.TabIndex = 27
@@ -322,7 +301,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkTagline.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTagline.AutoSize = True
-        Me.chkTagline.Location = New System.Drawing.Point(3, 451)
+        Me.chkTagline.Location = New System.Drawing.Point(3, 425)
         Me.chkTagline.Name = "chkTagline"
         Me.chkTagline.Size = New System.Drawing.Size(61, 17)
         Me.chkTagline.TabIndex = 29
@@ -333,7 +312,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkTags.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTags.AutoSize = True
-        Me.chkTags.Location = New System.Drawing.Point(3, 477)
+        Me.chkTags.Location = New System.Drawing.Point(3, 451)
         Me.chkTags.Name = "chkTags"
         Me.chkTags.Size = New System.Drawing.Size(50, 17)
         Me.chkTags.TabIndex = 31
@@ -344,7 +323,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkTop250.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTop250.AutoSize = True
-        Me.chkTop250.Location = New System.Drawing.Point(3, 525)
+        Me.chkTop250.Location = New System.Drawing.Point(3, 499)
         Me.chkTop250.Name = "chkTop250"
         Me.chkTop250.Size = New System.Drawing.Size(66, 17)
         Me.chkTop250.TabIndex = 34
@@ -355,7 +334,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTrailer.AutoSize = True
-        Me.chkTrailer.Location = New System.Drawing.Point(3, 548)
+        Me.chkTrailer.Location = New System.Drawing.Point(3, 522)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(55, 17)
         Me.chkTrailer.TabIndex = 35
@@ -366,29 +345,18 @@ Partial Class dlgClearOrReplace
         '
         Me.chkWriters.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkWriters.AutoSize = True
-        Me.chkWriters.Location = New System.Drawing.Point(3, 624)
+        Me.chkWriters.Location = New System.Drawing.Point(3, 598)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(100, 17)
         Me.chkWriters.TabIndex = 40
         Me.chkWriters.Text = "Credits (Writers)"
         Me.chkWriters.UseVisualStyleBackColor = True
         '
-        'chkYear
-        '
-        Me.chkYear.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkYear.AutoSize = True
-        Me.chkYear.Location = New System.Drawing.Point(3, 650)
-        Me.chkYear.Name = "chkYear"
-        Me.chkYear.Size = New System.Drawing.Size(48, 17)
-        Me.chkYear.TabIndex = 42
-        Me.chkYear.Text = "Year"
-        Me.chkYear.UseVisualStyleBackColor = True
-        '
         'chkVideoSource
         '
         Me.chkVideoSource.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkVideoSource.AutoSize = True
-        Me.chkVideoSource.Location = New System.Drawing.Point(3, 598)
+        Me.chkVideoSource.Location = New System.Drawing.Point(3, 572)
         Me.chkVideoSource.Name = "chkVideoSource"
         Me.chkVideoSource.Size = New System.Drawing.Size(87, 17)
         Me.chkVideoSource.TabIndex = 38
@@ -399,7 +367,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkUserRating.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkUserRating.AutoSize = True
-        Me.chkUserRating.Location = New System.Drawing.Point(3, 572)
+        Me.chkUserRating.Location = New System.Drawing.Point(3, 546)
         Me.chkUserRating.Name = "chkUserRating"
         Me.chkUserRating.Size = New System.Drawing.Size(82, 17)
         Me.chkUserRating.TabIndex = 36
@@ -409,7 +377,7 @@ Partial Class dlgClearOrReplace
         'txtVideoSource
         '
         Me.txtVideoSource.Enabled = False
-        Me.txtVideoSource.Location = New System.Drawing.Point(109, 597)
+        Me.txtVideoSource.Location = New System.Drawing.Point(109, 571)
         Me.txtVideoSource.Name = "txtVideoSource"
         Me.txtVideoSource.Size = New System.Drawing.Size(200, 20)
         Me.txtVideoSource.TabIndex = 39
@@ -417,7 +385,7 @@ Partial Class dlgClearOrReplace
         'txtTagline
         '
         Me.txtTagline.Enabled = False
-        Me.txtTagline.Location = New System.Drawing.Point(109, 450)
+        Me.txtTagline.Location = New System.Drawing.Point(109, 424)
         Me.txtTagline.Name = "txtTagline"
         Me.txtTagline.Size = New System.Drawing.Size(200, 20)
         Me.txtTagline.TabIndex = 30
@@ -474,11 +442,41 @@ Partial Class dlgClearOrReplace
         Me.chkPremiered.Text = "Premiered"
         Me.chkPremiered.UseVisualStyleBackColor = True
         '
+        'txtPremiered
+        '
+        Me.txtPremiered.Enabled = False
+        Me.txtPremiered.Location = New System.Drawing.Point(109, 300)
+        Me.txtPremiered.Name = "txtPremiered"
+        Me.txtPremiered.Size = New System.Drawing.Size(90, 20)
+        Me.txtPremiered.TabIndex = 20
+        Me.txtPremiered.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtPremiered.WatermarkText = "yyyy-MM-dd"
+        '
+        'txtUserRating
+        '
+        Me.txtUserRating.Enabled = False
+        Me.txtUserRating.Location = New System.Drawing.Point(109, 545)
+        Me.txtUserRating.Name = "txtUserRating"
+        Me.txtUserRating.Size = New System.Drawing.Size(40, 20)
+        Me.txtUserRating.TabIndex = 37
+        Me.txtUserRating.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtUserRating.WatermarkText = "0-9"
+        '
+        'txtAired
+        '
+        Me.txtAired.Enabled = False
+        Me.txtAired.Location = New System.Drawing.Point(109, 26)
+        Me.txtAired.Name = "txtAired"
+        Me.txtAired.Size = New System.Drawing.Size(90, 20)
+        Me.txtAired.TabIndex = 2
+        Me.txtAired.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtAired.WatermarkText = "yyyy-MM-dd"
+        '
         'chkStatus
         '
         Me.chkStatus.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkStatus.AutoSize = True
-        Me.chkStatus.Location = New System.Drawing.Point(3, 399)
+        Me.chkStatus.Location = New System.Drawing.Point(3, 373)
         Me.chkStatus.Name = "chkStatus"
         Me.chkStatus.Size = New System.Drawing.Size(56, 17)
         Me.chkStatus.TabIndex = 25
@@ -488,7 +486,7 @@ Partial Class dlgClearOrReplace
         'txtStatus
         '
         Me.txtStatus.Enabled = False
-        Me.txtStatus.Location = New System.Drawing.Point(109, 398)
+        Me.txtStatus.Location = New System.Drawing.Point(109, 372)
         Me.txtStatus.Name = "txtStatus"
         Me.txtStatus.Size = New System.Drawing.Size(200, 20)
         Me.txtStatus.TabIndex = 26
@@ -497,12 +495,92 @@ Partial Class dlgClearOrReplace
         '
         Me.chkTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTitle.AutoSize = True
-        Me.chkTitle.Location = New System.Drawing.Point(3, 502)
+        Me.chkTitle.Location = New System.Drawing.Point(3, 476)
         Me.chkTitle.Name = "chkTitle"
         Me.chkTitle.Size = New System.Drawing.Size(46, 17)
         Me.chkTitle.TabIndex = 33
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
+        '
+        'txtCertifications
+        '
+        Me.txtCertifications.Enabled = False
+        Me.txtCertifications.Location = New System.Drawing.Point(109, 52)
+        Me.txtCertifications.Name = "txtCertifications"
+        Me.txtCertifications.Size = New System.Drawing.Size(200, 20)
+        Me.txtCertifications.TabIndex = 4
+        Me.txtCertifications.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtCertifications.WatermarkText = "comma separated"
+        '
+        'txtCountries
+        '
+        Me.txtCountries.Enabled = False
+        Me.txtCountries.Location = New System.Drawing.Point(109, 78)
+        Me.txtCountries.Name = "txtCountries"
+        Me.txtCountries.Size = New System.Drawing.Size(200, 20)
+        Me.txtCountries.TabIndex = 6
+        Me.txtCountries.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtCountries.WatermarkText = "comma separated"
+        '
+        'txtCreators
+        '
+        Me.txtCreators.Enabled = False
+        Me.txtCreators.Location = New System.Drawing.Point(109, 104)
+        Me.txtCreators.Name = "txtCreators"
+        Me.txtCreators.Size = New System.Drawing.Size(200, 20)
+        Me.txtCreators.TabIndex = 8
+        Me.txtCreators.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtCreators.WatermarkText = "comma separated"
+        '
+        'txtDirectors
+        '
+        Me.txtDirectors.Enabled = False
+        Me.txtDirectors.Location = New System.Drawing.Point(109, 130)
+        Me.txtDirectors.Name = "txtDirectors"
+        Me.txtDirectors.Size = New System.Drawing.Size(200, 20)
+        Me.txtDirectors.TabIndex = 10
+        Me.txtDirectors.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtDirectors.WatermarkText = "comma separated"
+        '
+        'txtGenres
+        '
+        Me.txtGenres.Enabled = False
+        Me.txtGenres.Location = New System.Drawing.Point(109, 156)
+        Me.txtGenres.Name = "txtGenres"
+        Me.txtGenres.Size = New System.Drawing.Size(200, 20)
+        Me.txtGenres.TabIndex = 12
+        Me.txtGenres.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtGenres.WatermarkText = "comma separated"
+        '
+        'txtStudios
+        '
+        Me.txtStudios.Enabled = False
+        Me.txtStudios.Location = New System.Drawing.Point(109, 398)
+        Me.txtStudios.Name = "txtStudios"
+        Me.txtStudios.Size = New System.Drawing.Size(200, 20)
+        Me.txtStudios.TabIndex = 28
+        Me.txtStudios.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtStudios.WatermarkText = "comma separated"
+        '
+        'txtTags
+        '
+        Me.txtTags.Enabled = False
+        Me.txtTags.Location = New System.Drawing.Point(109, 450)
+        Me.txtTags.Name = "txtTags"
+        Me.txtTags.Size = New System.Drawing.Size(200, 20)
+        Me.txtTags.TabIndex = 32
+        Me.txtTags.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtTags.WatermarkText = "comma separated"
+        '
+        'txtWriters
+        '
+        Me.txtWriters.Enabled = False
+        Me.txtWriters.Location = New System.Drawing.Point(109, 597)
+        Me.txtWriters.Name = "txtWriters"
+        Me.txtWriters.Size = New System.Drawing.Size(200, 20)
+        Me.txtWriters.TabIndex = 41
+        Me.txtWriters.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtWriters.WatermarkText = "comma separated"
         '
         'chkPlot
         '
@@ -599,7 +677,7 @@ Partial Class dlgClearOrReplace
         Me.lblRuntime.AutoSize = True
         Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblRuntime.ForeColor = System.Drawing.Color.Red
-        Me.lblRuntime.Location = New System.Drawing.Point(109, 377)
+        Me.lblRuntime.Location = New System.Drawing.Point(109, 351)
         Me.lblRuntime.Name = "lblRuntime"
         Me.lblRuntime.Size = New System.Drawing.Size(74, 13)
         Me.lblRuntime.TabIndex = 13
@@ -612,7 +690,7 @@ Partial Class dlgClearOrReplace
         Me.lblTitle.AutoSize = True
         Me.lblTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTitle.ForeColor = System.Drawing.Color.Red
-        Me.lblTitle.Location = New System.Drawing.Point(109, 504)
+        Me.lblTitle.Location = New System.Drawing.Point(109, 478)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(74, 13)
         Me.lblTitle.TabIndex = 13
@@ -625,7 +703,7 @@ Partial Class dlgClearOrReplace
         Me.lblTop250.AutoSize = True
         Me.lblTop250.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTop250.ForeColor = System.Drawing.Color.Red
-        Me.lblTop250.Location = New System.Drawing.Point(109, 527)
+        Me.lblTop250.Location = New System.Drawing.Point(109, 501)
         Me.lblTop250.Name = "lblTop250"
         Me.lblTop250.Size = New System.Drawing.Size(74, 13)
         Me.lblTop250.TabIndex = 13
@@ -638,7 +716,7 @@ Partial Class dlgClearOrReplace
         Me.lblTrailer.AutoSize = True
         Me.lblTrailer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTrailer.ForeColor = System.Drawing.Color.Red
-        Me.lblTrailer.Location = New System.Drawing.Point(109, 550)
+        Me.lblTrailer.Location = New System.Drawing.Point(109, 524)
         Me.lblTrailer.Name = "lblTrailer"
         Me.lblTrailer.Size = New System.Drawing.Size(74, 13)
         Me.lblTrailer.TabIndex = 13
@@ -704,136 +782,6 @@ Partial Class dlgClearOrReplace
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
         '
-        'txtPremiered
-        '
-        Me.txtPremiered.Enabled = False
-        Me.txtPremiered.Location = New System.Drawing.Point(109, 300)
-        Me.txtPremiered.Name = "txtPremiered"
-        Me.txtPremiered.Size = New System.Drawing.Size(90, 20)
-        Me.txtPremiered.TabIndex = 20
-        Me.txtPremiered.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtPremiered.WatermarkText = "yyyy-MM-dd"
-        '
-        'txtReleaseDate
-        '
-        Me.txtReleaseDate.Enabled = False
-        Me.txtReleaseDate.Location = New System.Drawing.Point(109, 349)
-        Me.txtReleaseDate.Name = "txtReleaseDate"
-        Me.txtReleaseDate.Size = New System.Drawing.Size(90, 20)
-        Me.txtReleaseDate.TabIndex = 23
-        Me.txtReleaseDate.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtReleaseDate.WatermarkText = "yyyy-MM-dd"
-        '
-        'txtUserRating
-        '
-        Me.txtUserRating.Enabled = False
-        Me.txtUserRating.Location = New System.Drawing.Point(109, 571)
-        Me.txtUserRating.Name = "txtUserRating"
-        Me.txtUserRating.Size = New System.Drawing.Size(40, 20)
-        Me.txtUserRating.TabIndex = 37
-        Me.txtUserRating.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtUserRating.WatermarkText = "0-9"
-        '
-        'txtYear
-        '
-        Me.txtYear.Enabled = False
-        Me.txtYear.Location = New System.Drawing.Point(109, 649)
-        Me.txtYear.Name = "txtYear"
-        Me.txtYear.Size = New System.Drawing.Size(40, 20)
-        Me.txtYear.TabIndex = 43
-        Me.txtYear.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtYear.WatermarkText = "yyyy"
-        '
-        'txtAired
-        '
-        Me.txtAired.Enabled = False
-        Me.txtAired.Location = New System.Drawing.Point(109, 26)
-        Me.txtAired.Name = "txtAired"
-        Me.txtAired.Size = New System.Drawing.Size(90, 20)
-        Me.txtAired.TabIndex = 2
-        Me.txtAired.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtAired.WatermarkText = "yyyy-MM-dd"
-        '
-        'txtCertifications
-        '
-        Me.txtCertifications.Enabled = False
-        Me.txtCertifications.Location = New System.Drawing.Point(109, 52)
-        Me.txtCertifications.Name = "txtCertifications"
-        Me.txtCertifications.Size = New System.Drawing.Size(200, 20)
-        Me.txtCertifications.TabIndex = 4
-        Me.txtCertifications.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtCertifications.WatermarkText = "comma separated"
-        '
-        'txtCountries
-        '
-        Me.txtCountries.Enabled = False
-        Me.txtCountries.Location = New System.Drawing.Point(109, 78)
-        Me.txtCountries.Name = "txtCountries"
-        Me.txtCountries.Size = New System.Drawing.Size(200, 20)
-        Me.txtCountries.TabIndex = 6
-        Me.txtCountries.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtCountries.WatermarkText = "comma separated"
-        '
-        'txtCreators
-        '
-        Me.txtCreators.Enabled = False
-        Me.txtCreators.Location = New System.Drawing.Point(109, 104)
-        Me.txtCreators.Name = "txtCreators"
-        Me.txtCreators.Size = New System.Drawing.Size(200, 20)
-        Me.txtCreators.TabIndex = 8
-        Me.txtCreators.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtCreators.WatermarkText = "comma separated"
-        '
-        'txtDirectors
-        '
-        Me.txtDirectors.Enabled = False
-        Me.txtDirectors.Location = New System.Drawing.Point(109, 130)
-        Me.txtDirectors.Name = "txtDirectors"
-        Me.txtDirectors.Size = New System.Drawing.Size(200, 20)
-        Me.txtDirectors.TabIndex = 10
-        Me.txtDirectors.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtDirectors.WatermarkText = "comma separated"
-        '
-        'txtGenres
-        '
-        Me.txtGenres.Enabled = False
-        Me.txtGenres.Location = New System.Drawing.Point(109, 156)
-        Me.txtGenres.Name = "txtGenres"
-        Me.txtGenres.Size = New System.Drawing.Size(200, 20)
-        Me.txtGenres.TabIndex = 12
-        Me.txtGenres.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtGenres.WatermarkText = "comma separated"
-        '
-        'txtStudios
-        '
-        Me.txtStudios.Enabled = False
-        Me.txtStudios.Location = New System.Drawing.Point(109, 424)
-        Me.txtStudios.Name = "txtStudios"
-        Me.txtStudios.Size = New System.Drawing.Size(200, 20)
-        Me.txtStudios.TabIndex = 28
-        Me.txtStudios.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtStudios.WatermarkText = "comma separated"
-        '
-        'txtTags
-        '
-        Me.txtTags.Enabled = False
-        Me.txtTags.Location = New System.Drawing.Point(109, 476)
-        Me.txtTags.Name = "txtTags"
-        Me.txtTags.Size = New System.Drawing.Size(200, 20)
-        Me.txtTags.TabIndex = 32
-        Me.txtTags.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtTags.WatermarkText = "comma separated"
-        '
-        'txtWriters
-        '
-        Me.txtWriters.Enabled = False
-        Me.txtWriters.Location = New System.Drawing.Point(109, 623)
-        Me.txtWriters.Name = "txtWriters"
-        Me.txtWriters.Size = New System.Drawing.Size(200, 20)
-        Me.txtWriters.TabIndex = 41
-        Me.txtWriters.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtWriters.WatermarkText = "comma separated"
-        '
         'dlgClearOrReplace
         '
         Me.AcceptButton = Me.btnOK
@@ -878,7 +826,6 @@ Partial Class dlgClearOrReplace
     Friend WithEvents chkOutline As CheckBox
     Friend WithEvents chkPlot As CheckBox
     Friend WithEvents chkRating As CheckBox
-    Friend WithEvents chkReleaseDate As CheckBox
     Friend WithEvents chkRuntime As CheckBox
     Friend WithEvents chkStudios As CheckBox
     Friend WithEvents chkTagline As CheckBox
@@ -887,7 +834,6 @@ Partial Class dlgClearOrReplace
     Friend WithEvents chkTrailer As CheckBox
     Friend WithEvents chkUserRating As CheckBox
     Friend WithEvents chkWriters As CheckBox
-    Friend WithEvents chkYear As CheckBox
     Friend WithEvents chkVideoSource As CheckBox
     Friend WithEvents txtVideoSource As TextBox
     Friend WithEvents txtTagline As TextBox
@@ -897,9 +843,7 @@ Partial Class dlgClearOrReplace
     Friend WithEvents chkCreators As CheckBox
     Friend WithEvents chkPremiered As CheckBox
     Friend WithEvents txtPremiered As EmberAPI.AdvancedControls.TextBox_with_Watermark
-    Friend WithEvents txtReleaseDate As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents txtUserRating As EmberAPI.AdvancedControls.TextBox_with_Watermark
-    Friend WithEvents txtYear As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents txtAired As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents chkStatus As CheckBox
     Friend WithEvents txtStatus As TextBox

@@ -30,7 +30,7 @@ Partial Class dlgSearchResults_Movie
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.lblTagline = New System.Windows.Forms.Label()
         Me.txtOutline = New System.Windows.Forms.TextBox()
-        Me.lblYear = New System.Windows.Forms.Label()
+        Me.lblPremiered = New System.Windows.Forms.Label()
         Me.lblDirectors = New System.Windows.Forms.Label()
         Me.lblGenre = New System.Windows.Forms.Label()
         Me.txtIMDBID = New System.Windows.Forms.TextBox()
@@ -41,7 +41,7 @@ Partial Class dlgSearchResults_Movie
         Me.chkManual = New System.Windows.Forms.CheckBox()
         Me.btnVerify = New System.Windows.Forms.Button()
         Me.lblIMDBID = New System.Windows.Forms.Label()
-        Me.lblYearHeader = New System.Windows.Forms.Label()
+        Me.lblPremieredHeader = New System.Windows.Forms.Label()
         Me.lblDirectorsHeader = New System.Windows.Forms.Label()
         Me.lblGenreHeader = New System.Windows.Forms.Label()
         Me.lblIMDBHeader = New System.Windows.Forms.Label()
@@ -132,16 +132,16 @@ Partial Class dlgSearchResults_Movie
         Me.txtOutline.TabStop = False
         Me.txtOutline.Visible = False
         '
-        'lblYear
+        'lblPremiered
         '
-        Me.lblYear.AutoSize = True
-        Me.lblYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblYear.Location = New System.Drawing.Point(476, 160)
-        Me.lblYear.Name = "lblYear"
-        Me.lblYear.Size = New System.Drawing.Size(31, 13)
-        Me.lblYear.TabIndex = 13
-        Me.lblYear.Text = "0000"
-        Me.lblYear.Visible = False
+        Me.lblPremiered.AutoSize = True
+        Me.lblPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPremiered.Location = New System.Drawing.Point(476, 160)
+        Me.lblPremiered.Name = "lblPremiered"
+        Me.lblPremiered.Size = New System.Drawing.Size(31, 13)
+        Me.lblPremiered.TabIndex = 13
+        Me.lblPremiered.Text = "0000"
+        Me.lblPremiered.Visible = False
         '
         'lblDirectors
         '
@@ -253,16 +253,16 @@ Partial Class dlgSearchResults_Movie
         Me.lblIMDBID.Text = "IMDB"
         Me.lblIMDBID.Visible = False
         '
-        'lblYearHeader
+        'lblPremieredHeader
         '
-        Me.lblYearHeader.AutoSize = True
-        Me.lblYearHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblYearHeader.Location = New System.Drawing.Point(414, 160)
-        Me.lblYearHeader.Name = "lblYearHeader"
-        Me.lblYearHeader.Size = New System.Drawing.Size(32, 13)
-        Me.lblYearHeader.TabIndex = 12
-        Me.lblYearHeader.Text = "Year:"
-        Me.lblYearHeader.Visible = False
+        Me.lblPremieredHeader.AutoSize = True
+        Me.lblPremieredHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblPremieredHeader.Location = New System.Drawing.Point(414, 160)
+        Me.lblPremieredHeader.Name = "lblPremieredHeader"
+        Me.lblPremieredHeader.Size = New System.Drawing.Size(63, 13)
+        Me.lblPremieredHeader.TabIndex = 12
+        Me.lblPremieredHeader.Text = "Premiered:"
+        Me.lblPremieredHeader.Visible = False
         '
         'lblDirectorsHeader
         '
@@ -390,7 +390,7 @@ Partial Class dlgSearchResults_Movie
         Me.btnOpenFolder.Text = "..."
         Me.btnOpenFolder.UseVisualStyleBackColor = True
         '
-        'dlgIMDBSearchResults_Movie
+        'dlgSearchResults_Movie
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -410,7 +410,7 @@ Partial Class dlgSearchResults_Movie
         Me.Controls.Add(Me.lblIMDBHeader)
         Me.Controls.Add(Me.lblGenreHeader)
         Me.Controls.Add(Me.lblDirectorsHeader)
-        Me.Controls.Add(Me.lblYearHeader)
+        Me.Controls.Add(Me.lblPremieredHeader)
         Me.Controls.Add(Me.lblIMDBID)
         Me.Controls.Add(Me.btnVerify)
         Me.Controls.Add(Me.chkManual)
@@ -418,7 +418,7 @@ Partial Class dlgSearchResults_Movie
         Me.Controls.Add(Me.txtIMDBID)
         Me.Controls.Add(Me.lblGenre)
         Me.Controls.Add(Me.lblDirectors)
-        Me.Controls.Add(Me.lblYear)
+        Me.Controls.Add(Me.lblPremiered)
         Me.Controls.Add(Me.txtOutline)
         Me.Controls.Add(Me.lblTagline)
         Me.Controls.Add(Me.lblTitle)
@@ -430,7 +430,7 @@ Partial Class dlgSearchResults_Movie
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.MinimumSize = New System.Drawing.Size(670, 500)
-        Me.Name = "dlgIMDBSearchResults_Movie"
+        Me.Name = "dlgSearchResults_Movie"
         Me.Text = "Search Results"
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTop.ResumeLayout(False)
@@ -450,7 +450,7 @@ Partial Class dlgSearchResults_Movie
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents lblTagline As System.Windows.Forms.Label
     Friend WithEvents txtOutline As System.Windows.Forms.TextBox
-    Friend WithEvents lblYear As System.Windows.Forms.Label
+    Friend WithEvents lblPremiered As System.Windows.Forms.Label
     Friend WithEvents lblDirectors As System.Windows.Forms.Label
     Friend WithEvents lblGenre As System.Windows.Forms.Label
     Friend WithEvents txtIMDBID As System.Windows.Forms.TextBox
@@ -461,7 +461,7 @@ Partial Class dlgSearchResults_Movie
     Friend WithEvents chkManual As System.Windows.Forms.CheckBox
     Friend WithEvents btnVerify As System.Windows.Forms.Button
     Friend WithEvents lblIMDBID As System.Windows.Forms.Label
-    Friend WithEvents lblYearHeader As System.Windows.Forms.Label
+    Friend WithEvents lblPremieredHeader As System.Windows.Forms.Label
     Friend WithEvents lblDirectorsHeader As System.Windows.Forms.Label
     Friend WithEvents lblGenreHeader As System.Windows.Forms.Label
     Friend WithEvents lblIMDBHeader As System.Windows.Forms.Label

@@ -20,7 +20,7 @@
 
 Imports EmberAPI
 
-Public Class frmMovie_Trailer
+Public Class frmMovie_FileNaming_Renaming
     Implements Interfaces.IMasterSettingsPanel
 
 #Region "Events"
@@ -36,7 +36,7 @@ Public Class frmMovie_Trailer
     Public Event NeedsRestart() Implements Interfaces.IMasterSettingsPanel.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IMasterSettingsPanel.SettingsChanged
 
-#End Region 'Events
+#End Region 'Events 
 
 #Region "Constructors"
 
@@ -57,23 +57,17 @@ Public Class frmMovie_Trailer
         Settings_Load()
 
         Return New Containers.SettingsPanel With {
-            .Contains = Enums.SettingsPanelType.MovieTrailer,
-            .ImageIndex = 2,
-            .Order = 600,
+            .Contains = Enums.SettingsPanelType.None,
+            .ImageIndex = 4,
+            .Order = 100,
             .Panel = pnlSettings,
-            .SettingsPanelID = "Movie_Trailer",
-            .Title = Master.eLang.GetString(1195, "Trailers"),
-            .Type = Enums.SettingsPanelType.Movie
+            .SettingsPanelID = "Movie_FileNaming_Renaming",
+            .Title = Master.eLang.GetString(290, "Renaming"),
+            .Type = Enums.SettingsPanelType.MovieFileNaming
         }
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
-        With Master.eSettings.Movie.TrailerSettings
-            .DefaultSearchParameter = txtDefaultSearchParameter.Text
-            .KeepExisting = chkKeepExisting.Checked
-            .MinimumVideoQuality = CType(cbMinimumQuality.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
-            .PreferredVideoQuality = CType(cbPreferredQuality.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
-        End With
     End Sub
 
 #End Region 'Interface Methodes
@@ -81,65 +75,17 @@ Public Class frmMovie_Trailer
 #Region "Methods"
 
     Public Sub Settings_Load()
-        With Master.eSettings.Movie.TrailerSettings
-            cbMinimumQuality.SelectedValue = .MinimumVideoQuality
-            cbPreferredQuality.SelectedValue = .PreferredVideoQuality
-            chkKeepExisting.Checked = .KeepExisting
-            txtDefaultSearchParameter.Text = .DefaultSearchParameter
-        End With
-        Load_MovieTrailerQualities()
-    End Sub
-
-    Private Sub Setup()
-        With Master.eLang
-            chkKeepExisting.Text = .GetString(971, "Keep existing")
-            lblDefaultSearchParameter.Text = String.Concat(.GetString(1172, "Default Search Parameter"), ":")
-            lblMinimumQuality.Text = String.Concat(.GetString(1027, "Minimum Quality"), ":")
-            lblPreferredQuality.Text = String.Concat(.GetString(800, "Preferred Quality"), ":")
-        End With
-    End Sub
-
-    Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
-        cbMinimumQuality.SelectedIndexChanged,
-        chkKeepExisting.CheckedChanged,
-        txtDefaultSearchParameter.TextChanged
-
-        RaiseEvent SettingsChanged()
-    End Sub
-
-    Private Sub Load_MovieTrailerQualities()
-        Dim items As New Dictionary(Of String, Enums.TrailerVideoQuality) From {
-            {Master.eLang.GetString(745, "Any"), Enums.TrailerVideoQuality.Any},
-            {"2160p 60fps", Enums.TrailerVideoQuality.HD2160p60fps},
-            {"2160p", Enums.TrailerVideoQuality.HD2160p},
-            {"1440p", Enums.TrailerVideoQuality.HD1440p},
-            {"1080p 60fps", Enums.TrailerVideoQuality.HD1080p60fps},
-            {"1080p", Enums.TrailerVideoQuality.HD1080p},
-            {"720p 60fps", Enums.TrailerVideoQuality.HD720p60fps},
-            {"720p", Enums.TrailerVideoQuality.HD720p},
-            {"480p", Enums.TrailerVideoQuality.HQ480p},
-            {"360p", Enums.TrailerVideoQuality.SQ360p},
-            {"240p", Enums.TrailerVideoQuality.SQ240p},
-            {"144p", Enums.TrailerVideoQuality.SQ144p},
-            {"144p 15fps", Enums.TrailerVideoQuality.SQ144p15fps}
-        }
-        cbMinimumQuality.DataSource = items.ToList
-        cbMinimumQuality.DisplayMember = "Key"
-        cbMinimumQuality.ValueMember = "Value"
-        cbPreferredQuality.DataSource = items.ToList
-        cbPreferredQuality.DisplayMember = "Key"
-        cbPreferredQuality.ValueMember = "Value"
-    End Sub
-
-    Private Sub PreferredQuality_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbPreferredQuality.SelectedIndexChanged
-        If CType(cbPreferredQuality.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value = Enums.TrailerVideoQuality.Any Then
-            cbMinimumQuality.Enabled = False
-        Else
-            cbMinimumQuality.Enabled = True
-        End If
-        RaiseEvent SettingsChanged()
     End Sub
 
 #End Region 'Methods
+
+    Private Sub Setup()
+        With Master.eLang
+        End With
+    End Sub
+
+    Private Sub Enable_ApplyButton()
+        RaiseEvent SettingsChanged()
+    End Sub
 
 End Class

@@ -69,7 +69,7 @@ Public Class dlgCustomScraper
     Private oEpisodeWritersAllowed As Boolean
     Private oMainActorsAllowed As Boolean
     Private oMainCertificationsAllowed As Boolean
-    Private oMainCollectionIDAllowed As Boolean
+    Private oMainCollectionAllowed As Boolean
     Private oMainCountriesAllowed As Boolean
     Private oMainCreatorsAllowed As Boolean
     Private oMainDirectorsAllowed As Boolean
@@ -82,7 +82,6 @@ Public Class dlgCustomScraper
     Private oMainPremieredAllowed As Boolean
     Private oMainProducersAllowed As Boolean
     Private oMainRatingAllowed As Boolean
-    Private oMainReleaseDateAllowed As Boolean
     Private oMainRuntimeAllowed As Boolean
     Private oMainStatusAllowed As Boolean
     Private oMainStudiosAllowed As Boolean
@@ -91,7 +90,6 @@ Public Class dlgCustomScraper
     Private oMainTop250Allowed As Boolean
     Private oMainTrailerAllowed As Boolean
     Private oMainWritersAllowed As Boolean
-    Private oMainYearAllowed As Boolean
     Private oSeasonAiredAllowed As Boolean
     Private oSeasonPlotAllowed As Boolean
     Private oSeasonTitleAllowed As Boolean
@@ -208,7 +206,7 @@ Public Class dlgCustomScraper
 
         chkMainOptionsActors.Checked = False
         chkMainOptionsCertifications.Checked = False
-        chkMainOptionsCollectionID.Checked = False
+        chkMainOptionsCollection.Checked = False
         chkMainOptionsCountries.Checked = False
         chkMainOptionsCreators.Checked = False
         chkMainOptionsDirectors.Checked = False
@@ -220,7 +218,6 @@ Public Class dlgCustomScraper
         chkMainOptionsPlot.Checked = False
         chkMainOptionsPremiered.Checked = False
         chkMainOptionsRating.Checked = False
-        chkMainOptionsReleaseDate.Checked = False
         chkMainOptionsRuntime.Checked = False
         chkMainOptionsStatus.Checked = False
         chkMainOptionsStudios.Checked = False
@@ -229,7 +226,6 @@ Public Class dlgCustomScraper
         chkMainOptionsTop250.Checked = False
         chkMainOptionsTrailer.Checked = False
         chkMainOptionsWriters.Checked = False
-        chkMainOptionsYear.Checked = False
 
         CheckEnable()
     End Sub
@@ -327,8 +323,8 @@ Public Class dlgCustomScraper
                 chkMainOptionsActors.Enabled = False
                 chkMainOptionsCertifications.Checked = oMainCertificationsAllowed
                 chkMainOptionsCertifications.Enabled = False
-                chkMainOptionsCollectionID.Checked = oMainCollectionIDAllowed
-                chkMainOptionsCollectionID.Enabled = False
+                chkMainOptionsCollection.Checked = oMainCollectionAllowed
+                chkMainOptionsCollection.Enabled = False
                 chkMainOptionsCountries.Checked = oMainCountriesAllowed
                 chkMainOptionsCountries.Enabled = False
                 chkMainOptionsCreators.Checked = oMainCreatorsAllowed
@@ -351,8 +347,6 @@ Public Class dlgCustomScraper
                 chkMainOptionsPremiered.Enabled = False
                 chkMainOptionsRating.Checked = oMainRatingAllowed
                 chkMainOptionsRating.Enabled = False
-                chkMainOptionsReleaseDate.Checked = oMainReleaseDateAllowed
-                chkMainOptionsReleaseDate.Enabled = False
                 chkMainOptionsRuntime.Checked = oMainRuntimeAllowed
                 chkMainOptionsRuntime.Enabled = False
                 chkMainOptionsStatus.Checked = oMainStatusAllowed
@@ -369,12 +363,10 @@ Public Class dlgCustomScraper
                 chkMainOptionsTrailer.Enabled = False
                 chkMainOptionsWriters.Checked = oMainWritersAllowed
                 chkMainOptionsWriters.Enabled = False
-                chkMainOptionsYear.Checked = oMainYearAllowed
-                chkMainOptionsYear.Enabled = False
             Else
                 chkMainOptionsActors.Enabled = oMainActorsAllowed
                 chkMainOptionsCertifications.Enabled = oMainCertificationsAllowed
-                chkMainOptionsCollectionID.Enabled = oMainCollectionIDAllowed
+                chkMainOptionsCollection.Enabled = oMainCollectionAllowed
                 chkMainOptionsCountries.Enabled = oMainCountriesAllowed
                 chkMainOptionsCreators.Enabled = oMainCreatorsAllowed
                 chkMainOptionsDirectors.Enabled = oMainDirectorsAllowed
@@ -386,7 +378,6 @@ Public Class dlgCustomScraper
                 chkMainOptionsPlot.Enabled = oMainPlotAllowed
                 chkMainOptionsPremiered.Enabled = oMainPremieredAllowed
                 chkMainOptionsRating.Enabled = oMainRatingAllowed
-                chkMainOptionsReleaseDate.Enabled = oMainReleaseDateAllowed
                 chkMainOptionsRuntime.Enabled = oMainRuntimeAllowed
                 chkMainOptionsStatus.Enabled = oMainStatusAllowed
                 chkMainOptionsStudios.Enabled = oMainStudiosAllowed
@@ -395,7 +386,6 @@ Public Class dlgCustomScraper
                 chkMainOptionsTop250.Enabled = oMainTop250Allowed
                 chkMainOptionsTrailer.Enabled = oMainTrailerAllowed
                 chkMainOptionsWriters.Enabled = oMainWritersAllowed
-                chkMainOptionsYear.Enabled = oMainYearAllowed
             End If
         Else
             gbMainScrapeOptions.Enabled = False
@@ -567,7 +557,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bEpisodeTitle = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsTitle.Checked
         CustomUpdater.ScrapeOptions.bMainActors = chkMainModifierNFO.Checked AndAlso chkMainOptionsActors.Checked
         CustomUpdater.ScrapeOptions.bMainCertifications = chkMainModifierNFO.Checked AndAlso chkMainOptionsCertifications.Checked
-        CustomUpdater.ScrapeOptions.bMainCollectionID = chkMainModifierNFO.Checked AndAlso chkMainOptionsCollectionID.Checked
+        CustomUpdater.ScrapeOptions.bMainCollection = chkMainModifierNFO.Checked AndAlso chkMainOptionsCollection.Checked
         CustomUpdater.ScrapeOptions.bMainCountries = chkMainModifierNFO.Checked AndAlso chkMainOptionsCountries.Checked
         CustomUpdater.ScrapeOptions.bMainCreators = chkMainModifierNFO.Checked AndAlso chkMainOptionsCreators.Checked
         CustomUpdater.ScrapeOptions.bMainDirectors = chkMainModifierNFO.Checked AndAlso chkMainOptionsDirectors.Checked
@@ -578,8 +568,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bMainOutline = chkMainModifierNFO.Checked AndAlso chkMainOptionsOutline.Checked
         CustomUpdater.ScrapeOptions.bMainPlot = chkMainModifierNFO.Checked AndAlso chkMainOptionsPlot.Checked
         CustomUpdater.ScrapeOptions.bMainPremiered = chkMainModifierNFO.Checked AndAlso chkMainOptionsPremiered.Checked
-        CustomUpdater.ScrapeOptions.bMainRating = chkMainModifierNFO.Checked AndAlso chkMainOptionsRating.Checked
-        CustomUpdater.ScrapeOptions.bMainRelease = chkMainModifierNFO.Checked AndAlso chkMainOptionsReleaseDate.Checked
+        CustomUpdater.ScrapeOptions.bMainRatings = chkMainModifierNFO.Checked AndAlso chkMainOptionsRating.Checked
         CustomUpdater.ScrapeOptions.bMainRuntime = chkMainModifierNFO.Checked AndAlso chkMainOptionsRuntime.Checked
         CustomUpdater.ScrapeOptions.bMainStatus = chkMainModifierNFO.Checked AndAlso chkMainOptionsStatus.Checked
         CustomUpdater.ScrapeOptions.bMainStudios = chkMainModifierNFO.Checked AndAlso chkMainOptionsStudios.Checked
@@ -587,8 +576,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bMainTitle = chkMainModifierNFO.Checked AndAlso chkMainOptionsTitle.Checked
         CustomUpdater.ScrapeOptions.bMainTop250 = chkMainModifierNFO.Checked AndAlso chkMainOptionsTop250.Checked
         CustomUpdater.ScrapeOptions.bMainTrailer = chkMainModifierNFO.Checked AndAlso chkMainOptionsTrailer.Checked
-        CustomUpdater.ScrapeOptions.bMainWriters = chkMainModifierNFO.Checked AndAlso chkMainOptionsWriters.Checked
-        CustomUpdater.ScrapeOptions.bMainYear = chkMainModifierNFO.Checked AndAlso chkMainOptionsYear.Checked
+        CustomUpdater.ScrapeOptions.bMainCredits = chkMainModifierNFO.Checked AndAlso chkMainOptionsWriters.Checked
         CustomUpdater.ScrapeOptions.bSeasonAired = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsAired.Checked   'TODO: check. Atm we save the season infos to tv show NFO
         CustomUpdater.ScrapeOptions.bSeasonPlot = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsPlot.Checked     'TODO: check. Atm we save the season infos to tv show NFO
         CustomUpdater.ScrapeOptions.bSeasonTitle = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsTitle.Checked     'TODO: check. Atm we save the season infos to tv show NFO
@@ -633,7 +621,7 @@ Public Class dlgCustomScraper
         ElseIf CustomUpdater.ScrapeModifiers.MainNFO AndAlso (
             CustomUpdater.ScrapeOptions.bMainActors OrElse
             CustomUpdater.ScrapeOptions.bMainCertifications OrElse
-            CustomUpdater.ScrapeOptions.bMainCollectionID OrElse
+            CustomUpdater.ScrapeOptions.bMainCollection OrElse
             CustomUpdater.ScrapeOptions.bMainCountries OrElse
             CustomUpdater.ScrapeOptions.bMainCreators OrElse
             CustomUpdater.ScrapeOptions.bMainDirectors OrElse
@@ -644,8 +632,7 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeOptions.bMainOutline OrElse
             CustomUpdater.ScrapeOptions.bMainPlot OrElse
             CustomUpdater.ScrapeOptions.bMainPremiered OrElse
-            CustomUpdater.ScrapeOptions.bMainRating OrElse
-            CustomUpdater.ScrapeOptions.bMainRelease OrElse
+            CustomUpdater.ScrapeOptions.bMainRatings OrElse
             CustomUpdater.ScrapeOptions.bMainRuntime OrElse
             CustomUpdater.ScrapeOptions.bMainStatus OrElse
             CustomUpdater.ScrapeOptions.bMainStudios OrElse
@@ -654,8 +641,7 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeOptions.bMainTitle OrElse
             CustomUpdater.ScrapeOptions.bMainTop250 OrElse
             CustomUpdater.ScrapeOptions.bMainTrailer OrElse
-            CustomUpdater.ScrapeOptions.bMainWriters OrElse
-            CustomUpdater.ScrapeOptions.bMainYear OrElse
+            CustomUpdater.ScrapeOptions.bMainCredits OrElse
             CustomUpdater.ScrapeOptions.bSeasonAired OrElse
             CustomUpdater.ScrapeOptions.bSeasonPlot) Then
             btnOK.Enabled = True
@@ -695,7 +681,7 @@ Public Class dlgCustomScraper
                     mMainFanartAllowed = .MovieFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     mMainKeyArtAllowed = .MovieKeyArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
                     mMainLandscapeAllowed = .MovieLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
-                    mMainMetaDataAllowed = .MovieScraperMetaDataScan
+                    mMainMetaDataAllowed = .Movie.DataSettings.MetadataScan.Enabled
                     mMainNFOAllowed = .MovieNFOAnyEnabled
                     mMainPosterAllowed = .MoviePosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
                     mMainThemeAllowed = .MovieThemeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
@@ -705,43 +691,43 @@ Public Class dlgCustomScraper
                     mSeasonLandscapeAllowed = False
                     mSeasonPosterAllowed = False
 
-                    oEpisodeActorsAllowed = False
-                    oEpisodeAiredAllowed = False
-                    oEpisodeDirectorsAllowed = False
-                    oEpisodeGuestStarsAllowed = False
-                    oEpisodePlotAllowed = False
-                    oEpisodeRatingAllowed = False
-                    oEpisodeRuntimeAllowed = False
-                    oEpisodeTitleAllowed = False
-                    oEpisodeWritersAllowed = False
-                    oMainActorsAllowed = .MovieScraperCast
-                    oMainCertificationsAllowed = .MovieScraperCert
-                    oMainCollectionIDAllowed = .MovieScraperCollectionID
-                    oMainCountriesAllowed = .MovieScraperCountry
-                    oMainCreatorsAllowed = False
-                    oMainDirectorsAllowed = .MovieScraperDirector
-                    oMainEpisodeGuideURLAllowed = False
-                    oMainGenresAllowed = .MovieScraperGenre
-                    oMainMPAAAllowed = .MovieScraperMPAA
-                    oMainOriginalTitleAllowed = .MovieScraperOriginalTitle
-                    oMainOutlineAllowed = .MovieScraperOutline
-                    oMainPlotAllowed = .MovieScraperPlot
-                    oMainPremieredAllowed = False
-                    oMainProducersAllowed = False
-                    oMainRatingAllowed = .MovieScraperRating
-                    oMainReleaseDateAllowed = .MovieScraperRelease
-                    oMainRuntimeAllowed = .MovieScraperRuntime
-                    oMainStatusAllowed = False
-                    oMainStudiosAllowed = .MovieScraperStudio
-                    oMainTaglineAllowed = .MovieScraperTagline
-                    oMainTitleAllowed = .MovieScraperTitle
-                    oMainTop250Allowed = .MovieScraperTop250
-                    oMainTrailerAllowed = .MovieScraperTrailer
-                    oMainWritersAllowed = .MovieScraperCredits
-                    oMainYearAllowed = .MovieScraperYear
-                    oSeasonAiredAllowed = False
-                    oSeasonPlotAllowed = False
-                    oSeasonTitleAllowed = False
+                    With Master.eSettings.Movie.DataSettings
+                        oEpisodeActorsAllowed = False
+                        oEpisodeAiredAllowed = False
+                        oEpisodeDirectorsAllowed = False
+                        oEpisodeGuestStarsAllowed = False
+                        oEpisodePlotAllowed = False
+                        oEpisodeRatingAllowed = False
+                        oEpisodeRuntimeAllowed = False
+                        oEpisodeTitleAllowed = False
+                        oEpisodeWritersAllowed = False
+                        oMainActorsAllowed = .Actors.Enabled
+                        oMainCertificationsAllowed = .Certifications.Enabled
+                        oMainCollectionAllowed = .Collection.Enabled
+                        oMainCountriesAllowed = .Countries.Enabled
+                        oMainCreatorsAllowed = False
+                        oMainDirectorsAllowed = .Directors.Enabled
+                        oMainEpisodeGuideURLAllowed = False
+                        oMainGenresAllowed = .Genres.Enabled
+                        oMainMPAAAllowed = .MPAA.Enabled
+                        oMainOriginalTitleAllowed = .OriginalTitle.Enabled
+                        oMainOutlineAllowed = .Outline.Enabled
+                        oMainPlotAllowed = .Plot.Enabled
+                        oMainPremieredAllowed = .Premiered.Enabled
+                        oMainProducersAllowed = False
+                        oMainRatingAllowed = .Ratings.Enabled
+                        oMainRuntimeAllowed = .Runtime.Enabled
+                        oMainStatusAllowed = False
+                        oMainStudiosAllowed = .Studios.Enabled
+                        oMainTaglineAllowed = .Tagline.Enabled
+                        oMainTitleAllowed = .Title.Enabled
+                        oMainTop250Allowed = .Top250.Enabled
+                        oMainTrailerAllowed = .TrailerLink.Enabled
+                        oMainWritersAllowed = .Credits.Enabled
+                        oSeasonAiredAllowed = False
+                        oSeasonPlotAllowed = False
+                        oSeasonTitleAllowed = False
+                    End With
 
                     chkMainModifierAll.Checked = True
                     chkMainOptionsAll.Checked = True
@@ -797,7 +783,7 @@ Public Class dlgCustomScraper
                     oEpisodeWritersAllowed = False
                     oMainActorsAllowed = False
                     oMainCertificationsAllowed = False
-                    oMainCollectionIDAllowed = False
+                    oMainCollectionAllowed = False
                     oMainCountriesAllowed = False
                     oMainCreatorsAllowed = False
                     oMainDirectorsAllowed = False
@@ -810,7 +796,6 @@ Public Class dlgCustomScraper
                     oMainPremieredAllowed = False
                     oMainProducersAllowed = False
                     oMainRatingAllowed = False
-                    oMainReleaseDateAllowed = False
                     oMainRuntimeAllowed = False
                     oMainStatusAllowed = False
                     oMainStudiosAllowed = False
@@ -819,7 +804,6 @@ Public Class dlgCustomScraper
                     oMainTop250Allowed = False
                     oMainTrailerAllowed = False
                     oMainWritersAllowed = False
-                    oMainYearAllowed = False
                     oSeasonAiredAllowed = False
                     oSeasonPlotAllowed = False
                     oSeasonTitleAllowed = False
@@ -873,7 +857,7 @@ Public Class dlgCustomScraper
                     oEpisodeWritersAllowed = .TVScraperEpisodeCredits
                     oMainActorsAllowed = .TVScraperShowActors
                     oMainCertificationsAllowed = .TVScraperShowCert
-                    oMainCollectionIDAllowed = False
+                    oMainCollectionAllowed = False
                     oMainCountriesAllowed = .TVScraperShowCountry
                     oMainCreatorsAllowed = .TVScraperShowCreators
                     oMainDirectorsAllowed = False
@@ -886,7 +870,6 @@ Public Class dlgCustomScraper
                     oMainPremieredAllowed = .TVScraperShowPremiered
                     oMainProducersAllowed = False
                     oMainRatingAllowed = .TVScraperShowRating
-                    oMainReleaseDateAllowed = False
                     oMainRuntimeAllowed = .TVScraperShowRuntime
                     oMainStatusAllowed = .TVScraperShowStatus
                     oMainStudiosAllowed = .TVScraperShowStudio
@@ -895,7 +878,6 @@ Public Class dlgCustomScraper
                     oMainTop250Allowed = False
                     oMainTrailerAllowed = False
                     oMainWritersAllowed = False
-                    oMainYearAllowed = False
                     oSeasonAiredAllowed = .TVScraperSeasonAired
                     oSeasonPlotAllowed = .TVScraperSeasonPlot
                     oSeasonTitleAllowed = .TVScraperSeasonTitle
@@ -1089,7 +1071,7 @@ Public Class dlgCustomScraper
         chkMainOptionsActors.Click,
         chkMainOptionsAll.Click,
         chkMainOptionsCertifications.Click,
-        chkMainOptionsCollectionID.Click,
+        chkMainOptionsCollection.Click,
         chkMainOptionsCountries.Click,
         chkMainOptionsCreators.Click,
         chkMainOptionsDirectors.Click,
@@ -1101,7 +1083,6 @@ Public Class dlgCustomScraper
         chkMainOptionsPlot.Click,
         chkMainOptionsPremiered.Click,
         chkMainOptionsRating.Click,
-        chkMainOptionsReleaseDate.Click,
         chkMainOptionsRuntime.Click,
         chkMainOptionsStatus.Click,
         chkMainOptionsStudios.Click,
@@ -1110,7 +1091,6 @@ Public Class dlgCustomScraper
         chkMainOptionsTop250.Click,
         chkMainOptionsTrailer.Click,
         chkMainOptionsWriters.Click,
-        chkMainOptionsYear.Click,
         chkSeasonModifierAll.Click,
         chkSeasonModifierBanner.Click,
         chkSeasonModifierFanart.Click,
@@ -1201,7 +1181,7 @@ Public Class dlgCustomScraper
         chkSeasonModifierLandscape.Text = strLandscape
 
         'MetaData
-        Dim strMetaData As String = Master.eLang.GetString(59, "Meta Data")
+        Dim strMetaData As String = Master.eLang.GetString(59, "Metadata")
         chkEpisodeModifierMetaData.Text = strMetaData
         chkMainModifierMetaData.Text = strMetaData
 
@@ -1247,7 +1227,7 @@ Public Class dlgCustomScraper
         btnOK.Text = Master.eLang.GetString(389, "Begin")
         chkMainOptionsActors.Text = Master.eLang.GetString(231, "Actors")
         chkMainOptionsCertifications.Text = Master.eLang.GetString(56, "Certifications")
-        chkMainOptionsCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
+        chkMainOptionsCollection.Text = Master.eLang.GetString(424, "Collection")
         chkMainOptionsCountries.Text = Master.eLang.GetString(237, "Countries")
         chkMainOptionsDirectors.Text = Master.eLang.GetString(940, "Directors")
         chkMainOptionsEpisodeGuideURL.Text = Master.eLang.GetString(723, "Episode Guide URL")
@@ -1257,7 +1237,6 @@ Public Class dlgCustomScraper
         chkMainOptionsOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         chkMainOptionsPlot.Text = Master.eLang.GetString(65, "Plot")
         chkMainOptionsRating.Text = Master.eLang.GetString(400, "Rating")
-        chkMainOptionsReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
         chkMainOptionsRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkMainOptionsStudios.Text = Master.eLang.GetString(226, "Studios")
         chkMainOptionsTagline.Text = Master.eLang.GetString(397, "Tagline")
@@ -1265,7 +1244,6 @@ Public Class dlgCustomScraper
         chkMainOptionsTop250.Text = Master.eLang.GetString(591, "Top 250")
         chkMainOptionsTrailer.Text = Master.eLang.GetString(151, "Trailer")
         chkMainOptionsWriters.Text = Master.eLang.GetString(394, "Writers")
-        chkMainOptionsYear.Text = Master.eLang.GetString(278, "Year")
         gbMainScrapeOptions.Text = Master.eLang.GetString(390, "Options")
         gbMainScrapeModifiers.Text = Master.eLang.GetString(388, "Modifiers")
         gbScrapeType_Filter.Text = Master.eLang.GetString(386, "Selection Filter")

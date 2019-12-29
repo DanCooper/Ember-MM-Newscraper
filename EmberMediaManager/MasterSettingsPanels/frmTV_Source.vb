@@ -85,6 +85,8 @@ Public Class frmTV_Source
             .MarkNewAsNew = chkMarkAsNew_TVEpisode.Checked
             .MarkNewAsNewWithoutNFO = chkMarkAsNewWithoutNFO_TVEpisode.Checked
             .OverWriteNfo = chkOverwriteNfo.Checked
+            .ResetNewBeforeDBUpdate = chkResetNewBeforeDBUpdate_TVEpisode.Checked
+            .ResetNewOnExit = chkResetNewOnExit_TVEpisode.Checked
             If Not String.IsNullOrEmpty(txtSkipLessThan.Text) AndAlso Integer.TryParse(txtSkipLessThan.Text, 0) Then
                 .SkipLessThan = Convert.ToInt32(txtSkipLessThan.Text)
             Else
@@ -109,6 +111,8 @@ Public Class frmTV_Source
             .MarkNewAsNew = chkMarkAsNew_TVShow.Checked
             .MarkNewAsNewWithoutNFO = chkMarkAsNewWithoutNFO_TVShow.Checked
             .OverWriteNfo = chkOverwriteNfo.Checked
+            .ResetNewBeforeDBUpdate = chkResetNewBeforeDBUpdate_TVShow.Checked
+            .ResetNewOnExit = chkResetNewOnExit_TVShow.Checked
             .TitleFiltersEnabled = chkTitleFiltersEnabled_TVShow.Checked
             .TitleProperCase = chkTitleProperCase_TVShow.Checked
         End With
@@ -136,6 +140,8 @@ Public Class frmTV_Source
             chkMarkAsNew_TVEpisode.Checked = .MarkNewAsNew
             chkMarkAsNewWithoutNFO_TVEpisode.Enabled = .MarkNewAsNew
             chkMarkAsNewWithoutNFO_TVEpisode.Checked = .MarkNewAsNewWithoutNFO
+            chkResetNewBeforeDBUpdate_TVEpisode.Checked = .ResetNewBeforeDBUpdate
+            chkResetNewOnExit_TVEpisode.Checked = .ResetNewOnExit
             chkTitleFiltersEnabled_TVEpisode.Checked = .TitleFiltersEnabled
             chkTitleProperCase_TVEpisode.Checked = .TitleProperCase
             dgvTitleFilters_TVEpisode.Enabled = .TitleFiltersEnabled
@@ -175,6 +181,8 @@ Public Class frmTV_Source
             chkMarkAsNewWithoutNFO_TVShow.Enabled = .MarkNewAsNew
             chkMarkAsNewWithoutNFO_TVShow.Checked = .MarkNewAsNewWithoutNFO
             chkOverwriteNfo.Checked = .OverWriteNfo
+            chkResetNewBeforeDBUpdate_TVShow.Checked = .ResetNewBeforeDBUpdate
+            chkResetNewOnExit_TVShow.Checked = .ResetNewOnExit
             chkTitleProperCase_TVShow.Checked = .TitleProperCase
             dgvTitleFilters_TVShow.Enabled = .TitleFiltersEnabled
             lblTitleFilters_TVShow.Enabled = .TitleFiltersEnabled
@@ -197,17 +205,23 @@ Public Class frmTV_Source
 
     Private Sub Setup()
         With Master.eLang
+            btnTitleFilterDefaults_TVEpisode.Text = .GetString(713, "Defaults")
+            btnTitleFilterDefaults_TVShow.Text = .GetString(713, "Defaults")
             chkCleanLibraryAfterUpdate.Text = .GetString(668, "Clean database after Library Update")
             chkDateAddedIgnoreNFO.Text = .GetString(1209, "Ignore <dateadded> from NFO")
-            chkOverwriteNfo.Text = .GetString(433, "Overwrite invalid NFOs")
-            chkMarkAsMarked_TVEpisode.Text = .GetString(459, "Mark as ""Marked""")
-            chkMarkAsMarked_TVShow.Text = .GetString(459, "Mark as ""Marked""")
             chkMarkAsMarkedWithoutNFO_TVEpisode.Text = .GetString(114, "Only if no valid NFO exists")
             chkMarkAsMarkedWithoutNFO_TVShow.Text = .GetString(114, "Only if no valid NFO exists")
-            chkMarkAsNew_TVEpisode.Text = .GetString(530, "Mark as ""New""")
-            chkMarkAsNew_TVShow.Text = .GetString(530, "Mark as ""New""")
+            chkMarkAsMarked_TVEpisode.Text = .GetString(459, "Mark as ""Marked""")
+            chkMarkAsMarked_TVShow.Text = .GetString(459, "Mark as ""Marked""")
             chkMarkAsNewWithoutNFO_TVEpisode.Text = .GetString(114, "Only if no valid NFO exists")
             chkMarkAsNewWithoutNFO_TVShow.Text = .GetString(114, "Only if no valid NFO exists")
+            chkMarkAsNew_TVEpisode.Text = .GetString(530, "Mark as ""New""")
+            chkMarkAsNew_TVShow.Text = .GetString(530, "Mark as ""New""")
+            chkOverwriteNfo.Text = .GetString(433, "Overwrite invalid NFOs")
+            chkResetNewBeforeDBUpdate_TVEpisode.Text = .GetString(693, "Before any Library Update")
+            chkResetNewBeforeDBUpdate_TVShow.Text = .GetString(693, "Before any Library Update")
+            chkResetNewOnExit_TVEpisode.Text = .GetString(734, "On Exit")
+            chkResetNewOnExit_TVShow.Text = .GetString(734, "On Exit")
             chkTitleFiltersEnabled_TVEpisode.Text = .GetString(451, "Enable Title Filters")
             chkTitleFiltersEnabled_TVShow.Text = .GetString(451, "Enable Title Filters")
             chkTitleProperCase_TVEpisode.Text = .GetString(452, "Convert Names to Proper Case")
@@ -224,7 +238,11 @@ Public Class frmTV_Source
             colSourcesName.HeaderText = .GetString(232, "Name")
             colSourcesPath.HeaderText = .GetString(410, "Path")
             colSourcesSorting.HeaderText = .GetString(895, "Sorting")
+            colTitleFiltersRegex_TVEpisode.HeaderText = .GetString(699, "Regex")
+            colTitleFiltersRegex_TVShow.HeaderText = .GetString(699, "Regex")
             gbImportOptions.Text = .GetString(559, "Import Options")
+            gbMarkNew.Text = .GetString(691, "Mark newly added")
+            gbResetNew.Text = .GetString(692, "Reset marker ""New""")
             gbSourcesDefaults.Text = .GetString(252, "Defaults for new Sources")
             gbTitleCleanup.Text = Master.eLang.GetString(455, "Title Cleanup")
             lblDateAdded.Text = .GetString(792, "Default value for <dateadded>")
@@ -255,8 +273,8 @@ Public Class frmTV_Source
             chkOverwriteNfo.CheckedChanged,
             chkTitleProperCase_TVEpisode.CheckedChanged,
             chkTitleProperCase_TVShow.CheckedChanged,
-            chkUnmarkNewBeforeDBUpdate.CheckedChanged,
-            chkUnmarkNewOnExit.CheckedChanged,
+            chkResetNewBeforeDBUpdate_TVShow.CheckedChanged,
+            chkResetNewOnExit_TVShow.CheckedChanged,
             chkVideoSourceFromFolder.CheckedChanged
 
         RaiseEvent SettingsChanged()
@@ -467,7 +485,7 @@ Public Class frmTV_Source
                            Master.eLang.GetString(104, "Are You Sure?"),
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
-            DataGridView_Fill_TitleFilters_TVEpisode(Master.eSettings.TVEpisode.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.TVEpisode))
+            DataGridView_Fill_TitleFilters_TVEpisode(Master.eSettings.TVEpisode.SourceSettings.TitleFilters.GetDefaults(Enums.DefaultType.TitleFilters_TVEpisode))
             RaiseEvent SettingsChanged()
         End If
     End Sub
@@ -477,7 +495,7 @@ Public Class frmTV_Source
                            Master.eLang.GetString(104, "Are You Sure?"),
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
-            DataGridView_Fill_TitleFilters_TVShow(Master.eSettings.TVShow.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.TVShow))
+            DataGridView_Fill_TitleFilters_TVShow(Master.eSettings.TVShow.SourceSettings.TitleFilters.GetDefaults(Enums.DefaultType.TitleFilters_TVShow))
             RaiseEvent SettingsChanged()
         End If
     End Sub
@@ -589,6 +607,18 @@ Public Class frmTV_Source
         ExistingToRemove = 3
         EditedToRemove = 4
     End Enum
+
+    Private Sub LoadDefaults_TitleFilters_TVEpisode(sender As Object, e As EventArgs) Handles btnTitleFilterDefaults_TVEpisode.Click
+
+    End Sub
+
+    Private Sub EnableApplyButton(sender As Object, e As EventArgs) Handles chkVideoSourceFromFolder.CheckedChanged, chkTitleProperCase_TVShow.CheckedChanged, chkTitleProperCase_TVEpisode.CheckedChanged, chkResetNewOnExit_TVShow.CheckedChanged, chkResetNewBeforeDBUpdate_TVShow.CheckedChanged, chkOverwriteNfo.CheckedChanged, chkMarkAsNewWithoutNFO_TVShow.CheckedChanged, chkMarkAsNewWithoutNFO_TVEpisode.CheckedChanged, chkMarkAsMarkedWithoutNFO_TVShow.CheckedChanged, chkMarkAsMarkedWithoutNFO_TVEpisode.CheckedChanged, chkDateAddedIgnoreNFO.CheckedChanged, chkCleanLibraryAfterUpdate.CheckedChanged, cbSourcesDefaultsLanguage.SelectedIndexChanged, cbSourcesDefaultsEpisodeOrdering.SelectedIndexChanged, cbDateAddedDateTime.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub LoadDefaults_TitleFilters_TVShow(sender As Object, e As EventArgs) Handles btnTitleFilterDefaults_TVShow.Click
+
+    End Sub
 
 #End Region 'Nested Types
 

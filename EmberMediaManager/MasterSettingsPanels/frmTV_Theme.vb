@@ -68,8 +68,9 @@ Public Class frmTV_Theme
     End Function
 
     Public Sub SaveSettings() Implements Interfaces.IMasterSettingsPanel.SaveSettings
-        With Master.eSettings
-            .TVShowThemeKeepExisting = chkTVShowThemeKeepExisting.Checked
+        With Master.eSettings.TVShow.ThemeSettings
+            .DefaultSearchParameter = txtDefaultSearchParameter.Text.Trim
+            .KeepExisting = chkKeepExisting.Checked
         End With
     End Sub
 
@@ -78,18 +79,23 @@ Public Class frmTV_Theme
 #Region "Methods"
 
     Public Sub Settings_Load()
-        With Master.eSettings
-            chkTVShowThemeKeepExisting.Checked = .TVShowThemeKeepExisting
+        With Master.eSettings.TVShow.ThemeSettings
+            chkKeepExisting.Checked = .KeepExisting
+            txtDefaultSearchParameter.Text = .DefaultSearchParameter
         End With
     End Sub
 
     Private Sub Setup()
-        chkTVShowThemeKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
-        gbTVThemeOpts.Text = Master.eLang.GetString(1285, "Themes")
+        With Master.eLang
+            chkKeepExisting.Text = .GetString(971, "Keep existing")
+            gbThemes.Text = .GetString(1285, "Themes")
+            lblDefaultSearchParameter.Text = String.Concat(.GetString(1172, "Default Search Parameter"), ":")
+        End With
     End Sub
 
     Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
-        chkTVShowThemeKeepExisting.CheckedChanged
+        chkKeepExisting.CheckedChanged,
+        txtDefaultSearchParameter.TextChanged
 
         RaiseEvent SettingsChanged()
     End Sub

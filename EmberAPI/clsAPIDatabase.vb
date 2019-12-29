@@ -1787,6 +1787,7 @@ Public Class Database
         For i As Integer = 0 To nDataTable.Rows.Count - 1
             nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.ListTitle)) = StringUtils.SortTokens(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Title)).ToString)
             nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)) = StringUtils.SortTokens(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)).ToString)
+            nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Year)) = StringUtils.GetYearFromString(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Premiered)).ToString)
         Next
         Return nDataTable
     End Function
@@ -2079,7 +2080,6 @@ Public Class Database
                         If Not DBNull.Value.Equals(sqlReader("title")) Then .Title = sqlReader("title").ToString
                         If Not DBNull.Value.Equals(sqlReader("originalTitle")) Then .OriginalTitle = sqlReader("originalTitle").ToString
                         If Not DBNull.Value.Equals(sqlReader("sortTitle")) Then .SortTitle = sqlReader("sortTitle").ToString
-                        If Not DBNull.Value.Equals(sqlReader("year")) Then .Year = Convert.ToInt32(sqlReader("year"))
                         If Not DBNull.Value.Equals(sqlReader("mpaa")) Then .MPAA = sqlReader("mpaa").ToString
                         If Not DBNull.Value.Equals(sqlReader("top250")) Then .Top250 = Convert.ToInt32(sqlReader("top250"))
                         If Not DBNull.Value.Equals(sqlReader("outline")) Then .Outline = sqlReader("outline").ToString
@@ -2087,7 +2087,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(sqlReader("tagline")) Then .Tagline = sqlReader("tagline").ToString
                         If Not DBNull.Value.Equals(sqlReader("trailer")) Then .Trailer = sqlReader("trailer").ToString
                         If Not DBNull.Value.Equals(sqlReader("runtime")) Then .Runtime = sqlReader("runtime").ToString
-                        If Not DBNull.Value.Equals(sqlReader("releaseDate")) Then .ReleaseDate = sqlReader("releaseDate").ToString
+                        If Not DBNull.Value.Equals(sqlReader("premiered")) Then .Premiered = sqlReader("premiered").ToString
                         If Not DBNull.Value.Equals(sqlReader("playCount")) Then .PlayCount = Convert.ToInt32(sqlReader("playCount"))
                         If Not DBNull.Value.Equals(sqlReader("videoSource")) Then .VideoSource = sqlReader("videoSource").ToString
                         If Not DBNull.Value.Equals(sqlReader("lastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(sqlReader("lastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
@@ -2200,7 +2200,7 @@ Public Class Database
 
         'Movies in Set
         Using sqlCommand As SQLiteCommand = _MyvideosDBConn.CreateCommand()
-            If Not Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets Then
+            If Not Master.eSettings.Movie.DataSettings.Collection.SaveYAMJCompatible Then
                 If dbElement.SortMethod = Enums.SortMethod_MovieSet.Year Then
                     sqlCommand.CommandText = String.Concat("SELECT movieset_link.idMovie, movieset_link.set_order FROM movieset_link INNER JOIN movie ON (movieset_link.idMovie=movie.idMovie) ",
                                                                "WHERE idSet=", dbElement.ID, " ORDER BY movie.year;")
@@ -3114,14 +3114,13 @@ Public Class Database
                                                            "title,",
                                                            "originalTitle,",
                                                            "sortTitle,",
-                                                           "year,",
                                                            "mpaa,",
                                                            "top250,",
                                                            "outline,",
                                                            "plot,",
                                                            "tagline,",
                                                            "runtime,",
-                                                           "releaseDate,",
+                                                           "premiered,",
                                                            "playCount,",
                                                            "trailer,",
                                                            "nfoPath,",
@@ -3142,7 +3141,7 @@ Public Class Database
                                                            "lastPlayed,",
                                                            "language,",
                                                            "userRating",
-                                                           ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?")
+                                                           ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?")
             If dbElement.IDSpecified Then
                 sqlCommand.CommandText = String.Concat(sqlCommand.CommandText, ",?")
                 Dim par_idMovie As SQLiteParameter = sqlCommand.Parameters.Add("par_idMovie", DbType.Int64, 0, "idMovie")
@@ -3160,14 +3159,13 @@ Public Class Database
             Dim par_title As SQLiteParameter = sqlCommand.Parameters.Add("par_title", DbType.String, 0, "title")
             Dim par_originalTitle As SQLiteParameter = sqlCommand.Parameters.Add("par_originalTitle", DbType.String, 0, "originalTitle")
             Dim par_sortTitle As SQLiteParameter = sqlCommand.Parameters.Add("par_sortTitle", DbType.String, 0, "sortTitle")
-            Dim par_year As SQLiteParameter = sqlCommand.Parameters.Add("par_year", DbType.Int32, 0, "year")
             Dim par_mpaa As SQLiteParameter = sqlCommand.Parameters.Add("par_mpaa", DbType.String, 0, "mpaa")
             Dim par_top250 As SQLiteParameter = sqlCommand.Parameters.Add("par_top250", DbType.Int64, 0, "top250")
             Dim par_outline As SQLiteParameter = sqlCommand.Parameters.Add("par_outline", DbType.String, 0, "outline")
             Dim par_plot As SQLiteParameter = sqlCommand.Parameters.Add("par_plot", DbType.String, 0, "plot")
             Dim par_tagline As SQLiteParameter = sqlCommand.Parameters.Add("par_tagline", DbType.String, 0, "tagline")
             Dim par_runtime As SQLiteParameter = sqlCommand.Parameters.Add("par_runtime", DbType.String, 0, "runtime")
-            Dim par_releaseDate As SQLiteParameter = sqlCommand.Parameters.Add("par_releaseDate", DbType.String, 0, "releaseDate")
+            Dim par_premiered As SQLiteParameter = sqlCommand.Parameters.Add("par_premiered", DbType.String, 0, "premiered")
             Dim par_playCount As SQLiteParameter = sqlCommand.Parameters.Add("par_playCount", DbType.Int64, 0, "playCount")
             Dim par_trailer As SQLiteParameter = sqlCommand.Parameters.Add("par_trailer", DbType.String, 0, "trailer")
             Dim par_nfoPath As SQLiteParameter = sqlCommand.Parameters.Add("par_nfoPath", DbType.String, 0, "nfoPath")
@@ -3272,7 +3270,7 @@ Public Class Database
             End If
 
             'Trailer URL
-            If Master.eSettings.MovieScraperXBMCTrailerFormat Then
+            If Master.eSettings.Movie.DataSettings.TrailerLink.SaveKodiCompatible Then
                 dbElement.Movie.Trailer = dbElement.Movie.Trailer.Trim.Replace("http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                 dbElement.Movie.Trailer = dbElement.Movie.Trailer.Replace("http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
             End If
@@ -3321,7 +3319,7 @@ Public Class Database
                     par_playCount.Value = .PlayCount
                 End If
                 par_plot.Value = .Plot
-                par_releaseDate.Value = NumUtils.DateToISO8601Date(.ReleaseDate)
+                par_premiered.Value = NumUtils.DateToISO8601Date(.Premiered)
                 par_runtime.Value = .Runtime
                 par_sortTitle.Value = .SortTitle
                 par_tagline.Value = .Tagline
@@ -3330,9 +3328,6 @@ Public Class Database
                     par_top250.Value = .Top250
                 End If
                 par_trailer.Value = .Trailer
-                If .YearSpecified Then 'has to be NOTHING instead of "0"
-                    par_year.Value = .Year
-                End If
             End With
 
             par_outOfTolerance.Value = dbElement.OutOfTolerance

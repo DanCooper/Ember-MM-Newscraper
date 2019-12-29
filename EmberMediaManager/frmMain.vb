@@ -307,11 +307,11 @@ Public Class frmMain
             End While
 
             If doSave Then
-                If Master.eSettings.Movie.SourceSettings.UnmarkNewOnExit Then Master.DB.ClearNew(Enums.ContentType.Movie)
-                If Master.eSettings.Movieset.SourceSettings.UnmarkNewOnExit Then Master.DB.ClearNew(Enums.ContentType.Movieset)
-                If Master.eSettings.TVEpisode.SourceSettings.UnmarkNewOnExit Then Master.DB.ClearNew(Enums.ContentType.TVEpisode)
-                If Master.eSettings.TVSeason.SourceSettings.UnmarkNewOnExit Then Master.DB.ClearNew(Enums.ContentType.TVSeason)
-                If Master.eSettings.TVShow.SourceSettings.UnmarkNewOnExit Then Master.DB.ClearNew(Enums.ContentType.TVSeason)
+                If Master.eSettings.Movie.SourceSettings.ResetNewOnExit Then Master.DB.ClearNew(Enums.ContentType.Movie)
+                If Master.eSettings.Movieset.SourceSettings.ResetNewOnExit Then Master.DB.ClearNew(Enums.ContentType.Movieset)
+                If Master.eSettings.TVEpisode.SourceSettings.ResetNewOnExit Then Master.DB.ClearNew(Enums.ContentType.TVEpisode)
+                If Master.eSettings.TVSeason.SourceSettings.ResetNewOnExit Then Master.DB.ClearNew(Enums.ContentType.TVSeason)
+                If Master.eSettings.TVShow.SourceSettings.ResetNewOnExit Then Master.DB.ClearNew(Enums.ContentType.TVSeason)
             End If
 
             If Not Master.isCL Then
@@ -740,9 +740,9 @@ Public Class frmMain
         cmnuShowEditGenres.Text = strEditGenres
 
         'Edit Meta Data
-        Dim strEditMetaData As String = Master.eLang.GetString(603, "Edit Meta Data")
-        cmnuEpisodeEditMetaData.Text = strEditMetaData
-        cmnuMovieEditMetaData.Text = strEditMetaData
+        Dim strEditMetaData As String = Master.eLang.GetString(603, "Edit Metadata")
+        cmnuEpisodeEditMetadata.Text = strEditMetaData
+        cmnuMovieEditMetadata.Text = strEditMetaData
 
         'Edit Movie Sorting
         Dim strEditMovieSorting As String = Master.eLang.GetString(939, "Edit Movie Sorting")
@@ -839,8 +839,8 @@ Public Class frmMain
         mnuScrapeSubmenuMarked.Text = strMarked
 
         'Meta Data Only
-        Dim strMetaDataOnly As String = Master.eLang.GetString(76, "Meta Data Only")
-        mnuScrapeModifierMetaData.Text = strMetaDataOnly
+        Dim strMetaDataOnly As String = Master.eLang.GetString(76, "Metadata Only")
+        mnuScrapeModifierMetadata.Text = strMetaDataOnly
 
         'Missing Items
         Dim strMissingItems As String = Master.eLang.GetString(40, "Missing Items")
@@ -962,6 +962,7 @@ Public Class frmMain
 
         'Tags
         Dim strTags As String = Master.eLang.GetString(243, "Tags")
+        mnuScrapeOptionTags.Text = strTags
         lblTagsHeader.Text = strTags
 
         'Theme Only
@@ -1255,12 +1256,12 @@ Public Class frmMain
         lblInfoPanelHeader.Text = Master.eLang.GetString(66, "Info")
         lblLandscapeTitle.Text = Master.eLang.GetString(1035, "Landscape")
         lblLoadSettings.Text = Master.eLang.GetString(484, "Loading Settings...")
-        lblMetaDataHeader.Text = Master.eLang.GetString(59, "Meta Data")
+        lblMetaDataHeader.Text = Master.eLang.GetString(59, "Metadata")
         lblMoviesInSetHeader.Text = Master.eLang.GetString(367, "Movies In Set")
         lblOutlineHeader.Text = Master.eLang.GetString(64, "Plot Outline")
         lblPlotHeader.Text = Master.eLang.GetString(65, "Plot")
         lblPosterTitle.Text = Master.eLang.GetString(148, "Poster")
-        lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
+        lblPremieredHeader.Text = Master.eLang.GetString(57, "Release Date")
         lblTrailerPathHeader.Text = Master.eLang.GetString(1058, "Trailer Path")
         mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
         mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
@@ -1289,7 +1290,7 @@ Public Class frmMain
         mnuScrapeOptionActors.Text = Master.eLang.GetString(231, "Actors")
         mnuScrapeOptionAired.Text = Master.eLang.GetString(728, "Aired")
         mnuScrapeOptionCertifications.Text = Master.eLang.GetString(56, "Certification")
-        mnuScrapeOptionCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
+        mnuScrapeOptionCollection.Text = Master.eLang.GetString(424, "Collection")
         mnuScrapeOptionCountries.Text = Master.eLang.GetString(237, "Countries")
         mnuScrapeOptionCreators.Text = Master.eLang.GetString(744, "Creators")
         mnuScrapeOptionDirectors.Text = Master.eLang.GetString(940, "Directors")
@@ -1301,7 +1302,6 @@ Public Class frmMain
         mnuScrapeOptionPlot.Text = Master.eLang.GetString(65, "Plot")
         mnuScrapeOptionPremiered.Text = Master.eLang.GetString(724, "Premiered")
         mnuScrapeOptionRating.Text = Master.eLang.GetString(400, "Rating")
-        mnuScrapeOptionReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
         mnuScrapeOptionRuntime.Text = Master.eLang.GetString(238, "Runtime")
         mnuScrapeOptionStatus.Text = Master.eLang.GetString(215, "Status")
         mnuScrapeOptionStudios.Text = Master.eLang.GetString(226, "Studios")
@@ -1311,7 +1311,6 @@ Public Class frmMain
         mnuScrapeOptionTrailer.Text = Master.eLang.GetString(151, "Trailer")
         mnuScrapeOptionUserRating.Text = Master.eLang.GetString(1467, "User Rating")
         mnuScrapeOptionWriters.Text = Master.eLang.GetString(777, "Writer")
-        mnuScrapeOptionYear.Text = Master.eLang.GetString(278, "Year")
         mnuUpdate.Text = Master.eLang.GetString(82, "Update Library")
         mnuUpdateMovies.Text = Master.eLang.GetString(36, "Movies")
         mnuUpdateShows.Text = Master.eLang.GetString(653, "TV Shows")
@@ -1355,7 +1354,7 @@ Public Class frmMain
         TT.SetToolTip(txtSearchMovieSets, Master.eLang.GetString(1267, "Search the movie titles by entering text here."))
         TT.SetToolTip(txtSearchShows, Master.eLang.GetString(1268, "Search the tv show titles by entering text here."))
         TT.SetToolTip(btnFilePlay, Master.eLang.GetString(89, "Play the movie file with the system default media player."))
-        TT.SetToolTip(btnMetaDataRefresh, Master.eLang.GetString(90, "Rescan and save the meta data for the selected movie."))
+        TT.SetToolTip(btnMetaDataRefresh, Master.eLang.GetString(90, "Rescan and save the Metadata for the selected video."))
         TT.SetToolTip(chkFilterDuplicates_Movies, Master.eLang.GetString(91, "Display only movies that have duplicate IMDB IDs."))
         TT.SetToolTip(chkFilterTolerance_Movies, Master.eLang.GetString(92, "Display only movies whose title matching is out of tolerance."))
         TT.SetToolTip(chkFilterMissing_Movies, Master.eLang.GetString(93, "Display only movies that have items missing."))
@@ -1644,27 +1643,27 @@ Public Class frmMain
                 contentType = Enums.ContentType.Movie
                 bClickScrapeEnabled = Manager.mSettings.Movie.GuiSettings.ClickScrapeEnabled
                 bClickScrapeShowResults = Manager.mSettings.Movie.GuiSettings.ClickScrapeEnabled
-                defaultOptions = Master.eSettings.DefaultOptions_Movie
+                defaultOptions = Master.eSettings.DefaultOptions(Enums.ContentType.Movie)
             Case sender Is dgvMoviesets
                 contentType = Enums.ContentType.Movieset
                 bClickScrapeEnabled = Master.eSettings.MovieSetClickScrape
                 bClickScrapeShowResults = Master.eSettings.MovieSetClickScrapeAsk
-                defaultOptions = Master.eSettings.DefaultOptions_Movieset
+                defaultOptions = Master.eSettings.DefaultOptions(Enums.ContentType.Movieset)
             Case sender Is dgvTVEpisodes
                 contentType = Enums.ContentType.TVEpisode
                 bClickScrapeEnabled = Manager.mSettings.TVEpisode.GuiSettings.ClickScrapeEnabled
                 bClickScrapeShowResults = Manager.mSettings.TVEpisode.GuiSettings.ClickScrapeShowResults
-                defaultOptions = Master.eSettings.DefaultOptions_TV
+                defaultOptions = Master.eSettings.DefaultOptions(Enums.ContentType.TV)
             Case sender Is dgvTVSeasons
                 contentType = Enums.ContentType.TVSeason
                 bClickScrapeEnabled = Manager.mSettings.TVSeason.GuiSettings.ClickScrapeEnabled
                 bClickScrapeShowResults = Manager.mSettings.TVSeason.GuiSettings.ClickScrapeShowResults
-                defaultOptions = Master.eSettings.DefaultOptions_TV
+                defaultOptions = Master.eSettings.DefaultOptions(Enums.ContentType.TV)
             Case sender Is dgvTVShows
                 contentType = Enums.ContentType.TVShow
                 bClickScrapeEnabled = Manager.mSettings.TVShow.GuiSettings.ClickScrapeEnabled
                 bClickScrapeShowResults = Manager.mSettings.TVShow.GuiSettings.ClickScrapeShowResults
-                defaultOptions = Master.eSettings.DefaultOptions_TV
+                defaultOptions = Master.eSettings.DefaultOptions(Enums.ContentType.TV)
         End Select
 
         If Not contentType = Enums.ContentType.None Then
@@ -1692,7 +1691,7 @@ Public Class frmMain
                 currRow_Movie = objCell.RowIndex
 
                 Dim scrapeOptions As New Structures.ScrapeOptions
-                scrapeOptions.bMainCollectionID = True
+                scrapeOptions.bMainCollection = True
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
                 Select Case contentType
@@ -1748,8 +1747,8 @@ Public Class frmMain
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
                     Case Database.ColumnType.MetaData
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMeta, True)
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMetadata, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMetadata, True)
                     Case Database.ColumnType.NFO
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeNFO, True)
@@ -2010,7 +2009,7 @@ Public Class frmMain
                     Case Database.ColumnType.NFO
                         strScrapeFor = Master.eLang.GetString(71, "NFO Only")
                     Case Database.ColumnType.MetaData
-                        strScrapeFor = Master.eLang.GetString(76, "Meta Data Only")
+                        strScrapeFor = Master.eLang.GetString(76, "Metadata Only")
                     Case Database.ColumnType.Movieset
                         strScrapeFor = Master.eLang.GetString(1354, "MovieSet Informations Only")
                     Case Database.ColumnType.Poster
@@ -3138,7 +3137,7 @@ Public Class frmMain
                     cmnuMovieChange.Enabled = False
                     cmnuMovieChangeAuto.Enabled = False
                     cmnuMovieEdit.Enabled = False
-                    cmnuMovieEditMetaData.Enabled = False
+                    cmnuMovieEditMetadata.Enabled = False
                     cmnuMovieScrape.Enabled = False
 
                     For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
@@ -3222,7 +3221,7 @@ Public Class frmMain
                     cmnuMovieChange.Enabled = True
                     cmnuMovieChangeAuto.Enabled = True
                     cmnuMovieEdit.Enabled = True
-                    cmnuMovieEditMetaData.Enabled = True
+                    cmnuMovieEditMetadata.Enabled = True
                     cmnuMovieScrape.Enabled = True
 
                     cmnuMovieTitle.Text = String.Concat(">> ", dgvMovies.Item(Database.Helpers.GetColumnName(Database.ColumnName.Title), dgvHTI.RowIndex).Value, " <<")
@@ -3473,7 +3472,7 @@ Public Class frmMain
 
                         cmnuEpisodeEditSeparator.Visible = True
                         cmnuEpisodeEdit.Visible = False
-                        cmnuEpisodeEditMetaData.Visible = False
+                        cmnuEpisodeEditMetadata.Visible = False
                         cmnuEpisodeScrapeSeparator.Visible = True
                         cmnuEpisodeScrape.Visible = False
                         cmnuEpisodeChange.Visible = False
@@ -3545,7 +3544,7 @@ Public Class frmMain
 
                         cmnuEpisodeEditSeparator.Visible = True
                         cmnuEpisodeEdit.Visible = True
-                        cmnuEpisodeEditMetaData.Visible = True
+                        cmnuEpisodeEditMetadata.Visible = True
                         cmnuEpisodeScrapeSeparator.Visible = True
                         cmnuEpisodeScrape.Visible = True
                         cmnuEpisodeChange.Visible = True
@@ -4808,12 +4807,12 @@ Public Class frmMain
                     Case DialogResult.Retry 'Rescrape
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
+                        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
                     Case DialogResult.Abort 'Change Movie
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
+                        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
                     Case Else
                         If InfoCleared Then LoadInfo_Movie(DBMovie.ID)
                 End Select
@@ -4837,12 +4836,12 @@ Public Class frmMain
                     Case DialogResult.Retry 'Rescrape
                         Dim ScrapeModifier As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
-                        CreateScrapeList_Movieset(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movieset, ScrapeModifier)
+                        CreateScrapeList_Movieset(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifier)
                     Case DialogResult.Abort 'Change MovieSet
                         Dim ScrapeModifier As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
-                        CreateScrapeList_Movieset(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movieset, ScrapeModifier)
+                        CreateScrapeList_Movieset(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifier)
                     Case Else
                         If InfoCleared Then LoadInfo_Movieset(DBMovieset.ID)
                 End Select
@@ -4866,7 +4865,7 @@ Public Class frmMain
                     Case DialogResult.Retry 'Rescrape
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+                        CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
                     Case DialogResult.Abort 'Change TVEpisode
                         'TODO
                     Case Else
@@ -4912,12 +4911,12 @@ Public Class frmMain
                     Case DialogResult.Retry 'Rescrape
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+                        CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
                     Case DialogResult.Abort 'Change TVShow
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+                        CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
                     Case Else
                         If InfoCleared Then LoadInfo_TVShow(DBTVShow.ID)
                 End Select
@@ -5831,7 +5830,7 @@ Public Class frmMain
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
-                        CreateScrapeList_Movie(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
+                        CreateScrapeList_Movie(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
                         While bwMovieScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -5840,7 +5839,7 @@ Public Class frmMain
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
-                        CreateScrapeList_Movieset(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions_Movieset, ScrapeModifiers)
+                        CreateScrapeList_Movieset(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifiers)
                         While bwMoviesetScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -5849,7 +5848,7 @@ Public Class frmMain
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
-                        CreateScrapeList_TV(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+                        CreateScrapeList_TV(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
                         While bwTVScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -6550,14 +6549,14 @@ Public Class frmMain
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             If dgvMovies.SelectedRows.Count = 1 Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
-                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMeta, True)
-                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
+                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMetadata, True)
+                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
             End If
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
             If dgvTVEpisodes.SelectedRows.Count = 1 AndAlso _CurrDBElement.FileItemSpecified Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
-                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
-                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMetadata, True)
+                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
             End If
         End If
     End Sub
@@ -6675,7 +6674,7 @@ Public Class frmMain
         lblOriginalTitle.Text = String.Empty
         lblPosterSize.Text = String.Empty
         lblRating.Text = String.Empty
-        lblReleaseDate.Text = String.Empty
+        lblPremiered.Text = String.Empty
         lblRuntime.Text = String.Empty
         lblStatus.Text = String.Empty
         lblStudio.Text = String.Empty
@@ -7237,9 +7236,9 @@ Public Class frmMain
                         If tMovieInSet.DBMovie.ImagesContainer.Poster.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                             ResImg = tMovieInSet.DBMovie.ImagesContainer.Poster.ImageOriginal.Image
                             ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
-                            Posters.Add(New MovieInSetPoster With {.MoviePoster = ResImg, .MovieTitle = tMovieInSet.DBMovie.Movie.Title, .MovieYear = tMovieInSet.DBMovie.Movie.Year})
+                            Posters.Add(New MovieInSetPoster With {.MoviePoster = ResImg, .MovieTitle = tMovieInSet.DBMovie.Movie.Title, .MovieYear = StringUtils.GetYearFromString(tMovieInSet.DBMovie.Movie.Premiered)})
                         Else
-                            Posters.Add(New MovieInSetPoster With {.MoviePoster = My.Resources.noposter, .MovieTitle = tMovieInSet.DBMovie.Movie.Title, .MovieYear = tMovieInSet.DBMovie.Movie.Year})
+                            Posters.Add(New MovieInSetPoster With {.MoviePoster = My.Resources.noposter, .MovieTitle = tMovieInSet.DBMovie.Movie.Title, .MovieYear = StringUtils.GetYearFromString(tMovieInSet.DBMovie.Movie.Premiered)})
                         End If
                     Next
                 Catch ex As Exception
@@ -7383,8 +7382,8 @@ Public Class frmMain
             If bwMovieScraper.CancellationPending Then Exit For
 
             If Not Cancelled Then
-                If Master.eSettings.MovieScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.MainMeta Then
-                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
+                If Master.eSettings.Movie.DataSettings.MetadataScan.Enabled AndAlso tScrapeItem.ScrapeModifiers.MainMeta Then
+                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Metadata"), ":"))
                     MetaData.UpdateFileInfo(DBScrapeMovie)
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
@@ -7812,7 +7811,7 @@ Public Class frmMain
 
                 'Episode Meta Data
                 If tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta AndAlso Master.eSettings.TVScraperMetaDataScan Then
-                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
+                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Metadata"), ":"))
                     For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.FileItemSpecified)
                         MetaData.UpdateFileInfo(tEpisode)
                     Next
@@ -8945,7 +8944,7 @@ Public Class frmMain
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
 
-        If Not AddonsManager.Instance.ScrapeData_TVShow(tmpShow, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, True) Then
+        If Not AddonsManager.Instance.ScrapeData_TVShow(tmpShow, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), True) Then
             If tmpShow.Episodes.Count > 0 Then
                 Dim dlgChangeEp As New dlgTVChangeTVEpisode(tmpShow)
                 If dlgChangeEp.ShowDialog = DialogResult.OK Then
@@ -8987,7 +8986,7 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
-            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
         End If
     End Sub
 
@@ -9361,7 +9360,7 @@ Public Class frmMain
         dgvMovies.Invalidate()
     End Sub
 
-    Private Sub cmnuEpisodeEditMetaData_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuEpisodeEditMetaData.Click
+    Private Sub cmnuEpisodeEditMetaData_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuEpisodeEditMetadata.Click
         If dgvTVEpisodes.SelectedRows.Count > 1 Then Return
         Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
         Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), indX).Value)
@@ -9375,7 +9374,7 @@ Public Class frmMain
         End Using
     End Sub
 
-    Private Sub cmnuMovieEditMetaData_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieEditMetaData.Click
+    Private Sub cmnuMovieEditMetaData_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieEditMetadata.Click
         If dgvMovies.SelectedRows.Count > 1 Then Return
         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
         Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
@@ -9781,7 +9780,7 @@ Public Class frmMain
         If dgvTVEpisodes.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+            CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
         End If
     End Sub
 
@@ -9789,7 +9788,7 @@ Public Class frmMain
         If dgvMovies.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
+            CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
         End If
     End Sub
 
@@ -9797,7 +9796,7 @@ Public Class frmMain
         If dgvMoviesets.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_Movieset(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movieset, ScrapeModifiers)
+            CreateScrapeList_Movieset(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifiers)
         End If
     End Sub
 
@@ -9807,7 +9806,7 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
-            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
         End If
     End Sub
     ''' <summary>
@@ -9822,7 +9821,7 @@ Public Class frmMain
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
     End Sub
     ''' <summary>
     ''' User has selected "Change Movie" from the context menu. This will re-validate the movie title with the user,
@@ -9836,7 +9835,7 @@ Public Class frmMain
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
     End Sub
 
     Private Sub cmnuSeasonEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSeasonEdit.Click
@@ -9877,7 +9876,7 @@ Public Class frmMain
         If dgvTVSeasons.SelectedRows.Count > 0 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_TVSeason(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+            CreateScrapeList_TVSeason(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
         End If
     End Sub
 
@@ -10352,12 +10351,12 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_Movie()
         SuspendLayout()
-        If _CurrDBElement.Movie.TitleSpecified AndAlso _CurrDBElement.Movie.YearSpecified Then
-            lblTitle.Text = String.Format("{0} ({1})", _CurrDBElement.Movie.Title, _CurrDBElement.Movie.Year)
-        ElseIf _CurrDBElement.Movie.TitleSpecified AndAlso Not _CurrDBElement.Movie.YearSpecified Then
+        If _CurrDBElement.Movie.TitleSpecified AndAlso _CurrDBElement.Movie.PremieredSpecified Then
+            lblTitle.Text = String.Format("{0} ({1})", _CurrDBElement.Movie.Title, StringUtils.GetYearFromString(_CurrDBElement.Movie.Premiered))
+        ElseIf _CurrDBElement.Movie.TitleSpecified AndAlso Not _CurrDBElement.Movie.PremieredSpecified Then
             lblTitle.Text = _CurrDBElement.Movie.Title
-        ElseIf Not _CurrDBElement.Movie.TitleSpecified AndAlso _CurrDBElement.Movie.YearSpecified Then
-            lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), _CurrDBElement.Movie.Year)
+        ElseIf Not _CurrDBElement.Movie.TitleSpecified AndAlso _CurrDBElement.Movie.PremieredSpecified Then
+            lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), StringUtils.GetYearFromString(_CurrDBElement.Movie.Premiered))
         End If
 
         If _CurrDBElement.Movie.OriginalTitleSpecified AndAlso Not _CurrDBElement.Movie.OriginalTitle = _CurrDBElement.Movie.Title Then
@@ -10451,7 +10450,7 @@ Public Class frmMain
             lblStudio.Text = pbStudio.Tag.ToString
         End If
 
-        If Master.eSettings.MovieScraperMetaDataScan Then
+        If Master.eSettings.Movie.DataSettings.MetadataScan.Enabled Then 'TODO: show images even metadata is disabled
             SetAVImages(MediaFlags.GetAVImages(
                         _CurrDBElement.Movie.FileInfo,
                         Manager.mSettings.Movie.GuiSettings.PreferredAudioLanguage,
@@ -10471,8 +10470,8 @@ Public Class frmMain
         lblCredits.Text = String.Join(" / ", _CurrDBElement.Movie.Credits.ToArray)
         lblDirectors.Text = String.Join(" / ", _CurrDBElement.Movie.Directors.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
-        lblReleaseDate.Text = _CurrDBElement.Movie.ReleaseDate
-        lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
+        lblPremiered.Text = _CurrDBElement.Movie.Premiered
+        lblPremieredHeader.Text = Master.eLang.GetString(724, "Premiered")
         lblTags.Text = String.Join(" / ", _CurrDBElement.Movie.Tags.ToArray)
 
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(_CurrDBElement)
@@ -10557,8 +10556,8 @@ Public Class frmMain
         lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
         txtFilePath.Text = If(_CurrDBElement.FileItemSpecified, _CurrDBElement.FileItem.FullPath, String.Empty)
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(_CurrDBElement.TVEpisode.AiredSpecified, Date.Parse(_CurrDBElement.TVEpisode.Aired).ToShortDateString, "?"))
-        lblReleaseDate.Text = _CurrDBElement.TVEpisode.Aired
-        lblReleaseDateHeader.Text = Master.eLang.GetString(728, "Aired")
+        lblPremiered.Text = _CurrDBElement.TVEpisode.Aired
+        lblPremieredHeader.Text = Master.eLang.GetString(728, "Aired")
 
         If _CurrDBElement.TVEpisode.RuntimeSpecified Then
             lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(_CurrDBElement.TVEpisode.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(_CurrDBElement.TVEpisode.Runtime, _CurrDBElement.TVEpisode.Runtime.IndexOf("|")), _CurrDBElement.TVEpisode.Runtime)).Trim
@@ -10714,7 +10713,7 @@ Public Class frmMain
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(_CurrDBElement)
         txtTVDBID.Text = _CurrDBElement.TVSeason.UniqueIDs.TVDbId
         lblCertifications.Text = String.Join(" / ", _CurrDBElement.TVShow.Certifications.ToArray)
-        lblReleaseDate.Text = _CurrDBElement.TVSeason.Aired
+        lblPremiered.Text = _CurrDBElement.TVSeason.Aired
 
         Try
             If _CurrDBElement.TVShow.RatingSpecified Then
@@ -10812,8 +10811,8 @@ Public Class frmMain
         lblCountries.Text = String.Join(" / ", _CurrDBElement.TVShow.Countries.ToArray)
         lblDirectors.Text = String.Join(" / ", _CurrDBElement.TVShow.Creators.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(744, "Creators")
-        lblReleaseDate.Text = _CurrDBElement.TVShow.Premiered
-        lblReleaseDateHeader.Text = Master.eLang.GetString(724, "Premiered")
+        lblPremiered.Text = _CurrDBElement.TVShow.Premiered
+        lblPremieredHeader.Text = Master.eLang.GetString(724, "Premiered")
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(_CurrDBElement)
         txtIMDBID.Text = _CurrDBElement.TVShow.UniqueIDs.IMDbId
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(_CurrDBElement)
@@ -11601,7 +11600,7 @@ Public Class frmMain
         If Manager.mSettings.Movie.GuiSettings.CustomScrapeButtonEnabled Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Manager.mSettings.Movie.GuiSettings.CustomScrapeButtonModifierType, True)
-            CreateScrapeList_Movie(Manager.mSettings.Movie.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
+            CreateScrapeList_Movie(Manager.mSettings.Movie.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
         Else
             mnuScrapeMovies.ShowDropDown()
         End If
@@ -11611,7 +11610,7 @@ Public Class frmMain
         If Manager.mSettings.Movieset.GuiSettings.CustomScrapeButtonEnabled Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Manager.mSettings.Movieset.GuiSettings.CustomScrapeButtonModifierType, True)
-            CreateScrapeList_Movieset(Manager.mSettings.Movieset.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions_Movieset, ScrapeModifiers)
+            CreateScrapeList_Movieset(Manager.mSettings.Movieset.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifiers)
         Else
             mnuScrapeMoviesets.ShowDropDown()
         End If
@@ -11623,7 +11622,7 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Manager.mSettings.TVShow.GuiSettings.CustomScrapeButtonModifierType, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
-            CreateScrapeList_TV(Manager.mSettings.TVShow.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+            CreateScrapeList_TV(Manager.mSettings.TVShow.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
         Else
             mnuScrapeTVShows.ShowDropDown()
         End If
@@ -11635,60 +11634,60 @@ Public Class frmMain
         With Master.eSettings
             Select Case _SelectedContentType
                 Case "movie"
-                    mnuScrapeOptionActors.Enabled = .MovieScraperCast
-                    mnuScrapeOptionActors.Visible = True
-                    mnuScrapeOptionAired.Enabled = False
-                    mnuScrapeOptionAired.Visible = False
-                    mnuScrapeOptionCertifications.Enabled = .MovieScraperCert
-                    mnuScrapeOptionCertifications.Visible = True
-                    mnuScrapeOptionCollectionID.Enabled = .MovieScraperCollectionID
-                    mnuScrapeOptionCollectionID.Visible = True
-                    mnuScrapeOptionCountries.Enabled = .MovieScraperCountry
-                    mnuScrapeOptionCountries.Visible = True
-                    mnuScrapeOptionCreators.Enabled = False
-                    mnuScrapeOptionCreators.Visible = False
-                    mnuScrapeOptionDirectors.Enabled = .MovieScraperDirector
-                    mnuScrapeOptionDirectors.Visible = True
-                    mnuScrapeOptionEpiGuideURL.Enabled = False
-                    mnuScrapeOptionEpiGuideURL.Visible = False
-                    mnuScrapeOptionGenres.Enabled = .MovieScraperGenre
-                    mnuScrapeOptionGenres.Visible = True
-                    mnuScrapeOptionGuestStars.Enabled = False
-                    mnuScrapeOptionGuestStars.Visible = False
-                    mnuScrapeOptionMPAA.Enabled = .MovieScraperMPAA
-                    mnuScrapeOptionMPAA.Visible = True
-                    mnuScrapeOptionOriginalTitle.Enabled = .MovieScraperOriginalTitle
-                    mnuScrapeOptionOriginalTitle.Visible = True
-                    mnuScrapeOptionOutline.Enabled = .MovieScraperOutline
-                    mnuScrapeOptionOutline.Visible = True
-                    mnuScrapeOptionPlot.Enabled = .MovieScraperPlot
-                    mnuScrapeOptionPlot.Visible = True
-                    mnuScrapeOptionPremiered.Enabled = False
-                    mnuScrapeOptionPremiered.Visible = False
-                    mnuScrapeOptionRating.Enabled = .MovieScraperRating
-                    mnuScrapeOptionRating.Visible = True
-                    mnuScrapeOptionReleaseDate.Enabled = .MovieScraperRelease
-                    mnuScrapeOptionReleaseDate.Visible = True
-                    mnuScrapeOptionRuntime.Enabled = .MovieScraperRuntime
-                    mnuScrapeOptionRuntime.Visible = True
-                    mnuScrapeOptionStatus.Enabled = False
-                    mnuScrapeOptionStatus.Visible = False
-                    mnuScrapeOptionStudios.Enabled = .MovieScraperStudio
-                    mnuScrapeOptionStudios.Visible = True
-                    mnuScrapeOptionTagline.Enabled = .MovieScraperTagline
-                    mnuScrapeOptionTagline.Visible = True
-                    mnuScrapeOptionTitle.Enabled = .MovieScraperTitle
-                    mnuScrapeOptionTitle.Visible = True
-                    mnuScrapeOptionTop250.Enabled = .MovieScraperTop250
-                    mnuScrapeOptionTop250.Visible = True
-                    mnuScrapeOptionTrailer.Enabled = .MovieScraperTrailer
-                    mnuScrapeOptionTrailer.Visible = True
-                    mnuScrapeOptionUserRating.Enabled = .MovieScraperUserRating
-                    mnuScrapeOptionUserRating.Visible = True
-                    mnuScrapeOptionWriters.Enabled = .MovieScraperCredits
-                    mnuScrapeOptionWriters.Visible = True
-                    mnuScrapeOptionYear.Enabled = .MovieScraperYear
-                    mnuScrapeOptionYear.Visible = True
+                    With Master.eSettings.Movie.DataSettings
+                        mnuScrapeOptionActors.Enabled = .Actors.Enabled
+                        mnuScrapeOptionActors.Visible = True
+                        mnuScrapeOptionAired.Enabled = False
+                        mnuScrapeOptionAired.Visible = False
+                        mnuScrapeOptionCertifications.Enabled = .Certifications.Enabled
+                        mnuScrapeOptionCertifications.Visible = True
+                        mnuScrapeOptionCollection.Enabled = .Collection.Enabled
+                        mnuScrapeOptionCollection.Visible = True
+                        mnuScrapeOptionCountries.Enabled = .Countries.Enabled
+                        mnuScrapeOptionCountries.Visible = True
+                        mnuScrapeOptionCreators.Enabled = False
+                        mnuScrapeOptionCreators.Visible = False
+                        mnuScrapeOptionDirectors.Enabled = .Directors.Enabled
+                        mnuScrapeOptionDirectors.Visible = True
+                        mnuScrapeOptionEpiGuideURL.Enabled = False
+                        mnuScrapeOptionEpiGuideURL.Visible = False
+                        mnuScrapeOptionGenres.Enabled = .Genres.Enabled
+                        mnuScrapeOptionGenres.Visible = True
+                        mnuScrapeOptionGuestStars.Enabled = False
+                        mnuScrapeOptionGuestStars.Visible = False
+                        mnuScrapeOptionMPAA.Enabled = .MPAA.Enabled
+                        mnuScrapeOptionMPAA.Visible = True
+                        mnuScrapeOptionOriginalTitle.Enabled = .OriginalTitle.Enabled
+                        mnuScrapeOptionOriginalTitle.Visible = True
+                        mnuScrapeOptionOutline.Enabled = .Outline.Enabled
+                        mnuScrapeOptionOutline.Visible = True
+                        mnuScrapeOptionPlot.Enabled = .Plot.Enabled
+                        mnuScrapeOptionPlot.Visible = True
+                        mnuScrapeOptionPremiered.Enabled = .Premiered.Enabled
+                        mnuScrapeOptionPremiered.Visible = True
+                        mnuScrapeOptionRating.Enabled = .Ratings.Enabled
+                        mnuScrapeOptionRating.Visible = True
+                        mnuScrapeOptionRuntime.Enabled = .Runtime.Enabled
+                        mnuScrapeOptionRuntime.Visible = True
+                        mnuScrapeOptionStatus.Enabled = False
+                        mnuScrapeOptionStatus.Visible = False
+                        mnuScrapeOptionStudios.Enabled = .Studios.Enabled
+                        mnuScrapeOptionStudios.Visible = True
+                        mnuScrapeOptionTagline.Enabled = .Tagline.Enabled
+                        mnuScrapeOptionTagline.Visible = True
+                        mnuScrapeOptionTags.Enabled = .Tags.Enabled
+                        mnuScrapeOptionTags.Visible = True
+                        mnuScrapeOptionTitle.Enabled = .Title.Enabled
+                        mnuScrapeOptionTitle.Visible = True
+                        mnuScrapeOptionTop250.Enabled = .Top250.Enabled
+                        mnuScrapeOptionTop250.Visible = True
+                        mnuScrapeOptionTrailer.Enabled = .TrailerLink.Enabled
+                        mnuScrapeOptionTrailer.Visible = True
+                        mnuScrapeOptionUserRating.Enabled = .UserRating.Enabled
+                        mnuScrapeOptionUserRating.Visible = True
+                        mnuScrapeOptionWriters.Enabled = .Credits.Enabled
+                        mnuScrapeOptionWriters.Visible = True
+                    End With
                 Case "movieset"
                     mnuScrapeOptionActors.Enabled = False
                     mnuScrapeOptionActors.Visible = False
@@ -11696,8 +11695,8 @@ Public Class frmMain
                     mnuScrapeOptionAired.Visible = False
                     mnuScrapeOptionCertifications.Enabled = False
                     mnuScrapeOptionCertifications.Visible = False
-                    mnuScrapeOptionCollectionID.Enabled = False
-                    mnuScrapeOptionCollectionID.Visible = False
+                    mnuScrapeOptionCollection.Enabled = False
+                    mnuScrapeOptionCollection.Visible = False
                     mnuScrapeOptionCountries.Enabled = False
                     mnuScrapeOptionCountries.Visible = False
                     mnuScrapeOptionCreators.Enabled = False
@@ -11722,8 +11721,6 @@ Public Class frmMain
                     mnuScrapeOptionPremiered.Visible = False
                     mnuScrapeOptionRating.Enabled = False
                     mnuScrapeOptionRating.Visible = False
-                    mnuScrapeOptionReleaseDate.Enabled = False
-                    mnuScrapeOptionReleaseDate.Visible = False
                     mnuScrapeOptionRuntime.Enabled = False
                     mnuScrapeOptionRuntime.Visible = False
                     mnuScrapeOptionStatus.Enabled = False
@@ -11732,6 +11729,8 @@ Public Class frmMain
                     mnuScrapeOptionStudios.Visible = False
                     mnuScrapeOptionTagline.Enabled = False
                     mnuScrapeOptionTagline.Visible = False
+                    mnuScrapeOptionTags.Enabled = False
+                    mnuScrapeOptionTags.Visible = False
                     mnuScrapeOptionTitle.Enabled = .MoviesetScraperTitle
                     mnuScrapeOptionTitle.Visible = True
                     mnuScrapeOptionTop250.Enabled = False
@@ -11742,8 +11741,6 @@ Public Class frmMain
                     mnuScrapeOptionUserRating.Visible = False
                     mnuScrapeOptionWriters.Enabled = False
                     mnuScrapeOptionWriters.Visible = False
-                    mnuScrapeOptionYear.Enabled = False
-                    mnuScrapeOptionYear.Visible = False
                 Case "tvepisode"
                     mnuScrapeOptionActors.Enabled = .TVScraperEpisodeActors
                     mnuScrapeOptionActors.Visible = True
@@ -11751,8 +11748,8 @@ Public Class frmMain
                     mnuScrapeOptionAired.Visible = True
                     mnuScrapeOptionCertifications.Enabled = False
                     mnuScrapeOptionCertifications.Visible = False
-                    mnuScrapeOptionCollectionID.Enabled = False
-                    mnuScrapeOptionCollectionID.Visible = False
+                    mnuScrapeOptionCollection.Enabled = False
+                    mnuScrapeOptionCollection.Visible = False
                     mnuScrapeOptionCountries.Enabled = False
                     mnuScrapeOptionCountries.Visible = False
                     mnuScrapeOptionCreators.Enabled = False
@@ -11777,8 +11774,6 @@ Public Class frmMain
                     mnuScrapeOptionPremiered.Visible = False
                     mnuScrapeOptionRating.Enabled = .TVScraperEpisodeRating
                     mnuScrapeOptionRating.Visible = True
-                    mnuScrapeOptionReleaseDate.Enabled = False
-                    mnuScrapeOptionReleaseDate.Visible = False
                     mnuScrapeOptionRuntime.Enabled = .TVScraperEpisodeRuntime
                     mnuScrapeOptionRuntime.Visible = True
                     mnuScrapeOptionStatus.Enabled = False
@@ -11787,6 +11782,8 @@ Public Class frmMain
                     mnuScrapeOptionStudios.Visible = False
                     mnuScrapeOptionTagline.Enabled = False
                     mnuScrapeOptionTagline.Visible = False
+                    mnuScrapeOptionTags.Enabled = False
+                    mnuScrapeOptionTags.Visible = False
                     mnuScrapeOptionTitle.Enabled = .TVScraperEpisodeTitle
                     mnuScrapeOptionTitle.Visible = True
                     mnuScrapeOptionTop250.Enabled = False
@@ -11797,8 +11794,6 @@ Public Class frmMain
                     mnuScrapeOptionUserRating.Visible = True
                     mnuScrapeOptionWriters.Enabled = .TVScraperEpisodeCredits
                     mnuScrapeOptionWriters.Visible = True
-                    mnuScrapeOptionYear.Enabled = False
-                    mnuScrapeOptionYear.Visible = False
                 Case "tvseason"
                     mnuScrapeOptionActors.Enabled = False
                     mnuScrapeOptionActors.Visible = False
@@ -11806,8 +11801,8 @@ Public Class frmMain
                     mnuScrapeOptionAired.Visible = True
                     mnuScrapeOptionCertifications.Enabled = False
                     mnuScrapeOptionCertifications.Visible = False
-                    mnuScrapeOptionCollectionID.Enabled = False
-                    mnuScrapeOptionCollectionID.Visible = False
+                    mnuScrapeOptionCollection.Enabled = False
+                    mnuScrapeOptionCollection.Visible = False
                     mnuScrapeOptionCountries.Enabled = False
                     mnuScrapeOptionCountries.Visible = False
                     mnuScrapeOptionCreators.Enabled = False
@@ -11832,8 +11827,6 @@ Public Class frmMain
                     mnuScrapeOptionPremiered.Visible = False
                     mnuScrapeOptionRating.Enabled = False
                     mnuScrapeOptionRating.Visible = False
-                    mnuScrapeOptionReleaseDate.Enabled = False
-                    mnuScrapeOptionReleaseDate.Visible = False
                     mnuScrapeOptionRuntime.Enabled = False
                     mnuScrapeOptionRuntime.Visible = False
                     mnuScrapeOptionStatus.Enabled = False
@@ -11842,6 +11835,8 @@ Public Class frmMain
                     mnuScrapeOptionStudios.Visible = False
                     mnuScrapeOptionTagline.Enabled = False
                     mnuScrapeOptionTagline.Visible = False
+                    mnuScrapeOptionTags.Enabled = False
+                    mnuScrapeOptionTags.Visible = False
                     mnuScrapeOptionTitle.Enabled = .TVScraperSeasonTitle
                     mnuScrapeOptionTitle.Visible = True
                     mnuScrapeOptionTop250.Enabled = False
@@ -11852,8 +11847,6 @@ Public Class frmMain
                     mnuScrapeOptionUserRating.Visible = True
                     mnuScrapeOptionWriters.Enabled = False
                     mnuScrapeOptionWriters.Visible = False
-                    mnuScrapeOptionYear.Enabled = False
-                    mnuScrapeOptionYear.Visible = False
                 Case "tvshow"
                     mnuScrapeOptionActors.Enabled = .TVScraperShowActors
                     mnuScrapeOptionActors.Visible = True
@@ -11861,8 +11854,8 @@ Public Class frmMain
                     mnuScrapeOptionAired.Visible = False
                     mnuScrapeOptionCertifications.Enabled = .TVScraperShowCert
                     mnuScrapeOptionCertifications.Visible = True
-                    mnuScrapeOptionCollectionID.Enabled = False
-                    mnuScrapeOptionCollectionID.Visible = False
+                    mnuScrapeOptionCollection.Enabled = False
+                    mnuScrapeOptionCollection.Visible = False
                     mnuScrapeOptionCountries.Enabled = .TVScraperShowCountry
                     mnuScrapeOptionCountries.Visible = True
                     mnuScrapeOptionCreators.Enabled = .TVScraperShowCreators
@@ -11887,8 +11880,6 @@ Public Class frmMain
                     mnuScrapeOptionPremiered.Visible = True
                     mnuScrapeOptionRating.Enabled = .TVScraperShowRating
                     mnuScrapeOptionRating.Visible = True
-                    mnuScrapeOptionReleaseDate.Enabled = False
-                    mnuScrapeOptionReleaseDate.Visible = False
                     mnuScrapeOptionRuntime.Enabled = .TVScraperShowRuntime
                     mnuScrapeOptionRuntime.Visible = True
                     mnuScrapeOptionStatus.Enabled = .TVScraperShowStatus
@@ -11897,6 +11888,8 @@ Public Class frmMain
                     mnuScrapeOptionStudios.Visible = True
                     mnuScrapeOptionTagline.Enabled = False
                     mnuScrapeOptionTagline.Visible = False
+                    'mnuScrapeOptionTags.Enabled = .Tags.Enabled
+                    mnuScrapeOptionTags.Visible = True
                     mnuScrapeOptionTitle.Enabled = .TVScraperShowTitle
                     mnuScrapeOptionTitle.Visible = True
                     mnuScrapeOptionTop250.Enabled = False
@@ -11907,8 +11900,6 @@ Public Class frmMain
                     mnuScrapeOptionUserRating.Visible = True
                     mnuScrapeOptionWriters.Enabled = False
                     mnuScrapeOptionWriters.Visible = False
-                    mnuScrapeOptionYear.Enabled = False
-                    mnuScrapeOptionYear.Visible = False
             End Select
         End With
     End Sub
@@ -11941,8 +11932,8 @@ Public Class frmMain
                     mnuScrapeModifierKeyArt.Visible = True
                     mnuScrapeModifierLandscape.Enabled = .MovieLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
                     mnuScrapeModifierLandscape.Visible = True
-                    mnuScrapeModifierMetaData.Enabled = .MovieScraperMetaDataScan
-                    mnuScrapeModifierMetaData.Visible = True
+                    mnuScrapeModifierMetadata.Enabled = .Movie.DataSettings.MetadataScan.Enabled
+                    mnuScrapeModifierMetadata.Visible = True
                     mnuScrapeModifierNFO.Enabled = True
                     mnuScrapeModifierNFO.Visible = True
                     mnuScrapeModifierPoster.Enabled = .MoviePosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
@@ -11974,8 +11965,8 @@ Public Class frmMain
                     mnuScrapeModifierKeyArt.Visible = True
                     mnuScrapeModifierLandscape.Enabled = .MovieSetLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
                     mnuScrapeModifierLandscape.Visible = True
-                    mnuScrapeModifierMetaData.Enabled = False
-                    mnuScrapeModifierMetaData.Visible = False
+                    mnuScrapeModifierMetadata.Enabled = False
+                    mnuScrapeModifierMetadata.Visible = False
                     mnuScrapeModifierNFO.Enabled = True
                     mnuScrapeModifierNFO.Visible = True
                     mnuScrapeModifierPoster.Enabled = .MovieSetPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
@@ -12007,8 +11998,8 @@ Public Class frmMain
                     mnuScrapeModifierKeyArt.Visible = False
                     mnuScrapeModifierLandscape.Enabled = False
                     mnuScrapeModifierLandscape.Visible = False
-                    mnuScrapeModifierMetaData.Enabled = .TVScraperMetaDataScan
-                    mnuScrapeModifierMetaData.Visible = True
+                    mnuScrapeModifierMetadata.Enabled = .TVScraperMetaDataScan
+                    mnuScrapeModifierMetadata.Visible = True
                     mnuScrapeModifierNFO.Enabled = True
                     mnuScrapeModifierNFO.Visible = True
                     mnuScrapeModifierPoster.Enabled = .TVEpisodePosterAnyEnabled AndAlso (AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster) OrElse Master.eSettings.TVEpisodePosterVideoExtraction)
@@ -12040,8 +12031,8 @@ Public Class frmMain
                     mnuScrapeModifierKeyArt.Visible = False
                     mnuScrapeModifierLandscape.Enabled = .TVSeasonLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
                     mnuScrapeModifierLandscape.Visible = True
-                    mnuScrapeModifierMetaData.Enabled = False
-                    mnuScrapeModifierMetaData.Visible = False
+                    mnuScrapeModifierMetadata.Enabled = False
+                    mnuScrapeModifierMetadata.Visible = False
                     mnuScrapeModifierNFO.Enabled = False
                     mnuScrapeModifierNFO.Visible = False
                     mnuScrapeModifierPoster.Enabled = .TVSeasonPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
@@ -12073,8 +12064,8 @@ Public Class frmMain
                     mnuScrapeModifierKeyArt.Visible = True
                     mnuScrapeModifierLandscape.Enabled = .TVShowLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
                     mnuScrapeModifierLandscape.Visible = True
-                    mnuScrapeModifierMetaData.Enabled = False
-                    mnuScrapeModifierMetaData.Visible = False
+                    mnuScrapeModifierMetadata.Enabled = False
+                    mnuScrapeModifierMetadata.Visible = False
                     mnuScrapeModifierNFO.Enabled = True
                     mnuScrapeModifierNFO.Visible = True
                     mnuScrapeModifierPoster.Enabled = .TVShowPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
@@ -12110,7 +12101,7 @@ Public Class frmMain
         mnuScrapeModifierFanart.Click,
         mnuScrapeModifierKeyArt.Click,
         mnuScrapeModifierLandscape.Click,
-        mnuScrapeModifierMetaData.Click,
+        mnuScrapeModifierMetadata.Click,
         mnuScrapeModifierNFO.Click,
         mnuScrapeModifierPoster.Click,
         mnuScrapeModifierTheme.Click,
@@ -12163,8 +12154,8 @@ Public Class frmMain
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsLandscape, True)
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
                 Case "metadata"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMeta, True)
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
+                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMetadata, True)
+                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMetadata, True)
                 Case "nfo"
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeNFO, True)
@@ -12223,17 +12214,17 @@ Public Class frmMain
 
             Select Case ContentType
                 Case "movie"
-                    CreateScrapeList_Movie(Type, Master.eSettings.DefaultOptions_Movie, ScrapeModifiers)
+                    CreateScrapeList_Movie(Type, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
                 Case "movieset"
-                    CreateScrapeList_Movieset(Type, Master.eSettings.DefaultOptions_Movieset, ScrapeModifiers)
+                    CreateScrapeList_Movieset(Type, Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifiers)
                 Case "tvepisode"
-                    CreateScrapeList_TVEpisode(Type, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+                    CreateScrapeList_TVEpisode(Type, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
                 Case "tvseason"
-                    CreateScrapeList_TVSeason(Type, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+                    CreateScrapeList_TVSeason(Type, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
                 Case "tvshow"
                     ScrapeModifiers.withEpisodes = True
                     ScrapeModifiers.withSeasons = True
-                    CreateScrapeList_TV(Type, Master.eSettings.DefaultOptions_TV, ScrapeModifiers)
+                    CreateScrapeList_TV(Type, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
             End Select
         Else
             Select Case ContentType
@@ -12278,7 +12269,7 @@ Public Class frmMain
         mnuScrapeOptionActors.Click,
         mnuScrapeOptionAired.Click,
         mnuScrapeOptionCertifications.Click,
-        mnuScrapeOptionCollectionID.Click,
+        mnuScrapeOptionCollection.Click,
         mnuScrapeOptionCountries.Click,
         mnuScrapeOptionCreators.Click,
         mnuScrapeOptionDirectors.Click,
@@ -12291,17 +12282,16 @@ Public Class frmMain
         mnuScrapeOptionPlot.Click,
         mnuScrapeOptionPremiered.Click,
         mnuScrapeOptionRating.Click,
-        mnuScrapeOptionReleaseDate.Click,
         mnuScrapeOptionRuntime.Click,
         mnuScrapeOptionStatus.Click,
         mnuScrapeOptionStudios.Click,
         mnuScrapeOptionTagline.Click,
+        mnuScrapeOptionTags.Click,
         mnuScrapeOptionTitle.Click,
         mnuScrapeOptionTop250.Click,
         mnuScrapeOptionTrailer.Click,
         mnuScrapeOptionUserRating.Click,
-        mnuScrapeOptionWriters.Click,
-        mnuScrapeOptionYear.Click
+        mnuScrapeOptionWriters.Click
 
         Dim ContentType As String = String.Empty
         Dim ScrapeOption As String = String.Empty
@@ -12321,8 +12311,8 @@ Public Class frmMain
                 ScrapeOptions.bSeasonAired = True
             Case "certifications"
                 ScrapeOptions.bMainCertifications = True
-            Case "collectionid"
-                ScrapeOptions.bMainCollectionID = True
+            Case "collection"
+                ScrapeOptions.bMainCollection = True
             Case "countries"
                 ScrapeOptions.bMainCountries = True
             Case "creators"
@@ -12350,9 +12340,7 @@ Public Class frmMain
                 ScrapeOptions.bMainPremiered = True
             Case "rating"
                 ScrapeOptions.bEpisodeRating = True
-                ScrapeOptions.bMainRating = True
-            Case "releasedate"
-                ScrapeOptions.bMainRelease = True
+                ScrapeOptions.bMainRatings = True
             Case "runtime"
                 ScrapeOptions.bEpisodeRuntime = True
                 ScrapeOptions.bMainRuntime = True
@@ -12362,6 +12350,8 @@ Public Class frmMain
                 ScrapeOptions.bMainStudios = True
             Case "tagline"
                 ScrapeOptions.bMainTagline = True
+            Case "tags"
+                ScrapeOptions.bMainTags = True
             Case "title"
                 ScrapeOptions.bEpisodeTitle = True
                 ScrapeOptions.bMainTitle = True
@@ -12375,9 +12365,7 @@ Public Class frmMain
                 ScrapeOptions.bMainUserRating = True
             Case "writers"
                 ScrapeOptions.bEpisodeCredits = True
-                ScrapeOptions.bMainWriters = True
-            Case "year"
-                ScrapeOptions.bMainYear = True
+                ScrapeOptions.bMainCredits = True
         End Select
 
         Select Case ContentType

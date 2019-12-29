@@ -153,11 +153,11 @@ Public Class Scraper
                     'get preferred quality setting
                     Dim prevQual As String = "480p"
 
-                    prevQual = Master.eSettings.MovieTrailerPrefVideoQual.ToString
+                    prevQual = Master.eSettings.Movie.TrailerSettings.MinimumVideoQuality.ToString
 
                     'Since prevQual value will be used to build trailerurl "Any" should not be used at all!
                     If prevQual.Contains("Any") Then
-                        prevQual = Master.eSettings.MovieTrailerMinVideoQual.ToString
+                        prevQual = Master.eSettings.Movie.TrailerSettings.MinimumVideoQuality.ToString
                         If prevQual.Contains("Any") Then
                             prevQual = "480p"
                         End If

@@ -138,69 +138,70 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub Setup()
-        Dim mTitle As String = tmpDBElement.Movie.Title
-        Text = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
-        btnCancel.Text = Master.eLang.Cancel
-        btnChange.Text = Master.eLang.GetString(32, "Change Movie")
-        btnFrameLoadVideo.Text = Master.eLang.GetString(307, "Load Video")
-        btnFrameSaveAsExtrafanart.Text = Master.eLang.GetString(1050, "Save as Extrafanart")
-        btnFrameSaveAsExtrathumb.Text = Master.eLang.GetString(305, "Save as Extrathumb")
-        btnFrameSaveAsFanart.Text = Master.eLang.GetString(1049, "Save as Fanart")
-        btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
-        btnOK.Text = Master.eLang.OK
-        btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
-        chkLocked.Text = Master.eLang.GetString(43, "Locked")
-        chkMarked.Text = Master.eLang.GetString(48, "Marked")
-        chkMarkedCustom1.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker1Name), Master.eSettings.MovieGeneralCustomMarker1Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #1"))
-        chkMarkedCustom2.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker2Name), Master.eSettings.MovieGeneralCustomMarker2Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #2"))
-        chkMarkedCustom3.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker3Name), Master.eSettings.MovieGeneralCustomMarker3Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #3"))
-        chkMarkedCustom4.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker4Name), Master.eSettings.MovieGeneralCustomMarker4Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #4"))
-        chkWatched.Text = Master.eLang.GetString(981, "Watched")
-        colActorsName.Text = Master.eLang.GetString(232, "Name")
-        colActorsRole.Text = Master.eLang.GetString(233, "Role")
-        colActorsThumb.Text = Master.eLang.GetString(234, "Thumb")
-        colRatingsVotes.Text = Master.eLang.GetString(244, "Votes")
-        lblActors.Text = String.Concat(Master.eLang.GetString(231, "Actors"), ":")
-        lblBanner.Text = Master.eLang.GetString(838, "Banner")
-        lblCertifications.Text = String.Concat(Master.eLang.GetString(56, "Certifications"), ":")
-        lblClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
-        lblClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
-        lblCountries.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
-        lblCredits.Text = Master.eLang.GetString(228, "Credits:")
-        lblDirectors.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
-        lblDiscArt.Text = Master.eLang.GetString(1098, "DiscArt")
-        lblExtrafanarts.Text = String.Format("{0} ({1})", Master.eLang.GetString(992, "Extrafanarts"), pnlExtrafanartsList.Controls.Count)
-        lblExtrathumbs.Text = String.Format("{0} ({1})", Master.eLang.GetString(153, "Extrathumbs"), pnlExtrafanartsList.Controls.Count)
-        lblFanart.Text = Master.eLang.GetString(149, "Fanart")
-        lblGenres.Text = Master.eLang.GetString(51, "Genre(s):")
-        lblKeyArt.Text = Master.eLang.GetString(296, "KeyArt")
-        lblLandscape.Text = Master.eLang.GetString(1059, "Landscape")
-        lblLanguage.Text = Master.eLang.GetString(610, "Language")
-        lblLinkTrailer.Text = String.Concat(Master.eLang.GetString(227, "Trailer URL"), ":")
-        lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
-        lblMPAADesc.Text = Master.eLang.GetString(229, "MPAA Rating Description:")
-        lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
-        lblOutline.Text = String.Concat(Master.eLang.GetString(64, "Plot Outline"), ":")
-        lblPlot.Text = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
-        lblPoster.Text = Master.eLang.GetString(148, "Poster")
-        lblRatings.Text = String.Concat(Master.eLang.GetString(245, "Ratings"), ":")
-        lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
-        lblRuntime.Text = String.Concat(Master.eLang.GetString(238, "Runtime"), ":")
-        lblSortTilte.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
-        lblStudios.Text = String.Concat(Master.eLang.GetString(395, "Studio"), ":")
-        lblTagline.Text = String.Concat(Master.eLang.GetString(397, "Tagline"), ":")
-        lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
-        lblTop250.Text = String.Concat(Master.eLang.GetString(591, "Top 250"), ":")
-        lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
-        lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
-        lblTVShowLinks.Text = String.Concat(Master.eLang.GetString(884, "TV Show Links"), ":")
-        lblUserRating.Text = String.Concat(Master.eLang.GetString(1467, "User Rating"), ":")
-        lblVideoSource.Text = String.Concat(Master.eLang.GetString(824, "Video Source"), ":")
-        lblYear.Text = String.Concat(Master.eLang.GetString(278, "Year"), ":")
-        tpDetails.Text = Master.eLang.GetString(26, "Details")
-        tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
-        tpMetaData.Text = Master.eLang.GetString(866, "Metadata")
-        tsslFilename.Text = tmpDBElement.FileItem.FullPath
+        With Master.eLang
+            Dim mTitle As String = tmpDBElement.Movie.Title
+            Text = String.Concat(.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
+            btnCancel.Text = .Cancel
+            btnChange.Text = .GetString(32, "Change Movie")
+            btnFrameLoadVideo.Text = .GetString(307, "Load Video")
+            btnFrameSaveAsExtrafanart.Text = .GetString(1050, "Save as Extrafanart")
+            btnFrameSaveAsExtrathumb.Text = .GetString(305, "Save as Extrathumb")
+            btnFrameSaveAsFanart.Text = .GetString(1049, "Save as Fanart")
+            btnManual.Text = .GetString(230, "Manual Edit")
+            btnOK.Text = .OK
+            btnRescrape.Text = .GetString(716, "Re-Scrape")
+            chkLocked.Text = .GetString(43, "Locked")
+            chkMarked.Text = .GetString(48, "Marked")
+            chkMarkedCustom1.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker1Name), Master.eSettings.MovieGeneralCustomMarker1Name, String.Concat(.GetString(1191, "Custom"), " #1"))
+            chkMarkedCustom2.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker2Name), Master.eSettings.MovieGeneralCustomMarker2Name, String.Concat(.GetString(1191, "Custom"), " #2"))
+            chkMarkedCustom3.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker3Name), Master.eSettings.MovieGeneralCustomMarker3Name, String.Concat(.GetString(1191, "Custom"), " #3"))
+            chkMarkedCustom4.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker4Name), Master.eSettings.MovieGeneralCustomMarker4Name, String.Concat(.GetString(1191, "Custom"), " #4"))
+            chkWatched.Text = .GetString(981, "Watched")
+            colActorsName.Text = .GetString(232, "Name")
+            colActorsRole.Text = .GetString(233, "Role")
+            colActorsThumb.Text = .GetString(234, "Thumb")
+            colRatingsVotes.Text = .GetString(244, "Votes")
+            lblActors.Text = String.Concat(.GetString(231, "Actors"), ":")
+            lblBanner.Text = .GetString(838, "Banner")
+            lblCertifications.Text = String.Concat(.GetString(56, "Certifications"), ":")
+            lblClearArt.Text = .GetString(1096, "ClearArt")
+            lblClearLogo.Text = .GetString(1097, "ClearLogo")
+            lblCountries.Text = String.Concat(.GetString(237, "Countries"), ":")
+            lblCredits.Text = .GetString(228, "Credits:")
+            lblDirectors.Text = String.Concat(.GetString(940, "Directors"), ":")
+            lblDiscArt.Text = .GetString(1098, "DiscArt")
+            lblExtrafanarts.Text = String.Format("{0} ({1})", .GetString(992, "Extrafanarts"), pnlExtrafanartsList.Controls.Count)
+            lblExtrathumbs.Text = String.Format("{0} ({1})", .GetString(153, "Extrathumbs"), pnlExtrafanartsList.Controls.Count)
+            lblFanart.Text = .GetString(149, "Fanart")
+            lblGenres.Text = .GetString(51, "Genre(s):")
+            lblKeyArt.Text = .GetString(296, "KeyArt")
+            lblLandscape.Text = .GetString(1059, "Landscape")
+            lblLanguage.Text = .GetString(610, "Language")
+            lblLinkTrailer.Text = String.Concat(.GetString(227, "Trailer URL"), ":")
+            lblMPAA.Text = .GetString(235, "MPAA Rating:")
+            lblMPAADesc.Text = .GetString(229, "MPAA Rating Description:")
+            lblOriginalTitle.Text = String.Concat(.GetString(302, "Original Title"), ":")
+            lblOutline.Text = String.Concat(.GetString(64, "Plot Outline"), ":")
+            lblPlot.Text = String.Concat(.GetString(65, "Plot"), ":")
+            lblPoster.Text = .GetString(148, "Poster")
+            lblPremiered.Text = String.Concat(.GetString(724, "Premiered"), ":")
+            lblRatings.Text = String.Concat(.GetString(245, "Ratings"), ":")
+            lblRuntime.Text = String.Concat(.GetString(238, "Runtime"), ":")
+            lblSortTilte.Text = String.Concat(.GetString(642, "Sort Title"), ":")
+            lblStudios.Text = String.Concat(.GetString(395, "Studio"), ":")
+            lblTagline.Text = String.Concat(.GetString(397, "Tagline"), ":")
+            lblTitle.Text = String.Concat(.GetString(21, "Title"), ":")
+            lblTop250.Text = String.Concat(.GetString(591, "Top 250"), ":")
+            lblTopDetails.Text = .GetString(224, "Edit the details for the selected movie.")
+            lblTopTitle.Text = .GetString(25, "Edit Movie")
+            lblTVShowLinks.Text = String.Concat(.GetString(884, "TV Show Links"), ":")
+            lblUserRating.Text = String.Concat(.GetString(1467, "User Rating"), ":")
+            lblVideoSource.Text = String.Concat(.GetString(824, "Video Source"), ":")
+            tpDetails.Text = .GetString(26, "Details")
+            tpFrameExtraction.Text = .GetString(256, "Frame Extraction")
+            tpMetaData.Text = .GetString(866, "Metadata")
+            tsslFilename.Text = tmpDBElement.FileItem.FullPath
+        End With
 
         cbSourceLanguage.Items.Clear()
         cbSourceLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages Select lLang.Description).ToArray)
@@ -416,10 +417,10 @@ Public Class dlgEdit_Movie
             txtOutline.Text = .Outline
             'Plot
             txtPlot.Text = .Plot
+            'Premiered
+            dtpPremiered.Text = .Premiered
             'Ratings
             Ratings_Fill()
-            'ReleaseDate
-            dtpReleaseDate.Text = .ReleaseDate
             'Runtime
             txtRuntime.Text = .Runtime
             'SortTitle
@@ -440,7 +441,7 @@ Public Class dlgEdit_Movie
             'Trailer Link
             txtLinkTrailer.Text = tmpDBElement.Movie.Trailer
             btnLinkTrailerPlay.Enabled = tmpDBElement.Movie.TrailerSpecified
-            btnLinkTrailerGet.Enabled = Master.eSettings.DefaultOptions_Movie.bMainTrailer
+            btnLinkTrailerGet.Enabled = Master.eSettings.Movie.DataSettings.TrailerLink.Enabled
             'TV Show Links
             TVShowLinks_Fill()
             'UserRating
@@ -459,8 +460,6 @@ Public Class dlgEdit_Movie
                     dtpLastPlayed.Text = .LastPlayed
                 End If
             End If
-            'Year
-            txtYear.Text = .Year.ToString
         End With
 
         If DoAll Then
@@ -725,10 +724,10 @@ Public Class dlgEdit_Movie
             .Outline = txtOutline.Text.Trim
             'Plot
             .Plot = txtPlot.Text.Trim
+            'Premiered
+            .Premiered = dtpPremiered.Value.ToString("yyyy-MM-dd")
             'Ratings
             'TODO
-            'ReleaseDate
-            .ReleaseDate = dtpReleaseDate.Value.ToString("yyyy-MM-dd")
             'Runtime
             .Runtime = txtRuntime.Text.Trim
             'SortTitle
@@ -778,8 +777,6 @@ Public Class dlgEdit_Movie
                     .LastPlayed = String.Empty
                 End If
             End If
-            'Year
-            .Year = If(Integer.TryParse(txtYear.Text.Trim, 0), CInt(txtYear.Text.Trim), 0)
         End With
 
         'DiscStub
@@ -1581,13 +1578,13 @@ Public Class dlgEdit_Movie
 
     Private Sub MPAA_Fill()
         lbMPAA.Items.Add(Master.eLang.None)
-        If Not String.IsNullOrEmpty(Master.eSettings.MovieScraperMPAANotRated) Then lbMPAA.Items.Add(Master.eSettings.MovieScraperMPAANotRated)
+        If Master.eSettings.Movie.DataSettings.MPAANotRatedValueSpecified Then lbMPAA.Items.Add(Master.eSettings.Movie.DataSettings.MPAANotRatedValue)
         lbMPAA.Items.AddRange(MediaFlags.GetRatingList_Movie)
     End Sub
 
     Private Sub MPAA_Select()
         If tmpDBElement.Movie.MPAASpecified Then
-            If Master.eSettings.MovieScraperCertOnlyValue Then
+            If Master.eSettings.Movie.DataSettings.CertificationsOnlyValue Then
                 Dim sItem As String = String.Empty
                 For i As Integer = 0 To lbMPAA.Items.Count - 1
                     sItem = lbMPAA.Items(i).ToString
@@ -1786,8 +1783,7 @@ Public Class dlgEdit_Movie
 
     Private Sub TextBox_NumericOnly(sender As Object, e As KeyPressEventArgs) Handles _
         txtTop250.KeyPress,
-        txtUserRating.KeyPress,
-        txtYear.KeyPress
+        txtUserRating.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 

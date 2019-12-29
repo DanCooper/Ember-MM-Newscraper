@@ -287,7 +287,7 @@ Public Class frmMovie_GUI
             {Master.eLang.GetString(73, "Fanart Only"), Enums.ModifierType.MainFanart},
             {Master.eLang.GetString(303, "KeyArt Only"), Enums.ModifierType.MainKeyArt},
             {Master.eLang.GetString(1061, "Landscape Only"), Enums.ModifierType.MainLandscape},
-            {Master.eLang.GetString(76, "Meta Data Only"), Enums.ModifierType.MainMeta},
+            {Master.eLang.GetString(76, "Metadata Only"), Enums.ModifierType.MainMetadata},
             {Master.eLang.GetString(71, "NFO Only"), Enums.ModifierType.MainNFO},
             {Master.eLang.GetString(72, "Poster Only"), Enums.ModifierType.MainPoster},
             {Master.eLang.GetString(1125, "Theme Only"), Enums.ModifierType.MainTheme},

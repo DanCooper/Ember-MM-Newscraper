@@ -236,7 +236,7 @@ Public Class Scraper
 
         If _Client IsNot Nothing Then
             'Rating
-            If tFilteredOptions.bMainRating Then
+            If tFilteredOptions.bMainRatings Then
                 Dim nGlobalRating = Await _Client.Movies.GetMovieRatingsAsync(CStr(uintTraktID.Result))
                 Dim dblRating As Double
                 Dim iVotes As Integer
@@ -334,7 +334,7 @@ Public Class Scraper
 
         If _Client IsNot Nothing Then
             'Rating
-            If FilteredOptions.bMainRating Then
+            If FilteredOptions.bMainRatings Then
                 Dim nGlobalRating = Await _Client.Shows.GetShowRatingsAsync(CStr(uintTraktID.Result))
                 Dim dblRating As Double
                 Dim iVotes As Integer

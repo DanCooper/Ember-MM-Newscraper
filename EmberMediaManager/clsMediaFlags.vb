@@ -404,14 +404,14 @@ Public Class MediaFlags
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
-        If Not strRating = Master.eSettings.MovieScraperMPAANotRated Then
-            Dim v = From e In _FLags_Ratings.movies.Where(Function(f) f.searchstring = strRating)
+        If Not strRating = Master.eSettings.Movie.DataSettings.MPAANotRatedValue Then
+            Dim v = From e In _Flags_Ratings.Movies.Where(Function(f) f.SearchString = strRating)
             If v.Count > 0 Then
-                imgRatingStr = Path.Combine(mePath, v(0).icon)
+                imgRatingStr = Path.Combine(mePath, v(0).Icon)
             Else
-                v = From e In _FLags_Ratings.movies Where strRating.ToLower.StartsWith(e.searchstring.ToLower)
+                v = From e In _Flags_Ratings.Movies Where strRating.ToLower.StartsWith(e.SearchString.ToLower)
                 If v.Count > 0 Then
-                    imgRatingStr = Path.Combine(mePath, v(0).icon)
+                    imgRatingStr = Path.Combine(mePath, v(0).Icon)
                 End If
             End If
         Else
@@ -433,11 +433,11 @@ Public Class MediaFlags
 
     Public Shared Function GetRatingList_Movie() As Object()
         Dim retRatings As New List(Of String)
-        If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
-            Dim tCountry = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
+        If Master.eSettings.Movie.DataSettings.CertificationsForMPAA AndAlso Not Master.eSettings.Movie.DataSettings.Certifications.Filter = Master.eLang.All Then
+            Dim tCountry = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.Movie.DataSettings.Certifications.Filter)
             If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.name) Then
-                For Each r In _FLags_Ratings.movies.FindAll(Function(f) f.country.ToLower = tCountry.name.ToLower)
-                    retRatings.Add(r.searchstring)
+                For Each r In _Flags_Ratings.Movies.FindAll(Function(f) f.Country.ToLower = tCountry.name.ToLower)
+                    retRatings.Add(r.SearchString)
                 Next
             End If
         Else

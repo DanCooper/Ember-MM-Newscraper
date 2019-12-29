@@ -1574,23 +1574,35 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("year")>
-        Public Property Year() As Integer = 0
-
-        <XmlIgnore()>
-        Public ReadOnly Property YearSpecified() As Boolean
-            Get
-                Return Not Year = 0
-            End Get
-        End Property
-
+        <Obsolete>
         <XmlElement("releasedate")>
         Public Property ReleaseDate() As String = String.Empty
 
+        <Obsolete>
         <XmlIgnore()>
         Public ReadOnly Property ReleaseDateSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(ReleaseDate)
+            End Get
+        End Property
+
+        <XmlElement("premiered")>
+        Public Property Premiered() As String = String.Empty
+
+        <XmlIgnore()>
+        Public ReadOnly Property PremieredSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Premiered)
+            End Get
+        End Property
+
+        <Obsolete>
+        Public Property Year() As Integer
+
+        <Obsolete>
+        Public ReadOnly Property YearSpecified As Boolean
+            Get
+                Return Year > 0
             End Get
         End Property
 
@@ -2061,7 +2073,7 @@ Namespace MediaContainers
             If _sets.Count > 0 AndAlso _sets.Item(0).TitleSpecified Then
                 Dim firstSet As SetDetails = _sets.Item(0)
 
-                If Master.eSettings.MovieScraperCollectionsExtendedInfo Then
+                If Master.eSettings.Movie.DataSettings.Collection.SaveExtendedInformation Then
                     'creates a set node like:
                     '<set> 
                     '  <name>Die Hard Collection</name>
@@ -2126,7 +2138,7 @@ Namespace MediaContainers
         End Function
 
         Public Function CreateSetYAMJ() As SetContainer
-            If Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets AndAlso Sets.Count > 0 Then
+            If Master.eSettings.Movie.DataSettings.Collection.SaveYAMJCompatible AndAlso Sets.Count > 0 Then
                 Return New SetContainer With {.Sets = Sets}
             Else
                 Return Nothing
@@ -2136,7 +2148,7 @@ Namespace MediaContainers
         Public Function CompareTo(ByVal other As Movie) As Integer Implements IComparable(Of Movie).CompareTo
             Dim retVal As Integer = (Lev).CompareTo(other.Lev)
             If retVal = 0 Then
-                retVal = (Year).CompareTo(other.Year) * -1
+                retVal = (Premiered).CompareTo(other.Premiered) * -1
             End If
             Return retVal
         End Function

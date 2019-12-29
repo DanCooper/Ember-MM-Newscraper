@@ -184,7 +184,7 @@ Public Class dlgSearchResults_Movie
         ControlsVisible(False)
         lblTitle.Text = String.Empty
         lblTagline.Text = String.Empty
-        lblYear.Text = String.Empty
+        lblPremiered.Text = String.Empty
         lblDirectors.Text = String.Empty
         lblGenre.Text = String.Empty
         txtPlot.Text = String.Empty
@@ -197,13 +197,13 @@ Public Class dlgSearchResults_Movie
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
-        lblYearHeader.Visible = areVisible
+        lblPremieredHeader.Visible = areVisible
         lblDirectorsHeader.Visible = areVisible
         lblGenreHeader.Visible = areVisible
         lblPlotHeader.Visible = areVisible
         lblTMDBHeader.Visible = areVisible
         txtPlot.Visible = areVisible
-        lblYear.Visible = areVisible
+        lblPremiered.Visible = areVisible
         lblTagline.Visible = areVisible
         lblTitle.Visible = areVisible
         lblDirectors.Visible = areVisible
@@ -248,7 +248,7 @@ Public Class dlgSearchResults_Movie
             _TmpMovie = sInfo
             lblTitle.Text = _TmpMovie.Title
             lblTagline.Text = _TmpMovie.Tagline
-            lblYear.Text = _TmpMovie.Year.ToString
+            lblPremiered.Text = _TmpMovie.Premiered
             lblDirectors.Text = String.Join(" / ", _TmpMovie.Directors.ToArray)
             lblGenre.Text = String.Join(" / ", _TmpMovie.Genres.ToArray)
             txtPlot.Text = StringUtils.ShortenOutline(_TmpMovie.Plot, 410)
@@ -292,8 +292,9 @@ Public Class dlgSearchResults_Movie
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
             For Each Movie As MediaContainers.Movie In M.Matches
                 tvResults.Nodes.Add(New TreeNode() With {
-                                    .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year.ToString), String.Empty)),
-                                    .Tag = Movie.UniqueIDs.TMDbId})
+                                    .Text = String.Concat(Movie.Title, If(Movie.PremieredSpecified, String.Format(" ({0})", StringUtils.GetYearFromString(Movie.Premiered)), String.Empty)),
+                                    .Tag = Movie.UniqueIDs.TMDbId
+                                    })
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)
 
@@ -308,16 +309,15 @@ Public Class dlgSearchResults_Movie
     End Sub
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions
-        Dim aOpt As New Structures.ScrapeOptions
-        aOpt.bMainDirectors = True
-        aOpt.bMainGenres = True
-        aOpt.bMainOutline = True
-        aOpt.bMainPlot = True
-        aOpt.bMainTagline = True
-        aOpt.bMainTitle = True
-        aOpt.bMainYear = True
-
-        Return aOpt
+        Return New Structures.ScrapeOptions With {
+            .bMainDirectors = True,
+            .bMainGenres = True,
+            .bMainOutline = True,
+            .bMainPlot = True,
+            .bMainPremiered = True,
+            .bMainTagline = True,
+            .bMainTitle = True
+        }
     End Function
 
     Private Sub SetUp()
@@ -327,7 +327,7 @@ Public Class dlgSearchResults_Movie
         Label1.Text = Master.eLang.GetString(846, "Movie Search Results")
         chkManual.Text = String.Concat(Master.eLang.GetString(847, "Manual ID Entry"), " (TMDb / IMDb):")
         btnVerify.Text = Master.eLang.GetString(848, "Verify")
-        lblYearHeader.Text = String.Concat(Master.eLang.GetString(278, "Year"), ":")
+        lblPremieredHeader.Text = String.Concat(Master.eLang.GetString(724, "Premiered"), ":")
         lblDirectorsHeader.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
         lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
         lblTMDBHeader.Text = String.Concat(Master.eLang.GetString(933, "TMDB ID"), ":")

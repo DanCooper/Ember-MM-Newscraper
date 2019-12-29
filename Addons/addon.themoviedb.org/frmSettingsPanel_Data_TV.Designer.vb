@@ -77,6 +77,7 @@ Partial Class frmSettingsPanel_Data_TV
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
         Me.lblInfoBottom = New System.Windows.Forms.Label()
+        Me.chkTags_TVShow = New System.Windows.Forms.CheckBox()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -400,7 +401,8 @@ Partial Class frmSettingsPanel_Data_TV
         Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowPremiered, 1, 0)
         Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowStatus, 1, 3)
         Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowStudios, 1, 4)
-        Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowTitle, 1, 5)
+        Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowTitle, 1, 6)
+        Me.tblScraperFieldsShow.Controls.Add(Me.chkTags_TVShow, 1, 5)
         Me.tblScraperFieldsShow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsShow.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsShow.Name = "tblScraperFieldsShow"
@@ -552,7 +554,7 @@ Partial Class frmSettingsPanel_Data_TV
         '
         Me.chkScraperShowTitle.AutoSize = True
         Me.chkScraperShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowTitle.Location = New System.Drawing.Point(103, 118)
+        Me.chkScraperShowTitle.Location = New System.Drawing.Point(103, 141)
         Me.chkScraperShowTitle.Name = "chkScraperShowTitle"
         Me.chkScraperShowTitle.Size = New System.Drawing.Size(47, 17)
         Me.chkScraperShowTitle.TabIndex = 0
@@ -805,7 +807,18 @@ Partial Class frmSettingsPanel_Data_TV
     "for more options."
         Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'frmSettingsHolder_TV
+        'chkTags_TVShow
+        '
+        Me.chkTags_TVShow.AutoSize = True
+        Me.chkTags_TVShow.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTags_TVShow.Location = New System.Drawing.Point(103, 118)
+        Me.chkTags_TVShow.Name = "chkTags_TVShow"
+        Me.chkTags_TVShow.Size = New System.Drawing.Size(48, 17)
+        Me.chkTags_TVShow.TabIndex = 0
+        Me.chkTags_TVShow.Text = "Tags"
+        Me.chkTags_TVShow.UseVisualStyleBackColor = True
+        '
+        'frmSettingsPanel_Data_TV
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -817,7 +830,7 @@ Partial Class frmSettingsPanel_Data_TV
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmSettingsHolder_TV"
+        Me.Name = "frmSettingsPanel_Data_TV"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
@@ -915,5 +928,5 @@ Partial Class frmSettingsPanel_Data_TV
     Friend WithEvents chkScraperSeasonAired As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperSeasonPlot As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperSeasonTitle As System.Windows.Forms.CheckBox
-
+    Friend WithEvents chkTags_TVShow As CheckBox
 End Class

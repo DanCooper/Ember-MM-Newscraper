@@ -85,7 +85,7 @@ Public Class frmSettingsPanel_Movie
         RaiseEvent SettingsChanged()
     End Sub
 
-    Private Sub chkRelease_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkRelease.CheckedChanged
+    Private Sub chkRelease_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkPremiered.CheckedChanged
         RaiseEvent SettingsChanged()
     End Sub
 
@@ -113,7 +113,7 @@ Public Class frmSettingsPanel_Movie
         RaiseEvent SettingsChanged()
     End Sub
 
-    Private Sub chkYear_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkYear.CheckedChanged
+    Private Sub chkYear_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         RaiseEvent SettingsChanged()
     End Sub
 
@@ -140,15 +140,14 @@ Public Class frmSettingsPanel_Movie
         chkGenres.Text = Master.eLang.GetString(725, "Genres")
         chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         chkPlot.Text = Master.eLang.GetString(65, "Plot")
+        chkPremiered.Text = Master.eLang.GetString(724, "Premiered")
         chkRating.Text = Master.eLang.GetString(400, "Rating")
-        chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         chkRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkStudios.Text = Master.eLang.GetString(226, "Studios")
         chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         chkTitle.Text = Master.eLang.GetString(21, "Title")
         chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
         chkWriters.Text = Master.eLang.GetString(394, "Writers")
-        chkYear.Text = Master.eLang.GetString(278, "Year")
         gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         lblApiKey.Text = String.Concat(Master.eLang.GetString(796, "OMDb API Key"), ":")

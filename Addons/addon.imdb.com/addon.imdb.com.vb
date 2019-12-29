@@ -109,16 +109,15 @@ Public Class Data_Movie
         _PnlSettingsPanel.chkOriginalTitle.Checked = _ConfigScrapeOptions.bMainOriginalTitle
         _PnlSettingsPanel.chkOutline.Checked = _ConfigScrapeOptions.bMainOutline
         _PnlSettingsPanel.chkPlot.Checked = _ConfigScrapeOptions.bMainPlot
-        _PnlSettingsPanel.chkRating.Checked = _ConfigScrapeOptions.bMainRating
-        _PnlSettingsPanel.chkRelease.Checked = _ConfigScrapeOptions.bMainRelease
+        _PnlSettingsPanel.chkPremiered.Checked = _ConfigScrapeOptions.bMainPremiered
+        _PnlSettingsPanel.chkRating.Checked = _ConfigScrapeOptions.bMainRatings
         _PnlSettingsPanel.chkRuntime.Checked = _ConfigScrapeOptions.bMainRuntime
         _PnlSettingsPanel.chkStudios.Checked = _ConfigScrapeOptions.bMainStudios
         _PnlSettingsPanel.chkTagline.Checked = _ConfigScrapeOptions.bMainTagline
         _PnlSettingsPanel.chkTitle.Checked = _ConfigScrapeOptions.bMainTitle
         _PnlSettingsPanel.chkTop250.Checked = _ConfigScrapeOptions.bMainTop250
         _PnlSettingsPanel.chkTrailer.Checked = _ConfigScrapeOptions.bMainTrailer
-        _PnlSettingsPanel.chkWriters.Checked = _ConfigScrapeOptions.bMainWriters
-        _PnlSettingsPanel.chkYear.Checked = _ConfigScrapeOptions.bMainYear
+        _PnlSettingsPanel.chkWriters.Checked = _ConfigScrapeOptions.bMainCredits
 
         _PnlSettingsPanel.cbForceTitleLanguage.Text = _AddonSettings.ForceTitleLanguage
         _PnlSettingsPanel.chkCountryAbbreviation.Checked = _AddonSettings.CountryAbbreviation
@@ -169,7 +168,7 @@ Public Class Data_Movie
                 nMovie = _scraper.GetMovieInfo(oDBElement.Movie.UniqueIDs.IMDbId, False, FilteredOptions)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first!
-                nMovie = _scraper.GetSearchMovieInfo(oDBElement.Movie.Title, oDBElement.Movie.Year, oDBElement, ScrapeType, FilteredOptions)
+                nMovie = _scraper.GetSearchMovieInfo(oDBElement.Movie.Title, StringUtils.GetYearFromString(oDBElement.Movie.Premiered), oDBElement, ScrapeType, FilteredOptions)
                 'if still no search result -> exit
                 _Logger.Trace(String.Format("[IMDB_Data] [Scraper_Movie] [Abort] No search result found"))
                 If nMovie Is Nothing Then Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
@@ -190,7 +189,7 @@ Public Class Data_Movie
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If Not oDBElement.Movie.UniqueIDs.IMDbIdSpecified AndAlso Not oDBElement.Movie.UniqueIDs.TMDbIdSpecified Then
                 Using dlgSearch As New dlgSearchResults_Movie(_AddonSettings, _scraper)
-                    If dlgSearch.ShowDialog(oDBElement.Movie.Title, oDBElement.Movie.Year, oDBElement.FileItem.FirstPathFromStack, FilteredOptions) = DialogResult.OK Then
+                    If dlgSearch.ShowDialog(oDBElement.Movie.Title, StringUtils.GetYearFromString(oDBElement.Movie.Premiered), oDBElement.FileItem.FirstPathFromStack, FilteredOptions) = DialogResult.OK Then
                         nMovie = _scraper.GetMovieInfo(dlgSearch.Result.UniqueIDs.IMDbId, False, FilteredOptions)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
@@ -216,16 +215,15 @@ Public Class Data_Movie
         _ConfigScrapeOptions.bMainOriginalTitle = _PnlSettingsPanel.chkOriginalTitle.Checked
         _ConfigScrapeOptions.bMainOutline = _PnlSettingsPanel.chkOutline.Checked
         _ConfigScrapeOptions.bMainPlot = _PnlSettingsPanel.chkPlot.Checked
-        _ConfigScrapeOptions.bMainRating = _PnlSettingsPanel.chkRating.Checked
-        _ConfigScrapeOptions.bMainRelease = _PnlSettingsPanel.chkRelease.Checked
+        _ConfigScrapeOptions.bMainPremiered = _PnlSettingsPanel.chkPremiered.Checked
+        _ConfigScrapeOptions.bMainRatings = _PnlSettingsPanel.chkRating.Checked
         _ConfigScrapeOptions.bMainRuntime = _PnlSettingsPanel.chkRuntime.Checked
         _ConfigScrapeOptions.bMainStudios = _PnlSettingsPanel.chkStudios.Checked
         _ConfigScrapeOptions.bMainTagline = _PnlSettingsPanel.chkTagline.Checked
         _ConfigScrapeOptions.bMainTitle = _PnlSettingsPanel.chkTitle.Checked
         _ConfigScrapeOptions.bMainTop250 = _PnlSettingsPanel.chkTop250.Checked
         _ConfigScrapeOptions.bMainTrailer = _PnlSettingsPanel.chkTrailer.Checked
-        _ConfigScrapeOptions.bMainWriters = _PnlSettingsPanel.chkWriters.Checked
-        _ConfigScrapeOptions.bMainYear = _PnlSettingsPanel.chkYear.Checked
+        _ConfigScrapeOptions.bMainCredits = _PnlSettingsPanel.chkWriters.Checked
 
         _AddonSettings.CountryAbbreviation = _PnlSettingsPanel.chkCountryAbbreviation.Checked
         _AddonSettings.FallBackWorldwide = _PnlSettingsPanel.chkFallBackworldwide.Checked
@@ -262,16 +260,15 @@ Public Class Data_Movie
         _ConfigScrapeOptions.bMainOriginalTitle = AdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.ContentType.Movie)
         _ConfigScrapeOptions.bMainOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True, , Enums.ContentType.Movie)
         _ConfigScrapeOptions.bMainPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.Movie)
-        _ConfigScrapeOptions.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.Movie)
-        _ConfigScrapeOptions.bMainRelease = AdvancedSettings.GetBooleanSetting("DoRelease", True, , Enums.ContentType.Movie)
+        _ConfigScrapeOptions.bMainPremiered = AdvancedSettings.GetBooleanSetting("DoPremiered", True, , Enums.ContentType.Movie)
+        _ConfigScrapeOptions.bMainRatings = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.Movie)
         _ConfigScrapeOptions.bMainRuntime = AdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.ContentType.Movie)
         _ConfigScrapeOptions.bMainStudios = AdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.Movie)
         _ConfigScrapeOptions.bMainTagline = AdvancedSettings.GetBooleanSetting("DoTagline", True, , Enums.ContentType.Movie)
         _ConfigScrapeOptions.bMainTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.Movie)
         _ConfigScrapeOptions.bMainTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True, , Enums.ContentType.Movie)
         _ConfigScrapeOptions.bMainTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True, , Enums.ContentType.Movie)
-        _ConfigScrapeOptions.bMainWriters = AdvancedSettings.GetBooleanSetting("DoWriters", True, , Enums.ContentType.Movie)
-        _ConfigScrapeOptions.bMainYear = AdvancedSettings.GetBooleanSetting("DoYear", True, , Enums.ContentType.Movie)
+        _ConfigScrapeOptions.bMainCredits = AdvancedSettings.GetBooleanSetting("DoWriters", True, , Enums.ContentType.Movie)
 
         _AddonSettings.CountryAbbreviation = AdvancedSettings.GetBooleanSetting("CountryAbbreviation", False, , Enums.ContentType.Movie)
         _AddonSettings.FallBackWorldwide = AdvancedSettings.GetBooleanSetting("FallBackWorldwide", False, , Enums.ContentType.Movie)
@@ -296,16 +293,15 @@ Public Class Data_Movie
             settings.SetBooleanSetting("DoOriginalTitle", _ConfigScrapeOptions.bMainOriginalTitle, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoOutline", _ConfigScrapeOptions.bMainOutline, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoPlot", _ConfigScrapeOptions.bMainPlot, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.bMainRating, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoRelease", _ConfigScrapeOptions.bMainRelease, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoPremiered", _ConfigScrapeOptions.bMainPremiered, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.bMainRatings, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoRuntime", _ConfigScrapeOptions.bMainRuntime, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoStudio", _ConfigScrapeOptions.bMainStudios, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoTagline", _ConfigScrapeOptions.bMainTagline, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoTitle", _ConfigScrapeOptions.bMainTitle, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoTop250", _ConfigScrapeOptions.bMainTop250, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoTrailer", _ConfigScrapeOptions.bMainTrailer, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoWriters", _ConfigScrapeOptions.bMainWriters, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoYear", _ConfigScrapeOptions.bMainYear, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoWriters", _ConfigScrapeOptions.bMainCredits, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("CountryAbbreviation", _AddonSettings.CountryAbbreviation, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("FallBackWorldwide", _AddonSettings.FallBackWorldwide, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("MPAADescription", _AddonSettings.MPAADescription, , , Enums.ContentType.Movie)
@@ -399,7 +395,7 @@ Public Class Data_TV
         _PnlSettingsPanel.chkScraperShowOriginalTitle.Checked = _ConfigOptions.bMainOriginalTitle
         _PnlSettingsPanel.chkScraperShowPlot.Checked = _ConfigOptions.bMainPlot
         _PnlSettingsPanel.chkScraperShowPremiered.Checked = _ConfigOptions.bMainPremiered
-        _PnlSettingsPanel.chkScraperShowRating.Checked = _ConfigOptions.bMainRating
+        _PnlSettingsPanel.chkScraperShowRating.Checked = _ConfigOptions.bMainRatings
         _PnlSettingsPanel.chkScraperShowRuntime.Checked = _ConfigOptions.bMainRuntime
         _PnlSettingsPanel.chkScraperShowStudios.Checked = _ConfigOptions.bMainStudios
         _PnlSettingsPanel.chkScraperShowTitle.Checked = _ConfigOptions.bMainTitle
@@ -525,7 +521,7 @@ Public Class Data_TV
         _ConfigOptions.bMainOriginalTitle = _PnlSettingsPanel.chkScraperShowOriginalTitle.Checked
         _ConfigOptions.bMainPlot = _PnlSettingsPanel.chkScraperShowPlot.Checked
         _ConfigOptions.bMainPremiered = _PnlSettingsPanel.chkScraperShowPremiered.Checked
-        _ConfigOptions.bMainRating = _PnlSettingsPanel.chkScraperShowRating.Checked
+        _ConfigOptions.bMainRatings = _PnlSettingsPanel.chkScraperShowRating.Checked
         _ConfigOptions.bMainRuntime = _PnlSettingsPanel.chkScraperShowRuntime.Checked
         _ConfigOptions.bMainStudios = _PnlSettingsPanel.chkScraperShowStudios.Checked
         _ConfigOptions.bMainTitle = _PnlSettingsPanel.chkScraperShowTitle.Checked
@@ -562,7 +558,7 @@ Public Class Data_TV
         _ConfigOptions.bMainOriginalTitle = AdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.ContentType.TVShow)
         _ConfigOptions.bMainPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVShow)
         _ConfigOptions.bMainPremiered = AdvancedSettings.GetBooleanSetting("DoPremiered", True, , Enums.ContentType.TVShow)
-        _ConfigOptions.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
+        _ConfigOptions.bMainRatings = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
         _ConfigOptions.bMainRuntime = AdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.ContentType.TVShow)
         _ConfigOptions.bMainStudios = AdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.TVShow)
         _ConfigOptions.bMainTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVShow)
@@ -588,7 +584,7 @@ Public Class Data_TV
             settings.SetBooleanSetting("DoOriginalTitle", _ConfigOptions.bMainOriginalTitle, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoPlot", _ConfigOptions.bMainPlot, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoPremiered", _ConfigOptions.bMainPremiered, , , Enums.ContentType.TVShow)
-            settings.SetBooleanSetting("DoRating", _ConfigOptions.bMainRating, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoRating", _ConfigOptions.bMainRatings, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoRuntime", _ConfigOptions.bMainRuntime, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoStudio", _ConfigOptions.bMainStudios, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoTitle", _ConfigOptions.bMainTitle, , , Enums.ContentType.TVShow)

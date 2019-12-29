@@ -206,7 +206,7 @@ Public Class Scraper
         If bwOMDb.CancellationPending Then Return Nothing
 
         'Director / Writer
-        If filteredOptions.bMainDirectors OrElse filteredOptions.bMainWriters Then
+        If filteredOptions.bMainDirectors OrElse filteredOptions.bMainCredits Then
             If Not String.IsNullOrEmpty(Result.Director) Then
                 nMovie.Directors.AddRange(Regex.Replace(Result.Director, ", ", ",").Split(",".ToArray, StringSplitOptions.RemoveEmptyEntries))
             End If
@@ -239,8 +239,21 @@ Public Class Scraper
 
         If bwOMDb.CancellationPending Then Return Nothing
 
+        'Premiered
+        If filteredOptions.bMainPremiered Then
+            If Not String.IsNullOrEmpty(Result.Released) Then
+                Dim RelDate As Date
+                If Date.TryParse(Result.Released, RelDate) Then
+                    'always save date in same date format not depending on users language setting!
+                    nMovie.Premiered = RelDate.ToString("yyyy-MM-dd")
+                End If
+            End If
+        End If
+
+        If bwOMDb.CancellationPending Then Return Nothing
+
         'Rating
-        If filteredOptions.bMainRating Then
+        If filteredOptions.bMainRatings Then
             Dim dblRating As Double
             Dim iVotes As Integer
             If Not String.IsNullOrEmpty(Result.imdbRating) AndAlso (Double.TryParse(Result.imdbRating, dblRating)) AndAlso Not String.IsNullOrEmpty(Result.imdbVotes) AndAlso Integer.TryParse(Regex.Replace(Result.imdbVotes, "\D", String.Empty), iVotes) Then
@@ -265,19 +278,6 @@ Public Class Scraper
 
         If bwOMDb.CancellationPending Then Return Nothing
 
-        'ReleaseDate
-        If filteredOptions.bMainRelease Then
-            If Not String.IsNullOrEmpty(Result.Released) Then
-                Dim RelDate As Date
-                If Date.TryParse(Result.Released, RelDate) Then
-                    'always save date in same date format not depending on users language setting!
-                    nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
-                End If
-            End If
-        End If
-
-        If bwOMDb.CancellationPending Then Return Nothing
-
         'Runtime
         If filteredOptions.bMainRuntime Then
             If Not String.IsNullOrEmpty(Result.Runtime) Then
@@ -291,16 +291,6 @@ Public Class Scraper
         If filteredOptions.bMainTitle Then
             If Not String.IsNullOrEmpty(Result.Title) Then
                 nMovie.Title = Result.Title
-            End If
-        End If
-
-        If bwOMDb.CancellationPending Then Return Nothing
-
-        'Year
-        If filteredOptions.bMainYear Then
-            Dim iYear As Integer
-            If Not String.IsNullOrEmpty(Result.Year) AndAlso Integer.TryParse(Result.Year, iYear) Then
-                nMovie.Year = iYear
             End If
         End If
 

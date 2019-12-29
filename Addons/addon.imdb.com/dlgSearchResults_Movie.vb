@@ -198,7 +198,7 @@ Public Class dlgSearchResults_Movie
         ControlsVisible(False)
         lblTitle.Text = String.Empty
         lblTagline.Text = String.Empty
-        lblYear.Text = String.Empty
+        lblPremiered.Text = String.Empty
         lblDirectors.Text = String.Empty
         lblGenre.Text = String.Empty
         txtOutline.Text = String.Empty
@@ -211,13 +211,13 @@ Public Class dlgSearchResults_Movie
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
-        lblYearHeader.Visible = areVisible
+        lblPremieredHeader.Visible = areVisible
         lblDirectorsHeader.Visible = areVisible
         lblGenreHeader.Visible = areVisible
         lblPlotHeader.Visible = areVisible
         lblIMDBHeader.Visible = areVisible
         txtOutline.Visible = areVisible
-        lblYear.Visible = areVisible
+        lblPremiered.Visible = areVisible
         lblTagline.Visible = areVisible
         lblTitle.Visible = areVisible
         lblDirectors.Visible = areVisible
@@ -284,7 +284,7 @@ Public Class dlgSearchResults_Movie
                 _TmpMovie = sInfo
                 lblTitle.Text = _TmpMovie.Title
                 lblTagline.Text = _TmpMovie.Tagline
-                lblYear.Text = _TmpMovie.Year.ToString
+                lblPremiered.Text = _TmpMovie.Year.ToString
                 lblDirectors.Text = String.Join(" / ", _TmpMovie.Directors.ToArray)
                 lblGenre.Text = String.Join(" / ", _TmpMovie.Genres.ToArray)
                 txtOutline.Text = _TmpMovie.Outline
@@ -467,14 +467,15 @@ Public Class dlgSearchResults_Movie
     End Sub
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions
-        Dim aOpt As New Structures.ScrapeOptions
-        aOpt.bMainDirectors = True
-        aOpt.bMainGenres = True
-        aOpt.bMainOutline = True
-        aOpt.bMainPlot = True
-        aOpt.bMainTagline = True
-        aOpt.bMainTitle = True
-        aOpt.bMainYear = True
+        Dim aOpt As New Structures.ScrapeOptions With {
+            .bMainDirectors = True,
+            .bMainGenres = True,
+            .bMainOutline = True,
+            .bMainPlot = True,
+            .bMainPremiered = True,
+            .bMainTagline = True,
+            .bMainTitle = True
+        }
 
         Return aOpt
     End Function
@@ -486,7 +487,7 @@ Public Class dlgSearchResults_Movie
         Label1.Text = Master.eLang.GetString(846, "Movie Search Results")
         chkManual.Text = String.Concat(Master.eLang.GetString(847, "Manual ID Entry"), " (IMDb):")
         btnVerify.Text = Master.eLang.GetString(848, "Verify")
-        lblYearHeader.Text = String.Concat(Master.eLang.GetString(278, "Year"), ":")
+        lblPremieredHeader.Text = String.Concat(Master.eLang.GetString(278, "Year"), ":")
         lblDirectorsHeader.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
         lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
         lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")

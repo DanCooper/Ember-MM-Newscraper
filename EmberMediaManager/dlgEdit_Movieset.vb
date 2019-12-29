@@ -75,7 +75,7 @@ Public Class dlgEdit_Movieset
             pbLandscape.AllowDrop = True
             pbPoster.AllowDrop = True
 
-            If Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets Then
+            If Master.eSettings.Movie.DataSettings.Collection.SaveYAMJCompatible Then
                 btnMovieDown.Visible = True
                 btnMovieUp.Visible = True
                 colOrdering.Width = 25
@@ -126,7 +126,7 @@ Public Class dlgEdit_Movieset
         lblBanner.Text = Master.eLang.GetString(838, "Banner")
         lblClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
         lblClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
-        lblCollectionID.Text = String.Concat(Master.eLang.GetString(1206, "Collection ID"), ":")
+        lblCollectionID.Text = String.Concat(Master.eLang.GetString(1135, "Collection ID"), ":")
         lblDiscArt.Text = Master.eLang.GetString(1098, "DiscArt")
         lblFanart.Text = Master.eLang.GetString(149, "Fanart")
         lblKeyArt.Text = Master.eLang.GetString(296, "KeyArt")
@@ -807,7 +807,7 @@ Public Class dlgEdit_Movieset
     Private Sub MoviesInSetList_Fill()
         lvMoviesInSet.SuspendLayout()
         lvMoviesInSet.Items.Clear()
-        If Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets Then
+        If Master.eSettings.Movie.DataSettings.Collection.SaveYAMJCompatible Then
             tmpDBElement.MoviesInSet.Sort()
         End If
         Dim lvItem As ListViewItem

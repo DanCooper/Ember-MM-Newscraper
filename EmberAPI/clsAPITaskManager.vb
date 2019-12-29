@@ -172,9 +172,9 @@ Public Class TaskManager
                             DataField_ClearString(.bMainOriginalTitle, tmpDBElement.Movie.OriginalTitle)
                             DataField_ClearString(.bMainOutline, tmpDBElement.Movie.Outline)
                             DataField_ClearString(.bMainPlot, tmpDBElement.Movie.Plot)
-                            DataField_ClearString(.bMainRating, tmpDBElement.Movie.Rating)
-                            DataField_ClearString(.bMainRating, tmpDBElement.Movie.Votes)
-                            DataField_CompareStrings(.bMainRelease, tmpDBElement.Movie.ReleaseDate, nInfo.ReleaseDate)
+                            DataField_ClearString(.bMainRatings, tmpDBElement.Movie.Rating)
+                            DataField_ClearString(.bMainRatings, tmpDBElement.Movie.Votes)
+                            DataField_CompareStrings(.bMainPremiered, tmpDBElement.Movie.Premiered, nInfo.Premiered)
                             DataField_ClearString(.bMainRuntime, tmpDBElement.Movie.Runtime)
                             DataField_CompareLists(.bMainStudios, tmpDBElement.Movie.Studios, nInfo.Studios)
                             DataField_CompareStrings(.bMainTagline, tmpDBElement.Movie.Tagline, nInfo.Tagline)
@@ -184,8 +184,7 @@ Public Class TaskManager
                             DataField_CompareIntegers(.bMainUserRating, tmpDBElement.Movie.UserRating, nInfo.UserRating)
                             DataField_CompareStrings(.bMainVideoSource, tmpDBElement.VideoSource, nInfo.VideoSource)
                             tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
-                            DataField_CompareLists(.bMainWriters, tmpDBElement.Movie.Credits, nInfo.Credits)
-                            DataField_CompareIntegers(.bMainYear, tmpDBElement.Movie.Year, nInfo.Year)
+                            DataField_CompareLists(.bMainCredits, tmpDBElement.Movie.Credits, nInfo.Credits)
                         End With
 
                         If _HasChanged Then
@@ -336,8 +335,8 @@ Public Class TaskManager
                             DataField_ClearString(.bMainOriginalTitle, tmpDBElement.TVShow.OriginalTitle)
                             DataField_ClearString(.bMainPlot, tmpDBElement.TVShow.Plot)
                             DataField_CompareStrings(.bMainPremiered, tmpDBElement.TVShow.Premiered, nInfo.Premiered)
-                            DataField_ClearString(.bMainRating, tmpDBElement.TVShow.Rating)
-                            DataField_ClearString(.bMainRating, tmpDBElement.TVShow.Votes)
+                            DataField_ClearString(.bMainRatings, tmpDBElement.TVShow.Rating)
+                            DataField_ClearString(.bMainRatings, tmpDBElement.TVShow.Votes)
                             DataField_ClearString(.bMainRuntime, tmpDBElement.TVShow.Runtime)
                             DataField_CompareStrings(.bMainStatus, tmpDBElement.TVShow.Status, nInfo.Status)
                             DataField_CompareLists(.bMainStudios, tmpDBElement.TVShow.Studios, nInfo.Studios)
@@ -528,7 +527,7 @@ Public Class TaskManager
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
 
-                    If Not AddonsManager.Instance.ScrapeData_TVShow(tmpDBElement, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions_TV, True) Then
+                    If Not AddonsManager.Instance.ScrapeData_TVShow(tmpDBElement, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), True) Then
                         For Each nMissingSeason In tmpDBElement.Seasons.Where(Function(f) Not f.IDSpecified)
                             Master.DB.Save_TVSeason(nMissingSeason, True, False, False)
                             bNewSeasons = True

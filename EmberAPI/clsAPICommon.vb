@@ -353,16 +353,16 @@ Public Class Enums
         All
         AudioCodecMapping
         MainTabSorting
-        MovieFilters
+        TitleFilters_Movie
         MovieListSorting
         MoviesetListSorting
         SortTokens
-        TVEpisodeFilters
+        TitleFilters_TVEpisode
         TVEpisodeListSorting
         TVEpisodeMatching
         TVSeasonListSorting
-        TVSeasonTitleBlacklist
-        TVShowFilters
+        TitleBlacklist_TVSeason
+        TitleFilters_TVShow
         TVShowListSorting
         TrailerCodec
         ValidVideoExts
@@ -506,7 +506,7 @@ Public Class Enums
         EpisodeActorThumbs
         EpisodeFanart
         EpisodePoster
-        EpisodeMeta
+        EpisodeMetadata
         EpisodeNFO
         EpisodeSubtitle
         EpisodeWatchedFile
@@ -521,7 +521,7 @@ Public Class Enums
         MainFanart
         MainKeyArt
         MainLandscape
-        MainMeta
+        MainMetadata
         MainNFO
         MainPoster
         MainSubtitle
@@ -1164,86 +1164,87 @@ Public Class Functions
     ''' <returns>Structures.MovieScrapeOptions representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
     Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
-        Dim FilteredOptions As New Structures.ScrapeOptions
-        FilteredOptions.bEpisodeActors = Options.bEpisodeActors AndAlso Options2.bEpisodeActors
-        FilteredOptions.bEpisodeAired = Options.bEpisodeAired AndAlso Options2.bEpisodeAired
-        FilteredOptions.bEpisodeCredits = Options.bEpisodeCredits AndAlso Options2.bEpisodeCredits
-        FilteredOptions.bEpisodeDirectors = Options.bEpisodeDirectors AndAlso Options2.bEpisodeDirectors
-        FilteredOptions.bEpisodeGuestStars = Options.bEpisodeGuestStars AndAlso Options2.bEpisodeGuestStars
-        FilteredOptions.bEpisodePlot = Options.bEpisodePlot AndAlso Options2.bEpisodePlot
-        FilteredOptions.bEpisodeRating = Options.bEpisodeRating AndAlso Options2.bEpisodeRating
-        FilteredOptions.bEpisodeRuntime = Options.bEpisodeRuntime AndAlso Options2.bEpisodeRuntime
-        FilteredOptions.bEpisodeTitle = Options.bEpisodeTitle AndAlso Options2.bEpisodeTitle
-        FilteredOptions.bEpisodeUserRating = Options.bEpisodeUserRating AndAlso Options2.bEpisodeUserRating
-        FilteredOptions.bMainActors = Options.bMainActors AndAlso Options2.bMainActors
-        FilteredOptions.bMainCertifications = Options.bMainCertifications AndAlso Options2.bMainCertifications
-        FilteredOptions.bMainCollectionID = Options.bMainCollectionID AndAlso Options2.bMainCollectionID
-        FilteredOptions.bMainCountries = Options.bMainCountries AndAlso Options2.bMainCountries
-        FilteredOptions.bMainCreators = Options.bMainCreators AndAlso Options2.bMainCreators
-        FilteredOptions.bMainDirectors = Options.bMainDirectors AndAlso Options2.bMainDirectors
-        FilteredOptions.bMainEpisodeGuide = Options.bMainEpisodeGuide AndAlso Options2.bMainEpisodeGuide
-        FilteredOptions.bMainGenres = Options.bMainGenres AndAlso Options2.bMainGenres
-        FilteredOptions.bMainMPAA = Options.bMainMPAA AndAlso Options2.bMainMPAA
-        FilteredOptions.bMainOriginalTitle = Options.bMainOriginalTitle AndAlso Options2.bMainOriginalTitle
-        FilteredOptions.bMainOutline = Options.bMainOutline AndAlso Options2.bMainOutline
-        FilteredOptions.bMainPlot = Options.bMainPlot AndAlso Options2.bMainPlot
-        FilteredOptions.bMainPremiered = Options.bMainPremiered AndAlso Options2.bMainPremiered
-        FilteredOptions.bMainRating = Options.bMainRating AndAlso Options2.bMainRating
-        FilteredOptions.bMainRelease = Options.bMainRelease AndAlso Options2.bMainRelease
-        FilteredOptions.bMainRuntime = Options.bMainRuntime AndAlso Options2.bMainRuntime
-        FilteredOptions.bMainStatus = Options.bMainStatus AndAlso Options2.bMainStatus
-        FilteredOptions.bMainStudios = Options.bMainStudios AndAlso Options2.bMainStudios
-        FilteredOptions.bMainTagline = Options.bMainTagline AndAlso Options2.bMainTagline
-        FilteredOptions.bMainTitle = Options.bMainTitle AndAlso Options2.bMainTitle
-        FilteredOptions.bMainTop250 = Options.bMainTop250 AndAlso Options2.bMainTop250
-        FilteredOptions.bMainTrailer = Options.bMainTrailer AndAlso Options2.bMainTrailer
-        FilteredOptions.bMainUserRating = Options.bMainUserRating AndAlso Options2.bMainUserRating
-        FilteredOptions.bMainWriters = Options.bMainWriters AndAlso Options2.bMainWriters
-        FilteredOptions.bMainYear = Options.bMainYear AndAlso Options2.bMainYear
-        FilteredOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
-        FilteredOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
-        FilteredOptions.bSeasonTitle = Options.bSeasonTitle AndAlso Options2.bSeasonTitle
+        Dim FilteredOptions As New Structures.ScrapeOptions With {
+            .bEpisodeActors = Options.bEpisodeActors AndAlso Options2.bEpisodeActors,
+            .bEpisodeAired = Options.bEpisodeAired AndAlso Options2.bEpisodeAired,
+            .bEpisodeCredits = Options.bEpisodeCredits AndAlso Options2.bEpisodeCredits,
+            .bEpisodeDirectors = Options.bEpisodeDirectors AndAlso Options2.bEpisodeDirectors,
+            .bEpisodeGuestStars = Options.bEpisodeGuestStars AndAlso Options2.bEpisodeGuestStars,
+            .bEpisodePlot = Options.bEpisodePlot AndAlso Options2.bEpisodePlot,
+            .bEpisodeRating = Options.bEpisodeRating AndAlso Options2.bEpisodeRating,
+            .bEpisodeRuntime = Options.bEpisodeRuntime AndAlso Options2.bEpisodeRuntime,
+            .bEpisodeTitle = Options.bEpisodeTitle AndAlso Options2.bEpisodeTitle,
+            .bEpisodeUserRating = Options.bEpisodeUserRating AndAlso Options2.bEpisodeUserRating,
+            .bMainActors = Options.bMainActors AndAlso Options2.bMainActors,
+            .bMainCertifications = Options.bMainCertifications AndAlso Options2.bMainCertifications,
+            .bMainCollection = Options.bMainCollection AndAlso Options2.bMainCollection,
+            .bMainCountries = Options.bMainCountries AndAlso Options2.bMainCountries,
+            .bMainCreators = Options.bMainCreators AndAlso Options2.bMainCreators,
+            .bMainDirectors = Options.bMainDirectors AndAlso Options2.bMainDirectors,
+            .bMainEpisodeGuide = Options.bMainEpisodeGuide AndAlso Options2.bMainEpisodeGuide,
+            .bMainGenres = Options.bMainGenres AndAlso Options2.bMainGenres,
+            .bMainMPAA = Options.bMainMPAA AndAlso Options2.bMainMPAA,
+            .bMainOriginalTitle = Options.bMainOriginalTitle AndAlso Options2.bMainOriginalTitle,
+            .bMainOutline = Options.bMainOutline AndAlso Options2.bMainOutline,
+            .bMainPlot = Options.bMainPlot AndAlso Options2.bMainPlot,
+            .bMainPremiered = Options.bMainPremiered AndAlso Options2.bMainPremiered,
+            .bMainRatings = Options.bMainRatings AndAlso Options2.bMainRatings,
+            .bMainRuntime = Options.bMainRuntime AndAlso Options2.bMainRuntime,
+            .bMainStatus = Options.bMainStatus AndAlso Options2.bMainStatus,
+            .bMainStudios = Options.bMainStudios AndAlso Options2.bMainStudios,
+            .bMainTagline = Options.bMainTagline AndAlso Options2.bMainTagline,
+            .bMainTags = Options.bMainTags AndAlso Options2.bMainTags,
+            .bMainTitle = Options.bMainTitle AndAlso Options2.bMainTitle,
+            .bMainTop250 = Options.bMainTop250 AndAlso Options2.bMainTop250,
+            .bMainTrailer = Options.bMainTrailer AndAlso Options2.bMainTrailer,
+            .bMainUserRating = Options.bMainUserRating AndAlso Options2.bMainUserRating,
+            .bMainCredits = Options.bMainCredits AndAlso Options2.bMainCredits,
+            .bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired,
+            .bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot,
+            .bSeasonTitle = Options.bSeasonTitle AndAlso Options2.bSeasonTitle
+        }
         Return FilteredOptions
     End Function
 
     Public Shared Function ScrapeModifiersAndAlso(ByVal Options As Structures.ScrapeModifiers, ByVal Options2 As Structures.ScrapeModifiers) As Structures.ScrapeModifiers
-        Dim FilteredModifiers As New Structures.ScrapeModifiers
-        FilteredModifiers.AllSeasonsBanner = Options.AllSeasonsBanner AndAlso Options2.AllSeasonsBanner
-        FilteredModifiers.AllSeasonsFanart = Options.AllSeasonsFanart AndAlso Options2.AllSeasonsFanart
-        FilteredModifiers.AllSeasonsLandscape = Options.AllSeasonsLandscape AndAlso Options2.AllSeasonsLandscape
-        FilteredModifiers.AllSeasonsPoster = Options.AllSeasonsPoster AndAlso Options2.AllSeasonsPoster
-        FilteredModifiers.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
-        FilteredModifiers.EpisodeActorThumbs = Options.EpisodeActorThumbs AndAlso Options2.EpisodeActorThumbs
-        FilteredModifiers.EpisodeFanart = Options.EpisodeFanart AndAlso Options2.EpisodeFanart
-        FilteredModifiers.EpisodeMeta = Options.EpisodeMeta AndAlso Options2.EpisodeMeta
-        FilteredModifiers.EpisodeNFO = Options.EpisodeNFO AndAlso Options2.EpisodeNFO
-        FilteredModifiers.EpisodePoster = Options.EpisodePoster AndAlso Options2.EpisodePoster
-        FilteredModifiers.EpisodeSubtitles = Options.EpisodeSubtitles AndAlso Options2.EpisodeSubtitles
-        FilteredModifiers.EpisodeWatchedFile = Options.EpisodeWatchedFile AndAlso Options2.EpisodeWatchedFile
-        FilteredModifiers.MainActorthumbs = Options.MainActorthumbs AndAlso Options2.MainActorthumbs
-        FilteredModifiers.MainBanner = Options.MainBanner AndAlso Options2.MainBanner
-        FilteredModifiers.MainCharacterArt = Options.MainCharacterArt AndAlso Options2.MainCharacterArt
-        FilteredModifiers.MainClearArt = Options.MainClearArt AndAlso Options2.MainClearArt
-        FilteredModifiers.MainClearLogo = Options.MainClearLogo AndAlso Options2.MainClearLogo
-        FilteredModifiers.MainDiscArt = Options.MainDiscArt AndAlso Options2.MainDiscArt
-        FilteredModifiers.MainExtrafanarts = Options.MainExtrafanarts AndAlso Options2.MainExtrafanarts
-        FilteredModifiers.MainExtrathumbs = Options.MainExtrathumbs AndAlso Options2.MainExtrathumbs
-        FilteredModifiers.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
-        FilteredModifiers.MainKeyArt = Options.MainKeyArt AndAlso Options2.MainKeyArt
-        FilteredModifiers.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
-        FilteredModifiers.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
-        FilteredModifiers.MainPoster = Options.MainPoster AndAlso Options2.MainPoster
-        FilteredModifiers.MainSubtitles = Options.MainSubtitles AndAlso Options2.MainSubtitles
-        FilteredModifiers.MainTheme = Options.MainTheme AndAlso Options2.MainTheme
-        FilteredModifiers.MainTrailer = Options.MainTrailer AndAlso Options2.MainTrailer
-        FilteredModifiers.MainWatchedFile = Options.MainWatchedFile AndAlso Options2.MainWatchedFile
-        FilteredModifiers.SeasonBanner = Options.SeasonBanner AndAlso Options2.SeasonBanner
-        FilteredModifiers.SeasonFanart = Options.SeasonFanart AndAlso Options2.SeasonFanart
-        FilteredModifiers.SeasonLandscape = Options.SeasonLandscape AndAlso Options2.SeasonLandscape
-        FilteredModifiers.SeasonNFO = Options.SeasonNFO AndAlso Options2.SeasonNFO
-        FilteredModifiers.SeasonPoster = Options.SeasonPoster AndAlso Options2.SeasonPoster
-        FilteredModifiers.withEpisodes = Options.withEpisodes AndAlso Options2.withEpisodes
-        FilteredModifiers.withSeasons = Options.withSeasons AndAlso Options2.withSeasons
+        Dim FilteredModifiers As New Structures.ScrapeModifiers With {
+            .AllSeasonsBanner = Options.AllSeasonsBanner AndAlso Options2.AllSeasonsBanner,
+            .AllSeasonsFanart = Options.AllSeasonsFanart AndAlso Options2.AllSeasonsFanart,
+            .AllSeasonsLandscape = Options.AllSeasonsLandscape AndAlso Options2.AllSeasonsLandscape,
+            .AllSeasonsPoster = Options.AllSeasonsPoster AndAlso Options2.AllSeasonsPoster,
+            .DoSearch = Options.DoSearch AndAlso Options2.DoSearch,
+            .EpisodeActorThumbs = Options.EpisodeActorThumbs AndAlso Options2.EpisodeActorThumbs,
+            .EpisodeFanart = Options.EpisodeFanart AndAlso Options2.EpisodeFanart,
+            .EpisodeMeta = Options.EpisodeMeta AndAlso Options2.EpisodeMeta,
+            .EpisodeNFO = Options.EpisodeNFO AndAlso Options2.EpisodeNFO,
+            .EpisodePoster = Options.EpisodePoster AndAlso Options2.EpisodePoster,
+            .EpisodeSubtitles = Options.EpisodeSubtitles AndAlso Options2.EpisodeSubtitles,
+            .EpisodeWatchedFile = Options.EpisodeWatchedFile AndAlso Options2.EpisodeWatchedFile,
+            .MainActorthumbs = Options.MainActorthumbs AndAlso Options2.MainActorthumbs,
+            .MainBanner = Options.MainBanner AndAlso Options2.MainBanner,
+            .MainCharacterArt = Options.MainCharacterArt AndAlso Options2.MainCharacterArt,
+            .MainClearArt = Options.MainClearArt AndAlso Options2.MainClearArt,
+            .MainClearLogo = Options.MainClearLogo AndAlso Options2.MainClearLogo,
+            .MainDiscArt = Options.MainDiscArt AndAlso Options2.MainDiscArt,
+            .MainExtrafanarts = Options.MainExtrafanarts AndAlso Options2.MainExtrafanarts,
+            .MainExtrathumbs = Options.MainExtrathumbs AndAlso Options2.MainExtrathumbs,
+            .MainFanart = Options.MainFanart AndAlso Options2.MainFanart,
+            .MainKeyArt = Options.MainKeyArt AndAlso Options2.MainKeyArt,
+            .MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape,
+            .MainNFO = Options.MainNFO AndAlso Options2.MainNFO,
+            .MainPoster = Options.MainPoster AndAlso Options2.MainPoster,
+            .MainSubtitles = Options.MainSubtitles AndAlso Options2.MainSubtitles,
+            .MainTheme = Options.MainTheme AndAlso Options2.MainTheme,
+            .MainTrailer = Options.MainTrailer AndAlso Options2.MainTrailer,
+            .MainWatchedFile = Options.MainWatchedFile AndAlso Options2.MainWatchedFile,
+            .SeasonBanner = Options.SeasonBanner AndAlso Options2.SeasonBanner,
+            .SeasonFanart = Options.SeasonFanart AndAlso Options2.SeasonFanart,
+            .SeasonLandscape = Options.SeasonLandscape AndAlso Options2.SeasonLandscape,
+            .SeasonNFO = Options.SeasonNFO AndAlso Options2.SeasonNFO,
+            .SeasonPoster = Options.SeasonPoster AndAlso Options2.SeasonPoster,
+            .withEpisodes = Options.withEpisodes AndAlso Options2.withEpisodes,
+            .withSeasons = Options.withSeasons AndAlso Options2.withSeasons
+        }
         Return FilteredModifiers
     End Function
 
@@ -1344,7 +1345,7 @@ Public Class Functions
                     .EpisodeActorThumbs = MValue
                 Case Enums.ModifierType.EpisodeFanart
                     .EpisodeFanart = MValue
-                Case Enums.ModifierType.EpisodeMeta
+                Case Enums.ModifierType.EpisodeMetadata
                     .EpisodeMeta = MValue
                 Case Enums.ModifierType.EpisodeNFO
                     .EpisodeNFO = MValue
@@ -1376,7 +1377,7 @@ Public Class Functions
                     .MainKeyArt = MValue
                 Case Enums.ModifierType.MainLandscape
                     .MainLandscape = MValue
-                Case Enums.ModifierType.MainMeta
+                Case Enums.ModifierType.MainMetadata
                     .MainMeta = MValue
                 Case Enums.ModifierType.MainNFO
                     .MainNFO = MValue
@@ -1583,9 +1584,10 @@ Public Class Structures
         Dim bEpisodeVideoSource As Boolean
         Dim bMainActors As Boolean
         Dim bMainCertifications As Boolean
-        Dim bMainCollectionID As Boolean
+        Dim bMainCollection As Boolean
         Dim bMainCountries As Boolean
         Dim bMainCreators As Boolean
+        Dim bMainCredits As Boolean
         Dim bMainDirectors As Boolean
         Dim bMainEpisodeGuide As Boolean
         Dim bMainGenres As Boolean
@@ -1594,8 +1596,7 @@ Public Class Structures
         Dim bMainOutline As Boolean
         Dim bMainPlot As Boolean
         Dim bMainPremiered As Boolean
-        Dim bMainRating As Boolean
-        Dim bMainRelease As Boolean
+        Dim bMainRatings As Boolean
         Dim bMainRuntime As Boolean
         Dim bMainStatus As Boolean
         Dim bMainStudios As Boolean
@@ -1606,8 +1607,6 @@ Public Class Structures
         Dim bMainTrailer As Boolean
         Dim bMainUserRating As Boolean
         Dim bMainVideoSource As Boolean
-        Dim bMainWriters As Boolean
-        Dim bMainYear As Boolean
         Dim bSeasonAired As Boolean
         Dim bSeasonPlot As Boolean
         Dim bSeasonTitle As Boolean

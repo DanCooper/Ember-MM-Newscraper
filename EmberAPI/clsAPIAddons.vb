@@ -873,9 +873,9 @@ Public Class AddonsManager
             If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifiers.DoSearch Then
                 DBElement.ImagesContainer = New MediaContainers.ImagesContainer
                 DBElement.Movie = New MediaContainers.Movie With {
+                    .Premiered = StringUtils.FilterYearFromPath_Movie(DBElement.FileItem, DBElement.IsSingle, DBElement.Source.UseFolderName).ToString,
                     .Title = StringUtils.FilterTitleFromPath_Movie(DBElement.FileItem, DBElement.IsSingle, DBElement.Source.UseFolderName),
-                    .VideoSource = DBElement.VideoSource,
-                    .Year = StringUtils.FilterYearFromPath_Movie(DBElement.FileItem, DBElement.IsSingle, DBElement.Source.UseFolderName)
+                    .VideoSource = DBElement.VideoSource
                 }
             End If
 
@@ -906,8 +906,8 @@ Public Class AddonsManager
                         If ret.Result.UniqueIDsSpecified Then
                             oDBMovie.Movie.UniqueIDs.AddRange(ret.Result.UniqueIDs)
                         End If
-                        If ret.Result.YearSpecified Then
-                            oDBMovie.Movie.Year = ret.Result.Year
+                        If ret.Result.PremieredSpecified Then
+                            oDBMovie.Movie.Premiered = ret.Result.Premiered
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie

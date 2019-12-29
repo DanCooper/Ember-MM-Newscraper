@@ -18,28 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports EmberAPI
-Imports NLog
-
-Public Class Scraper
-
-#Region "Fields"
-
-    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
-
-#End Region 'Fields
-
-#Region "Methods"
-
-    Public Shared Function GetTrailers(ByVal Title As String) As List(Of MediaContainers.Trailer)
-        Dim alTrailers As New List(Of MediaContainers.Trailer)
-        alTrailers = YouTube.Scraper.SearchOnYouTube(String.Concat(Title, " ", Master.eSettings.Movie.TrailerSettings.DefaultSearchParameter))
-        For Each tTrailer In alTrailers
-            tTrailer.Scraper = "YouTube"
-        Next
-        Return alTrailers
-    End Function
-
-#End Region 'Methods 
+Public Class Renaming
 
 End Class

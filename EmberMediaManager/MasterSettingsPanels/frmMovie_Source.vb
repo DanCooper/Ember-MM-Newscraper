@@ -89,6 +89,8 @@ Public Class frmMovie_Source
             .MarkNewAsNew = chkMarkAsNew.Checked
             .MarkNewAsNewWithoutNFO = chkMarkAsNewWithoutNFO.Checked
             .OverWriteNfo = chkOverwriteNfo.Checked
+            .ResetNewBeforeDBUpdate = chkResetNewBeforeDBUpdate.Checked
+            .ResetNewOnExit = chkResetNewOnExit.Checked
             If Not String.IsNullOrEmpty(txtSkipLessThan.Text) AndAlso Integer.TryParse(txtSkipLessThan.Text, 0) Then
                 .SkipLessThan = Convert.ToInt32(txtSkipLessThan.Text)
             Else
@@ -97,8 +99,6 @@ Public Class frmMovie_Source
             .SortBeforeScan = chkSortBeforeScan.Checked
             .TitleFiltersEnabled = chkTitleFiltersEnabled.Checked
             .TitleProperCase = chkTitleProperCase.Checked
-            .UnmarkNewBeforeDBUpdate = chkUnmarkNewBeforeDBUpdate.Checked
-            .UnmarkNewOnExit = chkUnmarkNewOnExit.Checked
             .VideoSourceFromFolder = chkVideoSourceFromFolder.Checked
         End With
         Save_Sources()
@@ -139,6 +139,8 @@ Public Class frmMovie_Source
             chkMarkAsNewWithoutNFO.Enabled = .MarkNewAsNew
             chkMarkAsNewWithoutNFO.Checked = .MarkNewAsNewWithoutNFO
             chkOverwriteNfo.Checked = .OverWriteNfo
+            chkResetNewBeforeDBUpdate.Checked = .ResetNewBeforeDBUpdate
+            chkResetNewOnExit.Checked = .ResetNewOnExit
             chkSortBeforeScan.Checked = .SortBeforeScan
             chkTitleFiltersEnabled.Checked = .TitleFiltersEnabled
             chkTitleProperCase.Checked = .TitleProperCase
@@ -159,6 +161,7 @@ Public Class frmMovie_Source
 
     Private Sub Setup()
         With Master.eLang
+            btnTitleFilterDefaults.Text = .GetString(713, "Defaults")
             chkCleanLibraryAfterUpdate.Text = .GetString(668, "Clean database after Library Update")
             chkDateAddedIgnoreNFO.Text = .GetString(1209, "Ignore <dateadded> from NFO")
             chkMarkAsMarked.Text = .GetString(459, "Mark as ""Marked""")
@@ -166,6 +169,8 @@ Public Class frmMovie_Source
             chkMarkAsNew.Text = .GetString(530, "Mark as ""New""")
             chkMarkAsNewWithoutNFO.Text = .GetString(114, "Only if no valid NFO exists")
             chkOverwriteNfo.Text = .GetString(433, "Overwrite invalid NFOs")
+            chkResetNewBeforeDBUpdate.Text = .GetString(693, "Before any Library Update")
+            chkResetNewOnExit.Text = .GetString(734, "On Exit")
             chkSortBeforeScan.Text = .GetString(712, "Sort files into folder before each Library Update")
             chkTitleFiltersEnabled.Text = .GetString(451, "Enable Title Filters")
             chkTitleProperCase.Text = .GetString(452, "Convert Names to Proper Case")
@@ -182,7 +187,10 @@ Public Class frmMovie_Source
             colSourcesPath.HeaderText = .GetString(410, "Path")
             colSourcesRecursive.HeaderText = .GetString(411, "Recursive")
             colSourcesUseFolderName.HeaderText = .GetString(412, "Use Folder Name")
+            colTitleFiltersRegex.HeaderText = .GetString(699, "Regex")
             gbImportOptions.Text = .GetString(559, "Import Options")
+            gbMarkNew.Text = .GetString(691, "Mark newly added")
+            gbResetNew.Text = .GetString(692, "Reset marker ""New""")
             gbSourcesDefaults.Text = .GetString(252, "Defaults for new Sources")
             gbTitleCleanup.Text = Master.eLang.GetString(455, "Title Cleanup")
             lblDateAdded.Text = .GetString(792, "Default value for <dateadded>")
@@ -206,8 +214,8 @@ Public Class frmMovie_Source
             chkMarkAsNewWithoutNFO.CheckedChanged,
             chkOverwriteNfo.CheckedChanged,
             chkTitleProperCase.CheckedChanged,
-            chkUnmarkNewBeforeDBUpdate.CheckedChanged,
-            chkUnmarkNewOnExit.CheckedChanged,
+            chkResetNewBeforeDBUpdate.CheckedChanged,
+            chkResetNewOnExit.CheckedChanged,
             chkVideoSourceFromFolder.CheckedChanged
 
         RaiseEvent SettingsChanged()
@@ -398,7 +406,7 @@ Public Class frmMovie_Source
                            Master.eLang.GetString(104, "Are You Sure?"),
                            MessageBoxButtons.YesNo,
                            MessageBoxIcon.Question) = DialogResult.Yes Then
-            DataGridView_Fill_TitleFilters(Master.eSettings.Movie.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.Movie))
+            DataGridView_Fill_TitleFilters(Master.eSettings.Movie.SourceSettings.TitleFilters.GetDefaults(Enums.DefaultType.TitleFilters_Movie))
             RaiseEvent SettingsChanged()
         End If
     End Sub

@@ -74,7 +74,7 @@ Public Class frmSettingsPanel_Data_Movie
         RaiseEvent SettingsChanged()
     End Sub
 
-    Private Sub chkCollectionID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkCollectionID.CheckedChanged
+    Private Sub chkCollectionID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkCollection.CheckedChanged
         RaiseEvent SettingsChanged()
     End Sub
 
@@ -106,7 +106,7 @@ Public Class frmSettingsPanel_Data_Movie
         RaiseEvent SettingsChanged()
     End Sub
 
-    Private Sub chkRelease_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkRelease.CheckedChanged
+    Private Sub chkRelease_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkPremiered.CheckedChanged
         RaiseEvent SettingsChanged()
     End Sub
 
@@ -122,7 +122,7 @@ Public Class frmSettingsPanel_Data_Movie
         RaiseEvent SettingsChanged()
     End Sub
 
-    Private Sub chkTitle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitle.CheckedChanged
+    Private Sub chkTitle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitle.CheckedChanged, chkTags.CheckedChanged
         RaiseEvent SettingsChanged()
     End Sub
 
@@ -138,7 +138,7 @@ Public Class frmSettingsPanel_Data_Movie
         RaiseEvent SettingsChanged()
     End Sub
 
-    Private Sub chkYear_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkYear.CheckedChanged
+    Private Sub chkYear_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         RaiseEvent SettingsChanged()
     End Sub
 
@@ -167,7 +167,7 @@ Public Class frmSettingsPanel_Data_Movie
         btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         chkActors.Text = Master.eLang.GetString(231, "Actors")
         chkCertifications.Text = Master.eLang.GetString(56, "Certifications")
-        chkCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
+        chkCollection.Text = Master.eLang.GetString(424, "Collection")
         chkCountries.Text = Master.eLang.GetString(237, "Countries")
         chkDirectors.Text = Master.eLang.GetString(940, "Directors")
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
@@ -176,16 +176,16 @@ Public Class frmSettingsPanel_Data_Movie
         chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
         chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         chkPlot.Text = Master.eLang.GetString(65, "Plot")
+        chkPremiered.Text = Master.eLang.GetString(724, "Premiered")
         chkRating.Text = Master.eLang.GetString(400, "Rating")
-        chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         chkRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkSearchDeviant.Text = Master.eLang.GetString(98, "Search -/+ 1 year if no search result was found")
         chkStudios.Text = Master.eLang.GetString(226, "Studios")
         chkTagline.Text = Master.eLang.GetString(397, "Tagline")
+        chkTags.Text = Master.eLang.GetString(243, "Tags")
         chkTitle.Text = Master.eLang.GetString(21, "Title")
         chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
         chkWriters.Text = Master.eLang.GetString(394, "Writers")
-        chkYear.Text = Master.eLang.GetString(278, "Year")
         gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         lblApiKey.Text = String.Concat(Master.eLang.GetString(870, "TMDB API Key"), ":")

@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmTV_Data_SeasonTitleBlacklist
+Partial Class frmMovie_Data_TagsWhitelist
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
@@ -22,25 +22,20 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTV_Data_SeasonTitleBlacklist))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMovie_Data_TagsWhitelist))
         Me.pnlTop = New System.Windows.Forms.Panel()
-        Me.tblTop = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblHint = New System.Windows.Forms.Label()
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.dgvBlacklist = New System.Windows.Forms.DataGridView()
+        Me.dgvWhitelist = New System.Windows.Forms.DataGridView()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnSetDefaults = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
-        Me.colBlacklistText = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.pnlTop.SuspendLayout()
-        Me.tblTop.SuspendLayout()
+        Me.colText = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlMain.SuspendLayout()
         Me.tblMain.SuspendLayout()
-        CType(Me.dgvBlacklist, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvWhitelist, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBottom.SuspendLayout()
         Me.tblBottom.SuspendLayout()
         Me.SuspendLayout()
@@ -48,45 +43,19 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
         'pnlTop
         '
         Me.pnlTop.AutoSize = True
-        Me.pnlTop.Controls.Add(Me.tblTop)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(384, 26)
+        Me.pnlTop.Size = New System.Drawing.Size(384, 0)
         Me.pnlTop.TabIndex = 0
-        '
-        'tblTop
-        '
-        Me.tblTop.AutoSize = True
-        Me.tblTop.ColumnCount = 1
-        Me.tblTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTop.Controls.Add(Me.lblHint, 0, 0)
-        Me.tblTop.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTop.Location = New System.Drawing.Point(0, 0)
-        Me.tblTop.Name = "tblTop"
-        Me.tblTop.RowCount = 1
-        Me.tblTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26.0!))
-        Me.tblTop.Size = New System.Drawing.Size(384, 26)
-        Me.tblTop.TabIndex = 0
-        '
-        'lblHint
-        '
-        Me.lblHint.AutoSize = True
-        Me.lblHint.Location = New System.Drawing.Point(3, 0)
-        Me.lblHint.Name = "lblHint"
-        Me.lblHint.Size = New System.Drawing.Size(382, 26)
-        Me.lblHint.TabIndex = 1
-        Me.lblHint.Text = "This list contains patterns of season titles that should be ignored when scraping" &
-    "." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Use %{season_number} to mark the location of the season number."
         '
         'pnlMain
         '
         Me.pnlMain.Controls.Add(Me.tblMain)
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlMain.Location = New System.Drawing.Point(0, 26)
+        Me.pnlMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(384, 434)
+        Me.pnlMain.Size = New System.Drawing.Size(384, 460)
         Me.pnlMain.TabIndex = 1
         '
         'tblMain
@@ -94,30 +63,30 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
         Me.tblMain.AutoSize = True
         Me.tblMain.ColumnCount = 1
         Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMain.Controls.Add(Me.dgvBlacklist, 0, 0)
+        Me.tblMain.Controls.Add(Me.dgvWhitelist, 0, 0)
         Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMain.Location = New System.Drawing.Point(0, 0)
         Me.tblMain.Name = "tblMain"
         Me.tblMain.RowCount = 1
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.Size = New System.Drawing.Size(384, 434)
+        Me.tblMain.Size = New System.Drawing.Size(384, 460)
         Me.tblMain.TabIndex = 0
         '
-        'dgvBlacklist
+        'dgvWhitelist
         '
-        Me.dgvBlacklist.AllowUserToResizeColumns = False
-        Me.dgvBlacklist.AllowUserToResizeRows = False
-        Me.dgvBlacklist.BackgroundColor = System.Drawing.SystemColors.Window
-        Me.dgvBlacklist.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.dgvBlacklist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvBlacklist.ColumnHeadersVisible = False
-        Me.dgvBlacklist.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colBlacklistText})
-        Me.dgvBlacklist.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvBlacklist.Location = New System.Drawing.Point(3, 3)
-        Me.dgvBlacklist.Name = "dgvBlacklist"
-        Me.dgvBlacklist.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.dgvBlacklist.Size = New System.Drawing.Size(378, 428)
-        Me.dgvBlacklist.TabIndex = 17
+        Me.dgvWhitelist.AllowUserToResizeColumns = False
+        Me.dgvWhitelist.AllowUserToResizeRows = False
+        Me.dgvWhitelist.BackgroundColor = System.Drawing.SystemColors.Window
+        Me.dgvWhitelist.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvWhitelist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvWhitelist.ColumnHeadersVisible = False
+        Me.dgvWhitelist.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colText})
+        Me.dgvWhitelist.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvWhitelist.Location = New System.Drawing.Point(3, 3)
+        Me.dgvWhitelist.Name = "dgvWhitelist"
+        Me.dgvWhitelist.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.dgvWhitelist.Size = New System.Drawing.Size(378, 454)
+        Me.dgvWhitelist.TabIndex = 17
         '
         'pnlBottom
         '
@@ -132,14 +101,13 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
         'tblBottom
         '
         Me.tblBottom.AutoSize = True
-        Me.tblBottom.ColumnCount = 4
-        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnCount = 3
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblBottom.Controls.Add(Me.btnSetDefaults, 0, 0)
-        Me.tblBottom.Controls.Add(Me.btnCancel, 3, 0)
-        Me.tblBottom.Controls.Add(Me.btnOK, 2, 0)
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblBottom.Controls.Add(Me.btnCancel, 2, 0)
+        Me.tblBottom.Controls.Add(Me.btnOK, 1, 0)
         Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblBottom.Location = New System.Drawing.Point(0, 0)
         Me.tblBottom.Name = "tblBottom"
@@ -147,19 +115,6 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblBottom.Size = New System.Drawing.Size(384, 29)
         Me.tblBottom.TabIndex = 0
-        '
-        'btnSetDefaults
-        '
-        Me.btnSetDefaults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetDefaults.Image = CType(resources.GetObject("btnSetDefaults.Image"), System.Drawing.Image)
-        Me.btnSetDefaults.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSetDefaults.Location = New System.Drawing.Point(3, 3)
-        Me.btnSetDefaults.Name = "btnSetDefaults"
-        Me.btnSetDefaults.Size = New System.Drawing.Size(105, 23)
-        Me.btnSetDefaults.TabIndex = 3
-        Me.btnSetDefaults.Text = "Defaults"
-        Me.btnSetDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnSetDefaults.UseVisualStyleBackColor = True
         '
         'btnCancel
         '
@@ -194,14 +149,14 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
         Me.StatusStrip1.TabIndex = 0
         Me.StatusStrip1.Text = "StatusStrip1"
         '
-        'colBlacklistText
+        'colText
         '
-        Me.colBlacklistText.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.colBlacklistText.HeaderText = "Text"
-        Me.colBlacklistText.Name = "colBlacklistText"
-        Me.colBlacklistText.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.colText.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colText.HeaderText = "Text"
+        Me.colText.Name = "colText"
+        Me.colText.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         '
-        'frmTV_Data_SeasonTitleBlacklist
+        'frmMovie_Data_TagsWhitelist
         '
         Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -215,16 +170,12 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmTV_Data_SeasonTitleBlacklist"
-        Me.Text = "Season Title Blacklist"
-        Me.pnlTop.ResumeLayout(False)
-        Me.pnlTop.PerformLayout()
-        Me.tblTop.ResumeLayout(False)
-        Me.tblTop.PerformLayout()
+        Me.Name = "frmMovie_Data_TagsWhitelist"
+        Me.Text = "Tags Whitelist"
         Me.pnlMain.ResumeLayout(False)
         Me.pnlMain.PerformLayout()
         Me.tblMain.ResumeLayout(False)
-        CType(Me.dgvBlacklist, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvWhitelist, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBottom.ResumeLayout(False)
         Me.pnlBottom.PerformLayout()
         Me.tblBottom.ResumeLayout(False)
@@ -235,16 +186,13 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
     End Sub
 
     Friend WithEvents pnlTop As Panel
-    Friend WithEvents tblTop As TableLayoutPanel
     Friend WithEvents pnlMain As Panel
     Friend WithEvents tblMain As TableLayoutPanel
     Friend WithEvents pnlBottom As Panel
     Friend WithEvents tblBottom As TableLayoutPanel
     Friend WithEvents btnCancel As Button
     Friend WithEvents btnOK As Button
-    Friend WithEvents dgvBlacklist As DataGridView
+    Friend WithEvents dgvWhitelist As DataGridView
     Friend WithEvents StatusStrip1 As StatusStrip
-    Friend WithEvents btnSetDefaults As Button
-    Friend WithEvents lblHint As Label
-    Friend WithEvents colBlacklistText As DataGridViewTextBoxColumn
+    Friend WithEvents colText As DataGridViewTextBoxColumn
 End Class

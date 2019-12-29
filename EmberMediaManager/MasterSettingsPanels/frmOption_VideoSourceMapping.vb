@@ -138,7 +138,7 @@ Public Class frmOption_VideoSourceMapping
     End Sub
 
     Private Sub LoadDefaults_ByRegex() Handles btnByRegexDefaults.Click
-        DataGridView_Fill_ByRegex(Master.eSettings.GetDefaultsForList_VideoSourceMappingsByRegex())
+        DataGridView_Fill_ByRegex(Master.eSettings.Options.VideoSourceMapping.GetDefaults())
         RaiseEvent SettingsChanged()
     End Sub
 

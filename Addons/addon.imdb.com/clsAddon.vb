@@ -116,14 +116,12 @@ Public Class SearchResults_Movie
         End Sub
 
         Private Function BuildMovieForSearchResults(ByVal imdbID As String, ByVal lev As Integer, ByVal title As String, ByVal year As String) As MediaContainers.Movie
-            Dim iYear As Integer
-            Integer.TryParse(year, iYear)
-            Dim nMovie As New MediaContainers.Movie
-            nMovie.UniqueIDs.IMDbId = imdbID
-            nMovie.Lev = lev
-            nMovie.Title = title
-            nMovie.Year = iYear
-            Return nMovie
+        Dim nMovie As New MediaContainers.Movie
+        nMovie.UniqueIDs.IMDbId = imdbID
+        nMovie.Lev = lev
+        nMovie.Title = title
+        nMovie.Premiered = year
+        Return nMovie
         End Function
 
         Private Sub bwIMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwIMDB.DoWork
@@ -189,311 +187,299 @@ Public Class SearchResults_Movie
             End If
             Return ret
         End Function
-        ''' <summary>
-        '''  Scrape MovieDetails from IMDB
-        ''' </summary>
-        ''' <param name="id">IMDBID of movie to be scraped</param>
-        ''' <param name="FullCrew">Module setting: Scrape full cast?</param>
-        ''' <param name="getposter">Scrape posters for the movie?</param>
-        ''' <param name="Options">Module settings<param>
-        ''' <param name="IsSearch">Not used at moment</param>
-        ''' <returns>True: success, false: no success</returns>
-        ''' <remarks></remarks>
-        Public Function GetMovieInfo(ByVal id As String, ByVal getposter As Boolean, ByVal filteredoptions As Structures.ScrapeOptions) As MediaContainers.Movie
-            If String.IsNullOrEmpty(id) Then Return Nothing
+    ''' <summary>
+    '''  Scrape MovieDetails from IMDB
+    ''' </summary>
+    ''' <param name="id">IMDBID of movie to be scraped</param>
+    ''' <param name="FullCrew">Module setting: Scrape full cast?</param>
+    ''' <param name="getposter">Scrape posters for the movie?</param>
+    ''' <param name="Options">Module settings<param>
+    ''' <param name="IsSearch">Not used at moment</param>
+    ''' <returns>True: success, false: no success</returns>
+    ''' <remarks></remarks>
+    Public Function GetMovieInfo(ByVal id As String, ByVal getposter As Boolean, ByVal filteredoptions As Structures.ScrapeOptions) As MediaContainers.Movie
+        If String.IsNullOrEmpty(id) Then Return Nothing
 
-            Try
-                If bwIMDB.CancellationPending Then Return Nothing
+        Try
+            If bwIMDB.CancellationPending Then Return Nothing
 
-                Dim bIsScraperLanguage As Boolean = _AddonSettings.PrefLanguage.ToLower.StartsWith("en")
+            Dim bIsScraperLanguage As Boolean = _AddonSettings.PrefLanguage.ToLower.StartsWith("en")
 
-                _PosterURL = String.Empty
-                Dim nMovie As New MediaContainers.Movie With {.Scrapersource = "IMDB"}
+            _PosterURL = String.Empty
+            Dim nMovie As New MediaContainers.Movie With {.Scrapersource = "IMDB"}
 
-                'ID
-                nMovie.UniqueIDs.IMDbId = id
+            'ID
+            nMovie.UniqueIDs.IMDbId = id
 
-                'reset all local objects
-                _HtmlDocPlotSummary = Nothing
-                _HtmlDocReleaseInfo = Nothing
+            'reset all local objects
+            _HtmlDocPlotSummary = Nothing
+            _HtmlDocReleaseInfo = Nothing
 
-                Dim webParsing As New HtmlWeb
-                Dim htmldReference As HtmlDocument = webParsing.Load(String.Concat("http://www.imdb.com/title/", id, "/reference"))
+            Dim webParsing As New HtmlWeb
+            Dim htmldReference As HtmlDocument = webParsing.Load(String.Concat("http://www.imdb.com/title/", id, "/reference"))
 
-                If bwIMDB.CancellationPending Then Return Nothing
+            If bwIMDB.CancellationPending Then Return Nothing
 
-                'get clean OriginalTitle
-                Dim strOriginalTitle As String = String.Empty
-                Dim ndOriginalTitle = htmldReference.DocumentNode.SelectSingleNode("//h3[@itemprop=""name""]/text()")
-                Dim ndOriginalTitleLbl = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""titlereference-original-title-label""]")
+            'get clean OriginalTitle
+            Dim strOriginalTitle As String = String.Empty
+            Dim ndOriginalTitle = htmldReference.DocumentNode.SelectSingleNode("//h3[@itemprop=""name""]/text()")
+            Dim ndOriginalTitleLbl = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""titlereference-original-title-label""]")
 
-                'first check if Original Title is country localized
-                If ndOriginalTitleLbl IsNot Nothing Then
-                    'get text before span object for Original Title
-                    strOriginalTitle = HttpUtility.HtmlDecode(ndOriginalTitleLbl.PreviousSibling.InnerText.Trim)
-                ElseIf ndOriginalTitle IsNot Nothing Then
-                    'remove year in brakets
-                    strOriginalTitle = HttpUtility.HtmlDecode(ndOriginalTitle.InnerText.Trim)
+            'first check if Original Title is country localized
+            If ndOriginalTitleLbl IsNot Nothing Then
+                'get text before span object for Original Title
+                strOriginalTitle = HttpUtility.HtmlDecode(ndOriginalTitleLbl.PreviousSibling.InnerText.Trim)
+            ElseIf ndOriginalTitle IsNot Nothing Then
+                'remove year in brakets
+                strOriginalTitle = HttpUtility.HtmlDecode(ndOriginalTitle.InnerText.Trim)
+            Else
+                _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Originaltitle", id))
+            End If
+
+            'Actors
+            If filteredoptions.bMainActors Then
+                Dim nActors = ParseActors(htmldReference)
+                If nActors IsNot Nothing Then
+                    nMovie.Actors = nActors
                 Else
-                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Originaltitle", id))
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Actors", id))
                 End If
+            End If
 
-                'Actors
-                If filteredoptions.bMainActors Then
-                    Dim nActors = ParseActors(htmldReference)
-                    If nActors IsNot Nothing Then
-                        nMovie.Actors = nActors
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Certifications
+            If filteredoptions.bMainCertifications Then
+                Dim lstCertifications = ParseCertifications(htmldReference)
+                If lstCertifications IsNot Nothing Then
+                    nMovie.Certifications = lstCertifications
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Certifications", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Credits
+            If filteredoptions.bMainCredits Then
+                Dim lstCredits = ParseCredits(htmldReference)
+                If lstCredits IsNot Nothing Then
+                    nMovie.Credits = lstCredits
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Writers (Credits)", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Countries
+            If filteredoptions.bMainCountries Then
+                Dim lstCountries = ParseCountries(htmldReference)
+                If lstCountries IsNot Nothing Then
+                    nMovie.Countries = lstCountries
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Countries", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Director
+            If filteredoptions.bMainDirectors Then
+                Dim lstDirectors = ParseDirectors(htmldReference)
+                If lstDirectors IsNot Nothing Then
+                    nMovie.Directors = lstDirectors
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Directors", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Duration
+            If filteredoptions.bMainRuntime Then
+                Dim strDuration = ParseDuration(htmldReference)
+                If strDuration IsNot Nothing Then
+                    nMovie.Runtime = strDuration
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Runtime", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Genres
+            If filteredoptions.bMainGenres Then
+                Dim lstGenres = ParseGenres(htmldReference)
+                If lstGenres IsNot Nothing Then
+                    nMovie.Genres = lstGenres
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Genres", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'MPAA
+            If filteredoptions.bMainMPAA Then
+                Dim strMPAA = ParseMPAA(htmldReference, id)
+                If id IsNot Nothing Then
+                    nMovie.MPAA = strMPAA
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse MPAA", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Original Title
+            If filteredoptions.bMainOriginalTitle Then
+                nMovie.OriginalTitle = strOriginalTitle
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Outline
+            If filteredoptions.bMainOutline AndAlso bIsScraperLanguage Then
+                Dim strOutline = ParseOutline(htmldReference, id)
+                If strOutline IsNot Nothing Then
+                    nMovie.Outline = strOutline
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Outline", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Plot
+            If filteredoptions.bMainPlot AndAlso bIsScraperLanguage Then
+                Dim strPlot = ParsePlot(htmldReference)
+                If strPlot IsNot Nothing Then
+                    nMovie.Plot = strPlot
+                Else
+                    'if "plot" isn't available then the "outline" will be used as plot
+                    If nMovie.OutlineSpecified Then
+                        nMovie.Plot = nMovie.Outline
                     Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Actors", id))
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Certifications
-                If filteredoptions.bMainCertifications Then
-                    Dim lstCertifications = ParseCertifications(htmldReference)
-                    If lstCertifications IsNot Nothing Then
-                        nMovie.Certifications = lstCertifications
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Certifications", id))
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Countries
-                If filteredoptions.bMainCountries Then
-                    Dim lstCountries = ParseCountries(htmldReference)
-                    If lstCountries IsNot Nothing Then
-                        nMovie.Countries = lstCountries
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Countries", id))
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Director
-                If filteredoptions.bMainDirectors Then
-                    Dim lstDirectors = ParseDirectors(htmldReference)
-                    If lstDirectors IsNot Nothing Then
-                        nMovie.Directors = lstDirectors
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Directors", id))
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Duration
-                If filteredoptions.bMainRuntime Then
-                    Dim strDuration = ParseDuration(htmldReference)
-                    If strDuration IsNot Nothing Then
-                        nMovie.Runtime = strDuration
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Runtime", id))
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Genres
-                If filteredoptions.bMainGenres Then
-                    Dim lstGenres = ParseGenres(htmldReference)
-                    If lstGenres IsNot Nothing Then
-                        nMovie.Genres = lstGenres
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Genres", id))
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'MPAA
-                If filteredoptions.bMainMPAA Then
-                    Dim strMPAA = ParseMPAA(htmldReference, id)
-                    If id IsNot Nothing Then
-                        nMovie.MPAA = strMPAA
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse MPAA", id))
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Original Title
-                If filteredoptions.bMainOriginalTitle Then
-                    nMovie.OriginalTitle = strOriginalTitle
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Outline
-                If filteredoptions.bMainOutline AndAlso bIsScraperLanguage Then
-                    Dim strOutline = ParseOutline(htmldReference, id)
-                    If strOutline IsNot Nothing Then
-                        nMovie.Outline = strOutline
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Outline", id))
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Plot
-                If filteredoptions.bMainPlot AndAlso bIsScraperLanguage Then
-                    Dim strPlot = ParsePlot(htmldReference)
-                    If strPlot IsNot Nothing Then
-                        nMovie.Plot = strPlot
-                    Else
-                        'if "plot" isn't available then the "outline" will be used as plot
-                        If nMovie.OutlineSpecified Then
-                            nMovie.Plot = nMovie.Outline
+                        strPlot = ParsePlotFromSummaryPage(id)
+                        If Not String.IsNullOrEmpty(strPlot) Then
+                            nMovie.Plot = strPlot
                         Else
-                            strPlot = ParsePlotFromSummaryPage(id)
-                            If Not String.IsNullOrEmpty(strPlot) Then
-                                nMovie.Plot = strPlot
-                            Else
-                                _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] no result from ""plotsummary"" page for Plot", id))
-                            End If
+                            _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] no result from ""plotsummary"" page for Plot", id))
                         End If
                     End If
                 End If
+            End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+            If bwIMDB.CancellationPending Then Return Nothing
 
-                'Poster for search result
-                If getposter Then
-                    ParsePosterURL(htmldReference)
+            'Poster for search result
+            If getposter Then
+                ParsePosterURL(htmldReference)
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Premiered
+            If filteredoptions.bMainPremiered Then
+                Dim dateRelease As New Date
+                If ParseReleaseDate(htmldReference, dateRelease) Then
+                    If filteredoptions.bMainPremiered Then nMovie.Premiered = dateRelease.ToString("yyyy-MM-dd")
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Premiered/Year", id))
                 End If
+            End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+            If bwIMDB.CancellationPending Then Return Nothing
 
-                'Rating
-                If filteredoptions.bMainRating Then
-                    Dim nRating = ParseRating(htmldReference)
-                    If nRating IsNot Nothing Then
-                        Dim dblRating As Double
-                        Dim iVotes As Integer
-                        If Double.TryParse(nRating.strRating, dblRating) AndAlso Integer.TryParse(NumUtils.CleanVotes(nRating.strVotes), iVotes) Then
-                            nMovie.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "imdb", .Value = dblRating, .Votes = iVotes})
-                        End If
+            'Rating
+            If filteredoptions.bMainRatings Then
+                Dim nRating = ParseRating(htmldReference)
+                If nRating IsNot Nothing Then
+                    Dim dblRating As Double
+                    Dim iVotes As Integer
+                    If Double.TryParse(nRating.strRating, dblRating) AndAlso Integer.TryParse(NumUtils.CleanVotes(nRating.strVotes), iVotes) Then
+                        nMovie.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "imdb", .Value = dblRating, .Votes = iVotes})
+                    End If
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Rating", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Studios
+            If filteredoptions.bMainStudios Then
+                Dim lstStudios = ParseStudios(htmldReference)
+                If lstStudios IsNot Nothing Then
+                    nMovie.Studios = lstStudios
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Studios", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Tagline
+            If filteredoptions.bMainTagline AndAlso bIsScraperLanguage Then
+                Dim strTagline = ParseTagline(htmldReference)
+                If strTagline IsNot Nothing Then
+                    nMovie.Tagline = strTagline
+                Else
+                    _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Tagline", id))
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Title
+            If filteredoptions.bMainTitle Then
+                If Not String.IsNullOrEmpty(_AddonSettings.ForceTitleLanguage) Then
+                    nMovie.Title = ParseForcedTitle(id, strOriginalTitle)
+                Else
+                    nMovie.Title = strOriginalTitle
+                End If
+            End If
+
+            If bwIMDB.CancellationPending Then Return Nothing
+
+            'Top250
+            If filteredoptions.bMainTop250 Then
+                Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//a[@href=""/chart/top""]")
+                If selNode IsNot Nothing Then
+                    Dim strTop250 As String = Regex.Match(selNode.InnerText.Trim, "#([0-9]+)").Groups(1).Value
+                    Dim iTop250 As Integer = 0
+                    If Integer.TryParse(strTop250, iTop250) Then
+                        nMovie.Top250 = iTop250
                     Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Rating", id))
+                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Top250", id))
                     End If
                 End If
+            End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+            If bwIMDB.CancellationPending Then Return Nothing
 
-                'ReleaseDate / Year
-                If filteredoptions.bMainRelease OrElse filteredoptions.bMainYear Then
-                    Dim dateRelease As New Date
-                    If ParseReleaseDate(htmldReference, dateRelease) Then
-                        If filteredoptions.bMainRelease Then nMovie.ReleaseDate = dateRelease.ToString("yyyy-MM-dd")
-                        If filteredoptions.bMainYear Then nMovie.Year = dateRelease.Year
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse ReleaseDate/Year", id))
+            'Trailer
+            If filteredoptions.bMainTrailer Then
+                'Get first IMDB trailer if possible
+                Dim TrailerList As List(Of MediaContainers.Trailer) = EmberAPI.IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.UniqueIDs.IMDbId)
+                If TrailerList.Count > 0 Then
+                    Dim sIMDb As New EmberAPI.IMDb.Scraper
+                    sIMDb.GetVideoLinks(TrailerList.Item(0).URLWebsite)
+                    If sIMDb.VideoLinks.Count > 0 Then
+                        nMovie.Trailer = sIMDb.VideoLinks.FirstOrDefault().Value.URL.ToString
                     End If
                 End If
+            End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
+            Return nMovie
+        Catch ex As Exception
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
+            Return Nothing
+        End Try
+    End Function
 
-                'Studios
-                If filteredoptions.bMainStudios Then
-                    Dim lstStudios = ParseStudios(htmldReference)
-                    If lstStudios IsNot Nothing Then
-                        nMovie.Studios = lstStudios
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Studios", id))
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Tagline
-                If filteredoptions.bMainTagline AndAlso bIsScraperLanguage Then
-                    Dim strTagline = ParseTagline(htmldReference)
-                    If strTagline IsNot Nothing Then
-                        nMovie.Tagline = strTagline
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Tagline", id))
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Title
-                If filteredoptions.bMainTitle Then
-                    If Not String.IsNullOrEmpty(_AddonSettings.ForceTitleLanguage) Then
-                        nMovie.Title = ParseForcedTitle(id, strOriginalTitle)
-                    Else
-                        nMovie.Title = strOriginalTitle
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Top250
-                If filteredoptions.bMainTop250 Then
-                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//a[@href=""/chart/top""]")
-                    If selNode IsNot Nothing Then
-                        Dim strTop250 As String = Regex.Match(selNode.InnerText.Trim, "#([0-9]+)").Groups(1).Value
-                        Dim iTop250 As Integer = 0
-                        If Integer.TryParse(strTop250, iTop250) Then
-                            nMovie.Top250 = iTop250
-                        Else
-                            _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Top250", id))
-                        End If
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Trailer
-                If filteredoptions.bMainTrailer Then
-                    'Get first IMDB trailer if possible
-                    Dim TrailerList As List(Of MediaContainers.Trailer) = EmberAPI.IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.UniqueIDs.IMDbId)
-                    If TrailerList.Count > 0 Then
-                        Dim sIMDb As New EmberAPI.IMDb.Scraper
-                        sIMDb.GetVideoLinks(TrailerList.Item(0).URLWebsite)
-                        If sIMDb.VideoLinks.Count > 0 Then
-                            nMovie.Trailer = sIMDb.VideoLinks.FirstOrDefault().Value.URL.ToString
-                        End If
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Writers
-                If filteredoptions.bMainWriters Then
-                    Dim lstCredits = ParseCredits(htmldReference)
-                    If lstCredits IsNot Nothing Then
-                        nMovie.Credits = lstCredits
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Writers (Credits)", id))
-                    End If
-                End If
-
-                'Year (fallback if ReleaseDate can't be parsed)
-                If filteredoptions.bMainYear AndAlso Not nMovie.YearSpecified Then
-                    Dim iYear As Integer
-                    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""titlereference-title-year""]/a")
-                    If selNode IsNot Nothing AndAlso Integer.TryParse(selNode.InnerText, iYear) Then
-                        nMovie.Year = iYear
-                    Else
-                        _Logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Year (fallback)", id))
-                    End If
-                End If
-
-                Return nMovie
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-                Return Nothing
-            End Try
-        End Function
-
-        Public Function GetTVEpisodeInfo(ByVal id As String, ByRef filteredoptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
+    Public Function GetTVEpisodeInfo(ByVal id As String, ByRef filteredoptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
             If String.IsNullOrEmpty(id) Then Return Nothing
 
             Try
@@ -841,7 +827,7 @@ Public Class SearchResults_Movie
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Rating
-                If filteredoptions.bMainRating Then
+                If filteredoptions.bMainRatings Then
                     Dim nRating As Rating = ParseRating(htmldReference)
                     If nRating IsNot Nothing Then
                         Dim dblRating As Double

@@ -76,7 +76,7 @@ Partial Class dlgSettings
         Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnOK.AutoSize = True
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnOK.Location = New System.Drawing.Point(1299, 3)
+        Me.btnOK.Location = New System.Drawing.Point(1349, 3)
         Me.btnOK.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnOK.MinimumSize = New System.Drawing.Size(75, 23)
         Me.btnOK.Name = "btnOK"
@@ -91,7 +91,7 @@ Partial Class dlgSettings
         Me.btnApply.AutoSize = True
         Me.btnApply.Enabled = False
         Me.btnApply.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnApply.Location = New System.Drawing.Point(1137, 3)
+        Me.btnApply.Location = New System.Drawing.Point(1187, 3)
         Me.btnApply.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnApply.MinimumSize = New System.Drawing.Size(75, 23)
         Me.btnApply.Name = "btnApply"
@@ -106,7 +106,7 @@ Partial Class dlgSettings
         Me.btnCancel.AutoSize = True
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(1218, 3)
+        Me.btnCancel.Location = New System.Drawing.Point(1268, 3)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnCancel.MinimumSize = New System.Drawing.Size(75, 23)
         Me.btnCancel.Name = "btnCancel"
@@ -125,7 +125,7 @@ Partial Class dlgSettings
         Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsTop.Name = "pnlSettingsTop"
-        Me.pnlSettingsTop.Size = New System.Drawing.Size(1384, 64)
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(1434, 64)
         Me.pnlSettingsTop.TabIndex = 3
         '
         'lblSettingsTopDetails
@@ -218,7 +218,7 @@ Partial Class dlgSettings
         Me.pnlSettingsCurrent.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsCurrent.Location = New System.Drawing.Point(5, 3)
         Me.pnlSettingsCurrent.Name = "pnlSettingsCurrent"
-        Me.pnlSettingsCurrent.Size = New System.Drawing.Size(1374, 27)
+        Me.pnlSettingsCurrent.Size = New System.Drawing.Size(1424, 27)
         Me.pnlSettingsCurrent.TabIndex = 5
         '
         'pbSettingsCurrent
@@ -238,7 +238,7 @@ Partial Class dlgSettings
         Me.tsSettingsTopMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsSettingsTopMenu.Location = New System.Drawing.Point(0, 64)
         Me.tsSettingsTopMenu.Name = "tsSettingsTopMenu"
-        Me.tsSettingsTopMenu.Size = New System.Drawing.Size(1384, 25)
+        Me.tsSettingsTopMenu.Size = New System.Drawing.Size(1434, 25)
         Me.tsSettingsTopMenu.Stretch = True
         Me.tsSettingsTopMenu.TabIndex = 4
         Me.tsSettingsTopMenu.Text = "ToolStrip1"
@@ -250,7 +250,7 @@ Partial Class dlgSettings
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(1128, 855)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(1178, 855)
         Me.pnlSettingsMain.TabIndex = 9
         '
         'scSettings
@@ -271,7 +271,7 @@ Partial Class dlgSettings
         'scSettings.Panel2
         '
         Me.scSettings.Panel2.Controls.Add(Me.scSettingsBody)
-        Me.scSettings.Size = New System.Drawing.Size(1384, 1039)
+        Me.scSettings.Size = New System.Drawing.Size(1434, 1039)
         Me.scSettings.SplitterDistance = 145
         Me.scSettings.TabIndex = 28
         '
@@ -286,7 +286,7 @@ Partial Class dlgSettings
         Me.tblSettingsCurrent.Padding = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.tblSettingsCurrent.RowCount = 1
         Me.tblSettingsCurrent.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblSettingsCurrent.Size = New System.Drawing.Size(1384, 33)
+        Me.tblSettingsCurrent.Size = New System.Drawing.Size(1434, 33)
         Me.tblSettingsCurrent.TabIndex = 6
         '
         'scSettingsBody
@@ -307,7 +307,7 @@ Partial Class dlgSettings
         '
         Me.scSettingsBody.Panel2.Controls.Add(Me.tblSettingsFooter)
         Me.scSettingsBody.Panel2.Padding = New System.Windows.Forms.Padding(2, 0, 5, 0)
-        Me.scSettingsBody.Size = New System.Drawing.Size(1384, 890)
+        Me.scSettingsBody.Size = New System.Drawing.Size(1434, 890)
         Me.scSettingsBody.SplitterDistance = 855
         Me.scSettingsBody.TabIndex = 99
         '
@@ -327,7 +327,7 @@ Partial Class dlgSettings
         '
         Me.scSettingsMain.Panel2.Controls.Add(Me.pnlSettingsMain)
         Me.scSettingsMain.Panel2.Padding = New System.Windows.Forms.Padding(0, 0, 5, 0)
-        Me.scSettingsMain.Size = New System.Drawing.Size(1384, 855)
+        Me.scSettingsMain.Size = New System.Drawing.Size(1434, 855)
         Me.scSettingsMain.SplitterDistance = 247
         Me.scSettingsMain.TabIndex = 0
         '
@@ -347,14 +347,14 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.Name = "tblSettingsFooter"
         Me.tblSettingsFooter.RowCount = 1
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsFooter.Size = New System.Drawing.Size(1377, 31)
+        Me.tblSettingsFooter.Size = New System.Drawing.Size(1427, 31)
         Me.tblSettingsFooter.TabIndex = 0
         '
         'ssBottom
         '
         Me.ssBottom.Location = New System.Drawing.Point(0, 1039)
         Me.ssBottom.Name = "ssBottom"
-        Me.ssBottom.Size = New System.Drawing.Size(1384, 22)
+        Me.ssBottom.Size = New System.Drawing.Size(1434, 22)
         Me.ssBottom.TabIndex = 3
         Me.ssBottom.Text = "StatusStrip1"
         '
@@ -364,7 +364,7 @@ Partial Class dlgSettings
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(1384, 1061)
+        Me.ClientSize = New System.Drawing.Size(1434, 1061)
         Me.Controls.Add(Me.scSettings)
         Me.Controls.Add(Me.ssBottom)
         Me.DoubleBuffered = True

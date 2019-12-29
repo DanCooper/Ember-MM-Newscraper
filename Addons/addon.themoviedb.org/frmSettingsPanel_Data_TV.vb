@@ -88,7 +88,8 @@ Public Class frmSettingsPanel_Data_TV
         chkScraperShowRuntime.CheckedChanged,
         chkScraperShowStatus.CheckedChanged,
         chkScraperShowStudios.CheckedChanged,
-        chkScraperShowTitle.CheckedChanged
+        chkScraperShowTitle.CheckedChanged,
+        chkTags_TVShow.CheckedChanged
 
         RaiseEvent SettingsChanged()
     End Sub
@@ -111,6 +112,7 @@ Public Class frmSettingsPanel_Data_TV
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         chkFallBackEng.Text = Master.eLang.GetString(922, "Fallback to english")
         chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
+        chkTags_TVShow.Text = Master.eLang.GetString(243, "Tags")
         chkScraperEpisodeActors.Text = Master.eLang.GetString(231, "Actors")
         chkScraperEpisodeAired.Text = Master.eLang.GetString(728, "Aired")
         chkScraperEpisodeCredits.Text = Master.eLang.GetString(394, "Credits (Writers)")

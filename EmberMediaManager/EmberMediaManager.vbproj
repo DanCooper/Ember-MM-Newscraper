@@ -309,10 +309,28 @@
     <Compile Include="MasterSettingsPanels\frmMovie_Data.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Data_Metadata.Designer.vb">
+      <DependentUpon>frmMovie_Data_Metadata.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Data_Metadata.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Data_TagsWhitelist.Designer.vb">
+      <DependentUpon>frmMovie_Data_TagsWhitelist.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Data_TagsWhitelist.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MasterSettingsPanels\frmMovie_FileNaming.Designer.vb">
       <DependentUpon>frmMovie_FileNaming.vb</DependentUpon>
     </Compile>
     <Compile Include="MasterSettingsPanels\frmMovie_FileNaming.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_FileNaming_Renaming.Designer.vb">
+      <DependentUpon>frmMovie_FileNaming_Renaming.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_FileNaming_Renaming.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MasterSettingsPanels\frmMovie_GUI.Designer.vb">
@@ -507,6 +525,12 @@
     <Compile Include="MasterSettingsPanels\frmTV_FileNaming.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_FileNaming_Renaming.Designer.vb">
+      <DependentUpon>frmTV_FileNaming_Renaming.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_FileNaming_Renaming.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MasterSettingsPanels\frmTV_GUI.Designer.vb">
       <DependentUpon>frmTV_GUI.vb</DependentUpon>
     </Compile>
@@ -615,8 +639,14 @@
     <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Data.resx">
       <DependentUpon>frmMovie_Data.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Data_TagsWhitelist.resx">
+      <DependentUpon>frmMovie_Data_TagsWhitelist.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmMovie_FileNaming.resx">
       <DependentUpon>frmMovie_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_FileNaming_Renaming.resx">
+      <DependentUpon>frmMovie_FileNaming_Renaming.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmMovie_GUI.resx">
       <DependentUpon>frmMovie_GUI.vb</DependentUpon>
@@ -718,6 +748,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmTV_FileNaming.resx">
       <DependentUpon>frmTV_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_FileNaming_Renaming.resx">
+      <DependentUpon>frmTV_FileNaming_Renaming.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmTV_GUI.resx">
       <DependentUpon>frmTV_GUI.vb</DependentUpon>

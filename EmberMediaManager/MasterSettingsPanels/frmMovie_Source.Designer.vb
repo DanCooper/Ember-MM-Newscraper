@@ -50,10 +50,10 @@ Partial Class frmMovie_Source
         Me.cmnuSourcesReject = New System.Windows.Forms.ToolStripMenuItem()
         Me.gbImportOptions = New System.Windows.Forms.GroupBox()
         Me.tblImportOptions = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbUnmarkNew = New System.Windows.Forms.GroupBox()
-        Me.tblUnmarkNew = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkUnmarkNewBeforeDBUpdate = New System.Windows.Forms.CheckBox()
-        Me.chkUnmarkNewOnExit = New System.Windows.Forms.CheckBox()
+        Me.gbResetNew = New System.Windows.Forms.GroupBox()
+        Me.tblResetNew = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkResetNewBeforeDBUpdate = New System.Windows.Forms.CheckBox()
+        Me.chkResetNewOnExit = New System.Windows.Forms.CheckBox()
         Me.lblSkipLessThan = New System.Windows.Forms.Label()
         Me.gbMarkNew = New System.Windows.Forms.GroupBox()
         Me.tblMarkNew = New System.Windows.Forms.TableLayoutPanel()
@@ -90,8 +90,8 @@ Partial Class frmMovie_Source
         Me.cmnuSources.SuspendLayout()
         Me.gbImportOptions.SuspendLayout()
         Me.tblImportOptions.SuspendLayout()
-        Me.gbUnmarkNew.SuspendLayout()
-        Me.tblUnmarkNew.SuspendLayout()
+        Me.gbResetNew.SuspendLayout()
+        Me.tblResetNew.SuspendLayout()
         Me.gbMarkNew.SuspendLayout()
         Me.tblMarkNew.SuspendLayout()
         Me.gbTitleCleanup.SuspendLayout()
@@ -372,7 +372,7 @@ Partial Class frmMovie_Source
         Me.tblImportOptions.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblImportOptions.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblImportOptions.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblImportOptions.Controls.Add(Me.gbUnmarkNew, 2, 8)
+        Me.tblImportOptions.Controls.Add(Me.gbResetNew, 2, 8)
         Me.tblImportOptions.Controls.Add(Me.lblSkipLessThan, 0, 1)
         Me.tblImportOptions.Controls.Add(Me.gbMarkNew, 0, 8)
         Me.tblImportOptions.Controls.Add(Me.gbTitleCleanup, 3, 0)
@@ -403,56 +403,56 @@ Partial Class frmMovie_Source
         Me.tblImportOptions.Size = New System.Drawing.Size(898, 302)
         Me.tblImportOptions.TabIndex = 9
         '
-        'gbUnmarkNew
+        'gbResetNew
         '
-        Me.gbUnmarkNew.AutoSize = True
-        Me.gbUnmarkNew.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.gbUnmarkNew.Controls.Add(Me.tblUnmarkNew)
-        Me.gbUnmarkNew.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbUnmarkNew.Location = New System.Drawing.Point(234, 186)
-        Me.gbUnmarkNew.Name = "gbUnmarkNew"
-        Me.gbUnmarkNew.Size = New System.Drawing.Size(171, 113)
-        Me.gbUnmarkNew.TabIndex = 9
-        Me.gbUnmarkNew.TabStop = False
-        Me.gbUnmarkNew.Text = "Remove the marker ""New"""
+        Me.gbResetNew.AutoSize = True
+        Me.gbResetNew.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.gbResetNew.Controls.Add(Me.tblResetNew)
+        Me.gbResetNew.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbResetNew.Location = New System.Drawing.Point(234, 186)
+        Me.gbResetNew.Name = "gbResetNew"
+        Me.gbResetNew.Size = New System.Drawing.Size(171, 113)
+        Me.gbResetNew.TabIndex = 9
+        Me.gbResetNew.TabStop = False
+        Me.gbResetNew.Text = "Reset marker ""New"""
         '
-        'tblUnmarkNew
+        'tblResetNew
         '
-        Me.tblUnmarkNew.AutoSize = True
-        Me.tblUnmarkNew.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tblUnmarkNew.ColumnCount = 1
-        Me.tblUnmarkNew.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblUnmarkNew.Controls.Add(Me.chkUnmarkNewBeforeDBUpdate, 0, 0)
-        Me.tblUnmarkNew.Controls.Add(Me.chkUnmarkNewOnExit, 0, 1)
-        Me.tblUnmarkNew.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblUnmarkNew.Location = New System.Drawing.Point(3, 18)
-        Me.tblUnmarkNew.Name = "tblUnmarkNew"
-        Me.tblUnmarkNew.RowCount = 2
-        Me.tblUnmarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblUnmarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblUnmarkNew.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblUnmarkNew.Size = New System.Drawing.Size(165, 92)
-        Me.tblUnmarkNew.TabIndex = 0
+        Me.tblResetNew.AutoSize = True
+        Me.tblResetNew.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.tblResetNew.ColumnCount = 1
+        Me.tblResetNew.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblResetNew.Controls.Add(Me.chkResetNewBeforeDBUpdate, 0, 0)
+        Me.tblResetNew.Controls.Add(Me.chkResetNewOnExit, 0, 1)
+        Me.tblResetNew.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblResetNew.Location = New System.Drawing.Point(3, 18)
+        Me.tblResetNew.Name = "tblResetNew"
+        Me.tblResetNew.RowCount = 2
+        Me.tblResetNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblResetNew.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblResetNew.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblResetNew.Size = New System.Drawing.Size(165, 92)
+        Me.tblResetNew.TabIndex = 0
         '
-        'chkUnmarkNewBeforeDBUpdate
+        'chkResetNewBeforeDBUpdate
         '
-        Me.chkUnmarkNewBeforeDBUpdate.AutoSize = True
-        Me.chkUnmarkNewBeforeDBUpdate.Location = New System.Drawing.Point(3, 3)
-        Me.chkUnmarkNewBeforeDBUpdate.Name = "chkUnmarkNewBeforeDBUpdate"
-        Me.chkUnmarkNewBeforeDBUpdate.Size = New System.Drawing.Size(159, 17)
-        Me.chkUnmarkNewBeforeDBUpdate.TabIndex = 0
-        Me.chkUnmarkNewBeforeDBUpdate.Text = "Before any Library Update"
-        Me.chkUnmarkNewBeforeDBUpdate.UseVisualStyleBackColor = True
+        Me.chkResetNewBeforeDBUpdate.AutoSize = True
+        Me.chkResetNewBeforeDBUpdate.Location = New System.Drawing.Point(3, 3)
+        Me.chkResetNewBeforeDBUpdate.Name = "chkResetNewBeforeDBUpdate"
+        Me.chkResetNewBeforeDBUpdate.Size = New System.Drawing.Size(159, 17)
+        Me.chkResetNewBeforeDBUpdate.TabIndex = 0
+        Me.chkResetNewBeforeDBUpdate.Text = "Before any Library Update"
+        Me.chkResetNewBeforeDBUpdate.UseVisualStyleBackColor = True
         '
-        'chkUnmarkNewOnExit
+        'chkResetNewOnExit
         '
-        Me.chkUnmarkNewOnExit.AutoSize = True
-        Me.chkUnmarkNewOnExit.Location = New System.Drawing.Point(3, 26)
-        Me.chkUnmarkNewOnExit.Name = "chkUnmarkNewOnExit"
-        Me.chkUnmarkNewOnExit.Size = New System.Drawing.Size(63, 17)
-        Me.chkUnmarkNewOnExit.TabIndex = 0
-        Me.chkUnmarkNewOnExit.Text = "On Exit"
-        Me.chkUnmarkNewOnExit.UseVisualStyleBackColor = True
+        Me.chkResetNewOnExit.AutoSize = True
+        Me.chkResetNewOnExit.Location = New System.Drawing.Point(3, 26)
+        Me.chkResetNewOnExit.Name = "chkResetNewOnExit"
+        Me.chkResetNewOnExit.Size = New System.Drawing.Size(63, 17)
+        Me.chkResetNewOnExit.TabIndex = 0
+        Me.chkResetNewOnExit.Text = "On Exit"
+        Me.chkResetNewOnExit.UseVisualStyleBackColor = True
         '
         'lblSkipLessThan
         '
@@ -796,10 +796,10 @@ Partial Class frmMovie_Source
         Me.gbImportOptions.PerformLayout()
         Me.tblImportOptions.ResumeLayout(False)
         Me.tblImportOptions.PerformLayout()
-        Me.gbUnmarkNew.ResumeLayout(False)
-        Me.gbUnmarkNew.PerformLayout()
-        Me.tblUnmarkNew.ResumeLayout(False)
-        Me.tblUnmarkNew.PerformLayout()
+        Me.gbResetNew.ResumeLayout(False)
+        Me.gbResetNew.PerformLayout()
+        Me.tblResetNew.ResumeLayout(False)
+        Me.tblResetNew.PerformLayout()
         Me.gbMarkNew.ResumeLayout(False)
         Me.gbMarkNew.PerformLayout()
         Me.tblMarkNew.ResumeLayout(False)
@@ -837,10 +837,10 @@ Partial Class frmMovie_Source
     Friend WithEvents btnTitleFilterDefaults As Button
     Friend WithEvents lblTitleFilters As Label
     Friend WithEvents dgvTitleFilters As DataGridView
-    Friend WithEvents gbUnmarkNew As GroupBox
-    Friend WithEvents tblUnmarkNew As TableLayoutPanel
-    Friend WithEvents chkUnmarkNewBeforeDBUpdate As CheckBox
-    Friend WithEvents chkUnmarkNewOnExit As CheckBox
+    Friend WithEvents gbResetNew As GroupBox
+    Friend WithEvents tblResetNew As TableLayoutPanel
+    Friend WithEvents chkResetNewBeforeDBUpdate As CheckBox
+    Friend WithEvents chkResetNewOnExit As CheckBox
     Friend WithEvents chkMarkAsNewWithoutNFO As CheckBox
     Friend WithEvents gbMarkNew As GroupBox
     Friend WithEvents tblMarkNew As TableLayoutPanel

@@ -20,7 +20,7 @@
 
 Imports EmberAPI
 
-Public Class frmTV_Data_SeasonTitleBlacklist
+Public Class frmMovie_Data_TagsWhitelist
 
 #Region "Properties"
 
@@ -36,7 +36,7 @@ Public Class frmTV_Data_SeasonTitleBlacklist
         FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
-    Private Sub Dialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         DataGridView_Fill()
     End Sub
 
@@ -45,16 +45,14 @@ Public Class frmTV_Data_SeasonTitleBlacklist
     End Sub
 
     Private Sub DialogResult_OK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
-        Save_Blacklist()
+        Save_Whitelist()
         DialogResult = DialogResult.OK
     End Sub
 
     Private Sub Setup()
-        Text = Master.eLang.GetString(1113, "Season Title Blacklist")
+        Text = Master.eLang.GetString(841, "Whitelist")
         btnCancel.Text = Master.eLang.Cancel
         btnOK.Text = Master.eLang.OK
-        btnSetDefaults.Text = Master.eLang.GetString(713, "Defaults")
-        lblHint.Text = Master.eLang.GetString(1114, "This list contains patterns of season titles that should be ignored when scraping.{0}Use %{season_number} to mark the location of the season number.").Replace("{0}", Environment.NewLine)
     End Sub
 
     Public Overloads Function ShowDialog(ByVal list As ExtendedListOfString) As DialogResult
@@ -68,25 +66,19 @@ Public Class frmTV_Data_SeasonTitleBlacklist
 #Region "Methods"
 
     Private Sub DataGridView_Fill()
-        dgvBlacklist.Rows.Clear()
+        dgvWhitelist.Rows.Clear()
         For Each v In Result
-            dgvBlacklist.Rows.Add(New Object() {v})
+            dgvWhitelist.Rows.Add(New Object() {v})
         Next
-        dgvBlacklist.ClearSelection()
+        dgvWhitelist.ClearSelection()
     End Sub
 
-    Private Sub Load_Defaults_Click(sender As Object, e As EventArgs) Handles btnSetDefaults.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TitleBlacklist_TVSeason, True)
-        Result = Master.eSettings.TVScraperSeasonTitleBlacklist
-        DataGridView_Fill()
-    End Sub
-
-    Private Sub Save_Blacklist()
-        Dim newList As New ExtendedListOfString
-        For Each r As DataGridViewRow In dgvBlacklist.Rows
-            If Not r.IsNewRow AndAlso r.Cells(0).Value IsNot Nothing Then newList.Add(r.Cells(0).Value.ToString.Trim)
+    Private Sub Save_Whitelist()
+        Dim nResult As New ExtendedListOfString
+        For Each r As DataGridViewRow In dgvWhitelist.Rows
+            If Not r.IsNewRow AndAlso r.Cells(0).Value IsNot Nothing Then nResult.Add(r.Cells(0).Value.ToString.Trim)
         Next
-        Result = newList
+        Result = nResult
     End Sub
 
 #End Region 'Methods

@@ -103,7 +103,7 @@ Public Class frmSettingsPanel_Data_Movie
         RaiseEvent SettingsChanged()
     End Sub
 
-    Private Sub chkRelease_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkRelease.CheckedChanged
+    Private Sub chkRelease_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkPremiered.CheckedChanged
         RaiseEvent SettingsChanged()
     End Sub
 
@@ -161,7 +161,7 @@ Public Class frmSettingsPanel_Data_Movie
         RaiseEvent SettingsChanged()
     End Sub
 
-    Private Sub chkYear_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkYear.CheckedChanged
+    Private Sub chkYear_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         RaiseEvent SettingsChanged()
     End Sub
 
@@ -205,8 +205,8 @@ Public Class frmSettingsPanel_Data_Movie
         chkPlot.Text = Master.eLang.GetString(65, "Plot")
         chkPartialTitles.Text = Master.eLang.GetString(1183, "Partial Titles")
         chkPopularTitles.Text = Master.eLang.GetString(1182, "Popular Titles")
+        chkPremiered.Text = Master.eLang.GetString(724, "Premiered")
         chkRating.Text = Master.eLang.GetString(400, "Rating")
-        chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         chkRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkShortTitles.Text = Master.eLang.GetString(837, "Short Titles")
         chkStudios.Text = Master.eLang.GetString(226, "Studios")
@@ -217,7 +217,6 @@ Public Class frmSettingsPanel_Data_Movie
         chkTvTitles.Text = Master.eLang.GetString(1184, "TV Movie Titles")
         chkVideoTitles.Text = Master.eLang.GetString(1185, "Video Titles")
         chkWriters.Text = Master.eLang.GetString(394, "Writers")
-        chkYear.Text = Master.eLang.GetString(278, "Year")
         gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")

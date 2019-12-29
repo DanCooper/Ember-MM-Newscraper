@@ -29,7 +29,7 @@ Public Class frmTV_Data
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private TVMeta As New List(Of Settings.MetadataPerType)
-    Private TempTVScraperSeasonTitleBlacklist As New List(Of String)
+    Private TempTVScraperSeasonTitleBlacklist As New ExtendedListOfString
 
 #End Region 'Fields
 
@@ -118,7 +118,7 @@ Public Class frmTV_Data
             .TVScraperEpisodeRuntime = chkTVScraperEpisodeRuntime.Checked
             .TVScraperEpisodeTitle = chkTVScraperEpisodeTitle.Checked
             .TVScraperEpisodeUserRating = chkTVScraperEpisodeUserRating.Checked
-            .TVScraperMetaDataScan = chkTVScraperMetaDataScan.Checked
+            .TVScraperMetaDataScan = chkMetadata.Checked
             .TVScraperSeasonAired = chkTVScraperSeasonAired.Checked
             .TVScraperSeasonPlot = chkTVScraperSeasonPlot.Checked
             .TVScraperSeasonTitle = chkTVScraperSeasonTitle.Checked
@@ -199,7 +199,7 @@ Public Class frmTV_Data
             chkTVScraperEpisodeRuntime.Checked = .TVScraperEpisodeRuntime
             chkTVScraperEpisodeTitle.Checked = .TVScraperEpisodeTitle
             chkTVScraperEpisodeUserRating.Checked = .TVScraperEpisodeUserRating
-            chkTVScraperMetaDataScan.Checked = .TVScraperMetaDataScan
+            chkMetadata.Checked = .TVScraperMetaDataScan
             chkTVScraperSeasonAired.Checked = .TVScraperSeasonAired
             chkTVScraperSeasonPlot.Checked = .TVScraperSeasonPlot
             chkTVScraperSeasonTitle.Checked = .TVScraperSeasonTitle
@@ -283,19 +283,18 @@ Public Class frmTV_Data
         chkTVScraperEpisodeGuestStarsToActors.Text = Master.eLang.GetString(974, "Add Episode Guest Stars to Actors list")
         chkTVScraperUseDisplaySeasonEpisode.Text = Master.eLang.GetString(976, "Add <displayseason> and <displayepisode> to special episodes")
         lblTVScraperGlobalAired.Text = Master.eLang.GetString(728, "Aired")
-        chkTVScraperCleanFields.Text = Master.eLang.GetString(125, "Cleanup disabled fields")
+        chkTVScraperCleanFields.Text = Master.eLang.GetString(125, "Clear disabled fields")
         lblTVScraperGlobalCreators.Text = Master.eLang.GetString(744, "Creators")
         gbTVScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         lblTVScraperGlobalDirectors.Text = Master.eLang.GetString(940, "Directors")
-        gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
         lblTVScraperDurationRuntimeFormat.Text = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), Environment.NewLine)
         lblTVScraperGlobalEpisodeGuideURL.Text = Master.eLang.GetString(723, "Episode Guide URL")
         lblTVScraperGlobalHeaderEpisodes.Text = Master.eLang.GetString(682, "Episodes")
         lblTVScraperDefFIExt.Text = String.Concat(Master.eLang.GetString(626, "File Type"), ":")
         lblTVScraperGlobalGenres.Text = Master.eLang.GetString(725, "Genres")
-        lblTVScraperGlobalLanguageA.Text = Master.eLang.GetString(431, "Language (Audio)")
-        lblTVScraperGlobalLanguageV.Text = Master.eLang.GetString(435, "Language (Video)")
-        gbTVScraperMetaDataOpts.Text = Master.eLang.GetString(59, "Meta Data")
+        lblTVScraperGlobalLanguageA.Text = Master.eLang.GetString(431, "Metadata Audio Language")
+        lblTVScraperGlobalLanguageV.Text = Master.eLang.GetString(435, "Metadata Video Language")
+        gbMetadata.Text = Master.eLang.GetString(59, "Metadata")
         gbTVScraperMiscOpts.Text = Master.eLang.GetString(429, "Miscellaneous")
         lblTVScraperGlobalMPAA.Text = Master.eLang.GetString(401, "MPAA")
         lblTVScraperShowMPAANotRated.Text = Master.eLang.GetString(832, "MPAA value if no rating is available")
@@ -322,7 +321,7 @@ Public Class frmTV_Data
         gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
         gbTVScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
         lblTVScraperGlobalGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
-        chkTVScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
+        chkMetadata.Text = Master.eLang.GetString(517, "Scan Metadata")
     End Sub
 
     Private Sub btnTVScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs)

@@ -220,7 +220,7 @@ Public Class frmOption_Global
     End Sub
 
     Private Sub LoadDefaults_SortTokens() Handles btnSortTokensDefaults.Click
-        DataGridView_Fill_SortTokens(Master.eSettings.GetDefaultsForList_SortTokens())
+        DataGridView_Fill_SortTokens(Master.eSettings.Options.Global.SortTokens.GetDefaults(Enums.DefaultType.SortTokens))
         RaiseEvent SettingsChanged()
     End Sub
 

@@ -134,12 +134,12 @@ Public Class frmOption_AVCodecMapping
     End Sub
 
     Private Sub LoadDefaults_Audio(ByVal sender As Object, ByVal e As EventArgs) Handles btnAudioDefaults.Click
-        DataGridView_Fill_Audio(Master.eSettings.GetDefaultsForList_AudioCodecMappings())
+        DataGridView_Fill_Audio(Master.eSettings.Options.AVCodecMapping.GetDefaults(Enums.DefaultType.AudioCodecMapping))
         RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub LoadDefaults_Video(ByVal sender As Object, ByVal e As EventArgs) Handles btnVideoDefaults.Click
-        DataGridView_Fill_Video(Master.eSettings.GetDefaultsForList_VideoCodecMappings())
+        DataGridView_Fill_Video(Master.eSettings.Options.AVCodecMapping.GetDefaults(Enums.DefaultType.VideoCodecMapping))
         RaiseEvent SettingsChanged()
     End Sub
 

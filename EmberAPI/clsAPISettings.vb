@@ -24,7 +24,7 @@ Imports System.Net
 Imports System.Xml.Serialization
 
 <Serializable()>
-<XmlRoot("Settings")>
+<XmlRoot("settings")>
 Public Class Settings
 
 #Region "Fields"
@@ -39,8 +39,11 @@ Public Class Settings
 #End Region 'Fields 
 
 #Region "Properties"
-    <XmlArray("Addons")>
-    <XmlArrayItem("Addon")>
+    <XmlElement("version")>
+    Public Property Version() As String = String.Empty
+
+    <XmlArray("addons")>
+    <XmlArrayItem("addon")>
     Public Property Addons() As List(Of AddonsManager.XMLAddonClass) = New List(Of AddonsManager.XMLAddonClass)
 
     Public Property Options() As Options = New Options
@@ -223,31 +226,6 @@ Public Class Settings
     Public Property MovieLandscapePrefSize() As Enums.ImageSize = Enums.ImageSize.Any
     Public Property MovieLandscapePrefSizeOnly() As Boolean = False
     Public Property MovieLevTolerance() As Integer = 0
-    Public Property MovieLockActors() As Boolean = False
-    Public Property MovieLockCert() As Boolean = False
-    Public Property MovieLockCollectionID() As Boolean = False
-    Public Property MovieLockCollections() As Boolean = False
-    Public Property MovieLockCountry() As Boolean = False
-    Public Property MovieLockCredits() As Boolean = False
-    Public Property MovieLockDirector() As Boolean = False
-    Public Property MovieLockGenre() As Boolean = False
-    Public Property MovieLockLanguageA() As Boolean = False
-    Public Property MovieLockLanguageV() As Boolean = False
-    Public Property MovieLockMPAA() As Boolean = False
-    Public Property MovieLockOriginalTitle() As Boolean = False
-    Public Property MovieLockOutline() As Boolean = False
-    Public Property MovieLockPlot() As Boolean = False
-    Public Property MovieLockRating() As Boolean = False
-    Public Property MovieLockReleaseDate() As Boolean = False
-    Public Property MovieLockRuntime() As Boolean = False
-    Public Property MovieLockStudio() As Boolean = False
-    Public Property MovieLockTagline() As Boolean = False
-    Public Property MovieLockTags() As Boolean = False
-    Public Property MovieLockTitle() As Boolean = False
-    Public Property MovieLockTop250() As Boolean = False
-    Public Property MovieLockTrailer() As Boolean = False
-    Public Property MovieLockUserRating() As Boolean = False
-    Public Property MovieLockYear() As Boolean = False
     Public Property MovieMetadataPerFileType() As List(Of MetadataPerType) = New List(Of MetadataPerType)
     Public Property MovieMissingBanner() As Boolean = False
     Public Property MovieMissingClearArt() As Boolean = False
@@ -288,52 +266,6 @@ Public Class Settings
     Public Property MoviePosterWidth() As Integer = 0
     Public Property MoviePosterYAMJ() As Boolean = False
     Public Property MovieRecognizeVTSExpertVTS() As Boolean = False
-    Public Property MovieScraperCast() As Boolean = True
-    Public Property MovieScraperCastLimit() As Integer = 0
-    Public Property MovieScraperCastWithImgOnly() As Boolean = False
-    Public Property MovieScraperCert() As Boolean = False
-    Public Property MovieScraperCertForMPAA() As Boolean = False
-    Public Property MovieScraperCertForMPAAFallback() As Boolean = False
-    Public Property MovieScraperCertLang() As String = String.Empty
-    Public Property MovieScraperCertOnlyValue() As Boolean = False
-    Public Property MovieScraperCleanFields() As Boolean = False
-    Public Property MovieScraperCleanPlotOutline() As Boolean = False
-    Public Property MovieScraperCollectionID() As Boolean = True
-    Public Property MovieScraperCollectionsAuto() As Boolean = True
-    Public Property MovieScraperCollectionsExtendedInfo() As Boolean = False
-    Public Property MovieScraperCollectionsYAMJCompatibleSets() As Boolean = False
-    Public Property MovieScraperCountry() As Boolean = True
-    Public Property MovieScraperCountryLimit() As Integer = 0
-    Public Property MovieScraperCredits() As Boolean = True
-    Public Property MovieScraperDirector() As Boolean = True
-    Public Property MovieScraperDurationRuntimeFormat() As String = "<m>"
-    Public Property MovieScraperGenre() As Boolean = True
-    Public Property MovieScraperGenreLimit() As Integer = 0
-    Public Property MovieScraperMPAA() As Boolean = True
-    Public Property MovieScraperMPAANotRated() As String = String.Empty
-    Public Property MovieScraperMetaDataIFOScan() As Boolean = True
-    Public Property MovieScraperMetaDataScan() As Boolean = True
-    Public Property MovieScraperOriginalTitle() As Boolean = True
-    Public Property MovieScraperOriginalTitleAsTitle() As Boolean = False
-    Public Property MovieScraperOutline() As Boolean = True
-    Public Property MovieScraperOutlineLimit() As Integer = 350
-    Public Property MovieScraperPlot() As Boolean = True
-    Public Property MovieScraperPlotForOutline() As Boolean = False
-    Public Property MovieScraperPlotForOutlineIfEmpty() As Boolean = False
-    Public Property MovieScraperRating() As Boolean = True
-    Public Property MovieScraperRelease() As Boolean = True
-    Public Property MovieScraperRuntime() As Boolean = True
-    Public Property MovieScraperStudio() As Boolean = True
-    Public Property MovieScraperStudioLimit() As Integer = 0
-    Public Property MovieScraperTagline() As Boolean = True
-    Public Property MovieScraperTitle() As Boolean = True
-    Public Property MovieScraperTop250() As Boolean = True
-    Public Property MovieScraperTrailer() As Boolean = True
-    Public Property MovieScraperUseDetailView() As Boolean = False
-    Public Property MovieScraperUseMDDuration() As Boolean = True
-    Public Property MovieScraperUserRating() As Boolean = True
-    Public Property MovieScraperXBMCTrailerFormat() As Boolean = False
-    Public Property MovieScraperYear() As Boolean = True
     Public Property MovieSetBannerExpertSingle() As String = String.Empty
     Public Property MovieSetBannerExtended() As Boolean = False
     Public Property MovieSetBannerHeight() As Integer = 0
@@ -425,24 +357,19 @@ Public Class Settings
     Public Property MovieSetUseMSAA() As Boolean = False
     Public Property MovieStackExpertMulti() As Boolean = False
     Public Property MovieStackExpertSingle() As Boolean = False
-    Public Property MovieThemeKeepExisting() As Boolean = False
     Public Property MovieThemeTvTunesCustom() As Boolean = False
     Public Property MovieThemeTvTunesCustomPath() As String = String.Empty
     Public Property MovieThemeTvTunesEnable() As Boolean = False
     Public Property MovieThemeTvTunesMoviePath() As Boolean = False
     Public Property MovieThemeTvTunesSub() As Boolean = False
     Public Property MovieThemeTvTunesSubDir() As String = String.Empty
-    Public Property MovieTrailerDefaultSearch() As String = "trailer"
     Public Property MovieTrailerEden() As Boolean = False
     Public Property MovieTrailerExpertBDMV() As String = String.Empty
     Public Property MovieTrailerExpertMulti() As String = String.Empty
     Public Property MovieTrailerExpertSingle() As String = String.Empty
     Public Property MovieTrailerExpertVTS() As String = String.Empty
     Public Property MovieTrailerFrodo() As Boolean = False
-    Public Property MovieTrailerKeepExisting() As Boolean = False
-    Public Property MovieTrailerMinVideoQual() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.Any
     Public Property MovieTrailerNMJ() As Boolean = False
-    Public Property MovieTrailerPrefVideoQual() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.Any
     Public Property MovieTrailerYAMJ() As Boolean = False
     Public Property MovieUnstackExpertMulti() As Boolean = False
     Public Property MovieUnstackExpertSingle() As Boolean = False
@@ -582,7 +509,7 @@ Public Class Settings
     Public Property TVScraperSeasonAired() As Boolean = True
     Public Property TVScraperSeasonPlot() As Boolean = True
     Public Property TVScraperSeasonTitle() As Boolean = False
-    Public Property TVScraperSeasonTitleBlacklist() As List(Of String) = New List(Of String)
+    Public Property TVScraperSeasonTitleBlacklist() As ExtendedListOfString = New ExtendedListOfString
     Public Property TVScraperShowActors() As Boolean = True
     Public Property TVScraperShowActorsLimit() As Integer = 0
     Public Property TVScraperShowCert() As Boolean = False
@@ -753,7 +680,6 @@ Public Class Settings
     Public Property TVShowPosterResize() As Boolean = False
     Public Property TVShowPosterWidth() As Integer = 0
     Public Property TVShowPosterYAMJ() As Boolean = False
-    Public Property TVShowThemeKeepExisting() As Boolean = False
     Public Property TVShowThemeTvTunesCustom() As Boolean = False
     Public Property TVShowThemeTvTunesCustomPath() As String = String.Empty
     Public Property TVShowThemeTvTunesEnable() As Boolean = False
@@ -768,88 +694,71 @@ Public Class Settings
     Public Property TVUseFrodo() As Boolean = False
     Public Property TVUseYAMJ() As Boolean = False
     Public Property Username() As String = String.Empty
-    Public Property Version() As String = String.Empty
 
 #End Region 'Properties
 
 #Region "Simplified Properties"
 
-    Public ReadOnly Property DefaultOptions_Movie As Structures.ScrapeOptions
+    Public ReadOnly Property DefaultOptions(ByVal type As Enums.ContentType) As Structures.ScrapeOptions
         Get
-            Dim scrapeOptions As New Structures.ScrapeOptions
-            With scrapeOptions
-                .bMainActors = MovieScraperCast
-                .bMainCertifications = MovieScraperCert
-                .bMainCollectionID = MovieScraperCollectionID
-                .bMainCountries = MovieScraperCountry
-                .bMainDirectors = MovieScraperDirector
-                .bMainGenres = MovieScraperGenre
-                .bMainMPAA = MovieScraperMPAA
-                .bMainOriginalTitle = MovieScraperOriginalTitle
-                .bMainOutline = MovieScraperOutline
-                .bMainPlot = MovieScraperPlot
-                .bMainRating = MovieScraperRating
-                .bMainRelease = MovieScraperRelease
-                .bMainRuntime = MovieScraperRuntime
-                .bMainStudios = MovieScraperStudio
-                .bMainTagline = MovieScraperTagline
-                .bMainTitle = MovieScraperTitle
-                .bMainTop250 = MovieScraperTop250
-                .bMainTrailer = MovieScraperTrailer
-                .bMainUserRating = MovieScraperUserRating
-                .bMainWriters = MovieScraperCredits
-                .bMainYear = MovieScraperYear
+            Dim nScrapeOptions As New Structures.ScrapeOptions
+            Dim nMainSettings As New DataSettings
+            Dim nEpisodeSettings As New DataSettings
+            Dim nSeasonSettings As New DataSettings
+            Select Case type
+                Case Enums.ContentType.Movie
+                    nMainSettings = Master.eSettings.Movie.DataSettings
+                Case Enums.ContentType.Movieset
+                    nMainSettings = Master.eSettings.Movieset.DataSettings
+                Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
+                    nMainSettings = Master.eSettings.TVShow.DataSettings
+                    nEpisodeSettings = Master.eSettings.TVEpisode.DataSettings
+                    nSeasonSettings = Master.eSettings.TVSeason.DataSettings
+            End Select
+            With nMainSettings
+                nScrapeOptions.bMainActors = .Actors.Enabled
+                nScrapeOptions.bMainCertifications = .Certifications.Enabled
+                nScrapeOptions.bMainCollection = .Collection.Enabled
+                nScrapeOptions.bMainCountries = .Countries.Enabled
+                nScrapeOptions.bMainCreators = .Creators.Enabled
+                nScrapeOptions.bMainCredits = .Credits.Enabled
+                nScrapeOptions.bMainDirectors = .Directors.Enabled
+                nScrapeOptions.bMainEpisodeGuide = .EpisodeGuideURL.Enabled
+                nScrapeOptions.bMainGenres = .Genres.Enabled
+                nScrapeOptions.bMainMPAA = .MPAA.Enabled
+                nScrapeOptions.bMainOriginalTitle = .OriginalTitle.Enabled
+                nScrapeOptions.bMainOutline = .Outline.Enabled
+                nScrapeOptions.bMainPlot = .Plot.Enabled
+                nScrapeOptions.bMainPremiered = .Premiered.Enabled
+                nScrapeOptions.bMainRatings = .Ratings.Enabled
+                nScrapeOptions.bMainRuntime = .Runtime.Enabled
+                nScrapeOptions.bMainStatus = .Status.Enabled
+                nScrapeOptions.bMainStudios = .Studios.Enabled
+                nScrapeOptions.bMainTagline = .Tagline.Enabled
+                nScrapeOptions.bMainTags = .Tags.Enabled
+                nScrapeOptions.bMainTitle = .Title.Enabled
+                nScrapeOptions.bMainTop250 = .Top250.Enabled
+                nScrapeOptions.bMainTrailer = .TrailerLink.Enabled
+                nScrapeOptions.bMainUserRating = .UserRating.Enabled
             End With
-            Return scrapeOptions
-        End Get
-    End Property
-
-    Public ReadOnly Property DefaultOptions_Movieset As Structures.ScrapeOptions
-        Get
-            Dim scrapeOptions As New Structures.ScrapeOptions
-            With scrapeOptions
-                .bMainPlot = MoviesetScraperPlot
-                .bMainTitle = MoviesetScraperTitle
+            With nEpisodeSettings
+                nScrapeOptions.bEpisodeActors = .Actors.Enabled
+                nScrapeOptions.bEpisodeAired = .Aired.Enabled
+                nScrapeOptions.bEpisodeCredits = .Credits.Enabled
+                nScrapeOptions.bEpisodeDirectors = .Directors.Enabled
+                nScrapeOptions.bEpisodeGuestStars = .GuestStars.Enabled
+                nScrapeOptions.bEpisodePlot = .Plot.Enabled
+                nScrapeOptions.bEpisodeRating = .Ratings.Enabled
+                nScrapeOptions.bEpisodeRuntime = .Runtime.Enabled
+                nScrapeOptions.bEpisodeTitle = .Title.Enabled
+                nScrapeOptions.bEpisodeUserRating = .UserRating.Enabled
             End With
-            Return scrapeOptions
-        End Get
-    End Property
-
-    Public ReadOnly Property DefaultOptions_TV As Structures.ScrapeOptions
-        Get
-            Dim scrapeOptions As New Structures.ScrapeOptions
-            With scrapeOptions
-                .bEpisodeActors = TVScraperEpisodeActors
-                .bEpisodeAired = TVScraperEpisodeAired
-                .bEpisodeCredits = TVScraperEpisodeCredits
-                .bEpisodeDirectors = TVScraperEpisodeDirector
-                .bEpisodeGuestStars = TVScraperEpisodeGuestStars
-                .bEpisodePlot = TVScraperEpisodePlot
-                .bEpisodeRating = TVScraperEpisodeRating
-                .bEpisodeRuntime = TVScraperEpisodeRuntime
-                .bEpisodeTitle = TVScraperEpisodeTitle
-                .bEpisodeUserRating = TVScraperEpisodeUserRating
-                .bMainActors = TVScraperShowActors
-                .bMainCertifications = TVScraperShowCert
-                .bMainCountries = TVScraperShowCountry
-                .bMainCreators = TVScraperShowCreators
-                .bMainEpisodeGuide = TVScraperShowEpiGuideURL
-                .bMainGenres = TVScraperShowGenre
-                .bMainMPAA = TVScraperShowMPAA
-                .bMainOriginalTitle = TVScraperShowOriginalTitle
-                .bMainPlot = TVScraperShowPlot
-                .bMainPremiered = TVScraperShowPremiered
-                .bMainRating = TVScraperShowRating
-                .bMainRuntime = TVScraperShowRuntime
-                .bMainStatus = TVScraperShowStatus
-                .bMainStudios = TVScraperShowStudio
-                .bMainTitle = TVScraperShowTitle
-                .bMainUserRating = TVScraperShowUserRating
-                .bSeasonAired = TVScraperSeasonAired
-                .bSeasonPlot = TVScraperSeasonPlot
-                .bSeasonTitle = TVScraperSeasonTitle
+            With nSeasonSettings
+                nScrapeOptions.bSeasonAired = .Aired.Enabled
+                nScrapeOptions.bSeasonPlot = .Plot.Enabled
+                nScrapeOptions.bSeasonTitle = .Title.Enabled
             End With
-            Return scrapeOptions
+            Return nScrapeOptions
         End Get
     End Property
 
@@ -1252,78 +1161,22 @@ Public Class Settings
 
     Public Sub Load()
         Dim configpath As String = Path.Combine(Master.SettingsPath, "Settings.xml")
-
         Try
             If File.Exists(configpath) Then
                 Dim xmlSer As New XmlSerializer(GetType(Settings))
                 Using xmlSR As StreamReader = New StreamReader(configpath)
                     Master.eSettings = DirectCast(xmlSer.Deserialize(xmlSR), Settings)
                 End Using
+            Else
+                Master.eSettings = New Settings
+                SetDefaultsForLists(Enums.DefaultType.All, True)
             End If
         Catch ex As Exception
             _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            _Logger.Info("An attempt is made to repair the Settings.xml")
-            Try
-                Using srSettings As New StreamReader(configpath)
-                    Dim sSettings As String = srSettings.ReadToEnd
-                    'old Fanart/Poster sizes
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Xlrg<", "PrefSize>Any<")
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Lrg<", "PrefSize>Any<")
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Mid<", "PrefSize>Any<")
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Small<", "PrefSize>Any<")
-                    'old Trailer Audio/Video quality
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "Qual>All<", "Qual>Any<")
-                    'old allseasons/season/tvshow banner type
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefType>None<", "PrefType>Any<")
-                    'old seasonposter size HD1000
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "<TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>",
-                                                                             "<TVSeasonPosterPrefSize>Any</TVSeasonPosterPrefSize>")
-                    'replace no longer used "Enums.ImageSize.Thumb" with "Enums.ImageSize.Any"
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Thumb<", "PrefSize>Any<")
-                    Dim xmlSer As New XmlSerializer(GetType(Settings))
-                    Using txtReader As TextReader = New StringReader(sSettings)
-                        Master.eSettings = DirectCast(xmlSer.Deserialize(txtReader), Settings)
-                    End Using
-                    _Logger.Info("Settings.xml successfully repaired")
-                End Using
-            Catch ex2 As Exception
-                _Logger.Error(ex2, New StackFrame().GetMethod().Name)
-                File.Copy(configpath, String.Concat(configpath, "_backup"), True)
-                Master.eSettings = New Settings
-            End Try
+            File.Copy(configpath, String.Concat(configpath, "_backup"), True)
+            Master.eSettings = New Settings
+            SetDefaultsForLists(Enums.DefaultType.All, True)
         End Try
-
-        SetDefaultsForLists(Enums.DefaultType.All, False)
-
-        ' Fix added to avoid to have no movie NFO saved
-        If Not (Master.eSettings.MovieUseBoxee Or Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
-            Master.eSettings.MovieUseFrodo = True
-            Master.eSettings.MovieActorThumbsFrodo = True
-            Master.eSettings.MovieExtrafanartsFrodo = True
-            Master.eSettings.MovieExtrathumbsFrodo = True
-            Master.eSettings.MovieFanartFrodo = True
-            Master.eSettings.MovieNFOFrodo = True
-            Master.eSettings.MoviePosterFrodo = True
-            Master.eSettings.MovieTrailerFrodo = True
-            Master.eSettings.MovieScraperXBMCTrailerFormat = True
-        End If
-
-        ' Fix added to avoid to have no tv show NFO saved
-        If Not (Master.eSettings.TVUseBoxee OrElse Master.eSettings.TVUseEden OrElse Master.eSettings.TVUseExpert OrElse Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
-            Master.eSettings.TVUseFrodo = True
-            Master.eSettings.TVEpisodeActorThumbsFrodo = True
-            Master.eSettings.TVEpisodeNFOFrodo = True
-            Master.eSettings.TVEpisodePosterFrodo = True
-            Master.eSettings.TVSeasonBannerFrodo = True
-            Master.eSettings.TVSeasonFanartFrodo = True
-            Master.eSettings.TVSeasonPosterFrodo = True
-            Master.eSettings.TVShowActorThumbsFrodo = True
-            Master.eSettings.TVShowBannerFrodo = True
-            Master.eSettings.TVShowExtrafanartsFrodo = True
-            Master.eSettings.TVShowFanartFrodo = True
-            Master.eSettings.TVShowNFOFrodo = True
-            Master.eSettings.TVShowPosterFrodo = True
-        End If
     End Sub
 
     Public Sub Save()
@@ -1337,124 +1190,9 @@ Public Class Settings
         End Try
     End Sub
 
-    Public Function GetDefaultsForList_AudioCodecMappings() As List(Of AVCodecMapping.CodecMapping)
-        Return New List(Of AVCodecMapping.CodecMapping) From {
-            New AVCodecMapping.CodecMapping With {.Codec = "aac lc", .Mapping = "aac", .AdditionalFeatures = ""},
-            New AVCodecMapping.CodecMapping With {.Codec = "ac-3 mlp fba 16-ch", .Mapping = "truehd", .AdditionalFeatures = "atmos"},
-            New AVCodecMapping.CodecMapping With {.Codec = "ac-3", .Mapping = "ac3", .AdditionalFeatures = ""},
-            New AVCodecMapping.CodecMapping With {.Codec = "dts xbr", .Mapping = "dtshd_hra", .AdditionalFeatures = ""},
-            New AVCodecMapping.CodecMapping With {.Codec = "dts xll x", .Mapping = "dtshd_ma", .AdditionalFeatures = "x"},
-            New AVCodecMapping.CodecMapping With {.Codec = "dts xll", .Mapping = "dtshd_ma", .AdditionalFeatures = ""},
-            New AVCodecMapping.CodecMapping With {.Codec = "dts", .Mapping = "dca", .AdditionalFeatures = ""},
-            New AVCodecMapping.CodecMapping With {.Codec = "e-ac-3", .Mapping = "eac3", .AdditionalFeatures = ""},
-            New AVCodecMapping.CodecMapping With {.Codec = "mlp fba", .Mapping = "truehd", .AdditionalFeatures = ""}
-        }
-    End Function
-
-    Public Function GetDefaultsForList_Blacklist_SeasonTitles() As List(Of String)
-        Return New List(Of String) From {
-            "%{season_number}. sezóna",
-            "%{season_number}. évad",
-            "%{season_number}.ª Temporada",
-            "%{season_number}ª Temporada",
-            "%{season_number}ος κύκλος",
-            "Kausi %{season_number}",
-            "Musim ke %{season_number}",
-            "Saison %{season_number}",
-            "Season %{season_number}",
-            "Seizoen %{season_number}",
-            "Series %{season_number}",
-            "Sezon %{season_number}",
-            "Sezonas %{season_number}",
-            "Sezonul %{season_number}",
-            "Staffel %{season_number}",
-            "Stagione %{season_number}",
-            "Säsong %{season_number}",
-            "Séria %{season_number}",
-            "Tempada %{season_number}",
-            "Temporada %{season_number}",
-            "Сезон %{season_number}",
-            "Сезона %{season_number}",
-            "עונה %{season_number}",
-            "الموسم %{season_number}",
-            "فصل %{season_number}",
-            "シーズン%{season_number}",
-            "第 %{season_number} 季"
-        }
-    End Function
-
-    Public Function GetDefaultsForList_SortTokens() As List(Of String)
-        Return New List(Of String) From {
-            "a\s", "an\s", "das\s", "der\s", "die\s", "the\s"
-        }
-    End Function
-
-    Public Function GetDefaultsForList_ValidSubtitleExtensions() As List(Of String)
-        Return New List(Of String) From {
-            ".aqt", ".ass", ".idx", ".jss", ".mpl", ".rt", ".sami", ".smi", ".srt", ".ssa", ".sst", ".sub"
-        }
-    End Function
-
-    Public Function GetDefaultsForList_ValidThemeExtensions() As List(Of String)
-        Return New List(Of String) From {
-            ".flac", ".m4a", ".mp3", ".wav", ".wma"
-        }
-    End Function
-
-    Public Function GetDefaultsForList_ValidVideoExtensions() As List(Of String)
-        Return New List(Of String) From {
-            ".3gpp", ".asf", ".asx", ".avi", ".avs", ".bdmv", ".bin", ".cue", ".dat", ".disc",
-            ".divx", ".dvb", ".dvr-ms", ".evo", ".flv", ".ifo", ".img", ".iso", ".m2t", ".m2ts",
-            ".m4v", ".mkv", ".mov", ".mp4", ".mpeg", ".mpg", ".mts", ".nsv", ".nut", ".ogg",
-            ".ogm", ".ogv", ".ram", ".rar", ".rmvb", ".swf", ".ts", ".viv", ".vob", ".webm",
-            ".wma", ".wmv"
-        }
-    End Function
-
-    Public Function GetDefaultsForList_VideoCodecMappings() As List(Of AVCodecMapping.CodecMapping)
-        Return New List(Of AVCodecMapping.CodecMapping) From {
-            New AVCodecMapping.CodecMapping With {.Codec = "avc", .Mapping = "h264"},
-            New AVCodecMapping.CodecMapping With {.Codec = "hvc1", .Mapping = "hevc"},
-            New AVCodecMapping.CodecMapping With {.Codec = "v_mpeg2", .Mapping = "h264"},
-            New AVCodecMapping.CodecMapping With {.Codec = "v_mpegh/iso/hevc", .Mapping = "hevc"},
-            New AVCodecMapping.CodecMapping With {.Codec = "v_ms/vfw/fourcc / dx50", .Mapping = "dx50"},
-            New AVCodecMapping.CodecMapping With {.Codec = "v_ms/vfw/fourcc / xvid", .Mapping = "xvid"},
-            New AVCodecMapping.CodecMapping With {.Codec = "v_vp7", .Mapping = "vp7"},
-            New AVCodecMapping.CodecMapping With {.Codec = "v_vp8", .Mapping = "vp8"},
-            New AVCodecMapping.CodecMapping With {.Codec = "v_vp9", .Mapping = "vp9"},
-            New AVCodecMapping.CodecMapping With {.Codec = "x264", .Mapping = "h264"}
-        }
-    End Function
-
-    Public Function GetDefaultsForList_VideoSourceMappingsByRegex() As List(Of VideoSourceMapping.VideoSourceByRegex)
-        Return New List(Of VideoSourceMapping.VideoSourceByRegex) From {
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]3dbd[\W_]", .Videosource = "3dbd"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]azhd|amazon[\W_]", .Videosource = "amazon"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_](b[dr][-\s]?rip|blu[-\s]?ray)[\W_]", .Videosource = "bluray"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd25[\W_]", .Videosource = "bluray"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd50[\W_]", .Videosource = "bluray"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd5[\W_]", .Videosource = "dvd"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd9[\W_]", .Videosource = "dvd"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_](sd[-\s]?)?dvd([-\s]?rip)?[\W_]", .Videosource = "dvd"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?dvd[\W_]", .Videosource = "hddvd"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?tv[\W_]", .Videosource = "hdtv"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]ithd|itunes[\W_]", .Videosource = "itunes"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]nfu?hd|netflix[\W_]", .Videosource = "netflix"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]pdtv[\W_]", .Videosource = "sdtv"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]dsr[\W_]", .Videosource = "sdtv"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]ntsc[\W_]", .Videosource = "sdtv"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]sd[-\s]?tv[\W_]", .Videosource = "sdtv"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]tvrip[\W_]", .Videosource = "sdtv"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]vhs[\W_]", .Videosource = "vhs"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]hddl[\W_]", .Videosource = "webdl"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?dl[\W_]", .Videosource = "webdl"},
-            New VideoSourceMapping.VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?rip[\W_]", .Videosource = "webdl"}
-        }
-    End Function
-
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.AudioCodecMapping) AndAlso (Force OrElse Not Master.eSettings.Options.AVCodecMapping.AudioSpecified) Then
-            Master.eSettings.Options.AVCodecMapping.Audio = GetDefaultsForList_AudioCodecMappings()
+            Master.eSettings.Options.AVCodecMapping.Audio = Master.eSettings.Options.AVCodecMapping.GetDefaults(Enums.DefaultType.AudioCodecMapping)
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MainTabSorting) AndAlso (Force OrElse Master.eSettings.GeneralMainTabSorting.Count = 0) Then
@@ -1464,24 +1202,24 @@ Public Class Settings
             Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist", .Order = 2, .Title = Master.eLang.GetString(653, "TV Shows")})
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse Not Master.eSettings.Movie.SourceSettings.TitleFiltersSpecified) Then
-            Master.eSettings.Movie.SourceSettings.TitleFilters = Master.eSettings.Movie.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.Movie)
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TitleFilters_Movie) AndAlso (Force OrElse Not Master.eSettings.Movie.SourceSettings.TitleFiltersSpecified) Then
+            Master.eSettings.Movie.SourceSettings.TitleFilters = Master.eSettings.Movie.SourceSettings.TitleFilters.GetDefaults(Enums.DefaultType.TitleFilters_Movie)
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeFilters) AndAlso (Force OrElse Master.eSettings.TVEpisode.SourceSettings.TitleFiltersSpecified) Then
-            Master.eSettings.TVEpisode.SourceSettings.TitleFilters = Master.eSettings.TVEpisode.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.TVEpisode)
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TitleFilters_TVEpisode) AndAlso (Force OrElse Master.eSettings.TVEpisode.SourceSettings.TitleFiltersSpecified) Then
+            Master.eSettings.TVEpisode.SourceSettings.TitleFilters = Master.eSettings.TVEpisode.SourceSettings.TitleFilters.GetDefaults(Enums.DefaultType.TitleFilters_TVEpisode)
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowFilters) AndAlso (Force OrElse Not Master.eSettings.TVShow.SourceSettings.TitleFiltersSpecified) Then
-            Master.eSettings.TVShow.SourceSettings.TitleFilters = Master.eSettings.TVShow.SourceSettings.TitleFilters.GetDefaults(Enums.ContentType.TVShow)
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TitleFilters_TVShow) AndAlso (Force OrElse Not Master.eSettings.TVShow.SourceSettings.TitleFiltersSpecified) Then
+            Master.eSettings.TVShow.SourceSettings.TitleFilters = Master.eSettings.TVShow.SourceSettings.TitleFilters.GetDefaults(Enums.DefaultType.TitleFilters_TVShow)
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.SortTokens) AndAlso (Force OrElse Not Master.eSettings.Options.Global.SortTokensSpecified) Then
-            Master.eSettings.Options.Global.SortTokens = GetDefaultsForList_SortTokens()
+            Master.eSettings.Options.Global.SortTokens = Master.eSettings.Options.Global.SortTokens.GetDefaults(Enums.DefaultType.SortTokens)
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSeasonTitleBlacklist) AndAlso (Force OrElse Master.eSettings.TVScraperSeasonTitleBlacklist.Count <= 0) Then
-            Master.eSettings.TVScraperSeasonTitleBlacklist = GetDefaultsForList_Blacklist_SeasonTitles()
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TitleBlacklist_TVSeason) AndAlso (Force OrElse Master.eSettings.TVScraperSeasonTitleBlacklist.Count <= 0) Then
+            Master.eSettings.TVScraperSeasonTitleBlacklist = Master.eSettings.TVScraperSeasonTitleBlacklist.GetDefaults(Enums.DefaultType.TitleBlacklist_TVSeason)
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeMatching) AndAlso (Force OrElse Not Master.eSettings.TVEpisode.SourceSettings.EpisodeMatchingSepcified) Then
@@ -1489,23 +1227,23 @@ Public Class Settings
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidSubtitleExts) AndAlso (Force OrElse Not Master.eSettings.Options.FileSystem.ValidSubtitleExtensionsSpecified) Then
-            Master.eSettings.Options.FileSystem.ValidSubtitleExtensions = GetDefaultsForList_ValidSubtitleExtensions()
+            Master.eSettings.Options.FileSystem.ValidSubtitleExtensions = Master.eSettings.Options.FileSystem.ValidSubtitleExtensions.GetDefaults(Enums.DefaultType.ValidSubtitleExts)
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidThemeExts) AndAlso (Force OrElse Not Master.eSettings.Options.FileSystem.ValidThemeExtensionsSpecified) Then
-            Master.eSettings.Options.FileSystem.ValidThemeExtensions = GetDefaultsForList_ValidThemeExtensions()
+            Master.eSettings.Options.FileSystem.ValidThemeExtensions = Master.eSettings.Options.FileSystem.ValidThemeExtensions.GetDefaults(Enums.DefaultType.ValidThemeExts)
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidVideoExts) AndAlso (Force OrElse Not Master.eSettings.Options.FileSystem.ValidVideoExtensionsSpecified) Then
-            Master.eSettings.Options.FileSystem.ValidVideoExtensions = GetDefaultsForList_ValidVideoExtensions()
+            Master.eSettings.Options.FileSystem.ValidVideoExtensions = Master.eSettings.Options.FileSystem.ValidVideoExtensions.GetDefaults(Enums.DefaultType.ValidVideoExts)
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.VideoCodecMapping) AndAlso (Force OrElse Not Master.eSettings.Options.AVCodecMapping.VideoSpecified) Then
-            Master.eSettings.Options.AVCodecMapping.Video = GetDefaultsForList_VideoCodecMappings()
+            Master.eSettings.Options.AVCodecMapping.Video = Master.eSettings.Options.AVCodecMapping.GetDefaults(Enums.DefaultType.VideoCodecMapping)
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.VideosourceMappingByRegex) AndAlso (Force OrElse Not Master.eSettings.Options.VideoSourceMapping.ByRegexSpecified) Then
-            Master.eSettings.Options.VideoSourceMapping.ByRegex = GetDefaultsForList_VideoSourceMappingsByRegex()
+            Master.eSettings.Options.VideoSourceMapping.ByRegex = Master.eSettings.Options.VideoSourceMapping.GetDefaults
         End If
     End Sub
 
@@ -1920,7 +1658,7 @@ Public Class AVCodecMapping
 
 #Region "Properties"
 
-    Public Property Audio As List(Of CodecMapping) = New List(Of CodecMapping)
+    Public Property Audio As New List(Of CodecMapping)
 
     <XmlIgnore>
     Public ReadOnly Property AudioSpecified As Boolean
@@ -1929,7 +1667,7 @@ Public Class AVCodecMapping
         End Get
     End Property
 
-    Public Property Video As List(Of CodecMapping) = New List(Of CodecMapping)
+    Public Property Video As New List(Of CodecMapping)
 
     <XmlIgnore>
     Public ReadOnly Property VideoSpecified As Boolean
@@ -1941,6 +1679,41 @@ Public Class AVCodecMapping
 
 #End Region 'Properties
 
+#Region "Methods"
+
+    Public Function GetDefaults(ByVal type As Enums.DefaultType) As List(Of CodecMapping)
+        Select Case type
+            Case Enums.DefaultType.AudioCodecMapping
+                Return New List(Of CodecMapping) From {
+                        New CodecMapping With {.Codec = "aac lc", .Mapping = "aac", .AdditionalFeatures = ""},
+                        New CodecMapping With {.Codec = "ac-3 mlp fba 16-ch", .Mapping = "truehd", .AdditionalFeatures = "atmos"},
+                        New CodecMapping With {.Codec = "ac-3", .Mapping = "ac3", .AdditionalFeatures = ""},
+                        New CodecMapping With {.Codec = "dts xbr", .Mapping = "dtshd_hra", .AdditionalFeatures = ""},
+                        New CodecMapping With {.Codec = "dts xll x", .Mapping = "dtshd_ma", .AdditionalFeatures = "x"},
+                        New CodecMapping With {.Codec = "dts xll", .Mapping = "dtshd_ma", .AdditionalFeatures = ""},
+                        New CodecMapping With {.Codec = "dts", .Mapping = "dca", .AdditionalFeatures = ""},
+                        New CodecMapping With {.Codec = "e-ac-3", .Mapping = "eac3", .AdditionalFeatures = ""},
+                        New CodecMapping With {.Codec = "mlp fba", .Mapping = "truehd", .AdditionalFeatures = ""}
+                    }
+            Case Enums.DefaultType.VideoCodecMapping
+                Return New List(Of CodecMapping) From {
+                        New CodecMapping With {.Codec = "avc", .Mapping = "h264"},
+                        New CodecMapping With {.Codec = "hvc1", .Mapping = "hevc"},
+                        New CodecMapping With {.Codec = "v_mpeg2", .Mapping = "h264"},
+                        New CodecMapping With {.Codec = "v_mpegh/iso/hevc", .Mapping = "hevc"},
+                        New CodecMapping With {.Codec = "v_ms/vfw/fourcc / dx50", .Mapping = "dx50"},
+                        New CodecMapping With {.Codec = "v_ms/vfw/fourcc / xvid", .Mapping = "xvid"},
+                        New CodecMapping With {.Codec = "v_vp7", .Mapping = "vp7"},
+                        New CodecMapping With {.Codec = "v_vp8", .Mapping = "vp8"},
+                        New CodecMapping With {.Codec = "v_vp9", .Mapping = "vp9"},
+                        New CodecMapping With {.Codec = "x264", .Mapping = "h264"}
+                    }
+        End Select
+        Return New List(Of CodecMapping)
+    End Function
+
+#End Region 'Methods
+
 #Region "Nested Types"
 
     Public Class CodecMapping
@@ -1948,11 +1721,18 @@ Public Class AVCodecMapping
 #Region "Properties"
 
         <XmlAttribute>
-        Public Property Codec As String = String.Empty
+        Public Property Codec() As String = String.Empty
 
-        Public Property Mapping As String = String.Empty
+        Public Property Mapping() As String = String.Empty
 
-        Public Property AdditionalFeatures As String = String.Empty
+        Public Property AdditionalFeatures() As String = String.Empty
+
+        <XmlIgnore>
+        Public ReadOnly Property AdditionalFeaturesSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(AdditionalFeatures)
+            End Get
+        End Property
 
 #End Region 'Properties
 
@@ -1968,7 +1748,7 @@ Public Class ConnectionSettings
 
 #Region "Properties"
 
-    Public Property ProxyCredentials() As NetworkCredential = New NetworkCredential
+    Public Property ProxyCredentials() As New NetworkCredential
 
     Public Property ProxyPort() As Integer = 0
 
@@ -1997,36 +1777,36 @@ Public Class FilesystemSettings
 
 #Region "Properties"
 
-    Public Property ValidSubtitleExtensions() As List(Of String) = New List(Of String)
+    Public Property ValidSubtitleExtensions() As New ExtendedListOfString
 
     <XmlIgnore>
-    Public ReadOnly Property ValidSubtitleExtensionsSpecified As Boolean
+    Public ReadOnly Property ValidSubtitleExtensionsSpecified() As Boolean
         Get
             Return ValidSubtitleExtensions.Count > 0
         End Get
     End Property
 
-    Public Property ValidThemeExtensions() As List(Of String) = New List(Of String)
+    Public Property ValidThemeExtensions() As New ExtendedListOfString
 
     <XmlIgnore>
-    Public ReadOnly Property ValidThemeExtensionsSpecified As Boolean
+    Public ReadOnly Property ValidThemeExtensionsSpecified() As Boolean
         Get
             Return ValidSubtitleExtensions.Count > 0
         End Get
     End Property
 
-    Public Property ValidVideoExtensions() As List(Of String) = New List(Of String)
+    Public Property ValidVideoExtensions() As New ExtendedListOfString
 
     <XmlIgnore>
-    Public ReadOnly Property ValidVideoExtensionsSpecified As Boolean
+    Public ReadOnly Property ValidVideoExtensionsSpecified() As Boolean
         Get
             Return ValidSubtitleExtensions.Count > 0
         End Get
     End Property
 
-    Public Property VirtualDriveBinPath As String = String.Empty
+    Public Property VirtualDriveBinPath() As String = String.Empty
 
-    Public Property VirtualDriveDriveLetter As String = String.Empty
+    Public Property VirtualDriveDriveLetter() As String = String.Empty
 
 #End Region 'Properties
 
@@ -2040,16 +1820,16 @@ Public Class GlobalSettings
 
     Public Property CheckForUpdates() As Boolean = False
 
-    Public Property DigitGrpSymbolVotesEnabled As Boolean = False
+    Public Property DigitGrpSymbolVotesEnabled() As Boolean = False
 
-    Public Property Language As String = "English_(en_US)"
+    Public Property Language() As String = "English_(en_US)"
 
-    Public Property ShowNews As Boolean = True
+    Public Property ShowNews() As Boolean = True
 
-    Public Property SortTokens As List(Of String) = New List(Of String)
+    Public Property SortTokens() As New ExtendedListOfString
 
     <XmlIgnore>
-    Public ReadOnly Property SortTokensSpecified As Boolean
+    Public ReadOnly Property SortTokensSpecified() As Boolean
         Get
             Return SortTokens.Count > 0
         End Get
@@ -2064,17 +1844,17 @@ Public Class MovieSettings
 
 #Region "Properties"
 
-    'Public Property DataSettings() As DataSettings_Movie
+    Public Property DataSettings() As New DataSettings
 
-    ' Public Property Filenaming As FilenamingSettings_Movie
+    ' Public Property Filenaming As New FilenamingSettings_Movie
 
-    'Public Property ImageSettings() As ImageSettings_Movie
+    'Public Property ImageSettings() As New ImageSettings_Movie
 
-    Public Property SourceSettings As SourceSettings = New SourceSettings
+    Public Property SourceSettings() As New SourceSettings
 
-    'Public Property ThemeSettings() As ThemeSettings
+    Public Property ThemeSettings() As New ThemeSettings
 
-    ' Public Property TrailerSettings() As TrailerSettings
+    Public Property TrailerSettings() As New TrailerSettings
 
 #End Region 'Properties
 
@@ -2085,13 +1865,13 @@ Public Class MoviesetSettings
 
 #Region "Properties"
 
-    'Public Property DataSettings() As DataSettings_Movie
+    Public Property DataSettings() As New DataSettings
 
     ' Public Property Filenaming As FilenamingSettings_Movie
 
     'Public Property ImageSettings() As ImageSettings_Movie
 
-    Public Property SourceSettings As SourceSettings = New SourceSettings
+    Public Property SourceSettings As New SourceSettings
 
     'Public Property ThemeSettings() As ThemeSettings
 
@@ -2106,19 +1886,219 @@ Public Class Options
 
 #Region "Properties"
 
-    Public Property AVCodecMapping As AVCodecMapping = New AVCodecMapping
+    Public Property AVCodecMapping As New AVCodecMapping
 
-    Public Property Connection As ConnectionSettings = New ConnectionSettings
+    Public Property Connection As New ConnectionSettings
 
-    Public Property FileSystem As FilesystemSettings = New FilesystemSettings
+    Public Property FileSystem As New FilesystemSettings
 
     'Public Property GUI As GUISettings
 
-    Public Property [Global] As GlobalSettings = New GlobalSettings
+    Public Property [Global] As New GlobalSettings
 
-    Public Property VideoSourceMapping As VideoSourceMapping = New VideoSourceMapping
+    Public Property VideoSourceMapping As New VideoSourceMapping
 
 #End Region 'Properties
+
+End Class
+
+
+<Serializable()>
+Public Class DataSettings
+
+#Region "Properties"
+
+    Public Property Actors() As New DataSpecificationItem_WithImageOnly
+    Public Property Aired() As New DataSpecificationItem
+    Public Property Certifications() As New DataSpecificationItem
+    Public Property CertificationsForMPAA() As Boolean = False
+    Public Property CertificationsForMPAAFallback() As Boolean = False
+    Public Property CertificationsOnlyValue() As Boolean = False
+    Public Property CleanPlotAndOutline As Boolean = False
+    Public Property ClearDisabledFields() As Boolean = False
+    Public Property Collection As New DataSpecificationItem_Collection
+    Public Property Countries() As New DataSpecificationItem
+    Public Property Creators() As New DataSpecificationItem
+    Public Property Credits() As New DataSpecificationItem
+    Public Property Directors() As New DataSpecificationItem
+    Public Property EpisodeGuideURL() As New DataSpecificationItem
+    Public Property Genres() As New DataSpecificationItem
+    Public Property GuestStars() As New DataSpecificationItem_WithImageOnly
+    Public Property LockAudioLanguage As Boolean = False
+    Public Property LockVideoLanguage As Boolean = False
+    Public Property MetadataScan As New DataSpecificationItem_Metadata
+    Public Property MPAA() As New DataSpecificationItem
+    Public Property MPAANotRatedValue As String = String.Empty
+    <XmlIgnore()>
+    Public ReadOnly Property MPAANotRatedValueSpecified() As Boolean
+        Get
+            Return Not String.IsNullOrEmpty(MPAANotRatedValue)
+        End Get
+    End Property
+    Public Property OriginalTitle() As New DataSpecificationItem
+    Public Property Outline() As New DataSpecificationItem_Outline With {.Limit = 350}
+    Public Property Plot() As New DataSpecificationItem
+    Public Property Premiered() As New DataSpecificationItem
+    Public Property Ratings() As New DataSpecificationItem
+    Public Property Runtime() As New DataSpecificationItem
+    Public Property Status As New DataSpecificationItem
+    Public Property Studios() As New DataSpecificationItem
+    Public Property Tagline() As New DataSpecificationItem
+    Public Property Tags() As New DataSpecificationItem
+    Public Property Title() As New DataSpecificationItem_Title
+    Public Property Top250() As New DataSpecificationItem
+    Public Property TrailerLink() As New DataSpecificationItem_Trailer
+    Public Property UserRating() As New DataSpecificationItem
+
+#End Region 'Properties 
+
+End Class
+
+<Serializable()>
+Public Class DataSpecificationItem
+
+#Region "Properties"
+
+    Public Property Enabled() As Boolean = True
+
+    Public Property Filter() As String = String.Empty
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilterSpecified() As Boolean
+        Get
+            Return Not String.IsNullOrEmpty(Filter)
+        End Get
+    End Property
+
+    Public Property Limit() As Integer = 0
+
+    <XmlIgnore()>
+    Public ReadOnly Property LimitSpecified() As Boolean
+        Get
+            Return Limit > 0
+        End Get
+    End Property
+
+    Public Property LimitAsList() As ExtendedListOfString = New ExtendedListOfString
+
+    <XmlIgnore()>
+    Public ReadOnly Property LimitAsListSpecified() As Boolean
+        Get
+            Return LimitAsList.Count > 0
+        End Get
+    End Property
+
+    Public Property Locked() As Boolean = False
+
+#End Region 'Properties 
+
+End Class
+
+<Serializable()>
+Public Class DataSpecificationItem_Collection
+    Inherits DataSpecificationItem
+
+#Region "Properties"
+
+    Public Property AutoAddToCollection() As Boolean = True
+
+    Public Property SaveExtendedInformation As Boolean = True
+
+    Public Property SaveYAMJCompatible As Boolean = False
+
+#End Region 'Properties
+
+End Class
+
+<Serializable()>
+Public Class DataSpecificationItem_Metadata
+
+#Region "Properties"
+
+    Public Property Enabled() As Boolean = True
+
+    Public Property DurationForRuntimeEnabled() As Boolean = True
+
+    Public Property DurationForRuntimeFormat() As String = "<m>"
+
+    Public Property LockAudioLanguage() As Boolean = False
+
+    Public Property LockVideoLanguage() As Boolean = False
+
+#End Region 'Properties
+
+End Class
+
+<Serializable()>
+Public Class DataSpecificationItem_Outline
+    Inherits DataSpecificationItem
+
+#Region "Properties"
+
+    Public Property UsePlot() As Boolean = False
+
+    Public Property UsePlotAsFallback As Boolean = False
+
+#End Region 'Properties
+
+End Class
+
+<Serializable()>
+Public Class DataSpecificationItem_Title
+    Inherits DataSpecificationItem
+
+#Region "Properties"
+
+    Public Property UseOriginalTitle() As Boolean = False
+
+#End Region 'Properties
+
+End Class
+
+<Serializable()>
+Public Class DataSpecificationItem_Trailer
+    Inherits DataSpecificationItem
+
+#Region "Properties"
+
+    Public Property SaveKodiCompatible() As Boolean = False
+
+#End Region 'Properties
+
+End Class
+
+<Serializable()>
+Public Class DataSpecificationItem_WithImageOnly
+    Inherits DataSpecificationItem
+
+#Region "Properties"
+
+    Public Property WithImageOnly() As Boolean = False
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Overloads Sub SetDefaults()
+        Enabled = True
+        Filter = String.Empty
+        Limit = 0
+        Locked = False
+        WithImageOnly = False
+    End Sub
+
+#End Region 'Methods
 
 End Class
 
@@ -2198,6 +2178,169 @@ End Class
 
 
 <Serializable()>
+Public Class ExtendedListOfString
+    Inherits List(Of String)
+
+#Region "Methods"
+
+    Public Function GetDefaults(ByVal type As Enums.DefaultType) As ExtendedListOfString
+        Select Case type
+            Case Enums.DefaultType.SortTokens
+                Return New ExtendedListOfString From {
+                    "a\s", "an\s", "das\s", "der\s", "die\s", "the\s"
+                }
+            Case Enums.DefaultType.TitleBlacklist_TVSeason
+                Return New ExtendedListOfString From {
+                    "%{season_number}. sezóna",
+                    "%{season_number}. évad",
+                    "%{season_number}.ª Temporada",
+                    "%{season_number}ª Temporada",
+                    "%{season_number}ος κύκλος",
+                    "Kausi %{season_number}",
+                    "Musim ke %{season_number}",
+                    "Saison %{season_number}",
+                    "Season %{season_number}",
+                    "Seizoen %{season_number}",
+                    "Series %{season_number}",
+                    "Sezon %{season_number}",
+                    "Sezonas %{season_number}",
+                    "Sezonul %{season_number}",
+                    "Staffel %{season_number}",
+                    "Stagione %{season_number}",
+                    "Säsong %{season_number}",
+                    "Séria %{season_number}",
+                    "Tempada %{season_number}",
+                    "Temporada %{season_number}",
+                    "Сезон %{season_number}",
+                    "Сезона %{season_number}",
+                    "עונה %{season_number}",
+                    "الموسم %{season_number}",
+                    "فصل %{season_number}",
+                    "シーズン%{season_number}",
+                    "第 %{season_number} 季"
+                }
+            Case Enums.DefaultType.TitleFilters_Movie
+                Return New ExtendedListOfString From {
+                    "(?i)[\W_]\(?\d{4}\)?.*",               'year in brakets
+                    "(?i)[\W_]tt\d*",                       'IMDB ID
+                    "(?i)[\W_]blu[\W_]?ray.*",
+                    "(?i)[\W_]bd[\W_]?rip.*",
+                    "(?i)[\W_]3d.*",
+                    "(?i)[\W_]dvd.*",
+                    "(?i)[\W_]720.*",
+                    "(?i)[\W_]1080.*",
+                    "(?i)[\W_]1440.*",
+                    "(?i)[\W_]2160.*",
+                    "(?i)[\W_]4k.*",
+                    "(?i)[\W_]ac3.*",
+                    "(?i)[\W_]dts.*",
+                    "(?i)[\W_]divx.*",
+                    "(?i)[\W_]xvid.*",
+                    "(?i)[\W_]dc[\W_]?.*",
+                    "(?i)[\W_]dir(ector'?s?)?\s?cut.*",
+                    "(?i)[\W_]extended.*",
+                    "(?i)[\W_]hd(tv)?.*",
+                    "(?i)[\W_]unrated.*",
+                    "(?i)[\W_]uncut.*",
+                    "(?i)[\W_]german.*",
+                    "(?i)[\W_]([a-z]{3}|multi)[sd]ub.*",
+                    "(?i)[\W_]\[offline\].*",
+                    "(?i)[\W_]ntsc.*",
+                    "[\W_]PAL[\W_]?.*",                     'convert dots to space
+                    "\.[->] ", "_[->] "                     'convert underscore to space
+                }
+            Case Enums.DefaultType.TitleFilters_TVEpisode
+                Return New ExtendedListOfString From {
+                    "[\W_]\(?\d{4}\)?.*",
+                    "(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*",
+                    "(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*",
+                    "(?i)[\W_]blu[\W_]?ray.*",
+                    "(?i)[\W_]bd[\W_]?rip.*",
+                    "(?i)[\W_]dvd.*",
+                    "(?i)[\W_]720.*",
+                    "(?i)[\W_]1080.*",
+                    "(?i)[\W_]1440.*",
+                    "(?i)[\W_]2160.*",
+                    "(?i)[\W_]4k.*",
+                    "(?i)[\W_]ac3.*",
+                    "(?i)[\W_]dts.*",
+                    "(?i)[\W_]divx.*",
+                    "(?i)[\W_]xvid.*",
+                    "(?i)[\W_]dc[\W_]?.*",
+                    "(?i)[\W_]dir(ector'?s?)?\s?cut.*",
+                    "(?i)[\W_]extended.*",
+                    "(?i)[\W_]hd(tv)?.*",
+                    "(?i)[\W_]unrated.*",
+                    "(?i)[\W_]uncut.*",
+                    "(?i)[\W_]([a-z]{3}|multi)[sd]ub.*",
+                    "(?i)[\W_]\[offline\].*",
+                    "(?i)[\W_]ntsc.*",
+                    "[\W_]PAL[\W_]?.*",
+                    "\.[->] ",                              'convert dots to space
+                    "_[->] ",                               'convert underscore to space
+                    " - [->] "                              'convert space-minus-space to space
+                }
+            Case Enums.DefaultType.TitleFilters_TVShow
+                Return New ExtendedListOfString From {
+                    "[\W_]\(?\d{4}\,?.*",
+                    "(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*",
+                    "(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*",
+                    "(?i,[\W_]blu[\W_]?ray.*",
+                    "(?i,[\W_]bd[\W_]?rip.*",
+                    "(?i,[\W_]dvd.*",
+                    "(?i,[\W_]720.*",
+                    "(?i,[\W_]1080.*",
+                    "(?i,[\W_]1440.*",
+                    "(?i,[\W_]2160.*",
+                    "(?i,[\W_]4k.*",
+                    "(?i,[\W_]ac3.*",
+                    "(?i,[\W_]dts.*",
+                    "(?i,[\W_]divx.*",
+                    "(?i,[\W_]xvid.*",
+                    "(?i,[\W_]dc[\W_]?.*",
+                    "(?i,[\W_]dir(ector'?s?,?\s?cut.*",
+                    "(?i,[\W_]extended.*",
+                    "(?i,[\W_]hd(tv,?.*",
+                    "(?i,[\W_]unrated.*",
+                    "(?i,[\W_]uncut.*",
+                    "(?i,[\W_]([a-z]{3}|multi,[sd]ub.*",
+                    "(?i,[\W_]\[offline\].*",
+                    "(?i,[\W_]ntsc.*",
+                    "[\W_]PAL[\W_]?.*",
+                    "\.[->] ",                              'convert dots to space
+                    "_[->] ",                               'convert underscore to space
+                    " - [->] "                              'convert space-minus-space to space
+                }
+            Case Enums.DefaultType.ValidSubtitleExts
+                Return New ExtendedListOfString From {
+                    ".aqt", ".ass", ".idx", ".jss", ".mpl", ".rt", ".sami", ".smi", ".srt", ".ssa", ".sst", ".sub"
+                }
+            Case Enums.DefaultType.ValidThemeExts
+                Return New ExtendedListOfString From {
+                    ".flac", ".m4a", ".mp3", ".wav", ".wma"
+                }
+            Case Enums.DefaultType.ValidVideoExts
+                Return New ExtendedListOfString From {
+                    ".3gpp", ".asf", ".asx", ".avi", ".avs", ".bdmv", ".bin", ".cue", ".dat", ".disc",
+                    ".divx", ".dvb", ".dvr-ms", ".evo", ".flv", ".ifo", ".img", ".iso", ".m2t", ".m2ts",
+                    ".m4v", ".mkv", ".mov", ".mp4", ".mpeg", ".mpg", ".mts", ".nsv", ".nut", ".ogg",
+                    ".ogm", ".ogv", ".ram", ".rar", ".rmvb", ".swf", ".ts", ".viv", ".vob", ".webm",
+                    ".wma", ".wmv"
+                }
+        End Select
+        Return New ExtendedListOfString
+    End Function
+
+#End Region 'Methods
+
+End Class
+
+
+<Serializable()>
 Public Class SourceSettings
 
 #Region "Properties"
@@ -2218,7 +2361,7 @@ Public Class SourceSettings
 
     Public Property DefaultEpisodeOrdering() As Enums.EpisodeOrdering = Enums.EpisodeOrdering.Standard
 
-    Public Property EpisodeMatching As EpisodeMatchingSpecification = New EpisodeMatchingSpecification
+    Public Property EpisodeMatching As New EpisodeMatchingSpecification
 
     <XmlIgnore>
     Public ReadOnly Property EpisodeMatchingSepcified As Boolean
@@ -2227,7 +2370,7 @@ Public Class SourceSettings
         End Get
     End Property
 
-    Public Property EpisodeMultiPartMatching As EpisodeMultipartMatchingSpecification = New EpisodeMultipartMatchingSpecification
+    Public Property EpisodeMultiPartMatching As New EpisodeMultipartMatchingSpecification
 
     <XmlIgnore>
     Public ReadOnly Property EpisodeMultiPartMatchingSpecified As Boolean
@@ -2266,7 +2409,7 @@ Public Class SourceSettings
 
     Public Property SortBeforeScan As Boolean
 
-    Public Property TitleFilters As TitleFilterSpecification = New TitleFilterSpecification
+    Public Property TitleFilters As New ExtendedListOfString
 
     <XmlIgnore>
     Public ReadOnly Property TitleFiltersSpecified As Boolean
@@ -2281,9 +2424,9 @@ Public Class SourceSettings
 
     Public Property UnmarkNewAfterScraping As Boolean = True
 
-    Public Property UnmarkNewBeforeDBUpdate As Boolean = True
+    Public Property ResetNewBeforeDBUpdate As Boolean = True
 
-    Public Property UnmarkNewOnExit As Boolean = True
+    Public Property ResetNewOnExit As Boolean = True
 
     Public Property VideoSourceFromFolder As Boolean = False
 
@@ -2291,123 +2434,34 @@ Public Class SourceSettings
 
 End Class
 
+
 <Serializable()>
-Public Class TitleFilterSpecification
-    Inherits List(Of String)
+Public Class ThemeSettings
 
-#Region "Constructors"
+#Region "Properties"
 
-    Public Sub New()
-        Clear()
-    End Sub
+    Public Property DefaultSearchParameter() As String = "theme"
 
-#End Region 'Constructors
+    Public Property KeepExisting() As Boolean = False
 
-#Region "Methods"
+#End Region 'Properties
 
-    Public Function GetDefaults(ByVal type As Enums.ContentType) As TitleFilterSpecification
-        Select Case type
-            Case Enums.ContentType.Movie
-                Return New TitleFilterSpecification From {
-                    "(?i)[\W_]\(?\d{4}\)?.*",               'year in brakets
-                    "(?i)[\W_]tt\d*",                       'IMDB ID
-                    "(?i)[\W_]blu[\W_]?ray.*",
-                    "(?i)[\W_]bd[\W_]?rip.*",
-                    "(?i)[\W_]3d.*",
-                    "(?i)[\W_]dvd.*",
-                    "(?i)[\W_]720.*",
-                    "(?i)[\W_]1080.*",
-                    "(?i)[\W_]1440.*",
-                    "(?i)[\W_]2160.*",
-                    "(?i)[\W_]4k.*",
-                    "(?i)[\W_]ac3.*",
-                    "(?i)[\W_]dts.*",
-                    "(?i)[\W_]divx.*",
-                    "(?i)[\W_]xvid.*",
-                    "(?i)[\W_]dc[\W_]?.*",
-                    "(?i)[\W_]dir(ector'?s?)?\s?cut.*",
-                    "(?i)[\W_]extended.*",
-                    "(?i)[\W_]hd(tv)?.*",
-                    "(?i)[\W_]unrated.*",
-                    "(?i)[\W_]uncut.*",
-                    "(?i)[\W_]german.*",
-                    "(?i)[\W_]([a-z]{3}|multi)[sd]ub.*",
-                    "(?i)[\W_]\[offline\].*",
-                    "(?i)[\W_]ntsc.*",
-                    "[\W_]PAL[\W_]?.*",                     'convert dots to space
-                    "\.[->] ", "_[->] "                     'convert underscore to space
-                }
-            Case Enums.ContentType.TVEpisode
-                Return New TitleFilterSpecification From {
-                    "[\W_]\(?\d{4}\)?.*",
-                    "(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*",
-                    "(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*",
-                    "(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*",
-                    "(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*",
-                    "(?i)[\W_]blu[\W_]?ray.*",
-                    "(?i)[\W_]bd[\W_]?rip.*",
-                    "(?i)[\W_]dvd.*",
-                    "(?i)[\W_]720.*",
-                    "(?i)[\W_]1080.*",
-                    "(?i)[\W_]1440.*",
-                    "(?i)[\W_]2160.*",
-                    "(?i)[\W_]4k.*",
-                    "(?i)[\W_]ac3.*",
-                    "(?i)[\W_]dts.*",
-                    "(?i)[\W_]divx.*",
-                    "(?i)[\W_]xvid.*",
-                    "(?i)[\W_]dc[\W_]?.*",
-                    "(?i)[\W_]dir(ector'?s?)?\s?cut.*",
-                    "(?i)[\W_]extended.*",
-                    "(?i)[\W_]hd(tv)?.*",
-                    "(?i)[\W_]unrated.*",
-                    "(?i)[\W_]uncut.*",
-                    "(?i)[\W_]([a-z]{3}|multi)[sd]ub.*",
-                    "(?i)[\W_]\[offline\].*",
-                    "(?i)[\W_]ntsc.*",
-                    "[\W_]PAL[\W_]?.*",
-                    "\.[->] ",                              'convert dots to space
-                    "_[->] ",                               'convert underscore to space
-                    " - [->] "                              'convert space-minus-space to space
-                }
-            Case Enums.ContentType.TVShow
-                Return New TitleFilterSpecification From {
-                    "[\W_]\(?\d{4}\,?.*",
-                    "(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*",
-                    "(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*",
-                    "(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*",
-                    "(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*",
-                    "(?i,[\W_]blu[\W_]?ray.*",
-                    "(?i,[\W_]bd[\W_]?rip.*",
-                    "(?i,[\W_]dvd.*",
-                    "(?i,[\W_]720.*",
-                    "(?i,[\W_]1080.*",
-                    "(?i,[\W_]1440.*",
-                    "(?i,[\W_]2160.*",
-                    "(?i,[\W_]4k.*",
-                    "(?i,[\W_]ac3.*",
-                    "(?i,[\W_]dts.*",
-                    "(?i,[\W_]divx.*",
-                    "(?i,[\W_]xvid.*",
-                    "(?i,[\W_]dc[\W_]?.*",
-                    "(?i,[\W_]dir(ector'?s?,?\s?cut.*",
-                    "(?i,[\W_]extended.*",
-                    "(?i,[\W_]hd(tv,?.*",
-                    "(?i,[\W_]unrated.*",
-                    "(?i,[\W_]uncut.*",
-                    "(?i,[\W_]([a-z]{3}|multi,[sd]ub.*",
-                    "(?i,[\W_]\[offline\].*",
-                    "(?i,[\W_]ntsc.*",
-                    "[\W_]PAL[\W_]?.*",
-                    "\.[->] ",                              'convert dots to space
-                    "_[->] ",                               'convert underscore to space
-                    " - [->] "                              'convert space-minus-space to space
-                }
-        End Select
-        Return New TitleFilterSpecification
-    End Function
+End Class
 
-#End Region 'Methods
+<Serializable()>
+Public Class TrailerSettings
+
+#Region "Properties"
+
+    Public Property DefaultSearchParameter() As String = "trailer"
+
+    Public Property KeepExisting() As Boolean = False
+
+    Public Property MinimumVideoQuality() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.Any
+
+    Public Property PreferredVideoQuality() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.Any
+
+#End Region 'Properties
 
 End Class
 
@@ -2416,15 +2470,13 @@ Public Class TVEpisodeSettings
 
 #Region "Properties"
 
-    'Public Property DataSettings As DataSettings_TV
+    Public Property DataSettings As New DataSettings
 
-    'Public Property Filenaming As FilenamingSettings_TV
+    'Public Property Filenaming As  new FilenamingSettings_TV
 
-    'Public Property ImageSettings() As ImageSettings_TV
+    'Public Property ImageSettings() As new  ImageSettings_TV
 
-    Public Property SourceSettings As SourceSettings = New SourceSettings
-
-    'Public Property ThemeSettings() As ThemeSettings
+    Public Property SourceSettings As New SourceSettings
 
 #End Region 'Properties
 
@@ -2435,15 +2487,13 @@ Public Class TVSeasonSettings
 
 #Region "Properties"
 
-    'Public Property DataSettings As DataSettings_TV
+    Public Property DataSettings As New DataSettings
 
-    'Public Property Filenaming As FilenamingSettings_TV
+    'Public Property Filenaming As  new FilenamingSettings_TV
 
-    'Public Property ImageSettings() As ImageSettings_TV
+    'Public Property ImageSettings() As new  ImageSettings_TV
 
-    Public Property SourceSettings As SourceSettings = New SourceSettings
-
-    'Public Property ThemeSettings() As ThemeSettings
+    Public Property SourceSettings As New SourceSettings
 
 #End Region 'Properties
 
@@ -2454,15 +2504,15 @@ Public Class TVShowSettings
 
 #Region "Properties"
 
-    'Public Property DataSettings As DataSettings_TV
+    Public Property DataSettings As New DataSettings
 
-    'Public Property Filenaming As FilenamingSettings_TV
+    'Public Property Filenaming As  new FilenamingSettings_TV
 
-    'Public Property ImageSettings() As ImageSettings_TV
+    'Public Property ImageSettings() As  new ImageSettings_TV
 
-    Public Property SourceSettings As SourceSettings = New SourceSettings
+    Public Property SourceSettings As New SourceSettings
 
-    'Public Property ThemeSettings() As ThemeSettings
+    Public Property ThemeSettings() As New ThemeSettings
 
 #End Region 'Properties
 
@@ -2472,7 +2522,7 @@ Public Class VideoSourceMapping
 
 #Region "Properties"
 
-    Public Property ByExtension As List(Of VideoSourceByExtension) = New List(Of VideoSourceByExtension)
+    Public Property ByExtension As New List(Of VideoSourceByExtension)
 
     <XmlIgnore>
     Public ReadOnly Property ByExtensionSpecified As Boolean
@@ -2483,7 +2533,7 @@ Public Class VideoSourceMapping
 
     Public Property ByExtensionEnabled As Boolean = False
 
-    Public Property ByRegex As List(Of VideoSourceByRegex) = New List(Of VideoSourceByRegex)
+    Public Property ByRegex As New List(Of VideoSourceByRegex)
 
     <XmlIgnore>
     Public ReadOnly Property ByRegexSpecified As Boolean
@@ -2495,6 +2545,36 @@ Public Class VideoSourceMapping
     Public Property ByRegexEnabled As Boolean = True
 
 #End Region 'Properties
+
+#Region "Methods"
+
+    Public Function GetDefaults() As List(Of VideoSourceByRegex)
+        Return New List(Of VideoSourceByRegex) From {
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]3dbd[\W_]", .Videosource = "3dbd"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]azhd|amazon[\W_]", .Videosource = "amazon"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_](b[dr][-\s]?rip|blu[-\s]?ray)[\W_]", .Videosource = "bluray"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd25[\W_]", .Videosource = "bluray"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]bd50[\W_]", .Videosource = "bluray"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd5[\W_]", .Videosource = "dvd"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dvd9[\W_]", .Videosource = "dvd"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_](sd[-\s]?)?dvd([-\s]?rip)?[\W_]", .Videosource = "dvd"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?dvd[\W_]", .Videosource = "hddvd"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hd[-\s]?tv[\W_]", .Videosource = "hdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ithd|itunes[\W_]", .Videosource = "itunes"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]nfu?hd|netflix[\W_]", .Videosource = "netflix"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]pdtv[\W_]", .Videosource = "sdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]dsr[\W_]", .Videosource = "sdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]ntsc[\W_]", .Videosource = "sdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]sd[-\s]?tv[\W_]", .Videosource = "sdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]tvrip[\W_]", .Videosource = "sdtv"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]vhs[\W_]", .Videosource = "vhs"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]hddl[\W_]", .Videosource = "webdl"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?dl[\W_]", .Videosource = "webdl"},
+            New VideoSourceByRegex With {.Regexp = "(?i)[\W_]web-?rip[\W_]", .Videosource = "webdl"}
+        }
+    End Function
+
+#End Region 'Methods
 
 #Region "Nested Types"
 

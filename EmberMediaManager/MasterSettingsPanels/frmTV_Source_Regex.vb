@@ -88,11 +88,14 @@ Public Class frmTV_Source_Regex
 
     Private Sub Setup()
         With Master.eLang
+            btnEpisodeMatchingDefaults.Text = .GetString(713, "Defaults")
+            btnEpisodeMultipartMatchingDefaults.Text = .GetString(713, "Defaults")
             colEpisodeMatchingByDate.HeaderText = .GetString(698, "by Date")
             colEpisodeMatchingDefaultSeason.HeaderText = .GetString(695, "Default Season")
             colEpisodeMatchingRegex.HeaderText = .GetString(699, "Regex")
             gbEpisodeMatching.Text = .GetString(670, "Episode Matching")
             gbEpisodeMultipartMatching.Text = .GetString(671, "Episode Multipart Matching")
+            lblEpisodeMatching.Text = .GetString(456, "Use ALT + UP / DOWN to move the rows")
         End With
     End Sub
 

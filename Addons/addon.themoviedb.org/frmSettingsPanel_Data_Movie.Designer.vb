@@ -32,6 +32,7 @@ Partial Class frmSettingsPanel_Data_Movie
         Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
+        Me.chkSearchDeviant = New System.Windows.Forms.CheckBox()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
@@ -46,25 +47,24 @@ Partial Class frmSettingsPanel_Data_Movie
         Me.chkActors = New System.Windows.Forms.CheckBox()
         Me.chkCertifications = New System.Windows.Forms.CheckBox()
         Me.chkCountries = New System.Windows.Forms.CheckBox()
-        Me.chkCollectionID = New System.Windows.Forms.CheckBox()
+        Me.chkCollection = New System.Windows.Forms.CheckBox()
         Me.chkOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.chkGenres = New System.Windows.Forms.CheckBox()
         Me.chkDirectors = New System.Windows.Forms.CheckBox()
         Me.chkPlot = New System.Windows.Forms.CheckBox()
-        Me.chkRating = New System.Windows.Forms.CheckBox()
         Me.chkRuntime = New System.Windows.Forms.CheckBox()
-        Me.chkRelease = New System.Windows.Forms.CheckBox()
         Me.chkStudios = New System.Windows.Forms.CheckBox()
         Me.chkTagline = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
         Me.chkWriters = New System.Windows.Forms.CheckBox()
         Me.chkTrailer = New System.Windows.Forms.CheckBox()
-        Me.chkYear = New System.Windows.Forms.CheckBox()
+        Me.chkRating = New System.Windows.Forms.CheckBox()
+        Me.chkPremiered = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
         Me.lblInfoBottom = New System.Windows.Forms.Label()
-        Me.chkSearchDeviant = New System.Windows.Forms.CheckBox()
+        Me.chkTags = New System.Windows.Forms.CheckBox()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -201,6 +201,19 @@ Partial Class frmSettingsPanel_Data_Movie
         Me.lblEMMAPI.Size = New System.Drawing.Size(220, 13)
         Me.lblEMMAPI.TabIndex = 12
         Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
+        '
+        'chkSearchDeviant
+        '
+        Me.chkSearchDeviant.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkSearchDeviant.AutoSize = True
+        Me.tblScraperOpts.SetColumnSpan(Me.chkSearchDeviant, 2)
+        Me.chkSearchDeviant.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkSearchDeviant.Location = New System.Drawing.Point(3, 98)
+        Me.chkSearchDeviant.Name = "chkSearchDeviant"
+        Me.chkSearchDeviant.Size = New System.Drawing.Size(265, 17)
+        Me.chkSearchDeviant.TabIndex = 6
+        Me.chkSearchDeviant.Text = "Search +/- 1 year if no search result was found"
+        Me.chkSearchDeviant.UseVisualStyleBackColor = True
         '
         'chkEnabled
         '
@@ -345,20 +358,20 @@ Partial Class frmSettingsPanel_Data_Movie
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkActors, 0, 0)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertifications, 0, 1)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkCountries, 0, 3)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCollectionID, 0, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCollection, 0, 2)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkOriginalTitle, 1, 0)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenres, 0, 5)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkDirectors, 0, 4)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 1, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRating, 1, 2)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkRuntime, 1, 4)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRelease, 1, 3)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudios, 1, 5)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkTagline, 2, 0)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 2, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkWriters, 2, 3)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTrailer, 2, 2)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkYear, 2, 4)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRating, 1, 3)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkPremiered, 1, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkWriters, 2, 4)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTrailer, 2, 3)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 2, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTags, 2, 1)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
@@ -406,16 +419,16 @@ Partial Class frmSettingsPanel_Data_Movie
         Me.chkCountries.Text = "Countries"
         Me.chkCountries.UseVisualStyleBackColor = True
         '
-        'chkCollectionID
+        'chkCollection
         '
-        Me.chkCollectionID.AutoSize = True
-        Me.chkCollectionID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCollectionID.Location = New System.Drawing.Point(3, 49)
-        Me.chkCollectionID.Name = "chkCollectionID"
-        Me.chkCollectionID.Size = New System.Drawing.Size(92, 17)
-        Me.chkCollectionID.TabIndex = 76
-        Me.chkCollectionID.Text = "Collection ID"
-        Me.chkCollectionID.UseVisualStyleBackColor = True
+        Me.chkCollection.AutoSize = True
+        Me.chkCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCollection.Location = New System.Drawing.Point(3, 49)
+        Me.chkCollection.Name = "chkCollection"
+        Me.chkCollection.Size = New System.Drawing.Size(78, 17)
+        Me.chkCollection.TabIndex = 76
+        Me.chkCollection.Text = "Collection"
+        Me.chkCollection.UseVisualStyleBackColor = True
         '
         'chkOriginalTitle
         '
@@ -461,17 +474,6 @@ Partial Class frmSettingsPanel_Data_Movie
         Me.chkPlot.Text = "Plot"
         Me.chkPlot.UseVisualStyleBackColor = True
         '
-        'chkRating
-        '
-        Me.chkRating.AutoSize = True
-        Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRating.Location = New System.Drawing.Point(103, 49)
-        Me.chkRating.Name = "chkRating"
-        Me.chkRating.Size = New System.Drawing.Size(60, 17)
-        Me.chkRating.TabIndex = 6
-        Me.chkRating.Text = "Rating"
-        Me.chkRating.UseVisualStyleBackColor = True
-        '
         'chkRuntime
         '
         Me.chkRuntime.AutoSize = True
@@ -482,17 +484,6 @@ Partial Class frmSettingsPanel_Data_Movie
         Me.chkRuntime.TabIndex = 5
         Me.chkRuntime.Text = "Runtime"
         Me.chkRuntime.UseVisualStyleBackColor = True
-        '
-        'chkRelease
-        '
-        Me.chkRelease.AutoSize = True
-        Me.chkRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRelease.Location = New System.Drawing.Point(103, 72)
-        Me.chkRelease.Name = "chkRelease"
-        Me.chkRelease.Size = New System.Drawing.Size(92, 17)
-        Me.chkRelease.TabIndex = 4
-        Me.chkRelease.Text = "Release Date"
-        Me.chkRelease.UseVisualStyleBackColor = True
         '
         'chkStudios
         '
@@ -511,7 +502,7 @@ Partial Class frmSettingsPanel_Data_Movie
         Me.chkTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTagline.Location = New System.Drawing.Point(201, 3)
         Me.chkTagline.Name = "chkTagline"
-        Me.chkTagline.Size = New System.Drawing.Size(63, 17)
+        Me.chkTagline.Size = New System.Drawing.Size(62, 17)
         Me.chkTagline.TabIndex = 9
         Me.chkTagline.Text = "Tagline"
         Me.chkTagline.UseVisualStyleBackColor = True
@@ -520,7 +511,7 @@ Partial Class frmSettingsPanel_Data_Movie
         '
         Me.chkTitle.AutoSize = True
         Me.chkTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTitle.Location = New System.Drawing.Point(201, 26)
+        Me.chkTitle.Location = New System.Drawing.Point(201, 49)
         Me.chkTitle.Name = "chkTitle"
         Me.chkTitle.Size = New System.Drawing.Size(47, 17)
         Me.chkTitle.TabIndex = 0
@@ -531,7 +522,7 @@ Partial Class frmSettingsPanel_Data_Movie
         '
         Me.chkWriters.AutoSize = True
         Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWriters.Location = New System.Drawing.Point(201, 72)
+        Me.chkWriters.Location = New System.Drawing.Point(201, 95)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(63, 17)
         Me.chkWriters.TabIndex = 77
@@ -542,23 +533,34 @@ Partial Class frmSettingsPanel_Data_Movie
         '
         Me.chkTrailer.AutoSize = True
         Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailer.Location = New System.Drawing.Point(201, 49)
+        Me.chkTrailer.Location = New System.Drawing.Point(201, 72)
         Me.chkTrailer.Name = "chkTrailer"
-        Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
+        Me.chkTrailer.Size = New System.Drawing.Size(56, 17)
         Me.chkTrailer.TabIndex = 17
         Me.chkTrailer.Text = "Trailer"
         Me.chkTrailer.UseVisualStyleBackColor = True
         '
-        'chkYear
+        'chkRating
         '
-        Me.chkYear.AutoSize = True
-        Me.chkYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkYear.Location = New System.Drawing.Point(201, 95)
-        Me.chkYear.Name = "chkYear"
-        Me.chkYear.Size = New System.Drawing.Size(47, 17)
-        Me.chkYear.TabIndex = 1
-        Me.chkYear.Text = "Year"
-        Me.chkYear.UseVisualStyleBackColor = True
+        Me.chkRating.AutoSize = True
+        Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkRating.Location = New System.Drawing.Point(103, 72)
+        Me.chkRating.Name = "chkRating"
+        Me.chkRating.Size = New System.Drawing.Size(60, 17)
+        Me.chkRating.TabIndex = 6
+        Me.chkRating.Text = "Rating"
+        Me.chkRating.UseVisualStyleBackColor = True
+        '
+        'chkPremiered
+        '
+        Me.chkPremiered.AutoSize = True
+        Me.chkPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPremiered.Location = New System.Drawing.Point(103, 49)
+        Me.chkPremiered.Name = "chkPremiered"
+        Me.chkPremiered.Size = New System.Drawing.Size(77, 17)
+        Me.chkPremiered.TabIndex = 4
+        Me.chkPremiered.Text = "Premiered"
+        Me.chkPremiered.UseVisualStyleBackColor = True
         '
         'pnlSettingsBottom
         '
@@ -613,20 +615,18 @@ Partial Class frmSettingsPanel_Data_Movie
     "for more options."
         Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'chkSearchDeviant
+        'chkTags
         '
-        Me.chkSearchDeviant.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkSearchDeviant.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkSearchDeviant, 2)
-        Me.chkSearchDeviant.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkSearchDeviant.Location = New System.Drawing.Point(3, 98)
-        Me.chkSearchDeviant.Name = "chkSearchDeviant"
-        Me.chkSearchDeviant.Size = New System.Drawing.Size(265, 17)
-        Me.chkSearchDeviant.TabIndex = 6
-        Me.chkSearchDeviant.Text = "Search +/- 1 year if no search result was found"
-        Me.chkSearchDeviant.UseVisualStyleBackColor = True
+        Me.chkTags.AutoSize = True
+        Me.chkTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTags.Location = New System.Drawing.Point(201, 26)
+        Me.chkTags.Name = "chkTags"
+        Me.chkTags.Size = New System.Drawing.Size(48, 17)
+        Me.chkTags.TabIndex = 0
+        Me.chkTags.Text = "Tags"
+        Me.chkTags.UseVisualStyleBackColor = True
         '
-        'frmSettingsHolder_Movie
+        'frmSettingsPanel_Data_Movie
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -638,7 +638,7 @@ Partial Class frmSettingsPanel_Data_Movie
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmSettingsHolder_Movie"
+        Me.Name = "frmSettingsPanel_Data_Movie"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
@@ -691,15 +691,14 @@ Partial Class frmSettingsPanel_Data_Movie
     Friend WithEvents chkActors As System.Windows.Forms.CheckBox
     Friend WithEvents chkTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkRating As System.Windows.Forms.CheckBox
-    Friend WithEvents chkRelease As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPremiered As System.Windows.Forms.CheckBox
     Friend WithEvents chkCertifications As System.Windows.Forms.CheckBox
-    Friend WithEvents chkYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkFallBackEng As System.Windows.Forms.CheckBox
     Friend WithEvents chkDirectors As System.Windows.Forms.CheckBox
     Friend WithEvents pbTMDBApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkGetAdultItems As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCollectionID As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCollection As System.Windows.Forms.CheckBox
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
     Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
     Friend WithEvents chkWriters As System.Windows.Forms.CheckBox
@@ -712,4 +711,5 @@ Partial Class frmSettingsPanel_Data_Movie
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkSearchDeviant As CheckBox
+    Friend WithEvents chkTags As CheckBox
 End Class

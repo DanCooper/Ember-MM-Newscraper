@@ -605,19 +605,19 @@ Public Class Scanner
 
         If dbElement.NfoPathSpecified Then
             dbElement.Movie = Info.LoadFromNFO_Movie(dbElement.NfoPath, dbElement.IsSingle)
-            If Not dbElement.Movie.FileInfoSpecified AndAlso dbElement.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
+            If Not dbElement.Movie.FileInfoSpecified AndAlso dbElement.Movie.TitleSpecified AndAlso Master.eSettings.Movie.DataSettings.MetadataScan.Enabled Then
                 MetaData.UpdateFileInfo(dbElement)
             End If
         Else
             dbElement.Movie = Info.LoadFromNFO_Movie(dbElement.FileItem.FirstPathFromStack, dbElement.IsSingle)
-            If Not dbElement.Movie.FileInfoSpecified AndAlso dbElement.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
+            If Not dbElement.Movie.FileInfoSpecified AndAlso dbElement.Movie.TitleSpecified AndAlso Master.eSettings.Movie.DataSettings.MetadataScan.Enabled Then
                 MetaData.UpdateFileInfo(dbElement)
             End If
         End If
 
-        'Year
-        If Not dbElement.Movie.YearSpecified AndAlso dbElement.Source.GetYear Then
-            dbElement.Movie.Year = StringUtils.FilterYearFromPath_Movie(dbElement.FileItem, dbElement.IsSingle, dbElement.Source.UseFolderName)
+        'Premiered
+        If Not dbElement.Movie.PremieredSpecified AndAlso dbElement.Source.GetYear Then
+            dbElement.Movie.Premiered = StringUtils.FilterYearFromPath_Movie(dbElement.FileItem, dbElement.IsSingle, dbElement.Source.UseFolderName).ToString
         End If
 
         'IMDB ID
@@ -757,7 +757,7 @@ Public Class Scanner
                     End If
 
                     'Scrape episode data
-                    If Not AddonsManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.eSettings.DefaultOptions_TV, False) Then
+                    If Not AddonsManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.eSettings.DefaultOptions(Enums.ContentType.TV), False) Then
                         If cEpisode.TVEpisode.TitleSpecified Then
                             ToNfo = True
 
@@ -973,7 +973,7 @@ Public Class Scanner
                                 Else
                                     'Scrape season info
                                     If isNew AndAlso tmpSeason.TVShow.UniqueIDsSpecified AndAlso tmpSeason.ShowIDSpecified Then
-                                        AddonsManager.Instance.ScrapeData_TVSeason(tmpSeason, Master.eSettings.DefaultOptions_TV, False)
+                                        AddonsManager.Instance.ScrapeData_TVSeason(tmpSeason, Master.eSettings.DefaultOptions(Enums.ContentType.TV), False)
                                     End If
                                 End If
 
@@ -1406,11 +1406,11 @@ Public Class Scanner
 
                 If tFolder.StartsWith(tSource) Then
                     Args.Scan.Movies = True
-                    If Master.eSettings.Movie.SourceSettings.UnmarkNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movie Then
+                    If Master.eSettings.Movie.SourceSettings.ResetNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movie Then
                         Master.DB.ClearNew(Enums.ContentType.Movie)
                         bAlreadyClearedNew_Movie = True
                     End If
-                    If Master.eSettings.Movieset.SourceSettings.UnmarkNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movieset Then
+                    If Master.eSettings.Movieset.SourceSettings.ResetNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movieset Then
                         Master.DB.ClearNew(Enums.ContentType.Movieset)
                         bAlreadyClearedNew_Movieset = True
                     End If
@@ -1433,13 +1433,13 @@ Public Class Scanner
                 If tFolder.StartsWith(tSource) Then
                     Args.Scan.TV = True
                     If Not bAlreadyClearedNew_TV Then
-                        If Master.eSettings.TVEpisode.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                        If Master.eSettings.TVEpisode.SourceSettings.ResetNewBeforeDBUpdate Then
                             Master.DB.ClearNew(Enums.ContentType.TVEpisode)
                         End If
-                        If Master.eSettings.TVSeason.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                        If Master.eSettings.TVSeason.SourceSettings.ResetNewBeforeDBUpdate Then
                             Master.DB.ClearNew(Enums.ContentType.TVSeason)
                         End If
-                        If Master.eSettings.TVShow.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                        If Master.eSettings.TVShow.SourceSettings.ResetNewBeforeDBUpdate Then
                             Master.DB.ClearNew(Enums.ContentType.TVShow)
                         End If
                         bAlreadyClearedNew_TV = True
@@ -1500,11 +1500,11 @@ Public Class Scanner
         End If
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.Movies Then
-            If Master.eSettings.Movie.SourceSettings.UnmarkNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movie Then
+            If Master.eSettings.Movie.SourceSettings.ResetNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movie Then
                 Master.DB.ClearNew(Enums.ContentType.Movie)
                 bAlreadyClearedNew_Movie = True
             End If
-            If Master.eSettings.Movieset.SourceSettings.UnmarkNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movieset Then
+            If Master.eSettings.Movieset.SourceSettings.ResetNewBeforeDBUpdate AndAlso Not bAlreadyClearedNew_Movieset Then
                 Master.DB.ClearNew(Enums.ContentType.Movieset)
                 bAlreadyClearedNew_Movieset = True
             End If
@@ -1546,13 +1546,13 @@ Public Class Scanner
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.TV Then
             If Not bAlreadyClearedNew_TV Then
-                If Master.eSettings.TVEpisode.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                If Master.eSettings.TVEpisode.SourceSettings.ResetNewBeforeDBUpdate Then
                     Master.DB.ClearNew(Enums.ContentType.TVEpisode)
                 End If
-                If Master.eSettings.TVSeason.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                If Master.eSettings.TVSeason.SourceSettings.ResetNewBeforeDBUpdate Then
                     Master.DB.ClearNew(Enums.ContentType.TVSeason)
                 End If
-                If Master.eSettings.TVShow.SourceSettings.UnmarkNewBeforeDBUpdate Then
+                If Master.eSettings.TVShow.SourceSettings.ResetNewBeforeDBUpdate Then
                     Master.DB.ClearNew(Enums.ContentType.TVShow)
                 End If
                 bAlreadyClearedNew_TV = True

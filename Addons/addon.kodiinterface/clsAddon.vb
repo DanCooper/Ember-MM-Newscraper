@@ -1176,7 +1176,7 @@ Namespace Kodi
                     Dim mOriginalTitle As String = mDBElement.Movie.OriginalTitle
                     Dim mOutline As String = mDBElement.Movie.Outline
                     Dim mPlot As String = mDBElement.Movie.Plot
-                    Dim mPremiered As String = mDBElement.Movie.ReleaseDate
+                    Dim mPremiered As String = mDBElement.Movie.Premiered
                     Dim mSet As String = If(mDBElement.Movie.SetsSpecified, mDBElement.Movie.Sets.Item(0).Title, String.Empty)
                     Dim mSortTitle As String = mDBElement.Movie.SortTitle
                     Dim mTagline As String = mDBElement.Movie.Tagline

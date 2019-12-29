@@ -76,10 +76,8 @@ Partial Class dlgEdit_Movie
         Me.lblPlot = New System.Windows.Forms.Label()
         Me.lblCredits = New System.Windows.Forms.Label()
         Me.txtPlot = New System.Windows.Forms.TextBox()
-        Me.lblYear = New System.Windows.Forms.Label()
-        Me.txtYear = New System.Windows.Forms.MaskedTextBox()
-        Me.lblReleaseDate = New System.Windows.Forms.Label()
-        Me.dtpReleaseDate = New System.Windows.Forms.DateTimePicker()
+        Me.lblPremiered = New System.Windows.Forms.Label()
+        Me.dtpPremiered = New System.Windows.Forms.DateTimePicker()
         Me.lblRuntime = New System.Windows.Forms.Label()
         Me.txtRuntime = New System.Windows.Forms.TextBox()
         Me.lblVideoSource = New System.Windows.Forms.Label()
@@ -616,10 +614,7 @@ Partial Class dlgEdit_Movie
         Me.tblDetails.Controls.Add(Me.lblPlot, 6, 2)
         Me.tblDetails.Controls.Add(Me.lblCredits, 6, 13)
         Me.tblDetails.Controls.Add(Me.txtPlot, 6, 3)
-        Me.tblDetails.Controls.Add(Me.lblYear, 0, 6)
-        Me.tblDetails.Controls.Add(Me.txtYear, 0, 7)
-        Me.tblDetails.Controls.Add(Me.lblReleaseDate, 1, 6)
-        Me.tblDetails.Controls.Add(Me.dtpReleaseDate, 1, 7)
+        Me.tblDetails.Controls.Add(Me.dtpPremiered, 0, 7)
         Me.tblDetails.Controls.Add(Me.lblRuntime, 0, 8)
         Me.tblDetails.Controls.Add(Me.txtRuntime, 0, 9)
         Me.tblDetails.Controls.Add(Me.lblVideoSource, 1, 8)
@@ -660,6 +655,7 @@ Partial Class dlgEdit_Movie
         Me.tblDetails.Controls.Add(Me.btnRatingsRemove, 5, 24)
         Me.tblDetails.Controls.Add(Me.btnRatingsEdit, 3, 24)
         Me.tblDetails.Controls.Add(Me.btnRatingsAdd, 2, 24)
+        Me.tblDetails.Controls.Add(Me.lblPremiered, 0, 6)
         Me.tblDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblDetails.Location = New System.Drawing.Point(3, 3)
         Me.tblDetails.Name = "tblDetails"
@@ -926,6 +922,7 @@ Partial Class dlgEdit_Movie
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvActors.FullRowSelect = True
         Me.lvActors.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.lvActors.HideSelection = False
         Me.lvActors.Location = New System.Drawing.Point(725, 223)
         Me.lvActors.Name = "lvActors"
         Me.tblDetails.SetRowSpan(Me.lvActors, 3)
@@ -1004,49 +1001,28 @@ Partial Class dlgEdit_Movie
         Me.txtPlot.Size = New System.Drawing.Size(748, 104)
         Me.txtPlot.TabIndex = 10
         '
-        'lblYear
+        'lblPremiered
         '
-        Me.lblYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.lblYear.AutoSize = True
-        Me.lblYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblYear.Location = New System.Drawing.Point(3, 124)
-        Me.lblYear.Name = "lblYear"
-        Me.lblYear.Size = New System.Drawing.Size(30, 13)
-        Me.lblYear.TabIndex = 8
-        Me.lblYear.Text = "Year:"
+        Me.lblPremiered.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblPremiered.AutoSize = True
+        Me.tblDetails.SetColumnSpan(Me.lblPremiered, 2)
+        Me.lblPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblPremiered.Location = New System.Drawing.Point(3, 124)
+        Me.lblPremiered.Name = "lblPremiered"
+        Me.lblPremiered.Size = New System.Drawing.Size(61, 13)
+        Me.lblPremiered.TabIndex = 13
+        Me.lblPremiered.Text = "Premiered:"
         '
-        'txtYear
+        'dtpPremiered
         '
-        Me.txtYear.BackColor = System.Drawing.SystemColors.Window
-        Me.txtYear.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtYear.Location = New System.Drawing.Point(3, 140)
-        Me.txtYear.Mask = "####"
-        Me.txtYear.Name = "txtYear"
-        Me.txtYear.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
-        Me.txtYear.Size = New System.Drawing.Size(72, 22)
-        Me.txtYear.TabIndex = 3
-        '
-        'lblReleaseDate
-        '
-        Me.lblReleaseDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.lblReleaseDate.AutoSize = True
-        Me.lblReleaseDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblReleaseDate.Location = New System.Drawing.Point(81, 124)
-        Me.lblReleaseDate.Name = "lblReleaseDate"
-        Me.lblReleaseDate.Size = New System.Drawing.Size(76, 13)
-        Me.lblReleaseDate.TabIndex = 13
-        Me.lblReleaseDate.Text = "Release Date:"
-        '
-        'dtpReleaseDate
-        '
-        Me.dtpReleaseDate.CustomFormat = "yyyy-dd-MM"
-        Me.dtpReleaseDate.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dtpReleaseDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtpReleaseDate.Location = New System.Drawing.Point(81, 140)
-        Me.dtpReleaseDate.Name = "dtpReleaseDate"
-        Me.dtpReleaseDate.Size = New System.Drawing.Size(146, 22)
-        Me.dtpReleaseDate.TabIndex = 4
+        Me.tblDetails.SetColumnSpan(Me.dtpPremiered, 2)
+        Me.dtpPremiered.CustomFormat = "yyyy-dd-MM"
+        Me.dtpPremiered.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dtpPremiered.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpPremiered.Location = New System.Drawing.Point(3, 140)
+        Me.dtpPremiered.Name = "dtpPremiered"
+        Me.dtpPremiered.Size = New System.Drawing.Size(224, 22)
+        Me.dtpPremiered.TabIndex = 4
         '
         'lblRuntime
         '
@@ -1412,6 +1388,7 @@ Partial Class dlgEdit_Movie
         Me.lvRatings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvRatings.FullRowSelect = True
         Me.lvRatings.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.lvRatings.HideSelection = False
         Me.lvRatings.Location = New System.Drawing.Point(233, 471)
         Me.lvRatings.Name = "lvRatings"
         Me.tblDetails.SetRowSpan(Me.lvRatings, 5)
@@ -1998,6 +1975,7 @@ Partial Class dlgEdit_Movie
         ListViewGroup1.Name = "LocalSubtitles"
         Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+        Me.lvSubtitles.HideSelection = False
         ListViewItem1.Group = ListViewGroup1
         Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvSubtitles.Location = New System.Drawing.Point(3, 3)
@@ -3679,7 +3657,7 @@ Partial Class dlgEdit_Movie
         Me.chkMarkedCustom4.Text = "Custom #4"
         Me.chkMarkedCustom4.UseVisualStyleBackColor = True
         '
-        'dlgEditMovie
+        'dlgEdit_Movie
         '
         Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -3694,7 +3672,7 @@ Partial Class dlgEdit_Movie
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgEditMovie"
+        Me.Name = "dlgEdit_Movie"
         Me.Text = "Edit Movie"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
@@ -3862,10 +3840,8 @@ Partial Class dlgEdit_Movie
     Friend WithEvents lblPlot As Label
     Friend WithEvents lblCredits As Label
     Friend WithEvents txtPlot As TextBox
-    Friend WithEvents lblYear As Label
-    Friend WithEvents txtYear As MaskedTextBox
-    Friend WithEvents lblReleaseDate As Label
-    Friend WithEvents dtpReleaseDate As DateTimePicker
+    Friend WithEvents lblPremiered As Label
+    Friend WithEvents dtpPremiered As DateTimePicker
     Friend WithEvents lblRuntime As Label
     Friend WithEvents txtRuntime As TextBox
     Friend WithEvents lblVideoSource As Label
