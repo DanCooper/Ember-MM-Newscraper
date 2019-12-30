@@ -167,61 +167,61 @@ Public Class Scraper
             Select Case nContentType
                 Case Enums.ContentType.Movie
                     'search by IMDB ID
-                    If tDBElement.Movie.UniqueIDs.IMDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.Movie.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Movie)
+                    If tDBElement.MainDetails.UniqueIDs.IMDbIdSpecified Then
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.MainDetails.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Movie)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by TMDB ID
-                    If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.Movie.UniqueIDs.TMDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.Movie.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Movie)
+                    If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.MainDetails.UniqueIDs.TMDbIdSpecified Then
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.MainDetails.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Movie)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     If nSearchResults IsNot Nothing AndAlso nSearchResults.ItemCount = 1 AndAlso nSearchResults(0).Movie IsNot Nothing Then
                         Return nSearchResults(0).Movie.Ids.Trakt
                     Else
-                        _Logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! IMDB: {0} / TMDB: {1}", tDBElement.Movie.UniqueIDs.IMDbId, tDBElement.Movie.UniqueIDs.TMDbId))
+                        _Logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! IMDB: {0} / TMDB: {1}", tDBElement.MainDetails.UniqueIDs.IMDbId, tDBElement.MainDetails.UniqueIDs.TMDbId))
                     End If
                 Case Enums.ContentType.TVEpisode
                     'search by TVDB ID
-                    If tDBElement.TVEpisode.UniqueIDs.TVDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.TVEpisode.UniqueIDs.TVDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
+                    If tDBElement.MainDetails.UniqueIDs.TVDbIdSpecified Then
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.MainDetails.UniqueIDs.TVDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by IMDB ID
-                    If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.TVEpisode.UniqueIDs.IMDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.TVEpisode.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
+                    If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.MainDetails.UniqueIDs.IMDbIdSpecified Then
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.MainDetails.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by TMDB ID
-                    If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.TVEpisode.UniqueIDs.TMDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.TVEpisode.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
+                    If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.MainDetails.UniqueIDs.TMDbIdSpecified Then
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.MainDetails.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     If nSearchResults IsNot Nothing AndAlso nSearchResults.ItemCount = 1 AndAlso nSearchResults(0).Episode IsNot Nothing Then
                         Return nSearchResults(0).Episode.Ids.Trakt
                     Else
-                        _Logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! TVDB: {0} / IMDB: {1} / TMDB: {2}", tDBElement.TVEpisode.UniqueIDs.TVDbId, tDBElement.TVEpisode.UniqueIDs.IMDbId, tDBElement.TVEpisode.UniqueIDs.TMDbId))
+                        _Logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! TVDB: {0} / IMDB: {1} / TMDB: {2}", tDBElement.MainDetails.UniqueIDs.TVDbId, tDBElement.MainDetails.UniqueIDs.IMDbId, tDBElement.MainDetails.UniqueIDs.TMDbId))
                     End If
                 Case Enums.ContentType.TVShow
                     'search by TVDB ID
-                    If tDBElement.TVShow.UniqueIDs.TVDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.TVShow.UniqueIDs.TVDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
+                    If tDBElement.MainDetails.UniqueIDs.TVDbIdSpecified Then
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.MainDetails.UniqueIDs.TVDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by IMDB ID
-                    If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.TVShow.UniqueIDs.IMDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.TVShow.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
+                    If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.MainDetails.UniqueIDs.IMDbIdSpecified Then
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.ImDB, tDBElement.MainDetails.UniqueIDs.IMDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by TMDB ID
-                    If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.TVShow.UniqueIDs.TMDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.TVShow.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
+                    If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.MainDetails.UniqueIDs.TMDbIdSpecified Then
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.MainDetails.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     If nSearchResults IsNot Nothing AndAlso nSearchResults.ItemCount = 1 AndAlso nSearchResults(0).Show IsNot Nothing Then
                         Return nSearchResults(0).Show.Ids.Trakt
                     Else
-                        _Logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! TVDB: {0} / IMDB: {1} / TMDB: {2}", tDBElement.TVShow.UniqueIDs.TVDbId, tDBElement.TVShow.UniqueIDs.IMDbId, tDBElement.TVShow.UniqueIDs.TMDbId))
+                        _Logger.Info(String.Format("[GetID_Trakt] Could not scrape TraktID from trakt.tv! TVDB: {0} / IMDB: {1} / TMDB: {2}", tDBElement.MainDetails.UniqueIDs.TVDbId, tDBElement.MainDetails.UniqueIDs.IMDbId, tDBElement.MainDetails.UniqueIDs.TMDbId))
                     End If
             End Select
         End If
@@ -229,14 +229,14 @@ Public Class Scraper
         Return 0
     End Function
 
-    Public Async Function GetInfo_Movie(ByVal uintTraktID As Task(Of UInteger), ByVal tFilteredOptions As Structures.ScrapeOptions) As Task(Of MediaContainers.Movie)
+    Public Async Function GetInfo_Movie(ByVal uintTraktID As Task(Of UInteger), ByVal tFilteredOptions As Structures.ScrapeOptions) As Task(Of MediaContainers.MainDetails)
         If uintTraktID.Result = 0 Then Return Nothing
 
-        Dim nMovie As New MediaContainers.Movie With {.Scrapersource = "Trakt.tv"}
+        Dim nMovie As New MediaContainers.MainDetails With {.Scrapersource = "Trakt.tv"}
 
         If _Client IsNot Nothing Then
             'Rating
-            If tFilteredOptions.bMainRatings Then
+            If tFilteredOptions.Ratings Then
                 Dim nGlobalRating = Await _Client.Movies.GetMovieRatingsAsync(CStr(uintTraktID.Result))
                 Dim dblRating As Double
                 Dim iVotes As Integer
@@ -252,7 +252,7 @@ Public Class Scraper
             End If
 
             'UserRating
-            If tFilteredOptions.bMainUserRating Then
+            If tFilteredOptions.UserRating Then
                 Dim bCheck = CheckConnection()
                 If bCheck.Result Then
                     Dim nPersonalRatedMovies = Await _Client.Sync.GetRatingsAsync(TraktApiSharp.Enums.TraktRatingsItemType.Movie)
@@ -273,7 +273,7 @@ Public Class Scraper
                                             ByVal intSeason As Integer,
                                             ByVal intEpisode As Integer,
                                             ByVal tFilteredOptions As Structures.ScrapeOptions,
-                                            Optional ByVal tPersonalRatedTVEpisodes As IEnumerable(Of Objects.Get.Ratings.TraktRatingsItem) = Nothing) As Task(Of MediaContainers.EpisodeDetails)
+                                            Optional ByVal tPersonalRatedTVEpisodes As IEnumerable(Of Objects.Get.Ratings.TraktRatingsItem) = Nothing) As Task(Of MediaContainers.MainDetails)
         If uintTVShowTraktID.Result = 0 Then Return Nothing
 
         Dim uintSeason As Integer
@@ -283,11 +283,11 @@ Public Class Scraper
             Return Nothing
         End If
 
-        Dim nTVEpisode As New MediaContainers.EpisodeDetails With {.Scrapersource = "Trakt.tv", .Episode = intEpisode, .Season = intSeason}
+        Dim nTVEpisode As New MediaContainers.MainDetails With {.Scrapersource = "Trakt.tv", .Episode = intEpisode, .Season = intSeason}
 
         If _Client IsNot Nothing Then
             'Rating
-            If tFilteredOptions.bEpisodeRating Then
+            If tFilteredOptions.Episodes.Ratings Then
                 Dim nGlobalRating = Await _Client.Episodes.GetEpisodeRatingsAsync(CStr(uintTVShowTraktID.Result), uintSeason, uintEpisode)
                 Dim dblRating As Double
                 Dim iVotes As Integer
@@ -303,7 +303,7 @@ Public Class Scraper
             End If
 
             'UserRating
-            If tFilteredOptions.bEpisodeUserRating Then
+            If tFilteredOptions.Episodes.UserRating Then
                 Dim nPersonalRatedTVEpisodes = tPersonalRatedTVEpisodes
                 If nPersonalRatedTVEpisodes Is Nothing Then
                     Dim bCheck = CheckConnection()
@@ -327,14 +327,14 @@ Public Class Scraper
         Return nTVEpisode
     End Function
 
-    Public Async Function GetInfo_TVShow(ByVal uintTraktID As Task(Of UInteger), ByVal FilteredOptions As Structures.ScrapeOptions, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal lstEpisodes As List(Of Database.DBElement)) As Task(Of MediaContainers.TVShow)
+    Public Async Function GetInfo_TVShow(ByVal uintTraktID As Task(Of UInteger), ByVal FilteredOptions As Structures.ScrapeOptions, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal lstEpisodes As List(Of Database.DBElement)) As Task(Of MediaContainers.MainDetails)
         If uintTraktID.Result = 0 Then Return Nothing
 
-        Dim nTVShow As New MediaContainers.TVShow With {.Scrapersource = "Trakt.tv"}
+        Dim nTVShow As New MediaContainers.MainDetails With {.Scrapersource = "Trakt.tv"}
 
         If _Client IsNot Nothing Then
             'Rating
-            If FilteredOptions.bMainRatings Then
+            If FilteredOptions.Ratings Then
                 Dim nGlobalRating = Await _Client.Shows.GetShowRatingsAsync(CStr(uintTraktID.Result))
                 Dim dblRating As Double
                 Dim iVotes As Integer
@@ -350,7 +350,7 @@ Public Class Scraper
             End If
 
             'UserRating
-            If FilteredOptions.bMainUserRating Then
+            If FilteredOptions.UserRating Then
                 Dim bCheck = CheckConnection()
                 If bCheck.Result Then
                     Dim nPersonalRatedTVShows = Await _Client.Sync.GetRatingsAsync(TraktApiSharp.Enums.TraktRatingsItemType.Show)
@@ -364,11 +364,11 @@ Public Class Scraper
             End If
 
             'Episodes
-            If tScrapeModifiers.withEpisodes AndAlso lstEpisodes.Count > 0 AndAlso (FilteredOptions.bEpisodeRating OrElse FilteredOptions.bEpisodeUserRating) Then
+            If tScrapeModifiers.withEpisodes AndAlso lstEpisodes.Count > 0 AndAlso (FilteredOptions.Episodes.Ratings OrElse FilteredOptions.Episodes.UserRating) Then
                 'looks like there is no way to get all episodes for a tv show. so we scrape only local existing episodes
                 'reduce the API call and get all rated episodes before
                 Dim nPersonalRatedTVEpisodes As IEnumerable(Of Objects.Get.Ratings.TraktRatingsItem) = Nothing
-                If FilteredOptions.bEpisodeUserRating Then
+                If FilteredOptions.Episodes.UserRating Then
                     Dim bCheck = CheckConnection()
                     If bCheck.Result Then
                         nPersonalRatedTVEpisodes = Await _Client.Sync.GetRatingsAsync(TraktApiSharp.Enums.TraktRatingsItemType.Episode)
@@ -376,12 +376,12 @@ Public Class Scraper
                 End If
                 For Each nDBElement As Database.DBElement In lstEpisodes
                     Try
-                        Dim nEpisode As MediaContainers.EpisodeDetails = Await GetInfo_TVEpisode(uintTraktID, nDBElement.TVEpisode.Season, nDBElement.TVEpisode.Episode, FilteredOptions, nPersonalRatedTVEpisodes)
+                        Dim nEpisode As MediaContainers.MainDetails = Await GetInfo_TVEpisode(uintTraktID, nDBElement.MainDetails.Season, nDBElement.MainDetails.Episode, FilteredOptions, nPersonalRatedTVEpisodes)
                         If nEpisode IsNot Nothing Then
                             nTVShow.KnownEpisodes.Add(nEpisode)
                         End If
                     Catch ex As Exception
-                        _Logger.Info(String.Format("[TrakttvScraper] [GetInfo_TVShow] S{0}E{1}: {2}", nDBElement.TVEpisode.Season, nDBElement.TVEpisode.Episode, ex.Message))
+                        _Logger.Info(String.Format("[TrakttvScraper] [GetInfo_TVShow] S{0}E{1}: {2}", nDBElement.MainDetails.Season, nDBElement.MainDetails.Episode, ex.Message))
                     End Try
                 Next
             End If
@@ -418,11 +418,11 @@ Public Class Scraper
 
     Public Function GetWatchedState_Movie(ByRef tDBElement As Database.DBElement,
                                           Optional ByRef watchedmovies As IEnumerable(Of Objects.Get.Watched.TraktWatchedMovie) = Nothing) As Boolean
-        If Not tDBElement.Movie.UniqueIDsSpecified Then Return False
+        If Not tDBElement.MainDetails.UniqueIDsSpecified Then Return False
 
-        Dim strIMDBID As String = tDBElement.Movie.UniqueIDs.IMDbId
+        Dim strIMDBID As String = tDBElement.MainDetails.UniqueIDs.IMDbId
         Dim intTMDBID As Integer
-        Integer.TryParse(tDBElement.Movie.UniqueIDs.TMDbId, intTMDBID)
+        Integer.TryParse(tDBElement.MainDetails.UniqueIDs.TMDbId, intTMDBID)
 
         Dim lstWatchedMovies As IEnumerable(Of Objects.Get.Watched.TraktWatchedMovie)
         If watchedmovies Is Nothing Then
@@ -437,9 +437,9 @@ Public Class Scraper
             If nWatchedMovie IsNot Nothing Then
                 Dim strLastPlayed = Functions.ConvertToProperDateTime(nWatchedMovie.LastWatchedAt.Value.ToLocalTime.ToString)
                 Dim iPlayCount = nWatchedMovie.Plays.Value
-                If Not tDBElement.Movie.LastPlayed = strLastPlayed OrElse Not tDBElement.Movie.PlayCount = iPlayCount Then
-                    tDBElement.Movie.LastPlayed = strLastPlayed
-                    tDBElement.Movie.PlayCount = iPlayCount
+                If Not tDBElement.MainDetails.LastPlayed = strLastPlayed OrElse Not tDBElement.MainDetails.PlayCount = iPlayCount Then
+                    tDBElement.MainDetails.LastPlayed = strLastPlayed
+                    tDBElement.MainDetails.PlayCount = iPlayCount
                     Return True
                 End If
             End If
@@ -450,13 +450,13 @@ Public Class Scraper
 
     Public Function GetWatchedState_TVEpisode(ByRef tDBElement As Database.DBElement,
                                               Optional ByRef watchedshows As IEnumerable(Of Objects.Get.Watched.TraktWatchedShow) = Nothing) As Boolean
-        If tDBElement.TVShow Is Nothing OrElse Not tDBElement.TVShow.UniqueIDsSpecified Then Return False
+        If tDBElement.TVShowDetails Is Nothing OrElse Not tDBElement.TVShowDetails.UniqueIDsSpecified Then Return False
 
-        Dim strShowIMDBID As String = tDBElement.TVShow.UniqueIDs.IMDbId
+        Dim strShowIMDBID As String = tDBElement.TVShowDetails.UniqueIDs.IMDbId
         Dim intShowTMDBID As Integer
         Dim intShowTVDBID As Integer
-        Integer.TryParse(tDBElement.TVShow.UniqueIDs.TMDbId, intShowTMDBID)
-        Integer.TryParse(tDBElement.TVShow.UniqueIDs.TVDbId, intShowTVDBID)
+        Integer.TryParse(tDBElement.TVShowDetails.UniqueIDs.TMDbId, intShowTMDBID)
+        Integer.TryParse(tDBElement.TVShowDetails.UniqueIDs.TVDbId, intShowTVDBID)
 
         Dim lstWatchedShows As IEnumerable(Of Objects.Get.Watched.TraktWatchedShow)
         If watchedshows Is Nothing Then
@@ -473,8 +473,8 @@ Public Class Scraper
             If nTVShow IsNot Nothing Then
                 Select Case tDBElement.ContentType
                     Case Enums.ContentType.TVEpisode
-                        Dim intEpisode = tDBElement.TVEpisode.Episode
-                        Dim intSeason = tDBElement.TVEpisode.Season
+                        Dim intEpisode = tDBElement.MainDetails.Episode
+                        Dim intSeason = tDBElement.MainDetails.Season
 
                         Dim nWatchedSeason = nTVShow.Seasons.Where(Function(f) CInt(f.Number) = intSeason).FirstOrDefault
                         If nWatchedSeason IsNot Nothing Then
@@ -482,17 +482,17 @@ Public Class Scraper
                             If nWatchedEpisode IsNot Nothing Then
                                 Dim strLastPlayed = Functions.ConvertToProperDateTime(nWatchedEpisode.LastWatchedAt.Value.ToLocalTime.ToString)
                                 Dim iPlayCount = nWatchedEpisode.Plays.Value
-                                If Not tDBElement.TVEpisode.LastPlayed = strLastPlayed OrElse Not tDBElement.TVEpisode.Playcount = iPlayCount Then
-                                    tDBElement.TVEpisode.LastPlayed = strLastPlayed
-                                    tDBElement.TVEpisode.Playcount = iPlayCount
+                                If Not tDBElement.MainDetails.LastPlayed = strLastPlayed OrElse Not tDBElement.MainDetails.PlayCount = iPlayCount Then
+                                    tDBElement.MainDetails.LastPlayed = strLastPlayed
+                                    tDBElement.MainDetails.PlayCount = iPlayCount
                                     Return True
                                 End If
                             End If
                         End If
                     Case Enums.ContentType.TVShow
                         For Each nTVEpisode In tDBElement.Episodes.Where(Function(f) f.FileItemSpecified)
-                            Dim intEpisode = nTVEpisode.TVEpisode.Episode
-                            Dim intSeason = nTVEpisode.TVEpisode.Season
+                            Dim intEpisode = nTVEpisode.MainDetails.Episode
+                            Dim intSeason = nTVEpisode.MainDetails.Season
 
                             Dim nWatchedSeason = nTVShow.Seasons.Where(Function(f) CInt(f.Number) = intSeason).FirstOrDefault
                             If nWatchedSeason IsNot Nothing Then
@@ -500,9 +500,9 @@ Public Class Scraper
                                 If nWatchedEpisode IsNot Nothing Then
                                     Dim strLastPlayed = Functions.ConvertToProperDateTime(nWatchedEpisode.LastWatchedAt.Value.ToLocalTime.ToString)
                                     Dim iPlayCount = nWatchedEpisode.Plays.Value
-                                    If Not nTVEpisode.TVEpisode.LastPlayed = strLastPlayed OrElse Not nTVEpisode.TVEpisode.Playcount = iPlayCount Then
-                                        nTVEpisode.TVEpisode.LastPlayed = strLastPlayed
-                                        nTVEpisode.TVEpisode.Playcount = iPlayCount
+                                    If Not nTVEpisode.MainDetails.LastPlayed = strLastPlayed OrElse Not nTVEpisode.MainDetails.PlayCount = iPlayCount Then
+                                        nTVEpisode.MainDetails.LastPlayed = strLastPlayed
+                                        nTVEpisode.MainDetails.PlayCount = iPlayCount
                                     End If
                                 End If
                             End If

@@ -201,7 +201,7 @@ Public Class dlgImageSelect
                 End If
             Case Enums.ContentType.TVSeason
                 tContentType = Enums.ContentType.TVSeason
-                DoOnlySeason = DBElement.TVSeason.Season
+                DoOnlySeason = DBElement.MainDetails.Season
             Case Else
                 tContentType = DBElement.ContentType
                 If Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
@@ -907,22 +907,22 @@ Public Class dlgImageSelect
 
         Select Case eImageType
             Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
-                Dim sImg As MediaContainers.Image = tDBElement.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = iSeason).ImagesContainer.Banner
+                Dim sImg As MediaContainers.Image = tDBElement.Seasons.FirstOrDefault(Function(s) s.MainDetails.Season = iSeason).ImagesContainer.Banner
                 Result.Seasons.FirstOrDefault(Function(s) s.Season = iSeason).Banner = sImg
                 currSubImage = CreateImageTag(sImg, eImageType, iSeason)
                 RefreshSubImage(currSubImage)
             Case Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.SeasonFanart
-                Dim sImg As MediaContainers.Image = tDBElement.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = iSeason).ImagesContainer.Fanart
+                Dim sImg As MediaContainers.Image = tDBElement.Seasons.FirstOrDefault(Function(s) s.MainDetails.Season = iSeason).ImagesContainer.Fanart
                 Result.Seasons.FirstOrDefault(Function(s) s.Season = iSeason).Fanart = sImg
                 currSubImage = CreateImageTag(sImg, eImageType, iSeason)
                 RefreshSubImage(currSubImage)
             Case Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
-                Dim sImg As MediaContainers.Image = tDBElement.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = iSeason).ImagesContainer.Landscape
+                Dim sImg As MediaContainers.Image = tDBElement.Seasons.FirstOrDefault(Function(s) s.MainDetails.Season = iSeason).ImagesContainer.Landscape
                 Result.Seasons.FirstOrDefault(Function(s) s.Season = iSeason).Landscape = sImg
                 currSubImage = CreateImageTag(sImg, eImageType, iSeason)
                 RefreshSubImage(currSubImage)
             Case Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.SeasonPoster
-                Dim sImg As MediaContainers.Image = tDBElement.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = iSeason).ImagesContainer.Poster
+                Dim sImg As MediaContainers.Image = tDBElement.Seasons.FirstOrDefault(Function(s) s.MainDetails.Season = iSeason).ImagesContainer.Poster
                 Result.Seasons.FirstOrDefault(Function(s) s.Season = iSeason).Poster = sImg
                 currSubImage = CreateImageTag(sImg, eImageType, iSeason)
                 RefreshSubImage(currSubImage)

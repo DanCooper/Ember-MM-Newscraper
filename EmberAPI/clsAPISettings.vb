@@ -716,47 +716,47 @@ Public Class Settings
                     nSeasonSettings = Master.eSettings.TVSeason.DataSettings
             End Select
             With nMainSettings
-                nScrapeOptions.bMainActors = .Actors.Enabled
-                nScrapeOptions.bMainCertifications = .Certifications.Enabled
-                nScrapeOptions.bMainCollection = .Collection.Enabled
-                nScrapeOptions.bMainCountries = .Countries.Enabled
-                nScrapeOptions.bMainCreators = .Creators.Enabled
-                nScrapeOptions.bMainCredits = .Credits.Enabled
-                nScrapeOptions.bMainDirectors = .Directors.Enabled
-                nScrapeOptions.bMainEpisodeGuide = .EpisodeGuideURL.Enabled
-                nScrapeOptions.bMainGenres = .Genres.Enabled
-                nScrapeOptions.bMainMPAA = .MPAA.Enabled
-                nScrapeOptions.bMainOriginalTitle = .OriginalTitle.Enabled
-                nScrapeOptions.bMainOutline = .Outline.Enabled
-                nScrapeOptions.bMainPlot = .Plot.Enabled
-                nScrapeOptions.bMainPremiered = .Premiered.Enabled
-                nScrapeOptions.bMainRatings = .Ratings.Enabled
-                nScrapeOptions.bMainRuntime = .Runtime.Enabled
-                nScrapeOptions.bMainStatus = .Status.Enabled
-                nScrapeOptions.bMainStudios = .Studios.Enabled
-                nScrapeOptions.bMainTagline = .Tagline.Enabled
-                nScrapeOptions.bMainTags = .Tags.Enabled
-                nScrapeOptions.bMainTitle = .Title.Enabled
-                nScrapeOptions.bMainTop250 = .Top250.Enabled
-                nScrapeOptions.bMainTrailer = .TrailerLink.Enabled
-                nScrapeOptions.bMainUserRating = .UserRating.Enabled
+                nScrapeOptions.Actors = .Actors.Enabled
+                nScrapeOptions.Certifications = .Certifications.Enabled
+                nScrapeOptions.Collection = .Collection.Enabled
+                nScrapeOptions.Countries = .Countries.Enabled
+                nScrapeOptions.Creators = .Creators.Enabled
+                nScrapeOptions.Credits = .Credits.Enabled
+                nScrapeOptions.Directors = .Directors.Enabled
+                nScrapeOptions.EpisodeGuideURL = .EpisodeGuideURL.Enabled
+                nScrapeOptions.Genres = .Genres.Enabled
+                nScrapeOptions.MPAA = .MPAA.Enabled
+                nScrapeOptions.OriginalTitle = .OriginalTitle.Enabled
+                nScrapeOptions.Outline = .Outline.Enabled
+                nScrapeOptions.Plot = .Plot.Enabled
+                nScrapeOptions.Premiered = .Premiered.Enabled
+                nScrapeOptions.Ratings = .Ratings.Enabled
+                nScrapeOptions.Runtime = .Runtime.Enabled
+                nScrapeOptions.Status = .Status.Enabled
+                nScrapeOptions.Studios = .Studios.Enabled
+                nScrapeOptions.Tagline = .Tagline.Enabled
+                nScrapeOptions.Tags = .Tags.Enabled
+                nScrapeOptions.Title = .Title.Enabled
+                nScrapeOptions.Top250 = .Top250.Enabled
+                nScrapeOptions.Trailer = .TrailerLink.Enabled
+                nScrapeOptions.UserRating = .UserRating.Enabled
             End With
             With nEpisodeSettings
-                nScrapeOptions.bEpisodeActors = .Actors.Enabled
-                nScrapeOptions.bEpisodeAired = .Aired.Enabled
-                nScrapeOptions.bEpisodeCredits = .Credits.Enabled
-                nScrapeOptions.bEpisodeDirectors = .Directors.Enabled
-                nScrapeOptions.bEpisodeGuestStars = .GuestStars.Enabled
-                nScrapeOptions.bEpisodePlot = .Plot.Enabled
-                nScrapeOptions.bEpisodeRating = .Ratings.Enabled
-                nScrapeOptions.bEpisodeRuntime = .Runtime.Enabled
-                nScrapeOptions.bEpisodeTitle = .Title.Enabled
-                nScrapeOptions.bEpisodeUserRating = .UserRating.Enabled
+                nScrapeOptions.Episodes.Actors = .Actors.Enabled
+                nScrapeOptions.Episodes.Aired = .Aired.Enabled
+                nScrapeOptions.Episodes.Credits = .Credits.Enabled
+                nScrapeOptions.Episodes.Directors = .Directors.Enabled
+                nScrapeOptions.Episodes.GuestStars = .GuestStars.Enabled
+                nScrapeOptions.Episodes.Plot = .Plot.Enabled
+                nScrapeOptions.Episodes.Ratings = .Ratings.Enabled
+                nScrapeOptions.Episodes.Runtime = .Runtime.Enabled
+                nScrapeOptions.Episodes.Title = .Title.Enabled
+                nScrapeOptions.Episodes.UserRating = .UserRating.Enabled
             End With
             With nSeasonSettings
-                nScrapeOptions.bSeasonAired = .Aired.Enabled
-                nScrapeOptions.bSeasonPlot = .Plot.Enabled
-                nScrapeOptions.bSeasonTitle = .Title.Enabled
+                nScrapeOptions.Seasons.Aired = .Aired.Enabled
+                nScrapeOptions.Seasons.Plot = .Plot.Enabled
+                nScrapeOptions.Seasons.Title = .Title.Enabled
             End With
             Return nScrapeOptions
         End Get
@@ -1642,7 +1642,7 @@ Public Class Settings
 
         Public Property FileType() As String = String.Empty
 
-        Public Property MetaData() As MediaContainers.FileInfo = New MediaContainers.FileInfo
+        Public Property MetaData() As MediaContainers.Fileinfo = New MediaContainers.Fileinfo
 
 #End Region 'Properties
 

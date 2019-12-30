@@ -326,7 +326,7 @@ Public Class frmTV_Data
 
     Private Sub btnTVScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
         If Not txtTVScraperDefFIExt.Text.StartsWith(".") Then txtTVScraperDefFIExt.Text = String.Concat(".", txtTVScraperDefFIExt.Text)
-        Using dFileInfo As New dlgFileInfo(New MediaContainers.FileInfo)
+        Using dFileInfo As New dlgFileInfo(New MediaContainers.Fileinfo)
             If dFileInfo.ShowDialog() = DialogResult.OK Then
                 Dim fi = dFileInfo.Result
                 If Not fi Is Nothing Then

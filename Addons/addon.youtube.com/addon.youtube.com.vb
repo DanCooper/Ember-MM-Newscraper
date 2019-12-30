@@ -102,8 +102,8 @@ Public Class Trailer_Movie
 
         Settings_Load()
 
-        If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-            TrailerList = Scraper.GetTrailers(DBMovie.Movie.Title)
+        If Not String.IsNullOrEmpty(DBMovie.MainDetails.Title) Then
+            TrailerList = Scraper.GetTrailers(DBMovie.MainDetails.Title)
         End If
 
         _Logger.Trace("[YouTube_Trailer] [Scraper_Movie] [Done]")

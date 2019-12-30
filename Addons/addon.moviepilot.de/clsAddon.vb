@@ -68,11 +68,11 @@ Public Class Scraper
                                      ByVal strTitle As String,
                                      ByVal iYear As Integer,
                                      ByVal FilteredOptions As Structures.ScrapeOptions,
-                                     ByVal strLanguage As String) As MediaContainers.Movie
+                                     ByVal strLanguage As String) As MediaContainers.MainDetails
         Try
             Dim bIsScraperLanguage As Boolean = strLanguage.ToLower.StartsWith("de")
 
-            Dim nMovie As New MediaContainers.Movie With {
+            Dim nMovie As New MediaContainers.MainDetails With {
                 .Scrapersource = "MOVIEPILOT"
             }
 
@@ -91,16 +91,16 @@ Public Class Scraper
 
                 '....and use result to get the wanted information
                 If Not String.IsNullOrEmpty(HTML) Then
-                    If FilteredOptions.bMainCertifications Then
+                    If FilteredOptions.Certifications Then
                         nMovie.Certifications.Add(GetCertification(HTML))
                     End If
 
-                    If (FilteredOptions.bMainOutline OrElse FilteredOptions.bMainPlot) AndAlso bIsScraperLanguage Then
+                    If (FilteredOptions.Outline OrElse FilteredOptions.Plot) AndAlso bIsScraperLanguage Then
                         Dim aResult As Results = GetPlotAndOutline(HTML)
-                        If FilteredOptions.bMainOutline Then
+                        If FilteredOptions.Outline Then
                             nMovie.Outline = aResult.Outline
                         End If
-                        If FilteredOptions.bMainPlot Then
+                        If FilteredOptions.Plot Then
                             nMovie.Plot = aResult.Plot
                         End If
                     End If

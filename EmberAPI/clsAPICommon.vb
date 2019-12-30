@@ -614,10 +614,14 @@ Public Class Enums
         OnLandscapeSave_Movie
         OnNFORead_TVShow
         OnNFOSave_Movie
+        OnNFOSave_Movieset
+        OnNFOSave_TVEpisode
+        OnNFOSave_TVSeason
         OnNFOSave_TVShow
         OnPosterDelete_Movie
         OnPosterSave_Movie
         OnThemeSave_Movie
+        OnThemeSave_TVShow
         OnTrailerSave_Movie
         RandomFrameExtrator
         Remove_Movie
@@ -1157,53 +1161,55 @@ Public Class Functions
         End Using
     End Function
     ''' <summary>
-    ''' Determine the Structures.MovieScrapeOptions options that are in common between the two parameters
+    ''' Determine the Structures.ScrapeOptions options that are in common between the two parameters
     ''' </summary>
-    ''' <param name="Options">Base Structures.MovieScrapeOptions</param>
-    ''' <param name="Options2">Secondary Structures.MovieScrapeOptions</param>
-    ''' <returns>Structures.MovieScrapeOptions representing the AndAlso union of the two parameters</returns>
+    ''' <param name="Options">Base Structures.ScrapeOptions</param>
+    ''' <param name="Options2">Secondary Structures.ScrapeOptions</param>
+    ''' <returns>StructuresScrapeOptions representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
     Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
-        Dim FilteredOptions As New Structures.ScrapeOptions With {
-            .bEpisodeActors = Options.bEpisodeActors AndAlso Options2.bEpisodeActors,
-            .bEpisodeAired = Options.bEpisodeAired AndAlso Options2.bEpisodeAired,
-            .bEpisodeCredits = Options.bEpisodeCredits AndAlso Options2.bEpisodeCredits,
-            .bEpisodeDirectors = Options.bEpisodeDirectors AndAlso Options2.bEpisodeDirectors,
-            .bEpisodeGuestStars = Options.bEpisodeGuestStars AndAlso Options2.bEpisodeGuestStars,
-            .bEpisodePlot = Options.bEpisodePlot AndAlso Options2.bEpisodePlot,
-            .bEpisodeRating = Options.bEpisodeRating AndAlso Options2.bEpisodeRating,
-            .bEpisodeRuntime = Options.bEpisodeRuntime AndAlso Options2.bEpisodeRuntime,
-            .bEpisodeTitle = Options.bEpisodeTitle AndAlso Options2.bEpisodeTitle,
-            .bEpisodeUserRating = Options.bEpisodeUserRating AndAlso Options2.bEpisodeUserRating,
-            .bMainActors = Options.bMainActors AndAlso Options2.bMainActors,
-            .bMainCertifications = Options.bMainCertifications AndAlso Options2.bMainCertifications,
-            .bMainCollection = Options.bMainCollection AndAlso Options2.bMainCollection,
-            .bMainCountries = Options.bMainCountries AndAlso Options2.bMainCountries,
-            .bMainCreators = Options.bMainCreators AndAlso Options2.bMainCreators,
-            .bMainDirectors = Options.bMainDirectors AndAlso Options2.bMainDirectors,
-            .bMainEpisodeGuide = Options.bMainEpisodeGuide AndAlso Options2.bMainEpisodeGuide,
-            .bMainGenres = Options.bMainGenres AndAlso Options2.bMainGenres,
-            .bMainMPAA = Options.bMainMPAA AndAlso Options2.bMainMPAA,
-            .bMainOriginalTitle = Options.bMainOriginalTitle AndAlso Options2.bMainOriginalTitle,
-            .bMainOutline = Options.bMainOutline AndAlso Options2.bMainOutline,
-            .bMainPlot = Options.bMainPlot AndAlso Options2.bMainPlot,
-            .bMainPremiered = Options.bMainPremiered AndAlso Options2.bMainPremiered,
-            .bMainRatings = Options.bMainRatings AndAlso Options2.bMainRatings,
-            .bMainRuntime = Options.bMainRuntime AndAlso Options2.bMainRuntime,
-            .bMainStatus = Options.bMainStatus AndAlso Options2.bMainStatus,
-            .bMainStudios = Options.bMainStudios AndAlso Options2.bMainStudios,
-            .bMainTagline = Options.bMainTagline AndAlso Options2.bMainTagline,
-            .bMainTags = Options.bMainTags AndAlso Options2.bMainTags,
-            .bMainTitle = Options.bMainTitle AndAlso Options2.bMainTitle,
-            .bMainTop250 = Options.bMainTop250 AndAlso Options2.bMainTop250,
-            .bMainTrailer = Options.bMainTrailer AndAlso Options2.bMainTrailer,
-            .bMainUserRating = Options.bMainUserRating AndAlso Options2.bMainUserRating,
-            .bMainCredits = Options.bMainCredits AndAlso Options2.bMainCredits,
-            .bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired,
-            .bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot,
-            .bSeasonTitle = Options.bSeasonTitle AndAlso Options2.bSeasonTitle
+        Dim ScrapeOptions = ScrapeOptionsAndAlso_Internal(Options, Options2)
+        ScrapeOptions.Episodes = ScrapeOptionsAndAlso_Internal(Options.Episodes, Options2.Episodes)
+        ScrapeOptions.Seasons = ScrapeOptionsAndAlso_Internal(Options.Seasons, Options2.Seasons)
+        Return ScrapeOptions
+    End Function
+    ''' <summary>
+    ''' Determine the Structures.ScrapeOptions options that are in common between the two parameters
+    ''' </summary>
+    ''' <param name="Options">Base Structures.ScrapeOptions</param>
+    ''' <param name="Options2">Secondary Structures.ScrapeOptions</param>
+    ''' <returns>StructuresScrapeOptions representing the AndAlso union of the two parameters</returns>
+    ''' <remarks></remarks>
+    Private Shared Function ScrapeOptionsAndAlso_Internal(ByVal Options As Structures.ScrapeOptionsBase, ByVal Options2 As Structures.ScrapeOptionsBase) As Structures.ScrapeOptions
+        Return New Structures.ScrapeOptions With {
+            .Actors = Options.Actors AndAlso Options2.Actors,
+            .Aired = Options.Aired AndAlso Options2.Aired,
+            .Certifications = Options.Certifications AndAlso Options2.Certifications,
+            .Collection = Options.Collection AndAlso Options2.Collection,
+            .Countries = Options.Countries AndAlso Options2.Countries,
+            .Creators = Options.Creators AndAlso Options2.Creators,
+            .Credits = Options.Credits AndAlso Options2.Credits,
+            .Directors = Options.Directors AndAlso Options2.Directors,
+            .EpisodeGuideURL = Options.EpisodeGuideURL AndAlso Options2.EpisodeGuideURL,
+            .Genres = Options.Genres AndAlso Options2.Genres,
+            .GuestStars = Options.GuestStars AndAlso Options2.GuestStars,
+            .MPAA = Options.MPAA AndAlso Options2.MPAA,
+            .OriginalTitle = Options.OriginalTitle AndAlso Options2.OriginalTitle,
+            .Outline = Options.Outline AndAlso Options2.Outline,
+            .Plot = Options.Plot AndAlso Options2.Plot,
+            .Premiered = Options.Premiered AndAlso Options2.Premiered,
+            .Ratings = Options.Ratings AndAlso Options2.Ratings,
+            .Runtime = Options.Runtime AndAlso Options2.Runtime,
+            .Status = Options.Status AndAlso Options2.Status,
+            .Studios = Options.Studios AndAlso Options2.Studios,
+            .Tagline = Options.Tagline AndAlso Options2.Tagline,
+            .Tags = Options.Tags AndAlso Options2.Tags,
+            .Title = Options.Title AndAlso Options2.Title,
+            .Top250 = Options.Top250 AndAlso Options2.Top250,
+            .Trailer = Options.Trailer AndAlso Options2.Trailer,
+            .UserRating = Options.UserRating AndAlso Options2.UserRating,
+            .VideoSource = Options.VideoSource AndAlso Options2.VideoSource
         }
-        Return FilteredOptions
     End Function
 
     Public Shared Function ScrapeModifiersAndAlso(ByVal Options As Structures.ScrapeModifiers, ByVal Options2 As Structures.ScrapeModifiers) As Structures.ScrapeModifiers
@@ -1568,49 +1574,44 @@ Public Class Structures
     ''' Structure representing posible scrape fields
     ''' </summary>
     ''' <remarks></remarks>
-    <Serializable()>
-    Public Structure ScrapeOptions
-        Dim bEpisodeActors As Boolean
-        Dim bEpisodeAired As Boolean
-        Dim bEpisodeCredits As Boolean
-        Dim bEpisodeDirectors As Boolean
-        Dim bEpisodeGuestStars As Boolean
-        Dim bEpisodeOriginalTitle As Boolean
-        Dim bEpisodePlot As Boolean
-        Dim bEpisodeRating As Boolean
-        Dim bEpisodeRuntime As Boolean
-        Dim bEpisodeTitle As Boolean
-        Dim bEpisodeUserRating As Boolean
-        Dim bEpisodeVideoSource As Boolean
-        Dim bMainActors As Boolean
-        Dim bMainCertifications As Boolean
-        Dim bMainCollection As Boolean
-        Dim bMainCountries As Boolean
-        Dim bMainCreators As Boolean
-        Dim bMainCredits As Boolean
-        Dim bMainDirectors As Boolean
-        Dim bMainEpisodeGuide As Boolean
-        Dim bMainGenres As Boolean
-        Dim bMainMPAA As Boolean
-        Dim bMainOriginalTitle As Boolean
-        Dim bMainOutline As Boolean
-        Dim bMainPlot As Boolean
-        Dim bMainPremiered As Boolean
-        Dim bMainRatings As Boolean
-        Dim bMainRuntime As Boolean
-        Dim bMainStatus As Boolean
-        Dim bMainStudios As Boolean
-        Dim bMainTagline As Boolean
-        Dim bMainTags As Boolean
-        Dim bMainTitle As Boolean
-        Dim bMainTop250 As Boolean
-        Dim bMainTrailer As Boolean
-        Dim bMainUserRating As Boolean
-        Dim bMainVideoSource As Boolean
-        Dim bSeasonAired As Boolean
-        Dim bSeasonPlot As Boolean
-        Dim bSeasonTitle As Boolean
-    End Structure
+    Public Class ScrapeOptions
+        Inherits ScrapeOptionsBase
+        Public Episodes As New ScrapeOptionsBase
+        Public Seasons As New ScrapeOptionsBase
+    End Class
+    ''' <summary>
+    ''' Structure representing posible scrape fields
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Class ScrapeOptionsBase
+        Public Actors As Boolean
+        Public Aired As Boolean
+        Public Certifications As Boolean
+        Public Collection As Boolean
+        Public Countries As Boolean
+        Public Creators As Boolean
+        Public Credits As Boolean
+        Public Directors As Boolean
+        Public EpisodeGuideURL As Boolean
+        Public Genres As Boolean
+        Public GuestStars As Boolean
+        Public MPAA As Boolean
+        Public OriginalTitle As Boolean
+        Public Outline As Boolean
+        Public Plot As Boolean
+        Public Premiered As Boolean
+        Public Ratings As Boolean
+        Public Runtime As Boolean
+        Public Status As Boolean
+        Public Studios As Boolean
+        Public Tagline As Boolean
+        Public Tags As Boolean
+        Public Title As Boolean
+        Public Top250 As Boolean
+        Public Trailer As Boolean
+        Public UserRating As Boolean
+        Public VideoSource As Boolean
+    End Class
 
     Public Class SettingsResult
 

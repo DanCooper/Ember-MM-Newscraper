@@ -31,8 +31,8 @@ Public Class MetaData
 
 #Region "Methods"
 
-    Private Shared Function ApplyDefaults(ByVal tDBElement As Database.DBElement) As MediaContainers.FileInfo
-        Dim nFileInfo As New MediaContainers.FileInfo
+    Private Shared Function ApplyDefaults(ByVal tDBElement As Database.DBElement) As MediaContainers.Fileinfo
+        Dim nFileInfo As New MediaContainers.Fileinfo
         Dim nMetadataList As New List(Of Settings.MetadataPerType)
 
         Select Case tDBElement.ContentType
@@ -51,7 +51,7 @@ Public Class MetaData
         Return Nothing
     End Function
 
-    Private Shared Function CleanupFileInfo(ByVal tFileInfo As MediaContainers.FileInfo) As MediaContainers.FileInfo
+    Private Shared Function CleanupFileInfo(ByVal tFileInfo As MediaContainers.Fileinfo) As MediaContainers.Fileinfo
         If tFileInfo.StreamDetailsSpecified Then
             If tFileInfo.StreamDetails.VideoSpecified Then
                 For i As Integer = 0 To tFileInfo.StreamDetails.Video.Count - 1
@@ -63,7 +63,7 @@ Public Class MetaData
         Return tFileInfo
     End Function
 
-    Private Shared Function CombineFileInfo(ByVal mainFileInfo As MediaContainers.FileInfo, otherFileInfo As MediaContainers.FileInfo) As MediaContainers.FileInfo
+    Private Shared Function CombineFileInfo(ByVal mainFileInfo As MediaContainers.Fileinfo, otherFileInfo As MediaContainers.Fileinfo) As MediaContainers.Fileinfo
         If mainFileInfo IsNot Nothing AndAlso mainFileInfo.StreamDetailsSpecified AndAlso otherFileInfo IsNot Nothing AndAlso otherFileInfo.StreamDetailsSpecified Then
             'check if both containers has the same count of streams
             If mainFileInfo.StreamDetails.Audio.Count = otherFileInfo.StreamDetails.Audio.Count AndAlso
@@ -156,9 +156,9 @@ Public Class MetaData
     ''' 
     ''' 2014/08/12 cocotus - Should work better: If there's more than one audiostream which highest channelcount, the one with highest bitrate or the DTSHD stream will be returned
     ''' </remarks>
-    Public Shared Function GetBestAudio(ByVal fileInfo As MediaContainers.FileInfo, ByVal PreferredLanguage As String, ByVal contentType As Enums.ContentType) As MediaContainers.Audio
+    Public Shared Function GetBestAudio(ByVal fileInfo As MediaContainers.Fileinfo, ByVal PreferredLanguage As String, ByVal contentType As Enums.ContentType) As MediaContainers.Audio
         Dim nBestAudio As New MediaContainers.Audio
-        Dim nFilteredAudio As New MediaContainers.FileInfo
+        Dim nFilteredAudio As New MediaContainers.Fileinfo
         Dim bGetPrefLanguage As Boolean = False
         Dim bHasPrefLanguage As Boolean = False
         Dim strPrefLanguage As String = String.Empty
@@ -198,11 +198,11 @@ Public Class MetaData
         Return nBestAudio
     End Function
 
-    Private Shared Function GetFileInfo(ByVal fileItem As FileItem, ByVal contentType As Enums.ContentType) As MediaContainers.FileInfo
-        Dim nFileInfo As New MediaContainers.FileInfo
+    Private Shared Function GetFileInfo(ByVal fileItem As FileItem, ByVal contentType As Enums.ContentType) As MediaContainers.Fileinfo
+        Dim nFileInfo As New MediaContainers.Fileinfo
 
         If fileItem.FullPathSpecified AndAlso File.Exists(fileItem.FirstPathFromStack) Then
-            Dim nStackedFiles As New List(Of MediaContainers.FileInfo)
+            Dim nStackedFiles As New List(Of MediaContainers.Fileinfo)
             Dim nMediaInfo As New MediaInfo
 
             'scan Main video file to get all media informations
@@ -247,7 +247,7 @@ Public Class MetaData
                     If fiVOB IsNot Nothing AndAlso fiVOB.Count > 0 Then
                         nFileInfo = nMediaInfo.ScanPath(fiVOB(0))
                     End If
-                    Dim nAdditionalFileInfo As New MediaContainers.FileInfo
+                    Dim nAdditionalFileInfo As New MediaContainers.Fileinfo
                     If fiIFO IsNot Nothing AndAlso fiIFO.Count > 0 Then
                         nAdditionalFileInfo = nMediaInfo.ScanPath(fiIFO(0))
                     End If
@@ -280,16 +280,14 @@ Public Class MetaData
 
     Public Shared Sub UpdateFileInfo(ByRef dbElement As Database.DBElement)
         Dim nSettings As New DataSpecificationItem_Metadata
-        Dim currentFileInfo As New MediaContainers.FileInfo
-        Dim nFileInfo As New MediaContainers.FileInfo
+        Dim currentFileInfo = dbElement.MainDetails.FileInfo
+        Dim nFileInfo As New MediaContainers.Fileinfo
 
         Select Case dbElement.ContentType
             Case Enums.ContentType.Movie
                 nSettings = Master.eSettings.Movie.DataSettings.MetadataScan
-                currentFileInfo = dbElement.Movie.FileInfo
             Case Enums.ContentType.TVEpisode
                 nSettings = Master.eSettings.TVEpisode.DataSettings.MetadataScan
-                currentFileInfo = dbElement.TVEpisode.FileInfo
             Case Else
                 Exit Sub
         End Select
@@ -351,14 +349,9 @@ Public Class MetaData
                 End If
             End If
             If nFileInfo.StreamDetails.VideoSpecified AndAlso nSettings.DurationForRuntimeEnabled Then
-                Dim tVid As MediaContainers.Video = Info.GetBestVideo(currentFileInfo)
+                Dim tVid As MediaContainers.Video = Data.GetBestVideo(currentFileInfo)
                 If tVid.DurationSpecified Then
-                    Select Case dbElement.ContentType
-                        Case Enums.ContentType.Movie
-                            dbElement.Movie.Runtime = StringUtils.FormatDuration(tVid.Duration.ToString, dbElement.ContentType)
-                        Case Enums.ContentType.TVEpisode
-                            dbElement.TVEpisode.Runtime = StringUtils.FormatDuration(tVid.Duration.ToString, dbElement.ContentType)
-                    End Select
+                    dbElement.MainDetails.Runtime = StringUtils.FormatDuration(tVid.Duration.ToString, dbElement.ContentType)
                 End If
             End If
         End If
@@ -371,13 +364,8 @@ Public Class MetaData
             End If
         End If
 
-        'set the new FileInfo for the dbElement
-        Select Case dbElement.ContentType
-            Case Enums.ContentType.Movie
-                dbElement.Movie.FileInfo = CleanupFileInfo(nFileInfo)
-            Case Enums.ContentType.TVEpisode
-                dbElement.TVEpisode.FileInfo = CleanupFileInfo(nFileInfo)
-        End Select
+        'set the new FileInfo for the dbElement 
+        dbElement.MainDetails.FileInfo = CleanupFileInfo(nFileInfo)
     End Sub
 
 #End Region 'Methods

@@ -148,10 +148,10 @@ Public Class TaskManager
         Select Case tTaskItem.ContentType
 
             Case Enums.ContentType.Movie
-                Dim nInfo As New MediaContainers.Movie
+                Dim nInfo As New MediaContainers.MainDetails
                 If tTaskItem.GenericObject IsNot Nothing AndAlso
-                    tTaskItem.GenericObject.GetType Is GetType(MediaContainers.Movie) Then
-                    nInfo = DirectCast(tTaskItem.GenericObject, MediaContainers.Movie)
+                    tTaskItem.GenericObject.GetType Is GetType(MediaContainers.MainDetails) Then
+                    nInfo = DirectCast(tTaskItem.GenericObject, MediaContainers.MainDetails)
                 Else
                     Return
                 End If
@@ -163,34 +163,34 @@ Public Class TaskManager
 
                     If Not tmpDBElement.IsLocked Then
                         With tTaskItem.ScrapeOptions
-                            DataField_ClearList(.bMainActors, tmpDBElement.Movie.Actors)
-                            DataField_CompareLists(.bMainCertifications, tmpDBElement.Movie.Certifications, nInfo.Certifications)
-                            DataField_CompareLists(.bMainCountries, tmpDBElement.Movie.Countries, nInfo.Countries)
-                            DataField_CompareLists(.bMainDirectors, tmpDBElement.Movie.Directors, nInfo.Directors)
-                            DataField_CompareLists(.bMainGenres, tmpDBElement.Movie.Genres, nInfo.Genres)
-                            DataField_CompareStrings(.bMainMPAA, tmpDBElement.Movie.MPAA, nInfo.MPAA)
-                            DataField_ClearString(.bMainOriginalTitle, tmpDBElement.Movie.OriginalTitle)
-                            DataField_ClearString(.bMainOutline, tmpDBElement.Movie.Outline)
-                            DataField_ClearString(.bMainPlot, tmpDBElement.Movie.Plot)
-                            DataField_ClearString(.bMainRatings, tmpDBElement.Movie.Rating)
-                            DataField_ClearString(.bMainRatings, tmpDBElement.Movie.Votes)
-                            DataField_CompareStrings(.bMainPremiered, tmpDBElement.Movie.Premiered, nInfo.Premiered)
-                            DataField_ClearString(.bMainRuntime, tmpDBElement.Movie.Runtime)
-                            DataField_CompareLists(.bMainStudios, tmpDBElement.Movie.Studios, nInfo.Studios)
-                            DataField_CompareStrings(.bMainTagline, tmpDBElement.Movie.Tagline, nInfo.Tagline)
-                            DataField_CompareLists(.bMainTags, tmpDBElement.Movie.Tags, nInfo.Tags)
-                            DataField_CompareIntegers(.bMainTop250, tmpDBElement.Movie.Top250, nInfo.Top250)
-                            DataField_ClearString(.bMainTrailer, tmpDBElement.Movie.Trailer)
-                            DataField_CompareIntegers(.bMainUserRating, tmpDBElement.Movie.UserRating, nInfo.UserRating)
-                            DataField_CompareStrings(.bMainVideoSource, tmpDBElement.VideoSource, nInfo.VideoSource)
-                            tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
-                            DataField_CompareLists(.bMainCredits, tmpDBElement.Movie.Credits, nInfo.Credits)
+                            DataField_ClearList(.Actors, tmpDBElement.MainDetails.Actors)
+                            DataField_CompareLists(.Certifications, tmpDBElement.MainDetails.Certifications, nInfo.Certifications)
+                            DataField_CompareLists(.Countries, tmpDBElement.MainDetails.Countries, nInfo.Countries)
+                            DataField_CompareLists(.Directors, tmpDBElement.MainDetails.Directors, nInfo.Directors)
+                            DataField_CompareLists(.Genres, tmpDBElement.MainDetails.Genres, nInfo.Genres)
+                            DataField_CompareStrings(.MPAA, tmpDBElement.MainDetails.MPAA, nInfo.MPAA)
+                            DataField_ClearString(.OriginalTitle, tmpDBElement.MainDetails.OriginalTitle)
+                            DataField_ClearString(.Outline, tmpDBElement.MainDetails.Outline)
+                            DataField_ClearString(.Plot, tmpDBElement.MainDetails.Plot)
+                            DataField_ClearString(.Ratings, tmpDBElement.MainDetails.Rating)
+                            DataField_ClearString(.Ratings, tmpDBElement.MainDetails.Votes)
+                            DataField_CompareStrings(.Premiered, tmpDBElement.MainDetails.Premiered, nInfo.Premiered)
+                            DataField_ClearString(.Runtime, tmpDBElement.MainDetails.Runtime)
+                            DataField_CompareLists(.Studios, tmpDBElement.MainDetails.Studios, nInfo.Studios)
+                            DataField_CompareStrings(.Tagline, tmpDBElement.MainDetails.Tagline, nInfo.Tagline)
+                            DataField_CompareLists(.Tags, tmpDBElement.MainDetails.Tags, nInfo.Tags)
+                            DataField_CompareIntegers(.Top250, tmpDBElement.MainDetails.Top250, nInfo.Top250)
+                            DataField_ClearString(.Trailer, tmpDBElement.MainDetails.Trailer)
+                            DataField_CompareIntegers(.UserRating, tmpDBElement.MainDetails.UserRating, nInfo.UserRating)
+                            DataField_CompareStrings(.VideoSource, tmpDBElement.VideoSource, nInfo.VideoSource)
+                            tmpDBElement.MainDetails.VideoSource = tmpDBElement.VideoSource
+                            DataField_CompareLists(.Credits, tmpDBElement.MainDetails.Credits, nInfo.Credits)
                         End With
 
                         If _HasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = tmpDBElement.Movie.Title})
+                                                     .Message = tmpDBElement.MainDetails.Title})
 
                             Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
 
@@ -210,13 +210,13 @@ Public Class TaskManager
 
                     If Not tmpDBElement.IsLocked Then
                         With tTaskItem.ScrapeOptions
-                            DataField_ClearString(.bMainPlot, tmpDBElement.Movieset.Plot)
+                            DataField_ClearString(.Plot, tmpDBElement.MainDetails.Plot)
                         End With
 
                         If _HasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = tmpDBElement.Movieset.Title})
+                                                     .Message = tmpDBElement.MainDetails.Title})
 
                             Master.DB.Save_Movieset(tmpDBElement, True, True, False, True)
 
@@ -229,10 +229,10 @@ Public Class TaskManager
                 Next
 
             Case Enums.ContentType.TVEpisode
-                Dim nInfo As New MediaContainers.EpisodeDetails
+                Dim nInfo As New MediaContainers.MainDetails
                 If tTaskItem.GenericObject IsNot Nothing AndAlso
-                    tTaskItem.GenericObject.GetType Is GetType(MediaContainers.EpisodeDetails) Then
-                    nInfo = DirectCast(tTaskItem.GenericObject, MediaContainers.EpisodeDetails)
+                    tTaskItem.GenericObject.GetType Is GetType(MediaContainers.MainDetails) Then
+                    nInfo = DirectCast(tTaskItem.GenericObject, MediaContainers.MainDetails)
                 Else
                     Return
                 End If
@@ -244,24 +244,24 @@ Public Class TaskManager
 
                     If Not tmpDBElement.IsLocked Then
                         With tTaskItem.ScrapeOptions
-                            DataField_ClearList(.bEpisodeActors, tmpDBElement.TVEpisode.Actors)
-                            DataField_CompareStrings(.bEpisodeAired, tmpDBElement.TVEpisode.Aired, nInfo.Aired)
-                            DataField_CompareLists(.bEpisodeCredits, tmpDBElement.TVEpisode.Credits, nInfo.Credits)
-                            DataField_CompareLists(.bEpisodeDirectors, tmpDBElement.TVEpisode.Directors, nInfo.Directors)
-                            DataField_ClearList(.bEpisodeGuestStars, tmpDBElement.TVEpisode.GuestStars)
-                            DataField_ClearString(.bEpisodePlot, tmpDBElement.TVEpisode.Plot)
-                            DataField_ClearString(.bEpisodeRating, tmpDBElement.TVEpisode.Rating)
-                            DataField_ClearString(.bEpisodeRating, tmpDBElement.TVEpisode.Votes)
-                            DataField_ClearString(.bEpisodeRuntime, tmpDBElement.TVEpisode.Runtime)
-                            DataField_CompareIntegers(.bEpisodeUserRating, tmpDBElement.TVEpisode.UserRating, nInfo.UserRating)
-                            DataField_CompareStrings(.bEpisodeVideoSource, tmpDBElement.VideoSource, nInfo.VideoSource)
-                            tmpDBElement.TVEpisode.VideoSource = tmpDBElement.VideoSource
+                            DataField_ClearList(.Episodes.Actors, tmpDBElement.MainDetails.Actors)
+                            DataField_CompareStrings(.Episodes.Aired, tmpDBElement.MainDetails.Aired, nInfo.Aired)
+                            DataField_CompareLists(.Episodes.Credits, tmpDBElement.MainDetails.Credits, nInfo.Credits)
+                            DataField_CompareLists(.Episodes.Directors, tmpDBElement.MainDetails.Directors, nInfo.Directors)
+                            DataField_ClearList(.Episodes.GuestStars, tmpDBElement.MainDetails.GuestStars)
+                            DataField_ClearString(.Episodes.Plot, tmpDBElement.MainDetails.Plot)
+                            DataField_ClearString(.Episodes.Ratings, tmpDBElement.MainDetails.Rating)
+                            DataField_ClearString(.Episodes.Ratings, tmpDBElement.MainDetails.Votes)
+                            DataField_ClearString(.Episodes.Runtime, tmpDBElement.MainDetails.Runtime)
+                            DataField_CompareIntegers(.Episodes.UserRating, tmpDBElement.MainDetails.UserRating, nInfo.UserRating)
+                            DataField_CompareStrings(.Episodes.VideoSource, tmpDBElement.VideoSource, nInfo.VideoSource)
+                            tmpDBElement.MainDetails.VideoSource = tmpDBElement.VideoSource
                         End With
 
                         If _HasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = tmpDBElement.TVEpisode.Title})
+                                                     .Message = tmpDBElement.MainDetails.Title})
 
                             Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
 
@@ -274,10 +274,10 @@ Public Class TaskManager
                 Next
 
             Case Enums.ContentType.TVSeason
-                Dim nInfo As New MediaContainers.SeasonDetails
+                Dim nInfo As New MediaContainers.MainDetails
                 If tTaskItem.GenericObject IsNot Nothing AndAlso
-                    tTaskItem.GenericObject.GetType Is GetType(MediaContainers.SeasonDetails) Then
-                    nInfo = DirectCast(tTaskItem.GenericObject, MediaContainers.SeasonDetails)
+                    tTaskItem.GenericObject.GetType Is GetType(MediaContainers.MainDetails) Then
+                    nInfo = DirectCast(tTaskItem.GenericObject, MediaContainers.MainDetails)
                 Else
                     Return
                 End If
@@ -290,15 +290,15 @@ Public Class TaskManager
                     If Not tmpDBElement.IsLocked Then
 
                         With tTaskItem.ScrapeOptions
-                            DataField_CompareStrings(.bSeasonAired, tmpDBElement.TVSeason.Aired, nInfo.Aired)
-                            DataField_ClearString(.bSeasonPlot, tmpDBElement.TVSeason.Plot)
-                            DataField_ClearString(.bSeasonTitle, tmpDBElement.TVSeason.Title)
+                            DataField_CompareStrings(.Seasons.Aired, tmpDBElement.MainDetails.Aired, nInfo.Aired)
+                            DataField_ClearString(.Seasons.Plot, tmpDBElement.MainDetails.Plot)
+                            DataField_ClearString(.Seasons.Title, tmpDBElement.MainDetails.Title)
                         End With
 
                         If _HasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShow.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.TVSeason.Season.ToString)})
+                                                     .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShowDetails.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.MainDetails.Season.ToString)})
 
                             Master.DB.Save_TVSeason(tmpDBElement, True, False, True)
 
@@ -311,10 +311,10 @@ Public Class TaskManager
                 Next
 
             Case Enums.ContentType.TVShow
-                Dim nInfo As New MediaContainers.TVShow
+                Dim nInfo As New MediaContainers.MainDetails
                 If tTaskItem.GenericObject IsNot Nothing AndAlso
-                    tTaskItem.GenericObject.GetType Is GetType(MediaContainers.TVShow) Then
-                    nInfo = DirectCast(tTaskItem.GenericObject, MediaContainers.TVShow)
+                    tTaskItem.GenericObject.GetType Is GetType(MediaContainers.MainDetails) Then
+                    nInfo = DirectCast(tTaskItem.GenericObject, MediaContainers.MainDetails)
                 Else
                     Return
                 End If
@@ -326,28 +326,28 @@ Public Class TaskManager
 
                     If Not tmpDBElement.IsLocked Then
                         With tTaskItem.ScrapeOptions
-                            DataField_ClearList(.bMainActors, tmpDBElement.TVShow.Actors)
-                            DataField_CompareLists(.bMainCertifications, tmpDBElement.TVShow.Certifications, nInfo.Certifications)
-                            DataField_CompareLists(.bMainCountries, tmpDBElement.TVShow.Countries, nInfo.Countries)
-                            DataField_CompareLists(.bMainCreators, tmpDBElement.TVShow.Creators, nInfo.Creators)
-                            DataField_CompareLists(.bMainGenres, tmpDBElement.TVShow.Genres, nInfo.Genres)
-                            DataField_CompareStrings(.bMainMPAA, tmpDBElement.TVShow.MPAA, nInfo.MPAA)
-                            DataField_ClearString(.bMainOriginalTitle, tmpDBElement.TVShow.OriginalTitle)
-                            DataField_ClearString(.bMainPlot, tmpDBElement.TVShow.Plot)
-                            DataField_CompareStrings(.bMainPremiered, tmpDBElement.TVShow.Premiered, nInfo.Premiered)
-                            DataField_ClearString(.bMainRatings, tmpDBElement.TVShow.Rating)
-                            DataField_ClearString(.bMainRatings, tmpDBElement.TVShow.Votes)
-                            DataField_ClearString(.bMainRuntime, tmpDBElement.TVShow.Runtime)
-                            DataField_CompareStrings(.bMainStatus, tmpDBElement.TVShow.Status, nInfo.Status)
-                            DataField_CompareLists(.bMainStudios, tmpDBElement.TVShow.Studios, nInfo.Studios)
-                            DataField_CompareLists(.bMainTags, tmpDBElement.TVShow.Tags, nInfo.Tags)
-                            DataField_CompareIntegers(.bMainUserRating, tmpDBElement.TVShow.UserRating, nInfo.UserRating)
+                            DataField_ClearList(.Actors, tmpDBElement.MainDetails.Actors)
+                            DataField_CompareLists(.Certifications, tmpDBElement.MainDetails.Certifications, nInfo.Certifications)
+                            DataField_CompareLists(.Countries, tmpDBElement.MainDetails.Countries, nInfo.Countries)
+                            DataField_CompareLists(.Creators, tmpDBElement.MainDetails.Creators, nInfo.Creators)
+                            DataField_CompareLists(.Genres, tmpDBElement.MainDetails.Genres, nInfo.Genres)
+                            DataField_CompareStrings(.MPAA, tmpDBElement.MainDetails.MPAA, nInfo.MPAA)
+                            DataField_ClearString(.OriginalTitle, tmpDBElement.MainDetails.OriginalTitle)
+                            DataField_ClearString(.Plot, tmpDBElement.MainDetails.Plot)
+                            DataField_CompareStrings(.Premiered, tmpDBElement.MainDetails.Premiered, nInfo.Premiered)
+                            DataField_ClearString(.Ratings, tmpDBElement.MainDetails.Rating)
+                            DataField_ClearString(.Ratings, tmpDBElement.MainDetails.Votes)
+                            DataField_ClearString(.Runtime, tmpDBElement.MainDetails.Runtime)
+                            DataField_CompareStrings(.Status, tmpDBElement.MainDetails.Status, nInfo.Status)
+                            DataField_CompareLists(.Studios, tmpDBElement.MainDetails.Studios, nInfo.Studios)
+                            DataField_CompareLists(.Tags, tmpDBElement.MainDetails.Tags, nInfo.Tags)
+                            DataField_CompareIntegers(.UserRating, tmpDBElement.MainDetails.UserRating, nInfo.UserRating)
                         End With
 
                         If _HasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = tmpDBElement.TVShow.Title})
+                                                     .Message = tmpDBElement.MainDetails.Title})
 
                             Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
 
@@ -520,7 +520,7 @@ Public Class TaskManager
 
                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                  .EventType = EventType.SimpleMessage,
-                                                 .Message = tmpDBElement.TVShow.Title})
+                                                 .Message = tmpDBElement.TVShowDetails.Title})
 
                     Dim ScrapeModifiers As New Structures.ScrapeModifiers
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
@@ -565,7 +565,7 @@ Public Class TaskManager
                             tmpDBElement.Language = strNewLanguage
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .EventType = EventType.SimpleMessage,
-                                                         .Message = tmpDBElement.Movie.Title})
+                                                         .Message = tmpDBElement.MainDetails.Title})
 
                             Master.DB.Save_Movie(tmpDBElement, True, True, False, False, False)
 
@@ -585,7 +585,7 @@ Public Class TaskManager
                             tmpDBElement.Language = strNewLanguage
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .EventType = EventType.SimpleMessage,
-                                                         .Message = tmpDBElement.Movieset.Title})
+                                                         .Message = tmpDBElement.MainDetails.Title})
 
                             Master.DB.Save_Movieset(tmpDBElement, True, True, False, False)
 
@@ -605,7 +605,7 @@ Public Class TaskManager
                             tmpDBElement.Language = strNewLanguage
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .EventType = EventType.SimpleMessage,
-                                                         .Message = tmpDBElement.TVShow.Title})
+                                                         .Message = tmpDBElement.MainDetails.Title})
 
                             Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
 
@@ -645,7 +645,7 @@ Public Class TaskManager
                     If bHasChanged Then
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = tmpDBElement.Movie.Title})
+                                                     .Message = tmpDBElement.MainDetails.Title})
 
                         Master.DB.Save_Movie(tmpDBElement, True, True, False, False, False)
 
@@ -677,7 +677,7 @@ Public Class TaskManager
                     If bHasChanged Then
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = tmpDBElement.Movieset.Title})
+                                                     .Message = tmpDBElement.MainDetails.Title})
 
                         Master.DB.Save_Movieset(tmpDBElement, True, True, False, False)
 
@@ -713,7 +713,7 @@ Public Class TaskManager
                         lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = tmpDBElement.TVEpisode.Title})
+                                                     .Message = tmpDBElement.MainDetails.Title})
 
                         Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, False)
 
@@ -765,7 +765,7 @@ Public Class TaskManager
                         lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShow.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.TVSeason.Season.ToString)})
+                                                     .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShowDetails.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.MainDetails.Season.ToString)})
 
                         Master.DB.Save_TVSeason(tmpDBElement, True, True, False)
 
@@ -836,7 +836,7 @@ Public Class TaskManager
                     If bHasChanged Then
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = tmpDBElement.TVShow.Title})
+                                                     .Message = tmpDBElement.MainDetails.Title})
 
                         Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
 
@@ -1092,15 +1092,15 @@ Public Class TaskManager
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
-                    If nMovieset Is Nothing AndAlso tmpDBElement.Movie.SetsSpecified OrElse
-                        nMovieset IsNot Nothing AndAlso Not tmpDBElement.Movie.SetsSpecified OrElse
-                        nMovieset IsNot Nothing AndAlso tmpDBElement.Movie.Sets.Count > 1 OrElse
-                        nMovieset IsNot Nothing AndAlso tmpDBElement.Movie.Sets.Where(Function(f) f.ID = nMovieset.ID).Count = 0 Then
-                        tmpDBElement.Movie.Sets.Clear()
-                        If nMovieset IsNot Nothing Then tmpDBElement.Movie.Sets.Add(nMovieset)
+                    If nMovieset Is Nothing AndAlso tmpDBElement.MainDetails.SetsSpecified OrElse
+                        nMovieset IsNot Nothing AndAlso Not tmpDBElement.MainDetails.SetsSpecified OrElse
+                        nMovieset IsNot Nothing AndAlso tmpDBElement.MainDetails.Sets.Count > 1 OrElse
+                        nMovieset IsNot Nothing AndAlso tmpDBElement.MainDetails.Sets.Where(Function(f) f.ID = nMovieset.ID).Count = 0 Then
+                        tmpDBElement.MainDetails.Sets.Clear()
+                        If nMovieset IsNot Nothing Then tmpDBElement.MainDetails.Sets.Add(nMovieset)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .EventType = EventType.SimpleMessage,
-                                                         .Message = tmpDBElement.Movie.Title})
+                                                         .Message = tmpDBElement.MainDetails.Title})
 
                         Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
 
@@ -1123,15 +1123,15 @@ Public Class TaskManager
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
 
                     If tTaskItem.CommonBooleanValue Then
-                        If Not tmpDBElement.Movie.LastPlayedSpecified OrElse Not tmpDBElement.Movie.PlayCountSpecified Then
-                            tmpDBElement.Movie.LastPlayed = If(tmpDBElement.Movie.LastPlayedSpecified, tmpDBElement.Movie.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                            tmpDBElement.Movie.PlayCount = If(tmpDBElement.Movie.PlayCountSpecified, tmpDBElement.Movie.PlayCount, 1)
+                        If Not tmpDBElement.MainDetails.LastPlayedSpecified OrElse Not tmpDBElement.MainDetails.PlayCountSpecified Then
+                            tmpDBElement.MainDetails.LastPlayed = If(tmpDBElement.MainDetails.LastPlayedSpecified, tmpDBElement.MainDetails.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                            tmpDBElement.MainDetails.PlayCount = If(tmpDBElement.MainDetails.PlayCountSpecified, tmpDBElement.MainDetails.PlayCount, 1)
                             bHasChanged = True
                         End If
                     Else
-                        If tmpDBElement.Movie.LastPlayedSpecified OrElse tmpDBElement.Movie.PlayCountSpecified Then
-                            tmpDBElement.Movie.LastPlayed = String.Empty
-                            tmpDBElement.Movie.PlayCount = 0
+                        If tmpDBElement.MainDetails.LastPlayedSpecified OrElse tmpDBElement.MainDetails.PlayCountSpecified Then
+                            tmpDBElement.MainDetails.LastPlayed = String.Empty
+                            tmpDBElement.MainDetails.PlayCount = 0
                             bHasChanged = True
                         End If
                     End If
@@ -1139,7 +1139,7 @@ Public Class TaskManager
                     If bHasChanged Then
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = tmpDBElement.Movie.Title})
+                                                     .Message = tmpDBElement.MainDetails.Title})
 
                         Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
 
@@ -1159,15 +1159,15 @@ Public Class TaskManager
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(tID, True)
 
                     If tTaskItem.CommonBooleanValue Then
-                        If Not tmpDBElement.TVEpisode.LastPlayedSpecified OrElse Not tmpDBElement.TVEpisode.PlaycountSpecified Then
-                            tmpDBElement.TVEpisode.LastPlayed = If(tmpDBElement.TVEpisode.LastPlayedSpecified, tmpDBElement.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                            tmpDBElement.TVEpisode.Playcount = If(tmpDBElement.TVEpisode.PlaycountSpecified, tmpDBElement.TVEpisode.Playcount, 1)
+                        If Not tmpDBElement.MainDetails.LastPlayedSpecified OrElse Not tmpDBElement.MainDetails.PlayCountSpecified Then
+                            tmpDBElement.MainDetails.LastPlayed = If(tmpDBElement.MainDetails.LastPlayedSpecified, tmpDBElement.MainDetails.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                            tmpDBElement.MainDetails.PlayCount = If(tmpDBElement.MainDetails.PlayCountSpecified, tmpDBElement.MainDetails.PlayCount, 1)
                             bHasChanged = True
                         End If
                     Else
-                        If tmpDBElement.TVEpisode.LastPlayedSpecified OrElse tmpDBElement.TVEpisode.PlaycountSpecified Then
-                            tmpDBElement.TVEpisode.LastPlayed = String.Empty
-                            tmpDBElement.TVEpisode.Playcount = 0
+                        If tmpDBElement.MainDetails.LastPlayedSpecified OrElse tmpDBElement.MainDetails.PlayCountSpecified Then
+                            tmpDBElement.MainDetails.LastPlayed = String.Empty
+                            tmpDBElement.MainDetails.PlayCount = 0
                             bHasChanged = True
                         End If
                     End If
@@ -1177,7 +1177,7 @@ Public Class TaskManager
                         lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = EventType.SimpleMessage,
-                                                     .Message = tmpDBElement.TVEpisode.Title})
+                                                     .Message = tmpDBElement.MainDetails.Title})
 
                         Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
 
@@ -1211,21 +1211,21 @@ Public Class TaskManager
                     If bwTaskManager.CancellationPending Then Return
                     Dim tmpDBElement_TVSeason As Database.DBElement = Master.DB.Load_TVSeason(tID, True, True)
                     'exclude "* All Seasons" entry from changing WatchedState
-                    If Not tmpDBElement_TVSeason.TVSeason.IsAllSeasons Then
-                        For Each tmpDBElement As Database.DBElement In tmpDBElement_TVSeason.Episodes.OrderBy(Function(f) f.TVEpisode.Episode)
+                    If Not tmpDBElement_TVSeason.MainDetails.Season_IsAllSeasons Then
+                        For Each tmpDBElement As Database.DBElement In tmpDBElement_TVSeason.Episodes.OrderBy(Function(f) f.MainDetails.Episode)
                             If bwTaskManager.CancellationPending Then Exit For
                             Dim bHasChanged As Boolean = False
 
                             If tTaskItem.CommonBooleanValue Then
-                                If Not tmpDBElement.TVEpisode.LastPlayedSpecified OrElse Not tmpDBElement.TVEpisode.PlaycountSpecified Then
-                                    tmpDBElement.TVEpisode.LastPlayed = If(tmpDBElement.TVEpisode.LastPlayedSpecified, tmpDBElement.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                                    tmpDBElement.TVEpisode.Playcount = If(tmpDBElement.TVEpisode.PlaycountSpecified, tmpDBElement.TVEpisode.Playcount, 1)
+                                If Not tmpDBElement.MainDetails.LastPlayedSpecified OrElse Not tmpDBElement.MainDetails.PlayCountSpecified Then
+                                    tmpDBElement.MainDetails.LastPlayed = If(tmpDBElement.MainDetails.LastPlayedSpecified, tmpDBElement.MainDetails.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                                    tmpDBElement.MainDetails.PlayCount = If(tmpDBElement.MainDetails.PlayCountSpecified, tmpDBElement.MainDetails.PlayCount, 1)
                                     bHasChanged = True
                                 End If
                             Else
-                                If tmpDBElement.TVEpisode.LastPlayedSpecified OrElse tmpDBElement.TVEpisode.PlaycountSpecified Then
-                                    tmpDBElement.TVEpisode.LastPlayed = String.Empty
-                                    tmpDBElement.TVEpisode.Playcount = 0
+                                If tmpDBElement.MainDetails.LastPlayedSpecified OrElse tmpDBElement.MainDetails.PlayCountSpecified Then
+                                    tmpDBElement.MainDetails.LastPlayed = String.Empty
+                                    tmpDBElement.MainDetails.PlayCount = 0
                                     bHasChanged = True
                                 End If
                             End If
@@ -1233,7 +1233,7 @@ Public Class TaskManager
                             If bHasChanged Then
                                 bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                              .EventType = EventType.SimpleMessage,
-                                                             .Message = tmpDBElement.TVEpisode.Title})
+                                                             .Message = tmpDBElement.MainDetails.Title})
 
                                 Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
 
@@ -1260,20 +1260,20 @@ Public Class TaskManager
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
                     Dim tmpDBElement_TVShow As Database.DBElement = Master.DB.Load_TVShow(tID, True, True)
-                    For Each tmpDBElement As Database.DBElement In tmpDBElement_TVShow.Episodes.OrderBy(Function(f) f.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
+                    For Each tmpDBElement As Database.DBElement In tmpDBElement_TVShow.Episodes.OrderBy(Function(f) f.MainDetails.Season).OrderBy(Function(f) f.MainDetails.Episode)
                         If bwTaskManager.CancellationPending Then Exit For
                         Dim bHasChanged As Boolean = False
 
                         If tTaskItem.CommonBooleanValue Then
-                            If Not tmpDBElement.TVEpisode.LastPlayedSpecified OrElse Not tmpDBElement.TVEpisode.PlaycountSpecified Then
-                                tmpDBElement.TVEpisode.LastPlayed = If(tmpDBElement.TVEpisode.LastPlayedSpecified, tmpDBElement.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                                tmpDBElement.TVEpisode.Playcount = If(tmpDBElement.TVEpisode.PlaycountSpecified, tmpDBElement.TVEpisode.Playcount, 1)
+                            If Not tmpDBElement.MainDetails.LastPlayedSpecified OrElse Not tmpDBElement.MainDetails.PlayCountSpecified Then
+                                tmpDBElement.MainDetails.LastPlayed = If(tmpDBElement.MainDetails.LastPlayedSpecified, tmpDBElement.MainDetails.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                                tmpDBElement.MainDetails.PlayCount = If(tmpDBElement.MainDetails.PlayCountSpecified, tmpDBElement.MainDetails.PlayCount, 1)
                                 bHasChanged = True
                             End If
                         Else
-                            If tmpDBElement.TVEpisode.LastPlayedSpecified OrElse tmpDBElement.TVEpisode.PlaycountSpecified Then
-                                tmpDBElement.TVEpisode.LastPlayed = String.Empty
-                                tmpDBElement.TVEpisode.Playcount = 0
+                            If tmpDBElement.MainDetails.LastPlayedSpecified OrElse tmpDBElement.MainDetails.PlayCountSpecified Then
+                                tmpDBElement.MainDetails.LastPlayed = String.Empty
+                                tmpDBElement.MainDetails.PlayCount = 0
                                 bHasChanged = True
                             End If
                         End If
@@ -1281,7 +1281,7 @@ Public Class TaskManager
                         If bHasChanged Then
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .EventType = EventType.SimpleMessage,
-                                                         .Message = tmpDBElement.TVEpisode.Title})
+                                                         .Message = tmpDBElement.MainDetails.Title})
 
                             Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
 
@@ -1292,7 +1292,7 @@ Public Class TaskManager
                         End If
                     Next
 
-                    For Each tSeason In tmpDBElement_TVShow.Seasons.OrderBy(Function(f) f.TVSeason.Season)
+                    For Each tSeason In tmpDBElement_TVShow.Seasons.OrderBy(Function(f) f.MainDetails.Season)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVSeason,
                                                      .EventType = EventType.RefreshRow,

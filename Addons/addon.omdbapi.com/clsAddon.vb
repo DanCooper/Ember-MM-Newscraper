@@ -26,7 +26,7 @@ Public Class SearchResults_Movie
 
 #Region "Properties"
 
-    Public Property Matches() As New List(Of MediaContainers.Movie)
+    Public Property Matches() As New List(Of MediaContainers.MainDetails)
 
 #End Region 'Properties
 
@@ -36,7 +36,7 @@ Public Class SearchResults_TVShow
 
 #Region "Properties"
 
-    Public Property Matches() As New List(Of MediaContainers.TVShow)
+    Public Property Matches() As New List(Of MediaContainers.MainDetails)
 
 #End Region 'Properties
 
@@ -84,8 +84,8 @@ Public Class Scraper
 
 #Region "Events"
 
-    Public Event SearchInfoDownloaded_Movie(ByVal PosterURL As String, ByVal Info As MediaContainers.Movie)
-    Public Event SearchInfoDownloaded_TVShow(ByVal PosterURL As String, ByVal Info As MediaContainers.TVShow)
+    Public Event SearchInfoDownloaded_Movie(ByVal PosterURL As String, ByVal Info As MediaContainers.MainDetails)
+    Public Event SearchInfoDownloaded_TVShow(ByVal PosterURL As String, ByVal Info As MediaContainers.MainDetails)
 
     Public Event SearchResultsDownloaded_Movie(ByVal Results As SearchResults_Movie)
     Public Event SearchResultsDownloaded_TVShow(ByVal Results As SearchResults_TVShow)
@@ -119,11 +119,11 @@ Public Class Scraper
                 e.Result = New Results With {.ResultType = SearchType.TVShows, .Result = r}
 
             Case SearchType.SearchDetails_Movie
-                Dim r As MediaContainers.Movie = GetInfo_Movie(Args.Parameter, Args.ScrapeOptions, True)
+                Dim r As MediaContainers.MainDetails = GetInfo_Movie(Args.Parameter, Args.ScrapeOptions, True)
                 e.Result = New Results With {.ResultType = SearchType.SearchDetails_Movie, .Result = r}
 
             Case SearchType.SearchDetails_TVShow
-                Dim r As MediaContainers.TVShow = GetInfo_TVShow(Args.Parameter, Args.ScrapeModifiers, Args.ScrapeOptions, True)
+                Dim r As MediaContainers.MainDetails = GetInfo_TVShow(Args.Parameter, Args.ScrapeModifiers, Args.ScrapeOptions, True)
                 e.Result = New Results With {.ResultType = SearchType.SearchDetails_TVShow, .Result = r}
         End Select
     End Sub
@@ -139,11 +139,11 @@ Public Class Scraper
                 RaiseEvent SearchResultsDownloaded_TVShow(DirectCast(Res.Result, SearchResults_TVShow))
 
             Case SearchType.SearchDetails_Movie
-                Dim movieInfo As MediaContainers.Movie = DirectCast(Res.Result, MediaContainers.Movie)
+                Dim movieInfo As MediaContainers.MainDetails = DirectCast(Res.Result, MediaContainers.MainDetails)
                 RaiseEvent SearchInfoDownloaded_Movie(_PosterURL, movieInfo)
 
             Case SearchType.SearchDetails_TVShow
-                Dim showInfo As MediaContainers.TVShow = DirectCast(Res.Result, MediaContainers.TVShow)
+                Dim showInfo As MediaContainers.MainDetails = DirectCast(Res.Result, MediaContainers.MainDetails)
                 RaiseEvent SearchInfoDownloaded_TVShow(_PosterURL, showInfo)
         End Select
     End Sub
@@ -162,12 +162,12 @@ Public Class Scraper
     ''' <param name="strID">TMDb or IMDb ID (IMDB ID starts with "tt") of movie to be scraped</param>
     ''' <param name="isSearch">Scrape posters for the movie?</param>
     ''' <returns>True: success, false: no success</returns>
-    Public Function GetInfo_Movie(ByVal strID As String, ByVal filteredOptions As Structures.ScrapeOptions, ByVal isSearch As Boolean) As MediaContainers.Movie
+    Public Function GetInfo_Movie(ByVal strID As String, ByVal filteredOptions As Structures.ScrapeOptions, ByVal isSearch As Boolean) As MediaContainers.MainDetails
         If String.IsNullOrEmpty(strID) Then Return Nothing
 
         Dim bIsScraperLanguage As Boolean = PreferredLanguage.ToLower.StartsWith("en")
 
-        Dim nMovie As New MediaContainers.Movie
+        Dim nMovie As New MediaContainers.MainDetails
         Dim intTMDBID As Integer = -1
 
         If bwOMDb.CancellationPending Then Return Nothing
@@ -197,7 +197,7 @@ Public Class Scraper
         If bwOMDb.CancellationPending Or Result Is Nothing Then Return Nothing
 
         'Countries
-        If filteredOptions.bMainCountries Then
+        If filteredOptions.Countries Then
             If Not String.IsNullOrEmpty(Result.Country) Then
                 nMovie.Countries.AddRange(Regex.Replace(Result.Country, ", ", ",").Split(",".ToArray, StringSplitOptions.RemoveEmptyEntries))
             End If
@@ -206,7 +206,7 @@ Public Class Scraper
         If bwOMDb.CancellationPending Then Return Nothing
 
         'Director / Writer
-        If filteredOptions.bMainDirectors OrElse filteredOptions.bMainCredits Then
+        If filteredOptions.Directors OrElse filteredOptions.Credits Then
             If Not String.IsNullOrEmpty(Result.Director) Then
                 nMovie.Directors.AddRange(Regex.Replace(Result.Director, ", ", ",").Split(",".ToArray, StringSplitOptions.RemoveEmptyEntries))
             End If
@@ -215,7 +215,7 @@ Public Class Scraper
         If bwOMDb.CancellationPending Then Return Nothing
 
         'Genres
-        If filteredOptions.bMainGenres Then
+        If filteredOptions.Genres Then
             If Not String.IsNullOrEmpty(Result.Genre) Then
                 nMovie.Genres.AddRange(Regex.Replace(Result.Genre, ", ", ",").Split(",".ToArray, StringSplitOptions.RemoveEmptyEntries))
             End If
@@ -224,7 +224,7 @@ Public Class Scraper
         If bwOMDb.CancellationPending Then Return Nothing
 
         'Plot
-        If filteredOptions.bMainPlot AndAlso bIsScraperLanguage OrElse isSearch Then
+        If filteredOptions.Plot AndAlso bIsScraperLanguage OrElse isSearch Then
             If Not String.IsNullOrEmpty(Result.Plot) Then
                 nMovie.Plot = Result.Plot
             End If
@@ -240,7 +240,7 @@ Public Class Scraper
         If bwOMDb.CancellationPending Then Return Nothing
 
         'Premiered
-        If filteredOptions.bMainPremiered Then
+        If filteredOptions.Premiered Then
             If Not String.IsNullOrEmpty(Result.Released) Then
                 Dim RelDate As Date
                 If Date.TryParse(Result.Released, RelDate) Then
@@ -253,7 +253,7 @@ Public Class Scraper
         If bwOMDb.CancellationPending Then Return Nothing
 
         'Rating
-        If filteredOptions.bMainRatings Then
+        If filteredOptions.Ratings Then
             Dim dblRating As Double
             Dim iVotes As Integer
             If Not String.IsNullOrEmpty(Result.imdbRating) AndAlso (Double.TryParse(Result.imdbRating, dblRating)) AndAlso Not String.IsNullOrEmpty(Result.imdbVotes) AndAlso Integer.TryParse(Regex.Replace(Result.imdbVotes, "\D", String.Empty), iVotes) Then
@@ -279,7 +279,7 @@ Public Class Scraper
         If bwOMDb.CancellationPending Then Return Nothing
 
         'Runtime
-        If filteredOptions.bMainRuntime Then
+        If filteredOptions.Runtime Then
             If Not String.IsNullOrEmpty(Result.Runtime) Then
                 nMovie.Runtime = Result.Runtime
             End If
@@ -288,7 +288,7 @@ Public Class Scraper
         If bwOMDb.CancellationPending Then Return Nothing
 
         'Title
-        If filteredOptions.bMainTitle Then
+        If filteredOptions.Title Then
             If Not String.IsNullOrEmpty(Result.Title) Then
                 nMovie.Title = Result.Title
             End If
@@ -302,10 +302,10 @@ Public Class Scraper
     ''' <param name="strID">TMDB ID of tv show to be scraped</param>
     ''' <param name="GetPoster">Scrape posters for the movie?</param>
     ''' <returns>True: success, false: no success</returns>
-    Public Function GetInfo_TVShow(ByVal strID As String, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.TVShow
+    Public Function GetInfo_TVShow(ByVal strID As String, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.MainDetails
         If String.IsNullOrEmpty(strID) Then Return Nothing
 
-        Dim nTVShow As New MediaContainers.TVShow
+        Dim nTVShow As New MediaContainers.MainDetails
         Dim intTMDBID As Integer = -1
 
         'If Integer.TryParse(strID, intTMDBID) Then
@@ -553,7 +553,7 @@ Public Class Scraper
         Return nTVShow
     End Function
 
-    Public Function GetInfo_TVEpisode(ByVal ShowID As Integer, ByVal Aired As String, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
+    Public Function GetInfo_TVEpisode(ByVal ShowID As Integer, ByVal Aired As String, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
         'Dim nTVEpisode As New MediaContainers.EpisodeDetails
         'Dim ShowInfo As TMDbLib.Objects.TvShows.TvShow
 
@@ -598,8 +598,8 @@ Public Class Scraper
     '    End If
     'End Function
 
-    Public Function GetInfo_TVEpisode(ByRef EpisodeInfo As OMDbSharp.EpisodeDetails, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
-        Dim nTVEpisode As New MediaContainers.EpisodeDetails
+    Public Function GetInfo_TVEpisode(ByRef EpisodeInfo As OMDbSharp.EpisodeDetails, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
+        Dim nTVEpisode As New MediaContainers.MainDetails
 
         'nTVEpisode.Scrapersource = "TMDB"
 
@@ -710,7 +710,7 @@ Public Class Scraper
         Return nTVEpisode
     End Function
 
-    Public Sub GetInfo_TVSeason(ByRef nTVShow As MediaContainers.TVShow, ByVal ShowID As Integer, ByVal SeasonNumber As Integer, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
+    Public Sub GetInfo_TVSeason(ByRef nTVShow As MediaContainers.MainDetails, ByVal ShowID As Integer, ByVal SeasonNumber As Integer, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
         'Dim nSeason As New MediaContainers.SeasonDetails
 
         'Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvSeason)
@@ -790,8 +790,8 @@ Public Class Scraper
     '    End If
     'End Function
 
-    Public Function GetInfo_TVSeason(ByRef SeasonInfo As OMDbSharp.SeasonDetails, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.SeasonDetails
-        Dim nTVSeason As New MediaContainers.SeasonDetails
+    Public Function GetInfo_TVSeason(ByRef SeasonInfo As OMDbSharp.SeasonDetails, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
+        Dim nTVSeason As New MediaContainers.MainDetails
 
         'nTVSeason.Scrapersource = "TMDB"
 
@@ -864,8 +864,8 @@ Public Class Scraper
         Return alStudio
     End Function
 
-    Public Function GetSearchMovieInfo(ByVal strMovieName As String, ByRef oDBMovie As Database.DBElement, ByVal eType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
-        Dim r As SearchResults_Movie = SearchMovie(strMovieName, oDBMovie.Movie.Year)
+    Public Function GetSearchMovieInfo(ByVal strMovieName As String, ByRef oDBMovie As Database.DBElement, ByVal eType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
+        Dim r As SearchResults_Movie = SearchMovie(strMovieName, oDBMovie.MainDetails.Year)
 
         Select Case eType
             Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
@@ -895,7 +895,7 @@ Public Class Scraper
         Return Nothing
     End Function
 
-    Public Function GetSearchTVShowInfo(ByVal strShowName As String, ByRef oDBTV As Database.DBElement, ByVal eType As Enums.ScrapeType, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
+    Public Function GetSearchTVShowInfo(ByVal strShowName As String, ByRef oDBTV As Database.DBElement, ByVal eType As Enums.ScrapeType, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
         Dim r As SearchResults_TVShow = SearchTVShow(strShowName)
 
         Select Case eType
@@ -992,7 +992,7 @@ Public Class Scraper
                     Integer.TryParse(aMovie.Year, iYear)
                     If Not String.IsNullOrEmpty(aMovie.Title) Then strTitle = aMovie.Title
 
-                    Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie With {
+                    Dim lNewMovie As MediaContainers.MainDetails = New MediaContainers.MainDetails With {
                         .Plot = tPlot,
                         .Title = strTitle,
                         .ThumbPoster = tThumbPoster,

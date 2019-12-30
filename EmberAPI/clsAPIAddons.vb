@@ -863,7 +863,7 @@ Public Class AddonsManager
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of ScraperAddon_Data_Movie) = ScraperAddons_Data_Movie.Where(Function(e) e.ProcessorModule.IsEnabled).OrderBy(Function(e) e.ProcessorModule.Order)
             Dim ret As Interfaces.ModuleResult_Data_Movie
-            Dim ScrapedList As New List(Of MediaContainers.Movie)
+            Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not AllAddonsLoaded
                 Application.DoEvents()
@@ -872,7 +872,7 @@ Public Class AddonsManager
             'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
             If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifiers.DoSearch Then
                 DBElement.ImagesContainer = New MediaContainers.ImagesContainer
-                DBElement.Movie = New MediaContainers.Movie With {
+                DBElement.MainDetails = New MediaContainers.MainDetails With {
                     .Premiered = StringUtils.FilterYearFromPath_Movie(DBElement.FileItem, DBElement.IsSingle, DBElement.Source.UseFolderName).ToString,
                     .Title = StringUtils.FilterTitleFromPath_Movie(DBElement.FileItem, DBElement.IsSingle, DBElement.Source.UseFolderName),
                     .VideoSource = DBElement.VideoSource
@@ -898,16 +898,16 @@ Public Class AddonsManager
 
                         'set new informations for following scrapers 
                         If ret.Result.OriginalTitleSpecified Then
-                            oDBMovie.Movie.OriginalTitle = ret.Result.OriginalTitle
+                            oDBMovie.MainDetails.OriginalTitle = ret.Result.OriginalTitle
                         End If
                         If ret.Result.TitleSpecified Then
-                            oDBMovie.Movie.Title = ret.Result.Title
+                            oDBMovie.MainDetails.Title = ret.Result.Title
                         End If
                         If ret.Result.UniqueIDsSpecified Then
-                            oDBMovie.Movie.UniqueIDs.AddRange(ret.Result.UniqueIDs)
+                            oDBMovie.MainDetails.UniqueIDs.AddRange(ret.Result.UniqueIDs)
                         End If
                         If ret.Result.PremieredSpecified Then
-                            oDBMovie.Movie.Premiered = ret.Result.Premiered
+                            oDBMovie.MainDetails.Premiered = ret.Result.Premiered
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
@@ -915,10 +915,10 @@ Public Class AddonsManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBElement = Info.MergeDataScraperResults_Movie(DBElement, ScrapedList, ScrapeType, ScrapeOptions)
+                DBElement = Data.MergeResults(DBElement, ScrapedList, ScrapeOptions, False)
 
                 'create cache paths for Actor Thumbs
-                DBElement.Movie.CreateCachePaths_ActorsThumbs()
+                DBElement.MainDetails.CreateCachePaths_ActorsThumbs()
             End If
 
             If ScrapedList.Count > 0 Then
@@ -942,11 +942,11 @@ Public Class AddonsManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_MovieSet(ByRef DBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Start] {0}", DBElement.Movieset.Title))
+        _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Start] {0}", DBElement.MainDetails.Title))
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_MovieSet(DBMovieSet, showMessage) Then
         Dim modules As IEnumerable(Of ScraperAddon_Data_Movieset) = ScraperAddons_Data_Movieset.Where(Function(e) e.ProcessorModule.IsEnabled).OrderBy(Function(e) e.ProcessorModule.Order)
         Dim ret As Interfaces.ModuleResult_Data_MovieSet
-        Dim ScrapedList As New List(Of MediaContainers.MovieSet)
+        Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
         While Not AllAddonsLoaded
             Application.DoEvents()
@@ -954,10 +954,10 @@ Public Class AddonsManager
 
         'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
         If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifiers.DoSearch Then
-            Dim tmpTitle As String = DBElement.Movieset.Title
+            Dim tmpTitle As String = DBElement.MainDetails.Title
 
             DBElement.ImagesContainer = New MediaContainers.ImagesContainer
-            DBElement.Movieset = New MediaContainers.MovieSet With {
+            DBElement.MainDetails = New MediaContainers.MainDetails With {
                 .Title = tmpTitle
             }
         End If
@@ -975,7 +975,7 @@ Public Class AddonsManager
                 ret = _externalScraperModule.ProcessorModule.Run(oDBMovieSet, ScrapeModifiers, ScrapeType, ScrapeOptions)
 
                 If ret.Cancelled Then
-                    _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Cancelled] [No Scraper Results] {0}", DBElement.Movieset.Title))
+                    _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Cancelled] [No Scraper Results] {0}", DBElement.MainDetails.Title))
                     Return ret.Cancelled
                 End If
 
@@ -984,10 +984,10 @@ Public Class AddonsManager
 
                     'set new informations for following scrapers
                     If ret.Result.TitleSpecified Then
-                        oDBMovieSet.Movieset.Title = ret.Result.Title
+                        oDBMovieSet.MainDetails.Title = ret.Result.Title
                     End If
                     If ret.Result.UniqueIDsSpecified Then
-                        oDBMovieSet.Movieset.UniqueIDs.AddRange(ret.Result.UniqueIDs)
+                        oDBMovieSet.MainDetails.UniqueIDs.AddRange(ret.Result.UniqueIDs)
                     End If
                 End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
@@ -995,13 +995,13 @@ Public Class AddonsManager
             Next
 
             'Merge scraperresults considering global datascraper settings
-            DBElement = Info.MergeDataScraperResults_MovieSet(DBElement, ScrapedList, ScrapeType, ScrapeOptions)
+            DBElement = Data.MergeResults(DBElement, ScrapedList, ScrapeOptions, False)
         End If
 
         If ScrapedList.Count > 0 Then
-            _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Done] {0}", DBElement.Movieset.Title))
+            _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Done] {0}", DBElement.MainDetails.Title))
         Else
-            _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Done] [No Scraper Results] {0}", DBElement.Movieset.Title))
+            _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Done] [No Scraper Results] {0}", DBElement.MainDetails.Title))
             Return True 'TODO: need a new trigger
         End If
         Return ret.Cancelled
@@ -1015,7 +1015,7 @@ Public Class AddonsManager
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of ScraperAddon_Data_TV) = ScraperAddons_Data_TV.Where(Function(e) e.ProcessorModule.IsEnabled).OrderBy(Function(e) e.ProcessorModule.Order)
             Dim ret As Interfaces.ModuleResult_Data_TVEpisode
-            Dim ScrapedList As New List(Of MediaContainers.EpisodeDetails)
+            Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not AllAddonsLoaded
                 Application.DoEvents()
@@ -1040,19 +1040,19 @@ Public Class AddonsManager
 
                         'set new informations for following scrapers
                         If ret.Result.AiredSpecified Then
-                            oEpisode.TVEpisode.Aired = ret.Result.Aired
+                            oEpisode.MainDetails.Aired = ret.Result.Aired
                         End If
                         If ret.Result.EpisodeSpecified Then
-                            oEpisode.TVEpisode.Episode = ret.Result.Episode
+                            oEpisode.MainDetails.Episode = ret.Result.Episode
                         End If
                         If ret.Result.SeasonSpecified Then
-                            oEpisode.TVEpisode.Season = ret.Result.Season
+                            oEpisode.MainDetails.Season = ret.Result.Season
                         End If
                         If ret.Result.TitleSpecified Then
-                            oEpisode.TVEpisode.Title = ret.Result.Title
+                            oEpisode.MainDetails.Title = ret.Result.Title
                         End If
                         If ret.Result.UniqueIDsSpecified Then
-                            oEpisode.TVEpisode.UniqueIDs.AddRange(ret.Result.UniqueIDs)
+                            oEpisode.MainDetails.UniqueIDs.AddRange(ret.Result.UniqueIDs)
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
@@ -1060,10 +1060,10 @@ Public Class AddonsManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBElement = Info.MergeDataScraperResults_TVEpisode_Single(DBElement, ScrapedList, ScrapeOptions)
+                DBElement = Data.MergeResults_TVEpisode_Single(DBElement, ScrapedList, ScrapeOptions)
 
                 'create cache paths for Actor Thumbs
-                DBElement.TVEpisode.CreateCachePaths_ActorsThumbs()
+                DBElement.MainDetails.CreateCachePaths_ActorsThumbs()
             End If
 
             If ScrapedList.Count > 0 Then
@@ -1079,19 +1079,19 @@ Public Class AddonsManager
         End If
     End Function
 
-    Public Function ScrapeData_TVSeason(ByRef DBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Start] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
-        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, showMessage) Then
+    Public Function ScrapeData_TVSeason(ByRef dbElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
+        _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Start] {0}: Season {1}", dbElement.TVShowDetails.Title, dbElement.MainDetails.Season))
+        If dbElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(dbElement, showMessage) Then
             Dim modules As IEnumerable(Of ScraperAddon_Data_TV) = ScraperAddons_Data_TV.Where(Function(e) e.ProcessorModule.IsEnabled).OrderBy(Function(e) e.ProcessorModule.Order)
             Dim ret As Interfaces.ModuleResult_Data_TVSeason
-            Dim ScrapedList As New List(Of MediaContainers.SeasonDetails)
+            Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not AllAddonsLoaded
                 Application.DoEvents()
             End While
 
             'create a clone of DBTV
-            Dim oSeason As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
+            Dim oSeason As Database.DBElement = CType(dbElement.CloneDeep, Database.DBElement)
 
             If modules.Count() <= 0 Then
                 _Logger.Info("[AddonsManager] [ScrapeData_TVSeason] [Abort] No scrapers enabled")
@@ -1109,7 +1109,7 @@ Public Class AddonsManager
 
                         'set new informations for following scrapers 
                         If ret.Result.UniqueIDsSpecified Then
-                            oSeason.TVSeason.UniqueIDs.AddRange(ret.Result.UniqueIDs)
+                            oSeason.MainDetails.UniqueIDs.AddRange(ret.Result.UniqueIDs)
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
@@ -1117,17 +1117,17 @@ Public Class AddonsManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBElement = Info.MergeDataScraperResults_TVSeason(DBElement, ScrapedList, ScrapeOptions)
+                dbElement = Data.MergeResults(dbElement, ScrapedList, ScrapeOptions, False)
             End If
 
             If ScrapedList.Count > 0 Then
-                _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Done] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
+                _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Done] {0}: Season {1}", dbElement.TVShowDetails.Title, dbElement.MainDetails.Season))
             Else
-                _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Done] [No Scraper Results] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
+                _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Done] [No Scraper Results] {0}: Season {1}", dbElement.TVShowDetails.Title, dbElement.MainDetails.Season))
             End If
             Return ret.Cancelled
         Else
-            _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Abort] [Offline] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
+            _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Abort] [Offline] {0}: Season {1}", dbElement.TVShowDetails.Title, dbElement.MainDetails.Season))
             Return True 'Cancelled
         End If
     End Function
@@ -1140,11 +1140,11 @@ Public Class AddonsManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_TVShow(ByRef DBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Start] {0}", DBElement.TVShow.Title))
+        _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Start] {0}", DBElement.MainDetails.Title))
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of ScraperAddon_Data_TV) = ScraperAddons_Data_TV.Where(Function(e) e.ProcessorModule.IsEnabled).OrderBy(Function(e) e.ProcessorModule.Order)
             Dim ret As Interfaces.ModuleResult_Data_TVShow
-            Dim ScrapedList As New List(Of MediaContainers.TVShow)
+            Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not AllAddonsLoaded
                 Application.DoEvents()
@@ -1157,18 +1157,18 @@ Public Class AddonsManager
                 DBElement.NfoPath = String.Empty
                 DBElement.Seasons.Clear()
                 DBElement.Theme = New MediaContainers.Theme
-                DBElement.TVShow = New MediaContainers.TVShow With {
+                DBElement.MainDetails = New MediaContainers.MainDetails With {
                     .Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
                 }
 
                 For Each sEpisode As Database.DBElement In DBElement.Episodes
-                    Dim iEpisode As Integer = sEpisode.TVEpisode.Episode
-                    Dim iSeason As Integer = sEpisode.TVEpisode.Season
-                    Dim strAired As String = sEpisode.TVEpisode.Aired
+                    Dim iEpisode As Integer = sEpisode.MainDetails.Episode
+                    Dim iSeason As Integer = sEpisode.MainDetails.Season
+                    Dim strAired As String = sEpisode.MainDetails.Aired
                     sEpisode.ImagesContainer = New MediaContainers.ImagesContainer
                     sEpisode.NfoPath = String.Empty
-                    sEpisode.TVEpisode = New MediaContainers.EpisodeDetails With {.Aired = strAired, .Episode = iEpisode, .Season = iSeason}
-                    sEpisode.TVEpisode.VideoSource = sEpisode.VideoSource
+                    sEpisode.MainDetails = New MediaContainers.MainDetails With {.Aired = strAired, .Episode = iEpisode, .Season = iSeason}
+                    sEpisode.MainDetails.VideoSource = sEpisode.VideoSource
                 Next
             End If
 
@@ -1191,13 +1191,13 @@ Public Class AddonsManager
 
                         'set new informations for following scrapers 
                         If ret.Result.OriginalTitleSpecified Then
-                            oShow.TVShow.OriginalTitle = ret.Result.OriginalTitle
+                            oShow.MainDetails.OriginalTitle = ret.Result.OriginalTitle
                         End If
                         If ret.Result.TitleSpecified Then
-                            oShow.TVShow.Title = ret.Result.Title
+                            oShow.MainDetails.Title = ret.Result.Title
                         End If
                         If ret.Result.UniqueIDsSpecified Then
-                            oShow.TVShow.UniqueIDs.AddRange(ret.Result.UniqueIDs)
+                            oShow.MainDetails.UniqueIDs.AddRange(ret.Result.UniqueIDs)
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
@@ -1205,26 +1205,26 @@ Public Class AddonsManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBElement = Info.MergeDataScraperResults_TV(DBElement, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifiers.withEpisodes)
+                DBElement = Data.MergeResults(DBElement, ScrapedList, ScrapeOptions, ScrapeModifiers.withEpisodes)
 
                 'create cache paths for Actor Thumbs
-                DBElement.TVShow.CreateCachePaths_ActorsThumbs()
+                DBElement.MainDetails.CreateCachePaths_ActorsThumbs()
                 If ScrapeModifiers.withEpisodes Then
                     For Each tEpisode As Database.DBElement In DBElement.Episodes
-                        tEpisode.TVEpisode.CreateCachePaths_ActorsThumbs()
+                        tEpisode.MainDetails.CreateCachePaths_ActorsThumbs()
                     Next
                 End If
             End If
 
             If ScrapedList.Count > 0 Then
-                _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Done] {0}", DBElement.TVShow.Title))
+                _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Done] {0}", DBElement.MainDetails.Title))
             Else
-                _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Done] [No Scraper Results] {0}", DBElement.TVShow.Title))
+                _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Done] [No Scraper Results] {0}", DBElement.MainDetails.Title))
                 Return True 'TODO: need a new trigger
             End If
             Return ret.Cancelled
         Else
-            _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Abort] [Offline] {0}", DBElement.TVShow.Title))
+            _Logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Abort] [Offline] {0}", DBElement.MainDetails.Title))
             Return True 'Cancelled
         End If
     End Function
@@ -1301,7 +1301,7 @@ Public Class AddonsManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeImage_MovieSet(ByRef DBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Boolean
-        _Logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Start] {0}", DBElement.Movieset.Title))
+        _Logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Start] {0}", DBElement.MainDetails.Title))
         Dim modules As IEnumerable(Of ScraperAddon_Image_MovieSet) = ScraperAddons_Image_Movieset.Where(Function(e) e.ProcessorModule.IsEnabled).OrderBy(Function(e) e.ProcessorModule.Order)
         Dim ret As Interfaces.ModuleResult
 
@@ -1346,7 +1346,7 @@ Public Class AddonsManager
             ImagesContainer.CreateCachePaths(DBElement)
         End If
 
-        _Logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Done] {0}", DBElement.Movieset.Title))
+        _Logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Done] {0}", DBElement.MainDetails.Title))
         Return ret.Cancelled
     End Function
     ''' <summary>
@@ -1358,7 +1358,7 @@ Public Class AddonsManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeImage_TV(ByRef DBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal showMessage As Boolean) As Boolean
-        _Logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Start] {0}", DBElement.TVShow.Title))
+        _Logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Start] {0}", DBElement.MainDetails.Title))
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of ScraperAddon_Image_TV) = ScraperAddons_Image_TV.Where(Function(e) e.ProcessorModule.IsEnabled).OrderBy(Function(e) e.ProcessorModule.Order)
             Dim ret As Interfaces.ModuleResult
@@ -1439,10 +1439,10 @@ Public Class AddonsManager
                 ImagesContainer.CreateCachePaths(DBElement)
             End If
 
-            _Logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Done] {0}", DBElement.TVShow.Title))
+            _Logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Done] {0}", DBElement.MainDetails.Title))
             Return ret.Cancelled
         Else
-            _Logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Abort] [Offline] {0}", DBElement.TVShow.Title))
+            _Logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Abort] [Offline] {0}", DBElement.MainDetails.Title))
             Return True 'Cancelled
         End If
     End Function
@@ -1490,7 +1490,7 @@ Public Class AddonsManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
     Public Function ScrapeTheme_TVShow(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Boolean
-        _Logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_TVShow] [Start] {0}", DBElement.TVShow.Title))
+        _Logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_TVShow] [Start] {0}", DBElement.MainDetails.Title))
         Dim modules As IEnumerable(Of ScraperAddon_Theme_TV) = ScraperAddons_Theme_TV.Where(Function(e) e.ProcessorModule.IsEnabled).OrderBy(Function(e) e.ProcessorModule.Order)
         Dim ret As Interfaces.ModuleResult
 
@@ -1513,7 +1513,7 @@ Public Class AddonsManager
                 If ret.breakChain Then Exit For
             Next
         End If
-        _Logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_TVShow] [Done] {0}", DBElement.TVShow.Title))
+        _Logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_TVShow] [Done] {0}", DBElement.MainDetails.Title))
         Return ret.Cancelled
     End Function
     ''' <summary>

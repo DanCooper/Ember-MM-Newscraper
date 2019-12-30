@@ -87,7 +87,7 @@ Public Class dlgEdit_TVSeason
     End Sub
 
     Private Sub Setup()
-        Dim mTitle As String = tmpDBElement.TVShow.Title
+        Dim mTitle As String = tmpDBElement.TVShowDetails.Title
         Text = String.Concat(Master.eLang.GetString(663, "Edit Show"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         btnCancel.Text = Master.eLang.Cancel
         btnOK.Text = Master.eLang.OK
@@ -138,7 +138,7 @@ Public Class dlgEdit_TVSeason
         End With
 
         'Information part
-        With tmpDBElement.TVSeason
+        With tmpDBElement.MainDetails
             'Aired
             dtpAired.Text = .Aired
             'Plot
@@ -156,10 +156,10 @@ Public Class dlgEdit_TVSeason
                 tmpDBElement.LoadAllImages(True, True)
 
                 'Banner
-                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonBannerAnyEnabled) OrElse
-                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled) Then
-                    If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)) OrElse
-                        (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner) AndAlso
+                If (Not tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Master.eSettings.TVSeasonBannerAnyEnabled) OrElse
+                    (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled) Then
+                    If (Not tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)) OrElse
+                        (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner) AndAlso
                         Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)) Then
                         btnScrapeBanner.Enabled = False
                     End If
@@ -172,11 +172,11 @@ Public Class dlgEdit_TVSeason
                 End If
 
                 'Fanart
-                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonFanartAnyEnabled) OrElse
-                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled) Then
-                    If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) AndAlso
+                If (Not tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Master.eSettings.TVSeasonFanartAnyEnabled) OrElse
+                    (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled) Then
+                    If (Not tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) AndAlso
                         Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)) OrElse
-                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) AndAlso
+                    (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) AndAlso
                     Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)) Then
                         btnScrapeFanart.Enabled = False
                     End If
@@ -189,10 +189,10 @@ Public Class dlgEdit_TVSeason
                 End If
 
                 'Landscape
-                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled) OrElse
-                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled) Then
-                    If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)) OrElse
-                        (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape) AndAlso
+                If (Not tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled) OrElse
+                    (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled) Then
+                    If (Not tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)) OrElse
+                        (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape) AndAlso
                         Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)) Then
                         btnScrapeLandscape.Enabled = False
                     End If
@@ -205,10 +205,10 @@ Public Class dlgEdit_TVSeason
                 End If
 
                 'Poster
-                If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVSeasonPosterAnyEnabled) OrElse
-                    (tmpDBElement.TVSeason.IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled) Then
-                    If (Not tmpDBElement.TVSeason.IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)) OrElse
-                        (tmpDBElement.TVSeason.IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster) AndAlso
+                If (Not tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Master.eSettings.TVSeasonPosterAnyEnabled) OrElse
+                    (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled) Then
+                    If (Not tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)) OrElse
+                        (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster) AndAlso
                         Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)) Then
                         btnScrapePoster.Enabled = False
                     End If
@@ -240,7 +240,7 @@ Public Class dlgEdit_TVSeason
         End With
 
         'Information part
-        With tmpDBElement.TVSeason
+        With tmpDBElement.MainDetails
             'Aired
             .Aired = dtpAired.Value.ToString("yyyy-MM-dd")
             'Plot
@@ -418,19 +418,19 @@ Public Class dlgEdit_TVSeason
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
         Select Case eImageType
             Case Enums.ModifierType.SeasonBanner
-                If tmpDBElement.TVSeason.IsAllSeasons Then
+                If tmpDBElement.MainDetails.Season_IsAllSeasons Then
                     eImageType = Enums.ModifierType.AllSeasonsBanner
                 End If
             Case Enums.ModifierType.SeasonFanart
-                If tmpDBElement.TVSeason.IsAllSeasons Then
+                If tmpDBElement.MainDetails.Season_IsAllSeasons Then
                     eImageType = Enums.ModifierType.AllSeasonsFanart
                 End If
             Case Enums.ModifierType.SeasonLandscape
-                If tmpDBElement.TVSeason.IsAllSeasons Then
+                If tmpDBElement.MainDetails.Season_IsAllSeasons Then
                     eImageType = Enums.ModifierType.AllSeasonsLandscape
                 End If
             Case Enums.ModifierType.SeasonPoster
-                If tmpDBElement.TVSeason.IsAllSeasons Then
+                If tmpDBElement.MainDetails.Season_IsAllSeasons Then
                     eImageType = Enums.ModifierType.AllSeasonsPoster
                 End If
         End Select
@@ -441,18 +441,18 @@ Public Class dlgEdit_TVSeason
             Select Case eImageType
                 Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
                     iImageCount = aContainer.SeasonBanners.Count
-                    If tmpDBElement.TVSeason.IsAllSeasons Then iImageCount += aContainer.MainBanners.Count
+                    If tmpDBElement.MainDetails.Season_IsAllSeasons Then iImageCount += aContainer.MainBanners.Count
                     strNoImagesFound = Master.eLang.GetString(1363, "No Banners found")
                 Case Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.SeasonFanart
                     iImageCount = aContainer.SeasonFanarts.Count + aContainer.MainFanarts.Count
                     strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
                 Case Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
                     iImageCount = aContainer.SeasonLandscapes.Count
-                    If tmpDBElement.TVSeason.IsAllSeasons Then iImageCount += aContainer.MainLandscapes.Count
+                    If tmpDBElement.MainDetails.Season_IsAllSeasons Then iImageCount += aContainer.MainLandscapes.Count
                     strNoImagesFound = Master.eLang.GetString(1197, "No Landscapes found")
                 Case Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.SeasonPoster
                     iImageCount = aContainer.SeasonPosters.Count
-                    If tmpDBElement.TVSeason.IsAllSeasons Then iImageCount += aContainer.MainPosters.Count
+                    If tmpDBElement.MainDetails.Season_IsAllSeasons Then iImageCount += aContainer.MainPosters.Count
                     strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
             End Select
             If iImageCount > 0 Then

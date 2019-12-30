@@ -636,7 +636,7 @@ Public Class frmMovie_Data
 
     Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
         If Not txtMovieScraperDefFIExt.Text.StartsWith(".") Then txtMovieScraperDefFIExt.Text = String.Concat(".", txtMovieScraperDefFIExt.Text)
-        Using dFileInfo As New dlgFileInfo(New MediaContainers.FileInfo)
+        Using dFileInfo As New dlgFileInfo(New MediaContainers.Fileinfo)
             If dFileInfo.ShowDialog() = DialogResult.OK Then
                 Dim fi = dFileInfo.Result
                 If Not fi Is Nothing Then

@@ -71,7 +71,7 @@ Public Class dlgEdit_TVEpisode
                 pnlTop.BackgroundImage = iBackground
             End Using
 
-            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement.TVEpisode.FileInfo) With {
+            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement.MainDetails.FileInfo) With {
                 .BackColor = Color.White,
                 .Dock = DockStyle.Fill,
                 .FormBorderStyle = FormBorderStyle.None,
@@ -109,7 +109,7 @@ Public Class dlgEdit_TVEpisode
 
     Private Sub Setup()
         Dim mTitle As String = String.Empty
-        mTitle = tmpDBElement.TVEpisode.Title
+        mTitle = tmpDBElement.MainDetails.Title
         Text = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         btnCancel.Text = Master.eLang.Cancel
         btnChange.Text = Master.eLang.GetString(772, "Change Episode")
@@ -269,7 +269,7 @@ Public Class dlgEdit_TVEpisode
         End With
 
         'Information part
-        With tmpDBElement.TVEpisode
+        With tmpDBElement.MainDetails
             'Actors
             Dim lvActorsItem As ListViewItem
             lvActors.Items.Clear()
@@ -412,11 +412,11 @@ Public Class dlgEdit_TVEpisode
             .IsMarked = chkMarked.Checked
             'Videosource
             .VideoSource = cbVideoSource.Text.Trim
-            .TVEpisode.VideoSource = .VideoSource
+            .MainDetails.VideoSource = .VideoSource
         End With
 
         'Information part
-        With tmpDBElement.TVEpisode
+        With tmpDBElement.MainDetails
             'Actors
             .Actors.Clear()
             If lvActors.Items.Count > 0 Then
@@ -469,14 +469,14 @@ Public Class dlgEdit_TVEpisode
             'if watched-checkbox is checked -> save Playcount=1 in nfo
             If chkWatched.Checked Then
                 'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                If Not .PlaycountSpecified Then
-                    .Playcount = 1
+                If Not .PlayCountSpecified Then
+                    .PlayCount = 1
                     .LastPlayed = dtpLastPlayed.Value.ToString("yyyy-MM-dd HH:mm:ss")
                 End If
             Else
                 'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                If .PlaycountSpecified Then
-                    .Playcount = 0
+                If .PlayCountSpecified Then
+                    .PlayCount = 0
                     .LastPlayed = String.Empty
                 End If
             End If
@@ -864,7 +864,7 @@ Public Class dlgEdit_TVEpisode
 
     Private Sub TVEpisode_EditManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
-            tmpDBElement.TVEpisode = Info.LoadFromNFO_TVEpisode(tmpDBElement.NfoPath, tmpDBElement.TVEpisode.Season, tmpDBElement.TVEpisode.Episode)
+            tmpDBElement.MainDetails = NFO.LoadFromNFO_TVEpisode(tmpDBElement.NfoPath, tmpDBElement.MainDetails.Season, tmpDBElement.MainDetails.Episode)
             Data_Fill(False)
         End If
     End Sub
@@ -872,7 +872,7 @@ Public Class dlgEdit_TVEpisode
     Private Sub Ratings_Fill()
         Dim lvItem As ListViewItem
         lvRatings.Items.Clear()
-        For Each tRating As MediaContainers.RatingDetails In tmpDBElement.TVEpisode.Ratings
+        For Each tRating As MediaContainers.RatingDetails In tmpDBElement.MainDetails.Ratings
             lvItem = lvRatings.Items.Add(tRating.Name)
             lvItem.SubItems.Add(tRating.Value.ToString)
             lvItem.SubItems.Add(tRating.Votes.ToString)
@@ -902,7 +902,7 @@ Public Class dlgEdit_TVEpisode
     Private Sub Subtitles_Edit()
         If lvSubtitles.SelectedItems.Count > 0 Then
             Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
-            Dim tmpFileInfo As New MediaContainers.FileInfo
+            Dim tmpFileInfo As New MediaContainers.Fileinfo
             tmpFileInfo.StreamDetails.Subtitle.AddRange(tmpDBElement.Subtitles)
             Using dEditStream As New dlgFIStreamEditor
                 Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
@@ -1033,9 +1033,9 @@ Public Class dlgEdit_TVEpisode
     End Sub
 
     Private Sub Videosources_Fill()
-        If tmpDBElement.TVEpisode.VideoSourceSpecified Then
-            cbVideoSource.Items.Add(tmpDBElement.TVEpisode.VideoSource)
-            cbVideoSource.SelectedItem = tmpDBElement.TVEpisode.VideoSource
+        If tmpDBElement.MainDetails.VideoSourceSpecified Then
+            cbVideoSource.Items.Add(tmpDBElement.MainDetails.VideoSource)
+            cbVideoSource.SelectedItem = tmpDBElement.MainDetails.VideoSource
         End If
         cbVideoSource.Items.AddRange(Master.DB.GetAllVideoSources_TVEpisode.Where(Function(f) Not cbVideoSource.Items.Contains(f)).ToArray)
     End Sub

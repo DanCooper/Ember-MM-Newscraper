@@ -102,7 +102,7 @@ Public Class Theme_Movie
         logger.Trace("[TelevisionTunes_Theme] [Scraper_Movie] [Start]")
 
         Dim tTelevisionTunes As New Scraper
-        tTelevisionTunes.GetThemes(DBMovie.Movie.OriginalTitle)
+        tTelevisionTunes.GetThemes(DBMovie.MainDetails.OriginalTitle)
 
         If tTelevisionTunes.ThemeList.Count > 0 Then
             ThemeList = tTelevisionTunes.ThemeList
@@ -220,7 +220,7 @@ Public Class Theme_TV
         logger.Trace("[TelevisionTunes_Theme] [Scraper_TV] [Start]")
 
         Dim tTelevisionTunes As New Scraper
-        tTelevisionTunes.GetThemes(DBTV.TVShow.Title)
+        tTelevisionTunes.GetThemes(DBTV.MainDetails.Title)
 
         If tTelevisionTunes.ThemeList.Count > 0 Then
             ThemeList = tTelevisionTunes.ThemeList

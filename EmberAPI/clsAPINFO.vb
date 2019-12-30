@@ -23,1379 +23,92 @@ Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
-Imports System.Windows.Forms
 
-Public Class Info
+Public Class NFO
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-#End Region
+#End Region 'Fields
 
 #Region "Methods"
-    ''' <summary>
-    ''' Returns the "merged" result of each data scraper results
-    ''' </summary>
-    ''' <param name="dbElement">Movie to be scraped</param>
-    ''' <param name="scrapedList"><c>List(Of MediaContainers.Movie)</c> which contains unfiltered results of each data scraper</param>
-    ''' <returns>The scrape result of movie (after applying various global scraper settings here)</returns>
-    ''' <remarks>
-    ''' This is used to determine the result of data scraping by going through all scraperesults of every data scraper and applying global data scraper settings here!
-    ''' 
-    ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
-    ''' </remarks>
-    Public Shared Function MergeDataScraperResults_Movie(ByVal dbElement As Database.DBElement, ByVal scrapedList As List(Of MediaContainers.Movie), ByVal scrapeType As Enums.ScrapeType, ByVal scrapeOptions As Structures.ScrapeOptions) As Database.DBElement
-        With Master.eSettings.Movie.DataSettings
-            'protects the first scraped result against overwriting
-            Dim new_Actors As Boolean = False
-            Dim new_Certification As Boolean = False
-            Dim new_Collection As Boolean = False
-            Dim new_Countries As Boolean = False
-            Dim new_Credits As Boolean = False
-            Dim new_Directors As Boolean = False
-            Dim new_Genres As Boolean = False
-            Dim new_MPAA As Boolean = False
-            Dim new_OriginalTitle As Boolean = False
-            Dim new_Outline As Boolean = False
-            Dim new_Plot As Boolean = False
-            Dim new_Premiered As Boolean = False
-            Dim new_Runtime As Boolean = False
-            Dim new_Studios As Boolean = False
-            Dim new_Tagline As Boolean = False
-            Dim new_Tags As Boolean = False
-            Dim new_Title As Boolean = False
-            Dim new_Top250 As Boolean = False
-            Dim new_Trailer As Boolean = False
-            Dim new_UserRatings As Boolean = False
 
-            For Each scrapedmovie In scrapedList
-                'UniqueIDs
-                If scrapedmovie.UniqueIDsSpecified Then
-                    dbElement.Movie.UniqueIDs.AddRange(scrapedmovie.UniqueIDs)
-                End If
-
-                'Actors
-                If (Not dbElement.Movie.ActorsSpecified OrElse Not .Actors.Locked) AndAlso scrapeOptions.bMainActors AndAlso
-                    scrapedmovie.ActorsSpecified AndAlso .Actors.Enabled AndAlso Not new_Actors Then
-                    If .Actors.WithImageOnly Then
-                        FilterOnlyPersonsWithImage(scrapedmovie.Actors)
-                    End If
-                    FilterCountLimit(.Actors.Limit, scrapedmovie.Actors)
-                    'added check if there's any actors left to add, if not then try with results of following scraper...
-                    If scrapedmovie.ActorsSpecified Then
-                        ReorderPersons(scrapedmovie.Actors)
-                        dbElement.Movie.Actors = scrapedmovie.Actors
-                        new_Actors = True
-                    End If
-
-                ElseIf .ClearDisabledFields AndAlso Not .Actors.Enabled AndAlso Not .Actors.Locked Then
-                    dbElement.Movie.Actors.Clear()
-                End If
-
-                'Certification
-                If (Not dbElement.Movie.CertificationsSpecified OrElse Not .Certifications.Locked) AndAlso scrapeOptions.bMainCertifications AndAlso
-                    scrapedmovie.CertificationsSpecified AndAlso .Certifications.Enabled AndAlso Not new_Certification Then
-                    If .Certifications.Filter = Master.eLang.All Then
-                        dbElement.Movie.Certifications = scrapedmovie.Certifications
-                        new_Certification = True
-                    Else
-                        Dim CertificationLanguage = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .Certifications.Filter)
-                        If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
-                            For Each tCert In scrapedmovie.Certifications
-                                If tCert.StartsWith(CertificationLanguage.name) Then
-                                    dbElement.Movie.Certifications.Clear()
-                                    dbElement.Movie.Certifications.Add(tCert)
-                                    new_Certification = True
-                                    Exit For
-                                End If
-                            Next
-                        Else
-                            logger.Error("Movie Certification Language (Limit) not found. Please check your settings!")
-                        End If
-                    End If
-                ElseIf .ClearDisabledFields AndAlso Not .Certifications.Enabled AndAlso Not .Certifications.Locked Then
-                    dbElement.Movie.Certifications.Clear()
-                End If
-
-                'Collection
-                If OverwriteValue(scrapeOptions.bMainCollection, new_Collection, dbElement.Movie.SetsSpecified, scrapedmovie.SetsSpecified, .Collection) AndAlso .Collection.AutoAddToCollection Then
-                    dbElement.Movie.Sets.Clear()
-                    For Each movieset In scrapedmovie.Sets
-                        If Not String.IsNullOrEmpty(movieset.Title) Then
-                            For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:")) 'TODO: TitleRenamer
-                                movieset.Title = movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
-                            Next
-                        End If
-                    Next
-                    dbElement.Movie.Sets.AddRange(scrapedmovie.Sets)
-                    new_Collection = True
-                End If
-
-                'Countries
-                If (Not dbElement.Movie.CountriesSpecified OrElse Not .Countries.Locked) AndAlso scrapeOptions.bMainCountries AndAlso
-                    scrapedmovie.CountriesSpecified AndAlso .Countries.Enabled AndAlso Not new_Countries Then
-                    FilterCountLimit(.Countries.Limit, scrapedmovie.Countries)
-                    dbElement.Movie.Countries = scrapedmovie.Countries
-                    new_Countries = True
-                ElseIf ClearDatafield(.Countries, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Countries.Clear()
-                End If
-
-                'Credits
-                If OverwriteValue(scrapeOptions.bMainCredits, new_Credits, dbElement.Movie.CreditsSpecified, scrapedmovie.CreditsSpecified, .Credits) Then
-                    dbElement.Movie.Credits = scrapedmovie.Credits
-                    new_Credits = True
-                ElseIf ClearDatafield(.Credits, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Credits.Clear()
-                End If
-
-                'Directors
-                If OverwriteValue(scrapeOptions.bMainDirectors, new_Directors, dbElement.Movie.DirectorsSpecified, scrapedmovie.DirectorsSpecified, .Directors) Then
-                    dbElement.Movie.Directors = scrapedmovie.Directors
-                    new_Directors = True
-                ElseIf ClearDatafield(.Directors, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Directors.Clear()
-                End If
-
-                'Genres
-                If OverwriteValue(scrapeOptions.bMainGenres, new_Genres, dbElement.Movie.GenresSpecified, scrapedmovie.GenresSpecified, .Genres) Then
-                    StringUtils.GenreFilter(scrapedmovie.Genres)
-                    FilterCountLimit(.Genres.Limit, scrapedmovie.Genres)
-                    dbElement.Movie.Genres = scrapedmovie.Genres
-                    new_Genres = True
-                ElseIf ClearDatafield(.Genres, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Genres.Clear()
-                End If
-
-                'MPAA
-                If OverwriteValue(scrapeOptions.bMainMPAA, new_MPAA, dbElement.Movie.MPAASpecified, scrapedmovie.MPAASpecified, .MPAA) Then
-                    dbElement.Movie.MPAA = scrapedmovie.MPAA
-                    new_MPAA = True
-                ElseIf ClearDatafield(.MPAA, Enums.ContentType.Movie) Then
-                    dbElement.Movie.MPAA = String.Empty
-                End If
-
-                'Originaltitle
-                If OverwriteValue(scrapeOptions.bMainOriginalTitle, new_OriginalTitle, dbElement.Movie.OriginalTitleSpecified, scrapedmovie.OriginalTitleSpecified, .OriginalTitle) Then
-                    dbElement.Movie.OriginalTitle = scrapedmovie.OriginalTitle
-                    new_OriginalTitle = True
-                ElseIf ClearDatafield(.OriginalTitle, Enums.ContentType.Movie) Then
-                    dbElement.Movie.OriginalTitle = String.Empty
-                End If
-
-                'Outline
-                If OverwriteValue(scrapeOptions.bMainOutline, new_Outline, dbElement.Movie.OutlineSpecified, scrapedmovie.OutlineSpecified, .Outline) Then
-                    dbElement.Movie.Outline = scrapedmovie.Outline
-                    new_Outline = True
-                ElseIf ClearDatafield(.Outline, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Outline = String.Empty
-                End If
-                'check if brackets should be removed...
-                If .CleanPlotAndOutline Then
-                    dbElement.Movie.Outline = StringUtils.RemoveBrackets(dbElement.Movie.Outline)
-                End If
-
-                'Plot
-                If OverwriteValue(scrapeOptions.bMainPlot, new_Plot, dbElement.Movie.PlotSpecified, scrapedmovie.PlotSpecified, .Plot) Then
-                    dbElement.Movie.Plot = scrapedmovie.Plot
-                    new_Plot = True
-                ElseIf ClearDatafield(.Plot, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Plot = String.Empty
-                End If
-                'check if brackets should be removed...
-                If .CleanPlotAndOutline Then
-                    dbElement.Movie.Plot = StringUtils.RemoveBrackets(dbElement.Movie.Plot)
-                End If
-
-                'Premiered
-                If OverwriteValue(scrapeOptions.bMainPremiered, new_Premiered, dbElement.Movie.PremieredSpecified, scrapedmovie.PremieredSpecified, .Premiered) Then
-                    dbElement.Movie.Premiered = NumUtils.DateToISO8601Date(scrapedmovie.Premiered)
-                    new_Premiered = True
-                ElseIf ClearDatafield(.Premiered, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Premiered = String.Empty
-                End If
-
-                'Ratings
-                If OverwriteValue(scrapeOptions.bMainRatings, new_UserRatings, dbElement.Movie.RatingsSpecified, scrapedmovie.RatingsSpecified, .Ratings) Then
-                    For Each nRating In scrapedmovie.Ratings
-                        'remove old rating(s) from the same source
-                        dbElement.Movie.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
-                        dbElement.Movie.Ratings.Add(nRating)
-                    Next
-                ElseIf ClearDatafield(.Ratings, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Ratings.Clear()
-                    dbElement.Movie.Rating = String.Empty
-                    dbElement.Movie.Votes = String.Empty
-                End If
-
-                'Runtime
-                If OverwriteValue(scrapeOptions.bMainRuntime, new_Runtime, dbElement.Movie.RuntimeSpecified, scrapedmovie.RuntimeSpecified, .Runtime) Then
-                    dbElement.Movie.Runtime = scrapedmovie.Runtime
-                    new_Runtime = True
-                ElseIf ClearDatafield(.Runtime, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Runtime = String.Empty
-                End If
-
-                'Studios
-                If OverwriteValue(scrapeOptions.bMainStudios, new_Studios, dbElement.Movie.StudiosSpecified, scrapedmovie.StudiosSpecified, .Studios) Then
-                    dbElement.Movie.Studios.Clear()
-
-                    Dim _studios As New List(Of String)
-                    _studios.AddRange(scrapedmovie.Studios)
-
-                    FilterCountLimit(.Studios.Limit, _studios)
-
-                    dbElement.Movie.Studios.AddRange(_studios)
-                    'added check if there's any studios left to add, if not then try with results of following scraper...
-                    If _studios.Count > 0 Then
-                        new_Studios = True
-                    End If
-
-                ElseIf ClearDatafield(.Studios, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Studios.Clear()
-                End If
-
-                'Tagline
-                If OverwriteValue(scrapeOptions.bMainTagline, new_Tagline, dbElement.Movie.TaglineSpecified, scrapedmovie.TaglineSpecified, .Tagline) Then
-                    dbElement.Movie.Tagline = scrapedmovie.Tagline
-                    new_Tagline = True
-                ElseIf ClearDatafield(.Tagline, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Tagline = String.Empty
-                End If
-
-                'Tags
-                If OverwriteValue(scrapeOptions.bMainTags, new_Tags, dbElement.Movie.TagsSpecified, scrapedmovie.TagsSpecified, .Tags) Then
-                    dbElement.Movie.Tags = scrapedmovie.Tags
-                    'TODO: add Whitelist
-                ElseIf ClearDatafield(.Tags, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Tags.Clear()
-                End If
-
-                'Title
-                If OverwriteValue(scrapeOptions.bMainTitle, new_Title, dbElement.Movie.TitleSpecified, scrapedmovie.TitleSpecified, .Title) Then
-                    dbElement.Movie.Title = scrapedmovie.Title
-                    new_Title = True
-                ElseIf ClearDatafield(.Title, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Title = String.Empty
-                End If
-
-                'Top250 (special handling: no check if "scrapedmovie.Top250Specified" and only set "new_Top250 = True" if a value > 0 has been set)
-                'otherwise a movie that's no longer in the Top250 list can't be corrected
-                If OverwriteValue(scrapeOptions.bMainTop250, new_Top250, dbElement.Movie.Top250Specified, True, .Top250) Then
-                    dbElement.Movie.Top250 = scrapedmovie.Top250
-                    new_Top250 = If(scrapedmovie.Top250Specified, True, False)
-                ElseIf ClearDatafield(.Top250, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Top250 = 0
-                End If
-
-                'Trailer
-                If OverwriteValue(scrapeOptions.bMainTrailer, new_Trailer, dbElement.Movie.TrailerSpecified, scrapedmovie.TrailerSpecified, .TrailerLink) Then
-                    If .TrailerLink.SaveKodiCompatible AndAlso YouTube.UrlUtils.IsYouTubeURL(scrapedmovie.Trailer) Then
-                        dbElement.Movie.Trailer = StringUtils.ConvertFromYouTubeURLToKodiTrailerFormat(scrapedmovie.Trailer)
-                    Else
-                        dbElement.Movie.Trailer = scrapedmovie.Trailer
-                    End If
-                    new_Trailer = True
-                ElseIf ClearDatafield(.TrailerLink, Enums.ContentType.Movie) Then
-                    dbElement.Movie.Trailer = String.Empty
-                End If
-
-                'User Rating
-                If OverwriteValue(scrapeOptions.bMainUserRating, new_UserRatings, dbElement.Movie.UserRatingSpecified, scrapedmovie.UserRatingSpecified, .UserRating) Then
-                    dbElement.Movie.UserRating = scrapedmovie.UserRating
-                    new_UserRatings = True
-                ElseIf ClearDatafield(.UserRating, Enums.ContentType.Movie) Then
-                    dbElement.Movie.UserRating = 0
-                End If
-            Next
-
-            'Certification for MPAA
-            If dbElement.Movie.CertificationsSpecified AndAlso .CertificationsForMPAA AndAlso
-                (Not .CertificationsForMPAAFallback AndAlso (Not dbElement.Movie.MPAASpecified OrElse Not .MPAA.Locked) OrElse
-                 Not new_MPAA AndAlso (Not dbElement.Movie.MPAASpecified OrElse Not .MPAA.Locked)) Then
-                Dim tmpstring As String = String.Empty
-                tmpstring = If(Master.eSettings.Movie.DataSettings.Certifications.Filter = "us", StringUtils.USACertToMPAA(String.Join(" / ", dbElement.Movie.Certifications.ToArray)), If(.CertificationsOnlyValue, String.Join(" / ", dbElement.Movie.Certifications.ToArray).Split(Convert.ToChar(":"))(1), String.Join(" / ", dbElement.Movie.Certifications.ToArray)))
-                'only update DBMovie if scraped result is not empty/nothing!
-                If Not String.IsNullOrEmpty(tmpstring) Then
-                    dbElement.Movie.MPAA = tmpstring
-                End If
-            End If
-
-            'MPAA value if MPAA is not available
-            If Not dbElement.Movie.MPAASpecified AndAlso .MPAANotRatedValueSpecified Then
-                dbElement.Movie.MPAA = .MPAANotRatedValue
-            End If
-
-            'OriginalTitle as Title
-            If (Not dbElement.Movie.TitleSpecified OrElse Not .Title.Locked) AndAlso .Title.UseOriginalTitle AndAlso dbElement.Movie.OriginalTitleSpecified Then
-                dbElement.Movie.Title = dbElement.Movie.OriginalTitle
-            End If
-
-            'Plot for Outline
-            If ((Not dbElement.Movie.OutlineSpecified OrElse Not .Outline.Locked) AndAlso .Outline.UsePlot AndAlso Not .Outline.UsePlotAsFallback) OrElse
-                (Not dbElement.Movie.OutlineSpecified AndAlso .Outline.UsePlot AndAlso .Outline.UsePlotAsFallback) Then
-                dbElement.Movie.Outline = StringUtils.ShortenOutline(dbElement.Movie.Plot, .Outline.Limit)
-            End If
-
-            'Rating/Votes
-            'TODO: set the default rating/votes
-            If (Not dbElement.Movie.RatingSpecified OrElse Not .Ratings.Locked) AndAlso scrapeOptions.bMainRatings AndAlso
-                    dbElement.Movie.RatingsSpecified AndAlso .Ratings.Enabled Then
-                dbElement.Movie.Rating = dbElement.Movie.Ratings.Item(0).Value.ToString
-                dbElement.Movie.Votes = NumUtils.CleanVotes(dbElement.Movie.Ratings.Item(0).Votes.ToString)
-            ElseIf .ClearDisabledFields AndAlso Not .Ratings.Enabled AndAlso Not .Ratings.Locked Then
-                dbElement.Movie.Ratings.Clear()
-                dbElement.Movie.Rating = String.Empty
-                dbElement.Movie.Votes = String.Empty
-            End If
-
-            'UniqueID
-            'TODO: set the default uniqueid
-        End With
-        Return dbElement
-    End Function
-
-    Public Shared Function MergeDataScraperResults_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.MovieSet), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions) As Database.DBElement
-
-        'protects the first scraped result against overwriting
-        Dim new_Plot As Boolean = False
-        Dim new_Title As Boolean = False
-
-        For Each scrapedmovieset In ScrapedList
-
-            'UniqueIDs
-            If scrapedmovieset.UniqueIDsSpecified Then
-                DBMovieSet.Movieset.UniqueIDs.AddRange(scrapedmovieset.UniqueIDs)
-            End If
-
-            'Plot
-            If (Not DBMovieSet.Movieset.PlotSpecified OrElse Not Master.eSettings.MovieSetLockPlot) AndAlso ScrapeOptions.bMainPlot AndAlso
-                scrapedmovieset.PlotSpecified AndAlso Master.eSettings.MoviesetScraperPlot AndAlso Not new_Plot Then
-                DBMovieSet.Movieset.Plot = scrapedmovieset.Plot
-                new_Plot = True
-                'ElseIf Master.eSettings.MovieSetScraperCleanFields AndAlso Not Master.eSettings.MovieSetScraperPlot AndAlso Not Master.eSettings.MovieSetLockPlot Then
-                '    DBMovieSet.MovieSet.Plot = String.Empty
-            End If
-
-            'Title
-            If (Not DBMovieSet.Movieset.TitleSpecified OrElse Not Master.eSettings.MovieSetLockTitle) AndAlso ScrapeOptions.bMainTitle AndAlso
-                 scrapedmovieset.TitleSpecified AndAlso Master.eSettings.MoviesetScraperTitle AndAlso Not new_Title Then
-                DBMovieSet.Movieset.Title = scrapedmovieset.Title
-                new_Title = True
-                'ElseIf Master.eSettings.MovieSetScraperCleanFields AndAlso Not Master.eSettings.MovieSetScraperTitle AndAlso Not Master.eSettings.MovieSetLockTitle Then
-                '    DBMovieSet.MovieSet.Title = String.Empty
-            End If
-        Next
-
-        'set Title
-        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
-            DBMovieSet.Movieset.Title = DBMovieSet.Movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
-        Next
-
-        Return DBMovieSet
-    End Function
-    ''' <summary>
-    ''' Returns the "merged" result of each data scraper results
-    ''' </summary>
-    ''' <param name="DBTV">TV Show to be scraped</param>
-    ''' <param name="ScrapedList"><c>List(Of MediaContainers.TVShow)</c> which contains unfiltered results of each data scraper</param>
-    ''' <returns>The scrape result of movie (after applying various global scraper settings here)</returns>
-    ''' <remarks>
-    ''' This is used to determine the result of data scraping by going through all scraperesults of every data scraper and applying global data scraper settings here!
-    ''' 
-    ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
-    ''' </remarks>
-    Public Shared Function MergeDataScraperResults_TV(ByVal DBTV As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.TVShow), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal withEpisodes As Boolean) As Database.DBElement
-
-        'protects the first scraped result against overwriting
-        Dim new_Actors As Boolean = False
-        Dim new_Certification As Boolean = False
-        Dim new_Creators As Boolean = False
-        Dim new_Collections As Boolean = False
-        Dim new_ShowCountries As Boolean = False
-        Dim new_Credits As Boolean = False
-        Dim new_Directors As Boolean = False
-        Dim new_Genres As Boolean = False
-        Dim new_MPAA As Boolean = False
-        Dim new_Outline As Boolean = False
-        Dim new_Plot As Boolean = False
-        Dim new_Rating As Boolean = False
-        Dim new_Premiered As Boolean = False
-        Dim new_Runtime As Boolean = False
-        Dim new_Status As Boolean = False
-        Dim new_Studio As Boolean = False
-        Dim new_Tagline As Boolean = False
-        Dim new_Title As Boolean = False
-        Dim new_OriginalTitle As Boolean = False
-        Dim new_Trailer As Boolean = False
-        Dim new_UserRating As Boolean = False
-
-        Dim KnownEpisodesIndex As New List(Of KnownEpisode)
-        Dim KnownSeasonsIndex As New List(Of Integer)
-
-        ''If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
-        'If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
-        '    PreviewDataScraperResults(ScrapedList)
-        'End If
-
-        For Each scrapedshow In ScrapedList
-
-            'UniqueIDs
-            If scrapedshow.UniqueIDsSpecified Then
-                DBTV.TVShow.UniqueIDs.AddRange(scrapedshow.UniqueIDs)
-            End If
-
-            'Actors
-            If (Not DBTV.TVShow.ActorsSpecified OrElse Not Master.eSettings.TVLockShowActors) AndAlso ScrapeOptions.bMainActors AndAlso
-                scrapedshow.ActorsSpecified AndAlso Master.eSettings.TVScraperShowActors AndAlso Not new_Actors Then
-                If Master.eSettings.TVScraperCastWithImgOnly Then
-                    FilterOnlyPersonsWithImage(scrapedshow.Actors)
-                End If
-                FilterCountLimit(Master.eSettings.TVScraperShowActorsLimit, scrapedshow.Actors)
-                'added check if there's any actors left to add, if not then try with results of following scraper...
-                If scrapedshow.ActorsSpecified Then
-                    ReorderPersons(scrapedshow.Actors)
-                    DBTV.TVShow.Actors = scrapedshow.Actors
-                    new_Actors = True
-                End If
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowActors AndAlso Not Master.eSettings.TVLockShowActors Then
-                DBTV.TVShow.Actors.Clear()
-            End If
-
-            'Certification
-            If (Not DBTV.TVShow.CertificationsSpecified OrElse Not Master.eSettings.TVLockShowCert) AndAlso ScrapeOptions.bMainCertifications AndAlso
-                scrapedshow.CertificationsSpecified AndAlso Master.eSettings.TVScraperShowCert AndAlso Not new_Certification Then
-                If Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
-                    DBTV.TVShow.Certifications = scrapedshow.Certifications
-                    new_Certification = True
-                Else
-                    Dim CertificationLanguage = APIXML.CertificationLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
-                    If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
-                        For Each tCert In scrapedshow.Certifications
-                            If tCert.StartsWith(CertificationLanguage.name) Then
-                                DBTV.TVShow.Certifications.Clear()
-                                DBTV.TVShow.Certifications.Add(tCert)
-                                new_Certification = True
-                                Exit For
-                            End If
-                        Next
-                    Else
-                        logger.Error("TV Show Certification Language (Limit) not found. Please check your settings!")
-                    End If
-                End If
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCert AndAlso Not Master.eSettings.TVLockShowCert Then
-                DBTV.TVShow.Certifications.Clear()
-            End If
-
-            'Creators
-            If (Not DBTV.TVShow.CreatorsSpecified OrElse Not Master.eSettings.TVLockShowCreators) AndAlso ScrapeOptions.bMainCreators AndAlso
-                scrapedshow.CreatorsSpecified AndAlso Master.eSettings.TVScraperShowCreators AndAlso Not new_Creators Then
-                DBTV.TVShow.Creators = scrapedshow.Creators
-                new_Creators = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCreators AndAlso Not Master.eSettings.TVLockShowCreators Then
-                DBTV.TVShow.Creators.Clear()
-            End If
-
-            'Countries
-            If (Not DBTV.TVShow.CountriesSpecified OrElse Not Master.eSettings.TVLockShowCountry) AndAlso ScrapeOptions.bMainCountries AndAlso
-                scrapedshow.CountriesSpecified AndAlso Master.eSettings.TVScraperShowCountry AndAlso Not new_ShowCountries Then
-                FilterCountLimit(Master.eSettings.TVScraperShowCountryLimit, scrapedshow.Countries)
-                DBTV.TVShow.Countries = scrapedshow.Countries
-                new_ShowCountries = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCountry AndAlso Not Master.eSettings.TVLockShowCountry Then
-                DBTV.TVShow.Countries.Clear()
-            End If
-
-            'EpisodeGuideURL
-            If ScrapeOptions.bMainEpisodeGuide AndAlso scrapedshow.EpisodeGuideSpecified AndAlso Master.eSettings.TVScraperShowEpiGuideURL Then
-                DBTV.TVShow.EpisodeGuide = scrapedshow.EpisodeGuide
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowEpiGuideURL Then
-                DBTV.TVShow.EpisodeGuide = New MediaContainers.EpisodeGuide
-            End If
-
-            'Genres
-            If (Not DBTV.TVShow.GenresSpecified OrElse Not Master.eSettings.TVLockShowGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
-                scrapedshow.GenresSpecified AndAlso Master.eSettings.TVScraperShowGenre AndAlso Not new_Genres Then
-                StringUtils.GenreFilter(scrapedshow.Genres)
-                FilterCountLimit(Master.eSettings.TVScraperShowGenreLimit, scrapedshow.Genres)
-                DBTV.TVShow.Genres = scrapedshow.Genres
-                new_Genres = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowGenre AndAlso Not Master.eSettings.TVLockShowGenre Then
-                DBTV.TVShow.Genres.Clear()
-            End If
-
-            'MPAA
-            If (Not DBTV.TVShow.MPAASpecified OrElse Not Master.eSettings.TVLockShowMPAA) AndAlso ScrapeOptions.bMainMPAA AndAlso
-              scrapedshow.MPAASpecified AndAlso Master.eSettings.TVScraperShowMPAA AndAlso Not new_MPAA Then
-                DBTV.TVShow.MPAA = scrapedshow.MPAA
-                new_MPAA = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowMPAA AndAlso Not Master.eSettings.TVLockShowMPAA Then
-                DBTV.TVShow.MPAA = String.Empty
-            End If
-
-            'Originaltitle
-            If (Not DBTV.TVShow.OriginalTitleSpecified OrElse Not Master.eSettings.TVLockShowOriginalTitle) AndAlso ScrapeOptions.bMainOriginalTitle AndAlso
-                scrapedshow.OriginalTitleSpecified AndAlso Master.eSettings.TVScraperShowOriginalTitle AndAlso Not new_OriginalTitle Then
-                DBTV.TVShow.OriginalTitle = scrapedshow.OriginalTitle
-                new_OriginalTitle = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowOriginalTitle AndAlso Not Master.eSettings.TVLockShowOriginalTitle Then
-                DBTV.TVShow.OriginalTitle = String.Empty
-            End If
-
-            'Plot
-            If (Not DBTV.TVShow.PlotSpecified OrElse Not Master.eSettings.TVLockShowPlot) AndAlso ScrapeOptions.bMainPlot AndAlso
-                 scrapedshow.PlotSpecified AndAlso Master.eSettings.TVScraperShowPlot AndAlso Not new_Plot Then
-                DBTV.TVShow.Plot = scrapedshow.Plot
-                new_Plot = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowPlot AndAlso Not Master.eSettings.TVLockShowPlot Then
-                DBTV.TVShow.Plot = String.Empty
-            End If
-
-            'Premiered
-            If (Not DBTV.TVShow.PremieredSpecified OrElse Not Master.eSettings.TVLockShowPremiered) AndAlso ScrapeOptions.bMainPremiered AndAlso
-                scrapedshow.PremieredSpecified AndAlso Master.eSettings.TVScraperShowPremiered AndAlso Not new_Premiered Then
-                DBTV.TVShow.Premiered = NumUtils.DateToISO8601Date(scrapedshow.Premiered)
-                new_Premiered = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowPremiered AndAlso Not Master.eSettings.TVLockShowPremiered Then
-                DBTV.TVShow.Premiered = String.Empty
-            End If
-
-            'Ratings
-            If (Not DBTV.TVShow.RatingsSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRatings AndAlso
-                 scrapedshow.RatingsSpecified AndAlso Master.eSettings.TVScraperShowRating Then
-                For Each nRating In scrapedshow.Ratings
-                    'remove old rating(s) from the same source
-                    DBTV.TVShow.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
-                    DBTV.TVShow.Ratings.Add(nRating)
-                Next
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRating AndAlso Not Master.eSettings.TVLockShowRating Then
-                DBTV.TVShow.Ratings.Clear()
-                DBTV.TVShow.Rating = String.Empty
-                DBTV.TVShow.Votes = String.Empty
-            End If
-
-            'Runtime
-            If (Not DBTV.TVShow.RuntimeSpecified OrElse Not Master.eSettings.TVLockShowRuntime) AndAlso ScrapeOptions.bMainRuntime AndAlso
-                scrapedshow.RuntimeSpecified AndAlso Master.eSettings.TVScraperShowRuntime AndAlso Not new_Runtime Then
-                DBTV.TVShow.Runtime = scrapedshow.Runtime
-                new_Runtime = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRuntime AndAlso Not Master.eSettings.TVLockShowRuntime Then
-                DBTV.TVShow.Runtime = String.Empty
-            End If
-
-
-            'Status
-            If (DBTV.TVShow.StatusSpecified OrElse Not Master.eSettings.TVLockShowStatus) AndAlso ScrapeOptions.bMainStatus AndAlso
-                scrapedshow.StatusSpecified AndAlso Master.eSettings.TVScraperShowStatus AndAlso Not new_Status Then
-                DBTV.TVShow.Status = scrapedshow.Status
-                new_Status = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStatus AndAlso Not Master.eSettings.TVLockShowStatus Then
-                DBTV.TVShow.Status = String.Empty
-            End If
-
-            'Studios
-            If (Not DBTV.TVShow.StudiosSpecified OrElse Not Master.eSettings.TVLockShowStudio) AndAlso ScrapeOptions.bMainStudios AndAlso
-                scrapedshow.StudiosSpecified AndAlso Master.eSettings.TVScraperShowStudio AndAlso Not new_Studio Then
-
-                FilterCountLimit(Master.eSettings.TVScraperShowStudioLimit, scrapedshow.Studios)
-                DBTV.TVShow.Studios = scrapedshow.Studios
-                new_Studio = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStudio AndAlso Not Master.eSettings.TVLockShowStudio Then
-                DBTV.TVShow.Studios.Clear()
-            End If
-
-            'Title
-            If (Not DBTV.TVShow.TitleSpecified OrElse Not Master.eSettings.TVLockShowTitle) AndAlso ScrapeOptions.bMainTitle AndAlso
-                scrapedshow.TitleSpecified AndAlso Master.eSettings.TVScraperShowTitle AndAlso Not new_Title Then
-                DBTV.TVShow.Title = scrapedshow.Title
-                new_Title = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowTitle AndAlso Not Master.eSettings.TVLockShowTitle Then
-                DBTV.TVShow.Title = String.Empty
-            End If
-
-            'User Rating
-            If (Not DBTV.TVShow.UserRatingSpecified OrElse Not Master.eSettings.TVLockShowUserRating) AndAlso ScrapeOptions.bMainUserRating AndAlso
-                scrapedshow.UserRatingSpecified AndAlso Master.eSettings.TVScraperShowUserRating AndAlso Not new_UserRating Then
-                DBTV.TVShow.UserRating = scrapedshow.UserRating
-                new_UserRating = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowUserRating AndAlso Not Master.eSettings.TVLockShowUserRating Then
-                DBTV.TVShow.UserRating = 0
-            End If
-
-            'Create KnowSeasons index
-            For Each kSeason As MediaContainers.SeasonDetails In scrapedshow.KnownSeasons
-                If Not KnownSeasonsIndex.Contains(kSeason.Season) Then
-                    KnownSeasonsIndex.Add(kSeason.Season)
-                End If
-            Next
-
-            'Create KnownEpisodes index (season and episode number)
-            If withEpisodes Then
-                For Each kEpisode As MediaContainers.EpisodeDetails In scrapedshow.KnownEpisodes
-                    Dim nKnownEpisode As New KnownEpisode With {.AiredDate = kEpisode.Aired,
-                                                                .Episode = kEpisode.Episode,
-                                                                .EpisodeAbsolute = kEpisode.EpisodeAbsolute,
-                                                                .EpisodeCombined = kEpisode.EpisodeCombined,
-                                                                .EpisodeDVD = kEpisode.EpisodeDVD,
-                                                                .Season = kEpisode.Season,
-                                                                .SeasonCombined = kEpisode.SeasonCombined,
-                                                                .SeasonDVD = kEpisode.SeasonDVD}
-                    If KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season).Count = 0 Then
-                        KnownEpisodesIndex.Add(nKnownEpisode)
-
-                        'try to get an episode information with more numbers
-                    ElseIf KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season AndAlso
-                                ((nKnownEpisode.EpisodeAbsolute > -1 AndAlso Not f.EpisodeAbsolute = nKnownEpisode.EpisodeAbsolute) OrElse
-                                 (nKnownEpisode.EpisodeCombined > -1 AndAlso Not f.EpisodeCombined = nKnownEpisode.EpisodeCombined) OrElse
-                                 (nKnownEpisode.EpisodeDVD > -1 AndAlso Not f.EpisodeDVD = nKnownEpisode.EpisodeDVD) OrElse
-                                 (nKnownEpisode.SeasonCombined > -1 AndAlso Not f.SeasonCombined = nKnownEpisode.SeasonCombined) OrElse
-                                 (nKnownEpisode.SeasonDVD > -1 AndAlso Not f.SeasonDVD = nKnownEpisode.SeasonDVD))).Count = 1 Then
-                        Dim toRemove As KnownEpisode = KnownEpisodesIndex.FirstOrDefault(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season)
-                        KnownEpisodesIndex.Remove(toRemove)
-                        KnownEpisodesIndex.Add(nKnownEpisode)
-                    End If
-                Next
-            End If
-        Next
-
-        'Certification for MPAA
-        If DBTV.TVShow.CertificationsSpecified AndAlso Master.eSettings.TVScraperShowCertForMPAA AndAlso
-            (Not Master.eSettings.TVScraperShowCertForMPAAFallback AndAlso (Not DBTV.TVShow.MPAASpecified OrElse Not Master.eSettings.TVLockShowMPAA) OrElse
-             Not new_MPAA AndAlso (Not DBTV.TVShow.MPAASpecified OrElse Not Master.eSettings.TVLockShowMPAA)) Then
-
-            Dim tmpstring As String = String.Empty
-            tmpstring = If(Master.eSettings.TVScraperShowCertLang = "us", StringUtils.USACertToMPAA(String.Join(" / ", DBTV.TVShow.Certifications.ToArray)), If(Master.eSettings.TVScraperShowCertOnlyValue, String.Join(" / ", DBTV.TVShow.Certifications.ToArray).Split(Convert.ToChar(":"))(1), String.Join(" / ", DBTV.TVShow.Certifications.ToArray)))
-            'only update DBMovie if scraped result is not empty/nothing!
-            If Not String.IsNullOrEmpty(tmpstring) Then
-                DBTV.TVShow.MPAA = tmpstring
-            End If
-        End If
-
-        'MPAA value if MPAA is not available
-        If Not DBTV.TVShow.MPAASpecified AndAlso Not String.IsNullOrEmpty(Master.eSettings.TVScraperShowMPAANotRated) Then
-            DBTV.TVShow.MPAA = Master.eSettings.TVScraperShowMPAANotRated
-        End If
-
-        'OriginalTitle as Title
-        If (Not DBTV.TVShow.TitleSpecified OrElse Not Master.eSettings.TVLockShowTitle) AndAlso Master.eSettings.TVScraperShowOriginalTitleAsTitle AndAlso DBTV.TVShow.OriginalTitleSpecified Then
-            DBTV.TVShow.Title = DBTV.TVShow.OriginalTitle
-        End If
-
-        'Rating/Votes
-        'TODO: set the default rating/votes
-
-        'UniqueID
-        'TODO: set the default uniqueid
-
-        'Seasons
-        For Each aKnownSeason As Integer In KnownSeasonsIndex
-            'create a list of specified episode informations from all scrapers
-            Dim ScrapedSeasonList As New List(Of MediaContainers.SeasonDetails)
-            For Each nShow As MediaContainers.TVShow In ScrapedList
-                For Each nSeasonDetails As MediaContainers.SeasonDetails In nShow.KnownSeasons.Where(Function(f) f.Season = aKnownSeason)
-                    ScrapedSeasonList.Add(nSeasonDetails)
-                Next
-            Next
-            'check if we have already saved season information for this scraped season
-            Dim lSeasonList = DBTV.Seasons.Where(Function(f) f.TVSeason.Season = aKnownSeason)
-
-            If lSeasonList IsNot Nothing AndAlso lSeasonList.Count > 0 Then
-                For Each nSeason As Database.DBElement In lSeasonList
-                    MergeDataScraperResults_TVSeason(nSeason, ScrapedSeasonList, ScrapeOptions)
-                Next
-            Else
-                'no existing season found -> add it as "missing" season
-                Dim mSeason As New Database.DBElement(Enums.ContentType.TVSeason) With {.TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
-                mSeason = Master.DB.AddTVShowInfoToDBElement(mSeason, DBTV)
-                DBTV.Seasons.Add(MergeDataScraperResults_TVSeason(mSeason, ScrapedSeasonList, ScrapeOptions))
-            End If
-        Next
-        'add all season informations to TVShow (for saving season informations to tv show NFO)
-        DBTV.TVShow.Seasons.Seasons.Clear()
-        For Each kSeason As Database.DBElement In DBTV.Seasons.OrderBy(Function(f) f.TVSeason.Season)
-            DBTV.TVShow.Seasons.Seasons.Add(kSeason.TVSeason)
-        Next
-
-        'Episodes
-        If withEpisodes Then
-            'update the tvshow information for each local episode
-            For Each lEpisode In DBTV.Episodes
-                lEpisode = Master.DB.AddTVShowInfoToDBElement(lEpisode, DBTV)
-            Next
-
-            For Each aKnownEpisode As KnownEpisode In KnownEpisodesIndex.OrderBy(Function(f) f.Episode).OrderBy(Function(f) f.Season)
-
-                'convert the episode and season number if needed
-                Dim iEpisode As Integer = -1
-                Dim iSeason As Integer = -1
-                Dim strAiredDate As String = aKnownEpisode.AiredDate
-                If DBTV.EpisodeOrdering = Enums.EpisodeOrdering.Absolute Then
-                    iEpisode = aKnownEpisode.EpisodeAbsolute
-                    iSeason = 1
-                ElseIf DBTV.EpisodeOrdering = Enums.EpisodeOrdering.DVD Then
-                    iEpisode = CInt(aKnownEpisode.EpisodeDVD)
-                    iSeason = aKnownEpisode.SeasonDVD
-                ElseIf DBTV.EpisodeOrdering = Enums.EpisodeOrdering.Standard Then
-                    iEpisode = aKnownEpisode.Episode
-                    iSeason = aKnownEpisode.Season
-                End If
-
-                If Not iEpisode = -1 AndAlso Not iSeason = -1 Then
-                    'create a list of specified episode informations from all scrapers
-                    Dim ScrapedEpisodeList As New List(Of MediaContainers.EpisodeDetails)
-                    For Each nShow As MediaContainers.TVShow In ScrapedList
-                        For Each nEpisodeDetails As MediaContainers.EpisodeDetails In nShow.KnownEpisodes.Where(Function(f) f.Episode = aKnownEpisode.Episode AndAlso f.Season = aKnownEpisode.Season)
-                            ScrapedEpisodeList.Add(nEpisodeDetails)
-                        Next
-                    Next
-
-                    'check if we have a local episode file for this scraped episode
-                    Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.FileItemSpecified AndAlso f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
-
-                    If lEpisodeList IsNot Nothing AndAlso lEpisodeList.Count > 0 Then
-                        For Each nEpisode As Database.DBElement In lEpisodeList
-                            MergeDataScraperResults_TVEpisode(nEpisode, ScrapedEpisodeList, ScrapeOptions)
-                        Next
-                    Else
-                        'try to get the episode by AiredDate
-                        Dim dEpisodeList = DBTV.Episodes.Where(Function(f) f.FileItemSpecified AndAlso
-                                                                   f.TVEpisode.Episode = -1 AndAlso
-                                                                   f.TVEpisode.AiredSpecified AndAlso
-                                                                   f.TVEpisode.Aired = strAiredDate)
-
-                        If dEpisodeList IsNot Nothing AndAlso dEpisodeList.Count > 0 Then
-                            For Each nEpisode As Database.DBElement In dEpisodeList
-                                MergeDataScraperResults_TVEpisode(nEpisode, ScrapedEpisodeList, ScrapeOptions)
-                                'we have to add the proper season and episode number if the episode was found by AiredDate
-                                nEpisode.TVEpisode.Episode = iEpisode
-                                nEpisode.TVEpisode.Season = iSeason
-                            Next
-                        Else
-                            'no local episode found -> add it as "missing" episode
-                            Dim mEpisode As New Database.DBElement(Enums.ContentType.TVEpisode) With {.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
-                            mEpisode = Master.DB.AddTVShowInfoToDBElement(mEpisode, DBTV)
-                            MergeDataScraperResults_TVEpisode(mEpisode, ScrapedEpisodeList, ScrapeOptions)
-                            If mEpisode.TVEpisode.TitleSpecified Then
-                                DBTV.Episodes.Add(mEpisode)
-                            Else
-                                logger.Warn(String.Format("Missing Episode Ignored | {0} - S{1}E{2} | No Episode Title found", mEpisode.TVShow.Title, mEpisode.TVEpisode.Season, mEpisode.TVEpisode.Episode))
-                            End If
-                        End If
-                    End If
-                Else
-                    logger.Warn("No valid episode or season number found")
-                End If
-            Next
-        End If
-
-        'create the "* All Seasons" entry if needed
-        Dim tmpAllSeasons As Database.DBElement = DBTV.Seasons.FirstOrDefault(Function(f) f.TVSeason.IsAllSeasons)
-        If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
-            tmpAllSeasons = New Database.DBElement(Enums.ContentType.TVSeason)
-            tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = -1}
-            tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTV)
-            DBTV.Seasons.Add(tmpAllSeasons)
-        End If
-
-        'cleanup seasons they don't have any episode
-        Dim iIndex As Integer = 0
-        While iIndex <= DBTV.Seasons.Count - 1
-            Dim iSeason As Integer = DBTV.Seasons.Item(iIndex).TVSeason.Season
-            If Not iSeason = -1 AndAlso DBTV.Episodes.Where(Function(f) f.TVEpisode.Season = iSeason).Count = 0 Then
-                DBTV.Seasons.RemoveAt(iIndex)
-            Else
-                iIndex += 1
-            End If
-        End While
-
-        Return DBTV
-    End Function
-
-    Public Shared Function MergeDataScraperResults_TVSeason(ByRef DBTVSeason As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.SeasonDetails), ByVal ScrapeOptions As Structures.ScrapeOptions) As Database.DBElement
-
-        'protects the first scraped result against overwriting
-        Dim new_Aired As Boolean = False
-        Dim new_Plot As Boolean = False
-        Dim new_Season As Boolean = False
-        Dim new_Title As Boolean = False
-
-        For Each scrapedseason In ScrapedList
-
-            'UniqueIDs
-            If scrapedseason.UniqueIDsSpecified Then
-                DBTVSeason.TVSeason.UniqueIDs.AddRange(scrapedseason.UniqueIDs)
-            End If
-
-            'Season number
-            If scrapedseason.SeasonSpecified AndAlso Not new_Season Then
-                DBTVSeason.TVSeason.Season = scrapedseason.Season
-                new_Season = True
-            End If
-
-            'Aired
-            If (Not DBTVSeason.TVSeason.AiredSpecified OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso ScrapeOptions.bSeasonAired AndAlso
-                scrapedseason.AiredSpecified AndAlso Master.eSettings.TVScraperEpisodeAired AndAlso Not new_Aired Then
-                DBTVSeason.TVSeason.Aired = scrapedseason.Aired
-                new_Aired = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeAired AndAlso Not Master.eSettings.TVLockEpisodeAired Then
-                DBTVSeason.TVSeason.Aired = String.Empty
-            End If
-
-            'Plot
-            If (Not DBTVSeason.TVSeason.PlotSpecified OrElse Not Master.eSettings.TVLockEpisodePlot) AndAlso ScrapeOptions.bSeasonPlot AndAlso
-                scrapedseason.PlotSpecified AndAlso Master.eSettings.TVScraperEpisodePlot AndAlso Not new_Plot Then
-                DBTVSeason.TVSeason.Plot = scrapedseason.Plot
-                new_Plot = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodePlot AndAlso Not Master.eSettings.TVLockEpisodePlot Then
-                DBTVSeason.TVSeason.Plot = String.Empty
-            End If
-
-            'Title
-            If (Not DBTVSeason.TVSeason.TitleSpecified OrElse Not Master.eSettings.TVLockSeasonTitle) AndAlso ScrapeOptions.bSeasonTitle AndAlso
-                scrapedseason.TitleSpecified AndAlso Master.eSettings.TVScraperSeasonTitle AndAlso Not new_Title Then
-                Dim nTitle = StringUtils.FilterSeasonTitle(scrapedseason.Title)
-                If Not String.IsNullOrEmpty(nTitle) Then
-                    DBTVSeason.TVSeason.Title = nTitle
-                    new_Title = True
-                End If
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperSeasonTitle AndAlso Not Master.eSettings.TVLockSeasonTitle Then
-                DBTVSeason.TVSeason.Title = String.Empty
-            End If
-        Next
-
-        'UniqueID
-        'TODO: set the default uniqueid
-
-        Return DBTVSeason
-    End Function
-    ''' <summary>
-    ''' Returns the "merged" result of each data scraper results
-    ''' </summary>
-    ''' <param name="DBTVEpisode">Episode to be scraped</param>
-    ''' <param name="ScrapedList"><c>List(Of MediaContainers.EpisodeDetails)</c> which contains unfiltered results of each data scraper</param>
-    ''' <returns>The scrape result of episode (after applying various global scraper settings here)</returns>
-    ''' <remarks>
-    ''' This is used to determine the result of data scraping by going through all scraperesults of every data scraper and applying global data scraper settings here!
-    ''' 
-    ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
-    ''' </remarks>
-    Private Shared Function MergeDataScraperResults_TVEpisode(ByRef DBTVEpisode As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.EpisodeDetails), ByVal ScrapeOptions As Structures.ScrapeOptions) As Database.DBElement
-
-        'protects the first scraped result against overwriting
-        Dim new_Actors As Boolean = False
-        Dim new_Aired As Boolean = False
-        Dim new_Countries As Boolean = False
-        Dim new_Credits As Boolean = False
-        Dim new_Directors As Boolean = False
-        Dim new_Episode As Boolean = False
-        Dim new_GuestStars As Boolean = False
-        Dim new_OriginalTitle As Boolean = False
-        Dim new_Plot As Boolean = False
-        Dim new_Runtime As Boolean = False
-        Dim new_Season As Boolean = False
-        Dim new_ThumbPoster As Boolean = False
-        Dim new_Title As Boolean = False
-        Dim new_UserRating As Boolean = False
-
-        ''If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
-        'If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
-        '    PreviewDataScraperResults(ScrapedList)
-        'End If
-
-        For Each scrapedepisode In ScrapedList
-
-            'UniqueIDs
-            If scrapedepisode.UniqueIDsSpecified Then
-                DBTVEpisode.TVEpisode.UniqueIDs.AddRange(scrapedepisode.UniqueIDs)
-            End If
-
-            'DisplayEpisode
-            If scrapedepisode.DisplayEpisodeSpecified Then
-                DBTVEpisode.TVEpisode.DisplayEpisode = scrapedepisode.DisplayEpisode
-            End If
-
-            'DisplaySeason
-            If scrapedepisode.DisplaySeasonSpecified Then
-                DBTVEpisode.TVEpisode.DisplaySeason = scrapedepisode.DisplaySeason
-            End If
-
-            'Actors
-            If (Not DBTVEpisode.TVEpisode.ActorsSpecified OrElse Not Master.eSettings.TVLockEpisodeActors) AndAlso ScrapeOptions.bEpisodeActors AndAlso
-                scrapedepisode.ActorsSpecified AndAlso Master.eSettings.TVScraperEpisodeActors AndAlso Not new_Actors Then
-
-                If Master.eSettings.TVScraperCastWithImgOnly Then
-                    FilterOnlyPersonsWithImage(scrapedepisode.Actors)
-                End If
-                FilterCountLimit(Master.eSettings.TVScraperEpisodeActorsLimit, scrapedepisode.Actors)
-                'added check if there's any actors left to add, if not then try with results of following scraper...
-                If scrapedepisode.ActorsSpecified Then
-                    ReorderPersons(scrapedepisode.Actors)
-                    DBTVEpisode.TVEpisode.Actors = scrapedepisode.Actors
-                    new_Actors = True
-                End If
-
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
-                DBTVEpisode.TVEpisode.Actors.Clear()
-            End If
-
-            'Aired
-            If (Not DBTVEpisode.TVEpisode.AiredSpecified OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso ScrapeOptions.bEpisodeAired AndAlso
-                scrapedepisode.AiredSpecified AndAlso Master.eSettings.TVScraperEpisodeAired AndAlso Not new_Aired Then
-                DBTVEpisode.TVEpisode.Aired = NumUtils.DateToISO8601Date(scrapedepisode.Aired)
-                new_Aired = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeAired AndAlso Not Master.eSettings.TVLockEpisodeAired Then
-                DBTVEpisode.TVEpisode.Aired = String.Empty
-            End If
-
-            'Credits
-            If (Not DBTVEpisode.TVEpisode.CreditsSpecified OrElse Not Master.eSettings.TVLockEpisodeCredits) AndAlso
-                scrapedepisode.CreditsSpecified AndAlso Master.eSettings.TVScraperEpisodeCredits AndAlso Not new_Credits Then
-                DBTVEpisode.TVEpisode.Credits = scrapedepisode.Credits
-                new_Credits = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeCredits AndAlso Not Master.eSettings.TVLockEpisodeCredits Then
-                DBTVEpisode.TVEpisode.Credits.Clear()
-            End If
-
-            'Directors
-            If (Not DBTVEpisode.TVEpisode.DirectorsSpecified OrElse Not Master.eSettings.TVLockEpisodeDirector) AndAlso ScrapeOptions.bEpisodeDirectors AndAlso
-                scrapedepisode.DirectorsSpecified AndAlso Master.eSettings.TVScraperEpisodeDirector AndAlso Not new_Directors Then
-                DBTVEpisode.TVEpisode.Directors = scrapedepisode.Directors
-                new_Directors = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeDirector AndAlso Not Master.eSettings.TVLockEpisodeDirector Then
-                DBTVEpisode.TVEpisode.Directors.Clear()
-            End If
-
-            'GuestStars
-            If (Not DBTVEpisode.TVEpisode.GuestStarsSpecified OrElse Not Master.eSettings.TVLockEpisodeGuestStars) AndAlso ScrapeOptions.bEpisodeGuestStars AndAlso
-                scrapedepisode.GuestStarsSpecified AndAlso Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not new_GuestStars Then
-
-                If Master.eSettings.TVScraperCastWithImgOnly Then
-                    FilterOnlyPersonsWithImage(scrapedepisode.GuestStars)
-                End If
-                FilterCountLimit(Master.eSettings.TVScraperEpisodeGuestStarsLimit, scrapedepisode.GuestStars)
-                'added check if there's any actors left to add, if not then try with results of following scraper...
-                If scrapedepisode.GuestStarsSpecified Then
-                    ReorderPersons(scrapedepisode.GuestStars)
-                    DBTVEpisode.TVEpisode.GuestStars = scrapedepisode.GuestStars
-                    new_GuestStars = True
-                End If
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not Master.eSettings.TVLockEpisodeGuestStars Then
-                DBTVEpisode.TVEpisode.GuestStars.Clear()
-            End If
-
-            'Plot
-            If (Not DBTVEpisode.TVEpisode.PlotSpecified OrElse Not Master.eSettings.TVLockEpisodePlot) AndAlso ScrapeOptions.bEpisodePlot AndAlso
-                scrapedepisode.PlotSpecified AndAlso Master.eSettings.TVScraperEpisodePlot AndAlso Not new_Plot Then
-                DBTVEpisode.TVEpisode.Plot = scrapedepisode.Plot
-                new_Plot = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodePlot AndAlso Not Master.eSettings.TVLockEpisodePlot Then
-                DBTVEpisode.TVEpisode.Plot = String.Empty
-            End If
-
-            'Ratings
-            If (Not DBTVEpisode.TVEpisode.RatingsSpecified OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso
-                scrapedepisode.RatingsSpecified AndAlso Master.eSettings.TVScraperEpisodeRating Then
-                For Each nRating In scrapedepisode.Ratings
-                    'remove old rating(s) from the same source
-                    DBTVEpisode.TVEpisode.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
-                    DBTVEpisode.TVEpisode.Ratings.Add(nRating)
-                Next
-                DBTVEpisode.TVEpisode.Rating = scrapedepisode.Rating
-                DBTVEpisode.TVEpisode.Votes = NumUtils.CleanVotes(scrapedepisode.Votes)
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
-                DBTVEpisode.TVEpisode.Ratings.Clear()
-                DBTVEpisode.TVEpisode.Rating = String.Empty
-                DBTVEpisode.TVEpisode.Votes = String.Empty
-            End If
-
-            'User Rating
-            If (Not DBTVEpisode.TVEpisode.UserRatingSpecified OrElse Not Master.eSettings.TVLockEpisodeUserRating) AndAlso ScrapeOptions.bEpisodeUserRating AndAlso
-                scrapedepisode.UserRatingSpecified AndAlso Master.eSettings.TVScraperEpisodeUserRating AndAlso Not new_UserRating Then
-                DBTVEpisode.TVEpisode.UserRating = scrapedepisode.UserRating
-                new_UserRating = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeUserRating AndAlso Not Master.eSettings.TVLockEpisodeUserRating Then
-                DBTVEpisode.TVEpisode.UserRating = 0
-            End If
-
-            'Runtime
-            If (Not DBTVEpisode.TVEpisode.RuntimeSpecified OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso ScrapeOptions.bEpisodeRuntime AndAlso
-                scrapedepisode.RuntimeSpecified AndAlso Master.eSettings.TVScraperEpisodeRuntime AndAlso Not new_Runtime Then
-                DBTVEpisode.TVEpisode.Runtime = scrapedepisode.Runtime
-                new_Runtime = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRuntime AndAlso Not Master.eSettings.TVLockEpisodeRuntime Then
-                DBTVEpisode.TVEpisode.Runtime = String.Empty
-            End If
-
-            'ThumbPoster
-            If (Not String.IsNullOrEmpty(scrapedepisode.ThumbPoster.URLOriginal) OrElse Not String.IsNullOrEmpty(scrapedepisode.ThumbPoster.URLThumb)) AndAlso Not new_ThumbPoster Then
-                DBTVEpisode.TVEpisode.ThumbPoster = scrapedepisode.ThumbPoster
-                new_ThumbPoster = True
-            End If
-
-            'Title
-            If (Not DBTVEpisode.TVEpisode.TitleSpecified OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso ScrapeOptions.bEpisodeTitle AndAlso
-               scrapedepisode.TitleSpecified AndAlso Master.eSettings.TVScraperEpisodeTitle AndAlso Not new_Title Then
-                DBTVEpisode.TVEpisode.Title = scrapedepisode.Title
-                new_Title = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeTitle AndAlso Not Master.eSettings.TVLockEpisodeTitle Then
-                DBTVEpisode.TVEpisode.Title = String.Empty
-            End If
-        Next
-
-        'Add GuestStars to Actors
-        If DBTVEpisode.TVEpisode.GuestStarsSpecified AndAlso Master.eSettings.TVScraperEpisodeGuestStarsToActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
-            DBTVEpisode.TVEpisode.Actors.AddRange(DBTVEpisode.TVEpisode.GuestStars)
-
-            'run the limit filter again
-            FilterCountLimit(Master.eSettings.TVScraperEpisodeActorsLimit, DBTVEpisode.TVEpisode.Actors)
-
-            'reorder again
-            ReorderPersons(DBTVEpisode.TVEpisode.Actors)
-        End If
-
-        'TV Show Runtime for Episode Runtime
-        If Not DBTVEpisode.TVEpisode.RuntimeSpecified AndAlso Master.eSettings.TVScraperUseSRuntimeForEp AndAlso DBTVEpisode.TVShow.RuntimeSpecified Then
-            DBTVEpisode.TVEpisode.Runtime = DBTVEpisode.TVShow.Runtime
-        End If
-
-        'Rating/Votes
-        'TODO: set the default rating/votes
-        If (Not DBTVEpisode.TVEpisode.RatingSpecified OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso
-                DBTVEpisode.TVEpisode.RatingsSpecified AndAlso Master.eSettings.TVScraperEpisodeRating Then
-            DBTVEpisode.TVEpisode.Rating = DBTVEpisode.TVEpisode.Ratings.Item(0).Value.ToString
-            DBTVEpisode.TVEpisode.Votes = NumUtils.CleanVotes(DBTVEpisode.TVEpisode.Ratings.Item(0).Votes.ToString)
-        ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
-            DBTVEpisode.TVEpisode.Ratings.Clear()
-            DBTVEpisode.TVEpisode.Rating = String.Empty
-            DBTVEpisode.TVEpisode.Votes = String.Empty
-        End If
-
-        'UniqueID
-        'TODO: set the default uniqueid
-
-        Return DBTVEpisode
-    End Function
-
-    Public Shared Function MergeDataScraperResults_TVEpisode_Single(ByRef DBTVEpisode As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.EpisodeDetails), ByVal ScrapeOptions As Structures.ScrapeOptions) As Database.DBElement
-        Dim KnownEpisodesIndex As New List(Of KnownEpisode)
-
-        For Each kEpisode As MediaContainers.EpisodeDetails In ScrapedList
-            Dim nKnownEpisode As New KnownEpisode With {.AiredDate = kEpisode.Aired,
-                                                        .Episode = kEpisode.Episode,
-                                                        .EpisodeAbsolute = kEpisode.EpisodeAbsolute,
-                                                        .EpisodeCombined = kEpisode.EpisodeCombined,
-                                                        .EpisodeDVD = kEpisode.EpisodeDVD,
-                                                        .Season = kEpisode.Season,
-                                                        .SeasonCombined = kEpisode.SeasonCombined,
-                                                        .SeasonDVD = kEpisode.SeasonDVD}
-            If KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season).Count = 0 Then
-                KnownEpisodesIndex.Add(nKnownEpisode)
-
-                'try to get an episode information with more numbers
-            ElseIf KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season AndAlso
-                        ((nKnownEpisode.EpisodeAbsolute > -1 AndAlso Not f.EpisodeAbsolute = nKnownEpisode.EpisodeAbsolute) OrElse
-                         (nKnownEpisode.EpisodeCombined > -1 AndAlso Not f.EpisodeCombined = nKnownEpisode.EpisodeCombined) OrElse
-                         (nKnownEpisode.EpisodeDVD > -1 AndAlso Not f.EpisodeDVD = nKnownEpisode.EpisodeDVD) OrElse
-                         (nKnownEpisode.SeasonCombined > -1 AndAlso Not f.SeasonCombined = nKnownEpisode.SeasonCombined) OrElse
-                         (nKnownEpisode.SeasonDVD > -1 AndAlso Not f.SeasonDVD = nKnownEpisode.SeasonDVD))).Count = 1 Then
-                Dim toRemove As KnownEpisode = KnownEpisodesIndex.FirstOrDefault(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season)
-                KnownEpisodesIndex.Remove(toRemove)
-                KnownEpisodesIndex.Add(nKnownEpisode)
-            End If
-        Next
-
-        If KnownEpisodesIndex.Count = 1 Then
-            'convert the episode and season number if needed
-            Dim iEpisode As Integer = -1
-            Dim iSeason As Integer = -1
-            Dim strAiredDate As String = KnownEpisodesIndex.Item(0).AiredDate
-            If DBTVEpisode.EpisodeOrdering = Enums.EpisodeOrdering.Absolute Then
-                iEpisode = KnownEpisodesIndex.Item(0).EpisodeAbsolute
-                iSeason = 1
-            ElseIf DBTVEpisode.EpisodeOrdering = Enums.EpisodeOrdering.DVD Then
-                iEpisode = CInt(KnownEpisodesIndex.Item(0).EpisodeDVD)
-                iSeason = KnownEpisodesIndex.Item(0).SeasonDVD
-            ElseIf DBTVEpisode.EpisodeOrdering = Enums.EpisodeOrdering.Standard Then
-                iEpisode = KnownEpisodesIndex.Item(0).Episode
-                iSeason = KnownEpisodesIndex.Item(0).Season
-            End If
-
-            If Not iEpisode = -1 AndAlso Not iSeason = -1 Then
-                MergeDataScraperResults_TVEpisode(DBTVEpisode, ScrapedList, ScrapeOptions)
-                If DBTVEpisode.TVEpisode.Episode = -1 Then DBTVEpisode.TVEpisode.Episode = iEpisode
-                If DBTVEpisode.TVEpisode.Season = -1 Then DBTVEpisode.TVEpisode.Season = iSeason
-            Else
-                logger.Warn("No valid episode or season number found")
-            End If
-        Else
-            logger.Warn("Episode could not be clearly determined.")
-        End If
-
-        Return DBTVEpisode
-    End Function
-
-    Public Shared Function CleanNFO_Movies(ByVal mNFO As MediaContainers.Movie) As MediaContainers.Movie
-        If mNFO IsNot Nothing Then
-            mNFO.Outline = mNFO.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-            mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-            mNFO.Premiered = NumUtils.DateToISO8601Date(mNFO.Premiered)
-            mNFO.Votes = NumUtils.CleanVotes(mNFO.Votes)
-            If mNFO.FileInfoSpecified Then
-                If mNFO.FileInfo.StreamDetails.AudioSpecified Then
-                    For Each aStream In mNFO.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+    Public Shared Function Clean(ByVal details As MediaContainers.MainDetails) As MediaContainers.MainDetails
+        If details IsNot Nothing Then
+            details.Aired = NumUtils.DateToISO8601Date(details.Aired)
+            details.Outline = details.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+            details.Plot = details.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+            details.Premiered = NumUtils.DateToISO8601Date(details.Premiered)
+            details.Votes = NumUtils.CleanVotes(details.Votes)
+            If details.FileInfoSpecified Then
+                If details.FileInfo.StreamDetails.AudioSpecified Then
+                    For Each aStream In details.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
                         aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
                     Next
                 End If
-                If mNFO.FileInfo.StreamDetails.SubtitleSpecified Then
-                    For Each sStream In mNFO.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
+                If details.FileInfo.StreamDetails.SubtitleSpecified Then
+                    For Each sStream In details.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
                         sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
                     Next
                 End If
             End If
-            If mNFO.SetsSpecified Then
-                For i = mNFO.Sets.Count - 1 To 0 Step -1
-                    If Not mNFO.Sets(i).TitleSpecified Then
-                        mNFO.Sets.RemoveAt(i)
+            If details.SetsSpecified Then
+                For i = details.Sets.Count - 1 To 0 Step -1
+                    If Not details.Sets(i).TitleSpecified Then
+                        details.Sets.RemoveAt(i)
                     End If
                 Next
             End If
 
             'changes a LongLanguage to Alpha2 code
-            If mNFO.LanguageSpecified Then
-                Dim Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
+            If details.LanguageSpecified Then
+                Dim Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Name = details.Language)
                 If Language IsNot Nothing Then
-                    mNFO.Language = Language.Abbreviation
+                    details.Language = Language.Abbreviation
                 Else
                     'check if it's a valid Alpha2 code or remove the information the use the source default language
-                    Dim ShortLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
+                    Dim ShortLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = details.Language)
                     If ShortLanguage Is Nothing Then
-                        mNFO.Language = String.Empty
-                    End If
-                End If
-            End If
-
-            Return mNFO
-        Else
-            Return mNFO
-        End If
-    End Function
-
-    Public Shared Function CleanNFO_TVEpisodes(ByVal eNFO As MediaContainers.EpisodeDetails) As MediaContainers.EpisodeDetails
-        If eNFO IsNot Nothing Then
-            eNFO.Aired = NumUtils.DateToISO8601Date(eNFO.Aired)
-            eNFO.Votes = NumUtils.CleanVotes(eNFO.Votes)
-            If eNFO.FileInfoSpecified Then
-                If eNFO.FileInfo.StreamDetails.AudioSpecified Then
-                    For Each aStream In eNFO.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                        aStream.LongLanguage = Localization.ISOGetLangByCode3(aStream.Language)
-                    Next
-                End If
-                If eNFO.FileInfo.StreamDetails.SubtitleSpecified Then
-                    For Each sStream In eNFO.FileInfo.StreamDetails.Subtitle.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
-                        sStream.LongLanguage = Localization.ISOGetLangByCode3(sStream.Language)
-                    Next
-                End If
-            End If
-            Return eNFO
-        Else
-            Return eNFO
-        End If
-    End Function
-
-    Public Shared Function CleanNFO_TVShow(ByVal mNFO As MediaContainers.TVShow) As MediaContainers.TVShow
-        If mNFO IsNot Nothing Then
-            mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-            mNFO.Premiered = NumUtils.DateToISO8601Date(mNFO.Premiered)
-            mNFO.Votes = NumUtils.CleanVotes(mNFO.Votes)
-
-            'changes a LongLanguage to Alpha2 code
-            If mNFO.LanguageSpecified Then
-                Dim Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
-                If Language IsNot Nothing Then
-                    mNFO.Language = Language.Abbreviation
-                Else
-                    'check if it's a valid Alpha2 code or remove the information the use the source default language
-                    Dim ShortLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
-                    If ShortLanguage Is Nothing Then
-                        mNFO.Language = String.Empty
+                        details.Language = String.Empty
                     End If
                 End If
             End If
 
             'Boxee support
             If Master.eSettings.TVUseBoxee Then
-                If mNFO.BoxeeTvDbSpecified AndAlso Not mNFO.UniqueIDs.TVDbIdSpecified Then
-                    mNFO.UniqueIDs.TVDbId = mNFO.BoxeeTvDb
-                    mNFO.BlankBoxeeId()
+                If details.BoxeeTvDbSpecified AndAlso Not details.UniqueIDs.TVDbIdSpecified Then
+                    details.UniqueIDs.TVDbId = details.BoxeeTvDb
+                    'mNFO.BlankBoxeeId()
                 End If
             End If
 
-            Return mNFO
+            Return details
         Else
-            Return mNFO
+            Return details
         End If
-    End Function
-
-    Private Shared Function ClearDatafield(ByVal settings As DataSpecificationItem, ByVal type As Enums.ContentType) As Boolean
-        Select Case type
-            Case Enums.ContentType.Movie
-                Return Master.eSettings.Movie.DataSettings.ClearDisabledFields AndAlso Not settings.Enabled AndAlso Not settings.Locked
-            Case Enums.ContentType.Movieset
-                Return Master.eSettings.Movieset.DataSettings.ClearDisabledFields AndAlso Not settings.Enabled AndAlso Not settings.Locked
-            Case Enums.ContentType.TVEpisode
-                Return Master.eSettings.TVEpisode.DataSettings.ClearDisabledFields AndAlso Not settings.Enabled AndAlso Not settings.Locked
-            Case Enums.ContentType.TVSeason
-                Return Master.eSettings.TVSeason.DataSettings.ClearDisabledFields AndAlso Not settings.Enabled AndAlso Not settings.Locked
-            Case Enums.ContentType.TVShow
-                Return Master.eSettings.TVShow.DataSettings.ClearDisabledFields AndAlso Not settings.Enabled AndAlso Not settings.Locked
-        End Select
-        Return False
     End Function
     ''' <summary>
     ''' Delete all movie NFOs
     ''' </summary>
-    ''' <param name="DBMovie"></param>
+    ''' <param name="dbElement"></param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteNFO_Movie(ByVal DBMovie As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-        If Not DBMovie.FileItemSpecified Then Return
-
+    Public Shared Sub Delete(ByVal dbElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
+        If Not dbElement.FileItemSpecified Then Return
         Try
-            For Each a In FileUtils.FileNames.GetFileNames(DBMovie, Enums.ModifierType.MainNFO, ForceFileCleanup)
+            For Each a In FileUtils.FileNames.GetFileNames(dbElement, Enums.ModifierType.MainNFO, ForceFileCleanup)
                 If File.Exists(a) Then
                     File.Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.FileItem.FirstPathFromStack & ">")
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete all movie NFOs
-    ''' </summary>
-    ''' <param name="DBMovieSet"></param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteNFO_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ForceFileCleanup As Boolean, Optional bForceOldTitle As Boolean = False)
-        If Not DBMovieSet.Movieset.TitleSpecified Then Return
-
-        Try
-            For Each a In FileUtils.FileNames.GetFileNames(DBMovieSet, Enums.ModifierType.MainNFO, bForceOldTitle)
-                If File.Exists(a) Then
-                    File.Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.FileItem.FirstPathFromStack & ">")
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Private Shared Sub FilterOnlyPersonsWithImage(ByRef lstPerson As List(Of MediaContainers.Person))
-        If lstPerson IsNot Nothing Then
-            lstPerson = lstPerson.Where(Function(f) f.URLOriginalSpecified).ToList
-        End If
-    End Sub
-
-    Private Shared Sub FilterCountLimit(ByVal iLimit As Integer, ByRef lstPerson As List(Of MediaContainers.Person))
-        If Not iLimit = 0 AndAlso iLimit < lstPerson.Count Then
-            lstPerson.RemoveRange(iLimit, lstPerson.Count - iLimit)
-        End If
-    End Sub
-
-    Private Shared Sub FilterCountLimit(ByVal iLimit As Integer, ByRef lstString As List(Of String))
-        If Not iLimit = 0 AndAlso iLimit < lstString.Count Then
-            lstString.RemoveRange(iLimit, lstString.Count - iLimit)
-        End If
-    End Sub
-
-    Public Shared Function FIToString(ByVal dbElement As Database.DBElement) As String
-        Dim strOutput As New StringBuilder
-        Dim iVS As Integer = 1
-        Dim iAS As Integer = 1
-        Dim iSS As Integer = 1
-        Dim nFileInfo As New MediaContainers.FileInfo
-
-        Select Case dbElement.ContentType
-            Case Enums.ContentType.Movie
-                nFileInfo = dbElement.Movie.FileInfo
-            Case Enums.ContentType.TVEpisode
-                nFileInfo = dbElement.TVEpisode.FileInfo
-        End Select
-
-        If nFileInfo IsNot Nothing Then
-            If nFileInfo.StreamDetailsSpecified Then
-                If nFileInfo.StreamDetails.VideoSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(595, "Video Streams"), nFileInfo.StreamDetails.Video.Count.ToString, Environment.NewLine)
-                If nFileInfo.StreamDetails.AudioSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(596, "Audio Streams"), nFileInfo.StreamDetails.Audio.Count.ToString, Environment.NewLine)
-                If nFileInfo.StreamDetails.SubtitleSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(597, "Subtitle  Streams"), nFileInfo.StreamDetails.Subtitle.Count.ToString, Environment.NewLine)
-                'video streams
-                For Each miVideo As MediaContainers.Video In nFileInfo.StreamDetails.Video
-                    strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(617, "Video Stream"), iVS)
-                    If miVideo.WidthSpecified AndAlso miVideo.HeightSpecified Then strOutput.AppendFormat("- {0}{1}", String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), miVideo.Width, miVideo.Height), Environment.NewLine)
-                    If miVideo.AspectSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(614, "Aspect Ratio"), miVideo.Aspect, Environment.NewLine)
-                    If miVideo.ScantypeSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(605, "Scan Type"), miVideo.Scantype, Environment.NewLine)
-                    If miVideo.CodecSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miVideo.Codec, Environment.NewLine)
-                    If miVideo.BitrateSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miVideo.Bitrate, Environment.NewLine)
-                    If miVideo.DurationSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(609, "Duration"), miVideo.Duration, Environment.NewLine)
-                    'for now return filesize in mbytes instead of bytes(default)
-                    If dbElement.FileItemSpecified AndAlso dbElement.FileItem.TotalSizeSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1455, "Filesize"), dbElement.FileItem.TotalSizeAsReadableString, Environment.NewLine)
-                    If miVideo.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(610, "Language"), miVideo.LongLanguage, Environment.NewLine)
-                    If miVideo.MultiViewCountSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1156, "MultiView Count"), miVideo.MultiViewCount, Environment.NewLine)
-                    If miVideo.MultiViewLayoutSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1157, "MultiView Layout"), miVideo.MultiViewLayout, Environment.NewLine)
-                    If miVideo.StereoModeSpecified Then strOutput.AppendFormat("- {0}: {1} ({2})", Master.eLang.GetString(1286, "StereoMode"), miVideo.StereoMode, miVideo.ShortStereoMode)
-                    iVS += 1
-                Next
-
-                strOutput.Append(Environment.NewLine)
-
-                'audio streams
-                For Each miAudio As MediaContainers.Audio In nFileInfo.StreamDetails.Audio
-                    strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(618, "Audio Stream"), iAS.ToString)
-                    If miAudio.CodecSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miAudio.Codec, Environment.NewLine)
-                    If miAudio.ChannelsSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(611, "Channels"), miAudio.Channels, Environment.NewLine)
-                    If miAudio.BitrateSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miAudio.Bitrate, Environment.NewLine)
-                    If miAudio.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miAudio.LongLanguage)
-                    iAS += 1
-                Next
-
-                strOutput.Append(Environment.NewLine)
-
-                'subtitle streams
-                For Each miSub As MediaContainers.Subtitle In nFileInfo.StreamDetails.Subtitle
-                    strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(619, "Subtitle Stream"), iSS.ToString)
-                    If miSub.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miSub.LongLanguage)
-                    iSS += 1
-                Next
-            End If
-        End If
-
-        If strOutput.ToString.Trim.Length > 0 Then
-            Return strOutput.ToString
-        Else
-            Return Master.eLang.GetString(419, "Metadata is not available. Try rescanning.")
-        End If
-        Return String.Empty
-    End Function
-
-    Public Shared Function GetBestVideo(ByVal miFIV As MediaContainers.FileInfo) As MediaContainers.Video
-        Dim nBestVideo = miFIV.StreamDetails.Video.OrderBy(Function(f) f.Width).Reverse.FirstOrDefault
-        If nBestVideo IsNot Nothing Then
-            Return nBestVideo
-        Else
-            Return New MediaContainers.Video
-        End If
-    End Function
-
-    Public Shared Function GetDimensionsFromVideo(ByVal video As MediaContainers.Video) As String
-        If video.WidthSpecified AndAlso video.HeightSpecified AndAlso video.AspectSpecified Then
-            Return String.Format("{0}x{1} ({2})", video.Width, video.Height, video.Aspect)
-        ElseIf video.WidthSpecified AndAlso video.HeightSpecified Then
-            Return String.Format("{0}x{1}", video.Width, video.Height)
-        End If
-        Return String.Empty
-    End Function
-
-    Public Shared Function GetIMDBFromNonConf(ByVal path As String, ByVal isSingle As Boolean) As NonConf
+    Public Shared Function GetIMDBFromNonConf(ByVal nfoPath As String, ByVal isSingle As Boolean) As NonConf
         Dim tNonConf As New NonConf
-        Dim dirPath As String = Directory.GetParent(path).FullName
+        Dim dirPath As String = Directory.GetParent(nfoPath).FullName
         Dim lstFiles As New List(Of String)
 
         If isSingle Then
@@ -1408,8 +121,8 @@ Public Class Info
             Catch
             End Try
         Else
-            Dim fName As String = IO.Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(path)).ToLower
-            Dim oName As String = IO.Path.GetFileNameWithoutExtension(path)
+            Dim fName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(nfoPath)).ToLower
+            Dim oName As String = Path.GetFileNameWithoutExtension(nfoPath)
             fName = If(fName.EndsWith("*"), fName, String.Concat(fName, "*"))
             oName = If(oName.EndsWith("*"), oName, String.Concat(oName, "*"))
 
@@ -1444,7 +157,7 @@ Public Class Info
                     End If
                     Exit For
                 Else
-                    strIMDBID = Regex.Match(path, "tt\d\d\d\d\d\d\d*", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
+                    strIMDBID = Regex.Match(nfoPath, "tt\d\d\d\d\d\d\d*", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
                     If Not String.IsNullOrEmpty(strIMDBID) Then
                         tNonConf.IMDBID = strIMDBID
                     End If
@@ -1460,224 +173,101 @@ Public Class Info
                 Return a
             End If
         Next
-
         Return String.Empty
     End Function
-    ''' <summary>
-    ''' Get the resolution of the video from the dimensions provided by MediaInfo.dll
-    ''' </summary>
-    ''' <param name="video"></param>
-    ''' <returns></returns>
-    Public Shared Function GetResolutionFromDimensions(ByVal video As MediaContainers.Video) As String
-        Dim iWidth As Integer = video.Width
-        Dim iHeight As Integer = video.Height
-        Dim strResolution As String = String.Empty
 
-
-        Select Case True
-            'exact
-            Case iWidth = 7680 AndAlso iHeight = 4320   'UHD 8K
-                strResolution = "4320"
-            Case iWidth = 4096 AndAlso iHeight = 2160   'UHD 4K (cinema)
-                strResolution = "2160"
-            Case iWidth = 3840 AndAlso iHeight = 2160   'UHD 4K
-                strResolution = "2160"
-            Case iWidth = 2560 AndAlso iHeight = 1600   'WQXGA (16:10)
-                strResolution = "1600"
-            Case iWidth = 2560 AndAlso iHeight = 1440   'WQHD (16:9)
-                strResolution = "1440"
-            Case iWidth = 1920 AndAlso iHeight = 1200   'WUXGA (16:10)
-                strResolution = "1200"
-            Case iWidth = 1920 AndAlso iHeight = 1080   'HD1080 (16:9)
-                strResolution = "1080"
-            Case iWidth = 1680 AndAlso iHeight = 1050   'WSXGA+ (16:10)
-                strResolution = "1050"
-            Case iWidth = 1600 AndAlso iHeight = 900    'HD+ (16:9)
-                strResolution = "900"
-            Case iWidth = 1280 AndAlso iHeight = 720    'HD720 / WXGA (16:9)
-                strResolution = "720"
-            Case iWidth = 800 AndAlso iHeight = 480     'Rec. 601 plus a quarter (5:3)
-                strResolution = "480"
-            Case iWidth = 768 AndAlso iHeight = 576     'PAL
-                strResolution = "576"
-            Case iWidth = 720 AndAlso iHeight = 480     'Rec. 601 (3:2)
-                strResolution = "480"
-            Case iWidth = 720 AndAlso iHeight = 576     'PAL (DVD)
-                strResolution = "576"
-            Case iWidth = 720 AndAlso iHeight = 540     'half of 1080p (16:9)
-                strResolution = "540"
-            Case iWidth = 640 AndAlso iHeight = 480     'VGA (4:3)
-                strResolution = "480"
-            Case iWidth = 640 AndAlso iHeight = 360     'Wide 360p (16:9)
-                strResolution = "360"
-            Case iWidth = 480 AndAlso iHeight = 360     '360p (4:3, uncommon)
-                strResolution = "360"
-            Case iWidth = 426 AndAlso iHeight = 240     'NTSC widescreen (16:9)
-                strResolution = "240"
-            Case iWidth = 352 AndAlso iHeight = 240     'NTSC-standard VCD / super-long-play DVD (4:3)
-                strResolution = "240"
-            Case iWidth = 320 AndAlso iHeight = 240     'CGA / NTSC square pixel (4:3)
-                strResolution = "240"
-            Case iWidth = 256 AndAlso iHeight = 144     'One tenth of 1440p (16:9)
-                strResolution = "144"
-            Case Else
-                '
-                ' MAM: simple version, totally sufficient. Add new res at the end of the list if they become available (before "99999999" of course!)
-                ' Warning: this list needs to be sorted from lowest to highes resolution, else the search routine will go nuts!
-                '
-                Dim aVres() = New Dictionary(Of Integer, String) From
-                        {
-                        {0, "unknown"},
-                        {426, "240"},
-                        {480, "360"},
-                        {640, "480"},
-                        {720, "576"},
-                        {1280, "720"},
-                        {1920, "1080"},
-                        {4096, "2160"},
-                        {7680, "4320"},
-                        {99999999, String.Empty}
-                    }.ToArray
-                '
-                ' search appropriate horizontal resolution
-                ' Note: Array's last entry must be a ridiculous high number, else this loop will surely crash!
-                '
-                Dim i As Integer
-                While (aVres(i).Key < iWidth)
-                    i = i + 1
-                End While
-                strResolution = aVres(i).Value
-        End Select
-
-        If Not String.IsNullOrEmpty(strResolution) AndAlso Not String.IsNullOrEmpty(video.Scantype) Then
-            Return String.Concat(strResolution, If(video.Scantype.ToLower = "progressive", "p", "i"))
-        End If
-
-        Return strResolution
-    End Function
-
-    Public Shared Function IsConformingNFO_Movie(ByVal path As String) As Boolean
-        Dim testSer As XmlSerializer = Nothing
-
+    Public Shared Function IsConformingNFO(ByVal nfoPath As String) As Boolean
+        Dim xmlSer As XmlSerializer = Nothing
         Try
-            If (IO.Path.GetExtension(path) = ".nfo" OrElse IO.Path.GetExtension(path) = ".info") AndAlso File.Exists(path) Then
-                Using testSR As StreamReader = New StreamReader(path)
-                    testSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                    Dim testMovie As MediaContainers.Movie = DirectCast(testSer.Deserialize(testSR), MediaContainers.Movie)
-                    testMovie = Nothing
-                    testSer = Nothing
+            Dim fInfo As New FileInfo(nfoPath)
+            If (fInfo.Extension = ".nfo" OrElse fInfo.Extension = ".info") AndAlso fInfo.Exists Then
+                Using srNFO As StreamReader = New StreamReader(nfoPath)
+                    xmlSer = New XmlSerializer(GetType(MediaContainers.MainDetails))
+                    xmlSer.Deserialize(srNFO)
                 End Using
                 Return True
             Else
                 Return False
             End If
         Catch
-            If testSer IsNot Nothing Then
-                testSer = Nothing
-            End If
-
             Return False
         End Try
     End Function
 
-    Public Shared Function IsConformingNFO_TVEpisode(ByVal path As String) As Boolean
-        Dim testSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
-        Dim testEp As New MediaContainers.EpisodeDetails
+    Public Shared Function IsConformingNFO_TVEpisode(ByVal nfoPath As String) As Boolean
+        Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.MainDetails))
+        Dim nDetails As New MediaContainers.MainDetails
 
         Try
-            If (IO.Path.GetExtension(path) = ".nfo" OrElse IO.Path.GetExtension(path) = ".info") AndAlso File.Exists(path) Then
-                Using xmlSR As StreamReader = New StreamReader(path)
+            If (Path.GetExtension(nfoPath) = ".nfo" OrElse Path.GetExtension(nfoPath) = ".info") AndAlso File.Exists(nfoPath) Then
+                Using xmlSR As StreamReader = New StreamReader(nfoPath)
                     Dim xmlStr As String = xmlSR.ReadToEnd
                     Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
                     If rMatches.Count = 1 Then
                         Using xmlRead As StringReader = New StringReader(rMatches(0).Value)
-                            testEp = DirectCast(testSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
-                            testSer = Nothing
-                            testEp = Nothing
+                            nDetails = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.MainDetails)
+                            xmlSer = Nothing
+                            nDetails = Nothing
                             Return True
                         End Using
                     ElseIf rMatches.Count > 1 Then
                         'read them all... if one fails, the entire nfo is non conforming
                         For Each xmlReg As Match In rMatches
                             Using xmlRead As StringReader = New StringReader(xmlReg.Value)
-                                testEp = DirectCast(testSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
-                                testEp = Nothing
+                                nDetails = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.MainDetails)
+                                nDetails = Nothing
                             End Using
                         Next
-                        testSer = Nothing
+                        xmlSer = Nothing
                         Return True
                     Else
-                        testSer = Nothing
-                        If testEp IsNot Nothing Then
-                            testEp = Nothing
+                        xmlSer = Nothing
+                        If nDetails IsNot Nothing Then
+                            nDetails = Nothing
                         End If
                         Return False
                     End If
                 End Using
             Else
-                testSer = Nothing
-                testEp = Nothing
+                xmlSer = Nothing
+                nDetails = Nothing
                 Return False
             End If
         Catch
-            If testSer IsNot Nothing Then
-                testSer = Nothing
+            If xmlSer IsNot Nothing Then
+                xmlSer = Nothing
             End If
-            If testEp IsNot Nothing Then
-                testEp = Nothing
+            If nDetails IsNot Nothing Then
+                nDetails = Nothing
             End If
             Return False
         End Try
     End Function
 
-    Public Shared Function IsConformingNFO_TVShow(ByVal path As String) As Boolean
-        Dim testSer As XmlSerializer = Nothing
-
-        Try
-            If (IO.Path.GetExtension(path) = ".nfo" OrElse IO.Path.GetExtension(path) = ".info") AndAlso File.Exists(path) Then
-                Using testSR As StreamReader = New StreamReader(path)
-                    testSer = New XmlSerializer(GetType(MediaContainers.TVShow))
-                    Dim testShow As MediaContainers.TVShow = DirectCast(testSer.Deserialize(testSR), MediaContainers.TVShow)
-                    testShow = Nothing
-                    testSer = Nothing
-                End Using
-                Return True
-            Else
-                Return False
-            End If
-        Catch
-            If testSer IsNot Nothing Then
-                testSer = Nothing
-            End If
-
-            Return False
-        End Try
-    End Function
-
-    Public Shared Function LoadFromNFO_Movie(ByVal path As String, ByVal isSingle As Boolean) As MediaContainers.Movie
+    Public Shared Function LoadFromNFO_Movie(ByVal nfoPath As String, ByVal isSingle As Boolean) As MediaContainers.MainDetails
         Dim xmlSer As XmlSerializer = Nothing
-        Dim xmlMov As New MediaContainers.Movie
+        Dim xmlMov As New MediaContainers.MainDetails
 
-        If Not String.IsNullOrEmpty(path) Then
+        If Not String.IsNullOrEmpty(nfoPath) Then
             Try
-                If File.Exists(path) AndAlso IO.Path.GetExtension(path).ToLower = ".nfo" Then
-                    Using xmlSR As StreamReader = New StreamReader(path)
-                        xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                        xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.Movie)
-                        xmlMov = CleanNFO_Movies(xmlMov)
+                If File.Exists(nfoPath) AndAlso Path.GetExtension(nfoPath).ToLower = ".nfo" Then
+                    Using xmlSR As StreamReader = New StreamReader(nfoPath)
+                        xmlSer = New XmlSerializer(GetType(MediaContainers.MainDetails))
+                        xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.MainDetails)
+                        xmlMov = Clean(xmlMov)
                     End Using
                 Else
-                    If Not String.IsNullOrEmpty(path) Then
+                    If Not String.IsNullOrEmpty(nfoPath) Then
                         Dim sReturn As New NonConf
-                        sReturn = GetIMDBFromNonConf(path, isSingle)
+                        sReturn = GetIMDBFromNonConf(nfoPath, isSingle)
                         xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
                         Try
                             If Not String.IsNullOrEmpty(sReturn.Text) Then
                                 Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                                    xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                                    xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
+                                    xmlSer = New XmlSerializer(GetType(MediaContainers.MainDetails))
+                                    xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.MainDetails)
                                     xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
-                                    xmlMov = CleanNFO_Movies(xmlMov)
+                                    xmlMov = Clean(xmlMov)
                                 End Using
                             End If
                         Catch
@@ -1686,26 +276,26 @@ Public Class Info
                 End If
 
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
 
-                xmlMov = New MediaContainers.Movie
-                If Not String.IsNullOrEmpty(path) Then
+                xmlMov = New MediaContainers.MainDetails
+                If Not String.IsNullOrEmpty(nfoPath) Then
 
                     'go ahead and rename it now, will still be picked up in getimdbfromnonconf
                     If Not Master.eSettings.Movie.SourceSettings.OverWriteNfo Then
-                        RenameNonConfNFO_Movie(path, True)
+                        RenameNonConfNFO_Movie(nfoPath, True)
                     End If
 
                     Dim sReturn As New NonConf
-                    sReturn = GetIMDBFromNonConf(path, isSingle)
+                    sReturn = GetIMDBFromNonConf(nfoPath, isSingle)
                     xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
                     Try
                         If Not String.IsNullOrEmpty(sReturn.Text) Then
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                                xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
-                                xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
+                                xmlSer = New XmlSerializer(GetType(MediaContainers.MainDetails))
+                                xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.MainDetails)
                                 xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
-                                xmlMov = CleanNFO_Movies(xmlMov)
+                                xmlMov = Clean(xmlMov)
                             End Using
                         End If
                     Catch
@@ -1721,23 +311,23 @@ Public Class Info
         Return xmlMov
     End Function
 
-    Public Shared Function LoadFromNFO_MovieSet(ByVal path As String) As MediaContainers.MovieSet
+    Public Shared Function LoadFromNFO_MovieSet(ByVal nfoPath As String) As MediaContainers.MainDetails
         Dim xmlSer As XmlSerializer = Nothing
-        Dim xmlMovSet As New MediaContainers.MovieSet
+        Dim xmlMovSet As New MediaContainers.MainDetails
 
-        If Not String.IsNullOrEmpty(path) Then
+        If Not String.IsNullOrEmpty(nfoPath) Then
             Try
-                If File.Exists(path) AndAlso IO.Path.GetExtension(path).ToLower = ".nfo" Then
-                    Using xmlSR As StreamReader = New StreamReader(path)
-                        xmlSer = New XmlSerializer(GetType(MediaContainers.MovieSet))
-                        xmlMovSet = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.MovieSet)
+                If File.Exists(nfoPath) AndAlso Path.GetExtension(nfoPath).ToLower = ".nfo" Then
+                    Using xmlSR As StreamReader = New StreamReader(nfoPath)
+                        xmlSer = New XmlSerializer(GetType(MediaContainers.MainDetails))
+                        xmlMovSet = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.MainDetails)
                         xmlMovSet.Plot = xmlMovSet.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
                     End Using
                 End If
 
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-                xmlMovSet = New MediaContainers.MovieSet
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
+                xmlMovSet = New MediaContainers.MainDetails
             End Try
 
             If xmlSer IsNot Nothing Then
@@ -1748,22 +338,22 @@ Public Class Info
         Return xmlMovSet
     End Function
 
-    Public Shared Function LoadFromNFO_TVEpisode(ByVal path As String, ByVal seasonNumber As Integer, ByVal episodeNumber As Integer) As MediaContainers.EpisodeDetails
-        Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
-        Dim xmlEp As New MediaContainers.EpisodeDetails
+    Public Shared Function LoadFromNFO_TVEpisode(ByVal nfoPath As String, ByVal seasonNumber As Integer, ByVal episodeNumber As Integer) As MediaContainers.MainDetails
+        Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.MainDetails))
+        Dim xmlEp As New MediaContainers.MainDetails
 
-        If Not String.IsNullOrEmpty(path) AndAlso seasonNumber >= -1 Then
+        If Not String.IsNullOrEmpty(nfoPath) AndAlso seasonNumber >= -1 Then
             Try
-                If File.Exists(path) AndAlso IO.Path.GetExtension(path).ToLower = ".nfo" Then
+                If File.Exists(nfoPath) AndAlso Path.GetExtension(nfoPath).ToLower = ".nfo" Then
                     'better way to read multi-root xml??
-                    Using xmlSR As StreamReader = New StreamReader(path)
+                    Using xmlSR As StreamReader = New StreamReader(nfoPath)
                         Dim xmlStr As String = xmlSR.ReadToEnd
                         Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
                         If rMatches.Count = 1 Then
                             'only one episodedetail... assume it's the proper one
                             Using xmlRead As StringReader = New StringReader(rMatches(0).Value)
-                                xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
-                                xmlEp = CleanNFO_TVEpisodes(xmlEp)
+                                xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.MainDetails)
+                                xmlEp = Clean(xmlEp)
                                 xmlSer = Nothing
                                 If xmlEp.FileInfoSpecified Then
                                     If xmlEp.FileInfo.StreamDetails.AudioSpecified Then
@@ -1782,8 +372,8 @@ Public Class Info
                         ElseIf rMatches.Count > 1 Then
                             For Each xmlReg As Match In rMatches
                                 Using xmlRead As StringReader = New StringReader(xmlReg.Value)
-                                    xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
-                                    xmlEp = CleanNFO_TVEpisodes(xmlEp)
+                                    xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.MainDetails)
+                                    xmlEp = Clean(xmlEp)
                                     If xmlEp.Episode = episodeNumber AndAlso xmlEp.Season = seasonNumber Then
                                         xmlSer = Nothing
                                         Return xmlEp
@@ -1796,39 +386,39 @@ Public Class Info
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
                     If Not Master.eSettings.TVEpisode.SourceSettings.OverWriteNfo Then
-                        RenameNonConfNFO_TVEpisode(path, True)
+                        RenameNonConfNFO_TVEpisode(nfoPath, True)
                     End If
                 End If
 
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
 
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.TVEpisode.SourceSettings.OverWriteNfo Then
-                    RenameNonConfNFO_TVEpisode(path, True)
+                    RenameNonConfNFO_TVEpisode(nfoPath, True)
                 End If
             End Try
         End If
 
-        Return New MediaContainers.EpisodeDetails
+        Return New MediaContainers.MainDetails
     End Function
 
-    Public Shared Function LoadFromNFO_TVEpisode(ByVal path As String, ByVal seasonNumber As Integer, ByVal airedDate As String) As MediaContainers.EpisodeDetails
-        Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
-        Dim xmlEp As New MediaContainers.EpisodeDetails
+    Public Shared Function LoadFromNFO_TVEpisode(ByVal nfoPath As String, ByVal seasonNumber As Integer, ByVal airedDate As String) As MediaContainers.MainDetails
+        Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(MediaContainers.MainDetails))
+        Dim xmlEp As New MediaContainers.MainDetails
 
-        If Not String.IsNullOrEmpty(path) AndAlso seasonNumber >= -1 Then
+        If Not String.IsNullOrEmpty(nfoPath) AndAlso seasonNumber >= -1 Then
             Try
-                If File.Exists(path) AndAlso IO.Path.GetExtension(path).ToLower = ".nfo" Then
+                If File.Exists(nfoPath) AndAlso Path.GetExtension(nfoPath).ToLower = ".nfo" Then
                     'better way to read multi-root xml??
-                    Using xmlSR As StreamReader = New StreamReader(path)
+                    Using xmlSR As StreamReader = New StreamReader(nfoPath)
                         Dim xmlStr As String = xmlSR.ReadToEnd
                         Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
                         If rMatches.Count = 1 Then
                             'only one episodedetail... assume it's the proper one
                             Using xmlRead As StringReader = New StringReader(rMatches(0).Value)
-                                xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
-                                xmlEp = CleanNFO_TVEpisodes(xmlEp)
+                                xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.MainDetails)
+                                xmlEp = Clean(xmlEp)
                                 xmlSer = Nothing
                                 If xmlEp.FileInfoSpecified Then
                                     If xmlEp.FileInfo.StreamDetails.AudioSpecified Then
@@ -1847,8 +437,8 @@ Public Class Info
                         ElseIf rMatches.Count > 1 Then
                             For Each xmlReg As Match In rMatches
                                 Using xmlRead As StringReader = New StringReader(xmlReg.Value)
-                                    xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.EpisodeDetails)
-                                    xmlEp = CleanNFO_TVEpisodes(xmlEp)
+                                    xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), MediaContainers.MainDetails)
+                                    xmlEp = Clean(xmlEp)
                                     If xmlEp.Aired = airedDate AndAlso xmlEp.Season = seasonNumber Then
                                         xmlSer = Nothing
                                         Return xmlEp
@@ -1861,48 +451,48 @@ Public Class Info
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
                     If Not Master.eSettings.TVEpisode.SourceSettings.OverWriteNfo Then
-                        RenameNonConfNFO_TVEpisode(path, True)
+                        RenameNonConfNFO_TVEpisode(nfoPath, True)
                     End If
                 End If
 
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
 
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.TVEpisode.SourceSettings.OverWriteNfo Then
-                    RenameNonConfNFO_TVEpisode(path, True)
+                    RenameNonConfNFO_TVEpisode(nfoPath, True)
                 End If
             End Try
         End If
 
-        Return New MediaContainers.EpisodeDetails
+        Return New MediaContainers.MainDetails
     End Function
 
-    Public Shared Function LoadFromNFO_TVShow(ByVal path As String) As MediaContainers.TVShow
+    Public Shared Function LoadFromNFO_TVShow(ByVal nfoPath As String) As MediaContainers.MainDetails
         Dim xmlSer As XmlSerializer = Nothing
-        Dim xmlShow As New MediaContainers.TVShow
+        Dim xmlShow As New MediaContainers.MainDetails
 
-        If Not String.IsNullOrEmpty(path) Then
+        If Not String.IsNullOrEmpty(nfoPath) Then
             Try
-                If File.Exists(path) AndAlso IO.Path.GetExtension(path).ToLower = ".nfo" Then
-                    Using xmlSR As StreamReader = New StreamReader(path)
-                        xmlSer = New XmlSerializer(GetType(MediaContainers.TVShow))
-                        xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.TVShow)
-                        xmlShow = CleanNFO_TVShow(xmlShow)
+                If File.Exists(nfoPath) AndAlso Path.GetExtension(nfoPath).ToLower = ".nfo" Then
+                    Using xmlSR As StreamReader = New StreamReader(nfoPath)
+                        xmlSer = New XmlSerializer(GetType(MediaContainers.MainDetails))
+                        xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.MainDetails)
+                        xmlShow = Clean(xmlShow)
                     End Using
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
                     If Not Master.eSettings.TVShow.SourceSettings.OverWriteNfo Then
-                        RenameNonConfNFO_TVShow(path)
+                        RenameNonConfNFO_TVShow(nfoPath)
                     End If
                 End If
 
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
 
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.TVShow.SourceSettings.OverWriteNfo Then
-                    RenameNonConfNFO_TVShow(path)
+                    RenameNonConfNFO_TVShow(nfoPath)
                 End If
             End Try
 
@@ -1912,7 +502,7 @@ Public Class Info
                 AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFORead_TVShow, params, doContinue, False)
 
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             If xmlSer IsNot Nothing Then
@@ -1923,80 +513,60 @@ Public Class Info
         Return xmlShow
     End Function
 
-    Private Shared Function OverwriteValue(ByVal scrapeOptionEnabled As Boolean,
-                                           ByVal alreadyNewSet As Boolean,
-                                           ByVal oldSpecified As Boolean,
-                                           ByVal newSpecified As Boolean,
-                                           ByVal settings As DataSpecificationItem) As Boolean
-        Return scrapeOptionEnabled AndAlso
-            Not alreadyNewSet AndAlso
-            newSpecified AndAlso
-            settings.Enabled AndAlso
-            (Not oldSpecified OrElse Not settings.Locked)
-    End Function
-
-    Private Shared Sub RenameNonConfNFO_Movie(ByVal path As String, ByVal isChecked As Boolean)
+    Private Shared Sub RenameNonConfNFO_Movie(ByVal nfoPath As String, ByVal isChecked As Boolean)
         'test if current nfo is non-conforming... rename per setting
-
         Try
-            If isChecked OrElse Not IsConformingNFO_Movie(path) Then
-                If isChecked OrElse File.Exists(path) Then
-                    RenameToInfo(path)
+            If isChecked OrElse Not IsConformingNFO(nfoPath) Then
+                If isChecked OrElse File.Exists(nfoPath) Then
+                    RenameToInfo(nfoPath)
                 End If
             End If
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Private Shared Sub RenameNonConfNFO_TVEpisode(ByVal path As String, ByVal isChecked As Boolean)
+    Private Shared Sub RenameNonConfNFO_TVEpisode(ByVal nfoPath As String, ByVal isChecked As Boolean)
         'test if current nfo is non-conforming... rename per setting
 
         Try
-            If File.Exists(path) AndAlso Not IsConformingNFO_TVEpisode(path) Then
-                RenameToInfo(path)
+            If File.Exists(nfoPath) AndAlso Not IsConformingNFO_TVEpisode(nfoPath) Then
+                RenameToInfo(nfoPath)
             End If
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Private Shared Sub RenameNonConfNFO_TVShow(ByVal path As String)
+    Private Shared Sub RenameNonConfNFO_TVShow(ByVal nfoPath As String)
         'test if current nfo is non-conforming... rename per setting
 
         Try
-            If File.Exists(path) AndAlso Not IsConformingNFO_TVShow(path) Then
-                RenameToInfo(path)
+            If File.Exists(nfoPath) AndAlso Not IsConformingNFO(nfoPath) Then
+                RenameToInfo(nfoPath)
             End If
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Private Shared Sub RenameToInfo(ByVal path As String)
+    Private Shared Sub RenameToInfo(ByVal nfoPath As String)
         Try
+            Dim fInfo As New FileInfo(nfoPath)
             Dim i As Integer = 1
-            Dim strNewName As String = String.Concat(FileUtils.Common.RemoveExtFromPath(path), ".info")
+            Dim strFullNameNoExt As String = Regex.Replace(fInfo.FullName, fInfo.Extension, String.Empty)
+            Dim strNewFileName As String = String.Format("{0}.info", strFullNameNoExt)
             'in case there is already a .info file
-            If File.Exists(strNewName) Then
+            If File.Exists(strNewFileName) Then
                 Do
-                    strNewName = String.Format("{0}({1}).info", FileUtils.Common.RemoveExtFromPath(path), i)
+                    strNewFileName = String.Format("{0}({1}).info", strFullNameNoExt, i)
                     i += 1
-                Loop While File.Exists(strNewName)
-                strNewName = String.Format("{0}({1}).info", FileUtils.Common.RemoveExtFromPath(path), i)
+                Loop While File.Exists(strNewFileName)
             End If
-            File.Move(path, strNewName)
+            File.Move(nfoPath, strFullNameNoExt)
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
-    End Sub
-
-    Private Shared Sub ReorderPersons(ByRef lstPerson As List(Of MediaContainers.Person))
-        Dim iOrder As Integer = 0
-        For Each nPerson In lstPerson
-            nPerson.Order = iOrder
-            iOrder += 1
-        Next
     End Sub
 
     Public Shared Sub SaveToNFO_Movie(ByRef dbElement As Database.DBElement, ByVal forceFileCleanup As Boolean)
@@ -2004,20 +574,31 @@ Public Class Info
             Try
                 Dim params As New List(Of Object)(New Object() {dbElement})
                 Dim doContinue As Boolean = True
-                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_Movie, params, doContinue, False)
+                Select Case dbElement.ContentType
+                    Case Enums.ContentType.Movie
+                        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_Movie, params, doContinue, False)
+                    Case Enums.ContentType.Movieset
+                        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_Movieset, params, doContinue, False)
+                    Case Enums.ContentType.TVEpisode
+                        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_TVEpisode, params, doContinue, False)
+                    Case Enums.ContentType.TVSeason
+                        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_TVSeason, params, doContinue, False)
+                    Case Enums.ContentType.TVShow
+                        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_TVShow, params, doContinue, False)
+                End Select
                 If Not doContinue Then Return
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             If dbElement.FileItemSpecified Then
                 'cleanup old NFOs if needed
-                If forceFileCleanup Then DeleteNFO_Movie(dbElement, forceFileCleanup)
+                If forceFileCleanup Then Delete(dbElement, forceFileCleanup)
 
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
-                Dim tMovie As MediaContainers.Movie = CType(dbElement.Movie.CloneDeep, MediaContainers.Movie)
+                Dim tMovie As MediaContainers.MainDetails = CType(dbElement.MainDetails.CloneDeep, MediaContainers.MainDetails)
 
-                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
+                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MainDetails))
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
@@ -2062,11 +643,11 @@ Public Class Info
             End If
 
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Public Shared Sub SaveToNFO_MovieSet(ByRef dbElement As Database.DBElement)
+    Public Shared Sub SaveToNFO_Movieset(ByRef dbElement As Database.DBElement)
         Try
             'Try
             '    Dim params As New List(Of Object)(New Object() {moviesetToSave})
@@ -2076,10 +657,10 @@ Public Class Info
             'Catch ex As Exception
             'End Try
 
-            If Not String.IsNullOrEmpty(dbElement.Movieset.Title) Then
-                If dbElement.Movieset.TitleHasChanged Then DeleteNFO_MovieSet(dbElement, False, True)
+            If Not String.IsNullOrEmpty(dbElement.MainDetails.Title) Then
+                If dbElement.MainDetails.Title_HasChanged Then Delete(dbElement, True)
 
-                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MovieSet))
+                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MainDetails))
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
@@ -2101,7 +682,7 @@ Public Class Info
                         End If
                         Using xmlSW As New StreamWriter(a)
                             dbElement.NfoPath = a
-                            xmlSer.Serialize(xmlSW, dbElement.Movieset)
+                            xmlSer.Serialize(xmlSW, dbElement.MainDetails)
                         End Using
                         If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
                     End If
@@ -2109,7 +690,7 @@ Public Class Info
             End If
 
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -2117,14 +698,14 @@ Public Class Info
         Try
             If dbElement.FileItemSpecified Then
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
-                Dim tTVEpisode As MediaContainers.EpisodeDetails = CType(dbElement.TVEpisode.CloneDeep, MediaContainers.EpisodeDetails)
+                Dim tTVEpisode As MediaContainers.MainDetails = CType(dbElement.MainDetails.CloneDeep, MediaContainers.MainDetails)
 
-                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
+                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MainDetails))
 
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
-                Dim EpList As New List(Of MediaContainers.EpisodeDetails)
+                Dim EpList As New List(Of MediaContainers.MainDetails)
                 Dim sBuilder As New StringBuilder
 
                 For Each a In FileUtils.FileNames.GetFileNames(dbElement, Enums.ModifierType.EpisodeNFO)
@@ -2155,7 +736,7 @@ Public Class Info
 
                             Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLreader.Read
-                                    EpList.Add(Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), False).TVEpisode)
+                                    EpList.Add(Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), False).MainDetails)
                                 End While
                             End Using
 
@@ -2164,7 +745,7 @@ Public Class Info
                             Dim NS As New XmlSerializerNamespaces
                             NS.Add(String.Empty, String.Empty)
 
-                            For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season).OrderBy(Function(e) e.Episode)
+                            For Each tvEp As MediaContainers.MainDetails In EpList.OrderBy(Function(s) s.Season).OrderBy(Function(e) e.Episode)
 
                                 'digit grouping symbol for Votes count
                                 If Master.eSettings.Options.Global.DigitGrpSymbolVotesEnabled Then
@@ -2204,7 +785,7 @@ Public Class Info
             End If
 
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -2220,9 +801,9 @@ Public Class Info
         Try
             If dbElement.ShowPathSpecified Then
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
-                Dim tTVShow As MediaContainers.TVShow = CType(dbElement.TVShow.CloneDeep, MediaContainers.TVShow)
+                Dim tTVShow As MediaContainers.MainDetails = CType(dbElement.MainDetails.CloneDeep, MediaContainers.MainDetails)
 
-                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.TVShow))
+                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MainDetails))
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
@@ -2231,7 +812,7 @@ Public Class Info
                 If Master.eSettings.TVUseBoxee Then
                     If tTVShow.UniqueIDs.TVDbIdSpecified Then
                         tTVShow.BoxeeTvDb = tTVShow.UniqueIDs.TVDbId
-                        tTVShow.BlankId()
+                        'tTVShow.BlankId()
                     End If
                 End If
 
@@ -2270,7 +851,7 @@ Public Class Info
                 Next
             End If
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -2285,30 +866,6 @@ Public Class Info
         Public Property IMDBID() As String = String.Empty
 
         Public Property Text() As String = String.Empty
-
-#End Region 'Properties
-
-    End Class
-
-    Public Class KnownEpisode
-
-#Region "Properties"
-
-        Public Property AiredDate() As String = String.Empty
-
-        Public Property Episode() As Integer = -1
-
-        Public Property EpisodeAbsolute() As Integer = -1
-
-        Public Property EpisodeCombined() As Double = -1
-
-        Public Property EpisodeDVD() As Double = -1
-
-        Public Property Season() As Integer = -1
-
-        Public Property SeasonCombined() As Integer = -1
-
-        Public Property SeasonDVD() As Integer = -1
 
 #End Region 'Properties
 

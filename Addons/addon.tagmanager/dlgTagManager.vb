@@ -191,7 +191,7 @@ Public Class dlgTagManager
         For Each movielist In _GlobalMovieTags
             If movielist.Name = lbTags.SelectedItem.ToString Then
                 For Each tMovie In movielist.Movies
-                    lbMoviesInTag.Items.Add(tMovie.Movie.Title)
+                    lbMoviesInTag.Items.Add(tMovie.MainDetails.Title)
                 Next
                 If lbMoviesInTag.Items.Count > 0 Then
                     btnRemoveMovie.Enabled = True
@@ -243,7 +243,7 @@ Public Class dlgTagManager
                 For Each _tag In _GlobalMovieTags
                     If _tag.Name = lbTags.SelectedItem.ToString Then
                         For Each movie In _tag.Movies
-                            If movie.Movie.Title = selectedmovie.ToString Then
+                            If movie.MainDetails.Title = selectedmovie.ToString Then
                                 _tag.IsModified = True
                                 _tag.Movies.Remove(movie)
                             End If
@@ -268,14 +268,14 @@ Public Class dlgTagManager
                 Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("ID").Value))
 
 
-                If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
+                If Not String.IsNullOrEmpty(tmpMovie.MainDetails.Title) Then
                     'add new movie to tag in globaltaglist
                     For Each _tag In _GlobalMovieTags
                         If _tag.Name = lbTags.SelectedItem.ToString Then
                             If Not _tag.Movies Is Nothing Then
                                 Dim alreadyintag As Boolean = False
                                 For Each movie In _tag.Movies
-                                    If movie.Movie.Title = tmpMovie.Movie.Title AndAlso movie.Movie.UniqueIDs.IMDbId = tmpMovie.Movie.UniqueIDs.IMDbId Then
+                                    If movie.MainDetails.Title = tmpMovie.MainDetails.Title AndAlso movie.MainDetails.UniqueIDs.IMDbId = tmpMovie.MainDetails.UniqueIDs.IMDbId Then
                                         alreadyintag = True
                                     End If
                                 Next
@@ -287,7 +287,7 @@ Public Class dlgTagManager
                                 End If
                                 Exit For
                             Else
-                                _Logger.Info("[" & _tag.Name & "] " & tmpMovie.Movie.Title & " is null! Error when trying to add movie to tag!")
+                                _Logger.Info("[" & _tag.Name & "] " & tmpMovie.MainDetails.Title & " is null! Error when trying to add movie to tag!")
                             End If
                         End If
                     Next
@@ -512,12 +512,12 @@ Public Class dlgTagManager
     ''' </remarks>
     Private Sub SyncTagToMovies(ByVal tag As SyncTag)
         For Each tmovie As Database.DBElement In tag.Movies
-            If tmovie.Movie.Title.EndsWith("_TODELETE") Then
-                tmovie.Movie.Tags.Remove(tag.Name)
-                tmovie.Movie.Title = tmovie.Movie.Title.Replace("_TODELETE", String.Empty)
+            If tmovie.MainDetails.Title.EndsWith("_TODELETE") Then
+                tmovie.MainDetails.Tags.Remove(tag.Name)
+                tmovie.MainDetails.Title = tmovie.MainDetails.Title.Replace("_TODELETE", String.Empty)
                 Master.DB.Save_Movie(tmovie, True, True, False, True, False)
             Else
-                tmovie.Movie.Tags.Add(tag.Name)
+                tmovie.MainDetails.Tags.Add(tag.Name)
                 Master.DB.Save_Movie(tmovie, True, True, False, True, False)
             End If
         Next

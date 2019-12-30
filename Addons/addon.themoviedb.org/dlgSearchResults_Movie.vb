@@ -39,17 +39,17 @@ Public Class dlgSearchResults_Movie
     Private _PrevNode As Integer = -2
     Private _AddonSettings As AddonSettings
 
-    Private _InfoCache As New Dictionary(Of String, MediaContainers.Movie)
+    Private _InfoCache As New Dictionary(Of String, MediaContainers.MainDetails)
     Private _PosterCache As New Dictionary(Of String, Image)
     Private _FilterOptions As Structures.ScrapeOptions
 
-    Private _TmpMovie As New MediaContainers.Movie
+    Private _TmpMovie As New MediaContainers.MainDetails
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As MediaContainers.Movie
+    Public ReadOnly Property Result As MediaContainers.MainDetails
         Get
             Return _TmpMovie
         End Get
@@ -88,7 +88,7 @@ Public Class dlgSearchResults_Movie
         Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal Res As SearchResults_Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As SearchResults, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As DialogResult
         tmrWait.Enabled = False
         tmrWait.Interval = 250
         tmrLoad.Enabled = False
@@ -163,7 +163,7 @@ Public Class dlgSearchResults_Movie
             _TMDB.CancelAsync()
         End If
 
-        _TmpMovie = New MediaContainers.Movie
+        _TmpMovie = New MediaContainers.MainDetails
 
         DialogResult = DialogResult.Cancel
     End Sub
@@ -191,7 +191,7 @@ Public Class dlgSearchResults_Movie
         lblTMDBID.Text = String.Empty
         pbPoster.Image = Nothing
 
-        _TmpMovie = New MediaContainers.Movie
+        _TmpMovie = New MediaContainers.MainDetails
 
         _TMDB.CancelAsync()
     End Sub
@@ -239,7 +239,7 @@ Public Class dlgSearchResults_Movie
         DialogResult = DialogResult.OK
     End Sub
 
-    Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.Movie)
+    Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.MainDetails)
         pnlLoading.Visible = False
         btnOK.Enabled = True
 
@@ -286,11 +286,11 @@ Public Class dlgSearchResults_Movie
         End If
     End Sub
 
-    Private Sub SearchResultsDownloaded(ByVal M As SearchResults_Movie)
+    Private Sub SearchResultsDownloaded(ByVal M As SearchResults)
         tvResults.Nodes.Clear()
         ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
-            For Each Movie As MediaContainers.Movie In M.Matches
+            For Each Movie As MediaContainers.MainDetails In M.Matches
                 tvResults.Nodes.Add(New TreeNode() With {
                                     .Text = String.Concat(Movie.Title, If(Movie.PremieredSpecified, String.Format(" ({0})", StringUtils.GetYearFromString(Movie.Premiered)), String.Empty)),
                                     .Tag = Movie.UniqueIDs.TMDbId
@@ -310,13 +310,13 @@ Public Class dlgSearchResults_Movie
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions
         Return New Structures.ScrapeOptions With {
-            .bMainDirectors = True,
-            .bMainGenres = True,
-            .bMainOutline = True,
-            .bMainPlot = True,
-            .bMainPremiered = True,
-            .bMainTagline = True,
-            .bMainTitle = True
+            .Directors = True,
+            .Genres = True,
+            .Outline = True,
+            .Plot = True,
+            .Premiered = True,
+            .Tagline = True,
+            .Title = True
         }
     End Function
 
@@ -405,12 +405,12 @@ Public Class dlgSearchResults_Movie
         AcceptButton = btnSearch
     End Sub
 
-    Private Function GetMovieClone(ByVal original As MediaContainers.Movie) As MediaContainers.Movie
+    Private Function GetMovieClone(ByVal original As MediaContainers.MainDetails) As MediaContainers.MainDetails
         Using mem As New IO.MemoryStream()
             Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
             bin.Serialize(mem, original)
             mem.Seek(0, IO.SeekOrigin.Begin)
-            Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
+            Return DirectCast(bin.Deserialize(mem), MediaContainers.MainDetails)
         End Using
 
         Return Nothing

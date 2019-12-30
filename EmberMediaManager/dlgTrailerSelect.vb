@@ -78,7 +78,7 @@ Public Class dlgTrailerSelect
         lvTrailers.FullRowSelect = True
         lvTrailers.HideSelection = False
 
-        txtYouTubeSearch.Text = String.Concat(DBMovie.Movie.Title, " ", Master.eSettings.Movie.TrailerSettings.DefaultSearchParameter)
+        txtYouTubeSearch.Text = String.Concat(DBMovie.MainDetails.Title, " ", Master.eSettings.Movie.TrailerSettings.DefaultSearchParameter)
 
         tmpDBElement = DBMovie
 

@@ -103,7 +103,7 @@ Public Class Data_Movie
 #Region "Interface Methods"
 
     Public Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.IScraperAddon_Data_Movie.GetMovieStudio
-        If (DBMovie.Movie Is Nothing OrElse String.IsNullOrEmpty(DBMovie.Movie.UniqueIDs.IMDbId)) Then
+        If (DBMovie.MainDetails Is Nothing OrElse String.IsNullOrEmpty(DBMovie.MainDetails.UniqueIDs.IMDbId)) Then
             _Logger.Error("Attempting to get studio for undefined movie")
             Return New Interfaces.ModuleResult
         End If
@@ -126,8 +126,8 @@ Public Class Data_Movie
         _PnlSettingsPanel = New frmSettingsPanel_Data_Movie
         _PnlSettingsPanel.chkEnabled.Checked = _Enabled
 
-        _PnlSettingsPanel.chkRating.Checked = _ConfigScrapeOptions.bMainRatings
-        _PnlSettingsPanel.chkUserRating.Checked = _ConfigScrapeOptions.bMainUserRating
+        _PnlSettingsPanel.chkRating.Checked = _ConfigScrapeOptions.Ratings
+        _PnlSettingsPanel.chkUserRating.Checked = _ConfigScrapeOptions.UserRating
 
         AddHandler _PnlSettingsPanel.NeedsRestart, AddressOf Handle_NeedsRestart
         AddHandler _PnlSettingsPanel.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -155,7 +155,7 @@ Public Class Data_Movie
     Function Run(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.IScraperAddon_Data_Movie.Run
         _Logger.Trace("[Tracktv_Data] [Scraper_Movie] [Start]")
 
-        Dim nMovie As MediaContainers.Movie = Nothing
+        Dim nMovie As MediaContainers.MainDetails = Nothing
         Dim nDBElement = oDBElement
         If ScrapeModifiers.MainNFO Then
             Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, _ConfigScrapeOptions)
@@ -174,8 +174,8 @@ Public Class Data_Movie
     End Function
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.IScraperAddon_Data_Movie.SaveSetup
-        _ConfigScrapeOptions.bMainRatings = _PnlSettingsPanel.chkRating.Checked
-        _ConfigScrapeOptions.bMainUserRating = _PnlSettingsPanel.chkUserRating.Checked
+        _ConfigScrapeOptions.Ratings = _PnlSettingsPanel.chkRating.Checked
+        _ConfigScrapeOptions.UserRating = _PnlSettingsPanel.chkUserRating.Checked
 
         Settings_Save()
 
@@ -192,8 +192,8 @@ Public Class Data_Movie
 #Region "Methods"
 
     Sub Settings_Load()
-        _ConfigScrapeOptions.bMainRatings = AdvancedSettings.GetBooleanSetting("DoRating", True)
-        _ConfigScrapeOptions.bMainUserRating = AdvancedSettings.GetBooleanSetting("DoUserRating", True)
+        _ConfigScrapeOptions.Ratings = AdvancedSettings.GetBooleanSetting("DoRating", True)
+        _ConfigScrapeOptions.UserRating = AdvancedSettings.GetBooleanSetting("DoUserRating", True)
         _AddonSettings.APIAccessToken = AdvancedSettings.GetSetting("APIAccessToken", String.Empty, , Enums.ContentType.Movie)
         _AddonSettings.APICreated = AdvancedSettings.GetSetting("APICreatedAt", "0", , Enums.ContentType.Movie)
         _AddonSettings.APIExpiresInSeconds = AdvancedSettings.GetSetting("APIExpiresInSeconds", "0", , Enums.ContentType.Movie)
@@ -202,8 +202,8 @@ Public Class Data_Movie
 
     Sub Settings_Save()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.bMainRatings, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoUserRating", _ConfigScrapeOptions.bMainUserRating, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.Ratings, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoUserRating", _ConfigScrapeOptions.UserRating, , , Enums.ContentType.Movie)
             settings.SetSetting("APIAccessToken", _AddonSettings.APIAccessToken, , , Enums.ContentType.Movie)
             settings.SetSetting("APICreatedAt", _AddonSettings.APICreated, , , Enums.ContentType.Movie)
             settings.SetSetting("APIExpiresInSeconds", _AddonSettings.APIExpiresInSeconds, , , Enums.ContentType.Movie)
@@ -302,10 +302,10 @@ Public Class Data_TV
         _PnlSettingsPanel = New frmSettingsPanel_Data_TV
         _PnlSettingsPanel.chkEnabled.Checked = IsEnabled
 
-        _PnlSettingsPanel.chkScraperShowRating.Checked = _ConfigScrapeOptions.bMainRatings
-        _PnlSettingsPanel.chkScraperShowUserRating.Checked = _ConfigScrapeOptions.bMainUserRating
-        _PnlSettingsPanel.chkScraperEpisodeRating.Checked = _ConfigScrapeOptions.bEpisodeRating
-        _PnlSettingsPanel.chkScraperEpisodeUserRating.Checked = _ConfigScrapeOptions.bEpisodeUserRating
+        _PnlSettingsPanel.chkScraperShowRating.Checked = _ConfigScrapeOptions.Ratings
+        _PnlSettingsPanel.chkScraperShowUserRating.Checked = _ConfigScrapeOptions.UserRating
+        _PnlSettingsPanel.chkScraperEpisodeRating.Checked = _ConfigScrapeOptions.Episodes.Ratings
+        _PnlSettingsPanel.chkScraperEpisodeUserRating.Checked = _ConfigScrapeOptions.Episodes.UserRating
 
         AddHandler _PnlSettingsPanel.NeedsRestart, AddressOf Handle_NeedsRestart
         AddHandler _PnlSettingsPanel.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -332,11 +332,11 @@ Public Class Data_TV
     Public Function Run_TVEpisode(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.IScraperAddon_Data_TV.Run_TVEpisode
         _Logger.Trace("[Tracktv_Data] [Scraper_TVEpisode] [Start]")
 
-        Dim nTVEpisode As New MediaContainers.EpisodeDetails
+        Dim nTVEpisode As New MediaContainers.MainDetails
 
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, _ConfigScrapeOptions)
-        If FilteredOptions.bEpisodeRating OrElse FilteredOptions.bEpisodeUserRating Then
-            Dim nResult = _Scraper.GetInfo_TVEpisode(_Scraper.GetID_Trakt(oDBElement, True), oDBElement.TVEpisode.Season, oDBElement.TVEpisode.Episode, FilteredOptions)
+        If FilteredOptions.Episodes.Ratings OrElse FilteredOptions.Episodes.UserRating Then
+            Dim nResult = _Scraper.GetInfo_TVEpisode(_Scraper.GetID_Trakt(oDBElement, True), oDBElement.MainDetails.Season, oDBElement.MainDetails.Episode, FilteredOptions)
             While Not nResult.IsCompleted
                 Threading.Thread.Sleep(50)
             End While
@@ -373,7 +373,7 @@ Public Class Data_TV
     Function Run_TVShow(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.IScraperAddon_Data_TV.Run_TVShow
         _Logger.Trace("[Tracktv_Data] [Scraper_TV] [Start]")
 
-        Dim nTVShow As New MediaContainers.TVShow
+        Dim nTVShow As New MediaContainers.MainDetails
 
         If ScrapeModifiers.MainNFO Then
             Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, _ConfigScrapeOptions)
@@ -395,10 +395,10 @@ Public Class Data_TV
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.IScraperAddon_Data_TV.SaveSetup
-        _ConfigScrapeOptions.bEpisodeRating = _PnlSettingsPanel.chkScraperEpisodeRating.Checked
-        _ConfigScrapeOptions.bEpisodeUserRating = _PnlSettingsPanel.chkScraperEpisodeUserRating.Checked
-        _ConfigScrapeOptions.bMainRatings = _PnlSettingsPanel.chkScraperShowRating.Checked
-        _ConfigScrapeOptions.bMainUserRating = _PnlSettingsPanel.chkScraperShowUserRating.Checked
+        _ConfigScrapeOptions.Episodes.Ratings = _PnlSettingsPanel.chkScraperEpisodeRating.Checked
+        _ConfigScrapeOptions.Episodes.UserRating = _PnlSettingsPanel.chkScraperEpisodeUserRating.Checked
+        _ConfigScrapeOptions.Ratings = _PnlSettingsPanel.chkScraperShowRating.Checked
+        _ConfigScrapeOptions.UserRating = _PnlSettingsPanel.chkScraperShowUserRating.Checked
 
         Settings_Load()
         If DoDispose Then
@@ -414,10 +414,10 @@ Public Class Data_TV
 #Region "Methods"
 
     Sub Settings_Load()
-        _ConfigScrapeOptions.bEpisodeRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
-        _ConfigScrapeOptions.bEpisodeUserRating = AdvancedSettings.GetBooleanSetting("DoUserRating", True, , Enums.ContentType.TVEpisode)
-        _ConfigScrapeOptions.bMainRatings = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
-        _ConfigScrapeOptions.bMainUserRating = AdvancedSettings.GetBooleanSetting("DoUserRating", True, , Enums.ContentType.TVShow)
+        _ConfigScrapeOptions.Episodes.Ratings = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
+        _ConfigScrapeOptions.Episodes.UserRating = AdvancedSettings.GetBooleanSetting("DoUserRating", True, , Enums.ContentType.TVEpisode)
+        _ConfigScrapeOptions.Ratings = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
+        _ConfigScrapeOptions.UserRating = AdvancedSettings.GetBooleanSetting("DoUserRating", True, , Enums.ContentType.TVShow)
         _AddonSettings.APIAccessToken = AdvancedSettings.GetSetting("APIAccessToken", String.Empty, , Enums.ContentType.TV)
         _AddonSettings.APICreated = AdvancedSettings.GetSetting("APICreatedAt", "0", , Enums.ContentType.TV)
         _AddonSettings.APIExpiresInSeconds = AdvancedSettings.GetSetting("APIExpiresInSeconds", "0", , Enums.ContentType.TV)
@@ -426,10 +426,10 @@ Public Class Data_TV
 
     Sub Settings_Save()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.bEpisodeRating, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoUserRating", _ConfigScrapeOptions.bEpisodeUserRating, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.bMainRatings, , , Enums.ContentType.TVShow)
-            settings.SetBooleanSetting("DoUserRating", _ConfigScrapeOptions.bMainUserRating, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.Episodes.Ratings, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoUserRating", _ConfigScrapeOptions.Episodes.UserRating, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoRating", _ConfigScrapeOptions.Ratings, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoUserRating", _ConfigScrapeOptions.UserRating, , , Enums.ContentType.TVShow)
             settings.SetSetting("APIAccessToken", _AddonSettings.APIAccessToken, , , Enums.ContentType.TV)
             settings.SetSetting("APICreatedAt", _AddonSettings.APICreated, , , Enums.ContentType.TV)
             settings.SetSetting("APIExpiresInSeconds", _AddonSettings.APIExpiresInSeconds, , , Enums.ContentType.TV)
@@ -786,7 +786,7 @@ Public Class Generic
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 If _TraktAPI.GetWatchedState_Movie(DBElement, lstWatchedMovies) Then
                     Master.DB.Save_Movie(DBElement, False, True, False, True, False)
-                    _Logger.Trace(String.Format("[TraktWorker] GetWatchedStateSelected_Movie: ""{0}"" | Synced to Ember", DBElement.Movie.Title))
+                    _Logger.Trace(String.Format("[TraktWorker] GetWatchedStateSelected_Movie: ""{0}"" | Synced to Ember", DBElement.MainDetails.Title))
                     RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {DBElement.ID}))
                 End If
             End If
@@ -807,10 +807,10 @@ Public Class Generic
                 If _TraktAPI.GetWatchedState_TVEpisode(DBElement, lstWatchedShows) Then
                     Master.DB.Save_TVEpisode(DBElement, False, True, False, False, True, False)
                     _Logger.Trace(String.Format("[TraktWorker] GetWatchedStateSelected_TVEpisode: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",
-                                               DBElement.TVShow.Title,
-                                               DBElement.TVEpisode.Season,
-                                               DBElement.TVEpisode.Episode,
-                                               DBElement.TVEpisode.Title))
+                                               DBElement.TVShowDetails.Title,
+                                               DBElement.MainDetails.Season,
+                                               DBElement.MainDetails.Episode,
+                                               DBElement.MainDetails.Title))
                     RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {DBElement.ID}))
                 End If
             End If
@@ -834,10 +834,10 @@ Public Class Generic
                     If _TraktAPI.GetWatchedState_TVEpisode(DBElement, lstWatchedShows) Then
                         Master.DB.Save_TVEpisode(DBElement, False, True, False, False, True, False)
                         _Logger.Trace(String.Format("[TraktWorker] GetWatchedStateSelected_TVEpisode: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",
-                                                   DBElement.TVShow.Title,
-                                                   DBElement.TVEpisode.Season,
-                                                   DBElement.TVEpisode.Episode,
-                                                   DBElement.TVEpisode.Title))
+                                                   DBElement.TVShowDetails.Title,
+                                                   DBElement.MainDetails.Season,
+                                                   DBElement.MainDetails.Episode,
+                                                   DBElement.MainDetails.Title))
                         RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {DBElement.ID}))
                     End If
                 End If
@@ -861,10 +861,10 @@ Public Class Generic
                     If _TraktAPI.GetWatchedState_TVEpisode(DBElement, lstWatchedShows) Then
                         Master.DB.Save_TVEpisode(DBElement, False, True, False, False, True, False)
                         _Logger.Trace(String.Format("[TraktWorker] GetWatchedStateSelected_TVEpisode: ""{0}: S{1}E{2} - {3}"" | Synced to Ember",
-                                                   DBElement.TVShow.Title,
-                                                   DBElement.TVEpisode.Season,
-                                                   DBElement.TVEpisode.Episode,
-                                                   DBElement.TVEpisode.Title))
+                                                   DBElement.TVShowDetails.Title,
+                                                   DBElement.MainDetails.Season,
+                                                   DBElement.MainDetails.Episode,
+                                                   DBElement.MainDetails.Title))
                         RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {DBElement.ID}))
                     End If
                 End If

@@ -546,40 +546,40 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeModifiers.AllSeasonsPoster = CustomUpdater.ScrapeModifiers.SeasonPoster
 
         'Scrape Options
-        CustomUpdater.ScrapeOptions.bEpisodeActors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsActors.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeAired = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsAired.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeCredits = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsWriters.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeDirectors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsDirectors.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeGuestStars = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsGuestStars.Checked
-        CustomUpdater.ScrapeOptions.bEpisodePlot = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsPlot.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeRating = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRating.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeRuntime = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRuntime.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeTitle = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsTitle.Checked
-        CustomUpdater.ScrapeOptions.bMainActors = chkMainModifierNFO.Checked AndAlso chkMainOptionsActors.Checked
-        CustomUpdater.ScrapeOptions.bMainCertifications = chkMainModifierNFO.Checked AndAlso chkMainOptionsCertifications.Checked
-        CustomUpdater.ScrapeOptions.bMainCollection = chkMainModifierNFO.Checked AndAlso chkMainOptionsCollection.Checked
-        CustomUpdater.ScrapeOptions.bMainCountries = chkMainModifierNFO.Checked AndAlso chkMainOptionsCountries.Checked
-        CustomUpdater.ScrapeOptions.bMainCreators = chkMainModifierNFO.Checked AndAlso chkMainOptionsCreators.Checked
-        CustomUpdater.ScrapeOptions.bMainDirectors = chkMainModifierNFO.Checked AndAlso chkMainOptionsDirectors.Checked
-        CustomUpdater.ScrapeOptions.bMainEpisodeGuide = chkMainModifierNFO.Checked AndAlso chkMainOptionsEpisodeGuideURL.Checked
-        CustomUpdater.ScrapeOptions.bMainGenres = chkMainModifierNFO.Checked AndAlso chkMainOptionsGenres.Checked
-        CustomUpdater.ScrapeOptions.bMainMPAA = chkMainModifierNFO.Checked AndAlso chkMainOptionsMPAA.Checked
-        CustomUpdater.ScrapeOptions.bMainOriginalTitle = chkMainModifierNFO.Checked AndAlso chkMainOptionsOriginalTitle.Checked
-        CustomUpdater.ScrapeOptions.bMainOutline = chkMainModifierNFO.Checked AndAlso chkMainOptionsOutline.Checked
-        CustomUpdater.ScrapeOptions.bMainPlot = chkMainModifierNFO.Checked AndAlso chkMainOptionsPlot.Checked
-        CustomUpdater.ScrapeOptions.bMainPremiered = chkMainModifierNFO.Checked AndAlso chkMainOptionsPremiered.Checked
-        CustomUpdater.ScrapeOptions.bMainRatings = chkMainModifierNFO.Checked AndAlso chkMainOptionsRating.Checked
-        CustomUpdater.ScrapeOptions.bMainRuntime = chkMainModifierNFO.Checked AndAlso chkMainOptionsRuntime.Checked
-        CustomUpdater.ScrapeOptions.bMainStatus = chkMainModifierNFO.Checked AndAlso chkMainOptionsStatus.Checked
-        CustomUpdater.ScrapeOptions.bMainStudios = chkMainModifierNFO.Checked AndAlso chkMainOptionsStudios.Checked
-        CustomUpdater.ScrapeOptions.bMainTagline = chkMainModifierNFO.Checked AndAlso chkMainOptionsTagline.Checked
-        CustomUpdater.ScrapeOptions.bMainTitle = chkMainModifierNFO.Checked AndAlso chkMainOptionsTitle.Checked
-        CustomUpdater.ScrapeOptions.bMainTop250 = chkMainModifierNFO.Checked AndAlso chkMainOptionsTop250.Checked
-        CustomUpdater.ScrapeOptions.bMainTrailer = chkMainModifierNFO.Checked AndAlso chkMainOptionsTrailer.Checked
-        CustomUpdater.ScrapeOptions.bMainCredits = chkMainModifierNFO.Checked AndAlso chkMainOptionsWriters.Checked
-        CustomUpdater.ScrapeOptions.bSeasonAired = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsAired.Checked   'TODO: check. Atm we save the season infos to tv show NFO
-        CustomUpdater.ScrapeOptions.bSeasonPlot = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsPlot.Checked     'TODO: check. Atm we save the season infos to tv show NFO
-        CustomUpdater.ScrapeOptions.bSeasonTitle = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsTitle.Checked     'TODO: check. Atm we save the season infos to tv show NFO
+        CustomUpdater.ScrapeOptions.Episodes.Actors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsActors.Checked
+        CustomUpdater.ScrapeOptions.Episodes.Aired = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsAired.Checked
+        CustomUpdater.ScrapeOptions.Episodes.Credits = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsWriters.Checked
+        CustomUpdater.ScrapeOptions.Episodes.Directors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsDirectors.Checked
+        CustomUpdater.ScrapeOptions.Episodes.GuestStars = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsGuestStars.Checked
+        CustomUpdater.ScrapeOptions.Episodes.Plot = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsPlot.Checked
+        CustomUpdater.ScrapeOptions.Episodes.Ratings = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRating.Checked
+        CustomUpdater.ScrapeOptions.Episodes.Runtime = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRuntime.Checked
+        CustomUpdater.ScrapeOptions.Episodes.Title = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsTitle.Checked
+        CustomUpdater.ScrapeOptions.Actors = chkMainModifierNFO.Checked AndAlso chkMainOptionsActors.Checked
+        CustomUpdater.ScrapeOptions.Certifications = chkMainModifierNFO.Checked AndAlso chkMainOptionsCertifications.Checked
+        CustomUpdater.ScrapeOptions.Collection = chkMainModifierNFO.Checked AndAlso chkMainOptionsCollection.Checked
+        CustomUpdater.ScrapeOptions.Countries = chkMainModifierNFO.Checked AndAlso chkMainOptionsCountries.Checked
+        CustomUpdater.ScrapeOptions.Creators = chkMainModifierNFO.Checked AndAlso chkMainOptionsCreators.Checked
+        CustomUpdater.ScrapeOptions.Directors = chkMainModifierNFO.Checked AndAlso chkMainOptionsDirectors.Checked
+        CustomUpdater.ScrapeOptions.EpisodeGuideURL = chkMainModifierNFO.Checked AndAlso chkMainOptionsEpisodeGuideURL.Checked
+        CustomUpdater.ScrapeOptions.Genres = chkMainModifierNFO.Checked AndAlso chkMainOptionsGenres.Checked
+        CustomUpdater.ScrapeOptions.MPAA = chkMainModifierNFO.Checked AndAlso chkMainOptionsMPAA.Checked
+        CustomUpdater.ScrapeOptions.OriginalTitle = chkMainModifierNFO.Checked AndAlso chkMainOptionsOriginalTitle.Checked
+        CustomUpdater.ScrapeOptions.Outline = chkMainModifierNFO.Checked AndAlso chkMainOptionsOutline.Checked
+        CustomUpdater.ScrapeOptions.Plot = chkMainModifierNFO.Checked AndAlso chkMainOptionsPlot.Checked
+        CustomUpdater.ScrapeOptions.Premiered = chkMainModifierNFO.Checked AndAlso chkMainOptionsPremiered.Checked
+        CustomUpdater.ScrapeOptions.Ratings = chkMainModifierNFO.Checked AndAlso chkMainOptionsRating.Checked
+        CustomUpdater.ScrapeOptions.Runtime = chkMainModifierNFO.Checked AndAlso chkMainOptionsRuntime.Checked
+        CustomUpdater.ScrapeOptions.Status = chkMainModifierNFO.Checked AndAlso chkMainOptionsStatus.Checked
+        CustomUpdater.ScrapeOptions.Studios = chkMainModifierNFO.Checked AndAlso chkMainOptionsStudios.Checked
+        CustomUpdater.ScrapeOptions.Tagline = chkMainModifierNFO.Checked AndAlso chkMainOptionsTagline.Checked
+        CustomUpdater.ScrapeOptions.Title = chkMainModifierNFO.Checked AndAlso chkMainOptionsTitle.Checked
+        CustomUpdater.ScrapeOptions.Top250 = chkMainModifierNFO.Checked AndAlso chkMainOptionsTop250.Checked
+        CustomUpdater.ScrapeOptions.Trailer = chkMainModifierNFO.Checked AndAlso chkMainOptionsTrailer.Checked
+        CustomUpdater.ScrapeOptions.Credits = chkMainModifierNFO.Checked AndAlso chkMainOptionsWriters.Checked
+        CustomUpdater.ScrapeOptions.Seasons.Aired = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsAired.Checked   'TODO: check. Atm we save the season infos to tv show NFO
+        CustomUpdater.ScrapeOptions.Seasons.Plot = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsPlot.Checked     'TODO: check. Atm we save the season infos to tv show NFO
+        CustomUpdater.ScrapeOptions.Seasons.Title = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsTitle.Checked     'TODO: check. Atm we save the season infos to tv show NFO
 
         If CustomUpdater.ScrapeModifiers.EpisodeActorThumbs OrElse
             CustomUpdater.ScrapeModifiers.EpisodeFanart OrElse
@@ -608,42 +608,43 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeModifiers.SeasonPoster Then
             btnOK.Enabled = True
         ElseIf CustomUpdater.ScrapeModifiers.EpisodeNFO AndAlso (
-            CustomUpdater.ScrapeOptions.bEpisodeActors OrElse
-            CustomUpdater.ScrapeOptions.bEpisodeAired OrElse
-            CustomUpdater.ScrapeOptions.bEpisodeCredits OrElse
-            CustomUpdater.ScrapeOptions.bEpisodeDirectors OrElse
-            CustomUpdater.ScrapeOptions.bEpisodeGuestStars OrElse
-            CustomUpdater.ScrapeOptions.bEpisodePlot OrElse
-            CustomUpdater.ScrapeOptions.bEpisodeRating OrElse
-            CustomUpdater.ScrapeOptions.bEpisodeRuntime OrElse
-            CustomUpdater.ScrapeOptions.bEpisodeTitle) Then
+            CustomUpdater.ScrapeOptions.Episodes.Actors OrElse
+            CustomUpdater.ScrapeOptions.Episodes.Aired OrElse
+            CustomUpdater.ScrapeOptions.Episodes.Credits OrElse
+            CustomUpdater.ScrapeOptions.Episodes.Directors OrElse
+            CustomUpdater.ScrapeOptions.Episodes.GuestStars OrElse
+            CustomUpdater.ScrapeOptions.Episodes.Plot OrElse
+            CustomUpdater.ScrapeOptions.Episodes.Ratings OrElse
+            CustomUpdater.ScrapeOptions.Episodes.Runtime OrElse
+            CustomUpdater.ScrapeOptions.Episodes.Title) Then
             btnOK.Enabled = True
         ElseIf CustomUpdater.ScrapeModifiers.MainNFO AndAlso (
-            CustomUpdater.ScrapeOptions.bMainActors OrElse
-            CustomUpdater.ScrapeOptions.bMainCertifications OrElse
-            CustomUpdater.ScrapeOptions.bMainCollection OrElse
-            CustomUpdater.ScrapeOptions.bMainCountries OrElse
-            CustomUpdater.ScrapeOptions.bMainCreators OrElse
-            CustomUpdater.ScrapeOptions.bMainDirectors OrElse
-            CustomUpdater.ScrapeOptions.bMainEpisodeGuide OrElse
-            CustomUpdater.ScrapeOptions.bMainGenres OrElse
-            CustomUpdater.ScrapeOptions.bMainMPAA OrElse
-            CustomUpdater.ScrapeOptions.bMainOriginalTitle OrElse
-            CustomUpdater.ScrapeOptions.bMainOutline OrElse
-            CustomUpdater.ScrapeOptions.bMainPlot OrElse
-            CustomUpdater.ScrapeOptions.bMainPremiered OrElse
-            CustomUpdater.ScrapeOptions.bMainRatings OrElse
-            CustomUpdater.ScrapeOptions.bMainRuntime OrElse
-            CustomUpdater.ScrapeOptions.bMainStatus OrElse
-            CustomUpdater.ScrapeOptions.bMainStudios OrElse
-            CustomUpdater.ScrapeOptions.bMainTagline OrElse
-            CustomUpdater.ScrapeOptions.bMainTags OrElse
-            CustomUpdater.ScrapeOptions.bMainTitle OrElse
-            CustomUpdater.ScrapeOptions.bMainTop250 OrElse
-            CustomUpdater.ScrapeOptions.bMainTrailer OrElse
-            CustomUpdater.ScrapeOptions.bMainCredits OrElse
-            CustomUpdater.ScrapeOptions.bSeasonAired OrElse
-            CustomUpdater.ScrapeOptions.bSeasonPlot) Then
+            CustomUpdater.ScrapeOptions.Actors OrElse
+            CustomUpdater.ScrapeOptions.Certifications OrElse
+            CustomUpdater.ScrapeOptions.Collection OrElse
+            CustomUpdater.ScrapeOptions.Countries OrElse
+            CustomUpdater.ScrapeOptions.Creators OrElse
+            CustomUpdater.ScrapeOptions.Directors OrElse
+            CustomUpdater.ScrapeOptions.EpisodeGuideURL OrElse
+            CustomUpdater.ScrapeOptions.Genres OrElse
+            CustomUpdater.ScrapeOptions.MPAA OrElse
+            CustomUpdater.ScrapeOptions.OriginalTitle OrElse
+            CustomUpdater.ScrapeOptions.Outline OrElse
+            CustomUpdater.ScrapeOptions.Plot OrElse
+            CustomUpdater.ScrapeOptions.Premiered OrElse
+            CustomUpdater.ScrapeOptions.Ratings OrElse
+            CustomUpdater.ScrapeOptions.Runtime OrElse
+            CustomUpdater.ScrapeOptions.Status OrElse
+            CustomUpdater.ScrapeOptions.Studios OrElse
+            CustomUpdater.ScrapeOptions.Tagline OrElse
+            CustomUpdater.ScrapeOptions.Tags OrElse
+            CustomUpdater.ScrapeOptions.Title OrElse
+            CustomUpdater.ScrapeOptions.Top250 OrElse
+            CustomUpdater.ScrapeOptions.Trailer OrElse
+            CustomUpdater.ScrapeOptions.Credits OrElse
+            CustomUpdater.ScrapeOptions.Seasons.Aired OrElse
+            CustomUpdater.ScrapeOptions.Seasons.Plot OrElse
+            CustomUpdater.ScrapeOptions.Seasons.Title) Then
             btnOK.Enabled = True
         Else
             btnOK.Enabled = False

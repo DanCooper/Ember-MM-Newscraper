@@ -89,9 +89,9 @@ Public Class Data_Movie
         Settings_Load()
         _PnlSettingsPanel = New frmSettingsPanel
         _PnlSettingsPanel.chkEnabled.Checked = IsEnabled
-        _PnlSettingsPanel.chkCertifications.Checked = _ConfigScrapeOptions.bMainCertifications
-        _PnlSettingsPanel.chkOutline.Checked = _ConfigScrapeOptions.bMainOutline
-        _PnlSettingsPanel.chkPlot.Checked = _ConfigScrapeOptions.bMainPlot
+        _PnlSettingsPanel.chkCertifications.Checked = _ConfigScrapeOptions.Certifications
+        _PnlSettingsPanel.chkOutline.Checked = _ConfigScrapeOptions.Outline
+        _PnlSettingsPanel.chkPlot.Checked = _ConfigScrapeOptions.Plot
 
         AddHandler _PnlSettingsPanel.NeedsRestart, AddressOf Handle_NeedsRestart
         AddHandler _PnlSettingsPanel.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -120,11 +120,11 @@ Public Class Data_Movie
 
         Settings_Load()
 
-        Dim nMovie As New MediaContainers.Movie
+        Dim nMovie As New MediaContainers.MainDetails
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, _ConfigScrapeOptions)
 
         If ScrapeModifiers.MainNFO Then
-            nMovie = Scraper.GetMovieInfo(oDBMovie.Movie.OriginalTitle, oDBMovie.Movie.Title, oDBMovie.Movie.Year, FilteredOptions, oDBMovie.Language)
+            nMovie = Scraper.GetMovieInfo(oDBMovie.MainDetails.OriginalTitle, oDBMovie.MainDetails.Title, oDBMovie.MainDetails.Year, FilteredOptions, oDBMovie.Language)
         End If
 
         _Logger.Trace("[MoviepilotDE_Data] [Scraper_Movie] [Done]")
@@ -132,9 +132,9 @@ Public Class Data_Movie
     End Function
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.IScraperAddon_Data_Movie.SaveSetup
-        _ConfigScrapeOptions.bMainCertifications = _PnlSettingsPanel.chkCertifications.Checked
-        _ConfigScrapeOptions.bMainOutline = _PnlSettingsPanel.chkOutline.Checked
-        _ConfigScrapeOptions.bMainPlot = _PnlSettingsPanel.chkPlot.Checked
+        _ConfigScrapeOptions.Certifications = _PnlSettingsPanel.chkCertifications.Checked
+        _ConfigScrapeOptions.Outline = _PnlSettingsPanel.chkOutline.Checked
+        _ConfigScrapeOptions.Plot = _PnlSettingsPanel.chkPlot.Checked
 
         Settings_Save()
 
@@ -151,16 +151,16 @@ Public Class Data_Movie
 #Region "Methods"
 
     Sub Settings_Load()
-        _ConfigScrapeOptions.bMainOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
-        _ConfigScrapeOptions.bMainPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
-        _ConfigScrapeOptions.bMainCertifications = AdvancedSettings.GetBooleanSetting("DoCert", True)
+        _ConfigScrapeOptions.Outline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
+        _ConfigScrapeOptions.Plot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
+        _ConfigScrapeOptions.Certifications = AdvancedSettings.GetBooleanSetting("DoCert", True)
     End Sub
 
     Sub Settings_Save()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("DoOutline", _ConfigScrapeOptions.bMainOutline)
-            settings.SetBooleanSetting("DoPlot", _ConfigScrapeOptions.bMainPlot)
-            settings.SetBooleanSetting("DoCert", _ConfigScrapeOptions.bMainCertifications)
+            settings.SetBooleanSetting("DoOutline", _ConfigScrapeOptions.Outline)
+            settings.SetBooleanSetting("DoPlot", _ConfigScrapeOptions.Plot)
+            settings.SetBooleanSetting("DoCert", _ConfigScrapeOptions.Certifications)
         End Using
     End Sub
 

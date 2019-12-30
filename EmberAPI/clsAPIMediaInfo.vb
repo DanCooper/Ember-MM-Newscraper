@@ -312,8 +312,8 @@ Public Class MediaInfo
     ''' </summary>
     ''' <param name="path">full path to the video file</param>
     ''' <returns></returns>
-    Public Function ScanPath(ByVal path As String) As MediaContainers.FileInfo
-        Dim nFileInfo As New MediaContainers.FileInfo
+    Public Function ScanPath(ByVal path As String) As MediaContainers.Fileinfo
+        Dim nFileInfo As New MediaContainers.Fileinfo
 
         If Not String.IsNullOrEmpty(path) Then
             _Handle = MediaInfo_New()

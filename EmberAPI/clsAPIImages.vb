@@ -155,7 +155,7 @@ Public Class Images
     Public Shared Sub Delete_MovieSet(ByVal DBMovieSet As Database.DBElement,
                                       ByVal ImageType As Enums.ModifierType,
                                       Optional ByVal ForceOldTitle As Boolean = False)
-        If Not DBMovieSet.Movieset.TitleSpecified Then Return
+        If Not DBMovieSet.MainDetails.TitleSpecified Then Return
         Try
             For Each a In FileUtils.FileNames.GetFileNames(DBMovieSet, ImageType, ForceOldTitle)
                 If File.Exists(a) Then
@@ -163,7 +163,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovieSet.Movieset.Title & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovieSet.MainDetails.Title & ">")
         End Try
     End Sub
     ''' <summary>
@@ -788,7 +788,7 @@ Public Class Images
         nPreferredImagesContainer.ImagesContainer.Landscape = DBElement.ImagesContainer.Landscape
         nPreferredImagesContainer.ImagesContainer.Poster = DBElement.ImagesContainer.Poster
 
-        For Each tImageType In GetImageTypeByScrapeModifiers(tContentType, ScrapeModifiers, DBElement.TVSeason)
+        For Each tImageType In GetImageTypeByScrapeModifiers(tContentType, ScrapeModifiers, DBElement.MainDetails)
             Dim prefImage As MediaContainers.Image = Nothing
             Dim currImage = DBElement.ImagesContainer.GetImageByType(tImageType)
             Dim nImageSettings = Settings.Helpers.GetImageSettings(tContentType, tImageType)
@@ -799,36 +799,36 @@ Public Class Images
                             Select Case tImageType
                                 Case Enums.ModifierType.EpisodeFanart
                                     GetPreferredImage(DBElement, SearchResultsContainer.GetImagesByType(tImageType), prefImage,
-                                                      tImageType, DBElement.TVEpisode.Season, DBElement.TVEpisode.Episode,
+                                                      tImageType, DBElement.MainDetails.Season, DBElement.MainDetails.Episode,
                                                       SearchResultsContainer.GetImagesByType(Enums.ModifierType.MainFanart))
                                 Case Enums.ModifierType.EpisodePoster
                                     GetPreferredImage(DBElement, SearchResultsContainer.GetImagesByType(tImageType), prefImage,
-                                                      tImageType, DBElement.TVEpisode.Season, DBElement.TVEpisode.Episode)
+                                                      tImageType, DBElement.MainDetails.Season, DBElement.MainDetails.Episode)
                             End Select
                         Case Enums.ContentType.TVSeason
                             Select Case tImageType
                                 Case Enums.ModifierType.AllSeasonsBanner
                                     GetPreferredImage(SearchResultsContainer.GetImagesByType(tImageType), prefImage,
-                                                      tContentType, tImageType, DBElement.TVSeason.Season,
+                                                      tContentType, tImageType, DBElement.MainDetails.Season,
                                                       SearchResultsContainer.GetImagesByType(Enums.ModifierType.MainBanner))
                                 Case Enums.ModifierType.AllSeasonsFanart
                                     GetPreferredImage(SearchResultsContainer.GetImagesByType(tImageType), prefImage,
-                                                      tContentType, tImageType, DBElement.TVSeason.Season,
+                                                      tContentType, tImageType, DBElement.MainDetails.Season,
                                                       SearchResultsContainer.GetImagesByType(Enums.ModifierType.MainFanart))
                                 Case Enums.ModifierType.AllSeasonsLandscape
                                     GetPreferredImage(SearchResultsContainer.GetImagesByType(tImageType), prefImage,
-                                                      tContentType, tImageType, DBElement.TVSeason.Season,
+                                                      tContentType, tImageType, DBElement.MainDetails.Season,
                                                       SearchResultsContainer.GetImagesByType(Enums.ModifierType.MainLandscape))
                                 Case Enums.ModifierType.AllSeasonsPoster
                                     GetPreferredImage(SearchResultsContainer.GetImagesByType(tImageType), prefImage,
-                                                      tContentType, tImageType, DBElement.TVSeason.Season,
+                                                      tContentType, tImageType, DBElement.MainDetails.Season,
                                                       SearchResultsContainer.GetImagesByType(Enums.ModifierType.MainPoster))
                                 Case Enums.ModifierType.SeasonBanner, Enums.ModifierType.SeasonLandscape, Enums.ModifierType.SeasonPoster
                                     GetPreferredImage(SearchResultsContainer.GetImagesByType(tImageType), prefImage,
-                                                      tContentType, tImageType, DBElement.TVSeason.Season)
+                                                      tContentType, tImageType, DBElement.MainDetails.Season)
                                 Case Enums.ModifierType.SeasonFanart
                                     GetPreferredImage(SearchResultsContainer.GetImagesByType(tImageType), prefImage,
-                                                      tContentType, tImageType, DBElement.TVSeason.Season,
+                                                      tContentType, tImageType, DBElement.MainDetails.Season,
                                                       SearchResultsContainer.GetImagesByType(Enums.ModifierType.MainFanart))
                             End Select
                         Case Else
@@ -886,7 +886,7 @@ Public Class Images
 
         'Seasons while tv show scraping
         For Each tSeason As Database.DBElement In DBElement.Seasons
-            Dim nContainer As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Season = tSeason.TVSeason.Season}
+            Dim nContainer As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Season = tSeason.MainDetails.Season}
             Dim nSeasonResultsContainer = GetPreferredImagesContainer(tSeason, SearchResultsContainer, ScrapeModifiers)
             If nSeasonResultsContainer.ImagesContainer.BannerSpecified Then nContainer.Banner = nSeasonResultsContainer.ImagesContainer.Banner
             If nSeasonResultsContainer.ImagesContainer.FanartSpecified Then nContainer.Fanart = nSeasonResultsContainer.ImagesContainer.Fanart
@@ -897,7 +897,7 @@ Public Class Images
 
         'Episodes while tv show scraping
         For Each tEpisode As Database.DBElement In DBElement.Episodes.Where(Function(f) f.FileItemSpecified)
-            Dim nContainer As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Episode = tEpisode.TVEpisode.Episode, .Season = tEpisode.TVEpisode.Season}
+            Dim nContainer As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Episode = tEpisode.MainDetails.Episode, .Season = tEpisode.MainDetails.Season}
             Dim nSeasonResultsContainer = GetPreferredImagesContainer(tEpisode, SearchResultsContainer, ScrapeModifiers)
             If nSeasonResultsContainer.ImagesContainer.BannerSpecified Then nContainer.Banner = nSeasonResultsContainer.ImagesContainer.Banner
             If nSeasonResultsContainer.ImagesContainer.FanartSpecified Then nContainer.Fanart = nSeasonResultsContainer.ImagesContainer.Fanart
@@ -1082,7 +1082,7 @@ Public Class Images
 
     Public Shared Sub SaveMovieActorThumbs(ByVal Movie As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
-        For Each tActor As MediaContainers.Person In Movie.Movie.Actors
+        For Each tActor As MediaContainers.Person In Movie.MainDetails.Actors
             tActor.Thumb.LoadAndCache(Movie.ContentType, True)
         Next
 
@@ -1090,7 +1090,7 @@ Public Class Images
         Delete_Movie(Movie, Enums.ModifierType.MainActorThumbs, False)
 
         'Thirdly, save all actor thumbs
-        For Each tActor As MediaContainers.Person In Movie.Movie.Actors
+        For Each tActor As MediaContainers.Person In Movie.MainDetails.Actors
             If tActor.Thumb.LoadAndCache(Movie.ContentType, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsMovieActorThumb(Movie, tActor)
             End If
@@ -1270,7 +1270,7 @@ Public Class Images
 
     Public Shared Sub SaveTVEpisodeActorThumbs(ByVal Episode As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
-        For Each tActor As MediaContainers.Person In Episode.TVEpisode.Actors
+        For Each tActor As MediaContainers.Person In Episode.MainDetails.Actors
             tActor.Thumb.LoadAndCache(Episode.ContentType, True)
         Next
 
@@ -1278,7 +1278,7 @@ Public Class Images
         'Images.Delete_TVEpisode(mEpisode, Enums.ModifierType.EpisodeActorThumbs) 'TODO: find a way to only remove actor thumbs that not needed in other episodes with same actor thumbs path
 
         'Thirdly, save all actor thumbs
-        For Each tActor As MediaContainers.Person In Episode.TVEpisode.Actors
+        For Each tActor As MediaContainers.Person In Episode.MainDetails.Actors
             If tActor.Thumb.LoadAndCache(Episode.ContentType, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsTVEpisodeActorThumb(Episode, tActor)
             End If
@@ -1305,7 +1305,7 @@ Public Class Images
 
     Public Shared Sub SaveTVShowActorThumbs(ByVal Show As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
-        For Each tActor As MediaContainers.Person In Show.TVShow.Actors
+        For Each tActor As MediaContainers.Person In Show.MainDetails.Actors
             tActor.Thumb.LoadAndCache(Show.ContentType, True)
         Next
 
@@ -1313,7 +1313,7 @@ Public Class Images
         Images.Delete_TVShow(Show, Enums.ModifierType.MainActorThumbs)
 
         'Thirdly, save all actor thumbs
-        For Each tActor As MediaContainers.Person In Show.TVShow.Actors
+        For Each tActor As MediaContainers.Person In Show.MainDetails.Actors
             If tActor.Thumb.LoadAndCache(Show.ContentType, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsTVShowActorThumb(Show, tActor)
             End If
@@ -1420,7 +1420,7 @@ Public Class Images
             DBElement.ImagesContainer = PreferredImagesContainer.ImagesContainer
             'Season Images
             For Each tSeason As Database.DBElement In DBElement.Seasons
-                Dim prefImages As MediaContainers.EpisodeOrSeasonImagesContainer = PreferredImagesContainer.Seasons.FirstOrDefault(Function(f) f.Season = tSeason.TVSeason.Season)
+                Dim prefImages As MediaContainers.EpisodeOrSeasonImagesContainer = PreferredImagesContainer.Seasons.FirstOrDefault(Function(f) f.Season = tSeason.MainDetails.Season)
                 If prefImages IsNot Nothing Then
                     tSeason.ImagesContainer.Banner = prefImages.Banner
                     tSeason.ImagesContainer.Fanart = prefImages.Fanart
@@ -1443,7 +1443,7 @@ Public Class Images
 
             'Season Images while tvshow scraping
             For Each tSeason As Database.DBElement In DBElement.Seasons
-                Dim prefImages As MediaContainers.EpisodeOrSeasonImagesContainer = PreferredImagesContainer.Seasons.FirstOrDefault(Function(f) f.Season = tSeason.TVSeason.Season)
+                Dim prefImages As MediaContainers.EpisodeOrSeasonImagesContainer = PreferredImagesContainer.Seasons.FirstOrDefault(Function(f) f.Season = tSeason.MainDetails.Season)
                 If prefImages IsNot Nothing Then
                     tSeason.ImagesContainer.Banner = prefImages.Banner
                     tSeason.ImagesContainer.Fanart = prefImages.Fanart
@@ -1454,7 +1454,7 @@ Public Class Images
 
             'Episode Images while tvshow scraping
             For Each tEpisode As Database.DBElement In DBElement.Episodes
-                Dim prefImages As MediaContainers.EpisodeOrSeasonImagesContainer = PreferredImagesContainer.Episodes.FirstOrDefault(Function(f) f.Episode = tEpisode.TVEpisode.Episode AndAlso f.Season = tEpisode.TVEpisode.Season)
+                Dim prefImages As MediaContainers.EpisodeOrSeasonImagesContainer = PreferredImagesContainer.Episodes.FirstOrDefault(Function(f) f.Episode = tEpisode.MainDetails.Episode AndAlso f.Season = tEpisode.MainDetails.Season)
                 If prefImages IsNot Nothing Then
                     tEpisode.ImagesContainer.Fanart = prefImages.Fanart
                     tEpisode.ImagesContainer.Poster = prefImages.Poster
@@ -1469,7 +1469,7 @@ Public Class Images
 
     Private Shared Function GetImageTypeByScrapeModifiers(ByVal ContentType As Enums.ContentType,
                                                           ByVal Options As Structures.ScrapeModifiers,
-                                                          ByVal TVSeason As MediaContainers.SeasonDetails) As List(Of Enums.ModifierType)
+                                                          ByVal TVSeason As MediaContainers.MainDetails) As List(Of Enums.ModifierType)
         Dim lstModTypes As New List(Of Enums.ModifierType)
         With Options
             Select Case ContentType
@@ -1490,7 +1490,7 @@ Public Class Images
                     If .EpisodePoster Then lstModTypes.Add(Enums.ModifierType.EpisodePoster)
                 Case Enums.ContentType.TVSeason
                     If TVSeason IsNot Nothing Then
-                        If TVSeason.IsAllSeasons Then
+                        If TVSeason.Season_IsAllSeasons Then
                             If .AllSeasonsBanner Then lstModTypes.Add(Enums.ModifierType.AllSeasonsBanner)
                             If .AllSeasonsFanart Then lstModTypes.Add(Enums.ModifierType.AllSeasonsFanart)
                             If .AllSeasonsLandscape Then lstModTypes.Add(Enums.ModifierType.AllSeasonsLandscape)

@@ -192,7 +192,7 @@ Public Class dlgDeleteConfirm
 
                         Dim nMovie As Database.DBElement = Master.DB.Load_Movie(lngMovieID)
 
-                        ItemParentNode = .Nodes.Add(nMovie.ID.ToString, StringUtils.SortTokens(nMovie.Movie.Title))
+                        ItemParentNode = .Nodes.Add(nMovie.ID.ToString, StringUtils.SortTokens(nMovie.MainDetails.Title))
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nMovie.ID
@@ -230,7 +230,7 @@ Public Class dlgDeleteConfirm
 
                         Dim nMovieSet As Database.DBElement = Master.DB.Load_Movieset(lngMovieID)
 
-                        ItemParentNode = .Nodes.Add(nMovieSet.ID.ToString, StringUtils.SortTokens(nMovieSet.Movieset.Title))
+                        ItemParentNode = .Nodes.Add(nMovieSet.ID.ToString, StringUtils.SortTokens(nMovieSet.MainDetails.Title))
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nMovieSet.ID
@@ -270,7 +270,7 @@ Public Class dlgDeleteConfirm
 
                             Dim nTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(lngTVEpisodeID, True)
 
-                            ItemParentNode = .Nodes.Add(nTVEpisode.ID.ToString, String.Format("{0} - {1}", nTVEpisode.TVShow.Title, nTVEpisode.TVEpisode.Title))
+                            ItemParentNode = .Nodes.Add(nTVEpisode.ID.ToString, String.Format("{0} - {1}", nTVEpisode.TVShowDetails.Title, nTVEpisode.MainDetails.Title))
                             ItemParentNode.ImageKey = "DBE"
                             ItemParentNode.SelectedImageKey = "DBE"
                             ItemParentNode.Tag = lngTVEpisodeID
@@ -308,8 +308,8 @@ Public Class dlgDeleteConfirm
                         Dim nTVSeason As Database.DBElement = Master.DB.Load_TVSeason(lngTVSeasonID, True, True)
 
                         ItemParentNode = .Nodes.Add(nTVSeason.ID.ToString, String.Format("{0} - {1}",
-                                                                                         nTVSeason.TVShow.Title,
-                                                                                         StringUtils.FormatSeasonTitle(nTVSeason.TVSeason.Season)))
+                                                                                         nTVSeason.TVShowDetails.Title,
+                                                                                         StringUtils.FormatSeasonTitle(nTVSeason.MainDetails.Season)))
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nTVSeason.ID
@@ -396,7 +396,7 @@ Public Class dlgDeleteConfirm
 
                         Dim nTVShow As Database.DBElement = Master.DB.Load_TVShow(lngTVShowID, False, False)
 
-                        ItemParentNode = .Nodes.Add(nTVShow.ID.ToString, StringUtils.SortTokens(nTVShow.TVShow.Title))
+                        ItemParentNode = .Nodes.Add(nTVShow.ID.ToString, StringUtils.SortTokens(nTVShow.MainDetails.Title))
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nTVShow.ID

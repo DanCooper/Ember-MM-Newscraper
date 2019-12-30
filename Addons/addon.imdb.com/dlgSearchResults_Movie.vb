@@ -40,16 +40,16 @@ Public Class dlgSearchResults_Movie
     Private _PrevNode As Integer = -2
 
     Private _FilterOptions As Structures.ScrapeOptions
-    Private _InfoCache As New Dictionary(Of String, MediaContainers.Movie)
+    Private _InfoCache As New Dictionary(Of String, MediaContainers.MainDetails)
     Private _PosterCache As New Dictionary(Of String, Image)
 
-    Private _TmpMovie As New MediaContainers.Movie
+    Private _TmpMovie As New MediaContainers.MainDetails
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As MediaContainers.Movie
+    Public ReadOnly Property Result As MediaContainers.MainDetails
         Get
             Return _TmpMovie
         End Get
@@ -165,7 +165,7 @@ Public Class dlgSearchResults_Movie
             _IMDB.CancelAsync()
         End If
 
-        _TmpMovie = New MediaContainers.Movie
+        _TmpMovie = New MediaContainers.MainDetails
 
         DialogResult = DialogResult.Cancel
     End Sub
@@ -205,7 +205,7 @@ Public Class dlgSearchResults_Movie
         lblIMDBID.Text = String.Empty
         pbPoster.Image = Nothing
 
-        _TmpMovie = New MediaContainers.Movie
+        _TmpMovie = New MediaContainers.MainDetails
 
         _IMDB.CancelAsync()
     End Sub
@@ -274,7 +274,7 @@ Public Class dlgSearchResults_Movie
         Close()
     End Sub
 
-    Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.Movie)
+    Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.MainDetails)
         pnlLoading.Visible = False
         OK_Button.Enabled = True
 
@@ -341,7 +341,7 @@ Public Class dlgSearchResults_Movie
 
                     If tSearchResults.PartialMatches.Count > 0 Then
                         'tSearchResults.PartialMatches.Sort()
-                        For Each Movie As MediaContainers.Movie In tSearchResults.PartialMatches
+                        For Each Movie As MediaContainers.MainDetails In tSearchResults.PartialMatches
                             TnP.Nodes.Add(New TreeNode() With {
                                           .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
@@ -358,7 +358,7 @@ Public Class dlgSearchResults_Movie
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(1006, "TV Movie Titles ({0})"), tSearchResults.TvTitles.Count))
-                        For Each Movie As MediaContainers.Movie In tSearchResults.TvTitles
+                        For Each Movie As MediaContainers.MainDetails In tSearchResults.TvTitles
                             TnP.Nodes.Add(New TreeNode() With {
                                           .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
@@ -375,7 +375,7 @@ Public Class dlgSearchResults_Movie
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(1083, "Video Titles ({0})"), tSearchResults.VideoTitles.Count))
-                        For Each Movie As MediaContainers.Movie In tSearchResults.VideoTitles
+                        For Each Movie As MediaContainers.MainDetails In tSearchResults.VideoTitles
                             TnP.Nodes.Add(New TreeNode() With {
                                           .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
@@ -392,7 +392,7 @@ Public Class dlgSearchResults_Movie
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(1389, "Short Titles ({0})"), tSearchResults.ShortTitles.Count))
-                        For Each Movie As MediaContainers.Movie In tSearchResults.ShortTitles
+                        For Each Movie As MediaContainers.MainDetails In tSearchResults.ShortTitles
                             TnP.Nodes.Add(New TreeNode() With {
                                           .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
@@ -409,7 +409,7 @@ Public Class dlgSearchResults_Movie
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(829, "Popular Titles ({0})"), tSearchResults.PopularTitles.Count))
-                        For Each Movie As MediaContainers.Movie In tSearchResults.PopularTitles
+                        For Each Movie As MediaContainers.MainDetails In tSearchResults.PopularTitles
                             TnP.Nodes.Add(New TreeNode() With {
                                           .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
@@ -426,7 +426,7 @@ Public Class dlgSearchResults_Movie
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(831, "Exact Matches ({0})"), tSearchResults.ExactMatches.Count))
-                        For Each Movie As MediaContainers.Movie In tSearchResults.ExactMatches
+                        For Each Movie As MediaContainers.MainDetails In tSearchResults.ExactMatches
                             TnP.Nodes.Add(New TreeNode() With {
                                           .Text = String.Concat(Movie.Title, If(Movie.YearSpecified, String.Format(" ({0})", Movie.Year), String.Empty)),
                                           .Tag = Movie.UniqueIDs.IMDbId
@@ -468,13 +468,13 @@ Public Class dlgSearchResults_Movie
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions
         Dim aOpt As New Structures.ScrapeOptions With {
-            .bMainDirectors = True,
-            .bMainGenres = True,
-            .bMainOutline = True,
-            .bMainPlot = True,
-            .bMainPremiered = True,
-            .bMainTagline = True,
-            .bMainTitle = True
+            .Directors = True,
+            .Genres = True,
+            .Outline = True,
+            .Plot = True,
+            .Premiered = True,
+            .Tagline = True,
+            .Title = True
         }
 
         Return aOpt
@@ -566,13 +566,13 @@ Public Class dlgSearchResults_Movie
         AcceptButton = btnSearch
     End Sub
 
-    Private Function GetMovieClone(ByVal original As MediaContainers.Movie) As MediaContainers.Movie
+    Private Function GetMovieClone(ByVal original As MediaContainers.MainDetails) As MediaContainers.MainDetails
         Try
             Using mem As New MemoryStream()
                 Dim bin As New Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
                 bin.Serialize(mem, original)
                 mem.Seek(0, SeekOrigin.Begin)
-                Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
+                Return DirectCast(bin.Deserialize(mem), MediaContainers.MainDetails)
             End Using
         Catch ex As Exception
             _Looger.Error(ex, New StackFrame().GetMethod().Name)

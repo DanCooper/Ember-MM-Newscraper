@@ -108,13 +108,13 @@ Public Class Trailer_Movie
 
         Dim tTitle As String = String.Empty
 
-        If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
-            tTitle = DBMovie.Movie.Title
+        If String.IsNullOrEmpty(DBMovie.MainDetails.OriginalTitle) Then
+            tTitle = DBMovie.MainDetails.Title
         Else
-            tTitle = DBMovie.Movie.OriginalTitle
+            tTitle = DBMovie.MainDetails.OriginalTitle
         End If
 
-        TrailerList = Scraper.GetMovieTrailers(tTitle, DBMovie.Movie.Title)
+        TrailerList = Scraper.GetMovieTrailers(tTitle, DBMovie.MainDetails.Title)
 
         _Logger.Trace("[HDTrailersNET_Trailer] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}

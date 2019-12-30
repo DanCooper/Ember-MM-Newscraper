@@ -27,13 +27,13 @@ Public Class dlgFileInfo
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private tmpFileInfo As New MediaContainers.FileInfo
+    Private tmpFileInfo As New MediaContainers.Fileinfo
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As MediaContainers.FileInfo
+    Public ReadOnly Property Result As MediaContainers.Fileinfo
         Get
             Return tmpFileInfo
         End Get
@@ -43,12 +43,12 @@ Public Class dlgFileInfo
 
 #Region "Dialog"
 
-    Public Sub New(ByVal FileInfo As MediaContainers.FileInfo)
+    Public Sub New(ByVal FileInfo As MediaContainers.Fileinfo)
         ' This call is required by the designer.
         InitializeComponent()
         'no "ResizeAndMoveDialog" here, dialog can be loaded into another dialog
 
-        tmpFileInfo = CType(FileInfo.CloneDeep, MediaContainers.FileInfo)
+        tmpFileInfo = CType(FileInfo.CloneDeep, MediaContainers.Fileinfo)
     End Sub
 
     Private Sub Dialog_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

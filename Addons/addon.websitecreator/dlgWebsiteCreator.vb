@@ -113,7 +113,7 @@ Public Class dlgWebsiteCreator
                         While SQLreader.Read()
                             Dim _tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt32(SQLreader("idMovie")))
                             _LstMovieList.Add(_tmpMovie)
-                            bwLoadInfo.ReportProgress(iProg, _tmpMovie.Movie.Title) '  show File
+                            bwLoadInfo.ReportProgress(iProg, _tmpMovie.MainDetails.Title) '  show File
                             iProg += 1
                             If bwLoadInfo.CancellationPending Then
                                 e.Cancel = True
@@ -147,7 +147,7 @@ Public Class dlgWebsiteCreator
                         While SQLreader.Read()
                             Dim _tmpTVShow As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt32(SQLreader("idShow")), True, True, _DoExportMissingEpisodes)
                             _LstTVShowList.Add(_tmpTVShow)
-                            bwLoadInfo.ReportProgress(iProg, _tmpTVShow.TVShow.Title) '  show File
+                            bwLoadInfo.ReportProgress(iProg, _tmpTVShow.MainDetails.Title) '  show File
                             iProg += 1
                             If bwLoadInfo.CancellationPending Then
                                 e.Cancel = True

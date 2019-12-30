@@ -27,7 +27,7 @@ Public Class Themes
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private _ext As String
     Private _ms As MemoryStream
@@ -58,7 +58,7 @@ Public Class Themes
         End Set
     End Property
 
-    Public ReadOnly Property hasMemoryStream() As Boolean
+    Public ReadOnly Property HasMemoryStream() As Boolean
         Get
             Return _ms IsNot Nothing
         End Get
@@ -82,33 +82,13 @@ Public Class Themes
 
         _ext = String.Empty
     End Sub
-
-    Public Sub Cancel()
-        'Me.WebPage.Cancel()
-    End Sub
-    ''' <summary>
-    ''' Delete the given arbitrary file
-    ''' </summary>
-    ''' <param name="sPath"></param>
-    ''' <remarks>This version of Delete is wrapped in a try-catch block which 
-    ''' will log errors before safely returning.</remarks>
-    Public Shared Sub Delete(ByVal sPath As String)
-        If Not String.IsNullOrEmpty(sPath) Then
-            Try
-                File.Delete(sPath)
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">")
-            End Try
-        End If
-    End Sub
     ''' <summary>
     ''' Delete the movie themes
     ''' </summary>
     ''' <param name="tDBElement"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_Movie(ByVal tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-        If Not tDBElement.FileItemSpecified Then Return
-
+    Public Shared Sub Delete(ByVal tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
+        If Not tDBElement.FileItemSpecified AndAlso Not tDBElement.ShowPathSpecified Then Return
         Try
             For Each a In FileUtils.FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTheme, ForceFileCleanup)
                 For Each t As String In Master.eSettings.Options.FileSystem.ValidThemeExtensions
@@ -118,28 +98,23 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.FileItem.FirstPathFromStack & ">")
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
-    ''' Delete the tv show themes
+    ''' Delete the given arbitrary file
     ''' </summary>
-    ''' <param name="DBTVShow"><c>DBMovie</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub Delete_TVShow(ByVal DBTVShow As Database.DBElement) ', ByVal ForceFileCleanup As Boolean)
-        If Not DBTVShow.ShowPathSpecified Then Return
-
-        Try
-            For Each a In FileUtils.FileNames.GetFileNames(DBTVShow, Enums.ModifierType.MainTheme) ', ForceFileCleanup)
-                For Each t As String In Master.eSettings.Options.FileSystem.ValidThemeExtensions
-                    If File.Exists(String.Concat(a, t)) Then
-                        Delete(String.Concat(a, t))
-                    End If
-                Next
-            Next
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">")
-        End Try
+    ''' <param name="sPath"></param>
+    ''' <remarks>This version of Delete is wrapped in a try-catch block which 
+    ''' will log errors before safely returning.</remarks>
+    Private Shared Sub Delete(ByVal sPath As String)
+        If Not String.IsNullOrEmpty(sPath) Then
+            Try
+                File.Delete(sPath)
+            Catch ex As Exception
+                _Logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">")
+            End Try
+        End If
     End Sub
     ''' <summary>
     ''' Raises the ProgressUpdated event, passing the iPercent value to indicate percent completed.
@@ -150,20 +125,7 @@ Public Class Themes
         RaiseEvent ProgressUpdated(iPercent)
     End Sub
 
-    Public Shared Function GetPreferredMovieTheme(ByRef ThemeList As List(Of MediaContainers.Theme), ByRef trlResult As MediaContainers.Theme) As Boolean
-        If ThemeList.Count = 0 Then Return False
-        trlResult = Nothing
-
-        trlResult = ThemeList.Item(0)
-
-        If trlResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredTVShowTheme(ByRef ThemeList As List(Of MediaContainers.Theme), ByRef trlResult As MediaContainers.Theme) As Boolean
+    Public Shared Function GetPreferred(ByRef ThemeList As List(Of MediaContainers.Theme), ByRef trlResult As MediaContainers.Theme, ByVal type As Enums.ContentType) As Boolean
         If ThemeList.Count = 0 Then Return False
         trlResult = Nothing
 
@@ -220,10 +182,10 @@ Public Class Themes
                 _ms.Write(retSave, 0, retSave.Length)
                 _ext = Path.GetExtension(tTheme)
             Else
-                logger.Warn("Theme NOT downloaded: " & sURL)
+                _Logger.Warn("Theme NOT downloaded: " & sURL)
             End If
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">")
+            _Logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">")
         End Try
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
@@ -233,58 +195,33 @@ Public Class Themes
         LoadFromWeb(sTheme.URLAudioStream, sTheme.URLWebsite)
     End Sub
 
-    Public Function Save_Movie(ByVal tDBElement As Database.DBElement) As String
-        If Not tDBElement.Theme.ThemeOriginal.hasMemoryStream Then Return String.Empty
-
+    Public Function Save(ByVal tDBElement As Database.DBElement) As String
+        If Not tDBElement.Theme.ThemeOriginal.HasMemoryStream Then Return String.Empty
         Dim strReturn As String = String.Empty
-
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {tDBElement})
-                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnThemeSave_Movie, params, False)
+                Select Case tDBElement.ContentType
+                    Case Enums.ContentType.Movie
+                        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnThemeSave_Movie, params, False)
+                    Case Enums.ContentType.TVShow
+                        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.OnThemeSave_TVShow, params, False)
+                End Select
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
-
             For Each a In FileUtils.FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTheme)
-                SaveToFile(String.Concat(a, _ext))
+                Save(String.Concat(a, _ext))
                 strReturn = (String.Concat(a, _ext))
             Next
-
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
-
         Clear() 'Dispose to save memory
         Return strReturn
     End Function
 
-    Public Function Save_TVShow(ByVal tDBElement As Database.DBElement) As String
-        If Not tDBElement.Theme.ThemeOriginal.hasMemoryStream Then Return String.Empty
-
-        Dim strReturn As String = String.Empty
-
-        Try
-            'Try
-            '    Dim params As New List(Of Object)(New Object() {tDbElement})
-            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnThemeSave_TVShow, params, False)
-            'Catch ex As Exception
-            'End Try
-
-            For Each a In FileUtils.FileNames.GetFileNames(tDBElement, Enums.ModifierType.MainTheme)
-                SaveToFile(String.Concat(a, _ext))
-                strReturn = (String.Concat(a, _ext))
-            Next
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        Clear() 'Dispose to save memory
-        Return strReturn
-    End Function
-
-    Public Sub SaveToFile(ByVal sPath As String)
+    Private Sub Save(ByVal sPath As String)
         If _ms.Length > 0 Then
             Dim retSave() As Byte
             Try
@@ -300,7 +237,7 @@ Public Class Themes
                     End Using
                 End If
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Else
             Throw New ArgumentOutOfRangeException("Looks like MemoryStream is empty")
@@ -310,13 +247,14 @@ Public Class Themes
 #End Region 'Methods
 
 #Region "IDisposable Support"
-    Private disposedValue As Boolean ' To detect redundant calls
 
-    ' IDisposable
+    Private disposedValue As Boolean 'To detect redundant calls
+
+    'IDisposable
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not disposedValue Then
             If disposing Then
-                ' dispose managed state (managed objects).
+                'dispose managed state (managed objects).
                 If _ms IsNot Nothing Then
                     _ms.Flush()
                     _ms.Close()
@@ -324,26 +262,27 @@ Public Class Themes
                 End If
             End If
 
-            ' free unmanaged resources (unmanaged objects) and override Finalize() below.
-            ' set large fields to null.
+            'free unmanaged resources (unmanaged objects) and override Finalize() below.
+            'set large fields to null.
             _ms = Nothing
         End If
         disposedValue = True
     End Sub
 
-    ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
+    'TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
     'Protected Overrides Sub Finalize()
-    '    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+    '    'Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
     '    Dispose(False)
     '    MyBase.Finalize()
     'End Sub
 
-    ' This code added by Visual Basic to correctly implement the disposable pattern.
+    'This code added by Visual Basic to correctly implement the disposable pattern.
     Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
+        'Do not change this code. Put cleanup code in Dispose(disposing As Boolean) above.
         Dispose(True)
         GC.SuppressFinalize(Me)
     End Sub
-#End Region
+
+#End Region 'IDisposable Support
 
 End Class

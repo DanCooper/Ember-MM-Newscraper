@@ -37,17 +37,17 @@ Public Class dlgSearchResults_MovieSet
     Private _PrevNode As Integer = -2
     Private _AddonSettings As AddonSettings
 
-    Private _InfoCache As New Dictionary(Of String, MediaContainers.MovieSet)
+    Private _InfoCache As New Dictionary(Of String, MediaContainers.MainDetails)
     Private _PosterCache As New Dictionary(Of String, Image)
     Private _FilterOptions As Structures.ScrapeOptions
 
-    Private _TmpMovieSet As New MediaContainers.MovieSet
+    Private _TmpMovieSet As New MediaContainers.MainDetails
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As MediaContainers.MovieSet
+    Public ReadOnly Property Result As MediaContainers.MainDetails
         Get
             Return _TmpMovieSet
         End Get
@@ -85,7 +85,7 @@ Public Class dlgSearchResults_MovieSet
         Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(Res As SearchResults_MovieSet, ByVal sMovieSetTitle As String) As DialogResult
+    Public Overloads Function ShowDialog(Res As SearchResults, ByVal sMovieSetTitle As String) As DialogResult
         tmrWait.Enabled = False
         tmrWait.Interval = 250
         tmrLoad.Enabled = False
@@ -158,7 +158,7 @@ Public Class dlgSearchResults_MovieSet
         If _TMDB.bwTMDB.IsBusy Then
             _TMDB.CancelAsync()
         End If
-        _TmpMovieSet = New MediaContainers.MovieSet
+        _TmpMovieSet = New MediaContainers.MainDetails
 
         DialogResult = DialogResult.Cancel
     End Sub
@@ -182,7 +182,7 @@ Public Class dlgSearchResults_MovieSet
         lblTMDBID.Text = String.Empty
         pbPoster.Image = Nothing
 
-        _TmpMovieSet = New MediaContainers.MovieSet
+        _TmpMovieSet = New MediaContainers.MainDetails
 
         _TMDB.CancelAsync()
     End Sub
@@ -226,7 +226,7 @@ Public Class dlgSearchResults_MovieSet
         DialogResult = DialogResult.OK
     End Sub
 
-    Private Sub SearchMovieSetInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.MovieSet)
+    Private Sub SearchMovieSetInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.MainDetails)
         pnlLoading.Visible = False
         OK_Button.Enabled = True
 
@@ -269,11 +269,11 @@ Public Class dlgSearchResults_MovieSet
         End If
     End Sub
 
-    Private Sub SearchResultsDownloaded_MovieSet(ByVal M As SearchResults_MovieSet)
+    Private Sub SearchResultsDownloaded_MovieSet(ByVal M As SearchResults)
         tvResults.Nodes.Clear()
         ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
-            For Each MovieSet As MediaContainers.MovieSet In M.Matches
+            For Each MovieSet As MediaContainers.MainDetails In M.Matches
                 tvResults.Nodes.Add(New TreeNode() With {.Text = MovieSet.Title, .Tag = MovieSet.UniqueIDs.TMDbId})
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)
@@ -290,8 +290,8 @@ Public Class dlgSearchResults_MovieSet
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions
         Dim aOpt As New Structures.ScrapeOptions
-        aOpt.bMainPlot = True
-        aOpt.bMainTitle = True
+        aOpt.Plot = True
+        aOpt.Title = True
 
         Return aOpt
     End Function
@@ -379,13 +379,13 @@ Public Class dlgSearchResults_MovieSet
         AcceptButton = btnSearch
     End Sub
 
-    Private Function GetMovieSetClone(ByVal original As MediaContainers.MovieSet) As MediaContainers.MovieSet
+    Private Function GetMovieSetClone(ByVal original As MediaContainers.MainDetails) As MediaContainers.MainDetails
         Try
             Using mem As New IO.MemoryStream()
                 Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
                 bin.Serialize(mem, original)
                 mem.Seek(0, IO.SeekOrigin.Begin)
-                Return DirectCast(bin.Deserialize(mem), MediaContainers.MovieSet)
+                Return DirectCast(bin.Deserialize(mem), MediaContainers.MainDetails)
             End Using
         Catch ex As Exception
             _Logger.Error(ex, New StackFrame().GetMethod().Name)

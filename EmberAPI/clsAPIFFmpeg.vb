@@ -391,11 +391,11 @@ Namespace FFmpeg
         ''' Notice: Implemented a first version of ffprobe mediainfo scanning that may be used in future as alternative for MediaInfo scanning
         ''' Its not used right now
         ''' </remarks>
-        Public Shared Function ParseMediaInfoByFFProbe(ByVal jsonOutput As String) As MediaContainers.FileInfo
+        Public Shared Function ParseMediaInfoByFFProbe(ByVal jsonOutput As String) As MediaContainers.Fileinfo
 
             'deserialize JSON
             Dim ffprobeResults As FFProbeResults = JsonConvert.DeserializeObject(Of FFProbeResults)(jsonOutput)
-            Dim MediaInfo As New MediaContainers.FileInfo
+            Dim MediaInfo As New MediaContainers.Fileinfo
             Dim VideoInfo As New MediaContainers.Video
             Dim AudioInfo As New MediaContainers.Audio
             Dim SubtitleInfo As New MediaContainers.Subtitle

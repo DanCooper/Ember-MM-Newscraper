@@ -89,11 +89,11 @@ Public Class Data_Movie
         Settings_Load()
         _PnlSettingsPanel = New frmSettingsPanel
         _PnlSettingsPanel.chkEnabled.Checked = IsEnabled
-        _PnlSettingsPanel.chkTitle.Checked = _ConfigScrapeOptions.bMainTitle
-        _PnlSettingsPanel.chkOutline.Checked = _ConfigScrapeOptions.bMainOutline
-        _PnlSettingsPanel.chkPlot.Checked = _ConfigScrapeOptions.bMainPlot
-        _PnlSettingsPanel.chkGenres.Checked = _ConfigScrapeOptions.bMainGenres
-        _PnlSettingsPanel.chkCertifications.Checked = _ConfigScrapeOptions.bMainCertifications
+        _PnlSettingsPanel.chkTitle.Checked = _ConfigScrapeOptions.Title
+        _PnlSettingsPanel.chkOutline.Checked = _ConfigScrapeOptions.Outline
+        _PnlSettingsPanel.chkPlot.Checked = _ConfigScrapeOptions.Plot
+        _PnlSettingsPanel.chkGenres.Checked = _ConfigScrapeOptions.Genres
+        _PnlSettingsPanel.chkCertifications.Checked = _ConfigScrapeOptions.Certifications
 
         AddHandler _PnlSettingsPanel.NeedsRestart, AddressOf Handle_NeedsRestart
         AddHandler _PnlSettingsPanel.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -123,17 +123,17 @@ Public Class Data_Movie
 
         Settings_Load()
 
-        Dim nMovie As New MediaContainers.Movie
+        Dim nMovie As New MediaContainers.MainDetails
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, _ConfigScrapeOptions)
 
         'datascraper needs imdb of movie!
-        If Not oDBMovie.Movie.UniqueIDs.IMDbIdSpecified Then
+        If Not oDBMovie.MainDetails.UniqueIDs.IMDbIdSpecified Then
             _Logger.Trace("[OFDB_Data] [Scraper_Movie] [Abort] IMDB-ID of movie is needed, but not availaible")
             Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
         End If
 
         If Modifier.MainNFO Then
-            nMovie = Scraper.GetMovieInfo(oDBMovie.Movie.UniqueIDs.IMDbId, FilteredOptions, oDBMovie.Language)
+            nMovie = Scraper.GetMovieInfo(oDBMovie.MainDetails.UniqueIDs.IMDbId, FilteredOptions, oDBMovie.Language)
         End If
 
         _Logger.Trace("[OFDB_Data] [Scraper_Movie] [Done]")
@@ -141,11 +141,11 @@ Public Class Data_Movie
     End Function
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.IScraperAddon_Data_Movie.SaveSetup
-        _ConfigScrapeOptions.bMainCertifications = _PnlSettingsPanel.chkCertifications.Checked
-        _ConfigScrapeOptions.bMainTitle = _PnlSettingsPanel.chkTitle.Checked
-        _ConfigScrapeOptions.bMainOutline = _PnlSettingsPanel.chkOutline.Checked
-        _ConfigScrapeOptions.bMainPlot = _PnlSettingsPanel.chkPlot.Checked
-        _ConfigScrapeOptions.bMainGenres = _PnlSettingsPanel.chkGenres.Checked
+        _ConfigScrapeOptions.Certifications = _PnlSettingsPanel.chkCertifications.Checked
+        _ConfigScrapeOptions.Title = _PnlSettingsPanel.chkTitle.Checked
+        _ConfigScrapeOptions.Outline = _PnlSettingsPanel.chkOutline.Checked
+        _ConfigScrapeOptions.Plot = _PnlSettingsPanel.chkPlot.Checked
+        _ConfigScrapeOptions.Genres = _PnlSettingsPanel.chkGenres.Checked
 
         Settings_Save()
 
@@ -162,20 +162,20 @@ Public Class Data_Movie
 #Region "Methods"
 
     Sub Settings_Load()
-        _ConfigScrapeOptions.bMainTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
-        _ConfigScrapeOptions.bMainOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
-        _ConfigScrapeOptions.bMainPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
-        _ConfigScrapeOptions.bMainGenres = AdvancedSettings.GetBooleanSetting("DoGenres", True)
-        _ConfigScrapeOptions.bMainCertifications = AdvancedSettings.GetBooleanSetting("DoCert", False)
+        _ConfigScrapeOptions.Title = AdvancedSettings.GetBooleanSetting("DoTitle", True)
+        _ConfigScrapeOptions.Outline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
+        _ConfigScrapeOptions.Plot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
+        _ConfigScrapeOptions.Genres = AdvancedSettings.GetBooleanSetting("DoGenres", True)
+        _ConfigScrapeOptions.Certifications = AdvancedSettings.GetBooleanSetting("DoCert", False)
     End Sub
 
     Sub Settings_Save()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("DoTitle", _ConfigScrapeOptions.bMainTitle)
-            settings.SetBooleanSetting("DoOutline", _ConfigScrapeOptions.bMainOutline)
-            settings.SetBooleanSetting("DoPlot", _ConfigScrapeOptions.bMainPlot)
-            settings.SetBooleanSetting("DoGenres", _ConfigScrapeOptions.bMainGenres)
-            settings.SetBooleanSetting("DoCert", _ConfigScrapeOptions.bMainCertifications)
+            settings.SetBooleanSetting("DoTitle", _ConfigScrapeOptions.Title)
+            settings.SetBooleanSetting("DoOutline", _ConfigScrapeOptions.Outline)
+            settings.SetBooleanSetting("DoPlot", _ConfigScrapeOptions.Plot)
+            settings.SetBooleanSetting("DoGenres", _ConfigScrapeOptions.Genres)
+            settings.SetBooleanSetting("DoCert", _ConfigScrapeOptions.Certifications)
         End Using
     End Sub
 

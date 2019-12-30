@@ -61,7 +61,7 @@ Public Class dlgRenameManual_TVShow
         If Not String.IsNullOrEmpty(_DBElement.ShowPath) Then
             tFolder = Path.GetFileName(_DBElement.ShowPath)
         Else
-            tFolder = _DBElement.TVShow.Title
+            tFolder = _DBElement.MainDetails.Title
         End If
         txtFolder.Text = tFolder.Trim
     End Sub
@@ -78,13 +78,13 @@ Public Class dlgRenameManual_TVShow
     End Sub
 
     Sub Setup()
-        Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", _DBElement.TVShow.Title)
+        Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", _DBElement.MainDetails.Title)
         lblFolder.Text = Master.eLang.GetString(13, "Folder Name")
         btnOK.Text = Master.eLang.OK
         btnCancel.Text = Master.eLang.Close
         lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
         lblStatus.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
-        txtTitle.Text = _DBElement.TVShow.Title
+        txtTitle.Text = _DBElement.MainDetails.Title
     End Sub
 
     Private Sub txtFolder_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFolder.TextChanged

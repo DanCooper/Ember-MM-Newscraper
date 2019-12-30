@@ -38,17 +38,17 @@ Public Class dlgSearchResults_TV
     Private _PrevNode As Integer = -2
     Private _AddonSettings As AddonSettings
 
-    Private _InfoCache As New Dictionary(Of String, MediaContainers.TVShow)
+    Private _InfoCache As New Dictionary(Of String, MediaContainers.MainDetails)
     Private _PosterCache As New Dictionary(Of String, Image)
     Private _FilterOptions As Structures.ScrapeOptions
 
-    Private _TmpTVShow As New MediaContainers.TVShow
+    Private _TmpTVShow As New MediaContainers.MainDetails
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As MediaContainers.TVShow
+    Public ReadOnly Property Result As MediaContainers.MainDetails
         Get
             Return _TmpTVShow
         End Get
@@ -86,7 +86,7 @@ Public Class dlgSearchResults_TV
         Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal Res As SearchResults_TVShow, ByVal sShowTitle As String, ByVal sShowPath As String) As DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As SearchResults, ByVal sShowTitle As String, ByVal sShowPath As String) As DialogResult
         tmrWait.Enabled = False
         tmrWait.Interval = 250
         tmrLoad.Enabled = False
@@ -164,7 +164,7 @@ Public Class dlgSearchResults_TV
         If _TMDB.bwTMDB.IsBusy Then
             _TMDB.CancelAsync()
         End If
-        _TmpTVShow = New MediaContainers.TVShow
+        _TmpTVShow = New MediaContainers.MainDetails
 
         DialogResult = DialogResult.Cancel
     End Sub
@@ -192,7 +192,7 @@ Public Class dlgSearchResults_TV
         lblTMDBID.Text = String.Empty
         pbPoster.Image = Nothing
 
-        _TmpTVShow = New MediaContainers.TVShow
+        _TmpTVShow = New MediaContainers.MainDetails
 
         _TMDB.CancelAsync()
     End Sub
@@ -240,7 +240,7 @@ Public Class dlgSearchResults_TV
         DialogResult = DialogResult.OK
     End Sub
 
-    Private Sub SearchInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.TVShow)
+    Private Sub SearchInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.MainDetails)
         pnlLoading.Visible = False
         OK_Button.Enabled = True
 
@@ -287,11 +287,11 @@ Public Class dlgSearchResults_TV
         End If
     End Sub
 
-    Private Sub SearchResultsDownloaded(ByVal M As SearchResults_TVShow)
+    Private Sub SearchResultsDownloaded(ByVal M As SearchResults)
         tvResults.Nodes.Clear()
         ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
-            For Each Show As MediaContainers.TVShow In M.Matches
+            For Each Show As MediaContainers.MainDetails In M.Matches
                 tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Show.Title), .Tag = Show.UniqueIDs.TMDbId})
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)
@@ -308,11 +308,11 @@ Public Class dlgSearchResults_TV
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions
         Dim aOpt As New Structures.ScrapeOptions
-        aOpt.bMainCreators = True
-        aOpt.bMainGenres = True
-        aOpt.bMainPlot = True
-        aOpt.bMainPremiered = True
-        aOpt.bMainTitle = True
+        aOpt.Creators = True
+        aOpt.Genres = True
+        aOpt.Plot = True
+        aOpt.Premiered = True
+        aOpt.Title = True
 
         Return aOpt
     End Function
@@ -402,12 +402,12 @@ Public Class dlgSearchResults_TV
         AcceptButton = btnSearch
     End Sub
 
-    Private Function GetTVShowClone(ByVal original As MediaContainers.TVShow) As MediaContainers.TVShow
+    Private Function GetTVShowClone(ByVal original As MediaContainers.MainDetails) As MediaContainers.MainDetails
         Using mem As New IO.MemoryStream()
             Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
             bin.Serialize(mem, original)
             mem.Seek(0, IO.SeekOrigin.Begin)
-            Return DirectCast(bin.Deserialize(mem), MediaContainers.TVShow)
+            Return DirectCast(bin.Deserialize(mem), MediaContainers.MainDetails)
         End Using
 
         Return Nothing

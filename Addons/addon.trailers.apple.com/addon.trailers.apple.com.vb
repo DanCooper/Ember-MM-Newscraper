@@ -103,10 +103,10 @@ Public Class Trailer_Movie
 
         Dim tTitle As String = String.Empty
 
-        If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
-            tTitle = DBMovie.Movie.Title
+        If String.IsNullOrEmpty(DBMovie.MainDetails.OriginalTitle) Then
+            tTitle = DBMovie.MainDetails.Title
         Else
-            tTitle = DBMovie.Movie.OriginalTitle
+            tTitle = DBMovie.MainDetails.OriginalTitle
         End If
 
         TrailerList = Scraper.GetMovieTrailers(tTitle)

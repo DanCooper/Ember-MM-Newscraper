@@ -101,7 +101,7 @@ Public Class dlgEdit_Movie
                 pnlTop.BackgroundImage = iBackground
             End Using
 
-            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement.Movie.FileInfo) With {
+            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement.MainDetails.FileInfo) With {
                 .BackColor = Color.White,
                 .Dock = DockStyle.Fill,
                 .FormBorderStyle = FormBorderStyle.None,
@@ -139,7 +139,7 @@ Public Class dlgEdit_Movie
 
     Private Sub Setup()
         With Master.eLang
-            Dim mTitle As String = tmpDBElement.Movie.Title
+            Dim mTitle As String = tmpDBElement.MainDetails.Title
             Text = String.Concat(.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
             btnCancel.Text = .Cancel
             btnChange.Text = .GetString(32, "Change Movie")
@@ -373,7 +373,7 @@ Public Class dlgEdit_Movie
         End With
 
         'Information part
-        With tmpDBElement.Movie
+        With tmpDBElement.MainDetails
             'Actors
             Dim lvItem As ListViewItem
             lvActors.Items.Clear()
@@ -439,8 +439,8 @@ Public Class dlgEdit_Movie
             'Top250
             txtTop250.Text = .Top250.ToString
             'Trailer Link
-            txtLinkTrailer.Text = tmpDBElement.Movie.Trailer
-            btnLinkTrailerPlay.Enabled = tmpDBElement.Movie.TrailerSpecified
+            txtLinkTrailer.Text = tmpDBElement.MainDetails.Trailer
+            btnLinkTrailerPlay.Enabled = tmpDBElement.MainDetails.TrailerSpecified
             btnLinkTrailerGet.Enabled = Master.eSettings.Movie.DataSettings.TrailerLink.Enabled
             'TV Show Links
             TVShowLinks_Fill()
@@ -659,18 +659,18 @@ Public Class dlgEdit_Movie
             'Language
             If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
                 .Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
-                .Movie.Language = .Language
+                .MainDetails.Language = .Language
             Else
                 .Language = "en-US"
-                .Movie.Language = .Language
+                .MainDetails.Language = .Language
             End If
             'Videosource
             .VideoSource = cbVideoSource.Text.Trim
-            .Movie.VideoSource = .VideoSource
+            .MainDetails.VideoSource = .VideoSource
         End With
 
         'Information part
-        With tmpDBElement.Movie
+        With tmpDBElement.MainDetails
             'Actors
             .Actors.Clear()
             If lvActors.Items.Count > 0 Then
@@ -801,8 +801,8 @@ Public Class dlgEdit_Movie
             tmpDBElement.Subtitles.Remove(Subtitle)
         Next
 
-        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then tmpDBElement.Movie.Thumb = pResults.Posters
-        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then tmpDBElement.Movie.Fanart = pResults.Fanart
+        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then tmpDBElement.MainDetails.Thumbs = pResults.Posters
+        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then tmpDBElement.MainDetails.Fanart = pResults.Fanart
     End Sub
 
     Private Sub DataGridView_Leave(sender As Object, e As EventArgs) Handles _
@@ -948,9 +948,9 @@ Public Class dlgEdit_Movie
     ''' </summary>
     Private Sub Genres_Fill()
         clbGenres.Items.Add(Master.eLang.None)
-        If tmpDBElement.Movie.GenresSpecified Then
-            tmpDBElement.Movie.Genres.Sort()
-            clbGenres.Items.AddRange(tmpDBElement.Movie.Genres.ToArray)
+        If tmpDBElement.MainDetails.GenresSpecified Then
+            tmpDBElement.MainDetails.Genres.Sort()
+            clbGenres.Items.AddRange(tmpDBElement.MainDetails.Genres.ToArray)
             'enable all selected genres, skip the first entry "[none]"
             For i As Integer = 1 To clbGenres.Items.Count - 1
                 clbGenres.SetItemChecked(i, True)
@@ -1542,7 +1542,7 @@ Public Class dlgEdit_Movie
 
     Private Sub Movie_EditManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
-            tmpDBElement.Movie = Info.LoadFromNFO_Movie(tmpDBElement.NfoPath, tmpDBElement.IsSingle)
+            tmpDBElement.MainDetails = NFO.LoadFromNFO_Movie(tmpDBElement.NfoPath, tmpDBElement.IsSingle)
             Data_Fill(False)
         End If
     End Sub
@@ -1550,8 +1550,8 @@ Public Class dlgEdit_Movie
     Private Sub Moviesets_Fill()
         Dim items As New Dictionary(Of MediaContainers.SetDetails, String)
         items.Add(New MediaContainers.SetDetails, Master.eLang.None)
-        If tmpDBElement.Movie.SetsSpecified Then
-            items.Add(tmpDBElement.Movie.Sets.First, tmpDBElement.Movie.Sets.First.Title)
+        If tmpDBElement.MainDetails.SetsSpecified Then
+            items.Add(tmpDBElement.MainDetails.Sets.First, tmpDBElement.MainDetails.Sets.First.Title)
         End If
         For Each nSet In Master.DB.GetAllMovieSetDetails.Where(Function(f) Not items.Keys.Contains(f) AndAlso Not items.Values.Contains(f.Title))
             items.Add(nSet, nSet.Title)
@@ -1559,7 +1559,7 @@ Public Class dlgEdit_Movie
         cbMovieset.DataSource = items.ToList
         cbMovieset.DisplayMember = "Value"
         cbMovieset.ValueMember = "Key"
-        If tmpDBElement.Movie.SetsSpecified Then
+        If tmpDBElement.MainDetails.SetsSpecified Then
             cbMovieset.SelectedIndex = 1
         Else
             cbMovieset.SelectedIndex = 0
@@ -1583,12 +1583,12 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub MPAA_Select()
-        If tmpDBElement.Movie.MPAASpecified Then
+        If tmpDBElement.MainDetails.MPAASpecified Then
             If Master.eSettings.Movie.DataSettings.CertificationsOnlyValue Then
                 Dim sItem As String = String.Empty
                 For i As Integer = 0 To lbMPAA.Items.Count - 1
                     sItem = lbMPAA.Items(i).ToString
-                    If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = tmpDBElement.Movie.MPAA Then
+                    If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = tmpDBElement.MainDetails.MPAA Then
                         lbMPAA.SelectedIndex = i
                         lbMPAA.TopIndex = i
                         Exit For
@@ -1597,7 +1597,7 @@ Public Class dlgEdit_Movie
             Else
                 Dim i As Integer = 0
                 For ctr As Integer = 0 To lbMPAA.Items.Count - 1
-                    If tmpDBElement.Movie.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
+                    If tmpDBElement.MainDetails.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
                         i = ctr
                         Exit For
                     End If
@@ -1609,11 +1609,11 @@ Public Class dlgEdit_Movie
                 Dim strMPAADesc As String = String.Empty
                 If i > 0 Then
                     strMPAA = lbMPAA.Items.Item(i).ToString
-                    strMPAADesc = tmpDBElement.Movie.MPAA.Replace(strMPAA, String.Empty).Trim
+                    strMPAADesc = tmpDBElement.MainDetails.MPAA.Replace(strMPAA, String.Empty).Trim
                     txtMPAA.Text = strMPAA
                     txtMPAADesc.Text = strMPAADesc
                 Else
-                    txtMPAA.Text = tmpDBElement.Movie.MPAA
+                    txtMPAA.Text = tmpDBElement.MainDetails.MPAA
                 End If
             End If
         End If
@@ -1627,7 +1627,7 @@ Public Class dlgEdit_Movie
     Private Sub Ratings_Fill()
         Dim lvItem As ListViewItem
         lvRatings.Items.Clear()
-        For Each tRating As MediaContainers.RatingDetails In tmpDBElement.Movie.Ratings
+        For Each tRating As MediaContainers.RatingDetails In tmpDBElement.MainDetails.Ratings
             lvItem = lvRatings.Items.Add(tRating.Name)
             lvItem.SubItems.Add(tRating.Value.ToString)
             lvItem.SubItems.Add(tRating.Votes.ToString)
@@ -1657,7 +1657,7 @@ Public Class dlgEdit_Movie
     Private Sub Subtitles_Edit()
         If lvSubtitles.SelectedItems.Count > 0 Then
             Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
-            Dim tmpFileInfo As New MediaContainers.FileInfo
+            Dim tmpFileInfo As New MediaContainers.Fileinfo
             tmpFileInfo.StreamDetails.Subtitle.AddRange(tmpDBElement.Subtitles)
             Using dEditStream As New dlgFIStreamEditor
                 Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
@@ -1766,9 +1766,9 @@ Public Class dlgEdit_Movie
     ''' </summary>
     Private Sub Tags_Fill()
         clbTags.Items.Add(Master.eLang.None)
-        If tmpDBElement.Movie.TagsSpecified Then
-            tmpDBElement.Movie.Tags.Sort()
-            clbTags.Items.AddRange(tmpDBElement.Movie.Tags.ToArray)
+        If tmpDBElement.MainDetails.TagsSpecified Then
+            tmpDBElement.MainDetails.Tags.Sort()
+            clbTags.Items.AddRange(tmpDBElement.MainDetails.Tags.ToArray)
             'enable all selected tags, skip the first entry "[none]"
             For i As Integer = 1 To clbTags.Items.Count - 1
                 clbTags.SetItemChecked(i, True)
@@ -1976,9 +1976,9 @@ Public Class dlgEdit_Movie
     ''' </summary>
     Private Sub TVShowLinks_Fill()
         clbTVShowLinks.Items.Add(Master.eLang.None)
-        If tmpDBElement.Movie.ShowLinksSpecified Then
-            tmpDBElement.Movie.ShowLinks.Sort()
-            clbTVShowLinks.Items.AddRange(tmpDBElement.Movie.ShowLinks.ToArray)
+        If tmpDBElement.MainDetails.ShowLinksSpecified Then
+            tmpDBElement.MainDetails.ShowLinks.Sort()
+            clbTVShowLinks.Items.AddRange(tmpDBElement.MainDetails.ShowLinks.ToArray)
             'enable all selected tv shows, skip the first entry "[none]"
             For i As Integer = 1 To clbTVShowLinks.Items.Count - 1
                 clbTVShowLinks.SetItemChecked(i, True)
@@ -2004,9 +2004,9 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub Videosources_Fill()
-        If tmpDBElement.Movie.VideoSourceSpecified Then
-            cbVideoSource.Items.Add(tmpDBElement.Movie.VideoSource)
-            cbVideoSource.SelectedItem = tmpDBElement.Movie.VideoSource
+        If tmpDBElement.MainDetails.VideoSourceSpecified Then
+            cbVideoSource.Items.Add(tmpDBElement.MainDetails.VideoSource)
+            cbVideoSource.SelectedItem = tmpDBElement.MainDetails.VideoSource
         End If
         cbVideoSource.Items.AddRange(Master.DB.GetAllVideoSources_Movie.Where(Function(f) Not cbVideoSource.Items.Contains(f)).ToArray)
     End Sub

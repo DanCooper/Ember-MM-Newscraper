@@ -104,10 +104,10 @@ Public Class Addon
         Settings_Load()
 
         Dim strTitle As String = String.Empty
-        If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-            strTitle = DBMovie.Movie.Title
-        ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
-            strTitle = DBMovie.Movie.OriginalTitle
+        If Not String.IsNullOrEmpty(DBMovie.MainDetails.Title) Then
+            strTitle = DBMovie.MainDetails.Title
+        ElseIf Not String.IsNullOrEmpty(DBMovie.MainDetails.OriginalTitle) Then
+            strTitle = DBMovie.MainDetails.OriginalTitle
         End If
 
         If Not String.IsNullOrEmpty(strTitle) Then

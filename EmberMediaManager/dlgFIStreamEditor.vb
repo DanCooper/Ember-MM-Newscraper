@@ -38,7 +38,7 @@ Public Class dlgFIStreamEditor
         FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal stream_type As String, ByVal movie As MediaContainers.FileInfo, ByVal idx As Integer) As Object
+    Public Overloads Function ShowDialog(ByVal stream_type As String, ByVal movie As MediaContainers.Fileinfo, ByVal idx As Integer) As Object
         gbVideoStreams.Visible = False
         gbAudioStreams.Visible = False
         gbAudioStreams.Visible = False

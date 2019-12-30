@@ -118,7 +118,7 @@ Public Class dlgEdit_TVShow
     End Sub
 
     Private Sub Setup()
-        Dim mTitle As String = tmpDBElement.TVShow.Title
+        Dim mTitle As String = tmpDBElement.MainDetails.Title
         Text = String.Concat(Master.eLang.GetString(663, "Edit Show"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         btnCancel.Text = Master.eLang.Cancel
         btnChange.Text = Master.eLang.GetString(767, "Change TV Show")
@@ -333,7 +333,7 @@ Public Class dlgEdit_TVShow
         End With
 
         'Information part
-        With tmpDBElement.TVShow
+        With tmpDBElement.MainDetails
             'Actors
             Dim lvItem As ListViewItem
             lvActors.Items.Clear()
@@ -544,15 +544,15 @@ Public Class dlgEdit_TVShow
             'Language
             If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
                 .Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
-                .TVShow.Language = .Language
+                .MainDetails.Language = .Language
             Else
                 .Language = "en-US"
-                .TVShow.Language = .Language
+                .MainDetails.Language = .Language
             End If
         End With
 
         'Information part
-        With tmpDBElement.TVShow
+        With tmpDBElement.MainDetails
             'Actors
             .Actors.Clear()
             If lvActors.Items.Count > 0 Then
@@ -631,9 +631,9 @@ Public Class dlgEdit_TVShow
     ''' </summary>
     Private Sub Genres_Fill()
         clbGenres.Items.Add(Master.eLang.None)
-        If tmpDBElement.TVShow.GenresSpecified Then
-            tmpDBElement.TVShow.Genres.Sort()
-            clbGenres.Items.AddRange(tmpDBElement.TVShow.Genres.ToArray)
+        If tmpDBElement.MainDetails.GenresSpecified Then
+            tmpDBElement.MainDetails.Genres.Sort()
+            clbGenres.Items.AddRange(tmpDBElement.MainDetails.Genres.ToArray)
             'enable all selected genres, skip the first entry "[none]"
             For i As Integer = 1 To clbGenres.Items.Count - 1
                 clbGenres.SetItemChecked(i, True)
@@ -1149,12 +1149,12 @@ Public Class dlgEdit_TVShow
     End Sub
 
     Private Sub MPAA_Select()
-        If tmpDBElement.TVShow.MPAASpecified Then
+        If tmpDBElement.MainDetails.MPAASpecified Then
             If Master.eSettings.TVScraperShowCertOnlyValue Then
                 Dim sItem As String = String.Empty
                 For i As Integer = 0 To lbMPAA.Items.Count - 1
                     sItem = lbMPAA.Items(i).ToString
-                    If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = tmpDBElement.TVShow.MPAA Then
+                    If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = tmpDBElement.MainDetails.MPAA Then
                         lbMPAA.SelectedIndex = i
                         lbMPAA.TopIndex = i
                         Exit For
@@ -1163,7 +1163,7 @@ Public Class dlgEdit_TVShow
             Else
                 Dim i As Integer = 0
                 For ctr As Integer = 0 To lbMPAA.Items.Count - 1
-                    If tmpDBElement.TVShow.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
+                    If tmpDBElement.MainDetails.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
                         i = ctr
                         Exit For
                     End If
@@ -1175,11 +1175,11 @@ Public Class dlgEdit_TVShow
                 Dim strMPAADesc As String = String.Empty
                 If i > 0 Then
                     strMPAA = lbMPAA.Items.Item(i).ToString
-                    strMPAADesc = tmpDBElement.TVShow.MPAA.Replace(strMPAA, String.Empty).Trim
+                    strMPAADesc = tmpDBElement.MainDetails.MPAA.Replace(strMPAA, String.Empty).Trim
                     txtMPAA.Text = strMPAA
                     txtMPAADesc.Text = strMPAADesc
                 Else
-                    txtMPAA.Text = tmpDBElement.TVShow.MPAA
+                    txtMPAA.Text = tmpDBElement.MainDetails.MPAA
                 End If
             End If
         End If
@@ -1193,7 +1193,7 @@ Public Class dlgEdit_TVShow
     Private Sub Ratings_Fill()
         Dim lvItem As ListViewItem
         lvRatings.Items.Clear()
-        For Each tRating As MediaContainers.RatingDetails In tmpDBElement.TVShow.Ratings
+        For Each tRating As MediaContainers.RatingDetails In tmpDBElement.MainDetails.Ratings
             lvItem = lvRatings.Items.Add(tRating.Name)
             lvItem.SubItems.Add(tRating.Value.ToString)
             lvItem.SubItems.Add(tRating.Votes.ToString)
@@ -1210,9 +1210,9 @@ Public Class dlgEdit_TVShow
     ''' </summary>
     Private Sub Tags_Fill()
         clbTags.Items.Add(Master.eLang.None)
-        If tmpDBElement.TVShow.TagsSpecified Then
-            tmpDBElement.TVShow.Tags.Sort()
-            clbTags.Items.AddRange(tmpDBElement.TVShow.Tags.ToArray)
+        If tmpDBElement.MainDetails.TagsSpecified Then
+            tmpDBElement.MainDetails.Tags.Sort()
+            clbTags.Items.AddRange(tmpDBElement.MainDetails.Tags.ToArray)
             'enable all selected tags, skip the first entry "[none]"
             For i As Integer = 1 To clbTags.Items.Count - 1
                 clbTags.SetItemChecked(i, True)
@@ -1299,7 +1299,7 @@ Public Class dlgEdit_TVShow
 
     Private Sub TVShow_EditManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
-            tmpDBElement.TVShow = Info.LoadFromNFO_TVShow(tmpDBElement.NfoPath)
+            tmpDBElement.MainDetails = NFO.LoadFromNFO_TVShow(tmpDBElement.NfoPath)
             Data_Fill(False)
         End If
     End Sub
