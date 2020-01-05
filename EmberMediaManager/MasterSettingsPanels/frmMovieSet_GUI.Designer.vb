@@ -38,12 +38,14 @@ Partial Class frmMovieset_GUI
         Me.lblMediaList = New System.Windows.Forms.Label()
         Me.gbCustomScrapeButton = New System.Windows.Forms.GroupBox()
         Me.tblCustomScrapeButton = New System.Windows.Forms.TableLayoutPanel()
+        Me.cbCustomScrapeButtonSelectionType = New System.Windows.Forms.ComboBox()
         Me.cbCustomScrapeButtonScrapeType = New System.Windows.Forms.ComboBox()
-        Me.cbCustomScrapeButtonType = New System.Windows.Forms.ComboBox()
-        Me.txtCustomScrapeButtonScrapeType = New System.Windows.Forms.Label()
-        Me.txtCustomScrapeButtonModifierType = New System.Windows.Forms.Label()
+        Me.cbCustomScrapeButtonModifierType = New System.Windows.Forms.ComboBox()
+        Me.lblCustomScrapeButtonScrapeType = New System.Windows.Forms.Label()
+        Me.lblCustomScrapeButtonModifierType = New System.Windows.Forms.Label()
         Me.rbCustomScrapeButtonEnabled = New System.Windows.Forms.RadioButton()
         Me.rbCustomScrapeButtonDisabled = New System.Windows.Forms.RadioButton()
+        Me.lblCustomScrapeButtonSelectionType = New System.Windows.Forms.Label()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
         Me.gbMediaList.SuspendLayout()
@@ -224,7 +226,7 @@ Partial Class frmMovieset_GUI
         Me.gbCustomScrapeButton.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbCustomScrapeButton.Location = New System.Drawing.Point(350, 3)
         Me.gbCustomScrapeButton.Name = "gbCustomScrapeButton"
-        Me.gbCustomScrapeButton.Size = New System.Drawing.Size(497, 98)
+        Me.gbCustomScrapeButton.Size = New System.Drawing.Size(497, 125)
         Me.gbCustomScrapeButton.TabIndex = 11
         Me.gbCustomScrapeButton.TabStop = False
         Me.gbCustomScrapeButton.Text = "Scrape Button"
@@ -235,22 +237,36 @@ Partial Class frmMovieset_GUI
         Me.tblCustomScrapeButton.ColumnCount = 2
         Me.tblCustomScrapeButton.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblCustomScrapeButton.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblCustomScrapeButton.Controls.Add(Me.cbCustomScrapeButtonSelectionType, 1, 2)
         Me.tblCustomScrapeButton.Controls.Add(Me.cbCustomScrapeButtonScrapeType, 1, 1)
-        Me.tblCustomScrapeButton.Controls.Add(Me.cbCustomScrapeButtonType, 1, 2)
-        Me.tblCustomScrapeButton.Controls.Add(Me.txtCustomScrapeButtonScrapeType, 0, 1)
-        Me.tblCustomScrapeButton.Controls.Add(Me.txtCustomScrapeButtonModifierType, 0, 2)
+        Me.tblCustomScrapeButton.Controls.Add(Me.cbCustomScrapeButtonModifierType, 1, 3)
+        Me.tblCustomScrapeButton.Controls.Add(Me.lblCustomScrapeButtonScrapeType, 0, 1)
+        Me.tblCustomScrapeButton.Controls.Add(Me.lblCustomScrapeButtonModifierType, 0, 3)
         Me.tblCustomScrapeButton.Controls.Add(Me.rbCustomScrapeButtonEnabled, 1, 0)
         Me.tblCustomScrapeButton.Controls.Add(Me.rbCustomScrapeButtonDisabled, 0, 0)
+        Me.tblCustomScrapeButton.Controls.Add(Me.lblCustomScrapeButtonSelectionType, 0, 2)
         Me.tblCustomScrapeButton.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblCustomScrapeButton.Location = New System.Drawing.Point(3, 18)
         Me.tblCustomScrapeButton.Name = "tblCustomScrapeButton"
-        Me.tblCustomScrapeButton.RowCount = 4
+        Me.tblCustomScrapeButton.RowCount = 5
         Me.tblCustomScrapeButton.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblCustomScrapeButton.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblCustomScrapeButton.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblCustomScrapeButton.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblCustomScrapeButton.Size = New System.Drawing.Size(491, 77)
+        Me.tblCustomScrapeButton.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblCustomScrapeButton.Size = New System.Drawing.Size(491, 104)
         Me.tblCustomScrapeButton.TabIndex = 0
+        '
+        'cbCustomScrapeButtonSelectionType
+        '
+        Me.cbCustomScrapeButtonSelectionType.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbCustomScrapeButtonSelectionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbCustomScrapeButtonSelectionType.Enabled = False
+        Me.cbCustomScrapeButtonSelectionType.FormattingEnabled = True
+        Me.cbCustomScrapeButtonSelectionType.Location = New System.Drawing.Point(159, 53)
+        Me.cbCustomScrapeButtonSelectionType.Name = "cbCustomScrapeButtonSelectionType"
+        Me.cbCustomScrapeButtonSelectionType.Size = New System.Drawing.Size(329, 21)
+        Me.cbCustomScrapeButtonSelectionType.TabIndex = 7
         '
         'cbCustomScrapeButtonScrapeType
         '
@@ -263,38 +279,38 @@ Partial Class frmMovieset_GUI
         Me.cbCustomScrapeButtonScrapeType.Size = New System.Drawing.Size(329, 21)
         Me.cbCustomScrapeButtonScrapeType.TabIndex = 1
         '
-        'cbCustomScrapeButtonType
+        'cbCustomScrapeButtonModifierType
         '
-        Me.cbCustomScrapeButtonType.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.cbCustomScrapeButtonType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbCustomScrapeButtonType.Enabled = False
-        Me.cbCustomScrapeButtonType.FormattingEnabled = True
-        Me.cbCustomScrapeButtonType.Location = New System.Drawing.Point(159, 53)
-        Me.cbCustomScrapeButtonType.Name = "cbCustomScrapeButtonType"
-        Me.cbCustomScrapeButtonType.Size = New System.Drawing.Size(329, 21)
-        Me.cbCustomScrapeButtonType.TabIndex = 2
+        Me.cbCustomScrapeButtonModifierType.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbCustomScrapeButtonModifierType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbCustomScrapeButtonModifierType.Enabled = False
+        Me.cbCustomScrapeButtonModifierType.FormattingEnabled = True
+        Me.cbCustomScrapeButtonModifierType.Location = New System.Drawing.Point(159, 80)
+        Me.cbCustomScrapeButtonModifierType.Name = "cbCustomScrapeButtonModifierType"
+        Me.cbCustomScrapeButtonModifierType.Size = New System.Drawing.Size(329, 21)
+        Me.cbCustomScrapeButtonModifierType.TabIndex = 2
         '
-        'txtCustomScrapeButtonScrapeType
+        'lblCustomScrapeButtonScrapeType
         '
-        Me.txtCustomScrapeButtonScrapeType.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtCustomScrapeButtonScrapeType.AutoSize = True
-        Me.txtCustomScrapeButtonScrapeType.Enabled = False
-        Me.txtCustomScrapeButtonScrapeType.Location = New System.Drawing.Point(3, 30)
-        Me.txtCustomScrapeButtonScrapeType.Name = "txtCustomScrapeButtonScrapeType"
-        Me.txtCustomScrapeButtonScrapeType.Size = New System.Drawing.Size(66, 13)
-        Me.txtCustomScrapeButtonScrapeType.TabIndex = 3
-        Me.txtCustomScrapeButtonScrapeType.Text = "Scrape Type"
+        Me.lblCustomScrapeButtonScrapeType.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblCustomScrapeButtonScrapeType.AutoSize = True
+        Me.lblCustomScrapeButtonScrapeType.Enabled = False
+        Me.lblCustomScrapeButtonScrapeType.Location = New System.Drawing.Point(3, 30)
+        Me.lblCustomScrapeButtonScrapeType.Name = "lblCustomScrapeButtonScrapeType"
+        Me.lblCustomScrapeButtonScrapeType.Size = New System.Drawing.Size(66, 13)
+        Me.lblCustomScrapeButtonScrapeType.TabIndex = 3
+        Me.lblCustomScrapeButtonScrapeType.Text = "Scrape Type"
         '
-        'txtCustomScrapeButtonModifierType
+        'lblCustomScrapeButtonModifierType
         '
-        Me.txtCustomScrapeButtonModifierType.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtCustomScrapeButtonModifierType.AutoSize = True
-        Me.txtCustomScrapeButtonModifierType.Enabled = False
-        Me.txtCustomScrapeButtonModifierType.Location = New System.Drawing.Point(3, 57)
-        Me.txtCustomScrapeButtonModifierType.Name = "txtCustomScrapeButtonModifierType"
-        Me.txtCustomScrapeButtonModifierType.Size = New System.Drawing.Size(76, 13)
-        Me.txtCustomScrapeButtonModifierType.TabIndex = 4
-        Me.txtCustomScrapeButtonModifierType.Text = "Modifier Type"
+        Me.lblCustomScrapeButtonModifierType.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblCustomScrapeButtonModifierType.AutoSize = True
+        Me.lblCustomScrapeButtonModifierType.Enabled = False
+        Me.lblCustomScrapeButtonModifierType.Location = New System.Drawing.Point(3, 84)
+        Me.lblCustomScrapeButtonModifierType.Name = "lblCustomScrapeButtonModifierType"
+        Me.lblCustomScrapeButtonModifierType.Size = New System.Drawing.Size(76, 13)
+        Me.lblCustomScrapeButtonModifierType.TabIndex = 4
+        Me.lblCustomScrapeButtonModifierType.Text = "Modifier Type"
         '
         'rbCustomScrapeButtonEnabled
         '
@@ -319,6 +335,17 @@ Partial Class frmMovieset_GUI
         Me.rbCustomScrapeButtonDisabled.TabStop = True
         Me.rbCustomScrapeButtonDisabled.Text = "Open Drop Down Menu"
         Me.rbCustomScrapeButtonDisabled.UseVisualStyleBackColor = True
+        '
+        'lblCustomScrapeButtonSelectionType
+        '
+        Me.lblCustomScrapeButtonSelectionType.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblCustomScrapeButtonSelectionType.AutoSize = True
+        Me.lblCustomScrapeButtonSelectionType.Enabled = False
+        Me.lblCustomScrapeButtonSelectionType.Location = New System.Drawing.Point(3, 57)
+        Me.lblCustomScrapeButtonSelectionType.Name = "lblCustomScrapeButtonSelectionType"
+        Me.lblCustomScrapeButtonSelectionType.Size = New System.Drawing.Size(79, 13)
+        Me.lblCustomScrapeButtonSelectionType.TabIndex = 3
+        Me.lblCustomScrapeButtonSelectionType.Text = "Selection Type"
         '
         'frmMovieset_GUI
         '
@@ -354,9 +381,9 @@ Partial Class frmMovieset_GUI
     Friend WithEvents gbCustomScrapeButton As GroupBox
     Friend WithEvents tblCustomScrapeButton As TableLayoutPanel
     Friend WithEvents cbCustomScrapeButtonScrapeType As ComboBox
-    Friend WithEvents cbCustomScrapeButtonType As ComboBox
-    Friend WithEvents txtCustomScrapeButtonScrapeType As Label
-    Friend WithEvents txtCustomScrapeButtonModifierType As Label
+    Friend WithEvents cbCustomScrapeButtonModifierType As ComboBox
+    Friend WithEvents lblCustomScrapeButtonScrapeType As Label
+    Friend WithEvents lblCustomScrapeButtonModifierType As Label
     Friend WithEvents rbCustomScrapeButtonEnabled As RadioButton
     Friend WithEvents rbCustomScrapeButtonDisabled As RadioButton
     Friend WithEvents gbMediaList As GroupBox
@@ -368,4 +395,6 @@ Partial Class frmMovieset_GUI
     Friend WithEvents colMediaListSorting_AutoSizeMode As DataGridViewComboBoxColumn
     Friend WithEvents btnMediaListSortingDefaults As Button
     Friend WithEvents lblMediaList As Label
+    Friend WithEvents cbCustomScrapeButtonSelectionType As ComboBox
+    Friend WithEvents lblCustomScrapeButtonSelectionType As Label
 End Class

@@ -75,12 +75,6 @@ Public Class dlgEdit_Movieset
             pbLandscape.AllowDrop = True
             pbPoster.AllowDrop = True
 
-            If Master.eSettings.Movie.DataSettings.Collection.SaveYAMJCompatible Then
-                btnMovieDown.Visible = True
-                btnMovieUp.Visible = True
-                colOrdering.Width = 25
-            End If
-
             Setup()
 
             Dim iBackground As New Bitmap(pnlTop.Width, pnlTop.Height)
@@ -183,9 +177,7 @@ Public Class dlgEdit_Movieset
         btnOK.Enabled = isEnabled
         btnSearchMovie.Enabled = isEnabled
         btnMovieAdd.Enabled = isEnabled
-        btnMovieDown.Enabled = isEnabled
         btnMovieRemove.Enabled = isEnabled
-        btnMovieUp.Enabled = isEnabled
         btnRescrape.Enabled = isEnabled
         dgvDatabaseList.Enabled = isEnabled
         lvMoviesInSet.Enabled = isEnabled
@@ -219,7 +211,7 @@ Public Class dlgEdit_Movieset
         'Information part
         With tmpDBElement.MainDetails
             'CollectionID
-            txtCollectionID.Text = .UniqueIDs.TMDbId
+            txtCollectionID.Text = .UniqueIDs.TMDbId.ToString
             'Plot
             txtPlot.Text = .Plot
             'Title
@@ -720,41 +712,40 @@ Public Class dlgEdit_Movieset
         btnScrapePoster.Click, btnScrapeKeyArt.Click
         Cursor = Cursors.WaitCursor
         Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
-        Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-        Functions.SetScrapeModifiers(ScrapeModifiers, eImageType, True)
-        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+        Functions.SetScrapeModifiers(tmpDBElement.ScrapeModifiers, eImageType, True)
+        Dim nResults = Scraper.Run(tmpDBElement)
+        If nResults IsNot Nothing Then
             Dim iImageCount = 0
             Dim strNoImagesFound As String = String.Empty
             Select Case eImageType
                 Case Enums.ModifierType.MainBanner
-                    iImageCount = aContainer.MainBanners.Count
+                    iImageCount = nResults.lstImages.MainBanners.Count
                     strNoImagesFound = Master.eLang.GetString(1363, "No Banners found")
                 Case Enums.ModifierType.MainClearArt
-                    iImageCount = aContainer.MainClearArts.Count
+                    iImageCount = nResults.lstImages.MainClearArts.Count
                     strNoImagesFound = Master.eLang.GetString(1102, "No ClearArts found")
                 Case Enums.ModifierType.MainClearLogo
-                    iImageCount = aContainer.MainClearLogos.Count
+                    iImageCount = nResults.lstImages.MainClearLogos.Count
                     strNoImagesFound = Master.eLang.GetString(1103, "No ClearLogos found")
                 Case Enums.ModifierType.MainDiscArt
-                    iImageCount = aContainer.MainDiscArts.Count
+                    iImageCount = nResults.lstImages.MainDiscArts.Count
                     strNoImagesFound = Master.eLang.GetString(1104, "No DiscArts found")
                 Case Enums.ModifierType.MainFanart
-                    iImageCount = aContainer.MainFanarts.Count
+                    iImageCount = nResults.lstImages.MainFanarts.Count
                     strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
                 Case Enums.ModifierType.MainKeyArt
-                    iImageCount = aContainer.MainKeyArts.Count
+                    iImageCount = nResults.lstImages.MainKeyArts.Count
                     strNoImagesFound = Master.eLang.GetString(855, "No KeyArts found")
                 Case Enums.ModifierType.MainLandscape
-                    iImageCount = aContainer.MainLandscapes.Count
+                    iImageCount = nResults.lstImages.MainLandscapes.Count
                     strNoImagesFound = Master.eLang.GetString(1197, "No Landscapes found")
                 Case Enums.ModifierType.MainPoster
-                    iImageCount = aContainer.MainPosters.Count
+                    iImageCount = nResults.lstImages.MainPosters.Count
                     strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
             End Select
             If iImageCount > 0 Then
                 Dim dlgImgS = New dlgImageSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, nResults.lstImages) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.SetImageByType(dlgImgS.Result.ImagesContainer.GetImageByType(eImageType), eImageType)
                     If tmpDBElement.ImagesContainer.GetImageByType(eImageType) IsNot Nothing AndAlso
                         tmpDBElement.ImagesContainer.GetImageByType(eImageType).ImageOriginal.LoadFromMemoryStream() Then
@@ -777,11 +768,11 @@ Public Class dlgEdit_Movieset
                 Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(0).Value))
                 If String.IsNullOrEmpty(txtCollectionID.Text) AndAlso tmpMovie.MainDetails.UniqueIDs.TMDbCollectionIdSpecified Then
                     If MessageBox.Show(String.Format(Master.eLang.GetString(1264, "Should the Collection ID of the movie ""{0}"" be used as ID for this Collection?"), tmpMovie.MainDetails.Title), Master.eLang.GetString(1263, "TMDB Collection ID found"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
-                        txtCollectionID.Text = tmpMovie.MainDetails.UniqueIDs.TMDbCollectionId
+                        txtCollectionID.Text = tmpMovie.MainDetails.UniqueIDs.TMDbCollectionId.ToString
                         tmpDBElement.MainDetails.UniqueIDs.TMDbId = tmpMovie.MainDetails.UniqueIDs.TMDbCollectionId
                     End If
                 End If
-                Dim newMovieInSet As New MediaContainers.MovieInSet With {.DBMovie = tmpMovie, .Order = tmpDBElement.MoviesInSet.Count}
+                Dim newMovieInSet As New MediaContainers.MovieInSet With {.DBMovie = tmpMovie}
                 tmpDBElement.MoviesInSet.Add(newMovieInSet)
             Next
             dgvDatabaseList.ClearSelection()
@@ -793,32 +784,14 @@ Public Class dlgEdit_Movieset
         End If
     End Sub
 
-    Private Sub MoviesInSetList_Down_Click(sender As Object, e As EventArgs) Handles btnMovieDown.Click
-        If lvMoviesInSet.Items.Count > 0 AndAlso lvMoviesInSet.SelectedItems.Count > 0 AndAlso lvMoviesInSet.SelectedItems.Item(0).Index < lvMoviesInSet.Items.Count Then
-            Dim iIndex As Integer = lvMoviesInSet.SelectedItems.Item(0).Index
-            tmpDBElement.MoviesInSet(iIndex).Order += 1
-            tmpDBElement.MoviesInSet(iIndex + 1).Order -= 1
-            MoviesInSetList_Fill()
-            lvMoviesInSet.Items(iIndex + 1).Selected = True
-            lvMoviesInSet.Focus()
-        End If
-    End Sub
-
     Private Sub MoviesInSetList_Fill()
         lvMoviesInSet.SuspendLayout()
         lvMoviesInSet.Items.Clear()
-        If Master.eSettings.Movie.DataSettings.Collection.SaveYAMJCompatible Then
-            tmpDBElement.MoviesInSet.Sort()
-        End If
         Dim lvItem As ListViewItem
         lvMoviesInSet.Items.Clear()
-        Dim iOrder As Integer = 0
         For Each tMovie As MediaContainers.MovieInSet In tmpDBElement.MoviesInSet
-            tMovie.Order = iOrder
             lvItem = lvMoviesInSet.Items.Add(tMovie.DBMovie.ID.ToString)
-            lvItem.SubItems.Add(tMovie.Order.ToString)
             lvItem.SubItems.Add(tMovie.ListTitle)
-            iOrder += 1
         Next
         'filter out all movies that are already in movieset
         If tmpDBElement.MoviesInSetSpecified Then
@@ -839,8 +812,6 @@ Public Class dlgEdit_Movieset
             End If
         End If
         lvMoviesInSet.ResumeLayout()
-        btnMovieUp.Enabled = False
-        btnMovieDown.Enabled = False
         btnMovieRemove.Enabled = False
     End Sub
 
@@ -870,27 +841,12 @@ Public Class dlgEdit_Movieset
             MoviesInSetList_Fill()
             DatabaseList_RunFilter()
             Controls_SetEnabled(True)
-            btnMovieUp.Enabled = False
-            btnMovieDown.Enabled = False
             btnMovieRemove.Enabled = False
         End If
     End Sub
 
     Private Sub MoviesInSetList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvMoviesInSet.SelectedIndexChanged
-        btnMovieDown.Enabled = lvMoviesInSet.SelectedItems.Count > 0 AndAlso lvMoviesInSet.SelectedItems(0).Index < lvMoviesInSet.Items.Count - 1
         btnMovieRemove.Enabled = lvMoviesInSet.SelectedItems.Count > 0
-        btnMovieUp.Enabled = lvMoviesInSet.SelectedItems.Count > 0 AndAlso lvMoviesInSet.SelectedItems(0).Index > 0
-    End Sub
-
-    Private Sub MoviesInSetList_Up_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieUp.Click
-        If lvMoviesInSet.Items.Count > 0 AndAlso lvMoviesInSet.SelectedItems.Count > 0 AndAlso lvMoviesInSet.SelectedItems.Item(0).Index > 0 Then
-            Dim iIndex As Integer = lvMoviesInSet.SelectedItems.Item(0).Index
-            tmpDBElement.MoviesInSet(iIndex).Order -= 1
-            tmpDBElement.MoviesInSet(iIndex - 1).Order += 1
-            MoviesInSetList_Fill()
-            lvMoviesInSet.Items(iIndex - 1).Selected = True
-            lvMoviesInSet.Focus()
-        End If
     End Sub
 
     Private Sub TextBox_NumericOnly(sender As Object, e As KeyPressEventArgs) Handles txtCollectionID.KeyPress
@@ -908,7 +864,7 @@ Public Class dlgEdit_Movieset
     End Sub
 
     Private Sub TMDbColID_Get_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGetTMDbColID.Click
-        Dim newColID As String = String.Empty
+        Dim newColID As Integer = -1
 
         If tmpDBElement.MoviesInSetSpecified Then
             If tmpDBElement.MoviesInSet.Item(0).DBMovie.MainDetails.UniqueIDs.TMDbCollectionIdSpecified Then
@@ -917,8 +873,8 @@ Public Class dlgEdit_Movieset
                 newColID = AddonsManager.Instance.GetMovieCollectionID(tmpDBElement.MoviesInSet.Item(0).DBMovie.MainDetails.UniqueIDs.IMDbId)
             End If
 
-            If Not String.IsNullOrEmpty(newColID) Then
-                txtCollectionID.Text = newColID
+            If newColID = -1 Then
+                txtCollectionID.Text = newColID.ToString
                 tmpDBElement.MainDetails.UniqueIDs.TMDbId = newColID
             End If
         End If

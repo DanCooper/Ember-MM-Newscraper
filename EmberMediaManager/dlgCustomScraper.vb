@@ -96,7 +96,7 @@ Public Class dlgCustomScraper
 
 #End Region 'Fields
 
-#Region "Methods"
+#Region "Dialog"
 
     Public Sub New(ByVal tContentType As Enums.ContentType)
         ' This call is required by the designer.
@@ -104,6 +104,28 @@ Public Class dlgCustomScraper
         FormsUtils.ResizeAndMoveDialog(Me, Me)
 
         _ContentType = tContentType
+    End Sub
+
+    Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        Setup()
+
+        Dim iBackground As New Bitmap(pnlTop.Width, pnlTop.Height)
+        Using g As Graphics = Graphics.FromImage(iBackground)
+            g.FillRectangle(New Drawing2D.LinearGradientBrush(pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+            pnlTop.BackgroundImage = iBackground
+        End Using
+
+        'set defaults
+        SetParameters()
+        CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+        CustomUpdater.SelectionType = Enums.SelectionType.All
+        Functions.SetScrapeModifiers(CustomUpdater.ScrapeModifiers, Enums.ModifierType.All, True)
+
+        CheckEnable()
+    End Sub
+
+    Private Sub Dialog_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
+        Activate()
     End Sub
 
     Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct
@@ -115,32 +137,9 @@ Public Class dlgCustomScraper
         Return CustomUpdater
     End Function
 
-    Private Sub dlgUpdateMedia_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-        Try
-            SetUp()
+#End Region 'Dialog
 
-            Dim iBackground As New Bitmap(pnlTop.Width, pnlTop.Height)
-            Using g As Graphics = Graphics.FromImage(iBackground)
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-                pnlTop.BackgroundImage = iBackground
-            End Using
-
-            'set defaults
-            SetParameters()
-
-            CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
-            'Functions.SetScrapeModifiers(CustomUpdater.ScrapeModifiers, Enums.ModifierType.All, True)
-
-            CheckEnable()
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub dlgUpdateMedia_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
-        Activate()
-    End Sub
+#Region "Methods"
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnCancel.Click
         DialogResult = DialogResult.Cancel
@@ -921,117 +920,153 @@ Public Class dlgCustomScraper
     Private Sub rbUpdateModifier_All_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_All.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.All
             Case rbScrapeType_Auto.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.All
             Case rbScrapeType_Skip.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.All
         End Select
     End Sub
 
     Private Sub rbUpdateModifier_Filter_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Filter.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.Filtered
             Case rbScrapeType_Auto.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.Filtered
             Case rbScrapeType_Skip.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.Filtered
         End Select
     End Sub
 
     Private Sub rbUpdateModifier_Marked_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Marked.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.Marked
             Case rbScrapeType_Auto.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.Marked
             Case rbScrapeType_Skip.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.Marked
         End Select
     End Sub
 
     Private Sub rbUpdateModifier_Missing_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Missing.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.Missing
             Case rbScrapeType_Auto.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.Missing
             Case rbScrapeType_Skip.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.Missing
         End Select
     End Sub
 
     Private Sub rbUpdateModifier_New_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_New.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.[New]
             Case rbScrapeType_Auto.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.[New]
             Case rbScrapeType_Skip.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.NewSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.[New]
         End Select
     End Sub
 
     Private Sub rbUpdateModifier_Selected_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Selected.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.Selected
             Case rbScrapeType_Auto.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.Selected
             Case rbScrapeType_Skip.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.Selected
         End Select
     End Sub
 
     Private Sub rbUpdate_Ask_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Ask.CheckedChanged
         Select Case True
             Case rbScrapeType_All.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.All
             Case rbScrapeType_Filter.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.Filtered
             Case rbScrapeType_Marked.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.Marked
             Case rbScrapeType_Missing.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.Missing
             Case rbScrapeType_New.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.[New]
             Case rbScrapeType_Selected.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Ask
+                CustomUpdater.SelectionType = Enums.SelectionType.Selected
         End Select
     End Sub
 
     Private Sub rbUpdate_Auto_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Auto.CheckedChanged
         Select Case True
             Case rbScrapeType_All.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.All
             Case rbScrapeType_Filter.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.Filtered
             Case rbScrapeType_Marked.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.Marked
             Case rbScrapeType_Missing.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.Missing
             Case rbScrapeType_New.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.[New]
             Case rbScrapeType_Selected.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedAuto
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Auto
+                CustomUpdater.SelectionType = Enums.SelectionType.Selected
         End Select
     End Sub
 
     Private Sub rbUpdate_Skip_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Skip.CheckedChanged
         Select Case True
             Case rbScrapeType_All.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.All
             Case rbScrapeType_Filter.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.Filtered
             Case rbScrapeType_Marked.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.Marked
             Case rbScrapeType_Missing.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.Missing
             Case rbScrapeType_New.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.NewSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.[New]
             Case rbScrapeType_Selected.Checked
-                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedSkip
+                CustomUpdater.ScrapeType = Enums.ScrapeType.Skip
+                CustomUpdater.SelectionType = Enums.SelectionType.Selected
         End Select
     End Sub
 
@@ -1108,7 +1143,7 @@ Public Class dlgCustomScraper
         CheckEnable()
     End Sub
 
-    Private Sub SetUp()
+    Private Sub Setup()
 
         'Actor Thumbs
         Dim strActorThumbs As String = Master.eLang.GetString(991, "Actor Thumbs")

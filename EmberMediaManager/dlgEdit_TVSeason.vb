@@ -414,8 +414,6 @@ Public Class dlgEdit_TVSeason
         btnScrapePoster.Click
         Cursor = Cursors.WaitCursor
         Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
-        Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifiers As New Structures.ScrapeModifiers
         Select Case eImageType
             Case Enums.ModifierType.SeasonBanner
                 If tmpDBElement.MainDetails.Season_IsAllSeasons Then
@@ -434,30 +432,31 @@ Public Class dlgEdit_TVSeason
                     eImageType = Enums.ModifierType.AllSeasonsPoster
                 End If
         End Select
-        Functions.SetScrapeModifiers(ScrapeModifiers, eImageType, True)
-        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        Functions.SetScrapeModifiers(tmpDBElement.ScrapeModifiers, eImageType, True)
+        Dim nResults = Scraper.Run(tmpDBElement)
+        If nResults IsNot Nothing Then
             Dim iImageCount = 0
             Dim strNoImagesFound As String = String.Empty
             Select Case eImageType
                 Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
-                    iImageCount = aContainer.SeasonBanners.Count
-                    If tmpDBElement.MainDetails.Season_IsAllSeasons Then iImageCount += aContainer.MainBanners.Count
+                    iImageCount = nResults.lstImages.SeasonBanners.Count
+                    If tmpDBElement.MainDetails.Season_IsAllSeasons Then iImageCount += nResults.lstImages.MainBanners.Count
                     strNoImagesFound = Master.eLang.GetString(1363, "No Banners found")
                 Case Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.SeasonFanart
-                    iImageCount = aContainer.SeasonFanarts.Count + aContainer.MainFanarts.Count
+                    iImageCount = nResults.lstImages.SeasonFanarts.Count + nResults.lstImages.MainFanarts.Count
                     strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
                 Case Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
-                    iImageCount = aContainer.SeasonLandscapes.Count
-                    If tmpDBElement.MainDetails.Season_IsAllSeasons Then iImageCount += aContainer.MainLandscapes.Count
+                    iImageCount = nResults.lstImages.SeasonLandscapes.Count
+                    If tmpDBElement.MainDetails.Season_IsAllSeasons Then iImageCount += nResults.lstImages.MainLandscapes.Count
                     strNoImagesFound = Master.eLang.GetString(1197, "No Landscapes found")
                 Case Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.SeasonPoster
-                    iImageCount = aContainer.SeasonPosters.Count
-                    If tmpDBElement.MainDetails.Season_IsAllSeasons Then iImageCount += aContainer.MainPosters.Count
+                    iImageCount = nResults.lstImages.SeasonPosters.Count
+                    If tmpDBElement.MainDetails.Season_IsAllSeasons Then iImageCount += nResults.lstImages.MainPosters.Count
                     strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
             End Select
             If iImageCount > 0 Then
                 Dim dlgImgS = New dlgImageSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, nResults.lstImages) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.SetImageByType(dlgImgS.Result.ImagesContainer.GetImageByType(eImageType), eImageType)
                     If tmpDBElement.ImagesContainer.GetImageByType(eImageType) IsNot Nothing AndAlso
                         tmpDBElement.ImagesContainer.GetImageByType(eImageType).ImageOriginal.LoadFromMemoryStream Then

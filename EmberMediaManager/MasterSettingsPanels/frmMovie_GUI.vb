@@ -79,8 +79,9 @@ Public Class frmMovie_GUI
             .ClickScrapeEnabled = chkClickScrapeEnabled.Checked
             .ClickScrapeShowResults = chkClickScrapeShowResults.Checked
             .CustomScrapeButtonEnabled = rbCustomScrapeButtonEnabled.Checked
-            .CustomScrapeButtonModifierType = CType(cbCustomScrapeButtonType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value
+            .CustomScrapeButtonModifierType = CType(cbCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value
             .CustomScrapeButtonScrapeType = CType(cbCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
+            .CustomScrapeButtonSelectionType = CType(cbCustomScrapeButtonSelectionType.SelectedItem, KeyValuePair(Of String, Enums.SelectionType)).Value
             .PreferredAudioLanguage = If(cbLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbLanguageOverlay.Text)
             Save_MediaListSorting()
         End With
@@ -103,8 +104,9 @@ Public Class frmMovie_GUI
 
     Public Sub Settings_Load()
         With Manager.mSettings.Movie.GuiSettings
+            cbCustomScrapeButtonModifierType.SelectedValue = .CustomScrapeButtonModifierType
             cbCustomScrapeButtonScrapeType.SelectedValue = .CustomScrapeButtonScrapeType
-            cbCustomScrapeButtonType.SelectedValue = .CustomScrapeButtonModifierType
+            cbCustomScrapeButtonSelectionType.SelectedValue = .CustomScrapeButtonSelectionType
             cbLanguageOverlay.SelectedItem = If(.PreferredAudioLanguageSpecified, .PreferredAudioLanguage, Master.eLang.Disabled)
             chkClickScrapeEnabled.Checked = .ClickScrapeEnabled
             chkClickScrapeShowResults.Checked = .ClickScrapeShowResults
@@ -153,12 +155,14 @@ Public Class frmMovie_GUI
         Load_AutoSizeModes()
         Load_CustomScraperButton_ModifierTypes()
         Load_CustomScraperButton_ScrapeTypes()
+        Load_CustomScraperButton_SelectionTypes()
         Load_Languages()
     End Sub
 
     Private Sub Enable_ApplyButton() Handles _
+        cbCustomScrapeButtonModifierType.SelectedIndexChanged,
         cbCustomScrapeButtonScrapeType.SelectedIndexChanged,
-        cbCustomScrapeButtonType.SelectedIndexChanged,
+        cbCustomScrapeButtonSelectionType.SelectedIndexChanged,
         cbLanguageOverlay.SelectedIndexChanged,
         chkClickScrapeShowResults.CheckedChanged,
         dgvMediaListSorting.CellValueChanged,
@@ -203,20 +207,24 @@ Public Class frmMovie_GUI
 
     Private Sub CustomScrapeButtonDisabled_CheckedChanged() Handles rbCustomScrapeButtonDisabled.CheckedChanged
         If rbCustomScrapeButtonDisabled.Checked Then
-            cbCustomScrapeButtonType.Enabled = False
+            cbCustomScrapeButtonModifierType.Enabled = False
             cbCustomScrapeButtonScrapeType.Enabled = False
-            txtCustomScrapeButtonModifierType.Enabled = False
-            txtCustomScrapeButtonScrapeType.Enabled = False
+            cbCustomScrapeButtonSelectionType.Enabled = False
+            lblCustomScrapeButtonModifierType.Enabled = False
+            lblCustomScrapeButtonScrapeType.Enabled = False
+            lblCustomScrapeButtonSelectionType.Enabled = False
         End If
         RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub CustomScrapeButtonEnabled_CheckedChanged() Handles rbCustomScrapeButtonEnabled.CheckedChanged
         If rbCustomScrapeButtonEnabled.Checked Then
-            cbCustomScrapeButtonType.Enabled = True
+            cbCustomScrapeButtonModifierType.Enabled = True
             cbCustomScrapeButtonScrapeType.Enabled = True
-            txtCustomScrapeButtonModifierType.Enabled = True
-            txtCustomScrapeButtonScrapeType.Enabled = True
+            cbCustomScrapeButtonSelectionType.Enabled = True
+            lblCustomScrapeButtonModifierType.Enabled = True
+            lblCustomScrapeButtonScrapeType.Enabled = True
+            lblCustomScrapeButtonSelectionType.Enabled = True
         End If
         RaiseEvent SettingsChanged()
     End Sub
@@ -293,42 +301,44 @@ Public Class frmMovie_GUI
             {Master.eLang.GetString(1125, "Theme Only"), Enums.ModifierType.MainTheme},
             {Master.eLang.GetString(75, "Trailer Only"), Enums.ModifierType.MainTrailer}
         }
-        cbCustomScrapeButtonType.DataSource = items.ToList
-        cbCustomScrapeButtonType.DisplayMember = "Key"
-        cbCustomScrapeButtonType.ValueMember = "Value"
+        cbCustomScrapeButtonModifierType.DataSource = items.ToList
+        cbCustomScrapeButtonModifierType.DisplayMember = "Key"
+        cbCustomScrapeButtonModifierType.ValueMember = "Value"
     End Sub
 
     Private Sub Load_CustomScraperButton_ScrapeTypes()
-        Dim strAll As String = Master.eLang.GetString(68, "All")
-        Dim strFilter As String = Master.eLang.GetString(624, "Current Filter")
-        Dim strMarked As String = Master.eLang.GetString(48, "Marked")
-        Dim strMissing As String = Master.eLang.GetString(40, "Missing Items")
-        Dim strNew As String = Master.eLang.GetString(47, "New")
 
         Dim strAsk As String = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
         Dim strAuto As String = Master.eLang.GetString(69, "Automatic (Force Best Match)")
         Dim strSkip As String = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
 
         Dim items As New Dictionary(Of String, Enums.ScrapeType) From {
-            {String.Concat(strAll, " - ", strAuto), Enums.ScrapeType.AllAuto},
-            {String.Concat(strAll, " - ", strAsk), Enums.ScrapeType.AllAsk},
-            {String.Concat(strAll, " - ", strSkip), Enums.ScrapeType.AllSkip},
-            {String.Concat(strMissing, " - ", strAuto), Enums.ScrapeType.MissingAuto},
-            {String.Concat(strMissing, " - ", strAsk), Enums.ScrapeType.MissingAsk},
-            {String.Concat(strMissing, " - ", strSkip), Enums.ScrapeType.MissingSkip},
-            {String.Concat(strNew, " - ", strAuto), Enums.ScrapeType.NewAuto},
-            {String.Concat(strNew, " - ", strAsk), Enums.ScrapeType.NewAsk},
-            {String.Concat(strNew, " - ", strSkip), Enums.ScrapeType.NewSkip},
-            {String.Concat(strMarked, " - ", strAuto), Enums.ScrapeType.MarkedAuto},
-            {String.Concat(strMarked, " - ", strAsk), Enums.ScrapeType.MarkedAsk},
-            {String.Concat(strMarked, " - ", strSkip), Enums.ScrapeType.MarkedSkip},
-            {String.Concat(strFilter, " - ", strAuto), Enums.ScrapeType.FilterAuto},
-            {String.Concat(strFilter, " - ", strAsk), Enums.ScrapeType.FilterAsk},
-            {String.Concat(strFilter, " - ", strSkip), Enums.ScrapeType.FilterSkip}
+            {String.Concat(strAuto), Enums.ScrapeType.Auto},
+            {String.Concat(strAsk), Enums.ScrapeType.Ask},
+            {String.Concat(strSkip), Enums.ScrapeType.Skip}
         }
         cbCustomScrapeButtonScrapeType.DataSource = items.ToList
         cbCustomScrapeButtonScrapeType.DisplayMember = "Key"
         cbCustomScrapeButtonScrapeType.ValueMember = "Value"
+    End Sub
+
+    Private Sub Load_CustomScraperButton_SelectionTypes()
+        Dim strAll As String = Master.eLang.GetString(68, "All")
+        Dim strFilter As String = Master.eLang.GetString(624, "Current Filter")
+        Dim strMarked As String = Master.eLang.GetString(48, "Marked")
+        Dim strMissing As String = Master.eLang.GetString(40, "Missing Items")
+        Dim strNew As String = Master.eLang.GetString(47, "New")
+
+        Dim items As New Dictionary(Of String, Enums.SelectionType) From {
+            {String.Concat(strAll), Enums.SelectionType.All},
+            {String.Concat(strMissing), Enums.SelectionType.Missing},
+            {String.Concat(strNew), Enums.SelectionType.[New]},
+            {String.Concat(strMarked), Enums.SelectionType.Marked},
+            {String.Concat(strFilter), Enums.SelectionType.Filtered}
+        }
+        cbCustomScrapeButtonSelectionType.DataSource = items.ToList
+        cbCustomScrapeButtonSelectionType.DisplayMember = "Key"
+        cbCustomScrapeButtonSelectionType.ValueMember = "Value"
     End Sub
 
     Private Sub Load_Languages()

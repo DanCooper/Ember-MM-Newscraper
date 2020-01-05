@@ -38,7 +38,7 @@ Public Class dlgWorker
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal ModuleEventType As Enums.ModuleEventType, ByRef Parameters As List(Of Object))
+    Public Event GenericEvent(ByVal ModuleEventType As Enums.AddonEventType, ByRef Parameters As List(Of Object))
 
 #End Region 'Events
 
@@ -97,7 +97,7 @@ Public Class dlgWorker
                             End If
                             bwGetWatchedState.ReportProgress(3, nWatchedMovie.Movie.Title)
                             Dim lstDBElement = lstMoviesInDB.Where(Function(f) (nWatchedMovie.Movie.Ids.Imdb IsNot Nothing AndAlso f.MainDetails.UniqueIDs.IMDbId = nWatchedMovie.Movie.Ids.Imdb) OrElse
-                                                                       (nWatchedMovie.Movie.Ids.Tmdb IsNot Nothing AndAlso f.MainDetails.UniqueIDs.TMDbId = nWatchedMovie.Movie.Ids.Tmdb.ToString))
+                                                                       (nWatchedMovie.Movie.Ids.Tmdb IsNot Nothing AndAlso f.MainDetails.UniqueIDs.TMDbId = CInt(nWatchedMovie.Movie.Ids.Tmdb)))
                             If lstDBElement IsNot Nothing Then
                                 Dim strLastPlayed = Functions.ConvertToProperDateTime(nWatchedMovie.LastWatchedAt.Value.ToLocalTime.ToString)
                                 Dim iPlayCount = nWatchedMovie.Plays.Value
@@ -143,8 +143,8 @@ Public Class dlgWorker
                             Dim lstTVShowIDsToRefresh As New List(Of Long)
                             bwGetWatchedState.ReportProgress(3, nWatchedShow.Show.Title)
                             Dim lstDBTVShow = lstTVShowsInDB.Where(Function(f) (nWatchedShow.Show.Ids.Imdb IsNot Nothing AndAlso f.MainDetails.UniqueIDs.IMDbId = nWatchedShow.Show.Ids.Imdb) OrElse
-                                                                       (nWatchedShow.Show.Ids.Tmdb IsNot Nothing AndAlso f.MainDetails.UniqueIDs.TMDbId = nWatchedShow.Show.Ids.Tmdb.ToString) OrElse
-                                                                       (nWatchedShow.Show.Ids.Tvdb IsNot Nothing AndAlso f.MainDetails.UniqueIDs.TVDbId = nWatchedShow.Show.Ids.Tvdb.ToString))
+                                                                       (nWatchedShow.Show.Ids.Tmdb IsNot Nothing AndAlso f.MainDetails.UniqueIDs.TMDbId = CInt(nWatchedShow.Show.Ids.Tmdb)) OrElse
+                                                                       (nWatchedShow.Show.Ids.Tvdb IsNot Nothing AndAlso f.MainDetails.UniqueIDs.TVDbId = CInt(nWatchedShow.Show.Ids.Tvdb)))
                             If lstDBTVShow IsNot Nothing Then
                                 For Each nWatchedSeason In nWatchedShow.Seasons
                                     For Each nWatchedEpisode In nWatchedSeason.Episodes
@@ -228,15 +228,15 @@ Public Class dlgWorker
                 'e.UserState = media ID
                 Select Case _ContentType
                     Case Enums.ContentType.Movie
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {CLng(e.UserState)}))
+                        RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_Movie, New List(Of Object)(New Object() {CLng(e.UserState)}))
                     Case Enums.ContentType.TVEpisode
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {CLng(e.UserState)}))
+                        RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {CLng(e.UserState)}))
                 End Select
             Case 5
                 'update tv show entry in media list
                 'e.UserState = tv show IDs as "List(Of Long)"
                 For Each nID In CType(e.UserState, List(Of Long))
-                    RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {nID}))
+                    RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {nID}))
                 Next
             Case 6
                 'State 5: finished

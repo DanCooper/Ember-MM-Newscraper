@@ -51,9 +51,9 @@ Public Class Core
     Property SettingsPanel As Containers.SettingsPanel = Nothing Implements Interfaces.IGenericAddon.SettingsPanel
 
 
-    Public ReadOnly Property Type() As List(Of Enums.ModuleEventType) Implements Interfaces.IGenericAddon.Type
+    Public ReadOnly Property Type() As List(Of Enums.AddonEventType) Implements Interfaces.IGenericAddon.Type
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Generic})
         End Get
     End Property
 
@@ -61,7 +61,7 @@ Public Class Core
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.IGenericAddon.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.IGenericAddon.GenericEvent
     Public Event NeedsRestart() Implements Interfaces.IGenericAddon.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IGenericAddon.SettingsChanged
     Public Event StateChanged(ByVal SettingsPanelID As String, ByVal State As Boolean, ByVal DiffOrder As Integer) Implements Interfaces.IGenericAddon.StateChanged
@@ -95,7 +95,7 @@ Public Class Core
         }
     End Sub
 
-    Public Function Run(ByVal ModuleEventType As Enums.ModuleEventType, ByRef Parameters As List(Of Object), ByRef SingleObjekt As Object, ByRef DBElement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.IGenericAddon.Run
+    Public Function Run(ByVal ModuleEventType As Enums.AddonEventType, ByRef Parameters As List(Of Object), ByRef SingleObjekt As Object, ByRef DBElement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.IGenericAddon.Run
         Return New Interfaces.ModuleResult
     End Function
 

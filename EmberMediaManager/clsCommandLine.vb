@@ -33,7 +33,7 @@ Public Class CommandLine
 
 #Region "Events"
 
-    Public Event TaskEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+    Public Event TaskEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
 
 #End Region 'Events
 
@@ -59,7 +59,7 @@ Public Class CommandLine
                 Case "-addmoviesource"
                     If args.Count - 1 > i Then
                         If Directory.Exists(args(i + 1).Replace("""", String.Empty)) Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                         "addmoviesource",
                                                                                                         args(i + 1).Replace("""", String.Empty)
                                                                                                         }))
@@ -71,7 +71,7 @@ Public Class CommandLine
                 Case "-addtvshowsource"
                     If args.Count - 1 > i Then
                         If Directory.Exists(args(i + 1).Replace("""", String.Empty)) Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                         "addtvshowsource",
                                                                                                         args(i + 1).Replace("""", String.Empty)
                                                                                                         }))
@@ -81,9 +81,9 @@ Public Class CommandLine
                         _Logger.Warn("[CommandLine] No path or invalid path specified for -addtvshowsource command")
                     End If
                 Case "-cleanvideodb"
-                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"cleanvideodb"}))
+                    RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"cleanvideodb"}))
                 Case "-close"
-                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"close"}))
+                    RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"close"}))
                 Case "-nosplash"
                     Master.fLoading.Hide()
                 Case "-profile"
@@ -98,7 +98,7 @@ Public Class CommandLine
                         i += 1
                         Dim sParams As List(Of Object) = Nothing
                         i = SetModuleParameters(args, i, sParams)
-                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                        RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                     "run",
                                                                                                     strModuleName,
                                                                                                     sParams
@@ -109,7 +109,7 @@ Public Class CommandLine
                 Case "-scanfolder"
                     If args.Count - 1 > i Then
                         If Directory.Exists(args(i + 1).Replace("""", String.Empty)) Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                         "loadmedia",
                                                                                                         New Scanner.ScanOrCleanOptions With {.SpecificFolder = True},
                                                                                                         -1,
@@ -123,13 +123,13 @@ Public Class CommandLine
                 Case "-scrapemovies"
                     If args.Count - 1 > i AndAlso Not args(i + 1).StartsWith("-") Then
                         i += 1
-                        Dim ScrapeType = SetScrapeType(args(i))
-                        If Not ScrapeType = Enums.ScrapeType.None Then
+                        Dim nScrapeAndSelectionType = SetScrapeAndSelectionType(args(i))
+                        If Not nScrapeAndSelectionType.ScrapeType = Enums.ScrapeType.None Then
                             Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                             i = SetScrapModidiers(args, i, CustomScrapeModifiers)
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                         "scrapemovies",
-                                                                                                        ScrapeType,
+                                                                                                        nScrapeAndSelectionType,
                                                                                                         CustomScrapeModifiers
                                                                                                         }))
                         Else
@@ -141,13 +141,13 @@ Public Class CommandLine
                 Case "-scrapemoviesets"
                     If args.Count - 1 > i AndAlso Not args(i + 1).StartsWith("-") Then
                         i += 1
-                        Dim ScrapeType = SetScrapeType(args(i))
-                        If Not ScrapeType = Enums.ScrapeType.None Then
+                        Dim nScrapeAndSelectionType = SetScrapeAndSelectionType(args(i))
+                        If Not nScrapeAndSelectionType.ScrapeType = Enums.ScrapeType.None Then
                             Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                             i = SetScrapModidiers(args, i, CustomScrapeModifiers)
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                         "scrapemoviesets",
-                                                                                                        ScrapeType,
+                                                                                                        nScrapeAndSelectionType,
                                                                                                         CustomScrapeModifiers
                                                                                                         }))
                         Else
@@ -159,13 +159,13 @@ Public Class CommandLine
                 Case "-scrapetvshows"
                     If args.Count - 1 > i AndAlso Not args(i + 1).StartsWith("-") Then
                         i += 1
-                        Dim ScrapeType = SetScrapeType(args(i))
-                        If Not ScrapeType = Enums.ScrapeType.None Then
+                        Dim nScrapeAndSelectionType = SetScrapeAndSelectionType(args(i))
+                        If Not nScrapeAndSelectionType.ScrapeType = Enums.ScrapeType.None Then
                             Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                             i = SetScrapModidiers(args, i, CustomScrapeModifiers)
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                         "scrapetvshows",
-                                                                                                        ScrapeType,
+                                                                                                        nScrapeAndSelectionType,
                                                                                                         CustomScrapeModifiers
                                                                                                         }))
                         Else
@@ -179,7 +179,7 @@ Public Class CommandLine
                         Dim clArg As String = args(i + 1).Replace("""", String.Empty)
                         Dim sSource As Database.DBSource = Master.DB.Load_AllSources_Movie.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
                         If sSource IsNot Nothing Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                         "loadmedia",
                                                                                                         New Scanner.ScanOrCleanOptions With {.Movies = True},
                                                                                                         sSource.ID,
@@ -189,14 +189,14 @@ Public Class CommandLine
                         Else
                             sSource = Master.DB.Load_AllSources_Movie.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
                             If sSource IsNot Nothing Then
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                             "loadmedia",
                                                                                                             New Scanner.ScanOrCleanOptions With {.Movies = True},
                                                                                                             sSource.ID, String.Empty
                                                                                                             }))
                                 i += 1
                             Else
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                             "loadmedia",
                                                                                                             New Scanner.ScanOrCleanOptions With {.Movies = True},
                                                                                                             -1,
@@ -205,7 +205,7 @@ Public Class CommandLine
                             End If
                         End If
                     Else
-                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                        RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                     "loadmedia",
                                                                                                     New Scanner.ScanOrCleanOptions With {.Movies = True},
                                                                                                     -1,
@@ -217,7 +217,7 @@ Public Class CommandLine
                         Dim clArg As String = args(i + 1).Replace("""", String.Empty)
                         Dim sSource As Database.DBSource = Master.DB.Load_AllSources_TVShow.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
                         If sSource IsNot Nothing Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                         "loadmedia",
                                                                                                         New Scanner.ScanOrCleanOptions With {.TV = True},
                                                                                                         sSource.ID,
@@ -227,7 +227,7 @@ Public Class CommandLine
                         Else
                             sSource = Master.DB.Load_AllSources_TVShow.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
                             If sSource IsNot Nothing Then
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                             "loadmedia",
                                                                                                             New Scanner.ScanOrCleanOptions With {.TV = True},
                                                                                                             sSource.ID,
@@ -235,7 +235,7 @@ Public Class CommandLine
                                                                                                             }))
                                 i += 1
                             Else
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                             "loadmedia",
                                                                                                             New Scanner.ScanOrCleanOptions With {.TV = True},
                                                                                                             -1,
@@ -244,7 +244,7 @@ Public Class CommandLine
                             End If
                         End If
                     Else
-                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {
+                        RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {
                                                                                                     "loadmedia",
                                                                                                     New Scanner.ScanOrCleanOptions With {.TV = True},
                                                                                                     -1,
@@ -399,37 +399,46 @@ Public Class CommandLine
         Return iEndPos
     End Function
 
-    Private Function SetScrapeType(ByVal scrapetype As String) As Enums.ScrapeType
+    Private Function SetScrapeAndSelectionType(ByVal scrapetype As String) As ScrapeAndSelectionType
         Select Case scrapetype
             Case "allask"
-                Return Enums.ScrapeType.AllAsk
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Ask, .SelectionType = Enums.SelectionType.All}
             Case "allauto"
-                Return Enums.ScrapeType.AllAuto
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Auto, .SelectionType = Enums.SelectionType.All}
             Case "allskip"
-                Return Enums.ScrapeType.AllSkip
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Skip, .SelectionType = Enums.SelectionType.All}
             Case "markedask"
-                Return Enums.ScrapeType.MarkedAsk
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Ask, .SelectionType = Enums.SelectionType.Marked}
             Case "markedauto"
-                Return Enums.ScrapeType.MarkedAuto
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Auto, .SelectionType = Enums.SelectionType.Marked}
             Case "markedskip"
-                Return Enums.ScrapeType.MarkedSkip
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Skip, .SelectionType = Enums.SelectionType.Marked}
             Case "missingask"
-                Return Enums.ScrapeType.MissingAsk
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Ask, .SelectionType = Enums.SelectionType.Missing}
             Case "missingauto"
-                Return Enums.ScrapeType.MissingAuto
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Auto, .SelectionType = Enums.SelectionType.Missing}
             Case "missingskip"
-                Return Enums.ScrapeType.MissingSkip
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Skip, .SelectionType = Enums.SelectionType.Missing}
             Case "newask"
-                Return Enums.ScrapeType.NewAsk
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Ask, .SelectionType = Enums.SelectionType.[New]}
             Case "newauto"
-                Return Enums.ScrapeType.NewAuto
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Auto, .SelectionType = Enums.SelectionType.[New]}
             Case "newskip"
-                Return Enums.ScrapeType.NewSkip
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.Skip, .SelectionType = Enums.SelectionType.[New]}
             Case Else
-                Return Enums.ScrapeType.None
+                Return New ScrapeAndSelectionType With {.ScrapeType = Enums.ScrapeType.None, .SelectionType = Enums.SelectionType.None}
         End Select
     End Function
 
 #End Region 'Methods
+
+#Region "Nested Types"
+
+    Private Structure ScrapeAndSelectionType
+        Dim ScrapeType As Enums.ScrapeType
+        Dim SelectionType As Enums.SelectionType
+    End Structure
+
+#End Region 'Nested Types
 
 End Class

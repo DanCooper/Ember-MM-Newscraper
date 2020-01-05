@@ -119,9 +119,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack, Version=1.6.17.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\HtmlAgilityPack.1.6.17\lib\Net45\HtmlAgilityPack.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="HtmlAgilityPack, Version=1.11.17.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\HtmlAgilityPack.1.11.17\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
@@ -151,29 +150,17 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmSettingsPanel_Data_TV.Designer.vb">
-      <DependentUpon>frmSettingsPanel_Data_TV.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel_TV_Data.Designer.vb">
+      <DependentUpon>frmSettingsPanel_TV_Data.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsPanel_Data_TV.vb">
+    <Compile Include="frmSettingsPanel_TV_Data.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="clsAddon.vb" />
-    <Compile Include="dlgSearchResults_TV.Designer.vb">
-      <DependentUpon>dlgSearchResults_TV.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel_Movie_Search.Designer.vb">
+      <DependentUpon>frmSettingsPanel_Movie_Search.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgSearchResults_TV.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgSearchResults_Movie.Designer.vb">
-      <DependentUpon>dlgSearchResults_Movie.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgSearchResults_Movie.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmSettingsPanel_Trailer_Movie.Designer.vb">
-      <DependentUpon>frmSettingsPanel_Trailer_Movie.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmSettingsPanel_Trailer_Movie.vb">
+    <Compile Include="frmSettingsPanel_Movie_Search.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -191,33 +178,25 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmSettingsPanel_Data_Movie.Designer.vb">
-      <DependentUpon>frmSettingsPanel_Data_Movie.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel_Movie_Data.Designer.vb">
+      <DependentUpon>frmSettingsPanel_Movie_Data.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsPanel_Data_Movie.vb">
+    <Compile Include="frmSettingsPanel_Movie_Data.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="addon.imdb.com.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmSettingsPanel_Data_TV.resx">
-      <DependentUpon>frmSettingsPanel_Data_TV.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel_TV_Data.resx">
+      <DependentUpon>frmSettingsPanel_TV_Data.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgSearchResults_TV.resx">
-      <DependentUpon>dlgSearchResults_TV.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel_Movie_Search.resx">
+      <DependentUpon>frmSettingsPanel_Movie_Search.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgSearchResults_Movie.resx">
-      <DependentUpon>dlgSearchResults_Movie.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmSettingsPanel_Data_Movie.resx">
-      <DependentUpon>frmSettingsPanel_Data_Movie.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmSettingsPanel_Trailer_Movie.resx">
-      <DependentUpon>frmSettingsPanel_Trailer_Movie.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel_Movie_Data.resx">
+      <DependentUpon>frmSettingsPanel_Movie_Data.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

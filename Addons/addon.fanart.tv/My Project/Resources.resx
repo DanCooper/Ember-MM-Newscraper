@@ -120,7 +120,17 @@
   <data name="EmberAPIKey" xml:space="preserve">
     <value>ea68f9d0847c1b7643813c70cbfc0196</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="urlAPIKey" xml:space="preserve">
-    <value>http://fanart.tv/get-an-api-key/</value>
+    <value>https://fanart.tv/get-an-api-key/</value>
+  </data>
+  <data name="urlWebsite" xml:space="preserve">
+    <value>https://fanart.tv/</value>
   </data>
 </root>

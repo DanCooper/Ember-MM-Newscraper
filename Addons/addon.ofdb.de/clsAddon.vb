@@ -123,8 +123,9 @@ Public Class Scraper
         Try
             Dim bIsScraperLanguage As Boolean = strLanguage.ToLower.StartsWith("de")
 
-            Dim nMovie As New MediaContainers.MainDetails
-            nMovie.Scrapersource = "OFDB"
+            Dim nMovie As New MediaContainers.MainDetails With {
+                .Scrapersource = "OFDB"
+            }
 
             Dim sURL As String = SearchMovie(strIMDBID)
 

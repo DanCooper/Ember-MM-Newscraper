@@ -275,7 +275,9 @@ Public Class GuiSettings
 
     Public Property CustomScrapeButtonModifierType() As Enums.ModifierType = Enums.ModifierType.All
 
-    Public Property CustomScrapeButtonScrapeType() As Enums.ScrapeType = Enums.ScrapeType.NewSkip
+    Public Property CustomScrapeButtonScrapeType() As Enums.ScrapeType = Enums.ScrapeType.Skip
+
+    Public Property CustomScrapeButtonSelectionType() As Enums.SelectionType = Enums.SelectionType.[New]
 
     Public Property DisplayMissingElements() As Boolean = False
 

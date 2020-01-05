@@ -22,52 +22,18 @@ Imports EmberAPI
 Imports NLog
 Imports System.IO
 
-Public Class SearchResults
-
-#Region "Properties"
-
-    Public Property Matches() As List(Of MediaContainers.MainDetails)
-
-#End Region 'Properties
-
-End Class
-
 Public Class Scraper
 
 #Region "Fields"
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Friend WithEvents bwTVDB As New System.ComponentModel.BackgroundWorker
-
     Private _AddonSettings As AddonSettings
     Private _Poster As String
     Private _TVDBApi As TVDB.Web.WebInterface
     Private _TVDBMirror As TVDB.Model.Mirror
 
-
 #End Region 'Fields
-
-#Region "Enumerations"
-
-    Private Enum SearchType
-        Movies = 0
-        Details = 1
-        SearchDetails_Movie = 2
-        MovieSets = 3
-        SearchDetails_MovieSet = 4
-        TVShows = 5
-        SearchDetails_TVShow = 6
-    End Enum
-
-#End Region 'Enumerations
-
-#Region "Events"
-
-    Public Event SearchInfoDownloaded(ByVal strPoster As String, ByVal sInfo As MediaContainers.MainDetails)
-    Public Event SearchResultsDownloaded(ByVal mResults As SearchResults)
-
-#End Region 'Events
 
 #Region "Methods"
 
@@ -83,47 +49,25 @@ Public Class Scraper
             _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
-
-    Public Sub CancelAsync()
-        If bwTVDB.IsBusy Then bwTVDB.CancelAsync()
-
-        While bwTVDB.IsBusy
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
-    End Sub
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <param name="strID">TVDB ID</param>
+    ''' <param name="id">TVDB ID</param>
     ''' <param name="GetPoster"></param>
     ''' <param name="FilteredOptions"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function GetData_TV(ByVal strID As String, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.MainDetails
-        If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
-
+    Public Function GetData_TV(ByVal id As Integer, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.MainDetails
         Dim nTVShow As New MediaContainers.MainDetails
-        Dim strTVDBID As String = String.Empty
 
-        If bwTVDB.CancellationPending Then Return Nothing
-
-        If strID.StartsWith("tt") Then
-            strTVDBID = GetTVDbIDbyIMDbID(strID)
-        Else
-            strTVDBID = strID
-        End If
-
-        If String.IsNullOrEmpty(strTVDBID) Then Return Nothing
-
-        Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(strTVDBID)))
+        Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(id))
         If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
             Return Nothing
         End If
         Dim TVShowInfo = APIResult.Result
 
         nTVShow.Scrapersource = "TVDB"
-        nTVShow.UniqueIDs.TVDbId = CStr(TVShowInfo.Series.Id)
+        nTVShow.UniqueIDs.TVDbId = TVShowInfo.Series.Id
         nTVShow.UniqueIDs.IMDbId = TVShowInfo.Series.IMDBId
 
         'Actors
@@ -144,8 +88,6 @@ Public Class Scraper
             End If
         End If
 
-        If bwTVDB.CancellationPending Then Return Nothing
-
         'Certifications
         If FilteredOptions.Certifications Then
             If Not String.IsNullOrEmpty(TVShowInfo.Series.ContentRating) Then
@@ -153,14 +95,10 @@ Public Class Scraper
             End If
         End If
 
-        If bwTVDB.CancellationPending Then Return Nothing
-
         'EpisodeGuideURL
         If FilteredOptions.EpisodeGuideURL Then
             nTVShow.EpisodeGuideURL.URL = String.Concat(_TVDBMirror.Address, "/api/", _AddonSettings.APIKey, "/series/", TVShowInfo.Series.Id, "/all/", TVShowInfo.Language, ".zip")
         End If
-
-        If bwTVDB.CancellationPending Then Return Nothing
 
         'Genres
         If FilteredOptions.Genres Then
@@ -176,16 +114,12 @@ Public Class Scraper
             End If
         End If
 
-        If bwTVDB.CancellationPending Then Return Nothing
-
         'Plot
         If FilteredOptions.Plot Then
             If TVShowInfo.Series.Overview IsNot Nothing Then
                 nTVShow.Plot = TVShowInfo.Series.Overview
             End If
         End If
-
-        If bwTVDB.CancellationPending Then Return Nothing
 
         'Posters (only for SearchResult dialog, auto fallback to "en" by TVDB)
         If GetPoster Then
@@ -196,49 +130,35 @@ Public Class Scraper
             End If
         End If
 
-        If bwTVDB.CancellationPending Then Return Nothing
-
         'Premiered
         If FilteredOptions.Premiered Then
             nTVShow.Premiered = CStr(TVShowInfo.Series.FirstAired)
         End If
-
-        If bwTVDB.CancellationPending Then Return Nothing
 
         'Rating
         If FilteredOptions.Ratings Then
             nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {.Max = 10, .Name = "thetvdb", .Value = TVShowInfo.Series.Rating, .Votes = TVShowInfo.Series.RatingCount})
         End If
 
-        If bwTVDB.CancellationPending Then Return Nothing
-
         'Runtime
         If FilteredOptions.Runtime Then
             nTVShow.Runtime = CStr(TVShowInfo.Series.Runtime)
         End If
-
-        If bwTVDB.CancellationPending Then Return Nothing
 
         'Status
         If FilteredOptions.Status Then
             nTVShow.Status = TVShowInfo.Series.Status
         End If
 
-        If bwTVDB.CancellationPending Then Return Nothing
-
         'Studios
         If FilteredOptions.Studios Then
             nTVShow.Studios.Add(TVShowInfo.Series.Network)
         End If
 
-        If bwTVDB.CancellationPending Then Return Nothing
-
         'Title
         If FilteredOptions.Title Then
             nTVShow.Title = TVShowInfo.Series.Name
         End If
-
-        If bwTVDB.CancellationPending Then Return Nothing
 
         'Seasons and Episodes
         For Each aEpisode As TVDB.Model.Episode In TVShowInfo.Series.Episodes
@@ -249,8 +169,7 @@ Public Class Scraper
                 If lSeasonList.Count = 0 Then
                     nTVShow.KnownSeasons.Add(New MediaContainers.MainDetails With {
                                              .Season = aEpisode.SeasonNumber,
-                                             .UniqueIDs = New MediaContainers.UniqueidContainer With {
-                                             .TVDbId = CStr(aEpisode.SeasonId)}
+                                             .UniqueIDs = New MediaContainers.UniqueidContainer With {.TVDbId = aEpisode.SeasonId}
                                              })
                 End If
             End If
@@ -319,7 +238,7 @@ Public Class Scraper
         Dim nTVEpisode As New MediaContainers.MainDetails
 
         'IDs
-        nTVEpisode.UniqueIDs.TVDbId = CStr(EpisodeInfo.Id)
+        nTVEpisode.UniqueIDs.TVDbId = EpisodeInfo.Id
         If EpisodeInfo.IMDBId IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.IMDBId) Then nTVEpisode.UniqueIDs.IMDbId = EpisodeInfo.IMDBId
 
         'Episode # Absolute
@@ -638,62 +557,25 @@ Public Class Scraper
         Return alImagesContainer
     End Function
 
-    Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Database.DBElement, ByVal iType As Enums.ScrapeType, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
-        Dim r As SearchResults = SearchTVShowByName(sShowName)
-
-        Select Case iType
-            Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
-                If r.Matches.Count = 1 Then
-                    Return GetData_TV(r.Matches.Item(0).UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
-                Else
-                    Using dlgSearch As New dlgSearchResults(_AddonSettings, Me)
-                        If dlgSearch.ShowDialog(r, sShowName, oDBTV.ShowPath) = DialogResult.OK Then
-                            If Not String.IsNullOrEmpty(dlgSearch.Result.UniqueIDs.TVDbId) Then
-                                Return GetData_TV(dlgSearch.Result.UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
-                            End If
-                        End If
-                    End Using
-                End If
-
-            Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
-                If r.Matches.Count = 1 Then
-                    Return GetData_TV(r.Matches.Item(0).UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
-                End If
-
-            Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
-                If r.Matches.Count > 0 Then
-                    Return GetData_TV(r.Matches.Item(0).UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
-                End If
-        End Select
-
-        Return Nothing
+    Public Function Get_TVDbID_By_IMDbID(ByVal imdbID As String) As Integer
+        Dim Shows As List(Of TVDB.Model.Series)
+        Shows = _TVDBApi.GetSeriesByRemoteId(imdbID, String.Empty, _TVDBMirror).Result
+        If Shows IsNot Nothing AndAlso Shows.Count = 1 Then
+            Return Shows.Item(0).Id
+        End If
+        Return -1
     End Function
 
-    Public Function GetTVDbIDbyIMDbID(ByVal IMDbID As String) As String
+    Private Function SearchTVShowByName(ByVal tvshowTitle As String) As List(Of MediaContainers.MainDetails)
+        If String.IsNullOrEmpty(tvshowTitle) Then Return New List(Of MediaContainers.MainDetails)
+        Dim R As New List(Of MediaContainers.MainDetails)
         Dim Shows As List(Of TVDB.Model.Series)
 
-        Shows = _TVDBApi.GetSeriesByRemoteId(IMDbID, String.Empty, _TVDBMirror).Result
-        If Shows Is Nothing Then
-            Return String.Empty
-        End If
-
-        If Shows.Count = 1 Then
-            Return Shows.Item(0).Id.ToString
-        End If
-
-        Return String.Empty
-    End Function
-
-    Private Function SearchTVShowByName(ByVal TVShowName As String) As SearchResults
-        If String.IsNullOrEmpty(TVShowName) Then Return New SearchResults
-        Dim R As New SearchResults
-        Dim Shows As List(Of TVDB.Model.Series)
-
-        Shows = _TVDBApi.GetSeriesByName(TVShowName, _AddonSettings.Language, _TVDBMirror).Result
+        Shows = _TVDBApi.GetSeriesByName(tvshowTitle, _AddonSettings.Language, _TVDBMirror).Result
 
         If Shows.Count = 0 Then
             'Fallback to Eng
-            Shows = _TVDBApi.GetSeriesByName(TVShowName, "en", _TVDBMirror).Result
+            Shows = _TVDBApi.GetSeriesByName(tvshowTitle, "en", _TVDBMirror).Result
         End If
 
         If Shows.Count > 0 Then
@@ -708,8 +590,8 @@ Public Class Scraper
                     Dim lNewShow As MediaContainers.MainDetails = New MediaContainers.MainDetails With {
                             .Premiered = t2,
                             .Title = t1}
-                    lNewShow.UniqueIDs.TVDbId = CStr(aShow.Id)
-                    R.Matches.Add(lNewShow)
+                    lNewShow.UniqueIDs.TVDbId = aShow.Id
+                    R.Add(lNewShow)
                 End If
             Next
         End If
@@ -732,85 +614,7 @@ Public Class Scraper
         Return gActors
     End Function
 
-    Public Sub SearchTVShowAsync(ByVal sShow As String, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
-
-        If Not bwTVDB.IsBusy Then
-            bwTVDB.WorkerReportsProgress = False
-            bwTVDB.WorkerSupportsCancellation = True
-            bwTVDB.RunWorkerAsync(New Arguments With {.Search = SearchType.TVShows,
-                  .Parameter = sShow, .FilteredOptions = FilteredOptions, .ScrapeModifiers = ScrapeModifiers})
-        End If
-    End Sub
-
-    Public Sub GetSearchTVShowInfoAsync(ByVal tvdbID As String, ByVal Show As MediaContainers.MainDetails, ByVal FilteredOptions As Structures.ScrapeOptions)
-        '' The rule is that if there is a tt is an IMDB otherwise is a TVDB
-        If Not bwTVDB.IsBusy Then
-            bwTVDB.WorkerReportsProgress = False
-            bwTVDB.WorkerSupportsCancellation = True
-            bwTVDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails_TVShow,
-                  .Parameter = tvdbID, .TVShow = Show, .FilteredOptions = FilteredOptions})
-        End If
-    End Sub
-
-    Private Sub bwTVDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVDB.DoWork
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        '' The rule is that if there is a tt is an IMDB otherwise is a TVDB
-
-        Select Case Args.Search
-            Case SearchType.TVShows
-                Dim r As SearchResults = SearchTVShowByName(Args.Parameter)
-                e.Result = New Results With {.ResultType = SearchType.TVShows, .Result = r}
-
-            Case SearchType.SearchDetails_TVShow
-                Dim r As MediaContainers.MainDetails = GetData_TV(Args.Parameter, Args.ScrapeModifiers, Args.FilteredOptions, True)
-                e.Result = New Results With {.ResultType = SearchType.SearchDetails_TVShow, .Result = r}
-        End Select
-    End Sub
-
-    Private Sub bwTVDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVDB.RunWorkerCompleted
-        Dim Res As Results = DirectCast(e.Result, Results)
-
-        Select Case Res.ResultType
-            Case SearchType.TVShows
-                RaiseEvent SearchResultsDownloaded(DirectCast(Res.Result, SearchResults))
-
-            Case SearchType.SearchDetails_TVShow
-                Dim showInfo As MediaContainers.MainDetails = DirectCast(Res.Result, MediaContainers.MainDetails)
-                RaiseEvent SearchInfoDownloaded(_Poster, showInfo)
-        End Select
-    End Sub
-
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-    Private Structure Arguments
-
-#Region "Fields"
-
-        Dim FilteredOptions As Structures.ScrapeOptions
-        Dim Parameter As String
-        Dim ScrapeModifiers As Structures.ScrapeModifiers
-        Dim Search As SearchType
-        Dim TVShow As MediaContainers.MainDetails
-        Dim Year As Integer
-
-#End Region 'Fields
-
-    End Structure
-
-    Private Structure Results
-
-#Region "Fields"
-
-        Dim Result As Object
-        Dim ResultType As SearchType
-
-#End Region 'Fields
-
-    End Structure
-
-#End Region 'Nested Types
 
 End Class

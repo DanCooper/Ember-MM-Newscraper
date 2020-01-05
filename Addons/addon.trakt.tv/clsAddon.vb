@@ -173,7 +173,7 @@ Public Class Scraper
                     End If
                     'search by TMDB ID
                     If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.MainDetails.UniqueIDs.TMDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.MainDetails.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Movie)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.MainDetails.UniqueIDs.TMDbId.ToString, TraktApiSharp.Enums.TraktSearchResultType.Movie)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     If nSearchResults IsNot Nothing AndAlso nSearchResults.ItemCount = 1 AndAlso nSearchResults(0).Movie IsNot Nothing Then
@@ -184,7 +184,7 @@ Public Class Scraper
                 Case Enums.ContentType.TVEpisode
                     'search by TVDB ID
                     If tDBElement.MainDetails.UniqueIDs.TVDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.MainDetails.UniqueIDs.TVDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.MainDetails.UniqueIDs.TVDbId.ToString, TraktApiSharp.Enums.TraktSearchResultType.Episode)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by IMDB ID
@@ -194,7 +194,7 @@ Public Class Scraper
                     End If
                     'search by TMDB ID
                     If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.MainDetails.UniqueIDs.TMDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.MainDetails.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Episode)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.MainDetails.UniqueIDs.TMDbId.ToString, TraktApiSharp.Enums.TraktSearchResultType.Episode)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     If nSearchResults IsNot Nothing AndAlso nSearchResults.ItemCount = 1 AndAlso nSearchResults(0).Episode IsNot Nothing Then
@@ -205,7 +205,7 @@ Public Class Scraper
                 Case Enums.ContentType.TVShow
                     'search by TVDB ID
                     If tDBElement.MainDetails.UniqueIDs.TVDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.MainDetails.UniqueIDs.TVDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TvDB, tDBElement.MainDetails.UniqueIDs.TVDbId.ToString, TraktApiSharp.Enums.TraktSearchResultType.Show)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     'search by IMDB ID
@@ -215,7 +215,7 @@ Public Class Scraper
                     End If
                     'search by TMDB ID
                     If (nSearchResults Is Nothing OrElse nSearchResults.ItemCount = 0) AndAlso tDBElement.MainDetails.UniqueIDs.TMDbIdSpecified Then
-                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.MainDetails.UniqueIDs.TMDbId, TraktApiSharp.Enums.TraktSearchResultType.Show)
+                        nSearchResults = Await _Client.Search.GetIdLookupResultsAsync(TraktApiSharp.Enums.TraktSearchIdType.TmDB, tDBElement.MainDetails.UniqueIDs.TMDbId.ToString, TraktApiSharp.Enums.TraktSearchResultType.Show)
                         'If nSearchResults.Exception IsNot Nothing Then Return 0
                     End If
                     If nSearchResults IsNot Nothing AndAlso nSearchResults.ItemCount = 1 AndAlso nSearchResults(0).Show IsNot Nothing Then
@@ -421,8 +421,7 @@ Public Class Scraper
         If Not tDBElement.MainDetails.UniqueIDsSpecified Then Return False
 
         Dim strIMDBID As String = tDBElement.MainDetails.UniqueIDs.IMDbId
-        Dim intTMDBID As Integer
-        Integer.TryParse(tDBElement.MainDetails.UniqueIDs.TMDbId, intTMDBID)
+        Dim intTMDBID As Integer = tDBElement.MainDetails.UniqueIDs.TMDbId
 
         Dim lstWatchedMovies As IEnumerable(Of Objects.Get.Watched.TraktWatchedMovie)
         If watchedmovies Is Nothing Then
@@ -453,10 +452,8 @@ Public Class Scraper
         If tDBElement.TVShowDetails Is Nothing OrElse Not tDBElement.TVShowDetails.UniqueIDsSpecified Then Return False
 
         Dim strShowIMDBID As String = tDBElement.TVShowDetails.UniqueIDs.IMDbId
-        Dim intShowTMDBID As Integer
-        Dim intShowTVDBID As Integer
-        Integer.TryParse(tDBElement.TVShowDetails.UniqueIDs.TMDbId, intShowTMDBID)
-        Integer.TryParse(tDBElement.TVShowDetails.UniqueIDs.TVDbId, intShowTVDBID)
+        Dim intShowTMDBID As Integer = tDBElement.TVShowDetails.UniqueIDs.TMDbId
+        Dim intShowTVDBID As Integer = tDBElement.TVShowDetails.UniqueIDs.TVDbId
 
         Dim lstWatchedShows As IEnumerable(Of Objects.Get.Watched.TraktWatchedShow)
         If watchedshows Is Nothing Then

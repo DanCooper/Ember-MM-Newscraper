@@ -471,8 +471,8 @@ Public Class WebsiteCreator
 
         If fInfo IsNot Nothing Then
             If fInfo.StreamDetails.Video.Count > 0 Then
-                tVid = Data.GetBestVideo(fInfo)
-                tRes = Data.GetResolutionFromDimensions(tVid)
+                tVid = Information.GetBestVideo(fInfo)
+                tRes = Information.GetResolutionFromDimensions(tVid)
 
                 nInfo.vidBitrate = tVid.Bitrate.ToString
                 nInfo.vidMultiViewCount = tVid.MultiViewCount.ToString
@@ -486,7 +486,7 @@ Public Class WebsiteCreator
                 nInfo.vidStereoMode = tVid.StereoMode
                 nInfo.vidWidth = tVid.Width.ToString
                 nInfo.vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown"), tVid.Codec)).ToUpper
-                nInfo.vidDimensions = Data.GetDimensionsFromVideo(tVid)
+                nInfo.vidDimensions = Information.GetDimensionsFromVideo(tVid)
             End If
 
             If fInfo.StreamDetails.Audio.Count > 0 Then
@@ -615,11 +615,11 @@ Public Class WebsiteCreator
     Private Function ProcessPattern_Flags(ByVal tDBElement As Database.DBElement, ByVal strRow As String, ByVal tContentType As Enums.ContentType) As String
         If _AudioVideoFlags.Count > 0 Then
             Dim fiAV = tDBElement.MainDetails.FileInfo
-            Dim tVideo As MediaContainers.Video = Data.GetBestVideo(fiAV)
+            Dim tVideo As MediaContainers.Video = Information.GetBestVideo(fiAV)
             Dim tAudio As MediaContainers.Audio = MetaData.GetBestAudio(fiAV, String.Empty, tContentType)
 
             'VideoResolution flags
-            Dim vresFlag As Flag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = Data.GetResolutionFromDimensions(tVideo).ToLower AndAlso f.Type = Flag.FlagType.VideoResolution)
+            Dim vresFlag As Flag = _AudioVideoFlags.FirstOrDefault(Function(f) f.Name = Information.GetResolutionFromDimensions(tVideo).ToLower AndAlso f.Type = Flag.FlagType.VideoResolution)
             If vresFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
             Else
@@ -743,8 +743,8 @@ Public Class WebsiteCreator
         strRow = strRow.Replace("<$TAGLINE>", StringUtils.HtmlEncode(tMovie.MainDetails.Tagline))
         strRow = strRow.Replace("<$TAGS>", If(tMovie.MainDetails.TagsSpecified, StringUtils.HtmlEncode((String.Join(" / ", tMovie.MainDetails.Tags.ToArray))), String.Empty))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(Title))
-        strRow = strRow.Replace("<$TMDBCOLID>", StringUtils.HtmlEncode(tMovie.MainDetails.UniqueIDs.TMDbCollectionId))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tMovie.MainDetails.UniqueIDs.TMDbId))
+        strRow = strRow.Replace("<$TMDBCOLID>", StringUtils.HtmlEncode(CStr(tMovie.MainDetails.UniqueIDs.TMDbCollectionId)))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(CStr(tMovie.MainDetails.UniqueIDs.TMDbId)))
         strRow = strRow.Replace("<$TOP250>", StringUtils.HtmlEncode(tMovie.MainDetails.Top250.ToString))
         strRow = strRow.Replace("<$TRAILER>", StringUtils.HtmlEncode(tMovie.MainDetails.Trailer))
         strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tMovie.MainDetails.VideoSource))
@@ -854,8 +854,8 @@ Public Class WebsiteCreator
         strRow = strRow.Replace("<$RUNTIME>", StringUtils.HtmlEncode(tEpisode.MainDetails.Runtime))
         strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tEpisode.MainDetails.Season)))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tEpisode.MainDetails.Title))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tEpisode.MainDetails.UniqueIDs.TMDbId))
-        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tEpisode.MainDetails.UniqueIDs.TVDbId))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(CStr(tEpisode.MainDetails.UniqueIDs.TMDbId)))
+        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(CStr(tEpisode.MainDetails.UniqueIDs.TVDbId)))
         strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tEpisode.MainDetails.VideoSource))
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.MainDetails.VotesSpecified, Double.Parse(tEpisode.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
@@ -926,8 +926,8 @@ Public Class WebsiteCreator
         strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tSeason.MainDetails.Plot))
         strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tSeason.MainDetails.Season)))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tSeason.MainDetails.Title))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tSeason.MainDetails.UniqueIDs.TMDbId))
-        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tSeason.MainDetails.UniqueIDs.TVDbId))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(CStr(tSeason.MainDetails.UniqueIDs.TMDbId)))
+        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(CStr(tSeason.MainDetails.UniqueIDs.TVDbId)))
 
         Return strRow
     End Function
@@ -986,8 +986,8 @@ Public Class WebsiteCreator
         strRow = strRow.Replace("<$STUDIOS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.MainDetails.Studios.ToArray)))
         strRow = strRow.Replace("<$TAGS>", If(tShow.MainDetails.TagsSpecified, StringUtils.HtmlEncode((String.Join(" / ", tShow.MainDetails.Tags.ToArray))), String.Empty))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(Title))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tShow.MainDetails.UniqueIDs.TMDbId))
-        strRow = strRow.Replace("<$TVDBID>", tShow.MainDetails.UniqueIDs.TVDbId)
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(CStr(tShow.MainDetails.UniqueIDs.TMDbId)))
+        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(CStr(tShow.MainDetails.UniqueIDs.TVDbId)))
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tShow.MainDetails.VotesSpecified, Double.Parse(tShow.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
         Return strRow

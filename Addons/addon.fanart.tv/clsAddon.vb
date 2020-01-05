@@ -42,29 +42,25 @@ Public Class Scraper
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _AddonSettings As AddonSettings
-
 #End Region 'Fields
 
 #Region "Methods"
 
-    Public Sub New(ByVal Settings As AddonSettings)
+    Public Sub CreateAPI(ByVal personalAPIKey As String)
         Try
-            _AddonSettings = Settings
-
             FanartTv.API.Key = My.Resources.EmberAPIKey
-            FanartTv.API.cKey = Settings.ApiKey
-
+            FanartTv.API.cKey = personalAPIKey
+            _Logger.Trace("[Fanart.tv] [CreateAPI] Client created")
         Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(String.Format("[Fanart.tv] [CreateAPI] [Error] {0}", ex.Message))
         End Try
     End Sub
 
-    Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
+    Public Function GetImages_Movie_MovieSet(ByVal tmdbID_imdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
         Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
         Try
-            Dim Results = New FanartTv.Movies.Movie(imdbID_tmdbID)
+            Dim Results = New FanartTv.Movies.Movie(tmdbID_imdbID)
             If Results Is Nothing OrElse FanartTv.API.ErrorOccurred Then
                 If FanartTv.API.ErrorMessage IsNot Nothing Then
                     _Logger.Error(FanartTv.API.ErrorMessage)
@@ -224,11 +220,11 @@ Public Class Scraper
         Return alImagesContainer
     End Function
 
-    Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
+    Public Function GetImages_TV(ByVal tvdbID As Integer, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
         Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
         Try
-            Dim Results = New FanartTv.TV.Show(tvdbID)
+            Dim Results = New FanartTv.TV.Show(tvdbID.ToString)
             If Results Is Nothing OrElse FanartTv.API.ErrorOccurred Then
                 If FanartTv.API.ErrorMessage IsNot Nothing Then
                     _Logger.Error(FanartTv.API.ErrorMessage)
@@ -438,9 +434,9 @@ Public Class Scraper
             _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
-            Return alImagesContainer
-        End Function
+        Return alImagesContainer
+    End Function
 
 #End Region 'Methods
 
-    End Class
+End Class

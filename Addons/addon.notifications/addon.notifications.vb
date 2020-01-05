@@ -45,9 +45,9 @@ Public Class Generic
 
     Property SettingsPanel As Containers.SettingsPanel = Nothing Implements Interfaces.IGenericAddon.SettingsPanel
 
-    Public ReadOnly Property Type() As List(Of Enums.ModuleEventType) Implements Interfaces.IGenericAddon.Type
+    Public ReadOnly Property Type() As List(Of Enums.AddonEventType) Implements Interfaces.IGenericAddon.Type
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Notification})
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Notification})
         End Get
     End Property
 
@@ -55,7 +55,7 @@ Public Class Generic
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.IGenericAddon.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.IGenericAddon.GenericEvent
     Public Event NeedsRestart() Implements Interfaces.IGenericAddon.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IGenericAddon.SettingsChanged
     Public Event StateChanged(ByVal SettingsPanelID As String, ByVal State As Boolean, ByVal DiffOrder As Integer) Implements Interfaces.IGenericAddon.StateChanged
@@ -65,7 +65,7 @@ Public Class Generic
 #Region "Event Methods"
 
     Private Sub Handle_GenericEvent(ByVal _type As String)
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {_type}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {_type}))
     End Sub
 
     Private Sub Handle_SettingsChanged()
@@ -107,9 +107,9 @@ Public Class Generic
         }
     End Sub
 
-    Public Function Run(ByVal ModuleEventType As Enums.ModuleEventType, ByRef Parameters As List(Of Object), ByRef SingleObjekt As Object, ByRef DBElement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.IGenericAddon.Run
+    Public Function Run(ByVal ModuleEventType As Enums.AddonEventType, ByRef Parameters As List(Of Object), ByRef SingleObjekt As Object, ByRef DBElement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.IGenericAddon.Run
         Try
-            If ModuleEventType = Enums.ModuleEventType.Notification Then
+            If ModuleEventType = Enums.AddonEventType.Notification Then
                 Dim ShowIt As Boolean = False
 
                 Select Case True

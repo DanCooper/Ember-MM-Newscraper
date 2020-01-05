@@ -64,11 +64,11 @@ Public Class Generic
 
     Property SettingsPanel As Containers.SettingsPanel = Nothing Implements Interfaces.IGenericAddon.SettingsPanel
 
-    Public ReadOnly Property Type() As List(Of Enums.ModuleEventType) Implements Interfaces.IGenericAddon.Type
+    Public ReadOnly Property Type() As List(Of Enums.AddonEventType) Implements Interfaces.IGenericAddon.Type
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {
-                                                      Enums.ModuleEventType.Generic,
-                                                      Enums.ModuleEventType.CommandLine
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {
+                                                      Enums.AddonEventType.Generic,
+                                                      Enums.AddonEventType.CommandLine
                                                       })
         End Get
     End Property
@@ -84,7 +84,7 @@ Public Class Generic
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.IGenericAddon.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.IGenericAddon.GenericEvent
     Public Event NeedsRestart() Implements Interfaces.IGenericAddon.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IGenericAddon.SettingsChanged
     Public Event StateChanged(ByVal SettingsPanelID As String, ByVal State As Boolean, ByVal DiffOrder As Integer) Implements Interfaces.IGenericAddon.StateChanged
@@ -128,7 +128,7 @@ Public Class Generic
     ''' <remarks>
     ''' TODO
     ''' </remarks>
-    Public Function Run(ByVal ModuleEventType As Enums.ModuleEventType,
+    Public Function Run(ByVal ModuleEventType As Enums.AddonEventType,
                                ByRef Parameters As List(Of Object),
                                ByRef SingleObjekt As Object,
                                ByRef DBElement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.IGenericAddon.Run
@@ -194,13 +194,13 @@ Public Class Generic
     End Sub
 
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _MnuMainToolsTag.Click, _CmnuTrayToolsTag.Click
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
 
         Using dTagManager As New dlgTagManager
             dTagManager.ShowDialog()
         End Using
 
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub
 
     Sub Settings_Load()

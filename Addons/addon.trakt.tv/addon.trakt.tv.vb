@@ -495,26 +495,26 @@ Public Class Generic
 
     Property SettingsPanel As Containers.SettingsPanel = Nothing Implements Interfaces.IGenericAddon.SettingsPanel
 
-    Public ReadOnly Property Type() As List(Of Enums.ModuleEventType) Implements Interfaces.IGenericAddon.Type
+    Public ReadOnly Property Type() As List(Of Enums.AddonEventType) Implements Interfaces.IGenericAddon.Type
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {
-                                                      Enums.ModuleEventType.BeforeEdit_Movie,
-                                                      Enums.ModuleEventType.BeforeEdit_TVEpisode,
-                                                      Enums.ModuleEventType.BeforeEdit_TVShow,
-                                                      Enums.ModuleEventType.CommandLine,
-                                                      Enums.ModuleEventType.Generic,
-                                                      Enums.ModuleEventType.Remove_Movie,
-                                                      Enums.ModuleEventType.Remove_TVEpisode,
-                                                      Enums.ModuleEventType.Remove_TVSeason,
-                                                      Enums.ModuleEventType.Remove_TVShow,
-                                                      Enums.ModuleEventType.ScraperMulti_Movie,
-                                                      Enums.ModuleEventType.ScraperMulti_TVEpisode,
-                                                      Enums.ModuleEventType.ScraperMulti_TVSeason,
-                                                      Enums.ModuleEventType.ScraperMulti_TVShow,
-                                                      Enums.ModuleEventType.ScraperSingle_Movie,
-                                                      Enums.ModuleEventType.ScraperSingle_TVEpisode,
-                                                      Enums.ModuleEventType.ScraperSingle_TVSeason,
-                                                      Enums.ModuleEventType.ScraperSingle_TVShow})
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {
+                                                      Enums.AddonEventType.BeforeEdit_Movie,
+                                                      Enums.AddonEventType.BeforeEdit_TVEpisode,
+                                                      Enums.AddonEventType.BeforeEdit_TVShow,
+                                                      Enums.AddonEventType.CommandLine,
+                                                      Enums.AddonEventType.Generic,
+                                                      Enums.AddonEventType.Remove_Movie,
+                                                      Enums.AddonEventType.Remove_TVEpisode,
+                                                      Enums.AddonEventType.Remove_TVSeason,
+                                                      Enums.AddonEventType.Remove_TVShow,
+                                                      Enums.AddonEventType.ScraperMulti_Movie,
+                                                      Enums.AddonEventType.ScraperMulti_TVEpisode,
+                                                      Enums.AddonEventType.ScraperMulti_TVSeason,
+                                                      Enums.AddonEventType.ScraperMulti_TVShow,
+                                                      Enums.AddonEventType.ScraperSingle_Movie,
+                                                      Enums.AddonEventType.ScraperSingle_TVEpisode,
+                                                      Enums.AddonEventType.ScraperSingle_TVSeason,
+                                                      Enums.AddonEventType.ScraperSingle_TVShow})
         End Get
     End Property
 
@@ -531,7 +531,7 @@ Public Class Generic
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.IGenericAddon.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.IGenericAddon.GenericEvent
     Public Event NeedsRestart() Implements Interfaces.IGenericAddon.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IGenericAddon.SettingsChanged
     Public Event StateChanged(ByVal SettingsPanelID As String, ByVal State As Boolean, ByVal DiffOrder As Integer) Implements Interfaces.IGenericAddon.StateChanged
@@ -540,7 +540,7 @@ Public Class Generic
 
 #Region "Event Methods"
 
-    Private Sub Handle_GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef params As List(Of Object))
+    Private Sub Handle_GenericEvent(ByVal mType As Enums.AddonEventType, ByRef params As List(Of Object))
         RaiseEvent GenericEvent(mType, params)
     End Sub
 
@@ -591,35 +591,35 @@ Public Class Generic
         }
     End Sub
 
-    Public Function Run(ByVal ModuleEventType As Enums.ModuleEventType, ByRef Parameters As List(Of Object), ByRef SingleObjekt As Object, ByRef DBElement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.IGenericAddon.Run
+    Public Function Run(ByVal ModuleEventType As Enums.AddonEventType, ByRef Parameters As List(Of Object), ByRef SingleObjekt As Object, ByRef DBElement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.IGenericAddon.Run
         Select Case ModuleEventType
-            Case Enums.ModuleEventType.BeforeEdit_Movie
+            Case Enums.AddonEventType.BeforeEdit_Movie
                 If _AddonSettings.GetWatchedStateBeforeEdit_Movie AndAlso DBElement IsNot Nothing Then
                     _TraktAPI.GetWatchedState_Movie(DBElement)
                 End If
-            Case Enums.ModuleEventType.BeforeEdit_TVEpisode
+            Case Enums.AddonEventType.BeforeEdit_TVEpisode
                 If _AddonSettings.GetWatchedStateBeforeEdit_TVEpisode AndAlso DBElement IsNot Nothing Then
                     _TraktAPI.GetWatchedState_TVEpisode(DBElement)
                 End If
-            Case Enums.ModuleEventType.CommandLine
+            Case Enums.AddonEventType.CommandLine
                 '_TraktAPI.SyncToEmber_All()
-            Case Enums.ModuleEventType.ScraperMulti_Movie
+            Case Enums.AddonEventType.ScraperMulti_Movie
                 If _AddonSettings.GetWatchedStateScraperMulti_Movie AndAlso DBElement IsNot Nothing Then
                     _TraktAPI.GetWatchedState_Movie(DBElement)
                 End If
-            Case Enums.ModuleEventType.Remove_Movie
+            Case Enums.AddonEventType.Remove_Movie
                 If _AddonSettings.CollectionRemove_Movie AndAlso DBElement IsNot Nothing Then
                     '_TraktAPI.RemoveFromCollection_Movie(_dbelement)
                 End If
-            Case Enums.ModuleEventType.ScraperMulti_TVShow, Enums.ModuleEventType.ScraperMulti_TVEpisode
+            Case Enums.AddonEventType.ScraperMulti_TVShow, Enums.AddonEventType.ScraperMulti_TVEpisode
                 If _AddonSettings.GetWatchedStateScraperMulti_TVEpisode AndAlso DBElement IsNot Nothing Then
                     _TraktAPI.GetWatchedState_TVEpisode(DBElement)
                 End If
-            Case Enums.ModuleEventType.ScraperSingle_Movie
+            Case Enums.AddonEventType.ScraperSingle_Movie
                 If _AddonSettings.GetWatchedStateScraperSingle_Movie AndAlso DBElement IsNot Nothing Then
                     _TraktAPI.GetWatchedState_Movie(DBElement)
                 End If
-            Case Enums.ModuleEventType.ScraperSingle_TVShow, Enums.ModuleEventType.ScraperSingle_TVEpisode
+            Case Enums.AddonEventType.ScraperSingle_TVShow, Enums.AddonEventType.ScraperSingle_TVEpisode
                 If _AddonSettings.GetWatchedStateScraperSingle_TVEpisode AndAlso DBElement IsNot Nothing Then
                     _TraktAPI.GetWatchedState_TVEpisode(DBElement)
                 End If
@@ -787,7 +787,7 @@ Public Class Generic
                 If _TraktAPI.GetWatchedState_Movie(DBElement, lstWatchedMovies) Then
                     Master.DB.Save_Movie(DBElement, False, True, False, True, False)
                     _Logger.Trace(String.Format("[TraktWorker] GetWatchedStateSelected_Movie: ""{0}"" | Synced to Ember", DBElement.MainDetails.Title))
-                    RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {DBElement.ID}))
+                    RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_Movie, New List(Of Object)(New Object() {DBElement.ID}))
                 End If
             End If
         Next
@@ -811,7 +811,7 @@ Public Class Generic
                                                DBElement.MainDetails.Season,
                                                DBElement.MainDetails.Episode,
                                                DBElement.MainDetails.Title))
-                    RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {DBElement.ID}))
+                    RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {DBElement.ID}))
                 End If
             End If
         Next
@@ -838,11 +838,11 @@ Public Class Generic
                                                    DBElement.MainDetails.Season,
                                                    DBElement.MainDetails.Episode,
                                                    DBElement.MainDetails.Title))
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {DBElement.ID}))
+                        RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {DBElement.ID}))
                     End If
                 End If
             Next
-            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVSeason, New List(Of Object)(New Object() {DBTVSeason.ID}))
+            RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVSeason, New List(Of Object)(New Object() {DBTVSeason.ID}))
         Next
     End Sub
     ''' <summary>
@@ -865,11 +865,11 @@ Public Class Generic
                                                    DBElement.MainDetails.Season,
                                                    DBElement.MainDetails.Episode,
                                                    DBElement.MainDetails.Title))
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {DBElement.ID}))
+                        RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {DBElement.ID}))
                     End If
                 End If
             Next
-            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {DBTVSShow.ID}))
+            RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {DBTVSShow.ID}))
         Next
     End Sub
     ''' <summary>

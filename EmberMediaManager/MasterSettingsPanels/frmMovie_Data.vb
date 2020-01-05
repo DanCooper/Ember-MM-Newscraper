@@ -25,7 +25,8 @@ Public Class frmMovie_Data
 
 #Region "Fields"
 
-    Private MovieMeta As New List(Of Settings.MetadataPerType)
+    Private _SGVWidthCalculated As Boolean
+    Private _MovieMeta As New List(Of Settings.MetadataPerType)
     Private _TempTagsWhitelist As New ExtendedListOfString
 
 #End Region 'Fields
@@ -82,6 +83,7 @@ Public Class frmMovie_Data
             .Actors.Enabled = chkActorsEnabled.Checked
             Integer.TryParse(txtActorsLimit.Text, .Actors.Limit)
             .Actors.Locked = chkActorsLocked.Checked
+            .Actors.ScraperSettings = sgvActors.Save
             .Actors.WithImageOnly = chkActorsWithImageOnly.Checked
             '
             'Certifications
@@ -95,39 +97,43 @@ Public Class frmMovie_Data
                 End If
             End If
             .Certifications.Locked = chkCertificationsLocked.Checked
+            .Certifications.ScraperSettings = sgvCertifications.Save
             .CertificationsForMPAA = chkCertificationsForMPAA.Checked
             .CertificationsForMPAAFallback = chkCertificationsForMPAAFallback.Checked
-            .CertificationsOnlyValue = chkCertificationsOnlyValue.Checked
+            .CertificationsOnlyValue = chkMPAAValueOnly.Checked
             '
             'Collection
             '
             .Collection.Enabled = chkCollectionEnabled.Checked
             .Collection.Locked = chkCollectionLocked.Checked
-            .Collection.AutoAddToCollection = chkCollectionAutoAddToCollection.Checked
             .Collection.SaveExtendedInformation = chkCollectionSaveExtendedInformation.Checked
-            .Collection.SaveYAMJCompatible = chkCollectionSaveYAMJCompatible.Checked
+            .Collection.ScraperSettings = sgvCollection.Save
             '
             'Countries
             '
             .Countries.Enabled = chkCountriesEnabled.Checked
             Integer.TryParse(txtCountriesLimit.Text, .Countries.Limit)
             .Countries.Locked = chkCountriesLocked.Checked
+            .Countries.ScraperSettings = sgvCountries.Save
             '
             'Credits
             '
             .Credits.Enabled = chkCreditsEnabled.Checked
             .Credits.Locked = chkCreditsLocked.Checked
+            .Credits.ScraperSettings = sgvCredits.Save
             '
             'Directors
             '
             .Directors.Enabled = chkDirectorsEnabled.Checked
             .Directors.Locked = chkDirectorsLocked.Checked
+            .Directors.ScraperSettings = sgvDirectors.Save
             '
             'Genres
             '
             .Genres.Enabled = chkGenresEnabled.Checked
             Integer.TryParse(txtGenresLimit.Text, .Genres.Limit)
             .Genres.Locked = chkGenresLocked.Checked
+            .Genres.ScraperSettings = sgvGenres.Save
             '
             'Metadata
             '
@@ -141,6 +147,7 @@ Public Class frmMovie_Data
             '
             .MPAA.Enabled = chkMPAAEnabled.Checked
             .MPAA.Locked = chkMPAALocked.Checked
+            .MPAA.ScraperSettings = sgvMPAA.Save
             .MPAANotRatedValue = txtMPAANotRatedValue.Text.Trim
 
             '
@@ -148,12 +155,14 @@ Public Class frmMovie_Data
             '
             .OriginalTitle.Enabled = chkOriginalTitleEnabled.Checked
             .OriginalTitle.Locked = chkOriginalTitleLocked.Checked
+            .OriginalTitle.ScraperSettings = sgvOriginalTitle.Save
             '
             'Outline
             '
             .Outline.Enabled = chkOutlineEnabled.Checked
             Integer.TryParse(txtOutlineLimit.Text, .Outline.Limit)
             .Outline.Locked = chkOutlineLocked.Checked
+            .Outline.ScraperSettings = sgvOutline.Save
             .Outline.UsePlot = chkOutlineUsePlot.Checked
             .Outline.UsePlotAsFallback = chkOutlineUsePlotAsFallback.Checked
             '
@@ -161,55 +170,71 @@ Public Class frmMovie_Data
             '
             .Plot.Enabled = chkPlotEnabled.Checked
             .Plot.Locked = chkPlotLocked.Checked
+            .Plot.ScraperSettings = sgvPlot.Save
             '
             'Premiered
             '
             .Premiered.Enabled = chkPremieredEnabled.Checked
             .Premiered.Locked = chkPremieredLocked.Checked
+            .Premiered.ScraperSettings = sgvPremiered.Save
             '
             'Ratings
             '
             .Ratings.Enabled = chkRatingsEnabled.Checked
             .Ratings.Locked = chkRatingsLocked.Checked
+            .Ratings.ScraperSettings = sgvRatings.Save
+            '
+            'Runtime
+            '
+            .Runtime.Enabled = chkRuntimeEnabled.Checked
+            .Runtime.Locked = chkRuntimeLocked.Checked
+            .Runtime.ScraperSettings = sgvRuntime.Save
             '
             'Studios
             '
             .Studios.Enabled = chkStudiosEnabled.Checked
             Integer.TryParse(txtStudiosLimit.Text, .Studios.Limit)
             .Studios.Locked = chkStudiosLocked.Checked
+            .Studios.ScraperSettings = sgvStudios.Save
             '
             'Tagline
             '
             .Tagline.Enabled = chkTaglineEnabled.Checked
             .Tagline.Locked = chkTaglineLocked.Checked
+            .Tagline.ScraperSettings = sgvTagline.Save
             '
             'Tags
             '
             .Tags.Enabled = chkTagsEnabled.Checked
             .Tags.Locked = chkTagsLocked.Checked
             .Tags.LimitAsList = _TempTagsWhitelist
+            .Tags.ScraperSettings = sgvTags.Save
             '
             'Title
             '
             .Title.Enabled = chkTitleEnabled.Checked
             .Title.Locked = chkTitleLock.Checked
             .Title.UseOriginalTitle = chkTitleUseOriginalTitle.Checked
+            .Title.ScraperSettings = sgvTitle.Save
             '
             'Top250
             '
-            chkTop250Enabled.Checked = .Top250.Enabled
-            chkTop250Locked.Checked = .Top250.Locked
+            .Top250.Enabled = chkTop250Enabled.Checked
+            .Top250.Locked = chkTop250Locked.Checked
+            .Top250.ScraperSettings = sgvTop250.Save
             '
             'Trailer
             '
             .TrailerLink.Enabled = chkTrailerLinkEnabled.Checked
             .TrailerLink.Locked = chkTrailerLinkLocked.Checked
             .TrailerLink.SaveKodiCompatible = chkTrailerLinkSaveKodiCompatible.Checked
+            .TrailerLink.ScraperSettings = sgvTrailerLink.Save
             '
             'UserRating
             '
             .UserRating.Enabled = chkUserRatingEnabled.Checked
             .UserRating.Locked = chkUserRatingLocked.Checked
+            .UserRating.ScraperSettings = sgvUserRating.Save
 
             .CleanPlotAndOutline = chkCleanPlotAndOutline.Checked
             .ClearDisabledFields = chkClearDisabledFields.Checked
@@ -217,7 +242,7 @@ Public Class frmMovie_Data
 
         With Master.eSettings
             .MovieMetadataPerFileType.Clear()
-            .MovieMetadataPerFileType.AddRange(MovieMeta)
+            .MovieMetadataPerFileType.AddRange(_MovieMeta)
         End With
     End Sub
 
@@ -234,6 +259,7 @@ Public Class frmMovie_Data
             chkActorsLocked.Checked = .Actors.Locked
             chkActorsWithImageOnly.Checked = .Actors.WithImageOnly
             txtActorsLimit.Text = .Actors.Limit.ToString
+            sgvActors.AddSettings(.Actors.ScraperSettings)
             '
             'Certifications
             '
@@ -262,57 +288,63 @@ Public Class frmMovie_Data
             chkCertificationsLocked.Checked = .Certifications.Locked
             chkCertificationsForMPAA.Checked = .CertificationsForMPAA
             chkCertificationsForMPAAFallback.Checked = .CertificationsForMPAAFallback
-            chkCertificationsOnlyValue.Checked = .CertificationsOnlyValue
+            chkMPAAValueOnly.Checked = .CertificationsOnlyValue
+            sgvCertifications.AddSettings(.Certifications.ScraperSettings)
             '
             'Collection
             '
             chkCollectionEnabled.Checked = .Collection.Enabled
             chkCollectionLocked.Checked = .Collection.Locked
-            chkCollectionAutoAddToCollection.Checked = .Collection.AutoAddToCollection
             chkCollectionSaveExtendedInformation.Checked = .Collection.SaveExtendedInformation
-            chkCollectionSaveYAMJCompatible.Checked = .Collection.SaveYAMJCompatible
+            sgvCollection.AddSettings(.Collection.ScraperSettings)
             '
             'Countries
             '
             chkCountriesEnabled.Checked = .Countries.Enabled
             chkCountriesLocked.Checked = .Countries.Locked
+            sgvCountries.AddSettings(.Countries.ScraperSettings)
             txtCountriesLimit.Text = .Countries.Limit.ToString
             '
             'Credits
             '
             chkCreditsEnabled.Checked = .Credits.Enabled
             chkCreditsLocked.Checked = .Credits.Locked
+            sgvCredits.AddSettings(.Credits.ScraperSettings)
 
             '
             'Directors
             '
             chkDirectorsEnabled.Checked = .Directors.Enabled
             chkDirectorsLocked.Checked = .Directors.Locked
+            sgvDirectors.AddSettings(.Directors.ScraperSettings)
             '
             'Genres
             '
             chkGenresEnabled.Checked = .Genres.Enabled
             chkGenresLocked.Checked = .Genres.Locked
+            sgvGenres.AddSettings(.Genres.ScraperSettings)
             txtGenresLimit.Text = .Genres.Limit.ToString
             '
             'Metadata
             '
             chkMetaDataScanEnabled.Checked = .MetadataScan.Enabled
             chkMetadataScanDurationForRuntimeEnabled.Checked = .MetadataScan.DurationForRuntimeEnabled
-            txtMetadataScanDurationForRuntimeFormat.Text = .MetadataScan.DurationForRuntimeFormat
             chkMetadataScanLockAudioLanguage.Checked = .MetadataScan.LockAudioLanguage
             chkMetadataScanLockVideoLanguage.Checked = .MetadataScan.LockVideoLanguage
+            txtMetadataScanDurationForRuntimeFormat.Text = .MetadataScan.DurationForRuntimeFormat
             '
             'MPAA
             '
             chkMPAAEnabled.Checked = .MPAA.Enabled
             chkMPAALocked.Checked = .MPAA.Locked
+            sgvMPAA.AddSettings(.MPAA.ScraperSettings)
             txtMPAANotRatedValue.Text = .MPAANotRatedValue
             '
             'OriginalTitle
             '
             chkOriginalTitleEnabled.Checked = .OriginalTitle.Enabled
             chkOriginalTitleLocked.Checked = .OriginalTitle.Locked
+            sgvOriginalTitle.AddSettings(.OriginalTitle.ScraperSettings)
             '
             'Outline
             '
@@ -320,43 +352,51 @@ Public Class frmMovie_Data
             chkOutlineLocked.Checked = .Outline.Locked
             chkOutlineUsePlot.Checked = .Outline.UsePlot
             chkOutlineUsePlotAsFallback.Checked = .Outline.UsePlotAsFallback
+            sgvOutline.AddSettings(.Outline.ScraperSettings)
             txtOutlineLimit.Text = .Outline.Limit.ToString
             '
             'Plot
             '
             chkPlotEnabled.Checked = .Plot.Enabled
             chkPlotLocked.Checked = .Plot.Locked
+            sgvPlot.AddSettings(.Plot.ScraperSettings)
             '
             'Premiered
             '
             chkPremieredEnabled.Checked = .Premiered.Enabled
             chkPremieredLocked.Checked = .Premiered.Locked
+            sgvPremiered.AddSettings(.Premiered.ScraperSettings)
             '
             'Ratings
             '
             chkRatingsEnabled.Checked = .Ratings.Enabled
             chkRatingsLocked.Checked = .Ratings.Locked
+            sgvRatings.AddSettings(.Ratings.ScraperSettings)
             '
             'Runtime
             '
             chkRuntimeEnabled.Checked = .Runtime.Enabled
             chkRuntimeLocked.Checked = .Runtime.Locked
+            sgvRuntime.AddSettings(.Runtime.ScraperSettings)
             '
             'Studios
             '
             chkStudiosEnabled.Checked = .Studios.Enabled
             chkStudiosLocked.Checked = .Studios.Locked
+            sgvStudios.AddSettings(.Studios.ScraperSettings)
             txtStudiosLimit.Text = .Studios.Limit.ToString
             '
             'Tagline
             '
             chkTaglineEnabled.Checked = .Tagline.Enabled
             chkTaglineLocked.Checked = .Tagline.Locked
+            sgvTagline.AddSettings(.Tagline.ScraperSettings)
             '
             'Tags
             '
             chkTagsEnabled.Checked = .Tags.Enabled
             chkTagsLocked.Checked = .Tags.Locked
+            sgvTags.AddSettings(.Tags.ScraperSettings)
             _TempTagsWhitelist = .Tags.LimitAsList
             '
             'Title
@@ -364,22 +404,26 @@ Public Class frmMovie_Data
             chkTitleEnabled.Checked = .Title.Enabled
             chkTitleLock.Checked = .Title.Locked
             chkTitleUseOriginalTitle.Checked = .Title.UseOriginalTitle
+            sgvTitle.AddSettings(.Title.ScraperSettings)
             '
             'Top250
             '
             chkTop250Enabled.Checked = .Top250.Enabled
             chkTop250Locked.Checked = .Top250.Locked
+            sgvTop250.AddSettings(.Top250.ScraperSettings)
             '
             'Trailer
             '
             chkTrailerLinkEnabled.Checked = .TrailerLink.Enabled
             chkTrailerLinkLocked.Checked = .TrailerLink.Locked
             chkTrailerLinkSaveKodiCompatible.Checked = .TrailerLink.SaveKodiCompatible
+            sgvTrailerLink.AddSettings(.TrailerLink.ScraperSettings)
             '
             'UserRating
             '
             chkUserRatingEnabled.Checked = .UserRating.Enabled
             chkUserRatingLocked.Checked = .UserRating.Locked
+            sgvUserRating.AddSettings(.UserRating.ScraperSettings)
 
 
             chkCleanPlotAndOutline.Checked = .CleanPlotAndOutline
@@ -387,30 +431,50 @@ Public Class frmMovie_Data
         End With
 
         With Master.eSettings
-            MovieMeta.AddRange(.MovieMetadataPerFileType)
+            _MovieMeta.AddRange(.MovieMetadataPerFileType)
         End With
 
         Load_MovieMetadata()
     End Sub
+    ''' <summary>
+    ''' Workaround to autosize the DGV based on column widths without change the row hights
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub Settings_VisibleChanged(sender As Object, e As EventArgs) Handles pnlSettings.VisibleChanged
+        If Not _SGVWidthCalculated AndAlso CType(sender, Panel).Visible Then
+            tblScraperFields.SuspendLayout()
+            For i As Integer = 0 To tblScraperFields.Controls.Count - 1
+                Dim nType As Type = tblScraperFields.Controls(i).GetType
+                If nType.Name = "ScraperGridView" Then
+                    Dim nDataGridView As DataGridView = CType(tblScraperFields.Controls(i), DataGridView)
+                    Dim intWidth As Integer = 0
+                    For Each nColumn As DataGridViewColumn In nDataGridView.Columns
+                        intWidth += nColumn.Width
+                    Next
+                    nDataGridView.Width = intWidth + 1
+                End If
+            Next
+            tblScraperFields.ResumeLayout()
+            _SGVWidthCalculated = True
+        End If
+    End Sub
 
     Private Sub Setup()
         With Master.eLang
-            chkActorsWithImageOnly.Text = .GetString(510, "Scrape Only Actors With Images")
-            chkCertificationsForMPAA.Text = .GetString(511, "Use Certification for MPAA")
-            chkCertificationsForMPAAFallback.Text = .GetString(1293, "Only if no MPAA is found")
-            chkCertificationsOnlyValue.Text = .GetString(835, "Save value only")
+            lblCertificationsForMPAA.Text = .GetString(511, "Use Certifications for MPAA")
+            lblCertificationsForMPAAFallback.Text = .GetString(1293, "Only if MPAA is empty")
+            lblMPAAValueOnly.Text = .GetString(835, "Save value only")
             chkClearDisabledFields.Text = .GetString(125, "Clear disabled fields")
             chkCleanPlotAndOutline.Text = .GetString(985, "Clean Plot/Outline")
-            chkCollectionAutoAddToCollection.Text = .GetString(1266, "Add Movie automatically to Collections")
             chkCollectionSaveExtendedInformation.Text = .GetString(1075, "Save extended Collection information to NFO (Kodi 16.0 ""Jarvis"" and newer)")
-            chkCollectionSaveYAMJCompatible.Text = .GetString(561, "Save YAMJ Compatible Sets to NFO")
             chkMetaDataScanEnabled.Text = .GetString(517, "Scan Metadata")
             lblPlotForOutline.Text = .GetString(965, "Use Plot for Outline")
+            lblActorsWithImageOnly.Text = .GetString(510, "Only those with images")
             lblPlotForOutlineAsFallback.Text = .GetString(958, "Only if Plot Outline is empty")
             chkMetadataScanDurationForRuntimeEnabled.Text = .GetString(516, "Use Duration for Runtime")
             chkTrailerLinkSaveKodiCompatible.Text = .GetString(1187, "Save YouTube-Trailer-Links in Kodi compatible format")
             lblOriginalTitleAsTitle.Text = .GetString(240, "Use Original Title as Title")
-            gbMPAA.Text = .GetString(401, "MPAA")
             gbMovieScraperDefFIExtOpts.Text = .GetString(625, "Defaults by File Type")
             gbMovieScraperDefFIExtOpts.Text = .GetString(625, "Defaults by File Type")
             gbScraperFields.Text = .GetString(577, "Scraper Fields - Global")
@@ -441,10 +505,32 @@ Public Class frmMovie_Data
             lblTop250.Text = .GetString(591, "Top 250")
             lblTrailerLink.Text = .GetString(937, "Trailer-Link")
             lblUserRating.Text = .GetString(1467, "User Rating")
-            lblMovieScraperMPAANotRated.Text = String.Concat(.GetString(832, "MPAA value if no rating is available"), ":")
+            lblMPAANotRatedValue.Text = String.Concat(.GetString(832, "Value if no rating is available"), ":")
             lblPremiered.Text = .GetString(724, "Premiered")
             btnTagsWhitelist.Text = .GetString(841, "Whitelist")
         End With
+
+        sgvActors.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Actors)))
+        sgvCertifications.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Certifications)))
+        sgvCollection.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Collection)))
+        sgvCountries.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Countries)))
+        sgvCredits.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Credits)))
+        sgvDirectors.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Directors)))
+        sgvGenres.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Genres)))
+        sgvMPAA.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_MPAA)))
+        sgvOriginalTitle.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_OriginalTitle)))
+        sgvOutline.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Outline)))
+        sgvPlot.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Plot)))
+        sgvPremiered.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Premiered)))
+        sgvRatings.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Ratings)))
+        sgvRuntime.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Runtime)))
+        sgvStudios.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Studios)))
+        sgvTagline.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Tagline)))
+        sgvTags.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Tags)))
+        sgvTitle.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Title)))
+        sgvTop250.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Top250)))
+        sgvTrailerLink.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Trailer)))
+        sgvUserRating.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_UserRating)))
     End Sub
 
     Private Sub Enable_ApplyButton() Handles _
@@ -453,13 +539,12 @@ Public Class frmMovie_Data
             chkActorsWithImageOnly.CheckedChanged,
             chkCertificationsForMPAAFallback.CheckedChanged,
             chkCertificationsLocked.CheckedChanged,
-            chkCertificationsOnlyValue.CheckedChanged,
+            chkMPAAValueOnly.CheckedChanged,
             chkCleanPlotAndOutline.CheckedChanged,
             chkClearDisabledFields.CheckedChanged,
-            chkCollectionAutoAddToCollection.CheckedChanged,
+            chkCollectionEnabled.CheckedChanged,
             chkCollectionLocked.CheckedChanged,
             chkCollectionSaveExtendedInformation.CheckedChanged,
-            chkCollectionSaveYAMJCompatible.CheckedChanged,
             chkCountriesLocked.CheckedChanged,
             chkCreditsEnabled.CheckedChanged,
             chkCreditsLocked.CheckedChanged,
@@ -520,13 +605,13 @@ Public Class frmMovie_Data
             cbCertificationsLimit.SelectedIndex = 0
             chkCertificationsForMPAA.Enabled = False
             chkCertificationsForMPAA.Checked = False
-            chkCertificationsOnlyValue.Enabled = False
-            chkCertificationsOnlyValue.Checked = False
+            chkMPAAValueOnly.Enabled = False
+            chkMPAAValueOnly.Checked = False
         Else
             cbCertificationsLimit.Enabled = True
             cbCertificationsLimit.SelectedIndex = 0
             chkCertificationsForMPAA.Enabled = True
-            chkCertificationsOnlyValue.Enabled = True
+            chkMPAAValueOnly.Enabled = True
         End If
         RaiseEvent SettingsChanged()
     End Sub
@@ -537,14 +622,6 @@ Public Class frmMovie_Data
             chkCertificationsForMPAAFallback.Checked = False
         Else
             chkCertificationsForMPAAFallback.Enabled = True
-        End If
-        RaiseEvent SettingsChanged()
-    End Sub
-
-    Private Sub CollectionEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkCollectionEnabled.CheckedChanged
-        chkCollectionAutoAddToCollection.Enabled = chkCollectionEnabled.Checked
-        If Not chkCollectionEnabled.Checked Then
-            chkCollectionAutoAddToCollection.Checked = False
         End If
         RaiseEvent SettingsChanged()
     End Sub
@@ -563,7 +640,7 @@ Public Class frmMovie_Data
 
     Private Sub Load_MovieMetadata()
         lstMovieScraperDefFIExt.Items.Clear()
-        For Each x As Settings.MetadataPerType In MovieMeta
+        For Each x As Settings.MetadataPerType In _MovieMeta
             lstMovieScraperDefFIExt.Items.Add(x.FileType)
         Next
     End Sub
@@ -634,7 +711,7 @@ Public Class frmMovie_Data
 
 
 
-    Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtAdd.Click
         If Not txtMovieScraperDefFIExt.Text.StartsWith(".") Then txtMovieScraperDefFIExt.Text = String.Concat(".", txtMovieScraperDefFIExt.Text)
         Using dFileInfo As New dlgFileInfo(New MediaContainers.Fileinfo)
             If dFileInfo.ShowDialog() = DialogResult.OK Then
@@ -644,7 +721,7 @@ Public Class frmMovie_Data
                         .FileType = txtMovieScraperDefFIExt.Text,
                         .MetaData = fi
                     }
-                    MovieMeta.Add(m)
+                    _MovieMeta.Add(m)
                     Load_MovieMetadata()
                     txtMovieScraperDefFIExt.Text = String.Empty
                     txtMovieScraperDefFIExt.Focus()
@@ -654,9 +731,9 @@ Public Class frmMovie_Data
         End Using
     End Sub
 
-    Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtEdit.Click
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
-            For Each tMetadata As Settings.MetadataPerType In MovieMeta
+            For Each tMetadata As Settings.MetadataPerType In _MovieMeta
                 If tMetadata.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
                     Using dFileInfo As New dlgFileInfo(tMetadata.MetaData)
                         If dFileInfo.ShowDialog = DialogResult.OK Then
@@ -671,11 +748,11 @@ Public Class frmMovie_Data
         End If
     End Sub
 
-    Private Sub btnMovieScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnMovieScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtRemove.Click
         RemoveMovieMetaData()
     End Sub
 
-    Private Sub lstMovieScraperDefFIExt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub lstMovieScraperDefFIExt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lstMovieScraperDefFIExt.SelectedIndexChanged
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
             btnMovieScraperDefFIExtEdit.Enabled = True
             btnMovieScraperDefFIExtRemove.Enabled = True
@@ -688,9 +765,9 @@ Public Class frmMovie_Data
 
     Private Sub RemoveMovieMetaData()
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
-            For Each x As Settings.MetadataPerType In MovieMeta
+            For Each x As Settings.MetadataPerType In _MovieMeta
                 If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
-                    MovieMeta.Remove(x)
+                    _MovieMeta.Remove(x)
                     Load_MovieMetadata()
                     RaiseEvent SettingsChanged()
                     Exit For
@@ -699,11 +776,11 @@ Public Class frmMovie_Data
         End If
     End Sub
 
-    Private Sub lstMovieScraperDefFIExt_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+    Private Sub lstMovieScraperDefFIExt_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieScraperDefFIExt.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveMovieMetaData()
     End Sub
 
-    Private Sub txtMovieScraperDefFIExt_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub txtMovieScraperDefFIExt_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtMovieScraperDefFIExt.TextChanged
         btnMovieScraperDefFIExtAdd.Enabled = Not String.IsNullOrEmpty(txtMovieScraperDefFIExt.Text) AndAlso Not lstMovieScraperDefFIExt.Items.Contains(If(txtMovieScraperDefFIExt.Text.StartsWith("."), txtMovieScraperDefFIExt.Text, String.Concat(".", txtMovieScraperDefFIExt.Text)))
         If btnMovieScraperDefFIExtAdd.Enabled Then
             btnMovieScraperDefFIExtEdit.Enabled = False

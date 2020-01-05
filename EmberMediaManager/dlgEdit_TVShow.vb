@@ -1076,41 +1076,40 @@ Public Class dlgEdit_TVShow
         btnScrapePoster.Click
         Cursor = Cursors.WaitCursor
         Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
-        Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-        Functions.SetScrapeModifiers(ScrapeModifiers, eImageType, True)
-        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        Functions.SetScrapeModifiers(tmpDBElement.ScrapeModifiers, eImageType, True)
+        Dim nResults = Scraper.Run(tmpDBElement)
+        If nResults IsNot Nothing Then
             Dim iImageCount = 0
             Dim strNoImagesFound As String = String.Empty
             Select Case eImageType
                 Case Enums.ModifierType.MainBanner
-                    iImageCount = aContainer.MainBanners.Count
+                    iImageCount = nResults.lstImages.MainBanners.Count
                     strNoImagesFound = Master.eLang.GetString(1363, "No Banners found")
                 Case Enums.ModifierType.MainClearArt
-                    iImageCount = aContainer.MainClearArts.Count
+                    iImageCount = nResults.lstImages.MainClearArts.Count
                     strNoImagesFound = Master.eLang.GetString(1102, "No ClearArts found")
                 Case Enums.ModifierType.MainClearLogo
-                    iImageCount = aContainer.MainClearLogos.Count
+                    iImageCount = nResults.lstImages.MainClearLogos.Count
                     strNoImagesFound = Master.eLang.GetString(1103, "No ClearLogos found")
                 Case Enums.ModifierType.MainCharacterArt
-                    iImageCount = aContainer.MainCharacterArts.Count
+                    iImageCount = nResults.lstImages.MainCharacterArts.Count
                     strNoImagesFound = Master.eLang.GetString(1343, "No CharacterArts found")
                 Case Enums.ModifierType.MainExtrafanarts, Enums.ModifierType.MainExtrathumbs, Enums.ModifierType.MainFanart
-                    iImageCount = aContainer.MainFanarts.Count
+                    iImageCount = nResults.lstImages.MainFanarts.Count
                     strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
                 Case Enums.ModifierType.MainKeyArt
-                    iImageCount = aContainer.MainKeyArts.Count
+                    iImageCount = nResults.lstImages.MainKeyArts.Count
                     strNoImagesFound = Master.eLang.GetString(855, "No KeyArts found")
                 Case Enums.ModifierType.MainLandscape
-                    iImageCount = aContainer.MainLandscapes.Count
+                    iImageCount = nResults.lstImages.MainLandscapes.Count
                     strNoImagesFound = Master.eLang.GetString(1197, "No Landscapes found")
                 Case Enums.ModifierType.MainPoster
-                    iImageCount = aContainer.MainPosters.Count
+                    iImageCount = nResults.lstImages.MainPosters.Count
                     strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
             End Select
             If iImageCount > 0 Then
                 Dim dlgImgS = New dlgImageSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, nResults.lstImages) = DialogResult.OK Then
                     Select Case eImageType
                         Case Enums.ModifierType.MainExtrafanarts
                             tmpDBElement.ImagesContainer.Extrafanarts = dlgImgS.Result.ImagesContainer.Extrafanarts
@@ -1279,11 +1278,12 @@ Public Class dlgEdit_TVShow
 
     Private Sub Theme_Scrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeScrape.Click
         Dim dThemeSelect As dlgThemeSelect
-        Dim tList As New List(Of MediaContainers.Theme)
-        If Not AddonsManager.Instance.ScrapeTheme_TVShow(tmpDBElement, Enums.ModifierType.MainTheme, tList) Then
-            If tList.Count > 0 Then
+        Functions.SetScrapeModifiers(tmpDBElement.ScrapeModifiers, Enums.ModifierType.MainTheme, True)
+        Dim nResult = Scraper.Run(tmpDBElement)
+        If nResult IsNot Nothing Then
+            If nResult.lstThemes.Count > 0 Then
                 dThemeSelect = New dlgThemeSelect()
-                If dThemeSelect.ShowDialog(tmpDBElement, tList, True) = DialogResult.OK Then
+                If dThemeSelect.ShowDialog(tmpDBElement, nResult.lstThemes, True) = DialogResult.OK Then
                     tmpDBElement.Theme = dThemeSelect.Result
                     Theme_Load(tmpDBElement.Theme)
                 End If

@@ -21,164 +21,110 @@
 Imports EmberAPI
 Imports NLog
 
-Public Class Data_Movie
-    Implements Interfaces.IScraperAddon_Data_Movie
+Public Class Addon
+    Implements Interfaces.IAddon
 
 
 #Region "Fields"
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared _ConfigScrapeModifier As New Structures.ScrapeModifiers
-    Public Shared _ConfigScrapeOptions As New Structures.ScrapeOptions
-    Private _PnlSettingsPanel As frmSettingsPanel
-
-
 #End Region 'Fields
 
 #Region "Properties"
 
-    Property IsEnabled() As Boolean Implements Interfaces.IScraperAddon_Data_Movie.IsEnabled
+    Public ReadOnly Property Capabilities_AddonEventTypes As List(Of Enums.AddonEventType) Implements Interfaces.IAddon.Capabilities_AddonEventTypes
+        Get
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {
+                                                     Enums.AddonEventType.Scrape_Movie,
+                                                     Enums.AddonEventType.Search_Movie
+                                                     })
+        End Get
+    End Property
 
-    Property Order As Integer Implements Interfaces.IScraperAddon_Data_Movie.Order
+    Public ReadOnly Property Capabilities_ScraperCapatibilities As List(Of Enums.ScraperCapatibility) Implements Interfaces.IAddon.Capabilities_ScraperCapatibilities
+        Get
+            Return New List(Of Enums.ScraperCapatibility)(New Enums.ScraperCapatibility() {
+                                                          Enums.ScraperCapatibility.Movie_Data_Certifications,
+                                                          Enums.ScraperCapatibility.Movie_Data_Genres,
+                                                          Enums.ScraperCapatibility.Movie_Data_OriginalTitle,
+                                                          Enums.ScraperCapatibility.Movie_Data_Plot,
+                                                          Enums.ScraperCapatibility.Movie_Data_Title
+                                                          })
+        End Get
+    End Property
 
-    Property SettingsPanel As Containers.SettingsPanel = Nothing Implements Interfaces.IScraperAddon_Data_Movie.SettingsPanel
+    Public Property IsEnabled As Boolean Implements Interfaces.IAddon.IsEnabled
+        Get
+            Return True
+        End Get
+        Set(value As Boolean)
+            Return
+        End Set
+    End Property
+
+    Public Property SettingsPanels As New List(Of Containers.SettingsPanel) Implements Interfaces.IAddon.SettingsPanels
+
+    Public ReadOnly Property IsBusy As Boolean Implements Interfaces.IAddon.IsBusy
+        Get
+            Return False
+        End Get
+    End Property
 
 #End Region 'Properties
 
 #Region "Events"
 
-    Public Event NeedsRestart() Implements Interfaces.IScraperAddon_Data_Movie.NeedsRestart
-    Public Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.IScraperAddon_Data_Movie.ScraperEvent
-    Public Event SettingsChanged() Implements Interfaces.IScraperAddon_Data_Movie.SettingsChanged
-    Public Event StateChanged(ByVal SettingsPanelID As String, ByVal State As Boolean, ByVal DiffOrder As Integer) Implements Interfaces.IScraperAddon_Data_Movie.StateChanged
+    Public Event NeedsRestart As Interfaces.IAddon.NeedsRestartEventHandler Implements Interfaces.IAddon.NeedsRestart
+    Public Event SettingsChanged As Interfaces.IAddon.SettingsChangedEventHandler Implements Interfaces.IAddon.SettingsChanged
+    Public Event StateChanged As Interfaces.IAddon.StateChangedEventHandler Implements Interfaces.IAddon.StateChanged
 
-#End Region 'Events
-
-#Region "Event Methods"
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-    Private Sub Handle_StateChanged(ByVal State As Boolean, ByVal DiffOrder As Integer)
-        IsEnabled = State
-        RaiseEvent StateChanged(SettingsPanel.SettingsPanelID, State, DiffOrder)
-    End Sub
-
-#End Region 'Event Methods
+#End Region 'Events 
 
 #Region "Interface Methods"
-    Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef Studios As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.IScraperAddon_Data_Movie.GetMovieStudio
-        Return New Interfaces.ModuleResult
+
+    Public Sub Init() Implements Interfaces.IAddon.Init
+        Return
+    End Sub
+
+    Public Sub InjectSettingsPanel() Implements Interfaces.IAddon.InjectSettingsPanel
+        Return
+    End Sub
+
+    Public Sub SaveSetup(DoDispose As Boolean) Implements Interfaces.IAddon.SaveSetup
+        Return
+    End Sub
+
+    Public Function Run(ByRef dbElement As Database.DBElement, type As Enums.AddonEventType, lstCommandLineParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.IAddon.Run
+        _Logger.Trace("[OFDB] [Run] [Started]")
+        Dim nAddonResult As New Interfaces.AddonResult
+
+        Select Case type
+            '
+            'PreCheck
+            '
+            Case Enums.AddonEventType.Scrape_Movie_PreCheck
+                nAddonResult.bPreCheckSuccessful = dbElement.MainDetails.UniqueIDs.IMDbIdSpecified
+            '
+            'Scraping
+            '
+            Case Enums.AddonEventType.Scrape_Movie
+                If dbElement.MainDetails.UniqueIDs.IMDbIdSpecified Then
+                    nAddonResult.ScraperResult_Data = Scraper.GetMovieInfo(dbElement.MainDetails.UniqueIDs.IMDbId, dbElement.ScrapeOptions, dbElement.Language)
+                End If
+            '
+            'Searching
+            '
+            Case Enums.AddonEventType.Search_Movie
+                If dbElement.MainDetails.TitleSpecified Then
+                    nAddonResult.ScraperResult_Data = Scraper.GetMovieInfo(dbElement.MainDetails.UniqueIDs.IMDbId, dbElement.ScrapeOptions, dbElement.Language)
+                End If
+        End Select
+
+        _Logger.Trace("[OFDB] [Run] [Done]")
+        Return nAddonResult
     End Function
-
-    Function GetTMDbID(ByVal IMDbID As String, ByRef TMDbID As String) As Interfaces.ModuleResult Implements Interfaces.IScraperAddon_Data_Movie.GetTMDbID
-        Return New Interfaces.ModuleResult
-    End Function
-
-    Public Sub Init() Implements Interfaces.IScraperAddon_Data_Movie.Init
-        Settings_Load()
-    End Sub
-
-    Public Sub InjectSettingsPanel() Implements Interfaces.IScraperAddon_Data_Movie.InjectSettingsPanel
-        Settings_Load()
-        _PnlSettingsPanel = New frmSettingsPanel
-        _PnlSettingsPanel.chkEnabled.Checked = IsEnabled
-        _PnlSettingsPanel.chkTitle.Checked = _ConfigScrapeOptions.Title
-        _PnlSettingsPanel.chkOutline.Checked = _ConfigScrapeOptions.Outline
-        _PnlSettingsPanel.chkPlot.Checked = _ConfigScrapeOptions.Plot
-        _PnlSettingsPanel.chkGenres.Checked = _ConfigScrapeOptions.Genres
-        _PnlSettingsPanel.chkCertifications.Checked = _ConfigScrapeOptions.Certifications
-
-        AddHandler _PnlSettingsPanel.NeedsRestart, AddressOf Handle_NeedsRestart
-        AddHandler _PnlSettingsPanel.SettingsChanged, AddressOf Handle_SettingsChanged
-        AddHandler _PnlSettingsPanel.StateChanged, AddressOf Handle_StateChanged
-
-        SettingsPanel = New Containers.SettingsPanel With {
-            .ImageIndex = If(IsEnabled, 9, 10),
-            .Panel = _PnlSettingsPanel.pnlSettings,
-            .Title = "OFDb.de",
-            .Type = Enums.SettingsPanelType.MovieData
-        }
-    End Sub
-
-    Public Sub OrderChanged(ByVal OrderState As Containers.SettingsPanel.OrderState) Implements Interfaces.IScraperAddon_Data_Movie.OrderChanged
-        _PnlSettingsPanel.OrderChanged(OrderState)
-    End Sub
-    ''' <summary>
-    '''  Scrape MovieDetails from OFDB
-    ''' </summary>
-    ''' <param name="DBMovie">Movie to be scraped. DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper</param>
-    ''' <param name="nMovie">New scraped movie data</param>
-    ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
-    ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
-    ''' <remarks></remarks>
-    Function Run(ByRef oDBMovie As Database.DBElement, ByRef Modifier As Structures.ScrapeModifiers, ByRef Type As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.IScraperAddon_Data_Movie.Run
-        _Logger.Trace("[OFDB_Data] [Scraper_Movie] [Start]")
-
-        Settings_Load()
-
-        Dim nMovie As New MediaContainers.MainDetails
-        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, _ConfigScrapeOptions)
-
-        'datascraper needs imdb of movie!
-        If Not oDBMovie.MainDetails.UniqueIDs.IMDbIdSpecified Then
-            _Logger.Trace("[OFDB_Data] [Scraper_Movie] [Abort] IMDB-ID of movie is needed, but not availaible")
-            Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
-        End If
-
-        If Modifier.MainNFO Then
-            nMovie = Scraper.GetMovieInfo(oDBMovie.MainDetails.UniqueIDs.IMDbId, FilteredOptions, oDBMovie.Language)
-        End If
-
-        _Logger.Trace("[OFDB_Data] [Scraper_Movie] [Done]")
-        Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
-    End Function
-
-    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.IScraperAddon_Data_Movie.SaveSetup
-        _ConfigScrapeOptions.Certifications = _PnlSettingsPanel.chkCertifications.Checked
-        _ConfigScrapeOptions.Title = _PnlSettingsPanel.chkTitle.Checked
-        _ConfigScrapeOptions.Outline = _PnlSettingsPanel.chkOutline.Checked
-        _ConfigScrapeOptions.Plot = _PnlSettingsPanel.chkPlot.Checked
-        _ConfigScrapeOptions.Genres = _PnlSettingsPanel.chkGenres.Checked
-
-        Settings_Save()
-
-        If DoDispose Then
-            RemoveHandler _PnlSettingsPanel.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler _PnlSettingsPanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler _PnlSettingsPanel.StateChanged, AddressOf Handle_StateChanged
-            _PnlSettingsPanel.Dispose()
-        End If
-    End Sub
 
 #End Region 'Interface Methods
-
-#Region "Methods"
-
-    Sub Settings_Load()
-        _ConfigScrapeOptions.Title = AdvancedSettings.GetBooleanSetting("DoTitle", True)
-        _ConfigScrapeOptions.Outline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
-        _ConfigScrapeOptions.Plot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
-        _ConfigScrapeOptions.Genres = AdvancedSettings.GetBooleanSetting("DoGenres", True)
-        _ConfigScrapeOptions.Certifications = AdvancedSettings.GetBooleanSetting("DoCert", False)
-    End Sub
-
-    Sub Settings_Save()
-        Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("DoTitle", _ConfigScrapeOptions.Title)
-            settings.SetBooleanSetting("DoOutline", _ConfigScrapeOptions.Outline)
-            settings.SetBooleanSetting("DoPlot", _ConfigScrapeOptions.Plot)
-            settings.SetBooleanSetting("DoGenres", _ConfigScrapeOptions.Genres)
-            settings.SetBooleanSetting("DoCert", _ConfigScrapeOptions.Certifications)
-        End Using
-    End Sub
-
-#End Region 'Methods
 
 End Class

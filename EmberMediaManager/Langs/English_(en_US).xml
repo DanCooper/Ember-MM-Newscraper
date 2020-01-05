@@ -441,7 +441,7 @@
   <string id="440">Timeout</string>
   <string id="441">Timeout in milliseconds</string>
   <string id="442">Abort</string>
-  <string id="443">Use embedded API Key</string>
+  <string id="443"></string>
   <string id="444">Removing Template can not be undone. Are you sure?</string>
   <string id="445">Remove Template</string>
   <string id="446">Installed</string>
@@ -508,8 +508,8 @@
   <string id="507">Offline movie place holder created!</string>
   <string id="508">Guest Stars</string>
   <string id="509">Source directory does not exist or could not be found: </string>
-  <string id="510">Scrape Only Actors With Images</string>
-  <string id="511">Use Certification for MPAA</string>
+  <string id="510">Only those with images</string>
+  <string id="511">Use Certifications for MPAA</string>
   <string id="512">Scrape Full Cast</string>
   <string id="513">Scrape Full Crew</string>
   <string id="514">Use Certification Language:</string>
@@ -559,7 +559,7 @@
   <string id="558">Wide</string>
   <string id="559">Import Options</string>
   <string id="560">TV Show Options</string>
-  <string id="561">Save YAMJ Compatible Sets to NFO</string>
+  <string id="561"></string>
   <string id="562">Reloading Show</string>
   <string id="563">Reloading Season</string>
   <string id="564">YAMJ Specific NFO fields</string>
@@ -785,11 +785,11 @@
   <string id="784">Video Source Mapping</string>
   <string id="785">Audio &amp; Video Codec Mapping</string>
   <string id="786">Default List</string>
-  <string id="787">Get your API Key from fanart.tv</string>
+  <string id="787"></string>
   <string id="788">Fanart.tv</string>
   <string id="789">Fanart.tv Personal API Key</string>
-  <string id="790">These settings are specific to this module.{0}Please refer to the global settings for more options.</string>
-  <string id="791">Scraper Fields - Scraper specific</string>
+  <string id="790"></string>
+  <string id="791">Scraper specific settings</string>
   <string id="792">Default value for &lt;dateadded&gt;</string>
   <string id="793">&amp;Versions...</string>
   <string id="794">Search Results</string>
@@ -830,7 +830,7 @@
   <string id="829">Popular Titles ({0})</string>
   <string id="830">Edit the details for the selected season.</string>
   <string id="831">Exact Matches ({0})</string>
-  <string id="832">MPAA value if no rating is available</string>
+  <string id="832">Value if no rating is available</string>
   <string id="833">No Matches Found</string>
   <string id="834">* Inside Season Folder</string>
   <string id="835">Save value only</string>
@@ -868,7 +868,7 @@
   <string id="867">XBMC Frodo</string>
   <string id="868">Tag Manager</string>
   <string id="869">Wiki</string>
-  <string id="870">TMDB Api Key</string>
+  <string id="870">TMDB API Key</string>
   <string id="871">Trakt.tv Manager</string>
   <string id="872">Use</string>
   <string id="873">IMDB ID:</string>
@@ -1177,7 +1177,7 @@
   <string id="1085">Directory already exists or is not empty</string>
   <string id="1086">The directory can not be renamed because the directory is specified as the source.</string>
   <string id="1087">Clear or Replace Data Fields</string>
-  <string id="1088">include Description</string>
+  <string id="1088">MPAA including description</string>
   <string id="1089">Added TV Show</string>
   <string id="1090">Active</string>
   <string id="1091">Inactive</string>
@@ -1355,7 +1355,7 @@
   <string id="1263">TMDB Collection ID found</string>
   <string id="1264">Should the Collection ID of the movie "{0}" be used as ID for this Collection?</string>
   <string id="1265">Store themes in tv show directory</string>
-  <string id="1266">Add Movie automatically to Collections</string>
+  <string id="1266"></string>
   <string id="1267">Search the movieset titles by entering text here.</string>
   <string id="1268">Search the tv show titles by entering text here.</string>
   <string id="1269">Display only new moviesets.</string>
@@ -1382,7 +1382,7 @@
   <string id="1290">Data Field</string>
   <string id="1291">Is Empty</string>
   <string id="1292">Is Not Empty</string>
-  <string id="1293">Only if no MPAA is found</string>
+  <string id="1293">Only if MPAA is empty</string>
   <string id="1294">Change Movie (Auto)</string>
   <string id="1295">Part of a MovieSet</string>
   <string id="1296"></string>

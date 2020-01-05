@@ -135,13 +135,13 @@ Public Class MediaFlags
 
     Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.Fileinfo, ByVal PreferredLanguage As String, ByVal contentType As Enums.ContentType, ByVal videoSource As String) As Image()
         Dim iReturn(19) As Image
-        Dim tVideo As MediaContainers.Video = Data.GetBestVideo(fiAV)
+        Dim tVideo As MediaContainers.Video = Information.GetBestVideo(fiAV)
         Dim tAudio As MediaContainers.Audio = MetaData.GetBestAudio(fiAV, PreferredLanguage, contentType)
 
         If AudioVideoFlags.Count > 0 OrElse _Flags_Countries.Count > 0 Then
             Try
                 'VideoResolution flags
-                Dim vRes As String = Data.GetResolutionFromDimensions(tVideo).ToLower
+                Dim vRes As String = Information.GetResolutionFromDimensions(tVideo).ToLower
                 Dim vresFlag As Flag = AudioVideoFlags.FirstOrDefault(Function(f) f.Name = vRes AndAlso f.Type = Flag.FlagType.VideoResolution)
                 If vresFlag IsNot Nothing Then
                     iReturn(0) = vresFlag.Image

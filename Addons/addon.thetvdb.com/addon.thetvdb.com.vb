@@ -183,7 +183,7 @@ Public Class Data_TV
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
                 nTVShow = _scraper.GetData_TV(oDBTV.MainDetails.UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
             ElseIf oDBTV.MainDetails.UniqueIDs.IMDbIdSpecified Then
-                oDBTV.MainDetails.UniqueIDs.TVDbId = _scraper.GetTVDbIDbyIMDbID(oDBTV.MainDetails.UniqueIDs.IMDbId)
+                oDBTV.MainDetails.UniqueIDs.TVDbId = _scraper.Get_TVDbID_By_IMDbID(oDBTV.MainDetails.UniqueIDs.IMDbId)
                 If Not oDBTV.MainDetails.UniqueIDs.TVDbIdSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
                 nTVShow = _scraper.GetData_TV(oDBTV.MainDetails.UniqueIDs.TVDbId, ScrapeModifiers, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then

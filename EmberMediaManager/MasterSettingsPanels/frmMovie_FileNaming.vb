@@ -581,7 +581,7 @@ Public Class frmMovie_FileNaming
         End If
     End Sub
 
-    Private Sub chkMovieUseKodiExtended_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieUseKodiExtended_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseExtended.CheckedChanged
         RaiseEvent SettingsChanged()
 
         chkMovieBannerExtended.Enabled = chkMovieUseExtended.Checked
@@ -608,7 +608,7 @@ Public Class frmMovie_FileNaming
         End If
     End Sub
 
-    Private Sub chkMovieUseFrodo_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieUseFrodo_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseFrodo.CheckedChanged
         RaiseEvent SettingsChanged()
 
         chkMovieActorThumbsFrodo.Enabled = chkMovieUseFrodo.Checked

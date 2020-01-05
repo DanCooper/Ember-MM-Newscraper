@@ -25,10 +25,10 @@ Public Class dlgImageSelect
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Friend WithEvents bwImgDefaults As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwImgDownload As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwImgDefaults As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwImgDownload As New ComponentModel.BackgroundWorker
 
     Public Delegate Sub LoadImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
     Public Delegate Sub Delegate_MeActivate()
@@ -187,14 +187,14 @@ Public Class dlgImageSelect
         pnlTopImages.Height = iTopImage_DistanceTop + iTopImage_Size_Panel.Height + 20
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal DBElement As Database.DBElement, ByVal SearchResultsContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As DialogResult
+    Public Overloads Function ShowDialog(ByVal DBElement As Database.DBElement, ByVal SearchResultsContainer As MediaContainers.SearchResultsContainer) As DialogResult
         tSearchResultsContainer = SearchResultsContainer
         tDBElement = DBElement
-        tScrapeModifiers = ScrapeModifiers
+        tScrapeModifiers = DBElement.ScrapeModifiers
 
         Select Case DBElement.ContentType
             Case Enums.ContentType.TVShow
-                If ScrapeModifiers.withEpisodes OrElse ScrapeModifiers.withSeasons Then
+                If tScrapeModifiers.withEpisodes OrElse tScrapeModifiers.withSeasons Then
                     tContentType = Enums.ContentType.TV
                 Else
                     tContentType = Enums.ContentType.TVShow

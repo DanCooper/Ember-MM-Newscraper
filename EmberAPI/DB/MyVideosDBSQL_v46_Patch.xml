@@ -411,8 +411,7 @@
       <execute>
         CREATE TABLE movieset_link (
         idSet       integer NOT NULL,
-        idMovie     integer NOT NULL,
-        set_order   integer NOT NULL DEFAULT -1
+        idMovie     integer NOT NULL
         );
 
         CREATE UNIQUE INDEX movieset_link_1
@@ -425,12 +424,10 @@
 
         INSERT INTO movieset_link
         (idSet,
-        idMovie,
-        set_order)
+        idMovie)
         SELECT
         idSet,
-        idMovie,
-        iOrder
+        idMovie
         FROM setlinkmovie;
 
         DROP TABLE setlinkmovie;

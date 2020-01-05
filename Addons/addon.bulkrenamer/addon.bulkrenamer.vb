@@ -72,19 +72,19 @@ Public Class Generic
 
     Property SettingsPanel As Containers.SettingsPanel = Nothing Implements Interfaces.IGenericAddon.SettingsPanel
 
-    Public ReadOnly Property Type() As List(Of Enums.ModuleEventType) Implements Interfaces.IGenericAddon.Type
+    Public ReadOnly Property Type() As List(Of Enums.AddonEventType) Implements Interfaces.IGenericAddon.Type
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {
-                                                      Enums.ModuleEventType.AfterEdit_Movie,
-                                                      Enums.ModuleEventType.ScraperMulti_Movie,
-                                                      Enums.ModuleEventType.ScraperSingle_Movie,
-                                                      Enums.ModuleEventType.AfterEdit_TVEpisode,
-                                                      Enums.ModuleEventType.ScraperMulti_TVEpisode,
-                                                      Enums.ModuleEventType.ScraperSingle_TVEpisode,
-                                                      Enums.ModuleEventType.AfterEdit_TVShow,
-                                                      Enums.ModuleEventType.ScraperMulti_TVShow,
-                                                      Enums.ModuleEventType.ScraperSingle_TVShow,
-                                                      Enums.ModuleEventType.DuringUpdateDB_TV
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {
+                                                      Enums.AddonEventType.AfterEdit_Movie,
+                                                      Enums.AddonEventType.ScraperMulti_Movie,
+                                                      Enums.AddonEventType.ScraperSingle_Movie,
+                                                      Enums.AddonEventType.AfterEdit_TVEpisode,
+                                                      Enums.AddonEventType.ScraperMulti_TVEpisode,
+                                                      Enums.AddonEventType.ScraperSingle_TVEpisode,
+                                                      Enums.AddonEventType.AfterEdit_TVShow,
+                                                      Enums.AddonEventType.ScraperMulti_TVShow,
+                                                      Enums.AddonEventType.ScraperSingle_TVShow,
+                                                      Enums.AddonEventType.DuringUpdateDB_TV
                                                       })
         End Get
     End Property
@@ -101,7 +101,7 @@ Public Class Generic
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef Parameters As List(Of Object)) Implements Interfaces.IGenericAddon.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef Parameters As List(Of Object)) Implements Interfaces.IGenericAddon.GenericEvent
     Public Event NeedsRestart() Implements Interfaces.IGenericAddon.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.IGenericAddon.SettingsChanged
     Public Event StateChanged(ByVal SettingsPanelID As String, ByVal State As Boolean, ByVal DiffOrder As Integer) Implements Interfaces.IGenericAddon.StateChanged
@@ -157,41 +157,41 @@ Public Class Generic
         }
     End Sub
 
-    Public Function Run(ByVal ModuleEventType As Enums.ModuleEventType, ByRef Parameters As List(Of Object), ByRef SingleObjekt As Object, ByRef DBElement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.IGenericAddon.Run
+    Public Function Run(ByVal ModuleEventType As Enums.AddonEventType, ByRef Parameters As List(Of Object), ByRef SingleObjekt As Object, ByRef DBElement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.IGenericAddon.Run
         Select Case ModuleEventType
-            Case Enums.ModuleEventType.AfterEdit_Movie
+            Case Enums.AddonEventType.AfterEdit_Movie
                 If _AddonSettings.RenameEdit_Movies AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Movies) Then
                     Renamer.RenameSingle_Movie(DBElement, _AddonSettings.FoldersPattern_Movies, _AddonSettings.FilesPattern_Movies, False, False, False)
                 End If
-            Case Enums.ModuleEventType.AfterEdit_TVEpisode
+            Case Enums.AddonEventType.AfterEdit_TVEpisode
                 If _AddonSettings.RenameEdit_Episodes AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
                     Renamer.RenameSingle_TVEpisode(DBElement, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, False, False)
                 End If
-            Case Enums.ModuleEventType.DuringUpdateDB_TV
+            Case Enums.AddonEventType.DuringUpdateDB_TV
                 If DBElement.NfoPathSpecified AndAlso _AddonSettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
                     Renamer.RenameSingle_TVEpisode(DBElement, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, True, False, False)
                 End If
-            Case Enums.ModuleEventType.ScraperMulti_Movie
+            Case Enums.AddonEventType.ScraperMulti_Movie
                 If _AddonSettings.RenameMulti_Movies AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Movies) Then
                     Renamer.RenameSingle_Movie(DBElement, _AddonSettings.FoldersPattern_Movies, _AddonSettings.FilesPattern_Movies, False, False, False)
                 End If
-            Case Enums.ModuleEventType.ScraperMulti_TVEpisode
+            Case Enums.AddonEventType.ScraperMulti_TVEpisode
                 If _AddonSettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
                     Renamer.RenameSingle_TVEpisode(DBElement, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, False, False)
                 End If
-            Case Enums.ModuleEventType.ScraperMulti_TVShow
+            Case Enums.AddonEventType.ScraperMulti_TVShow
                 If _AddonSettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Shows) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Seasons) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
                     Renamer.RenameSingle_TVShow(DBElement, _AddonSettings.FoldersPattern_Shows, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, False, False)
                 End If
-            Case Enums.ModuleEventType.ScraperSingle_Movie
+            Case Enums.AddonEventType.ScraperSingle_Movie
                 If _AddonSettings.RenameSingle_Movies AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Movies) Then
                     Renamer.RenameSingle_Movie(DBElement, _AddonSettings.FoldersPattern_Movies, _AddonSettings.FilesPattern_Movies, False, False, False)
                 End If
-            Case Enums.ModuleEventType.ScraperSingle_TVEpisode
+            Case Enums.AddonEventType.ScraperSingle_TVEpisode
                 If _AddonSettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
                     Renamer.RenameSingle_TVEpisode(DBElement, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, False, False)
                 End If
-            Case Enums.ModuleEventType.ScraperSingle_TVShow
+            Case Enums.AddonEventType.ScraperSingle_TVShow
                 If _AddonSettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Shows) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Seasons) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
                     Renamer.RenameSingle_TVShow(DBElement, _AddonSettings.FoldersPattern_Shows, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, False, False)
                 End If
@@ -231,7 +231,7 @@ Public Class Generic
             Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 Renamer.RenameSingle_Movie(DBElement, _AddonSettings.FoldersPattern_Movies, _AddonSettings.FilesPattern_Movies, False, True, True)
-                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idMovie").Value)}))
+                RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_Movie, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idMovie").Value)}))
             End If
         Next
         Cursor.Current = Cursors.Default
@@ -243,7 +243,7 @@ Public Class Generic
             Dim DBElement As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 Renamer.RenameSingle_TVEpisode(DBElement, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, True, True)
-                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idEpisode").Value)})) 'TODO: should be idFile (MultiEpisode handling)
+                RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idEpisode").Value)})) 'TODO: should be idFile (MultiEpisode handling)
             End If
         Next
         Cursor.Current = Cursors.Default
@@ -255,7 +255,7 @@ Public Class Generic
             Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True, True)
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 Renamer.RenameSingle_TVShow(DBElement, _AddonSettings.FoldersPattern_Shows, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, True, True)
-                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idShow").Value)}))
+                RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idShow").Value)}))
             End If
         Next
         Cursor.Current = Cursors.Default
@@ -269,7 +269,7 @@ Public Class Generic
                 Using dRenameManual As New dlgRenameManual_Movie(DBElement)
                     Select Case dRenameManual.ShowDialog()
                         Case DialogResult.OK
-                            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idMovie").Value)}))
+                            RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_Movie, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idMovie").Value)}))
                     End Select
                 End Using
             End If
@@ -285,7 +285,7 @@ Public Class Generic
                 Using dRenameManual As New dlgRenameManual_TVEpisode(DBElement)
                     Select Case dRenameManual.ShowDialog()
                         Case DialogResult.OK
-                            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idEpisode").Value)}))
+                            RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idEpisode").Value)}))
                     End Select
                 End Using
             End If
@@ -301,7 +301,7 @@ Public Class Generic
                 Using dRenameManual As New dlgRenameManual_TVShow(DBElement)
                     Select Case dRenameManual.ShowDialog()
                         Case DialogResult.OK
-                            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idShow").Value)}))
+                            RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idShow").Value)}))
                     End Select
                 End Using
             End If
@@ -443,7 +443,7 @@ Public Class Generic
     End Sub
 
     Private Sub mnuMainToolsRenamer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles _MnuMainToolsRenamer.Click, _CmnuTrayToolsRenamer.Click
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
         Select Case AddonsManager.Instance.RuntimeObjects.MediaTabSelected.ContentType
             Case Enums.ContentType.Movie
                 Using dBulkRename As New dlgBulkRenamer_Movie
@@ -467,8 +467,8 @@ Public Class Generic
                     dBulkRename.ShowDialog()
                 End Using
         End Select
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
     End Sub
 
     Sub Settings_Load()

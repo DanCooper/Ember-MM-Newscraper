@@ -162,10 +162,6 @@ Public Class frmMain
 
 #Region "Delegates"
 
-    Delegate Sub DelegateEvent_Movie(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
-    Delegate Sub DelegateEvent_MovieSet(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
-    Delegate Sub DelegateEvent_TVShow(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
-
     Delegate Sub Delegate_dtListAddRow(ByVal dTable As DataTable, ByVal dRow As DataRow)
     Delegate Sub Delegate_dtListRemoveRow(ByVal dTable As DataTable, ByVal dRow As DataRow)
     Delegate Sub Delegate_dtListUpdateRow(ByVal dRow As DataRow, ByVal v As DataRow)
@@ -238,7 +234,7 @@ Public Class frmMain
     Public Property KeyArtMaxWidth() As Integer = 160
     Public Property LandscapeMaxHeight() As Integer = 160
     Public Property LandscapeMaxWidth() As Integer = 285
-    Public Property MediaListColors As New clsXMLTheme.MediaListSettings
+    Public Property MediaListColors As New XMLTheme.MediaListSettings
     Public Property PosterMaxHeight() As Integer = 160
     Public Property PosterMaxWidth() As Integer = 113
 
@@ -284,9 +280,9 @@ Public Class frmMain
             pnlCancel.Visible = True
             Refresh()
 
-            If AddonsManager.Instance.QueryAnyGenericIsBusy Then
+            If AddonsManager.Instance.QueryAnyAddonIsBusy Then
                 If MessageBox.Show("One or more modules are busy. Do you want to wait until all tasks are finished?", "One or more external Modules are busy", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
-                    While AddonsManager.Instance.QueryAnyGenericIsBusy
+                    While AddonsManager.Instance.QueryAnyAddonIsBusy
                         Application.DoEvents()
                         Threading.Thread.Sleep(50)
                     End While
@@ -797,7 +793,7 @@ Public Class frmMain
         Dim strLock As String = Master.eLang.GetString(24, "Lock")
         cmnuEpisodeLock.Text = strLock
         cmnuMovieLock.Text = strLock
-        cmnuMovieSetLock.Text = strLock
+        cmnuMoviesetLock.Text = strLock
         cmnuSeasonLock.Text = strLock
         cmnuShowLock.Text = strLock
 
@@ -812,7 +808,7 @@ Public Class frmMain
         Dim strMark As String = Master.eLang.GetString(23, "Mark")
         cmnuEpisodeMark.Text = strMark
         cmnuMovieMark.Text = strMark
-        cmnuMovieSetMark.Text = strMark
+        cmnuMoviesetMark.Text = strMark
         cmnuSeasonMark.Text = strMark
         cmnuShowMark.Text = strMark
 
@@ -977,7 +973,7 @@ Public Class frmMain
         Dim strUnlock As String = Master.eLang.GetString(108, "Unlock")
         cmnuEpisodeUnlock.Text = strUnlock
         cmnuMovieUnlock.Text = strUnlock
-        cmnuMovieSetUnlock.Text = strUnlock
+        cmnuMoviesetUnlock.Text = strUnlock
         cmnuSeasonUnlock.Text = strUnlock
         cmnuShowUnlock.Text = strUnlock
 
@@ -985,7 +981,7 @@ Public Class frmMain
         Dim strUnmark As String = Master.eLang.GetString(107, "Unmark")
         cmnuEpisodeUnmark.Text = strUnmark
         cmnuMovieUnmark.Text = strUnmark
-        cmnuMovieSetUnmark.Text = strUnmark
+        cmnuMoviesetUnmark.Text = strUnmark
         cmnuSeasonUnmark.Text = strUnmark
         cmnuShowUnmark.Text = strUnmark
 
@@ -1261,7 +1257,7 @@ Public Class frmMain
         lblOutlineHeader.Text = Master.eLang.GetString(64, "Plot Outline")
         lblPlotHeader.Text = Master.eLang.GetString(65, "Plot")
         lblPosterTitle.Text = Master.eLang.GetString(148, "Poster")
-        lblPremieredHeader.Text = Master.eLang.GetString(57, "Release Date")
+        lblPremieredHeader.Text = Master.eLang.GetString(724, "Premiered")
         lblTrailerPathHeader.Text = Master.eLang.GetString(1058, "Trailer Path")
         mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
         mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
@@ -1332,7 +1328,7 @@ Public Class frmMain
         tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
 
         cmnuEpisodeOpenFolder.Text = cmnuMovieOpenFolder.Text
-        cmnuMovieSetLock.Text = cmnuMovieLock.Text
+        cmnuMoviesetLock.Text = cmnuMovieLock.Text
         cmnuMovieSetReload.Text = cmnuMovieReload.Text
         cmnuMovieSetRemove.Text = cmnuMovieRemove.Text
         cmnuSeasonOpenFolder.Text = cmnuMovieOpenFolder.Text
@@ -1634,55 +1630,54 @@ Public Class frmMain
 
         Dim bClickScrapeEnabled As Boolean
         Dim bClickScrapeShowResults As Boolean
-        Dim contentType As Enums.ContentType = Enums.ContentType.None
-        Dim defaultOptions As Structures.ScrapeOptions
+        Dim eContentType As Enums.ContentType = Enums.ContentType.None
+        Dim cDefaultOptions As Structures.ScrapeOptions
         Dim dgView As DataGridView = DirectCast(sender, DataGridView)
 
         Select Case True
             Case sender Is dgvMovies
-                contentType = Enums.ContentType.Movie
+                eContentType = Enums.ContentType.Movie
                 bClickScrapeEnabled = Manager.mSettings.Movie.GuiSettings.ClickScrapeEnabled
                 bClickScrapeShowResults = Manager.mSettings.Movie.GuiSettings.ClickScrapeEnabled
-                defaultOptions = Master.eSettings.DefaultOptions(Enums.ContentType.Movie)
+                cDefaultOptions = Master.eSettings.DefaultScrapeOptions(Enums.ContentType.Movie)
             Case sender Is dgvMoviesets
-                contentType = Enums.ContentType.Movieset
+                eContentType = Enums.ContentType.Movieset
                 bClickScrapeEnabled = Master.eSettings.MovieSetClickScrape
                 bClickScrapeShowResults = Master.eSettings.MovieSetClickScrapeAsk
-                defaultOptions = Master.eSettings.DefaultOptions(Enums.ContentType.Movieset)
+                cDefaultOptions = Master.eSettings.DefaultScrapeOptions(Enums.ContentType.Movieset)
             Case sender Is dgvTVEpisodes
-                contentType = Enums.ContentType.TVEpisode
+                eContentType = Enums.ContentType.TVEpisode
                 bClickScrapeEnabled = Manager.mSettings.TVEpisode.GuiSettings.ClickScrapeEnabled
                 bClickScrapeShowResults = Manager.mSettings.TVEpisode.GuiSettings.ClickScrapeShowResults
-                defaultOptions = Master.eSettings.DefaultOptions(Enums.ContentType.TV)
+                cDefaultOptions = Master.eSettings.DefaultScrapeOptions(Enums.ContentType.TV)
             Case sender Is dgvTVSeasons
-                contentType = Enums.ContentType.TVSeason
+                eContentType = Enums.ContentType.TVSeason
                 bClickScrapeEnabled = Manager.mSettings.TVSeason.GuiSettings.ClickScrapeEnabled
                 bClickScrapeShowResults = Manager.mSettings.TVSeason.GuiSettings.ClickScrapeShowResults
-                defaultOptions = Master.eSettings.DefaultOptions(Enums.ContentType.TV)
+                cDefaultOptions = Master.eSettings.DefaultScrapeOptions(Enums.ContentType.TV)
             Case sender Is dgvTVShows
-                contentType = Enums.ContentType.TVShow
+                eContentType = Enums.ContentType.TVShow
                 bClickScrapeEnabled = Manager.mSettings.TVShow.GuiSettings.ClickScrapeEnabled
                 bClickScrapeShowResults = Manager.mSettings.TVShow.GuiSettings.ClickScrapeShowResults
-                defaultOptions = Master.eSettings.DefaultOptions(Enums.ContentType.TV)
+                cDefaultOptions = Master.eSettings.DefaultScrapeOptions(Enums.ContentType.TV)
             Case Else
                 Return
         End Select
 
-        If Not contentType = Enums.ContentType.None Then
+        If Not eContentType = Enums.ContentType.None Then
             Dim colName As String = dgView.Columns(e.ColumnIndex).Name
             If String.IsNullOrEmpty(colName) Then
                 Return
             End If
 
             If Database.Helpers.ColumnIsWatchedState(colName) Then
-                If Not (contentType = Enums.ContentType.TVSeason AndAlso
+                If Not (eContentType = Enums.ContentType.TVSeason AndAlso
                     CInt(dgvTVSeasons.Rows(e.RowIndex).Cells(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)).Value) = -1) Then
-                    TaskManager_CreateTask(contentType,
-                               Enums.SelectionType.Selected,
-                               TaskManager.TaskItem.TaskType.SetWatchedState,
-                               If(String.IsNullOrEmpty(dgView.Rows(e.RowIndex).Cells(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Value.ToString), True, False),
-                               String.Empty,
-                               Nothing)
+                    TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetWatchedState) With {
+                                           .CommonBooleanValue = If(String.IsNullOrEmpty(dgView.Rows(e.RowIndex).Cells(Database.Helpers.GetColumnName(Database.ColumnName.LastPlayed)).Value.ToString), True, False),
+                                           .ContentType = eContentType,
+                                           .SelectionType = Enums.SelectionType.Selected
+                                           })
                 End If
 
             ElseIf bClickScrapeEnabled AndAlso colName = Database.Helpers.GetColumnName(Database.ColumnName.HasMovieset) AndAlso Not bwMovieScraper.IsBusy Then
@@ -1690,15 +1685,21 @@ Public Class frmMain
 
                 dgView.ClearSelection()
                 dgView.Rows(objCell.RowIndex).Selected = True
-                currRow_Movie = objCell.RowIndex
 
-                Dim scrapeOptions As New Structures.ScrapeOptions
-                scrapeOptions.Collection = True
+                Dim scrapeOptions As New Structures.ScrapeOptions With {
+                    .Collection = True
+                }
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
-                Select Case contentType
+                Select Case eContentType
                     Case Enums.ContentType.Movie
-                        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, scrapeOptions, ScrapeModifiers)
+                        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                               .ContentType = Enums.ContentType.Movie,
+                                               .ScrapeModifiers = ScrapeModifiers,
+                                               .ScrapeOptions = scrapeOptions,
+                                               .ScrapeType = If(bClickScrapeShowResults, Enums.ScrapeType.Ask, Enums.ScrapeType.Auto),
+                                               .SelectionType = Enums.SelectionType.Selected
+                                               })
                 End Select
 
             ElseIf bClickScrapeEnabled AndAlso Database.Helpers.ColumnIsScrapeModifier(colName) AndAlso
@@ -1711,7 +1712,7 @@ Public Class frmMain
 
                 dgView.ClearSelection()
                 dgView.Rows(objCell.RowIndex).Selected = True
-                Select Case contentType
+                Select Case eContentType
                     Case Enums.ContentType.Movie
                         currRow_Movie = objCell.RowIndex
                     Case Enums.ContentType.Movieset
@@ -1766,18 +1767,13 @@ Public Class frmMain
                     Case Database.ColumnType.Trailer
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTrailer, True)
                 End Select
-                Select Case contentType
-                    Case Enums.ContentType.Movie
-                        CreateScrapeList_Movie(If(bClickScrapeShowResults, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
-                    Case Enums.ContentType.Movieset
-                        CreateScrapeList_Movieset(If(bClickScrapeShowResults, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
-                    Case Enums.ContentType.TVEpisode
-                        CreateScrapeList_TVEpisode(If(bClickScrapeShowResults, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
-                    Case Enums.ContentType.TVSeason
-                        CreateScrapeList_TVSeason(If(bClickScrapeShowResults, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
-                    Case Enums.ContentType.TVShow
-                        CreateScrapeList_TV(If(bClickScrapeShowResults, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto), defaultOptions, ScrapeModifiers)
-                End Select
+                TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                       .ContentType = Enums.ContentType.Movie,
+                                       .ScrapeModifiers = ScrapeModifiers,
+                                       .ScrapeOptions = cDefaultOptions,
+                                       .ScrapeType = If(bClickScrapeShowResults, Enums.ScrapeType.Ask, Enums.ScrapeType.Auto),
+                                       .SelectionType = Enums.SelectionType.Selected
+                                       })
             End If
         End If
     End Sub
@@ -2423,7 +2419,7 @@ Public Class frmMain
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).Resizable = DataGridViewTriState.False
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).ReadOnly = True
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).Visible = Not DataGridView_ShowColumn_Movie(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath))
+                dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).Visible = DataGridView_ShowColumn_Movie(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath))
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).ToolTipText = Master.eLang.GetString(151, "Trailer")
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
                 dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.UserRating)).MinimumWidth = 30
@@ -3371,12 +3367,12 @@ Public Class frmMain
                     mnuLanguagesSet.Enabled = False
 
                     'Lock / Unlock menu
-                    cmnuMovieSetLock.Visible = bShowLock
-                    cmnuMovieSetUnlock.Visible = bShowUnlock
+                    cmnuMoviesetLock.Visible = bShowLock
+                    cmnuMoviesetUnlock.Visible = bShowUnlock
 
                     'Mark / Unmark menu
-                    cmnuMovieSetMark.Visible = bShowMark
-                    cmnuMovieSetUnmark.Visible = bShowUnmark
+                    cmnuMoviesetMark.Visible = bShowMark
+                    cmnuMoviesetUnmark.Visible = bShowUnmark
                 Else
                     cmnuMovieSet.Enabled = True
                     ContextMenuStrip_EnableItems(cmnuMovieSet, True)
@@ -3414,13 +3410,13 @@ Public Class frmMain
 
                     'Lock / Unlock menu
                     Dim bIsLocked As Boolean = Convert.ToBoolean(dgvMoviesets.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked), dgvHTI.RowIndex).Value)
-                    cmnuMovieSetLock.Visible = Not bIsLocked
-                    cmnuMovieSetUnlock.Visible = bIsLocked
+                    cmnuMoviesetLock.Visible = Not bIsLocked
+                    cmnuMoviesetUnlock.Visible = bIsLocked
 
                     'Mark / Unmark menu
                     Dim bIsMarked As Boolean = Convert.ToBoolean(dgvMoviesets.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked), dgvHTI.RowIndex).Value)
-                    cmnuMovieSetMark.Visible = Not bIsMarked
-                    cmnuMovieSetUnmark.Visible = bIsMarked
+                    cmnuMoviesetMark.Visible = Not bIsMarked
+                    cmnuMoviesetUnmark.Visible = bIsMarked
                 End If
 
                 'Website links"
@@ -4794,102 +4790,137 @@ Public Class frmMain
         dRow.ItemArray = newRow.ItemArray
     End Sub
 
-    Private Sub Edit_Movie(ByRef DBMovie As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_Movie)
+    Private Sub Edit_Movie(ByRef dbelement As Database.DBElement, Optional ByVal EventType As Enums.AddonEventType = Enums.AddonEventType.AfterEdit_Movie)
         SetControlsEnabled(False)
-        If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBMovie, True) Then
+        If dbelement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(dbelement, True) Then
             Using dEditMovie As New dlgEdit_Movie
-                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBMovie)
-                Select Case dEditMovie.ShowDialog(DBMovie)
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.BeforeEdit_Movie, Nothing, Nothing, False, dbelement)
+                Select Case dEditMovie.ShowDialog(dbelement)
                     Case DialogResult.OK
-                        DBMovie = dEditMovie.Result
-                        AddonsManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBMovie)
+                        dbelement = dEditMovie.Result
+                        AddonsManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, dbelement)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                        Master.DB.Save_Movie(DBMovie, False, True, True, True, False)
-                        DataGridView_RefreshRow_Movie(DBMovie.ID)
+                        Master.DB.Save_Movie(dbelement, False, True, True, True, False)
+                        DataGridView_RefreshRow_Movie(dbelement.ID)
                     Case DialogResult.Retry 'Rescrape
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
+                        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                               .ContentType = dbelement.ContentType,
+                                               .ListOfID = New List(Of Long) From {dbelement.ID},
+                                               .ScrapeModifiers = ScrapeModifiers,
+                                               .ScrapeOptions = Master.eSettings.DefaultScrapeOptions(dbelement.ContentType),
+                                               .ScrapeType = Enums.ScrapeType.Manually,
+                                               .SelectionType = Enums.SelectionType.None
+                                               })
                     Case DialogResult.Abort 'Change Movie
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
+                        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                               .ContentType = dbelement.ContentType,
+                                               .ListOfID = New List(Of Long) From {dbelement.ID},
+                                               .ScrapeModifiers = ScrapeModifiers,
+                                               .ScrapeOptions = Master.eSettings.DefaultScrapeOptions(dbelement.ContentType),
+                                               .ScrapeType = Enums.ScrapeType.Manually,
+                                               .SelectionType = Enums.SelectionType.None
+                                               })
                     Case Else
-                        If InfoCleared Then LoadInfo_Movie(DBMovie.ID)
+                        If InfoCleared Then LoadInfo_Movie(dbelement.ID)
                 End Select
             End Using
         End If
         SetControlsEnabled(True)
     End Sub
 
-    Private Sub Edit_Movieset(ByRef DBMovieset As Database.DBElement)
+    Private Sub Edit_Movieset(ByRef dbelement As Database.DBElement)
         SetControlsEnabled(False)
-        If DBMovieset.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBMovieset, True) Then
+        If dbelement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(dbelement, True) Then
             Using dEditMovieSet As New dlgEdit_Movieset
-                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_MovieSet, Nothing, Nothing, False, DBMovieset)
-                Select Case dEditMovieSet.ShowDialog(DBMovieset)
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.BeforeEdit_Movieset, Nothing, Nothing, False, dbelement)
+                Select Case dEditMovieSet.ShowDialog(dbelement)
                     Case DialogResult.OK
-                        DBMovieset = dEditMovieSet.Result
-                        AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieset)
+                        dbelement = dEditMovieSet.Result
+                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.AfterEdit_Movieset, Nothing, Nothing, False, dbelement)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                        Master.DB.Save_Movieset(DBMovieset, False, True, True, True)
-                        DataGridView_RefreshRow_Movieset(DBMovieset.ID)
-                    Case DialogResult.Retry 'Rescrape
-                        Dim ScrapeModifier As New Structures.ScrapeModifiers
-                        Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
-                        CreateScrapeList_Movieset(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifier)
-                    Case DialogResult.Abort 'Change MovieSet
-                        Dim ScrapeModifier As New Structures.ScrapeModifiers
-                        Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.DoSearch, True)
-                        Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
-                        CreateScrapeList_Movieset(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifier)
-                    Case Else
-                        If InfoCleared Then LoadInfo_Movieset(DBMovieset.ID)
-                End Select
-            End Using
-        End If
-        SetControlsEnabled(True)
-    End Sub
-
-    Private Sub Edit_TVEpisode(ByRef DBTVEpisode As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVEpisode)
-        SetControlsEnabled(False)
-        If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVEpisode, True) Then
-            Using dEditTVEpisode As New dlgEdit_TVEpisode
-                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
-                Select Case dEditTVEpisode.ShowDialog(DBTVEpisode)
-                    Case DialogResult.OK
-                        DBTVEpisode = dEditTVEpisode.Result
-                        AddonsManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBTVEpisode)
-                        tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                        Master.DB.Save_TVEpisode(DBTVEpisode, False, True, True, True, True)
-                        DataGridView_RefreshRow_TVEpisode(DBTVEpisode.ID)
+                        Master.DB.Save_Movieset(dbelement, False, True, True, True)
+                        DataGridView_RefreshRow_Movieset(dbelement.ID)
                     Case DialogResult.Retry 'Rescrape
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
-                    Case DialogResult.Abort 'Change TVEpisode
-                        'TODO
+                        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                               .ContentType = dbelement.ContentType,
+                                               .ListOfID = New List(Of Long) From {dbelement.ID},
+                                               .ScrapeModifiers = ScrapeModifiers,
+                                               .ScrapeOptions = Master.eSettings.DefaultScrapeOptions(dbelement.ContentType),
+                                               .ScrapeType = Enums.ScrapeType.Manually,
+                                               .SelectionType = Enums.SelectionType.None
+                                               })
+                    Case DialogResult.Abort 'Change MovieSet
+                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
+                        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                               .ContentType = dbelement.ContentType,
+                                               .ListOfID = New List(Of Long) From {dbelement.ID},
+                                               .ScrapeModifiers = ScrapeModifiers,
+                                               .ScrapeOptions = Master.eSettings.DefaultScrapeOptions(dbelement.ContentType),
+                                               .ScrapeType = Enums.ScrapeType.Manually,
+                                               .SelectionType = Enums.SelectionType.None
+                                               })
                     Case Else
-                        If InfoCleared Then LoadInfo_TVEpisode(DBTVEpisode.ID)
+                        If InfoCleared Then LoadInfo_Movieset(dbelement.ID)
                 End Select
             End Using
         End If
         SetControlsEnabled(True)
     End Sub
 
-    Private Sub Edit_TVSeason(ByRef DBTVSeason As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVSeason)
+    Private Sub Edit_TVEpisode(ByRef dbelement As Database.DBElement, Optional ByVal EventType As Enums.AddonEventType = Enums.AddonEventType.AfterEdit_TVEpisode)
         SetControlsEnabled(False)
-        If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVSeason, True) Then
-            Using dEditTVSeason As New dlgEdit_TVSeason
-                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
-                Select Case dEditTVSeason.ShowDialog(DBTVSeason)
+        If dbelement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(dbelement, True) Then
+            Using dEditTVEpisode As New dlgEdit_TVEpisode
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.BeforeEdit_TVEpisode, Nothing, Nothing, False, dbelement)
+                Select Case dEditTVEpisode.ShowDialog(dbelement)
                     Case DialogResult.OK
-                        DBTVSeason = dEditTVSeason.Result
-                        AddonsManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBTVSeason)
+                        dbelement = dEditTVEpisode.Result
+                        AddonsManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, dbelement)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                        Master.DB.Save_TVSeason(DBTVSeason, False, True, True)
-                        DataGridView_RefreshRow_TVSeason(DBTVSeason.ID)
+                        Master.DB.Save_TVEpisode(dbelement, False, True, True, True, True)
+                        DataGridView_RefreshRow_TVEpisode(dbelement.ID)
+                    Case DialogResult.Retry 'Rescrape
+                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
+                        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                               .ContentType = dbelement.ContentType,
+                                               .ListOfID = New List(Of Long) From {dbelement.ID},
+                                               .ScrapeModifiers = ScrapeModifiers,
+                                               .ScrapeOptions = Master.eSettings.DefaultScrapeOptions(dbelement.ContentType),
+                                               .ScrapeType = Enums.ScrapeType.Manually,
+                                               .SelectionType = Enums.SelectionType.None
+                                               })
+                    Case DialogResult.Abort 'Change TVEpisode
+                        'TODO
+                    Case Else
+                        If InfoCleared Then LoadInfo_TVEpisode(dbelement.ID)
+                End Select
+            End Using
+        End If
+        SetControlsEnabled(True)
+    End Sub
+
+    Private Sub Edit_TVSeason(ByRef dbelement As Database.DBElement, Optional ByVal EventType As Enums.AddonEventType = Enums.AddonEventType.AfterEdit_TVSeason)
+        SetControlsEnabled(False)
+        If dbelement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(dbelement, True) Then
+            Using dEditTVSeason As New dlgEdit_TVSeason
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.BeforeEdit_TVSeason, Nothing, Nothing, False, dbelement)
+                Select Case dEditTVSeason.ShowDialog(dbelement)
+                    Case DialogResult.OK
+                        dbelement = dEditTVSeason.Result
+                        AddonsManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, dbelement)
+                        tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
+                        Master.DB.Save_TVSeason(dbelement, False, True, True)
+                        DataGridView_RefreshRow_TVSeason(dbelement.ID)
                     Case Else
                         'If Me.InfoCleared Then Me.LoadInfo_TVSeason(CInt(DBTVSeason.ID)) 'TODO: 
                 End Select
@@ -4898,29 +4929,43 @@ Public Class frmMain
         SetControlsEnabled(True)
     End Sub
 
-    Private Sub Edit_TVShow(ByRef DBTVShow As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVShow)
+    Private Sub Edit_TVShow(ByRef dbelement As Database.DBElement, Optional ByVal type As Enums.AddonEventType = Enums.AddonEventType.AfterEdit_TVShow)
         SetControlsEnabled(False)
-        If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVShow, True) Then
+        If dbelement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(dbelement, True) Then
             Using dEditTVShow As New dlgEdit_TVShow
-                AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVShow, Nothing, Nothing, False, DBTVShow)
-                Select Case dEditTVShow.ShowDialog(DBTVShow)
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.BeforeEdit_TVShow, Nothing, Nothing, False, dbelement)
+                Select Case dEditTVShow.ShowDialog(dbelement)
                     Case DialogResult.OK
-                        DBTVShow = dEditTVShow.Result
-                        AddonsManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBTVShow)
+                        dbelement = dEditTVShow.Result
+                        AddonsManager.Instance.RunGeneric(type, Nothing, Nothing, False, dbelement)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                        Master.DB.Save_TVShow(DBTVShow, False, True, True, True)
-                        DataGridView_RefreshRow_TVShow(DBTVShow.ID)
+                        Master.DB.Save_TVShow(dbelement, False, True, True, True)
+                        DataGridView_RefreshRow_TVShow(dbelement.ID)
                     Case DialogResult.Retry 'Rescrape
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
+                        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                               .ContentType = dbelement.ContentType,
+                                               .ListOfID = New List(Of Long) From {dbelement.ID},
+                                               .ScrapeModifiers = ScrapeModifiers,
+                                               .ScrapeOptions = Master.eSettings.DefaultScrapeOptions(dbelement.ContentType),
+                                               .ScrapeType = Enums.ScrapeType.Manually,
+                                               .SelectionType = Enums.SelectionType.None
+                                               })
                     Case DialogResult.Abort 'Change TVShow
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-                        CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
+                        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                               .ContentType = dbelement.ContentType,
+                                               .ListOfID = New List(Of Long) From {dbelement.ID},
+                                               .ScrapeModifiers = ScrapeModifiers,
+                                               .ScrapeOptions = Master.eSettings.DefaultScrapeOptions(dbelement.ContentType),
+                                               .ScrapeType = Enums.ScrapeType.Manually,
+                                               .SelectionType = Enums.SelectionType.None
+                                               })
                     Case Else
-                        If InfoCleared Then LoadInfo_TVShow(DBTVShow.ID)
+                        If InfoCleared Then LoadInfo_TVShow(dbelement.ID)
                 End Select
             End Using
         End If
@@ -5777,10 +5822,10 @@ Public Class frmMain
     ''' <param name="mType"></param>
     ''' <param name="_params"></param>
     ''' <remarks></remarks>
-    Private Sub Generic_RunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+    Private Sub Generic_RunCallBack(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
         Select Case mType
 
-            Case Enums.ModuleEventType.CommandLine
+            Case Enums.AddonEventType.CommandLine
                 Select Case _params(0).ToString
                     Case "addmoviesource"
                         Using dSource As New dlgSource_Movie(Master.DB.Load_AllSources_Movie)
@@ -5824,15 +5869,15 @@ Public Class frmMain
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Addon..."))
                         Dim strModuleName As String = CStr(_params(1))
                         Dim oParameters As List(Of Object) = CType(_params(2), List(Of Object))
-                        Dim gModule As AddonsManager.GenericAddon = AddonsManager.Instance.GenericAddons.FirstOrDefault(Function(y) y.AssemblyName = strModuleName)
+                        Dim gModule = AddonsManager.Instance.Addons.FirstOrDefault(Function(y) y.AssemblyName = strModuleName)
                         If gModule IsNot Nothing Then
-                            gModule.ProcessorModule.Run(Enums.ModuleEventType.CommandLine, oParameters, Nothing, Nothing)
+                            gModule.ProcessorModule.Run(Nothing, Enums.AddonEventType.CommandLine, oParameters)
                         End If
                     Case "scrapemovies"
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
-                        CreateScrapeList_Movie(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
+                        CreateScrapeList_Movie(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultScrapeOptions(Enums.ContentType.Movie), ScrapeModifiers)
                         While bwMovieScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -5841,7 +5886,7 @@ Public Class frmMain
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
-                        CreateScrapeList_Movieset(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifiers)
+                        CreateScrapeList_Movieset(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultScrapeOptions(Enums.ContentType.Movieset), ScrapeModifiers)
                         While bwMoviesetScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -5850,21 +5895,21 @@ Public Class frmMain
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
-                        CreateScrapeList_TV(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
+                        CreateScrapeList_TV(CType(_params(1), Enums.ScrapeType), Master.eSettings.DefaultScrapeOptions(Enums.ContentType.TV), ScrapeModifiers)
                         While bwTVScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
                 End Select
 
-            Case Enums.ModuleEventType.Generic
+            Case Enums.AddonEventType.Generic
                 Select Case _params(0).ToString
                     Case "controlsenabled"
                         SetControlsEnabled(Convert.ToBoolean(_params(1)), If(_params.Count = 3, Convert.ToBoolean(_params(2)), False))
                     Case "filllist"
                         DataGridView_Fill_Main(CBool(_params(1)), CBool(_params(2)), CBool(_params(3)))
                 End Select
-            Case Enums.ModuleEventType.Notification
+            Case Enums.AddonEventType.Notification
                 Select Case _params(0).ToString
                     Case "error"
                         dlgErrorViewer.Show(Me)
@@ -5872,28 +5917,28 @@ Public Class frmMain
                         Activate()
                 End Select
 
-            Case Enums.ModuleEventType.AfterEdit_Movie
+            Case Enums.AddonEventType.AfterEdit_Movie
                 DataGridView_RefreshRow_Movie(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.AfterEdit_TVEpisode
+            Case Enums.AddonEventType.AfterEdit_TVEpisode
                 DataGridView_RefreshRow_TVEpisode(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.AfterEdit_TVShow
+            Case Enums.AddonEventType.AfterEdit_TVShow
                 DataGridView_RefreshRow_TVShow(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.Remove_Movie
+            Case Enums.AddonEventType.Remove_Movie
                 DataGridView_RemoveRow_Movie(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.Remove_MovieSet
+            Case Enums.AddonEventType.Remove_MovieSet
                 DataGridView_RemoveRow_Movieset(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.Remove_TVEpisode
+            Case Enums.AddonEventType.Remove_TVEpisode
                 DataGridView_RemoveRow_TVEpisode(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.Remove_TVSeason
+            Case Enums.AddonEventType.Remove_TVSeason
                 DataGridView_RemoveRow_TVSeason(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.Remove_TVShow
+            Case Enums.AddonEventType.Remove_TVShow
                 DataGridView_RemoveRow_TVShow(Convert.ToInt64(_params(0)))
 
             Case Else
@@ -6146,7 +6191,7 @@ Public Class frmMain
         Next
     End Sub
 
-    Private Sub Task_RunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+    Private Sub Task_RunCallBack(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
         _TaskList.Enqueue(New Task With {.mType = mType, .Params = _params})
         If _TasksDone Then
             _TasksDone = False
@@ -6164,12 +6209,11 @@ Public Class frmMain
         _TasksDone = True
     End Sub
 
-    Private Sub TaskManager_CreateTask(ByVal ContentType As Enums.ContentType, ByVal SelectionType As Enums.SelectionType, ByVal TaskType As TaskManager.TaskItem.TaskType, ByVal BooleanValue As Boolean, ByVal StringValue As String, GenericObject As Object)
-        Dim lItemsToChange As New List(Of Long)
+    Private Sub TaskManager_CreateTask(ByVal taskItem As TaskManager.TaskItem)
         Dim nDataGridView As DataGridView = Nothing
         Dim strIDName As String = String.Empty
 
-        Select Case ContentType
+        Select Case taskItem.ContentType
             Case Enums.ContentType.Movie
                 nDataGridView = dgvMovies
                 strIDName = Database.Helpers.GetMainIdName(Database.TableName.movie)
@@ -6188,36 +6232,24 @@ Public Class frmMain
         End Select
 
         If nDataGridView IsNot Nothing AndAlso Not String.IsNullOrEmpty(strIDName) Then
-            Select Case SelectionType
-                Case Enums.SelectionType.All
+            Select Case taskItem.SelectionType
+                Case Enums.SelectionType.Filtered
                     If nDataGridView.Rows.Count > 0 Then
                         For Each sRow As DataGridViewRow In nDataGridView.Rows
-                            lItemsToChange.Add(Convert.ToInt64(sRow.Cells(strIDName).Value))
+                            taskItem.ListOfID.Add(Convert.ToInt64(sRow.Cells(strIDName).Value))
                         Next
-
-                        Master.TaskManager.AddTask(New TaskManager.TaskItem(TaskType) With {
-                                                   .CommonBooleanValue = BooleanValue,
-                                                   .CommonStringValue = StringValue,
-                                                   .GenericObject = GenericObject,
-                                                   .ListOfID = lItemsToChange,
-                                                   .ContentType = ContentType
-                                                   })
+                        Master.TaskManager.AddTask(taskItem)
                     End If
 
                 Case Enums.SelectionType.Selected
                     If nDataGridView.SelectedRows.Count > 0 Then
                         For Each sRow As DataGridViewRow In nDataGridView.SelectedRows
-                            lItemsToChange.Add(Convert.ToInt64(sRow.Cells(strIDName).Value))
+                            taskItem.ListOfID.Add(Convert.ToInt64(sRow.Cells(strIDName).Value))
                         Next
-
-                        Master.TaskManager.AddTask(New TaskManager.TaskItem(TaskType) With {
-                                                   .CommonBooleanValue = BooleanValue,
-                                                   .CommonStringValue = StringValue,
-                                                   .GenericObject = GenericObject,
-                                                   .ListOfID = lItemsToChange,
-                                                   .ContentType = ContentType
-                                                   })
+                        Master.TaskManager.AddTask(taskItem)
                     End If
+                Case Else
+                    Master.TaskManager.AddTask(taskItem)
             End Select
         End If
     End Sub
@@ -6520,12 +6552,20 @@ Public Class frmMain
 
     Private Sub btnMarkAll_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMarkAll.Click
         Dim currMainTabTag = AddonsManager.Instance.RuntimeObjects.MediaTabSelected
-        TaskManager_CreateTask(currMainTabTag.ContentType, Enums.SelectionType.All, TaskManager.TaskItem.TaskType.SetMarkedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = currMainTabTag.ContentType,
+                               .SelectionType = Enums.SelectionType.All
+                               })
     End Sub
 
     Private Sub btnUnmarkAll_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUnmarkAll.Click
         Dim currMainTabTag = AddonsManager.Instance.RuntimeObjects.MediaTabSelected
-        TaskManager_CreateTask(currMainTabTag.ContentType, Enums.SelectionType.All, TaskManager.TaskItem.TaskType.SetMarkedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = currMainTabTag.ContentType,
+                               .SelectionType = Enums.SelectionType.All
+                               })
     End Sub
 
     Private Sub btnMid_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMid.Click
@@ -6552,13 +6592,23 @@ Public Class frmMain
             If dgvMovies.SelectedRows.Count = 1 Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMetadata, True)
-                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
+                TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                       .ContentType = currMainTabTag.ContentType,
+                                       .ScrapeModifiers = ScrapeModifiers,
+                                       .ScrapeType = Enums.ScrapeType.Auto,
+                                       .SelectionType = Enums.SelectionType.Selected
+                                       })
             End If
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
             If dgvTVEpisodes.SelectedRows.Count = 1 AndAlso _CurrDBElement.FileItemSpecified Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMetadata, True)
-                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
+                TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                       .ContentType = currMainTabTag.ContentType,
+                                       .ScrapeModifiers = ScrapeModifiers,
+                                       .ScrapeType = Enums.ScrapeType.Auto,
+                                       .SelectionType = Enums.SelectionType.Selected
+                                       })
             End If
         End If
     End Sub
@@ -7286,38 +7336,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub bwMovieScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
-        Dim Res As Results = DirectCast(e.Result, Results)
-
-        If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
-            InfoDownloaded_Movie(Res.DBElement)
-        ElseIf Res.Cancelled Then
-            'Reload last partially scraped Movie from disk to get clean informations in DB
-            Reload_Movie(Res.DBElement.ID, False, True)
-            tslLoading.Visible = False
-            tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = False
-            SetControlsEnabled(True)
-        Else
-            DataGridView_Fill_Main(False, True, False)
-            If dgvMovies.SelectedRows.Count > 0 Then
-                DataGridView_SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
-            Else
-                ClearInfo()
-            End If
-            tslLoading.Visible = False
-            tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = False
-            SetControlsEnabled(True)
-        End If
-    End Sub
-
     Private Sub bwMovieScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
@@ -7325,216 +7343,172 @@ Public Class frmMain
 
         _Logger.Trace(String.Format("[Movie Scraper] [Start] Movies Count [{0}]", Args.ScrapeList.Count.ToString))
 
-        For Each tScrapeItem As ScrapeItem In Args.ScrapeList
-            Dim Theme As New MediaContainers.Theme
-            Dim tURL As String = String.Empty
-            Dim aUrlList As New List(Of MediaContainers.Trailer)
-            Dim tUrlList As New List(Of Themes)
-            Dim OldListTitle As String = String.Empty
-            Dim NewListTitle As String = String.Empty
+        'For Each tScrapeItem As ScrapeItem In Args.ScrapeList
+        '    Dim Theme As New MediaContainers.Theme
+        '    Dim tURL As String = String.Empty
+        '    Dim aUrlList As New List(Of MediaContainers.Trailer)
+        '    Dim tUrlList As New List(Of Themes)
+        '    Dim OldListTitle As String = String.Empty
+        '    Dim NewListTitle As String = String.Empty
 
-            Cancelled = False
+        '    Cancelled = False
 
-            If bwMovieScraper.CancellationPending Then Exit For
-            OldListTitle = tScrapeItem.DataRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToString
-            bwMovieScraper.ReportProgress(1, OldListTitle)
+        '    If bwMovieScraper.CancellationPending Then Exit For
+        '    OldListTitle = tScrapeItem.DataRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToString
+        '    bwMovieScraper.ReportProgress(1, OldListTitle)
 
-            Dim dScrapeRow As DataRow = tScrapeItem.DataRow
+        '    Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
-            _Logger.Trace(String.Format("[Movie Scraper] [Start] Scraping {0}", OldListTitle))
+        '    _Logger.Trace(String.Format("[Movie Scraper] [Start] Scraping {0}", OldListTitle))
 
-            DBScrapeMovie = Master.DB.Load_Movie(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.movie))))
+        '    DBScrapeMovie = Master.DB.Load_Movie(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.movie))))
 
-            If tScrapeItem.ScrapeModifiers.MainNFO Then
-                If AddonsManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
-                    _Logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
-                    Cancelled = True
-                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        bwMovieScraper.CancelAsync()
-                    End If
-                End If
-            Else
-                ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If Not DBScrapeMovie.MainDetails.UniqueIDs.IMDbIdSpecified AndAlso (
-                    tScrapeItem.ScrapeModifiers.MainActorthumbs OrElse
-                    tScrapeItem.ScrapeModifiers.MainBanner OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
-                    tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
-                    tScrapeItem.ScrapeModifiers.MainExtrathumbs OrElse
-                    tScrapeItem.ScrapeModifiers.MainFanart OrElse
-                    tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainLandscape OrElse
-                    tScrapeItem.ScrapeModifiers.MainPoster OrElse
-                    tScrapeItem.ScrapeModifiers.MainTheme OrElse
-                    tScrapeItem.ScrapeModifiers.MainTrailer) Then
-                    Dim tModifiers As New Structures.ScrapeModifiers With {.MainNFO = True}
-                    Dim tOptions As New Structures.ScrapeOptions 'set all values to false to not override any field. ID's are always determined.
-                    If AddonsManager.Instance.ScrapeData_Movie(DBScrapeMovie, tModifiers, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
-                        _Logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
-                        Cancelled = True
-                        If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            bwMovieScraper.CancelAsync()
-                        End If
-                    End If
-                End If
-            End If
+        '    If tScrapeItem.ScrapeModifiers.MainNFO Then
+        '        If AddonsManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
+        '            _Logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
+        '            Cancelled = True
+        '            If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                bwMovieScraper.CancelAsync()
+        '            End If
+        '        End If
+        '    Else
+        '        ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
+        '        If Not DBScrapeMovie.MainDetails.UniqueIDs.IMDbIdSpecified AndAlso (
+        '            tScrapeItem.ScrapeModifiers.MainActorthumbs OrElse
+        '            tScrapeItem.ScrapeModifiers.MainBanner OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
+        '            tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
+        '            tScrapeItem.ScrapeModifiers.MainExtrathumbs OrElse
+        '            tScrapeItem.ScrapeModifiers.MainFanart OrElse
+        '            tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainLandscape OrElse
+        '            tScrapeItem.ScrapeModifiers.MainPoster OrElse
+        '            tScrapeItem.ScrapeModifiers.MainTheme OrElse
+        '            tScrapeItem.ScrapeModifiers.MainTrailer) Then
+        '            Dim tModifiers As New Structures.ScrapeModifiers With {.MainNFO = True}
+        '            Dim tOptions As New Structures.ScrapeOptions 'set all values to false to not override any field. ID's are always determined.
+        '            If AddonsManager.Instance.ScrapeData_Movie(DBScrapeMovie, tModifiers, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
+        '                _Logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
+        '                Cancelled = True
+        '                If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                    bwMovieScraper.CancelAsync()
+        '                End If
+        '            End If
+        '        End If
+        '    End If
 
-            If bwMovieScraper.CancellationPending Then Exit For
+        '    If bwMovieScraper.CancellationPending Then Exit For
 
-            If Not Cancelled Then
-                If Master.eSettings.Movie.DataSettings.MetadataScan.Enabled AndAlso tScrapeItem.ScrapeModifiers.MainMeta Then
-                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Metadata"), ":"))
-                    MetaData.UpdateFileInfo(DBScrapeMovie)
-                End If
-                If bwMovieScraper.CancellationPending Then Exit For
+        '    If Not Cancelled Then
+        '        If Master.eSettings.Movie.DataSettings.MetadataScan.Enabled AndAlso tScrapeItem.ScrapeModifiers.MainMeta Then
+        '            bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Metadata"), ":"))
+        '            MetaData.UpdateFileInfo(DBScrapeMovie)
+        '        End If
+        '        If bwMovieScraper.CancellationPending Then Exit For
 
-                NewListTitle = StringUtils.SortTokens(DBScrapeMovie.MainDetails.Title)
+        '        NewListTitle = StringUtils.SortTokens(DBScrapeMovie.MainDetails.Title)
 
-                If Not NewListTitle = OldListTitle Then
-                    bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
-                End If
+        '        If Not NewListTitle = OldListTitle Then
+        '            bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
+        '        End If
 
-                'get all images 
-                If tScrapeItem.ScrapeModifiers.MainBanner OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
-                    tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
-                    tScrapeItem.ScrapeModifiers.MainExtrathumbs OrElse
-                    tScrapeItem.ScrapeModifiers.MainFanart OrElse
-                    tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainLandscape OrElse
-                    tScrapeItem.ScrapeModifiers.MainPoster Then
+        '        'get all images 
+        '        If tScrapeItem.ScrapeModifiers.MainBanner OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
+        '            tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
+        '            tScrapeItem.ScrapeModifiers.MainExtrathumbs OrElse
+        '            tScrapeItem.ScrapeModifiers.MainFanart OrElse
+        '            tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainLandscape OrElse
+        '            tScrapeItem.ScrapeModifiers.MainPoster Then
 
-                    Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
-                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
-                    If Not AddonsManager.Instance.ScrapeImage_Movie(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifiers, Args.ScrapeList.Count = 1) Then
-                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
-                            Using dImgSelect As New dlgImageSelect
-                                If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifiers) = DialogResult.OK Then
-                                    Images.SetPreferredImages(DBScrapeMovie, dImgSelect.Result)
-                                End If
-                            End Using
-                        Else
-                            'autoscraping
-                            Images.SetPreferredImages(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
-                        End If
-                    End If
-                End If
+        '            Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+        '            bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
+        '            If Not AddonsManager.Instance.ScrapeImage_Movie(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifiers, Args.ScrapeList.Count = 1) Then
+        '                If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
+        '                    Using dImgSelect As New dlgImageSelect
+        '                        If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer) = DialogResult.OK Then
+        '                            Images.SetPreferredImages(DBScrapeMovie, dImgSelect.Result)
+        '                        End If
+        '                    End Using
+        '                Else
+        '                    'autoscraping
+        '                    Images.SetPreferredImages(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
+        '                End If
+        '            End If
+        '        End If
 
-                If bwMovieScraper.CancellationPending Then Exit For
+        '        If bwMovieScraper.CancellationPending Then Exit For
 
-                'Theme
-                If tScrapeItem.ScrapeModifiers.MainTheme Then
-                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
-                    Dim SearchResults As New List(Of MediaContainers.Theme)
-                    If Not AddonsManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, Enums.ModifierType.MainTheme, SearchResults) Then
-                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Using dThemeSelect As New dlgThemeSelect
-                                If dThemeSelect.ShowDialog(DBScrapeMovie, SearchResults, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
-                                    DBScrapeMovie.Theme = dThemeSelect.Result
-                                End If
-                            End Using
+        '        'Theme
+        '        If tScrapeItem.ScrapeModifiers.MainTheme Then
+        '            bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
+        '            Dim SearchResults As New List(Of MediaContainers.Theme)
+        '            If Not AddonsManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, Enums.ModifierType.MainTheme, SearchResults) Then
+        '                If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                    Using dThemeSelect As New dlgThemeSelect
+        '                        If dThemeSelect.ShowDialog(DBScrapeMovie, SearchResults, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+        '                            DBScrapeMovie.Theme = dThemeSelect.Result
+        '                        End If
+        '                    End Using
 
-                            'autoscraping
-                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredTheme As New MediaContainers.Theme
-                            If Themes.GetPreferred(SearchResults, newPreferredTheme, Enums.ContentType.Movie) Then
-                                DBScrapeMovie.Theme = newPreferredTheme
-                            End If
-                        End If
-                    End If
-                End If
+        '                    'autoscraping
+        '                ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                    Dim newPreferredTheme As New MediaContainers.Theme
+        '                    If Themes.GetPreferred(SearchResults, newPreferredTheme, Enums.ContentType.Movie) Then
+        '                        DBScrapeMovie.Theme = newPreferredTheme
+        '                    End If
+        '                End If
+        '            End If
+        '        End If
 
-                If bwMovieScraper.CancellationPending Then Exit For
+        '        If bwMovieScraper.CancellationPending Then Exit For
 
-                'Trailer
-                If tScrapeItem.ScrapeModifiers.MainTrailer Then
-                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(574, "Scraping Trailers"), ":"))
-                    Dim SearchResults As New List(Of MediaContainers.Trailer)
-                    If Not AddonsManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ModifierType.MainTrailer, SearchResults) Then
-                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Using dTrailerSelect As New dlgTrailerSelect
-                                'note msavazzi why is always False with Player? If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, False) = DialogResult.OK Then
-                                'DanCooper: the VLC COM interface is/was not able to call in multithread
-                                If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
-                                    DBScrapeMovie.Trailer = dTrailerSelect.Result
-                                End If
-                            End Using
+        '        'Trailer
+        '        If tScrapeItem.ScrapeModifiers.MainTrailer Then
+        '            bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(574, "Scraping Trailers"), ":"))
+        '            Dim SearchResults As New List(Of MediaContainers.Trailer)
+        '            If Not AddonsManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ModifierType.MainTrailer, SearchResults) Then
+        '                If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                    Using dTrailerSelect As New dlgTrailerSelect
+        '                        'note msavazzi why is always False with Player? If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, False) = DialogResult.OK Then
+        '                        'DanCooper: the VLC COM interface is/was not able to call in multithread
+        '                        If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+        '                            DBScrapeMovie.Trailer = dTrailerSelect.Result
+        '                        End If
+        '                    End Using
 
-                            'autoscraping
-                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredTrailer As New MediaContainers.Trailer
-                            If Trailers.GetPreferred(SearchResults, newPreferredTrailer, Enums.ContentType.Movie) Then
-                                DBScrapeMovie.Trailer = newPreferredTrailer
-                            End If
-                        End If
-                    End If
-                End If
+        '                    'autoscraping
+        '                ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                    Dim newPreferredTrailer As New MediaContainers.Trailer
+        '                    If Trailers.GetPreferred(SearchResults, newPreferredTrailer, Enums.ContentType.Movie) Then
+        '                        DBScrapeMovie.Trailer = newPreferredTrailer
+        '                    End If
+        '                End If
+        '            End If
+        '        End If
 
-                If bwMovieScraper.CancellationPending Then Exit For
+        '        If bwMovieScraper.CancellationPending Then Exit For
 
-                If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                    AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_Movie, Nothing, Nothing, False, DBScrapeMovie)
-                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.Save_Movie(DBScrapeMovie, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True, True, False)
-                    bwMovieScraper.ReportProgress(-2, DBScrapeMovie.ID)
-                    bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
-                End If
-                _Logger.Trace(String.Format("[Movie Scraper] [Done] Scraping {0}", OldListTitle))
-            Else
-                _Logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
-            End If
-        Next
+        '        If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
+        '            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.ScraperMulti_Movie, Nothing, Nothing, False, DBScrapeMovie)
+        '            bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
+        '            Master.DB.Save_Movie(DBScrapeMovie, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True, True, False)
+        '            bwMovieScraper.ReportProgress(-2, DBScrapeMovie.ID)
+        '            bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
+        '        End If
+        '        _Logger.Trace(String.Format("[Movie Scraper] [Done] Scraping {0}", OldListTitle))
+        '    Else
+        '        _Logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
+        '    End If
+        'Next
 
         e.Result = New Results With {.DBElement = DBScrapeMovie, .ScrapeType = Args.ScrapeType, .Cancelled = bwMovieScraper.CancellationPending}
         _Logger.Trace(String.Format("[Movie Scraper] [Done] Scraping"))
-    End Sub
-
-    Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
-        If e.ProgressPercentage = -1 Then
-            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString, Nothing}))
-        ElseIf e.ProgressPercentage = -2 Then
-            DataGridView_RefreshRow_Movie(CLng(e.UserState))
-        ElseIf e.ProgressPercentage = -3 Then
-            tslLoading.Text = e.UserState.ToString
-        Else
-            tspbLoading.Value += e.ProgressPercentage
-            SetStatus(e.UserState.ToString)
-        End If
-    End Sub
-
-    Private Sub bwMovieSetScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMoviesetScraper.RunWorkerCompleted
-        Dim Res As Results = DirectCast(e.Result, Results)
-
-        If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
-            InfoDownloaded_MovieSet(Res.DBElement)
-        ElseIf Res.Cancelled Then
-            'Reload last partially scraped MovieSet from disk to get clean informations in DB
-            Reload_Movieset(Res.DBElement.ID)
-            tslLoading.Visible = False
-            tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = False
-            SetControlsEnabled(True)
-        Else
-            If dgvMoviesets.SelectedRows.Count > 0 Then
-                DataGridView_SelectRow_Movieset(dgvMoviesets.SelectedRows(0).Index)
-            Else
-                ClearInfo()
-            End If
-            tslLoading.Visible = False
-            tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = False
-            SetControlsEnabled(True)
-        End If
     End Sub
 
     Private Sub bwMovieSetScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMoviesetScraper.DoWork
@@ -7544,163 +7518,119 @@ Public Class frmMain
 
         _Logger.Trace(String.Format("[MovieSet Scraper] [Start] MovieSets Count [{0}]", Args.ScrapeList.Count.ToString))
 
-        For Each tScrapeItem As ScrapeItem In Args.ScrapeList
-            Dim aContainer As New MediaContainers.SearchResultsContainer
-            Dim NewListTitle As String = String.Empty
-            Dim NewTMDBColID As String = String.Empty
-            Dim NewTitle As String = String.Empty
-            Dim OldListTitle As String = String.Empty
-            Dim OldTitle As String = String.Empty
-            Dim efList As New List(Of String)
-            Dim etList As New List(Of String)
-            Dim tURL As String = String.Empty
+        'For Each tScrapeItem As ScrapeItem In Args.ScrapeList
+        '    Dim aContainer As New MediaContainers.SearchResultsContainer
+        '    Dim NewListTitle As String = String.Empty
+        '    Dim NewTMDBColID As String = String.Empty
+        '    Dim NewTitle As String = String.Empty
+        '    Dim OldListTitle As String = String.Empty
+        '    Dim OldTitle As String = String.Empty
+        '    Dim efList As New List(Of String)
+        '    Dim etList As New List(Of String)
+        '    Dim tURL As String = String.Empty
 
-            Cancelled = False
+        '    Cancelled = False
 
-            If bwMoviesetScraper.CancellationPending Then Exit For
-            OldListTitle = tScrapeItem.DataRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToString
-            OldTitle = tScrapeItem.DataRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Title)).ToString
-            bwMoviesetScraper.ReportProgress(1, OldListTitle)
+        '    If bwMoviesetScraper.CancellationPending Then Exit For
+        '    OldListTitle = tScrapeItem.DataRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToString
+        '    OldTitle = tScrapeItem.DataRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Title)).ToString
+        '    bwMoviesetScraper.ReportProgress(1, OldListTitle)
 
-            Dim dScrapeRow As DataRow = tScrapeItem.DataRow
+        '    Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
-            _Logger.Trace(String.Format("[MovieSet Scraper] [Start] Scraping {0}", OldListTitle))
+        '    _Logger.Trace(String.Format("[MovieSet Scraper] [Start] Scraping {0}", OldListTitle))
 
-            DBScrapeMovieSet = Master.DB.Load_Movieset(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset))))
+        '    DBScrapeMovieSet = Master.DB.Load_Movieset(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset))))
 
-            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
+        '    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
 
-            If tScrapeItem.ScrapeModifiers.MainNFO Then
-                bwMoviesetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
-                If AddonsManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
-                    _Logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
-                    Cancelled = True
-                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        bwMoviesetScraper.CancelAsync()
-                    End If
-                End If
-            Else
-                ' if we do not have the movie set ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If Not DBScrapeMovieSet.MainDetails.UniqueIDs.TMDbIdSpecified AndAlso (
-                    tScrapeItem.ScrapeModifiers.MainBanner OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
-                    tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainFanart OrElse
-                    tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainLandscape OrElse
-                    tScrapeItem.ScrapeModifiers.MainPoster) Then
-                    Dim tModifiers As New Structures.ScrapeModifiers With {.MainNFO = True}
-                    Dim tOptions As New Structures.ScrapeOptions 'set all values to false to not override any field. ID's are always determined.
-                    If AddonsManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tModifiers, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
-                        _Logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
-                        Cancelled = True
-                        If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            bwMoviesetScraper.CancelAsync()
-                        End If
-                    End If
-                End If
-            End If
+        '    If tScrapeItem.ScrapeModifiers.MainNFO Then
+        '        bwMoviesetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
+        '        If AddonsManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
+        '            _Logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
+        '            Cancelled = True
+        '            If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                bwMoviesetScraper.CancelAsync()
+        '            End If
+        '        End If
+        '    Else
+        '        ' if we do not have the movie set ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
+        '        If Not DBScrapeMovieSet.MainDetails.UniqueIDs.TMDbIdSpecified AndAlso (
+        '            tScrapeItem.ScrapeModifiers.MainBanner OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
+        '            tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainFanart OrElse
+        '            tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainLandscape OrElse
+        '            tScrapeItem.ScrapeModifiers.MainPoster) Then
+        '            Dim tModifiers As New Structures.ScrapeModifiers With {.MainNFO = True}
+        '            Dim tOptions As New Structures.ScrapeOptions 'set all values to false to not override any field. ID's are always determined.
+        '            If AddonsManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tModifiers, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
+        '                _Logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
+        '                Cancelled = True
+        '                If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                    bwMoviesetScraper.CancelAsync()
+        '                End If
+        '            End If
+        '        End If
+        '    End If
 
-            If bwMoviesetScraper.CancellationPending Then Exit For
+        '    If bwMoviesetScraper.CancellationPending Then Exit For
 
-            If Not Cancelled Then
+        '    If Not Cancelled Then
 
-                NewListTitle = StringUtils.SortTokens(DBScrapeMovieSet.MainDetails.Title)
-                NewTitle = DBScrapeMovieSet.MainDetails.Title
-                NewTMDBColID = DBScrapeMovieSet.MainDetails.UniqueIDs.TMDbId
+        '        NewListTitle = StringUtils.SortTokens(DBScrapeMovieSet.MainDetails.Title)
+        '        NewTitle = DBScrapeMovieSet.MainDetails.Title
+        '        NewTMDBColID = DBScrapeMovieSet.MainDetails.UniqueIDs.TMDbId.ToString
 
-                If Not NewListTitle = OldListTitle Then
-                    bwMoviesetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
-                End If
+        '        If Not NewListTitle = OldListTitle Then
+        '            bwMoviesetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
+        '        End If
 
-                'get all images
-                If tScrapeItem.ScrapeModifiers.MainBanner OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
-                    tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
-                    tScrapeItem.ScrapeModifiers.MainFanart OrElse
-                    tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainLandscape OrElse
-                    tScrapeItem.ScrapeModifiers.MainPoster Then
+        '        'get all images
+        '        If tScrapeItem.ScrapeModifiers.MainBanner OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
+        '            tScrapeItem.ScrapeModifiers.MainDiscArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
+        '            tScrapeItem.ScrapeModifiers.MainFanart OrElse
+        '            tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainLandscape OrElse
+        '            tScrapeItem.ScrapeModifiers.MainPoster Then
 
-                    Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
-                    bwMoviesetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
-                    If Not AddonsManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifiers) Then
-                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
-                            Using dImgSelect As New dlgImageSelect
-                                If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifiers) = DialogResult.OK Then
-                                    Images.SetPreferredImages(DBScrapeMovieSet, dImgSelect.Result)
-                                End If
-                            End Using
-                        Else
-                            'autoscraping
-                            Images.SetPreferredImages(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
-                        End If
-                    End If
-                End If
+        '            Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+        '            bwMoviesetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
+        '            If Not AddonsManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifiers) Then
+        '                If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
+        '                    Using dImgSelect As New dlgImageSelect
+        '                        If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer) = DialogResult.OK Then
+        '                            Images.SetPreferredImages(DBScrapeMovieSet, dImgSelect.Result)
+        '                        End If
+        '                    End Using
+        '                Else
+        '                    'autoscraping
+        '                    Images.SetPreferredImages(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
+        '                End If
+        '            End If
+        '        End If
 
-                If bwMovieScraper.CancellationPending Then Exit For
+        '        If bwMovieScraper.CancellationPending Then Exit For
 
-                If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                    bwMoviesetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.Save_Movieset(DBScrapeMovieSet, True, True, True, True)
-                    bwMoviesetScraper.ReportProgress(-2, DBScrapeMovieSet.ID)
-                    bwMoviesetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
-                End If
-                _Logger.Trace(String.Format("[MovieSet Scraper] [Done] Scraping {0}", OldListTitle))
-            Else
-                _Logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
-            End If
-        Next
+        '        If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
+        '            bwMoviesetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
+        '            Master.DB.Save_Movieset(DBScrapeMovieSet, True, True, True, True)
+        '            bwMoviesetScraper.ReportProgress(-2, DBScrapeMovieSet.ID)
+        '            bwMoviesetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
+        '        End If
+        '        _Logger.Trace(String.Format("[MovieSet Scraper] [Done] Scraping {0}", OldListTitle))
+        '    Else
+        '        _Logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
+        '    End If
+        'Next
 
         e.Result = New Results With {.DBElement = DBScrapeMovieSet, .ScrapeType = Args.ScrapeType, .Cancelled = bwMoviesetScraper.CancellationPending}
         _Logger.Trace(String.Format("[MovieSet Scraper] [Done] Scraping"))
-    End Sub
-
-    Private Sub bwMovieSetScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMoviesetScraper.ProgressChanged
-        If e.ProgressPercentage = -1 Then
-            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviesetscraped", 3, Master.eLang.GetString(1204, "MovieSet Scraped"), e.UserState.ToString, Nothing}))
-        ElseIf e.ProgressPercentage = -2 Then
-            DataGridView_RefreshRow_Movieset(CLng(e.UserState))
-        ElseIf e.ProgressPercentage = -3 Then
-            tslLoading.Text = e.UserState.ToString
-        Else
-            tspbLoading.Value += e.ProgressPercentage
-            SetStatus(e.UserState.ToString)
-        End If
-    End Sub
-
-    Private Sub bwTVScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVScraper.RunWorkerCompleted
-        Dim Res As Results = DirectCast(e.Result, Results)
-
-        If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
-            InfoDownloaded_TV(Res.DBElement)
-        ElseIf Res.Cancelled Then
-            'Reload last partially scraped TVShow from disk to get clean informations in DB
-            Reload_TVShow(Res.DBElement.ID, False, True, True)
-            tslLoading.Visible = False
-            tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = False
-            SetControlsEnabled(True)
-        Else
-            If dgvTVShows.SelectedRows.Count > 0 Then
-                DataGridView_SelectRow_TVShow(dgvTVShows.SelectedRows(0).Index)
-            Else
-                ClearInfo()
-            End If
-            tslLoading.Visible = False
-            tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = False
-            SetControlsEnabled(True)
-        End If
     End Sub
 
     Private Sub bwTVScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVScraper.DoWork
@@ -7710,173 +7640,129 @@ Public Class frmMain
 
         _Logger.Trace(String.Format("[TVScraper] [Start] TV Shows Count [{0}]", Args.ScrapeList.Count.ToString))
 
-        For Each tScrapeItem As ScrapeItem In Args.ScrapeList
-            Dim Theme As New MediaContainers.Theme
-            Dim tURL As String = String.Empty
-            Dim tUrlList As New List(Of Themes)
-            Dim OldListTitle As String = String.Empty
-            Dim NewListTitle As String = String.Empty
+        'For Each tScrapeItem As ScrapeItem In Args.ScrapeList
+        '    Dim Theme As New MediaContainers.Theme
+        '    Dim tURL As String = String.Empty
+        '    Dim tUrlList As New List(Of Themes)
+        '    Dim OldListTitle As String = String.Empty
+        '    Dim NewListTitle As String = String.Empty
 
-            Cancelled = False
+        '    Cancelled = False
 
-            If bwTVScraper.CancellationPending Then Exit For
-            OldListTitle = tScrapeItem.DataRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToString
-            bwTVScraper.ReportProgress(1, OldListTitle)
+        '    If bwTVScraper.CancellationPending Then Exit For
+        '    OldListTitle = tScrapeItem.DataRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ListTitle)).ToString
+        '    bwTVScraper.ReportProgress(1, OldListTitle)
 
-            Dim dScrapeRow As DataRow = tScrapeItem.DataRow
+        '    Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
-            _Logger.Trace(String.Format("[TVScraper] [Start] Scraping {0}", OldListTitle))
+        '    _Logger.Trace(String.Format("[TVScraper] [Start] Scraping {0}", OldListTitle))
 
-            DBScrapeShow = Master.DB.Load_TVShow_Full(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow))))
-            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
+        '    DBScrapeShow = Master.DB.Load_TVShow_Full(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow))))
+        '    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
-            If tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.EpisodeNFO Then
-                bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
-                If AddonsManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
-                    Cancelled = True
-                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        _Logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
-                        bwTVScraper.CancelAsync()
-                    End If
-                End If
-            Else
-                ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If Not DBScrapeShow.MainDetails.UniqueIDs.TVDbIdSpecified AndAlso (
-                    tScrapeItem.ScrapeModifiers.MainActorthumbs OrElse
-                    tScrapeItem.ScrapeModifiers.MainBanner OrElse
-                    tScrapeItem.ScrapeModifiers.MainCharacterArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
-                    tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
-                    tScrapeItem.ScrapeModifiers.MainFanart OrElse
-                    tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainLandscape OrElse
-                    tScrapeItem.ScrapeModifiers.MainPoster OrElse
-                    tScrapeItem.ScrapeModifiers.MainTheme) Then
-                    Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
-                    If AddonsManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifiers, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
-                        Exit For
-                    End If
-                End If
-            End If
+        '    If tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.EpisodeNFO Then
+        '        bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
+        '        If AddonsManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
+        '            Cancelled = True
+        '            If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                _Logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
+        '                bwTVScraper.CancelAsync()
+        '            End If
+        '        End If
+        '    Else
+        '        ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
+        '        If Not DBScrapeShow.MainDetails.UniqueIDs.TVDbIdSpecified AndAlso (
+        '            tScrapeItem.ScrapeModifiers.MainActorthumbs OrElse
+        '            tScrapeItem.ScrapeModifiers.MainBanner OrElse
+        '            tScrapeItem.ScrapeModifiers.MainCharacterArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
+        '            tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
+        '            tScrapeItem.ScrapeModifiers.MainFanart OrElse
+        '            tScrapeItem.ScrapeModifiers.MainKeyArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainLandscape OrElse
+        '            tScrapeItem.ScrapeModifiers.MainPoster OrElse
+        '            tScrapeItem.ScrapeModifiers.MainTheme) Then
+        '            Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
+        '            If AddonsManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifiers, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
+        '                Exit For
+        '            End If
+        '        End If
+        '    End If
 
-            If bwTVScraper.CancellationPending Then Exit For
+        '    If bwTVScraper.CancellationPending Then Exit For
 
-            If Not Cancelled Then
-                NewListTitle = StringUtils.SortTokens(DBScrapeShow.MainDetails.Title)
+        '    If Not Cancelled Then
+        '        NewListTitle = StringUtils.SortTokens(DBScrapeShow.MainDetails.Title)
 
-                If Not NewListTitle = OldListTitle Then
-                    bwTVScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
-                End If
+        '        If Not NewListTitle = OldListTitle Then
+        '            bwTVScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
+        '        End If
 
-                'get all images
-                Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
-                bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
-                If Not AddonsManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifiers, Args.ScrapeList.Count = 1) Then
-                    If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                        Using dImgSelect As New dlgImageSelect
-                            If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifiers) = DialogResult.OK Then
-                                Images.SetPreferredImages(DBScrapeShow, dImgSelect.Result)
-                            End If
-                        End Using
-                    Else
-                        'autoscraping
-                        Images.SetPreferredImages(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
-                    End If
-                End If
+        '        'get all images
+        '        Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+        '        bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
+        '        If Not AddonsManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifiers, Args.ScrapeList.Count = 1) Then
+        '            If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
+        '                Using dImgSelect As New dlgImageSelect
+        '                    If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer) = DialogResult.OK Then
+        '                        Images.SetPreferredImages(DBScrapeShow, dImgSelect.Result)
+        '                    End If
+        '                End Using
+        '            Else
+        '                'autoscraping
+        '                Images.SetPreferredImages(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
+        '            End If
+        '        End If
 
-                If bwTVScraper.CancellationPending Then Exit For
+        '        If bwTVScraper.CancellationPending Then Exit For
 
-                'Theme
-                If tScrapeItem.ScrapeModifiers.MainTheme Then
-                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
-                    Dim SearchResults As New List(Of MediaContainers.Theme)
-                    If Not AddonsManager.Instance.ScrapeTheme_TVShow(DBScrapeShow, Enums.ModifierType.MainTheme, SearchResults) Then
-                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Using dThemeSelect As New dlgThemeSelect
-                                If dThemeSelect.ShowDialog(DBScrapeShow, SearchResults, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
-                                    DBScrapeShow.Theme = dThemeSelect.Result
-                                End If
-                            End Using
+        '        'Theme
+        '        If tScrapeItem.ScrapeModifiers.MainTheme Then
+        '            bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
+        '            Dim SearchResults As New List(Of MediaContainers.Theme)
+        '            If Not AddonsManager.Instance.ScrapeTheme_TVShow(DBScrapeShow, Enums.ModifierType.MainTheme, SearchResults) Then
+        '                If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                    Using dThemeSelect As New dlgThemeSelect
+        '                        If dThemeSelect.ShowDialog(DBScrapeShow, SearchResults, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+        '                            DBScrapeShow.Theme = dThemeSelect.Result
+        '                        End If
+        '                    End Using
 
-                            'autoscraping
-                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredTheme As New MediaContainers.Theme
-                            If Themes.GetPreferred(SearchResults, newPreferredTheme, Enums.ContentType.TVShow) Then
-                                DBScrapeShow.Theme = newPreferredTheme
-                            End If
-                        End If
-                    End If
-                End If
+        '                    'autoscraping
+        '                ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                    Dim newPreferredTheme As New MediaContainers.Theme
+        '                    If Themes.GetPreferred(SearchResults, newPreferredTheme, Enums.ContentType.TVShow) Then
+        '                        DBScrapeShow.Theme = newPreferredTheme
+        '                    End If
+        '                End If
+        '            End If
+        '        End If
 
-                If bwTVScraper.CancellationPending Then Exit For
+        '        If bwTVScraper.CancellationPending Then Exit For
 
-                'Episode Meta Data
-                If tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta AndAlso Master.eSettings.TVScraperMetaDataScan Then
-                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Metadata"), ":"))
-                    For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.FileItemSpecified)
-                        MetaData.UpdateFileInfo(tEpisode)
-                    Next
-                End If
+        '        'Episode Meta Data
+        '        If tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta AndAlso Master.eSettings.TVScraperMetaDataScan Then
+        '            bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Metadata"), ":"))
+        '            For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.FileItemSpecified)
+        '                MetaData.UpdateFileInfo(tEpisode)
+        '            Next
+        '        End If
 
-                If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                    AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVShow, Nothing, Nothing, False, DBScrapeShow)
-                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.Save_TVShow(DBScrapeShow, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True, tScrapeItem.ScrapeModifiers.withEpisodes)
-                    bwTVScraper.ReportProgress(-2, DBScrapeShow.ID)
-                    bwTVScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
-                End If
-            End If
+        '        If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
+        '            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.ScraperMulti_TVShow, Nothing, Nothing, False, DBScrapeShow)
+        '            bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
+        '            Master.DB.Save_TVShow(DBScrapeShow, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True, tScrapeItem.ScrapeModifiers.withEpisodes)
+        '            bwTVScraper.ReportProgress(-2, DBScrapeShow.ID)
+        '            bwTVScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
+        '        End If
+        '    End If
 
-            _Logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
-        Next
+        '    _Logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
+        'Next
 
         e.Result = New Results With {.DBElement = DBScrapeShow, .ScrapeType = Args.ScrapeType, .Cancelled = bwTVScraper.CancellationPending}
         _Logger.Trace("Ended TV SHOW scrape")
-    End Sub
-
-    Private Sub bwTVScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVScraper.ProgressChanged
-        If e.ProgressPercentage = -1 Then
-            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvshowscraped", 3, Master.eLang.GetString(248, "Show Scraped"), e.UserState.ToString, Nothing}))
-        ElseIf e.ProgressPercentage = -2 Then
-            DataGridView_RefreshRow_TVShow(CLng(e.UserState))
-        ElseIf e.ProgressPercentage = -3 Then
-            tslLoading.Text = e.UserState.ToString
-        Else
-            tspbLoading.Value += e.ProgressPercentage
-            SetStatus(e.UserState.ToString)
-        End If
-    End Sub
-
-    Private Sub bwTVEpisodeScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVEpisodeScraper.RunWorkerCompleted
-        Dim Res As Results = DirectCast(e.Result, Results)
-
-        If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
-            InfoDownloaded_TVEpisode(Res.DBElement)
-        ElseIf Res.Cancelled Then
-            'Reload last partially scraped Episode from disk to get clean informations in DB
-            Reload_TVEpisode(Res.DBElement.ID, False, True)
-            tslLoading.Visible = False
-            tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = False
-            SetControlsEnabled(True)
-        Else
-            If dgvTVEpisodes.SelectedRows.Count > 0 Then
-                DataGridView_SelectRow_TVEpisode(dgvTVShows.SelectedRows(0).Index)
-            Else
-                ClearInfo()
-            End If
-            tslLoading.Visible = False
-            tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = False
-            SetControlsEnabled(True)
-        End If
     End Sub
 
     Private Sub bwTVEpisodeScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVEpisodeScraper.DoWork
@@ -7886,145 +7772,101 @@ Public Class frmMain
 
         _Logger.Trace(String.Format("[TVEpisode] [Start] Episodes Count [{0}]", Args.ScrapeList.Count.ToString))
 
-        For Each tScrapeItem As ScrapeItem In Args.ScrapeList
-            Dim OldEpisodeTitle As String = String.Empty
-            Dim NewEpisodeTitle As String = String.Empty
+        'For Each tScrapeItem As ScrapeItem In Args.ScrapeList
+        '    Dim OldEpisodeTitle As String = String.Empty
+        '    Dim NewEpisodeTitle As String = String.Empty
 
-            Cancelled = False
+        '    Cancelled = False
 
-            If bwTVEpisodeScraper.CancellationPending Then Exit For
-            OldEpisodeTitle = tScrapeItem.DataRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Title)).ToString
-            bwTVEpisodeScraper.ReportProgress(1, OldEpisodeTitle)
+        '    If bwTVEpisodeScraper.CancellationPending Then Exit For
+        '    OldEpisodeTitle = tScrapeItem.DataRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Title)).ToString
+        '    bwTVEpisodeScraper.ReportProgress(1, OldEpisodeTitle)
 
-            Dim dScrapeRow As DataRow = tScrapeItem.DataRow
+        '    Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
-            _Logger.Trace(String.Format("[TVEpisodeScraper] [Start] Scraping {0}", OldEpisodeTitle))
+        '    _Logger.Trace(String.Format("[TVEpisodeScraper] [Start] Scraping {0}", OldEpisodeTitle))
 
-            DBScrapeEpisode = Master.DB.Load_TVEpisode(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.episode))), True)
-            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
+        '    DBScrapeEpisode = Master.DB.Load_TVEpisode(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.episode))), True)
+        '    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
-            If tScrapeItem.ScrapeModifiers.EpisodeNFO Then
-                bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
-                If AddonsManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
-                    Cancelled = True
-                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        _Logger.Trace(String.Concat("Canceled scraping: ", OldEpisodeTitle))
-                        bwTVEpisodeScraper.CancelAsync()
-                    End If
-                End If
-            Else
-                ' if we do not have the episode ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If Not DBScrapeEpisode.MainDetails.UniqueIDs.TVDbIdSpecified AndAlso (
-                    tScrapeItem.ScrapeModifiers.MainActorthumbs OrElse
-                    tScrapeItem.ScrapeModifiers.MainBanner OrElse
-                    tScrapeItem.ScrapeModifiers.MainCharacterArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearArt OrElse
-                    tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
-                    tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
-                    tScrapeItem.ScrapeModifiers.MainFanart OrElse
-                    tScrapeItem.ScrapeModifiers.MainLandscape OrElse
-                    tScrapeItem.ScrapeModifiers.MainPoster OrElse
-                    tScrapeItem.ScrapeModifiers.MainTheme) Then
-                    Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
-                    If AddonsManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, tOpt, Args.ScrapeList.Count = 1) Then
-                        Exit For
-                    End If
-                End If
-            End If
+        '    If tScrapeItem.ScrapeModifiers.EpisodeNFO Then
+        '        bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
+        '        If AddonsManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
+        '            Cancelled = True
+        '            If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                _Logger.Trace(String.Concat("Canceled scraping: ", OldEpisodeTitle))
+        '                bwTVEpisodeScraper.CancelAsync()
+        '            End If
+        '        End If
+        '    Else
+        '        ' if we do not have the episode ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
+        '        If Not DBScrapeEpisode.MainDetails.UniqueIDs.TVDbIdSpecified AndAlso (
+        '            tScrapeItem.ScrapeModifiers.MainActorthumbs OrElse
+        '            tScrapeItem.ScrapeModifiers.MainBanner OrElse
+        '            tScrapeItem.ScrapeModifiers.MainCharacterArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearArt OrElse
+        '            tScrapeItem.ScrapeModifiers.MainClearLogo OrElse
+        '            tScrapeItem.ScrapeModifiers.MainExtrafanarts OrElse
+        '            tScrapeItem.ScrapeModifiers.MainFanart OrElse
+        '            tScrapeItem.ScrapeModifiers.MainLandscape OrElse
+        '            tScrapeItem.ScrapeModifiers.MainPoster OrElse
+        '            tScrapeItem.ScrapeModifiers.MainTheme) Then
+        '            Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
+        '            If AddonsManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, tOpt, Args.ScrapeList.Count = 1) Then
+        '                Exit For
+        '            End If
+        '        End If
+        '    End If
 
-            If bwTVEpisodeScraper.CancellationPending Then Exit For
+        '    If bwTVEpisodeScraper.CancellationPending Then Exit For
 
-            If Not Cancelled Then
-                If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta Then
-                    MetaData.UpdateFileInfo(DBScrapeEpisode)
-                End If
-                If bwTVEpisodeScraper.CancellationPending Then Exit For
+        '    If Not Cancelled Then
+        '        If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta Then
+        '            MetaData.UpdateFileInfo(DBScrapeEpisode)
+        '        End If
+        '        If bwTVEpisodeScraper.CancellationPending Then Exit For
 
-                NewEpisodeTitle = DBScrapeEpisode.MainDetails.Title
+        '        NewEpisodeTitle = DBScrapeEpisode.MainDetails.Title
 
-                If Not NewEpisodeTitle = OldEpisodeTitle Then
-                    bwTVEpisodeScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldEpisodeTitle, NewEpisodeTitle))
-                End If
+        '        If Not NewEpisodeTitle = OldEpisodeTitle Then
+        '            bwTVEpisodeScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldEpisodeTitle, NewEpisodeTitle))
+        '        End If
 
-                'get all images
-                If tScrapeItem.ScrapeModifiers.EpisodeFanart OrElse
-                    tScrapeItem.ScrapeModifiers.EpisodePoster Then
-                    Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
-                    bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(265, "Scraping Episode Images"), ":"))
-                    If Not AddonsManager.Instance.ScrapeImage_TV(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifiers, Args.ScrapeList.Count = 1) Then
-                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                            Using dImgSelect As New dlgImageSelect
-                                If dImgSelect.ShowDialog(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifiers) = DialogResult.OK Then
-                                    Images.SetPreferredImages(DBScrapeEpisode, dImgSelect.Result)
-                                End If
-                            End Using
-                        Else
-                            'autoscraping
-                            Images.SetPreferredImages(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
-                        End If
-                    End If
-                End If
+        '        'get all images
+        '        If tScrapeItem.ScrapeModifiers.EpisodeFanart OrElse
+        '            tScrapeItem.ScrapeModifiers.EpisodePoster Then
+        '            Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+        '            bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(265, "Scraping Episode Images"), ":"))
+        '            If Not AddonsManager.Instance.ScrapeImage_TV(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifiers, Args.ScrapeList.Count = 1) Then
+        '                If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
+        '                    Using dImgSelect As New dlgImageSelect
+        '                        If dImgSelect.ShowDialog(DBScrapeEpisode, SearchResultsContainer) = DialogResult.OK Then
+        '                            Images.SetPreferredImages(DBScrapeEpisode, dImgSelect.Result)
+        '                        End If
+        '                    End Using
+        '                Else
+        '                    'autoscraping
+        '                    Images.SetPreferredImages(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
+        '                End If
+        '            End If
+        '        End If
 
-                If bwTVEpisodeScraper.CancellationPending Then Exit For
+        '        If bwTVEpisodeScraper.CancellationPending Then Exit For
 
-                If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                    AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, DBScrapeEpisode)
-                    bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.Save_TVEpisode(DBScrapeEpisode, False, tScrapeItem.ScrapeModifiers.EpisodeNFO OrElse tScrapeItem.ScrapeModifiers.EpisodeMeta, True, True, True)
-                    bwTVEpisodeScraper.ReportProgress(-2, DBScrapeEpisode.ID)
-                    bwTVEpisodeScraper.ReportProgress(-1, If(Not OldEpisodeTitle = NewEpisodeTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldEpisodeTitle, NewEpisodeTitle), NewEpisodeTitle))
-                End If
-            End If
+        '        If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
+        '            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, DBScrapeEpisode)
+        '            bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
+        '            Master.DB.Save_TVEpisode(DBScrapeEpisode, False, tScrapeItem.ScrapeModifiers.EpisodeNFO OrElse tScrapeItem.ScrapeModifiers.EpisodeMeta, True, True, True)
+        '            bwTVEpisodeScraper.ReportProgress(-2, DBScrapeEpisode.ID)
+        '            bwTVEpisodeScraper.ReportProgress(-1, If(Not OldEpisodeTitle = NewEpisodeTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldEpisodeTitle, NewEpisodeTitle), NewEpisodeTitle))
+        '        End If
+        '    End If
 
-            _Logger.Trace(String.Concat("Ended scraping: ", OldEpisodeTitle))
-        Next
+        '    _Logger.Trace(String.Concat("Ended scraping: ", OldEpisodeTitle))
+        'Next
 
         e.Result = New Results With {.DBElement = DBScrapeEpisode, .ScrapeType = Args.ScrapeType, .Cancelled = bwTVEpisodeScraper.CancellationPending}
         _Logger.Trace("Ended EPISODE scrape")
-    End Sub
-
-    Private Sub bwTVEpisodeScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVEpisodeScraper.ProgressChanged
-        If e.ProgressPercentage = -1 Then
-            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvepisodescraped", 3, Master.eLang.GetString(883, "Episode Scraped"), e.UserState.ToString, Nothing}))
-        ElseIf e.ProgressPercentage = -2 Then
-            DataGridView_RefreshRow_TVEpisode(CLng(e.UserState))
-        ElseIf e.ProgressPercentage = -3 Then
-            tslLoading.Text = e.UserState.ToString
-        Else
-            tspbLoading.Value += e.ProgressPercentage
-            SetStatus(e.UserState.ToString)
-        End If
-    End Sub
-
-    Private Sub bwTVSeasonScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVSeasonScraper.RunWorkerCompleted
-        Dim Res As Results = DirectCast(e.Result, Results)
-
-        If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
-            InfoDownloaded_TVSeason(Res.DBElement)
-        ElseIf Res.Cancelled Then
-            'Reload last partially scraped TVSeason from disk to get clean informations in DB
-            Reload_TVSeason(Res.DBElement.ID, False, True, False)
-            tslLoading.Visible = False
-            tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = False
-            SetControlsEnabled(True)
-        Else
-            If dgvTVSeasons.SelectedRows.Count > 0 Then
-                DataGridView_SelectRow_TVSeason(dgvTVSeasons.SelectedRows(0).Index)
-            Else
-                ClearInfo()
-            End If
-            tslLoading.Visible = False
-            tspbLoading.Visible = False
-            btnCancel.Visible = False
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = False
-            SetControlsEnabled(True)
-        End If
     End Sub
 
     Private Sub bwTVSeasonScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVSeasonScraper.DoWork
@@ -8034,85 +7876,85 @@ Public Class frmMain
 
         _Logger.Trace(String.Format("[TVSeason Scraper] [Start] Seasons Count [{0}]", Args.ScrapeList.Count.ToString))
 
-        For Each tScrapeItem As ScrapeItem In Args.ScrapeList
-            Dim tURL As String = String.Empty
-            Dim tUrlList As New List(Of Themes)
+        'For Each tScrapeItem As ScrapeItem In Args.ScrapeList
+        '    Dim tURL As String = String.Empty
+        '    Dim tUrlList As New List(Of Themes)
 
-            Cancelled = False
+        '    Cancelled = False
 
-            If bwTVSeasonScraper.CancellationPending Then Exit For
+        '    If bwTVSeasonScraper.CancellationPending Then Exit For
 
-            Dim dScrapeRow As DataRow = tScrapeItem.DataRow
+        '    Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
-            DBScrapeSeason = Master.DB.Load_TVSeason(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.season))), True, False)
-            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
+        '    DBScrapeSeason = Master.DB.Load_TVSeason(Convert.ToInt64(tScrapeItem.DataRow.Item(Database.Helpers.GetMainIdName(Database.TableName.season))), True, False)
+        '    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
-            _Logger.Trace(String.Format("Start scraping: {0}: Season {1}", DBScrapeSeason.TVShowDetails.Title, DBScrapeSeason.MainDetails.Season))
+        '    _Logger.Trace(String.Format("Start scraping: {0}: Season {1}", DBScrapeSeason.TVShowDetails.Title, DBScrapeSeason.MainDetails.Season))
 
-            If tScrapeItem.ScrapeModifiers.SeasonNFO Then
-                bwTVSeasonScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
-                If AddonsManager.Instance.ScrapeData_TVSeason(DBScrapeSeason, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
-                    Cancelled = True
-                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        _Logger.Trace(String.Format("Canceled scraping: {0}: Season {1}", DBScrapeSeason.TVShowDetails.Title, DBScrapeSeason.MainDetails.Season))
-                        bwTVSeasonScraper.CancelAsync()
-                    End If
-                End If
-            Else
-                ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If Not DBScrapeSeason.MainDetails.UniqueIDs.TVDbIdSpecified AndAlso (
-                    tScrapeItem.ScrapeModifiers.SeasonBanner OrElse
-                    tScrapeItem.ScrapeModifiers.SeasonFanart OrElse
-                    tScrapeItem.ScrapeModifiers.SeasonLandscape OrElse
-                    tScrapeItem.ScrapeModifiers.SeasonPoster) Then
-                    Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
-                    If AddonsManager.Instance.ScrapeData_TVSeason(DBScrapeSeason, tOpt, Args.ScrapeList.Count = 1) Then
-                        Exit For
-                    End If
-                End If
-            End If
+        '    If tScrapeItem.ScrapeModifiers.SeasonNFO Then
+        '        bwTVSeasonScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
+        '        If AddonsManager.Instance.ScrapeData_TVSeason(DBScrapeSeason, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
+        '            Cancelled = True
+        '            If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        '                _Logger.Trace(String.Format("Canceled scraping: {0}: Season {1}", DBScrapeSeason.TVShowDetails.Title, DBScrapeSeason.MainDetails.Season))
+        '                bwTVSeasonScraper.CancelAsync()
+        '            End If
+        '        End If
+        '    Else
+        '        ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
+        '        If Not DBScrapeSeason.MainDetails.UniqueIDs.TVDbIdSpecified AndAlso (
+        '            tScrapeItem.ScrapeModifiers.SeasonBanner OrElse
+        '            tScrapeItem.ScrapeModifiers.SeasonFanart OrElse
+        '            tScrapeItem.ScrapeModifiers.SeasonLandscape OrElse
+        '            tScrapeItem.ScrapeModifiers.SeasonPoster) Then
+        '            Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
+        '            If AddonsManager.Instance.ScrapeData_TVSeason(DBScrapeSeason, tOpt, Args.ScrapeList.Count = 1) Then
+        '                Exit For
+        '            End If
+        '        End If
+        '    End If
 
-            If bwTVSeasonScraper.CancellationPending Then Exit For
+        '    If bwTVSeasonScraper.CancellationPending Then Exit For
 
-            If Not Cancelled Then
-                'get all images
-                If tScrapeItem.ScrapeModifiers.AllSeasonsBanner OrElse
-                    tScrapeItem.ScrapeModifiers.AllSeasonsFanart OrElse
-                    tScrapeItem.ScrapeModifiers.AllSeasonsLandscape OrElse
-                    tScrapeItem.ScrapeModifiers.AllSeasonsPoster OrElse
-                    tScrapeItem.ScrapeModifiers.SeasonBanner OrElse
-                    tScrapeItem.ScrapeModifiers.SeasonFanart OrElse
-                    tScrapeItem.ScrapeModifiers.SeasonLandscape OrElse
-                    tScrapeItem.ScrapeModifiers.SeasonPoster Then
+        '    If Not Cancelled Then
+        '        'get all images
+        '        If tScrapeItem.ScrapeModifiers.AllSeasonsBanner OrElse
+        '            tScrapeItem.ScrapeModifiers.AllSeasonsFanart OrElse
+        '            tScrapeItem.ScrapeModifiers.AllSeasonsLandscape OrElse
+        '            tScrapeItem.ScrapeModifiers.AllSeasonsPoster OrElse
+        '            tScrapeItem.ScrapeModifiers.SeasonBanner OrElse
+        '            tScrapeItem.ScrapeModifiers.SeasonFanart OrElse
+        '            tScrapeItem.ScrapeModifiers.SeasonLandscape OrElse
+        '            tScrapeItem.ScrapeModifiers.SeasonPoster Then
 
-                    Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
-                    bwTVSeasonScraper.ReportProgress(-3, "Scraping Season Images:")
-                    If Not AddonsManager.Instance.ScrapeImage_TV(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifiers, Args.ScrapeList.Count = 1) Then
-                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                            Using dImgSelect As New dlgImageSelect
-                                If dImgSelect.ShowDialog(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifiers) = DialogResult.OK Then
-                                    Images.SetPreferredImages(DBScrapeSeason, dImgSelect.Result)
-                                End If
-                            End Using
-                        Else
-                            'autoscraping
-                            Images.SetPreferredImages(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
-                        End If
-                    End If
-                End If
+        '            Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+        '            bwTVSeasonScraper.ReportProgress(-3, "Scraping Season Images:")
+        '            If Not AddonsManager.Instance.ScrapeImage_TV(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifiers, Args.ScrapeList.Count = 1) Then
+        '                If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
+        '                    Using dImgSelect As New dlgImageSelect
+        '                        If dImgSelect.ShowDialog(DBScrapeSeason, SearchResultsContainer) = DialogResult.OK Then
+        '                            Images.SetPreferredImages(DBScrapeSeason, dImgSelect.Result)
+        '                        End If
+        '                    End Using
+        '                Else
+        '                    'autoscraping
+        '                    Images.SetPreferredImages(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifiers)
+        '                End If
+        '            End If
+        '        End If
 
-                If bwTVSeasonScraper.CancellationPending Then Exit For
+        '        If bwTVSeasonScraper.CancellationPending Then Exit For
 
-                If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                    AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVSeason, Nothing, Nothing, False, DBScrapeSeason)
-                    bwTVSeasonScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.Save_TVSeason(DBScrapeSeason, False, True, True)
-                    bwTVSeasonScraper.ReportProgress(-2, DBScrapeSeason.ID)
-                End If
-            End If
+        '        If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
+        '            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.ScraperMulti_TVSeason, Nothing, Nothing, False, DBScrapeSeason)
+        '            bwTVSeasonScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
+        '            Master.DB.Save_TVSeason(DBScrapeSeason, False, True, True)
+        '            bwTVSeasonScraper.ReportProgress(-2, DBScrapeSeason.ID)
+        '        End If
+        '    End If
 
-            _Logger.Trace(String.Format("Ended scraping: {0}: Season {1}", DBScrapeSeason.TVShowDetails.Title, DBScrapeSeason.MainDetails.Season))
-        Next
+        '    _Logger.Trace(String.Format("Ended scraping: {0}: Season {1}", DBScrapeSeason.TVShowDetails.Title, DBScrapeSeason.MainDetails.Season))
+        'Next
 
         e.Result = New Results With {.DBElement = DBScrapeSeason, .ScrapeType = Args.ScrapeType, .Cancelled = bwTVSeasonScraper.CancellationPending}
         _Logger.Trace("Ended TV Season scrape")
@@ -8120,7 +7962,7 @@ Public Class frmMain
 
     Private Sub bwTVSeasonScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVSeasonScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvseasonscraped", 3, Master.eLang.GetString(247, "Season Scraped"), e.UserState.ToString, Nothing}))
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"tvseasonscraped", 3, Master.eLang.GetString(247, "Season Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             DataGridView_RefreshRow_TVSeason(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -8942,11 +8784,12 @@ Public Class frmMain
         Dim tmpEpisode As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
         Dim tmpShow As Database.DBElement = Master.DB.Load_TVShow(ShowID, False, False)
 
-        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
-        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
-
-        If Not AddonsManager.Instance.ScrapeData_TVShow(tmpShow, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), True) Then
+        Functions.SetScrapeModifiers(tmpShow.ScrapeModifiers, Enums.ModifierType.MainNFO, True)
+        Functions.SetScrapeModifiers(tmpShow.ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
+        tmpShow.ScrapeOptions = Master.eSettings.DefaultScrapeOptions(Enums.ContentType.TV)
+        tmpShow.ScrapeType = Enums.ScrapeType.Manually
+        Dim nResult = Scraper.Run(tmpShow)
+        If nResult IsNot Nothing Then
             If tmpShow.Episodes.Count > 0 Then
                 Dim dlgChangeEp As New dlgTVChangeTVEpisode(tmpShow)
                 If dlgChangeEp.ShowDialog = DialogResult.OK Then
@@ -8988,7 +8831,13 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
-            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
+            TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                   .ContentType = Enums.ContentType.TVShow,
+                                   .ScrapeModifiers = ScrapeModifiers,
+                                   .ScrapeOptions = Master.eSettings.DefaultScrapeOptions(Enums.ContentType.TVShow),
+                                   .ScrapeType = Enums.ScrapeType.Manually,
+                                   .SelectionType = Enums.SelectionType.Selected
+                                   })
         End If
     End Sub
 
@@ -9103,115 +8952,227 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuMovieLock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieLock.Click
-        TaskManager_CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLockedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLockedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.Movie,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuMovieUnlock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieUnlock.Click
-        TaskManager_CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLockedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLockedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.Movie,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuMovieMark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieMark.Click
-        TaskManager_CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMarkedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.Movie,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuMovieUnmark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieUnmark.Click
-        TaskManager_CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMarkedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.Movie,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuMovieWatched_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieWatched.Click
-        TaskManager_CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetWatchedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetWatchedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.Movie,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuMovieUnwatched_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieUnwatched.Click
-        TaskManager_CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetWatchedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetWatchedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.Movie,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
-    Private Sub cmnuMovieSetLock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieSetLock.Click
-        TaskManager_CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLockedState, True, String.Empty, Nothing)
+    Private Sub cmnuMoviesetLock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMoviesetLock.Click
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLockedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.Movieset,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
-    Private Sub cmnuMovieSetUnlock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieSetUnlock.Click
-        TaskManager_CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLockedState, False, String.Empty, Nothing)
+    Private Sub cmnuMoviesetUnlock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMoviesetUnlock.Click
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLockedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.Movieset,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
-    Private Sub cmnuMovieSetMark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieSetMark.Click
-        TaskManager_CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMarkedState, True, String.Empty, Nothing)
+    Private Sub cmnuMoviesetMark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMoviesetMark.Click
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.Movieset,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
-    Private Sub cmnuMovieSetUnmark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieSetUnmark.Click
-        TaskManager_CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMarkedState, False, String.Empty, Nothing)
+    Private Sub cmnuMoviesetUnmark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMoviesetUnmark.Click
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.Movieset,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuEpisodeLock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuEpisodeLock.Click
-        TaskManager_CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLockedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLockedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.TVEpisode,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuEpisodeUnlock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuEpisodeUnlock.Click
-        TaskManager_CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLockedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLockedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.TVEpisode,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuEpisodeMark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuEpisodeMark.Click
-        TaskManager_CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMarkedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.TVEpisode,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuEpisodeUnmark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuEpisodeUnmark.Click
-        TaskManager_CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMarkedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.TVEpisode,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuEpisodeWatched_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuEpisodeWatched.Click
-        TaskManager_CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetWatchedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetWatchedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.TVEpisode,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuEpisodeUnwatched_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuEpisodeUnwatched.Click
-        TaskManager_CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetWatchedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetWatchedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.TVEpisode,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuSeasonLock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSeasonLock.Click
-        TaskManager_CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLockedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLockedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.TVSeason,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuSeasonUnlock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSeasonUnlock.Click
-        TaskManager_CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLockedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLockedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.TVSeason,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuSeasonMark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSeasonMark.Click
-        TaskManager_CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMarkedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.TVSeason,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuSeasonUnmark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSeasonUnmark.Click
-        TaskManager_CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMarkedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.TVSeason,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuSeasonWatched_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSeasonWatched.Click
-        TaskManager_CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetWatchedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetWatchedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.TVSeason,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuSeasonUnwatched_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSeasonUnwatched.Click
-        TaskManager_CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetWatchedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetWatchedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.TVSeason,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuShowLock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuShowLock.Click
-        TaskManager_CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLockedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLockedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.TVShow,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuShowUnlock_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuShowUnlock.Click
-        TaskManager_CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLockedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLockedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.TVShow,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuShowMark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuShowMark.Click
-        TaskManager_CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMarkedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.TVShow,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuShowUnmark_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuShowUnmark.Click
-        TaskManager_CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMarkedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMarkedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.TVShow,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuShowWatched_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuShowWatched.Click
-        TaskManager_CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetWatchedState, True, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetWatchedState) With {
+                               .CommonBooleanValue = True,
+                               .ContentType = Enums.ContentType.TVShow,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuShowUnwatched_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuShowUnwatched.Click
-        TaskManager_CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetWatchedState, False, String.Empty, Nothing)
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetWatchedState) With {
+                               .CommonBooleanValue = False,
+                               .ContentType = Enums.ContentType.TVShow,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
 
     Private Sub cmnuMovieMarkAsCustom1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieMarkAsCustom1.Click
@@ -9782,7 +9743,8 @@ Public Class frmMain
         If dgvTVEpisodes.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
+            'CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultScrapeOptions(Enums.ContentType.TV), ScrapeModifiers)
+            'TODO
         End If
     End Sub
 
@@ -9790,7 +9752,7 @@ Public Class frmMain
         If dgvMovies.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
+            'CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultScrapeOptions(Enums.ContentType.Movie), ScrapeModifiers)
         End If
     End Sub
 
@@ -9798,7 +9760,7 @@ Public Class frmMain
         If dgvMoviesets.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_Movieset(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifiers)
+            'CreateScrapeList_Movieset(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultScrapeOptions(Enums.ContentType.Movieset), ScrapeModifiers)
         End If
     End Sub
 
@@ -9808,7 +9770,7 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
-            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
+            'CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultScrapeOptions(Enums.ContentType.TV), ScrapeModifiers)
         End If
     End Sub
     ''' <summary>
@@ -9823,7 +9785,7 @@ Public Class frmMain
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
+        'CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultScrapeOptions(Enums.ContentType.Movie), ScrapeModifiers)
     End Sub
     ''' <summary>
     ''' User has selected "Change Movie" from the context menu. This will re-validate the movie title with the user,
@@ -9837,7 +9799,7 @@ Public Class frmMain
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
+        'CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.eSettings.DefaultScrapeOptions(Enums.ContentType.Movie), ScrapeModifiers)
     End Sub
 
     Private Sub cmnuSeasonEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuSeasonEdit.Click
@@ -9878,7 +9840,7 @@ Public Class frmMain
         If dgvTVSeasons.SelectedRows.Count > 0 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
-            CreateScrapeList_TVSeason(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
+            'CreateScrapeList_TVSeason(Enums.ScrapeType.SingleScrape, Master.eSettings.DefaultScrapeOptions(Enums.ContentType.TV), ScrapeModifiers)
         End If
     End Sub
 
@@ -10479,12 +10441,12 @@ Public Class frmMain
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(_CurrDBElement)
         txtIMDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.IMDbId
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(_CurrDBElement)
-        txtTMDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.TMDbId
+        txtTMDBID.Text = If(_CurrDBElement.MainDetails.UniqueIDs.TMDbIdSpecified, _CurrDBElement.MainDetails.UniqueIDs.TMDbId.ToString, String.Empty)
 
         txtFilePath.Text = _CurrDBElement.FileItem.FullPath
         txtTrailerPath.Text = If(Not String.IsNullOrEmpty(_CurrDBElement.Trailer.LocalFilePath), _CurrDBElement.Trailer.LocalFilePath, _CurrDBElement.MainDetails.Trailer)
 
-        txtMetaData.Text = Data.FIToString(_CurrDBElement)
+        txtMetaData.Text = Information.FIToString(_CurrDBElement)
 
         InfoCleared = False
 
@@ -10517,7 +10479,7 @@ Public Class frmMain
 
 
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(_CurrDBElement)
-        txtTMDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.TMDbId
+        txtTMDBID.Text = If(_CurrDBElement.MainDetails.UniqueIDs.TMDbIdSpecified, _CurrDBElement.MainDetails.UniqueIDs.TMDbId.ToString, String.Empty)
 
         If _CurrDBElement.MoviesInSet IsNot Nothing AndAlso _CurrDBElement.MoviesInSet.Count > 0 Then
             If bwLoadImages_MovieSetMoviePosters.IsBusy AndAlso Not bwLoadImages_MovieSetMoviePosters.CancellationPending Then
@@ -10660,9 +10622,9 @@ Public Class frmMain
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(_CurrDBElement)
         txtIMDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.IMDbId
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(_CurrDBElement)
-        txtTMDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.TMDbId
+        txtTMDBID.Text = If(_CurrDBElement.MainDetails.UniqueIDs.TMDbIdSpecified, _CurrDBElement.MainDetails.UniqueIDs.TMDbId.ToString, String.Empty)
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(_CurrDBElement)
-        txtTVDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.TVDbId
+        txtTMDBID.Text = If(_CurrDBElement.MainDetails.UniqueIDs.TVDbIdSpecified, _CurrDBElement.MainDetails.UniqueIDs.TVDbId.ToString, String.Empty)
 
         If _CurrDBElement.TVShowDetails.StudiosSpecified AndAlso Manager.mSettings.MainOptions.GuiSettings.DisplayStudioFlag Then
             pbStudio.Image = MediaFlags.GetStudioImage(_CurrDBElement.TVShowDetails.Studios.Item(0).ToLower) 'ByDef all image file names are in lower case
@@ -10690,7 +10652,7 @@ Public Class frmMain
             pbStudio.Left = 0
         End If
 
-        txtMetaData.Text = Data.FIToString(_CurrDBElement)
+        txtMetaData.Text = Information.FIToString(_CurrDBElement)
 
         InfoCleared = False
 
@@ -10713,9 +10675,10 @@ Public Class frmMain
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(_CurrDBElement)
         txtTMDBID.Text = If(Not String.IsNullOrEmpty(lblTMDBHeader.Tag.ToString), "Link", String.Empty)
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(_CurrDBElement)
-        txtTVDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.TVDbId
+        txtTMDBID.Text = If(_CurrDBElement.MainDetails.UniqueIDs.TVDbIdSpecified, _CurrDBElement.MainDetails.UniqueIDs.TVDbId.ToString, String.Empty)
         lblCertifications.Text = String.Join(" / ", _CurrDBElement.TVShowDetails.Certifications.ToArray)
         lblPremiered.Text = _CurrDBElement.MainDetails.Aired
+        lblPremieredHeader.Text = Master.eLang.GetString(728, "Aired")
 
         Try
             If _CurrDBElement.TVShowDetails.RatingSpecified Then
@@ -10818,9 +10781,9 @@ Public Class frmMain
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(_CurrDBElement)
         txtIMDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.IMDbId
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(_CurrDBElement)
-        txtTMDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.TMDbId
+        txtTMDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.TMDbId.ToString
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(_CurrDBElement)
-        txtTVDBID.Text = _CurrDBElement.MainDetails.UniqueIDs.TVDbId
+        txtTVDBID.Text = If(_CurrDBElement.MainDetails.UniqueIDs.TVDbIdSpecified, _CurrDBElement.MainDetails.UniqueIDs.TVDbId.ToString, String.Empty)
         lblCertifications.Text = String.Join(" / ", _CurrDBElement.MainDetails.Certifications.ToArray)
         lblTags.Text = String.Join(" / ", _CurrDBElement.MainDetails.Tags.ToArray)
         lblStatus.Text = _CurrDBElement.MainDetails.Status
@@ -11106,11 +11069,23 @@ Public Class frmMain
         If Not String.IsNullOrEmpty(strLanguage) Then
             Select Case _SelectedContentType
                 Case "movie"
-                    TaskManager_CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLanguage, False, strLanguage, Nothing)
+                    TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLanguage) With {
+                                           .CommonStringValue = strLanguage,
+                                           .ContentType = Enums.ContentType.Movie,
+                                           .SelectionType = Enums.SelectionType.Selected
+                                           })
                 Case "movieset"
-                    TaskManager_CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLanguage, False, strLanguage, Nothing)
+                    TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLanguage) With {
+                                           .CommonStringValue = strLanguage,
+                                           .ContentType = Enums.ContentType.Movieset,
+                                           .SelectionType = Enums.SelectionType.Selected
+                                           })
                 Case "tvshow"
-                    TaskManager_CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetLanguage, False, strLanguage, Nothing)
+                    TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetLanguage) With {
+                                           .CommonStringValue = strLanguage,
+                                           .ContentType = Enums.ContentType.TVShow,
+                                           .SelectionType = Enums.SelectionType.Selected
+                                           })
             End Select
         End If
     End Sub
@@ -11172,7 +11147,11 @@ Public Class frmMain
 
         Select Case _SelectedContentType
             Case "movie"
-                TaskManager_CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, TaskManager.TaskItem.TaskType.SetMovieset, False, String.Empty, nMovieset)
+                TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.SetMovieset) With {
+                                       .GenericObject = nMovieset,
+                                       .ContentType = Enums.ContentType.Movie,
+                                       .SelectionType = Enums.SelectionType.Selected
+                                       })
         End Select
     End Sub
 
@@ -11602,7 +11581,7 @@ Public Class frmMain
         If Manager.mSettings.Movie.GuiSettings.CustomScrapeButtonEnabled Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Manager.mSettings.Movie.GuiSettings.CustomScrapeButtonModifierType, True)
-            CreateScrapeList_Movie(Manager.mSettings.Movie.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
+            CreateScrapeList_Movie(Manager.mSettings.Movie.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultScrapeOptions(Enums.ContentType.Movie), ScrapeModifiers)
         Else
             mnuScrapeMovies.ShowDropDown()
         End If
@@ -11612,7 +11591,7 @@ Public Class frmMain
         If Manager.mSettings.Movieset.GuiSettings.CustomScrapeButtonEnabled Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Manager.mSettings.Movieset.GuiSettings.CustomScrapeButtonModifierType, True)
-            CreateScrapeList_Movieset(Manager.mSettings.Movieset.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifiers)
+            CreateScrapeList_Movieset(Manager.mSettings.Movieset.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultScrapeOptions(Enums.ContentType.Movieset), ScrapeModifiers)
         Else
             mnuScrapeMoviesets.ShowDropDown()
         End If
@@ -11624,7 +11603,7 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Manager.mSettings.TVShow.GuiSettings.CustomScrapeButtonModifierType, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
-            CreateScrapeList_TV(Manager.mSettings.TVShow.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
+            CreateScrapeList_TV(Manager.mSettings.TVShow.GuiSettings.CustomScrapeButtonScrapeType, Master.eSettings.DefaultScrapeOptions(Enums.ContentType.TV), ScrapeModifiers)
         Else
             mnuScrapeTVShows.ShowDropDown()
         End If
@@ -12110,16 +12089,35 @@ Public Class frmMain
         mnuScrapeModifierTrailer.Click,
         mnuScrapeSubmenuCustom.Click
 
-        Dim ContentType As String = String.Empty
+        Dim strContentType As String = String.Empty
         Dim ModifierType As String = String.Empty
-        Dim ScrapeType As String = String.Empty
-        Dim Type As Enums.ScrapeType
+        Dim strScrapeType As String = String.Empty
+        Dim eScrapeType As Enums.ScrapeType
+        Dim eSelectionType As Enums.SelectionType
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Dim Menu As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
         ModifierType = Menu.Tag.ToString
-        ScrapeType = String.Concat(_SelectedScrapeType, "_", _SelectedScrapeTypeMode)
-        ContentType = _SelectedContentType
+        strScrapeType = String.Concat(_SelectedScrapeType, "_", _SelectedScrapeTypeMode)
+        strContentType = _SelectedContentType
+
+        Dim eContentType As Enums.ContentType = Enums.ContentType.None
+        Select Case strContentType
+            Case "movie"
+                eContentType = Enums.ContentType.Movie
+            Case "movieset"
+                eContentType = Enums.ContentType.Movieset
+            Case "tvepisode"
+                eContentType = Enums.ContentType.TVEpisode
+            Case "tvseason"
+                eContentType = Enums.ContentType.TVSeason
+            Case "tvshow"
+                eContentType = Enums.ContentType.TVShow
+                ScrapeModifiers.withEpisodes = True
+                ScrapeModifiers.withSeasons = True
+            Case Else
+                Return
+        End Select
 
         If Not ModifierType = "custom" Then
             Select Case ModifierType
@@ -12175,95 +12173,83 @@ Public Class frmMain
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTrailer, True)
             End Select
 
-            Select Case ScrapeType
+            Select Case strScrapeType
                 Case "all_ask"
-                    Type = Enums.ScrapeType.AllAsk
+                    eScrapeType = Enums.ScrapeType.Ask
+                    eSelectionType = Enums.SelectionType.All
                 Case "all_auto"
-                    Type = Enums.ScrapeType.AllAuto
+                    eScrapeType = Enums.ScrapeType.Auto
+                    eSelectionType = Enums.SelectionType.All
                 Case "all_skip"
-                    Type = Enums.ScrapeType.AllSkip
+                    eScrapeType = Enums.ScrapeType.Skip
+                    eSelectionType = Enums.SelectionType.All
                 Case "filter_ask"
-                    Type = Enums.ScrapeType.FilterAsk
+                    eScrapeType = Enums.ScrapeType.Ask
+                    eSelectionType = Enums.SelectionType.Filtered
                 Case "filter_auto"
-                    Type = Enums.ScrapeType.FilterAuto
+                    eScrapeType = Enums.ScrapeType.Auto
+                    eSelectionType = Enums.SelectionType.Filtered
                 Case "filter_skip"
-                    Type = Enums.ScrapeType.FilterSkip
+                    eScrapeType = Enums.ScrapeType.Skip
+                    eSelectionType = Enums.SelectionType.Filtered
                 Case "marked_ask"
-                    Type = Enums.ScrapeType.MarkedAsk
+                    eScrapeType = Enums.ScrapeType.Ask
+                    eSelectionType = Enums.SelectionType.Marked
                 Case "marked_auto"
-                    Type = Enums.ScrapeType.MarkedAuto
+                    eScrapeType = Enums.ScrapeType.Auto
+                    eSelectionType = Enums.SelectionType.Marked
                 Case "marked_skip"
-                    Type = Enums.ScrapeType.MarkedSkip
+                    eScrapeType = Enums.ScrapeType.Skip
+                    eSelectionType = Enums.SelectionType.Marked
                 Case "missing_ask"
-                    Type = Enums.ScrapeType.MissingAsk
+                    eScrapeType = Enums.ScrapeType.Ask
+                    eSelectionType = Enums.SelectionType.Missing
                 Case "missing_auto"
-                    Type = Enums.ScrapeType.MissingAuto
+                    eScrapeType = Enums.ScrapeType.Auto
+                    eSelectionType = Enums.SelectionType.Missing
                 Case "missing_skip"
-                    Type = Enums.ScrapeType.MissingSkip
+                    eScrapeType = Enums.ScrapeType.Skip
+                    eSelectionType = Enums.SelectionType.Missing
                 Case "new_ask"
-                    Type = Enums.ScrapeType.NewAsk
+                    eScrapeType = Enums.ScrapeType.Ask
+                    eSelectionType = Enums.SelectionType.[New]
                 Case "new_auto"
-                    Type = Enums.ScrapeType.NewAuto
+                    eScrapeType = Enums.ScrapeType.Auto
+                    eSelectionType = Enums.SelectionType.[New]
                 Case "new_skip"
-                    Type = Enums.ScrapeType.NewSkip
+                    eScrapeType = Enums.ScrapeType.Skip
+                    eSelectionType = Enums.SelectionType.[New]
                 Case "selected_ask"
-                    Type = Enums.ScrapeType.SelectedAsk
+                    eScrapeType = Enums.ScrapeType.Ask
+                    eSelectionType = Enums.SelectionType.Selected
                 Case "selected_auto"
-                    Type = Enums.ScrapeType.SelectedAuto
+                    eScrapeType = Enums.ScrapeType.Auto
+                    eSelectionType = Enums.SelectionType.Selected
                 Case "selected_skip"
-                    Type = Enums.ScrapeType.SelectedSkip
+                    eScrapeType = Enums.ScrapeType.Skip
+                    eSelectionType = Enums.SelectionType.Selected
             End Select
-
-            Select Case ContentType
-                Case "movie"
-                    CreateScrapeList_Movie(Type, Master.eSettings.DefaultOptions(Enums.ContentType.Movie), ScrapeModifiers)
-                Case "movieset"
-                    CreateScrapeList_Movieset(Type, Master.eSettings.DefaultOptions(Enums.ContentType.Movieset), ScrapeModifiers)
-                Case "tvepisode"
-                    CreateScrapeList_TVEpisode(Type, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
-                Case "tvseason"
-                    CreateScrapeList_TVSeason(Type, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
-                Case "tvshow"
-                    ScrapeModifiers.withEpisodes = True
-                    ScrapeModifiers.withSeasons = True
-                    CreateScrapeList_TV(Type, Master.eSettings.DefaultOptions(Enums.ContentType.TV), ScrapeModifiers)
-            End Select
+            TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                   .ContentType = eContentType,
+                                   .ScrapeModifiers = ScrapeModifiers,
+                                   .ScrapeOptions = Master.eSettings.DefaultScrapeOptions(eContentType),
+                                   .ScrapeType = eScrapeType,
+                                   .SelectionType = eSelectionType
+                                   })
         Else
-            Select Case ContentType
-                Case "movie"
-                    SetControlsEnabled(False)
-                    Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.Movie)
-                        Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
-                        CustomScraper = dlgCustomScraper.ShowDialog()
-                        If Not CustomScraper.Canceled Then
-                            CreateScrapeList_Movie(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifiers)
-                        Else
-                            SetControlsEnabled(True)
-                        End If
-                    End Using
-                Case "movieset"
-                    SetControlsEnabled(False)
-                    Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.Movieset)
-                        Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
-                        CustomScraper = dlgCustomScraper.ShowDialog()
-                        If Not CustomScraper.Canceled Then
-                            CreateScrapeList_Movieset(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifiers)
-                        Else
-                            SetControlsEnabled(True)
-                        End If
-                    End Using
-                Case "tvshow"
-                    SetControlsEnabled(False)
-                    Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.TV)
-                        Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
-                        CustomScraper = dlgCustomScraper.ShowDialog()
-                        If Not CustomScraper.Canceled Then
-                            CreateScrapeList_TV(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifiers)
-                        Else
-                            SetControlsEnabled(True)
-                        End If
-                    End Using
-            End Select
+            Using dlgCustomScraper As New dlgCustomScraper(eContentType)
+                Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
+                CustomScraper = dlgCustomScraper.ShowDialog()
+                If Not CustomScraper.Canceled Then
+                    TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                                                   .ContentType = eContentType,
+                                                   .ScrapeModifiers = CustomScraper.ScrapeModifiers,
+                                                   .ScrapeOptions = CustomScraper.ScrapeOptions,
+                                                   .ScrapeType = CustomScraper.ScrapeType,
+                                                   .SelectionType = CustomScraper.SelectionType
+                                                   })
+                End If
+            End Using
         End If
     End Sub
 
@@ -12295,14 +12281,14 @@ Public Class frmMain
         mnuScrapeOptionUserRating.Click,
         mnuScrapeOptionWriters.Click
 
-        Dim ContentType As String = String.Empty
+        Dim strContentType As String = String.Empty
         Dim ScrapeOption As String = String.Empty
         Dim ScrapeOptions As New Structures.ScrapeOptions
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Dim Menu As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
         ScrapeOption = Menu.Tag.ToString
-        ContentType = _SelectedContentType
+        strContentType = _SelectedContentType
 
         Select Case ScrapeOption
             Case "actors"
@@ -12322,7 +12308,7 @@ Public Class frmMain
             Case "directors"
                 ScrapeOptions.Directors = True
                 ScrapeOptions.Episodes.Directors = True
-            Case "epiguideurl"
+            Case "episodeguideurl"
                 ScrapeOptions.EpisodeGuideURL = True
             Case "genres"
                 ScrapeOptions.Genres = True
@@ -12370,23 +12356,31 @@ Public Class frmMain
                 ScrapeOptions.Episodes.Credits = True
         End Select
 
-        Select Case ContentType
+        Dim eContentType As Enums.ContentType = Enums.ContentType.None
+        Select Case strContentType
             Case "movie"
                 ScrapeModifiers.MainNFO = True
-                CreateScrapeList_Movie(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifiers)
+                eContentType = Enums.ContentType.Movie
             Case "movieset"
                 ScrapeModifiers.MainNFO = True
-                CreateScrapeList_Movieset(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifiers)
+                eContentType = Enums.ContentType.Movieset
             Case "tvepisode"
                 ScrapeModifiers.EpisodeNFO = True
-                CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifiers)
+                eContentType = Enums.ContentType.TVEpisode
             Case "tvseason"
                 ScrapeModifiers.SeasonNFO = True
-                CreateScrapeList_TVSeason(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifiers)
+                eContentType = Enums.ContentType.TVSeason
             Case "tvshow"
                 ScrapeModifiers.MainNFO = True
-                CreateScrapeList_TV(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifiers)
+                eContentType = Enums.ContentType.TVShow
         End Select
+        TaskManager_CreateTask(New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.Scrape) With {
+                               .ContentType = eContentType,
+                               .ScrapeModifiers = ScrapeModifiers,
+                               .ScrapeOptions = ScrapeOptions,
+                               .ScrapeType = Enums.ScrapeType.Ask,
+                               .SelectionType = Enums.SelectionType.Selected
+                               })
     End Sub
     ''' <summary>
     ''' Slide the genre images along with the panel and move with form resizing
@@ -12414,733 +12408,731 @@ Public Class frmMain
     End Sub
 
     Private Sub CreateScrapeList_Movie(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifiers As Structures.ScrapeModifiers)
-        Dim DataRowList As New List(Of DataRow)
-        Dim ScrapeList As New List(Of ScrapeItem)
+        'Dim DataRowList As New List(Of DataRow)
+        'Dim ScrapeList As New List(Of ScrapeItem)
 
-        Select Case sType
-            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
-                Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
-                'create snapshoot list of selected movies
-                For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                    DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
-                Next
-            Case Else
-                For Each sRow As DataRow In _DtMovies.Rows
-                    DataRowList.Add(sRow)
-                Next
-        End Select
+        'Select Case sType
+        '    Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
+        '        Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
+        '        'create snapshoot list of selected movies
+        '        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+        '            DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+        '        Next
+        '    Case Else
+        '        For Each sRow As DataRow In _DtMovies.Rows
+        '            DataRowList.Add(sRow)
+        '        Next
+        'End Select
 
-        Dim ActorThumbsAllowed As Boolean = Master.eSettings.MovieActorThumbsAnyEnabled
-        Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
-        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
-        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
-        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
-        Dim ExtrafanartsAllowed As Boolean = Master.eSettings.MovieExtrafanartsAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim ExtrathumbsAllowed As Boolean = Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso (AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) OrElse Master.eSettings.MovieExtrathumbsVideoExtraction)
-        Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim KeyArtAllowed As Boolean = Master.eSettings.MovieKeyArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
-        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
-        Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
-        Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
-        Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
+        ''Dim ActorThumbsAllowed As Boolean = Master.eSettings.MovieActorThumbsAnyEnabled
+        ''Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+        ''Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
+        ''Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
+        ''Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
+        ''Dim ExtrafanartsAllowed As Boolean = Master.eSettings.MovieExtrafanartsAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        ''Dim ExtrathumbsAllowed As Boolean = Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso (AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) OrElse Master.eSettings.MovieExtrathumbsVideoExtraction)
+        ''Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        ''Dim KeyArtAllowed As Boolean = Master.eSettings.MovieKeyArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+        ''Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
+        ''Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+        ''Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
+        ''Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
 
-        'create ScrapeList of movies acording to scrapetype
-        For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+        ''create ScrapeList of movies acording to scrapetype
+        'For Each drvRow As DataRow In DataRowList
+        '    'If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
-            Dim sModifier As New Structures.ScrapeModifiers
-            sModifier.DoSearch = ScrapeModifiers.DoSearch
-            sModifier.MainActorthumbs = ScrapeModifiers.MainActorthumbs AndAlso ActorThumbsAllowed
-            sModifier.MainBanner = ScrapeModifiers.MainBanner AndAlso BannerAllowed
-            sModifier.MainClearArt = ScrapeModifiers.MainClearArt AndAlso ClearArtAllowed
-            sModifier.MainClearLogo = ScrapeModifiers.MainClearLogo AndAlso ClearLogoAllowed
-            sModifier.MainDiscArt = ScrapeModifiers.MainDiscArt AndAlso DiscArtAllowed
-            sModifier.MainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso ExtrafanartsAllowed
-            sModifier.MainExtrathumbs = ScrapeModifiers.MainExtrathumbs AndAlso ExtrathumbsAllowed
-            sModifier.MainFanart = ScrapeModifiers.MainFanart AndAlso FanartAllowed
-            sModifier.MainKeyArt = ScrapeModifiers.MainKeyArt AndAlso KeyArtAllowed
-            sModifier.MainLandscape = ScrapeModifiers.MainLandscape AndAlso LandscapeAllowed
-            sModifier.MainMeta = ScrapeModifiers.MainMeta
-            sModifier.MainNFO = ScrapeModifiers.MainNFO
-            sModifier.MainPoster = ScrapeModifiers.MainPoster AndAlso PosterAllowed
-            'sModifier.MainSubtitles = ScrapeModifier.MainSubtitles AndAlso SubtitlesAllowed
-            sModifier.MainTheme = ScrapeModifiers.MainTheme AndAlso ThemeAllowed
-            sModifier.MainTrailer = ScrapeModifiers.MainTrailer AndAlso TrailerAllowed
+        '    ''sModifier.MainSubtitles = ScrapeModifier.MainSubtitles AndAlso SubtitlesAllowed
+        '    'Dim sModifier As New Structures.ScrapeModifiers With {
+        '    '    .DoSearch = ScrapeModifiers.DoSearch,
+        '    '    .MainActorthumbs = ScrapeModifiers.MainActorthumbs AndAlso ActorThumbsAllowed,
+        '    '    .MainBanner = ScrapeModifiers.MainBanner AndAlso BannerAllowed,
+        '    '    .MainClearArt = ScrapeModifiers.MainClearArt AndAlso ClearArtAllowed,
+        '    '    .MainClearLogo = ScrapeModifiers.MainClearLogo AndAlso ClearLogoAllowed,
+        '    '    .MainDiscArt = ScrapeModifiers.MainDiscArt AndAlso DiscArtAllowed,
+        '    '    .MainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso ExtrafanartsAllowed,
+        '    '    .MainExtrathumbs = ScrapeModifiers.MainExtrathumbs AndAlso ExtrathumbsAllowed,
+        '    '    .MainFanart = ScrapeModifiers.MainFanart AndAlso FanartAllowed,
+        '    '    .MainKeyArt = ScrapeModifiers.MainKeyArt AndAlso KeyArtAllowed,
+        '    '    .MainLandscape = ScrapeModifiers.MainLandscape AndAlso LandscapeAllowed,
+        '    '    .MainMeta = ScrapeModifiers.MainMeta,
+        '    '    .MainNFO = ScrapeModifiers.MainNFO,
+        '    '    .MainPoster = ScrapeModifiers.MainPoster AndAlso PosterAllowed,
+        '    '    .MainTheme = ScrapeModifiers.MainTheme AndAlso ThemeAllowed,
+        '    '    .MainTrailer = ScrapeModifiers.MainTrailer AndAlso TrailerAllowed
+        '    '}
 
-            Select Case sType
-                Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
-                Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
-                Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                    Dim index As Integer = _BsMovies.Find(Database.Helpers.GetMainIdName(Database.TableName.movie), drvRow.Item(0))
-                    If Not index >= 0 Then Continue For
-                Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.MainBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ToString) Then sModifier.MainClearArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ToString) Then sModifier.MainDiscArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ToString) Then sModifier.MainExtrafanarts = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).ToString) Then sModifier.MainExtrathumbs = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToString) Then sModifier.MainKeyArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ToString) Then sModifier.MainTheme = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).ToString) Then sModifier.MainTrailer = False
-            End Select
-            If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
-                ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
-            End If
-        Next
+        '    Select Case sType
+        '        'Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
+        '        '    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
+        '        'Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
+        '        '    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
+        '        Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
+        '            Dim index As Integer = _BsMovies.Find(Database.Helpers.GetMainIdName(Database.TableName.movie), drvRow.Item(0))
+        '            If Not index >= 0 Then Continue For
+        '            'Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.MainBanner = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ToString) Then sModifier.MainClearArt = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ToString) Then sModifier.MainDiscArt = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ToString) Then sModifier.MainExtrafanarts = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrathumbsPath)).ToString) Then sModifier.MainExtrathumbs = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToString) Then sModifier.MainKeyArt = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ToString) Then sModifier.MainTheme = False
+        '            '    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.TrailerPath)).ToString) Then sModifier.MainTrailer = False
+        '    End Select
+        '    'If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
+        '    'ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+        '    'End If
+        'Next
 
-        If Not ScrapeList.Count = 0 Then
-            SetControlsEnabled(False)
+        'If Not ScrapeList.Count = 0 Then
+        '    SetControlsEnabled(False)
 
-            tspbLoading.Value = 0
-            If ScrapeList.Count > 1 Then
-                tspbLoading.Style = ProgressBarStyle.Continuous
-                tspbLoading.Maximum = ScrapeList.Count
-            Else
-                tspbLoading.Maximum = 100
-                tspbLoading.Style = ProgressBarStyle.Marquee
-            End If
+        '    tspbLoading.Value = 0
+        '    If ScrapeList.Count > 1 Then
+        '        tspbLoading.Style = ProgressBarStyle.Continuous
+        '        tspbLoading.Maximum = ScrapeList.Count
+        '    Else
+        '        tspbLoading.Maximum = 100
+        '        tspbLoading.Style = ProgressBarStyle.Marquee
+        '    End If
 
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-                Case Enums.ScrapeType.MissingAuto
-                    tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                Case Enums.ScrapeType.MissingAsk
-                    tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                Case Enums.ScrapeType.MissingSkip
-                    tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-                Case Enums.ScrapeType.NewAsk
-                    tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-                Case Enums.ScrapeType.NewAuto
-                    tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-                Case Enums.ScrapeType.NewSkip
-                    tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-                Case Enums.ScrapeType.MarkedAsk
-                    tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-                Case Enums.ScrapeType.MarkedAuto
-                    tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-                Case Enums.ScrapeType.MarkedSkip
-                    tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-                Case Enums.ScrapeType.FilterAsk
-                    tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                Case Enums.ScrapeType.FilterAuto
-                    tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-                Case Enums.ScrapeType.FilterAuto
-                    tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-                Case Enums.ScrapeType.SelectedAsk
-                    tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-                Case Enums.ScrapeType.SelectedAuto
-                    tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-                Case Enums.ScrapeType.SelectedSkip
-                    tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-                Case Enums.ScrapeType.SingleField
-                    tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
+        '    'Select Case sType
+        '    '    Case Enums.ScrapeType.AllAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+        '    '    Case Enums.ScrapeType.AllAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+        '    '    Case Enums.ScrapeType.AllSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+        '    '    Case Enums.ScrapeType.MissingAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+        '    '    Case Enums.ScrapeType.MissingAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+        '    '    Case Enums.ScrapeType.MissingSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+        '    '    Case Enums.ScrapeType.NewAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+        '    '    Case Enums.ScrapeType.NewAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+        '    '    Case Enums.ScrapeType.NewSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+        '    '    Case Enums.ScrapeType.MarkedAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+        '    '    Case Enums.ScrapeType.MarkedAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+        '    '    Case Enums.ScrapeType.MarkedSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+        '    '    Case Enums.ScrapeType.FilterAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+        '    '    Case Enums.ScrapeType.FilterAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+        '    '    Case Enums.ScrapeType.FilterAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+        '    '    Case Enums.ScrapeType.SelectedAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+        '    '    Case Enums.ScrapeType.SelectedAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+        '    '    Case Enums.ScrapeType.SelectedSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+        '    '    Case Enums.ScrapeType.SingleField
+        '    '        tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+        '    '    Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        '    'End Select
 
-            If Not sType = Enums.ScrapeType.SingleScrape Then
-                btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-                lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-                btnCancel.Visible = True
-                lblCanceling.Visible = False
-                prbCanceling.Visible = False
-                pnlCancel.Visible = True
-            End If
+        '    'TaskManager_CreateTask(Enums.ContentType.Movie, )
 
-            tslLoading.Visible = True
-            tspbLoading.Visible = True
-            Application.DoEvents()
-            bwMovieScraper.WorkerSupportsCancellation = True
-            bwMovieScraper.WorkerReportsProgress = True
-            bwMovieScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
-        End If
+        '    If Not sType = Enums.ScrapeType.SingleScrape Then
+        '        btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+        '        lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+        '        btnCancel.Visible = True
+        '        lblCanceling.Visible = False
+        '        prbCanceling.Visible = False
+        '        pnlCancel.Visible = True
+        '    End If
+        'End If
     End Sub
 
     Private Sub CreateScrapeList_Movieset(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifiers As Structures.ScrapeModifiers)
-        Dim DataRowList As New List(Of DataRow)
-        Dim ScrapeList As New List(Of ScrapeItem)
+        'Dim DataRowList As New List(Of DataRow)
+        'Dim ScrapeList As New List(Of ScrapeItem)
 
-        Select Case sType
-            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
-                Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
-                'create snapshoot list of selected moviesets
-                For Each sRow As DataGridViewRow In dgvMoviesets.SelectedRows
-                    DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
-                Next
-            Case Else
-                For Each sRow As DataRow In _DtMovieSets.Rows
-                    DataRowList.Add(sRow)
-                Next
-        End Select
+        'Select Case sType
+        '    Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
+        '        Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
+        '        'create snapshoot list of selected moviesets
+        '        For Each sRow As DataGridViewRow In dgvMoviesets.SelectedRows
+        '            DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+        '        Next
+        '    Case Else
+        '        For Each sRow As DataRow In _DtMovieSets.Rows
+        '            DataRowList.Add(sRow)
+        '        Next
+        'End Select
 
-        Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
-        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
-        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
-        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
-        Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
-        Dim KeyArtAllowed As Boolean = Master.eSettings.MovieSetKeyArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
-        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
-        Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
+        'Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
+        'Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
+        'Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
+        'Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
+        'Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
+        'Dim KeyArtAllowed As Boolean = Master.eSettings.MovieSetKeyArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
+        'Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
+        'Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
 
-        'create ScrapeList of moviesets acording to scrapetype
-        For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+        ''create ScrapeList of moviesets acording to scrapetype
+        'For Each drvRow As DataRow In DataRowList
+        '    If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
-            Dim sModifier As New Structures.ScrapeModifiers
-            sModifier.DoSearch = ScrapeModifiers.DoSearch
-            sModifier.MainBanner = ScrapeModifiers.MainBanner AndAlso BannerAllowed
-            sModifier.MainClearArt = ScrapeModifiers.MainClearArt AndAlso ClearArtAllowed
-            sModifier.MainClearLogo = ScrapeModifiers.MainClearLogo AndAlso ClearLogoAllowed
-            sModifier.MainDiscArt = ScrapeModifiers.MainDiscArt AndAlso DiscArtAllowed
-            sModifier.MainFanart = ScrapeModifiers.MainFanart AndAlso FanartAllowed
-            sModifier.MainKeyArt = ScrapeModifiers.MainKeyArt AndAlso KeyArtAllowed
-            sModifier.MainLandscape = ScrapeModifiers.MainLandscape AndAlso LandscapeAllowed
-            sModifier.MainNFO = ScrapeModifiers.MainNFO
-            sModifier.MainPoster = ScrapeModifiers.MainPoster AndAlso PosterAllowed
+        '    Dim sModifier As New Structures.ScrapeModifiers With {
+        '        .DoSearch = ScrapeModifiers.DoSearch,
+        '        .MainBanner = ScrapeModifiers.MainBanner AndAlso BannerAllowed,
+        '        .MainClearArt = ScrapeModifiers.MainClearArt AndAlso ClearArtAllowed,
+        '        .MainClearLogo = ScrapeModifiers.MainClearLogo AndAlso ClearLogoAllowed,
+        '        .MainDiscArt = ScrapeModifiers.MainDiscArt AndAlso DiscArtAllowed,
+        '        .MainFanart = ScrapeModifiers.MainFanart AndAlso FanartAllowed,
+        '        .MainKeyArt = ScrapeModifiers.MainKeyArt AndAlso KeyArtAllowed,
+        '        .MainLandscape = ScrapeModifiers.MainLandscape AndAlso LandscapeAllowed,
+        '        .MainNFO = ScrapeModifiers.MainNFO,
+        '        .MainPoster = ScrapeModifiers.MainPoster AndAlso PosterAllowed
+        '    }
 
-            Select Case sType
-                Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
-                Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
-                Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                    Dim index As Integer = _BsMoviesets.Find(Database.Helpers.GetMainIdName(Database.TableName.movieset), drvRow.Item(0))
-                    If Not index >= 0 Then Continue For
-                Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.MainBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ToString) Then sModifier.MainClearArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ToString) Then sModifier.MainDiscArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToString) Then sModifier.MainKeyArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
-            End Select
-            If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
-                ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
-            End If
-        Next
+        '    Select Case sType
+        '        Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
+        '            If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
+        '        Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
+        '            If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
+        '        Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
+        '            Dim index As Integer = _BsMoviesets.Find(Database.Helpers.GetMainIdName(Database.TableName.movieset), drvRow.Item(0))
+        '            If Not index >= 0 Then Continue For
+        '        Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.MainBanner = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ToString) Then sModifier.MainClearArt = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.DiscArtPath)).ToString) Then sModifier.MainDiscArt = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToString) Then sModifier.MainKeyArt = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
+        '    End Select
+        '    If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
+        '        ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+        '    End If
+        'Next
 
-        If Not ScrapeList.Count = 0 Then
-            SetControlsEnabled(False)
+        'If Not ScrapeList.Count = 0 Then
+        '    SetControlsEnabled(False)
 
-            tspbLoading.Value = 0
-            If ScrapeList.Count > 1 Then
-                tspbLoading.Style = ProgressBarStyle.Continuous
-                tspbLoading.Maximum = ScrapeList.Count
-            Else
-                tspbLoading.Maximum = 100
-                tspbLoading.Style = ProgressBarStyle.Marquee
-            End If
+        '    tspbLoading.Value = 0
+        '    If ScrapeList.Count > 1 Then
+        '        tspbLoading.Style = ProgressBarStyle.Continuous
+        '        tspbLoading.Maximum = ScrapeList.Count
+        '    Else
+        '        tspbLoading.Maximum = 100
+        '        tspbLoading.Style = ProgressBarStyle.Marquee
+        '    End If
 
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    tslLoading.Text = Master.eLang.GetString(1215, "Scraping Media (All MovieSets - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    tslLoading.Text = Master.eLang.GetString(1216, "Scraping Media (All MovieSets - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    tslLoading.Text = Master.eLang.GetString(1217, "Scraping Media (All MovieSets - Skip):")
-                Case Enums.ScrapeType.MissingAuto
-                    tslLoading.Text = Master.eLang.GetString(1218, "Scraping Media (MovieSets Missing Items - Auto):")
-                Case Enums.ScrapeType.MissingAsk
-                    tslLoading.Text = Master.eLang.GetString(1219, "Scraping Media (MovieSets Missing Items - Ask):")
-                Case Enums.ScrapeType.MissingSkip
-                    tslLoading.Text = Master.eLang.GetString(1220, "Scraping Media (MovieSets Missing Items - Skip):")
-                Case Enums.ScrapeType.NewAsk
-                    tslLoading.Text = Master.eLang.GetString(1221, "Scraping Media (New MovieSets - Ask):")
-                Case Enums.ScrapeType.NewAuto
-                    tslLoading.Text = Master.eLang.GetString(1222, "Scraping Media (New MovieSets - Auto):")
-                Case Enums.ScrapeType.NewSkip
-                    tslLoading.Text = Master.eLang.GetString(1223, "Scraping Media (New MovieSets - Skip):")
-                Case Enums.ScrapeType.MarkedAsk
-                    tslLoading.Text = Master.eLang.GetString(1224, "Scraping Media (Marked MovieSets - Ask):")
-                Case Enums.ScrapeType.MarkedAuto
-                    tslLoading.Text = Master.eLang.GetString(1225, "Scraping Media (Marked MovieSets - Auto):")
-                Case Enums.ScrapeType.MarkedSkip
-                    tslLoading.Text = Master.eLang.GetString(1226, "Scraping Media (Marked MovieSets - Skip):")
-                Case Enums.ScrapeType.FilterAsk
-                    tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                Case Enums.ScrapeType.FilterAuto
-                    tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-                Case Enums.ScrapeType.FilterAuto
-                    tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-                Case Enums.ScrapeType.AllAsk
-                    tslLoading.Text = Master.eLang.GetString(1358, "Scraping Media (Selected MovieSets - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    tslLoading.Text = Master.eLang.GetString(1359, "Scraping Media (Selected MovieSets - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    tslLoading.Text = Master.eLang.GetString(1360, "Scraping Media (Selected MovieSets - Skip):")
-                Case Enums.ScrapeType.SingleField
-                    tslLoading.Text = Master.eLang.GetString(1357, "Scraping Media (Selected MovieSets - Single Field):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
+        '    'Select Case sType
+        '    '    Case Enums.ScrapeType.AllAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(1215, "Scraping Media (All MovieSets - Ask):")
+        '    '    Case Enums.ScrapeType.AllAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1216, "Scraping Media (All MovieSets - Auto):")
+        '    '    Case Enums.ScrapeType.AllSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1217, "Scraping Media (All MovieSets - Skip):")
+        '    '    Case Enums.ScrapeType.MissingAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1218, "Scraping Media (MovieSets Missing Items - Auto):")
+        '    '    Case Enums.ScrapeType.MissingAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(1219, "Scraping Media (MovieSets Missing Items - Ask):")
+        '    '    Case Enums.ScrapeType.MissingSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1220, "Scraping Media (MovieSets Missing Items - Skip):")
+        '    '    Case Enums.ScrapeType.NewAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(1221, "Scraping Media (New MovieSets - Ask):")
+        '    '    Case Enums.ScrapeType.NewAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1222, "Scraping Media (New MovieSets - Auto):")
+        '    '    Case Enums.ScrapeType.NewSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1223, "Scraping Media (New MovieSets - Skip):")
+        '    '    Case Enums.ScrapeType.MarkedAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(1224, "Scraping Media (Marked MovieSets - Ask):")
+        '    '    Case Enums.ScrapeType.MarkedAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1225, "Scraping Media (Marked MovieSets - Auto):")
+        '    '    Case Enums.ScrapeType.MarkedSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1226, "Scraping Media (Marked MovieSets - Skip):")
+        '    '    Case Enums.ScrapeType.FilterAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+        '    '    Case Enums.ScrapeType.FilterAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+        '    '    Case Enums.ScrapeType.FilterAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+        '    '    Case Enums.ScrapeType.AllAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(1358, "Scraping Media (Selected MovieSets - Ask):")
+        '    '    Case Enums.ScrapeType.AllAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1359, "Scraping Media (Selected MovieSets - Auto):")
+        '    '    Case Enums.ScrapeType.AllSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1360, "Scraping Media (Selected MovieSets - Skip):")
+        '    '    Case Enums.ScrapeType.SingleField
+        '    '        tslLoading.Text = Master.eLang.GetString(1357, "Scraping Media (Selected MovieSets - Single Field):")
+        '    '    Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        '    'End Select
 
 
-            If Not sType = Enums.ScrapeType.SingleScrape Then
-                btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-                lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-                btnCancel.Visible = True
-                lblCanceling.Visible = False
-                prbCanceling.Visible = False
-                pnlCancel.Visible = True
-            End If
+        '    If Not sType = Enums.ScrapeType.SingleScrape Then
+        '        btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+        '        lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+        '        btnCancel.Visible = True
+        '        lblCanceling.Visible = False
+        '        prbCanceling.Visible = False
+        '        pnlCancel.Visible = True
+        '    End If
 
-            tslLoading.Visible = True
-            tspbLoading.Visible = True
-            Application.DoEvents()
-            bwMoviesetScraper.WorkerSupportsCancellation = True
-            bwMoviesetScraper.WorkerReportsProgress = True
-            bwMoviesetScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
-        End If
+        '    tslLoading.Visible = True
+        '    tspbLoading.Visible = True
+        '    Application.DoEvents()
+        '    bwMoviesetScraper.WorkerSupportsCancellation = True
+        '    bwMoviesetScraper.WorkerReportsProgress = True
+        '    bwMoviesetScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
+        'End If
     End Sub
 
     Private Sub CreateScrapeList_TV(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifiers As Structures.ScrapeModifiers)
-        Dim DataRowList As New List(Of DataRow)
-        Dim ScrapeList As New List(Of ScrapeItem)
+        'Dim DataRowList As New List(Of DataRow)
+        'Dim ScrapeList As New List(Of ScrapeItem)
 
-        Select Case sType
-            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
-                Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
-                'create snapshoot list of selected tv show
-                For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                    DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
-                Next
-            Case Else
-                For Each sRow As DataRow In _DtTVShows.Rows
-                    DataRowList.Add(sRow)
-                Next
-        End Select
+        'Select Case sType
+        '    Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
+        '        Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
+        '        'create snapshoot list of selected tv show
+        '        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+        '            DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+        '        Next
+        '    Case Else
+        '        For Each sRow As DataRow In _DtTVShows.Rows
+        '            DataRowList.Add(sRow)
+        '        Next
+        'End Select
 
-        Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
-        Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
-        Dim AllSeasonsLandscapeAllowed As Boolean = Master.eSettings.TVAllSeasonsLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape)
-        Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.TVAllSeasonsPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster)
-        Dim EpisodeActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
-        Dim EpisodeFanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
-        Dim EpisodeMetaAllowed As Boolean = Master.eSettings.TVScraperMetaDataScan
-        Dim EpisodePosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
-        Dim MainActorThumbsAllowed As Boolean = Master.eSettings.TVShowActorThumbsAnyEnabled
-        Dim MainBannerAllowed As Boolean = Master.eSettings.TVShowBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
-        Dim MainCharacterArtAllowed As Boolean = Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
-        Dim MainClearArtAllowed As Boolean = Master.eSettings.TVShowClearArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
-        Dim MainClearLogoAllowed As Boolean = Master.eSettings.TVShowClearLogoAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
-        Dim MainExtrafanartsAllowed As Boolean = Master.eSettings.TVShowExtrafanartsAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
-        Dim MainFanartAllowed As Boolean = Master.eSettings.TVShowFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
-        Dim MainKeyArtAllowed As Boolean = Master.eSettings.TVShowKeyArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
-        Dim MainLandscapeAllowed As Boolean = Master.eSettings.TVShowLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
-        Dim MainPosterAllowed As Boolean = Master.eSettings.TVShowPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
-        Dim MainThemeAllowed As Boolean = Master.eSettings.TvShowThemeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
-        Dim SeasonBannerAllowed As Boolean = Master.eSettings.TVSeasonBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
-        Dim SeasonFanartAllowed As Boolean = Master.eSettings.TVSeasonFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
-        Dim SeasonLandscapeAllowed As Boolean = Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
-        Dim SeasonPosterAllowed As Boolean = Master.eSettings.TVSeasonPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
+        'Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
+        'Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
+        'Dim AllSeasonsLandscapeAllowed As Boolean = Master.eSettings.TVAllSeasonsLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape)
+        'Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.TVAllSeasonsPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster)
+        'Dim EpisodeActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
+        'Dim EpisodeFanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
+        'Dim EpisodeMetaAllowed As Boolean = Master.eSettings.TVScraperMetaDataScan
+        'Dim EpisodePosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+        'Dim MainActorThumbsAllowed As Boolean = Master.eSettings.TVShowActorThumbsAnyEnabled
+        'Dim MainBannerAllowed As Boolean = Master.eSettings.TVShowBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
+        'Dim MainCharacterArtAllowed As Boolean = Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
+        'Dim MainClearArtAllowed As Boolean = Master.eSettings.TVShowClearArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
+        'Dim MainClearLogoAllowed As Boolean = Master.eSettings.TVShowClearLogoAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
+        'Dim MainExtrafanartsAllowed As Boolean = Master.eSettings.TVShowExtrafanartsAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+        'Dim MainFanartAllowed As Boolean = Master.eSettings.TVShowFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+        'Dim MainKeyArtAllowed As Boolean = Master.eSettings.TVShowKeyArtAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
+        'Dim MainLandscapeAllowed As Boolean = Master.eSettings.TVShowLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
+        'Dim MainPosterAllowed As Boolean = Master.eSettings.TVShowPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
+        'Dim MainThemeAllowed As Boolean = Master.eSettings.TvShowThemeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
+        'Dim SeasonBannerAllowed As Boolean = Master.eSettings.TVSeasonBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
+        'Dim SeasonFanartAllowed As Boolean = Master.eSettings.TVSeasonFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
+        'Dim SeasonLandscapeAllowed As Boolean = Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
+        'Dim SeasonPosterAllowed As Boolean = Master.eSettings.TVSeasonPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
 
-        'create ScrapeList of tv shows acording to scrapetype
-        For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+        ''create ScrapeList of tv shows acording to scrapetype
+        'For Each drvRow As DataRow In DataRowList
+        '    If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
-            Dim sModifier As New Structures.ScrapeModifiers
-            sModifier.DoSearch = ScrapeModifiers.DoSearch
-            sModifier.AllSeasonsBanner = ScrapeModifiers.AllSeasonsBanner AndAlso AllSeasonsBannerAllowed
-            sModifier.AllSeasonsFanart = ScrapeModifiers.AllSeasonsFanart AndAlso AllSeasonsFanartAllowed
-            sModifier.AllSeasonsLandscape = ScrapeModifiers.AllSeasonsLandscape AndAlso AllSeasonsLandscapeAllowed
-            sModifier.AllSeasonsPoster = ScrapeModifiers.AllSeasonsPoster AndAlso AllSeasonsPosterAllowed
-            sModifier.EpisodeActorThumbs = ScrapeModifiers.EpisodeActorThumbs AndAlso EpisodeActorThumbsAllowed
-            sModifier.EpisodeFanart = ScrapeModifiers.EpisodeFanart AndAlso EpisodeFanartAllowed
-            sModifier.EpisodeMeta = ScrapeModifiers.EpisodeMeta AndAlso EpisodeMetaAllowed
-            sModifier.EpisodeNFO = ScrapeModifiers.EpisodeNFO
-            sModifier.EpisodePoster = ScrapeModifiers.EpisodePoster AndAlso EpisodePosterAllowed
-            sModifier.MainActorthumbs = ScrapeModifiers.MainActorthumbs AndAlso MainActorThumbsAllowed
-            sModifier.MainBanner = ScrapeModifiers.MainBanner AndAlso MainBannerAllowed
-            sModifier.MainCharacterArt = ScrapeModifiers.MainCharacterArt AndAlso MainCharacterArtAllowed
-            sModifier.MainClearArt = ScrapeModifiers.MainClearArt AndAlso MainClearArtAllowed
-            sModifier.MainClearLogo = ScrapeModifiers.MainClearLogo AndAlso MainClearLogoAllowed
-            sModifier.MainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso MainExtrafanartsAllowed
-            sModifier.MainFanart = ScrapeModifiers.MainFanart AndAlso MainFanartAllowed
-            sModifier.MainKeyArt = ScrapeModifiers.MainKeyArt AndAlso MainKeyArtAllowed
-            sModifier.MainLandscape = ScrapeModifiers.MainLandscape AndAlso MainLandscapeAllowed
-            sModifier.MainNFO = ScrapeModifiers.MainNFO
-            sModifier.MainPoster = ScrapeModifiers.MainPoster AndAlso MainPosterAllowed
-            sModifier.MainTheme = ScrapeModifiers.MainTheme AndAlso MainThemeAllowed
-            sModifier.SeasonBanner = ScrapeModifiers.SeasonBanner AndAlso SeasonBannerAllowed
-            sModifier.SeasonFanart = ScrapeModifiers.SeasonFanart AndAlso SeasonFanartAllowed
-            sModifier.SeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso SeasonLandscapeAllowed
-            sModifier.SeasonPoster = ScrapeModifiers.SeasonPoster AndAlso SeasonPosterAllowed
-            sModifier.withEpisodes = ScrapeModifiers.withEpisodes
-            sModifier.withSeasons = ScrapeModifiers.withSeasons
+        '    Dim sModifier As New Structures.ScrapeModifiers With {
+        '        .DoSearch = ScrapeModifiers.DoSearch,
+        '        .AllSeasonsBanner = ScrapeModifiers.AllSeasonsBanner AndAlso AllSeasonsBannerAllowed,
+        '        .AllSeasonsFanart = ScrapeModifiers.AllSeasonsFanart AndAlso AllSeasonsFanartAllowed,
+        '        .AllSeasonsLandscape = ScrapeModifiers.AllSeasonsLandscape AndAlso AllSeasonsLandscapeAllowed,
+        '        .AllSeasonsPoster = ScrapeModifiers.AllSeasonsPoster AndAlso AllSeasonsPosterAllowed,
+        '        .EpisodeActorThumbs = ScrapeModifiers.EpisodeActorThumbs AndAlso EpisodeActorThumbsAllowed,
+        '        .EpisodeFanart = ScrapeModifiers.EpisodeFanart AndAlso EpisodeFanartAllowed,
+        '        .EpisodeMeta = ScrapeModifiers.EpisodeMeta AndAlso EpisodeMetaAllowed,
+        '        .EpisodeNFO = ScrapeModifiers.EpisodeNFO,
+        '        .EpisodePoster = ScrapeModifiers.EpisodePoster AndAlso EpisodePosterAllowed,
+        '        .MainActorthumbs = ScrapeModifiers.MainActorthumbs AndAlso MainActorThumbsAllowed,
+        '        .MainBanner = ScrapeModifiers.MainBanner AndAlso MainBannerAllowed,
+        '        .MainCharacterArt = ScrapeModifiers.MainCharacterArt AndAlso MainCharacterArtAllowed,
+        '        .MainClearArt = ScrapeModifiers.MainClearArt AndAlso MainClearArtAllowed,
+        '        .MainClearLogo = ScrapeModifiers.MainClearLogo AndAlso MainClearLogoAllowed,
+        '        .MainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso MainExtrafanartsAllowed,
+        '        .MainFanart = ScrapeModifiers.MainFanart AndAlso MainFanartAllowed,
+        '        .MainKeyArt = ScrapeModifiers.MainKeyArt AndAlso MainKeyArtAllowed,
+        '        .MainLandscape = ScrapeModifiers.MainLandscape AndAlso MainLandscapeAllowed,
+        '        .MainNFO = ScrapeModifiers.MainNFO,
+        '        .MainPoster = ScrapeModifiers.MainPoster AndAlso MainPosterAllowed,
+        '        .MainTheme = ScrapeModifiers.MainTheme AndAlso MainThemeAllowed,
+        '        .SeasonBanner = ScrapeModifiers.SeasonBanner AndAlso SeasonBannerAllowed,
+        '        .SeasonFanart = ScrapeModifiers.SeasonFanart AndAlso SeasonFanartAllowed,
+        '        .SeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso SeasonLandscapeAllowed,
+        '        .SeasonPoster = ScrapeModifiers.SeasonPoster AndAlso SeasonPosterAllowed,
+        '        .withEpisodes = ScrapeModifiers.withEpisodes,
+        '        .withSeasons = ScrapeModifiers.withSeasons
+        '    }
 
-            Select Case sType
-                Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.New))) Then Continue For
-                Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
-                Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                    Dim index As Integer = _BsTVShows.Find(Database.Helpers.GetMainIdName(Database.TableName.tvshow), drvRow.Item(0))
-                    If Not index >= 0 Then Continue For
-                Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.MainBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath)).ToString) Then sModifier.MainCharacterArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ToString) Then sModifier.MainClearArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ToString) Then sModifier.MainExtrafanarts = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToString) Then sModifier.MainKeyArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ToString) Then sModifier.MainTheme = False
-            End Select
-            If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
-                ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
-            End If
-        Next
+        '    Select Case sType
+        '        Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
+        '            If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.New))) Then Continue For
+        '        Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
+        '            If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
+        '        Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
+        '            Dim index As Integer = _BsTVShows.Find(Database.Helpers.GetMainIdName(Database.TableName.tvshow), drvRow.Item(0))
+        '            If Not index >= 0 Then Continue For
+        '        Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.MainBanner = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.CharacterArtPath)).ToString) Then sModifier.MainCharacterArt = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearArtPath)).ToString) Then sModifier.MainClearArt = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ClearLogoPath)).ToString) Then sModifier.MainClearLogo = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ExtrafanartsPath)).ToString) Then sModifier.MainExtrafanarts = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.MainFanart = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.KeyArtPath)).ToString) Then sModifier.MainKeyArt = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.MainLandscape = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.MainNFO = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.MainPoster = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.ThemePath)).ToString) Then sModifier.MainTheme = False
+        '    End Select
+        '    If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
+        '        ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+        '    End If
+        'Next
 
-        If Not ScrapeList.Count = 0 Then
-            SetControlsEnabled(False)
+        'If Not ScrapeList.Count = 0 Then
+        '    SetControlsEnabled(False)
 
-            tspbLoading.Value = 0
-            If ScrapeList.Count > 1 Then
-                tspbLoading.Style = ProgressBarStyle.Continuous
-                tspbLoading.Maximum = ScrapeList.Count
-            Else
-                tspbLoading.Maximum = 100
-                tspbLoading.Style = ProgressBarStyle.Marquee
-            End If
+        '    tspbLoading.Value = 0
+        '    If ScrapeList.Count > 1 Then
+        '        tspbLoading.Style = ProgressBarStyle.Continuous
+        '        tspbLoading.Maximum = ScrapeList.Count
+        '    Else
+        '        tspbLoading.Maximum = 100
+        '        tspbLoading.Style = ProgressBarStyle.Marquee
+        '    End If
 
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-                Case Enums.ScrapeType.MissingAuto
-                    tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                Case Enums.ScrapeType.MissingAsk
-                    tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                Case Enums.ScrapeType.MissingSkip
-                    tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-                Case Enums.ScrapeType.NewAsk
-                    tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-                Case Enums.ScrapeType.NewAuto
-                    tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-                Case Enums.ScrapeType.NewSkip
-                    tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-                Case Enums.ScrapeType.MarkedAsk
-                    tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-                Case Enums.ScrapeType.MarkedAuto
-                    tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-                Case Enums.ScrapeType.MarkedSkip
-                    tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-                Case Enums.ScrapeType.FilterAsk
-                    tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                Case Enums.ScrapeType.FilterAuto
-                    tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-                Case Enums.ScrapeType.FilterAuto
-                    tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-                Case Enums.ScrapeType.SelectedAsk
-                    tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-                Case Enums.ScrapeType.SelectedAuto
-                    tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-                Case Enums.ScrapeType.SelectedSkip
-                    tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-                Case Enums.ScrapeType.SingleField
-                    tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
+        '    'Select Case sType
+        '    '    Case Enums.ScrapeType.AllAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+        '    '    Case Enums.ScrapeType.AllAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+        '    '    Case Enums.ScrapeType.AllSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+        '    '    Case Enums.ScrapeType.MissingAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+        '    '    Case Enums.ScrapeType.MissingAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+        '    '    Case Enums.ScrapeType.MissingSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+        '    '    Case Enums.ScrapeType.NewAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+        '    '    Case Enums.ScrapeType.NewAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+        '    '    Case Enums.ScrapeType.NewSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+        '    '    Case Enums.ScrapeType.MarkedAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+        '    '    Case Enums.ScrapeType.MarkedAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+        '    '    Case Enums.ScrapeType.MarkedSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+        '    '    Case Enums.ScrapeType.FilterAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+        '    '    Case Enums.ScrapeType.FilterAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+        '    '    Case Enums.ScrapeType.FilterAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+        '    '    Case Enums.ScrapeType.SelectedAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+        '    '    Case Enums.ScrapeType.SelectedAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+        '    '    Case Enums.ScrapeType.SelectedSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+        '    '    Case Enums.ScrapeType.SingleField
+        '    '        tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+        '    '    Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        '    'End Select
 
-            If Not sType = Enums.ScrapeType.SingleScrape Then
-                btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-                lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-                btnCancel.Visible = True
-                lblCanceling.Visible = False
-                prbCanceling.Visible = False
-                pnlCancel.Visible = True
-            End If
+        '    If Not sType = Enums.ScrapeType.SingleScrape Then
+        '        btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+        '        lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+        '        btnCancel.Visible = True
+        '        lblCanceling.Visible = False
+        '        prbCanceling.Visible = False
+        '        pnlCancel.Visible = True
+        '    End If
 
-            tslLoading.Visible = True
-            tspbLoading.Visible = True
-            Application.DoEvents()
-            bwTVScraper.WorkerSupportsCancellation = True
-            bwTVScraper.WorkerReportsProgress = True
-            bwTVScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
-        End If
+        '    tslLoading.Visible = True
+        '    tspbLoading.Visible = True
+        '    Application.DoEvents()
+        '    bwTVScraper.WorkerSupportsCancellation = True
+        '    bwTVScraper.WorkerReportsProgress = True
+        '    bwTVScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
+        'End If
     End Sub
 
     Private Sub CreateScrapeList_TVEpisode(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifiers As Structures.ScrapeModifiers)
-        Dim DataRowList As New List(Of DataRow)
-        Dim ScrapeList As New List(Of ScrapeItem)
+        'Dim DataRowList As New List(Of DataRow)
+        'Dim ScrapeList As New List(Of ScrapeItem)
 
-        Select Case sType
-            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
-                Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
-                'create snapshoot list of selected tv episode
-                For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                    DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
-                Next
-            Case Else
-                For Each sRow As DataRow In _DtTVEpisodes.Rows
-                    DataRowList.Add(sRow)
-                Next
-        End Select
+        'Select Case sType
+        '    Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
+        '        Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
+        '        'create snapshoot list of selected tv episode
+        '        For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
+        '            DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+        '        Next
+        '    Case Else
+        '        For Each sRow As DataRow In _DtTVEpisodes.Rows
+        '            DataRowList.Add(sRow)
+        '        Next
+        'End Select
 
-        Dim ActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
-        Dim FanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso (AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) OrElse
-            AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart))
-        Dim PosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso (AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster) OrElse
-            Master.eSettings.TVEpisodePosterVideoExtraction)
+        'Dim ActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
+        'Dim FanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso (AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) OrElse
+        '    AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart))
+        'Dim PosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso (AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster) OrElse
+        '    Master.eSettings.TVEpisodePosterVideoExtraction)
 
-        'create ScrapeList of episodes acording to scrapetype
-        For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+        ''create ScrapeList of episodes acording to scrapetype
+        'For Each drvRow As DataRow In DataRowList
+        '    If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
-            Dim sModifier As New Structures.ScrapeModifiers
-            sModifier.DoSearch = ScrapeModifiers.DoSearch
-            sModifier.EpisodeActorThumbs = ScrapeModifiers.EpisodeActorThumbs AndAlso ActorThumbsAllowed
-            sModifier.EpisodeFanart = ScrapeModifiers.EpisodeFanart AndAlso FanartAllowed
-            sModifier.EpisodeMeta = ScrapeModifiers.EpisodeMeta
-            sModifier.EpisodeNFO = ScrapeModifiers.EpisodeNFO
-            sModifier.EpisodePoster = ScrapeModifiers.EpisodePoster AndAlso PosterAllowed
+        '    Dim sModifier As New Structures.ScrapeModifiers
+        '    sModifier.DoSearch = ScrapeModifiers.DoSearch
+        '    sModifier.EpisodeActorThumbs = ScrapeModifiers.EpisodeActorThumbs AndAlso ActorThumbsAllowed
+        '    sModifier.EpisodeFanart = ScrapeModifiers.EpisodeFanart AndAlso FanartAllowed
+        '    sModifier.EpisodeMeta = ScrapeModifiers.EpisodeMeta
+        '    sModifier.EpisodeNFO = ScrapeModifiers.EpisodeNFO
+        '    sModifier.EpisodePoster = ScrapeModifiers.EpisodePoster AndAlso PosterAllowed
 
-            Select Case sType
-                Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
-                Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
-                Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                    Dim index As Integer = _BsTVEpisodes.Find(Database.Helpers.GetMainIdName(Database.TableName.episode), drvRow.Item(0))
-                    If Not index >= 0 Then Continue For
-                Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.EpisodeFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.EpisodeNFO = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.EpisodePoster = False
-            End Select
-            If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
-                ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
-            End If
-        Next
+        '    Select Case sType
+        '        Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
+        '            If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
+        '        Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
+        '            If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
+        '        Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
+        '            Dim index As Integer = _BsTVEpisodes.Find(Database.Helpers.GetMainIdName(Database.TableName.episode), drvRow.Item(0))
+        '            If Not index >= 0 Then Continue For
+        '        Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.EpisodeFanart = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.NfoPath)).ToString) Then sModifier.EpisodeNFO = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.EpisodePoster = False
+        '    End Select
+        '    If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
+        '        ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+        '    End If
+        'Next
 
-        If Not ScrapeList.Count = 0 Then
-            SetControlsEnabled(False)
+        'If Not ScrapeList.Count = 0 Then
+        '    SetControlsEnabled(False)
 
-            tspbLoading.Value = 0
-            If ScrapeList.Count > 1 Then
-                tspbLoading.Style = ProgressBarStyle.Continuous
-                tspbLoading.Maximum = ScrapeList.Count
-            Else
-                tspbLoading.Maximum = 100
-                tspbLoading.Style = ProgressBarStyle.Marquee
-            End If
+        '    tspbLoading.Value = 0
+        '    If ScrapeList.Count > 1 Then
+        '        tspbLoading.Style = ProgressBarStyle.Continuous
+        '        tspbLoading.Maximum = ScrapeList.Count
+        '    Else
+        '        tspbLoading.Maximum = 100
+        '        tspbLoading.Style = ProgressBarStyle.Marquee
+        '    End If
 
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-                Case Enums.ScrapeType.MissingAuto
-                    tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                Case Enums.ScrapeType.MissingAsk
-                    tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                Case Enums.ScrapeType.MissingSkip
-                    tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-                Case Enums.ScrapeType.NewAsk
-                    tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-                Case Enums.ScrapeType.NewAuto
-                    tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-                Case Enums.ScrapeType.NewSkip
-                    tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-                Case Enums.ScrapeType.MarkedAsk
-                    tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-                Case Enums.ScrapeType.MarkedAuto
-                    tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-                Case Enums.ScrapeType.MarkedSkip
-                    tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-                Case Enums.ScrapeType.FilterAsk
-                    tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                Case Enums.ScrapeType.FilterAuto
-                    tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-                Case Enums.ScrapeType.FilterAuto
-                    tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-                Case Enums.ScrapeType.AllAsk
-                    tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-                Case Enums.ScrapeType.SingleField
-                    tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
+        '    'Select Case sType
+        '    '    Case Enums.ScrapeType.AllAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+        '    '    Case Enums.ScrapeType.AllAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+        '    '    Case Enums.ScrapeType.AllSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+        '    '    Case Enums.ScrapeType.MissingAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+        '    '    Case Enums.ScrapeType.MissingAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+        '    '    Case Enums.ScrapeType.MissingSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+        '    '    Case Enums.ScrapeType.NewAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+        '    '    Case Enums.ScrapeType.NewAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+        '    '    Case Enums.ScrapeType.NewSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+        '    '    Case Enums.ScrapeType.MarkedAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+        '    '    Case Enums.ScrapeType.MarkedAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+        '    '    Case Enums.ScrapeType.MarkedSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+        '    '    Case Enums.ScrapeType.FilterAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+        '    '    Case Enums.ScrapeType.FilterAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+        '    '    Case Enums.ScrapeType.FilterAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+        '    '    Case Enums.ScrapeType.AllAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+        '    '    Case Enums.ScrapeType.AllAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+        '    '    Case Enums.ScrapeType.AllSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+        '    '    Case Enums.ScrapeType.SingleField
+        '    '        tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+        '    '    Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        '    'End Select
 
-            If Not sType = Enums.ScrapeType.SingleScrape Then
-                btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-                lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-                btnCancel.Visible = True
-                lblCanceling.Visible = False
-                prbCanceling.Visible = False
-                pnlCancel.Visible = True
-            End If
+        '    If Not sType = Enums.ScrapeType.SingleScrape Then
+        '        btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+        '        lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+        '        btnCancel.Visible = True
+        '        lblCanceling.Visible = False
+        '        prbCanceling.Visible = False
+        '        pnlCancel.Visible = True
+        '    End If
 
-            tslLoading.Visible = True
-            tspbLoading.Visible = True
-            Application.DoEvents()
-            bwTVEpisodeScraper.WorkerSupportsCancellation = True
-            bwTVEpisodeScraper.WorkerReportsProgress = True
-            bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
-        End If
+        '    tslLoading.Visible = True
+        '    tspbLoading.Visible = True
+        '    Application.DoEvents()
+        '    bwTVEpisodeScraper.WorkerSupportsCancellation = True
+        '    bwTVEpisodeScraper.WorkerReportsProgress = True
+        '    bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
+        'End If
     End Sub
 
     Private Sub CreateScrapeList_TVSeason(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifiers As Structures.ScrapeModifiers)
-        Dim DataRowList As New List(Of DataRow)
-        Dim ScrapeList As New List(Of ScrapeItem)
+        'Dim DataRowList As New List(Of DataRow)
+        'Dim ScrapeList As New List(Of ScrapeItem)
 
-        Select Case sType
-            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
-                Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
-                'create snapshoot list of selected tv season
-                For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                    DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
-                Next
-            Case Else
-                For Each sRow As DataRow In _DtTVSeasons.Rows
-                    DataRowList.Add(sRow)
-                Next
-        End Select
+        'Select Case sType
+        '    Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
+        '        Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
+        '        'create snapshoot list of selected tv season
+        '        For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
+        '            DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+        '        Next
+        '    Case Else
+        '        For Each sRow As DataRow In _DtTVSeasons.Rows
+        '            DataRowList.Add(sRow)
+        '        Next
+        'End Select
 
-        Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
-        Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
-        Dim AllSeasonsLandscapeAllowed As Boolean = Master.eSettings.TVAllSeasonsLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape)
-        Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.TVAllSeasonsPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster)
-        Dim SeasonBannerAllowed As Boolean = Master.eSettings.TVSeasonBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
-        Dim SeasonFanartAllowed As Boolean = Master.eSettings.TVSeasonFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
-        Dim SeasonLandscapeAllowed As Boolean = Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
-        Dim SeasonPosterAllowed As Boolean = Master.eSettings.TVSeasonPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
+        'Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
+        'Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
+        'Dim AllSeasonsLandscapeAllowed As Boolean = Master.eSettings.TVAllSeasonsLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape)
+        'Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.TVAllSeasonsPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster)
+        'Dim SeasonBannerAllowed As Boolean = Master.eSettings.TVSeasonBannerAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
+        'Dim SeasonFanartAllowed As Boolean = Master.eSettings.TVSeasonFanartAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
+        'Dim SeasonLandscapeAllowed As Boolean = Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
+        'Dim SeasonPosterAllowed As Boolean = Master.eSettings.TVSeasonPosterAnyEnabled AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
 
-        'create ScrapeList of tv seasons acording to scrapetype
-        For Each drvRow As DataRow In DataRowList
-            If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
+        ''create ScrapeList of tv seasons acording to scrapetype
+        'For Each drvRow As DataRow In DataRowList
+        '    If Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Locked))) AndAlso Not sType = Enums.ScrapeType.SingleScrape Then Continue For
 
-            Dim sModifier As New Structures.ScrapeModifiers
-            Dim iSeason As Integer = CInt(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)))
-            sModifier.DoSearch = ScrapeModifiers.DoSearch
-            sModifier.AllSeasonsBanner = ScrapeModifiers.AllSeasonsBanner AndAlso AllSeasonsBannerAllowed AndAlso iSeason = -1
-            sModifier.AllSeasonsFanart = ScrapeModifiers.AllSeasonsFanart AndAlso AllSeasonsFanartAllowed AndAlso iSeason = -1
-            sModifier.AllSeasonsLandscape = ScrapeModifiers.AllSeasonsLandscape AndAlso AllSeasonsLandscapeAllowed AndAlso iSeason = -1
-            sModifier.AllSeasonsPoster = ScrapeModifiers.AllSeasonsPoster AndAlso AllSeasonsPosterAllowed AndAlso iSeason = -1
-            sModifier.SeasonBanner = ScrapeModifiers.SeasonBanner AndAlso SeasonBannerAllowed AndAlso Not iSeason = -1
-            sModifier.SeasonFanart = ScrapeModifiers.SeasonFanart AndAlso SeasonFanartAllowed AndAlso Not iSeason = -1
-            sModifier.SeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso SeasonLandscapeAllowed AndAlso Not iSeason = -1
-            sModifier.SeasonNFO = ScrapeModifiers.SeasonNFO
-            sModifier.SeasonPoster = ScrapeModifiers.SeasonPoster AndAlso SeasonPosterAllowed AndAlso Not iSeason = -1
+        '    Dim sModifier As New Structures.ScrapeModifiers
+        '    Dim iSeason As Integer = CInt(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.SeasonNumber)))
+        '    sModifier.DoSearch = ScrapeModifiers.DoSearch
+        '    sModifier.AllSeasonsBanner = ScrapeModifiers.AllSeasonsBanner AndAlso AllSeasonsBannerAllowed AndAlso iSeason = -1
+        '    sModifier.AllSeasonsFanart = ScrapeModifiers.AllSeasonsFanart AndAlso AllSeasonsFanartAllowed AndAlso iSeason = -1
+        '    sModifier.AllSeasonsLandscape = ScrapeModifiers.AllSeasonsLandscape AndAlso AllSeasonsLandscapeAllowed AndAlso iSeason = -1
+        '    sModifier.AllSeasonsPoster = ScrapeModifiers.AllSeasonsPoster AndAlso AllSeasonsPosterAllowed AndAlso iSeason = -1
+        '    sModifier.SeasonBanner = ScrapeModifiers.SeasonBanner AndAlso SeasonBannerAllowed AndAlso Not iSeason = -1
+        '    sModifier.SeasonFanart = ScrapeModifiers.SeasonFanart AndAlso SeasonFanartAllowed AndAlso Not iSeason = -1
+        '    sModifier.SeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso SeasonLandscapeAllowed AndAlso Not iSeason = -1
+        '    sModifier.SeasonNFO = ScrapeModifiers.SeasonNFO
+        '    sModifier.SeasonPoster = ScrapeModifiers.SeasonPoster AndAlso SeasonPosterAllowed AndAlso Not iSeason = -1
 
-            Select Case sType
-                Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
-                Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
-                    If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
-                Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                    Dim index As Integer = _BsTVShows.Find(Database.Helpers.GetMainIdName(Database.TableName.tvshow), drvRow.Item(0))
-                    If Not index >= 0 Then Continue For
-                Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.SeasonBanner = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.SeasonFanart = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.SeasonLandscape = False
-                    If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.SeasonPoster = False
-            End Select
-            If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
-                ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
-            End If
-        Next
+        '    Select Case sType
+        '        Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
+        '            If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.[New]))) Then Continue For
+        '        Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
+        '            If Not Convert.ToBoolean(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.Marked))) Then Continue For
+        '        Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
+        '            Dim index As Integer = _BsTVShows.Find(Database.Helpers.GetMainIdName(Database.TableName.tvshow), drvRow.Item(0))
+        '            If Not index >= 0 Then Continue For
+        '        Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.BannerPath)).ToString) Then sModifier.SeasonBanner = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.FanartPath)).ToString) Then sModifier.SeasonFanart = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.LandscapePath)).ToString) Then sModifier.SeasonLandscape = False
+        '            If Not String.IsNullOrEmpty(drvRow.Item(Database.Helpers.GetColumnName(Database.ColumnName.PosterPath)).ToString) Then sModifier.SeasonPoster = False
+        '    End Select
+        '    If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
+        '        ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+        '    End If
+        'Next
 
-        If Not ScrapeList.Count = 0 Then
-            SetControlsEnabled(False)
+        'If Not ScrapeList.Count = 0 Then
+        '    SetControlsEnabled(False)
 
-            tspbLoading.Value = 0
-            If ScrapeList.Count > 1 Then
-                tspbLoading.Style = ProgressBarStyle.Continuous
-                tspbLoading.Maximum = ScrapeList.Count
-            Else
-                tspbLoading.Maximum = 100
-                tspbLoading.Style = ProgressBarStyle.Marquee
-            End If
+        '    tspbLoading.Value = 0
+        '    If ScrapeList.Count > 1 Then
+        '        tspbLoading.Style = ProgressBarStyle.Continuous
+        '        tspbLoading.Maximum = ScrapeList.Count
+        '    Else
+        '        tspbLoading.Maximum = 100
+        '        tspbLoading.Style = ProgressBarStyle.Marquee
+        '    End If
 
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-                Case Enums.ScrapeType.MissingAuto
-                    tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                Case Enums.ScrapeType.MissingAsk
-                    tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                Case Enums.ScrapeType.MissingSkip
-                    tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-                Case Enums.ScrapeType.NewAsk
-                    tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-                Case Enums.ScrapeType.NewAuto
-                    tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-                Case Enums.ScrapeType.NewSkip
-                    tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-                Case Enums.ScrapeType.MarkedAsk
-                    tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-                Case Enums.ScrapeType.MarkedAuto
-                    tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-                Case Enums.ScrapeType.MarkedSkip
-                    tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-                Case Enums.ScrapeType.FilterAsk
-                    tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                Case Enums.ScrapeType.FilterAuto
-                    tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-                Case Enums.ScrapeType.FilterAuto
-                    tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-                Case Enums.ScrapeType.SelectedAsk
-                    tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-                Case Enums.ScrapeType.SelectedAuto
-                    tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-                Case Enums.ScrapeType.SelectedSkip
-                    tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-                Case Enums.ScrapeType.SingleField
-                    tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
+        '    'Select Case sType
+        '    '    Case Enums.ScrapeType.AllAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+        '    '    Case Enums.ScrapeType.AllAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+        '    '    Case Enums.ScrapeType.AllSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+        '    '    Case Enums.ScrapeType.MissingAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+        '    '    Case Enums.ScrapeType.MissingAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+        '    '    Case Enums.ScrapeType.MissingSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+        '    '    Case Enums.ScrapeType.NewAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+        '    '    Case Enums.ScrapeType.NewAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+        '    '    Case Enums.ScrapeType.NewSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+        '    '    Case Enums.ScrapeType.MarkedAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+        '    '    Case Enums.ScrapeType.MarkedAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+        '    '    Case Enums.ScrapeType.MarkedSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+        '    '    Case Enums.ScrapeType.FilterAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+        '    '    Case Enums.ScrapeType.FilterAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+        '    '    Case Enums.ScrapeType.FilterAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+        '    '    Case Enums.ScrapeType.SelectedAsk
+        '    '        tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+        '    '    Case Enums.ScrapeType.SelectedAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+        '    '    Case Enums.ScrapeType.SelectedSkip
+        '    '        tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+        '    '    Case Enums.ScrapeType.SingleField
+        '    '        tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+        '    '    Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+        '    '        tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        '    'End Select
 
-            If Not sType = Enums.ScrapeType.SingleScrape Then
-                btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-                lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-                btnCancel.Visible = True
-                lblCanceling.Visible = False
-                prbCanceling.Visible = False
-                pnlCancel.Visible = True
-            End If
+        '    If Not sType = Enums.ScrapeType.SingleScrape Then
+        '        btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+        '        lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+        '        btnCancel.Visible = True
+        '        lblCanceling.Visible = False
+        '        prbCanceling.Visible = False
+        '        pnlCancel.Visible = True
+        '    End If
 
-            tslLoading.Visible = True
-            tspbLoading.Visible = True
-            Application.DoEvents()
-            bwTVSeasonScraper.WorkerSupportsCancellation = True
-            bwTVSeasonScraper.WorkerReportsProgress = True
-            bwTVSeasonScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
-        End If
+        '    tslLoading.Visible = True
+        '    tspbLoading.Visible = True
+        '    Application.DoEvents()
+        '    bwTVSeasonScraper.WorkerSupportsCancellation = True
+        '    bwTVSeasonScraper.WorkerReportsProgress = True
+        '    bwTVSeasonScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
+        'End If
     End Sub
 
     Private Sub InfoDownloaded_Movie(ByRef DBMovie As Database.DBElement)
@@ -13148,7 +13140,7 @@ Public Class frmMain
             tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
             Application.DoEvents()
 
-            Edit_Movie(DBMovie, Enums.ModuleEventType.ScraperSingle_Movie)
+            Edit_Movie(DBMovie, Enums.AddonEventType.ScraperSingle_Movie)
         End If
 
         pnlCancel.Visible = False
@@ -13202,7 +13194,7 @@ Public Class frmMain
             tslLoading.Text = Master.eLang.GetString(761, "Verifying TV Show Details:")
             Application.DoEvents()
 
-            Edit_TVShow(DBTVShow, Enums.ModuleEventType.ScraperSingle_TVShow)
+            Edit_TVShow(DBTVShow, Enums.AddonEventType.ScraperSingle_TVShow)
         End If
 
         pnlCancel.Visible = False
@@ -13229,7 +13221,7 @@ Public Class frmMain
             tslLoading.Text = Master.eLang.GetString(762, "Verifying TV Episode Details:")
             Application.DoEvents()
 
-            Edit_TVEpisode(DBTVEpisode, Enums.ModuleEventType.ScraperSingle_TVEpisode)
+            Edit_TVEpisode(DBTVEpisode, Enums.AddonEventType.ScraperSingle_TVEpisode)
         End If
 
         pnlCancel.Visible = False
@@ -13256,7 +13248,7 @@ Public Class frmMain
             tslLoading.Text = Master.eLang.GetString(80, "Verifying TV Season Details:")
             Application.DoEvents()
 
-            Edit_TVSeason(DBTVSeason, Enums.ModuleEventType.ScraperSingle_TVSeason)
+            Edit_TVSeason(DBTVSeason, Enums.AddonEventType.ScraperSingle_TVSeason)
         End If
 
         pnlCancel.Visible = False
@@ -13548,1036 +13540,1033 @@ Public Class frmMain
         DirectCast(sender, PictureBox).Image = GenreImage
     End Sub
 
-    Private Sub pbBanner_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbBanner.MouseDoubleClick
-        Try
-            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-                If pbBannerCache.Image IsNot Nothing Then
-                    Using dImgView As New dlgImageViewer
-                        dImgView.ShowDialog(pbBannerCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-
-                Select Case MainTab_GetCurrentTag().ContentType
-                    Case Enums.ContentType.Movie
-                        If dgvMovies.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
-                        If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                            If aContainer.MainBanners.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    DataGridView_RefreshRow_Movie(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
-                        If dgvMoviesets.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
-                        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
-                            If aContainer.MainBanners.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.Save_Movieset(tmpDBElement, False, True, True, True)
-                                    DataGridView_RefreshRow_Movieset(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.TV
-                        'TV Show list
-                        If dgvTVShows.Focused Then
-                            If dgvTVShows.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.MainBanners.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                        Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        DataGridView_RefreshRow_TVShow(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Season list
-                        ElseIf dgvTVSeasons.Focused Then
-                            If dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            If tmpDBElement.MainDetails.Season_IsAllSeasons Then
-                                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsBanner, True)
-                            Else
-                                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonBanner, True)
-                            End If
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.SeasonBanners.Count > 0 OrElse (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso aContainer.MainBanners.Count > 0) Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                        Master.DB.Save_TVSeason(tmpDBElement, False, True, True)
-                                        DataGridView_RefreshRow_TVSeason(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Episode list
-                        ElseIf dgvTVEpisodes.Focused Then
-                            Return
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            SetControlsEnabled(True)
-        End Try
-    End Sub
-
-    Private Sub pbCharacterArt_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbCharacterArt.MouseDoubleClick
-        Try
-            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-                If pbCharacterArtCache.Image IsNot Nothing Then
-                    Using dImgView As New dlgImageViewer
-                        dImgView.ShowDialog(pbCharacterArtCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-
-                Select Case MainTab_GetCurrentTag().ContentType
-                    Case Enums.ContentType.Movie
-                        Return
-                    Case Enums.ContentType.Movieset
-                        Return
-                    Case Enums.ContentType.TV
-                        'TV Show list
-                        If dgvTVShows.Focused Then
-                            If dgvTVShows.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainCharacterArt, True)
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.MainCharacterArts.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.CharacterArt = dlgImgS.Result.ImagesContainer.CharacterArt
-                                        Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        DataGridView_RefreshRow_TVShow(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Season list
-                        ElseIf dgvTVSeasons.Focused Then
-                            Return
-
-                            'TV Episode list
-                        ElseIf dgvTVEpisodes.Focused Then
-                            Return
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            SetControlsEnabled(True)
-        End Try
-    End Sub
-
-    Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbClearArt.MouseDoubleClick
-        Try
-            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-                If pbClearArtCache.Image IsNot Nothing Then
-                    Using dImgView As New dlgImageViewer
-                        dImgView.ShowDialog(pbClearArtCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-
-                Select Case MainTab_GetCurrentTag().ContentType
-                    Case Enums.ContentType.Movie
-                        If dgvMovies.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
-                        If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                            If aContainer.MainClearArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    DataGridView_RefreshRow_Movie(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
-                        If dgvMoviesets.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
-                        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
-                            If aContainer.MainClearArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
-                                    DataGridView_RefreshRow_Movieset(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.TV
-                        'TV Show list
-                        If dgvTVShows.Focused Then
-                            If dgvTVShows.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.MainClearArts.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                        Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        DataGridView_RefreshRow_TVShow(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Season list
-                        ElseIf dgvTVSeasons.Focused Then
-                            Return
-
-                            'TV Episode list
-                        ElseIf dgvTVEpisodes.Focused Then
-                            Return
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            SetControlsEnabled(True)
-        End Try
-    End Sub
-
-    Private Sub pbClearLogo_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbClearLogo.MouseDoubleClick
-        Try
-            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-                If pbClearLogoCache.Image IsNot Nothing Then
-                    Using dImgView As New dlgImageViewer
-                        dImgView.ShowDialog(pbClearLogoCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-
-                Select Case MainTab_GetCurrentTag().ContentType
-                    Case Enums.ContentType.Movie
-                        If dgvMovies.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
-                        If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                            If aContainer.MainClearLogos.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    DataGridView_RefreshRow_Movie(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
-                        If dgvMoviesets.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
-                        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
-                            If aContainer.MainClearLogos.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
-                                    DataGridView_RefreshRow_Movieset(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.TV
-                        'TV Show list
-                        If dgvTVShows.Focused Then
-                            If dgvTVShows.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.MainClearLogos.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                        Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        DataGridView_RefreshRow_TVShow(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Season list
-                        ElseIf dgvTVSeasons.Focused Then
-                            Return
-
-                            'TV Episode list
-                        ElseIf dgvTVEpisodes.Focused Then
-                            Return
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            SetControlsEnabled(True)
-        End Try
-    End Sub
-
-    Private Sub pbDiscArt_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbDiscArt.MouseDoubleClick
-        Try
-            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-                If pbDiscArtCache.Image IsNot Nothing Then
-                    Using dImgView As New dlgImageViewer
-                        dImgView.ShowDialog(pbDiscArtCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-
-                Select Case MainTab_GetCurrentTag().ContentType
-                    Case Enums.ContentType.Movie
-                        If dgvMovies.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainDiscArt, True)
-                        If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                            If aContainer.MainDiscArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    DataGridView_RefreshRow_Movie(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
-                        If dgvMoviesets.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainDiscArt, True)
-                        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
-                            If aContainer.MainDiscArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
-                                    DataGridView_RefreshRow_Movieset(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.TV
-                        'TV Show list
-                        If dgvTVShows.Focused Then
-                            Return
-
-                            'TV Season list
-                        ElseIf dgvTVSeasons.Focused Then
-                            Return
-
-                            'TV Episode list
-                        ElseIf dgvTVEpisodes.Focused Then
-                            Return
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            SetControlsEnabled(True)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Show the Fanart in the Image Viewer
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbFanart.MouseDoubleClick, pbFanartSmall.MouseDoubleClick
-        Try
-            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-                If pbFanartCache.Image IsNot Nothing Then
-                    Using dImgView As New dlgImageViewer
-                        dImgView.ShowDialog(pbFanartCache.Image)
-                    End Using
-                ElseIf pbFanartSmallCache.Image IsNot Nothing Then
-                    Using dImgView As New dlgImageViewer
-                        dImgView.ShowDialog(pbFanartSmallCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-
-                Select Case MainTab_GetCurrentTag().ContentType
-                    Case Enums.ContentType.Movie
-                        If dgvMovies.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
-                        If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                            If aContainer.MainFanarts.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    DataGridView_RefreshRow_Movie(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
-                        If dgvMoviesets.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
-                        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
-                            If aContainer.MainFanarts.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
-                                    DataGridView_RefreshRow_Movieset(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.TV
-                        'TV Show list
-                        If dgvTVShows.Focused Then
-                            If dgvTVShows.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.MainFanarts.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                        Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        DataGridView_RefreshRow_TVShow(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Season list
-                        ElseIf dgvTVSeasons.Focused Then
-                            If dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            If tmpDBElement.MainDetails.Season_IsAllSeasons Then
-                                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsFanart, True)
-                            Else
-                                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonFanart, True)
-                            End If
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.SeasonFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                        Master.DB.Save_TVSeason(tmpDBElement, False, True, True)
-                                        DataGridView_RefreshRow_TVSeason(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Episode list
-                        ElseIf dgvTVEpisodes.Focused Then
-                            If dgvTVEpisodes.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeFanart, True)
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                        Master.DB.Save_TVEpisode(tmpDBElement, False, False, True, False, True)
-                                        DataGridView_RefreshRow_TVEpisode(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            SetControlsEnabled(True)
-        End Try
-    End Sub
-
-    Private Sub pbKeyArt_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbKeyArt.MouseDoubleClick
-        Try
-            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-                If pbKeyArtCache.Image IsNot Nothing Then
-                    Using dImgView As New dlgImageViewer
-                        dImgView.ShowDialog(pbKeyArtCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-
-                Select Case MainTab_GetCurrentTag().ContentType
-                    Case Enums.ContentType.Movie
-                        If dgvMovies.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
-                        If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                            If aContainer.MainKeyArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.KeyArt = dlgImgS.Result.ImagesContainer.KeyArt
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    DataGridView_RefreshRow_Movie(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
-                        If dgvMoviesets.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
-                        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
-                            If aContainer.MainKeyArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.KeyArt = dlgImgS.Result.ImagesContainer.KeyArt
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
-                                    DataGridView_RefreshRow_Movieset(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.TV
-                        'TV Show list
-                        If dgvTVShows.Focused Then
-                            If dgvTVShows.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.MainKeyArts.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.KeyArt = dlgImgS.Result.ImagesContainer.KeyArt
-                                        Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        DataGridView_RefreshRow_TVShow(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            SetControlsEnabled(True)
-        End Try
-    End Sub
-
-    Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbLandscape.MouseDoubleClick
-        Try
-            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-                If pbLandscapeCache.Image IsNot Nothing Then
-                    Using dImgView As New dlgImageViewer
-                        dImgView.ShowDialog(pbLandscapeCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-
-                Select Case MainTab_GetCurrentTag().ContentType
-                    Case Enums.ContentType.Movie
-                        If dgvMovies.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
-                        If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                            If aContainer.MainLandscapes.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    DataGridView_RefreshRow_Movie(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
-                        If dgvMoviesets.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
-                        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
-                            If aContainer.MainLandscapes.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
-                                    DataGridView_RefreshRow_Movieset(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.TV
-                        'TV Show list
-                        If dgvTVShows.Focused Then
-                            If dgvTVShows.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.MainLandscapes.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                        Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        DataGridView_RefreshRow_TVShow(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Season list
-                        ElseIf dgvTVSeasons.Focused Then
-                            If dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            If tmpDBElement.MainDetails.Season_IsAllSeasons Then
-                                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsLandscape, True)
-                            Else
-                                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
-                            End If
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.SeasonLandscapes.Count > 0 OrElse (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso aContainer.MainLandscapes.Count > 0) Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                        Master.DB.Save_TVSeason(tmpDBElement, False, True, True)
-                                        DataGridView_RefreshRow_TVSeason(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Episode list
-                        ElseIf dgvTVEpisodes.Focused Then
-                            Return
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            SetControlsEnabled(True)
-        End Try
-    End Sub
-
-    Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbPoster.MouseDoubleClick
-        Try
-            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-                If pbPosterCache.Image IsNot Nothing Then
-                    Using dImgView As New dlgImageViewer
-                        dImgView.ShowDialog(pbPosterCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
-
-                Select Case MainTab_GetCurrentTag().ContentType
-                    Case Enums.ContentType.Movie
-                        If dgvMovies.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
-                        If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                            If aContainer.MainPosters.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    DataGridView_RefreshRow_Movie(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
-                        If dgvMoviesets.SelectedRows.Count > 1 Then Return
-                        SetControlsEnabled(False)
-
-                        Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
-                        Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
-
-                        Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
-                        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
-                            If aContainer.MainPosters.Count > 0 Then
-                                Dim dlgImgS As New dlgImageSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                    tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
-                                    DataGridView_RefreshRow_Movieset(ID)
-                                End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            End If
-                        End If
-                        SetControlsEnabled(True)
-                    Case Enums.ContentType.TV
-                        'TV Show list
-                        If dgvTVShows.Focused Then
-                            If dgvTVShows.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.MainPosters.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                        Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        DataGridView_RefreshRow_TVShow(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Season list
-                        ElseIf dgvTVSeasons.Focused Then
-                            If dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            If tmpDBElement.MainDetails.Season_IsAllSeasons Then
-                                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsPoster, True)
-                            Else
-                                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonPoster, True)
-                            End If
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.SeasonPosters.Count > 0 OrElse (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso aContainer.MainPosters.Count > 0) Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                        Master.DB.Save_TVSeason(tmpDBElement, False, True, True)
-                                        DataGridView_RefreshRow_TVSeason(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-
-                            'TV Episode list
-                        ElseIf dgvTVEpisodes.Focused Then
-                            If dgvTVEpisodes.SelectedRows.Count > 1 Then Return
-                            SetControlsEnabled(False)
-
-                            Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
-                            Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
-
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-
-                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodePoster, True)
-                            If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
-                                If aContainer.EpisodePosters.Count > 0 Then
-                                    Dim dlgImgS As New dlgImageSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                                        tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                        Master.DB.Save_TVEpisode(tmpDBElement, False, False, True, False, True)
-                                        DataGridView_RefreshRow_TVEpisode(ID)
-                                    End If
-                                Else
-                                    MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            End If
-                            SetControlsEnabled(True)
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            SetControlsEnabled(True)
-        End Try
-    End Sub
+    'Private Sub pbBanner_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbBanner.MouseDoubleClick
+    '    Try
+    '        If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+    '            If pbBannerCache.Image IsNot Nothing Then
+    '                Using dImgView As New dlgImageViewer
+    '                    dImgView.ShowDialog(pbBannerCache.Image)
+    '                End Using
+    '            End If
+    '        ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+
+    '            Select Case MainTab_GetCurrentTag().ContentType
+    '                Case Enums.ContentType.Movie
+    '                    If dgvMovies.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMovies.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
+    '                    Functions.SetScrapeModifiers(tmpDBElement.ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+    '                    Dim nResult = Scraper.Run(tmpDBElement)
+    '                    If nResult IsNot Nothing Then
+    '                        If nResult.lstImages.MainBanners.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, nResult.lstImages) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+    '                                Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
+    '                                DataGridView_RefreshRow_Movie(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.Movieset
+    '                    If dgvMoviesets.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+    '                        If aContainer.MainBanners.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+    '                                Master.DB.Save_Movieset(tmpDBElement, False, True, True, True)
+    '                                DataGridView_RefreshRow_Movieset(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.TV
+    '                    'TV Show list
+    '                    If dgvTVShows.Focused Then
+    '                        If dgvTVShows.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.MainBanners.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+    '                                    Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
+    '                                    DataGridView_RefreshRow_TVShow(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Season list
+    '                    ElseIf dgvTVSeasons.Focused Then
+    '                        If dgvTVSeasons.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        If tmpDBElement.MainDetails.Season_IsAllSeasons Then
+    '                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsBanner, True)
+    '                        Else
+    '                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonBanner, True)
+    '                        End If
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.SeasonBanners.Count > 0 OrElse (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso aContainer.MainBanners.Count > 0) Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+    '                                    Master.DB.Save_TVSeason(tmpDBElement, False, True, True)
+    '                                    DataGridView_RefreshRow_TVSeason(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Episode list
+    '                    ElseIf dgvTVEpisodes.Focused Then
+    '                        Return
+    '                    End If
+    '            End Select
+    '        End If
+    '    Catch ex As Exception
+    '        _Logger.Error(ex, New StackFrame().GetMethod().Name)
+    '        SetControlsEnabled(True)
+    '    End Try
+    'End Sub
+
+    'Private Sub pbCharacterArt_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbCharacterArt.MouseDoubleClick
+    '    Try
+    '        If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+    '            If pbCharacterArtCache.Image IsNot Nothing Then
+    '                Using dImgView As New dlgImageViewer
+    '                    dImgView.ShowDialog(pbCharacterArtCache.Image)
+    '                End Using
+    '            End If
+    '        ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+
+    '            Select Case MainTab_GetCurrentTag().ContentType
+    '                Case Enums.ContentType.Movie
+    '                    Return
+    '                Case Enums.ContentType.Movieset
+    '                    Return
+    '                Case Enums.ContentType.TV
+    '                    'TV Show list
+    '                    If dgvTVShows.Focused Then
+    '                        If dgvTVShows.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainCharacterArt, True)
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.MainCharacterArts.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.CharacterArt = dlgImgS.Result.ImagesContainer.CharacterArt
+    '                                    Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
+    '                                    DataGridView_RefreshRow_TVShow(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Season list
+    '                    ElseIf dgvTVSeasons.Focused Then
+    '                        Return
+
+    '                        'TV Episode list
+    '                    ElseIf dgvTVEpisodes.Focused Then
+    '                        Return
+    '                    End If
+    '            End Select
+    '        End If
+    '    Catch ex As Exception
+    '        _Logger.Error(ex, New StackFrame().GetMethod().Name)
+    '        SetControlsEnabled(True)
+    '    End Try
+    'End Sub
+
+    'Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbClearArt.MouseDoubleClick
+    '    Try
+    '        If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+    '            If pbClearArtCache.Image IsNot Nothing Then
+    '                Using dImgView As New dlgImageViewer
+    '                    dImgView.ShowDialog(pbClearArtCache.Image)
+    '                End Using
+    '            End If
+    '        ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+
+    '            Select Case MainTab_GetCurrentTag().ContentType
+    '                Case Enums.ContentType.Movie
+    '                    If dgvMovies.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMovies.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                        If aContainer.MainClearArts.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
+    '                                Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
+    '                                DataGridView_RefreshRow_Movie(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.Movieset
+    '                    If dgvMoviesets.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+    '                        If aContainer.MainClearArts.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
+    '                                Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+    '                                DataGridView_RefreshRow_Movieset(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.TV
+    '                    'TV Show list
+    '                    If dgvTVShows.Focused Then
+    '                        If dgvTVShows.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.MainClearArts.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
+    '                                    Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
+    '                                    DataGridView_RefreshRow_TVShow(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Season list
+    '                    ElseIf dgvTVSeasons.Focused Then
+    '                        Return
+
+    '                        'TV Episode list
+    '                    ElseIf dgvTVEpisodes.Focused Then
+    '                        Return
+    '                    End If
+    '            End Select
+    '        End If
+    '    Catch ex As Exception
+    '        _Logger.Error(ex, New StackFrame().GetMethod().Name)
+    '        SetControlsEnabled(True)
+    '    End Try
+    'End Sub
+
+    'Private Sub pbClearLogo_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbClearLogo.MouseDoubleClick
+    '    Try
+    '        If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+    '            If pbClearLogoCache.Image IsNot Nothing Then
+    '                Using dImgView As New dlgImageViewer
+    '                    dImgView.ShowDialog(pbClearLogoCache.Image)
+    '                End Using
+    '            End If
+    '        ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+
+    '            Select Case MainTab_GetCurrentTag().ContentType
+    '                Case Enums.ContentType.Movie
+    '                    If dgvMovies.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMovies.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                        If aContainer.MainClearLogos.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
+    '                                Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
+    '                                DataGridView_RefreshRow_Movie(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.Movieset
+    '                    If dgvMoviesets.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+    '                        If aContainer.MainClearLogos.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
+    '                                Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+    '                                DataGridView_RefreshRow_Movieset(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.TV
+    '                    'TV Show list
+    '                    If dgvTVShows.Focused Then
+    '                        If dgvTVShows.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.MainClearLogos.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
+    '                                    Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
+    '                                    DataGridView_RefreshRow_TVShow(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Season list
+    '                    ElseIf dgvTVSeasons.Focused Then
+    '                        Return
+
+    '                        'TV Episode list
+    '                    ElseIf dgvTVEpisodes.Focused Then
+    '                        Return
+    '                    End If
+    '            End Select
+    '        End If
+    '    Catch ex As Exception
+    '        _Logger.Error(ex, New StackFrame().GetMethod().Name)
+    '        SetControlsEnabled(True)
+    '    End Try
+    'End Sub
+
+    'Private Sub pbDiscArt_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbDiscArt.MouseDoubleClick
+    '    Try
+    '        If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+    '            If pbDiscArtCache.Image IsNot Nothing Then
+    '                Using dImgView As New dlgImageViewer
+    '                    dImgView.ShowDialog(pbDiscArtCache.Image)
+    '                End Using
+    '            End If
+    '        ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+
+    '            Select Case MainTab_GetCurrentTag().ContentType
+    '                Case Enums.ContentType.Movie
+    '                    If dgvMovies.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMovies.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainDiscArt, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                        If aContainer.MainDiscArts.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
+    '                                Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
+    '                                DataGridView_RefreshRow_Movie(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.Movieset
+    '                    If dgvMoviesets.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainDiscArt, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+    '                        If aContainer.MainDiscArts.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
+    '                                Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+    '                                DataGridView_RefreshRow_Movieset(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.TV
+    '                    'TV Show list
+    '                    If dgvTVShows.Focused Then
+    '                        Return
+
+    '                        'TV Season list
+    '                    ElseIf dgvTVSeasons.Focused Then
+    '                        Return
+
+    '                        'TV Episode list
+    '                    ElseIf dgvTVEpisodes.Focused Then
+    '                        Return
+    '                    End If
+    '            End Select
+    '        End If
+    '    Catch ex As Exception
+    '        _Logger.Error(ex, New StackFrame().GetMethod().Name)
+    '        SetControlsEnabled(True)
+    '    End Try
+    'End Sub
+    '''' <summary>
+    '''' Show the Fanart in the Image Viewer
+    '''' </summary>
+    '''' <param name="sender"></param>
+    '''' <param name="e"></param>
+    '''' <remarks></remarks>
+    'Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbFanart.MouseDoubleClick, pbFanartSmall.MouseDoubleClick
+    '    Try
+    '        If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+    '            If pbFanartCache.Image IsNot Nothing Then
+    '                Using dImgView As New dlgImageViewer
+    '                    dImgView.ShowDialog(pbFanartCache.Image)
+    '                End Using
+    '            ElseIf pbFanartSmallCache.Image IsNot Nothing Then
+    '                Using dImgView As New dlgImageViewer
+    '                    dImgView.ShowDialog(pbFanartSmallCache.Image)
+    '                End Using
+    '            End If
+    '        ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+
+    '            Select Case MainTab_GetCurrentTag().ContentType
+    '                Case Enums.ContentType.Movie
+    '                    If dgvMovies.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMovies.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                        If aContainer.MainFanarts.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+    '                                Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
+    '                                DataGridView_RefreshRow_Movie(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.Movieset
+    '                    If dgvMoviesets.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+    '                        If aContainer.MainFanarts.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+    '                                Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+    '                                DataGridView_RefreshRow_Movieset(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.TV
+    '                    'TV Show list
+    '                    If dgvTVShows.Focused Then
+    '                        If dgvTVShows.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.MainFanarts.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+    '                                    Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
+    '                                    DataGridView_RefreshRow_TVShow(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Season list
+    '                    ElseIf dgvTVSeasons.Focused Then
+    '                        If dgvTVSeasons.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        If tmpDBElement.MainDetails.Season_IsAllSeasons Then
+    '                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsFanart, True)
+    '                        Else
+    '                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonFanart, True)
+    '                        End If
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.SeasonFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+    '                                    Master.DB.Save_TVSeason(tmpDBElement, False, True, True)
+    '                                    DataGridView_RefreshRow_TVSeason(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Episode list
+    '                    ElseIf dgvTVEpisodes.Focused Then
+    '                        If dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeFanart, True)
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+    '                                    Master.DB.Save_TVEpisode(tmpDBElement, False, False, True, False, True)
+    '                                    DataGridView_RefreshRow_TVEpisode(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+    '                    End If
+    '            End Select
+    '        End If
+    '    Catch ex As Exception
+    '        _Logger.Error(ex, New StackFrame().GetMethod().Name)
+    '        SetControlsEnabled(True)
+    '    End Try
+    'End Sub
+
+    'Private Sub pbKeyArt_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbKeyArt.MouseDoubleClick
+    '    Try
+    '        If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+    '            If pbKeyArtCache.Image IsNot Nothing Then
+    '                Using dImgView As New dlgImageViewer
+    '                    dImgView.ShowDialog(pbKeyArtCache.Image)
+    '                End Using
+    '            End If
+    '        ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+
+    '            Select Case MainTab_GetCurrentTag().ContentType
+    '                Case Enums.ContentType.Movie
+    '                    If dgvMovies.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMovies.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                        If aContainer.MainKeyArts.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.KeyArt = dlgImgS.Result.ImagesContainer.KeyArt
+    '                                Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
+    '                                DataGridView_RefreshRow_Movie(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.Movieset
+    '                    If dgvMoviesets.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+    '                        If aContainer.MainKeyArts.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.KeyArt = dlgImgS.Result.ImagesContainer.KeyArt
+    '                                Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+    '                                DataGridView_RefreshRow_Movieset(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.TV
+    '                    'TV Show list
+    '                    If dgvTVShows.Focused Then
+    '                        If dgvTVShows.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyArt, True)
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.MainKeyArts.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.KeyArt = dlgImgS.Result.ImagesContainer.KeyArt
+    '                                    Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
+    '                                    DataGridView_RefreshRow_TVShow(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+    '                    End If
+    '            End Select
+    '        End If
+    '    Catch ex As Exception
+    '        _Logger.Error(ex, New StackFrame().GetMethod().Name)
+    '        SetControlsEnabled(True)
+    '    End Try
+    'End Sub
+
+    'Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbLandscape.MouseDoubleClick
+    '    Try
+    '        If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+    '            If pbLandscapeCache.Image IsNot Nothing Then
+    '                Using dImgView As New dlgImageViewer
+    '                    dImgView.ShowDialog(pbLandscapeCache.Image)
+    '                End Using
+    '            End If
+    '        ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+
+    '            Select Case MainTab_GetCurrentTag().ContentType
+    '                Case Enums.ContentType.Movie
+    '                    If dgvMovies.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMovies.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                        If aContainer.MainLandscapes.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+    '                                Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
+    '                                DataGridView_RefreshRow_Movie(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.Movieset
+    '                    If dgvMoviesets.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+    '                        If aContainer.MainLandscapes.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+    '                                Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+    '                                DataGridView_RefreshRow_Movieset(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.TV
+    '                    'TV Show list
+    '                    If dgvTVShows.Focused Then
+    '                        If dgvTVShows.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.MainLandscapes.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+    '                                    Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
+    '                                    DataGridView_RefreshRow_TVShow(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Season list
+    '                    ElseIf dgvTVSeasons.Focused Then
+    '                        If dgvTVSeasons.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        If tmpDBElement.MainDetails.Season_IsAllSeasons Then
+    '                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsLandscape, True)
+    '                        Else
+    '                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
+    '                        End If
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.SeasonLandscapes.Count > 0 OrElse (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso aContainer.MainLandscapes.Count > 0) Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+    '                                    Master.DB.Save_TVSeason(tmpDBElement, False, True, True)
+    '                                    DataGridView_RefreshRow_TVSeason(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Episode list
+    '                    ElseIf dgvTVEpisodes.Focused Then
+    '                        Return
+    '                    End If
+    '            End Select
+    '        End If
+    '    Catch ex As Exception
+    '        _Logger.Error(ex, New StackFrame().GetMethod().Name)
+    '        SetControlsEnabled(True)
+    '    End Try
+    'End Sub
+
+    'Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbPoster.MouseDoubleClick
+    '    Try
+    '        If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+    '            If pbPosterCache.Image IsNot Nothing Then
+    '                Using dImgView As New dlgImageViewer
+    '                    dImgView.ShowDialog(pbPosterCache.Image)
+    '                End Using
+    '            End If
+    '        ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.MainOptions.GuiSettings.DoubleClickScrapeEnabled Then
+
+    '            Select Case MainTab_GetCurrentTag().ContentType
+    '                Case Enums.ContentType.Movie
+    '                    If dgvMovies.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMovies.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMovies.Item(Database.Helpers.GetMainIdName(Database.TableName.movie), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                        If aContainer.MainPosters.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+    '                                Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
+    '                                DataGridView_RefreshRow_Movie(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.Movieset
+    '                    If dgvMoviesets.SelectedRows.Count > 1 Then Return
+    '                    SetControlsEnabled(False)
+
+    '                    Dim indX As Integer = dgvMoviesets.SelectedRows(0).Index
+    '                    Dim ID As Long = Convert.ToInt64(dgvMoviesets.Item(Database.Helpers.GetMainIdName(Database.TableName.movieset), indX).Value)
+    '                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+
+    '                    Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+    '                    If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+    '                        If aContainer.MainPosters.Count > 0 Then
+    '                            Dim dlgImgS As New dlgImageSelect()
+    '                            If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+    '                                Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+    '                                DataGridView_RefreshRow_Movieset(ID)
+    '                            End If
+    '                        Else
+    '                            MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                        End If
+    '                    End If
+    '                    SetControlsEnabled(True)
+    '                Case Enums.ContentType.TV
+    '                    'TV Show list
+    '                    If dgvTVShows.Focused Then
+    '                        If dgvTVShows.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVShows.Item(Database.Helpers.GetMainIdName(Database.TableName.tvshow), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.MainPosters.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+    '                                    Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
+    '                                    DataGridView_RefreshRow_TVShow(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Season list
+    '                    ElseIf dgvTVSeasons.Focused Then
+    '                        If dgvTVSeasons.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item(Database.Helpers.GetMainIdName(Database.TableName.season), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        If tmpDBElement.MainDetails.Season_IsAllSeasons Then
+    '                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsPoster, True)
+    '                        Else
+    '                            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonPoster, True)
+    '                        End If
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.SeasonPosters.Count > 0 OrElse (tmpDBElement.MainDetails.Season_IsAllSeasons AndAlso aContainer.MainPosters.Count > 0) Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+    '                                    Master.DB.Save_TVSeason(tmpDBElement, False, True, True)
+    '                                    DataGridView_RefreshRow_TVSeason(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+
+    '                        'TV Episode list
+    '                    ElseIf dgvTVEpisodes.Focused Then
+    '                        If dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+    '                        SetControlsEnabled(False)
+
+    '                        Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
+    '                        Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item(Database.Helpers.GetMainIdName(Database.TableName.episode), indX).Value)
+    '                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
+
+    '                        Dim aContainer As New MediaContainers.SearchResultsContainer
+    '                        Dim ScrapeModifiers As New Structures.ScrapeModifiers
+
+    '                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodePoster, True)
+    '                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+    '                            If aContainer.EpisodePosters.Count > 0 Then
+    '                                Dim dlgImgS As New dlgImageSelect()
+    '                                If dlgImgS.ShowDialog(tmpDBElement, aContainer) = DialogResult.OK Then
+    '                                    tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+    '                                    Master.DB.Save_TVEpisode(tmpDBElement, False, False, True, False, True)
+    '                                    DataGridView_RefreshRow_TVEpisode(ID)
+    '                                End If
+    '                            Else
+    '                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                            End If
+    '                        End If
+    '                        SetControlsEnabled(True)
+    '                    End If
+    '            End Select
+    '        End If
+    '    Catch ex As Exception
+    '        _Logger.Error(ex, New StackFrame().GetMethod().Name)
+    '        SetControlsEnabled(True)
+    '    End Try
+    'End Sub
 
     Private Sub rbFilterAnd_Movies_Click(ByVal sender As Object, ByVal e As EventArgs) Handles rbFilterAnd_Movies.Click
         If Filter_Movie.AnyRuleSpecified Then
@@ -15471,15 +15460,15 @@ Public Class frmMain
     End Sub
 
     Private Sub mnuMainEdit_DropDownOpening(sender As Object, e As EventArgs) Handles mnuMainEdit.DropDownOpening
-        mnuMainEditSettings.Enabled = Not AddonsManager.Instance.QueryAnyGenericIsBusy AndAlso Not AnyBackgroundWorkerIsBusy
+        mnuMainEditSettings.Enabled = Not AddonsManager.Instance.QueryAnyAddonIsBusy AndAlso Not AnyBackgroundWorkerIsBusy
     End Sub
 
     Private Sub cmnuTray_Opening(sender As Object, e As EventArgs) Handles cmnuTray.Opening
-        cmnuTraySettings.Enabled = Not AddonsManager.Instance.QueryAnyGenericIsBusy AndAlso Not AnyBackgroundWorkerIsBusy
+        cmnuTraySettings.Enabled = Not AddonsManager.Instance.QueryAnyAddonIsBusy AndAlso Not AnyBackgroundWorkerIsBusy
     End Sub
 
     Private Sub mnuMainEditSettings_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainEditSettings.Click, cmnuTraySettings.Click
-        If Not AddonsManager.Instance.QueryAnyGenericIsBusy AndAlso Not AnyBackgroundWorkerIsBusy Then
+        If Not AddonsManager.Instance.QueryAnyAddonIsBusy AndAlso Not AnyBackgroundWorkerIsBusy Then
             Try
                 SetControlsEnabled(False)
                 pnlLoadSettings.Visible = True
@@ -15527,7 +15516,7 @@ Public Class frmMain
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub ShowSettings()
-        While AddonsManager.Instance.QueryAnyGenericIsBusy
+        While AddonsManager.Instance.QueryAnyAddonIsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -16219,7 +16208,7 @@ Public Class frmMain
 
 #Region "Fields"
 
-        Dim mType As Enums.ModuleEventType
+        Dim mType As Enums.AddonEventType
         Dim Params As List(Of Object)
 
 #End Region 'Fields

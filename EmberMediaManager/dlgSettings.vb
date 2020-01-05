@@ -62,7 +62,6 @@ Public Class dlgSettings
         _MasterSettingsPanels.Clear()
         SettingsPanels_Add_MasterPanels()
         SettingsPanels_Add_AddonPanels()
-        SettingsPanels_Reorder_AddonPanels()
         TopMenu_AddButtons()
 
         Dim iBackground As New Bitmap(pnlSettingsTop.Width, pnlSettingsTop.Height)
@@ -264,7 +263,6 @@ Public Class dlgSettings
                 _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End If
-        SettingsPanels_Reorder_AddonPanels()
         ResumeLayout()
         Button_Apply_SetEnabled(True)
     End Sub
@@ -276,70 +274,7 @@ Public Class dlgSettings
         Next
 
         'AddonSettingsPanels
-        For Each s As AddonsManager.GenericAddon In AddonsManager.Instance.GenericAddons
-            Try
-                s.ProcessorModule.SaveSetup(Not IsApply)
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-        For Each s As AddonsManager.ScraperAddon_Data_Movie In AddonsManager.Instance.ScraperAddons_Data_Movie
-            Try
-                s.ProcessorModule.SaveSetup(Not IsApply)
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-        For Each s As AddonsManager.ScraperAddon_Data_Movieset In AddonsManager.Instance.ScraperAddons_Data_Movieset
-            Try
-                s.ProcessorModule.SaveSetup(Not IsApply)
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-        For Each s As AddonsManager.ScraperAddon_Data_TV In AddonsManager.Instance.ScraperAddons_Data_TV
-            Try
-                s.ProcessorModule.SaveSetup(Not IsApply)
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-        For Each s As AddonsManager.ScraperAddon_Image_Movie In AddonsManager.Instance.ScraperAddons_Image_Movie
-            Try
-                s.ProcessorModule.SaveSetup(Not IsApply)
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-        For Each s As AddonsManager.ScraperAddon_Image_MovieSet In AddonsManager.Instance.ScraperAddons_Image_Movieset
-            Try
-                s.ProcessorModule.SaveSetup(Not IsApply)
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-        For Each s As AddonsManager.ScraperAddon_Image_TV In AddonsManager.Instance.ScraperAddons_Image_TV
-            Try
-                s.ProcessorModule.SaveSetup(Not IsApply)
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-        For Each s As AddonsManager.ScraperAddon_Theme_Movie In AddonsManager.Instance.ScraperAddons_Theme_Movie
-            Try
-                s.ProcessorModule.SaveSetup(Not IsApply)
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-        For Each s As AddonsManager.ScraperAddon_Theme_TV In AddonsManager.Instance.ScraperAddons_Theme_TV
-            Try
-                s.ProcessorModule.SaveSetup(Not IsApply)
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-        For Each s As AddonsManager.ScraperAddon_Trailer_Movie In AddonsManager.Instance.ScraperAddons_Trailer_Movie
+        For Each s In AddonsManager.Instance.Addons
             Try
                 s.ProcessorModule.SaveSetup(Not IsApply)
             Catch ex As Exception
@@ -396,151 +331,27 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SettingsPanels_Add_AddonPanels()
-        Dim nSettingsPanel As Containers.SettingsPanel = Nothing
+        Dim settingsPanel As Containers.SettingsPanel = Nothing
         'Use 9000 as panel order beginning to show all generic panels after MasterPanels
         Dim iPanelCounter As Integer = 9000
-        For Each s As AddonsManager.GenericAddon In AddonsManager.Instance.GenericAddons.OrderBy(Function(f) f.AssemblyName)
-            s.ProcessorModule.InjectSettingsPanel()
-            nSettingsPanel = s.ProcessorModule.SettingsPanel
-            If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
-                nSettingsPanel.Order = iPanelCounter
-                nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                If nSettingsPanel.ImageIndex = -1 AndAlso nSettingsPanel.Image IsNot Nothing Then
-                    ilSettings.Images.Add(nSettingsPanel.SettingsPanelID, nSettingsPanel.Image)
-                    nSettingsPanel.ImageIndex = ilSettings.Images.IndexOfKey(nSettingsPanel.SettingsPanelID)
+        For Each addon In AddonsManager.Instance.Addons.OrderBy(Function(f) f.AssemblyName)
+            addon.ProcessorModule.SettingsPanels = New List(Of Containers.SettingsPanel)
+            addon.ProcessorModule.InjectSettingsPanel()
+            For Each settingsPanel In addon.ProcessorModule.SettingsPanels
+                If settingsPanel IsNot Nothing AndAlso settingsPanel.Panel IsNot Nothing Then
+                    settingsPanel.Order = iPanelCounter
+                    settingsPanel.SettingsPanelID = String.Concat(addon.AssemblyName, "_", settingsPanel.Type)
+                    If settingsPanel.ImageIndex = -1 AndAlso settingsPanel.Image IsNot Nothing Then
+                        ilSettings.Images.Add(settingsPanel.SettingsPanelID, settingsPanel.Image)
+                        settingsPanel.ImageIndex = ilSettings.Images.IndexOfKey(settingsPanel.SettingsPanelID)
+                    End If
+                    _AllSettingsPanels.Add(settingsPanel)
+                    iPanelCounter += 1
+                    AddHandler addon.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
+                    AddHandler addon.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
+                    AddHandler addon.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
                 End If
-                _AllSettingsPanels.Add(nSettingsPanel)
-                iPanelCounter += 1
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-                AddHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-            End If
-        Next
-        iPanelCounter = 0
-        For Each s As AddonsManager.ScraperAddon_Data_Movie In AddonsManager.Instance.ScraperAddons_Data_Movie.OrderBy(Function(x) x.ProcessorModule.Order)
-            s.ProcessorModule.InjectSettingsPanel()
-            nSettingsPanel = s.ProcessorModule.SettingsPanel
-            If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
-                nSettingsPanel.Order = iPanelCounter
-                nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AllSettingsPanels.Add(nSettingsPanel)
-                iPanelCounter += 1
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-                AddHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-            End If
-        Next
-        iPanelCounter = 0
-        For Each s As AddonsManager.ScraperAddon_Data_Movieset In AddonsManager.Instance.ScraperAddons_Data_Movieset.OrderBy(Function(x) x.ProcessorModule.Order)
-            s.ProcessorModule.InjectSettingsPanel()
-            nSettingsPanel = s.ProcessorModule.SettingsPanel
-            If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
-                nSettingsPanel.Order = iPanelCounter
-                nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AllSettingsPanels.Add(nSettingsPanel)
-                iPanelCounter += 1
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-                AddHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-            End If
-        Next
-        iPanelCounter = 0
-        For Each s As AddonsManager.ScraperAddon_Data_TV In AddonsManager.Instance.ScraperAddons_Data_TV.OrderBy(Function(x) x.ProcessorModule.Order)
-            s.ProcessorModule.InjectSettingsPanel()
-            nSettingsPanel = s.ProcessorModule.SettingsPanel
-            If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
-                nSettingsPanel.Order = iPanelCounter
-                nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AllSettingsPanels.Add(nSettingsPanel)
-                iPanelCounter += 1
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-                AddHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-            End If
-        Next
-        iPanelCounter = 0
-        For Each s As AddonsManager.ScraperAddon_Image_Movie In AddonsManager.Instance.ScraperAddons_Image_Movie.OrderBy(Function(x) x.ProcessorModule.Order)
-            s.ProcessorModule.InjectSettingsPanel()
-            nSettingsPanel = s.ProcessorModule.SettingsPanel
-            If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
-                nSettingsPanel.Order = iPanelCounter
-                nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AllSettingsPanels.Add(nSettingsPanel)
-                iPanelCounter += 1
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-                AddHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-            End If
-        Next
-        iPanelCounter = 0
-        For Each s As AddonsManager.ScraperAddon_Image_MovieSet In AddonsManager.Instance.ScraperAddons_Image_Movieset.OrderBy(Function(x) x.ProcessorModule.Order)
-            s.ProcessorModule.InjectSettingsPanel()
-            nSettingsPanel = s.ProcessorModule.SettingsPanel
-            If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
-                nSettingsPanel.Order = iPanelCounter
-                nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AllSettingsPanels.Add(nSettingsPanel)
-                iPanelCounter += 1
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-                AddHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-            End If
-        Next
-        iPanelCounter = 0
-        For Each s As AddonsManager.ScraperAddon_Image_TV In AddonsManager.Instance.ScraperAddons_Image_TV.OrderBy(Function(x) x.ProcessorModule.Order)
-            s.ProcessorModule.InjectSettingsPanel()
-            nSettingsPanel = s.ProcessorModule.SettingsPanel
-            If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
-                nSettingsPanel.Order = iPanelCounter
-                nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AllSettingsPanels.Add(nSettingsPanel)
-                iPanelCounter += 1
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-                AddHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-            End If
-        Next
-        iPanelCounter = 0
-        For Each s As AddonsManager.ScraperAddon_Theme_Movie In AddonsManager.Instance.ScraperAddons_Theme_Movie.OrderBy(Function(x) x.ProcessorModule.Order)
-            s.ProcessorModule.InjectSettingsPanel()
-            nSettingsPanel = s.ProcessorModule.SettingsPanel
-            If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
-                nSettingsPanel.Order = iPanelCounter
-                nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AllSettingsPanels.Add(nSettingsPanel)
-                iPanelCounter += 1
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-                AddHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-            End If
-        Next
-        iPanelCounter = 0
-        For Each s As AddonsManager.ScraperAddon_Theme_TV In AddonsManager.Instance.ScraperAddons_Theme_TV.OrderBy(Function(x) x.ProcessorModule.Order)
-            s.ProcessorModule.InjectSettingsPanel()
-            nSettingsPanel = s.ProcessorModule.SettingsPanel
-            If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
-                nSettingsPanel.Order = iPanelCounter
-                nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AllSettingsPanels.Add(nSettingsPanel)
-                iPanelCounter += 1
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-                AddHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-            End If
-        Next
-        iPanelCounter = 0
-        For Each s As AddonsManager.ScraperAddon_Trailer_Movie In AddonsManager.Instance.ScraperAddons_Trailer_Movie.OrderBy(Function(x) x.ProcessorModule.Order)
-            s.ProcessorModule.InjectSettingsPanel()
-            nSettingsPanel = s.ProcessorModule.SettingsPanel
-            If nSettingsPanel IsNot Nothing AndAlso nSettingsPanel.Panel IsNot Nothing Then
-                nSettingsPanel.Order = iPanelCounter
-                nSettingsPanel.SettingsPanelID = String.Concat(s.AssemblyName, "_", s.InterfaceType)
-                _AllSettingsPanels.Add(nSettingsPanel)
-                iPanelCounter += 1
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-                AddHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-            End If
+            Next
         Next
     End Sub
 
@@ -561,52 +372,7 @@ Public Class dlgSettings
         Next
 
         'AddonSettingsPanels
-        For Each s As AddonsManager.ScraperAddon_Data_Movie In AddonsManager.Instance.ScraperAddons_Data_Movie
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-        Next
-        For Each s As AddonsManager.ScraperAddon_Data_Movieset In AddonsManager.Instance.ScraperAddons_Data_Movieset
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-        Next
-        For Each s As AddonsManager.ScraperAddon_Data_TV In AddonsManager.Instance.ScraperAddons_Data_TV
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-        Next
-        For Each s As AddonsManager.ScraperAddon_Image_Movie In AddonsManager.Instance.ScraperAddons_Image_Movie
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-        Next
-        For Each s As AddonsManager.ScraperAddon_Image_MovieSet In AddonsManager.Instance.ScraperAddons_Image_Movieset
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-        Next
-        For Each s As AddonsManager.ScraperAddon_Image_TV In AddonsManager.Instance.ScraperAddons_Image_TV
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-        Next
-        For Each s As AddonsManager.ScraperAddon_Theme_Movie In AddonsManager.Instance.ScraperAddons_Theme_Movie
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-        Next
-        For Each s As AddonsManager.ScraperAddon_Theme_TV In AddonsManager.Instance.ScraperAddons_Theme_TV
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-        Next
-        For Each s As AddonsManager.ScraperAddon_Trailer_Movie In AddonsManager.Instance.ScraperAddons_Trailer_Movie
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
-        Next
-        For Each s As AddonsManager.GenericAddon In AddonsManager.Instance.GenericAddons
+        For Each s In AddonsManager.Instance.Addons
             RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
             RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
             RemoveHandler s.ProcessorModule.StateChanged, AddressOf Handle_StateChanged
@@ -617,81 +383,6 @@ Public Class dlgSettings
         If pnlSettingsMain.Controls.Count > 0 Then
             pnlSettingsMain.Controls.Remove(_CurrPanel)
         End If
-    End Sub
-
-    Private Sub SettingsPanels_Reorder_AddonPanels()
-        Dim iPosition As Integer = 0
-        For Each s In AddonsManager.Instance.ScraperAddons_Data_Movie.OrderBy(Function(f) f.ProcessorModule.SettingsPanel.Order)
-            s.ProcessorModule.Order = s.ProcessorModule.SettingsPanel.Order
-            s.ProcessorModule.OrderChanged(New Containers.SettingsPanel.OrderState With {
-                                           .Position = iPosition,
-                                           .TotalCount = AddonsManager.Instance.ScraperAddons_Data_Movie.Count})
-            iPosition += 1
-        Next
-        iPosition = 0
-        For Each s In AddonsManager.Instance.ScraperAddons_Data_Movieset.OrderBy(Function(f) f.ProcessorModule.SettingsPanel.Order)
-            s.ProcessorModule.Order = s.ProcessorModule.SettingsPanel.Order
-            s.ProcessorModule.OrderChanged(New Containers.SettingsPanel.OrderState With {
-                                           .Position = iPosition,
-                                           .TotalCount = AddonsManager.Instance.ScraperAddons_Data_Movieset.Count})
-            iPosition += 1
-        Next
-        iPosition = 0
-        For Each s In AddonsManager.Instance.ScraperAddons_Data_TV.OrderBy(Function(f) f.ProcessorModule.SettingsPanel.Order)
-            s.ProcessorModule.Order = s.ProcessorModule.SettingsPanel.Order
-            s.ProcessorModule.OrderChanged(New Containers.SettingsPanel.OrderState With {
-                                           .Position = iPosition,
-                                           .TotalCount = AddonsManager.Instance.ScraperAddons_Data_TV.Count})
-            iPosition += 1
-        Next
-        iPosition = 0
-        For Each s In AddonsManager.Instance.ScraperAddons_Image_Movie.OrderBy(Function(f) f.ProcessorModule.SettingsPanel.Order)
-            s.ProcessorModule.Order = s.ProcessorModule.SettingsPanel.Order
-            s.ProcessorModule.OrderChanged(New Containers.SettingsPanel.OrderState With {
-                                           .Position = iPosition,
-                                           .TotalCount = AddonsManager.Instance.ScraperAddons_Image_Movie.Count})
-            iPosition += 1
-        Next
-        iPosition = 0
-        For Each s In AddonsManager.Instance.ScraperAddons_Image_Movieset.OrderBy(Function(f) f.ProcessorModule.SettingsPanel.Order)
-            s.ProcessorModule.Order = s.ProcessorModule.SettingsPanel.Order
-            s.ProcessorModule.OrderChanged(New Containers.SettingsPanel.OrderState With {
-                                           .Position = iPosition,
-                                           .TotalCount = AddonsManager.Instance.ScraperAddons_Image_Movieset.Count})
-            iPosition += 1
-        Next
-        iPosition = 0
-        For Each s In AddonsManager.Instance.ScraperAddons_Image_TV.OrderBy(Function(f) f.ProcessorModule.SettingsPanel.Order)
-            s.ProcessorModule.Order = s.ProcessorModule.SettingsPanel.Order
-            s.ProcessorModule.OrderChanged(New Containers.SettingsPanel.OrderState With {
-                                           .Position = iPosition,
-                                           .TotalCount = AddonsManager.Instance.ScraperAddons_Image_TV.Count})
-            iPosition += 1
-        Next
-        iPosition = 0
-        For Each s In AddonsManager.Instance.ScraperAddons_Theme_Movie.OrderBy(Function(f) f.ProcessorModule.SettingsPanel.Order)
-            s.ProcessorModule.Order = s.ProcessorModule.SettingsPanel.Order
-            s.ProcessorModule.OrderChanged(New Containers.SettingsPanel.OrderState With {
-                                           .Position = iPosition,
-                                           .TotalCount = AddonsManager.Instance.ScraperAddons_Theme_Movie.Count})
-            iPosition += 1
-        Next
-        iPosition = 0
-        For Each s In AddonsManager.Instance.ScraperAddons_Theme_TV.OrderBy(Function(f) f.ProcessorModule.SettingsPanel.Order)
-            s.ProcessorModule.Order = s.ProcessorModule.SettingsPanel.Order
-            s.ProcessorModule.OrderChanged(New Containers.SettingsPanel.OrderState With {
-                                           .Position = iPosition,
-                                           .TotalCount = AddonsManager.Instance.ScraperAddons_Theme_TV.Count})
-            iPosition += 1
-        Next
-        iPosition = 0
-        For Each s In AddonsManager.Instance.ScraperAddons_Trailer_Movie.OrderBy(Function(f) f.ProcessorModule.SettingsPanel.Order)
-            s.ProcessorModule.Order = s.ProcessorModule.SettingsPanel.Order
-            s.ProcessorModule.OrderChanged(New Containers.SettingsPanel.OrderState With {
-                                           .Position = iPosition,
-                                           .TotalCount = AddonsManager.Instance.ScraperAddons_Trailer_Movie.Count})
-            iPosition += 1
-        Next
     End Sub
 
     Private Sub TopMenu_AddButtons()

@@ -70,11 +70,40 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://fanart.tv/get-an-api-key/ ähnelt.
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property icon() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("icon", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property logo() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("logo", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die https://fanart.tv/get-an-api-key/ ähnelt.
         '''</summary>
         Friend ReadOnly Property urlAPIKey() As String
             Get
                 Return ResourceManager.GetString("urlAPIKey", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die https://fanart.tv/ ähnelt.
+        '''</summary>
+        Friend ReadOnly Property urlWebsite() As String
+            Get
+                Return ResourceManager.GetString("urlWebsite", resourceCulture)
             End Get
         End Property
     End Module

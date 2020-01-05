@@ -144,6 +144,8 @@ Public Class dlgFIStreamEditor
         If Not cbVideoMultiViewLayout.Text = String.Empty Then
             txtVideoMultiViewCount.Text = "2"
             txtVideoStereoMode.Text = MediaInfo.ConvertVideoMultiViewLayoutToStereoMode(cbVideoMultiViewLayout.Text)
+        Else
+            txtVideoStereoMode.Text = String.Empty
         End If
     End Sub
 

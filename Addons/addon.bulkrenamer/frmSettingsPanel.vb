@@ -78,7 +78,7 @@ Public Class frmSettingsPanel
         _fDummyMultiEpisode.SortTitle = "Big Bang Theory"
         _fDummyMultiEpisode.StereoMode = "left_right"
         _fDummyMultiEpisode.Title = "Pilot"
-        _fDummyMultiEpisode.TVDBID = "58056"
+        _fDummyMultiEpisode.TVDBID = 58056
         _fDummyMultiEpisode.VideoCodec = "xvid"
         _fDummyMultiEpisode.VideoSource = "dvd"
         _fDummyMultiEpisode.Year = "2007"
@@ -125,7 +125,7 @@ Public Class frmSettingsPanel
         _fDummyMultiSeason.SortTitle = "Big Bang Theory"
         _fDummyMultiSeason.StereoMode = "left_right"
         _fDummyMultiSeason.Title = "Pilot"
-        _fDummyMultiSeason.TVDBID = "58056"
+        _fDummyMultiSeason.TVDBID = 58056
         _fDummyMultiSeason.VideoCodec = "xvid"
         _fDummyMultiSeason.VideoSource = "dvd"
         _fDummyMultiSeason.Year = "2007"
@@ -178,7 +178,7 @@ Public Class frmSettingsPanel
         _fDummySingleEpisode.SortTitle = "Big Bang Theory"
         _fDummySingleEpisode.StereoMode = "left_right"
         _fDummySingleEpisode.Title = "Pilot"
-        _fDummySingleEpisode.TVDBID = "58056"
+        _fDummySingleEpisode.TVDBID = 58056
         _fDummySingleEpisode.VideoCodec = "xvid"
         _fDummySingleEpisode.VideoSource = "dvd"
         _fDummySingleEpisode.Year = "2007"
@@ -224,7 +224,7 @@ Public Class frmSettingsPanel
         _fDummySingleMovie.SortTitle = "Avengers"
         _fDummySingleMovie.StereoMode = "left_right"
         _fDummySingleMovie.Title = "The Avengers"
-        _fDummySingleMovie.TVDBID = String.Empty
+        _fDummySingleMovie.TVDBID = -1
         _fDummySingleMovie.VideoCodec = "h264"
         _fDummySingleMovie.VideoSource = "bluray"
         _fDummySingleMovie.Year = "2012"

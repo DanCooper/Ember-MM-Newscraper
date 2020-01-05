@@ -1765,7 +1765,7 @@ Namespace Kodi
                     'string or string.empty
                     Dim mDateAdded As String = If(mDBElement.MainDetails.DateAddedSpecified, mDBElement.MainDetails.DateAdded, Nothing)
                     Dim mEpisodeGuide As String = mDBElement.MainDetails.EpisodeGuideURL.URL
-                    Dim mImdbnumber As String = mDBElement.MainDetails.UniqueIDs.TVDbId
+                    Dim mImdbnumber As String = mDBElement.MainDetails.UniqueIDs.TVDbId.ToString
                     Dim mMPAA As String = mDBElement.MainDetails.MPAA
                     Dim mOriginalTitle As String = mDBElement.MainDetails.OriginalTitle
                     Dim mPlot As String = mDBElement.MainDetails.Plot
@@ -1818,8 +1818,8 @@ Namespace Kodi
                     Dim mPoster As String = If(mDBElement.ImagesContainer.Poster.LocalFilePathSpecified,
                                                  GetRemotePath(mDBElement.ImagesContainer.Poster.LocalFilePath), Nothing)
                     Dim mIMDB As String = If(mDBElement.MainDetails.UniqueIDs.IMDbIdSpecified, mDBElement.MainDetails.UniqueIDs.IMDbId, Nothing)
-                    Dim mTMDB As String = If(mDBElement.MainDetails.UniqueIDs.TMDbIdSpecified, mDBElement.MainDetails.UniqueIDs.TMDbId, Nothing)
-                    Dim mTVDB As String = If(mDBElement.MainDetails.UniqueIDs.TVDbIdSpecified, mDBElement.MainDetails.UniqueIDs.TVDbId, Nothing)
+                    Dim mTMDB As String = If(mDBElement.MainDetails.UniqueIDs.TMDbIdSpecified, mDBElement.MainDetails.UniqueIDs.TMDbId.ToString, Nothing)
+                    Dim mTVDB As String = If(mDBElement.MainDetails.UniqueIDs.TVDbIdSpecified, mDBElement.MainDetails.UniqueIDs.TVDbId.ToString, Nothing)
 
                     'Artwork
                     Dim mArtwork As New Dictionary(Of String, String) From {
@@ -1954,7 +1954,7 @@ Namespace Kodi
         ''' <remarks>just an example for eventhandler</remarks>
         Private Sub VideoLibrary_OnCleanFinished(ByVal sender As String, ByVal data As Object)
             'Finished cleaning of video library
-            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
         End Sub
 
         ''' <summary>
@@ -1964,7 +1964,7 @@ Namespace Kodi
         ''' <remarks>just an example for eventhandler</remarks>
         Private Sub VideoLibrary_OnScanFinished(ByVal sender As String, ByVal data As Object)
             'Finished updating video library
-            AddonsManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
         End Sub
         ''' <summary>
         ''' Scan video library of Kodi host

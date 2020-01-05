@@ -23,6 +23,12 @@ Imports EmberAPI
 Public Class frmMovie_Trailer
     Implements Interfaces.IMasterSettingsPanel
 
+#Region "Fields"
+
+    Private _SGVWidthCalculated As Boolean
+
+#End Region 'Fields
+
 #Region "Events"
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.IMasterSettingsPanel.NeedsDBClean_Movie
@@ -73,6 +79,7 @@ Public Class frmMovie_Trailer
             .KeepExisting = chkKeepExisting.Checked
             .MinimumVideoQuality = CType(cbMinimumQuality.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
             .PreferredVideoQuality = CType(cbPreferredQuality.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
+            .ScraperSettings = sgvScraper.Save
         End With
     End Sub
 
@@ -85,18 +92,45 @@ Public Class frmMovie_Trailer
             cbMinimumQuality.SelectedValue = .MinimumVideoQuality
             cbPreferredQuality.SelectedValue = .PreferredVideoQuality
             chkKeepExisting.Checked = .KeepExisting
+            sgvScraper.AddSettings(.ScraperSettings)
             txtDefaultSearchParameter.Text = .DefaultSearchParameter
         End With
         Load_MovieTrailerQualities()
     End Sub
+    ''' <summary>
+    ''' Workaround to autosize the DGV based on column widths without change the row hights
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub Settings_VisibleChanged(sender As Object, e As EventArgs) Handles pnlSettings.VisibleChanged
+        If Not _SGVWidthCalculated AndAlso CType(sender, Panel).Visible Then
+            tblTrailers.SuspendLayout()
+            For i As Integer = 0 To tblTrailers.Controls.Count - 1
+                Dim nType As Type = tblTrailers.Controls(i).GetType
+                If nType.Name = "ScraperGridView" Then
+                    Dim nDataGridView As DataGridView = CType(tblTrailers.Controls(i), DataGridView)
+                    Dim intWidth As Integer = 0
+                    For Each nColumn As DataGridViewColumn In nDataGridView.Columns
+                        intWidth += nColumn.Width
+                    Next
+                    nDataGridView.Width = intWidth + 1
+                End If
+            Next
+            tblTrailers.ResumeLayout()
+            _SGVWidthCalculated = True
+        End If
+    End Sub
 
     Private Sub Setup()
         With Master.eLang
-            chkKeepExisting.Text = .GetString(971, "Keep existing")
+            lblKeepExisting.Text = .GetString(971, "Keep existing")
             lblDefaultSearchParameter.Text = String.Concat(.GetString(1172, "Default Search Parameter"), ":")
             lblMinimumQuality.Text = String.Concat(.GetString(1027, "Minimum Quality"), ":")
             lblPreferredQuality.Text = String.Concat(.GetString(800, "Preferred Quality"), ":")
+            lblScraper.Text = "Scraper"
         End With
+
+        sgvScraper.AddScrapers(Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Trailer)))
     End Sub
 
     Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _

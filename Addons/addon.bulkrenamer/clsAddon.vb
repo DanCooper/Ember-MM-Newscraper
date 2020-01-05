@@ -612,8 +612,8 @@ Public Class Renamer
         If movie.MainDetails.FileInfoSpecified Then
             'Resolution
             If movie.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
-                Dim tVid As MediaContainers.Video = Data.GetBestVideo(movie.MainDetails.FileInfo)
-                Dim tRes As String = Data.GetResolutionFromDimensions(tVid)
+                Dim tVid As MediaContainers.Video = Information.GetBestVideo(movie.MainDetails.FileInfo)
+                Dim tRes As String = Information.GetResolutionFromDimensions(tVid)
                 MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
             End If
 
@@ -826,8 +826,8 @@ Public Class Renamer
         If episode.MainDetails.FileInfoSpecified Then
             'Resolution
             If episode.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
-                Dim tVid As MediaContainers.Video = Data.GetBestVideo(episode.MainDetails.FileInfo)
-                Dim tRes As String = Data.GetResolutionFromDimensions(tVid)
+                Dim tVid As MediaContainers.Video = Information.GetBestVideo(episode.MainDetails.FileInfo)
+                Dim tRes As String = Information.GetResolutionFromDimensions(tVid)
                 EpisodeFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
             End If
 
@@ -1854,7 +1854,7 @@ Public Class Renamer
         Private _status As String
         Private _stereomode As String
         Private _title As String
-        Private _tvdbid As String
+        Private _tvdbid As Integer
         Private _videocodec As String
         Private _videosource As String
         Private _year As String
@@ -2160,12 +2160,12 @@ Public Class Renamer
             End Set
         End Property
 
-        Public Property TVDBID() As String
+        Public Property TVDBID() As Integer
             Get
                 Return _tvdbid
             End Get
-            Set(ByVal value As String)
-                _tvdbid = value.Trim
+            Set(ByVal value As Integer)
+                _tvdbid = value
             End Set
         End Property
 
@@ -2348,7 +2348,7 @@ Public Class Renamer
             _status = String.Empty
             _stereomode = String.Empty
             _title = String.Empty
-            _tvdbid = String.Empty
+            _tvdbid = -1
             _videocodec = String.Empty
             _year = String.Empty
         End Sub

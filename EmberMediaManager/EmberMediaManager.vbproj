@@ -197,6 +197,9 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="clsCommandLine.vb" />
+    <Compile Include="clsScraperGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="clsMediaFlags.vb" />
     <Compile Include="clsSettings.vb" />
     <Compile Include="clsTheming.vb" />

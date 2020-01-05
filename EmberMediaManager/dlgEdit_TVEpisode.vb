@@ -830,23 +830,22 @@ Public Class dlgEdit_TVEpisode
         btnScrapePoster.Click
         Cursor = Cursors.WaitCursor
         Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
-        Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifiers As New Structures.ScrapeModifiers
-        Functions.SetScrapeModifiers(ScrapeModifiers, eImageType, True)
-        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        Functions.SetScrapeModifiers(tmpDBElement.ScrapeModifiers, eImageType, True)
+        Dim nResults = Scraper.Run(tmpDBElement)
+        If nResults IsNot Nothing Then
             Dim iImageCount = 0
             Dim strNoImagesFound As String = String.Empty
             Select Case eImageType
                 Case Enums.ModifierType.EpisodeFanart
-                    iImageCount = aContainer.EpisodeFanarts.Count + aContainer.MainFanarts.Count
+                    iImageCount = nResults.lstImages.EpisodeFanarts.Count + nResults.lstImages.MainFanarts.Count
                     strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
                 Case Enums.ModifierType.EpisodePoster
-                    iImageCount = aContainer.EpisodePosters.Count
+                    iImageCount = nResults.lstImages.EpisodePosters.Count
                     strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
             End Select
             If iImageCount > 0 Then
                 Dim dlgImgS = New dlgImageSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, nResults.lstImages) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.SetImageByType(dlgImgS.Result.ImagesContainer.GetImageByType(eImageType), eImageType)
                     If tmpDBElement.ImagesContainer.GetImageByType(eImageType) IsNot Nothing AndAlso
                         tmpDBElement.ImagesContainer.GetImageByType(eImageType).ImageOriginal.LoadFromMemoryStream Then
