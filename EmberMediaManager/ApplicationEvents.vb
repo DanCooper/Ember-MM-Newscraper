@@ -28,8 +28,8 @@ Namespace My
 
 #Region "Fields"
 
-        Shared logger As Logger = LogManager.GetCurrentClassLogger()
-        Private frmEmber As frmMain
+        Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
+        Private _FrmEmber As frmMain
 
 #End Region 'Fields
 
@@ -39,8 +39,8 @@ Namespace My
         ''' Process/load information before beginning the main application.
         ''' </summary>
         Private Sub MyApplication_Startup(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
-            logger.Info("====Ember Media Manager starting up====")
-            logger.Info(String.Format("===={0}", Master.Version))
+            _Logger.Info("====Ember Media Manager starting up====")
+            _Logger.Info(String.Format("===={0}", Master.VersionAsString))
 
             Master.fLoading = New frmSplash
             Master.appArgs = e
@@ -60,7 +60,7 @@ Namespace My
                 Master.fLoading.Show()
             End If
 
-            Master.fLoading.SetVersionMesg(Master.Version)
+            Master.fLoading.SetVersionMesg(Master.VersionAsString)
 
             Application.DoEvents()
 
@@ -103,24 +103,24 @@ Namespace My
                                                 Master.isCL = False
                                             End If
                                         Else
-                                            logger.Warn(String.Format("[CommandLine] [Abort] Profile ""{0}"" not found. Abort to prevent library corruption.", Master.appArgs.CommandLine(i + 1).Replace("""", String.Empty)))
-                                            logger.Info("====Ember Media Manager exiting====")
+                                            _Logger.Warn(String.Format("[CommandLine] [Abort] Profile ""{0}"" not found. Abort to prevent library corruption.", Master.appArgs.CommandLine(i + 1).Replace("""", String.Empty)))
+                                            _Logger.Info("====Ember Media Manager exiting====")
                                             Environment.Exit(0)
                                         End If
                                     Else
-                                        logger.Warn("[CommandLine] [Abort] Missing profile name for command ""-profile"". Abort to prevent library corruption.")
-                                        logger.Info("====Ember Media Manager exiting====")
+                                        _Logger.Warn("[CommandLine] [Abort] Missing profile name for command ""-profile"". Abort to prevent library corruption.")
+                                        _Logger.Info("====Ember Media Manager exiting====")
                                         Environment.Exit(0)
                                     End If
                                 Else
-                                    logger.Warn(String.Format("[CommandLine] [Abort] More than one profile has been specified. Abort to prevent library corruption.", Master.appArgs.CommandLine(i + 1).Replace("""", String.Empty)))
-                                    logger.Info("====Ember Media Manager exiting====")
+                                    _Logger.Warn(String.Format("[CommandLine] [Abort] More than one profile has been specified. Abort to prevent library corruption.", Master.appArgs.CommandLine(i + 1).Replace("""", String.Empty)))
+                                    _Logger.Info("====Ember Media Manager exiting====")
                                     Environment.Exit(0)
                                 End If
                         End Select
                     Next
                 Else
-                    logger.Info("[CommandLine] Using profile ""Default"".")
+                    _Logger.Info("[CommandLine] Using profile ""Default"".")
                     Master.SettingsPath = Path.Combine(Functions.AppPath, "Profiles\Default")
                 End If
             ElseIf Master.eProfiles.DefaultProfileSpecified AndAlso
@@ -133,7 +133,7 @@ Namespace My
                     If dProfileSelect.ShowDialog() = DialogResult.OK AndAlso Not String.IsNullOrEmpty(dProfileSelect.SelectedProfileFullPath) Then
                         Master.SettingsPath = dProfileSelect.SelectedProfileFullPath
                     Else
-                        logger.Info("====Ember Media Manager exiting====")
+                        _Logger.Info("====Ember Media Manager exiting====")
                         Environment.Exit(0)
                     End If
                 End Using
@@ -141,17 +141,18 @@ Namespace My
 
             Master.fLoading.SetLoadingMesg("Loading settings...")
             Master.eSettings.Load()
+            Manager.mSettings.Load()
 
             ' Force initialization of languages for main
-            Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
+            Master.eLang.LoadAllLanguage(Master.eSettings.Options.Global.Language)
 
-            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading Translations..."))
             APIXML.CacheXMLs()
+            MediaFlags.CacheFlags()
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1164, "Loading Main Form. Please wait..."))
-            frmEmber = New frmMain
+            _FrmEmber = New frmMain
         End Sub
-
         ''' <summary>
         ''' Check if Ember is already running, but only for GUI instances
         ''' </summary>
@@ -161,14 +162,13 @@ Namespace My
                 frmMain.fCommandLine.RunCommandLine(Args)
             End If
         End Sub
-
         ''' <summary>
         ''' Basic wrapper for unhandled exceptions
         ''' </summary>
         Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
-            logger.Error(e.Exception, e.Exception.Source)
+            _Logger.Error(e.Exception, e.Exception.Source)
             MessageBox.Show(e.Exception.Message, "Ember Media Manager", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            My.Application.Log.WriteException(e.Exception, TraceEventType.Critical, "Unhandled Exception.")
+            Application.Log.WriteException(e.Exception, TraceEventType.Critical, "Unhandled Exception.")
         End Sub
 
 #End Region 'Methods

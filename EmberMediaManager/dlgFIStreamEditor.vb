@@ -38,14 +38,14 @@ Public Class dlgFIStreamEditor
         FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal stream_type As String, ByVal movie As MediaContainers.FileInfo, ByVal idx As Integer) As Object
+    Public Overloads Function ShowDialog(ByVal stream_type As String, ByVal movie As MediaContainers.Fileinfo, ByVal idx As Integer) As Object
         gbVideoStreams.Visible = False
         gbAudioStreams.Visible = False
         gbAudioStreams.Visible = False
 
         If stream_type = Master.eLang.GetString(595, "Video Streams") Then
             gbVideoStreams.Visible = True
-            cbVideoCodec.Items.AddRange((From vCo In APIXML.lFlags Where vCo.Type = APIXML.FlagType.VideoCodec AndAlso Not vCo.Name = "defaultscreen" Select vCo.Name).ToArray)
+            cbVideoCodec.Items.AddRange((From vCo In MediaFlags.AudioVideoFlags Where vCo.Type = MediaFlags.Flag.FlagType.VideoCodec AndAlso Not vCo.Name = "defaultscreen" Select vCo.Name).ToArray)
             cbVideoLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
             If Not movie Is Nothing Then
                 cbVideoCodec.Text = movie.StreamDetails.Video(idx).Codec
@@ -69,7 +69,7 @@ Public Class dlgFIStreamEditor
         End If
         If stream_type = Master.eLang.GetString(596, "Audio Streams") Then
             gbAudioStreams.Visible = True
-            cbAudioCodec.Items.AddRange((From aCo In APIXML.lFlags Where aCo.Type = APIXML.FlagType.AudioCodec AndAlso Not aCo.Name = "defaultaudio" Select aCo.Name).ToArray)
+            cbAudioCodec.Items.AddRange((From aCo In MediaFlags.AudioVideoFlags Where aCo.Type = MediaFlags.Flag.FlagType.AudioCodec AndAlso Not aCo.Name = "defaultaudio" Select aCo.Name).ToArray)
             cbAudioLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
             cbAudioChannels.Items.AddRange(New String() {"8", "7", "6", "2", "1"})
             If Not movie Is Nothing Then
@@ -144,6 +144,8 @@ Public Class dlgFIStreamEditor
         If Not cbVideoMultiViewLayout.Text = String.Empty Then
             txtVideoMultiViewCount.Text = "2"
             txtVideoStereoMode.Text = MediaInfo.ConvertVideoMultiViewLayoutToStereoMode(cbVideoMultiViewLayout.Text)
+        Else
+            txtVideoStereoMode.Text = String.Empty
         End If
     End Sub
 

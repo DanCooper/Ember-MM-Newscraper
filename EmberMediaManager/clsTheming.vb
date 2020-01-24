@@ -26,7 +26,7 @@ Imports NLog
 
 <Serializable()>
 <XmlRoot("theme")>
-Public Class clsXMLTheme
+Public Class XMLTheme
 
 #Region "Properties"
     <XmlElement("imagepanel")>
@@ -453,18 +453,15 @@ Public Class clsXMLTheme
 
 End Class
 
-
-
-
 Public Class Theming
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _availablecontrols As New List(Of clsXMLTheme.ControlSettings)
+    Private _availablecontrols As New List(Of XMLTheme.ControlSettings)
     Private _rProcs(3) As Regex
-    Private _theme As New clsXMLTheme
+    Private _theme As New XMLTheme
 
 #End Region 'Fields
 
@@ -576,14 +573,14 @@ Public Class Theming
         'MediaList settings
         If Not _theme.MediaList.BackColor.IsEmpty Then
             frmMain.dgvMovies.BackgroundColor = _theme.MediaList.BackColor
-            frmMain.dgvMovieSets.BackgroundColor = _theme.MediaList.BackColor
+            frmMain.dgvMoviesets.BackgroundColor = _theme.MediaList.BackColor
             frmMain.dgvTVEpisodes.BackgroundColor = _theme.MediaList.BackColor
             frmMain.dgvTVSeasons.BackgroundColor = _theme.MediaList.BackColor
             frmMain.dgvTVShows.BackgroundColor = _theme.MediaList.BackColor
         End If
         If Not _theme.MediaList.GridColor.IsEmpty Then
             frmMain.dgvMovies.GridColor = _theme.MediaList.GridColor
-            frmMain.dgvMovieSets.GridColor = _theme.MediaList.GridColor
+            frmMain.dgvMoviesets.GridColor = _theme.MediaList.GridColor
             frmMain.dgvTVEpisodes.GridColor = _theme.MediaList.GridColor
             frmMain.dgvTVSeasons.GridColor = _theme.MediaList.GridColor
         End If
@@ -646,8 +643,8 @@ Public Class Theming
             "lblMoviesInSetHeader",
             "lblOutlineHeader",
             "lblPlotHeader",
-            "lblReleaseDate",
-            "lblReleaseDateHeader",
+            "lblPremiered",
+            "lblPremieredHeader",
             "lblStatus",
             "lblStatusHeader",
             "lblTags",
@@ -675,7 +672,7 @@ Public Class Theming
             "txtTVDBID",
             "txtTrailerPath"}
         For Each sCon As String In PossibleControls
-            _availablecontrols.Add(New clsXMLTheme.ControlSettings With {.Name = sCon})
+            _availablecontrols.Add(New XMLTheme.ControlSettings With {.Name = sCon})
         Next
     End Sub
 
@@ -733,7 +730,7 @@ Public Class Theming
             End If
             Return iResult
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & sFormula)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name & sFormula)
         End Try
 
         Return 0
@@ -757,11 +754,11 @@ Public Class Theming
         Return Nothing
     End Function
 
-    Private Function Load(ByVal path As String) As clsXMLTheme
+    Private Function Load(ByVal path As String) As XMLTheme
         If File.Exists(path) Then
-            Dim xmlSer As New XmlSerializer(GetType(clsXMLTheme))
+            Dim xmlSer As New XmlSerializer(GetType(XMLTheme))
             Using xmlSR As StreamReader = New StreamReader(path)
-                Return DirectCast(xmlSer.Deserialize(xmlSR), clsXMLTheme)
+                Return DirectCast(xmlSer.Deserialize(xmlSR), XMLTheme)
             End Using
         End If
         Return Nothing
@@ -773,12 +770,12 @@ Public Class Theming
         Dim diCustom As DirectoryInfo = New DirectoryInfo(Path.Combine(Master.SettingsPath, "Themes"))
         If diDefaults.Exists Then lstFiles.AddRange(diDefaults.GetFiles("*.xml"))
         If diCustom.Exists Then lstFiles.AddRange(diCustom.GetFiles("*.xml"))
-        Dim fiTheme = lstFiles.FirstOrDefault(Function(f) f.Name = String.Format("{0}.xml", Master.eSettings.GeneralTheme))
+        Dim fiTheme = lstFiles.FirstOrDefault(Function(f) f.Name = String.Format("{0}.xml", Manager.mSettings.MainOptions.GuiSettings.Theme))
         If fiTheme IsNot Nothing AndAlso fiTheme.Exists Then
             _theme = Load(fiTheme.FullName)
         Else
             _theme = Load(String.Concat(Functions.AppPath, "Themes", Path.DirectorySeparatorChar, "FullHD-Default.xml"))
-            Master.eSettings.GeneralTheme = "FullHD-Default"
+            Manager.mSettings.MainOptions.GuiSettings.Theme = "FullHD-Default"
         End If
     End Sub
 
@@ -788,7 +785,7 @@ Public Class Theming
         Try
             For Each xCon As Match In Regex.Matches(sFormula, "(?<control>[a-z]+)\.(?<value>[a-z]+)", RegexOptions.IgnoreCase)
                 cName = xCon.Groups("control").Value
-                Dim aCon = From bCon As clsXMLTheme.ControlSettings In _availablecontrols Where bCon.Name.ToLower = cName.ToLower
+                Dim aCon = From bCon As XMLTheme.ControlSettings In _availablecontrols Where bCon.Name.ToLower = cName.ToLower
 
                 If aCon.Count > 0 Then
                     Dim xControl = GetControl(aCon(0).Name)
@@ -804,16 +801,16 @@ Public Class Theming
                                 sFormula = sFormula.Replace(xCon.ToString, xControl.Left.ToString)
                         End Select
                     Else
-                        logger.Error(String.Concat("Unknown control name in Theme: ", aCon(0).Name))
+                        _Logger.Error(String.Concat("Unknown control name in Theme: ", aCon(0).Name))
                     End If
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Private Sub SetControlSettings_ImagePanel(ByVal control As Object, ByVal settings As clsXMLTheme.ControlSettings)
+    Private Sub SetControlSettings_ImagePanel(ByVal control As Object, ByVal settings As XMLTheme.ControlSettings)
         If TypeOf control Is Label Then
             Dim nControl = DirectCast(control, Label)
             nControl.BackColor = settings.BackColor
@@ -822,7 +819,7 @@ Public Class Theming
         End If
     End Sub
 
-    Private Sub SetControlSettings_TopPanel(ByVal control As Object, ByVal controlsettings As clsXMLTheme.ControlSettings)
+    Private Sub SetControlSettings_TopPanel(ByVal control As Object, ByVal controlsettings As XMLTheme.ControlSettings)
         If TypeOf control Is Label Then
             Dim nControl = DirectCast(control, Label)
             Dim globalSettings = _theme.TopPanel.GlobalSettings
@@ -840,7 +837,7 @@ Public Class Theming
     End Sub
 
     Private Sub SetImagePanelSettings(ByVal contentType As Enums.ContentType)
-        Dim settings As New clsXMLTheme.ImagePanelContentSettings
+        Dim settings As New XMLTheme.ImagePanelContentSettings
         Select Case contentType
             Case Enums.ContentType.Movie
                 settings = _theme.ImagePanel.Movie
@@ -896,7 +893,7 @@ Public Class Theming
     End Sub
 
     Private Sub SetInfoPanelSettings(ByVal contentType As Enums.ContentType)
-        Dim settings As New clsXMLTheme.InfoPanelContentSettings
+        Dim settings As New XMLTheme.InfoPanelContentSettings
         Select Case contentType
             Case Enums.ContentType.Movie
                 settings = _theme.InfoPanel.Movie
@@ -913,8 +910,8 @@ Public Class Theming
         End Select
 
         frmMain.pnlInfoPanel.BackColor = settings.BackColor
-        frmMain.IPMid = settings.PosMid
-        frmMain.IPUp = settings.PosUp
+        frmMain.InfoPanelMidHeight = settings.PosMid
+        frmMain.InfoPanelUpHeight = settings.PosUp
 
         For Each xCon In _availablecontrols
             Dim nControl = frmMain.pnlInfoPanel.Controls(xCon.Name)
@@ -928,13 +925,13 @@ Public Class Theming
             If xControl IsNot Nothing Then
                 SetInfoPanelGlobalSettings(xControl, xCon, settings)
             Else
-                logger.Error(String.Concat("Unknown control name in Theme: ", xCon.Name))
+                _Logger.Error(String.Concat("Unknown control name in Theme: ", xCon.Name))
             End If
 
         Next
     End Sub
 
-    Private Sub SetInfoPanelGlobalSettings(ByRef control As Control, ByVal controlsettings As clsXMLTheme.ControlSettings, ByVal settings As clsXMLTheme.InfoPanelContentSettings)
+    Private Sub SetInfoPanelGlobalSettings(ByRef control As Control, ByVal controlsettings As XMLTheme.ControlSettings, ByVal settings As XMLTheme.InfoPanelContentSettings)
         Select Case True
             Case control.Name = "pnlInfoPanel"
                 Dim globalSettings = settings.GlobalHeaderSettings

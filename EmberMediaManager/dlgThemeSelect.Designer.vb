@@ -23,44 +23,44 @@ Partial Class dlgThemeSelect
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgThemeSelect))
-        Me.OK_Button = New System.Windows.Forms.Button()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
+        Me.btnOK = New System.Windows.Forms.Button()
+        Me.btnSkip = New System.Windows.Forms.Button()
         Me.gbSelectTheme = New System.Windows.Forms.GroupBox()
         Me.lvThemes = New System.Windows.Forms.ListView()
-        Me.pnlStatus = New System.Windows.Forms.Panel()
-        Me.lblStatus = New System.Windows.Forms.Label()
-        Me.pbStatus = New System.Windows.Forms.ProgressBar()
         Me.colNumber = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colWebURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colBitrate = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colDuration = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colExtension = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colSource = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colScraper = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colBitrate = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colExtension = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.pnlStatus = New System.Windows.Forms.Panel()
+        Me.lblStatus = New System.Windows.Forms.Label()
+        Me.pbStatus = New System.Windows.Forms.ProgressBar()
         Me.gbSelectTheme.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.SuspendLayout()
         '
-        'OK_Button
+        'btnOK
         '
-        Me.OK_Button.Location = New System.Drawing.Point(470, 258)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(75, 23)
-        Me.OK_Button.TabIndex = 1
-        Me.OK_Button.Text = "OK"
-        Me.OK_Button.UseVisualStyleBackColor = True
+        Me.btnOK.Location = New System.Drawing.Point(470, 258)
+        Me.btnOK.Name = "btnOK"
+        Me.btnOK.Size = New System.Drawing.Size(75, 23)
+        Me.btnOK.TabIndex = 1
+        Me.btnOK.Text = "OK"
+        Me.btnOK.UseVisualStyleBackColor = True
         '
-        'Cancel_Button
+        'btnSkip
         '
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(551, 258)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(75, 23)
-        Me.Cancel_Button.TabIndex = 2
-        Me.Cancel_Button.Text = "Cancel"
-        Me.Cancel_Button.UseVisualStyleBackColor = True
+        Me.btnSkip.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnSkip.Location = New System.Drawing.Point(551, 258)
+        Me.btnSkip.Name = "btnSkip"
+        Me.btnSkip.Size = New System.Drawing.Size(75, 23)
+        Me.btnSkip.TabIndex = 2
+        Me.btnSkip.Text = "Skip"
+        Me.btnSkip.UseVisualStyleBackColor = True
         '
         'gbSelectTheme
         '
@@ -76,12 +76,60 @@ Partial Class dlgThemeSelect
         '
         Me.lvThemes.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colBitrate, Me.colDuration, Me.colExtension, Me.colSource, Me.colScraper})
         Me.lvThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvThemes.HideSelection = False
         Me.lvThemes.Location = New System.Drawing.Point(6, 19)
         Me.lvThemes.Name = "lvThemes"
         Me.lvThemes.Size = New System.Drawing.Size(602, 215)
         Me.lvThemes.TabIndex = 5
         Me.lvThemes.UseCompatibleStateImageBehavior = False
         Me.lvThemes.View = System.Windows.Forms.View.Details
+        '
+        'colNumber
+        '
+        Me.colNumber.Text = "#"
+        Me.colNumber.Width = 20
+        '
+        'colURL
+        '
+        Me.colURL.Text = "URL"
+        Me.colURL.Width = 0
+        '
+        'colWebURL
+        '
+        Me.colWebURL.Text = "WebURL"
+        Me.colWebURL.Width = 0
+        '
+        'colDescription
+        '
+        Me.colDescription.Text = "Description"
+        Me.colDescription.Width = 180
+        '
+        'colBitrate
+        '
+        Me.colBitrate.DisplayIndex = 7
+        Me.colBitrate.Text = "Bitrate"
+        '
+        'colDuration
+        '
+        Me.colDuration.DisplayIndex = 4
+        Me.colDuration.Text = "Duration"
+        '
+        'colExtension
+        '
+        Me.colExtension.DisplayIndex = 8
+        Me.colExtension.Text = "Extension"
+        '
+        'colSource
+        '
+        Me.colSource.DisplayIndex = 5
+        Me.colSource.Text = "Source"
+        Me.colSource.Width = 80
+        '
+        'colScraper
+        '
+        Me.colScraper.DisplayIndex = 6
+        Me.colScraper.Text = "Scraper"
+        Me.colScraper.Width = 80
         '
         'pnlStatus
         '
@@ -115,65 +163,18 @@ Partial Class dlgThemeSelect
         Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.pbStatus.TabIndex = 1
         '
-        'colNumber
-        '
-        Me.colNumber.Text = "#"
-        Me.colNumber.Width = 20
-        '
-        'colURL
-        '
-        Me.colURL.Text = "URL"
-        Me.colURL.Width = 0
-        '
-        'colWebURL
-        '
-        Me.colWebURL.Text = "WebURL"
-        Me.colWebURL.Width = 0
-        '
-        'colDescription
-        '
-        Me.colDescription.Text = "Description"
-        Me.colDescription.Width = 180
-        '
-        'colDuration
-        '
-        Me.colDuration.DisplayIndex = 4
-        Me.colDuration.Text = "Duration"
-        '
-        'colSource
-        '
-        Me.colSource.DisplayIndex = 5
-        Me.colSource.Text = "Source"
-        Me.colSource.Width = 80
-        '
-        'colScraper
-        '
-        Me.colScraper.DisplayIndex = 6
-        Me.colScraper.Text = "Scraper"
-        Me.colScraper.Width = 80
-        '
-        'colBitrate
-        '
-        Me.colBitrate.DisplayIndex = 7
-        Me.colBitrate.Text = "Bitrate"
-        '
-        'colExtension
-        '
-        Me.colExtension.DisplayIndex = 8
-        Me.colExtension.Text = "Extension"
-        '
         'dlgThemeSelect
         '
-        Me.AcceptButton = Me.OK_Button
+        Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.CancelButton = Me.Cancel_Button
+        Me.CancelButton = Me.btnSkip
         Me.ClientSize = New System.Drawing.Size(636, 291)
         Me.ControlBox = False
         Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.gbSelectTheme)
-        Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.btnSkip)
+        Me.Controls.Add(Me.btnOK)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -185,8 +186,8 @@ Partial Class dlgThemeSelect
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
+    Friend WithEvents btnOK As System.Windows.Forms.Button
+    Friend WithEvents btnSkip As System.Windows.Forms.Button
     Friend WithEvents gbSelectTheme As System.Windows.Forms.GroupBox
     Friend WithEvents lvThemes As System.Windows.Forms.ListView
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel

@@ -175,49 +175,47 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsAPIAdvancedSettings.vb" />
-    <Compile Include="clsAPIApple.vb" />
-    <Compile Include="clsAPICommandLine.vb" />
-    <Compile Include="clsAPIFFmpeg.vb" />
-    <Compile Include="clsAPIFileItem.vb" />
-    <Compile Include="clsAPIAdvancedControls.vb">
+    <Compile Include="clsAdvancedSettings.vb" />
+    <Compile Include="clsApple.vb" />
+    <Compile Include="clsFFmpeg.vb" />
+    <Compile Include="clsFileItem.vb" />
+    <Compile Include="clsAdvancedControls.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="clsAPIFormsUtils.vb" />
-    <Compile Include="clsAPIIMDB.vb" />
-    <Compile Include="clsAPIMetaData.vb" />
-    <Compile Include="clsAPIProfiles.vb" />
-    <Compile Include="clsAPISmartFilter.vb" />
-    <Compile Include="clsAPITaskManager.vb" />
-    <Compile Include="clsAPIThemes.vb" />
-    <Compile Include="clsAPICommon.vb" />
-    <Compile Include="clsAPIDatabase.vb" />
-    <Compile Include="clsAPIFileUtils.vb" />
-    <Compile Include="clsAPIHTTP.vb" />
-    <Compile Include="clsAPIImages.vb" />
-    <Compile Include="clsAPIImageUtils.vb" />
-    <Compile Include="clsAPIInterfaces.vb" />
-    <Compile Include="clsAPILocalization.vb" />
-    <Compile Include="clsAPIMaster.vb" />
-    <Compile Include="clsAPIMediaContainers.vb" />
-    <Compile Include="clsAPIMediaInfo.vb" />
-    <Compile Include="clsAPIMediaStub.vb" />
-    <Compile Include="clsAPIModules.vb" />
-    <Compile Include="clsAPINFO.vb" />
-    <Compile Include="clsAPINumUtils.vb" />
-    <Compile Include="clsAPIScanner.vb" />
-    <Compile Include="clsAPISettings.vb" />
-    <Compile Include="clsAPISorter.vb" />
-    <Compile Include="clsAPIStringUtils.vb" />
-    <Compile Include="clsAPIXML.vb" />
-    <Compile Include="clsAPIYouTube.vb" />
-    <Compile Include="clsAPITrailers.vb" />
-    <Compile Include="dlgMovieDataScraperPreview.Designer.vb">
-      <DependentUpon>dlgMovieDataScraperPreview.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgMovieDataScraperPreview.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="clsFormsUtils.vb" />
+    <Compile Include="clsIMDB.vb" />
+    <Compile Include="clsLogger.vb" />
+    <Compile Include="clsMetaData.vb" />
+    <Compile Include="clsEvents.vb" />
+    <Compile Include="clsNFO.vb" />
+    <Compile Include="clsProfiles.vb" />
+    <Compile Include="clsRenaming.vb" />
+    <Compile Include="clsScraper.vb" />
+    <Compile Include="clsSmartFilter.vb" />
+    <Compile Include="clsTaskManager.vb" />
+    <Compile Include="clsThemes.vb" />
+    <Compile Include="clsCommon.vb" />
+    <Compile Include="clsDatabase.vb" />
+    <Compile Include="clsFileUtils.vb" />
+    <Compile Include="clsHTTP.vb" />
+    <Compile Include="clsImages.vb" />
+    <Compile Include="clsImageUtils.vb" />
+    <Compile Include="clsInterfaces.vb" />
+    <Compile Include="clsLocalization.vb" />
+    <Compile Include="clsMaster.vb" />
+    <Compile Include="clsMediaContainers.vb" />
+    <Compile Include="clsMediaInfo.vb" />
+    <Compile Include="clsMediaStub.vb" />
+    <Compile Include="clsAddons.vb" />
+    <Compile Include="clsInformation.vb" />
+    <Compile Include="clsNumUtils.vb" />
+    <Compile Include="clsScanner.vb" />
+    <Compile Include="clsSettings.vb" />
+    <Compile Include="clsSorter.vb" />
+    <Compile Include="clsStringUtils.vb" />
+    <Compile Include="clsXML.vb" />
+    <Compile Include="clsYouTube.vb" />
+    <Compile Include="clsTrailers.vb" />
     <Compile Include="dlgVersions.Designer.vb">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </Compile>
@@ -249,15 +247,10 @@
     <Compile Include="XML Serialization\clsXMLGenres.vb" />
     <Compile Include="XML Serialization\clsXMLLanguage.vb" />
     <Compile Include="XML Serialization\clsXMLLanguages.vb" />
-    <Compile Include="XML Serialization\clsXMLRatings.vb" />
     <Compile Include="XML Serialization\clsXMLMovieCertLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLScraperLanguages.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="dlgMovieDataScraperPreview.resx">
-      <DependentUpon>dlgMovieDataScraperPreview.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="dlgVersions.resx">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </EmbeddedResource>
@@ -475,48 +468,8 @@
     <Content Include="Defaults\Core.ScraperLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Defaults\DefaultGenre.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Defaults\DefaultLanguage.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Defaults\DefaultLanguageMore.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Defaults\Duplicate.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\Defaults\HasLanguage.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\Missing.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\Overlay.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\Overlay2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\Puzzle.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\questionmark.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="NLog Notes.txt" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -529,10 +482,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Settings\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>

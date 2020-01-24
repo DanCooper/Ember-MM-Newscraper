@@ -336,25 +336,25 @@ or a "32-bit ARGB value"
       </control>
       <!-- END INTERNAL OF PNLACTORS -->
 
-      <control name="lblReleaseDateHeader">
+      <control name="lblPremieredHeader">
         <anchor>9</anchor>
         <left>pnlActors.Left - 103</left>
         <top>pnlActors.Top</top>
         <width>100</width>
       </control>
 
-      <control name="lblReleaseDate">
+      <control name="lblPremiered">
         <anchor>9</anchor>
-        <left>lblReleaseDateHeader.Left</left>
-        <top>lblReleaseDateHeader.Top + lblReleaseDateHeader.Height + 3</top>
-        <width>lblReleaseDateHeader.Width</width>
+        <left>lblPremieredHeader.Left</left>
+        <top>lblPremieredHeader.Top + lblPremieredHeader.Height + 3</top>
+        <width>lblPremieredHeader.Width</width>
       </control>
 
       <control name="lblDirectorsHeader">
         <anchor>13</anchor>
         <left>lblInfoPanelHeader.Left</left>
         <top>pnlActors.Top</top>
-        <width>(lblReleaseDateHeader.Left - 3) / 2 - 3</width>
+        <width>(lblPremieredHeader.Left - 3) / 2 - 3</width>
       </control>
 
       <control name="lblDirectors">
@@ -368,7 +368,7 @@ or a "32-bit ARGB value"
         <anchor>9</anchor>
         <left>lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3</left>
         <top>pnlActors.Top</top>
-        <width>lblReleaseDate.Left - (lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3) - 3</width>
+        <width>lblPremiered.Left - (lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3) - 3</width>
       </control>
 
       <control name="lblCredits">
@@ -809,25 +809,25 @@ or a "32-bit ARGB value"
       </control>
       <!-- END INTERNAL OF PNLGUESTSTARS -->
 
-      <control name="lblReleaseDateHeader">
+      <control name="lblPremieredHeader">
         <anchor>9</anchor>
         <left>pnlGuestStars.Left - 103</left>
         <top>pnlGuestStars.Top</top>
         <width>100</width>
       </control>
 
-      <control name="lblReleaseDate">
+      <control name="lblPremiered">
         <anchor>9</anchor>
-        <left>lblReleaseDateHeader.Left</left>
-        <top>lblReleaseDateHeader.Top + lblReleaseDateHeader.Height + 3</top>
-        <width>lblReleaseDateHeader.Width</width>
+        <left>lblPremieredHeader.Left</left>
+        <top>lblPremieredHeader.Top + lblPremieredHeader.Height + 3</top>
+        <width>lblPremieredHeader.Width</width>
       </control>
 
       <control name="lblDirectorsHeader">
         <anchor>13</anchor>
         <left>lblInfoPanelHeader.Left</left>
         <top>pnlActors.Top</top>
-        <width>(lblReleaseDateHeader.Left - 3) / 2 - 3</width>
+        <width>(lblPremieredHeader.Left - 3) / 2 - 3</width>
       </control>
 
       <control name="lblDirectors">
@@ -841,7 +841,7 @@ or a "32-bit ARGB value"
         <anchor>9</anchor>
         <left>lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3</left>
         <top>pnlActors.Top</top>
-        <width>lblReleaseDate.Left - (lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3) - 3</width>
+        <width>lblPremiered.Left - (lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3) - 3</width>
       </control>
 
       <control name="lblCredits">
@@ -1008,25 +1008,25 @@ or a "32-bit ARGB value"
         <width>btnDown.Width</width>
       </control>
 
-      <control name="lblReleaseDateHeader">
+      <control name="lblPremieredHeader">
         <anchor>9</anchor>
         <left>pnlInfoPanel.Width - 105</left>
         <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
         <width>100</width>
       </control>
 
-      <control name="lblReleaseDate">
+      <control name="lblPremiered">
         <anchor>9</anchor>
-        <left>lblReleaseDateHeader.Left</left>
-        <top>lblReleaseDateHeader.Top + lblReleaseDateHeader.Height + 3</top>
-        <width>lblReleaseDateHeader.Width</width>
+        <left>lblPremieredHeader.Left</left>
+        <top>lblPremieredHeader.Top + lblPremieredHeader.Height + 3</top>
+        <width>lblPremieredHeader.Width</width>
       </control>
 
       <control name="lblPlotHeader">
         <anchor>13</anchor>
         <left>lblInfoPanelHeader.Left</left>
-        <top>lblReleaseDateHeader.Top</top>
-        <width>lblReleaseDateHeader.Left - 6</width>
+        <top>lblPremieredHeader.Top</top>
+        <width>lblPremieredHeader.Left - 6</width>
       </control>
 
       <control name="txtPlot">
@@ -1172,23 +1172,23 @@ or a "32-bit ARGB value"
       </control>
       <!-- END INTERNAL OF PNLACTORS -->
 
-      <control name="lblReleaseDateHeader">
+      <control name="lblPremieredHeader">
         <anchor>9</anchor>
         <left>pnlActors.Left - 103</left>
         <top>pnlActors.Top</top>
         <width>100</width>
       </control>
 
-      <control name="lblReleaseDate">
+      <control name="lblPremiered">
         <anchor>9</anchor>
-        <left>lblReleaseDateHeader.Left</left>
-        <top>lblReleaseDateHeader.Top + lblReleaseDateHeader.Height + 3</top>
-        <width>lblReleaseDateHeader.Width</width>
+        <left>lblPremieredHeader.Left</left>
+        <top>lblPremieredHeader.Top + lblPremieredHeader.Height + 3</top>
+        <width>lblPremieredHeader.Width</width>
       </control>
 
       <control name="lblStatusHeader">
         <anchor>9</anchor>
-        <left>lblReleaseDateHeader.Left - 153</left>
+        <left>lblPremieredHeader.Left - 153</left>
         <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
         <width>150</width>
       </control>

@@ -26,31 +26,23 @@ Public Class dlgThemeSelect
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Friend WithEvents bwDownloadTheme As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwDownloadTheme As New ComponentModel.BackgroundWorker
 
-    Private tmpDBElement As Database.DBElement
-    Private _result As New MediaContainers.Theme
-    Private nList As New List(Of MediaContainers.Theme)
-    Private _withPlayer As Boolean
+    Private _TmpDBElement As Database.DBElement
+    Private _ThemeList As New List(Of MediaContainers.Theme)
+    Private _WithPlayer As Boolean
 
     Private _UrlList As List(Of Themes)
-    Private tURL As String = String.Empty
-    Private tTheme As New Themes
+    Private _URL As String = String.Empty
+    Private _Theme As New Themes
 
 #End Region 'Fields
 
 #Region "Properties"
 
     Public Property Result As MediaContainers.Theme
-        Get
-            Return _result
-        End Get
-        Set(value As MediaContainers.Theme)
-            _result = value
-        End Set
-    End Property
 
 #End Region 'Properties
 
@@ -62,12 +54,12 @@ Public Class dlgThemeSelect
         FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
-    Private Sub dlgThemeSelect_FormClosing(sender As Object, e As System.EventArgs) Handles Me.FormClosing
+    Private Sub dlgThemeSelect_FormClosing(sender As Object, e As EventArgs) Handles Me.FormClosing
         RemoveHandler Themes.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
-    Private Sub dlgThemeSelect_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        SetUp()
+    Private Sub dlgThemeSelect_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        Setup()
         AddHandler Themes.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
@@ -76,14 +68,14 @@ Public Class dlgThemeSelect
     End Sub
 
     Public Overloads Function ShowDialog(ByRef tDBElement As Database.DBElement, ByRef tURLList As List(Of MediaContainers.Theme), Optional ByVal WithPlayer As Boolean = False) As DialogResult
-        _withPlayer = WithPlayer
+        _WithPlayer = WithPlayer
 
         'set ListView
         lvThemes.MultiSelect = False
         lvThemes.FullRowSelect = True
         lvThemes.HideSelection = False
 
-        tmpDBElement = tDBElement
+        _TmpDBElement = tDBElement
 
         AddThemesToList(tURLList)
 
@@ -124,11 +116,11 @@ Public Class dlgThemeSelect
         Next
     End Sub
 
-    Private Sub lvThemes_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThemes.DoubleClick
+    Private Sub lvThemes_DoubleClick(ByVal sender As System.Object, ByVal e As EventArgs) Handles lvThemes.DoubleClick
         Process.Start(lvThemes.SelectedItems(0).SubItems(2).Text.ToString)
     End Sub
 
-    Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         Dim didCancel As Boolean = False
 
         SetControlsEnabled(False)
@@ -142,9 +134,10 @@ Public Class dlgThemeSelect
             Dim SelectedTheme As New MediaContainers.Theme With {
                 .URLAudioStream = lvThemes.SelectedItems(0).SubItems(1).Text.ToString,
                 .URLWebsite = lvThemes.SelectedItems(0).SubItems(2).Text.ToString}
-            bwDownloadTheme = New System.ComponentModel.BackgroundWorker
-            bwDownloadTheme.WorkerReportsProgress = True
-            bwDownloadTheme.WorkerSupportsCancellation = True
+            bwDownloadTheme = New ComponentModel.BackgroundWorker With {
+                .WorkerReportsProgress = True,
+                .WorkerSupportsCancellation = True
+            }
             bwDownloadTheme.RunWorkerAsync(New Arguments With {.Parameter = SelectedTheme, .bType = True})
         Else
             DialogResult = DialogResult.Cancel
@@ -155,7 +148,7 @@ Public Class dlgThemeSelect
         'Me.TrailerStop()
         'Me.vlcPlayer.playlist.stop()
 
-        OK_Button.Enabled = isEnabled
+        btnOK.Enabled = isEnabled
         lvThemes.Enabled = isEnabled
     End Sub
 
@@ -165,7 +158,7 @@ Public Class dlgThemeSelect
             Result.ThemeOriginal.LoadFromWeb(Args.Parameter.URLAudioStream, Args.Parameter.URLWebsite)
             Result.URLAudioStream = Args.Parameter.URLAudioStream
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         e.Result = Args.bType
@@ -198,11 +191,13 @@ Public Class dlgThemeSelect
         bwDownloadTheme.ReportProgress(iProgress)
     End Sub
 
-    Private Sub SetUp()
+    Private Sub Setup()
         Text = Master.eLang.GetString(1069, "Select Theme")
+        btnOK.Text = Master.eLang.OK
+        btnSkip.Text = Master.eLang.Skip
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnSkip.Click
         If bwDownloadTheme.IsBusy Then bwDownloadTheme.CancelAsync()
 
         While bwDownloadTheme.IsBusy
@@ -211,7 +206,6 @@ Public Class dlgThemeSelect
         End While
 
         DialogResult = DialogResult.Cancel
-        Me.Result = Nothing
     End Sub
 
 #End Region 'Methods

@@ -25,20 +25,15 @@ Public Class dlgVersions
 
 #Region "Methods"
 
-    Private Sub btnCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy.Click
+    Private Sub Button_Copy_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCopy.Click
         Dim sVersions As New StringBuilder
         For Each lItem As ListViewItem In lstVersions.Items
             sVersions.AppendLine(String.Format("{0} (Revision: {1})", lItem.Text, lItem.SubItems(1).Text))
         Next
         Clipboard.SetText(sVersions.ToString)
-        sVersions = Nothing
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        DialogResult = DialogResult.Cancel
-    End Sub
-
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub Button_OK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         DialogResult = DialogResult.OK
     End Sub
 

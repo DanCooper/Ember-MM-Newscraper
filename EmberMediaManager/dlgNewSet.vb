@@ -51,19 +51,19 @@ Public Class dlgNewSet
         Return ShowDialog()
     End Function
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         DialogResult = DialogResult.Cancel
     End Sub
 
-    Private Sub dlgNewSet_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub dlgNewSet_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         SetUp()
 
         If cbLanguage.Items.Count > 0 Then
-            Dim tLang As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieGeneralLanguage)
+            Dim tLang As languageProperty = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.Movie.SourceSettings.DefaultLanguage) 'TODO: switch to Movieset default Language
             If tLang IsNot Nothing Then
                 cbLanguage.Text = tLang.Description
             Else
-                tLang = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.MovieGeneralLanguage))
+                tLang = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.Movie.SourceSettings.DefaultLanguage))
                 If tLang IsNot Nothing Then
                     cbLanguage.Text = tLang.Description
                 End If
@@ -71,15 +71,14 @@ Public Class dlgNewSet
         End If
     End Sub
 
-    Private Sub dlgNewSet_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgNewSet_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         Activate()
         txtTitle.Focus()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
-        tmpDBElement.MovieSet.Title = txtTitle.Text.Trim
-        tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbLanguage.Text).Abbreviation
-        tmpDBElement.ListTitle = StringUtils.SortTokens_MovieSet(txtTitle.Text.Trim)
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
+        tmpDBElement.MainDetails.Title = txtTitle.Text.Trim
+        tmpDBElement.Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbLanguage.Text).Abbreviation
 
         DialogResult = DialogResult.OK
     End Sub
@@ -119,7 +118,7 @@ Public Class dlgNewSet
         lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
 
         cbLanguage.Items.Clear()
-        cbLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
+        cbLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages Select lLang.Description).ToArray)
     End Sub
 
 #End Region 'Methods

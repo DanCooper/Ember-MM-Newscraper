@@ -23,8 +23,8 @@ Partial Class dlgTrailerSelect
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrailerSelect))
-        Me.OK_Button = New System.Windows.Forms.Button()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
+        Me.btnOK = New System.Windows.Forms.Button()
+        Me.btnSkip = New System.Windows.Forms.Button()
         Me.btnTrailerScrape = New System.Windows.Forms.Button()
         Me.lvTrailers = New System.Windows.Forms.ListView()
         Me.colNumber = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -68,23 +68,23 @@ Partial Class dlgTrailerSelect
         Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
-        'OK_Button
+        'btnOK
         '
-        Me.OK_Button.Enabled = False
-        Me.OK_Button.Location = New System.Drawing.Point(635, 3)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(120, 23)
-        Me.OK_Button.TabIndex = 6
-        Me.OK_Button.Text = "Download"
+        Me.btnOK.Enabled = False
+        Me.btnOK.Location = New System.Drawing.Point(635, 3)
+        Me.btnOK.Name = "btnOK"
+        Me.btnOK.Size = New System.Drawing.Size(120, 23)
+        Me.btnOK.TabIndex = 6
+        Me.btnOK.Text = "Download"
         '
-        'Cancel_Button
+        'btnSkip
         '
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(761, 3)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(120, 23)
-        Me.Cancel_Button.TabIndex = 7
-        Me.Cancel_Button.Text = "Cancel"
+        Me.btnSkip.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnSkip.Location = New System.Drawing.Point(761, 3)
+        Me.btnSkip.Name = "btnSkip"
+        Me.btnSkip.Size = New System.Drawing.Size(120, 23)
+        Me.btnSkip.TabIndex = 7
+        Me.btnSkip.Text = "Skip"
         '
         'btnTrailerScrape
         '
@@ -104,6 +104,7 @@ Partial Class dlgTrailerSelect
         Me.lvTrailers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colDuration, Me.colVideoQuality, Me.colVideoType, Me.colSource, Me.colScraper})
         Me.tblMain.SetColumnSpan(Me.lvTrailers, 2)
         Me.lvTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvTrailers.HideSelection = False
         Me.lvTrailers.Location = New System.Drawing.Point(3, 3)
         Me.lvTrailers.Name = "lvTrailers"
         Me.lvTrailers.Size = New System.Drawing.Size(878, 354)
@@ -364,8 +365,8 @@ Partial Class dlgTrailerSelect
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblBottom.Controls.Add(Me.btnPlayInBrowser, 0, 0)
-        Me.tblBottom.Controls.Add(Me.OK_Button, 2, 0)
-        Me.tblBottom.Controls.Add(Me.Cancel_Button, 3, 0)
+        Me.tblBottom.Controls.Add(Me.btnOK, 2, 0)
+        Me.tblBottom.Controls.Add(Me.btnSkip, 3, 0)
         Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblBottom.Location = New System.Drawing.Point(0, 0)
         Me.tblBottom.Name = "tblBottom"
@@ -397,11 +398,11 @@ Partial Class dlgTrailerSelect
         '
         'dlgTrailerSelect
         '
-        Me.AcceptButton = Me.OK_Button
+        Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.CancelButton = Me.Cancel_Button
+        Me.CancelButton = Me.btnSkip
         Me.ClientSize = New System.Drawing.Size(884, 661)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pblBottom)
@@ -432,8 +433,8 @@ Partial Class dlgTrailerSelect
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
+    Friend WithEvents btnOK As System.Windows.Forms.Button
+    Friend WithEvents btnSkip As System.Windows.Forms.Button
     Friend WithEvents gbManualTrailer As System.Windows.Forms.GroupBox
     Friend WithEvents lblManualTrailerLink As System.Windows.Forms.Label
     Friend WithEvents txtManualTrailerLink As System.Windows.Forms.TextBox

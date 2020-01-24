@@ -22,19 +22,9 @@ Imports EmberAPI
 
 Public Class dlgClearOrReplace
 
-#Region "Fields"
-
-    Private _Result As New TaskManager.TaskItem
-
-#End Region 'Fields
-
 #Region "Properties"
 
-    Public ReadOnly Property Result As TaskManager.TaskItem
-        Get
-            Return _Result
-        End Get
-    End Property
+    Public Result As New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.DataFields_ClearOrReplace)
 
 #End Region 'Properties
 
@@ -49,19 +39,16 @@ Public Class dlgClearOrReplace
     Public Overloads Function ShowDialog(ByVal tContentType As Enums.ContentType) As DialogResult
         SetUp()
 
-        _Result.ContentType = tContentType
-        _Result.TaskType = Enums.TaskManagerType.DataFields_ClearOrReplace
+        Result.ContentType = tContentType
         Select Case tContentType
             Case Enums.ContentType.Movie
                 chkAired.Visible = False
                 chkCreators.Visible = False
                 chkGuestStars.Visible = False
-                chkPremiered.Visible = False
                 chkStatus.Visible = False
                 chkTitle.Visible = False
                 txtAired.Visible = False
                 txtCreators.Visible = False
-                txtPremiered.Visible = False
                 txtStatus.Visible = False
             Case Enums.ContentType.Movieset
                 chkActors.Visible = False
@@ -77,7 +64,6 @@ Public Class dlgClearOrReplace
                 chkOutline.Visible = False
                 chkPremiered.Visible = False
                 chkRating.Visible = False
-                chkReleaseDate.Visible = False
                 chkRuntime.Visible = False
                 chkStatus.Visible = False
                 chkStudios.Visible = False
@@ -89,7 +75,6 @@ Public Class dlgClearOrReplace
                 chkUserRating.Visible = False
                 chkVideoSource.Visible = False
                 chkWriters.Visible = False
-                chkYear.Visible = False
                 txtAired.Visible = False
                 txtCertifications.Visible = False
                 txtCountries.Visible = False
@@ -98,7 +83,6 @@ Public Class dlgClearOrReplace
                 txtGenres.Visible = False
                 txtMPAA.Visible = False
                 txtPremiered.Visible = False
-                txtReleaseDate.Visible = False
                 txtStatus.Visible = False
                 txtStudios.Visible = False
                 txtTagline.Visible = False
@@ -106,7 +90,6 @@ Public Class dlgClearOrReplace
                 txtUserRating.Visible = False
                 txtVideoSource.Visible = False
                 txtWriters.Visible = False
-                txtYear.Visible = False
             Case Enums.ContentType.TVEpisode
                 chkCertifications.Visible = False
                 chkCountries.Visible = False
@@ -116,7 +99,6 @@ Public Class dlgClearOrReplace
                 chkOriginalTitle.Visible = False
                 chkOutline.Visible = False
                 chkPremiered.Visible = False
-                chkReleaseDate.Visible = False
                 chkStatus.Visible = False
                 chkStudios.Visible = False
                 chkTagline.Visible = False
@@ -124,19 +106,16 @@ Public Class dlgClearOrReplace
                 chkTitle.Visible = False
                 chkTop250.Visible = False
                 chkTrailer.Visible = False
-                chkYear.Visible = False
                 txtCertifications.Visible = False
                 txtCountries.Visible = False
                 txtCreators.Visible = False
                 txtGenres.Visible = False
                 txtMPAA.Visible = False
                 txtPremiered.Visible = False
-                txtReleaseDate.Visible = False
                 txtStatus.Visible = False
                 txtStudios.Visible = False
                 txtTagline.Visible = False
                 txtTags.Visible = False
-                txtYear.Visible = False
             Case Enums.ContentType.TVSeason
                 chkActors.Visible = False
                 chkCertifications.Visible = False
@@ -150,7 +129,6 @@ Public Class dlgClearOrReplace
                 chkOutline.Visible = False
                 chkPremiered.Visible = False
                 chkRating.Visible = False
-                chkReleaseDate.Visible = False
                 chkRuntime.Visible = False
                 chkStatus.Visible = False
                 chkStudios.Visible = False
@@ -161,7 +139,6 @@ Public Class dlgClearOrReplace
                 chkUserRating.Visible = False
                 chkVideoSource.Visible = False
                 chkWriters.Visible = False
-                chkYear.Visible = False
                 txtCertifications.Visible = False
                 txtCountries.Visible = False
                 txtCreators.Visible = False
@@ -169,7 +146,6 @@ Public Class dlgClearOrReplace
                 txtGenres.Visible = False
                 txtMPAA.Visible = False
                 txtPremiered.Visible = False
-                txtReleaseDate.Visible = False
                 txtStatus.Visible = False
                 txtStudios.Visible = False
                 txtTagline.Visible = False
@@ -177,27 +153,22 @@ Public Class dlgClearOrReplace
                 txtUserRating.Visible = False
                 txtVideoSource.Visible = False
                 txtWriters.Visible = False
-                txtYear.Visible = False
             Case Enums.ContentType.TVShow
                 chkAired.Visible = False
                 chkGuestStars.Visible = False
                 chkDirectors.Visible = False
                 chkOutline.Visible = False
-                chkReleaseDate.Visible = False
                 chkTagline.Visible = False
                 chkTitle.Visible = False
                 chkTop250.Visible = False
                 chkTrailer.Visible = False
                 chkVideoSource.Visible = False
                 chkWriters.Visible = False
-                chkYear.Visible = False
                 txtAired.Visible = False
                 txtDirectors.Visible = False
-                txtReleaseDate.Visible = False
                 txtTagline.Visible = False
                 txtVideoSource.Visible = False
                 txtWriters.Visible = False
-                txtYear.Visible = False
         End Select
         Return ShowDialog()
     End Function
@@ -219,110 +190,108 @@ Public Class dlgClearOrReplace
     End Sub
 
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
-        With _Result.ScrapeOptions
-            Select Case _Result.ContentType
+        Dim nScrapeOptions As New Structures.ScrapeOptions
+        With nScrapeOptions
+            Select Case Result.ContentType
                 Case Enums.ContentType.Movie
-                    Dim nInfo = New MediaContainers.Movie
-                    .bMainActors = chkActors.Checked
-                    .bMainCertifications = chkCertifications.Checked
+                    Dim nInfo = New MediaContainers.MainDetails
+                    .Actors = chkActors.Checked
+                    .Certifications = chkCertifications.Checked
                     nInfo.Certifications = DoSplit(txtCertifications)
-                    .bMainCountries = chkCountries.Checked
+                    .Countries = chkCountries.Checked
                     nInfo.Countries = DoSplit(txtCountries)
-                    .bMainDirectors = chkDirectors.Checked
+                    .Directors = chkDirectors.Checked
                     nInfo.Directors = DoSplit(txtDirectors)
-                    .bMainGenres = chkGenres.Checked
+                    .Genres = chkGenres.Checked
                     nInfo.Genres = DoSplit(txtGenres)
-                    .bMainMPAA = chkMPAA.Checked
+                    .MPAA = chkMPAA.Checked
                     nInfo.MPAA = txtMPAA.Text.Trim
-                    .bMainOriginalTitle = chkOriginalTitle.Checked
-                    .bMainOutline = chkOutline.Checked
-                    .bMainPlot = chkPlot.Checked
-                    .bMainRating = chkRating.Checked
-                    .bMainRelease = chkReleaseDate.Checked
-                    nInfo.ReleaseDate = txtReleaseDate.Text.Trim
-                    .bMainRuntime = chkRuntime.Checked
-                    .bMainStudios = chkStudios.Checked
-                    nInfo.Studios = DoSplit(txtStudios)
-                    .bMainTagline = chkTagline.Checked
-                    nInfo.Tagline = txtTagline.Text.Trim
-                    .bMainTags = chkTags.Checked
-                    nInfo.Tags = DoSplit(txtTags)
-                    .bMainTop250 = chkTop250.Checked
-                    .bMainTrailer = chkTrailer.Checked
-                    .bMainUserRating = chkUserRating.Checked
-                    Dim uiUserRating As UInteger = 0
-                    UInteger.TryParse(txtUserRating.Text.Trim, uiUserRating)
-                    nInfo.UserRating = CInt(uiUserRating)
-                    .bMainVideoSource = chkVideoSource.Checked
-                    nInfo.VideoSource = txtVideoSource.Text.Trim
-                    .bMainWriters = chkWriters.Checked
-                    nInfo.Credits = DoSplit(txtWriters)
-                    .bMainYear = chkYear.Checked
-                    Dim uiYear As UInteger = 0
-                    UInteger.TryParse(txtYear.Text.Trim, uiYear)
-                    nInfo.Year = CInt(uiYear)
-                    _Result.GenericObject = nInfo
-                Case Enums.ContentType.Movieset
-                    .bMainPlot = chkPlot.Checked
-                Case Enums.ContentType.TVEpisode
-                    Dim nInfo = New MediaContainers.EpisodeDetails
-                    .bEpisodeActors = chkActors.Checked
-                    .bEpisodeAired = chkAired.Checked
-                    nInfo.Aired = txtAired.Text.Trim
-                    .bEpisodeCredits = chkWriters.Checked
-                    nInfo.Credits = DoSplit(txtWriters)
-                    .bEpisodeDirectors = chkDirectors.Checked
-                    nInfo.Directors = DoSplit(txtDirectors)
-                    .bEpisodeGuestStars = chkGuestStars.Checked
-                    .bEpisodePlot = chkPlot.Checked
-                    .bEpisodeRating = chkRating.Checked
-                    .bEpisodeRuntime = chkRuntime.Checked
-                    .bEpisodeUserRating = chkUserRating.Checked
-                    Dim uiUserRating As UInteger = 0
-                    UInteger.TryParse(txtUserRating.Text.Trim, uiUserRating)
-                    nInfo.UserRating = CInt(uiUserRating)
-                    .bEpisodeVideoSource = chkVideoSource.Checked
-                    nInfo.VideoSource = txtVideoSource.Text.Trim
-                    _Result.GenericObject = nInfo
-                Case Enums.ContentType.TVSeason
-                    Dim nInfo = New MediaContainers.SeasonDetails
-                    .bSeasonAired = chkAired.Checked
-                    nInfo.Aired = txtAired.Text.Trim
-                    .bSeasonPlot = chkPlot.Checked
-                    .bSeasonTitle = chkTitle.Checked
-                    _Result.GenericObject = nInfo
-                Case Enums.ContentType.TVShow
-                    Dim nInfo = New MediaContainers.TVShow
-                    .bMainActors = chkActors.Checked
-                    .bMainCertifications = chkCertifications.Checked
-                    nInfo.Certifications = DoSplit(txtCertifications)
-                    .bMainCountries = chkCountries.Checked
-                    nInfo.Countries = DoSplit(txtCountries)
-                    .bMainCreators = chkCreators.Checked
-                    nInfo.Creators = DoSplit(txtCreators)
-                    .bMainGenres = chkGenres.Checked
-                    nInfo.Genres = DoSplit(txtGenres)
-                    .bMainMPAA = chkMPAA.Checked
-                    nInfo.MPAA = txtMPAA.Text.Trim
-                    .bMainOriginalTitle = chkOriginalTitle.Checked
-                    .bMainPlot = chkPlot.Checked
-                    .bMainPremiered = chkPremiered.Checked
+                    .OriginalTitle = chkOriginalTitle.Checked
+                    .Outline = chkOutline.Checked
+                    .Plot = chkPlot.Checked
+                    .Premiered = chkPremiered.Checked
                     nInfo.Premiered = txtPremiered.Text.Trim
-                    .bMainRating = chkRating.Checked
-                    .bMainRuntime = chkRuntime.Checked
-                    .bMainStatus = chkStatus.Checked
-                    nInfo.Status = txtStatus.Text.Trim
-                    .bMainStudios = chkStudios.Checked
+                    .Ratings = chkRating.Checked
+                    .Runtime = chkRuntime.Checked
+                    .Studios = chkStudios.Checked
                     nInfo.Studios = DoSplit(txtStudios)
-                    .bMainTags = chkTags.Checked
+                    .Tagline = chkTagline.Checked
+                    nInfo.Tagline = txtTagline.Text.Trim
+                    .Tags = chkTags.Checked
                     nInfo.Tags = DoSplit(txtTags)
-                    .bMainUserRating = chkUserRating.Checked
+                    .Top250 = chkTop250.Checked
+                    .Trailer = chkTrailer.Checked
+                    .UserRating = chkUserRating.Checked
                     Dim uiUserRating As UInteger = 0
                     UInteger.TryParse(txtUserRating.Text.Trim, uiUserRating)
                     nInfo.UserRating = CInt(uiUserRating)
-                    _Result.GenericObject = nInfo
+                    .VideoSource = chkVideoSource.Checked
+                    nInfo.VideoSource = txtVideoSource.Text.Trim
+                    .Credits = chkWriters.Checked
+                    nInfo.Credits = DoSplit(txtWriters)
+                    Result.GenericObject = nInfo
+                Case Enums.ContentType.Movieset
+                    .Plot = chkPlot.Checked
+                Case Enums.ContentType.TVEpisode
+                    Dim nInfo = New MediaContainers.MainDetails
+                    .Episodes.Actors = chkActors.Checked
+                    .Episodes.Aired = chkAired.Checked
+                    nInfo.Aired = txtAired.Text.Trim
+                    .Episodes.Credits = chkWriters.Checked
+                    nInfo.Credits = DoSplit(txtWriters)
+                    .Episodes.Directors = chkDirectors.Checked
+                    nInfo.Directors = DoSplit(txtDirectors)
+                    .Episodes.GuestStars = chkGuestStars.Checked
+                    .Episodes.Plot = chkPlot.Checked
+                    .Episodes.Ratings = chkRating.Checked
+                    .Episodes.Runtime = chkRuntime.Checked
+                    .Episodes.UserRating = chkUserRating.Checked
+                    Dim uiUserRating As UInteger = 0
+                    UInteger.TryParse(txtUserRating.Text.Trim, uiUserRating)
+                    nInfo.UserRating = CInt(uiUserRating)
+                    .Episodes.VideoSource = chkVideoSource.Checked
+                    nInfo.VideoSource = txtVideoSource.Text.Trim
+                    Result.GenericObject = nInfo
+                Case Enums.ContentType.TVSeason
+                    Dim nInfo = New MediaContainers.MainDetails
+                    .Seasons.Aired = chkAired.Checked
+                    nInfo.Aired = txtAired.Text.Trim
+                    .Seasons.Plot = chkPlot.Checked
+                    .Seasons.Title = chkTitle.Checked
+                    Result.GenericObject = nInfo
+                Case Enums.ContentType.TVShow
+                    Dim nInfo = New MediaContainers.MainDetails
+                    .Actors = chkActors.Checked
+                    .Certifications = chkCertifications.Checked
+                    nInfo.Certifications = DoSplit(txtCertifications)
+                    .Countries = chkCountries.Checked
+                    nInfo.Countries = DoSplit(txtCountries)
+                    .Creators = chkCreators.Checked
+                    nInfo.Creators = DoSplit(txtCreators)
+                    .Genres = chkGenres.Checked
+                    nInfo.Genres = DoSplit(txtGenres)
+                    .MPAA = chkMPAA.Checked
+                    nInfo.MPAA = txtMPAA.Text.Trim
+                    .OriginalTitle = chkOriginalTitle.Checked
+                    .Plot = chkPlot.Checked
+                    .Premiered = chkPremiered.Checked
+                    nInfo.Premiered = txtPremiered.Text.Trim
+                    .Ratings = chkRating.Checked
+                    .Runtime = chkRuntime.Checked
+                    .Status = chkStatus.Checked
+                    nInfo.Status = txtStatus.Text.Trim
+                    .Studios = chkStudios.Checked
+                    nInfo.Studios = DoSplit(txtStudios)
+                    .Tags = chkTags.Checked
+                    nInfo.Tags = DoSplit(txtTags)
+                    .UserRating = chkUserRating.Checked
+                    Dim uiUserRating As UInteger = 0
+                    UInteger.TryParse(txtUserRating.Text.Trim, uiUserRating)
+                    nInfo.UserRating = CInt(uiUserRating)
+                    Result.GenericObject = nInfo
             End Select
         End With
+        Result.ScrapeOptions = nScrapeOptions
         DialogResult = DialogResult.OK
     End Sub
 
@@ -382,10 +351,6 @@ Public Class dlgClearOrReplace
         lblRating.Visible = chkRating.Checked
     End Sub
 
-    Private Sub chkReleaseDate_CheckedChanged(sender As Object, e As EventArgs) Handles chkReleaseDate.CheckedChanged
-        txtReleaseDate.Enabled = chkReleaseDate.Checked
-    End Sub
-
     Private Sub chkRuntime_CheckedChanged(sender As Object, e As EventArgs) Handles chkRuntime.CheckedChanged
         lblRuntime.Visible = chkRuntime.Checked
     End Sub
@@ -430,10 +395,6 @@ Public Class dlgClearOrReplace
         txtWriters.Enabled = chkWriters.Checked
     End Sub
 
-    Private Sub chkYear_CheckedChanged(sender As Object, e As EventArgs) Handles chkYear.CheckedChanged
-        txtYear.Enabled = chkYear.Checked
-    End Sub
-
     Private Function DoSplit(tTextbox As TextBox) As List(Of String)
         Dim nList = tTextbox.Text.Trim.Split(",".ToCharArray, StringSplitOptions.RemoveEmptyEntries).Distinct.ToList
         'remove empty entries that has not been removed with "StringSplitOptions.RemoveEmptyEntries"
@@ -463,7 +424,6 @@ Public Class dlgClearOrReplace
         chkPlot.Text = Master.eLang.GetString(65, "Plot")
         chkPremiered.Text = Master.eLang.GetString(724, "Premiered")
         chkRating.Text = String.Format("{0} / {1}", Master.eLang.GetString(400, "Rating"), Master.eLang.GetString(244, "Votes"))
-        chkReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
         chkRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkStatus.Text = Master.eLang.GetString(215, "Status")
         chkStudios.Text = Master.eLang.GetString(226, "Studios")
@@ -475,8 +435,6 @@ Public Class dlgClearOrReplace
         chkUserRating.Text = Master.eLang.GetString(1467, "User Rating")
         chkVideoSource.Text = Master.eLang.GetString(824, "Video Source")
         chkWriters.Text = Master.eLang.GetString(394, "Credits (Writers)")
-        chkYear.Text = Master.eLang.GetString(278, "Year")
-
 
         Dim strCommaSeparated As String = Master.eLang.GetString(882, "comma separated")
         txtCertifications.WatermarkText = strCommaSeparated

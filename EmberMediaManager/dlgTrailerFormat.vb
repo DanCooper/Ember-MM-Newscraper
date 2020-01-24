@@ -122,7 +122,7 @@ Public Class dlgTrailerFormat
                         End If
 
                         Dim prevQualLink As YouTube.VideoLinkItem
-                        prevQualLink = YouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual)
+                        prevQualLink = YouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.Movie.TrailerSettings.PreferredVideoQuality)
                         If prevQualLink IsNot Nothing Then
                             lbVideoFormats.SelectedItem = prevQualLink
                         ElseIf lbVideoFormats.Items.Count = 1 Then
@@ -139,8 +139,8 @@ Public Class dlgTrailerFormat
                         lbVideoFormats.DisplayMember = "Description"
                         lbVideoFormats.ValueMember = "URL"
 
-                        If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefVideoQual) Then
-                            lbVideoFormats.SelectedIndex = IMDb.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefVideoQual)
+                        If IMDb.VideoLinks.ContainsKey(Master.eSettings.Movie.TrailerSettings.PreferredVideoQuality) Then
+                            lbVideoFormats.SelectedIndex = IMDb.VideoLinks.IndexOfKey(Master.eSettings.Movie.TrailerSettings.PreferredVideoQuality)
                         ElseIf lbVideoFormats.Items.Count = 1 Then
                             lbVideoFormats.SelectedIndex = 0
                         End If
