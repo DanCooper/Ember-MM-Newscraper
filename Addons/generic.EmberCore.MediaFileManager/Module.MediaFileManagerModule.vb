@@ -18,9 +18,9 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
 Imports NLog
+Imports System.IO
 
 Public Class FileManagerExternalModule
     Implements Interfaces.GenericModule
@@ -35,9 +35,9 @@ Public Class FileManagerExternalModule
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Friend WithEvents bwCopyDirectory As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwCopyOrMove As New System.ComponentModel.BackgroundWorker
 
     Private _AssemblyName As String = String.Empty
     Private _MySettings As New MySettings
@@ -45,12 +45,11 @@ Public Class FileManagerExternalModule
     Private _enabled As Boolean = False
     Private _Name As String = Master.eLang.GetString(311, "Media File Manager")
     Private _setup As frmSettingsHolder
-    Private withErrors As Boolean
     Private cmnuMediaCustomList As New List(Of ToolStripMenuItem)
     Private cmnuMedia_Movies As New ToolStripMenuItem
     Private cmnuMedia_Shows As New ToolStripMenuItem
-    Private cmnuSep_Movies As New System.Windows.Forms.ToolStripSeparator
-    Private cmnuSep_Shows As New System.Windows.Forms.ToolStripSeparator
+    Private cmnuSep_Movies As New ToolStripSeparator
+    Private cmnuSep_Shows As New ToolStripSeparator
     Private WithEvents cmnuMediaCopy_Movies As New ToolStripMenuItem
     Private WithEvents cmnuMediaCopy_Shows As New ToolStripMenuItem
     Private WithEvents cmnuMediaMove_Movies As New ToolStripMenuItem
@@ -115,26 +114,6 @@ Public Class FileManagerExternalModule
 
 #Region "Methods"
 
-    'Public Shared Function MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String) As Boolean
-    '    Try
-    '        Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
-    '            Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
-    '                Dim StreamBuffer(4096) As Byte
-    '                Dim nbytes As Integer
-    '                Do
-    '                    nbytes = SourceStream.Read(StreamBuffer, 0, 4096)
-    '                    DestinationStream.Write(StreamBuffer, 0, nbytes)
-    '                Loop While nbytes > 0
-    '                StreamBuffer = Nothing
-    '            End Using
-    '        End Using
-    '    Catch ex As Exception
-    '        Return False
-    '        logger.Error(ex, New StackFrame().GetMethod().Name)
-    '    End Try
-    '    Return True
-    'End Function
-
     Public Sub LoadSettings()
         eSettings.ModuleSettings.Clear()
         Dim eMovies As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("MoviePaths")
@@ -180,40 +159,35 @@ Public Class FileManagerExternalModule
         End Using
     End Sub
 
-    Private Sub bwCopyDirectory_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCopyDirectory.DoWork
+    Private Sub bwCopyOrMove_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCopyOrMove.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        If Not Args.src = Args.dst Then
-            withErrors = False
-            DirectoryCopyMove(Args.src, Args.dst, Args.doMove)
+        If Not Args.SourcePath = Args.DestinationPath Then
+            If Args.IsDirectory Then
+                If Args.DoMove Then
+                    FileUtils.Common.DirectoryMove(Args.SourcePath, Args.DestinationPath, True, True)
+                Else
+                    FileUtils.Common.DirectoryCopy(Args.SourcePath, Args.DestinationPath, True, True)
+                End If
+            Else
+                If Args.DoMove Then
+                    FileUtils.Common.FileMove(Args.SourcePath, Args.DestinationPath, True)
+                Else
+                    FileUtils.Common.FileCopy(Args.SourcePath, Args.DestinationPath, True)
+                End If
+            End If
         End If
     End Sub
 
-    Sub DirectoryCopy(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
+    Sub CopyOrMove(ByVal sourcePath As String, ByVal destinationPath As String, ByVal isDirectory As Boolean, ByVal doMove As Boolean, ByVal title As String)
         Using dCopy As New dlgCopyFiles
             dCopy.Show()
             dCopy.prbStatus.Style = ProgressBarStyle.Marquee
             dCopy.Text = title
-            dCopy.lblFilename.Text = Path.GetFileNameWithoutExtension(src)
-            bwCopyDirectory.WorkerReportsProgress = True
-            bwCopyDirectory.WorkerSupportsCancellation = True
-            bwCopyDirectory.RunWorkerAsync(New Arguments With {.src = src, .dst = dst, .doMove = False})
-            While bwCopyDirectory.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
-        End Using
-    End Sub
-
-    Sub DirectoryMove(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
-        Using dCopy As New dlgCopyFiles
-            dCopy.Show()
-            dCopy.prbStatus.Style = ProgressBarStyle.Marquee
-            dCopy.Text = title
-            dCopy.lblFilename.Text = Path.GetFileNameWithoutExtension(src)
-            bwCopyDirectory.WorkerReportsProgress = True
-            bwCopyDirectory.WorkerSupportsCancellation = True
-            bwCopyDirectory.RunWorkerAsync(New Arguments With {.src = src, .dst = dst, .doMove = True})
-            While bwCopyDirectory.IsBusy
+            dCopy.lblFilename.Text = Path.GetFileNameWithoutExtension(sourcePath)
+            bwCopyOrMove.WorkerReportsProgress = True
+            bwCopyOrMove.WorkerSupportsCancellation = True
+            bwCopyOrMove.RunWorkerAsync(New Arguments With {.DestinationPath = destinationPath, .DoMove = doMove, .IsDirectory = isDirectory, .SourcePath = sourcePath})
+            While bwCopyOrMove.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -368,36 +342,51 @@ Public Class FileManagerExternalModule
                             Dim FileDelete As New FileUtils.Delete
                             For Each movieID As Long In MediaToWork
                                 Dim mMovie As Database.DBElement = Master.DB.Load_Movie(movieID)
-                                ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
-                                If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
-                                    If _MySettings.TeraCopy Then
-                                        mTeraCopy.Sources.Add(ItemsToWork(0).ToString)
-                                    Else
-                                        Select Case tMItem.OwnerItem.Tag.ToString
-                                            Case "MOVE"
-                                                DirectoryMove(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(316, "Moving Movie"))
-                                                Master.DB.Delete_Movie(movieID, False)
-                                            Case "COPY"
-                                                DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(317, "Copying Movie"))
-                                        End Select
+                                ItemsToWork = FileUtils.Common.GetAllItemsOfDBElement(mMovie)
+                                For Each item In ItemsToWork
+                                    If item.Attributes = FileAttributes.Directory AndAlso item.Exists Then
+                                        If _MySettings.TeraCopy Then
+                                            mTeraCopy.Sources.Add(item.FullName)
+                                        Else
+                                            Select Case tMItem.OwnerItem.Tag.ToString
+                                                Case "MOVE"
+                                                    CopyOrMove(item.FullName, Path.Combine(dstPath, item.Name), True, True, Master.eLang.GetString(316, "Moving Movie"))
+                                                    Master.DB.Delete_Movie(movieID, False)
+                                                Case "COPY"
+                                                    CopyOrMove(item.FullName, Path.Combine(dstPath, item.Name), True, False, Master.eLang.GetString(317, "Copying Movie"))
+                                            End Select
+                                        End If
+                                    ElseIf item.Exists Then
+                                        If _MySettings.TeraCopy Then
+                                            mTeraCopy.Sources.Add(item.FullName)
+                                        Else
+                                            Select Case tMItem.OwnerItem.Tag.ToString
+                                                Case "MOVE"
+                                                    CopyOrMove(item.FullName, Path.Combine(dstPath, item.Name), False, True, Master.eLang.GetString(316, "Moving Movie"))
+                                                    Master.DB.Delete_Movie(movieID, False)
+                                                Case "COPY"
+                                                    CopyOrMove(item.FullName, Path.Combine(dstPath, item.Name), False, False, Master.eLang.GetString(317, "Copying Movie"))
+                                            End Select
+                                        End If
                                     End If
-                                End If
+                                Next
                             Next
                             If Not _MySettings.TeraCopy AndAlso doMove Then ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.Movies = True})
                         ElseIf ContentType = Enums.ContentType.TVShow Then
                             Dim FileDelete As New FileUtils.Delete
                             For Each tShowID As Long In MediaToWork
                                 Dim mShow As Database.DBElement = Master.DB.Load_TVShow(tShowID, False, False)
-                                If Directory.Exists(mShow.ShowPath) Then
+                                Dim diShowPath As New DirectoryInfo(mShow.ShowPath)
+                                If diShowPath.Exists Then
                                     If _MySettings.TeraCopy Then
                                         mTeraCopy.Sources.Add(mShow.ShowPath)
                                     Else
                                         Select Case tMItem.OwnerItem.Tag.ToString
                                             Case "MOVE"
-                                                DirectoryMove(mShow.ShowPath, Path.Combine(dstPath, Path.GetFileName(mShow.ShowPath)), Master.eLang.GetString(899, "Moving TV Show"))
+                                                CopyOrMove(diShowPath.FullName, Path.Combine(dstPath, diShowPath.Name), True, True, Master.eLang.GetString(899, "Moving TV Show"))
                                                 Master.DB.Delete_TVShow(tShowID, False)
                                             Case "COPY"
-                                                DirectoryCopy(mShow.ShowPath, Path.Combine(dstPath, Path.GetFileName(mShow.ShowPath)), Master.eLang.GetString(900, "Copying TV Show"))
+                                                CopyOrMove(diShowPath.FullName, Path.Combine(dstPath, diShowPath.Name), True, False, Master.eLang.GetString(899, "Moving TV Show"))
                                         End Select
                                     End If
                                 End If
@@ -514,14 +503,6 @@ Public Class FileManagerExternalModule
         End If
     End Sub
 
-    Private Sub DirectoryCopyMove(ByVal sourceDirName As String, ByVal destDirName As String, ByVal doMove As Boolean)
-        If Not doMove Then
-            FileUtils.Common.DirectoryCopy(sourceDirName, destDirName, True, True)
-        Else
-            FileUtils.Common.DirectoryMove(sourceDirName, destDirName, True, True)
-        End If
-    End Sub
-
 #End Region 'Methods
 
 #Region "Nested Types"
@@ -530,9 +511,10 @@ Public Class FileManagerExternalModule
 
 #Region "Fields"
 
-        Dim dst As String
-        Dim src As String
-        Dim doMove As Boolean
+        Dim DestinationPath As String
+        Dim DoMove As Boolean
+        Dim IsDirectory As Boolean
+        Dim SourcePath As String
 
 #End Region 'Fields
 

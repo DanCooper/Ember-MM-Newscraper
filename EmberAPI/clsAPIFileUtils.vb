@@ -104,29 +104,29 @@ Namespace FileUtils
         End Sub
 
         Public Shared Sub DirectoryCopy(
-                                       ByVal strSourceDir As String,
-                                       ByVal strDestinationDir As String,
+                                       ByVal sourcePath As String,
+                                       ByVal destinationPath As String,
                                        ByVal withSubDirs As Boolean,
                                        ByVal overwriteFiles As Boolean)
 
-            If Not Directory.Exists(strSourceDir) Then
-                logger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
+            If Not Directory.Exists(sourcePath) Then
+                logger.Error(String.Concat("Source directory does not exist: ", sourcePath))
                 Exit Sub
             End If
 
             ' Get the subdirectories for the specified directory.
-            Dim dir As DirectoryInfo = New DirectoryInfo(strSourceDir)
+            Dim dir As DirectoryInfo = New DirectoryInfo(sourcePath)
             Dim subdirs As DirectoryInfo() = dir.GetDirectories()
 
             ' If the destination directory doesn't exist, create it.
-            If Not Directory.Exists(strDestinationDir) Then
-                Directory.CreateDirectory(strDestinationDir)
+            If Not Directory.Exists(destinationPath) Then
+                Directory.CreateDirectory(destinationPath)
             End If
 
             ' Get the files in the directory and copy them to the new location.
             Dim files As FileInfo() = dir.GetFiles()
             For Each cFile In files
-                Dim temppath As String = Path.Combine(strDestinationDir, cFile.Name)
+                Dim temppath As String = Path.Combine(destinationPath, cFile.Name)
                 If Not File.Exists(temppath) OrElse overwriteFiles Then
                     cFile.CopyTo(temppath, overwriteFiles)
                 End If
@@ -135,40 +135,40 @@ Namespace FileUtils
             ' If copying subdirectories, copy them and their contents to new location.
             If withSubDirs Then
                 For Each subdir In subdirs
-                    Dim temppath As String = Path.Combine(strDestinationDir, subdir.Name)
+                    Dim temppath As String = Path.Combine(destinationPath, subdir.Name)
                     DirectoryCopy(subdir.FullName, temppath, withSubDirs, overwriteFiles)
                 Next subdir
             End If
         End Sub
 
         Public Shared Sub DirectoryMove(
-                                       ByVal strSourceDir As String,
-                                       ByVal strDestinationDir As String,
+                                       ByVal sourcePath As String,
+                                       ByVal destinationPath As String,
                                        ByVal withSubDirs As Boolean,
                                        ByVal overwriteFiles As Boolean)
 
-            If Not Directory.Exists(strSourceDir) Then
-                logger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
+            If Not Directory.Exists(sourcePath) Then
+                logger.Error(String.Concat("Source directory does not exist: ", sourcePath))
                 Exit Sub
             End If
 
-            If Path.GetPathRoot(strSourceDir).ToLower = Path.GetPathRoot(strDestinationDir).ToLower AndAlso withSubDirs Then
-                If Not Directory.Exists(Directory.GetParent(strDestinationDir).FullName) Then Directory.CreateDirectory(Directory.GetParent(strDestinationDir).FullName)
-                Directory.Move(strSourceDir, strDestinationDir)
+            If Path.GetPathRoot(sourcePath).ToLower = Path.GetPathRoot(destinationPath).ToLower AndAlso withSubDirs Then
+                If Not Directory.Exists(Directory.GetParent(destinationPath).FullName) Then Directory.CreateDirectory(Directory.GetParent(destinationPath).FullName)
+                Directory.Move(sourcePath, destinationPath)
             Else
                 ' Get the subdirectories for the specified directory.
-                Dim dir As DirectoryInfo = New DirectoryInfo(strSourceDir)
+                Dim dir As DirectoryInfo = New DirectoryInfo(sourcePath)
                 Dim subdirs As DirectoryInfo() = dir.GetDirectories()
 
                 ' If the destination directory doesn't exist, create it.
-                If Not Directory.Exists(strDestinationDir) Then
-                    Directory.CreateDirectory(strDestinationDir)
+                If Not Directory.Exists(destinationPath) Then
+                    Directory.CreateDirectory(destinationPath)
                 End If
 
                 ' Get the files in the directory and move them to the new location.
                 Dim files As FileInfo() = dir.GetFiles()
                 For Each cFile In files
-                    Dim temppath As String = Path.Combine(strDestinationDir, cFile.Name)
+                    Dim temppath As String = Path.Combine(destinationPath, cFile.Name)
                     If Not File.Exists(temppath) OrElse overwriteFiles Then
                         If File.Exists(temppath) Then File.Delete(temppath)
                         cFile.MoveTo(temppath)
@@ -178,7 +178,7 @@ Namespace FileUtils
                 ' If copying subdirectories, copy them and their contents to new location.
                 If withSubDirs Then
                     For Each subdir In subdirs
-                        Dim temppath As String = Path.Combine(strDestinationDir, subdir.Name)
+                        Dim temppath As String = Path.Combine(destinationPath, subdir.Name)
                         DirectoryMove(subdir.FullName, temppath, withSubDirs, overwriteFiles)
                     Next subdir
                 End If
@@ -187,7 +187,40 @@ Namespace FileUtils
                     Directory.Delete(dir.FullName)
                 End If
             End If
+        End Sub
 
+        Public Shared Sub FileCopy(
+                                  ByVal sourcePath As String,
+                                  ByVal destinationPath As String,
+                                  ByVal overwriteFiles As Boolean)
+
+            Dim fiSource As New FileInfo(sourcePath)
+            Dim fiDestination As New FileInfo(destinationPath)
+            If fiSource.Exists Then
+                If Not fiDestination.Exists OrElse overwriteFiles Then
+                    fiSource.CopyTo(fiDestination.FullName, overwriteFiles)
+                End If
+            Else
+                logger.Error(String.Concat("Source file does not exist: ", fiSource.FullName))
+                Exit Sub
+            End If
+        End Sub
+
+        Public Shared Sub FileMove(
+                                  ByVal sourcePath As String,
+                                  ByVal destinationPath As String,
+                                  ByVal overwriteFiles As Boolean)
+
+            Dim fiSource As New FileInfo(sourcePath)
+            Dim fiDestination As New FileInfo(destinationPath)
+            If fiSource.Exists Then
+                If Not fiDestination.Exists OrElse overwriteFiles Then
+                    fiSource.MoveTo(fiDestination.FullName)
+                End If
+            Else
+                logger.Error(String.Concat("Source file does not exist: ", fiSource.FullName))
+                Exit Sub
+            End If
         End Sub
 
         Public Shared Function GetAllItemsOfDBElement(ByVal tDBElement As Database.DBElement) As List(Of FileSystemInfo)
@@ -782,223 +815,6 @@ Namespace FileUtils
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
-
-        'Public Function GetItemsToDelete_Episode(ByVal isCleaner As Boolean, ByVal mEpisode As Database.DBElement) As List(Of IO.FileSystemInfo)
-        '    Dim ItemsToDelete As New List(Of FileSystemInfo)
-        '    Dim fScanner As New Scanner
-
-
-
-        'End Function
-
-
-        ''' <summary>
-        ''' Gather a list of all files to be deleted for display in a confirmation dialog.
-        ''' </summary>
-        ''' <param name="isCleaner">Is the function being called from the cleaner?</param>
-        ''' <param name="mMovie">DBMovie object to get paths from</param>        
-        ''' <returns><c>True</c> if files were found that are to be deleted, <c>False</c> if not.</returns>
-        ''' <remarks>Not used for cleaner, needs to be modified to reflect.</remarks>
-        Public Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As Database.DBElement) As List(Of IO.FileSystemInfo)
-            Dim dPath As String = String.Empty
-            Dim ItemsToDelete As New List(Of FileSystemInfo)
-            Dim fScanner As New Scanner
-
-            Try
-                Dim MovieFile As New FileInfo(mMovie.Filename)
-                Dim MovieDir As DirectoryInfo = MovieFile.Directory
-                'TODO: check VIDEO_TS parent
-                If Common.isVideoTS(MovieDir.FullName) Then
-                    dPath = String.Concat(Path.Combine(MovieDir.Parent.FullName, MovieDir.Parent.Name), ".ext")
-                ElseIf Common.isBDRip(MovieDir.FullName) Then
-                    dPath = String.Concat(Path.Combine(MovieDir.Parent.Parent.FullName, MovieDir.Parent.Parent.Name), ".ext")
-                Else
-                    dPath = mMovie.Filename
-                End If
-
-                Dim sOrName As String = Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(dPath))
-                Dim sPathShort As String = Directory.GetParent(dPath).FullName
-                Dim sPathNoExt As String = Common.RemoveExtFromPath(dPath)
-
-                Dim dirInfo As New DirectoryInfo(sPathShort)
-                Dim ioFi As New List(Of FileSystemInfo)
-
-                Try
-                    ioFi.AddRange(dirInfo.GetFiles())
-                Catch
-                End Try
-
-                If isCleaner AndAlso Master.eSettings.FileSystemExpertCleaner Then
-
-                    For Each sFile As FileInfo In ioFi
-                        If Not Master.eSettings.FileSystemCleanerWhitelistExts.Contains(sFile.Extension.ToLower) AndAlso ((Master.eSettings.FileSystemCleanerWhitelist AndAlso Not Master.eSettings.FileSystemValidExts.Contains(sFile.Extension.ToLower)) OrElse Not Master.eSettings.FileSystemCleanerWhitelist) Then
-                            sFile.Delete()
-                        End If
-                    Next
-
-                Else
-
-                    If Not isCleaner Then
-                        'cleanup backdrops
-                        Dim fPath As String = mMovie.ImagesContainer.Fanart.LocalFilePath
-                        Dim tPath As String = String.Empty
-                        If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                            If Common.isVideoTS(fPath) Then
-                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(Common.GetMainPath(fPath).FullName, Common.GetMainPath(fPath).Name), "-fanart.jpg"))
-                            ElseIf Common.isBDRip(fPath) Then
-                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Common.GetMainPath(fPath).Name, "-fanart.jpg"))
-                            Else
-                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Common.GetMainPath(fPath).Name, "-fanart.jpg"))
-                            End If
-                        End If
-                        If Not String.IsNullOrEmpty(tPath) Then
-                            If IO.File.Exists(tPath) Then
-                                ItemsToDelete.Add(New FileInfo(tPath))
-                            End If
-                        End If
-                    End If
-
-                    If Not isCleaner AndAlso mMovie.IsSingle AndAlso Master.DB.GetSources_Movie.FirstOrDefault(Function(f) f.Path = MovieDir.Parent.FullName) Is Nothing Then
-                        If Common.isVideoTS(MovieDir.FullName) Then
-                            ItemsToDelete.Add(MovieDir.Parent)
-                        ElseIf Common.isBDRip(MovieDir.FullName) Then
-                            ItemsToDelete.Add(MovieDir.Parent.Parent)
-                        Else
-                            'check if there are other folders with movies in them
-                            If Not fScanner.SubDirsHaveMovies(MovieDir) Then
-                                'no movies in sub dirs... delete the whole thing
-                                ItemsToDelete.Add(MovieDir)
-                            Else
-                                'just delete the movie file itself
-                                ItemsToDelete.Add(New FileInfo(mMovie.Filename))
-                            End If
-                        End If
-                    Else
-                        For Each lFI As FileInfo In ioFi
-                            If isCleaner Then
-                                If (Master.eSettings.CleanFolderJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "folder.jpg")) _
-                                    OrElse (Master.eSettings.CleanFanartJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "fanart.jpg")) _
-                                    OrElse (Master.eSettings.CleanMovieTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.tbn")) _
-                                    OrElse (Master.eSettings.CleanMovieNFO AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.nfo")) _
-                                    OrElse (Master.eSettings.CleanPosterTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.tbn")) _
-                                    OrElse (Master.eSettings.CleanPosterJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.jpg")) _
-                                    OrElse (Master.eSettings.CleanMovieJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.jpg")) Then
-                                    File.Delete(lFI.FullName)
-                                    Continue For
-                                End If
-                            End If
-
-                            If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".tbn") _
-                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.tbn") _
-                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.tbn") _
-                                OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".tbn") Then
-                                    If isCleaner Then
-                                        File.Delete(lFI.FullName)
-                                    Else
-                                        ItemsToDelete.Add(lFI)
-                                    End If
-                                    Continue For
-                                End If
-                            End If
-
-                            If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, "-fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts-fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index-fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), "-fanart.jpg") Then
-                                    If isCleaner Then
-                                        File.Delete(lFI.FullName)
-                                    Else
-                                        ItemsToDelete.Add(lFI)
-                                    End If
-                                    Continue For
-                                End If
-                            End If
-
-                            If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".nfo") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.nfo") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.nfo") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".nfo") Then
-                                    If isCleaner Then
-                                        File.Delete(lFI.FullName)
-                                    Else
-                                        ItemsToDelete.Add(lFI)
-                                    End If
-                                    Continue For
-                                End If
-                            End If
-
-                            If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".fanart.jpg") Then
-                                    If isCleaner Then
-                                        File.Delete(lFI.FullName)
-                                    Else
-                                        ItemsToDelete.Add(lFI)
-                                    End If
-                                    Continue For
-                                End If
-                            End If
-
-                            If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.jpg") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".jpg") Then
-                                    If isCleaner Then
-                                        File.Delete(lFI.FullName)
-                                    Else
-                                        ItemsToDelete.Add(lFI)
-                                    End If
-                                    Continue For
-                                End If
-                            End If
-                        Next
-
-                        If Not isCleaner Then
-
-                            ioFi.Clear()
-                            Try
-                                If mMovie.IsSingle Then ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
-                            Catch
-                            End Try
-
-                            Try
-                                ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), ".*")))
-                            Catch
-                            End Try
-
-                            ItemsToDelete.AddRange(ioFi)
-
-                        End If
-
-                        If Master.eSettings.CleanExtrathumbs Then
-                            If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
-                                If isCleaner Then
-                                    DeleteDirectory(Path.Combine(sPathShort, "extrathumbs"))
-                                Else
-                                    Dim dir As New DirectoryInfo(Path.Combine(sPathShort, "extrathumbs"))
-                                    If dir.Exists Then
-                                        ItemsToDelete.Add(dir)
-                                    End If
-                                End If
-                            End If
-                        End If
-
-                    End If
-                End If
-
-                ioFi = Nothing
-                dirInfo = Nothing
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-            Return ItemsToDelete
-        End Function
 
 #End Region 'Methods
 
