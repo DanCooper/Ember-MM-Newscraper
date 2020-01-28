@@ -121,10 +121,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="TVDB, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\TheTVDBApi.1.2.0.0\lib\TVDB.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="System" />
@@ -199,6 +195,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\TheTVDBApi\src\TVDB\TVDB.csproj">
+      <Project>{a265b83f-495e-43bd-b1f5-c89b58618a84}</Project>
+      <Name>TVDB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\EmberAPI\EmberAPI.vbproj">
       <Project>{208aa35e-c6ae-4d2d-a9dd-b6efd19a4279}</Project>
       <Name>EmberAPI</Name>

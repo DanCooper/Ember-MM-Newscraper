@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberMediaManager", "EmberMediaManager\EmberMediaManager.vbproj", "{9B57D3AB-AF12-4012-B945-284C2448DC81}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -109,6 +109,8 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.VideoSourceMapping", "Addons\generic.EmberCore.VideoSourceMapping\generic.EmberCore.VideoSourceMapping.vbproj", "{386116B7-7870-4F91-9DEC-C79062882E3E}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.Interface.Trakttv", "Addons\generic.Interface.Trakttv\generic.Interface.Trakttv.vbproj", "{6F30E40B-6D85-4EE7-9474-5F82E96E1817}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TVDB", "..\TheTVDBApi\src\TVDB\TVDB.csproj", "{A265B83F-495E-43BD-B1F5-C89B58618A84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -537,6 +539,18 @@ Global
 		{6F30E40B-6D85-4EE7-9474-5F82E96E1817}.Release|x64.Build.0 = Release|x64
 		{6F30E40B-6D85-4EE7-9474-5F82E96E1817}.Release|x86.ActiveCfg = Release|x86
 		{6F30E40B-6D85-4EE7-9474-5F82E96E1817}.Release|x86.Build.0 = Release|x86
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Debug|x64.Build.0 = Debug|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Debug|x86.Build.0 = Debug|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Release|x64.ActiveCfg = Release|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Release|x64.Build.0 = Release|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Release|x86.ActiveCfg = Release|Any CPU
+		{A265B83F-495E-43BD-B1F5-C89B58618A84}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -572,5 +586,8 @@ Global
 		{953436C0-3624-4594-8E00-D3487EB197A7} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{386116B7-7870-4F91-9DEC-C79062882E3E} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{6F30E40B-6D85-4EE7-9474-5F82E96E1817} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B109B16-F5C2-441C-967E-5DBC3EE9FD9A}
 	EndGlobalSection
 EndGlobal
