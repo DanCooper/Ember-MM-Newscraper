@@ -73,6 +73,7 @@ Public Class Addon
                                                           Enums.ScraperCapatibility.Movie_Data_Runtime,
                                                           Enums.ScraperCapatibility.Movie_Data_Studios,
                                                           Enums.ScraperCapatibility.Movie_Data_Tagline,
+                                                          Enums.ScraperCapatibility.Movie_Data_Tags,
                                                           Enums.ScraperCapatibility.Movie_Data_Title,
                                                           Enums.ScraperCapatibility.Movie_Image_Fanart,
                                                           Enums.ScraperCapatibility.Movie_Image_Poster,
@@ -106,6 +107,7 @@ Public Class Addon
                                                           Enums.ScraperCapatibility.TVShow_Data_Runtime,
                                                           Enums.ScraperCapatibility.TVShow_Data_Status,
                                                           Enums.ScraperCapatibility.TVShow_Data_Studios,
+                                                          Enums.ScraperCapatibility.TVShow_Data_Tags,
                                                           Enums.ScraperCapatibility.TVShow_Data_Title,
                                                           Enums.ScraperCapatibility.TVShow_Image_Fanart,
                                                           Enums.ScraperCapatibility.TVShow_Image_Poster
