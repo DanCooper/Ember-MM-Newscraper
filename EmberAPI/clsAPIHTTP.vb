@@ -127,20 +127,19 @@ Public Class HTTP
         _cancelRequested = False
     End Sub
     ''' <summary>
-    ''' Download the data from the given <paramref name="URL"/>
+    ''' Download the data from the given <paramref name="url"/>
     ''' and return it as a <c>String</c>
     ''' </summary>
-    ''' <param name="URL"><c>URL</c> from which to download the data</param>
-    ''' <returns><c>String</c> representing the data retrieved from the <paramref name="URL"/>, or <c>String.Empty</c> on error.</returns>
+    ''' <param name="url"><c>URL</c> from which to download the data</param>
+    ''' <returns><c>String</c> representing the data retrieved from the <paramref name="url"/>, or <c>String.Empty</c> on error.</returns>
     ''' <remarks></remarks>
-    Public Function DownloadData(ByVal URL As String) As String
+    Public Function DownloadData(ByVal url As String, Optional encoding As System.Text.Encoding = Nothing) As String
         Dim sResponse As String = String.Empty
-        Dim cEncoding As System.Text.Encoding
 
         Clear()
 
         Try
-            wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            wrRequest = DirectCast(WebRequest.Create(url), HttpWebRequest)
             wrRequest.Timeout = _defaultRequestTimeout
             wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
             wrRequest.KeepAlive = False
@@ -148,26 +147,28 @@ Public Class HTTP
             PrepareProxy()
 
             Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-                Select Case True
+                If encoding Is Nothing Then
+                    Select Case True
                     'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
-                    Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
-                        cEncoding = System.Text.Encoding.UTF8
-                    Case Else
-                        cEncoding = System.Text.Encoding.GetEncoding(28591)
-                End Select
+                        Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
+                            encoding = System.Text.Encoding.UTF8
+                        Case Else
+                            encoding = System.Text.Encoding.GetEncoding(28591)
+                    End Select
+                End If
                 Using Ms As Stream = wrResponse.GetResponseStream
                     If wrResponse.ContentEncoding.ToLower = "gzip" Then
-                        sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                        sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), encoding, True).ReadToEnd
                     ElseIf wrResponse.ContentEncoding.ToLower = "deflate" Then
-                        sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                        sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), encoding, True).ReadToEnd
                     Else
-                        sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
+                        sResponse = New StreamReader(Ms, encoding, True).ReadToEnd
                     End If
                 End Using
                 _responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & url & ">")
         End Try
 
         Return sResponse

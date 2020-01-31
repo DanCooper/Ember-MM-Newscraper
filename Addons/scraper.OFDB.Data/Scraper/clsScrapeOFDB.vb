@@ -104,7 +104,7 @@ Namespace OFDB
             Try
                 If Not String.IsNullOrEmpty(sURL) Then
                     Dim sHTTP As New HTTP
-                    Dim HTML As String = sHTTP.DownloadData(sURL)
+                    Dim HTML As String = sHTTP.DownloadData(sURL, Text.Encoding.UTF8)
                     sHTTP = Nothing
 
                     If Not String.IsNullOrEmpty(HTML) Then
@@ -132,7 +132,7 @@ Namespace OFDB
 
                 If Not String.IsNullOrEmpty(sURL) Then
                     Dim sHTTP As New HTTP
-                    Dim HTML As String = sHTTP.DownloadData(sURL)
+                    Dim HTML As String = sHTTP.DownloadData(sURL, Text.Encoding.UTF8)
                     sHTTP = Nothing
 
                     If Not String.IsNullOrEmpty(HTML) Then
@@ -189,7 +189,7 @@ Namespace OFDB
             Try
                 If Not String.IsNullOrEmpty(strIMDBID) Then
                     Dim sHTTP As New HTTP
-                    Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", strIMDBID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
+                    Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", strIMDBID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"), Text.Encoding.UTF8)
                     sHTTP = Nothing
 
                     If Not String.IsNullOrEmpty(HTML) Then
