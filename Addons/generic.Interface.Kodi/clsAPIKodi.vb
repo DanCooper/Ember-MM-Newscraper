@@ -1245,7 +1245,7 @@ Namespace Kodi
                     Dim response As String = String.Empty
 
                     If _currenthost.APIVersionInfo.Major >= 8 Then
-                        Await _kodi.VideoLibrary.SetMovieDetailsNew(
+                        response = Await _kodi.VideoLibrary.SetMovieDetailsNew(
                             KodiElement.movieid,
                             title:=mTitle,
                             playcount:=mPlaycount,
@@ -1275,7 +1275,7 @@ Namespace Kodi
                             dateadded:=mDateAdded,
                             uniqueid:=mUniqueID).ConfigureAwait(False)
                     Else
-                        Await _kodi.VideoLibrary.SetMovieDetails(
+                        response = Await _kodi.VideoLibrary.SetMovieDetails(
                             KodiElement.movieid,
                             title:=mTitle,
                             playcount:=mPlaycount,
@@ -1400,27 +1400,37 @@ Namespace Kodi
                     artwork.landscape = mLandscape
                     artwork.poster = mPoster
 
-                    Dim response As String = Await _kodi.VideoLibrary.SetMovieSetDetails(
-                        KodiElement.setid,
-                        title:=mTitle,
-                        art:=artwork).ConfigureAwait(False)
+                    Dim response As String = String.Empty
+
+                    If _currenthost.APIVersionInfo.Major >= 10 Then
+                        response = Await _kodi.VideoLibrary.SetMovieSetDetailsNew(
+                            KodiElement.setid,
+                            title:=mTitle,
+                            art:=artwork,
+                            plot:=mPlot).ConfigureAwait(False)
+                    Else
+                        response = Await _kodi.VideoLibrary.SetMovieSetDetails(
+                            KodiElement.setid,
+                            title:=mTitle,
+                            art:=artwork).ConfigureAwait(False)
+                    End If
 
                     If response.Contains("error") Then
-                        logger.Error(String.Format("[APIKodi] [{0}] UpdateInfo_MovieSet: {1}", _currenthost.Label, response))
-                        Return False
-                    Else
-                        'Remove old textures (cache)
-                        Await RemoveTextures(mDBElement)
+                            logger.Error(String.Format("[APIKodi] [{0}] UpdateInfo_MovieSet: {1}", _currenthost.Label, response))
+                            Return False
+                        Else
+                            'Remove old textures (cache)
+                            Await RemoveTextures(mDBElement)
 
-                        'Send message to Kodi?
-                        If blnSendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & mDBElement.MovieSet.Title).ConfigureAwait(False)
+                            'Send message to Kodi?
+                            If blnSendHostNotification = True Then
+                                Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & mDBElement.MovieSet.Title).ConfigureAwait(False)
+                            End If
+                            logger.Trace(String.Format("[APIKodi] [{0}] UpdateInfo_MovieSet: ""{1}"" | {2} on host", _currenthost.Label, mDBElement.MovieSet.Title, If(bIsNew, "Added", "Updated")))
+                            Return True
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateInfo_MovieSet: ""{1}"" | {2} on host", _currenthost.Label, mDBElement.MovieSet.Title, If(bIsNew, "Added", "Updated")))
-                        Return True
-                    End If
-                Else
-                    logger.Error(String.Format("[APIKodi] [{0}] UpdateInfo_MovieSet: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.MovieSet.Title))
+                    Else
+                        logger.Error(String.Format("[APIKodi] [{0}] UpdateInfo_MovieSet: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.MovieSet.Title))
                     Return False
                 End If
 

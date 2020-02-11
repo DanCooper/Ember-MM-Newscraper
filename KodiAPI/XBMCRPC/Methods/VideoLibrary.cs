@@ -2403,6 +2403,39 @@ namespace XBMCRPC.Methods
         /// <summary>
         /// Update the given movie set with the given details
         /// </summary>
+        public async Task<string> SetMovieSetDetailsNew(
+            int setid = 0,
+            string title = null,
+            Media.Artwork.Set art = null,
+            string plot = null)
+        {
+            var jArgs = new JObject();
+            if (setid != null)
+            {
+                var jpropsetid = JToken.FromObject(setid, _client.Serializer);
+                jArgs.Add(new JProperty("setid", jpropsetid));
+            }
+            if (title != null)
+            {
+                var jproptitle = JToken.FromObject(title, _client.Serializer);
+                jArgs.Add(new JProperty("title", jproptitle));
+            }
+            if (art != null)
+            {
+                var jpropart = JToken.FromObject(art, _client.Serializer);
+                jArgs.Add(new JProperty("art", jpropart));
+            }
+            if (plot != null)
+            {
+                var jpropplot = JToken.FromObject(plot, _client.Serializer);
+                jArgs.Add(new JProperty("plot", jpropplot));
+            }
+            return await _client.GetData<string>("VideoLibrary.SetMovieSetDetails", jArgs);
+        }
+
+        /// <summary>
+        /// Update the given movie set with the given details
+        /// </summary>
         public async Task<string> SetMovieSetDetails(
             int setid=0, 
             string title=null, 
