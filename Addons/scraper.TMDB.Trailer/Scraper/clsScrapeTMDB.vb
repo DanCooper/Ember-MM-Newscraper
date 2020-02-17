@@ -91,18 +91,13 @@ Public Class clsAPITMDB
         End If
         If trailers IsNot Nothing AndAlso trailers.Results IsNot Nothing Then
             For Each Video As TMDbLib.Objects.General.Video In trailers.Results.Where(Function(f) f.Site = "YouTube")
-                Dim tLink As String = String.Format("http://www.youtube.com/watch?v={0}", Video.Key)
-                If YouTube.Scraper.IsAvailable(tLink) Then
-                    Dim tName As String = YouTube.Scraper.GetVideoTitle(tLink)
-                    alTrailers.Add(New MediaContainers.Trailer With {
-                                           .LongLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1)),
-                                           .Quality = GetVideoQuality(Video.Size),
-                                           .Scraper = "TMDB",
-                                           .ShortLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Video.Iso_639_1),
-                                           .Source = Video.Site,
-                                           .Title = tName,
-                                           .Type = GetVideoType(Video.Type),
-                                           .URLWebsite = tLink})
+                Dim nTrailer = YouTube.Scraper.GetVideoDetails(Video.Key)
+                If nTrailer IsNot Nothing Then
+                    nTrailer.LongLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1))
+                    nTrailer.Scraper = "TMDb"
+                    nTrailer.ShortLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Video.Iso_639_1)
+                    nTrailer.Type = GetVideoType(Video.Type)
+                    alTrailers.Add(nTrailer)
                 End If
             Next
         End If

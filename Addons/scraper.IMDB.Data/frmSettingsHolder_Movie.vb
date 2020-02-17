@@ -155,10 +155,6 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkTrailer_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTrailer.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
     Private Sub chkVideoTitles_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkVideoTitles.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -230,7 +226,6 @@ Public Class frmSettingsHolder_Movie
         chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         chkTitle.Text = Master.eLang.GetString(21, "Title")
         chkTop250.Text = Master.eLang.GetString(591, "Top250")
-        chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
         chkTvTitles.Text = Master.eLang.GetString(1184, "TV Movie Titles")
         chkVideoTitles.Text = Master.eLang.GetString(1185, "Video Titles")
         chkWriters.Text = Master.eLang.GetString(394, "Writers")

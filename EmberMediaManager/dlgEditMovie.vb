@@ -305,7 +305,7 @@ Public Class dlgEditMovie
 
         Try
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(tmpDBElement, tList, True, True, True) = DialogResult.OK Then
+            If dlgTrlS.ShowDialog(tmpDBElement, tList, True, True) = DialogResult.OK Then
                 tURL = dlgTrlS.Result.URLWebsite
             End If
 
@@ -1071,7 +1071,7 @@ Public Class dlgEditMovie
 
         TrailerStop()
         dlgTrlS = New dlgTrailerSelect()
-        If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True, True) = DialogResult.OK Then
+        If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True) = DialogResult.OK Then
             tResults = dlgTrlS.Result
             tmpDBElement.Trailer = tResults
             LoadTrailer(tmpDBElement.Trailer)
@@ -1084,7 +1084,7 @@ Public Class dlgEditMovie
 
         TrailerStop()
         dlgTrlS = New dlgTrailerSelect()
-        If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True, True) = DialogResult.OK Then
+        If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True) = DialogResult.OK Then
             tmpDBElement.Trailer = dlgTrlS.Result
             LoadTrailer(tmpDBElement.Trailer)
         End If

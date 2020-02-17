@@ -150,23 +150,15 @@ Public Class Apple_Trailer
         End If
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Function Scraper_Movie(ByRef dbElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
         logger.Trace("[Apple_Trailer] [Scraper_Movie] [Start]")
-
-        Dim tTitle As String = String.Empty
-
-        If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
-            tTitle = DBMovie.Movie.Title
-        Else
-            tTitle = DBMovie.Movie.OriginalTitle
+        Dim strTitle As String = String.Empty
+        If dbElement.Movie.OriginalTitleSpecified Then
+            strTitle = dbElement.Movie.OriginalTitle
+        ElseIf dbElement.movie.TitleSpecified Then
+            strTitle = dbElement.Movie.Title
         End If
-
-        Dim tAppleTrailer As New Apple.Scraper(tTitle, DBMovie.Movie.IMDB)
-
-        If tAppleTrailer.TrailerList.Count > 0 Then
-            TrailerList = tAppleTrailer.TrailerList
-        End If
-
+        If Not String.IsNullOrEmpty(strTitle) Then TrailerList = Scraper.GetMovieTrailers(strTitle)
         logger.Trace("[Apple_Trailer] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

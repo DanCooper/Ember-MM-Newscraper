@@ -157,7 +157,6 @@ Public Class IMDB_Data
         _setup_Movie.chkTagline.Checked = ConfigScrapeOptions_Movie.bMainTagline
         _setup_Movie.chkTitle.Checked = ConfigScrapeOptions_Movie.bMainTitle
         _setup_Movie.chkTop250.Checked = ConfigScrapeOptions_Movie.bMainTop250
-        _setup_Movie.chkTrailer.Checked = ConfigScrapeOptions_Movie.bMainTrailer
         _setup_Movie.chkWriters.Checked = ConfigScrapeOptions_Movie.bMainWriters
         _setup_Movie.chkYear.Checked = ConfigScrapeOptions_Movie.bMainYear
 
@@ -250,7 +249,6 @@ Public Class IMDB_Data
         ConfigScrapeOptions_Movie.bMainTagline = AdvancedSettings.GetBooleanSetting("DoTagline", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True, , Enums.ContentType.Movie)
-        ConfigScrapeOptions_Movie.bMainTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainWriters = AdvancedSettings.GetBooleanSetting("DoWriters", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainYear = AdvancedSettings.GetBooleanSetting("DoYear", True, , Enums.ContentType.Movie)
 
@@ -309,7 +307,6 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("DoTagline", ConfigScrapeOptions_Movie.bMainTagline, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions_Movie.bMainTitle, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoTop250", ConfigScrapeOptions_Movie.bMainTop250, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoTrailer", ConfigScrapeOptions_Movie.bMainTrailer, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoWriters", ConfigScrapeOptions_Movie.bMainWriters, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoYear", ConfigScrapeOptions_Movie.bMainYear, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("CountryAbbreviation", _SpecialSettings_Movie.CountryAbbreviation, , , Enums.ContentType.Movie)
@@ -368,7 +365,6 @@ Public Class IMDB_Data
         ConfigScrapeOptions_Movie.bMainTagline = _setup_Movie.chkTagline.Checked
         ConfigScrapeOptions_Movie.bMainTitle = _setup_Movie.chkTitle.Checked
         ConfigScrapeOptions_Movie.bMainTop250 = _setup_Movie.chkTop250.Checked
-        ConfigScrapeOptions_Movie.bMainTrailer = _setup_Movie.chkTrailer.Checked
         ConfigScrapeOptions_Movie.bMainWriters = _setup_Movie.chkWriters.Checked
         ConfigScrapeOptions_Movie.bMainYear = _setup_Movie.chkYear.Checked
 
@@ -430,7 +426,7 @@ Public Class IMDB_Data
         End If
 
         LoadSettings_Movie()
-        Dim _scraper As New IMDB.Scraper(_SpecialSettings_Movie)
+        Dim _scraper As New Scraper(_SpecialSettings_Movie)
 
         studio.AddRange(_scraper.GetMovieStudios(DBMovie.Movie.IMDB))
         Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -453,7 +449,7 @@ Public Class IMDB_Data
 
         Dim nMovie As MediaContainers.Movie = Nothing
         _SpecialSettings_Movie.PrefLanguage = oDBElement.Language
-        Dim _scraper As New IMDB.Scraper(_SpecialSettings_Movie)
+        Dim _scraper As New Scraper(_SpecialSettings_Movie)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_Movie)
 
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
@@ -512,7 +508,7 @@ Public Class IMDB_Data
 
         Dim nTVShow As MediaContainers.TVShow = Nothing
         _SpecialSettings_TV.PrefLanguage = oDBElement.Language
-        Dim _scraper As New IMDB.Scraper(_SpecialSettings_TV)
+        Dim _scraper As New Scraper(_SpecialSettings_TV)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
@@ -565,7 +561,7 @@ Public Class IMDB_Data
 
         Dim nTVEpisode As New MediaContainers.EpisodeDetails
         _SpecialSettings_TV.PrefLanguage = oDBTVEpisode.Language
-        Dim _scraper As New IMDB.Scraper(_SpecialSettings_TV)
+        Dim _scraper As New Scraper(_SpecialSettings_TV)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
         If oDBTVEpisode.TVEpisode.IMDBSpecified Then

@@ -2142,9 +2142,7 @@ Public Class frmMain
                     If Not ModulesManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ModifierType.MainTrailer, SearchResults) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Using dTrailerSelect As New dlgTrailerSelect
-                                'note msavazzi why is always False with Player? If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, False) = DialogResult.OK Then
-                                'DanCooper: the VLC COM interface is/was not able to call in multithread
-                                If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+                                If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True) = DialogResult.OK Then
                                     DBScrapeMovie.Trailer = dTrailerSelect.Result
                                 End If
                             End Using

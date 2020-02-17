@@ -18,6 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports Newtonsoft.Json
 Imports NLog
 Imports System.Runtime.CompilerServices
 Imports System.Text.RegularExpressions
@@ -32,178 +33,74 @@ Namespace YouTube
 
 #Region "Fields"
 
-        Shared logger As Logger = LogManager.GetCurrentClassLogger()
-        Private _youtubelinks As YouTubeLinkItemCollection
+        Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
-#Region "Events"
-
-        Public Event Exception(ByVal ex As Exception)
-
-        Public Event VideoLinksRetrieved(ByVal bSuccess As Boolean)
-
-#End Region 'Events
-
-#Region "Properties"
-
-        Public ReadOnly Property YouTubeLinks() As YouTubeLinkItemCollection
-            Get
-                If _youtubelinks Is Nothing Then
-                    _youtubelinks = New YouTubeLinkItemCollection
-                End If
-                Return _youtubelinks
-            End Get
-        End Property
-
-#End Region 'Properties
-
 #Region "Methods"
 
-        ''' <summary>
-        ''' Fetches the list of valid video links for the given URL
-        ''' </summary>
-        ''' <param name="strURL"><c>String</c> representation of the URL to query</param>
-        ''' <remarks>If the <paramref name="strURL">URL</paramref> leads to a YouTube video page, this method will parse
-        ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
-        ''' </remarks>
-        Public Sub GetVideoLinks(ByVal strURL As String)
-            Try
-                _youtubelinks = ParseYTFormats(strURL)
+        Private Shared Function GetStreams(ByVal videoInfo As VideoInfo) As MediaContainers.Trailer.StreamCollection
+            If videoInfo Is Nothing Then Return Nothing
+            Dim nStreams As New MediaContainers.Trailer.StreamCollection
+            Dim nAdaptiveFormats = SetITag(videoInfo.streamingData.adaptiveFormats)
+            Dim nFormats = SetITag(videoInfo.streamingData.formats)
+            nStreams.AudioStreams.AddRange(nAdaptiveFormats.AudioStreams)
+            nStreams.AudioStreams.AddRange(nFormats.AudioStreams)
+            nStreams.VideoStreams.AddRange(nAdaptiveFormats.VideoStreams)
+            nStreams.VideoStreams.AddRange(nFormats.VideoStreams)
+            nStreams.AudioStreams.Sort()
+            nStreams.VideoStreams.Sort()
+            Return nStreams
+        End Function
 
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        End Sub
+        Public Shared Function GetVideoDetails(ByVal videoIdOrUrl As String) As MediaContainers.Trailer
+            If String.IsNullOrEmpty(videoIdOrUrl) Then Return Nothing
+            Dim strVideoId As String = String.Empty
+            If UrlUtils.IsYouTubeUrl(videoIdOrUrl) Then
+                UrlUtils.GetVideoIDFromURL(videoIdOrUrl, strVideoId)
+            Else
+                strVideoId = videoIdOrUrl
+            End If
+            Dim nVideoInfo = GetVideoInfo(strVideoId)
+            Dim nStreams As New MediaContainers.Trailer.StreamCollection
+            If nVideoInfo IsNot Nothing AndAlso nVideoInfo.playabilityStatus.status = "OK" AndAlso nVideoInfo.streamingData.HasStreams Then
+                nStreams = GetStreams(nVideoInfo)
+            Else
+                'try parse webpage
+            End If
+            If nStreams IsNot Nothing AndAlso nStreams.VideoStreams.Count > 0 Then
+                Return New MediaContainers.Trailer With {
+                    .Duration = StringUtils.SecondsToDuration(nVideoInfo.videoDetails.lengthSeconds),
+                    .Quality = nStreams.VideoStreams(0).FormatQuality,
+                    .Source = "YouTube",
+                    .Streams = nStreams,
+                    .Title = nVideoInfo.videoDetails.title,
+                    .URLWebsite = String.Concat("http://www.youtube.com/watch?v=", nVideoInfo.videoDetails.videoId)
+                }
+            End If
+            Return Nothing
+        End Function
 
-        Public Shared Function GetVideoDetails(ByVal strVideoID As String) As String
-            If String.IsNullOrEmpty(strVideoID) Then Return String.Empty
+        Public Shared Function GetVideoInfo(ByVal videoID As String) As VideoInfo
+            If String.IsNullOrEmpty(videoID) Then Return Nothing
             Dim sHTTP As New HTTP
-            Dim result As String = sHTTP.DownloadData(String.Concat("https://www.youtube.com/get_video_info?&video_id=", strVideoID))
-            Return result
-        End Function
-        ''' <summary>
-        ''' Extract and return the title of the video from the supplied YouTUbe URL.
-        ''' </summary>
-        ''' <param name="strURL">The text to parse for the title</param>
-        Public Shared Function GetVideoTitle(ByRef strURL As String) As String
-            If UrlUtils.IsYouTubeURL(strURL) Then
-                Dim raw_video_info As String = GetVideoDetails(UrlUtils.GetVideoID(strURL))
-                Dim rawAllData As Dictionary(Of String, String) = ToStringTable(raw_video_info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
-                If rawAllData.ContainsKey("title") Then
-                    Return HttpUtility.UrlDecode(rawAllData("title"))
-                ElseIf rawAllData.ContainsKey("reason") Then
-                    Return HttpUtility.UrlDecode(rawAllData("reason"))
-                Else
-                    Return "Error while parsing Title"
-                End If
-            End If
-            Return String.Empty
-        End Function
-
-        Public Shared Function IsAvailable(ByVal strURL As String) As Boolean
-            If UrlUtils.IsYouTubeURL(strURL) Then
-                Dim raw_video_info As String = GetVideoDetails(UrlUtils.GetVideoID(strURL))
-                If Not String.IsNullOrEmpty(raw_video_info) Then
-                    Dim rawAllData As Dictionary(Of String, String) = ToStringTable(raw_video_info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
-                    If Not rawAllData.ContainsKey("errorcode") Then
-                        Return True
-                    End If
-                Else
-                    Return False
-                End If
-            End If
-            Return False
-        End Function
-
-        Private Shared Function ToStringTable(s As String) As IEnumerable(Of String())
-            Return s.Split("&"c).[Select](Function(entry) entry.Split("="c))
-        End Function
-
-        ''' <summary>
-        ''' Fetches the list of valid video links for the given URL
-        ''' </summary>
-        ''' <param name="strURL"><c>String</c> representation of the URL to query</param>
-        ''' <remarks>Note that most callers should use <c>GetVideoLinks(ByVal url As String)</c> instead of this <c>Private</c> function.
-        ''' If the <paramref name="strURL">URL</paramref> leads to a YouTube video page, this method will parse
-        ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
-        ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.
-        ''' </remarks>
-        Private Function ParseYTFormats(ByVal strURL As String) As YouTubeLinkItemCollection
-            Dim DownloadLinks As New YouTubeLinkItemCollection
-
-            If UrlUtils.IsYouTubeURL(strURL) Then
-                Dim rawVideo_Info As String = GetVideoDetails(UrlUtils.GetVideoID(strURL))
-                Dim rawStream_Map As String = String.Empty
-                Dim rawDash_Map As String = String.Empty
-
-                Dim rawAllData As Dictionary(Of String, String) = ToStringTable(rawVideo_Info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
-
-                Try
-                    rawStream_Map = HttpUtility.UrlDecode(rawAllData("url_encoded_fmt_stream_map"))
-                    rawDash_Map = HttpUtility.UrlDecode(rawAllData("adaptive_fmts"))
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-
-                Try
-                    Dim StreamList() As StreamInfo = New StreamInfo() {}
-                    Dim DashList() As StreamInfo = New StreamInfo() {}
-
-                    If Not String.IsNullOrEmpty(rawStream_Map) Then
-                        StreamList = rawStream_Map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
-                    End If
-
-                    If Not String.IsNullOrEmpty(rawDash_Map) Then
-                        DashList = rawDash_Map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
-                    End If
-
-                    If StreamList.Count > 0 Then
-                        Dim fmtDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(StreamList)
-                        If fmtDownloadlinks IsNot Nothing AndAlso fmtDownloadlinks.AudioLinks.Count > 0 Then
-                            DownloadLinks.AudioLinks.AddRange(fmtDownloadlinks.AudioLinks)
-                        End If
-                        If fmtDownloadlinks IsNot Nothing AndAlso fmtDownloadlinks.VideoLinks.Count > 0 Then
-                            DownloadLinks.VideoLinks.AddRange(fmtDownloadlinks.VideoLinks)
-                        End If
-                    End If
-
-                    If DashList.Count > 0 Then
-                        Dim dashDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(DashList)
-                        If dashDownloadlinks IsNot Nothing AndAlso dashDownloadlinks.AudioLinks.Count > 0 Then
-                            DownloadLinks.AudioLinks.AddRange(dashDownloadlinks.AudioLinks)
-                        End If
-                        If dashDownloadlinks IsNot Nothing AndAlso dashDownloadlinks.VideoLinks.Count > 0 Then
-                            DownloadLinks.VideoLinks.AddRange(dashDownloadlinks.VideoLinks)
-                        End If
-                    End If
-
-                    DownloadLinks.AudioLinks.Sort()
-                    DownloadLinks.VideoLinks.Sort()
-
-                    DownloadLinks.BestQuality = DownloadLinks.VideoLinks.Item(0).FormatQuality
-                    DownloadLinks.Title = HttpUtility.UrlDecode(rawAllData("title"))
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-            End If
-
-            Return DownloadLinks
+            Dim rawResult As String = HttpUtility.UrlDecode(sHTTP.DownloadData(String.Concat("https://www.youtube.com/get_video_info?&video_id=", videoID)))
+            rawResult = Regex.Match(rawResult, "{.*}").Value
+            rawResult = Regex.Replace(rawResult, "\u0026", "&")
+            Dim videoInfo = JsonConvert.DeserializeObject(Of VideoInfo)(rawResult)
+            Return videoInfo
         End Function
         ''' <summary>
         ''' Search for the given string on YouTube
         ''' </summary>
-        ''' <param name="mName"><c>String</c> to search for</param>
+        ''' <param name="searchString"><c>String</c> to search for</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function SearchOnYouTube(ByVal mName As String) As List(Of MediaContainers.Trailer)
+        Public Shared Function SearchOnYouTube(ByVal searchString As String) As List(Of MediaContainers.Trailer)
             Dim tHTTP As New HTTP
             Dim tList As New List(Of MediaContainers.Trailer)
-            Dim strDuration As String = String.Empty
-            Dim strURL As String = String.Empty
-            Dim strTitle As String = String.Empty
 
-            Dim Html As String = tHTTP.DownloadData(String.Concat("http://www.youtube.com/results?search_query=", HttpUtility.UrlEncode(mName), "&sp=EgIQAQ%253D%253D"))
+            Dim Html As String = tHTTP.DownloadData(String.Concat("http://www.youtube.com/results?search_query=", HttpUtility.UrlEncode(searchString), "&sp=EgIQAQ%253D%253D"))
             If Html.ToLower.Contains("page not found") Then
                 Html = String.Empty
             End If
@@ -212,517 +109,523 @@ Namespace YouTube
 
             Try
                 Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline, TimeSpan.FromSeconds(1))
-
                 For ctr As Integer = 0 To Result.Count - 1
-                    strDuration = Result.Item(ctr).Groups("DURATION").Value
-                    strURL = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups("URL").Value)
-                    strTitle = HttpUtility.HtmlDecode(Result.Item(ctr).Groups("TITLE").Value)
-                    If Not strTitle = "__title__" AndAlso Not strTitle = "__channel_name__" Then
-                        tList.Add(New MediaContainers.Trailer With {.URLWebsite = strURL, .Title = strTitle, .Duration = strDuration, .Source = "YouTube"})
-                    End If
+                    Dim strURL = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups("URL").Value)
+                    Dim nTrailer = GetVideoDetails(strURL)
+                    If nTrailer IsNot Nothing Then tList.Add(nTrailer)
                 Next
             Catch ex As TimeoutException
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return tList
         End Function
 
-        Private Function SelectYTiTag(ByVal StreamList() As StreamInfo) As YouTubeLinkItemCollection
-            Dim DownloadLinks As New YouTubeLinkItemCollection
-            For Each tStream As StreamInfo In StreamList
-                Dim aLink As New AudioLinkItem
-                Dim vLink As New VideoLinkItem
+        Private Shared Function SetITag(ByVal streamList() As VideoInfo.Format) As MediaContainers.Trailer.StreamCollection
+            Dim nStreams As New MediaContainers.Trailer.StreamCollection
+            For Each tStream In streamList
+                Dim aLink As MediaContainers.Trailer.AudioStream = Nothing
+                Dim vLink As MediaContainers.Trailer.VideoStream = Nothing
 
-                Select Case tStream.ITag
-                    ' **********************************************************************
-                    ' see all itags http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs
-                    ' **********************************************************************
-                    Case 5
-                        vLink.Description = "240p (FLV, H.263)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.FLV
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ240p
-                        vLink.isDash = False
-                    Case 6 'Discontinued
-                        vLink.Description = "270p (FLV, H.263)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.FLV
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
-                        vLink.isDash = False
-                    Case 13 'Discontinued
-                        vLink.Description = "144p (3GP, MPEG-4)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.v3GP
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ144p
-                        vLink.isDash = False
-                    Case 17
-                        vLink.Description = "144p (3GP, MPEG-4)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.v3GP
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ144p
-                        vLink.isDash = False
-                    Case 18
-                        vLink.Description = "360p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
-                        vLink.isDash = False
-                    Case 22
-                        vLink.Description = "720p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
-                        vLink.isDash = False
-                    Case 34 'Discontinued
-                        vLink.Description = "360p (FLV, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.FLV
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
-                        vLink.isDash = False
-                    Case 35 'Discontinued
-                        vLink.Description = "480p (FLV, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.FLV
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
-                        vLink.isDash = False
-                    Case 36
-                        vLink.Description = "240p (3GP, MPEG-4)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.v3GP
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ240p
-                        vLink.isDash = False
-                    Case 37 'Discontinued
-                        vLink.Description = "1080p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p
-                        vLink.isDash = False
-                    Case 38 'Discontinued
-                        vLink.Description = "1536p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
-                        vLink.isDash = False
-                    Case 43
-                        vLink.Description = "360p (WebM, VP8)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
-                        vLink.isDash = False
-                    Case 44 'Discontinued
-                        vLink.Description = "480p (WebM, VP8)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
-                        vLink.isDash = False
-                    Case 45 'Discontinued
-                        vLink.Description = "720p (WebM, VP8)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
-                        vLink.isDash = False
-                    Case 46 'Discontinued
-                        vLink.Description = "1080p (WebM, VP8)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p
-                        vLink.isDash = False
-                    Case 82
-                        vLink.Description = "3D 360p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
-                        vLink.isDash = False
-                    Case 83
-                        vLink.Description = "3D 480p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
-                        vLink.isDash = False
-                    Case 84
-                        vLink.Description = "3D 720p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
-                        vLink.isDash = False
-                    Case 85
-                        vLink.Description = "3D 520p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
-                        vLink.isDash = False
-                    Case 100
-                        vLink.Description = "3D 360p (WebM, VP8)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
-                        vLink.isDash = False
-                    Case 101 'Discontinued
-                        vLink.Description = "3D 480p (WebM, VP8)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
-                        vLink.isDash = False
-                    Case 102 'Discontinued
-                        vLink.Description = "3D 720p (WebM, VP8)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
-                        vLink.isDash = False
+                Select Case tStream.itag
+                    Case 5 'FLV
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H263,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ240p,
+                            .IsDash = False
+                        }
+                    Case 6 'FLV
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H263,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ240p,
+                            .IsDash = False
+                        }
+                    Case 13 'ThreeGP
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H263,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ144p15fps,
+                            .IsDash = False
+                        }
+                    Case 17 'ThreeGP
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ144p,
+                            .IsDash = False
+                        }
+                    Case 18 'MP4
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ360p,
+                            .IsDash = False
+                        }
+                    Case 22 'MP4
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD720p,
+                            .IsDash = False
+                        }
+                    Case 34 'FLV
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ360p,
+                            .IsDash = False
+                        }
+                    Case 35 'FLV
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = False
+                        }
+                    Case 36 'ThreeGP
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ240p,
+                            .IsDash = False
+                        }
+                    Case 37 'MP4
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1080p,
+                            .IsDash = False
+                        }
+                    Case 38 'MP4
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD2160p,
+                            .IsDash = False
+                        }
+                    Case 43 'WebM
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ360p,
+                            .IsDash = False
+                        }
+                    Case 44 'WebM
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = False
+                        }
+                    Case 45 'WebM
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD720p,
+                            .IsDash = False
+                        }
+                    Case 46 'WebM
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1080p,
+                            .IsDash = False
+                        }
+                    Case 82 'MP4
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ360p,
+                            .IsDash = False
+                        }
+                    Case 83 'MP4
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = False
+                        }
+                    Case 84 'MP4
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD720p,
+                            .IsDash = False
+                        }
+                    Case 85 'MP4
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1080p,
+                            .IsDash = False
+                        }
+                    Case 100 'WebM
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ360p,
+                            .IsDash = False
+                        }
+                    Case 101 'WebM
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ360p,
+                            .IsDash = False
+                        }
+                    Case 102 'WebM
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD720p,
+                            .IsDash = False
+                        }
                     Case 133 'DASH (video only)
-                        vLink.Description = "240p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ240p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ240p,
+                            .IsDash = True
+                        }
                     Case 134 'DASH (video only)
-                        vLink.Description = "360p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ360p,
+                            .IsDash = True
+                        }
                     Case 135 'DASH (video only)
-                        vLink.Description = "480p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = True
+                        }
                     Case 136 'DASH (video only)
-                        vLink.Description = "720p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD720p,
+                            .IsDash = True
+                        }
                     Case 137 'DASH (video only)
-                        vLink.Description = "1080p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1080p,
+                            .IsDash = True
+                        }
                     Case 139 'DASH (audio only)
-                        aLink.Description = "48 kbit/s (MP4, AAC)"
-                        aLink.FormatCodec = Enums.TrailerAudioCodec.MP4
-                        aLink.FormatQuality = Enums.TrailerAudioQuality.AAC48kbps
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.AAC,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q48kbps
+                        }
                     Case 140 'DASH (audio only)
-                        aLink.Description = "128 kbit/s (MP4, AAC)"
-                        aLink.FormatCodec = Enums.TrailerAudioCodec.MP4
-                        aLink.FormatQuality = Enums.TrailerAudioQuality.AAC128kbps
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.AAC,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q128kbps
+                        }
                     Case 141 'DASH (audio only)
-                        aLink.Description = "256 kbit/s (MP4, AAC)"
-                        aLink.FormatCodec = Enums.TrailerAudioCodec.MP4
-                        aLink.FormatQuality = Enums.TrailerAudioQuality.AAC256kbps
-                    Case 160 'DASH (video only, 15 FPS)
-                        vLink.Description = "144p (MP4, H.264, 15 FPS)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ144p15fps
-                        vLink.isDash = True
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.AAC,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q256kbps
+                        }
+                    Case 160 'DASH (video only, 15 fps)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ144p15fps,
+                            .IsDash = True
+                        }
                     Case 171 'DASH (audio only)
-                        aLink.Description = "128 kbit/s (WebM, Vorbis)"
-                        aLink.FormatCodec = Enums.TrailerAudioCodec.WebM
-                        aLink.FormatQuality = Enums.TrailerAudioQuality.Vorbis128kbps
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.Vorbis,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q128kbps
+                        }
                     Case 172 'DASH (audio only)
-                        aLink.Description = "192 kbit/s (WebM, Vorbis)"
-                        aLink.FormatCodec = Enums.TrailerAudioCodec.WebM
-                        aLink.FormatQuality = Enums.TrailerAudioQuality.Vorbis192kbps
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.Vorbis,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q192kbps
+                        }
                     Case 242 'DASH (video only)
-                        vLink.Description = "240p (WebM, VP9)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ240p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ240p,
+                            .IsDash = True
+                        }
                     Case 243 'DASH (video only)
-                        vLink.Description = "360p (WebM, VP9)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ360p,
+                            .IsDash = True
+                        }
                     Case 244 'DASH (video only)
-                        vLink.Description = "480p (WebM, VP9)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = True
+                        }
+                    Case 245 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = True
+                        }
+                    Case 246 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = True
+                        }
                     Case 247 'DASH (video only)
-                        vLink.Description = "720p (WebM, VP9)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD720p,
+                            .IsDash = True
+                        }
                     Case 248 'DASH (video only)
-                        vLink.Description = "1080p (WebM, VP9)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1080p,
+                            .IsDash = True
+                        }
+                    Case 249 'DASH (audio only)
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.Opus,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q48kbps
+                        }
+                    Case 250 'DASH (audio only)
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.Opus,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q64kbps
+                        }
+                    Case 251 'DASH (audio only)
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.Opus,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q128kbps
+                        }
+                    Case 256 'DASH (audio only)
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.AAC_SPATIAL,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q192kbps
+                        }
+                    Case 258 'DASH (audio only)
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.AAC_SPATIAL,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q384kbps
+                        }
                     Case 264 'DASH (video only)
-                        vLink.Description = "1140p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD1440p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1440p,
+                            .IsDash = True
+                        }
                     Case 266 'DASH (video only)
-                        vLink.Description = "2160p (MP4, H.264)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD2160p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD2160p,
+                            .IsDash = True
+                        }
                     Case 271 'DASH (video only)
-                        vLink.Description = "1140p (WebM, VP9)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD1440p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1440p,
+                            .IsDash = True
+                        }
                     Case 272 'DASH (video only)
-                        vLink.Description = "2160p (WebM, VP9)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD2160p
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD2160p,
+                            .IsDash = True
+                        }
                     Case 278 'DASH (video only)
-                        vLink.Description = "144p (WebM, VP9)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.SQ144p
-                        vLink.isDash = True
-                    Case 298 'DASH (video only, 60 FPS)
-                        vLink.Description = "720p (MP4, H.264, 60 FPS)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p60fps
-                        vLink.isDash = True
-                    Case 299 'DASH (video only, 60 FPS)
-                        vLink.Description = "1080p (MP4, H.264, 60 FPS)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps
-                        vLink.isDash = True
-                    Case 302 'DASH (video only, 60 FPS)
-                        vLink.Description = "720p (WebM, VP9, 60 FPS)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p60fps
-                        vLink.isDash = True
-                    Case 303 'DASH (video only, 60 FPS)
-                        vLink.Description = "1080p (WebM, VP9, 60 FPS)"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps
-                        vLink.isDash = True
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ144p,
+                            .IsDash = True
+                        }
+                    Case 298 'DASH (video only, 60 fps)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD720p60fps,
+                            .IsDash = True
+                        }
+                    Case 299 'DASH (video only, 60 fps)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.H264,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps,
+                            .IsDash = True
+                        }
+                    Case 302 'DASH (video only, 60 fps)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD720p60fps,
+                            .IsDash = True
+                        }
+                    Case 303 'DASH (video only, 60 FPSfps)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps,
+                            .IsDash = True
+                        }
+                    Case 308 'DASH (video only, 60 FPSfps)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1440p,
+                            .IsDash = True
+                        }
+                    Case 313 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP9,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1080p,
+                            .IsDash = True
+                        }
+                    Case 325 'DASH (audio only)
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.DTSE_SPATIAL,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q384kbps
+                        }
+                    Case 327 'DASH (audio only)
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.AAC_SPATIAL,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q256kbps
+                        }
+                    Case 328 'DASH (audio only)
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.EC3_SPATIAL,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q384kbps
+                        }
+                    Case 380 'DASH (audio only)
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.AC3_SPATIAL,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q384kbps
+                        }
+                    Case 339 'DASH (audio only)
+                        aLink = New MediaContainers.Trailer.AudioStream With {
+                            .FormatCodec = Enums.TrailerAudioCodec.Vorbis_SPATIAL,
+                            .FormatQuality = Enums.TrailerAudioQuality.Q256kbps
+                        }
+                    Case 394 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.AV1,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ144p,
+                            .IsDash = True
+                        }
+                    Case 395 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.AV1,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ240p,
+                            .IsDash = True
+                        }
+                    Case 396 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.AV1,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ360p,
+                            .IsDash = True
+                        }
+                    Case 397 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.AV1,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = True
+                        }
+                    Case 398 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.AV1,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD720p,
+                            .IsDash = True
+                        }
+                    Case 399 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.AV1,
+                            .FormatQuality = Enums.TrailerVideoQuality.HD1080p,
+                            .IsDash = True
+                        }
                     Case Else
-                        vLink.Description = "Unknown"
-                        vLink.FormatCodec = Enums.TrailerVideoCodec.UNKNOWN
-                        vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
-                        vLink.isDash = False
+                        _Logger.Warn(String.Format("Unknown YouTube ITAG: {0}", tStream.itag))
                 End Select
 
-                If Not String.IsNullOrEmpty(vLink.Description) Then
-                    If vLink.isDash Then
-                        vLink.URL = tStream.DownloadUrlDash
-                    Else
-                        vLink.URL = tStream.DownloadUrl
-                    End If
-
-                    If Not String.IsNullOrEmpty(vLink.URL) Then
-                        DownloadLinks.VideoLinks.Add(vLink)
-                    End If
-                ElseIf Not String.IsNullOrEmpty(aLink.Description) Then
-                    aLink.URL = tStream.DownloadUrlDash
-
-                    If Not String.IsNullOrEmpty(aLink.URL) Then
-                        DownloadLinks.AudioLinks.Add(aLink)
-                    End If
+                If vLink IsNot Nothing AndAlso Not String.IsNullOrEmpty(tStream.url) Then
+                    vLink.URL = tStream.url
+                    nStreams.VideoStreams.Add(vLink)
+                ElseIf aLink IsNot Nothing AndAlso Not String.IsNullOrEmpty(tStream.url) Then
+                    aLink.URL = tStream.url
+                    nStreams.AudioStreams.Add(aLink)
                 End If
             Next
 
-            Return DownloadLinks
+            Return nStreams
         End Function
 
 #End Region 'Methods
 
-    End Class
+#Region "Nested Types"
 
-    Public Class StreamInfo
-
-#Region "Fields"
-
-        Shared logger As Logger = LogManager.GetCurrentClassLogger()
-
-        Private m_Bitrate As String
-        Private m_Clen As String
-        Private m_Fallback_Host As String
-        Private m_FPS As String
-        Private m_ITag As Integer
-        Private m_Index As String
-        Private m_Init As String
-        Private m_LMT As String
-        Private m_ProjectionType As String
-        Private m_Quality As String
-        Private m_QualityLabel As String
-        Private m_S As String
-        Private m_Sig As String
-        Private m_Size As String
-        Private m_Stereo3D As String
-        Private m_Type As String = String.Empty
-        Private m_URL As String = String.Empty
-
-#End Region 'Fields
+        Public Class VideoInfo
 
 #Region "Properties"
 
-        Public Property Bitrate() As String
-            Get
-                Return m_Bitrate
-            End Get
-            Set(value As String)
-                m_Bitrate = value
-            End Set
-        End Property
-
-        Public Property Clen() As String
-            Get
-                Return m_Clen
-            End Get
-            Set(value As String)
-                m_Clen = value
-            End Set
-        End Property
-
-        Public ReadOnly Property DownloadUrl() As String
-            Get
-                Return String.Format("{0}&fallback_host={1}&signature={2}", Url, Fallback_Host, Sig)
-            End Get
-        End Property
-
-        Public ReadOnly Property DownloadUrlDash() As String
-            Get
-                Return Url
-            End Get
-        End Property
-
-        Public Property Fallback_Host() As String
-            Get
-                Return m_Fallback_Host
-            End Get
-            Set(value As String)
-                m_Fallback_Host = value
-            End Set
-        End Property
-
-        Public Property FPS() As String
-            Get
-                Return m_FPS
-            End Get
-            Set(value As String)
-                m_FPS = value
-            End Set
-        End Property
-
-        Public ReadOnly Property FileType() As String
-            Get
-                Return Type.Split(";"c)(0).Split("/"c)(1).Replace("x-", "")
-            End Get
-        End Property
-
-        Public Property ITag() As Integer
-            Get
-                Return m_ITag
-            End Get
-            Set(value As Integer)
-                m_ITag = value
-            End Set
-        End Property
-
-        Public Property Index() As String
-            Get
-                Return m_Index
-            End Get
-            Set(value As String)
-                m_Index = value
-            End Set
-        End Property
-
-        Public Property Init() As String
-            Get
-                Return m_Init
-            End Get
-            Set(value As String)
-                m_Init = value
-            End Set
-        End Property
-
-        Public Property LMT() As String
-            Get
-                Return m_LMT
-            End Get
-            Set(value As String)
-                m_LMT = value
-            End Set
-        End Property
-
-        Public Property Projection_Type() As String
-            Get
-                Return m_ProjectionType
-            End Get
-            Set(value As String)
-                m_ProjectionType = value
-            End Set
-        End Property
-
-        Public Property Quality() As String
-            Get
-                Return m_Quality
-            End Get
-            Set(value As String)
-                m_Quality = value
-            End Set
-        End Property
-
-        Public Property Quality_Label() As String
-            Get
-                Return m_QualityLabel
-            End Get
-            Set(value As String)
-                m_QualityLabel = value
-            End Set
-        End Property
-
-        Public Property S() As String
-            Get
-                Return m_S
-            End Get
-            Set(value As String)
-                m_S = value
-            End Set
-        End Property
-
-        Public Property Sig() As String
-            Get
-                Return m_Sig
-            End Get
-            Set(value As String)
-                m_Sig = value
-            End Set
-        End Property
-
-        Public Property Size() As String
-            Get
-                Return m_Size
-            End Get
-            Set(value As String)
-                m_Size = value
-            End Set
-        End Property
-
-        Public Property Stereo3D() As String
-            Get
-                Return m_Stereo3D
-            End Get
-            Set(value As String)
-                m_Stereo3D = value
-            End Set
-        End Property
-
-        Public Property Type() As String
-            Get
-                Return m_Type
-            End Get
-            Set(value As String)
-                m_Type = HttpUtility.UrlDecode(value)
-            End Set
-        End Property
-
-        Public Property Url() As String
-            Get
-                Return m_URL
-            End Get
-            Set(value As String)
-                m_URL = HttpUtility.UrlDecode(value)
-            End Set
-        End Property
+            Public Property playabilityStatus As New PlayabilityStatusItem
+            Public Property streamingData As New StreamingDataItem
+            Public Property videoDetails As New VideoDetailsItem
 
 #End Region 'Properties
 
-#Region "Methods"
+#Region "Nested Types"
 
-        Public Shared Function FromStringTable(table As IEnumerable(Of String())) As StreamInfo
-            Dim info As New StreamInfo()
-            Dim infoType As Type = GetType(StreamInfo)
+            Public Class PlayabilityStatusItem
+                Public Property status As String
+                Public Property playableInEmbed As Boolean
+                Public Property contextParams As String
+            End Class
 
-            Dim properties = infoType.GetProperties().ToDictionary(Function(item) item.Name.ToLower())
+            Public Class Format
+                Public Property itag As Integer
+                Public Property url As String
+                Public Property mimeType As String
+                Public Property bitrate As Integer
+                Public Property width As Integer
+                Public Property height As Integer
+                Public Property lastModified As String
+                Public Property contentLength As String
+                Public Property quality As String
+                Public Property qualityLabel As String
+                Public Property projectionType As String
+                Public Property averageBitrate As Integer
+                Public Property audioQuality As String
+                Public Property approxDurationMs As String
+                Public Property audioSampleRate As String
+                Public Property audioChannels As Integer
+            End Class
 
-            For Each entry In table
-                Try
-                    properties(entry(0).ToLower()).SetValue(info, Convert.ChangeType(entry(1), properties(entry(0).ToLower()).PropertyType))
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                    logger.Error(String.Format("Tkey: ""{0}"", key: ""{1}""", entry(0), entry(1)))
-                End Try
-            Next
+            Public Class Range
+                Public Property start As String
+                Public Property [end] As String
+            End Class
 
-            Return info
-        End Function
+            Public Class ColorInfo
+                Public Property primaries As String
+                Public Property transferCharacteristics As String
+                Public Property matrixCoefficients As String
+            End Class
 
-#End Region 'Methods
+            Public Class AdaptiveFormat
+                Inherits Format
+                Public Property initRange As New Range
+                Public Property indexRange As New Range
+                Public Property fps As Integer
+                Public Property colorInfo As New ColorInfo
+                Public Property highReplication As Boolean?
+            End Class
+
+            Public Class StreamingDataItem
+                Public Property expiresInSeconds As String
+                Public Property formats As Format()
+                Public ReadOnly Property HasStreams As Boolean
+                    Get
+                        Return formats IsNot Nothing AndAlso formats.Count > 0 OrElse adaptiveFormats IsNot Nothing AndAlso adaptiveFormats.Count > 0
+                    End Get
+                End Property
+                Public Property adaptiveFormats As AdaptiveFormat()
+            End Class
+
+            Public Class VideoDetailsItem
+                Public Property videoId As String
+                Public Property title As String
+                Public Property lengthSeconds As String
+                Public Property keywords As String()
+                Public Property channelId As String
+                Public Property isOwnerViewing As Boolean
+                Public Property shortDescription As String
+                Public Property isCrawlable As Boolean
+                Public Property averageRating As Double
+                Public Property allowRatings As Boolean
+                Public Property viewCount As String
+                Public Property author As String
+                Public Property isPrivate As Boolean
+                Public Property isUnpluggedCorpus As Boolean
+                Public Property isLiveContent As Boolean
+            End Class
+
+#End Region 'Nested Types
+
+        End Class
+
+#End Region 'Nested Types
 
     End Class
 
@@ -730,95 +633,29 @@ Namespace YouTube
 
 #Region "Fields"
 
-        Private Shared ReadOnly YouTubeURLRegex As Regex = New Regex("youtu(?:\.be|be\.com)/(?:(.*)v(/|=)|(.*/)?)([a-zA-Z0-9-_]+)", RegexOptions.IgnoreCase)
+        Private Shared ReadOnly YouTubeUrlRegex As Regex = New Regex("youtu(?:\.be|be\.com)/(?:(.*)v(/|=)|(.*/)?)([a-zA-Z0-9-_]+)", RegexOptions.IgnoreCase)
 
 #End Region 'Fields
 
 #Region "Methods"
 
-        Public Shared Function GetVideoID(ByVal strURL As String) As String
-            Dim ytMatch As Match = YouTubeURLRegex.Match(strURL)
+        Public Shared Function GetVideoIDFromURL(ByVal url As String, ByRef id As String) As Boolean
+            Dim ytMatch As Match = YouTubeUrlRegex.Match(url)
             If ytMatch.Success Then
-                Return ytMatch.Groups(4).ToString
+                id = ytMatch.Groups(4).ToString
+                Return True
             Else
-                Return String.Empty
+                id = String.Empty
+                Return False
             End If
         End Function
 
-        Public Shared Function IsYouTubeURL(ByVal strURL As String) As Boolean
-            Dim result As Match = YouTubeURLRegex.Match(strURL)
+        Public Shared Function IsYouTubeUrl(ByVal url As String) As Boolean
+            Dim result As Match = YouTubeUrlRegex.Match(url)
             Return result.Success
         End Function
 
 #End Region 'Methods
-
-    End Class
-
-    Public Class AudioLinkItem
-        Implements IComparable(Of AudioLinkItem)
-
-#Region "Properties"
-
-        Public Property Description() As String = String.Empty
-
-        Public Property FormatCodec() As Enums.TrailerAudioCodec = Enums.TrailerAudioCodec.UNKNOWN
-
-        Public Property FormatQuality() As Enums.TrailerAudioQuality = Enums.TrailerAudioQuality.UNKNOWN
-
-        Public Property URL() As String = String.Empty
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Function CompareTo(ByVal other As AudioLinkItem) As Integer Implements IComparable(Of AudioLinkItem).CompareTo
-            Return (FormatQuality).CompareTo(other.FormatQuality)
-        End Function
-
-#End Region 'Methods
-
-    End Class
-
-    Public Class VideoLinkItem
-        Implements IComparable(Of VideoLinkItem)
-
-#Region "Properties"
-
-        Public Property Description() As String = String.Empty
-
-        Public Property FormatCodec() As Enums.TrailerVideoCodec = Enums.TrailerVideoCodec.UNKNOWN
-
-        Public Property FormatQuality() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.UNKNOWN
-
-        Public Property isDash() As Boolean = False
-
-        Public Property URL() As String = String.Empty
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Function CompareTo(ByVal other As VideoLinkItem) As Integer Implements IComparable(Of VideoLinkItem).CompareTo
-            Return (FormatQuality).CompareTo(other.FormatQuality)
-        End Function
-
-#End Region 'Methods
-
-    End Class
-
-    Public Class YouTubeLinkItemCollection
-
-#Region "Properties"
-
-        Public Property AudioLinks() As List(Of AudioLinkItem) = New List(Of AudioLinkItem)
-
-        Public Property BestQuality() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.Any
-
-        Public Property Title() As String = String.Empty
-
-        Public Property VideoLinks() As List(Of VideoLinkItem) = New List(Of VideoLinkItem)
-
-#End Region 'Properties 
 
     End Class
 

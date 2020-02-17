@@ -973,21 +973,31 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum TrailerAudioCodec As Integer
-        MP4 = 0
-        WebM = 1
-        UNKNOWN = 99
+        AAC = 0
+        AAC_SPATIAL = 1
+        AC3_SPATIAL = 2
+        DTSE_SPATIAL = 3
+        EC3_SPATIAL = 4
+        Opus = 5
+        Opus_SPATIAL = 6
+        Vorbis = 7
+        Vorbis_SPATIAL = 8
+        UNKNOWN = 9
+        Any = 99
     End Enum
     ''' <summary>
     ''' Enum representing the trailer quality options
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum TrailerAudioQuality As Integer
-        AAC256kbps = 0
-        AAC128kbps = 1
-        AAC48kbps = 2
-        Vorbis192kbps = 3
-        Vorbis128kbps = 4
-        UNKNOWN = 5
+        Q512kbps = 0
+        Q384kbps = 1
+        Q256kbps = 2
+        Q192kbps = 3
+        Q128kbps = 4
+        Q64kbps = 5
+        Q48kbps = 6
+        UNKNOWN = 7
         Any = 99
     End Enum
     ''' <summary>
@@ -1006,10 +1016,12 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum TrailerVideoCodec As Integer
-        MP4 = 0
-        WebM = 1
-        v3GP = 2
-        FLV = 3
+        H264 = 0
+        VP9 = 1
+        H263 = 2
+        VP8 = 3
+        VP9_HDR = 4
+        AV1 = 5
         UNKNOWN = 4
     End Enum
     ''' <summary>
@@ -1019,17 +1031,18 @@ Public Class Enums
     Public Enum TrailerVideoQuality As Integer
         HD2160p = 0
         HD2160p60fps = 1
-        HD1440p = 2
-        HD1080p = 3
-        HD1080p60fps = 4
-        HD720p = 5
-        HD720p60fps = 6
-        HQ480p = 7 'or 576 for 4:3 media
-        SQ360p = 8
-        SQ240p = 9 'or 270
-        SQ144p = 10
-        SQ144p15fps = 11
-        UNKNOWN = 12
+        HD1440p60fps = 2
+        HD1440p = 3
+        HD1080p = 4
+        HD1080p60fps = 5
+        HD720p = 6
+        HD720p60fps = 7
+        HQ480p = 8 'or 576 for 4:3 media
+        SQ360p = 9
+        SQ240p = 10 'or 270
+        SQ144p = 11
+        SQ144p15fps = 12
+        UNKNOWN = 13
         Any = 99
     End Enum
 

@@ -214,7 +214,6 @@ Public Class HTTP
             PrepareProxy()
 
             Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-
                 Try
                     urlExt = Path.GetExtension(URL)
                     urlExtWeb = String.Concat(".", wrResponse.ContentType.Replace("video/", String.Empty).Trim)
@@ -240,7 +239,6 @@ Public Class HTTP
 
 
                 If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
-
                     Using Ms As Stream = wrResponse.GetResponseStream
                         If LocalFile.Length > 0 Then
 

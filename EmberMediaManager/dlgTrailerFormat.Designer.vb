@@ -22,18 +22,15 @@ Partial Class dlgTrailerFormat
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrailerFormat))
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.lbVideoFormats = New System.Windows.Forms.ListBox()
         Me.gbVideoFormats = New System.Windows.Forms.GroupBox()
-        Me.pnlStatus = New System.Windows.Forms.Panel()
-        Me.lblStatus = New System.Windows.Forms.Label()
-        Me.prbStatus = New System.Windows.Forms.ProgressBar()
         Me.pnlTrailerFormat = New System.Windows.Forms.Panel()
         Me.gbAudioFormats = New System.Windows.Forms.GroupBox()
         Me.lbAudioFormats = New System.Windows.Forms.ListBox()
         Me.gbVideoFormats.SuspendLayout()
-        Me.pnlStatus.SuspendLayout()
         Me.pnlTrailerFormat.SuspendLayout()
         Me.gbAudioFormats.SuspendLayout()
         Me.SuspendLayout()
@@ -60,7 +57,6 @@ Partial Class dlgTrailerFormat
         '
         'lbVideoFormats
         '
-        Me.lbVideoFormats.Enabled = False
         Me.lbVideoFormats.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbVideoFormats.FormattingEnabled = True
         Me.lbVideoFormats.Location = New System.Drawing.Point(4, 19)
@@ -78,37 +74,6 @@ Partial Class dlgTrailerFormat
         Me.gbVideoFormats.TabIndex = 0
         Me.gbVideoFormats.TabStop = False
         Me.gbVideoFormats.Text = "Available Video Formats"
-        '
-        'pnlStatus
-        '
-        Me.pnlStatus.BackColor = System.Drawing.Color.White
-        Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlStatus.Controls.Add(Me.lblStatus)
-        Me.pnlStatus.Controls.Add(Me.prbStatus)
-        Me.pnlStatus.Location = New System.Drawing.Point(110, 69)
-        Me.pnlStatus.Name = "pnlStatus"
-        Me.pnlStatus.Size = New System.Drawing.Size(200, 54)
-        Me.pnlStatus.TabIndex = 1
-        '
-        'lblStatus
-        '
-        Me.lblStatus.AutoSize = True
-        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblStatus.Location = New System.Drawing.Point(3, 10)
-        Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(147, 13)
-        Me.lblStatus.TabIndex = 0
-        Me.lblStatus.Text = "Getting available formats..."
-        Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'prbStatus
-        '
-        Me.prbStatus.Location = New System.Drawing.Point(3, 29)
-        Me.prbStatus.MarqueeAnimationSpeed = 25
-        Me.prbStatus.Name = "prbStatus"
-        Me.prbStatus.Size = New System.Drawing.Size(192, 17)
-        Me.prbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.prbStatus.TabIndex = 1
         '
         'pnlTrailerFormat
         '
@@ -133,6 +98,7 @@ Partial Class dlgTrailerFormat
         '
         'lbAudioFormats
         '
+        Me.lbAudioFormats.Enabled = False
         Me.lbAudioFormats.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbAudioFormats.FormattingEnabled = True
         Me.lbAudioFormats.Location = New System.Drawing.Point(4, 19)
@@ -147,21 +113,17 @@ Partial Class dlgTrailerFormat
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(418, 217)
-        Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.pnlTrailerFormat)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgTrailerFormat"
-        Me.ShowIcon = False
-        Me.ShowInTaskbar = False
         Me.Text = "Select Format"
         Me.gbVideoFormats.ResumeLayout(False)
-        Me.pnlStatus.ResumeLayout(False)
-        Me.pnlStatus.PerformLayout()
         Me.pnlTrailerFormat.ResumeLayout(False)
         Me.gbAudioFormats.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -171,9 +133,6 @@ Partial Class dlgTrailerFormat
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents lbVideoFormats As System.Windows.Forms.ListBox
     Friend WithEvents gbVideoFormats As System.Windows.Forms.GroupBox
-    Friend WithEvents pnlStatus As System.Windows.Forms.Panel
-    Friend WithEvents lblStatus As System.Windows.Forms.Label
-    Friend WithEvents prbStatus As System.Windows.Forms.ProgressBar
     Friend WithEvents pnlTrailerFormat As System.Windows.Forms.Panel
     Friend WithEvents gbAudioFormats As System.Windows.Forms.GroupBox
     Friend WithEvents lbAudioFormats As System.Windows.Forms.ListBox

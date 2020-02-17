@@ -19,32 +19,20 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports NLog
 
-Namespace IMDBs
-
-    Public Class Scraper
-
-#Region "Fields"
-
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-
-#End Region 'Fields
+Public Class Scraper
 
 #Region "Methods"
 
-        Public Function GetTrailers(ByVal strIMDBID As String) As List(Of MediaContainers.Trailer)
-            Dim alTrailers As New List(Of MediaContainers.Trailer)
-            alTrailers = IMDb.Scraper.GetMovieTrailersByIMDBID(strIMDBID)
-            For Each tTrailer In alTrailers
-                tTrailer.Scraper = "IMDB"
-            Next
-            Return alTrailers
-
-        End Function
+    Public Function GetTrailers(ByVal strIMDBID As String) As List(Of MediaContainers.Trailer)
+        Dim alTrailers As New List(Of MediaContainers.Trailer)
+        alTrailers = IMDb.Scraper.GetTrailersByIMDbId(strIMDBID)
+        For Each tTrailer In alTrailers
+            tTrailer.Scraper = "IMDB"
+        Next
+        Return alTrailers
+    End Function
 
 #End Region 'Methods
 
-    End Class
-
-End Namespace
+End Class

@@ -586,10 +586,10 @@ Public Class clsAPITMDB
 
             If aTrailers IsNot Nothing AndAlso aTrailers.Count > 0 Then
                 For Each tTrailer In aTrailers
-                    If YouTube.Scraper.IsAvailable("http://www.youtube.com/watch?hd=1&v=" & tTrailer.Key) Then
-                        nMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & tTrailer.Key
-                        Exit For
-                    End If
+                    'If YouTube.Scraper.IsAvailable("http://www.youtube.com/watch?hd=1&v=" & tTrailer.Key) Then
+                    '    nMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & tTrailer.Key
+                    '    Exit For
+                    'End If
                 Next
             End If
         End If

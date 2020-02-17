@@ -19,17 +19,8 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports NLog
 
-Namespace YouTubes
-
-    Public Class Scraper
-
-#Region "Fields"
-
-        Shared logger As Logger = LogManager.GetCurrentClassLogger()
-
-#End Region 'Fields
+Public Class Scraper
 
 #Region "Methods"
 
@@ -44,21 +35,4 @@ Namespace YouTubes
 
 #End Region 'Methods
 
-#Region "Nested Types"
-
-        Private Structure Arguments
-
-#Region "Fields"
-
-            Dim Parameter As String
-            Dim Type As Enums.ModifierType
-
-#End Region 'Fields
-
-        End Structure
-
-#End Region 'Nested Types
-
-    End Class
-
-End Namespace
+End Class

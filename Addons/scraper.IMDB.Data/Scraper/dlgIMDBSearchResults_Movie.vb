@@ -32,7 +32,7 @@ Public Class dlgIMDBSearchResults_Movie
     Friend WithEvents tmrLoad As New Timer
     Friend WithEvents tmrWait As New Timer
 
-    Private _IMDB As IMDB.Scraper
+    Private _IMDB As Scraper
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
@@ -58,7 +58,7 @@ Public Class dlgIMDBSearchResults_Movie
 
 #Region "Methods"
 
-    Public Sub New(ByVal SpecialSettings As IMDB_Data.SpecialSettings, ByRef IMDB As IMDB.Scraper)
+    Public Sub New(ByVal SpecialSettings As IMDB_Data.SpecialSettings, ByRef IMDB As Scraper)
         ' This call is required by the designer.
         InitializeComponent()
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
@@ -90,7 +90,7 @@ Public Class dlgIMDBSearchResults_Movie
         Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal Res As IMDB.SearchResults_Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As SearchResults_Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As DialogResult
         tmrWait.Enabled = False
         tmrWait.Interval = 250
         tmrLoad.Enabled = False
@@ -334,7 +334,7 @@ Public Class dlgIMDBSearchResults_Movie
         End Try
     End Sub
 
-    Private Sub SearchResultsDownloaded(ByVal tSearchResults As IMDB.SearchResults_Movie)
+    Private Sub SearchResultsDownloaded(ByVal tSearchResults As SearchResults_Movie)
         '//
         ' Process the results that IMDB gave us
         '\\

@@ -18,13 +18,9 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports NLog
 Imports EmberAPI
+Imports NLog
 
-''' <summary>
-''' Native Scraper
-''' </summary>
-''' <remarks></remarks>
 Public Class IMDB_Trailer
     Implements Interfaces.ScraperModule_Trailer_Movie
 
@@ -136,7 +132,6 @@ Public Class IMDB_Trailer
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Trailer_Movie.SaveSetupScraper
         SaveSettings()
-        'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -147,12 +142,8 @@ Public Class IMDB_Trailer
 
     Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
         logger.Trace("[IMDB_Trailer] [Scraper_Movie] [Start]")
-
-        Dim tIMDBID As String = String.Empty
-
         If Not String.IsNullOrEmpty(DBMovie.Movie.IMDB) Then
-            Dim _scraper As New IMDBs.Scraper()
-
+            Dim _scraper As New Scraper()
             TrailerList = _scraper.GetTrailers(DBMovie.Movie.IMDB)
         End If
         logger.Trace("[IMDB_Trailer] [Scraper_Movie] [Done]")

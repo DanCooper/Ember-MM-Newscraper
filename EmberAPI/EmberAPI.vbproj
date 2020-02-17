@@ -176,13 +176,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsAPIAdvancedSettings.vb" />
-    <Compile Include="clsAPIApple.vb" />
     <Compile Include="clsAPICommandLine.vb" />
     <Compile Include="clsAPIFFmpeg.vb" />
     <Compile Include="clsAPIFormsUtils.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="clsAPIIMDB.vb" />
     <Compile Include="clsAPIProfiles.vb" />
     <Compile Include="clsAPITaskManager.vb" />
     <Compile Include="clsAPIThemes.vb" />

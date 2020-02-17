@@ -31,7 +31,6 @@ Public Class YouTube_Trailer
     Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
 
-    Private _SpecialSettings As New SpecialSettings
     Private _Name As String = "YouTube_Trailer"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
@@ -115,9 +114,7 @@ Public Class YouTube_Trailer
     End Function
 
     Sub LoadSettings()
-
         ConfigScrapeModifiers.MainTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
-
     End Sub
 
     Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
@@ -126,8 +123,7 @@ Public Class YouTube_Trailer
         LoadSettings()
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-            Dim _scraper As New YouTubes.Scraper()
-
+            Dim _scraper As New Scraper()
             TrailerList = _scraper.GetTrailers(DBMovie.Movie.Title)
         End If
 
@@ -143,7 +139,6 @@ Public Class YouTube_Trailer
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Trailer_Movie.SaveSetupScraper
         SaveSettings()
-        'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -157,19 +152,5 @@ Public Class YouTube_Trailer
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-    Structure SpecialSettings
-
-#Region "Fields"
-
-        Dim PrefLanguage As String
-
-#End Region 'Fields
-
-    End Structure
-
-#End Region 'Nested Types
 
 End Class

@@ -64,8 +64,6 @@ Namespace Davestrailerpage
         Private Sub Clear()
             _trailerlist = New List(Of MediaContainers.Trailer)
         End Sub
-
-
         ''' <summary>
         ''' Scrapes available trailerlinks from http://www.davestrailerpage.co.uk/
         ''' </summary>
@@ -80,30 +78,30 @@ Namespace Davestrailerpage
         ''' </remarks>
         Private Sub GetMovieTrailers()
             Try
-                If originaltitle <> "" Then
+                If Not String.IsNullOrEmpty(originaltitle) Then
                     'constant URL-part of query
-                    Dim BaseURL As String = ""
+                    Dim BaseURL As String = String.Empty
                     'dynamic URL-part of query
-                    Dim SearchURL As String = ""
+                    Dim SearchURL As String = String.Empty
                     'webrequest-object of Ember used to scrape Webpages
                     Dim sHTTP As New HTTP
                     'retrieved JSON string
-                    Dim sjson As String = ""
+                    Dim sjson As String = String.Empty
                     'downloaded HTML of a webpage
-                    Dim sHtml As String = ""
+                    Dim sHtml As String = String.Empty
                     'title to search for
                     Dim searchtitle As String = originaltitle.ToLower
                     If searchtitle.StartsWith("the ") Then
-                        searchtitle = searchtitle.Replace("the ", "")
+                        searchtitle = searchtitle.Replace("the ", String.Empty)
                     ElseIf searchtitle.StartsWith("an ") Then
-                        searchtitle = searchtitle.Replace("an ", "")
+                        searchtitle = searchtitle.Replace("an ", String.Empty)
                     ElseIf searchtitle.StartsWith("a ") Then
-                        searchtitle = searchtitle.Replace("a ", "")
+                        searchtitle = searchtitle.Replace("a ", String.Empty)
                     End If
                     'TODO: Optional: originaltitle may contain not supported characters which must be filtered/cleaned first!?
                     'searchtitle = StringUtils.RemovePunctuation(originaltitle)
                     'URL to moviepage which contains downloadlinks
-                    Dim TrailerWEBPageURL As String = ""
+                    Dim TrailerWEBPageURL As String = String.Empty
                     'Step 1: Build URL to movie on http://www.davestrailerpage.co.uk/!
                     'depending on beginning letter of movietitle we need to scrape different HTML site
 
@@ -112,19 +110,19 @@ Namespace Davestrailerpage
                     ElseIf searchtitle(0).ToString.ToLower = "x" OrElse searchtitle(0).ToString.ToLower = "z" OrElse searchtitle(0).ToString.ToLower = "y" Then
                         searchtitle = "xyz.html"
                     Else
-                        searchtitle = (StringUtils.RemovePunctuation(searchtitle)).Replace(" ", "")(0) & ".html"
+                        searchtitle = (StringUtils.RemovePunctuation(searchtitle)).Replace(" ", String.Empty)(0) & ".html"
                     End If
                     'build URL
                     BaseURL = "http://www.davestrailerpage.co.uk/trailers_"
                     SearchURL = String.Concat(BaseURL, searchtitle)
                     'download HTML
                     sHTTP = New HTTP
-                    sHtml = ""
+                    sHtml = String.Empty
                     sHtml = sHTTP.DownloadData(SearchURL)
                     sHTTP = Nothing
 
                     'Step 2: Extract moviesection on downloaded HTML
-                    If sHtml <> "" Then
+                    If Not String.IsNullOrEmpty(sHtml) Then
                         'example of returned HTML:
                         '<tr>
                         '<td><ul><li><b>X-Men Origins: Wolverine</b>
@@ -147,7 +145,7 @@ Namespace Davestrailerpage
                         Dim intstartposmovie As Integer = 0
 
                         'either use IMDBID or movietitle to search for movie on page
-                        If imdbid <> "" Then
+                        If Not String.IsNullOrEmpty(imdbid) Then
                             intstartposmovie = sHtml.IndexOf(imdbid)
                         End If
                         'if IMDBID search didn't help, look for title
@@ -159,21 +157,21 @@ Namespace Davestrailerpage
                             If Not movieResults Is Nothing AndAlso movieResults.Count > 0 Then
                                 'Go through each movietitle found on page and compare it with originaltitle using Levenshtein algorithm
                                 Dim compareresult As Integer = 100
-                                Dim comparestring As String = ""
+                                Dim comparestring As String = String.Empty
                                 searchtitle = originaltitle.ToLower
                                 If searchtitle.StartsWith("the ") Then
-                                    searchtitle = searchtitle.Replace("the ", "")
+                                    searchtitle = searchtitle.Replace("the ", String.Empty)
                                 ElseIf searchtitle.StartsWith("an ") Then
-                                    searchtitle = searchtitle.Replace("an ", "")
+                                    searchtitle = searchtitle.Replace("an ", String.Empty)
                                 ElseIf searchtitle.StartsWith("a ") Then
-                                    searchtitle = searchtitle.Replace("a ", "")
+                                    searchtitle = searchtitle.Replace("a ", String.Empty)
                                 End If
-                                searchtitle = (StringUtils.RemovePunctuation(searchtitle)).Replace("the ", "").Replace(" ", "")
+                                searchtitle = (StringUtils.RemovePunctuation(searchtitle)).Replace("the ", String.Empty).Replace(" ", String.Empty)
                                 For Each movieresult As Match In movieResults
                                     comparestring = movieresult.Groups(1).Value.ToLower
-                                    comparestring = comparestring.Replace("the ", "").Replace("an ", "").Replace("a ", "").Replace(", the", "").Replace(", a", "").Replace(", an", "")
+                                    comparestring = comparestring.Replace("the ", String.Empty).Replace("an ", String.Empty).Replace("a ", String.Empty).Replace(", the", String.Empty).Replace(", a", String.Empty).Replace(", an", String.Empty)
                                     compareresult = 100
-                                    comparestring = (StringUtils.RemovePunctuation(comparestring)).Replace(" ", "")
+                                    comparestring = (StringUtils.RemovePunctuation(comparestring)).Replace(" ", String.Empty)
                                     compareresult = StringUtils.ComputeLevenshtein(comparestring, searchtitle)
 
                                     If (originaltitle.Length <= 5 AndAlso compareresult = 0) OrElse (originaltitle.Length > 5 AndAlso compareresult <= 2) Then
@@ -191,11 +189,11 @@ Namespace Davestrailerpage
                         'check if title was found
                         If intstartposmovie > 0 Then
                             'extracted HTML which contains information of movie (title,trailerlinks)
-                            Dim strmoviesection As String = ""
+                            Dim strmoviesection As String = String.Empty
                             strmoviesection = (sHtml.Substring(intstartposmovie)).Remove(sHtml.Substring(intstartposmovie).IndexOf("</tr"))
 
                             ' Step 3: Further extract trailerlinks of moviesection
-                            If strmoviesection <> "" Then
+                            If Not String.IsNullOrEmpty(strmoviesection) Then
                                 'now look for trailers in found moviesection
 
                                 'moviesection can have 2 different structures
@@ -227,9 +225,9 @@ Namespace Davestrailerpage
                                         Dim intstartpostrailer As Integer = 0
                                         intstartpostrailer = strmoviesection.IndexOf(trailerresult.Groups(1).Value)
                                         'extracted HTML which contains information of ONE trailer (url,quality)
-                                        Dim strtrailersection As String = ""
+                                        Dim strtrailersection As String = String.Empty
                                         strtrailersection = (strmoviesection.Substring(intstartpostrailer)).Remove(strmoviesection.Substring(intstartpostrailer).IndexOf("</ul"))
-                                        If strtrailersection <> "" Then
+                                        If Not String.IsNullOrEmpty(strtrailersection) Then
                                             Dim trailerURLResults As MatchCollection = Nothing
                                             Dim trailerlinkPattern As String = "<a href=""(?<URL>.*?)"">(?<QUALITY>.*?)</a>"
                                             trailerURLResults = Regex.Matches(strtrailersection, trailerlinkPattern, RegexOptions.Singleline)
@@ -287,7 +285,7 @@ Namespace Davestrailerpage
                                                 'trailer source
                                                 trailer.Source = "Davestrailer"
                                                 '..and most important: trailer quality
-                                                If trailerlink.Groups(3).Value <> "" Then
+                                                If Not String.IsNullOrEmpty(trailerlink.Groups(3).Value) Then
                                                     If trailerlink.Groups(3).Value.Contains("1080") Then
                                                         '1080p
                                                         trailer.Quality = Enums.TrailerVideoQuality.HD1080p

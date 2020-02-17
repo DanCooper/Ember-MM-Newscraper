@@ -41,7 +41,6 @@ Partial Class frmSettingsHolder_Movie
         Me.chkDirectors = New System.Windows.Forms.CheckBox()
         Me.chkWriters = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
-        Me.chkTrailer = New System.Windows.Forms.CheckBox()
         Me.chkTop250 = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
         Me.chkTagline = New System.Windows.Forms.CheckBox()
@@ -230,8 +229,6 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenres, 0, 5)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkDirectors, 0, 4)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkWriters, 0, 3)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkYear, 3, 2)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTrailer, 3, 1)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkTop250, 3, 0)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 2, 5)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkTagline, 2, 4)
@@ -246,6 +243,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkMPAA, 1, 0)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkMPAADescription, 1, 1)
         Me.tblScraperFieldsOpts.Controls.Add(Me.lblInfoParsing, 0, 7)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkYear, 3, 1)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
@@ -339,24 +337,12 @@ Partial Class frmSettingsHolder_Movie
         Me.chkYear.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkYear.AutoSize = True
         Me.chkYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkYear.Location = New System.Drawing.Point(431, 49)
+        Me.chkYear.Location = New System.Drawing.Point(431, 26)
         Me.chkYear.Name = "chkYear"
         Me.chkYear.Size = New System.Drawing.Size(46, 17)
         Me.chkYear.TabIndex = 1
         Me.chkYear.Text = "Year"
         Me.chkYear.UseVisualStyleBackColor = True
-        '
-        'chkTrailer
-        '
-        Me.chkTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTrailer.AutoSize = True
-        Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailer.Location = New System.Drawing.Point(431, 26)
-        Me.chkTrailer.Name = "chkTrailer"
-        Me.chkTrailer.Size = New System.Drawing.Size(56, 17)
-        Me.chkTrailer.TabIndex = 17
-        Me.chkTrailer.Text = "Trailer"
-        Me.chkTrailer.UseVisualStyleBackColor = True
         '
         'chkTop250
         '
@@ -802,7 +788,6 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents chkDirectors As System.Windows.Forms.CheckBox
     Friend WithEvents chkTagline As System.Windows.Forms.CheckBox
     Friend WithEvents chkActors As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkRating As System.Windows.Forms.CheckBox
     Friend WithEvents chkRelease As System.Windows.Forms.CheckBox
     Friend WithEvents chkYear As System.Windows.Forms.CheckBox
