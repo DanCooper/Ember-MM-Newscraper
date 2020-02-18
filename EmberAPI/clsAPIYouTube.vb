@@ -66,7 +66,7 @@ Namespace YouTube
             If nVideoInfo IsNot Nothing AndAlso nVideoInfo.playabilityStatus.status = "OK" AndAlso nVideoInfo.streamingData.HasStreams Then
                 nStreams = GetStreams(nVideoInfo)
             Else
-                'try parse webpage
+                'TODO: try parse webpage
             End If
             If nStreams IsNot Nothing AndAlso nStreams.VideoStreams.Count > 0 Then
                 Return New MediaContainers.Trailer With {
@@ -81,7 +81,7 @@ Namespace YouTube
             Return Nothing
         End Function
 
-        Public Shared Function GetVideoInfo(ByVal videoID As String) As VideoInfo
+        Private Shared Function GetVideoInfo(ByVal videoID As String) As VideoInfo
             If String.IsNullOrEmpty(videoID) Then Return Nothing
             Dim sHTTP As New HTTP
             Dim rawResult As String = HttpUtility.UrlDecode(sHTTP.DownloadData(String.Concat("https://www.youtube.com/get_video_info?&video_id=", videoID)))
