@@ -50,9 +50,9 @@ Public Class TMDB_Data
     Private _setup_Movie As frmSettingsHolder_Movie
     Private _setup_MovieSet As frmSettingsHolder_MovieSet
     Private _setup_TV As frmSettingsHolder_TV
-    Private _TMDBAPI_Movie As New clsAPITMDB
-    Private _TMDBAPI_MovieSet As New clsAPITMDB
-    Private _TMDBAPI_TV As New clsAPITMDB
+    Private _TMDBAPI_Movie As New Scraper
+    Private _TMDBAPI_MovieSet As New Scraper
+    Private _TMDBAPI_TV As New Scraper
 
     Private Const _strAPIKey As String = "44810eefccd9cb1fa1d57e7b0d67b08d"
 
@@ -706,7 +706,7 @@ Public Class TMDB_Data
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
             If oDBElement.MovieSet.TMDBSpecified Then
                 'TMDB-ID already available -> scrape and save data into an empty movieset container (nMovieSet)
-                nMovieSet = _TMDBAPI_MovieSet.GetInfo_MovieSet(oDBElement.MovieSet.TMDB, FilteredOptions, False)
+                nMovieSet = _TMDBAPI_MovieSet.GetInfo_Movieset(oDBElement.MovieSet.TMDB, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no ITMDB-ID for movieset --> search first and try to get ID!
                 If oDBElement.MovieSet.TitleSpecified Then
@@ -735,7 +735,7 @@ Public Class TMDB_Data
             If Not oDBElement.MovieSet.TMDBSpecified Then
                 Using dlgSearch As New dlgTMDBSearchResults_MovieSet(_SpecialSettings_MovieSet, _TMDBAPI_MovieSet)
                     If dlgSearch.ShowDialog(oDBElement.MovieSet.Title, FilteredOptions) = DialogResult.OK Then
-                        nMovieSet = _TMDBAPI_MovieSet.GetInfo_MovieSet(dlgSearch.Result.TMDB, FilteredOptions, False)
+                        nMovieSet = _TMDBAPI_MovieSet.GetInfo_Movieset(dlgSearch.Result.TMDB, FilteredOptions, False)
                         'if a movieset is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else

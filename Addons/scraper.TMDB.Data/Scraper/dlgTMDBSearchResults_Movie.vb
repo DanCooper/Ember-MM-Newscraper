@@ -33,7 +33,7 @@ Public Class dlgTMDBSearchResults_Movie
     Friend WithEvents tmrLoad As New Timer
     Friend WithEvents tmrWait As New Timer
 
-    Private _TMDB As clsAPITMDB
+    Private _TMDB As Scraper
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
@@ -59,7 +59,7 @@ Public Class dlgTMDBSearchResults_Movie
 
 #Region "Methods"
 
-    Public Sub New(ByVal SpecialSettings As TMDB_Data.SpecialSettings, ByRef TMDB As clsAPITMDB)
+    Public Sub New(ByVal SpecialSettings As TMDB_Data.SpecialSettings, ByRef TMDB As Scraper)
         ' This call is required by the designer.
         InitializeComponent()
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
