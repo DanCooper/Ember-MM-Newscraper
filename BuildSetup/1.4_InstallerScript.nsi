@@ -19,7 +19,7 @@
   ;!define emm_root ".."
   ;!define emm_release "EmberMM - Release - x86"
   ;!define emm_revision "1.4.0.0"
-  ;!define emm_branch "Beta"
+  ;!define emm_branch "Master"
   ;!define transifex_path ".\translations"
 
 ;--------------------------------
