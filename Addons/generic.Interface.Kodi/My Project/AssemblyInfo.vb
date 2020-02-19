@@ -11,7 +11,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")>
 <Assembly: AssemblyCompany("Ember Media Manager")>
 <Assembly: AssemblyProduct("generic.Interface.Kodi")>
-<Assembly: AssemblyCopyright("Copyright ©  2015")>
+<Assembly: AssemblyCopyright("Copyright © 2020")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
@@ -30,5 +30,5 @@ Imports System.Runtime.InteropServices
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.4.90.0")>
-<Assembly: AssemblyFileVersion("1.4.90.0")>
+<Assembly: AssemblyVersion("1.4.91.0")>
+<Assembly: AssemblyFileVersion("1.4.91.0")>
