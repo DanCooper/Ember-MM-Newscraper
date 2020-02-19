@@ -175,9 +175,14 @@ Namespace TVDBs
         ''' <param name="tvdbID"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Async Function GetFullSeriesById(ByVal tvdbID As Integer) As Task(Of TVDB.Model.SeriesDetails)
-            Dim Result As TVDB.Model.SeriesDetails = Await _TVDBApi.GetFullSeriesById(tvdbID, _SpecialSettings.Language, _TVDBMirror)
-            Return Result
+        Private Async Function GetFullSeriesById(ByVal tvdbID As Integer, Optional overwriteLanguage As String = "") As Task(Of TVDB.Model.SeriesDetails)
+            Dim strLanguage As String = String.Empty
+            If Not String.IsNullOrEmpty(overwriteLanguage) Then
+                strLanguage = overwriteLanguage
+            Else
+                strLanguage = _SpecialSettings.Language
+            End If
+            Return Await _TVDBApi.GetFullSeriesById(tvdbID, strLanguage, _TVDBMirror)
         End Function
         ''' <summary>
         ''' 
@@ -217,11 +222,13 @@ Namespace TVDBs
             If FilteredOptions.bMainActors Then
                 If TVShowInfo.Actors IsNot Nothing Then
                     For Each aCast As TVDB.Model.Actor In TVShowInfo.Actors.Where(Function(f) f.Name IsNot Nothing AndAlso f.Role IsNot Nothing).OrderBy(Function(f) f.SortOrder)
-                        nTVShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                          .Order = aCast.SortOrder,
-                                                                          .Role = aCast.Role,
-                                                                          .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
-                                                                          .TVDB = CStr(aCast.Id)})
+                        nTVShow.Actors.Add(New MediaContainers.Person With {
+                                           .Name = aCast.Name,
+                                           .Order = aCast.SortOrder,
+                                           .Role = aCast.Role,
+                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
+                                           .TVDB = CStr(aCast.Id)
+                                           })
                     Next
                 End If
             End If
@@ -260,8 +267,16 @@ Namespace TVDBs
 
             'Plot
             If FilteredOptions.bMainPlot Then
-                If TVShowInfo.Series.Overview IsNot Nothing Then
+                If TVShowInfo.Series.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(TVShowInfo.Series.Overview) Then
                     nTVShow.Plot = TVShowInfo.Series.Overview
+                ElseIf _SpecialSettings.FallBackEng Then
+                    'looks like TVDb does an auto fallback to EN, so this is only used as backup
+                    Dim intTVShowId = TVShowInfo.Series.Id
+                    Dim APIResultEN As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(intTVShowId, "en"))
+                    If APIResultEN IsNot Nothing AndAlso APIResultEN.Result IsNot Nothing AndAlso
+                        APIResultEN.Result.Series.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(APIResultEN.Result.Series.Overview) Then
+                        nTVShow.Plot = APIResultEN.Result.Series.Overview
+                    End If
                 End If
             End If
 
@@ -454,11 +469,13 @@ Namespace TVDBs
             If FilteredOptions.bEpisodeActors Then
                 If TVShowInfo.Actors IsNot Nothing Then
                     For Each aCast As TVDB.Model.Actor In TVShowInfo.Actors.Where(Function(f) f.Name IsNot Nothing AndAlso f.Role IsNot Nothing).OrderBy(Function(f) f.SortOrder)
-                        nEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                          .Order = aCast.SortOrder,
-                                                                          .Role = aCast.Role,
-                                                                          .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
-                                                                          .TVDB = CStr(aCast.Id)})
+                        nEpisode.Actors.Add(New MediaContainers.Person With {
+                                            .Name = aCast.Name,
+                                            .Order = aCast.SortOrder,
+                                            .Role = aCast.Role,
+                                            .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
+                                            .TVDB = CStr(aCast.Id)
+                                            })
                     Next
                 End If
             End If
@@ -512,6 +529,17 @@ Namespace TVDBs
             If FilteredOptions.bEpisodePlot Then
                 If EpisodeInfo.Overview IsNot Nothing Then
                     nEpisode.Plot = EpisodeInfo.Overview
+                ElseIf _SpecialSettings.FallBackEng Then
+                    Dim intTVShowId = TVShowInfo.Series.Id
+                    Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(intTVShowId, "en"))
+                    If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing Then
+                        'find episode
+                        Dim intEpisodeId = EpisodeInfo.Id
+                        Dim nEpisodeInfoEN = APIResult.Result.Series.Episodes.FirstOrDefault(Function(f) f.Id = intEpisodeId)
+                        If nEpisodeInfoEN IsNot Nothing AndAlso Not String.IsNullOrEmpty(nEpisodeInfoEN.Overview) Then
+                            nEpisode.Plot = nEpisodeInfoEN.Overview
+                        End If
+                    End If
                 End If
             End If
 
