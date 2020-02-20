@@ -371,7 +371,7 @@ Public Class Scraper
 
         'Collection ID
         If FilteredOptions.bMainCollectionID Then
-            If Result.BelongsToCollection Is Nothing Then
+            If Result.BelongsToCollection IsNot Nothing Then
                 Dim nFullMovieSetInfo = GetInfo_Movieset(Result.BelongsToCollection.Id.ToString,
                                                          New Structures.ScrapeOptions With {.bMainPlot = True, .bMainTitle = True},
                                                          False)
