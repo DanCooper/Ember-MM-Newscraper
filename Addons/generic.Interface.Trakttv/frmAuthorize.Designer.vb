@@ -90,7 +90,7 @@ Partial Class frmAuthorize
         '
         'pbLogo
         '
-        Me.pbLogo.Image = Global.generic.EmberCore.Trakt.My.Resources.Resources.logo
+        Me.pbLogo.Image = Global.generic.Interface.Trakt.My.Resources.Resources.logo
         Me.pbLogo.Location = New System.Drawing.Point(3, 3)
         Me.pbLogo.Name = "pbLogo"
         Me.pbLogo.Size = New System.Drawing.Size(48, 48)
