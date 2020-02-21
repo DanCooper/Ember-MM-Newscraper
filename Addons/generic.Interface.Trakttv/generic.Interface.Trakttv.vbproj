@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6F30E40B-6D85-4EE7-9474-5F82E96E1817}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>generic.EmberCore.Trakt</RootNamespace>
-    <AssemblyName>generic.EmberCore.Trakt</AssemblyName>
+    <RootNamespace>generic.Interface.Trakt</RootNamespace>
+    <AssemblyName>generic.Interface.Trakt</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
