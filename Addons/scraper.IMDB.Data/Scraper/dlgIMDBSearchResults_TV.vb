@@ -126,10 +126,10 @@ Public Class dlgIMDBSearchResults_TV
     Private Sub btnVerify_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnVerify.Click
         Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
-        If Regex.IsMatch(txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
+        If Regex.IsMatch(txtIMDBID.Text.Trim, "tt\d\d\d\d\d\d\d") Then
             pnlLoading.Visible = True
             _IMDB.CancelAsync()
-            _IMDB.GetSearchTVShowInfoAsync(txtIMDBID.Text.Replace("tt", String.Empty), pOpt)
+            _IMDB.GetSearchTVShowInfoAsync(txtIMDBID.Text.Trim, pOpt)
         Else
             MessageBox.Show(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), Master.eLang.GetString(292, "Invalid Entry"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End If
@@ -356,9 +356,9 @@ Public Class dlgIMDBSearchResults_TV
         chkManual.Text = Master.eLang.GetString(847, "Manual IMDB Entry:")
         btnVerify.Text = Master.eLang.GetString(848, "Verify")
         lblCreatorsHeader.Text = String.Concat(Master.eLang.GetString(744, "Creators"), ":")
-        lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
+        lblGenreHeader.Text = String.Concat(Master.eLang.GetString(725, "Genres"), ":")
         lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
-        lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
+        lblPlotHeader.Text = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
         Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
     End Sub
 
