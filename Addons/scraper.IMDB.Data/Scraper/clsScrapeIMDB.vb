@@ -1254,7 +1254,7 @@ Public Class Scraper
                     logger.Trace(String.Format("[IMDB] [ParseOutline] [ID:""{0}""] no result from ""plotsummary"" page for Outline", id))
                 End If
             End If
-            If Not String.IsNullOrEmpty(strReferenceOutline) Then
+            If Not String.IsNullOrEmpty(strReferenceOutline) AndAlso Not strReferenceOutline.ToLower = "know what this is about?" Then
                 Return strReferenceOutline
             End If
         End If
@@ -1285,7 +1285,7 @@ Public Class Scraper
             Else
                 selNode = htmldPlotSummary.DocumentNode.SelectNodes("//ul[@id=""plot-summaries-content""]/li/p").FirstOrDefault
             End If
-            If selNode IsNot Nothing Then
+            If selNode IsNot Nothing AndAlso Not selNode.InnerText.Trim.ToLower.StartsWith("it looks like we don't have any plot summaries") Then
                 Return HttpUtility.HtmlDecode(selNode.InnerText.Trim)
             Else
                 logger.Trace(String.Format("[IMDB] [ParsePlotFromSummaryPage] [ID:""{0}""] no proper result from the ""plotsummary"" page for Outline", id))
