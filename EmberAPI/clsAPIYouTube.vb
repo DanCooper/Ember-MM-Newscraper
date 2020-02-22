@@ -311,6 +311,18 @@ Namespace YouTube
                             .FormatQuality = Enums.TrailerVideoQuality.SQ144p15fps,
                             .IsDash = True
                         }
+                    Case 167 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.SQ360p,
+                            .IsDash = True
+                        }
+                    Case 168 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = True
+                        }
                     Case 171 'DASH (audio only)
                         aLink = New MediaContainers.Trailer.AudioStream With {
                             .FormatCodec = Enums.TrailerAudioCodec.Vorbis,
@@ -320,6 +332,18 @@ Namespace YouTube
                         aLink = New MediaContainers.Trailer.AudioStream With {
                             .FormatCodec = Enums.TrailerAudioCodec.Vorbis,
                             .FormatQuality = Enums.TrailerAudioQuality.Q192kbps
+                        }
+                    Case 218 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = True
+                        }
+                    Case 219 'DASH (video only)
+                        vLink = New MediaContainers.Trailer.VideoStream With {
+                            .FormatCodec = Enums.TrailerVideoCodec.VP8,
+                            .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                            .IsDash = True
                         }
                     Case 242 'DASH (video only)
                         vLink = New MediaContainers.Trailer.VideoStream With {
@@ -516,7 +540,7 @@ Namespace YouTube
                             .IsDash = True
                         }
                     Case Else
-                        _Logger.Warn(String.Format("Unknown YouTube ITAG: {0}", tStream.itag))
+                        _Logger.Warn(String.Format("Unknown YouTube ITAG: {0}, URL: {1}", tStream.itag, tStream.url))
                 End Select
 
                 If vLink IsNot Nothing AndAlso Not String.IsNullOrEmpty(tStream.url) Then
