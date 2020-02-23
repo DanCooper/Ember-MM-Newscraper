@@ -64,12 +64,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MetadataE
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.GenresEditor", "Addons\generic.EmberCore.GenresEditor\generic.EmberCore.GenresEditor.vbproj", "{5B501BD8-D4BC-4719-B708-D4B91E3530D1}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberAPI_Test", "EmberAPI_Test\EmberAPI_Test.vbproj", "{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Scraper_Test", "Scraper_Test\Scraper_Test.vbproj", "{125DE2A3-081B-41B2-9528-8BF387EB39C7}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UnitTests", "UnitTests\UnitTests.vbproj", "{8160971E-1B33-4D0F-9355-2F8D3E833288}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.MoviepilotDE", "Addons\scraper.MoviepilotDE.Data\scraper.Data.MoviepilotDE.vbproj", "{5F7F16F4-1BE8-47FF-B48B-2527D4971645}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Theme.TelevisionTunes", "Addons\scraper.TelevisionTunes.Theme\scraper.Theme.TelevisionTunes.vbproj", "{974598ED-C19D-41CA-9771-4DE837D708BC}"
@@ -284,27 +278,6 @@ Global
 		{5B501BD8-D4BC-4719-B708-D4B91E3530D1}.Release|x64.Build.0 = Release|x64
 		{5B501BD8-D4BC-4719-B708-D4B91E3530D1}.Release|x86.ActiveCfg = Release|x86
 		{5B501BD8-D4BC-4719-B708-D4B91E3530D1}.Release|x86.Build.0 = Release|x86
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Debug|x64.ActiveCfg = Debug|x86
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Debug|x86.ActiveCfg = Debug|x86
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Debug|x86.Build.0 = Debug|x86
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Release|Any CPU.ActiveCfg = Release|x86
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Release|x64.ActiveCfg = Release|x86
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Release|x86.ActiveCfg = Release|x86
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Debug|x64.ActiveCfg = Debug|x86
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Debug|x86.ActiveCfg = Debug|x86
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Debug|x86.Build.0 = Debug|x86
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Release|Any CPU.ActiveCfg = Release|x86
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Release|x64.ActiveCfg = Release|x86
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Release|x86.ActiveCfg = Release|x86
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Debug|x64.ActiveCfg = Debug|x86
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Debug|x86.ActiveCfg = Debug|x86
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Debug|x86.Build.0 = Debug|x86
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Release|Any CPU.ActiveCfg = Release|x86
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Release|x64.ActiveCfg = Release|x86
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Release|x86.ActiveCfg = Release|x86
 		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|x64.ActiveCfg = Debug|x64
