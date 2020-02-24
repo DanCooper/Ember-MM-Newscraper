@@ -753,7 +753,8 @@ Public Class dlgEditMovieSet
         bsMovies.DataSource = Nothing
         dgvMovies.DataSource = Nothing
 
-        Master.DB.FillDataTable(dtMovies, "SELECT * FROM movie ORDER BY ListTitle COLLATE NOCASE;")
+        'Master.DB.FillDataTable(dtMovies, "SELECT * FROM movie ORDER BY ListTitle COLLATE NOCASE;")
+        Master.DB.FillDataTable(dtMovies, "SELECT *, GROUP_CONCAT(DISTINCT sets.SetName) AS 'Moviesets' FROM movielist LEFT OUTER JOIN setlinkmovie ON (movielist.idMovie = setlinkmovie.idMovie) LEFT OUTER JOIN sets ON (setlinkmovie.idSet = sets.idSet) GROUP BY movielist.idMovie ORDER BY movieList.ListTitle COLLATE NOCASE;")
 
         If dtMovies.Rows.Count > 0 Then
             With Me
@@ -771,6 +772,14 @@ Public Class dlgEditMovieSet
                 .dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
                 .dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
                 .dgvMovies.Columns("ListTitle").Visible = True
+
+                .dgvMovies.Columns("Moviesets").HeaderText = Master.eLang.GetString(1295, "Part of a MovieSet")
+                .dgvMovies.Columns("Moviesets").MinimumWidth = 83
+                .dgvMovies.Columns("Moviesets").ReadOnly = True
+                .dgvMovies.Columns("Moviesets").Resizable = DataGridViewTriState.True
+                .dgvMovies.Columns("Moviesets").SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvMovies.Columns("Moviesets").ToolTipText = Master.eLang.GetString(1295, "Part of a MovieSet")
+                .dgvMovies.Columns("Moviesets").Visible = True
 
                 .dgvMovies.Columns("idMovie").ValueType = GetType(Int32)
 
@@ -1397,17 +1406,17 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
+    Private Sub dgvMovies_CellDoubleClick(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvMovies.CellDoubleClick
+        If Not e.RowIndex < 0 AndAlso dgvMovies.SelectedRows.Count = 1 Then
+            AddMovieToSet()
+        End If
+    End Sub
+
     Private Sub dgvMovies_SelectionChanged(sender As Object, e As EventArgs) Handles dgvMovies.SelectionChanged
         If dgvMovies.SelectedRows.Count > 0 Then
             btnMovieAdd.Enabled = True
         Else
             btnMovieAdd.Enabled = False
-        End If
-    End Sub
-
-    Private Sub dgvMovies_DoubleClick(sender As Object, e As EventArgs) Handles dgvMovies.DoubleClick
-        If dgvMovies.SelectedRows.Count = 1 Then
-            AddMovieToSet()
         End If
     End Sub
 

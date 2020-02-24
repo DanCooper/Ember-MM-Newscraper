@@ -869,9 +869,9 @@ Partial Class dlgEditMovieSet
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtSearchMovies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSearchMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtSearchMovies.Location = New System.Drawing.Point(346, 453)
+        Me.txtSearchMovies.Location = New System.Drawing.Point(293, 453)
         Me.txtSearchMovies.Name = "txtSearchMovies"
-        Me.txtSearchMovies.Size = New System.Drawing.Size(348, 22)
+        Me.txtSearchMovies.Size = New System.Drawing.Size(371, 22)
         Me.txtSearchMovies.TabIndex = 51
         '
         'dgvMovies
@@ -889,14 +889,14 @@ Partial Class dlgEditMovieSet
         Me.dgvMovies.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvMovies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMovies.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.dgvMovies.Location = New System.Drawing.Point(346, 63)
+        Me.dgvMovies.Location = New System.Drawing.Point(293, 63)
         Me.dgvMovies.Name = "dgvMovies"
         Me.dgvMovies.ReadOnly = True
         Me.dgvMovies.RowHeadersVisible = False
         Me.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMovies.ShowCellErrors = False
         Me.dgvMovies.ShowRowErrors = False
-        Me.dgvMovies.Size = New System.Drawing.Size(484, 382)
+        Me.dgvMovies.Size = New System.Drawing.Size(537, 382)
         Me.dgvMovies.StandardTab = True
         Me.dgvMovies.TabIndex = 50
         '
@@ -916,7 +916,7 @@ Partial Class dlgEditMovieSet
         Me.btnMovieAdd.Enabled = False
         Me.btnMovieAdd.Image = CType(resources.GetObject("btnMovieAdd.Image"), System.Drawing.Image)
         Me.btnMovieAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieAdd.Location = New System.Drawing.Point(292, 135)
+        Me.btnMovieAdd.Location = New System.Drawing.Point(264, 135)
         Me.btnMovieAdd.Name = "btnMovieAdd"
         Me.btnMovieAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieAdd.TabIndex = 40
@@ -928,7 +928,7 @@ Partial Class dlgEditMovieSet
         Me.lblMoviesInDB.AutoSize = True
         Me.lblMoviesInDB.Enabled = False
         Me.lblMoviesInDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMoviesInDB.Location = New System.Drawing.Point(343, 47)
+        Me.lblMoviesInDB.Location = New System.Drawing.Point(290, 47)
         Me.lblMoviesInDB.Name = "lblMoviesInDB"
         Me.lblMoviesInDB.Size = New System.Drawing.Size(112, 13)
         Me.lblMoviesInDB.TabIndex = 39
@@ -982,6 +982,7 @@ Partial Class dlgEditMovieSet
         Me.lvMoviesInSet.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colOrdering, Me.colMovie})
         Me.lvMoviesInSet.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvMoviesInSet.FullRowSelect = True
+        Me.lvMoviesInSet.HideSelection = False
         Me.lvMoviesInSet.Location = New System.Drawing.Point(6, 63)
         Me.lvMoviesInSet.Name = "lvMoviesInSet"
         Me.lvMoviesInSet.Size = New System.Drawing.Size(252, 382)
