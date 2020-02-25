@@ -30,7 +30,8 @@ Public Class Davestrailerpage_Trailer
 
 
 #Region "Fields"
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
@@ -146,23 +147,19 @@ Public Class Davestrailerpage_Trailer
     End Sub
 
     Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
-        logger.Trace("[Davestrailerpage_Trailer] [Scraper_Movie] [Start]")
+        _Logger.Trace("[Davestrailerpage_Trailer] [Scraper_Movie] [Start]")
 
-        Dim tTitle As String = String.Empty
+        Dim strTitle As String = String.Empty
 
-        If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
-            tTitle = DBMovie.Movie.Title
+        If Not DBMovie.Movie.OriginalTitleSpecified Then
+            strTitle = DBMovie.Movie.Title
         Else
-            tTitle = DBMovie.Movie.OriginalTitle
+            strTitle = DBMovie.Movie.OriginalTitle
         End If
 
-        Dim tDavestrailerpageTrailer As New Davestrailerpage.Scraper(tTitle, DBMovie.Movie.IMDB)
+        TrailerList = Scraper.GetTrailers(strTitle, DBMovie.Movie.IMDB)
 
-        If tDavestrailerpageTrailer.TrailerList.Count > 0 Then
-            TrailerList = tDavestrailerpageTrailer.TrailerList
-        End If
-
-        logger.Trace("[Davestrailerpage_Trailer] [Scraper_Movie] [Done]")
+        _Logger.Trace("[Davestrailerpage_Trailer] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
