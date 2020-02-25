@@ -28,7 +28,6 @@ Imports NLog
 Public Class Davestrailerpage_Trailer
     Implements Interfaces.ScraperModule_Trailer_Movie
 
-
 #Region "Fields"
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
@@ -37,7 +36,6 @@ Public Class Davestrailerpage_Trailer
     Public Shared _AssemblyName As String
 
     Private _Name As String = "Davestrailerpage_Trailer"
-    Private _MySettings As New sMySettings
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
 
@@ -167,17 +165,6 @@ Public Class Davestrailerpage_Trailer
         _setup.orderChanged()
     End Sub
 
-#End Region 'Methods
-
-#Region "Nested Types"
-
-    Structure sMySettings
-
-#Region "Fields"
-#End Region 'Fields
-
-    End Structure
-
-#End Region 'Nested Types
+#End Region 'Methods 
 
 End Class
