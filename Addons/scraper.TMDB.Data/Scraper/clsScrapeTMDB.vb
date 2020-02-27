@@ -588,7 +588,7 @@ Public Class Scraper
                 If Result.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(Result.Overview) Then
                     nMovieSet.Plot = HttpUtility.HtmlDecode(Result.Overview)
                 ElseIf RunFallback_Movieset(Result.Id) AndAlso _Fallback_Movieset.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(_Fallback_Movieset.Overview) Then
-                    nMovieSet.Plot = HttpUtility.HtmlDecode(_Fallback_Movie.Overview)
+                    nMovieSet.Plot = HttpUtility.HtmlDecode(_Fallback_Movieset.Overview)
                 End If
             End If
 
