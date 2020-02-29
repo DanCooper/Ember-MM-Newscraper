@@ -18567,8 +18567,8 @@ Public Class frmMain
                     Integer.TryParse(regVersion.Groups(4).Value, iRevision)
 
                     If iMajor > My.Application.Info.Version.Major OrElse
-                       iMinor > My.Application.Info.Version.Minor OrElse
-                       iBuild > My.Application.Info.Version.Build Then
+                        iMajor = My.Application.Info.Version.Major AndAlso iMinor > My.Application.Info.Version.Minor OrElse
+                        iMajor = My.Application.Info.Version.Major AndAlso iMinor = My.Application.Info.Version.Minor AndAlso iBuild > My.Application.Info.Version.Build Then
                         'means that running Ember version is outdated!
                         Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), String.Format("{0} - {1}", Master.Version, Master.eLang.GetString(1009, "New version available")), Color.DarkRed)
                     Else
