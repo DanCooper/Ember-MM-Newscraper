@@ -9,8 +9,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("generic.EmberCore.Trakt")> 
 <Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
 <Assembly: AssemblyCompany("Ember Media Manager")> 
-<Assembly: AssemblyProduct("generic.EmberCore.Trakt")> 
-<Assembly: AssemblyCopyright("Copyright © 2015")> 
+<Assembly: AssemblyProduct("generic.EmberCore.Trakt")>
+<Assembly: AssemblyCopyright("Copyright © 2020")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(False)>
 
@@ -27,5 +27,5 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
-<Assembly: AssemblyVersion("1.4.90.0")>
-<Assembly: AssemblyFileVersion("1.4.90.0")>
+<Assembly: AssemblyVersion("1.5.0.0")>
+<Assembly: AssemblyFileVersion("1.5.0.0")>
