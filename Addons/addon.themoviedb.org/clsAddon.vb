@@ -629,28 +629,28 @@ Public Class Scraper
             End If
 
             If aTrailers IsNot Nothing AndAlso aTrailers.Count > 0 Then
-                For Each nTrailer In aTrailers
-                    If YouTube.Scraper.IsAvailable("http://www.youtube.com/watch?hd=1&v=" & nTrailer.Key) Then
-                        nMainDetails.Trailer = "http://www.youtube.com/watch?hd=1&v=" & nTrailer.Key
-                        Exit For
-                    End If
-                Next
+                If scrapeModifiers.MainTrailer Then
+                    For Each aVideo In aTrailers.Where(Function(f) f.Site = "YouTube")
+                        Dim nTrailer = YouTube.Scraper.GetVideoDetails(aVideo.Key)
+                        If nTrailer IsNot Nothing Then
+                            nMainDetails.Trailer = String.Concat("http://www.youtube.com/watch?hd=1&v=", aVideo.Key)
+                            Exit For
+                        End If
+                    Next
+                End If
 
-                For Each nTrailer In aTrailers.Where(Function(f) f.Site = "YouTube")
-                    Dim tLink As String = String.Format("http://www.youtube.com/watch?v={0}", nTrailer.Key)
-                    If YouTube.Scraper.IsAvailable(tLink) Then
-                        Dim tName As String = YouTube.Scraper.GetVideoTitle(tLink)
-                        nTrailers.Add(New MediaContainers.Trailer With {
-                                           .LongLang = If(String.IsNullOrEmpty(nTrailer.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(nTrailer.Iso_639_1)),
-                                           .Quality = Convert_VideoQuality(nTrailer.Size),
-                                           .Scraper = "TMDB",
-                                           .ShortLang = If(String.IsNullOrEmpty(nTrailer.Iso_639_1), String.Empty, nTrailer.Iso_639_1),
-                                           .Source = nTrailer.Site,
-                                           .Title = tName,
-                                           .Type = Convert_VideoType(nTrailer.Type),
-                                           .URLWebsite = tLink})
-                    End If
-                Next
+                If scrapeOptions.Trailer Then
+                    For Each aVideo In aTrailers.Where(Function(f) f.Site = "YouTube")
+                        Dim nTrailer = YouTube.Scraper.GetVideoDetails(aVideo.Key)
+                        If nTrailer IsNot Nothing Then
+                            nTrailer.LongLang = If(String.IsNullOrEmpty(aVideo.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(aVideo.Iso_639_1))
+                            nTrailer.Scraper = "TMDb"
+                            nTrailer.ShortLang = If(String.IsNullOrEmpty(aVideo.Iso_639_1), String.Empty, aVideo.Iso_639_1)
+                            nTrailer.Type = Convert_VideoType(aVideo.Type)
+                            nTrailers.Add(nTrailer)
+                        End If
+                    Next
+                End If
             End If
         End If
 
