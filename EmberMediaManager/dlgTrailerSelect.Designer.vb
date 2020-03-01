@@ -24,7 +24,7 @@ Partial Class dlgTrailerSelect
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrailerSelect))
         Me.btnOK = New System.Windows.Forms.Button()
-        Me.btnSkip = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnTrailerScrape = New System.Windows.Forms.Button()
         Me.lvTrailers = New System.Windows.Forms.ListView()
         Me.colNumber = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -77,14 +77,14 @@ Partial Class dlgTrailerSelect
         Me.btnOK.TabIndex = 6
         Me.btnOK.Text = "Download"
         '
-        'btnSkip
+        'btnCancel
         '
-        Me.btnSkip.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnSkip.Location = New System.Drawing.Point(761, 3)
-        Me.btnSkip.Name = "btnSkip"
-        Me.btnSkip.Size = New System.Drawing.Size(120, 23)
-        Me.btnSkip.TabIndex = 7
-        Me.btnSkip.Text = "Skip"
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnCancel.Location = New System.Drawing.Point(761, 3)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(120, 23)
+        Me.btnCancel.TabIndex = 7
+        Me.btnCancel.Text = "Cancel"
         '
         'btnTrailerScrape
         '
@@ -274,9 +274,9 @@ Partial Class dlgTrailerSelect
         Me.lblManualTrailerLink.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblManualTrailerLink.Location = New System.Drawing.Point(3, 3)
         Me.lblManualTrailerLink.Name = "lblManualTrailerLink"
-        Me.lblManualTrailerLink.Size = New System.Drawing.Size(250, 13)
+        Me.lblManualTrailerLink.Size = New System.Drawing.Size(148, 13)
         Me.lblManualTrailerLink.TabIndex = 0
-        Me.lblManualTrailerLink.Text = "Direct Link, YouTube, IMDB or Apple Trailer URL:"
+        Me.lblManualTrailerLink.Text = "Direct Link or YouTube URL:"
         '
         'lblLocalTrailer
         '
@@ -285,7 +285,7 @@ Partial Class dlgTrailerSelect
         Me.lblLocalTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblLocalTrailer.Location = New System.Drawing.Point(3, 52)
         Me.lblLocalTrailer.Name = "lblLocalTrailer"
-        Me.lblLocalTrailer.Size = New System.Drawing.Size(69, 13)
+        Me.lblLocalTrailer.Size = New System.Drawing.Size(70, 13)
         Me.lblLocalTrailer.TabIndex = 2
         Me.lblLocalTrailer.Text = "Local Trailer:"
         '
@@ -366,7 +366,7 @@ Partial Class dlgTrailerSelect
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblBottom.Controls.Add(Me.btnPlayInBrowser, 0, 0)
         Me.tblBottom.Controls.Add(Me.btnOK, 2, 0)
-        Me.tblBottom.Controls.Add(Me.btnSkip, 3, 0)
+        Me.tblBottom.Controls.Add(Me.btnCancel, 3, 0)
         Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblBottom.Location = New System.Drawing.Point(0, 0)
         Me.tblBottom.Name = "tblBottom"
@@ -393,7 +393,7 @@ Partial Class dlgTrailerSelect
         'lblStatus
         '
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(119, 17)
+        Me.lblStatus.Size = New System.Drawing.Size(118, 17)
         Me.lblStatus.Text = "Compiling Trailer List"
         '
         'dlgTrailerSelect
@@ -402,7 +402,7 @@ Partial Class dlgTrailerSelect
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.CancelButton = Me.btnSkip
+        Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(884, 661)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pblBottom)
@@ -434,7 +434,7 @@ Partial Class dlgTrailerSelect
 
     End Sub
     Friend WithEvents btnOK As System.Windows.Forms.Button
-    Friend WithEvents btnSkip As System.Windows.Forms.Button
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents gbManualTrailer As System.Windows.Forms.GroupBox
     Friend WithEvents lblManualTrailerLink As System.Windows.Forms.Label
     Friend WithEvents txtManualTrailerLink As System.Windows.Forms.TextBox

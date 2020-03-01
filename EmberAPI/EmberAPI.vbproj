@@ -176,14 +176,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsAdvancedSettings.vb" />
-    <Compile Include="clsApple.vb" />
     <Compile Include="clsFFmpeg.vb" />
     <Compile Include="clsFileItem.vb" />
     <Compile Include="clsAdvancedControls.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="clsFormsUtils.vb" />
-    <Compile Include="clsIMDB.vb" />
     <Compile Include="clsLogger.vb" />
     <Compile Include="clsMetaData.vb" />
     <Compile Include="clsEvents.vb" />

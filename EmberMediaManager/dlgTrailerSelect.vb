@@ -18,10 +18,9 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
+Imports System.IO
 
 Public Class dlgTrailerSelect
 
@@ -47,7 +46,7 @@ Public Class dlgTrailerSelect
 
 #End Region 'Properties
 
-#Region "Methods"
+#Region "Dialog"
 
     Public Sub New()
         ' This call is required by the designer.
@@ -55,20 +54,26 @@ Public Class dlgTrailerSelect
         FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
-    Private Sub dlgTrailerSelect_FormClosing(sender As Object, e As EventArgs) Handles Me.FormClosing
+    Private Sub Dialog_FormClosing(sender As Object, e As EventArgs) Handles Me.FormClosing
         RemoveHandler Trailers.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
-    Private Sub dlgTrailer_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-        SetUp()
+    Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         AddHandler Trailers.ProgressUpdated, AddressOf DownloadProgressUpdated
+        Setup()
     End Sub
 
-    Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
+    Private Sub Dialog_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         Activate()
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef DBMovie As Database.DBElement, ByRef tURLList As List(Of MediaContainers.Trailer), ByVal OnlyToNFO As Boolean, Optional ByVal _isNew As Boolean = False) As DialogResult
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
+
+    Public Overloads Function ShowDialog(ByRef DBMovie As Database.DBElement,
+                                         ByRef tURLList As List(Of MediaContainers.Trailer),
+                                         ByVal OnlyToNFO As Boolean) As DialogResult
         _NoDownload = OnlyToNFO
 
         'set ListView
@@ -80,7 +85,7 @@ Public Class dlgTrailerSelect
 
         _TmpDBElement = DBMovie
 
-        AddTrailersToList(tURLList)
+        ListView_AddTrailers(tURLList)
 
         lblStatus.Visible = False
         pbStatus.Visible = False
@@ -94,169 +99,29 @@ Public Class dlgTrailerSelect
         Return ShowDialog()
     End Function
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
+    Private Sub Setup()
+        Text = Master.eLang.GetString(915, "Select Trailer to Download")
+        btnOK.Text = Master.eLang.GetString(373, "Download")
+        colDescription.Text = Master.eLang.GetString(979, "Description")
+        colDuration.Text = Master.eLang.GetString(609, "Duration")
+        colVideoQuality.Text = Master.eLang.GetString(1138, "Quality")
+        colSource.Text = Master.eLang.GetString(1173, "Source")
+        btnPlayInBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
+        btnTrailerScrape.Text = Master.eLang.GetString(1171, "Scrape Trailers")
+        btnYouTubeSearch.Text = Master.eLang.GetString(977, "Search")
+        btnCancel.Text = Master.eLang.Cancel
+        gbManualTrailer.Text = Master.eLang.GetString(916, "Manual Trailer Entry")
+        gbYouTubeSearch.Text = Master.eLang.GetString(978, "Search On YouTube")
+        lblLocalTrailer.Text = String.Concat(Master.eLang.GetString(920, "Local Trailer"), ":")
+        lblManualTrailerLink.Text = String.Concat(Master.eLang.GetString(917, "Direct Link or YouTube URL"), ":")
+        lblStatus.Text = Master.eLang.GetString(918, "Compiling Trailer List")
     End Sub
 
-    Private Sub AddTrailersToList(ByVal tList As List(Of MediaContainers.Trailer))
-        Dim ID As Integer = lvTrailers.Items.Count + 1
-        Dim nList As List(Of MediaContainers.Trailer) = tList
+#End Region 'Dialog
 
-        Dim str(10) As String
-        For Each aUrl In nList
-            Dim itm As ListViewItem
-            str(0) = ID.ToString
-            str(1) = aUrl.URLVideoStream.ToString
-            str(2) = aUrl.URLWebsite.ToString
-            str(3) = aUrl.Title.ToString
-            str(4) = aUrl.Duration.ToString
-            str(5) = aUrl.Quality.ToString
-            str(6) = aUrl.Type.ToString
-            str(7) = aUrl.Source.ToString
-            str(8) = aUrl.Scraper.ToString
-            str(9) = aUrl.TrailerOriginal.Extention.ToString
-            itm = New ListViewItem(str)
-            lvTrailers.Items.Add(itm)
-            ID = ID + 1
-        Next
-    End Sub
+#Region "Methods"
 
-    Private Sub BeginDownload(ByVal CloseDialog As Boolean)
-        Dim didCancel As Boolean = False
-
-        SetControlsEnabled(False)
-        lblStatus.Text = Master.eLang.GetString(906, "Downloading selected trailer...")
-        lblStatus.Visible = True
-        pbStatus.Style = ProgressBarStyle.Continuous
-        pbStatus.Value = 0
-        pbStatus.Visible = True
-        Application.DoEvents()
-
-        If txtLocalTrailer.Text.Length > 0 Then
-            lblStatus.Text = Master.eLang.GetString(907, "Copying specified file to trailer...")
-            If Master.eSettings.Options.FileSystem.ValidVideoExtensions.Contains(Path.GetExtension(txtLocalTrailer.Text)) AndAlso File.Exists(txtLocalTrailer.Text) Then
-                If CloseDialog Then
-                    If _NoDownload Then
-                        Result.URLWebsite = txtLocalTrailer.Text
-                    Else
-                        Result.TrailerOriginal.LoadFromFile(txtLocalTrailer.Text)
-                    End If
-
-                    DialogResult = DialogResult.OK
-                Else
-                    Process.Start(String.Concat("""", txtLocalTrailer.Text, """"))
-                    didCancel = True
-                End If
-            Else
-                MessageBox.Show(Master.eLang.GetString(192, "File is not valid."), Master.eLang.GetString(194, "Not Valid"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                didCancel = True
-            End If
-        ElseIf YouTube.UrlUtils.IsYouTubeURL(txtManualTrailerLink.Text) OrElse
-            Regex.IsMatch(txtManualTrailerLink.Text, "https?:\/\/.*imdb.*\/video\/imdb\/.*") Then
-            Dim sFormat As New TrailerLinksContainer
-            Using dFormats As New dlgTrailerFormat
-                sFormat = dFormats.ShowDialog(txtManualTrailerLink.Text)
-            End Using
-            If _NoDownload Then
-                Result.URLWebsite = sFormat.VideoURL
-                DialogResult = DialogResult.OK
-            Else
-                If sFormat IsNot Nothing AndAlso Not String.IsNullOrEmpty(sFormat.VideoURL) Then
-                    bwDownloadTrailer = New ComponentModel.BackgroundWorker With {
-                        .WorkerReportsProgress = True,
-                        .WorkerSupportsCancellation = True
-                    }
-                    bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
-                Else
-                    didCancel = True
-                End If
-            End If
-        ElseIf Regex.IsMatch(txtManualTrailerLink.Text, "https?:\/\/.*trailers.apple.com.*") Then
-            Dim Apple As New Apple.Scraper
-
-            Apple.GetTrailerLinks(txtManualTrailerLink.Text)
-
-            If Apple.TrailerLinks IsNot Nothing Then
-                AddTrailersToList(Apple.TrailerLinks)
-                txtManualTrailerLink.Text = String.Empty
-            End If
-
-            didCancel = True
-        ElseIf StringUtils.isValidURL(txtManualTrailerLink.Text) Then
-            If _NoDownload Then
-                Result.URLWebsite = txtManualTrailerLink.Text
-                DialogResult = DialogResult.OK
-            Else
-                Dim ManualTrailer As New TrailerLinksContainer With {.VideoURL = txtManualTrailerLink.Text}
-                bwDownloadTrailer = New ComponentModel.BackgroundWorker With {
-                    .WorkerReportsProgress = True,
-                    .WorkerSupportsCancellation = True
-                }
-                bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = ManualTrailer, .bType = CloseDialog})
-            End If
-        Else
-            If YouTube.UrlUtils.IsYouTubeURL(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString) Then
-                If _NoDownload Then
-                    Result.URLWebsite = lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
-                    DialogResult = DialogResult.OK
-                Else
-                    Dim sFormat As New TrailerLinksContainer
-                    Using dFormats As New dlgTrailerFormat
-                        sFormat = dFormats.ShowDialog(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
-                    End Using
-                    If sFormat IsNot Nothing AndAlso Not String.IsNullOrEmpty(sFormat.VideoURL) Then
-                        bwDownloadTrailer = New ComponentModel.BackgroundWorker With {
-                            .WorkerReportsProgress = True,
-                            .WorkerSupportsCancellation = True
-                        }
-                        bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
-                    Else
-                        didCancel = True
-                    End If
-                End If
-            ElseIf Regex.IsMatch(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString, "https?:\/\/.*imdb.*") Then
-                Dim sFormat As New TrailerLinksContainer
-                Using dFormats As New dlgTrailerFormat
-                    sFormat = dFormats.ShowDialog(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
-                End Using
-                If _NoDownload Then
-                    Result.URLWebsite = lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
-                    DialogResult = DialogResult.OK
-                Else
-                    If sFormat IsNot Nothing AndAlso Not String.IsNullOrEmpty(sFormat.VideoURL) Then
-                        bwDownloadTrailer = New ComponentModel.BackgroundWorker With {
-                            .WorkerReportsProgress = True,
-                            .WorkerSupportsCancellation = True
-                        }
-                        bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
-                    Else
-                        didCancel = True
-                    End If
-                End If
-            Else
-                If _NoDownload Then
-                    Result.URLWebsite = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
-                    DialogResult = DialogResult.OK
-                Else
-                    Dim SelectedTrailer As New TrailerLinksContainer With {.VideoURL = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString}
-                    bwDownloadTrailer = New ComponentModel.BackgroundWorker With {
-                        .WorkerReportsProgress = True,
-                        .WorkerSupportsCancellation = True
-                    }
-                    bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = SelectedTrailer, .bType = CloseDialog})
-                End If
-            End If
-        End If
-
-        If didCancel Then
-            lblStatus.Visible = False
-            pbStatus.Visible = False
-            SetControlsEnabled(True)
-            SetEnabled()
-        End If
-    End Sub
-
-    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBrowseLocalTrailer.Click
+    Private Sub btnBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBrowseLocalTrailer.Click
         Try
             With ofdTrailer
                 .InitialDirectory = _TmpDBElement.FileItem.MainPath.FullName
@@ -272,11 +137,27 @@ Public Class dlgTrailerSelect
         End Try
     End Sub
 
+    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+        If bwDownloadTrailer.IsBusy Then bwDownloadTrailer.CancelAsync()
+
+        While bwDownloadTrailer.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        Result = Nothing
+        DialogResult = DialogResult.Cancel
+    End Sub
+
     Private Sub btnClearLink_Click(sender As Object, e As EventArgs) Handles btnClearManualTrailerLink.Click
         txtManualTrailerLink.Text = String.Empty
     End Sub
 
-    Private Sub btnPlayBrowser_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnPlayInBrowser.Click
+    Private Sub btnOk_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
+        ProcessSelection()
+    End Sub
+
+    Private Sub btnPlayInBrowser_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnPlayInBrowser.Click
         If Not String.IsNullOrEmpty(txtManualTrailerLink.Text) Then
             Process.Start(txtManualTrailerLink.Text)
         Else
@@ -286,16 +167,10 @@ Public Class dlgTrailerSelect
         End If
     End Sub
 
-    Private Sub btnYouTubeSearch_Click(sender As Object, e As EventArgs) Handles btnYouTubeSearch.Click
-        Dim ID As Integer = lvTrailers.Items.Count + 1
-        Dim nList As New List(Of MediaContainers.Trailer)
-
-        nList = YouTube.Scraper.SearchOnYouTube(txtYouTubeSearch.Text)
-        AddTrailersToList(nList)
-    End Sub
-
     Private Sub btnTrailerScrape_Click(sender As Object, e As EventArgs) Handles btnTrailerScrape.Click
         Dim didCancel As Boolean = False
+        txtLocalTrailer.Text = String.Empty
+        txtManualTrailerLink.Text = String.Empty
         SetControlsEnabled(False)
         lblStatus.Text = Master.eLang.GetString(918, "Compiling Trailer List")
         lblStatus.Visible = True
@@ -309,25 +184,30 @@ Public Class dlgTrailerSelect
             .WorkerReportsProgress = False,
             .WorkerSupportsCancellation = True
         }
-        bwCompileList.RunWorkerAsync(New Arguments With {.bType = False})
+        bwCompileList.RunWorkerAsync()
+    End Sub
+
+    Private Sub btnYouTubeSearch_Click(sender As Object, e As EventArgs) Handles btnYouTubeSearch.Click
+        Dim ID As Integer = lvTrailers.Items.Count + 1
+        Dim nList As New List(Of MediaContainers.Trailer)
+
+        nList = YouTube.Scraper.SearchOnYouTube(txtYouTubeSearch.Text)
+        ListView_AddTrailers(nList)
     End Sub
 
     Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
             Functions.SetScrapeModifiers(_TmpDBElement.ScrapeModifiers, Enums.ModifierType.MainTrailer, True)
             Dim nResult = Scraper.Run(_TmpDBElement)
             If nResult IsNot Nothing Then
                 _TrailerList = nResult.lstTrailers
-                Args.bType = True
+                e.Result = True
             Else
-                Args.bType = False
+                e.Result = False
             End If
         Catch ex As Exception
             _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
-
-        e.Result = Args.bType
 
         If bwCompileList.CancellationPending Then
             e.Cancel = True
@@ -339,7 +219,7 @@ Public Class dlgTrailerSelect
             If Convert.ToBoolean(e.Result) Then
                 If _TrailerList.Count > 0 Then
                     lvTrailers.Items.Clear()
-                    AddTrailersToList(_TrailerList)
+                    ListView_AddTrailers(_TrailerList)
                 Else
                     MessageBox.Show(Master.eLang.GetString(225, "No Trailers found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
@@ -354,15 +234,13 @@ Public Class dlgTrailerSelect
     End Sub
 
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            Result.TrailerOriginal.LoadFromWeb(Args.Parameter)
-            Result.URLWebsite = Args.Parameter.VideoURL
+            Result.TrailerOriginal.LoadFromWeb(Result)
+            e.Result = True
         Catch ex As Exception
             _Logger.Error(ex, New StackFrame().GetMethod().Name)
+            e.Result = False
         End Try
-
-        e.Result = Args.bType
 
         If bwDownloadTrailer.CancellationPending Then
             e.Cancel = True
@@ -395,32 +273,144 @@ Public Class dlgTrailerSelect
         End If
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnSkip.Click
-        If bwDownloadTrailer.IsBusy Then bwDownloadTrailer.CancelAsync()
-
-        While bwDownloadTrailer.IsBusy
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
-
-        Result = Nothing
-        DialogResult = DialogResult.Cancel
-    End Sub
-
     Private Sub DownloadProgressUpdated(ByVal iProgress As Integer, ByVal strInfo As String)
         bwDownloadTrailer.ReportProgress(iProgress, strInfo)
     End Sub
 
-    Private Sub lvTrailers_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles lvTrailers.SelectedIndexChanged
-        SetEnabled()
+    Private Sub ListView_AddTrailers(ByVal tList As List(Of MediaContainers.Trailer))
+        Dim ID As Integer = lvTrailers.Items.Count + 1
+        Dim nList As List(Of MediaContainers.Trailer) = tList
+
+        Dim str(10) As String
+        For Each aTrailer In nList
+            Dim itm As ListViewItem
+            str(0) = ID.ToString
+            str(1) = aTrailer.URLVideoStream.ToString
+            str(2) = aTrailer.URLWebsite.ToString
+            str(3) = aTrailer.Title.ToString
+            str(4) = aTrailer.Duration.ToString
+            str(5) = aTrailer.Quality.ToString
+            str(6) = aTrailer.Type.ToString
+            str(7) = aTrailer.Source.ToString
+            str(8) = aTrailer.Scraper.ToString
+            str(9) = aTrailer.TrailerOriginal.Extention.ToString
+            itm = New ListViewItem(str) With {
+                .Tag = aTrailer
+            }
+            lvTrailers.Items.Add(itm)
+            ID = ID + 1
+        Next
     End Sub
 
-    Private Sub lvTrailers_DoubleClick(ByVal sender As System.Object, ByVal e As EventArgs) Handles lvTrailers.DoubleClick
+    Private Sub ListView_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvTrailers.DoubleClick
         If Not String.IsNullOrEmpty(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString) Then Process.Start(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnOK.Click
-        BeginDownload(True)
+    Private Sub ListView_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lvTrailers.SelectedIndexChanged
+        SetEnabled()
+    End Sub
+
+    Private Sub ProcessSelection()
+        Dim didCancel As Boolean = False
+
+        SetControlsEnabled(False)
+        lblStatus.Text = Master.eLang.GetString(906, "Downloading selected trailer...")
+        lblStatus.Visible = True
+        pbStatus.Style = ProgressBarStyle.Continuous
+        pbStatus.Value = 0
+        pbStatus.Visible = True
+        Application.DoEvents()
+
+        Select Case True
+            Case txtLocalTrailer.Text.Length > 0
+                '
+                'Local trailer
+                '
+                lblStatus.Text = Master.eLang.GetString(907, "Copying specified file to trailer...")
+                If Master.eSettings.Options.FileSystem.ValidVideoExtensions.Contains(Path.GetExtension(txtLocalTrailer.Text)) AndAlso File.Exists(txtLocalTrailer.Text) Then
+                    If _NoDownload Then
+                        Result = New MediaContainers.Trailer With {
+                            .URLWebsite = txtLocalTrailer.Text
+                        }
+                    Else
+                        Result = New MediaContainers.Trailer
+                        Result.TrailerOriginal.LoadFromFile(txtLocalTrailer.Text)
+                    End If
+                    DialogResult = DialogResult.OK
+                Else
+                    MessageBox.Show(Master.eLang.GetString(192, "File is not valid."), Master.eLang.GetString(194, "Not Valid"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    didCancel = True
+                End If
+            Case YouTube.UrlUtils.IsYouTubeUrl(txtManualTrailerLink.Text)
+                '
+                'Manual YouTube Link
+                '
+                Result = YouTube.Scraper.GetVideoDetails(txtManualTrailerLink.Text)
+                If Result IsNot Nothing Then
+                    If _NoDownload Then
+                        DialogResult = DialogResult.OK
+                    Else
+                        If Result.StreamsSpecified Then
+                            If SetFormat() Then
+                                StartDownload()
+                            Else
+                                didCancel = True
+                            End If
+                        ElseIf Result.URLVideoStreamSpecified Then
+                            StartDownload()
+                        Else
+                            didCancel = True
+                        End If
+                    End If
+                Else
+                    MessageBox.Show(Master.eLang.GetString(1170, "Trailer could not be parsed"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    didCancel = True
+                End If
+            Case StringUtils.isValidURL(txtManualTrailerLink.Text)
+                '
+                'Manual direct URL
+                '
+                If _NoDownload Then
+                    Result.URLWebsite = txtManualTrailerLink.Text
+                    DialogResult = DialogResult.OK
+                Else
+                    Dim ManualTrailer As New TrailerLinksContainer With {.VideoURL = txtManualTrailerLink.Text}
+                    bwDownloadTrailer = New ComponentModel.BackgroundWorker With {
+                        .WorkerReportsProgress = True,
+                        .WorkerSupportsCancellation = True
+                    }
+                    bwDownloadTrailer.RunWorkerAsync()
+                End If
+            Case lvTrailers.SelectedItems.Count = 1 AndAlso String.IsNullOrEmpty(txtLocalTrailer.Text.Trim) AndAlso String.IsNullOrEmpty(txtManualTrailerLink.Text.Trim)
+                '
+                'List trailer
+                '
+                Result = DirectCast(lvTrailers.SelectedItems(0).Tag, MediaContainers.Trailer)
+                If Result IsNot Nothing Then
+                    If _NoDownload Then DialogResult = DialogResult.OK
+                    If Result.StreamsSpecified Then
+                        If SetFormat() Then
+                            StartDownload()
+                        Else
+                            didCancel = True
+                        End If
+                    ElseIf Result.URLVideoStreamSpecified Then
+                        StartDownload()
+                    Else
+                        didCancel = True
+                    End If
+                Else
+                    MessageBox.Show(Master.eLang.GetString(1170, "Trailer could not be parsed"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    didCancel = True
+                End If
+        End Select
+
+        If didCancel Then
+            lblStatus.Visible = False
+            pbStatus.Visible = False
+            SetControlsEnabled(True)
+            SetEnabled()
+        End If
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
@@ -477,51 +467,38 @@ Public Class dlgTrailerSelect
         End If
     End Sub
 
-    Private Sub SetUp()
-        Text = Master.eLang.GetString(915, "Select Trailer to Download")
-        btnOK.Text = Master.eLang.GetString(373, "Download")
-        colDescription.Text = Master.eLang.GetString(979, "Description")
-        colDuration.Text = Master.eLang.GetString(609, "Duration")
-        colVideoQuality.Text = Master.eLang.GetString(1138, "Quality")
-        colSource.Text = Master.eLang.GetString(1173, "Source")
-        btnPlayInBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
-        btnTrailerScrape.Text = Master.eLang.GetString(1171, "Scrape Trailers")
-        btnYouTubeSearch.Text = Master.eLang.GetString(977, "Search")
-        btnSkip.Text = Master.eLang.Skip
-        gbManualTrailer.Text = Master.eLang.GetString(916, "Manual Trailer Entry")
-        gbYouTubeSearch.Text = Master.eLang.GetString(978, "Search On YouTube")
-        lblLocalTrailer.Text = String.Concat(Master.eLang.GetString(920, "Local Trailer"), ":")
-        lblManualTrailerLink.Text = String.Concat(Master.eLang.GetString(917, "Direct Link, YouTube, IMDB or Apple Trailer URL"), ":")
-        lblStatus.Text = Master.eLang.GetString(918, "Compiling Trailer List")
-    End Sub
+    Private Function SetFormat() As Boolean
+        Using dFormats As New dlgTrailerFormat
+            If dFormats.ShowDialog(Result) = DialogResult.OK Then
+                Result.URLAudioStream = dFormats.Result.AudioURL
+                Result.URLVideoStream = dFormats.Result.VideoURL
+                Return True
+            Else
+                Return False
+            End If
+        End Using
+    End Function
 
-    Private Sub txtManual_TextChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles txtLocalTrailer.TextChanged
+    Private Sub txtManual_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtLocalTrailer.TextChanged
         SetEnabled()
     End Sub
 
-    Private Sub txtManualTrailerLink_TextChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles txtManualTrailerLink.TextChanged
+    Private Sub StartDownload()
+        bwDownloadTrailer = New ComponentModel.BackgroundWorker With {
+            .WorkerReportsProgress = True,
+            .WorkerSupportsCancellation = True
+        }
+        bwDownloadTrailer.RunWorkerAsync()
+    End Sub
+
+    Private Sub txtManualTrailerLink_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtManualTrailerLink.TextChanged
         SetEnabled()
     End Sub
 
-    Private Sub txtYouTubeSearch_TextChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles txtYouTubeSearch.TextChanged
+    Private Sub txtYouTubeSearch_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtYouTubeSearch.TextChanged
         SetEnabledSearch()
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-    Private Structure Arguments
-
-#Region "Fields"
-
-        Dim bType As Boolean
-        Dim Parameter As TrailerLinksContainer
-
-#End Region 'Fields
-
-    End Structure
-
-#End Region 'Nested Types
 
 End Class

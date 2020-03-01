@@ -237,14 +237,15 @@ Public Class StringUtils
         Return strResult
     End Function
 
-    Public Shared Function ConvertFromKodiTrailerFormatToYouTubeURL(ByVal strURL As String) As String
-        If String.IsNullOrEmpty(strURL) Then Return String.Empty
-        Return strURL.Replace("plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")
+    Public Shared Function ConvertFromKodiTrailerFormatToYouTubeURL(ByVal url As String) As String
+        If String.IsNullOrEmpty(url) Then Return String.Empty
+        Return url.Replace("plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")
     End Function
 
-    Public Shared Function ConvertFromYouTubeURLToKodiTrailerFormat(ByVal strURL As String) As String
-        If String.IsNullOrEmpty(strURL) Then Return String.Empty
-        Return String.Concat("plugin://plugin.video.youtube/?action=play_video&videoid=", YouTube.UrlUtils.GetVideoID(strURL))
+    Public Shared Function ConvertFromYouTubeURLToKodiTrailerFormat(ByVal url As String) As String
+        Dim strID As String = String.Empty
+        If String.IsNullOrEmpty(url) OrElse Not YouTube.UrlUtils.GetVideoIDFromURL(url, strID) Then Return String.Empty
+        Return String.Concat("plugin://plugin.video.youtube/?action=play_video&videoid=", strID)
     End Function
     ''' <summary>
     ''' Converts the supplied <c>String</c> to title-case, and converts certain keywords to uppercase
@@ -747,6 +748,24 @@ Public Class StringUtils
             sReturn = sString
         End Try
         Return sReturn.Trim
+    End Function
+
+    Public Shared Function SecondsToDuration(ByVal seconds As String) As String
+        Dim dblSeconds As Double
+        If Double.TryParse(seconds, dblSeconds) Then
+            Dim tsDuration = TimeSpan.FromSeconds(dblSeconds)
+            Dim dDuration = New Date(tsDuration.Ticks)
+            Dim strDuration As String = String.Empty
+            Select Case True
+                Case tsDuration.Days > 0
+                    Return tsDuration.ToString("dd\.hh\:mm\:ss")
+                Case tsDuration.Hours > 0
+                    Return tsDuration.ToString("hh\:mm\:ss")
+                Case tsDuration.Minutes > 0 OrElse tsDuration.Seconds > 0
+                    Return tsDuration.ToString("m\:ss")
+            End Select
+        End If
+        Return String.Empty
     End Function
     ''' <summary>
     ''' Shortens the given <paramref name="fOutline"/> such that it is not longer than <paramref name="fLimit"/>.

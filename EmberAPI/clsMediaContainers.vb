@@ -2960,7 +2960,7 @@ Namespace MediaContainers
         ''' If is a Dash video, we need also an audio URL to merge video and audio
         ''' </summary>
         ''' <returns></returns>
-        Public Property isDash() As Boolean = False
+        Public Property IsDash() As Boolean = False
 
         Public Property LocalFilePath() As String = String.Empty
 
@@ -2980,6 +2980,14 @@ Namespace MediaContainers
 
         Public Property Source() As String = String.Empty
 
+        Public Property Streams() As StreamCollection = New StreamCollection
+
+        Public ReadOnly Property StreamsSpecified() As Boolean
+            Get
+                Return Streams.HasStreams
+            End Get
+        End Property
+
         Public Property Title() As String = String.Empty
 
         Public Property TrailerOriginal() As Trailers = New Trailers
@@ -2990,6 +2998,12 @@ Namespace MediaContainers
         ''' </summary>
         ''' <returns></returns>
         Public Property URLAudioStream() As String = String.Empty
+
+        Public ReadOnly Property URLAudioStreamSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(URLAudioStream)
+            End Get
+        End Property
         ''' <summary>
         ''' Download video URL of the trailer
         ''' </summary>
@@ -3051,6 +3065,149 @@ Namespace MediaContainers
         End Sub
 
 #End Region 'Methods
+
+#Region "Nested Types"
+
+        <Serializable()>
+        Public Class AudioStream
+            Implements IComparable(Of AudioStream)
+
+#Region "Properties"
+
+            Public ReadOnly Property Description() As String
+                Get
+                    Return String.Format("{0} ({1})", QualityToString(FormatQuality), CodecToString(FormatCodec))
+                End Get
+            End Property
+
+            Public Property FormatCodec() As Enums.TrailerAudioCodec = Enums.TrailerAudioCodec.UNKNOWN
+
+            Public Property FormatQuality() As Enums.TrailerAudioQuality = Enums.TrailerAudioQuality.UNKNOWN
+
+            Public Property URL() As String = String.Empty
+
+#End Region 'Properties
+
+#Region "Methods"
+
+            Private Shared Function CodecToString(ByVal audioCodec As Enums.TrailerAudioCodec) As String
+                Select Case audioCodec
+                    Case Enums.TrailerAudioCodec.UNKNOWN
+                        Return "Unknown"
+                    Case Enums.TrailerAudioCodec.AAC_SPATIAL
+                        Return "AAC 6Ch"
+                    Case Enums.TrailerAudioCodec.AC3_SPATIAL
+                        Return "AC-3 6Ch"
+                    Case Enums.TrailerAudioCodec.DTSE_SPATIAL
+                        Return "DTSE 6Ch"
+                    Case Enums.TrailerAudioCodec.EC3_SPATIAL
+                        Return "EC-3 6Ch"
+                    Case Enums.TrailerAudioCodec.Opus_SPATIAL
+                        Return "Opus 6Ch"
+                    Case Enums.TrailerAudioCodec.Vorbis_SPATIAL
+                        Return "Vorbis 4Ch"
+                    Case Else
+                        Return [Enum].GetName(GetType(Enums.TrailerAudioCodec), audioCodec)
+                End Select
+            End Function
+
+            Public Function CompareTo(ByVal other As AudioStream) As Integer Implements IComparable(Of AudioStream).CompareTo
+                Return (FormatQuality).CompareTo(other.FormatQuality)
+            End Function
+
+            Private Shared Function QualityToString(ByVal audioQuality As Enums.TrailerAudioQuality) As String
+                Select Case audioQuality
+                    Case Enums.TrailerAudioQuality.UNKNOWN
+                        Return "Unknown"
+                    Case Else
+                        Return [Enum].GetName(GetType(Enums.TrailerAudioQuality), audioQuality).Remove(0, 1).Replace("kbps", " kbit/s")
+                End Select
+            End Function
+
+#End Region 'Methods
+
+        End Class
+
+        <Serializable()>
+        Public Class StreamCollection
+
+#Region "Properties"
+
+            Public Property AudioStreams As New List(Of AudioStream)
+
+            Public ReadOnly Property HasStreams As Boolean
+                Get
+                    Return AudioStreams IsNot Nothing AndAlso AudioStreams.Count > 0 OrElse VideoStreams IsNot Nothing AndAlso VideoStreams.Count > 0
+                End Get
+            End Property
+
+            Public Property VideoStreams As New List(Of VideoStream)
+
+#End Region 'Properties
+
+        End Class
+
+        <Serializable()>
+        Public Class VideoStream
+            Implements IComparable(Of VideoStream)
+
+#Region "Properties"
+
+            Public ReadOnly Property Description() As String
+                Get
+                    Return String.Format("{0} ({1})", QualityToString(FormatQuality), CodecToString(FormatCodec))
+                End Get
+            End Property
+
+            Public Property FormatCodec() As Enums.TrailerVideoCodec = Enums.TrailerVideoCodec.UNKNOWN
+
+            Public Property FormatQuality() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.UNKNOWN
+
+            Public Property IsDash() As Boolean = False
+
+            Public Property URL() As String = String.Empty
+
+#End Region 'Properties
+
+#Region "Methods"
+
+            Private Shared Function CodecToString(ByVal videoCodec As Enums.TrailerVideoCodec) As String
+                Select Case videoCodec
+                    Case Enums.TrailerVideoCodec.UNKNOWN
+                        Return "Unknown"
+                    Case Enums.TrailerVideoCodec.VP9_HDR
+                        Return "VP9, HDR"
+                    Case Else
+                        Return [Enum].GetName(GetType(Enums.TrailerVideoCodec), videoCodec)
+                End Select
+            End Function
+
+            Public Function CompareTo(ByVal other As VideoStream) As Integer Implements IComparable(Of VideoStream).CompareTo
+                Return (FormatQuality).CompareTo(other.FormatQuality)
+            End Function
+
+            Private Shared Function QualityToString(ByVal videoQuality As Enums.TrailerVideoQuality) As String
+                Select Case videoQuality
+                    Case Enums.TrailerVideoQuality.UNKNOWN
+                        Return "Unknown"
+                    Case Enums.TrailerVideoQuality.HD1080p60fps
+                        Return "1080p, 60fps"
+                    Case Enums.TrailerVideoQuality.HD2160p60fps
+                        Return "2160, 60fps"
+                    Case Enums.TrailerVideoQuality.HD720p60fps
+                        Return "720p, 60fps"
+                    Case Enums.TrailerVideoQuality.SQ144p15fps
+                        Return "144p, 15fps"
+                    Case Else
+                        Return [Enum].GetName(GetType(Enums.TrailerVideoQuality), videoQuality).Remove(0, 2)
+                End Select
+            End Function
+
+#End Region 'Methods
+
+        End Class
+
+#End Region 'Nested Types
 
     End Class
 
@@ -3494,4 +3651,3 @@ Namespace MediaContainers
     End Class
 
 End Namespace
-
