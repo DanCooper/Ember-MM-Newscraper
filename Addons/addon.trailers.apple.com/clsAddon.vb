@@ -20,7 +20,6 @@
 
 Imports EmberAPI
 Imports NLog
-Imports System.Text.RegularExpressions
 Imports System.Web.Script.Serialization
 
 Public Class Scraper
@@ -75,35 +74,37 @@ Public Class Scraper
                         If nDataPageResults IsNot Nothing AndAlso nDataPageResults.clips IsNot Nothing AndAlso nDataPageResults.clips.Count > 0 Then
                             Dim lstTrailers = From trailers In nDataPageResults.clips.Where(Function(f) f.versions IsNot Nothing AndAlso f.versions.enus IsNot Nothing AndAlso f.versions.enus.sizes IsNot Nothing)
                             For Each clip As ClipItem In lstTrailers
+                                Dim nTrailer As New MediaContainers.Trailer With {
+                                    .Duration = clip.runtime,
+                                    .Source = "Apple",
+                                    .Scraper = "Apple",
+                                    .Title = clip.title,
+                                    .URLWebsite = strMovieTrailersPage
+                                }
                                 If clip.versions.enus.sizes.hd1080 IsNot Nothing AndAlso Not String.IsNullOrEmpty(clip.versions.enus.sizes.hd1080.src) Then
-                                    nTrailerList.Add(New MediaContainers.Trailer With {
-                                                 .Duration = clip.runtime,
-                                                 .Quality = Enums.TrailerVideoQuality.HD1080p,
-                                                 .Source = "Apple",
-                                                 .Title = clip.title,
-                                                 .URLVideoStream = clip.versions.enus.sizes.hd1080.src.Replace("1080p", "h1080p"),
-                                                 .URLWebsite = clip.versions.enus.sizes.hd1080.src.Replace("1080p", "h1080p")
-                                                 })
+                                    nTrailer.Streams.VideoStreams.Add(New MediaContainers.Trailer.VideoStream With {
+                                                                      .FormatCodec = Enums.TrailerVideoCodec.H264,
+                                                                      .FormatQuality = Enums.TrailerVideoQuality.HD1080p,
+                                                                      .URL = clip.versions.enus.sizes.hd1080.src.Replace("1080p", "h1080p")
+                                                                      })
                                 End If
                                 If clip.versions.enus.sizes.hd720 IsNot Nothing AndAlso Not String.IsNullOrEmpty(clip.versions.enus.sizes.hd720.src) Then
-                                    nTrailerList.Add(New MediaContainers.Trailer With {
-                                                 .Duration = clip.runtime,
-                                                 .Quality = Enums.TrailerVideoQuality.HD720p,
-                                                 .Source = "Apple",
-                                                 .Title = clip.title,
-                                                 .URLVideoStream = clip.versions.enus.sizes.hd720.src.Replace("720p", "h720p"),
-                                                 .URLWebsite = clip.versions.enus.sizes.hd720.src.Replace("720p", "h720p")
-                                                 })
+                                    nTrailer.Streams.VideoStreams.Add(New MediaContainers.Trailer.VideoStream With {
+                                                                      .FormatCodec = Enums.TrailerVideoCodec.H264,
+                                                                      .FormatQuality = Enums.TrailerVideoQuality.HD720p,
+                                                                      .URL = clip.versions.enus.sizes.hd720.src.Replace("720p", "h720p")
+                                                                      })
                                 End If
                                 If clip.versions.enus.sizes.sd IsNot Nothing AndAlso Not String.IsNullOrEmpty(clip.versions.enus.sizes.sd.src) Then
-                                    nTrailerList.Add(New MediaContainers.Trailer With {
-                                                 .Duration = clip.runtime,
-                                                 .Quality = Enums.TrailerVideoQuality.HQ480p,
-                                                 .Source = "Apple",
-                                                 .Title = clip.title,
-                                                 .URLVideoStream = clip.versions.enus.sizes.sd.src.Replace("480p", "h480p"),
-                                                 .URLWebsite = clip.versions.enus.sizes.sd.src.Replace("480p", "h480p")
-                                                 })
+                                    nTrailer.Streams.VideoStreams.Add(New MediaContainers.Trailer.VideoStream With {
+                                                                      .FormatCodec = Enums.TrailerVideoCodec.H264,
+                                                                      .FormatQuality = Enums.TrailerVideoQuality.HQ480p,
+                                                                      .URL = clip.versions.enus.sizes.sd.src.Replace("480p", "h480p")
+                                                                      })
+                                End If
+                                If nTrailer.StreamsSpecified Then
+                                    nTrailer.Quality = nTrailer.Streams.VideoStreams(0).FormatQuality
+                                    nTrailerList.Add(nTrailer)
                                 End If
                             Next
                         End If
