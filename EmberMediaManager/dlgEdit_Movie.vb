@@ -1860,7 +1860,7 @@ Public Class dlgEdit_Movie
         Dim dlgTrlS As dlgTrailerSelect
         Dim tList As New List(Of MediaContainers.Trailer)
         dlgTrlS = New dlgTrailerSelect()
-        If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True) = DialogResult.OK Then
+        If dlgTrlS.ShowDialog(tmpDBElement, tList, False) = DialogResult.OK Then
             tResults = dlgTrlS.Result
             tmpDBElement.Trailer = tResults
             Trailer_Load(tmpDBElement.Trailer)
@@ -1916,7 +1916,7 @@ Public Class dlgEdit_Movie
         Dim dlgTrlS As dlgTrailerSelect
         Dim tList As New List(Of MediaContainers.Trailer)
         dlgTrlS = New dlgTrailerSelect()
-        If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True) = DialogResult.OK Then
+        If dlgTrlS.ShowDialog(tmpDBElement, tList, False) = DialogResult.OK Then
             tmpDBElement.Trailer = dlgTrlS.Result
             Trailer_Load(tmpDBElement.Trailer)
         End If
@@ -1953,7 +1953,7 @@ Public Class dlgEdit_Movie
 
         Try
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(tmpDBElement, tList, True, True) = DialogResult.OK Then
+            If dlgTrlS.ShowDialog(tmpDBElement, tList, True) = DialogResult.OK Then
                 tURL = dlgTrlS.Result.URLWebsite
             End If
 
