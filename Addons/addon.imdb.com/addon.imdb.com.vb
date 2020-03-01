@@ -73,7 +73,6 @@ Public Class Addon
                                                           Enums.ScraperCapatibility.Movie_Data_Tagline,
                                                           Enums.ScraperCapatibility.Movie_Data_Title,
                                                           Enums.ScraperCapatibility.Movie_Data_Top250,
-                                                          Enums.ScraperCapatibility.Movie_Trailer,
                                                           Enums.ScraperCapatibility.TVEpisode_Data_Actors,
                                                           Enums.ScraperCapatibility.TVEpisode_Data_Aired,
                                                           Enums.ScraperCapatibility.TVEpisode_Data_Credits,

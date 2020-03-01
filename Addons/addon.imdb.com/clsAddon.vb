@@ -272,18 +272,6 @@ Public Class Scraper
                     End If
                 End If
             End If
-
-            'Trailer
-            If scrapeOptions.Trailer OrElse scrapeModifiers.MainTrailer Then
-                Dim TrailerList As List(Of MediaContainers.Trailer) = IMDb.Scraper.GetMovieTrailersByIMDBID(nMainDetails.UniqueIDs.IMDbId)
-                If TrailerList.Count > 0 Then
-                    Dim sIMDb As New IMDb.Scraper
-                    sIMDb.GetVideoLinks(TrailerList.Item(0).URLWebsite)
-                    If sIMDb.VideoLinks.Count > 0 Then
-                        nMainDetails.Trailer = sIMDb.VideoLinks.FirstOrDefault().Value.URL.ToString
-                    End If
-                End If
-            End If
         Catch ex As Exception
             _Logger.Error(ex, New StackFrame().GetMethod().Name)
             Return Nothing
@@ -676,15 +664,6 @@ Public Class Scraper
         End Try
 
         Return nMainDetails
-    End Function
-
-    Public Shared Function GetTrailers(ByVal IMDBID As String) As List(Of MediaContainers.Trailer)
-        Dim nTrailers As New List(Of MediaContainers.Trailer)
-        nTrailers = IMDb.Scraper.GetMovieTrailersByIMDBID(IMDBID)
-        For Each tTrailer In nTrailers
-            tTrailer.Source = "IMDB"
-        Next
-        Return nTrailers
     End Function
 
     Private Function Parse_Actors(ByRef htmldReference As HtmlDocument, Optional ByVal removeepisodecount As Boolean = False) As List(Of MediaContainers.Person)
