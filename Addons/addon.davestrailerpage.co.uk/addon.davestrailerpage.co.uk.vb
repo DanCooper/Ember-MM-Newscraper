@@ -21,123 +21,99 @@
 Imports EmberAPI
 Imports NLog
 
-Public Class Trailer_Movie
-    Implements Interfaces.IScraperAddon_Trailer_Movie
+Public Class Addon
+    Implements Interfaces.IAddon
 
 #Region "Fields"
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared _ConfigScrapeModifiers As New Structures.ScrapeModifiers
-    Private _PnlSettingsPanel As frmSettingsPanel
-
 #End Region 'Fields
 
 #Region "Properties"
 
-    Property IsEnabled() As Boolean Implements Interfaces.IScraperAddon_Trailer_Movie.IsEnabled
+    Public ReadOnly Property Capabilities_AddonEventTypes As List(Of Enums.AddonEventType) Implements Interfaces.IAddon.Capabilities_AddonEventTypes
+        Get
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {
+                                                     Enums.AddonEventType.Scrape_Movie
+                                                     })
+        End Get
+    End Property
 
-    Property Order As Integer Implements Interfaces.IScraperAddon_Trailer_Movie.Order
+    Public ReadOnly Property Capabilities_ScraperCapatibilities As List(Of Enums.ScraperCapatibility) Implements Interfaces.IAddon.Capabilities_ScraperCapatibilities
+        Get
+            Return New List(Of Enums.ScraperCapatibility)(New Enums.ScraperCapatibility() {
+                                                          Enums.ScraperCapatibility.Movie_Trailer
+                                                          })
+        End Get
+    End Property
 
-    Property SettingsPanel As Containers.SettingsPanel = Nothing Implements Interfaces.IScraperAddon_Trailer_Movie.SettingsPanel
+    Public ReadOnly Property IsBusy As Boolean Implements Interfaces.IAddon.IsBusy
+        Get
+            Return False
+        End Get
+    End Property
 
+    Public Property IsEnabled As Boolean Implements Interfaces.IAddon.IsEnabled
+        Get
+            Return True
+        End Get
+        Set(value As Boolean)
+            Return
+        End Set
+    End Property
+
+    Public Property SettingsPanels As New List(Of Containers.SettingsPanel) Implements Interfaces.IAddon.SettingsPanels
 
 #End Region 'Properties
 
 #Region "Events"
 
-    Public Event NeedsRestart() Implements Interfaces.IScraperAddon_Trailer_Movie.NeedsRestart
-    Public Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.IScraperAddon_Trailer_Movie.ScraperEvent
-    Public Event SettingsChanged() Implements Interfaces.IScraperAddon_Trailer_Movie.SettingsChanged
-    Public Event StateChanged(ByVal SettingsPanelID As String, ByVal State As Boolean, ByVal DiffOrder As Integer) Implements Interfaces.IScraperAddon_Trailer_Movie.StateChanged
+    Public Event NeedsRestart As Interfaces.IAddon.NeedsRestartEventHandler Implements Interfaces.IAddon.NeedsRestart
+    Public Event SettingsChanged As Interfaces.IAddon.SettingsChangedEventHandler Implements Interfaces.IAddon.SettingsChanged
+    Public Event StateChanged As Interfaces.IAddon.StateChangedEventHandler Implements Interfaces.IAddon.StateChanged
 
-#End Region 'Events
-
-#Region "Event Methods"
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
-    End Sub
-
-    Private Sub Handle_StateChanged(ByVal State As Boolean, ByVal DiffOrder As Integer)
-        IsEnabled = State
-        RaiseEvent StateChanged(SettingsPanel.SettingsPanelID, State, DiffOrder)
-    End Sub
-
-#End Region 'Event Methods
+#End Region 'Events 
 
 #Region "Interface Methods"
 
-    Public Sub Init() Implements Interfaces.IScraperAddon_Trailer_Movie.Init
-        Settings_Load()
+    Public Sub Init() Implements Interfaces.IAddon.Init
+        Return
     End Sub
 
-    Public Sub InjectSettingsPanel() Implements Interfaces.IScraperAddon_Trailer_Movie.InjectSettingsPanel
-        Settings_Load()
-        _PnlSettingsPanel = New frmSettingsPanel
-        _PnlSettingsPanel.chkEnabled.Checked = IsEnabled
-
-        AddHandler _PnlSettingsPanel.StateChanged, AddressOf Handle_StateChanged
-        AddHandler _PnlSettingsPanel.SettingsChanged, AddressOf Handle_SettingsChanged
-        AddHandler _PnlSettingsPanel.NeedsRestart, AddressOf Handle_NeedsRestart
-
-        SettingsPanel = New Containers.SettingsPanel With {
-            .ImageIndex = If(IsEnabled, 9, 10),
-            .Panel = _PnlSettingsPanel.pnlSettings,
-            .Title = "DavesTrailerPage.co.uk",
-            .Type = Enums.SettingsPanelType.MovieTrailer
-        }
+    Public Sub InjectSettingsPanel() Implements Interfaces.IAddon.InjectSettingsPanel
+        Return
     End Sub
 
-    Public Sub OrderChanged(ByVal OrderState As Containers.SettingsPanel.OrderState) Implements Interfaces.IScraperAddon_Trailer_Movie.OrderChanged
-        _PnlSettingsPanel.OrderChanged(OrderState)
+    Public Sub SaveSetup(DoDispose As Boolean) Implements Interfaces.IAddon.SaveSetup
+        Return
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.IScraperAddon_Trailer_Movie.Run
-        _Logger.Trace("[Davestrailerpage_Trailer] [Scraper_Movie] [Start]")
-
-        Dim tTitle As String = String.Empty
-
-        If String.IsNullOrEmpty(DBMovie.MainDetails.OriginalTitle) Then
-            tTitle = DBMovie.MainDetails.Title
-        Else
-            tTitle = DBMovie.MainDetails.OriginalTitle
-        End If
-
-        TrailerList = Scraper.GetMovieTrailers(tTitle, DBMovie.MainDetails.UniqueIDs.IMDbId)
-
-        _Logger.Trace("[Davestrailerpage_Trailer] [Scraper_Movie] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Public Function Run(ByRef dbElement As Database.DBElement, type As Enums.AddonEventType, lstCommandLineParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.IAddon.Run
+        _Logger.Trace("[Apple] [Run] [Started]")
+        Dim nAddonResult As New Interfaces.AddonResult
+        Select Case type
+            '
+            'PreCheck
+            '
+            Case Enums.AddonEventType.Scrape_Movie_PreCheck
+                nAddonResult.bPreCheckSuccessful = dbElement.MainDetails.OriginalTitleSpecified OrElse dbElement.MainDetails.TitleSpecified
+            '
+            'Scraping
+            '
+            Case Enums.AddonEventType.Scrape_Movie
+                Dim strTitle As String = String.Empty
+                If dbElement.MainDetails.OriginalTitleSpecified Then
+                    strTitle = dbElement.MainDetails.OriginalTitle
+                ElseIf dbElement.MainDetails.TitleSpecified Then
+                    strTitle = dbElement.MainDetails.Title
+                End If
+                If Not String.IsNullOrEmpty(strTitle) Then nAddonResult.ScraperResult_Trailers = Scraper.GetMovieTrailers(strTitle, dbElement.MainDetails.UniqueIDs.IMDbId)
+        End Select
+        _Logger.Trace("[Apple] [Run] [Started]")
+        Return nAddonResult
     End Function
 
-    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.IScraperAddon_Trailer_Movie.SaveSetup
-        Settings_Save()
-        If DoDispose Then
-            RemoveHandler _PnlSettingsPanel.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler _PnlSettingsPanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler _PnlSettingsPanel.StateChanged, AddressOf Handle_StateChanged
-            _PnlSettingsPanel.Dispose()
-        End If
-    End Sub
-
 #End Region 'Interface Methods
-
-#Region "Methods"
-
-    Sub Settings_Load()
-        _ConfigScrapeModifiers.MainTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
-    End Sub
-
-    Sub Settings_Save()
-        Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("DoTrailer", _ConfigScrapeModifiers.MainTrailer)
-        End Using
-    End Sub
-
-#End Region 'Methods 
 
 End Class
