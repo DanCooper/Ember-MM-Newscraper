@@ -888,9 +888,9 @@ Public Class frmMain
         Dim strPosterOnly As String = Master.eLang.GetString(72, "Poster Only")
         mnuScrapeModifierPoster.Text = strPosterOnly
 
-        'Release Date
-        Dim strReleaseDate As String = Master.eLang.GetString(57, "Release Date")
-        btnFilterSortReleaseDate_Movies.Text = strReleaseDate
+        'Premiered
+        Dim strPremiered As String = Master.eLang.GetString(724, "Premiered")
+        btnFilterSortPremiered_Movies.Text = strPremiered
 
         'Reload All Movies
         Dim strReloadAllMovies As String = Master.eLang.GetString(18, "Reload All Movies")
@@ -1539,6 +1539,7 @@ Public Class frmMain
                 lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
                 Filter_Movie.Match = If(rbFilterAnd_Movies.Checked, SmartFilter.Conditions.All, SmartFilter.Conditions.Any)
                 Filter_Movie.Build()
+                If Filter_Movie.NeedsSqlQuery Then DataGridView_Fill_Main(True, False, False)
                 _BsMovies.Filter = Filter_Movie.FilterForBindingSource
                 AddonsManager.Instance.RuntimeObjects.FilterMovies = _BsMovies.Filter
             Else
@@ -1552,7 +1553,7 @@ Public Class frmMain
                 AddonsManager.Instance.RuntimeObjects.FilterMovies = String.Empty
             End If
 
-            If Filter_Movie.NeedsQuery Then
+            If Filter_Movie.NeedsSqlQuery Then
                 DataGridView_Fill_Main(True, False, False)
                 AddonsManager.Instance.RuntimeObjects.FilterMoviesSearch = StringUtils.ConvertToValidFilterString(txtSearchMovies.Text)
                 AddonsManager.Instance.RuntimeObjects.FilterMoviesType = cbSearchMovies.Text
@@ -4520,14 +4521,14 @@ Public Class frmMain
         End If
 
         If dgvMovies.SortedColumn.HeaderCell.Value.ToString = "releaseDate" AndAlso dgvMovies.SortOrder = 1 Then
-            btnFilterSortReleaseDate_Movies.Tag = "ASC"
-            btnFilterSortReleaseDate_Movies.Image = My.Resources.asc
+            btnFilterSortPremiered_Movies.Tag = "ASC"
+            btnFilterSortPremiered_Movies.Image = My.Resources.asc
         ElseIf dgvMovies.SortedColumn.HeaderCell.Value.ToString = "releaseDate" AndAlso dgvMovies.SortOrder = 2 Then
-            btnFilterSortReleaseDate_Movies.Tag = "DESC"
-            btnFilterSortReleaseDate_Movies.Image = My.Resources.desc
+            btnFilterSortPremiered_Movies.Tag = "DESC"
+            btnFilterSortPremiered_Movies.Image = My.Resources.desc
         Else
-            btnFilterSortReleaseDate_Movies.Tag = String.Empty
-            btnFilterSortReleaseDate_Movies.Image = Nothing
+            btnFilterSortPremiered_Movies.Tag = String.Empty
+            btnFilterSortPremiered_Movies.Image = Nothing
         End If
 
         If dgvMovies.SortedColumn.HeaderCell.Value.ToString = "sortedTitle" AndAlso dgvMovies.SortOrder = 1 Then
@@ -6871,8 +6872,8 @@ Public Class frmMain
             btnFilterSortRating_Movies.Image = Nothing
             btnFilterSortDateModified_Movies.Tag = String.Empty
             btnFilterSortDateModified_Movies.Image = Nothing
-            btnFilterSortReleaseDate_Movies.Tag = String.Empty
-            btnFilterSortReleaseDate_Movies.Image = Nothing
+            btnFilterSortPremiered_Movies.Tag = String.Empty
+            btnFilterSortPremiered_Movies.Image = Nothing
             btnFilterSortTitle_Movies.Tag = String.Empty
             btnFilterSortTitle_Movies.Image = Nothing
             btnFilterSortYear_Movies.Tag = String.Empty
@@ -6902,8 +6903,8 @@ Public Class frmMain
             btnFilterSortDateAdded_Movies.Image = Nothing
             btnFilterSortRating_Movies.Tag = String.Empty
             btnFilterSortRating_Movies.Image = Nothing
-            btnFilterSortReleaseDate_Movies.Tag = String.Empty
-            btnFilterSortReleaseDate_Movies.Image = Nothing
+            btnFilterSortPremiered_Movies.Tag = String.Empty
+            btnFilterSortPremiered_Movies.Image = Nothing
             btnFilterSortTitle_Movies.Tag = String.Empty
             btnFilterSortTitle_Movies.Image = Nothing
             btnFilterSortYear_Movies.Tag = String.Empty
@@ -6935,8 +6936,8 @@ Public Class frmMain
             btnFilterSortDateModified_Movies.Image = Nothing
             btnFilterSortRating_Movies.Tag = String.Empty
             btnFilterSortRating_Movies.Image = Nothing
-            btnFilterSortReleaseDate_Movies.Tag = String.Empty
-            btnFilterSortReleaseDate_Movies.Image = Nothing
+            btnFilterSortPremiered_Movies.Tag = String.Empty
+            btnFilterSortPremiered_Movies.Image = Nothing
             btnFilterSortYear_Movies.Tag = String.Empty
             btnFilterSortYear_Movies.Image = Nothing
             If btnFilterSortTitle_Movies.Tag.ToString = "ASC" Then
@@ -6985,8 +6986,8 @@ Public Class frmMain
             btnFilterSortDateAdded_Movies.Image = Nothing
             btnFilterSortDateModified_Movies.Tag = String.Empty
             btnFilterSortDateModified_Movies.Image = Nothing
-            btnFilterSortReleaseDate_Movies.Tag = String.Empty
-            btnFilterSortReleaseDate_Movies.Image = Nothing
+            btnFilterSortPremiered_Movies.Tag = String.Empty
+            btnFilterSortPremiered_Movies.Image = Nothing
             btnFilterSortTitle_Movies.Tag = String.Empty
             btnFilterSortTitle_Movies.Image = Nothing
             btnFilterSortYear_Movies.Tag = String.Empty
@@ -7005,12 +7006,12 @@ Public Class frmMain
         End If
     End Sub
     ''' <summary>
-    ''' sorts the movielist by release date
+    ''' sorts the movielist by premiered
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks>this filter is inverted (DESC first) to get the highest year title on the top of the list</remarks>
-    Private Sub btnFilterSortReleaseDate_Movies_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFilterSortReleaseDate_Movies.Click
+    Private Sub btnFilterSortPremiered_Movies_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFilterSortPremiered_Movies.Click
         If dgvMovies.RowCount > 0 Then
             btnFilterSortDateAdded_Movies.Tag = String.Empty
             btnFilterSortDateAdded_Movies.Image = Nothing
@@ -7022,14 +7023,14 @@ Public Class frmMain
             btnFilterSortTitle_Movies.Image = Nothing
             btnFilterSortYear_Movies.Tag = String.Empty
             btnFilterSortYear_Movies.Image = Nothing
-            If btnFilterSortReleaseDate_Movies.Tag.ToString = "DESC" Then
-                btnFilterSortReleaseDate_Movies.Tag = "ASC"
-                btnFilterSortReleaseDate_Movies.Image = My.Resources.asc
-                dgvMovies.Sort(dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ReleaseDate)), System.ComponentModel.ListSortDirection.Ascending)
+            If btnFilterSortPremiered_Movies.Tag.ToString = "DESC" Then
+                btnFilterSortPremiered_Movies.Tag = "ASC"
+                btnFilterSortPremiered_Movies.Image = My.Resources.asc
+                dgvMovies.Sort(dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Premiered)), System.ComponentModel.ListSortDirection.Ascending)
             Else
-                btnFilterSortReleaseDate_Movies.Tag = "DESC"
-                btnFilterSortReleaseDate_Movies.Image = My.Resources.desc
-                dgvMovies.Sort(dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.ReleaseDate)), System.ComponentModel.ListSortDirection.Descending)
+                btnFilterSortPremiered_Movies.Tag = "DESC"
+                btnFilterSortPremiered_Movies.Image = My.Resources.desc
+                dgvMovies.Sort(dgvMovies.Columns(Database.Helpers.GetColumnName(Database.ColumnName.Premiered)), System.ComponentModel.ListSortDirection.Descending)
             End If
 
             DataGridView_SortingSave_Movie()
@@ -7049,8 +7050,8 @@ Public Class frmMain
             btnFilterSortDateModified_Movies.Image = Nothing
             btnFilterSortRating_Movies.Tag = String.Empty
             btnFilterSortRating_Movies.Image = Nothing
-            btnFilterSortReleaseDate_Movies.Tag = String.Empty
-            btnFilterSortReleaseDate_Movies.Image = Nothing
+            btnFilterSortPremiered_Movies.Tag = String.Empty
+            btnFilterSortPremiered_Movies.Image = Nothing
             btnFilterSortTitle_Movies.Tag = String.Empty
             btnFilterSortTitle_Movies.Image = Nothing
             If btnFilterSortYear_Movies.Tag.ToString = "DESC" Then

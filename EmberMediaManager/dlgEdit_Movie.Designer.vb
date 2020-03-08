@@ -76,7 +76,6 @@ Partial Class dlgEdit_Movie
         Me.lblPlot = New System.Windows.Forms.Label()
         Me.lblCredits = New System.Windows.Forms.Label()
         Me.txtPlot = New System.Windows.Forms.TextBox()
-        Me.lblPremiered = New System.Windows.Forms.Label()
         Me.dtpPremiered = New System.Windows.Forms.DateTimePicker()
         Me.lblRuntime = New System.Windows.Forms.Label()
         Me.txtRuntime = New System.Windows.Forms.TextBox()
@@ -126,6 +125,7 @@ Partial Class dlgEdit_Movie
         Me.btnRatingsRemove = New System.Windows.Forms.Button()
         Me.btnRatingsEdit = New System.Windows.Forms.Button()
         Me.btnRatingsAdd = New System.Windows.Forms.Button()
+        Me.lblPremiered = New System.Windows.Forms.Label()
         Me.tpOther = New System.Windows.Forms.TabPage()
         Me.tblOther = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMediaStub = New System.Windows.Forms.GroupBox()
@@ -755,7 +755,7 @@ Partial Class dlgEdit_Movie
         Me.lblTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTitle.Location = New System.Drawing.Point(3, 0)
         Me.lblTitle.Name = "lblTitle"
-        Me.lblTitle.Size = New System.Drawing.Size(31, 13)
+        Me.lblTitle.Size = New System.Drawing.Size(32, 13)
         Me.lblTitle.TabIndex = 0
         Me.lblTitle.Text = "Title:"
         '
@@ -801,7 +801,7 @@ Partial Class dlgEdit_Movie
         Me.lblOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblOriginalTitle.Location = New System.Drawing.Point(3, 42)
         Me.lblOriginalTitle.Name = "lblOriginalTitle"
-        Me.lblOriginalTitle.Size = New System.Drawing.Size(76, 13)
+        Me.lblOriginalTitle.Size = New System.Drawing.Size(77, 13)
         Me.lblOriginalTitle.TabIndex = 2
         Me.lblOriginalTitle.Text = "Original Title:"
         '
@@ -836,7 +836,7 @@ Partial Class dlgEdit_Movie
         Me.lblSortTilte.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblSortTilte.Location = New System.Drawing.Point(3, 83)
         Me.lblSortTilte.Name = "lblSortTilte"
-        Me.lblSortTilte.Size = New System.Drawing.Size(55, 13)
+        Me.lblSortTilte.Size = New System.Drawing.Size(56, 13)
         Me.lblSortTilte.TabIndex = 4
         Me.lblSortTilte.Text = "Sort Title:"
         '
@@ -859,7 +859,7 @@ Partial Class dlgEdit_Movie
         Me.lblTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTagline.Location = New System.Drawing.Point(233, 0)
         Me.lblTagline.Name = "lblTagline"
-        Me.lblTagline.Size = New System.Drawing.Size(46, 13)
+        Me.lblTagline.Size = New System.Drawing.Size(47, 13)
         Me.lblTagline.TabIndex = 6
         Me.lblTagline.Text = "Tagline:"
         '
@@ -1001,18 +1001,6 @@ Partial Class dlgEdit_Movie
         Me.txtPlot.Size = New System.Drawing.Size(748, 104)
         Me.txtPlot.TabIndex = 10
         '
-        'lblPremiered
-        '
-        Me.lblPremiered.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.lblPremiered.AutoSize = True
-        Me.tblDetails.SetColumnSpan(Me.lblPremiered, 2)
-        Me.lblPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblPremiered.Location = New System.Drawing.Point(3, 124)
-        Me.lblPremiered.Name = "lblPremiered"
-        Me.lblPremiered.Size = New System.Drawing.Size(61, 13)
-        Me.lblPremiered.TabIndex = 13
-        Me.lblPremiered.Text = "Premiered:"
-        '
         'dtpPremiered
         '
         Me.tblDetails.SetColumnSpan(Me.dtpPremiered, 2)
@@ -1075,7 +1063,7 @@ Partial Class dlgEdit_Movie
         Me.lblTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTags.Location = New System.Drawing.Point(3, 331)
         Me.lblTags.Name = "lblTags"
-        Me.lblTags.Size = New System.Drawing.Size(32, 13)
+        Me.lblTags.Size = New System.Drawing.Size(33, 13)
         Me.lblTags.TabIndex = 23
         Me.lblTags.Text = "Tags:"
         '
@@ -1100,7 +1088,7 @@ Partial Class dlgEdit_Movie
         Me.lblLinkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblLinkTrailer.Location = New System.Drawing.Point(233, 165)
         Me.lblLinkTrailer.Name = "lblLinkTrailer"
-        Me.lblLinkTrailer.Size = New System.Drawing.Size(63, 13)
+        Me.lblLinkTrailer.Size = New System.Drawing.Size(64, 13)
         Me.lblLinkTrailer.TabIndex = 49
         Me.lblLinkTrailer.Text = "Trailer URL:"
         '
@@ -1299,7 +1287,7 @@ Partial Class dlgEdit_Movie
         Me.lblTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTop250.Location = New System.Drawing.Point(3, 455)
         Me.lblTop250.Name = "lblTop250"
-        Me.lblTop250.Size = New System.Drawing.Size(49, 13)
+        Me.lblTop250.Size = New System.Drawing.Size(50, 13)
         Me.lblTop250.TabIndex = 19
         Me.lblTop250.Text = "Top 250:"
         '
@@ -1469,7 +1457,7 @@ Partial Class dlgEdit_Movie
         Me.lblTVShowLinks.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTVShowLinks.Location = New System.Drawing.Point(3, 536)
         Me.lblTVShowLinks.Name = "lblTVShowLinks"
-        Me.lblTVShowLinks.Size = New System.Drawing.Size(83, 13)
+        Me.lblTVShowLinks.Size = New System.Drawing.Size(84, 13)
         Me.lblTVShowLinks.TabIndex = 49
         Me.lblTVShowLinks.Text = "TV Show Links:"
         '
@@ -1532,6 +1520,18 @@ Partial Class dlgEdit_Movie
         Me.btnRatingsAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnRatingsAdd.TabIndex = 32
         Me.btnRatingsAdd.UseVisualStyleBackColor = True
+        '
+        'lblPremiered
+        '
+        Me.lblPremiered.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblPremiered.AutoSize = True
+        Me.tblDetails.SetColumnSpan(Me.lblPremiered, 2)
+        Me.lblPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblPremiered.Location = New System.Drawing.Point(3, 124)
+        Me.lblPremiered.Name = "lblPremiered"
+        Me.lblPremiered.Size = New System.Drawing.Size(61, 13)
+        Me.lblPremiered.TabIndex = 13
+        Me.lblPremiered.Text = "Premiered:"
         '
         'tpOther
         '
@@ -1607,7 +1607,7 @@ Partial Class dlgEdit_Movie
         Me.lblMediaStubTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMediaStubTitle.Location = New System.Drawing.Point(3, 3)
         Me.lblMediaStubTitle.Name = "lblMediaStubTitle"
-        Me.lblMediaStubTitle.Size = New System.Drawing.Size(31, 13)
+        Me.lblMediaStubTitle.Size = New System.Drawing.Size(32, 13)
         Me.lblMediaStubTitle.TabIndex = 2
         Me.lblMediaStubTitle.Text = "Title:"
         '
@@ -2769,7 +2769,7 @@ Partial Class dlgEdit_Movie
         Me.tblBanner.SetColumnSpan(Me.lblBanner, 6)
         Me.lblBanner.Location = New System.Drawing.Point(109, 3)
         Me.lblBanner.Name = "lblBanner"
-        Me.lblBanner.Size = New System.Drawing.Size(44, 13)
+        Me.lblBanner.Size = New System.Drawing.Size(43, 13)
         Me.lblBanner.TabIndex = 2
         Me.lblBanner.Text = "Banner"
         '
