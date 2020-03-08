@@ -79,6 +79,9 @@ Public Class Database
     End Enum
 
     Public Enum ColumnName As Integer
+        ''' <summary>
+        ''' Dummy trigger, not a database column
+        ''' </summary>
         ActorName
         Aired
         AudioBitrate
@@ -141,6 +144,10 @@ Public Class Database
         MarkedEpisodesCount
         MediaType
         MovieCount
+        ''' <summary>
+        ''' Dummy trigger, not a database column
+        ''' </summary>
+        MoviesInMovieset
         MovieTitles
         Name
         [New]
@@ -155,7 +162,6 @@ Public Class Database
         PosterPath
         Premiered
         Ratings
-        ReleaseDate
         Role
         Runtime
         ScanRecursive
@@ -1365,13 +1371,9 @@ Public Class Database
                 sqlConnection = _MyvideosDBConn
         End Select
         If sqlConnection IsNot Nothing Then
-            sqlQuery = Filter.SqlQuery_Full
+            sqlQuery = Filter.FullSqlQuery
             sqlDA = New SQLiteDataAdapter(sqlQuery, sqlConnection)
-            Try
-                sqlDA.Fill(Table)
-            Catch ex As Exception
-                _Logger.Error(String.Format("Get error: ""{0}"" with SQLCommand: ""{1}""", ex.Message, sqlQuery))
-            End Try
+            sqlDA.Fill(Table)
         End If
     End Sub
     ''' <summary>
@@ -1382,11 +1384,7 @@ Public Class Database
     Private Sub FillDataTable(ByRef dataTable As DataTable, ByVal sqlCommand As String)
         dataTable.Clear()
         Dim sqlDA As New SQLiteDataAdapter(sqlCommand, _MyvideosDBConn)
-        Try
-            sqlDA.Fill(dataTable)
-        Catch ex As Exception
-            _Logger.Error(String.Format("Get error: ""{0}"" with SQLCommand: ""{1}""", ex.Message, sqlCommand))
-        End Try
+        sqlDA.Fill(dataTable)
     End Sub
     ''' <summary>
     ''' Adds TVShow informations to a Database.DBElement
@@ -1504,15 +1502,10 @@ Public Class Database
     End Function
 
     Public Function GetAllYears_Movie() As String()
-        Dim nList As New List(Of String)
-        Using sqlCommand As SQLiteCommand = _MyvideosDBConn.CreateCommand()
-            sqlCommand.CommandText = "SELECT DISTINCT year FROM movie WHERE year IS NOT '' ORDER BY year;"
-            Using SQLreader As SQLiteDataReader = sqlCommand.ExecuteReader()
-                While SQLreader.Read
-                    nList.Add(SQLreader("year").ToString)
-                End While
-            End Using
-        End Using
+        Dim dtMovies = GetMovies()
+        Dim nList = Array.ConvertAll(dtMovies.Select(), Function(dr As DataRow) CStr(dr("year"))).ToList
+        nList = nList.Distinct.ToList
+        nList.Sort()
         Return nList.ToArray
     End Function
 
@@ -1778,11 +1771,15 @@ Public Class Database
         If filter Is Nothing Then
             filter = New SmartFilter.Filter(Enums.ContentType.Movie)
         End If
+        filter.Build()
         FillDataTable(nDataTable, filter)
 
         'Table manipulation
-        'add column "listTitle" and generate the value
+        'add column "listTitle" and create value
+        'add column "Year" and create value
+        'modify "SortedTitle" (add sort tokens to the end)
         nDataTable.Columns.Add(Helpers.GetColumnName(ColumnName.ListTitle))
+        nDataTable.Columns.Add(Helpers.GetColumnName(ColumnName.Year))
         For i As Integer = 0 To nDataTable.Rows.Count - 1
             nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.ListTitle)) = StringUtils.SortTokens(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.Title)).ToString)
             nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)) = StringUtils.SortTokens(nDataTable.Rows(i).Item(Helpers.GetColumnName(ColumnName.SortedTitle)).ToString)
@@ -2200,24 +2197,39 @@ Public Class Database
         End Using
 
         'Movies in Set
-        Using sqlCommand As SQLiteCommand = _MyvideosDBConn.CreateCommand()
-            If dbElement.SortMethod = Enums.SortMethod_MovieSet.Year Then
-                sqlCommand.CommandText = String.Concat("SELECT movieset_link.idMovie FROM movieset_link INNER JOIN movie ON (movieset_link.idMovie=movie.idMovie) ",
-                                                           "WHERE idSet=", dbElement.ID, " ORDER BY movie.year;")
-            ElseIf dbElement.SortMethod = Enums.SortMethod_MovieSet.Title Then
-                sqlCommand.CommandText = String.Concat("SELECT movieset_link.idMovie FROM movieset_link INNER JOIN movielist ON (movieset_link.idMovie=movielist.idMovie) ",
-                                                           "WHERE idSet=", dbElement.ID, " ORDER BY movielist.sortedTitle COLLATE NOCASE;")
-            End If
-            Using SQLreader As SQLiteDataReader = sqlCommand.ExecuteReader()
-                Dim i As Integer = 0
-                While SQLreader.Read
-                    dbElement.MoviesInSet.Add(New MediaContainers.MovieInSet With {
-                                              .DBMovie = Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
-                                              })
-                    i += 1
-                End While
-            End Using
-        End Using
+        Dim nFilter = New SmartFilter.Filter(Enums.ContentType.Movie)
+        nFilter.Rules.Add(New SmartFilter.Rule With {
+                          .Field = ColumnName.MoviesInMovieset,
+                          .[Operator] = SmartFilter.Operators.Is,
+                          .Value = dbElement.ID
+                          })
+
+        Dim dtMoviesInSet = GetMovies(nFilter)
+        For Each movieID In Array.ConvertAll(dtMoviesInSet.Select(), Function(dr As DataRow) CLng(dr("idMovie"))).ToList
+            dbElement.MoviesInSet.Add(New MediaContainers.MovieInSet With {
+                                      .DBMovie = Load_Movie(movieID)
+                                      })
+        Next
+
+
+        'Using sqlCommand As SQLiteCommand = _MyvideosDBConn.CreateCommand()
+        '    If dbElement.SortMethod = Enums.SortMethod_MovieSet.Year Then
+        '        sqlCommand.CommandText = String.Concat("SELECT movieset_link.idMovie FROM movieset_link INNER JOIN movie ON (movieset_link.idMovie=movie.idMovie) ",
+        '                                                   "WHERE idSet=", dbElement.ID, " ORDER BY movie.year;")
+        '    ElseIf dbElement.SortMethod = Enums.SortMethod_MovieSet.Title Then
+        '        sqlCommand.CommandText = String.Concat("SELECT movieset_link.idMovie FROM movieset_link INNER JOIN movielist ON (movieset_link.idMovie=movielist.idMovie) ",
+        '                                                   "WHERE idSet=", dbElement.ID, " ORDER BY movielist.sortedTitle COLLATE NOCASE;")
+        '    End If
+        '    Using SQLreader As SQLiteDataReader = sqlCommand.ExecuteReader()
+        '        Dim i As Integer = 0
+        '        While SQLreader.Read
+        '            dbElement.MoviesInSet.Add(New MediaContainers.MovieInSet With {
+        '                                      .DBMovie = Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
+        '                                      })
+        '            i += 1
+        '        End While
+        '    End Using
+        'End Using
 
         'Art
         dbElement.ImagesContainer.Banner.LocalFilePath = GetArtForItem(dbElement.ID, dbElement.ContentType, "banner")
@@ -5109,7 +5121,6 @@ Public Class Database
                         Patch47_dateAdded_tvshow(True)
                         Patch47_streamdetails(True)
                         Patch47_wipe_seasontitles(True)
-                        Patch47_year(True)
                         If MessageBox.Show("Ember now saves the resolution of all images in the database. Do you want to scan all images (all sources has to be mountet for this)?", "Get resolution of images", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                             Patch47_art(True)
                         End If
@@ -6218,20 +6229,6 @@ Public Class Database
         If Not batchMode Then sqlTransaction.Commit()
     End Sub
 
-    Private Sub Patch47_year(ByVal BatchMode As Boolean)
-        bwPatchDB.ReportProgress(-1, "Fixing Year...")
-
-        Dim SQLtransaction As SQLiteTransaction = Nothing
-        If Not BatchMode Then SQLtransaction = _MyvideosDBConn.BeginTransaction()
-
-        Using sqlCommand As SQLiteCommand = _MyvideosDBConn.CreateCommand()
-            sqlCommand.CommandText = "UPDATE movie SET year = NULL WHERE year = 0 OR year = '';"
-            sqlCommand.ExecuteNonQuery()
-        End Using
-
-        If Not BatchMode Then SQLtransaction.Commit()
-    End Sub
-
 #End Region 'Database upgrade Methods
 
 #Region "Deprecated Methodes"
@@ -6702,6 +6699,7 @@ Public Class Database
                      ColumnName.AudioCodec,
                      ColumnName.AudioLanguage,
                      ColumnName.FileSize,
+                     ColumnName.MoviesInMovieset,
                      ColumnName.Role,
                      ColumnName.SubtitleForced,
                      ColumnName.SubtitleLanguage,
@@ -6764,7 +6762,6 @@ Public Class Database
                     GetColumnName(Database.ColumnName.Plot),
                     GetColumnName(Database.ColumnName.Premiered),
                     GetColumnName(Database.ColumnName.Ratings),
-                    GetColumnName(Database.ColumnName.ReleaseDate),
                     GetColumnName(Database.ColumnName.Runtime),
                     GetColumnName(Database.ColumnName.SeasonNumber),
                     GetColumnName(Database.ColumnName.SortTitle),
@@ -6991,6 +6988,9 @@ Public Class Database
                     Return "markedEpisodes"
                 Case ColumnName.MovieCount
                     Return "movieCount"
+                Case ColumnName.MoviesInMovieset
+                    'shortcut to "idSet"
+                    Return GetColumnName(ColumnName.idSet)
                 Case ColumnName.MovieTitles
                     Return "movieTitles"
                 Case ColumnName.MPAA
@@ -7019,8 +7019,6 @@ Public Class Database
                     Return "posterPath"
                 Case ColumnName.Premiered
                     Return "premiered"
-                Case ColumnName.ReleaseDate
-                    Return "releaseDate"
                 Case ColumnName.Role
                     Return "role"
                 Case ColumnName.Runtime
@@ -7152,7 +7150,7 @@ Public Class Database
                     Return "idGenre"
                 Case TableName.movie
                     Return "idMovie"
-                Case TableName.movieset
+                Case TableName.movieset, TableName.movieset_link
                     Return "idSet"
                 Case TableName.moviesource
                     Return "idSource"

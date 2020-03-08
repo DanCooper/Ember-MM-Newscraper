@@ -225,10 +225,6 @@ Namespace SmartFilter
 
 #End Region 'Properties
 
-#Region "Methods"
-
-#End Region 'Methods
-
     End Class
 
     <Serializable()>
@@ -279,23 +275,23 @@ Namespace SmartFilter
 
 #Region "Fields"
 
-        Shared logger As Logger = LogManager.GetCurrentClassLogger()
+        Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-        Dim _whereclause As String = String.Empty
-        Dim _joinclauses As List(Of Dependency) = New List(Of Dependency)
-        Dim _match As Conditions = Conditions.All
-        Dim _sqlmaingrouping As String = String.Empty
-        Dim _sqlmainquery As String = String.Empty
+        Private _SqlJoinClauses As List(Of Dependency) = New List(Of Dependency)
+        Private _SqlMatch As Conditions = Conditions.All
+        Private _SqlMainGrouping As String = String.Empty
+        Private _SqlMainQuery As String = String.Empty
+        Private _SqlWhereClause As String = String.Empty
 
 #End Region 'Fields
 
 #Region "Properties"
 
         <XmlAttribute("type")>
-        Public Property Type As Enums.ContentType
+        Public Property Type As Enums.ContentType = Enums.ContentType.None
 
         <XmlElement("name")>
-        Private Property Name As String = String.Empty
+        Public Property Name As String = String.Empty
 
         <XmlIgnore()>
         Public ReadOnly Property NameSpecified() As Boolean
@@ -306,33 +302,6 @@ Namespace SmartFilter
 
         <XmlElement("match")>
         Public Property Match As Conditions
-            Get
-                Return _match
-            End Get
-            Set(value As Conditions)
-                If Not _match = value Then
-                    _match = value
-                    Build()
-                End If
-            End Set
-        End Property
-        ''' <summary>
-        ''' Returns a list of "JOIN" clauses
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlIgnore()>
-        Public ReadOnly Property JoinClauses As List(Of Dependency)
-            Get
-                Return _joinclauses
-            End Get
-        End Property
-
-        <XmlIgnore()>
-        Public ReadOnly Property JoinClauseSpecified() As Boolean
-            Get
-                Return JoinClauses.Count > 0
-            End Get
-        End Property
 
         <XmlElement("limit")>
         Public Property LimitClause As Integer = 0
@@ -415,7 +384,6 @@ Namespace SmartFilter
                                                 f.Field = Database.ColumnName.Plot OrElse
                                                 f.Field = Database.ColumnName.Premiered OrElse
                                                 f.Field = Database.ColumnName.Ratings OrElse
-                                                f.Field = Database.ColumnName.ReleaseDate OrElse
                                                 f.Field = Database.ColumnName.Runtime OrElse
                                                 f.Field = Database.ColumnName.SortTitle OrElse
                                                 f.Field = Database.ColumnName.Status OrElse
@@ -448,78 +416,14 @@ Namespace SmartFilter
             End Get
         End Property
         ''' <summary>
-        ''' Returns only the filter for use in DataGridViews
+        ''' Returns only the filter to use it in DataGridViews
         ''' </summary>
         ''' <returns></returns>
         <XmlIgnore()>
         Public ReadOnly Property FilterForBindingSource As String
             Get
                 If RulesSpecified OrElse RulesWithOperatorSpecified Then
-                    BuildCriteria()
-                    Return _whereclause
-                End If
-                Return String.Empty
-            End Get
-        End Property
-        ''' <summary>
-        ''' True if the default media list view can't provide all filters and a SQL query is needed
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlIgnore()>
-        Public ReadOnly Property NeedsQuery As Boolean
-            Get
-                Return True 'JoinClauseSpecified
-            End Get
-        End Property
-        ''' <summary>
-        ''' Returns the SQL "JOIN" clause
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlIgnore()>
-        Private ReadOnly Property SqlClause_Join As String
-            Get
-                If JoinClauseSpecified Then
-                    Return String.Join(" ", JoinClauses.Select(Function(f) f.SqlDependency)).Trim
-                End If
-                Return String.Empty
-            End Get
-        End Property
-        ''' <summary>
-        ''' Returns the SQL "LIMIT" clause
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlIgnore()>
-        Private ReadOnly Property SqlClause_Limit As String
-            Get
-                If LimitClauseSpecified Then
-                    Return String.Format("LIMIT {0}", LimitClause).Trim
-                End If
-                Return String.Empty
-            End Get
-        End Property
-        ''' <summary>
-        ''' Returns the SQL "ORDER BY" clause
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlIgnore()>
-        Private ReadOnly Property SqlClause_OrderBy As String
-            Get
-                If OrderBySpecified Then
-                    Return String.Format("ORDER BY {0}", String.Join(", ", OrderBy.Select(Function(f) f.SqlSortedByWithDirection))).Trim
-                End If
-                Return String.Empty
-            End Get
-        End Property
-        ''' <summary>
-        ''' Returns the SQL "WHERE" clause
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlIgnore()>
-        Private ReadOnly Property SqlClause_Where As String
-            Get
-                If RulesSpecified OrElse RulesWithOperatorSpecified Then
-                    BuildCriteria()
-                    Return String.Format("WHERE {0}", _whereclause).Trim
+                    Return _SqlWhereClause
                 End If
                 Return String.Empty
             End Get
@@ -529,15 +433,26 @@ Namespace SmartFilter
         ''' </summary>
         ''' <returns></returns>
         <XmlIgnore()>
-        Public ReadOnly Property SqlQuery_Full As String
+        Public ReadOnly Property FullSqlQuery As String
             Get
                 Return String.Format("{0} {1} {2} {3} {4} {5};",
-                                     _sqlmainquery,
-                                     SqlClause_Join,
-                                     SqlClause_Where,
-                                     SqlClause_OrderBy,
-                                     SqlClause_Limit,
-                                     _sqlmaingrouping).Trim
+                                     _SqlMainQuery,
+                                     BuildSqlClause_Join,
+                                     BuildSqlClause_Where,
+                                     BuildSqlClause_OrderBy,
+                                     BuildSqlClause_Limit,
+                                     _SqlMainGrouping
+                                     ).Trim
+            End Get
+        End Property
+        ''' <summary>
+        ''' True if the default media list view can't provide all filters and an SQL query is needed
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore()>
+        Public ReadOnly Property NeedsSqlQuery As Boolean
+            Get
+                Return _SqlJoinClauses.Count > 0
             End Get
         End Property
 
@@ -545,8 +460,8 @@ Namespace SmartFilter
 
 #Region "Constructors"
 
-        Public Sub New(ByVal PlaylistType As Enums.ContentType)
-            Type = PlaylistType
+        Public Sub New(ByVal filterType As Enums.ContentType)
+            Type = filterType
             Build()
         End Sub
 
@@ -555,12 +470,12 @@ Namespace SmartFilter
 #Region "Methods"
 
         Public Sub Build()
-            BuildSqlMainQuery()
+            BuildSql_MainQuery()
             BuildCriteria()
         End Sub
 
         Private Sub BuildCriteria()
-            _joinclauses.Clear()
+            _SqlJoinClauses.Clear()
             Dim lstRules As New List(Of String)
             If RulesSpecified Then lstRules.Add(BuildClause_Where(Rules, Match))
             For Each nRuleWithOperator In RulesWithOperator
@@ -569,10 +484,10 @@ Namespace SmartFilter
             'remove empty rules
             lstRules = lstRules.Where(Function(f) Not String.IsNullOrEmpty(f)).ToList
             If lstRules.Count > 0 Then
-                logger.Trace(String.Format("Current Filter: {0}", String.Format("({0})", String.Join(String.Format(" {0} ", Match.ToString.ToUpper), lstRules))))
-                _whereclause = String.Format("({0})", String.Join(String.Format(" {0} ", Match.ToString.ToUpper), lstRules))
+                _Logger.Trace(String.Format("Current Filter: {0}", String.Format("({0})", String.Join(String.Format(" {0} ", Match.ToString.ToUpper), lstRules))))
+                _SqlWhereClause = String.Format("({0})", String.Join(String.Format(" {0} ", Match.ToString.ToUpper), lstRules))
             Else
-                _whereclause = String.Empty
+                _SqlWhereClause = String.Empty
             End If
         End Sub
 
@@ -594,7 +509,7 @@ Namespace SmartFilter
                                                       .Table2 = Database.Helpers.GetTableName(Database.TableName.actor_link),
                                                       .Field2 = Database.Helpers.GetColumnName(Database.ColumnName.idMedia)
                                                       })
-                        _joinclauses.Add(nLinkTable)
+                        _SqlJoinClauses.Add(nLinkTable)
                         Dim nTargetTable As New Dependency With {
                             .Type = JoinTypes.LeftJoin,
                             .JoinTable = Database.TableName.person
@@ -605,7 +520,36 @@ Namespace SmartFilter
                                                         .Table2 = Database.Helpers.GetTableName(Database.TableName.person),
                                                         .Field2 = Database.Helpers.GetMainIdName(Database.TableName.person)
                                                         })
-                        _joinclauses.Add(nTargetTable)
+                        _SqlJoinClauses.Add(nTargetTable)
+                        strRule = String.Format("{0}.{1}",
+                                                Database.Helpers.GetTableName(nTargetTable.JoinTable),
+                                                strRule)
+                    End If
+                Case Database.ColumnName.MoviesInMovieset
+                    strRule = BuildRule(Rule)
+                    If strRule IsNot Nothing Then
+                        Dim nLinkTable As New Dependency With {
+                            .Type = JoinTypes.LeftJoin,
+                            .JoinTable = Database.TableName.movieset_link
+                        }
+                        nLinkTable.JoinConditions.Add(New Relation With {
+                                                      .Table1 = Database.Helpers.GetMainViewName(Type),
+                                                      .Field1 = Database.Helpers.GetMainIdName(Database.Helpers.GetMainViewName(Type)),
+                                                      .Table2 = Database.Helpers.GetTableName(Database.TableName.movieset_link),
+                                                      .Field2 = Database.Helpers.GetColumnName(Database.ColumnName.idMovie)
+                                                      })
+                        _SqlJoinClauses.Add(nLinkTable)
+                        Dim nTargetTable As New Dependency With {
+                            .Type = JoinTypes.LeftJoin,
+                            .JoinTable = Database.TableName.movieset
+                        }
+                        nTargetTable.JoinConditions.Add(New Relation With {
+                                                        .Table1 = Database.Helpers.GetTableName(Database.TableName.movieset_link),
+                                                        .Field1 = Database.Helpers.GetMainIdName(Database.TableName.movieset_link),
+                                                        .Table2 = Database.Helpers.GetTableName(Database.TableName.movieset),
+                                                        .Field2 = Database.Helpers.GetMainIdName(Database.TableName.movieset)
+                                                        })
+                        _SqlJoinClauses.Add(nTargetTable)
                         strRule = String.Format("{0}.{1}",
                                                 Database.Helpers.GetTableName(nTargetTable.JoinTable),
                                                 strRule)
@@ -623,7 +567,7 @@ Namespace SmartFilter
                                                         .Table2 = Database.Helpers.GetTableName(Database.TableName.actor_link),
                                                         .Field2 = Database.Helpers.GetColumnName(Database.ColumnName.idMedia)
                                                         })
-                        _joinclauses.Add(nTargetTable)
+                        _SqlJoinClauses.Add(nTargetTable)
                         strRule = String.Format("{0}.{1}",
                                                 Database.Helpers.GetTableName(nTargetTable.JoinTable),
                                                 strRule)
@@ -778,9 +722,36 @@ Namespace SmartFilter
             End If
         End Function
 
-        Private Sub BuildSqlMainQuery()
-            Dim strViewName As String = Database.Helpers.GetMainViewName(Type)
-            _sqlmainquery = String.Format("SELECT DISTINCT {0}.* FROM {0}", strViewName)
+        Private Function BuildSqlClause_Join() As String
+            If _SqlJoinClauses.Count > 0 Then
+                Return String.Join(" ", _SqlJoinClauses.Select(Function(f) f.SqlDependency)).Trim
+            End If
+            Return String.Empty
+        End Function
+
+        Private Function BuildSqlClause_Limit() As String
+            If LimitClauseSpecified Then
+                Return String.Format("LIMIT {0}", LimitClause).Trim
+            End If
+            Return String.Empty
+        End Function
+
+        Private Function BuildSqlClause_OrderBy() As String
+            If OrderBySpecified Then
+                Return String.Format("ORDER BY {0}", String.Join(", ", OrderBy.Select(Function(f) f.SqlSortedByWithDirection))).Trim
+            End If
+            Return String.Empty
+        End Function
+
+        Private Function BuildSqlClause_Where() As String
+            If RulesSpecified OrElse RulesWithOperatorSpecified Then
+                Return String.Format("WHERE {0}", _SqlWhereClause).Trim
+            End If
+            Return String.Empty
+        End Function
+
+        Private Sub BuildSql_MainQuery()
+            _SqlMainQuery = String.Format("SELECT DISTINCT {0}.* FROM {0}", Database.Helpers.GetMainViewName(Type))
         End Sub
 
         Private Shared Function ConvertMatchToString(ByVal Match As Conditions) As String
@@ -856,7 +827,6 @@ Namespace SmartFilter
             RemoveAll(Database.ColumnName.Plot)
             RemoveAll(Database.ColumnName.Premiered)
             RemoveAll(Database.ColumnName.Ratings)
-            RemoveAll(Database.ColumnName.ReleaseDate)
             RemoveAll(Database.ColumnName.Runtime)
             RemoveAll(Database.ColumnName.SortTitle)
             RemoveAll(Database.ColumnName.Status)
