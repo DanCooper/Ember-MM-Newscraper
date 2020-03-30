@@ -40,7 +40,7 @@ Public Class frmSettingsHolder
 
             dgvByFile.Rows.Clear()
             For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("VideoSourceByExtension:"))
-                Dim i As Integer = dgvByFile.Rows.Add(New Object() {sett.Name.Substring(24), sett.Value})
+                Dim i As Integer = dgvByFile.Rows.Add(New Object() {sett.Name.Substring(23), sett.Value})
             Next
             SetByFileStatus(False)
             chkMapByFile.Checked = AdvancedSettings.GetBooleanSetting("VideoSourceByExtension", False, "*EmberAPP")
@@ -61,25 +61,25 @@ Public Class frmSettingsHolder
     End Sub
 
 
-    Private Sub btnAddSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddSource.Click
+    Private Sub btnAddSource_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAddSource.Click
         Dim i As Integer = dgvSources.Rows.Add(New Object() {String.Empty, String.Empty})
         dgvSources.Rows(i).Tag = False
         dgvSources.CurrentCell = dgvSources.Rows(i).Cells(0)
         dgvSources.BeginEdit(True)
         RaiseEvent ModuleSettingsChanged()
     End Sub
-    Private Sub btnRemoveSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSource.Click
+    Private Sub btnRemoveSource_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveSource.Click
         If dgvSources.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvSources.Rows(dgvSources.SelectedCells(0).RowIndex).Tag) Then
             dgvSources.Rows.RemoveAt(dgvSources.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
-    Private Sub dgvSources_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.CurrentCellDirtyStateChanged
+    Private Sub dgvSources_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvSources.CurrentCellDirtyStateChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
 
-    Private Sub dgvSources_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.SelectionChanged
+    Private Sub dgvSources_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvSources.SelectionChanged
         If dgvSources.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvSources.Rows(dgvSources.SelectedCells(0).RowIndex).Tag) Then
             btnRemoveSource.Enabled = True
         Else
@@ -87,11 +87,11 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
-    Private Sub dgvSources_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvSources.KeyDown
+    Private Sub dgvSources_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles dgvSources.KeyDown
         e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
-    Private Sub dgvVideo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+    Private Sub dgvVideo_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
         e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
@@ -101,12 +101,12 @@ Public Class frmSettingsHolder
         btnAddByFile.Text = Master.eLang.GetString(28, "Add")
         btnRemoveByFile.Text = Master.eLang.GetString(30, "Remove")
         btnSetDefaults.Text = Master.eLang.GetString(713, "Defaults")
-        Label1.Text = Master.eLang.GetString(602, "Sources")
-        Me.dgvSources.Columns(0).HeaderText = Master.eLang.GetString(763, "Search String")
-        Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
-        Me.chkMapByFile.Text = Master.eLang.GetString(765, "Map Video Source by File Extension")
-        Me.dgvByFile.Columns(0).HeaderText = Master.eLang.GetString(775, "File Extension")
-        Me.dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
+        chkMapByFile.Text = Master.eLang.GetString(765, "Map Video Source by File Extension")
+        dgvSources.Columns(0).HeaderText = Master.eLang.GetString(763, "Search String")
+        dgvSources.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
+        dgvByFile.Columns(0).HeaderText = Master.eLang.GetString(775, "File Extension")
+        dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
+        lblSources.Text = Master.eLang.GetString(602, "Sources")
     End Sub
 
     Public Sub SaveChanges()
@@ -137,7 +137,7 @@ Public Class frmSettingsHolder
         End Using
     End Sub
 
-    Private Sub btnSetDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaults.Click
+    Private Sub btnSetDefaults_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetDefaults.Click
         Using settings = New AdvancedSettings()
             settings.SetDefaults("VideoSourceMapping")
         End Using
@@ -145,7 +145,7 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkMapByFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMapByFile.CheckedChanged
+    Private Sub chkMapByFile_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMapByFile.CheckedChanged
         SetByFileStatus(chkMapByFile.Checked)
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -157,7 +157,7 @@ Public Class frmSettingsHolder
         btnRemoveByFile.Enabled = b
     End Sub
 
-    Private Sub btnAddByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddByFile.Click
+    Private Sub btnAddByFile_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAddByFile.Click
         Dim i As Integer = dgvByFile.Rows.Add(New Object() {String.Empty, String.Empty})
         dgvByFile.Rows(i).Tag = False
         dgvByFile.CurrentCell = dgvByFile.Rows(i).Cells(0)
@@ -165,19 +165,19 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub btnRemoveByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveByFile.Click
+    Private Sub btnRemoveByFile_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveByFile.Click
         If dgvByFile.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Tag) Then
             dgvByFile.Rows.RemoveAt(dgvByFile.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
 
-    Private Sub dgvByFile_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvByFile.CurrentCellDirtyStateChanged
+    Private Sub dgvByFile_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvByFile.CurrentCellDirtyStateChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
 
-    Private Sub dgvByFile_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvByFile.SelectionChanged
+    Private Sub dgvByFile_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvByFile.SelectionChanged
         If dgvByFile.Enabled AndAlso dgvByFile.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Tag) Then
             btnRemoveByFile.Enabled = True
         Else

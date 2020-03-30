@@ -33,7 +33,7 @@ Partial Class frmSettingsHolder
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.chkMapByFile = New System.Windows.Forms.CheckBox()
         Me.btnSetDefaults = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblSources = New System.Windows.Forms.Label()
         Me.btnRemoveSource = New System.Windows.Forms.Button()
         Me.btnAddSource = New System.Windows.Forms.Button()
         Me.dgvSources = New System.Windows.Forms.DataGridView()
@@ -51,7 +51,7 @@ Partial Class frmSettingsHolder
         Me.pnlGenres.Controls.Add(Me.dgvByFile)
         Me.pnlGenres.Controls.Add(Me.chkMapByFile)
         Me.pnlGenres.Controls.Add(Me.btnSetDefaults)
-        Me.pnlGenres.Controls.Add(Me.Label1)
+        Me.pnlGenres.Controls.Add(Me.lblSources)
         Me.pnlGenres.Controls.Add(Me.btnRemoveSource)
         Me.pnlGenres.Controls.Add(Me.btnAddSource)
         Me.pnlGenres.Controls.Add(Me.dgvSources)
@@ -148,14 +148,14 @@ Partial Class frmSettingsHolder
         Me.btnSetDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnSetDefaults.UseVisualStyleBackColor = True
         '
-        'Label1
+        'lblSources
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(14, 9)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(46, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Sources"
+        Me.lblSources.AutoSize = True
+        Me.lblSources.Location = New System.Drawing.Point(14, 9)
+        Me.lblSources.Name = "lblSources"
+        Me.lblSources.Size = New System.Drawing.Size(46, 13)
+        Me.lblSources.TabIndex = 0
+        Me.lblSources.Text = "Sources"
         '
         'btnRemoveSource
         '
@@ -244,7 +244,7 @@ Partial Class frmSettingsHolder
     Friend WithEvents dgvSources As System.Windows.Forms.DataGridView
     Friend WithEvents btnRemoveSource As System.Windows.Forms.Button
     Friend WithEvents btnAddSource As System.Windows.Forms.Button
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lblSources As System.Windows.Forms.Label
     Friend WithEvents btnSetDefaults As System.Windows.Forms.Button
     Friend WithEvents Search As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewComboBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
