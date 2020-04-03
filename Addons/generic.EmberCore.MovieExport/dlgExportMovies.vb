@@ -107,7 +107,11 @@ Public Class dlgExportMovies
                     SQLcount.Read()
                     bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Format("SELECT idMovie FROM '{0}' ORDER BY SortedTitle COLLATE NOCASE;", strCurrList_Movies)
+                If strCurrList_Movies = "movielist" Then
+                    SQLNewcommand.CommandText = String.Format("SELECT idMovie FROM '{0}' ORDER BY SortedTitle COLLATE NOCASE;", strCurrList_Movies)
+                Else
+                    SQLNewcommand.CommandText = String.Format("SELECT idMovie FROM '{0}';", strCurrList_Movies)
+                End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
@@ -141,7 +145,11 @@ Public Class dlgExportMovies
                     SQLcount.Read()
                     bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Format("SELECT idShow FROM '{0}' ORDER BY SortedTitle COLLATE NOCASE;", strCurrList_TVShows)
+                If strCurrList_TVShows = "tvshowlist" Then
+                    SQLNewcommand.CommandText = String.Format("SELECT idShow FROM '{0}' ORDER BY SortedTitle COLLATE NOCASE;", strCurrList_TVShows)
+                Else
+                    SQLNewcommand.CommandText = String.Format("SELECT idShow FROM '{0}';", strCurrList_TVShows)
+                End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
