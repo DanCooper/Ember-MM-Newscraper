@@ -1261,7 +1261,7 @@ Public Class dlgImgSelect
         If Not noTopImages Then
             DoSelectTopImage(0, CType(pnlTopImage_Panel(0).Tag, iTag))
         Else
-            pnlImgSelectTop.Visible = False
+            pnlTopImages.Visible = False
         End If
     End Sub
 
@@ -1320,7 +1320,7 @@ Public Class dlgImgSelect
         DeselectAllTopImages()
         pnlImgSelectLeft.Enabled = False
         pnlImgSelectMain.Enabled = False
-        pnlImgSelectTop.Enabled = False
+        pnlTopImages.Enabled = False
         pnlLoading.Visible = False
 
         If bwImgDefaults.IsBusy Then bwImgDefaults.CancelAsync()

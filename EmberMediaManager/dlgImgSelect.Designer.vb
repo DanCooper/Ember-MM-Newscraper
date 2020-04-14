@@ -26,8 +26,6 @@ Partial Class dlgImgSelect
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImgSelect))
         Me.pnlImgSelect = New System.Windows.Forms.Panel()
         Me.pnlImgSelectMain = New System.Windows.Forms.Panel()
-        Me.pnlImgSelectTop = New System.Windows.Forms.Panel()
-        Me.tblImgSelectTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlTopImages = New System.Windows.Forms.Panel()
         Me.pnlImgSelectBottom = New System.Windows.Forms.Panel()
         Me.tblImgSelectBottom = New System.Windows.Forms.TableLayoutPanel()
@@ -65,8 +63,6 @@ Partial Class dlgImgSelect
         Me.cmnuListImageSelectAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuListImagePreview = New System.Windows.Forms.ToolStripMenuItem()
         Me.pnlImgSelect.SuspendLayout()
-        Me.pnlImgSelectTop.SuspendLayout()
-        Me.tblImgSelectTop.SuspendLayout()
         Me.pnlImgSelectBottom.SuspendLayout()
         Me.tblImgSelectBottom.SuspendLayout()
         Me.pnlImgSelectLeft.SuspendLayout()
@@ -81,7 +77,7 @@ Partial Class dlgImgSelect
         'pnlImgSelect
         '
         Me.pnlImgSelect.Controls.Add(Me.pnlImgSelectMain)
-        Me.pnlImgSelect.Controls.Add(Me.pnlImgSelectTop)
+        Me.pnlImgSelect.Controls.Add(Me.pnlTopImages)
         Me.pnlImgSelect.Controls.Add(Me.pnlImgSelectBottom)
         Me.pnlImgSelect.Controls.Add(Me.pnlImgSelectLeft)
         Me.pnlImgSelect.Dock = System.Windows.Forms.DockStyle.Fill
@@ -94,45 +90,19 @@ Partial Class dlgImgSelect
         '
         Me.pnlImgSelectMain.AutoScroll = True
         Me.pnlImgSelectMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlImgSelectMain.Location = New System.Drawing.Point(211, 203)
+        Me.pnlImgSelectMain.Location = New System.Drawing.Point(211, 200)
         Me.pnlImgSelectMain.Name = "pnlImgSelectMain"
-        Me.pnlImgSelectMain.Size = New System.Drawing.Size(1323, 542)
+        Me.pnlImgSelectMain.Size = New System.Drawing.Size(1323, 545)
         Me.pnlImgSelectMain.TabIndex = 3
-        '
-        'pnlImgSelectTop
-        '
-        Me.pnlImgSelectTop.AutoSize = True
-        Me.pnlImgSelectTop.Controls.Add(Me.tblImgSelectTop)
-        Me.pnlImgSelectTop.Dock = System.Windows.Forms.DockStyle.Top
-        Me.pnlImgSelectTop.Location = New System.Drawing.Point(211, 0)
-        Me.pnlImgSelectTop.Name = "pnlImgSelectTop"
-        Me.pnlImgSelectTop.Size = New System.Drawing.Size(1323, 203)
-        Me.pnlImgSelectTop.TabIndex = 0
-        '
-        'tblImgSelectTop
-        '
-        Me.tblImgSelectTop.AutoSize = True
-        Me.tblImgSelectTop.ColumnCount = 1
-        Me.tblImgSelectTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblImgSelectTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblImgSelectTop.Controls.Add(Me.pnlTopImages, 0, 0)
-        Me.tblImgSelectTop.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblImgSelectTop.Location = New System.Drawing.Point(0, 0)
-        Me.tblImgSelectTop.Name = "tblImgSelectTop"
-        Me.tblImgSelectTop.RowCount = 1
-        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 203.0!))
-        Me.tblImgSelectTop.Size = New System.Drawing.Size(1323, 203)
-        Me.tblImgSelectTop.TabIndex = 0
         '
         'pnlTopImages
         '
         Me.pnlTopImages.AutoScroll = True
-        Me.pnlTopImages.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlTopImages.Location = New System.Drawing.Point(0, 3)
+        Me.pnlTopImages.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlTopImages.Location = New System.Drawing.Point(211, 0)
         Me.pnlTopImages.Margin = New System.Windows.Forms.Padding(0, 3, 3, 3)
         Me.pnlTopImages.Name = "pnlTopImages"
-        Me.pnlTopImages.Size = New System.Drawing.Size(1320, 197)
+        Me.pnlTopImages.Size = New System.Drawing.Size(1323, 200)
         Me.pnlTopImages.TabIndex = 3
         '
         'pnlImgSelectBottom
@@ -496,9 +466,6 @@ Partial Class dlgImgSelect
         Me.Text = "Image Select"
         Me.pnlImgSelect.ResumeLayout(False)
         Me.pnlImgSelect.PerformLayout()
-        Me.pnlImgSelectTop.ResumeLayout(False)
-        Me.pnlImgSelectTop.PerformLayout()
-        Me.tblImgSelectTop.ResumeLayout(False)
         Me.pnlImgSelectBottom.ResumeLayout(False)
         Me.pnlImgSelectBottom.PerformLayout()
         Me.tblImgSelectBottom.ResumeLayout(False)
@@ -523,7 +490,6 @@ Partial Class dlgImgSelect
     Friend WithEvents tblImgSelectLeft As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSubImages As System.Windows.Forms.Panel
     Friend WithEvents pnlImgSelectBottom As System.Windows.Forms.Panel
-    Friend WithEvents pnlImgSelectTop As System.Windows.Forms.Panel
     Friend WithEvents pnlTopImages As System.Windows.Forms.Panel
     Friend WithEvents tblImgSelectBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents btnOK As System.Windows.Forms.Button
@@ -551,7 +517,6 @@ Partial Class dlgImgSelect
     Friend WithEvents cmnuSubImageRemove As ToolStripMenuItem
     Friend WithEvents cmnuListImage As ContextMenuStrip
     Friend WithEvents cmnuListImageSelect As ToolStripMenuItem
-    Friend WithEvents tblImgSelectTop As TableLayoutPanel
     Friend WithEvents cmnuSubImageRemoveAll As ToolStripMenuItem
     Friend WithEvents cmnuSubImageRestoreOriginal As ToolStripMenuItem
     Friend WithEvents cmnuSubImageRestorePreferred As ToolStripMenuItem
