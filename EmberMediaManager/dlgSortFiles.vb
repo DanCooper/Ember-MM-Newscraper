@@ -18,14 +18,14 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
+Imports System.IO
 
 Public Class dlgSortFiles
 
 #Region "Fields"
 
-    Private _hitgo As Boolean = False
+    Private _HitGo As Boolean = False
 
 #End Region 'Fields
 
@@ -39,7 +39,7 @@ Public Class dlgSortFiles
         StartPosition = FormStartPosition.Manual
     End Sub
 
-    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
+    Private Sub btnBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBrowse.Click
         With fbdBrowse
             If .ShowDialog = DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath) Then
@@ -49,19 +49,23 @@ Public Class dlgSortFiles
         End With
     End Sub
 
-    Private Sub btnGo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGo.Click
-        '//
-        ' Convert a file source into a folder source by separating everything into separate folders
-        '\\
+    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+        DialogResult = If(_HitGo, DialogResult.OK, DialogResult.Cancel)
+        Close()
+    End Sub
 
+    Private Sub btnGo_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGo.Click
         If Not String.IsNullOrEmpty(txtPath.Text) AndAlso Directory.Exists(txtPath.Text) Then
-            If MessageBox.Show(String.Concat(Master.eLang.GetString(220, "WARNING: If you continue, all files will be sorted into separate folders."), Environment.NewLine, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), Master.eLang.GetString(104, "Are you sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                _hitgo = True
-                FileUtils.FileSorter.SortFiles(txtPath.Text)
-                lblStatus.Text = "Done!"
-                pbStatus.Value = 0
-
+            If MessageBox.Show(String.Concat(Master.eLang.GetString(220, "WARNING: If you continue, all files will be sorted into separate folders."),
+                                             Environment.NewLine,
+                                             Environment.NewLine,
+                                             Master.eLang.GetString(101, "Are you sure you want to continue?")),
+                               Master.eLang.GetString(104, "Are you sure?"),
+                               MessageBoxButtons.YesNo,
+                               MessageBoxIcon.Question) = DialogResult.Yes Then
+                _HitGo = True
                 Master.eSettings.SortPath = txtPath.Text
+                FileUtils.SortFiles(txtPath.Text)
             End If
         Else
             MessageBox.Show(Master.eLang.GetString(221, "The folder you entered does not exist. Please enter a valid path."), Master.eLang.GetString(222, "Directory Not Found"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -69,40 +73,35 @@ Public Class dlgSortFiles
         End If
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        DialogResult = If(_hitgo, System.Windows.Forms.DialogResult.OK, System.Windows.Forms.DialogResult.Cancel)
-        Close()
-    End Sub
-
-    Private Sub dlgSortFiles_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        AddHandler FileUtils.FileSorter.ProgressUpdated, AddressOf UpdateProgress
+    Private Sub dlgSortFiles_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        AddHandler FileUtils.ProgressUpdated, AddressOf UpdateProgress
         pbStatus.Maximum = 100
-        SetUp()
         txtPath.Text = Master.eSettings.SortPath
+        Setup()
     End Sub
 
-    Private Sub dlgSortFiles_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgSortFiles_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         Activate()
     End Sub
 
-    Private Sub SetUp()
+    Private Sub Setup()
         Text = Master.eLang.GetString(213, "Sort Files Into Folders")
-        Cancel_Button.Text = Master.eLang.GetString(19, "Close")
+        btnCancel.Text = Master.eLang.GetString(19, "Close")
         btnGo.Text = Master.eLang.GetString(214, "Go")
+        fbdBrowse.Description = Master.eLang.GetString(218, "Select the folder which contains the files you wish to sort.")
         gbStatus.Text = Master.eLang.GetString(215, "Status")
         lblStatus.Text = Master.eLang.GetString(216, "Enter Path and Press ""Go"" to Begin.")
         lblPathToSort.Text = Master.eLang.GetString(217, "Path to Sort:")
-        fbdBrowse.Description = Master.eLang.GetString(218, "Select the folder which contains the files you wish to sort.")
     End Sub
     ''' <summary>
     ''' Event handler to display status text and progress bar updates during file moving operations
     ''' </summary>
-    ''' <param name="iPercent">Percentage completed</param>
-    ''' <param name="sStatus"></param>
+    ''' <param name="percent">Percentage completed</param>
+    ''' <param name="status"></param>
     ''' <remarks></remarks>
-    Private Sub UpdateProgress(ByVal iPercent As Integer, ByVal sStatus As String)
-        lblStatus.Text = sStatus
-        pbStatus.Value = iPercent
+    Private Sub UpdateProgress(ByVal percent As Integer, ByVal status As String)
+        lblStatus.Text = status
+        pbStatus.Value = percent
     End Sub
 
 #End Region 'Methods
