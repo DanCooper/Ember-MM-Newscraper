@@ -32,7 +32,7 @@ Public Class frmSettingsHolder
 
 #Region "Methods"
 
-    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+    Private Sub btnDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDown.Click
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ModuleOrder
         If order < ModulesManager.Instance.externalScrapersModules_Data_Movie.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
@@ -42,7 +42,7 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
-    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+    Private Sub btnUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUp.Click
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ModuleOrder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
@@ -52,23 +52,19 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
-    Private Sub bEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+    Private Sub bEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenres.CheckedChanged
+    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGenres.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOutline.CheckedChanged
+    Private Sub chkOFDBPlot_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkPlot.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTitle.CheckedChanged
+    Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitle.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -78,7 +74,7 @@ Public Class frmSettingsHolder
 
     Public Sub New()
         InitializeComponent()
-        Me.SetUp()
+        Setup()
     End Sub
 
     Sub orderChanged()
@@ -92,16 +88,15 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
-    Private Sub SetUp()
-        Me.chkCertifications.Text = Master.eLang.GetString(56, "Certifications")
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkGenres.Text = Master.eLang.GetString(725, "Genres")
-        Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
-        Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
-        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
-        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+    Private Sub Setup()
+        chkCertifications.Text = Master.eLang.GetString(56, "Certifications")
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        chkGenres.Text = Master.eLang.GetString(725, "Genres")
+        chkPlot.Text = Master.eLang.GetString(65, "Plot")
+        chkTitle.Text = Master.eLang.GetString(21, "Title")
+        gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
+        lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods

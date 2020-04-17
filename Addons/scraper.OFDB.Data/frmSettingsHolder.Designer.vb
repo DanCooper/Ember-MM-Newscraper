@@ -25,11 +25,10 @@ Partial Class frmSettingsHolder
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
         Me.gbScraperFieldsOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperFieldsOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkGenres = New System.Windows.Forms.CheckBox()
         Me.chkCertifications = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
+        Me.chkGenres = New System.Windows.Forms.CheckBox()
         Me.chkPlot = New System.Windows.Forms.CheckBox()
-        Me.chkOutline = New System.Windows.Forms.CheckBox()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
@@ -63,7 +62,7 @@ Partial Class frmSettingsHolder
         Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperFieldsOpts.MinimumSize = New System.Drawing.Size(200, 0)
         Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
-        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(200, 136)
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(200, 113)
         Me.gbScraperFieldsOpts.TabIndex = 2
         Me.gbScraperFieldsOpts.TabStop = False
         Me.gbScraperFieldsOpts.Text = "Scraper Fields - Scraper specific"
@@ -75,34 +74,20 @@ Partial Class frmSettingsHolder
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertifications, 0, 0)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 0, 4)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 0, 3)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenres, 0, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkOutline, 0, 3)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 0, 2)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
-        Me.tblScraperFieldsOpts.RowCount = 6
+        Me.tblScraperFieldsOpts.RowCount = 5
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(194, 115)
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(194, 92)
         Me.tblScraperFieldsOpts.TabIndex = 98
-        '
-        'chkGenres
-        '
-        Me.chkGenres.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGenres.AutoSize = True
-        Me.chkGenres.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGenres.Location = New System.Drawing.Point(3, 26)
-        Me.chkGenres.Name = "chkGenres"
-        Me.chkGenres.Size = New System.Drawing.Size(62, 17)
-        Me.chkGenres.TabIndex = 3
-        Me.chkGenres.Text = "Genres"
-        Me.chkGenres.UseVisualStyleBackColor = True
         '
         'chkCertifications
         '
@@ -121,12 +106,24 @@ Partial Class frmSettingsHolder
         Me.chkTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTitle.AutoSize = True
         Me.chkTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTitle.Location = New System.Drawing.Point(3, 95)
+        Me.chkTitle.Location = New System.Drawing.Point(3, 72)
         Me.chkTitle.Name = "chkTitle"
-        Me.chkTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkTitle.Size = New System.Drawing.Size(48, 17)
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
+        '
+        'chkGenres
+        '
+        Me.chkGenres.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkGenres.AutoSize = True
+        Me.chkGenres.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGenres.Location = New System.Drawing.Point(3, 26)
+        Me.chkGenres.Name = "chkGenres"
+        Me.chkGenres.Size = New System.Drawing.Size(62, 17)
+        Me.chkGenres.TabIndex = 3
+        Me.chkGenres.Text = "Genres"
+        Me.chkGenres.UseVisualStyleBackColor = True
         '
         'chkPlot
         '
@@ -139,18 +136,6 @@ Partial Class frmSettingsHolder
         Me.chkPlot.TabIndex = 2
         Me.chkPlot.Text = "Plot"
         Me.chkPlot.UseVisualStyleBackColor = True
-        '
-        'chkOutline
-        '
-        Me.chkOutline.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkOutline.AutoSize = True
-        Me.chkOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOutline.Location = New System.Drawing.Point(3, 72)
-        Me.chkOutline.Name = "chkOutline"
-        Me.chkOutline.Size = New System.Drawing.Size(88, 17)
-        Me.chkOutline.TabIndex = 1
-        Me.chkOutline.Text = "Plot Outline"
-        Me.chkOutline.UseVisualStyleBackColor = True
         '
         'chkEnabled
         '
@@ -363,7 +348,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents gbScraperFieldsOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkGenres As System.Windows.Forms.CheckBox
     Friend WithEvents chkPlot As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSettingsTop As System.Windows.Forms.Panel

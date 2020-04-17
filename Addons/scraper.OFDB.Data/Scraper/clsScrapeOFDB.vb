@@ -157,12 +157,6 @@ Namespace OFDB
                             nMovie.OriginalTitle = CleanTitle(HttpUtility.HtmlDecode(Regex.Match(HTML, strOriginalTitlePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim))
                         End If
 
-                        'Outline
-                        If FilteredOptions.bMainOutline AndAlso bIsScraperLanguage Then
-                            Dim strOutlinePattern As String = "Inhalt:.*?"">(?<OUTLINE>.*?)<a"
-                            nMovie.Outline = HttpUtility.HtmlDecode(Regex.Match(HTML, strOutlinePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim)
-                        End If
-
                         'Plot
                         If FilteredOptions.bMainPlot AndAlso bIsScraperLanguage Then
                             Dim strPlotPattern As String = "<a href=""(?<URL>plot.*?)"""

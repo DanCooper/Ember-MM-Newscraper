@@ -105,7 +105,6 @@ Public Class OFDB_Data
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.chkTitle.Checked = ConfigScrapeOptions.bMainTitle
-        _setup.chkOutline.Checked = ConfigScrapeOptions.bMainOutline
         _setup.chkPlot.Checked = ConfigScrapeOptions.bMainPlot
         _setup.chkGenres.Checked = ConfigScrapeOptions.bMainGenres
         _setup.chkCertifications.Checked = ConfigScrapeOptions.bMainCertifications
@@ -128,7 +127,6 @@ Public Class OFDB_Data
 
     Sub LoadSettings()
         ConfigScrapeOptions.bMainTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
-        ConfigScrapeOptions.bMainOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
         ConfigScrapeOptions.bMainPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
         ConfigScrapeOptions.bMainGenres = AdvancedSettings.GetBooleanSetting("DoGenres", True)
         ConfigScrapeOptions.bMainCertifications = AdvancedSettings.GetBooleanSetting("DoCert", False)
@@ -137,7 +135,6 @@ Public Class OFDB_Data
     Sub SaveSettings()
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions.bMainTitle)
-            settings.SetBooleanSetting("DoOutline", ConfigScrapeOptions.bMainOutline)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions.bMainPlot)
             settings.SetBooleanSetting("DoGenres", ConfigScrapeOptions.bMainGenres)
             settings.SetBooleanSetting("DoCert", ConfigScrapeOptions.bMainCertifications)
@@ -151,7 +148,6 @@ Public Class OFDB_Data
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
         ConfigScrapeOptions.bMainCertifications = _setup.chkCertifications.Checked
         ConfigScrapeOptions.bMainTitle = _setup.chkTitle.Checked
-        ConfigScrapeOptions.bMainOutline = _setup.chkOutline.Checked
         ConfigScrapeOptions.bMainPlot = _setup.chkPlot.Checked
         ConfigScrapeOptions.bMainGenres = _setup.chkGenres.Checked
         SaveSettings()
