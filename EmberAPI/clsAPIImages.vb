@@ -2219,8 +2219,10 @@ Public Class Images
 
         imgResult = SeasonImageList.Find(Function(f) f.Season = -1)
 
-        If imgResult Is Nothing Then
-            imgResult = ShowImageList.First
+        If Not ShowImageList.Count = 0 Then
+            If imgResult Is Nothing Then
+                imgResult = ShowImageList.First
+            End If
         End If
 
         If imgResult IsNot Nothing Then
