@@ -103,6 +103,29 @@ Namespace FileUtils
             End If
         End Sub
 
+        Public Shared Sub CreateFileBackup(ByVal filePath As String)
+            Dim fileToBackup As New FileInfo(filePath)
+            If fileToBackup.Exists Then
+                Try
+                    Dim i As Integer = 1
+                    Dim strNewFileName As String = String.Concat(fileToBackup.Name, "_bak")
+                    'in case there is already a backup of the same file
+                    If File.Exists(Path.Combine(fileToBackup.Directory.FullName, strNewFileName)) Then
+                        Dim alternateFileName = strNewFileName
+                        While File.Exists(Path.Combine(fileToBackup.Directory.FullName, alternateFileName))
+                            alternateFileName = String.Format("{0}({1})", strNewFileName, i)
+                            i += 1
+                        End While
+                        strNewFileName = alternateFileName
+                    End If
+                    File.Copy(fileToBackup.FullName, Path.Combine(fileToBackup.Directory.FullName, strNewFileName))
+                    logger.Info(String.Format("[FileUtils] [CreateFileBackup] file ""{0}"" copied to ""{1}""", fileToBackup.FullName, Path.Combine(fileToBackup.Directory.FullName, strNewFileName)))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+            End If
+        End Sub
+
         Public Shared Sub DirectoryCopy(
                                        ByVal sourcePath As String,
                                        ByVal destinationPath As String,
