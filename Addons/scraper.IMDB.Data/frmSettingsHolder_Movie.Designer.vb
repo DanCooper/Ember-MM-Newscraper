@@ -40,7 +40,6 @@ Partial Class frmSettingsHolder_Movie
         Me.chkGenres = New System.Windows.Forms.CheckBox()
         Me.chkDirectors = New System.Windows.Forms.CheckBox()
         Me.chkWriters = New System.Windows.Forms.CheckBox()
-        Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTop250 = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
         Me.chkTagline = New System.Windows.Forms.CheckBox()
@@ -55,9 +54,9 @@ Partial Class frmSettingsHolder_Movie
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkMPAADescription = New System.Windows.Forms.CheckBox()
         Me.lblInfoParsing = New System.Windows.Forms.Label()
+        Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkCountryAbbreviation = New System.Windows.Forms.CheckBox()
         Me.chkPopularTitles = New System.Windows.Forms.CheckBox()
         Me.chkFallBackworldwide = New System.Windows.Forms.CheckBox()
         Me.lblForceTitleLanguage = New System.Windows.Forms.Label()
@@ -210,7 +209,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
-        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(505, 199)
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(506, 199)
         Me.gbScraperFieldsOpts.TabIndex = 3
         Me.gbScraperFieldsOpts.TabStop = False
         Me.gbScraperFieldsOpts.Text = "Scraper Fields - Scraper specific"
@@ -257,7 +256,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(499, 178)
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(500, 178)
         Me.tblScraperFieldsOpts.TabIndex = 1
         '
         'chkActors
@@ -332,18 +331,6 @@ Partial Class frmSettingsHolder_Movie
         Me.chkWriters.Text = "Credits (Writers)"
         Me.chkWriters.UseVisualStyleBackColor = True
         '
-        'chkYear
-        '
-        Me.chkYear.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkYear.AutoSize = True
-        Me.chkYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkYear.Location = New System.Drawing.Point(431, 26)
-        Me.chkYear.Name = "chkYear"
-        Me.chkYear.Size = New System.Drawing.Size(46, 17)
-        Me.chkYear.TabIndex = 1
-        Me.chkYear.Text = "Year"
-        Me.chkYear.UseVisualStyleBackColor = True
-        '
         'chkTop250
         '
         Me.chkTop250.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -351,7 +338,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTop250.Location = New System.Drawing.Point(431, 3)
         Me.chkTop250.Name = "chkTop250"
-        Me.chkTop250.Size = New System.Drawing.Size(65, 17)
+        Me.chkTop250.Size = New System.Drawing.Size(66, 17)
         Me.chkTop250.TabIndex = 16
         Me.chkTop250.Text = "Top 250"
         Me.chkTop250.UseVisualStyleBackColor = True
@@ -363,7 +350,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTitle.Location = New System.Drawing.Point(277, 118)
         Me.chkTitle.Name = "chkTitle"
-        Me.chkTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkTitle.Size = New System.Drawing.Size(48, 17)
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
@@ -375,7 +362,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTagline.Location = New System.Drawing.Point(277, 95)
         Me.chkTagline.Name = "chkTagline"
-        Me.chkTagline.Size = New System.Drawing.Size(62, 17)
+        Me.chkTagline.Size = New System.Drawing.Size(63, 17)
         Me.chkTagline.TabIndex = 9
         Me.chkTagline.Text = "Tagline"
         Me.chkTagline.UseVisualStyleBackColor = True
@@ -473,7 +460,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkOriginalTitle.Location = New System.Drawing.Point(117, 49)
         Me.chkOriginalTitle.Name = "chkOriginalTitle"
-        Me.chkOriginalTitle.Size = New System.Drawing.Size(92, 17)
+        Me.chkOriginalTitle.Size = New System.Drawing.Size(93, 17)
         Me.chkOriginalTitle.TabIndex = 81
         Me.chkOriginalTitle.Text = "Original Title"
         Me.chkOriginalTitle.UseVisualStyleBackColor = True
@@ -516,6 +503,18 @@ Partial Class frmSettingsHolder_Movie
         Me.lblInfoParsing.TabIndex = 83
         Me.lblInfoParsing.Text = "* additional page(s) to parse, needs longer to scrape"
         '
+        'chkYear
+        '
+        Me.chkYear.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkYear.AutoSize = True
+        Me.chkYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkYear.Location = New System.Drawing.Point(431, 26)
+        Me.chkYear.Name = "chkYear"
+        Me.chkYear.Size = New System.Drawing.Size(46, 17)
+        Me.chkYear.TabIndex = 1
+        Me.chkYear.Text = "Year"
+        Me.chkYear.UseVisualStyleBackColor = True
+        '
         'gbScraperOpts
         '
         Me.gbScraperOpts.AutoSize = True
@@ -524,7 +523,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperOpts.Location = New System.Drawing.Point(3, 208)
         Me.gbScraperOpts.Name = "gbScraperOpts"
-        Me.gbScraperOpts.Size = New System.Drawing.Size(505, 140)
+        Me.gbScraperOpts.Size = New System.Drawing.Size(506, 140)
         Me.gbScraperOpts.TabIndex = 97
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Options"
@@ -537,7 +536,6 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperOpts.Controls.Add(Me.chkCountryAbbreviation, 1, 2)
         Me.tblScraperOpts.Controls.Add(Me.chkPopularTitles, 0, 0)
         Me.tblScraperOpts.Controls.Add(Me.chkFallBackworldwide, 1, 1)
         Me.tblScraperOpts.Controls.Add(Me.lblForceTitleLanguage, 1, 0)
@@ -556,21 +554,8 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperOpts.Size = New System.Drawing.Size(499, 119)
+        Me.tblScraperOpts.Size = New System.Drawing.Size(500, 119)
         Me.tblScraperOpts.TabIndex = 1
-        '
-        'chkCountryAbbreviation
-        '
-        Me.chkCountryAbbreviation.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkCountryAbbreviation.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkCountryAbbreviation, 2)
-        Me.chkCountryAbbreviation.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCountryAbbreviation.Location = New System.Drawing.Point(110, 53)
-        Me.chkCountryAbbreviation.Name = "chkCountryAbbreviation"
-        Me.chkCountryAbbreviation.Size = New System.Drawing.Size(355, 17)
-        Me.chkCountryAbbreviation.TabIndex = 79
-        Me.chkCountryAbbreviation.Text = "Country-Tag: Save country abbreviation(s) instead of full name(s)"
-        Me.chkCountryAbbreviation.UseVisualStyleBackColor = True
         '
         'chkPopularTitles
         '
@@ -579,7 +564,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkPopularTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkPopularTitles.Location = New System.Drawing.Point(3, 5)
         Me.chkPopularTitles.Name = "chkPopularTitles"
-        Me.chkPopularTitles.Size = New System.Drawing.Size(95, 17)
+        Me.chkPopularTitles.Size = New System.Drawing.Size(96, 17)
         Me.chkPopularTitles.TabIndex = 0
         Me.chkPopularTitles.Text = "Popular Titles"
         Me.chkPopularTitles.UseVisualStyleBackColor = True
@@ -591,7 +576,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperOpts.SetColumnSpan(Me.chkFallBackworldwide, 2)
         Me.chkFallBackworldwide.Enabled = False
         Me.chkFallBackworldwide.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFallBackworldwide.Location = New System.Drawing.Point(110, 30)
+        Me.chkFallBackworldwide.Location = New System.Drawing.Point(112, 30)
         Me.chkFallBackworldwide.Name = "chkFallBackworldwide"
         Me.chkFallBackworldwide.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkFallBackworldwide.Size = New System.Drawing.Size(189, 17)
@@ -604,9 +589,9 @@ Partial Class frmSettingsHolder_Movie
         Me.lblForceTitleLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblForceTitleLanguage.AutoSize = True
         Me.lblForceTitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblForceTitleLanguage.Location = New System.Drawing.Point(110, 7)
+        Me.lblForceTitleLanguage.Location = New System.Drawing.Point(112, 7)
         Me.lblForceTitleLanguage.Name = "lblForceTitleLanguage"
-        Me.lblForceTitleLanguage.Size = New System.Drawing.Size(116, 13)
+        Me.lblForceTitleLanguage.Size = New System.Drawing.Size(117, 13)
         Me.lblForceTitleLanguage.TabIndex = 4
         Me.lblForceTitleLanguage.Text = "Force Title Language:"
         '
@@ -617,7 +602,7 @@ Partial Class frmSettingsHolder_Movie
         Me.cbForceTitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbForceTitleLanguage.FormattingEnabled = True
         Me.cbForceTitleLanguage.Items.AddRange(New Object() {"", "Argentina", "Australia", "Azerbaijan", "Belgium", "Brazil", "Bulgaria (Bulgarian title)", "Canada (English title)", "Canada (French title)", "Chile", "China (Mandarin title)", "Colombia", "Croatia", "Czech Republic", "Denmark", "Estonia", "Finland", "Finland (Swedish title)", "France", "Georgia", "Germany", "Greece", "Hong Kong", "Hong Kong (Cantonese title)", "Hong Kong (Mandarin title)", "Hungary", "Iceland", "India (Hindi title)", "Ireland", "Israel (Hebrew title)", "Italy", "Japan", "Japan (English title)", "Latvia", "Lithuania", "Mexico", "Netherlands", "New Zealand", "Panama", "Peru", "Poland", "Portugal", "Romania", "Russia", "Serbia", "Singapore", "Slovakia", "Slovenia", "South Korea", "Spain", "Sweden", "Switzerland", "Taiwan", "Turkey (Turkish title)", "UK", "Ukraine", "Uruguay", "USA", "Venezuela", "Vietnam"})
-        Me.cbForceTitleLanguage.Location = New System.Drawing.Point(232, 3)
+        Me.cbForceTitleLanguage.Location = New System.Drawing.Point(235, 3)
         Me.cbForceTitleLanguage.Name = "cbForceTitleLanguage"
         Me.cbForceTitleLanguage.Size = New System.Drawing.Size(131, 21)
         Me.cbForceTitleLanguage.Sorted = True
@@ -630,7 +615,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkPartialTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkPartialTitles.Location = New System.Drawing.Point(3, 30)
         Me.chkPartialTitles.Name = "chkPartialTitles"
-        Me.chkPartialTitles.Size = New System.Drawing.Size(87, 17)
+        Me.chkPartialTitles.Size = New System.Drawing.Size(88, 17)
         Me.chkPartialTitles.TabIndex = 1
         Me.chkPartialTitles.Text = "Partial Titles"
         Me.chkPartialTitles.UseVisualStyleBackColor = True
@@ -642,7 +627,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkTvTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTvTitles.Location = New System.Drawing.Point(3, 53)
         Me.chkTvTitles.Name = "chkTvTitles"
-        Me.chkTvTitles.Size = New System.Drawing.Size(101, 17)
+        Me.chkTvTitles.Size = New System.Drawing.Size(103, 17)
         Me.chkTvTitles.TabIndex = 2
         Me.chkTvTitles.Text = "TV Movie Titles"
         Me.chkTvTitles.UseVisualStyleBackColor = True
@@ -654,7 +639,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkVideoTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkVideoTitles.Location = New System.Drawing.Point(3, 76)
         Me.chkVideoTitles.Name = "chkVideoTitles"
-        Me.chkVideoTitles.Size = New System.Drawing.Size(85, 17)
+        Me.chkVideoTitles.Size = New System.Drawing.Size(86, 17)
         Me.chkVideoTitles.TabIndex = 3
         Me.chkVideoTitles.Text = "Video Titles"
         Me.chkVideoTitles.UseVisualStyleBackColor = True
@@ -666,7 +651,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkShortTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkShortTitles.Location = New System.Drawing.Point(3, 99)
         Me.chkShortTitles.Name = "chkShortTitles"
-        Me.chkShortTitles.Size = New System.Drawing.Size(83, 17)
+        Me.chkShortTitles.Size = New System.Drawing.Size(84, 17)
         Me.chkShortTitles.TabIndex = 80
         Me.chkShortTitles.Text = "Short Titles"
         Me.chkShortTitles.UseVisualStyleBackColor = True
@@ -801,7 +786,6 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents chkFallBackworldwide As System.Windows.Forms.CheckBox
     Friend WithEvents cbForceTitleLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblForceTitleLanguage As System.Windows.Forms.Label
-    Friend WithEvents chkCountryAbbreviation As System.Windows.Forms.CheckBox
     Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkOriginalTitle As System.Windows.Forms.CheckBox
     Friend WithEvents tblScraperFieldsOpts As System.Windows.Forms.TableLayoutPanel

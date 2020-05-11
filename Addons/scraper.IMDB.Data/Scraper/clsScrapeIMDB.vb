@@ -1090,21 +1090,7 @@ Public Class Scraper
         If selNode IsNot Nothing AndAlso selNode.ParentNode IsNot Nothing Then
             Dim ncCountries = selNode.ParentNode.Descendants("a")
             If ncCountries IsNot Nothing Then
-                Dim lstCountries = ncCountries.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList
-                If _SpecialSettings.CountryAbbreviation Then
-                    For i As Integer = 0 To lstCountries.Count - 1
-                        lstCountries(i) = lstCountries(i).Replace("United States", "USA")
-                        lstCountries(i) = lstCountries(i).Replace("United States of America", "USA")
-                        lstCountries(i) = lstCountries(i).Replace("United Kingdom", "UK")
-                    Next
-                Else
-                    For i As Integer = 0 To lstCountries.Count - 1
-                        lstCountries(i) = lstCountries(i).Replace("United States", "United States of America")
-                        lstCountries(i) = lstCountries(i).Replace("USA", "United States of America")
-                        lstCountries(i) = lstCountries(i).Replace("UK", "United Kingdom")
-                    Next
-                End If
-                Return lstCountries
+                Return ncCountries.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList
             End If
         End If
         Return Nothing

@@ -161,7 +161,6 @@ Public Class IMDB_Data
         _setup_Movie.chkYear.Checked = ConfigScrapeOptions_Movie.bMainYear
 
         _setup_Movie.cbForceTitleLanguage.Text = _SpecialSettings_Movie.ForceTitleLanguage
-        _setup_Movie.chkCountryAbbreviation.Checked = _SpecialSettings_Movie.CountryAbbreviation
         _setup_Movie.chkFallBackworldwide.Checked = _SpecialSettings_Movie.FallBackWorldwide
         _setup_Movie.chkMPAADescription.Checked = _SpecialSettings_Movie.MPAADescription
         _setup_Movie.chkPartialTitles.Checked = _SpecialSettings_Movie.SearchPartialTitles
@@ -252,7 +251,6 @@ Public Class IMDB_Data
         ConfigScrapeOptions_Movie.bMainWriters = AdvancedSettings.GetBooleanSetting("DoWriters", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainYear = AdvancedSettings.GetBooleanSetting("DoYear", True, , Enums.ContentType.Movie)
 
-        _SpecialSettings_Movie.CountryAbbreviation = AdvancedSettings.GetBooleanSetting("CountryAbbreviation", False, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.FallBackWorldwide = AdvancedSettings.GetBooleanSetting("FallBackWorldwide", False, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.ForceTitleLanguage = AdvancedSettings.GetSetting("ForceTitleLanguage", String.Empty, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.MPAADescription = AdvancedSettings.GetBooleanSetting("MPAADescription", False, , Enums.ContentType.Movie)
@@ -309,7 +307,6 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("DoTop250", ConfigScrapeOptions_Movie.bMainTop250, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoWriters", ConfigScrapeOptions_Movie.bMainWriters, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoYear", ConfigScrapeOptions_Movie.bMainYear, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("CountryAbbreviation", _SpecialSettings_Movie.CountryAbbreviation, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("FallBackWorldwide", _SpecialSettings_Movie.FallBackWorldwide, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("MPAADescription", _SpecialSettings_Movie.MPAADescription, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("SearchPartialTitles", _SpecialSettings_Movie.SearchPartialTitles, , , Enums.ContentType.Movie)
@@ -368,7 +365,6 @@ Public Class IMDB_Data
         ConfigScrapeOptions_Movie.bMainWriters = _setup_Movie.chkWriters.Checked
         ConfigScrapeOptions_Movie.bMainYear = _setup_Movie.chkYear.Checked
 
-        _SpecialSettings_Movie.CountryAbbreviation = _setup_Movie.chkCountryAbbreviation.Checked
         _SpecialSettings_Movie.FallBackWorldwide = _setup_Movie.chkFallBackworldwide.Checked
         _SpecialSettings_Movie.ForceTitleLanguage = _setup_Movie.cbForceTitleLanguage.Text
         _SpecialSettings_Movie.MPAADescription = _setup_Movie.chkMPAADescription.Checked
@@ -597,7 +593,6 @@ Public Class IMDB_Data
 
 #Region "Fields"
 
-        Dim CountryAbbreviation As Boolean
         Dim FallBackWorldwide As Boolean
         Dim ForceTitleLanguage As String
         Dim MPAADescription As Boolean

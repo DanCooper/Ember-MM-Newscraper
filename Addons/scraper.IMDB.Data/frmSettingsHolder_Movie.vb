@@ -182,10 +182,6 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkCountryAbbreviation_CheckedChanged(sender As Object, e As EventArgs) Handles chkCountryAbbreviation.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
     Public Sub New()
         InitializeComponent()
         SetUp()
@@ -206,7 +202,6 @@ Public Class frmSettingsHolder_Movie
         chkActors.Text = Master.eLang.GetString(231, "Actors")
         chkCertifications.Text = Master.eLang.GetString(56, "Certifications")
         chkCountries.Text = Master.eLang.GetString(237, "Countries")
-        chkCountryAbbreviation.Text = Master.eLang.GetString(1257, "Country-Tag: Save country abbreviation(s) instead of full name(s)")
         chkDirectors.Text = Master.eLang.GetString(940, "Directors")
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         chkFallBackworldwide.Text = Master.eLang.GetString(984, "Worldwide title as fallback")
