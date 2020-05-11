@@ -22,44 +22,18 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 
-
 <Serializable()>
 <XmlRoot("core.scraperlanguages")>
 Public Class clsXMLScraperLanguages
 
-#Region "Fields"
-
-    Private _languages As New List(Of languageProperty)
-
-#End Region 'Fields
-
 #Region "Properties"
 
     <XmlElement("language")>
-    Public Property Languages() As List(Of languageProperty)
-        Get
-            Return _languages
-        End Get
-        Set(ByVal value As List(Of languageProperty))
-            _languages = value
-        End Set
-    End Property
+    Public Property Languages() As List(Of LanguageProperty) = New List(Of LanguageProperty)
 
 #End Region 'Properties
 
-#Region "Constructors"
-
-    Public Sub New()
-        Clear()
-    End Sub
-
-#End Region 'Constructors
-
 #Region "Methods"
-
-    Public Sub Clear()
-        _languages.Clear()
-    End Sub
 
     Public Sub Save()
         Sort()
@@ -70,7 +44,7 @@ Public Class clsXMLScraperLanguages
     End Sub
 
     Public Sub Sort()
-        _languages.Sort()
+        Languages.Sort()
     End Sub
 
 #End Region 'Methods
@@ -78,71 +52,37 @@ Public Class clsXMLScraperLanguages
 End Class
 
 <Serializable()>
-Public Class languageProperty
-    Implements IComparable(Of languageProperty)
-
-#Region "Fields"
-
-    Private _abbreviation As String
-    Private _name As String
-
-#End Region 'Fields
+Public Class LanguageProperty
+    Implements IComparable(Of LanguageProperty)
 
 #Region "Properties"
 
     <XmlElement("name")>
-    Public Property Name() As String
-        Get
-            Return _name
-        End Get
-        Set(ByVal value As String)
-            _name = value
-        End Set
-    End Property
+    Public Property Name() As String = String.Empty
 
     <XmlElement("abbreviation")>
-    Public Property Abbreviation() As String
-        Get
-            Return _abbreviation
-        End Get
-        Set(ByVal value As String)
-            _abbreviation = value
-        End Set
-    End Property
+    Public Property Abbreviation() As String = String.Empty
 
     <XmlIgnore()>
     Public ReadOnly Property Description() As String
         Get
-            Return String.Format("{0} ({1})", _name, _abbreviation)
+            Return String.Format("{0} ({1})", Name, Abbreviation)
         End Get
     End Property
 
     <XmlIgnore()>
     Public ReadOnly Property Abbrevation_MainLanguage() As String
         Get
-            Return Regex.Replace(_abbreviation, "-.*", String.Empty).Trim
+            Return Regex.Replace(Abbreviation, "-.*", String.Empty).Trim
         End Get
     End Property
 
 #End Region 'Properties
 
-#Region "Constructors"
-
-    Public Sub New()
-        Clear()
-    End Sub
-
-#End Region 'Constructors
-
 #Region "Methods"
 
-    Public Sub Clear()
-        _abbreviation = String.Empty
-        _name = String.Empty
-    End Sub
-
-    Public Function CompareTo(ByVal other As languageProperty) As Integer _
-        Implements IComparable(Of languageProperty).CompareTo
+    Public Function CompareTo(ByVal other As LanguageProperty) As Integer _
+        Implements IComparable(Of LanguageProperty).CompareTo
         Try
             Dim retVal As Integer = (Name).CompareTo(other.Name)
             Return retVal
@@ -154,4 +94,3 @@ Public Class languageProperty
 #End Region 'Methods
 
 End Class
-

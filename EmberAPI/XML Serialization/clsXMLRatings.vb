@@ -1,107 +1,57 @@
-﻿
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="ratings")> _
-Partial Public Class clsXMLRatings
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
 
-    Private moviesField As New List(Of ratingsNameMovie)
+Imports System.Xml.Serialization
 
-    Private tvField As New List(Of ratingsNameTV)
+<Serializable()>
+<XmlRoot("ratings")>
+Public Class clsXMLRatings
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlArrayItemAttribute("name", IsNullable:=False)> _
-    Public Property movies() As List(Of ratingsNameMovie)
-        Get
-            Return Me.moviesField
-        End Get
-        Set(value As List(Of ratingsNameMovie))
-            Me.moviesField = value
-        End Set
-    End Property
-    <System.Xml.Serialization.XmlArrayItemAttribute("name", IsNullable:=False)> _
-    Public Property tv() As List(Of ratingsNameTV)
-        Get
-            Return Me.tvField
-        End Get
-        Set(value As List(Of ratingsNameTV))
-            Me.tvField = value
-        End Set
-    End Property
+#Region "Properties"
+
+    <XmlArray("movies")>
+    <XmlArrayItem("name")>
+    Public Property Movies() As List(Of RatingProperty) = New List(Of RatingProperty)
+
+    <XmlArray("tv")>
+    <XmlArrayItem("name")>
+    Public Property TV() As List(Of RatingProperty) = New List(Of RatingProperty)
+
+#End Region 'Properties
+
 End Class
 
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-Partial Public Class ratingsNameMovie
+<Serializable()>
+Public Class RatingProperty
 
-    Private countryField As String
+#Region "Properties"
 
-    Private iconField As String
+    <XmlElement("country")>
+    Public Property Country() As String = String.Empty
 
-    Private searchstringField As String
+    <XmlElement("icon")>
+    Public Property Icon() As String = String.Empty
 
+    <XmlAttribute("searchstring")>
+    Public Property Searchstring() As String = String.Empty
 
-    Public Property country() As String
-        Get
-            Return Me.countryField
-        End Get
-        Set(value As String)
-            Me.countryField = value
-        End Set
-    End Property
+#End Region 'Properties
 
-    Public Property icon() As String
-        Get
-            Return Me.iconField
-        End Get
-        Set(value As String)
-            Me.iconField = value
-        End Set
-    End Property
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property searchstring() As String
-        Get
-            Return Me.searchstringField
-        End Get
-        Set(value As String)
-            Me.searchstringField = value
-        End Set
-    End Property
 End Class
-
-Partial Public Class ratingsNameTV
-
-    Private countryField As String
-
-    Private iconField As String
-
-    Private searchstringField As String
-
-
-    Public Property country() As String
-        Get
-            Return Me.countryField
-        End Get
-        Set(value As String)
-            Me.countryField = value
-        End Set
-    End Property
-
-    Public Property icon() As String
-        Get
-            Return Me.iconField
-        End Get
-        Set(value As String)
-            Me.iconField = value
-        End Set
-    End Property
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property searchstring() As String
-        Get
-            Return Me.searchstringField
-        End Get
-        Set(value As String)
-            Me.searchstringField = value
-        End Set
-    End Property
-End Class
-

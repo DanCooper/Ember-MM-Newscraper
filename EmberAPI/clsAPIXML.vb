@@ -18,26 +18,28 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
+Imports System.Drawing
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
-Imports System.Drawing
-Imports NLog
 
 Public Class APIXML
 
 #Region "Fields"
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
+
+    Public Shared CertificationMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Certifications.xml"))
     Public Shared CertLanguagesXML As New clsXMLCertLanguages
-    Public Shared FilterXML As New clsXMLFilter
-    Public Shared GenreXML As New clsXMLGenres
+    Public Shared CountryMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Countries.xml"))
+    Public Shared GenreMapping As New clsXMLGenreMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Genres.xml"))
+    Public Shared LanguageIcons As New Dictionary(Of String, String)
     Public Shared RatingXML As New clsXMLRatings
     Public Shared ScraperLanguagesXML As New clsXMLScraperLanguages
-    Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
+    Public Shared StudioMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Studios.xml"))
+    Public Shared StudioIcons As New Dictionary(Of String, String)
     Public Shared alGenres As New List(Of String)
-    Public Shared dLanguages As New Dictionary(Of String, String)
-    Public Shared dStudios As New Dictionary(Of String, String)
     Public Shared lFlags As New List(Of Flag)
 
 #End Region 'Fields
@@ -46,7 +48,6 @@ Public Class APIXML
 
     Public Shared Sub CacheXMLs()
         Dim objStreamReader As StreamReader
-        'TODO Dekker500 - This method is required before any of the other shared methods will work. Therefore, need to re-factor to have this method auto-run (unity?) and not depend on runtime ordering for shared methods to work.
         Try
             Dim fPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
             If Directory.Exists(fPath) Then
@@ -68,77 +69,12 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim gPath As String = Path.Combine(Master.SettingsPath, "Core.Genres.xml")
-            If File.Exists(gPath) Then
-                objStreamReader = New StreamReader(gPath)
-                Dim xGenres As New XmlSerializer(GenreXML.GetType)
-
-                GenreXML = CType(xGenres.Deserialize(objStreamReader), clsXMLGenres)
-                objStreamReader.Close()
+            'Certification mapping
+            If File.Exists(CertificationMapping.FileNameFullPath) Then
+                CertificationMapping.Load()
             End If
 
-            If Directory.Exists(Directory.GetParent(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar)).FullName) Then
-                Try
-                    alGenres.AddRange(Directory.GetFiles(Directory.GetParent(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar)).FullName, "*.jpg"))
-                Catch
-                End Try
-                alGenres = alGenres.ConvertAll(Function(s) s.ToLower)
-            End If
-
-            Dim sPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
-
-            If Directory.Exists(Directory.GetParent(sPath).FullName) Then
-                Try
-                    'get all images in the main folder
-                    For Each lFile As String In Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png")
-                        dStudios.Add(Path.GetFileNameWithoutExtension(lFile).ToLower, lFile)
-                    Next
-
-                    'now get all images in sub folders
-                    For Each iDir As String In Directory.GetDirectories(Directory.GetParent(sPath).FullName)
-                        For Each lFile As String In Directory.GetFiles(iDir, "*.png")
-                            'hard code "\" here, then resplace when retrieving images
-                            dStudios.Add(String.Concat(Directory.GetParent(iDir).Name, "\", Path.GetFileNameWithoutExtension(lFile).ToLower), lFile)
-                        Next
-                    Next
-                Catch
-                End Try
-            End If
-
-            Dim lPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Countries", Path.DirectorySeparatorChar, "Countries.xml")
-
-            If Directory.Exists(Directory.GetParent(lPath).FullName) Then
-                Try
-                    'get all images in the main folder
-                    For Each lFile As String In Directory.GetFiles(Directory.GetParent(lPath).FullName, "*.png")
-                        dLanguages.Add(Path.GetFileNameWithoutExtension(lFile).ToLower, lFile)
-                    Next
-                Catch
-                End Try
-            End If
-
-            Dim rPath As String = Path.Combine(Master.SettingsPath, "Ratings.xml")
-            If File.Exists(rPath) Then
-                objStreamReader = New StreamReader(rPath)
-                Dim xRatings As New XmlSerializer(RatingXML.GetType)
-
-                RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
-                objStreamReader.Close()
-            Else
-                Dim rPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultRatings.xml")
-                objStreamReader = New StreamReader(rPathD)
-                Dim xRatings As New XmlSerializer(RatingXML.GetType)
-
-                RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
-                objStreamReader.Close()
-
-                Try
-                    File.Copy(rPathD, rPath)
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-            End If
-
+            'Certification languages
             Dim cPath As String = Path.Combine(Master.SettingsPath, "CertLanguages.xml")
             If File.Exists(cPath) Then
                 objStreamReader = New StreamReader(cPath)
@@ -157,9 +93,92 @@ Public Class APIXML
                 Try
                     File.Copy(cPathD, cPath)
                 Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
+
+            'Country mapping
+            If File.Exists(CountryMapping.FileNameFullPath) Then
+                CountryMapping.Load()
+            End If
+
+            'Country/Language icons
+            Dim lPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Countries", Path.DirectorySeparatorChar, "Countries.xml")
+            If Directory.Exists(Directory.GetParent(lPath).FullName) Then
+                Try
+                    'get all images in the main folder
+                    For Each lFile As String In Directory.GetFiles(Directory.GetParent(lPath).FullName, "*.png")
+                        LanguageIcons.Add(Path.GetFileNameWithoutExtension(lFile).ToLower, lFile)
+                    Next
+                Catch
+                End Try
+            End If
+
+            'Genre mapping
+            If File.Exists(GenreMapping.FileNameFullPath) Then
+                GenreMapping.Load()
+            ElseIf File.Exists(Path.Combine(Master.SettingsPath, "Core.Genres.xml")) Then
+                File.Move(Path.Combine(Master.SettingsPath, "Core.Genres.xml"), Path.Combine(Master.SettingsPath, "Core.Mapping.Genres.xml"))
+                GenreMapping.Load()
+            End If
+
+            'Genre images
+            If Directory.Exists(Directory.GetParent(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar)).FullName) Then
+                Try
+                    alGenres.AddRange(Directory.GetFiles(Directory.GetParent(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar)).FullName, "*.jpg"))
+                Catch
+                End Try
+                alGenres = alGenres.ConvertAll(Function(s) s.ToLower)
+            End If
+
+            'Studio mapping
+            If File.Exists(StudioMapping.FileNameFullPath) Then
+                StudioMapping.Load()
+            End If
+
+            'Studio icons
+            Dim sPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
+            If Directory.Exists(Directory.GetParent(sPath).FullName) Then
+                Try
+                    'get all images in the main folder
+                    For Each lFile As String In Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png")
+                        StudioIcons.Add(Path.GetFileNameWithoutExtension(lFile).ToLower, lFile)
+                    Next
+
+                    'now get all images in sub folders
+                    For Each iDir As String In Directory.GetDirectories(Directory.GetParent(sPath).FullName)
+                        For Each lFile As String In Directory.GetFiles(iDir, "*.png")
+                            'hard code "\" here, then replace when retrieving images
+                            StudioIcons.Add(String.Concat(Directory.GetParent(iDir).Name, "\", Path.GetFileNameWithoutExtension(lFile).ToLower), lFile)
+                        Next
+                    Next
+                Catch
+                End Try
+            End If
+
+            'Rating icons
+            Dim rPath As String = Path.Combine(Master.SettingsPath, "Ratings.xml")
+            If File.Exists(rPath) Then
+                objStreamReader = New StreamReader(rPath)
+                Dim xRatings As New XmlSerializer(RatingXML.GetType)
+
+                RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
+                objStreamReader.Close()
+            Else
+                Dim rPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultRatings.xml")
+                objStreamReader = New StreamReader(rPathD)
+                Dim xRatings As New XmlSerializer(RatingXML.GetType)
+
+                RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
+                objStreamReader.Close()
+
+                Try
+                    File.Copy(rPathD, rPath)
+                Catch ex As Exception
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+            End If
+
 
             Dim slPath As String = Path.Combine(Master.SettingsPath, "Core.ScraperLanguages.xml")
             If File.Exists(slPath) Then
@@ -178,29 +197,8 @@ Public Class APIXML
                 ScraperLanguagesXML.Save()
             End If
 
-            Dim filterPath As String = Path.Combine(Master.SettingsPath, "Queries.xml")
-            If File.Exists(filterPath) Then
-                objStreamReader = New StreamReader(filterPath)
-                Dim xFilter As New XmlSerializer(FilterXML.GetType)
-
-                FilterXML = CType(xFilter.Deserialize(objStreamReader), clsXMLFilter)
-                objStreamReader.Close()
-            Else
-                Dim filterPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultQueries.xml")
-                objStreamReader = New StreamReader(filterPathD)
-                Dim xFilter As New XmlSerializer(FilterXML.GetType)
-
-                FilterXML = CType(xFilter.Deserialize(objStreamReader), clsXMLFilter)
-                objStreamReader.Close()
-                Try
-                    File.Copy(filterPathD, filterPath)
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-            End If
-
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -209,7 +207,7 @@ Public Class APIXML
         Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
         Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, ForTV)
 
-        If lFlags.Count > 0 OrElse dLanguages.Count > 0 Then
+        If lFlags.Count > 0 OrElse LanguageIcons.Count > 0 Then
             Try
                 Dim vRes As String = NFO.GetResFromDimensions(tVideo).ToLower
                 Dim vresFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = vRes AndAlso f.Type = FlagType.VideoResolution)
@@ -369,7 +367,7 @@ Public Class APIXML
                 End If
 
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Else
             iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
@@ -409,8 +407,8 @@ Public Class APIXML
         sLang = Localization.ISOLangGetCode2ByCode3(strLanguage)
 
         If Not String.IsNullOrEmpty(sLang) Then
-            If dLanguages.ContainsKey(sLang.ToLower) Then
-                Using fsImage As New FileStream(dLanguages.Item(sLang.ToLower).Replace(Convert.ToChar("\"), Path.DirectorySeparatorChar), FileMode.Open, FileAccess.Read)
+            If LanguageIcons.ContainsKey(sLang.ToLower) Then
+                Using fsImage As New FileStream(LanguageIcons.Item(sLang.ToLower).Replace(Convert.ToChar("\"), Path.DirectorySeparatorChar), FileMode.Open, FileAccess.Read)
                     imgLanguage = Image.FromStream(fsImage)
                 End Using
             End If
@@ -449,7 +447,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return String.Empty
@@ -459,9 +457,9 @@ Public Class APIXML
         Dim imgGenre As Image = Nothing
         Dim imgGenreStr As String = String.Empty
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres")
-        imgGenreStr = Path.Combine(mePath, GenreXML.DefaultImage)
+        imgGenreStr = Path.Combine(mePath, GenreMapping.DefaultImage)
 
-        Dim v = From e In GenreXML.Genres.Where(Function(f) f.Name = strGenre)
+        Dim v = From e In GenreMapping.Genres.Where(Function(f) f.Name = strGenre)
         If v.Count > 0 Then
             imgGenreStr = Path.Combine(mePath, v(0).Image)
         End If
@@ -474,7 +472,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return imgGenre
@@ -482,7 +480,7 @@ Public Class APIXML
 
     Public Shared Function GetGenreList() As String()
         Dim retGenre As New List(Of String)
-        For Each mGenre In GenreXML.Genres
+        For Each mGenre In GenreMapping.Genres
             retGenre.Add(mGenre.Name)
         Next
         retGenre.Sort()
@@ -494,13 +492,13 @@ Public Class APIXML
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
         If Not strRating = Master.eSettings.MovieScraperMPAANotRated Then
-            Dim v = From e In RatingXML.movies.Where(Function(f) f.searchstring = strRating)
+            Dim v = From e In RatingXML.Movies.Where(Function(f) f.Searchstring = strRating)
             If v.Count > 0 Then
-                imgRatingStr = Path.Combine(mePath, v(0).icon)
+                imgRatingStr = Path.Combine(mePath, v(0).Icon)
             Else
-                v = From e In RatingXML.movies Where strRating.ToLower.StartsWith(e.searchstring.ToLower)
+                v = From e In RatingXML.Movies Where strRating.ToLower.StartsWith(e.Searchstring.ToLower)
                 If v.Count > 0 Then
-                    imgRatingStr = Path.Combine(mePath, v(0).icon)
+                    imgRatingStr = Path.Combine(mePath, v(0).Icon)
                 End If
             End If
         Else
@@ -514,7 +512,7 @@ Public Class APIXML
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return imgRating
@@ -523,15 +521,15 @@ Public Class APIXML
     Public Shared Function GetRatingList_Movie() As Object()
         Dim retRatings As New List(Of String)
         If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
-            Dim tCountry = CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
-            If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.name) Then
-                For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = tCountry.name.ToLower)
-                    retRatings.Add(r.searchstring)
+            Dim tCountry = CertLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieScraperCertLang)
+            If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.Name) Then
+                For Each r In RatingXML.Movies.FindAll(Function(f) f.Country.ToLower = tCountry.Name.ToLower)
+                    retRatings.Add(r.Searchstring)
                 Next
             End If
         Else
-            For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = "usa")
-                retRatings.Add(r.searchstring)
+            For Each r In RatingXML.Movies.FindAll(Function(f) f.Country.ToLower = "usa")
+                retRatings.Add(r.Searchstring)
             Next
         End If
 
@@ -541,15 +539,15 @@ Public Class APIXML
     Public Shared Function GetRatingList_TV() As Object()
         Dim retRatings As New List(Of String)
         If Master.eSettings.TVScraperShowCertForMPAA AndAlso Not Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
-            Dim tCountry = CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
-            If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.name) Then
-                For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = tCountry.name.ToLower)
-                    retRatings.Add(r.searchstring)
+            Dim tCountry = CertLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVScraperShowCertLang)
+            If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.Name) Then
+                For Each r In RatingXML.TV.FindAll(Function(f) f.Country.ToLower = tCountry.Name.ToLower)
+                    retRatings.Add(r.Searchstring)
                 Next
             End If
         Else
-            For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = "usa")
-                retRatings.Add(r.searchstring)
+            For Each r In RatingXML.TV.FindAll(Function(f) f.Country.ToLower = "usa")
+                retRatings.Add(r.Searchstring)
             Next
         End If
 
@@ -559,8 +557,8 @@ Public Class APIXML
     Public Shared Function GetStudioImage(ByVal strStudio As String) As Image
         Dim imgStudio As Image = Nothing
 
-        If dStudios.ContainsKey(strStudio.ToLower) Then
-            Using fsImage As New FileStream(dStudios.Item(strStudio.ToLower).Replace(Convert.ToChar("\"), Path.DirectorySeparatorChar), FileMode.Open, FileAccess.Read)
+        If StudioIcons.ContainsKey(strStudio.ToLower) Then
+            Using fsImage As New FileStream(StudioIcons.Item(strStudio.ToLower).Replace(Convert.ToChar("\"), Path.DirectorySeparatorChar), FileMode.Open, FileAccess.Read)
                 imgStudio = Image.FromStream(fsImage)
             End Using
         End If
@@ -575,13 +573,13 @@ Public Class APIXML
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
         If Not strRating = Master.eSettings.TVScraperShowMPAANotRated Then
-            Dim v = From e In RatingXML.tv.Where(Function(f) f.searchstring = strRating)
+            Dim v = From e In RatingXML.TV.Where(Function(f) f.Searchstring = strRating)
             If v.Count > 0 Then
-                imgRatingStr = Path.Combine(mePath, v(0).icon)
+                imgRatingStr = Path.Combine(mePath, v(0).Icon)
             Else
-                v = From e In RatingXML.tv Where strRating.ToLower.StartsWith(e.searchstring.ToLower)
+                v = From e In RatingXML.TV Where strRating.ToLower.StartsWith(e.Searchstring.ToLower)
                 If v.Count > 0 Then
-                    imgRatingStr = Path.Combine(mePath, v(0).icon)
+                    imgRatingStr = Path.Combine(mePath, v(0).Icon)
                 End If
             End If
         Else
@@ -595,7 +593,7 @@ Public Class APIXML
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return imgRating
@@ -643,57 +641,18 @@ Public Class APIXML
     End Enum
 
     Public Class Flag
-        Private _name As String
-        Private _image As Image
-        Private _path As String
-        Private _type As FlagType
 
-        Public Property Name() As String
-            Get
-                Return _name
-            End Get
-            Set(ByVal value As String)
-                _name = value
-            End Set
-        End Property
+#Region "Properties"
 
-        Public Property Image() As Image
-            Get
-                Return _image
-            End Get
-            Set(ByVal value As Image)
-                _image = value
-            End Set
-        End Property
+        Public Property Name() As String = String.Empty
 
-        Public Property Path() As String
-            Get
-                Return _path
-            End Get
-            Set(ByVal value As String)
-                _path = value
-            End Set
-        End Property
+        Public Property Image() As Image = Nothing
 
-        Public Property Type() As FlagType
-            Get
-                Return _type
-            End Get
-            Set(ByVal value As FlagType)
-                _type = value
-            End Set
-        End Property
+        Public Property Path() As String = String.Empty
 
-        Public Sub New()
-            Clear()
-        End Sub
+        Public Property Type() As FlagType = FlagType.Unknown
 
-        Public Sub Clear()
-            _name = String.Empty
-            _image = Nothing
-            _path = String.Empty
-            _type = FlagType.VideoCodec
-        End Sub
+#End Region 'Properties
 
     End Class
 

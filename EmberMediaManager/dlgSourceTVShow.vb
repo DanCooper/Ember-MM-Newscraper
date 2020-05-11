@@ -180,7 +180,7 @@ Public Class dlgSourceTVShow
             If s IsNot Nothing Then
                 bAutoName = False
                 If cbSourceLanguage.Items.Count > 0 Then
-                    Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language)
+                    Dim tLanguage As LanguageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language)
                     If tLanguage IsNot Nothing Then
                         cbSourceLanguage.Text = tLanguage.Description
                     Else
@@ -201,7 +201,7 @@ Public Class dlgSourceTVShow
             End If
         Else
             If cbSourceLanguage.Items.Count > 0 Then
-                Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVGeneralLanguage)
+                Dim tLanguage As LanguageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVGeneralLanguage)
                 If tLanguage IsNot Nothing Then
                     cbSourceLanguage.Text = tLanguage.Description
                 Else

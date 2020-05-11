@@ -356,9 +356,9 @@ Public Class Scraper
             If Result.Releases IsNot Nothing AndAlso Result.Releases.Countries IsNot Nothing AndAlso Result.Releases.Countries.Count > 0 Then
                 For Each cCountry In Result.Releases.Countries
                     If Not String.IsNullOrEmpty(cCountry.Certification) Then
-                        Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = cCountry.Iso_3166_1.ToLower)
-                        If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
-                            nMovie.Certifications.Add(String.Concat(CertificationLanguage.name, ":", cCountry.Certification))
+                        Dim CertificationLanguage = APIXML.CertLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = cCountry.Iso_3166_1.ToLower)
+                        If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.Name) Then
+                            nMovie.Certifications.Add(String.Concat(CertificationLanguage.Name, ":", cCountry.Certification))
                         Else
                             _Logger.Warn("Unhandled certification language encountered: {0}", cCountry.Iso_3166_1.ToLower)
                         End If
@@ -940,9 +940,9 @@ Public Class Scraper
                 If Result.ContentRatings IsNot Nothing AndAlso Result.ContentRatings.Results IsNot Nothing AndAlso Result.ContentRatings.Results.Count > 0 Then
                     For Each aCountry In Result.ContentRatings.Results
                         If Not String.IsNullOrEmpty(aCountry.Rating) Then
-                            Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = aCountry.Iso_3166_1.ToLower)
-                            If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
-                                nTVShow.Certifications.Add(String.Concat(CertificationLanguage.name, ":", aCountry.Rating))
+                            Dim CertificationLanguage = APIXML.CertLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = aCountry.Iso_3166_1.ToLower)
+                            If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.Name) Then
+                                nTVShow.Certifications.Add(String.Concat(CertificationLanguage.Name, ":", aCountry.Rating))
                             Else
                                 _Logger.Warn("Unhandled certification language encountered: {0}", aCountry.Iso_3166_1.ToLower)
                             End If

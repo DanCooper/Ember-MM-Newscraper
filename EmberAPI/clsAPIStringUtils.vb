@@ -112,42 +112,6 @@ Public Class StringUtils
                              tDBElement.TVEpisode.Episode.ToString.PadLeft(2, Convert.ToChar("0")),
                              If(tDBElement.TVEpisode.SubEpisodeSpecified, String.Concat(".", tDBElement.TVEpisode.SubEpisode), String.Empty))
     End Function
-
-    Public Shared Function GenreFilter(ByRef aGenres As List(Of String), Optional ByVal addNewGenres As Boolean = True) As Boolean
-        Dim nGernes As New List(Of String)
-
-        If Not aGenres.Count = 0 Then
-            For Each tGenre As String In aGenres
-                Dim gMappings As genreMapping = APIXML.GenreXML.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
-                If gMappings IsNot Nothing Then
-                    nGernes.AddRange(gMappings.MappedTo)
-                ElseIf addNewGenres Then
-                    'check if the tGenre is already existing in Gernes list
-                    Dim gProperty As genreProperty = APIXML.GenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
-                    If gProperty Is Nothing Then
-                        APIXML.GenreXML.Genres.Add(New genreProperty With {.Name = tGenre})
-                    End If
-                    'add a new mapping if tGenre is not in the Mappings list
-                    APIXML.GenreXML.Mappings.Add(New genreMapping With {.MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
-                    nGernes.Add(tGenre)
-                End If
-            Next
-        End If
-
-        'Cleanup for comparing
-        nGernes = nGernes.Distinct().ToList()
-        aGenres.Sort()
-        nGernes.Sort()
-
-        'Comparing (check if something has been changed)
-        Dim bNoChanges = aGenres.SequenceEqual(nGernes)
-
-        'Set new Genre list
-        aGenres = nGernes
-
-        'Return if the list has been changed or not
-        Return Not bNoChanges
-    End Function
     ''' <summary>
     ''' Removes invalid token from the given filename string
     ''' </summary>

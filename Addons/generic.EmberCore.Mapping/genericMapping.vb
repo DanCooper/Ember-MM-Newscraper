@@ -18,12 +18,12 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Drawing
-Imports System.Windows.Forms
 Imports EmberAPI
 Imports NLog
+Imports System.Drawing
+Imports System.Windows.Forms
 
-Public Class genericGenreManager
+Public Class genericMapping
     Implements Interfaces.GenericModule
 
 #Region "Delegates"
@@ -36,14 +36,20 @@ Public Class genericGenreManager
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _Name As String = "GenresEditor"
+    Private _Name As String = "MappingManager"
     Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
-    Private WithEvents cmnuTrayToolsRenamer As New ToolStripMenuItem
-    Private WithEvents mnuMainToolsRenamer As New ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsCertificationMapping As New ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsCountryMapping As New ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsGenreMapping As New ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsStudioMapping As New ToolStripMenuItem
+    Private WithEvents mnuMainToolsCertificationMapping As New ToolStripMenuItem
+    Private WithEvents mnuMainToolsCountryMapping As New ToolStripMenuItem
+    Private WithEvents mnuMainToolsGenreMapping As New ToolStripMenuItem
+    Private WithEvents mnuMainToolsStudioMapping As New ToolStripMenuItem
 
 
 #End Region 'Fields
@@ -111,8 +117,8 @@ Public Class genericGenreManager
         _setup = New frmSettingsHolder
         _setup.chkEnabled.Checked = _enabled
         SPanel.Name = _Name
-        SPanel.Text = Master.eLang.GetString(782, "Genre Manager")
-        SPanel.Prefix = "GenreManager_"
+        SPanel.Text = "Mapping Manager"
+        SPanel.Prefix = "MappingManager_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Image = My.Resources.icon
@@ -135,28 +141,67 @@ Public Class genericGenreManager
 
         'mnuMainTools menu
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Remove(mnuMainToolsRenamer)
+        tsi.DropDownItems.Remove(mnuMainToolsCertificationMapping)
+        tsi.DropDownItems.Remove(mnuMainToolsCountryMapping)
+        tsi.DropDownItems.Remove(mnuMainToolsGenreMapping)
+        tsi.DropDownItems.Remove(mnuMainToolsStudioMapping)
 
         'cmnuTrayTools
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Remove(cmnuTrayToolsRenamer)
+        tsi.DropDownItems.Remove(cmnuTrayToolsCertificationMapping)
+        tsi.DropDownItems.Remove(cmnuTrayToolsCountryMapping)
+        tsi.DropDownItems.Remove(cmnuTrayToolsGenreMapping)
+        tsi.DropDownItems.Remove(cmnuTrayToolsStudioMapping)
     End Sub
 
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools menu
-        mnuMainToolsRenamer.Image = New Bitmap(My.Resources.icon)
-        mnuMainToolsRenamer.Text = Master.eLang.GetString(782, "Genre Manager")
-        mnuMainToolsRenamer.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
+        mnuMainToolsCertificationMapping.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsCertificationMapping.Text = Master.eLang.GetString(1114, "Certification Mapping")
+        mnuMainToolsCertificationMapping.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, mnuMainToolsRenamer)
+        AddToolsStripItem(tsi, mnuMainToolsCertificationMapping)
+
+        mnuMainToolsCountryMapping.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsCountryMapping.Text = Master.eLang.GetString(884, "Country Mapping")
+        mnuMainToolsCountryMapping.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, mnuMainToolsCountryMapping)
+
+        mnuMainToolsGenreMapping.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsGenreMapping.Text = Master.eLang.GetString(782, "Genre Manager")
+        mnuMainToolsGenreMapping.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, mnuMainToolsGenreMapping)
+
+        mnuMainToolsStudioMapping.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsStudioMapping.Text = Master.eLang.GetString(1113, "Studio Mapping")
+        mnuMainToolsStudioMapping.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, mnuMainToolsStudioMapping)
 
         'cmnuTrayTools
-        cmnuTrayToolsRenamer.Image = New Bitmap(My.Resources.icon)
-        cmnuTrayToolsRenamer.Text = Master.eLang.GetString(782, "Genre Manager")
+        cmnuTrayToolsCertificationMapping.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsCertificationMapping.Text = Master.eLang.GetString(1114, "Certification Mapping")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, cmnuTrayToolsRenamer)
+        AddToolsStripItem(tsi, cmnuTrayToolsCertificationMapping)
+
+        cmnuTrayToolsCountryMapping.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsCountryMapping.Text = Master.eLang.GetString(884, "Country Mapping")
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, cmnuTrayToolsCountryMapping)
+
+        cmnuTrayToolsGenreMapping.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsGenreMapping.Text = Master.eLang.GetString(782, "Genre Manager")
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, cmnuTrayToolsGenreMapping)
+
+        cmnuTrayToolsStudioMapping.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsStudioMapping.Text = Master.eLang.GetString(1113, "Studio Mapping")
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, cmnuTrayToolsStudioMapping)
     End Sub
 
     Public Sub AddToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
@@ -167,10 +212,37 @@ Public Class genericGenreManager
         End If
     End Sub
 
-    Private Sub mnuMainToolsRenamer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsRenamer.Click, cmnuTrayToolsRenamer.Click
+    Private Sub CertificationMapping_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsCertificationMapping.Click, cmnuTrayToolsCertificationMapping.Click
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
-        Using dGenreManager As New dlgGenreManager
-            dGenreManager.ShowDialog()
+        Using dlgMapping As New dlgSimpleMapping(dlgSimpleMapping.MappingType.CertificationMapping)
+            dlgMapping.ShowDialog()
+        End Using
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
+    End Sub
+
+    Private Sub CountryMapping_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsCountryMapping.Click, cmnuTrayToolsCountryMapping.Click
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        Using dlgMapping As New dlgSimpleMapping(dlgSimpleMapping.MappingType.CountryMapping)
+            dlgMapping.ShowDialog()
+        End Using
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
+    End Sub
+
+    Private Sub GenereMapping_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsGenreMapping.Click, cmnuTrayToolsGenreMapping.Click
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        Using dlgMapping As New dlgGenreManager
+            dlgMapping.ShowDialog()
+        End Using
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
+    End Sub
+
+    Private Sub StudioMapping_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsStudioMapping.Click, cmnuTrayToolsStudioMapping.Click
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        Using dlgMapping As New dlgSimpleMapping(dlgSimpleMapping.MappingType.StudioMapping)
+            dlgMapping.ShowDialog()
         End Using
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
@@ -185,9 +257,5 @@ Public Class genericGenreManager
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-#End Region  'Nested Types
 
 End Class

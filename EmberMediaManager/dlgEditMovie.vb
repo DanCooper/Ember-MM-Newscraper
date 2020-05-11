@@ -1515,7 +1515,7 @@ Public Class dlgEditMovie
         End If
 
         If cbSourceLanguage.Items.Count > 0 Then
-            Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = tmpDBElement.Language)
+            Dim tLanguage As LanguageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = tmpDBElement.Language)
             If tLanguage IsNot Nothing Then
                 cbSourceLanguage.Text = tLanguage.Description
             Else

@@ -111,14 +111,15 @@ Public Class NFO
             'Certification
             If (Not DBMovie.Movie.CertificationsSpecified OrElse Not Master.eSettings.MovieLockCert) AndAlso ScrapeOptions.bMainCertifications AndAlso
                 scrapedmovie.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCert AndAlso Not new_Certification Then
+
                 If Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
                     DBMovie.Movie.Certifications = scrapedmovie.Certifications
                     new_Certification = True
                 Else
-                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
-                    If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
+                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieScraperCertLang)
+                    If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.Name) Then
                         For Each tCert In scrapedmovie.Certifications
-                            If tCert.StartsWith(CertificationLanguage.name) Then
+                            If tCert.StartsWith(CertificationLanguage.Name) Then
                                 DBMovie.Movie.Certifications.Clear()
                                 DBMovie.Movie.Certifications.Add(tCert)
                                 new_Certification = True
@@ -129,6 +130,7 @@ Public Class NFO
                         logger.Error("Movie Certification Language (Limit) not found. Please check your settings!")
                     End If
                 End If
+                APIXML.CertificationMapping.RunMapping(DBMovie.Movie.Certifications)
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCert AndAlso Not Master.eSettings.MovieLockCert Then
                 DBMovie.Movie.Certifications.Clear()
             End If
@@ -173,6 +175,7 @@ Public Class NFO
                 FilterCountLimit(Master.eSettings.MovieScraperCountryLimit, scrapedmovie.Countries)
 
                 DBMovie.Movie.Countries = scrapedmovie.Countries
+                APIXML.CountryMapping.RunMapping(DBMovie.Movie.Countries)
                 new_Countries = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCountry AndAlso Not Master.eSettings.MovieLockCountry Then
                 DBMovie.Movie.Countries.Clear()
@@ -191,7 +194,7 @@ Public Class NFO
             If (Not DBMovie.Movie.GenresSpecified OrElse Not Master.eSettings.MovieLockGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
                 scrapedmovie.GenresSpecified AndAlso Master.eSettings.MovieScraperGenre AndAlso Not new_Genres Then
 
-                StringUtils.GenreFilter(scrapedmovie.Genres)
+                APIXML.GenreMapping.RunMapping(scrapedmovie.Genres)
 
                 FilterCountLimit(Master.eSettings.MovieScraperGenreLimit, scrapedmovie.Genres)
 
@@ -272,10 +275,11 @@ Public Class NFO
 
                 Dim _studios As New List(Of String)
                 _studios.AddRange(scrapedmovie.Studios)
+                APIXML.StudioMapping.RunMapping(_studios)
 
                 If Master.eSettings.MovieScraperStudioWithImgOnly Then
                     For i = _studios.Count - 1 To 0 Step -1
-                        If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
+                        If APIXML.StudioIcons.ContainsKey(_studios.Item(i).ToLower) = False Then
                             _studios.RemoveAt(i)
                         End If
                     Next
@@ -556,14 +560,15 @@ Public Class NFO
             'Certification
             If (Not DBTV.TVShow.CertificationsSpecified OrElse Not Master.eSettings.TVLockShowCert) AndAlso ScrapeOptions.bMainCertifications AndAlso
                 scrapedshow.CertificationsSpecified AndAlso Master.eSettings.TVScraperShowCert AndAlso Not new_Certification Then
+
                 If Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
                     DBTV.TVShow.Certifications = scrapedshow.Certifications
                     new_Certification = True
                 Else
-                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
-                    If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
+                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVScraperShowCertLang)
+                    If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.Name) Then
                         For Each tCert In scrapedshow.Certifications
-                            If tCert.StartsWith(CertificationLanguage.name) Then
+                            If tCert.StartsWith(CertificationLanguage.Name) Then
                                 DBTV.TVShow.Certifications.Clear()
                                 DBTV.TVShow.Certifications.Add(tCert)
                                 new_Certification = True
@@ -574,6 +579,7 @@ Public Class NFO
                         logger.Error("TV Show Certification Language (Limit) not found. Please check your settings!")
                     End If
                 End If
+                APIXML.CertificationMapping.RunMapping(DBTV.TVShow.Certifications)
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCert AndAlso Not Master.eSettings.TVLockShowCert Then
                 DBTV.TVShow.Certifications.Clear()
             End If
@@ -592,7 +598,9 @@ Public Class NFO
                 scrapedshow.CountriesSpecified AndAlso Master.eSettings.TVScraperShowCountry AndAlso Not new_ShowCountries Then
 
                 FilterCountLimit(Master.eSettings.TVScraperShowCountryLimit, scrapedshow.Countries)
+
                 DBTV.TVShow.Countries = scrapedshow.Countries
+                APIXML.CountryMapping.RunMapping(DBTV.TVShow.Countries)
                 new_ShowCountries = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCountry AndAlso Not Master.eSettings.TVLockShowCountry Then
                 DBTV.TVShow.Countries.Clear()
@@ -609,8 +617,10 @@ Public Class NFO
             If (Not DBTV.TVShow.GenresSpecified OrElse Not Master.eSettings.TVLockShowGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
                 scrapedshow.GenresSpecified AndAlso Master.eSettings.TVScraperShowGenre AndAlso Not new_Genres Then
 
-                StringUtils.GenreFilter(scrapedshow.Genres)
+                APIXML.GenreMapping.RunMapping(scrapedshow.Genres)
+
                 FilterCountLimit(Master.eSettings.TVScraperShowGenreLimit, scrapedshow.Genres)
+
                 DBTV.TVShow.Genres = scrapedshow.Genres
                 new_Genres = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowGenre AndAlso Not Master.eSettings.TVLockShowGenre Then
@@ -687,8 +697,12 @@ Public Class NFO
             If (Not DBTV.TVShow.StudiosSpecified OrElse Not Master.eSettings.TVLockShowStudio) AndAlso ScrapeOptions.bMainStudios AndAlso
                 scrapedshow.StudiosSpecified AndAlso Master.eSettings.TVScraperShowStudio AndAlso Not new_Studio Then
 
-                FilterCountLimit(Master.eSettings.TVScraperShowStudioLimit, scrapedshow.Studios)
-                DBTV.TVShow.Studios = scrapedshow.Studios
+                Dim _studios As New List(Of String)
+                _studios.AddRange(scrapedshow.Studios)
+                APIXML.StudioMapping.RunMapping(_studios)
+
+                FilterCountLimit(Master.eSettings.TVScraperShowStudioLimit, _studios)
+                DBTV.TVShow.Studios = _studios
                 new_Studio = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStudio AndAlso Not Master.eSettings.TVLockShowStudio Then
                 DBTV.TVShow.Studios.Clear()

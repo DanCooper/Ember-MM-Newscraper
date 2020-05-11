@@ -61,7 +61,7 @@ Public Class dlgNewSet
         SetUp()
 
         If cbLanguage.Items.Count > 0 Then
-            Dim tLang As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieGeneralLanguage)
+            Dim tLang As LanguageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieGeneralLanguage)
             If tLang IsNot Nothing Then
                 cbLanguage.Text = tLang.Description
             Else

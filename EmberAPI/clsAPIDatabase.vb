@@ -150,7 +150,9 @@ Public Class Database
 
     Private Function AddCountry(ByVal strCountry As String) As Long
         If String.IsNullOrEmpty(strCountry) Then Return -1
-        Return AddToTable("country", "idCountry", "strCountry", strCountry)
+        Dim ID As Long = AddToTable("country", "idCountry", "strCountry", strCountry)
+        LoadAllCountries()
+        Return ID
     End Function
 
     Private Sub AddCountryToMovie(ByVal idMovie As Long, ByVal idCountry As Long)
@@ -290,7 +292,9 @@ Public Class Database
 
     Private Function AddStudio(ByVal strStudio As String) As Long
         If String.IsNullOrEmpty(strStudio) Then Return -1
-        Return AddToTable("studio", "idStudio", "strStudio", strStudio)
+        Dim ID As Long = AddToTable("studio", "idStudio", "strStudio", strStudio)
+        LoadAllStudios()
+        Return ID
     End Function
 
     Private Sub AddStudioToMovie(ByVal idMovie As Long, ByVal idStudio As Long)
@@ -661,8 +665,145 @@ Public Class Database
         End Using
     End Sub
 
-    Public Sub Cleanup_Genres()
+    Public Function Cleanup_Certifications() As Integer
+        logger.Info("[Database] [Cleanup_Certifications] Started")
+        Dim iCounter As Integer
+        Dim MovieList As New List(Of Long)
+        Dim TVShowList As New List(Of Long)
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT DISTINCT idMovie FROM movie;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    MovieList.Add(Convert.ToInt64(SQLreader("idMovie")))
+                End While
+            End Using
+
+            SQLcommand.CommandText = "SELECT DISTINCT idShow FROM tvshow;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    TVShowList.Add(Convert.ToInt64(SQLreader("idShow")))
+                End While
+            End Using
+        End Using
+
+        Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+            logger.Info("[Database] [Cleanup_Certifications] Process all Movies")
+            'Process all Movies
+            For Each lMovieID In MovieList
+                Dim tmpDBElement As DBElement = Load_Movie(lMovieID)
+                If tmpDBElement.IsOnline Then
+                    If APIXML.CertificationMapping.RunMapping(tmpDBElement.Movie.Certifications, False) Then
+                        'run merge because of the "use certification as MPAA value" settings
+                        NFO.MergeDataScraperResults_Movie(tmpDBElement,
+                                                          New List(Of MediaContainers.Movie),
+                                                          Enums.ScrapeType.SingleField,
+                                                          New Structures.ScrapeOptions With {.bMainCertifications = True})
+                        Save_Movie(tmpDBElement, True, True, False, True, False)
+                        iCounter += 1
+                    End If
+                Else
+                    logger.Warn(String.Concat("[Database] [Cleanup_Certifications] Skip Movie (not online): ", tmpDBElement.Filename))
+                End If
+            Next
+
+            'Process all TVShows
+            logger.Info("[Database] [Cleanup_Certifications] Process all TVShows")
+            For Each lTVShowID In TVShowList
+                Dim tmpDBElement As DBElement = Load_TVShow(lTVShowID, False, False)
+                If tmpDBElement.IsOnline Then
+                    If APIXML.CertificationMapping.RunMapping(tmpDBElement.TVShow.Certifications, False) Then
+                        'run merge because of the "use certification as MPAA value" settings
+                        NFO.MergeDataScraperResults_TV(tmpDBElement,
+                                                       New List(Of MediaContainers.TVShow),
+                                                       Enums.ScrapeType.SingleField,
+                                                       New Structures.ScrapeOptions With {.bMainCertifications = True},
+                                                       False)
+                        Save_TVShow(tmpDBElement, True, True, False, False)
+                        iCounter += 1
+                    End If
+                Else
+                    logger.Warn(String.Concat("[Database] [Cleanup_Certifications] Skip TV Show (not online): ", tmpDBElement.ShowPath))
+                End If
+            Next
+
+            SQLtransaction.Commit()
+        End Using
+        logger.Info(String.Format("[Database] [Cleanup_Certifications] {0} items changed", iCounter))
+        logger.Info("[Database] [Cleanup_Certifications] Done")
+        Return iCounter
+    End Function
+
+    Public Function Cleanup_Countries() As Integer
+        logger.Info("[Database] [Cleanup_Countries] Started")
+        Dim iCounter As Integer
+        Dim MovieList As New List(Of Long)
+        Dim TVShowList As New List(Of Long)
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT DISTINCT idMovie FROM countrylinkmovie;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    MovieList.Add(Convert.ToInt64(SQLreader("idMovie")))
+                End While
+            End Using
+
+            SQLcommand.CommandText = "SELECT DISTINCT idShow FROM countrylinktvshow;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    TVShowList.Add(Convert.ToInt64(SQLreader("idShow")))
+                End While
+            End Using
+        End Using
+
+        Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+            logger.Info("[Database] [Cleanup_Countries] Process all Movies")
+            'Process all Movies, which are assigned to a country
+            For Each lMovieID In MovieList
+                Dim tmpDBElement As DBElement = Load_Movie(lMovieID)
+                If tmpDBElement.IsOnline Then
+                    If APIXML.CountryMapping.RunMapping(tmpDBElement.Movie.Countries, False) Then
+                        Save_Movie(tmpDBElement, True, True, False, True, False)
+                        iCounter += 1
+                    End If
+                Else
+                    logger.Warn(String.Concat("[Database] [Cleanup_Countries] Skip Movie (not online): ", tmpDBElement.Filename))
+                End If
+            Next
+
+            'Process all TVShows, which are assigned to a country
+            logger.Info("[Database] [Cleanup_Countries] Process all TVShows")
+            For Each lTVShowID In TVShowList
+                Dim tmpDBElement As DBElement = Load_TVShow(lTVShowID, False, False)
+                If tmpDBElement.IsOnline Then
+                    If APIXML.CountryMapping.RunMapping(tmpDBElement.TVShow.Countries, False) Then
+                        Save_TVShow(tmpDBElement, True, True, False, False)
+                        iCounter += 1
+                    End If
+                Else
+                    logger.Warn(String.Concat("[Database] [Cleanup_Countries] Skip TV Show (not online): ", tmpDBElement.ShowPath))
+                End If
+            Next
+
+            'Cleanup country table
+            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                logger.Info("[Database] [Cleanup_Countries] Cleaning country table")
+                SQLcommand.CommandText = String.Concat("DELETE FROM country ",
+                                                       "WHERE NOT EXISTS (SELECT 1 FROM countrylinkmovie WHERE countrylinkmovie.idCountry = country.idCountry) ",
+                                                         "AND NOT EXISTS (SELECT 1 FROM countrylinktvshow WHERE countrylinktvshow.idCountry = country.idCountry)")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+
+            SQLtransaction.Commit()
+        End Using
+        logger.Info(String.Format("[Database] [Cleanup_Countries] {0} items changed", iCounter))
+        logger.Info("[Database] [Cleanup_Countries] Done")
+        Return iCounter
+    End Function
+
+    Public Function Cleanup_Genres() As Integer
         logger.Info("[Database] [Cleanup_Genres] Started")
+        Dim iCounter As Integer
         Dim MovieList As New List(Of Long)
         Dim TVShowList As New List(Of Long)
 
@@ -688,8 +829,9 @@ Public Class Database
             For Each lMovieID In MovieList
                 Dim tmpDBElement As DBElement = Load_Movie(lMovieID)
                 If tmpDBElement.IsOnline Then
-                    If StringUtils.GenreFilter(tmpDBElement.Movie.Genres, False) Then
+                    If APIXML.GenreMapping.RunMapping(tmpDBElement.Movie.Genres, False) Then
                         Save_Movie(tmpDBElement, True, True, False, True, False)
+                        iCounter += 1
                     End If
                 Else
                     logger.Warn(String.Concat("[Database] [Cleanup_Genres] Skip Movie (not online): ", tmpDBElement.Filename))
@@ -701,8 +843,9 @@ Public Class Database
             For Each lTVShowID In TVShowList
                 Dim tmpDBElement As DBElement = Load_TVShow(lTVShowID, False, False)
                 If tmpDBElement.IsOnline Then
-                    If StringUtils.GenreFilter(tmpDBElement.TVShow.Genres, False) Then
+                    If APIXML.GenreMapping.RunMapping(tmpDBElement.TVShow.Genres, False) Then
                         Save_TVShow(tmpDBElement, True, True, False, False)
+                        iCounter += 1
                     End If
                 Else
                     logger.Warn(String.Concat("[Database] [Cleanup_Genres] Skip TV Show (not online): ", tmpDBElement.ShowPath))
@@ -720,8 +863,77 @@ Public Class Database
 
             SQLtransaction.Commit()
         End Using
+        logger.Info(String.Format("[Database] [Cleanup_Genres] {0} items changed", iCounter))
         logger.Info("[Database] [Cleanup_Genres] Done")
-    End Sub
+        Return iCounter
+    End Function
+
+    Public Function Cleanup_Studios() As Integer
+        logger.Info("[Database] [Cleanup_Studios] Started")
+        Dim iCounter As Integer
+        Dim MovieList As New List(Of Long)
+        Dim TVShowList As New List(Of Long)
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT DISTINCT idMovie FROM studiolinkmovie;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    MovieList.Add(Convert.ToInt64(SQLreader("idMovie")))
+                End While
+            End Using
+
+            SQLcommand.CommandText = "SELECT DISTINCT idShow FROM studiolinktvshow;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    TVShowList.Add(Convert.ToInt64(SQLreader("idShow")))
+                End While
+            End Using
+        End Using
+
+        Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+            logger.Info("[Database] [Cleanup_Studios] Process all Movies")
+            'Process all Movies, which are assigned to a studio
+            For Each lMovieID In MovieList
+                Dim tmpDBElement As DBElement = Load_Movie(lMovieID)
+                If tmpDBElement.IsOnline Then
+                    If APIXML.StudioMapping.RunMapping(tmpDBElement.Movie.Studios, False) Then
+                        Save_Movie(tmpDBElement, True, True, False, True, False)
+                        iCounter += 1
+                    End If
+                Else
+                    logger.Warn(String.Concat("[Database] [Cleanup_Studios] Skip Movie (not online): ", tmpDBElement.Filename))
+                End If
+            Next
+
+            'Process all TVShows, which are assigned to a studio
+            logger.Info("[Database] [Cleanup_Studios] Process all TVShows")
+            For Each lTVShowID In TVShowList
+                Dim tmpDBElement As DBElement = Load_TVShow(lTVShowID, False, False)
+                If tmpDBElement.IsOnline Then
+                    If APIXML.StudioMapping.RunMapping(tmpDBElement.TVShow.Studios, False) Then
+                        Save_TVShow(tmpDBElement, True, True, False, False)
+                        iCounter += 1
+                    End If
+                Else
+                    logger.Warn(String.Concat("[Database] [Cleanup_Studios] Skip TV Show (not online): ", tmpDBElement.ShowPath))
+                End If
+            Next
+
+            'Cleanup studio table
+            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                logger.Info("[Database] [Cleanup_Studios] Cleaning studio table")
+                SQLcommand.CommandText = String.Concat("DELETE FROM studio ",
+                                                       "WHERE NOT EXISTS (SELECT 1 FROM studiolinkmovie WHERE studiolinkmovie.idStudio = studio.idStudio) ",
+                                                         "AND NOT EXISTS (SELECT 1 FROM studiolinktvshow WHERE studiolinktvshow.idStudio = studio.idStudio)")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+
+            SQLtransaction.Commit()
+        End Using
+        logger.Info(String.Format("[Database] [Cleanup_Studios] {0} items changed", iCounter))
+        logger.Info("[Database] [Cleanup_Studios] Done")
+        Return iCounter
+    End Function
     ''' <summary>
     ''' Remove the New flag from database entries (movies, tvshow, seasons, episode)
     ''' </summary>
@@ -1334,7 +1546,32 @@ Public Class Database
         Return sEpisodeSorting
     End Function
 
-    Public Function GetAllCountries_Movie() As String()
+    Public Function GetAllCertifications() As String()
+        Dim nList As New List(Of String)
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT Certification FROM movie;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If SQLreader("Certification").ToString.Contains(" / ") Then
+                        Dim values As String() = Regex.Split(SQLreader("Certification").ToString, " / ")
+                        For Each certification As String In values
+                            certification = certification.Trim
+                            If Not nList.Contains(certification) Then
+                                nList.Add(certification)
+                            End If
+                        Next
+                    Else
+                        If Not nList.Contains(SQLreader("Certification").ToString.Trim) Then
+                            nList.Add(SQLreader("Certification").ToString.Trim)
+                        End If
+                    End If
+                End While
+            End Using
+        End Using
+        Return nList.ToArray
+    End Function
+
+    Public Function GetAllCountries() As String()
         Dim nList As New List(Of String)
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = "SELECT strCountry FROM country ORDER BY strCountry;"
@@ -1360,6 +1597,19 @@ Public Class Database
         For Each nSource In Master.DB.GetSources_TVShow
             nList.Add(nSource.Name)
         Next
+        Return nList.ToArray
+    End Function
+
+    Public Function GetAllStudios() As String()
+        Dim nList As New List(Of String)
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT strStudio FROM studio ORDER BY strStudio;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    nList.Add(SQLreader("strStudio").ToString)
+                End While
+            End Using
+        End Using
         Return nList.ToArray
     End Function
 
@@ -1392,28 +1642,58 @@ Public Class Database
         Return lstPaths
     End Function
 
+    Public Sub LoadAllCertifications()
+        For Each aElement As String In GetAllCertifications()
+            Dim nMapping As SimpleMapping = APIXML.CertificationMapping.Mappings.FirstOrDefault(Function(f) f.Input = aElement)
+            If nMapping Is Nothing Then
+                'add a new mapping if aElement is not in the MappingTable
+                APIXML.CertificationMapping.Mappings.Add(New SimpleMapping With {.Input = aElement, .MappedTo = aElement})
+            End If
+        Next
+    End Sub
+
+    Public Sub LoadAllCountries()
+        For Each aElement As String In GetAllCountries()
+            Dim nMapping As SimpleMapping = APIXML.CountryMapping.Mappings.FirstOrDefault(Function(f) f.Input = aElement)
+            If nMapping Is Nothing Then
+                'add a new mapping if aElement is not in the MappingTable
+                APIXML.CountryMapping.Mappings.Add(New SimpleMapping With {.Input = aElement, .MappedTo = aElement})
+            End If
+        Next
+    End Sub
+
     Public Sub LoadAllGenres()
-        Dim gList As New List(Of String)
+        Dim nList As New List(Of String)
 
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = "SELECT strGenre FROM genre ORDER BY strGenre;"
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    gList.Add(SQLreader("strGenre").ToString)
+                    nList.Add(SQLreader("strGenre").ToString)
                 End While
             End Using
         End Using
 
-        For Each tGenre As String In gList
-            Dim gMapping As genreMapping = APIXML.GenreXML.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
+        For Each aGenre As String In nList
+            Dim gMapping As GenreMapping = APIXML.GenreMapping.Mappings.FirstOrDefault(Function(f) f.SearchString = aGenre)
             If gMapping Is Nothing Then
                 'check if the tGenre is already existing in Gernes list
-                Dim gProperty As genreProperty = APIXML.GenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
+                Dim gProperty As GenreProperty = APIXML.GenreMapping.Genres.FirstOrDefault(Function(f) f.Name = aGenre)
                 If gProperty Is Nothing Then
-                    APIXML.GenreXML.Genres.Add(New genreProperty With {.isNew = False, .Name = tGenre})
+                    APIXML.GenreMapping.Genres.Add(New GenreProperty With {.isNew = False, .Name = aGenre})
                 End If
                 'add a new mapping if tGenre is not in the MappingTable
-                APIXML.GenreXML.Mappings.Add(New genreMapping With {.isNew = False, .MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
+                APIXML.GenreMapping.Mappings.Add(New GenreMapping With {.isNew = False, .MappedTo = New List(Of String) From {aGenre}, .SearchString = aGenre})
+            End If
+        Next
+    End Sub
+
+    Public Sub LoadAllStudios()
+        For Each aElement As String In GetAllStudios()
+            Dim nMapping As SimpleMapping = APIXML.StudioMapping.Mappings.FirstOrDefault(Function(f) f.Input = aElement)
+            If nMapping Is Nothing Then
+                'add a new mapping if aElement is not in the MappingTable
+                APIXML.StudioMapping.Mappings.Add(New SimpleMapping With {.Input = aElement, .MappedTo = aElement})
             End If
         Next
     End Sub
@@ -6035,7 +6315,7 @@ Public Class Database
 
         Public ReadOnly Property TrailerSpecified() As Boolean
             Get
-                Return _trailer.TrailerOriginal IsNot Nothing AndAlso _trailer.TrailerOriginal.hasMemoryStream
+                Return _trailer.TrailerOriginal IsNot Nothing AndAlso _trailer.TrailerOriginal.HasMemoryStream
             End Get
         End Property
 

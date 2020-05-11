@@ -1,49 +1,49 @@
-﻿
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="CertLanguages")> _
-Partial Public Class clsXMLCertLanguages
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
 
-    Private languageField As New List(Of CertLanguages)
+Imports System.Xml.Serialization
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("Language")> _
-    Public Property Language() As List(Of CertLanguages)
-        Get
-            Return Me.languageField
-        End Get
-        Set(value As List(Of CertLanguages))
-            Me.languageField = value
-        End Set
-    End Property
+<Serializable()>
+<XmlRoot("CertLanguages")>
+Public Class clsXMLCertLanguages
+
+#Region "Properties"
+
+    <XmlElement("language")>
+    Public Property Languages() As List(Of CertificationLanguageProperty) = New List(Of CertificationLanguageProperty)
+
+#End Region 'Properties
+
 End Class
 
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-Partial Public Class CertLanguages
+<Serializable()>
+Public Class CertificationLanguageProperty
 
-    Private nameField As String
+#Region "Properties"
 
-    Private abbreviationField As String
+    <XmlElement("name")>
+    Public Property Name() As String = String.Empty
 
-    '''<remarks/>
-    Public Property name() As String
-        Get
-            Return Me.nameField
-        End Get
-        Set(value As String)
-            Me.nameField = value
-        End Set
-    End Property
+    <XmlElement("abbreviation")>
+    Public Property Abbreviation() As String = String.Empty
 
-    '''<remarks/>
-    Public Property abbreviation() As String
-        Get
-            Return Me.abbreviationField
-        End Get
-        Set(value As String)
-            Me.abbreviationField = value
-        End Set
-    End Property
+#End Region 'Properties
+
 End Class
-

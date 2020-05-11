@@ -360,16 +360,17 @@ Public Class dlgExportMovies
         cbList_TVShows.SelectedIndex = 0
     End Sub
 
-    Private Sub dlgExportMovies_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
-        Activate()
+    'Private Sub dlgExportMovies_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
+    '    Activate()
 
-        'Start worker
-        ShowStatus(True)
-        bwLoadInfo = New System.ComponentModel.BackgroundWorker
-        bwLoadInfo.WorkerSupportsCancellation = True
-        bwLoadInfo.WorkerReportsProgress = True
-        bwLoadInfo.RunWorkerAsync()
-    End Sub
+    '    'Start worker
+    '    ShowStatus(True)
+    '    bwLoadInfo = New System.ComponentModel.BackgroundWorker With {
+    '        .WorkerSupportsCancellation = True,
+    '        .WorkerReportsProgress = True
+    '    }
+    '    bwLoadInfo.RunWorkerAsync()
+    'End Sub
 
     Private Sub DoCancel()
         tslblStatus.Text = Master.eLang.GetString(178, "Canceling Compilation...")
@@ -473,9 +474,5 @@ Public Class dlgExportMovies
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-#End Region 'Nested Types
 
 End Class

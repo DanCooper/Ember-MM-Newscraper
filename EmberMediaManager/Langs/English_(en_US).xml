@@ -882,7 +882,7 @@
   <string id="881">Added</string>
   <string id="882">comma separated</string>
   <string id="883">Episode Scraped</string>
-  <string id="884"></string>
+  <string id="884">Country Mapping</string>
   <string id="885">Change Watched Status</string>
   <string id="886">Downloading {0}</string>
   <string id="887">Preparing images...</string>
@@ -1202,10 +1202,10 @@
   <string id="1110">Select ClearLogo</string>
   <string id="1111">Select DiscArt</string>
   <string id="1112">Do you want to restart Ember Media Manager and load the selected profile?</string>
-  <string id="1113"></string>
-  <string id="1114"></string>
-  <string id="1115"></string>
-  <string id="1116"></string>
+  <string id="1113">Studio Mapping</string>
+  <string id="1114">Certification Mapping</string>
+  <string id="1115">Input</string>
+  <string id="1116">Mapped to</string>
   <string id="1117"></string>
   <string id="1118">Theme</string>
   <string id="1119">To prevent a memory overflow will not display more than {0} Extrafanarts.</string>
@@ -1346,7 +1346,7 @@
   <string id="1254">Only data in selected tabs will be used!</string>
   <string id="1255">Display Image Names</string>
   <string id="1256">* All Seasons</string>
-  <string id="1257">Country-Tag: Save country abbreviation(s) instead of full name(s)</string>
+  <string id="1257"></string>
   <string id="1258">Store themes in movie directory</string>
   <string id="1259">Store themes in a custom path</string>
   <string id="1260">Store themes in sub directories</string>

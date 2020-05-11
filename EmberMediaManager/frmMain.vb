@@ -2024,8 +2024,6 @@ Public Class frmMain
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim Theme As New MediaContainers.Theme
             Dim tURL As String = String.Empty
-            Dim aUrlList As New List(Of MediaContainers.Trailer)
-            Dim tUrlList As New List(Of Themes)
             Dim OldListTitle As String = String.Empty
             Dim NewListTitle As String = String.Empty
 
@@ -2126,7 +2124,7 @@ Public Class frmMain
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Dim newPreferredTheme As New MediaContainers.Theme
-                            If Themes.GetPreferredMovieTheme(SearchResults, newPreferredTheme) Then
+                            If MediaFiles.GetPreferredMovieTheme(SearchResults, newPreferredTheme) Then
                                 DBScrapeMovie.Theme = newPreferredTheme
                             End If
                         End If
@@ -2150,7 +2148,7 @@ Public Class frmMain
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Dim newPreferredTrailer As New MediaContainers.Trailer
-                            If Trailers.GetPreferredMovieTrailer(SearchResults, newPreferredTrailer) Then
+                            If MediaFiles.GetPreferredMovieTrailer(SearchResults, newPreferredTrailer) Then
                                 DBScrapeMovie.Trailer = newPreferredTrailer
                             End If
                         End If
@@ -2388,7 +2386,6 @@ Public Class frmMain
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim Theme As New MediaContainers.Theme
             Dim tURL As String = String.Empty
-            Dim tUrlList As New List(Of Themes)
             Dim OldListTitle As String = String.Empty
             Dim NewListTitle As String = String.Empty
 
@@ -2469,7 +2466,7 @@ Public Class frmMain
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Dim newPreferredTheme As New MediaContainers.Theme
-                            If Themes.GetPreferredTVShowTheme(SearchResults, newPreferredTheme) Then
+                            If MediaFiles.GetPreferredTVShowTheme(SearchResults, newPreferredTheme) Then
                                 DBScrapeShow.Theme = newPreferredTheme
                             End If
                         End If
@@ -2696,7 +2693,6 @@ Public Class frmMain
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim tURL As String = String.Empty
-            Dim tUrlList As New List(Of Themes)
 
             Cancelled = False
 
@@ -10241,7 +10237,10 @@ Public Class frmMain
 
         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
         Master.DB.Connect_MyVideos()
+        Master.DB.LoadAllCertifications()
+        Master.DB.LoadAllCountries()
         Master.DB.LoadAllGenres()
+        Master.DB.LoadAllStudios()
 
         tpMovies.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.ContentType.Movie, .DefaultList = "movielist"}
         tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist"}
@@ -18085,7 +18084,7 @@ Public Class frmMain
 
     Private Sub RefreshFilterCountry_Movies()
         clbFilterCountries_Movies.Items.Clear()
-        Dim mCountry() As Object = Master.DB.GetAllCountries_Movie
+        Dim mCountry() As Object = Master.DB.GetAllCountries
         clbFilterCountries_Movies.Items.Add(Master.eLang.None)
         clbFilterCountries_Movies.Items.AddRange(mCountry)
 

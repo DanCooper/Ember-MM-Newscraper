@@ -2052,6 +2052,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowThemeDefaultSearch() As String
+        Get
+            Return Settings._XMLSettings.TVShowThemeDefaultSearch
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVShowThemeDefaultSearch = value
+        End Set
+    End Property
+
+    Public Property MovieThemeDefaultSearch() As String
+        Get
+            Return Settings._XMLSettings.MovieThemeDefaultSearch
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieThemeDefaultSearch = value
+        End Set
+    End Property
+
     Public Property MovieTrailerDefaultSearch() As String
         Get
             Return Settings._XMLSettings.MovieTrailerDefaultSearch
@@ -7271,6 +7289,7 @@ Public Class Settings
         MovieSortTokensIsEmpty = False
         MovieSetSortTokensIsEmpty = False
         MovieThemeTvTunesEnable = True
+        MovieThemeDefaultSearch = "theme"
         MovieThemeKeepExisting = False
         MovieTrailerDefaultSearch = "trailer"
         MovieTrailerKeepExisting = False
@@ -7507,6 +7526,7 @@ Public Class Settings
         TVShowPosterResize = False
         TVShowPosterWidth = 0
         TVShowProperCase = True
+        TVShowThemeDefaultSearch = "theme"
         TVShowThemeKeepExisting = False
         TVSkipLessThan = 0
         TVSortTokens = New List(Of String)
