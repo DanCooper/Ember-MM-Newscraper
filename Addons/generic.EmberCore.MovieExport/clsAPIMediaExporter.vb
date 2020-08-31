@@ -698,6 +698,7 @@ Public Class MediaExporter
         Dim strRow As String = tContentPart.Content
 
         'Special Strings
+        strRow = strRow.Replace("<$NOW>", Date.Now.ToLongDateString) 'Save Build Date. might be useful info!
         strRow = strRow.Replace("<$TOTAL_MOVIES>", _iTotal_Movies.ToString)
         strRow = strRow.Replace("<$TOTAL_TVEPISODES>", _iTotal_TVEpisodes.ToString)
         strRow = strRow.Replace("<$TOTAL_TVSHOWS>", _iTotal_TVShows.ToString)
