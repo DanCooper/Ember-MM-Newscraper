@@ -724,7 +724,7 @@ CREATE VIEW episodelist
 CREATE VIEW movielist
 AS
 SELECT ordered_movies.*,
-        GROUP_CONCAT(DISTINCT strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT Country) AS Country,
         GROUP_CONCAT(DISTINCT Credits) AS Credits,
         GROUP_CONCAT(DISTINCT Director) AS Director,
         GROUP_CONCAT(DISTINCT Genre) AS Genre,
@@ -742,7 +742,7 @@ FROM (
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
-		countries.strCountry,
+        countries.strCountry AS Country,
         credits.strActor AS Credits,
         directors.strActor AS Director,
         genres.strGenre AS Genre,
@@ -783,8 +783,8 @@ FROM (
         LEFT OUTER JOIN studiolinkmovie AS studiolink ON (studiolink.idMovie = movie.idMovie)
         LEFT OUTER JOIN studio AS studios ON (studios.idStudio = studiolink.idStudio)
         LEFT OUTER JOIN taglinks AS taglinks ON (taglinks.idMedia = movie.idMovie and taglinks.media_type='movie')
-		LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglinks.idTag)
-		ORDER BY movie.idMovie, taglinks.tag_order 
+        LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglinks.idTag)
+        ORDER BY movie.idMovie, taglinks.tag_order 
 ) AS ordered_movies		
 GROUP BY ordered_movies.idMovie;
 
@@ -939,6 +939,6 @@ FROM (
         LEFT OUTER JOIN taglinks ON (taglinks.idMedia = tvshow.idShow) AND (taglinks.media_type = 'tvshow')
         LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglinks.idTag)
         LEFT OUTER JOIN episodelist ON (tvshow.idShow = episodelist.idShow) AND (episodelist.Missing = 0)
-		ORDER BY tvshow.idShow, taglinks.tag_order
+        ORDER BY tvshow.idShow, taglinks.tag_order
 ) AS ordered_tvshows
 GROUP BY ordered_tvshows.idShow;

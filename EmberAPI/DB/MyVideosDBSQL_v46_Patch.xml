@@ -14,7 +14,7 @@
         CREATE VIEW movielist
         AS
         SELECT ordered_movies.*,
-        GROUP_CONCAT(DISTINCT strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT Country) AS Country,
         GROUP_CONCAT(DISTINCT Credits) AS Credits,
         GROUP_CONCAT(DISTINCT Director) AS Director,
         GROUP_CONCAT(DISTINCT Genre) AS Genre,
@@ -32,7 +32,7 @@
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
-        countries.strCountry,
+        countries.strCountry AS Country,
         credits.strActor AS Credits,
         directors.strActor AS Director,
         genres.strGenre AS Genre,
