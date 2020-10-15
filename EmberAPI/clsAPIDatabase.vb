@@ -367,11 +367,6 @@ Public Class Database
         Return ID
     End Function
 
-    '    Private Sub AddTagToItem(ByVal idMedia As Long, ByVal idTag As Long, ByVal type As String)
-    '    If String.IsNullOrEmpty(type) Then Return
-    '        AddToLinkTable("taglinks", "idTag", idTag, "idMedia", idMedia, "media_type", type)
-    '    End Sub
-
     Private Sub SaveTagsToItem(ByVal idMedia As Long, ByVal type As String, tags As List(Of String))
         Using SQLcommand_taglinks As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand_taglinks.CommandText = String.Format("DELETE FROM taglinks WHERE idMedia = {0} AND media_type = '{1}';", idMedia, type)

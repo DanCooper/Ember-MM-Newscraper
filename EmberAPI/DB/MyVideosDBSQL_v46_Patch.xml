@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 <CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <transaction name="MyVideosDBSQL_v46_to_v47">
-    <!-- 
     <command type="DB">
       <description>added tag_order field to taglinks table</description>
       <execute>ALTER TABLE taglinks ADD tag_order REAL NOT NULL DEFAULT 0;</execute>
     </command>
-    -->
     <command type="DB">
       <description>recreate movielist view to order tags by tag_order</description>
       <execute>
