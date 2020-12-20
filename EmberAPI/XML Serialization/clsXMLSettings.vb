@@ -309,11 +309,12 @@ Partial Public Class clsXMLSettings
     Private _moviesetsorttokens As List(Of String)
     Private _moviesorttokensisempty As Boolean
     Private _moviesetsorttokensisempty As Boolean
+    Private _moviethemedefaultsearch As String
     Private _moviethemekeepexisting As Boolean
     Private _movietrailerdefaultsearch As String
     Private _movietrailerkeepexisting As Boolean
-    Private _movietrailerminvideoqual As Enums.TrailerVideoQuality
-    Private _movietrailerprefvideoqual As Enums.TrailerVideoQuality
+    Private _movietrailerminvideoqual As Enums.VideoResolution
+    Private _movietrailerprefvideoqual As Enums.VideoResolution
     Private _ommdummyformat As Integer
     Private _ommdummytagline As String
     Private _ommdummytop As String
@@ -541,6 +542,7 @@ Partial Public Class clsXMLSettings
     Private _tvshowposterresize As Boolean
     Private _tvshowposterwidth As Integer
     Private _tvshowpropercase As Boolean
+    Private _tvshowthemedefaultsearch As String
     Private _tvshowthemekeepexisting As Boolean
     Private _tvskiplessthan As Integer
     Private _tvsorttokens As List(Of String)
@@ -3039,6 +3041,24 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowThemeDefaultSearch() As String
+        Get
+            Return Me._tvshowthemedefaultsearch
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowthemedefaultsearch = value
+        End Set
+    End Property
+
+    Public Property MovieThemeDefaultSearch() As String
+        Get
+            Return Me._moviethemedefaultsearch
+        End Get
+        Set(ByVal value As String)
+            Me._moviethemedefaultsearch = value
+        End Set
+    End Property
+
     Public Property MovieTrailerDefaultSearch() As String
         Get
             Return Me._movietrailerdefaultsearch
@@ -4048,20 +4068,20 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieTrailerMinVideoQual() As Enums.TrailerVideoQuality
+    Public Property MovieTrailerMinVideoQual() As Enums.VideoResolution
         Get
             Return Me._movietrailerminvideoqual
         End Get
-        Set(ByVal value As Enums.TrailerVideoQuality)
+        Set(ByVal value As Enums.VideoResolution)
             Me._movietrailerminvideoqual = value
         End Set
     End Property
 
-    Public Property MovieTrailerPrefVideoQual() As Enums.TrailerVideoQuality
+    Public Property MovieTrailerPrefVideoQual() As Enums.VideoResolution
         Get
             Return Me._movietrailerprefvideoqual
         End Get
-        Set(ByVal value As Enums.TrailerVideoQuality)
+        Set(ByVal value As Enums.VideoResolution)
             Me._movietrailerprefvideoqual = value
         End Set
     End Property

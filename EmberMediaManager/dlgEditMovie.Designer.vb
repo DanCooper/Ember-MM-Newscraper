@@ -50,7 +50,7 @@ Partial Class dlgEditMovie
         Me.btnActorUp = New System.Windows.Forms.Button()
         Me.lblSortTilte = New System.Windows.Forms.Label()
         Me.txtSortTitle = New System.Windows.Forms.TextBox()
-        Me.btnPlayTrailer = New System.Windows.Forms.Button()
+        Me.btnPlayNFOTrailer = New System.Windows.Forms.Button()
         Me.btnDLTrailer = New System.Windows.Forms.Button()
         Me.clbGenre = New System.Windows.Forms.CheckedListBox()
         Me.btnStudio = New System.Windows.Forms.Button()
@@ -193,9 +193,6 @@ Partial Class dlgEditMovie
         Me.btnLocalTrailerPlay = New System.Windows.Forms.Button()
         Me.txtLocalTrailer = New System.Windows.Forms.TextBox()
         Me.pnlTrailerPreview = New System.Windows.Forms.Panel()
-        Me.pnlTrailerPreviewNoPlayer = New System.Windows.Forms.Panel()
-        Me.tblTrailerPreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblTrailerPreviewNoPlayer = New System.Windows.Forms.Label()
         Me.btnSetTrailerDL = New System.Windows.Forms.Button()
         Me.btnRemoveTrailer = New System.Windows.Forms.Button()
         Me.btnSetTrailerScrape = New System.Windows.Forms.Button()
@@ -204,9 +201,6 @@ Partial Class dlgEditMovie
         Me.btnLocalThemePlay = New System.Windows.Forms.Button()
         Me.txtLocalTheme = New System.Windows.Forms.TextBox()
         Me.pnlThemePreview = New System.Windows.Forms.Panel()
-        Me.pnlThemePreviewNoPlayer = New System.Windows.Forms.Panel()
-        Me.tblThemePreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblThemePreviewNoPlayer = New System.Windows.Forms.Label()
         Me.btnSetThemeDL = New System.Windows.Forms.Button()
         Me.btnRemoveTheme = New System.Windows.Forms.Button()
         Me.btnSetThemeScrape = New System.Windows.Forms.Button()
@@ -266,13 +260,7 @@ Partial Class dlgEditMovie
         Me.tpFrameExtraction.SuspendLayout()
         Me.tpSubtitles.SuspendLayout()
         Me.tpTrailer.SuspendLayout()
-        Me.pnlTrailerPreview.SuspendLayout()
-        Me.pnlTrailerPreviewNoPlayer.SuspendLayout()
-        Me.tblTrailerPreviewNoPlayer.SuspendLayout()
         Me.tpTheme.SuspendLayout()
-        Me.pnlThemePreview.SuspendLayout()
-        Me.pnlThemePreviewNoPlayer.SuspendLayout()
-        Me.tblThemePreviewNoPlayer.SuspendLayout()
         Me.tpMetaData.SuspendLayout()
         Me.tpMediaStub.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -390,7 +378,7 @@ Partial Class dlgEditMovie
         Me.tpDetails.Controls.Add(Me.btnActorUp)
         Me.tpDetails.Controls.Add(Me.lblSortTilte)
         Me.tpDetails.Controls.Add(Me.txtSortTitle)
-        Me.tpDetails.Controls.Add(Me.btnPlayTrailer)
+        Me.tpDetails.Controls.Add(Me.btnPlayNFOTrailer)
         Me.tpDetails.Controls.Add(Me.btnDLTrailer)
         Me.tpDetails.Controls.Add(Me.clbGenre)
         Me.tpDetails.Controls.Add(Me.btnStudio)
@@ -592,15 +580,15 @@ Partial Class dlgEditMovie
         Me.txtSortTitle.Size = New System.Drawing.Size(252, 22)
         Me.txtSortTitle.TabIndex = 5
         '
-        'btnPlayTrailer
+        'btnPlayNFOTrailer
         '
-        Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(659, 462)
-        Me.btnPlayTrailer.Name = "btnPlayTrailer"
-        Me.btnPlayTrailer.Size = New System.Drawing.Size(23, 23)
-        Me.btnPlayTrailer.TabIndex = 52
-        Me.btnPlayTrailer.UseVisualStyleBackColor = True
+        Me.btnPlayNFOTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnPlayNFOTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
+        Me.btnPlayNFOTrailer.Location = New System.Drawing.Point(659, 462)
+        Me.btnPlayNFOTrailer.Name = "btnPlayNFOTrailer"
+        Me.btnPlayNFOTrailer.Size = New System.Drawing.Size(23, 23)
+        Me.btnPlayNFOTrailer.TabIndex = 52
+        Me.btnPlayNFOTrailer.UseVisualStyleBackColor = True
         '
         'btnDLTrailer
         '
@@ -788,7 +776,7 @@ Partial Class dlgEditMovie
         'btnManual
         '
         Me.btnManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnManual.Location = New System.Drawing.Point(896, 462)
+        Me.btnManual.Location = New System.Drawing.Point(898, 462)
         Me.btnManual.Name = "btnManual"
         Me.btnManual.Size = New System.Drawing.Size(92, 23)
         Me.btnManual.TabIndex = 54
@@ -821,6 +809,7 @@ Partial Class dlgEditMovie
         Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvActors.FullRowSelect = True
+        Me.lvActors.HideSelection = False
         Me.lvActors.Location = New System.Drawing.Point(273, 156)
         Me.lvActors.Name = "lvActors"
         Me.lvActors.Size = New System.Drawing.Size(408, 147)
@@ -2028,6 +2017,7 @@ Partial Class dlgEditMovie
         ListViewGroup1.Name = "LocalSubtitles"
         Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+        Me.lvSubtitles.HideSelection = False
         ListViewItem1.Group = ListViewGroup1
         Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
@@ -2066,6 +2056,7 @@ Partial Class dlgEditMovie
         '
         'btnSetSubtitleDL
         '
+        Me.btnSetSubtitleDL.Enabled = False
         Me.btnSetSubtitleDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetSubtitleDL.Image = CType(resources.GetObject("btnSetSubtitleDL.Image"), System.Drawing.Image)
         Me.btnSetSubtitleDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
@@ -2093,6 +2084,7 @@ Partial Class dlgEditMovie
         '
         'btnSetSubtitleLocal
         '
+        Me.btnSetSubtitleLocal.Enabled = False
         Me.btnSetSubtitleLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetSubtitleLocal.Image = CType(resources.GetObject("btnSetSubtitleLocal.Image"), System.Drawing.Image)
         Me.btnSetSubtitleLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
@@ -2143,46 +2135,10 @@ Partial Class dlgEditMovie
         'pnlTrailerPreview
         '
         Me.pnlTrailerPreview.BackColor = System.Drawing.Color.DimGray
-        Me.pnlTrailerPreview.Controls.Add(Me.pnlTrailerPreviewNoPlayer)
         Me.pnlTrailerPreview.Location = New System.Drawing.Point(6, 6)
         Me.pnlTrailerPreview.Name = "pnlTrailerPreview"
         Me.pnlTrailerPreview.Size = New System.Drawing.Size(800, 450)
         Me.pnlTrailerPreview.TabIndex = 13
-        '
-        'pnlTrailerPreviewNoPlayer
-        '
-        Me.pnlTrailerPreviewNoPlayer.BackColor = System.Drawing.Color.White
-        Me.pnlTrailerPreviewNoPlayer.Controls.Add(Me.tblTrailerPreviewNoPlayer)
-        Me.pnlTrailerPreviewNoPlayer.Location = New System.Drawing.Point(285, 203)
-        Me.pnlTrailerPreviewNoPlayer.Name = "pnlTrailerPreviewNoPlayer"
-        Me.pnlTrailerPreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
-        Me.pnlTrailerPreviewNoPlayer.TabIndex = 0
-        '
-        'tblTrailerPreviewNoPlayer
-        '
-        Me.tblTrailerPreviewNoPlayer.AutoSize = True
-        Me.tblTrailerPreviewNoPlayer.ColumnCount = 1
-        Me.tblTrailerPreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblTrailerPreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTrailerPreviewNoPlayer.Controls.Add(Me.lblTrailerPreviewNoPlayer, 0, 0)
-        Me.tblTrailerPreviewNoPlayer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTrailerPreviewNoPlayer.Location = New System.Drawing.Point(0, 0)
-        Me.tblTrailerPreviewNoPlayer.Name = "tblTrailerPreviewNoPlayer"
-        Me.tblTrailerPreviewNoPlayer.RowCount = 1
-        Me.tblTrailerPreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblTrailerPreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56.0!))
-        Me.tblTrailerPreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
-        Me.tblTrailerPreviewNoPlayer.TabIndex = 0
-        '
-        'lblTrailerPreviewNoPlayer
-        '
-        Me.lblTrailerPreviewNoPlayer.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTrailerPreviewNoPlayer.AutoSize = True
-        Me.lblTrailerPreviewNoPlayer.Location = New System.Drawing.Point(52, 21)
-        Me.lblTrailerPreviewNoPlayer.Name = "lblTrailerPreviewNoPlayer"
-        Me.lblTrailerPreviewNoPlayer.Size = New System.Drawing.Size(137, 13)
-        Me.lblTrailerPreviewNoPlayer.TabIndex = 0
-        Me.lblTrailerPreviewNoPlayer.Text = "no Media Player enabled"
         '
         'btnSetTrailerDL
         '
@@ -2275,46 +2231,10 @@ Partial Class dlgEditMovie
         'pnlThemePreview
         '
         Me.pnlThemePreview.BackColor = System.Drawing.Color.DimGray
-        Me.pnlThemePreview.Controls.Add(Me.pnlThemePreviewNoPlayer)
         Me.pnlThemePreview.Location = New System.Drawing.Point(6, 6)
         Me.pnlThemePreview.Name = "pnlThemePreview"
         Me.pnlThemePreview.Size = New System.Drawing.Size(800, 450)
         Me.pnlThemePreview.TabIndex = 14
-        '
-        'pnlThemePreviewNoPlayer
-        '
-        Me.pnlThemePreviewNoPlayer.BackColor = System.Drawing.Color.White
-        Me.pnlThemePreviewNoPlayer.Controls.Add(Me.tblThemePreviewNoPlayer)
-        Me.pnlThemePreviewNoPlayer.Location = New System.Drawing.Point(285, 203)
-        Me.pnlThemePreviewNoPlayer.Name = "pnlThemePreviewNoPlayer"
-        Me.pnlThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
-        Me.pnlThemePreviewNoPlayer.TabIndex = 0
-        '
-        'tblThemePreviewNoPlayer
-        '
-        Me.tblThemePreviewNoPlayer.AutoSize = True
-        Me.tblThemePreviewNoPlayer.ColumnCount = 1
-        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblThemePreviewNoPlayer.Controls.Add(Me.lblThemePreviewNoPlayer, 0, 0)
-        Me.tblThemePreviewNoPlayer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblThemePreviewNoPlayer.Location = New System.Drawing.Point(0, 0)
-        Me.tblThemePreviewNoPlayer.Name = "tblThemePreviewNoPlayer"
-        Me.tblThemePreviewNoPlayer.RowCount = 1
-        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56.0!))
-        Me.tblThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
-        Me.tblThemePreviewNoPlayer.TabIndex = 0
-        '
-        'lblThemePreviewNoPlayer
-        '
-        Me.lblThemePreviewNoPlayer.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblThemePreviewNoPlayer.AutoSize = True
-        Me.lblThemePreviewNoPlayer.Location = New System.Drawing.Point(52, 21)
-        Me.lblThemePreviewNoPlayer.Name = "lblThemePreviewNoPlayer"
-        Me.lblThemePreviewNoPlayer.Size = New System.Drawing.Size(137, 13)
-        Me.lblThemePreviewNoPlayer.TabIndex = 0
-        Me.lblThemePreviewNoPlayer.Text = "no Media Player enabled"
         '
         'btnSetThemeDL
         '
@@ -2601,18 +2521,8 @@ Partial Class dlgEditMovie
         Me.tpSubtitles.PerformLayout()
         Me.tpTrailer.ResumeLayout(False)
         Me.tpTrailer.PerformLayout()
-        Me.pnlTrailerPreview.ResumeLayout(False)
-        Me.pnlTrailerPreviewNoPlayer.ResumeLayout(False)
-        Me.pnlTrailerPreviewNoPlayer.PerformLayout()
-        Me.tblTrailerPreviewNoPlayer.ResumeLayout(False)
-        Me.tblTrailerPreviewNoPlayer.PerformLayout()
         Me.tpTheme.ResumeLayout(False)
         Me.tpTheme.PerformLayout()
-        Me.pnlThemePreview.ResumeLayout(False)
-        Me.pnlThemePreviewNoPlayer.ResumeLayout(False)
-        Me.pnlThemePreviewNoPlayer.PerformLayout()
-        Me.tblThemePreviewNoPlayer.ResumeLayout(False)
-        Me.tblThemePreviewNoPlayer.PerformLayout()
         Me.tpMetaData.ResumeLayout(False)
         Me.tpMediaStub.ResumeLayout(False)
         Me.tpMediaStub.PerformLayout()
@@ -2706,7 +2616,7 @@ Partial Class dlgEditMovie
     Friend WithEvents pnlExtrathumbsSetAsFanart As System.Windows.Forms.Panel
     Friend WithEvents btnExtrathumbsSetAsFanart As System.Windows.Forms.Button
     Friend WithEvents btnDLTrailer As System.Windows.Forms.Button
-    Friend WithEvents btnPlayTrailer As System.Windows.Forms.Button
+    Friend WithEvents btnPlayNFOTrailer As System.Windows.Forms.Button
     Friend WithEvents btnSetPosterDL As System.Windows.Forms.Button
     Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
     Friend WithEvents tpMetaData As System.Windows.Forms.TabPage
@@ -2806,13 +2716,7 @@ Partial Class dlgEditMovie
     Friend WithEvents tsFilename As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents txtMPAA As System.Windows.Forms.TextBox
     Friend WithEvents pnlTrailerPreview As System.Windows.Forms.Panel
-    Friend WithEvents pnlTrailerPreviewNoPlayer As System.Windows.Forms.Panel
-    Friend WithEvents tblTrailerPreviewNoPlayer As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents lblTrailerPreviewNoPlayer As System.Windows.Forms.Label
     Friend WithEvents pnlThemePreview As System.Windows.Forms.Panel
-    Friend WithEvents pnlThemePreviewNoPlayer As System.Windows.Forms.Panel
-    Friend WithEvents tblThemePreviewNoPlayer As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents lblThemePreviewNoPlayer As System.Windows.Forms.Label
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
     Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
     Friend WithEvents btnSetExtrafanartsScrape As System.Windows.Forms.Button

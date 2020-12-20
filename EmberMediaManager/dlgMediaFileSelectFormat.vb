@@ -21,19 +21,19 @@
 Imports EmberAPI
 Imports NLog
 
-Public Class dlgTrailerFormat
+Public Class dlgMediaFileSelectFormat
 
 #Region "Fields"
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _Trailer As MediaContainers.Trailer
+    Private _Trailer As MediaContainers.MediaFile
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public Property Result As New TrailerLinksContainer
+    Public Property Result As New MediaFileLinkContainer
 
 #End Region
 
@@ -60,7 +60,7 @@ Public Class dlgTrailerFormat
             lbAudioFormats.ValueMember = "URL"
         End If
 
-        Dim prevQualLink = _Trailer.Streams.VideoStreams.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual)
+        Dim prevQualLink = _Trailer.Streams.VideoStreams.Find(Function(f) f.Resolution = Master.eSettings.MovieTrailerPrefVideoQual)
         If prevQualLink IsNot Nothing Then
             lbVideoFormats.SelectedItem = prevQualLink
         ElseIf lbVideoFormats.Items.Count = 1 Then
@@ -72,7 +72,7 @@ Public Class dlgTrailerFormat
         Activate()
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal trailer As MediaContainers.Trailer) As DialogResult
+    Public Overloads Function ShowDialog(ByVal trailer As MediaContainers.MediaFile) As DialogResult
         _Trailer = trailer
         Return ShowDialog()
     End Function
@@ -83,12 +83,12 @@ Public Class dlgTrailerFormat
 
     Private Sub lbAudioFormats_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lbAudioFormats.SelectedIndexChanged
         If Not lbAudioFormats.SelectedIndex = -1 Then
-            Result.AudioURL = DirectCast(lbAudioFormats.SelectedItem, MediaContainers.Trailer.AudioStream).URL
+            Result.AudioURL = DirectCast(lbAudioFormats.SelectedItem, MediaContainers.MediaFile.AudioStream).URL
         End If
 
-        If Result.isDash AndAlso lbVideoFormats.SelectedItems.Count > 0 AndAlso lbAudioFormats.SelectedItems.Count > 0 Then
+        If Result.IsAdpative AndAlso lbVideoFormats.SelectedItems.Count > 0 AndAlso lbAudioFormats.SelectedItems.Count > 0 Then
             OK_Button.Enabled = True
-        ElseIf Not Result.isDash Then
+        ElseIf Not Result.IsAdpative Then
             OK_Button.Enabled = True
         Else
             OK_Button.Enabled = False
@@ -96,15 +96,17 @@ Public Class dlgTrailerFormat
     End Sub
 
     Private Sub lbVideoFormats_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lbVideoFormats.SelectedIndexChanged
-        Result.VideoURL = DirectCast(lbVideoFormats.SelectedItem, MediaContainers.Trailer.VideoStream).URL
-        If Not DirectCast(lbVideoFormats.SelectedItem, MediaContainers.Trailer.VideoStream).IsDash Then
+        Dim selectedVideoStream = DirectCast(lbVideoFormats.SelectedItem, MediaContainers.MediaFile.VideoStream)
+        Result.VideoURL = selectedVideoStream.URL
+
+        If Not selectedVideoStream.IsAdaptive Then
             Result.AudioURL = String.Empty
             lbAudioFormats.Enabled = False
             lbAudioFormats.SelectedIndex = -1
         End If
 
         If lbVideoFormats.SelectedItems.Count > 0 Then
-            If DirectCast(lbVideoFormats.SelectedItem, MediaContainers.Trailer.VideoStream).IsDash Then
+            If selectedVideoStream.IsAdaptive Then
                 lbAudioFormats.Enabled = True
                 OK_Button.Enabled = lbAudioFormats.SelectedItems.Count > 0
             Else

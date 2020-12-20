@@ -1211,7 +1211,7 @@ Public Class ModulesManager
                 DBElement.ImagesContainer = New MediaContainers.ImagesContainer
                 DBElement.NfoPath = String.Empty
                 DBElement.Seasons.Clear()
-                DBElement.Theme = New MediaContainers.Theme
+                DBElement.Theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
                 DBElement.TVShow = New MediaContainers.TVShow
 
                 DBElement.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
@@ -1494,7 +1494,7 @@ Public Class ModulesManager
     ''' <param name="ThemeList">List of Theme objects that the scraper will append to.</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTheme_Movie(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Boolean
+    Public Function ScrapeTheme_Movie(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.MediaFile)) As Boolean
         logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_Movie] [Start] {0}", DBElement.Filename))
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_Movie) = externalScrapersModules_Theme_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
@@ -1509,7 +1509,7 @@ Public Class ModulesManager
             For Each _externalScraperModule As _externalScraperModuleClass_Theme_Movie In modules
                 logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
-                Dim aList As New List(Of MediaContainers.Theme)
+                Dim aList As New List(Of MediaContainers.MediaFile)
                 ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, Type, aList)
                 If aList IsNot Nothing Then
                     ThemeList.AddRange(aList)
@@ -1529,7 +1529,7 @@ Public Class ModulesManager
     ''' <param name="ThemeList">List of Theme objects that the scraper will append to.</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTheme_TVShow(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Boolean
+    Public Function ScrapeTheme_TVShow(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.MediaFile)) As Boolean
         logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_TVShow] [Start] {0}", DBElement.TVShow.Title))
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_TV) = externalScrapersModules_Theme_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
@@ -1544,7 +1544,7 @@ Public Class ModulesManager
             For Each _externalScraperModule As _externalScraperModuleClass_Theme_TV In modules
                 logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_TVShow] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-                Dim aList As New List(Of MediaContainers.Theme)
+                Dim aList As New List(Of MediaContainers.MediaFile)
                 ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, Type, aList)
                 If aList IsNot Nothing Then
                     ThemeList.AddRange(aList)
@@ -1565,7 +1565,7 @@ Public Class ModulesManager
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTrailer_Movie(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Boolean
+    Public Function ScrapeTrailer_Movie(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.MediaFile)) As Boolean
         logger.Trace(String.Format("[ModulesManager] [ScrapeTrailer_Movie] [Start] {0}", DBElement.Filename))
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer_Movie) = externalScrapersModules_Trailer_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
@@ -1580,7 +1580,7 @@ Public Class ModulesManager
             For Each _externalScraperModule As _externalScraperModuleClass_Trailer_Movie In modules
                 logger.Trace(String.Format("[ModulesManager] [ScrapeTrailer_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
-                Dim aList As New List(Of MediaContainers.Trailer)
+                Dim aList As New List(Of MediaContainers.MediaFile)
                 ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, Type, aList)
                 If aList IsNot Nothing Then
                     TrailerList.AddRange(aList)

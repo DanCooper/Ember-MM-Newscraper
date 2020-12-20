@@ -4110,8 +4110,8 @@ Public Class Database
             If bToDisk Then
                 _movieDB.ImagesContainer.SaveAllImages(_movieDB, bForceFileCleanup)
                 _movieDB.Movie.SaveAllActorThumbs(_movieDB)
-                _movieDB.Theme.SaveAllThemes(_movieDB, bForceFileCleanup)
-                _movieDB.Trailer.SaveAllTrailers(_movieDB, bForceFileCleanup)
+                _movieDB.Theme.Save(_movieDB, bForceFileCleanup)
+                _movieDB.Trailer.Save(_movieDB, bForceFileCleanup)
             End If
 
             par_movie_MoviePath.Value = _movieDB.Filename
@@ -5430,7 +5430,7 @@ Public Class Database
             If bToNFO Then NFO.SaveToNFO_TVShow(_show)
             If bToDisk Then
                 _show.ImagesContainer.SaveAllImages(_show, False)
-                _show.Theme.SaveAllThemes(_show, False)
+                _show.Theme.Save(_show, False)
                 _show.TVShow.SaveAllActorThumbs(_show)
             End If
 
@@ -5840,8 +5840,8 @@ Public Class Database
         Private _sortmethod As Enums.SortMethod_MovieSet
         Private _source As New DBSource
         Private _subtitles As New List(Of MediaContainers.Subtitle)
-        Private _theme As New MediaContainers.Theme
-        Private _trailer As New MediaContainers.Trailer
+        Private _theme As New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
+        Private _trailer As New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
         Private _tvepisode As MediaContainers.EpisodeDetails
         Private _tvseason As MediaContainers.SeasonDetails
         Private _tvshow As MediaContainers.TVShow
@@ -6289,33 +6289,33 @@ Public Class Database
             End Get
         End Property
 
-        Public Property Theme() As MediaContainers.Theme
+        Public Property Theme() As MediaContainers.MediaFile
             Get
                 Return _theme
             End Get
-            Set(ByVal value As MediaContainers.Theme)
+            Set(ByVal value As MediaContainers.MediaFile)
                 _theme = value
             End Set
         End Property
 
         Public ReadOnly Property ThemeSpecified() As Boolean
             Get
-                Return _theme.ThemeOriginal IsNot Nothing AndAlso _theme.ThemeOriginal.hasMemoryStream
+                Return _theme.FileOriginal IsNot Nothing AndAlso _theme.FileOriginal.HasMemoryStream
             End Get
         End Property
 
-        Public Property Trailer() As MediaContainers.Trailer
+        Public Property Trailer() As MediaContainers.MediaFile
             Get
                 Return _trailer
             End Get
-            Set(ByVal value As MediaContainers.Trailer)
+            Set(ByVal value As MediaContainers.MediaFile)
                 _trailer = value
             End Set
         End Property
 
         Public ReadOnly Property TrailerSpecified() As Boolean
             Get
-                Return _trailer.TrailerOriginal IsNot Nothing AndAlso _trailer.TrailerOriginal.HasMemoryStream
+                Return _trailer.FileOriginal IsNot Nothing AndAlso _trailer.FileOriginal.HasMemoryStream
             End Get
         End Property
 
@@ -6413,8 +6413,8 @@ Public Class Database
             _sortmethod = Enums.SortMethod_MovieSet.Year
             _source = New DBSource
             _subtitles = New List(Of MediaContainers.Subtitle)
-            _theme = New MediaContainers.Theme
-            _trailer = New MediaContainers.Trailer
+            _theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
+            _trailer = New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
             _tvepisode = Nothing
             _tvseason = Nothing
             _tvshow = Nothing

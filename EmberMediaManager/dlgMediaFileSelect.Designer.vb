@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class dlgTrailerSelect
+Partial Class dlgMediaFileSelect
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,17 +22,18 @@ Partial Class dlgTrailerSelect
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrailerSelect))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgMediaFileSelect))
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
-        Me.btnTrailerScrape = New System.Windows.Forms.Button()
-        Me.lvTrailers = New System.Windows.Forms.ListView()
+        Me.btnScrape = New System.Windows.Forms.Button()
+        Me.lvMediaFiles = New System.Windows.Forms.ListView()
         Me.colNumber = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colWebURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colDuration = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colVideoQuality = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colVideoResolution = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colAudioBitrate = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colVideoType = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colSource = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colScraper = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -40,18 +41,18 @@ Partial Class dlgTrailerSelect
         Me.tblYouTubeSearch = New System.Windows.Forms.TableLayoutPanel()
         Me.txtYouTubeSearch = New System.Windows.Forms.TextBox()
         Me.btnYouTubeSearch = New System.Windows.Forms.Button()
-        Me.gbManualTrailer = New System.Windows.Forms.GroupBox()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnBrowseLocalTrailer = New System.Windows.Forms.Button()
-        Me.btnClearManualTrailerLink = New System.Windows.Forms.Button()
-        Me.txtLocalTrailer = New System.Windows.Forms.TextBox()
-        Me.lblManualTrailerLink = New System.Windows.Forms.Label()
-        Me.lblLocalTrailer = New System.Windows.Forms.Label()
-        Me.txtManualTrailerLink = New System.Windows.Forms.TextBox()
-        Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog()
+        Me.gbCustom = New System.Windows.Forms.GroupBox()
+        Me.tblCustom = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnCustomLocalFile_Browse = New System.Windows.Forms.Button()
+        Me.btnCustomURL_Remove = New System.Windows.Forms.Button()
+        Me.txtCustomLocalFile = New System.Windows.Forms.TextBox()
+        Me.lblCustomURL = New System.Windows.Forms.Label()
+        Me.lblCustomLocalFile = New System.Windows.Forms.Label()
+        Me.txtCustomURL = New System.Windows.Forms.TextBox()
+        Me.ofdFile = New System.Windows.Forms.OpenFileDialog()
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnPlayInBrowser = New System.Windows.Forms.Button()
+        Me.btnOpenInBrowser = New System.Windows.Forms.Button()
         Me.pblBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
@@ -59,8 +60,8 @@ Partial Class dlgTrailerSelect
         Me.lblStatus = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gbYouTubeSearch.SuspendLayout()
         Me.tblYouTubeSearch.SuspendLayout()
-        Me.gbManualTrailer.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.gbCustom.SuspendLayout()
+        Me.tblCustom.SuspendLayout()
         Me.pnlMain.SuspendLayout()
         Me.tblMain.SuspendLayout()
         Me.pblBottom.SuspendLayout()
@@ -86,31 +87,31 @@ Partial Class dlgTrailerSelect
         Me.btnCancel.TabIndex = 7
         Me.btnCancel.Text = "Cancel"
         '
-        'btnTrailerScrape
+        'btnScrape
         '
-        Me.btnTrailerScrape.AutoSize = True
-        Me.btnTrailerScrape.Location = New System.Drawing.Point(3, 363)
-        Me.btnTrailerScrape.Name = "btnTrailerScrape"
-        Me.btnTrailerScrape.Size = New System.Drawing.Size(152, 23)
-        Me.btnTrailerScrape.TabIndex = 5
-        Me.btnTrailerScrape.Text = "Scrape Trailers"
-        Me.btnTrailerScrape.UseVisualStyleBackColor = True
+        Me.btnScrape.AutoSize = True
+        Me.btnScrape.Location = New System.Drawing.Point(3, 363)
+        Me.btnScrape.Name = "btnScrape"
+        Me.btnScrape.Size = New System.Drawing.Size(152, 23)
+        Me.btnScrape.TabIndex = 5
+        Me.btnScrape.Text = "Scrape"
+        Me.btnScrape.UseVisualStyleBackColor = True
         '
-        'lvTrailers
+        'lvMediaFiles
         '
-        Me.lvTrailers.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.lvMediaFiles.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lvTrailers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colDuration, Me.colVideoQuality, Me.colVideoType, Me.colSource, Me.colScraper})
-        Me.tblMain.SetColumnSpan(Me.lvTrailers, 2)
-        Me.lvTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lvTrailers.HideSelection = False
-        Me.lvTrailers.Location = New System.Drawing.Point(3, 3)
-        Me.lvTrailers.Name = "lvTrailers"
-        Me.lvTrailers.Size = New System.Drawing.Size(878, 354)
-        Me.lvTrailers.TabIndex = 4
-        Me.lvTrailers.UseCompatibleStateImageBehavior = False
-        Me.lvTrailers.View = System.Windows.Forms.View.Details
+        Me.lvMediaFiles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colDuration, Me.colVideoResolution, Me.colAudioBitrate, Me.colVideoType, Me.colSource, Me.colScraper})
+        Me.tblMain.SetColumnSpan(Me.lvMediaFiles, 2)
+        Me.lvMediaFiles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvMediaFiles.HideSelection = False
+        Me.lvMediaFiles.Location = New System.Drawing.Point(3, 3)
+        Me.lvMediaFiles.Name = "lvMediaFiles"
+        Me.lvMediaFiles.Size = New System.Drawing.Size(878, 354)
+        Me.lvMediaFiles.TabIndex = 4
+        Me.lvMediaFiles.UseCompatibleStateImageBehavior = False
+        Me.lvMediaFiles.View = System.Windows.Forms.View.Details
         '
         'colNumber
         '
@@ -137,9 +138,15 @@ Partial Class dlgTrailerSelect
         '
         Me.colDuration.Text = "Duration"
         '
-        'colVideoQuality
+        'colVideoResolution
         '
-        Me.colVideoQuality.Text = "Quality"
+        Me.colVideoResolution.Text = "Resolution"
+        Me.colVideoResolution.Width = 80
+        '
+        'colAudioBitrate
+        '
+        Me.colAudioBitrate.Text = "Bitrate"
+        Me.colAudioBitrate.Width = 80
         '
         'colVideoType
         '
@@ -203,101 +210,101 @@ Partial Class dlgTrailerSelect
         Me.btnYouTubeSearch.Text = "Search"
         Me.btnYouTubeSearch.UseVisualStyleBackColor = True
         '
-        'gbManualTrailer
+        'gbCustom
         '
-        Me.gbManualTrailer.AutoSize = True
-        Me.tblMain.SetColumnSpan(Me.gbManualTrailer, 2)
-        Me.gbManualTrailer.Controls.Add(Me.TableLayoutPanel1)
-        Me.gbManualTrailer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbManualTrailer.Location = New System.Drawing.Point(3, 488)
-        Me.gbManualTrailer.Name = "gbManualTrailer"
-        Me.gbManualTrailer.Size = New System.Drawing.Size(878, 119)
-        Me.gbManualTrailer.TabIndex = 3
-        Me.gbManualTrailer.TabStop = False
-        Me.gbManualTrailer.Text = "Manual Trailer Entry"
+        Me.gbCustom.AutoSize = True
+        Me.tblMain.SetColumnSpan(Me.gbCustom, 2)
+        Me.gbCustom.Controls.Add(Me.tblCustom)
+        Me.gbCustom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbCustom.Location = New System.Drawing.Point(3, 488)
+        Me.gbCustom.Name = "gbCustom"
+        Me.gbCustom.Size = New System.Drawing.Size(878, 119)
+        Me.gbCustom.TabIndex = 3
+        Me.gbCustom.TabStop = False
+        Me.gbCustom.Text = "Custom"
         '
-        'TableLayoutPanel1
+        'tblCustom
         '
-        Me.TableLayoutPanel1.AutoSize = True
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.Controls.Add(Me.btnBrowseLocalTrailer, 1, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.btnClearManualTrailerLink, 1, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.txtLocalTrailer, 0, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.lblManualTrailerLink, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.lblLocalTrailer, 0, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.txtManualTrailerLink, 0, 1)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 4
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(872, 98)
-        Me.TableLayoutPanel1.TabIndex = 5
+        Me.tblCustom.AutoSize = True
+        Me.tblCustom.ColumnCount = 2
+        Me.tblCustom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblCustom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblCustom.Controls.Add(Me.btnCustomLocalFile_Browse, 1, 3)
+        Me.tblCustom.Controls.Add(Me.btnCustomURL_Remove, 1, 1)
+        Me.tblCustom.Controls.Add(Me.txtCustomLocalFile, 0, 3)
+        Me.tblCustom.Controls.Add(Me.lblCustomURL, 0, 0)
+        Me.tblCustom.Controls.Add(Me.lblCustomLocalFile, 0, 2)
+        Me.tblCustom.Controls.Add(Me.txtCustomURL, 0, 1)
+        Me.tblCustom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblCustom.Location = New System.Drawing.Point(3, 18)
+        Me.tblCustom.Name = "tblCustom"
+        Me.tblCustom.RowCount = 4
+        Me.tblCustom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblCustom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblCustom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblCustom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblCustom.Size = New System.Drawing.Size(872, 98)
+        Me.tblCustom.TabIndex = 5
         '
-        'btnBrowseLocalTrailer
+        'btnCustomLocalFile_Browse
         '
-        Me.btnBrowseLocalTrailer.Location = New System.Drawing.Point(844, 72)
-        Me.btnBrowseLocalTrailer.Name = "btnBrowseLocalTrailer"
-        Me.btnBrowseLocalTrailer.Size = New System.Drawing.Size(25, 23)
-        Me.btnBrowseLocalTrailer.TabIndex = 4
-        Me.btnBrowseLocalTrailer.Text = "..."
-        Me.btnBrowseLocalTrailer.UseVisualStyleBackColor = True
+        Me.btnCustomLocalFile_Browse.Location = New System.Drawing.Point(844, 72)
+        Me.btnCustomLocalFile_Browse.Name = "btnCustomLocalFile_Browse"
+        Me.btnCustomLocalFile_Browse.Size = New System.Drawing.Size(25, 23)
+        Me.btnCustomLocalFile_Browse.TabIndex = 4
+        Me.btnCustomLocalFile_Browse.Text = "..."
+        Me.btnCustomLocalFile_Browse.UseVisualStyleBackColor = True
         '
-        'btnClearManualTrailerLink
+        'btnCustomURL_Remove
         '
-        Me.btnClearManualTrailerLink.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
-        Me.btnClearManualTrailerLink.Location = New System.Drawing.Point(844, 23)
-        Me.btnClearManualTrailerLink.Name = "btnClearManualTrailerLink"
-        Me.btnClearManualTrailerLink.Size = New System.Drawing.Size(25, 23)
-        Me.btnClearManualTrailerLink.TabIndex = 5
-        Me.btnClearManualTrailerLink.UseVisualStyleBackColor = True
+        Me.btnCustomURL_Remove.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
+        Me.btnCustomURL_Remove.Location = New System.Drawing.Point(844, 23)
+        Me.btnCustomURL_Remove.Name = "btnCustomURL_Remove"
+        Me.btnCustomURL_Remove.Size = New System.Drawing.Size(25, 23)
+        Me.btnCustomURL_Remove.TabIndex = 5
+        Me.btnCustomURL_Remove.UseVisualStyleBackColor = True
         '
-        'txtLocalTrailer
+        'txtCustomLocalFile
         '
-        Me.txtLocalTrailer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtLocalTrailer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtLocalTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtLocalTrailer.Location = New System.Drawing.Point(3, 72)
-        Me.txtLocalTrailer.Name = "txtLocalTrailer"
-        Me.txtLocalTrailer.Size = New System.Drawing.Size(835, 22)
-        Me.txtLocalTrailer.TabIndex = 3
+        Me.txtCustomLocalFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtCustomLocalFile.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtCustomLocalFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCustomLocalFile.Location = New System.Drawing.Point(3, 72)
+        Me.txtCustomLocalFile.Name = "txtCustomLocalFile"
+        Me.txtCustomLocalFile.Size = New System.Drawing.Size(835, 22)
+        Me.txtCustomLocalFile.TabIndex = 3
         '
-        'lblManualTrailerLink
+        'lblCustomURL
         '
-        Me.lblManualTrailerLink.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblManualTrailerLink.AutoSize = True
-        Me.lblManualTrailerLink.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblManualTrailerLink.Location = New System.Drawing.Point(3, 3)
-        Me.lblManualTrailerLink.Name = "lblManualTrailerLink"
-        Me.lblManualTrailerLink.Size = New System.Drawing.Size(147, 13)
-        Me.lblManualTrailerLink.TabIndex = 0
-        Me.lblManualTrailerLink.Text = "Direct Link or YouTube URL:"
+        Me.lblCustomURL.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblCustomURL.AutoSize = True
+        Me.lblCustomURL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCustomURL.Location = New System.Drawing.Point(3, 3)
+        Me.lblCustomURL.Name = "lblCustomURL"
+        Me.lblCustomURL.Size = New System.Drawing.Size(148, 13)
+        Me.lblCustomURL.TabIndex = 0
+        Me.lblCustomURL.Text = "Direct Link or YouTube URL:"
         '
-        'lblLocalTrailer
+        'lblCustomLocalFile
         '
-        Me.lblLocalTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblLocalTrailer.AutoSize = True
-        Me.lblLocalTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLocalTrailer.Location = New System.Drawing.Point(3, 52)
-        Me.lblLocalTrailer.Name = "lblLocalTrailer"
-        Me.lblLocalTrailer.Size = New System.Drawing.Size(69, 13)
-        Me.lblLocalTrailer.TabIndex = 2
-        Me.lblLocalTrailer.Text = "Local Trailer:"
+        Me.lblCustomLocalFile.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblCustomLocalFile.AutoSize = True
+        Me.lblCustomLocalFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCustomLocalFile.Location = New System.Drawing.Point(3, 52)
+        Me.lblCustomLocalFile.Name = "lblCustomLocalFile"
+        Me.lblCustomLocalFile.Size = New System.Drawing.Size(57, 13)
+        Me.lblCustomLocalFile.TabIndex = 2
+        Me.lblCustomLocalFile.Text = "Local File:"
         '
-        'txtManualTrailerLink
+        'txtCustomURL
         '
-        Me.txtManualTrailerLink.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtManualTrailerLink.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtManualTrailerLink.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtManualTrailerLink.Location = New System.Drawing.Point(3, 23)
-        Me.txtManualTrailerLink.Name = "txtManualTrailerLink"
-        Me.txtManualTrailerLink.Size = New System.Drawing.Size(835, 22)
-        Me.txtManualTrailerLink.TabIndex = 1
+        Me.txtCustomURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtCustomURL.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtCustomURL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCustomURL.Location = New System.Drawing.Point(3, 23)
+        Me.txtCustomURL.Name = "txtCustomURL"
+        Me.txtCustomURL.Size = New System.Drawing.Size(835, 22)
+        Me.txtCustomURL.TabIndex = 1
         '
         'pnlMain
         '
@@ -319,9 +326,9 @@ Partial Class dlgTrailerSelect
         Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMain.Controls.Add(Me.gbYouTubeSearch, 0, 3)
-        Me.tblMain.Controls.Add(Me.gbManualTrailer, 0, 6)
-        Me.tblMain.Controls.Add(Me.lvTrailers, 0, 0)
-        Me.tblMain.Controls.Add(Me.btnTrailerScrape, 0, 1)
+        Me.tblMain.Controls.Add(Me.gbCustom, 0, 6)
+        Me.tblMain.Controls.Add(Me.lvMediaFiles, 0, 0)
+        Me.tblMain.Controls.Add(Me.btnScrape, 0, 1)
         Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMain.Location = New System.Drawing.Point(0, 0)
         Me.tblMain.Name = "tblMain"
@@ -336,15 +343,15 @@ Partial Class dlgTrailerSelect
         Me.tblMain.Size = New System.Drawing.Size(884, 610)
         Me.tblMain.TabIndex = 4
         '
-        'btnPlayInBrowser
+        'btnOpenInBrowser
         '
-        Me.btnPlayInBrowser.Enabled = False
-        Me.btnPlayInBrowser.Location = New System.Drawing.Point(3, 3)
-        Me.btnPlayInBrowser.Name = "btnPlayInBrowser"
-        Me.btnPlayInBrowser.Size = New System.Drawing.Size(120, 23)
-        Me.btnPlayInBrowser.TabIndex = 4
-        Me.btnPlayInBrowser.Text = "Open In Browser"
-        Me.btnPlayInBrowser.UseVisualStyleBackColor = True
+        Me.btnOpenInBrowser.Enabled = False
+        Me.btnOpenInBrowser.Location = New System.Drawing.Point(3, 3)
+        Me.btnOpenInBrowser.Name = "btnOpenInBrowser"
+        Me.btnOpenInBrowser.Size = New System.Drawing.Size(120, 23)
+        Me.btnOpenInBrowser.TabIndex = 4
+        Me.btnOpenInBrowser.Text = "Open In Browser"
+        Me.btnOpenInBrowser.UseVisualStyleBackColor = True
         '
         'pblBottom
         '
@@ -364,7 +371,7 @@ Partial Class dlgTrailerSelect
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblBottom.Controls.Add(Me.btnPlayInBrowser, 0, 0)
+        Me.tblBottom.Controls.Add(Me.btnOpenInBrowser, 0, 0)
         Me.tblBottom.Controls.Add(Me.btnOK, 2, 0)
         Me.tblBottom.Controls.Add(Me.btnCancel, 3, 0)
         Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
@@ -393,10 +400,10 @@ Partial Class dlgTrailerSelect
         'lblStatus
         '
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(119, 17)
-        Me.lblStatus.Text = "Compiling Trailer List"
+        Me.lblStatus.Size = New System.Drawing.Size(90, 17)
+        Me.lblStatus.Text = "Compiling list..."
         '
-        'dlgTrailerSelect
+        'dlgMediaFileSelect
         '
         Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -410,16 +417,16 @@ Partial Class dlgTrailerSelect
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MinimizeBox = False
-        Me.Name = "dlgTrailerSelect"
-        Me.Text = "Select Trailer"
+        Me.Name = "dlgMediaFileSelect"
+        Me.Text = "Select Media File"
         Me.gbYouTubeSearch.ResumeLayout(False)
         Me.gbYouTubeSearch.PerformLayout()
         Me.tblYouTubeSearch.ResumeLayout(False)
         Me.tblYouTubeSearch.PerformLayout()
-        Me.gbManualTrailer.ResumeLayout(False)
-        Me.gbManualTrailer.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
+        Me.gbCustom.ResumeLayout(False)
+        Me.gbCustom.PerformLayout()
+        Me.tblCustom.ResumeLayout(False)
+        Me.tblCustom.PerformLayout()
         Me.pnlMain.ResumeLayout(False)
         Me.pnlMain.PerformLayout()
         Me.tblMain.ResumeLayout(False)
@@ -435,26 +442,26 @@ Partial Class dlgTrailerSelect
     End Sub
     Friend WithEvents btnOK As System.Windows.Forms.Button
     Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents gbManualTrailer As System.Windows.Forms.GroupBox
-    Friend WithEvents lblManualTrailerLink As System.Windows.Forms.Label
-    Friend WithEvents txtManualTrailerLink As System.Windows.Forms.TextBox
-    Friend WithEvents btnBrowseLocalTrailer As System.Windows.Forms.Button
-    Friend WithEvents txtLocalTrailer As System.Windows.Forms.TextBox
-    Friend WithEvents lblLocalTrailer As System.Windows.Forms.Label
-    Friend WithEvents ofdTrailer As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents gbCustom As System.Windows.Forms.GroupBox
+    Friend WithEvents lblCustomURL As System.Windows.Forms.Label
+    Friend WithEvents txtCustomURL As System.Windows.Forms.TextBox
+    Friend WithEvents btnCustomLocalFile_Browse As System.Windows.Forms.Button
+    Friend WithEvents txtCustomLocalFile As System.Windows.Forms.TextBox
+    Friend WithEvents lblCustomLocalFile As System.Windows.Forms.Label
+    Friend WithEvents ofdFile As System.Windows.Forms.OpenFileDialog
     Friend WithEvents pnlMain As System.Windows.Forms.Panel
-    Friend WithEvents btnPlayInBrowser As System.Windows.Forms.Button
-    Friend WithEvents lvTrailers As System.Windows.Forms.ListView
-    Friend WithEvents btnClearManualTrailerLink As System.Windows.Forms.Button
+    Friend WithEvents btnOpenInBrowser As System.Windows.Forms.Button
+    Friend WithEvents lvMediaFiles As System.Windows.Forms.ListView
+    Friend WithEvents btnCustomURL_Remove As System.Windows.Forms.Button
     Friend WithEvents gbYouTubeSearch As System.Windows.Forms.GroupBox
     Friend WithEvents btnYouTubeSearch As System.Windows.Forms.Button
     Friend WithEvents txtYouTubeSearch As System.Windows.Forms.TextBox
-    Friend WithEvents btnTrailerScrape As System.Windows.Forms.Button
+    Friend WithEvents btnScrape As System.Windows.Forms.Button
     Friend WithEvents colURL As System.Windows.Forms.ColumnHeader
     Friend WithEvents colWebURL As System.Windows.Forms.ColumnHeader
     Friend WithEvents colDescription As System.Windows.Forms.ColumnHeader
     Friend WithEvents colDuration As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colVideoQuality As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colVideoResolution As System.Windows.Forms.ColumnHeader
     Friend WithEvents colSource As System.Windows.Forms.ColumnHeader
     Friend WithEvents colNumber As System.Windows.Forms.ColumnHeader
     Friend WithEvents pblBottom As System.Windows.Forms.Panel
@@ -463,8 +470,9 @@ Partial Class dlgTrailerSelect
     Friend WithEvents colVideoType As System.Windows.Forms.ColumnHeader
     Friend WithEvents tblMain As TableLayoutPanel
     Friend WithEvents tblYouTubeSearch As TableLayoutPanel
-    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents tblCustom As TableLayoutPanel
     Friend WithEvents StatusStrip As StatusStrip
     Friend WithEvents pbStatus As ToolStripProgressBar
     Friend WithEvents lblStatus As ToolStripStatusLabel
+    Friend WithEvents colAudioBitrate As ColumnHeader
 End Class

@@ -29,111 +29,58 @@ Namespace MediaContainers
     <Serializable()>
     Public Class Audio
 
-#Region "Fields"
-
-        Private _bitrate As String = String.Empty
-        Private _channels As String = String.Empty
-        Private _codec As String = String.Empty
-        Private _haspreferred As Boolean = False
-        Private _language As String = String.Empty
-        Private _longlanguage As String = String.Empty
-
-#End Region 'Fields
-
 #Region "Properties"
 
         <XmlElement("bitrate")>
-        Public Property Bitrate() As String
-            Get
-                Return _bitrate.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _bitrate = Value
-            End Set
-        End Property
+        Public Property Bitrate() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property BitrateSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_bitrate)
+                Return Not String.IsNullOrEmpty(Bitrate)
             End Get
         End Property
 
         <XmlElement("channels")>
-        Public Property Channels() As String
-            Get
-                Return _channels.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _channels = Value
-            End Set
-        End Property
+        Public Property Channels() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property ChannelsSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_channels)
+                Return Not String.IsNullOrEmpty(Channels)
             End Get
         End Property
 
         <XmlElement("codec")>
-        Public Property Codec() As String
-            Get
-                Return _codec.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _codec = Value
-            End Set
-        End Property
+        Public Property Codec() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_codec)
+                Return Not String.IsNullOrEmpty(Codec)
             End Get
         End Property
 
         <XmlIgnore>
-        Public Property HasPreferred() As Boolean
-            Get
-                Return _haspreferred
-            End Get
-            Set(ByVal value As Boolean)
-                _haspreferred = value
-            End Set
-        End Property
+        Public Property HasPreferred() As Boolean = False
 
         <XmlElement("language")>
-        Public Property Language() As String
-            Get
-                Return _language.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _language = Value
-            End Set
-        End Property
+        Public Property Language() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_language)
+                Return Not String.IsNullOrEmpty(Language)
             End Get
         End Property
 
         <XmlElement("longlanguage")>
-        Public Property LongLanguage() As String
-            Get
-                Return _longlanguage.Trim()
-            End Get
-            Set(ByVal value As String)
-                _longlanguage = value
-            End Set
-        End Property
+        Public Property LongLanguage() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_longlanguage)
+                Return Not String.IsNullOrEmpty(LongLanguage)
             End Get
         End Property
 
@@ -974,6 +921,364 @@ Namespace MediaContainers
         End Property
 
 #End Region 'Properties
+
+    End Class
+
+    <Serializable()>
+    Public Class MediaFile
+
+#Region "Properties"
+        ''' <summary>
+        ''' Audio bitrate of the (best) audio stream
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property AudioBitrate As Enums.AudioBitrate = Enums.AudioBitrate.UNKNOWN
+
+        Public Property Duration As String = String.Empty
+
+        Public Property FileOriginal As MediaFiles = New MediaFiles
+        ''' <summary>
+        ''' If is a Dash video, we need also an audio URL to merge video and audio
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public ReadOnly Property IsDash() As Boolean
+            Get
+                Return URLVideoStreamSpecified AndAlso URLAudioStreamSpecified
+            End Get
+        End Property
+
+        Public Property Language As String = String.Empty
+
+        Public Property LocalFilePath As String = String.Empty
+
+        Public ReadOnly Property LocalFilePathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(LocalFilePath)
+            End Get
+        End Property
+
+        Public Property LongLanguage As String = String.Empty
+
+        Public Property Scraper As String = String.Empty
+
+        Public Property Source As String = String.Empty
+
+        Public Property Streams As StreamCollection = New StreamCollection
+
+        Public ReadOnly Property StreamsSpecified() As Boolean
+            Get
+                Return Streams.HasStreams
+            End Get
+        End Property
+
+        Public Property Title As String = String.Empty
+
+        Public ReadOnly Property Type As Enums.ModifierType
+        ''' <summary>
+        ''' Download URL of the selected audio stream
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property URLAudioStream As String = String.Empty
+
+        Public ReadOnly Property URLAudioStreamSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(URLAudioStream)
+            End Get
+        End Property
+        ''' <summary>
+        ''' Download URL of the selected video stream
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property URLVideoStream As String = String.Empty
+
+        Public ReadOnly Property URLVideoStreamSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(URLVideoStream)
+            End Get
+        End Property
+        ''' <summary>
+        ''' Website URL of the media file for preview in browser
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property URLWebsite As String = String.Empty
+
+        Public ReadOnly Property URLWebsiteSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(URLWebsite)
+            End Get
+        End Property
+        ''' <summary>
+        ''' Video resolution of the (best) video stream
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property VideoResolution As Enums.VideoResolution = Enums.VideoResolution.UNKNOWN
+
+        Public Property VideoType As Enums.VideoType = Enums.VideoType.Any
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New(ByVal modType As Enums.ModifierType)
+            Type = modType
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Function LoadAndCache() As Boolean
+
+            If Not FileOriginal.HasMemoryStream Then
+                If File.Exists(LocalFilePath) Then
+                    FileOriginal.LoadFromFile(LocalFilePath)
+                Else
+                    Select Case Type
+                        Case Enums.ModifierType.MainTheme
+                            If URLAudioStreamSpecified Then FileOriginal.LoadFromWeb(Me)
+                        Case Enums.ModifierType.MainTrailer
+                            If URLVideoStreamSpecified Then FileOriginal.LoadFromWeb(Me)
+                    End Select
+                End If
+            End If
+
+            If FileOriginal.HasMemoryStream Then
+                Return True
+            Else
+                Return False
+            End If
+        End Function
+
+        Public Sub Save(ByRef dbElement As Database.DBElement, ByVal forceFileCleanup As Boolean)
+            Dim tContentType As Enums.ContentType = dbElement.ContentType
+
+            With dbElement
+                Select Case tContentType
+                    Case Enums.ContentType.Movie
+                        Select Case Type
+                            Case Enums.ModifierType.MainTheme
+                                If .Theme.LoadAndCache() Then
+                                    MediaFiles.Delete_Movie(dbElement, Enums.ModifierType.MainTheme, forceFileCleanup)
+                                    .Theme.LocalFilePath = .Theme.FileOriginal.Save_Movie(dbElement, Enums.ModifierType.MainTheme)
+                                Else
+                                    MediaFiles.Delete_Movie(dbElement, Enums.ModifierType.MainTheme, forceFileCleanup)
+                                    .Theme = New MediaFile(Enums.ModifierType.MainTheme)
+                                End If
+
+                            Case Enums.ModifierType.MainTrailer
+                                If .Trailer.LoadAndCache() Then
+                                    MediaFiles.Delete_Movie(dbElement, Enums.ModifierType.MainTrailer, forceFileCleanup)
+                                    .Trailer.LocalFilePath = .Trailer.FileOriginal.Save_Movie(dbElement, Enums.ModifierType.MainTrailer)
+                                Else
+                                    MediaFiles.Delete_Movie(dbElement, Enums.ModifierType.MainTrailer, forceFileCleanup)
+                                    .Trailer = New MediaFile(Enums.ModifierType.MainTrailer)
+                                End If
+                        End Select
+                    Case Enums.ContentType.TVShow
+                        Select Case Type
+                            Case Enums.ModifierType.MainTheme
+                                If .Theme.LoadAndCache() Then
+                                    MediaFiles.Delete_TVShow(dbElement, Enums.ModifierType.MainTheme) ', ForceFileCleanup)
+                                    .Theme.LocalFilePath = .Theme.FileOriginal.Save_TVShow(dbElement, Enums.ModifierType.MainTheme)
+                                Else
+                                    MediaFiles.Delete_TVShow(dbElement, Enums.ModifierType.MainTheme) ', ForceFileCleanup)
+                                    .Theme = New MediaFile(Enums.ModifierType.MainTheme)
+                                End If
+                        End Select
+                End Select
+            End With
+        End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+        <Serializable()>
+        Public Class AudioStream
+            Implements IComparable(Of AudioStream)
+
+#Region "Fields"
+
+            Private _url As String = String.Empty
+
+#End Region 'Fields
+
+#Region "Properties"
+
+            Public Property Bitrate As Enums.AudioBitrate = Enums.AudioBitrate.UNKNOWN
+
+            Public Property Codec As Enums.AudioCodec = Enums.AudioCodec.UNKNOWN
+
+            Public ReadOnly Property Description() As String
+                Get
+                    Return String.Format("{0} ({1})", BitrateToString(Bitrate), CodecToString(Codec))
+                End Get
+            End Property
+
+            Public Property URL() As String
+                Get
+                    If YouTubeContainer IsNot Nothing AndAlso Not String.IsNullOrEmpty(YouTubeContainer.Uri) Then
+                        Return YouTubeContainer.Uri
+                    Else
+                        Return _url
+                    End If
+                End Get
+                Set(value As String)
+                    _url = value
+                End Set
+            End Property
+
+            Public Property YouTubeContainer As VideoLibrary.YouTubeVideo = Nothing
+
+#End Region 'Properties
+
+#Region "Methods"
+
+            Private Shared Function BitrateToString(ByVal audioBitrate As Enums.AudioBitrate) As String
+                Select Case audioBitrate
+                    Case Enums.AudioBitrate.UNKNOWN
+                        Return "Unknown"
+                    Case Else
+                        Return [Enum].GetName(GetType(Enums.AudioBitrate), audioBitrate).Remove(0, 1).Replace("kbps", " kbit/s")
+                End Select
+            End Function
+
+            Private Shared Function CodecToString(ByVal audioCodec As Enums.AudioCodec) As String
+                Select Case audioCodec
+                    Case Enums.AudioCodec.UNKNOWN
+                        Return "Unknown"
+                    Case Enums.AudioCodec.AAC_SPATIAL
+                        Return "AAC 6Ch"
+                    Case Enums.AudioCodec.AC3_SPATIAL
+                        Return "AC-3 6Ch"
+                    Case Enums.AudioCodec.DTSE_SPATIAL
+                        Return "DTSE 6Ch"
+                    Case Enums.AudioCodec.EC3_SPATIAL
+                        Return "EC-3 6Ch"
+                    Case Enums.AudioCodec.Opus_SPATIAL
+                        Return "Opus 6Ch"
+                    Case Enums.AudioCodec.Vorbis_SPATIAL
+                        Return "Vorbis 4Ch"
+                    Case Else
+                        Return [Enum].GetName(GetType(Enums.AudioCodec), audioCodec)
+                End Select
+            End Function
+
+            Public Function CompareTo(ByVal other As AudioStream) As Integer Implements IComparable(Of AudioStream).CompareTo
+                Return (Bitrate).CompareTo(other.Bitrate)
+            End Function
+
+#End Region 'Methods
+
+        End Class
+
+        <Serializable()>
+        Public Class StreamCollection
+
+#Region "Properties"
+
+            Public Property AudioStreams As New List(Of AudioStream)
+
+            Public ReadOnly Property HasStreams() As Boolean
+                Get
+                    Return AudioStreams IsNot Nothing AndAlso AudioStreams.Count > 0 OrElse VideoStreams IsNot Nothing AndAlso VideoStreams.Count > 0
+                End Get
+            End Property
+
+            Public Property VideoStreams As New List(Of VideoStream)
+
+#End Region 'Properties
+
+        End Class
+
+        <Serializable()>
+        Public Class VideoStream
+            Implements IComparable(Of VideoStream)
+
+#Region "Fields"
+
+            Private _url As String = String.Empty
+
+#End Region 'Fields
+
+#Region "Properties"
+
+            Public Property Codec As Enums.VideoCodec = Enums.VideoCodec.UNKNOWN
+
+            Public ReadOnly Property Description() As String
+                Get
+                    Return String.Format("{0} ({1})", ResolutionToString(Resolution), CodecToString(Codec))
+                End Get
+            End Property
+
+            Public Property IsAdaptive As Boolean = False
+
+            Public Property Resolution As Enums.VideoResolution = Enums.VideoResolution.UNKNOWN
+
+            Public Property URL() As String
+                Get
+                    If YouTubeContainer IsNot Nothing AndAlso Not String.IsNullOrEmpty(YouTubeContainer.Uri) Then
+                        Return YouTubeContainer.Uri
+                    Else
+                        Return _url
+                    End If
+                End Get
+                Set(value As String)
+                    _url = value
+                End Set
+            End Property
+
+            Public Property YouTubeContainer As VideoLibrary.YouTubeVideo = Nothing
+
+#End Region 'Properties
+
+#Region "Methods"
+
+            Private Shared Function CodecToString(ByVal videoCodec As Enums.VideoCodec) As String
+                Select Case videoCodec
+                    Case Enums.VideoCodec.UNKNOWN
+                        Return "Unknown"
+                    Case Enums.VideoCodec.VP9_HDR
+                        Return "VP9, HDR"
+                    Case Else
+                        Return [Enum].GetName(GetType(Enums.VideoCodec), videoCodec)
+                End Select
+            End Function
+
+            Public Function CompareTo(ByVal other As VideoStream) As Integer Implements IComparable(Of VideoStream).CompareTo
+                Return (Resolution).CompareTo(other.Resolution)
+            End Function
+
+            Private Shared Function ResolutionToString(ByVal videoQuality As Enums.VideoResolution) As String
+                Select Case videoQuality
+                    Case Enums.VideoResolution.UNKNOWN
+                        Return "Unknown"
+                    Case Enums.VideoResolution.HD1080p60fps
+                        Return "1080p, 60fps"
+                    Case Enums.VideoResolution.HD2160p60fps
+                        Return "2160, 60fps"
+                    Case Enums.VideoResolution.HD720p60fps
+                        Return "720p, 60fps"
+                    Case Enums.VideoResolution.SQ144p15fps
+                        Return "144p, 15fps"
+                    Case Else
+                        Return [Enum].GetName(GetType(Enums.VideoResolution), videoQuality).Remove(0, 2)
+                End Select
+            End Function
+
+#End Region 'Methods
+
+        End Class
+
+#End Region 'Nested Types
 
     End Class
 
@@ -5648,480 +5953,6 @@ Namespace MediaContainers
     End Class
 
     <Serializable()>
-    Public Class Theme
-
-#Region "Fields"
-
-        Private _bitrate As String
-        Private _description As String
-        Private _duration As String
-        Private _localfilepath As String
-        Private _scraper As String
-        Private _source As String
-        Private _themeoriginal As New Themes
-        Private _urlaudiostream As String
-        Private _urlwebsite As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Bitrate() As String
-            Get
-                Return _bitrate
-            End Get
-            Set(ByVal value As String)
-                _bitrate = value
-            End Set
-        End Property
-
-        Public Property Description() As String
-            Get
-                Return _description
-            End Get
-            Set(ByVal value As String)
-                _description = value
-            End Set
-        End Property
-
-        Public Property Duration() As String
-            Get
-                Return _duration
-            End Get
-            Set(ByVal value As String)
-                _duration = value
-            End Set
-        End Property
-
-        Public Property LocalFilePath() As String
-            Get
-                Return _localfilepath
-            End Get
-            Set(ByVal value As String)
-                _localfilepath = value
-            End Set
-        End Property
-
-        Public ReadOnly Property LocalFilePathSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(_localfilepath)
-            End Get
-        End Property
-
-        Public Property Scraper() As String
-            Get
-                Return _scraper
-            End Get
-            Set(ByVal value As String)
-                _scraper = value
-            End Set
-        End Property
-
-        Public Property Source() As String
-            Get
-                Return _source
-            End Get
-            Set(ByVal value As String)
-                _source = value
-            End Set
-        End Property
-        ''' <summary>
-        ''' Download audio URL of the theme
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property URLAudioStream() As String
-            Get
-                Return _urlaudiostream
-            End Get
-            Set(ByVal value As String)
-                _urlaudiostream = value
-            End Set
-        End Property
-
-        Public ReadOnly Property URLAudioStreamSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(_urlaudiostream)
-            End Get
-        End Property
-        ''' <summary>
-        ''' Website URL of the theme for preview in browser
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property URLWebsite() As String
-            Get
-                Return _urlwebsite
-            End Get
-            Set(ByVal value As String)
-                _urlwebsite = value
-            End Set
-        End Property
-
-        Public ReadOnly Property URLWebsiteSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(_urlwebsite)
-            End Get
-        End Property
-
-        Public Property ThemeOriginal() As Themes
-            Get
-                Return _themeoriginal
-            End Get
-            Set(ByVal value As Themes)
-                _themeoriginal = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _bitrate = String.Empty
-            _description = String.Empty
-            _duration = String.Empty
-            _localfilepath = String.Empty
-            _scraper = String.Empty
-            _source = String.Empty
-            _themeoriginal = New Themes
-            _urlaudiostream = String.Empty
-            _urlwebsite = String.Empty
-        End Sub
-
-        Public Function LoadAndCache() As Boolean
-
-            If Not ThemeOriginal.hasMemoryStream Then
-                If File.Exists(LocalFilePath) Then
-                    ThemeOriginal.LoadFromFile(LocalFilePath)
-                ElseIf URLAudioStreamSpecified Then
-                    ThemeOriginal.LoadFromWeb(Me)
-                End If
-            End If
-
-            If ThemeOriginal.hasMemoryStream Then
-                Return True
-            Else
-                Return False
-            End If
-        End Function
-
-        Public Sub SaveAllThemes(ByRef tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-            Dim tContentType As Enums.ContentType = tDBElement.ContentType
-
-            With tDBElement
-                Select Case tContentType
-                    Case Enums.ContentType.Movie
-                        If .Theme.LoadAndCache() Then
-                            Themes.Delete_Movie(tDBElement, ForceFileCleanup)
-                            .Theme.LocalFilePath = .Theme.ThemeOriginal.Save_Movie(tDBElement)
-                        Else
-                            Themes.Delete_Movie(tDBElement, ForceFileCleanup)
-                            .Theme = New Theme
-                        End If
-
-                    Case Enums.ContentType.TVShow
-                        If .Theme.LoadAndCache() Then
-                            Themes.Delete_TVShow(tDBElement) ', ForceFileCleanup)
-                            .Theme.LocalFilePath = .Theme.ThemeOriginal.Save_TVShow(tDBElement)
-                        Else
-                            Themes.Delete_TVShow(tDBElement) ', ForceFileCleanup)
-                            .Theme = New Theme
-                        End If
-                End Select
-            End With
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    <Serializable()>
-    Public Class Trailer
-
-#Region "Properties"
-
-        Public Property Duration() As String = String.Empty
-        ''' <summary>
-        ''' If is a Dash video, we need also an audio URL to merge video and audio
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property IsDash() As Boolean
-            Get
-                Return URLVideoStreamSpecified AndAlso URLAudioStreamSpecified
-            End Get
-        End Property
-
-        Public Property LocalFilePath() As String = String.Empty
-
-        Public ReadOnly Property LocalFilePathSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(LocalFilePath)
-            End Get
-        End Property
-
-        Public Property LongLang() As String = String.Empty
-
-        Public Property Quality() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.Any
-
-        Public Property Scraper() As String = String.Empty
-
-        Public Property ShortLang() As String = String.Empty
-
-        Public Property Source() As String = String.Empty
-
-        Public Property Streams() As StreamCollection = New StreamCollection
-
-        Public ReadOnly Property StreamsSpecified() As Boolean
-            Get
-                Return Streams.HasStreams
-            End Get
-        End Property
-
-        Public Property Title() As String = String.Empty
-
-        Public Property TrailerOriginal() As Trailers = New Trailers
-
-        Public Property Type() As Enums.TrailerType = Enums.TrailerType.Any
-        ''' <summary>
-        ''' Download audio URL of the trailer
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property URLAudioStream() As String = String.Empty
-
-        Public ReadOnly Property URLAudioStreamSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(URLAudioStream)
-            End Get
-        End Property
-        ''' <summary>
-        ''' Download video URL of the trailer
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property URLVideoStream() As String = String.Empty
-
-        Public ReadOnly Property URLVideoStreamSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(URLVideoStream)
-            End Get
-        End Property
-        ''' <summary>
-        ''' Website URL of the trailer for preview in browser
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property URLWebsite() As String = String.Empty
-
-        Public ReadOnly Property URLWebsiteSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(URLWebsite)
-            End Get
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Function LoadAndCache() As Boolean
-
-            If Not TrailerOriginal.hasMemoryStream Then
-                If File.Exists(LocalFilePath) Then
-                    TrailerOriginal.LoadFromFile(LocalFilePath)
-                ElseIf URLVideoStreamSpecified Then
-                    TrailerOriginal.LoadFromWeb(Me)
-                End If
-            End If
-
-            If TrailerOriginal.hasMemoryStream Then
-                Return True
-            Else
-                Return False
-            End If
-        End Function
-
-        Public Sub SaveAllTrailers(ByRef tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-            Dim tContentType As Enums.ContentType = tDBElement.ContentType
-
-            With tDBElement
-                Select Case tContentType
-                    Case Enums.ContentType.Movie
-                        'Movie Trailer
-                        If .Trailer.LoadAndCache() Then
-                            Trailers.Delete_Movie(tDBElement, ForceFileCleanup)
-                            .Trailer.LocalFilePath = .Trailer.TrailerOriginal.Save_Movie(tDBElement)
-                        Else
-                            Trailers.Delete_Movie(tDBElement, ForceFileCleanup)
-                            .Trailer = New Trailer
-                        End If
-                End Select
-            End With
-        End Sub
-
-#End Region 'Methods
-
-#Region "Nested Types"
-
-        <Serializable()>
-        Public Class AudioStream
-            Implements IComparable(Of AudioStream)
-
-#Region "Properties"
-
-            Public ReadOnly Property Description() As String
-                Get
-                    Return String.Format("{0} ({1})", QualityToString(FormatQuality), CodecToString(FormatCodec))
-                End Get
-            End Property
-
-            Public Property FormatCodec() As Enums.TrailerAudioCodec = Enums.TrailerAudioCodec.UNKNOWN
-
-            Public Property FormatQuality() As Enums.TrailerAudioQuality = Enums.TrailerAudioQuality.UNKNOWN
-
-            Public Property URL() As String = String.Empty
-
-#End Region 'Properties
-
-#Region "Methods"
-
-            Private Shared Function CodecToString(ByVal audioCodec As Enums.TrailerAudioCodec) As String
-                Select Case audioCodec
-                    Case Enums.TrailerAudioCodec.UNKNOWN
-                        Return "Unknown"
-                    Case Enums.TrailerAudioCodec.AAC_SPATIAL
-                        Return "AAC 6Ch"
-                    Case Enums.TrailerAudioCodec.AC3_SPATIAL
-                        Return "AC-3 6Ch"
-                    Case Enums.TrailerAudioCodec.DTSE_SPATIAL
-                        Return "DTSE 6Ch"
-                    Case Enums.TrailerAudioCodec.EC3_SPATIAL
-                        Return "EC-3 6Ch"
-                    Case Enums.TrailerAudioCodec.Opus_SPATIAL
-                        Return "Opus 6Ch"
-                    Case Enums.TrailerAudioCodec.Vorbis_SPATIAL
-                        Return "Vorbis 4Ch"
-                    Case Else
-                        Return [Enum].GetName(GetType(Enums.TrailerAudioCodec), audioCodec)
-                End Select
-            End Function
-
-            Public Function CompareTo(ByVal other As AudioStream) As Integer Implements IComparable(Of AudioStream).CompareTo
-                Return (FormatQuality).CompareTo(other.FormatQuality)
-            End Function
-
-            Private Shared Function QualityToString(ByVal audioQuality As Enums.TrailerAudioQuality) As String
-                Select Case audioQuality
-                    Case Enums.TrailerAudioQuality.UNKNOWN
-                        Return "Unknown"
-                    Case Else
-                        Return [Enum].GetName(GetType(Enums.TrailerAudioQuality), audioQuality).Remove(0, 1).Replace("kbps", " kbit/s")
-                End Select
-            End Function
-
-#End Region 'Methods
-
-        End Class
-
-        <Serializable()>
-        Public Class StreamCollection
-
-#Region "Properties"
-
-            Public Property AudioStreams As New List(Of AudioStream)
-
-            Public ReadOnly Property HasStreams As Boolean
-                Get
-                    Return AudioStreams IsNot Nothing AndAlso AudioStreams.Count > 0 OrElse VideoStreams IsNot Nothing AndAlso VideoStreams.Count > 0
-                End Get
-            End Property
-
-            Public Property VideoStreams As New List(Of VideoStream)
-
-#End Region 'Properties
-
-        End Class
-
-        <Serializable()>
-        Public Class VideoStream
-            Implements IComparable(Of VideoStream)
-
-#Region "Properties"
-
-            Public ReadOnly Property Description() As String
-                Get
-                    Return String.Format("{0} ({1})", QualityToString(FormatQuality), CodecToString(FormatCodec))
-                End Get
-            End Property
-
-            Public Property FormatCodec() As Enums.TrailerVideoCodec = Enums.TrailerVideoCodec.UNKNOWN
-
-            Public Property FormatQuality() As Enums.TrailerVideoQuality = Enums.TrailerVideoQuality.UNKNOWN
-
-            Public Property IsDash() As Boolean = False
-
-            Public Property URL() As String = String.Empty
-
-#End Region 'Properties
-
-#Region "Methods"
-
-            Private Shared Function CodecToString(ByVal videoCodec As Enums.TrailerVideoCodec) As String
-                Select Case videoCodec
-                    Case Enums.TrailerVideoCodec.UNKNOWN
-                        Return "Unknown"
-                    Case Enums.TrailerVideoCodec.VP9_HDR
-                        Return "VP9, HDR"
-                    Case Else
-                        Return [Enum].GetName(GetType(Enums.TrailerVideoCodec), videoCodec)
-                End Select
-            End Function
-
-            Public Function CompareTo(ByVal other As VideoStream) As Integer Implements IComparable(Of VideoStream).CompareTo
-                Return (FormatQuality).CompareTo(other.FormatQuality)
-            End Function
-
-            Private Shared Function QualityToString(ByVal videoQuality As Enums.TrailerVideoQuality) As String
-                Select Case videoQuality
-                    Case Enums.TrailerVideoQuality.UNKNOWN
-                        Return "Unknown"
-                    Case Enums.TrailerVideoQuality.HD1080p60fps
-                        Return "1080p, 60fps"
-                    Case Enums.TrailerVideoQuality.HD2160p60fps
-                        Return "2160, 60fps"
-                    Case Enums.TrailerVideoQuality.HD720p60fps
-                        Return "720p, 60fps"
-                    Case Enums.TrailerVideoQuality.SQ144p15fps
-                        Return "144p, 15fps"
-                    Case Else
-                        Return [Enum].GetName(GetType(Enums.TrailerVideoQuality), videoQuality).Remove(0, 2)
-                End Select
-            End Function
-
-#End Region 'Methods
-
-        End Class
-
-#End Region 'Nested Types
-
-    End Class
-
-    <Serializable()>
     Public Class Uniqueid
 
 #Region "Fields"
@@ -6208,258 +6039,148 @@ Namespace MediaContainers
     <Serializable()>
     Public Class Video
 
-#Region "Fields"
-
-        Private _aspect As String = String.Empty
-        Private _bitrate As String = String.Empty
-        Private _codec As String = String.Empty
-        Private _duration As String = String.Empty
-        Private _encoded_Settings As String = String.Empty
-        Private _height As String = String.Empty
-        Private _language As String = String.Empty
-        Private _longlanguage As String = String.Empty
-        Private _multiview_count As String = String.Empty
-        Private _multiview_layout As String = String.Empty
-        Private _scantype As String = String.Empty
-        'XBMC multiview layout type (http://wiki.xbmc.org/index.php?title=3D)
-        Private _stereomode As String = String.Empty
-        Private _width As String = String.Empty
-        Private _filesize As Double = 0
-
-#End Region 'Fields
-
 #Region "Properties"
 
         <XmlElement("aspect")>
-        Public Property Aspect() As String
-            Get
-                Return _aspect.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _aspect = Value
-            End Set
-        End Property
+        Public Property Aspect() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property AspectSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_aspect)
+                Return Not String.IsNullOrEmpty(Aspect)
             End Get
         End Property
 
         <XmlElement("bitrate")>
-        Public Property Bitrate() As String
-            Get
-                Return _bitrate.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _bitrate = Value
-            End Set
-        End Property
+        Public Property Bitrate() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property BitrateSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_bitrate)
+                Return Not String.IsNullOrEmpty(Bitrate)
             End Get
         End Property
 
         <XmlElement("codec")>
-        Public Property Codec() As String
-            Get
-                Return _codec.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _codec = Value
-            End Set
-        End Property
+        Public Property Codec() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_codec)
+                Return Not String.IsNullOrEmpty(Codec)
             End Get
         End Property
 
         <XmlElement("durationinseconds")>
-        Public Property Duration() As String
-            Get
-                Return _duration.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _duration = Value
-            End Set
-        End Property
+        Public Property Duration() As String = String.Empty
 
         <XmlIgnore()>
         Public ReadOnly Property DurationSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_duration)
+                Return Not String.IsNullOrEmpty(Duration)
             End Get
         End Property
 
         <XmlElement("height")>
-        Public Property Height() As String
-            Get
-                Return _height.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _height = Value
-            End Set
-        End Property
+        Public Property Height() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property HeightSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_height)
+                Return Not String.IsNullOrEmpty(Height)
             End Get
         End Property
 
         <XmlElement("language")>
-        Public Property Language() As String
-            Get
-                Return _language.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _language = Value
-            End Set
-        End Property
+        Public Property Language() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_language)
+                Return Not String.IsNullOrEmpty(Language)
             End Get
         End Property
 
         <XmlElement("longlanguage")>
-        Public Property LongLanguage() As String
-            Get
-                Return _longlanguage.Trim()
-            End Get
-            Set(ByVal value As String)
-                _longlanguage = value
-            End Set
-        End Property
+        Public Property LongLanguage() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_longlanguage)
+                Return Not String.IsNullOrEmpty(LongLanguage)
             End Get
         End Property
 
         <XmlElement("multiview_count")>
-        Public Property MultiViewCount() As String
-            Get
-                Return _multiview_count.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _multiview_count = Value
-            End Set
-        End Property
+        Public Property MultiViewCount() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property MultiViewCountSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_multiview_count)
+                Return Not String.IsNullOrEmpty(MultiViewCount)
             End Get
         End Property
 
         <XmlElement("multiview_layout")>
-        Public Property MultiViewLayout() As String
-            Get
-                Return _multiview_layout.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _multiview_layout = Value
-            End Set
-        End Property
+        Public Property MultiViewLayout() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property MultiViewLayoutSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_multiview_layout)
+                Return Not String.IsNullOrEmpty(MultiViewLayout)
             End Get
         End Property
 
         <XmlElement("scantype")>
-        Public Property Scantype() As String
-            Get
-                Return _scantype.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _scantype = Value
-            End Set
-        End Property
+        Public Property Scantype() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property ScantypeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_scantype)
+                Return Not String.IsNullOrEmpty(Scantype)
             End Get
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property ShortStereoMode() As String
             Get
-                Return ConvertVStereoToShort(_stereomode).Trim()
+                Return ConvertVStereoToShort(StereoMode).Trim()
             End Get
         End Property
-
+        ''' <summary>
+        ''' XBMC multiview layout type (http://wiki.xbmc.org/index.php?title=3D)
+        ''' </summary>
+        ''' <returns></returns>
         <XmlElement("stereomode")>
-        Public Property StereoMode() As String
-            Get
-                Return _stereomode.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _stereomode = Value
-            End Set
-        End Property
+        Public Property StereoMode() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property StereoModeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_stereomode)
+                Return Not String.IsNullOrEmpty(StereoMode)
             End Get
         End Property
 
         <XmlElement("width")>
-        Public Property Width() As String
-            Get
-                Return _width.Trim()
-            End Get
-            Set(ByVal Value As String)
-                _width = Value
-            End Set
-        End Property
+        Public Property Width() As String = String.Empty
 
         <XmlIgnore>
         Public ReadOnly Property WidthSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_width)
+                Return Not String.IsNullOrEmpty(Width)
             End Get
         End Property
-
+        ''' <summary>
+        ''' for now save filesize in bytes(default)
+        ''' </summary>
+        ''' <returns></returns>
         <XmlElement("filesize")>
-        Public Property Filesize() As Double
-            Get
-                Return _filesize
-            End Get
-            Set(ByVal Value As Double)
-                'for now save filesize in bytes(default)
-                _filesize = Value
-            End Set
-        End Property
+        Public Property Filesize() As Double = 0
 
         <XmlIgnore()>
         Public ReadOnly Property FilesizeSpecified() As Boolean
             Get
-                If _filesize = 0 Then
-                    Return False
-                Else
-                    Return True
-                End If
+                Return Not Filesize = 0
             End Get
         End Property
 
@@ -6490,4 +6211,3 @@ Namespace MediaContainers
     End Class
 
 End Namespace
-

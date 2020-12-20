@@ -18,9 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports System.IO
 Imports EmberAPI
 
-Public Class frmSettingsHolder
+Public Class frmSettingsHolder_TV
 
 #Region "Events"
 
@@ -33,42 +34,28 @@ Public Class frmSettingsHolder
 #End Region 'Events
 
 #Region "Methods"
-
-    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Apple_trailer._AssemblyName).ModuleOrder
-        If order < ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count - 1 Then
-            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Apple_trailer._AssemblyName).ModuleOrder = order + 1
+    Private Sub btnDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDown.Click
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.AssemblyName = YouTube_Theme._AssemblyName).ModuleOrder
+        If order < ModulesManager.Instance.externalScrapersModules_Theme_TV.Count - 1 Then
+            ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
+            ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.AssemblyName = YouTube_Theme._AssemblyName).ModuleOrder = order + 1
             RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
 
-    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Apple_trailer._AssemblyName).ModuleOrder
+    Private Sub btnUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUp.Click
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.AssemblyName = YouTube_Theme._AssemblyName).ModuleOrder
         If order > 0 Then
-            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Apple_trailer._AssemblyName).ModuleOrder = order - 1
+            ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
+            ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.AssemblyName = YouTube_Theme._AssemblyName).ModuleOrder = order - 1
             RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
-    End Sub
-    Private Sub cbTrailerPrefQual_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbTrailerPrefQual.SelectedIndexChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub LoadMovieTrailerQualities()
-        Dim items As New Dictionary(Of String, Enums.VideoResolution)
-        items.Add("1080p", Enums.VideoResolution.HD1080p)
-        items.Add("720p", Enums.VideoResolution.HD720p)
-        items.Add("480p", Enums.VideoResolution.HQ480p)
-        cbTrailerPrefQual.DataSource = items.ToList
-        cbTrailerPrefQual.DisplayMember = "Key"
-        cbTrailerPrefQual.ValueMember = "Value"
     End Sub
 
     Public Sub New()
@@ -77,9 +64,9 @@ Public Class frmSettingsHolder
     End Sub
 
     Sub orderChanged()
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Apple_Trailer._AssemblyName).ModuleOrder
-        If ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count > 1 Then
-            btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count - 1)
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Theme_TV.FirstOrDefault(Function(p) p.AssemblyName = YouTube_Theme._AssemblyName).ModuleOrder
+        If ModulesManager.Instance.externalScrapersModules_Theme_TV.Count > 1 Then
+            btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Theme_TV.Count - 1)
             btnUp.Enabled = (order > 0)
         Else
             btnDown.Enabled = False
@@ -89,11 +76,8 @@ Public Class frmSettingsHolder
 
     Sub SetUp()
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        gbScraperTrailerOpts.Text = Master.eLang.GetString(283, "Trailers - Scraper specific")
         lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
-        lblTrailerPrefQual.Text = Master.eLang.GetString(800, "Preferred Quality:")
-        LoadMovieTrailerQualities()
     End Sub
 
 #End Region 'Methods

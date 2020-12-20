@@ -232,6 +232,8 @@ Public Class HTTP
                 ElseIf Type = "theme" Then
                     If urlExtWeb = ".mpeg" Then
                         outFile = LocalFile & ".mp3"
+                    Else
+                        outFile = String.Concat(LocalFile, urlExtWeb)
                     End If
                 ElseIf Type = "other" Then
                     outFile = LocalFile

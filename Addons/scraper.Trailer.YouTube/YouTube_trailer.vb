@@ -82,7 +82,7 @@ Public Class YouTube_Trailer
 
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled = state
-        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
+        RaiseEvent SetupScraperChanged(String.Concat(_Name, "Scraper"), state, difforder)
     End Sub
 
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Trailer_Movie.Init
@@ -98,14 +98,14 @@ Public Class YouTube_Trailer
 
         _setup.orderChanged()
 
-        Spanel.Name = String.Concat(Me._Name, "Scraper")
+        Spanel.Name = String.Concat(_Name, "Scraper")
         Spanel.Text = "YouTube"
         Spanel.Prefix = "YouTubeTrailer_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieTrailer"
         Spanel.Type = Master.eLang.GetString(36, "Movies")
-        Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
-        Spanel.Panel = Me._setup.pnlSettings
+        Spanel.ImageIndex = If(_ScraperEnabled, 9, 10)
+        Spanel.Panel = _setup.pnlSettings
 
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -117,7 +117,7 @@ Public Class YouTube_Trailer
         ConfigScrapeModifiers.MainTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.MediaFile)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
         logger.Trace("[YouTube_Trailer] [Scraper_Movie] [Start]")
 
         LoadSettings()

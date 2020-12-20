@@ -33,23 +33,23 @@ Public Class Scraper
 
 #Region "Methods"
 
-    Private Shared Function ConvertQuality(ByVal quality As String) As Enums.TrailerVideoQuality
-        Select Case quality
-            Case "480P"
-                Return Enums.TrailerVideoQuality.HQ480p
-            Case "720P"
-                Return Enums.TrailerVideoQuality.HD720p
-            Case "1080P"
-                Return Enums.TrailerVideoQuality.HD1080p
+    Private Shared Function ConvertQuality(ByVal quality As String) As Enums.VideoResolution
+        Select Case quality.ToLower
+            Case "480p"
+                Return Enums.VideoResolution.HQ480p
+            Case "720p"
+                Return Enums.VideoResolution.HD720p
+            Case "1080p"
+                Return Enums.VideoResolution.HD1080p
             Case Else
-                Return Enums.TrailerVideoQuality.Any 
+                Return Enums.VideoResolution.Any
         End Select
     End Function
 
-    Public Shared Function GetTrailers(ByVal originalTitle As String, ByVal imdbId As String) As List(Of MediaContainers.Trailer)
-        If String.IsNullOrEmpty(originalTitle) Then Return New List(Of MediaContainers.Trailer)
+    Public Shared Function GetTrailers(ByVal originalTitle As String, ByVal imdbId As String) As List(Of MediaContainers.MediaFile)
+        If String.IsNullOrEmpty(originalTitle) Then Return New List(Of MediaContainers.MediaFile)
 
-        Dim nTrailerlist As New List(Of MediaContainers.Trailer)
+        Dim nTrailerlist As New List(Of MediaContainers.MediaFile)
 
         Dim strBaseUrl As String = "http://www.davestrailerpage.co.uk/trailers_"
         Dim strSubPagePath As String = String.Empty
@@ -119,7 +119,7 @@ Public Class Scraper
                 If ndMovie Is Nothing Then
                     'search for the node that contains the title like:
                     '<b>Thor: Ragnarok</b>
-                    Dim ndTitle = htmldocSubPage.DocumentNode.SelectSingleNode(String.Format("//b[.='{0}']", originalTitle))
+                    Dim ndTitle = htmldocSubPage.DocumentNode.SelectSingleNode(String.Format("//b[.=""{0}""]", originalTitle))
                     If ndTitle IsNot Nothing Then
                         'select the Ancestor <tr> node
                         ndMovie = ndTitle.Ancestors("tr").FirstOrDefault
@@ -135,9 +135,9 @@ Public Class Scraper
         Return nTrailerlist
     End Function
 
-    Private Shared Function GetTrailers(ByVal node As HtmlNode) As List(Of MediaContainers.Trailer)
-        If node Is Nothing Then Return New List(Of MediaContainers.Trailer)
-        Dim nTrailerList As New List(Of MediaContainers.Trailer)
+    Private Shared Function GetTrailers(ByVal node As HtmlNode) As List(Of MediaContainers.MediaFile)
+        If node Is Nothing Then Return New List(Of MediaContainers.MediaFile)
+        Dim nTrailerList As New List(Of MediaContainers.MediaFile)
 
         'search all <b> nodes
         'first node is usually the movie title node, the other nodes should be trailer title nodes
@@ -147,19 +147,19 @@ Public Class Scraper
             'the <li> node that contains the movie title node should not have any <a> node so only the trailer nodes should be listed as result
             Dim ndTrailerGroup = aNode.ParentNode.SelectNodes("a")
             If ndTrailerGroup IsNot Nothing Then
-                Dim nTrailer As New MediaContainers.Trailer With {
+                Dim nTrailer As New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer) With {
                     .Title = aNode.InnerText,
                     .Scraper = "DavesTrailerPage"
                 }
                 For Each aStream In ndTrailerGroup
-                    nTrailer.Streams.VideoStreams.Add(New MediaContainers.Trailer.VideoStream With {
-                                                      .FormatQuality = ConvertQuality(aStream.InnerText),
+                    nTrailer.Streams.VideoStreams.Add(New MediaContainers.MediaFile.VideoStream With {
+                                                      .Resolution = ConvertQuality(aStream.InnerText),
                                                       .URL = aStream.Attributes(0).Value
                                                       })
                 Next
                 If nTrailer.Streams.HasStreams Then
                     nTrailer.Streams.VideoStreams.Sort()
-                    nTrailer.Quality = nTrailer.Streams.VideoStreams(0).FormatQuality
+                    nTrailer.VideoResolution = nTrailer.Streams.VideoStreams(0).Resolution
                     nTrailer.URLWebsite = nTrailer.Streams.VideoStreams(0).URL
                     nTrailer.Source = If(nTrailer.URLWebsite.ToLower.Contains("apple"), "Apple", String.Empty)
                     nTrailerList.Add(nTrailer)

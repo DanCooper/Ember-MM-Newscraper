@@ -72,8 +72,8 @@ Public Class clsAPITMDB
         End Try
     End Function
 
-    Public Function GetTrailers(ByVal tmdbID As String) As List(Of MediaContainers.Trailer)
-        Dim alTrailers As New List(Of MediaContainers.Trailer)
+    Public Function GetTrailers(ByVal tmdbID As String) As List(Of MediaContainers.MediaFile)
+        Dim alTrailers As New List(Of MediaContainers.MediaFile)
         Dim trailers As TMDbLib.Objects.General.ResultContainer(Of TMDbLib.Objects.General.Video)
 
         If String.IsNullOrEmpty(tmdbID) OrElse Not Integer.TryParse(tmdbID, 0) Then Return alTrailers
@@ -91,12 +91,12 @@ Public Class clsAPITMDB
         End If
         If trailers IsNot Nothing AndAlso trailers.Results IsNot Nothing Then
             For Each Video As TMDbLib.Objects.General.Video In trailers.Results.Where(Function(f) f.Site = "YouTube")
-                Dim nTrailer = YouTube.Scraper.GetVideoDetails(Video.Key)
+                Dim nTrailer = YouTube.Scraper.GetVideoDetails(Video.Key, Enums.ModifierType.MainTrailer)
                 If nTrailer IsNot Nothing Then
-                    nTrailer.LongLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1))
+                    nTrailer.LongLanguage = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1))
                     nTrailer.Scraper = "TMDb"
-                    nTrailer.ShortLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Video.Iso_639_1)
-                    nTrailer.Type = GetVideoType(Video.Type)
+                    nTrailer.Language = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Video.Iso_639_1)
+                    nTrailer.VideoType = GetVideoType(Video.Type)
                     alTrailers.Add(nTrailer)
                 End If
             Next
@@ -105,31 +105,31 @@ Public Class clsAPITMDB
         Return alTrailers
     End Function
 
-    Private Function GetVideoQuality(ByRef Size As Integer) As Enums.TrailerVideoQuality
+    Private Function GetVideoQuality(ByRef Size As Integer) As Enums.VideoResolution
         Select Case Size
             Case 1080
-                Return Enums.TrailerVideoQuality.HD1080p
+                Return Enums.VideoResolution.HD1080p
             Case 720
-                Return Enums.TrailerVideoQuality.HD720p
+                Return Enums.VideoResolution.HD720p
             Case 480
-                Return Enums.TrailerVideoQuality.HQ480p
+                Return Enums.VideoResolution.HQ480p
             Case Else
-                Return Enums.TrailerVideoQuality.Any
+                Return Enums.VideoResolution.Any
         End Select
     End Function
 
-    Private Function GetVideoType(ByRef Type As String) As Enums.TrailerType
+    Private Function GetVideoType(ByRef Type As String) As Enums.VideoType
         Select Case Type.ToLower
             Case "clip"
-                Return Enums.TrailerType.Clip
+                Return Enums.VideoType.Clip
             Case "featurette"
-                Return Enums.TrailerType.Featurette
+                Return Enums.VideoType.Featurette
             Case "teaser"
-                Return Enums.TrailerType.Teaser
+                Return Enums.VideoType.Teaser
             Case "trailer"
-                Return Enums.TrailerType.Trailer
+                Return Enums.VideoType.Trailer
             Case Else
-                Return Enums.TrailerType.Any
+                Return Enums.VideoType.Any
         End Select
     End Function
 

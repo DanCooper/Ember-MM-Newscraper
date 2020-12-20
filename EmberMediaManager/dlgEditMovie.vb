@@ -18,10 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
+Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class dlgEditMovie
 
@@ -42,8 +42,6 @@ Public Class dlgEditMovie
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
     Private tmpRating As String = String.Empty
-    Private AnyThemePlayerEnabled As Boolean = False
-    Private AnyTrailerPlayerEnabled As Boolean = False
 
     'Extrafanarts
     Private ExtrafanartsWarning As Boolean = True
@@ -190,19 +188,19 @@ Public Class dlgEditMovie
 
     End Sub
 
-    Private Sub pbExtrafanartsImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub pbExtrafanartsImage_Click(ByVal sender As Object, ByVal e As EventArgs)
         DoSelectExtrafanart(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
     End Sub
 
-    Private Sub pbExtrathumbsImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub pbExtrathumbsImage_Click(ByVal sender As Object, ByVal e As EventArgs)
         DoSelectExtrathumb(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
     End Sub
 
-    Private Sub pnlExtrafanartsImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub pnlExtrafanartsImage_Click(ByVal sender As Object, ByVal e As EventArgs)
         DoSelectExtrafanart(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
     End Sub
 
-    Private Sub pnlExtrathumbsImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub pnlExtrathumbsImage_Click(ByVal sender As Object, ByVal e As EventArgs)
         DoSelectExtrathumb(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
     End Sub
 
@@ -235,7 +233,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnActorAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorAdd.Click
+    Private Sub btnActorAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorAdd.Click
         Using dAddEditActor As New dlgAddEditActor
             If dAddEditActor.ShowDialog() = DialogResult.OK Then
                 Dim nActor As MediaContainers.Person = dAddEditActor.Result
@@ -248,7 +246,7 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
+    Private Sub btnActorDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorDown.Click
         If lvActors.SelectedItems.Count > 0 AndAlso lvActors.SelectedItems(0) IsNot Nothing AndAlso lvActors.SelectedIndices(0) < (lvActors.Items.Count - 1) Then
             Dim iIndex As Integer = lvActors.SelectedIndices(0)
             lvActors.Items.Insert(iIndex + 2, DirectCast(lvActors.SelectedItems(0).Clone, ListViewItem))
@@ -258,15 +256,15 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnActorEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorEdit.Click
+    Private Sub btnActorEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorEdit.Click
         ActorEdit()
     End Sub
 
-    Private Sub btnActorRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorRemove.Click
+    Private Sub btnActorRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorRemove.Click
         ActorRemove()
     End Sub
 
-    Private Sub btnActorUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorUp.Click
+    Private Sub btnActorUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorUp.Click
         If lvActors.SelectedItems.Count > 0 AndAlso lvActors.SelectedItems(0) IsNot Nothing AndAlso lvActors.SelectedIndices(0) > 0 Then
             Dim iIndex As Integer = lvActors.SelectedIndices(0)
             lvActors.Items.Insert(iIndex - 1, DirectCast(lvActors.SelectedItems(0).Clone, ListViewItem))
@@ -276,14 +274,12 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnChangeMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeMovie.Click
-        ThemeStop()
-        TrailerStop()
+    Private Sub btnChangeMovie_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnChangeMovie.Click
         CleanUp()
         DialogResult = DialogResult.Abort
     End Sub
 
-    Private Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnDLTheme_Click(ByVal sender As Object, ByVal e As EventArgs)
         'Dim aUrlList As New List(Of Themes)
         'Dim tURL As String = String.Empty
         'If Not ModulesManager.Instance.ScrapeTheme_Movie(tmpDBMovie, aUrlList) Then
@@ -297,20 +293,20 @@ Public Class dlgEditMovie
         'End If
     End Sub
 
-    Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
-        Dim tResults As New MediaContainers.Trailer
-        Dim dlgTrlS As dlgTrailerSelect
-        Dim tList As New List(Of MediaContainers.Trailer)
+    Private Sub btnDLTrailer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDLTrailer.Click
+        Dim tResults As New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
+        Dim dlgTrlS As dlgMediaFileSelect
+        Dim tList As New List(Of MediaContainers.MediaFile)
         Dim tURL As String = String.Empty
 
         Try
-            dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(tmpDBElement, tList, True, True) = DialogResult.OK Then
+            dlgTrlS = New dlgMediaFileSelect(Enums.ModifierType.MainTrailer)
+            If dlgTrlS.ShowDialog(tmpDBElement, tList, True) = DialogResult.OK Then
                 tURL = dlgTrlS.Result.URLWebsite
             End If
 
             If Not String.IsNullOrEmpty(tURL) Then
-                btnPlayTrailer.Enabled = True
+                btnPlayNFOTrailer.Enabled = True
                 txtTrailer.Text = tURL
             End If
         Catch ex As Exception
@@ -318,7 +314,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnExtrathumbsDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsDown.Click
+    Private Sub btnExtrathumbsDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExtrathumbsDown.Click
         If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 AndAlso currExtrathumbImage.Index < tmpDBElement.ImagesContainer.Extrathumbs.Count - 1 Then
             Dim iIndex As Integer = currExtrathumbImage.Index
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index + 1
@@ -328,7 +324,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnExtrathumbsUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsUp.Click
+    Private Sub btnExtrathumbsUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExtrathumbsUp.Click
         If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 AndAlso currExtrathumbImage.Index > 0 Then
             Dim iIndex As Integer = currExtrathumbImage.Index
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index - 1
@@ -338,17 +334,15 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
+    Private Sub btnManual_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnManual.Click
         If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
             tmpDBElement.Movie = NFO.LoadFromNFO_Movie(tmpDBElement.NfoPath, tmpDBElement.IsSingle)
             FillInfo(False)
         End If
     End Sub
 
-    Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
-        'TODO 2013/12/18 Dekker500 - This should be re-factored to use Functions.Launch. Why is the URL different for non-windows??? Need to test first before editing
+    Private Sub btnPlayNFOTrailer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnPlayNFOTrailer.Click
         Try
-
             Dim tPath As String = String.Empty
 
             If Not String.IsNullOrEmpty(txtTrailer.Text) Then
@@ -375,14 +369,12 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnPlayTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        'TODO 2013/12/18 Dekker500 - This should be re-factored to use Functions.Launch. Why is the URL different for non-windows??? Need to test first before editing
+    Private Sub btnLocalThemePlay_Click(sender As Object, e As EventArgs) Handles btnLocalThemePlay.Click
         Try
-
             Dim tPath As String = String.Empty
 
-            If Not String.IsNullOrEmpty(tmpDBElement.Theme.LocalFilePath) Then
-                tPath = String.Concat("""", tmpDBElement.Theme.LocalFilePath, """")
+            If Not String.IsNullOrEmpty(txtLocalTheme.Text) Then
+                tPath = String.Concat("""", txtLocalTheme.Text, """")
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
@@ -396,13 +388,36 @@ Public Class dlgEditMovie
                     End Using
                 End If
             End If
-
         Catch
             MessageBox.Show(Master.eLang.GetString(1078, "The theme could not be played. This could due be you don't have the proper player to play the theme type."), Master.eLang.GetString(1079, "Error Playing Theme"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End Try
     End Sub
 
-    Private Sub btnRemoveBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveBanner.Click
+    Private Sub btnLocalTrailerPlay_Click(sender As Object, e As EventArgs) Handles btnLocalTrailerPlay.Click
+        Try
+            Dim tPath As String = String.Empty
+
+            If Not String.IsNullOrEmpty(txtLocalTrailer.Text) Then
+                tPath = String.Concat("""", txtLocalTrailer.Text, """")
+            End If
+
+            If Not String.IsNullOrEmpty(tPath) Then
+                If Master.isWindows Then
+                    Process.Start(tPath)
+                Else
+                    Using Explorer As New Process
+                        Explorer.StartInfo.FileName = "xdg-open"
+                        Explorer.StartInfo.Arguments = tPath
+                        Explorer.Start()
+                    End Using
+                End If
+            End If
+        Catch
+            MessageBox.Show(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End Try
+    End Sub
+
+    Private Sub btnRemoveBanner_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveBanner.Click
         pbBanner.Image = Nothing
         pbBanner.Tag = Nothing
         lblBannerSize.Text = String.Empty
@@ -410,7 +425,7 @@ Public Class dlgEditMovie
         tmpDBElement.ImagesContainer.Banner = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveClearArt.Click
+    Private Sub btnRemoveClearArt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveClearArt.Click
         pbClearArt.Image = Nothing
         pbClearArt.Tag = Nothing
         lblClearArtSize.Text = String.Empty
@@ -418,7 +433,7 @@ Public Class dlgEditMovie
         tmpDBElement.ImagesContainer.ClearArt = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveClearLogo.Click
+    Private Sub btnRemoveClearLogo_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveClearLogo.Click
         pbClearLogo.Image = Nothing
         pbClearLogo.Tag = Nothing
         lblClearLogoSize.Text = String.Empty
@@ -426,7 +441,7 @@ Public Class dlgEditMovie
         tmpDBElement.ImagesContainer.ClearLogo = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveDiscArt.Click
+    Private Sub btnRemoveDiscArt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveDiscArt.Click
         pbDiscArt.Image = Nothing
         pbDiscArt.Tag = Nothing
         lblDiscArtSize.Text = String.Empty
@@ -434,7 +449,7 @@ Public Class dlgEditMovie
         tmpDBElement.ImagesContainer.DiscArt = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
+    Private Sub btnRemoveFanart_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveFanart.Click
         pbFanart.Image = Nothing
         pbFanart.Tag = Nothing
         lblFanartSize.Text = String.Empty
@@ -442,7 +457,7 @@ Public Class dlgEditMovie
         tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLandscape.Click
+    Private Sub btnRemoveLandscape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveLandscape.Click
         pbLandscape.Image = Nothing
         pbLandscape.Tag = Nothing
         lblLandscapeSize.Text = String.Empty
@@ -450,7 +465,7 @@ Public Class dlgEditMovie
         tmpDBElement.ImagesContainer.Landscape = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
+    Private Sub btnRemovePoster_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemovePoster.Click
         pbPoster.Image = Nothing
         pbPoster.Tag = Nothing
         lblPosterSize.Text = String.Empty
@@ -458,29 +473,25 @@ Public Class dlgEditMovie
         tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveSubtitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSubtitle.Click
+    Private Sub btnRemoveSubtitle_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveSubtitle.Click
         DeleteSubtitle()
     End Sub
 
-    Private Sub btnRemoveTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTheme.Click
-        ThemeStop()
-        'axVLCTheme.playlist.items.clear()
-        tmpDBElement.Theme = New MediaContainers.Theme
+    Private Sub btnRemoveTheme_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveTheme.Click
+        tmpDBElement.Theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
         txtLocalTheme.Text = String.Empty
     End Sub
 
-    Private Sub btnRemoveTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTrailer.Click
-        TrailerStop()
-        TrailerPlaylistClear()
-        tmpDBElement.Trailer = New MediaContainers.Trailer
+    Private Sub btnRemoveTrailer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveTrailer.Click
+        tmpDBElement.Trailer = New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
         txtLocalTrailer.Text = String.Empty
     End Sub
 
-    Private Sub btnExtrafanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsRemove.Click
+    Private Sub btnExtrafanartsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExtrafanartsRemove.Click
         RemoveExtrafanart()
     End Sub
 
-    Private Sub btnExtrathumbsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsRemove.Click
+    Private Sub btnExtrathumbsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExtrathumbsRemove.Click
         RemoveExtrathumb()
     End Sub
 
@@ -502,14 +513,12 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
-        ThemeStop()
-        TrailerStop()
+    Private Sub btnRescrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRescrape.Click
         CleanUp()
         DialogResult = DialogResult.Retry
     End Sub
 
-    Private Sub btnSetBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerDL.Click
+    Private Sub btnSetBannerDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetBannerDL.Click
         Using dImgManual As New dlgImgManual
             Dim tImage As MediaContainers.Image
             If dImgManual.ShowDialog() = DialogResult.OK Then
@@ -526,7 +535,7 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnSetBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerScrape.Click
+    Private Sub btnSetBannerScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetBannerScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
@@ -555,7 +564,7 @@ Public Class dlgEditMovie
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerLocal.Click
+    Private Sub btnSetBannerLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetBannerLocal.Click
         With ofdLocalFiles
             .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
@@ -572,7 +581,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnSetClearArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtDL.Click
+    Private Sub btnSetClearArtDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearArtDL.Click
         Using dImgManual As New dlgImgManual
             Dim tImage As MediaContainers.Image
             If dImgManual.ShowDialog() = DialogResult.OK Then
@@ -589,7 +598,7 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnSetClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtScrape.Click
+    Private Sub btnSetClearArtScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearArtScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
@@ -618,7 +627,7 @@ Public Class dlgEditMovie
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtLocal.Click
+    Private Sub btnSetClearArtLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearArtLocal.Click
         With ofdLocalFiles
             .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
@@ -635,7 +644,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnSetClearLogoDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoDL.Click
+    Private Sub btnSetClearLogoDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearLogoDL.Click
         Using dImgManual As New dlgImgManual
             Dim tImage As MediaContainers.Image
             If dImgManual.ShowDialog() = DialogResult.OK Then
@@ -652,7 +661,7 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnSetClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoScrape.Click
+    Private Sub btnSetClearLogoScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearLogoScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
@@ -681,7 +690,7 @@ Public Class dlgEditMovie
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoLocal.Click
+    Private Sub btnSetClearLogoLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearLogoLocal.Click
         With ofdLocalFiles
             .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
@@ -698,7 +707,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnSetDiscArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtDL.Click
+    Private Sub btnSetDiscArtDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetDiscArtDL.Click
         Using dImgManual As New dlgImgManual
             Dim tImage As MediaContainers.Image
             If dImgManual.ShowDialog() = DialogResult.OK Then
@@ -715,7 +724,7 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnSetDiscArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtScrape.Click
+    Private Sub btnSetDiscArtScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetDiscArtScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
@@ -744,13 +753,12 @@ Public Class dlgEditMovie
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetDiscArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtLocal.Click
-
+    Private Sub btnSetDiscArtLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetDiscArtLocal.Click
         With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
-                .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
-                .FilterIndex = 0
-            End With
+            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+            .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
+            .FilterIndex = 0
+        End With
 
         If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
             tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.LoadFromFile(ofdLocalFiles.FileName, True)
@@ -762,7 +770,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnExtrafanartsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsSetAsFanart.Click
+    Private Sub btnExtrafanartsSetAsFanart_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExtrafanartsSetAsFanart.Click
         If pbExtrafanarts.Tag IsNot Nothing Then
             tmpDBElement.ImagesContainer.Fanart = DirectCast(pbExtrafanarts.Tag, MediaContainers.Image)
             pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -773,7 +781,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnExtrathumbsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsSetAsFanart.Click
+    Private Sub btnExtrathumbsSetAsFanart_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExtrathumbsSetAsFanart.Click
         If pbExtrathumbs.Tag IsNot Nothing Then
             tmpDBElement.ImagesContainer.Fanart = DirectCast(pbExtrathumbs.Tag, MediaContainers.Image)
             pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -784,7 +792,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnSetExtrafanartsScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetExtrafanartsScrape.Click
+    Private Sub btnSetExtrafanartsScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetExtrafanartsScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
@@ -804,7 +812,7 @@ Public Class dlgEditMovie
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetExtrathumbsScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetExtrathumbsScrape.Click
+    Private Sub btnSetExtrathumbsScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetExtrathumbsScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
@@ -824,7 +832,7 @@ Public Class dlgEditMovie
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
+    Private Sub btnSetFanartDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartDL.Click
         Using dImgManual As New dlgImgManual
             Dim tImage As MediaContainers.Image
             If dImgManual.ShowDialog() = DialogResult.OK Then
@@ -841,7 +849,7 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
+    Private Sub btnSetFanartScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
@@ -870,7 +878,7 @@ Public Class dlgEditMovie
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
+    Private Sub btnSetFanartLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartLocal.Click
         With ofdLocalFiles
             .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
@@ -887,7 +895,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnSetLandscapeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeDL.Click
+    Private Sub btnSetLandscapeDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetLandscapeDL.Click
         Using dImgManual As New dlgImgManual
             Dim tImage As MediaContainers.Image
             If dImgManual.ShowDialog() = DialogResult.OK Then
@@ -904,7 +912,7 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnSetLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeScrape.Click
+    Private Sub btnSetLandscapeScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetLandscapeScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
@@ -933,7 +941,7 @@ Public Class dlgEditMovie
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeLocal.Click
+    Private Sub btnSetLandscapeLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetLandscapeLocal.Click
         With ofdLocalFiles
             .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
@@ -950,7 +958,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnSetPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
+    Private Sub btnSetPosterDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterDL.Click
         Using dImgManual As New dlgImgManual
             Dim tImage As MediaContainers.Image
             If dImgManual.ShowDialog() = DialogResult.OK Then
@@ -967,7 +975,7 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
+    Private Sub btnSetPosterScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
@@ -996,7 +1004,7 @@ Public Class dlgEditMovie
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click
+    Private Sub btnSetPosterLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterLocal.Click
         With ofdLocalFiles
             .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
@@ -1031,26 +1039,15 @@ Public Class dlgEditMovie
     '    End Try
     'End Sub
 
-    Private Sub btnSetThemeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeScrape.Click
-        Dim dThemeSelect As dlgThemeSelect
-        Dim tList As New List(Of MediaContainers.Theme)
-
-        ThemeStop()
-        If Not ModulesManager.Instance.ScrapeTheme_Movie(tmpDBElement, Enums.ModifierType.MainTheme, tList) Then
-            If tList.Count > 0 Then
-                dThemeSelect = New dlgThemeSelect()
-                If dThemeSelect.ShowDialog(tmpDBElement, tList, True) = DialogResult.OK Then
-                    tmpDBElement.Theme = dThemeSelect.Result
-                    LoadTheme(tmpDBElement.Theme)
-                End If
-            Else
-                MessageBox.Show(Master.eLang.GetString(1163, "No Themes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End If
+    Private Sub btnSetThemeScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetThemeScrape.Click, btnSetThemeDL.Click
+        Dim dglSelectTheme As New dlgMediaFileSelect(Enums.ModifierType.MainTheme)
+        If dglSelectTheme.ShowDialog(tmpDBElement, New List(Of MediaContainers.MediaFile)) = DialogResult.OK Then
+            tmpDBElement.Theme = dglSelectTheme.Result
+            LoadTheme(tmpDBElement.Theme)
         End If
     End Sub
 
-    Private Sub btnSetThemeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeLocal.Click
-        ThemeStop()
+    Private Sub btnSetThemeLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetThemeLocal.Click
         With ofdLocalFiles
             .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
             .Filter = FileUtils.Common.GetOpenFileDialogFilter_Theme()
@@ -1058,40 +1055,29 @@ Public Class dlgEditMovie
         End With
 
         If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-            tmpDBElement.Theme = New MediaContainers.Theme With {.LocalFilePath = ofdLocalFiles.FileName}
+            tmpDBElement.Theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme) With {.LocalFilePath = ofdLocalFiles.FileName}
             tmpDBElement.Theme.LoadAndCache()
             LoadTheme(tmpDBElement.Theme)
         End If
     End Sub
 
-    Private Sub btnSetTrailerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetTrailerDL.Click
-        Dim tResults As New MediaContainers.Trailer
-        Dim dlgTrlS As dlgTrailerSelect
-        Dim tList As New List(Of MediaContainers.Trailer)
-
-        TrailerStop()
-        dlgTrlS = New dlgTrailerSelect()
-        If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True) = DialogResult.OK Then
-            tResults = dlgTrlS.Result
-            tmpDBElement.Trailer = tResults
+    Private Sub btnSetTrailerDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetTrailerDL.Click
+        Dim dlgSelectTrailer As New dlgMediaFileSelect(Enums.ModifierType.MainTrailer)
+        If dlgSelectTrailer.ShowDialog(tmpDBElement, New List(Of MediaContainers.MediaFile)) = DialogResult.OK Then
+            tmpDBElement.Trailer = dlgSelectTrailer.Result
             LoadTrailer(tmpDBElement.Trailer)
         End If
     End Sub
 
-    Private Sub btnSetTrailerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetTrailerScrape.Click
-        Dim dlgTrlS As dlgTrailerSelect
-        Dim tList As New List(Of MediaContainers.Trailer)
-
-        TrailerStop()
-        dlgTrlS = New dlgTrailerSelect()
-        If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True) = DialogResult.OK Then
-            tmpDBElement.Trailer = dlgTrlS.Result
+    Private Sub btnSetTrailerScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetTrailerScrape.Click
+        Dim dlgSelectTrailer As New dlgMediaFileSelect(Enums.ModifierType.MainTrailer)
+        If dlgSelectTrailer.ShowDialog(tmpDBElement, New List(Of MediaContainers.MediaFile)) = DialogResult.OK Then
+            tmpDBElement.Trailer = dlgSelectTrailer.Result
             LoadTrailer(tmpDBElement.Trailer)
         End If
     End Sub
 
-    Private Sub btnSetTrailerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetTrailerLocal.Click
-        TrailerStop()
+    Private Sub btnSetTrailerLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetTrailerLocal.Click
         Dim strValidExtesions As String() = Master.eSettings.FileSystemValidExts.ToArray
         With ofdLocalFiles
             .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
@@ -1100,13 +1086,13 @@ Public Class dlgEditMovie
         End With
 
         If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-            tmpDBElement.Trailer = New MediaContainers.Trailer With {.LocalFilePath = ofdLocalFiles.FileName}
+            tmpDBElement.Trailer = New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer) With {.LocalFilePath = ofdLocalFiles.FileName}
             tmpDBElement.Trailer.LoadAndCache()
             LoadTrailer(tmpDBElement.Trailer)
         End If
     End Sub
 
-    Private Sub btnStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStudio.Click
+    Private Sub btnStudio_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnStudio.Click
         Using dStudio As New dlgStudioSelect
             Dim tStudio As String = dStudio.ShowDialog(tmpDBElement)
             If Not String.IsNullOrEmpty(tStudio) Then
@@ -1115,59 +1101,26 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnExtrafanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsRefresh.Click
+    Private Sub btnExtrafanartsRefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExtrafanartsRefresh.Click
         RefreshExtrafanarts()
     End Sub
 
-    Private Sub btnExtrathumbsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsRefresh.Click
+    Private Sub btnExtrathumbsRefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExtrathumbsRefresh.Click
         RefreshExtrathumbs()
     End Sub
 
-    Private Sub ThemeStart()
-        'If axVLCTheme.playlist.isPlaying Then
-        '    axVLCTheme.playlist.togglePause()
-        '    btnThemePlay.Text = "Play"
-        'Else
-        '    axVLCTheme.playlist.play()
-        '    btnThemePlay.Text = "Pause"
-        'End If
-    End Sub
-
-    Private Sub ThemeStop()
-        'axVLCTheme.playlist.stop()
-        'btnThemePlay.Text = "Play"
-    End Sub
-
-    Private Sub LoadTheme(ByVal Theme As MediaContainers.Theme)
+    Private Sub LoadTheme(ByVal Theme As MediaContainers.MediaFile)
         txtLocalTheme.Text =
             If(Theme.LocalFilePathSpecified, Theme.LocalFilePath,
             If(Theme.URLAudioStreamSpecified, Theme.URLAudioStream,
             If(Theme.URLWebsiteSpecified, Theme.URLWebsite, String.Empty)))
     End Sub
 
-    Private Sub LoadTrailer(ByVal Trailer As MediaContainers.Trailer)
+    Private Sub LoadTrailer(ByVal Trailer As MediaContainers.MediaFile)
         txtLocalTrailer.Text =
             If(Trailer.LocalFilePathSpecified, Trailer.LocalFilePath,
             If(Trailer.URLVideoStreamSpecified, Trailer.URLVideoStream,
             If(Trailer.URLWebsiteSpecified, Trailer.URLWebsite, String.Empty)))
-        If AnyTrailerPlayerEnabled Then
-            Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.URLVideoStream})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video, paramsTrailerPreview, Nothing, True)
-        End If
-    End Sub
-
-    Private Sub TrailerPlaylistClear()
-        If AnyTrailerPlayerEnabled Then
-            Dim paramsTrailerPreview As New List(Of Object)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlaylistClear_Video, Nothing, Nothing, True)
-        End If
-    End Sub
-
-    Private Sub TrailerStop()
-        If AnyTrailerPlayerEnabled Then
-            Dim paramsTrailerPreview As New List(Of Object)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerStop_Video, Nothing, Nothing, True)
-        End If
     End Sub
 
     Private Sub BuildStars(ByVal sinRating As Single)
@@ -1411,9 +1364,7 @@ Public Class dlgEditMovie
         End With
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        ThemeStop()
-        TrailerStop()
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
         CleanUp()
         DialogResult = DialogResult.Cancel
     End Sub
@@ -1436,12 +1387,12 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub DelayTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrDelay.Tick
+    Private Sub DelayTimer_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrDelay.Tick
         tmrDelay.Stop()
         'GrabTheFrame()
     End Sub
 
-    Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub dlgEditMovie_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         pbBanner.AllowDrop = True
         pbClearArt.AllowDrop = True
         pbClearLogo.AllowDrop = True
@@ -1485,31 +1436,14 @@ Public Class dlgEditMovie
             tcEdit.TabPages.Remove(tpFrameExtraction)
         End If
 
-        Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
-        pnlThemePreview.Controls.Add(DirectCast(paramsThemePreview(0), Panel))
-        If Not String.IsNullOrEmpty(pnlThemePreview.Controls.Item(1).Name) Then
-            AnyThemePlayerEnabled = True
-            pnlThemePreviewNoPlayer.Visible = False
-        End If
-
-        Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel})
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
-        pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
-        If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
-            AnyTrailerPlayerEnabled = True
-            pnlTrailerPreviewNoPlayer.Visible = False
-        End If
-
         FillInfo()
     End Sub
 
-    Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         Activate()
     End Sub
 
     Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
-
         If String.IsNullOrEmpty(tmpDBElement.NfoPath) Then
             btnManual.Enabled = False
         End If
@@ -1568,9 +1502,9 @@ Public Class dlgEditMovie
 
         If Not String.IsNullOrEmpty(tmpDBElement.Movie.Trailer) Then
             txtTrailer.Text = tmpDBElement.Movie.Trailer
-            btnPlayTrailer.Enabled = True
+            btnPlayNFOTrailer.Enabled = True
         Else
-            btnPlayTrailer.Enabled = False
+            btnPlayNFOTrailer.Enabled = False
         End If
 
         btnDLTrailer.Enabled = Master.DefaultOptions_Movie.bMainTrailer
@@ -1823,7 +1757,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub clbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbGenre.ItemCheck
+    Private Sub clbGenre_ItemCheck(ByVal sender As Object, ByVal e As ItemCheckEventArgs) Handles clbGenre.ItemCheck
         If e.Index = 0 Then
             For i As Integer = 1 To clbGenre.Items.Count - 1
                 clbGenre.SetItemChecked(i, False)
@@ -1854,7 +1788,7 @@ Public Class dlgEditMovie
         lbMPAA.Items.AddRange(APIXML.GetRatingList_Movie)
     End Sub
 
-    Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvActors.ColumnClick
+    Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles lvActors.ColumnClick
         ' Determine if the clicked column is already the column that is
         ' being sorted.
 
@@ -1875,21 +1809,17 @@ Public Class dlgEditMovie
         lvActors.Sort()
     End Sub
 
-    Private Sub lvActors_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvActors.DoubleClick
+    Private Sub lvActors_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvActors.DoubleClick
         ActorEdit()
     End Sub
 
-    Private Sub lvActors_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvActors.KeyDown
+    Private Sub lvActors_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lvActors.KeyDown
         If e.KeyCode = Keys.Delete Then ActorRemove()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        ThemeStop()
-        TrailerStop()
-
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         SetInfo()
         CleanUp()
-
         DialogResult = DialogResult.OK
     End Sub
 
@@ -2026,17 +1956,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbStar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar1.Click
+    Private Sub pbStar1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar1.Click
         tmpRating = pbStar1.Tag.ToString
     End Sub
 
-    Private Sub pbStar1_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar1.MouseLeave
+    Private Sub pbStar1_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar1.MouseLeave
         Dim tmpDBL As Single = 0
         Single.TryParse(tmpRating, tmpDBL)
         BuildStars(tmpDBL)
     End Sub
 
-    Private Sub pbStar1_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar1.MouseMove
+    Private Sub pbStar1_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar1.MouseMove
         If e.X < 12 Then
             pbStar1.Tag = 0.5
             BuildStars(0.5)
@@ -2046,17 +1976,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbStar2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar2.Click
+    Private Sub pbStar2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar2.Click
         tmpRating = pbStar2.Tag.ToString
     End Sub
 
-    Private Sub pbStar2_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar2.MouseLeave
+    Private Sub pbStar2_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar2.MouseLeave
         Dim tmpDBL As Single = 0
         Single.TryParse(tmpRating, tmpDBL)
         BuildStars(tmpDBL)
     End Sub
 
-    Private Sub pbStar2_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar2.MouseMove
+    Private Sub pbStar2_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar2.MouseMove
         If e.X < 12 Then
             pbStar2.Tag = 1.5
             BuildStars(1.5)
@@ -2066,17 +1996,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbStar3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar3.Click
+    Private Sub pbStar3_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar3.Click
         tmpRating = pbStar3.Tag.ToString
     End Sub
 
-    Private Sub pbStar3_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar3.MouseLeave
+    Private Sub pbStar3_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar3.MouseLeave
         Dim tmpDBL As Single = 0
         Single.TryParse(tmpRating, tmpDBL)
         BuildStars(tmpDBL)
     End Sub
 
-    Private Sub pbStar3_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar3.MouseMove
+    Private Sub pbStar3_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar3.MouseMove
         If e.X < 12 Then
             pbStar3.Tag = 2.5
             BuildStars(2.5)
@@ -2086,17 +2016,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbStar4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar4.Click
+    Private Sub pbStar4_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar4.Click
         tmpRating = pbStar4.Tag.ToString
     End Sub
 
-    Private Sub pbStar4_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar4.MouseLeave
+    Private Sub pbStar4_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar4.MouseLeave
         Dim tmpDBL As Single = 0
         Single.TryParse(tmpRating, tmpDBL)
         BuildStars(tmpDBL)
     End Sub
 
-    Private Sub pbStar4_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar4.MouseMove
+    Private Sub pbStar4_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar4.MouseMove
         If e.X < 12 Then
             pbStar4.Tag = 3.5
             BuildStars(3.5)
@@ -2106,17 +2036,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbStar5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar5.Click
+    Private Sub pbStar5_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar5.Click
         tmpRating = pbStar5.Tag.ToString
     End Sub
 
-    Private Sub pbStar5_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar5.MouseLeave
+    Private Sub pbStar5_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar5.MouseLeave
         Dim tmpDBL As Single = 0
         Single.TryParse(tmpRating, tmpDBL)
         BuildStars(tmpDBL)
     End Sub
 
-    Private Sub pbStar5_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar5.MouseMove
+    Private Sub pbStar5_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar5.MouseMove
         If e.X < 12 Then
             pbStar5.Tag = 4.5
             BuildStars(4.5)
@@ -2126,17 +2056,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbStar6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar6.Click
+    Private Sub pbStar6_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar6.Click
         tmpRating = pbStar6.Tag.ToString
     End Sub
 
-    Private Sub pbStar6_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar6.MouseLeave
+    Private Sub pbStar6_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar6.MouseLeave
         Dim tmpDBL As Single = 0
         Single.TryParse(tmpRating, tmpDBL)
         BuildStars(tmpDBL)
     End Sub
 
-    Private Sub pbStar6_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar6.MouseMove
+    Private Sub pbStar6_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar6.MouseMove
         If e.X < 12 Then
             pbStar6.Tag = 5.5
             BuildStars(5.5)
@@ -2146,17 +2076,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbStar7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar7.Click
+    Private Sub pbStar7_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar7.Click
         tmpRating = pbStar7.Tag.ToString
     End Sub
 
-    Private Sub pbStar7_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar7.MouseLeave
+    Private Sub pbStar7_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar7.MouseLeave
         Dim tmpDBL As Single = 0
         Single.TryParse(tmpRating, tmpDBL)
         BuildStars(tmpDBL)
     End Sub
 
-    Private Sub pbStar7_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar7.MouseMove
+    Private Sub pbStar7_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar7.MouseMove
         If e.X < 12 Then
             pbStar7.Tag = 6.5
             BuildStars(6.5)
@@ -2166,17 +2096,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbStar8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar8.Click
+    Private Sub pbStar8_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar8.Click
         tmpRating = pbStar8.Tag.ToString
     End Sub
 
-    Private Sub pbStar8_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar8.MouseLeave
+    Private Sub pbStar8_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar8.MouseLeave
         Dim tmpDBL As Single = 0
         Single.TryParse(tmpRating, tmpDBL)
         BuildStars(tmpDBL)
     End Sub
 
-    Private Sub pbStar8_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar8.MouseMove
+    Private Sub pbStar8_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar8.MouseMove
         If e.X < 12 Then
             pbStar8.Tag = 7.5
             BuildStars(7.5)
@@ -2186,17 +2116,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbStar9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar9.Click
+    Private Sub pbStar9_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar9.Click
         tmpRating = pbStar9.Tag.ToString
     End Sub
 
-    Private Sub pbStar9_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar9.MouseLeave
+    Private Sub pbStar9_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar9.MouseLeave
         Dim tmpDBL As Single = 0
         Single.TryParse(tmpRating, tmpDBL)
         BuildStars(tmpDBL)
     End Sub
 
-    Private Sub pbStar9_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar9.MouseMove
+    Private Sub pbStar9_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar9.MouseMove
         If e.X < 12 Then
             pbStar9.Tag = 8.5
             BuildStars(8.5)
@@ -2206,17 +2136,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbStar10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar10.Click
+    Private Sub pbStar10_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar10.Click
         tmpRating = pbStar10.Tag.ToString
     End Sub
 
-    Private Sub pbStar10_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar10.MouseLeave
+    Private Sub pbStar10_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar10.MouseLeave
         Dim tmpDBL As Single = 0
         Single.TryParse(tmpRating, tmpDBL)
         BuildStars(tmpDBL)
     End Sub
 
-    Private Sub pbStar10_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar10.MouseMove
+    Private Sub pbStar10_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar10.MouseMove
         If e.X < 12 Then
             pbStar10.Tag = 9.5
             BuildStars(9.5)
@@ -2527,19 +2457,17 @@ Public Class dlgEditMovie
 
     Private Sub tcEditMovie_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tcEdit.SelectedIndexChanged
         lvSubtitles.SelectedItems.Clear()
-        ThemeStop()
-        TrailerStop()
     End Sub
 
     Private Sub txtTop250_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtTop250.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged
+    Private Sub txtTrailer_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTrailer.TextChanged
         If StringUtils.isValidURL(txtTrailer.Text) Then
-            btnPlayTrailer.Enabled = True
+            btnPlayNFOTrailer.Enabled = True
         Else
-            btnPlayTrailer.Enabled = False
+            btnPlayNFOTrailer.Enabled = False
         End If
     End Sub
 
@@ -2586,11 +2514,11 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub lvSubtitles_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvSubtitles.KeyDown
+    Private Sub lvSubtitles_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lvSubtitles.KeyDown
         If e.KeyCode = Keys.Delete Then DeleteSubtitle()
     End Sub
 
-    Private Sub lvSubtitles_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvSubtitles.DoubleClick
+    Private Sub lvSubtitles_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvSubtitles.DoubleClick
         If lvSubtitles.SelectedItems.Count > 0 Then
             If lvSubtitles.SelectedItems.Item(0).Tag.ToString <> "Header" Then
                 EditSubtitle()
@@ -2598,7 +2526,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub lvSubtitles_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSubtitles.SelectedIndexChanged
+    Private Sub lvSubtitles_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lvSubtitles.SelectedIndexChanged
         If lvSubtitles.SelectedItems.Count > 0 Then
             If lvSubtitles.SelectedItems.Item(0).Tag.ToString = "Header" Then
                 lvSubtitles.SelectedItems.Clear()
@@ -2707,54 +2635,6 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnLocalThemePlay_Click(sender As Object, e As EventArgs) Handles btnLocalThemePlay.Click
-        Try
-            Dim tPath As String = String.Empty
-
-            If Not String.IsNullOrEmpty(txtLocalTheme.Text) Then
-                tPath = String.Concat("""", txtLocalTheme.Text, """")
-            End If
-
-            If Not String.IsNullOrEmpty(tPath) Then
-                If Master.isWindows Then
-                    Process.Start(tPath)
-                Else
-                    Using Explorer As New Process
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = tPath
-                        Explorer.Start()
-                    End Using
-                End If
-            End If
-        Catch
-            MessageBox.Show(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
-        End Try
-    End Sub
-
-    Private Sub btnLocalTrailerPlay_Click(sender As Object, e As EventArgs) Handles btnLocalTrailerPlay.Click
-        Try
-            Dim tPath As String = String.Empty
-
-            If Not String.IsNullOrEmpty(txtLocalTrailer.Text) Then
-                tPath = String.Concat("""", txtLocalTrailer.Text, """")
-            End If
-
-            If Not String.IsNullOrEmpty(tPath) Then
-                If Master.isWindows Then
-                    Process.Start(tPath)
-                Else
-                    Using Explorer As New Process
-                        Explorer.StartInfo.FileName = "xdg-open"
-                        Explorer.StartInfo.Arguments = tPath
-                        Explorer.Start()
-                    End Using
-                End If
-            End If
-        Catch
-            MessageBox.Show(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
-        End Try
-    End Sub
-
     Private Sub txtLocalTheme_TextChanged(sender As Object, e As EventArgs) Handles txtLocalTheme.TextChanged
         btnLocalThemePlay.Enabled = Not String.IsNullOrEmpty(txtLocalTheme.Text)
     End Sub
@@ -2780,9 +2660,5 @@ Public Class dlgEditMovie
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-#End Region 'Nested Types
 
 End Class

@@ -24,13 +24,21 @@ Public Class Scraper
 
 #Region "Methods"
 
-    Public Function GetTrailers(ByVal title As String) As List(Of MediaContainers.MediaFile)
-        Dim lstTrailers As New List(Of MediaContainers.MediaFile)
-        lstTrailers = YouTube.Scraper.SearchOnYouTube(String.Format("{0} {1}", title, Master.eSettings.MovieTrailerDefaultSearch), Enums.ModifierType.MainTrailer)
-        For Each tTrailer In lstTrailers
-            tTrailer.Scraper = "YouTube"
+    Public Function GetThemes(ByVal title As String, ByVal type As Enums.ContentType) As List(Of MediaContainers.MediaFile)
+        Dim nThemes As New List(Of MediaContainers.MediaFile)
+        Dim strDefaultSearch As String = String.Empty
+        Select Case type
+            Case Enums.ContentType.Movie
+                strDefaultSearch = Master.eSettings.MovieThemeDefaultSearch
+            Case Enums.ContentType.TV, Enums.ContentType.TVShow
+                strDefaultSearch = Master.eSettings.TVShowThemeDefaultSearch
+        End Select
+        Dim lstThemes = YouTube.Scraper.SearchOnYouTube(String.Format("{0} {1}", title, strDefaultSearch), Enums.ModifierType.MainTheme)
+        nThemes.AddRange(lstThemes.Where(Function(f) f IsNot Nothing AndAlso f.Streams.AudioStreams.Count > 0))
+        For Each tTheme In nThemes
+            tTheme.Scraper = "YouTube"
         Next
-        Return lstTrailers
+        Return nThemes
     End Function
 
 #End Region 'Methods

@@ -93,11 +93,13 @@ Partial Class dlgEditTVShow
         Me.pbPoster = New System.Windows.Forms.PictureBox()
         Me.tpDetails = New System.Windows.Forms.TabPage()
         Me.txtMPAA = New System.Windows.Forms.TextBox()
+        Me.txtUserRating = New System.Windows.Forms.TextBox()
         Me.txtVotes = New System.Windows.Forms.TextBox()
         Me.txtRuntime = New System.Windows.Forms.TextBox()
         Me.txtStatus = New System.Windows.Forms.TextBox()
         Me.txtPremiered = New System.Windows.Forms.TextBox()
         Me.txtStudio = New System.Windows.Forms.TextBox()
+        Me.lblUserRating = New System.Windows.Forms.Label()
         Me.lblVotes = New System.Windows.Forms.Label()
         Me.lblRuntime = New System.Windows.Forms.Label()
         Me.pbStar10 = New System.Windows.Forms.PictureBox()
@@ -141,9 +143,6 @@ Partial Class dlgEditTVShow
         Me.tcEdit = New System.Windows.Forms.TabControl()
         Me.tpTheme = New System.Windows.Forms.TabPage()
         Me.pnlThemePreview = New System.Windows.Forms.Panel()
-        Me.pnlThemePreviewNoPlayer = New System.Windows.Forms.Panel()
-        Me.tblThemePreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblThemePreviewNoPlayer = New System.Windows.Forms.Label()
         Me.btnSetThemeDL = New System.Windows.Forms.Button()
         Me.btnRemoveTheme = New System.Windows.Forms.Button()
         Me.btnSetThemeScrape = New System.Windows.Forms.Button()
@@ -152,8 +151,7 @@ Partial Class dlgEditTVShow
         Me.txtLocalTheme = New System.Windows.Forms.TextBox()
         Me.lblLanguage = New System.Windows.Forms.Label()
         Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
-        Me.lblUserRating = New System.Windows.Forms.Label()
-        Me.txtUserRating = New System.Windows.Forms.TextBox()
+        Me.btnSetExtrafanartsScrape = New System.Windows.Forms.Button()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpExtrafanarts.SuspendLayout()
@@ -186,9 +184,6 @@ Partial Class dlgEditTVShow
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
         Me.tpTheme.SuspendLayout()
-        Me.pnlThemePreview.SuspendLayout()
-        Me.pnlThemePreviewNoPlayer.SuspendLayout()
-        Me.tblThemePreviewNoPlayer.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -201,7 +196,7 @@ Partial Class dlgEditTVShow
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(853, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(1008, 64)
         Me.pnlTop.TabIndex = 2
         '
         'lblTopDetails
@@ -243,7 +238,7 @@ Partial Class dlgEditTVShow
         '
         Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(781, 592)
+        Me.Cancel_Button.Location = New System.Drawing.Point(929, 632)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -252,7 +247,7 @@ Partial Class dlgEditTVShow
         'OK_Button
         '
         Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.OK_Button.Location = New System.Drawing.Point(708, 592)
+        Me.OK_Button.Location = New System.Drawing.Point(856, 632)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -264,7 +259,7 @@ Partial Class dlgEditTVShow
         Me.cbOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbOrdering.FormattingEnabled = True
-        Me.cbOrdering.Location = New System.Drawing.Point(142, 592)
+        Me.cbOrdering.Location = New System.Drawing.Point(142, 611)
         Me.cbOrdering.Name = "cbOrdering"
         Me.cbOrdering.Size = New System.Drawing.Size(166, 21)
         Me.cbOrdering.TabIndex = 5
@@ -273,7 +268,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblOrdering.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblOrdering.AutoSize = True
-        Me.lblOrdering.Location = New System.Drawing.Point(5, 597)
+        Me.lblOrdering.Location = New System.Drawing.Point(5, 616)
         Me.lblOrdering.Name = "lblOrdering"
         Me.lblOrdering.Size = New System.Drawing.Size(101, 13)
         Me.lblOrdering.TabIndex = 4
@@ -285,7 +280,7 @@ Partial Class dlgEditTVShow
         Me.cbEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbEpisodeSorting.FormattingEnabled = True
-        Me.cbEpisodeSorting.Location = New System.Drawing.Point(142, 619)
+        Me.cbEpisodeSorting.Location = New System.Drawing.Point(142, 638)
         Me.cbEpisodeSorting.Name = "cbEpisodeSorting"
         Me.cbEpisodeSorting.Size = New System.Drawing.Size(166, 21)
         Me.cbEpisodeSorting.TabIndex = 5
@@ -294,7 +289,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblEpisodeSorting.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblEpisodeSorting.AutoSize = True
-        Me.lblEpisodeSorting.Location = New System.Drawing.Point(5, 622)
+        Me.lblEpisodeSorting.Location = New System.Drawing.Point(5, 641)
         Me.lblEpisodeSorting.Name = "lblEpisodeSorting"
         Me.lblEpisodeSorting.Size = New System.Drawing.Size(103, 13)
         Me.lblEpisodeSorting.TabIndex = 4
@@ -303,6 +298,7 @@ Partial Class dlgEditTVShow
         '
         'tpExtrafanarts
         '
+        Me.tpExtrafanarts.Controls.Add(Me.btnSetExtrafanartsScrape)
         Me.tpExtrafanarts.Controls.Add(Me.lblExtrafanartsSize)
         Me.tpExtrafanarts.Controls.Add(Me.pnlShowExtrafanartsSetAsFanart)
         Me.tpExtrafanarts.Controls.Add(Me.pnlExtrafanarts)
@@ -311,7 +307,7 @@ Partial Class dlgEditTVShow
         Me.tpExtrafanarts.Controls.Add(Me.pbExtrafanarts)
         Me.tpExtrafanarts.Location = New System.Drawing.Point(4, 22)
         Me.tpExtrafanarts.Name = "tpExtrafanarts"
-        Me.tpExtrafanarts.Size = New System.Drawing.Size(836, 490)
+        Me.tpExtrafanarts.Size = New System.Drawing.Size(996, 491)
         Me.tpExtrafanarts.TabIndex = 12
         Me.tpExtrafanarts.Text = "Extrafanarts"
         Me.tpExtrafanarts.UseVisualStyleBackColor = True
@@ -332,7 +328,7 @@ Partial Class dlgEditTVShow
         Me.pnlShowExtrafanartsSetAsFanart.BackColor = System.Drawing.Color.LightGray
         Me.pnlShowExtrafanartsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlShowExtrafanartsSetAsFanart.Controls.Add(Me.btnExtrafanartsSetAsFanart)
-        Me.pnlShowExtrafanartsSetAsFanart.Location = New System.Drawing.Point(719, 403)
+        Me.pnlShowExtrafanartsSetAsFanart.Location = New System.Drawing.Point(767, 363)
         Me.pnlShowExtrafanartsSetAsFanart.Name = "pnlShowExtrafanartsSetAsFanart"
         Me.pnlShowExtrafanartsSetAsFanart.Size = New System.Drawing.Size(109, 39)
         Me.pnlShowExtrafanartsSetAsFanart.TabIndex = 21
@@ -357,13 +353,13 @@ Partial Class dlgEditTVShow
         Me.pnlExtrafanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlExtrafanarts.Location = New System.Drawing.Point(6, 8)
         Me.pnlExtrafanarts.Name = "pnlExtrafanarts"
-        Me.pnlExtrafanarts.Size = New System.Drawing.Size(165, 408)
+        Me.pnlExtrafanarts.Size = New System.Drawing.Size(165, 394)
         Me.pnlExtrafanarts.TabIndex = 22
         '
         'btnExtrafanartsRefresh
         '
         Me.btnExtrafanartsRefresh.Image = CType(resources.GetObject("btnExtrafanartsRefresh.Image"), System.Drawing.Image)
-        Me.btnExtrafanartsRefresh.Location = New System.Drawing.Point(88, 422)
+        Me.btnExtrafanartsRefresh.Location = New System.Drawing.Point(5, 408)
         Me.btnExtrafanartsRefresh.Name = "btnExtrafanartsRefresh"
         Me.btnExtrafanartsRefresh.Size = New System.Drawing.Size(23, 23)
         Me.btnExtrafanartsRefresh.TabIndex = 19
@@ -372,7 +368,7 @@ Partial Class dlgEditTVShow
         'btnExtrafanartsRemove
         '
         Me.btnExtrafanartsRemove.Image = CType(resources.GetObject("btnExtrafanartsRemove.Image"), System.Drawing.Image)
-        Me.btnExtrafanartsRemove.Location = New System.Drawing.Point(148, 422)
+        Me.btnExtrafanartsRemove.Location = New System.Drawing.Point(147, 408)
         Me.btnExtrafanartsRemove.Name = "btnExtrafanartsRemove"
         Me.btnExtrafanartsRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnExtrafanartsRemove.TabIndex = 20
@@ -384,7 +380,7 @@ Partial Class dlgEditTVShow
         Me.pbExtrafanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbExtrafanarts.Location = New System.Drawing.Point(177, 8)
         Me.pbExtrafanarts.Name = "pbExtrafanarts"
-        Me.pbExtrafanarts.Size = New System.Drawing.Size(653, 437)
+        Me.pbExtrafanarts.Size = New System.Drawing.Size(700, 394)
         Me.pbExtrafanarts.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbExtrafanarts.TabIndex = 18
         Me.pbExtrafanarts.TabStop = False
@@ -399,7 +395,7 @@ Partial Class dlgEditTVShow
         Me.tpFanart.Controls.Add(Me.pbFanart)
         Me.tpFanart.Location = New System.Drawing.Point(4, 22)
         Me.tpFanart.Name = "tpFanart"
-        Me.tpFanart.Size = New System.Drawing.Size(836, 490)
+        Me.tpFanart.Size = New System.Drawing.Size(996, 491)
         Me.tpFanart.TabIndex = 2
         Me.tpFanart.Text = "Fanart"
         Me.tpFanart.UseVisualStyleBackColor = True
@@ -409,7 +405,7 @@ Partial Class dlgEditTVShow
         Me.btnSetFanartDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetFanartDL.Image = CType(resources.GetObject("btnSetFanartDL.Image"), System.Drawing.Image)
         Me.btnSetFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanartDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetFanartDL.Location = New System.Drawing.Point(810, 184)
         Me.btnSetFanartDL.Name = "btnSetFanartDL"
         Me.btnSetFanartDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetFanartDL.TabIndex = 3
@@ -422,7 +418,7 @@ Partial Class dlgEditTVShow
         Me.btnRemoveFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemoveFanart.Image = CType(resources.GetObject("btnRemoveFanart.Image"), System.Drawing.Image)
         Me.btnRemoveFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveFanart.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveFanart.Location = New System.Drawing.Point(810, 373)
         Me.btnRemoveFanart.Name = "btnRemoveFanart"
         Me.btnRemoveFanart.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveFanart.TabIndex = 4
@@ -446,7 +442,7 @@ Partial Class dlgEditTVShow
         Me.btnSetFanartScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetFanartScrape.Image = CType(resources.GetObject("btnSetFanartScrape.Image"), System.Drawing.Image)
         Me.btnSetFanartScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanartScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetFanartScrape.Location = New System.Drawing.Point(810, 95)
         Me.btnSetFanartScrape.Name = "btnSetFanartScrape"
         Me.btnSetFanartScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetFanartScrape.TabIndex = 2
@@ -459,7 +455,7 @@ Partial Class dlgEditTVShow
         Me.btnSetFanartLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetFanartLocal.Image = CType(resources.GetObject("btnSetFanartLocal.Image"), System.Drawing.Image)
         Me.btnSetFanartLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanartLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetFanartLocal.Location = New System.Drawing.Point(810, 6)
         Me.btnSetFanartLocal.Name = "btnSetFanartLocal"
         Me.btnSetFanartLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetFanartLocal.TabIndex = 1
@@ -473,7 +469,7 @@ Partial Class dlgEditTVShow
         Me.pbFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbFanart.Location = New System.Drawing.Point(6, 6)
         Me.pbFanart.Name = "pbFanart"
-        Me.pbFanart.Size = New System.Drawing.Size(724, 440)
+        Me.pbFanart.Size = New System.Drawing.Size(800, 450)
         Me.pbFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbFanart.TabIndex = 1
         Me.pbFanart.TabStop = False
@@ -488,7 +484,7 @@ Partial Class dlgEditTVShow
         Me.tpClearLogo.Controls.Add(Me.pbClearLogo)
         Me.tpClearLogo.Location = New System.Drawing.Point(4, 22)
         Me.tpClearLogo.Name = "tpClearLogo"
-        Me.tpClearLogo.Size = New System.Drawing.Size(836, 490)
+        Me.tpClearLogo.Size = New System.Drawing.Size(996, 491)
         Me.tpClearLogo.TabIndex = 11
         Me.tpClearLogo.Text = "ClearLogo"
         Me.tpClearLogo.UseVisualStyleBackColor = True
@@ -509,7 +505,7 @@ Partial Class dlgEditTVShow
         Me.btnSetClearLogoDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetClearLogoDL.Image = CType(resources.GetObject("btnSetClearLogoDL.Image"), System.Drawing.Image)
         Me.btnSetClearLogoDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetClearLogoDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetClearLogoDL.Location = New System.Drawing.Point(810, 184)
         Me.btnSetClearLogoDL.Name = "btnSetClearLogoDL"
         Me.btnSetClearLogoDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearLogoDL.TabIndex = 15
@@ -522,7 +518,7 @@ Partial Class dlgEditTVShow
         Me.btnRemoveClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRemoveClearLogo.Image = CType(resources.GetObject("btnRemoveClearLogo.Image"), System.Drawing.Image)
         Me.btnRemoveClearLogo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveClearLogo.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveClearLogo.Location = New System.Drawing.Point(810, 373)
         Me.btnRemoveClearLogo.Name = "btnRemoveClearLogo"
         Me.btnRemoveClearLogo.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveClearLogo.TabIndex = 16
@@ -535,7 +531,7 @@ Partial Class dlgEditTVShow
         Me.btnSetClearLogoScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetClearLogoScrape.Image = CType(resources.GetObject("btnSetClearLogoScrape.Image"), System.Drawing.Image)
         Me.btnSetClearLogoScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetClearLogoScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetClearLogoScrape.Location = New System.Drawing.Point(810, 95)
         Me.btnSetClearLogoScrape.Name = "btnSetClearLogoScrape"
         Me.btnSetClearLogoScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearLogoScrape.TabIndex = 14
@@ -548,7 +544,7 @@ Partial Class dlgEditTVShow
         Me.btnSetClearLogoLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetClearLogoLocal.Image = CType(resources.GetObject("btnSetClearLogoLocal.Image"), System.Drawing.Image)
         Me.btnSetClearLogoLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetClearLogoLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetClearLogoLocal.Location = New System.Drawing.Point(810, 6)
         Me.btnSetClearLogoLocal.Name = "btnSetClearLogoLocal"
         Me.btnSetClearLogoLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearLogoLocal.TabIndex = 13
@@ -562,7 +558,7 @@ Partial Class dlgEditTVShow
         Me.pbClearLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbClearLogo.Location = New System.Drawing.Point(6, 6)
         Me.pbClearLogo.Name = "pbClearLogo"
-        Me.pbClearLogo.Size = New System.Drawing.Size(724, 440)
+        Me.pbClearLogo.Size = New System.Drawing.Size(800, 450)
         Me.pbClearLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbClearLogo.TabIndex = 12
         Me.pbClearLogo.TabStop = False
@@ -577,7 +573,7 @@ Partial Class dlgEditTVShow
         Me.tpClearArt.Controls.Add(Me.pbClearArt)
         Me.tpClearArt.Location = New System.Drawing.Point(4, 22)
         Me.tpClearArt.Name = "tpClearArt"
-        Me.tpClearArt.Size = New System.Drawing.Size(836, 490)
+        Me.tpClearArt.Size = New System.Drawing.Size(996, 491)
         Me.tpClearArt.TabIndex = 10
         Me.tpClearArt.Text = "ClearArt"
         Me.tpClearArt.UseVisualStyleBackColor = True
@@ -598,7 +594,7 @@ Partial Class dlgEditTVShow
         Me.btnSetClearArtDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetClearArtDL.Image = CType(resources.GetObject("btnSetClearArtDL.Image"), System.Drawing.Image)
         Me.btnSetClearArtDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetClearArtDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetClearArtDL.Location = New System.Drawing.Point(810, 184)
         Me.btnSetClearArtDL.Name = "btnSetClearArtDL"
         Me.btnSetClearArtDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearArtDL.TabIndex = 15
@@ -611,7 +607,7 @@ Partial Class dlgEditTVShow
         Me.btnRemoveClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRemoveClearArt.Image = CType(resources.GetObject("btnRemoveClearArt.Image"), System.Drawing.Image)
         Me.btnRemoveClearArt.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveClearArt.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveClearArt.Location = New System.Drawing.Point(810, 373)
         Me.btnRemoveClearArt.Name = "btnRemoveClearArt"
         Me.btnRemoveClearArt.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveClearArt.TabIndex = 16
@@ -624,7 +620,7 @@ Partial Class dlgEditTVShow
         Me.btnSetClearArtScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetClearArtScrape.Image = CType(resources.GetObject("btnSetClearArtScrape.Image"), System.Drawing.Image)
         Me.btnSetClearArtScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetClearArtScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetClearArtScrape.Location = New System.Drawing.Point(810, 95)
         Me.btnSetClearArtScrape.Name = "btnSetClearArtScrape"
         Me.btnSetClearArtScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearArtScrape.TabIndex = 14
@@ -637,7 +633,7 @@ Partial Class dlgEditTVShow
         Me.btnSetClearArtLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetClearArtLocal.Image = CType(resources.GetObject("btnSetClearArtLocal.Image"), System.Drawing.Image)
         Me.btnSetClearArtLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetClearArtLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetClearArtLocal.Location = New System.Drawing.Point(810, 6)
         Me.btnSetClearArtLocal.Name = "btnSetClearArtLocal"
         Me.btnSetClearArtLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearArtLocal.TabIndex = 13
@@ -651,7 +647,7 @@ Partial Class dlgEditTVShow
         Me.pbClearArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbClearArt.Location = New System.Drawing.Point(6, 6)
         Me.pbClearArt.Name = "pbClearArt"
-        Me.pbClearArt.Size = New System.Drawing.Size(724, 440)
+        Me.pbClearArt.Size = New System.Drawing.Size(800, 450)
         Me.pbClearArt.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbClearArt.TabIndex = 12
         Me.pbClearArt.TabStop = False
@@ -666,7 +662,7 @@ Partial Class dlgEditTVShow
         Me.tpCharacterArt.Controls.Add(Me.pbCharacterArt)
         Me.tpCharacterArt.Location = New System.Drawing.Point(4, 22)
         Me.tpCharacterArt.Name = "tpCharacterArt"
-        Me.tpCharacterArt.Size = New System.Drawing.Size(836, 490)
+        Me.tpCharacterArt.Size = New System.Drawing.Size(996, 491)
         Me.tpCharacterArt.TabIndex = 9
         Me.tpCharacterArt.Text = "CharacterArt"
         Me.tpCharacterArt.UseVisualStyleBackColor = True
@@ -687,7 +683,7 @@ Partial Class dlgEditTVShow
         Me.btnSetCharacterArtDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetCharacterArtDL.Image = CType(resources.GetObject("btnSetCharacterArtDL.Image"), System.Drawing.Image)
         Me.btnSetCharacterArtDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetCharacterArtDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetCharacterArtDL.Location = New System.Drawing.Point(810, 184)
         Me.btnSetCharacterArtDL.Name = "btnSetCharacterArtDL"
         Me.btnSetCharacterArtDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetCharacterArtDL.TabIndex = 21
@@ -700,7 +696,7 @@ Partial Class dlgEditTVShow
         Me.btnRemoveCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRemoveCharacterArt.Image = CType(resources.GetObject("btnRemoveCharacterArt.Image"), System.Drawing.Image)
         Me.btnRemoveCharacterArt.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveCharacterArt.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveCharacterArt.Location = New System.Drawing.Point(810, 373)
         Me.btnRemoveCharacterArt.Name = "btnRemoveCharacterArt"
         Me.btnRemoveCharacterArt.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveCharacterArt.TabIndex = 22
@@ -713,7 +709,7 @@ Partial Class dlgEditTVShow
         Me.btnSetCharacterArtScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetCharacterArtScrape.Image = CType(resources.GetObject("btnSetCharacterArtScrape.Image"), System.Drawing.Image)
         Me.btnSetCharacterArtScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetCharacterArtScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetCharacterArtScrape.Location = New System.Drawing.Point(810, 95)
         Me.btnSetCharacterArtScrape.Name = "btnSetCharacterArtScrape"
         Me.btnSetCharacterArtScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetCharacterArtScrape.TabIndex = 20
@@ -726,7 +722,7 @@ Partial Class dlgEditTVShow
         Me.btnSetCharacterArtLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetCharacterArtLocal.Image = CType(resources.GetObject("btnSetCharacterArtLocal.Image"), System.Drawing.Image)
         Me.btnSetCharacterArtLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetCharacterArtLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetCharacterArtLocal.Location = New System.Drawing.Point(810, 6)
         Me.btnSetCharacterArtLocal.Name = "btnSetCharacterArtLocal"
         Me.btnSetCharacterArtLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetCharacterArtLocal.TabIndex = 19
@@ -740,7 +736,7 @@ Partial Class dlgEditTVShow
         Me.pbCharacterArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbCharacterArt.Location = New System.Drawing.Point(6, 6)
         Me.pbCharacterArt.Name = "pbCharacterArt"
-        Me.pbCharacterArt.Size = New System.Drawing.Size(724, 440)
+        Me.pbCharacterArt.Size = New System.Drawing.Size(800, 450)
         Me.pbCharacterArt.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbCharacterArt.TabIndex = 18
         Me.pbCharacterArt.TabStop = False
@@ -755,7 +751,7 @@ Partial Class dlgEditTVShow
         Me.tpLandscape.Controls.Add(Me.pbLandscape)
         Me.tpLandscape.Location = New System.Drawing.Point(4, 22)
         Me.tpLandscape.Name = "tpLandscape"
-        Me.tpLandscape.Size = New System.Drawing.Size(836, 490)
+        Me.tpLandscape.Size = New System.Drawing.Size(996, 491)
         Me.tpLandscape.TabIndex = 7
         Me.tpLandscape.Text = "Landscape"
         Me.tpLandscape.UseVisualStyleBackColor = True
@@ -765,7 +761,7 @@ Partial Class dlgEditTVShow
         Me.btnSetLandscapeDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetLandscapeDL.Image = CType(resources.GetObject("btnSetLandscapeDL.Image"), System.Drawing.Image)
         Me.btnSetLandscapeDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetLandscapeDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetLandscapeDL.Location = New System.Drawing.Point(810, 184)
         Me.btnSetLandscapeDL.Name = "btnSetLandscapeDL"
         Me.btnSetLandscapeDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetLandscapeDL.TabIndex = 9
@@ -778,7 +774,7 @@ Partial Class dlgEditTVShow
         Me.btnRemoveLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemoveLandscape.Image = CType(resources.GetObject("btnRemoveLandscape.Image"), System.Drawing.Image)
         Me.btnRemoveLandscape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveLandscape.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveLandscape.Location = New System.Drawing.Point(810, 373)
         Me.btnRemoveLandscape.Name = "btnRemoveLandscape"
         Me.btnRemoveLandscape.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveLandscape.TabIndex = 10
@@ -802,7 +798,7 @@ Partial Class dlgEditTVShow
         Me.btnSetLandscapeScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetLandscapeScrape.Image = CType(resources.GetObject("btnSetLandscapeScrape.Image"), System.Drawing.Image)
         Me.btnSetLandscapeScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetLandscapeScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetLandscapeScrape.Location = New System.Drawing.Point(810, 95)
         Me.btnSetLandscapeScrape.Name = "btnSetLandscapeScrape"
         Me.btnSetLandscapeScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetLandscapeScrape.TabIndex = 8
@@ -815,7 +811,7 @@ Partial Class dlgEditTVShow
         Me.btnSetLandscapeLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetLandscapeLocal.Image = CType(resources.GetObject("btnSetLandscapeLocal.Image"), System.Drawing.Image)
         Me.btnSetLandscapeLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetLandscapeLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetLandscapeLocal.Location = New System.Drawing.Point(810, 6)
         Me.btnSetLandscapeLocal.Name = "btnSetLandscapeLocal"
         Me.btnSetLandscapeLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetLandscapeLocal.TabIndex = 7
@@ -829,7 +825,7 @@ Partial Class dlgEditTVShow
         Me.pbLandscape.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbLandscape.Location = New System.Drawing.Point(6, 6)
         Me.pbLandscape.Name = "pbLandscape"
-        Me.pbLandscape.Size = New System.Drawing.Size(724, 440)
+        Me.pbLandscape.Size = New System.Drawing.Size(800, 450)
         Me.pbLandscape.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbLandscape.TabIndex = 6
         Me.pbLandscape.TabStop = False
@@ -844,7 +840,7 @@ Partial Class dlgEditTVShow
         Me.tpBanner.Controls.Add(Me.pbBanner)
         Me.tpBanner.Location = New System.Drawing.Point(4, 22)
         Me.tpBanner.Name = "tpBanner"
-        Me.tpBanner.Size = New System.Drawing.Size(836, 490)
+        Me.tpBanner.Size = New System.Drawing.Size(996, 491)
         Me.tpBanner.TabIndex = 4
         Me.tpBanner.Text = "Banner"
         Me.tpBanner.UseVisualStyleBackColor = True
@@ -854,7 +850,7 @@ Partial Class dlgEditTVShow
         Me.btnSetBannerDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetBannerDL.Image = CType(resources.GetObject("btnSetBannerDL.Image"), System.Drawing.Image)
         Me.btnSetBannerDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetBannerDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetBannerDL.Location = New System.Drawing.Point(810, 184)
         Me.btnSetBannerDL.Name = "btnSetBannerDL"
         Me.btnSetBannerDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetBannerDL.TabIndex = 9
@@ -867,7 +863,7 @@ Partial Class dlgEditTVShow
         Me.btnRemoveBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemoveBanner.Image = CType(resources.GetObject("btnRemoveBanner.Image"), System.Drawing.Image)
         Me.btnRemoveBanner.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveBanner.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveBanner.Location = New System.Drawing.Point(810, 373)
         Me.btnRemoveBanner.Name = "btnRemoveBanner"
         Me.btnRemoveBanner.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveBanner.TabIndex = 10
@@ -891,7 +887,7 @@ Partial Class dlgEditTVShow
         Me.btnSetBannerScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetBannerScrape.Image = CType(resources.GetObject("btnSetBannerScrape.Image"), System.Drawing.Image)
         Me.btnSetBannerScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetBannerScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetBannerScrape.Location = New System.Drawing.Point(810, 95)
         Me.btnSetBannerScrape.Name = "btnSetBannerScrape"
         Me.btnSetBannerScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetBannerScrape.TabIndex = 8
@@ -904,7 +900,7 @@ Partial Class dlgEditTVShow
         Me.btnSetBannerLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetBannerLocal.Image = CType(resources.GetObject("btnSetBannerLocal.Image"), System.Drawing.Image)
         Me.btnSetBannerLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetBannerLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetBannerLocal.Location = New System.Drawing.Point(810, 6)
         Me.btnSetBannerLocal.Name = "btnSetBannerLocal"
         Me.btnSetBannerLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetBannerLocal.TabIndex = 7
@@ -918,7 +914,7 @@ Partial Class dlgEditTVShow
         Me.pbBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbBanner.Location = New System.Drawing.Point(6, 6)
         Me.pbBanner.Name = "pbBanner"
-        Me.pbBanner.Size = New System.Drawing.Size(724, 440)
+        Me.pbBanner.Size = New System.Drawing.Size(800, 450)
         Me.pbBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbBanner.TabIndex = 6
         Me.pbBanner.TabStop = False
@@ -934,7 +930,7 @@ Partial Class dlgEditTVShow
         Me.tpPoster.Location = New System.Drawing.Point(4, 22)
         Me.tpPoster.Name = "tpPoster"
         Me.tpPoster.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpPoster.Size = New System.Drawing.Size(836, 490)
+        Me.tpPoster.Size = New System.Drawing.Size(996, 491)
         Me.tpPoster.TabIndex = 1
         Me.tpPoster.Text = "Poster"
         Me.tpPoster.UseVisualStyleBackColor = True
@@ -944,7 +940,7 @@ Partial Class dlgEditTVShow
         Me.btnSetPosterDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetPosterDL.Image = CType(resources.GetObject("btnSetPosterDL.Image"), System.Drawing.Image)
         Me.btnSetPosterDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPosterDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetPosterDL.Location = New System.Drawing.Point(810, 184)
         Me.btnSetPosterDL.Name = "btnSetPosterDL"
         Me.btnSetPosterDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetPosterDL.TabIndex = 3
@@ -957,7 +953,7 @@ Partial Class dlgEditTVShow
         Me.btnRemovePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemovePoster.Image = CType(resources.GetObject("btnRemovePoster.Image"), System.Drawing.Image)
         Me.btnRemovePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemovePoster.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemovePoster.Location = New System.Drawing.Point(810, 373)
         Me.btnRemovePoster.Name = "btnRemovePoster"
         Me.btnRemovePoster.Size = New System.Drawing.Size(96, 83)
         Me.btnRemovePoster.TabIndex = 4
@@ -981,7 +977,7 @@ Partial Class dlgEditTVShow
         Me.btnSetPosterScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetPosterScrape.Image = CType(resources.GetObject("btnSetPosterScrape.Image"), System.Drawing.Image)
         Me.btnSetPosterScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPosterScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetPosterScrape.Location = New System.Drawing.Point(810, 95)
         Me.btnSetPosterScrape.Name = "btnSetPosterScrape"
         Me.btnSetPosterScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetPosterScrape.TabIndex = 2
@@ -994,7 +990,7 @@ Partial Class dlgEditTVShow
         Me.btnSetPosterLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetPosterLocal.Image = CType(resources.GetObject("btnSetPosterLocal.Image"), System.Drawing.Image)
         Me.btnSetPosterLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPosterLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetPosterLocal.Location = New System.Drawing.Point(810, 6)
         Me.btnSetPosterLocal.Name = "btnSetPosterLocal"
         Me.btnSetPosterLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetPosterLocal.TabIndex = 1
@@ -1008,7 +1004,7 @@ Partial Class dlgEditTVShow
         Me.pbPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbPoster.Location = New System.Drawing.Point(6, 6)
         Me.pbPoster.Name = "pbPoster"
-        Me.pbPoster.Size = New System.Drawing.Size(724, 440)
+        Me.pbPoster.Size = New System.Drawing.Size(800, 450)
         Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbPoster.TabIndex = 0
         Me.pbPoster.TabStop = False
@@ -1062,7 +1058,7 @@ Partial Class dlgEditTVShow
         Me.tpDetails.Location = New System.Drawing.Point(4, 22)
         Me.tpDetails.Name = "tpDetails"
         Me.tpDetails.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpDetails.Size = New System.Drawing.Size(836, 490)
+        Me.tpDetails.Size = New System.Drawing.Size(996, 491)
         Me.tpDetails.TabIndex = 0
         Me.tpDetails.Text = "Details"
         Me.tpDetails.UseVisualStyleBackColor = True
@@ -1071,10 +1067,19 @@ Partial Class dlgEditTVShow
         '
         Me.txtMPAA.BackColor = System.Drawing.SystemColors.Window
         Me.txtMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtMPAA.Location = New System.Drawing.Point(635, 269)
+        Me.txtMPAA.Location = New System.Drawing.Point(797, 267)
         Me.txtMPAA.Name = "txtMPAA"
         Me.txtMPAA.Size = New System.Drawing.Size(193, 22)
         Me.txtMPAA.TabIndex = 82
+        '
+        'txtUserRating
+        '
+        Me.txtUserRating.BackColor = System.Drawing.SystemColors.Window
+        Me.txtUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtUserRating.Location = New System.Drawing.Point(357, 188)
+        Me.txtUserRating.Name = "txtUserRating"
+        Me.txtUserRating.Size = New System.Drawing.Size(66, 22)
+        Me.txtUserRating.TabIndex = 81
         '
         'txtVotes
         '
@@ -1089,7 +1094,7 @@ Partial Class dlgEditTVShow
         '
         Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
         Me.txtRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtRuntime.Location = New System.Drawing.Point(635, 403)
+        Me.txtRuntime.Location = New System.Drawing.Point(797, 401)
         Me.txtRuntime.Name = "txtRuntime"
         Me.txtRuntime.Size = New System.Drawing.Size(66, 22)
         Me.txtRuntime.TabIndex = 79
@@ -1097,7 +1102,7 @@ Partial Class dlgEditTVShow
         'txtStatus
         '
         Me.txtStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtStatus.Location = New System.Drawing.Point(635, 362)
+        Me.txtStatus.Location = New System.Drawing.Point(797, 360)
         Me.txtStatus.Name = "txtStatus"
         Me.txtStatus.Size = New System.Drawing.Size(193, 22)
         Me.txtStatus.TabIndex = 69
@@ -1107,16 +1112,26 @@ Partial Class dlgEditTVShow
         Me.txtPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPremiered.Location = New System.Drawing.Point(6, 148)
         Me.txtPremiered.Name = "txtPremiered"
-        Me.txtPremiered.Size = New System.Drawing.Size(192, 22)
+        Me.txtPremiered.Size = New System.Drawing.Size(252, 22)
         Me.txtPremiered.TabIndex = 3
         '
         'txtStudio
         '
         Me.txtStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtStudio.Location = New System.Drawing.Point(635, 321)
+        Me.txtStudio.Location = New System.Drawing.Point(797, 319)
         Me.txtStudio.Name = "txtStudio"
         Me.txtStudio.Size = New System.Drawing.Size(193, 22)
         Me.txtStudio.TabIndex = 19
+        '
+        'lblUserRating
+        '
+        Me.lblUserRating.AutoSize = True
+        Me.lblUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblUserRating.Location = New System.Drawing.Point(354, 173)
+        Me.lblUserRating.Name = "lblUserRating"
+        Me.lblUserRating.Size = New System.Drawing.Size(70, 13)
+        Me.lblUserRating.TabIndex = 80
+        Me.lblUserRating.Text = "User Rating:"
         '
         'lblVotes
         '
@@ -1132,7 +1147,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblRuntime.AutoSize = True
         Me.lblRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblRuntime.Location = New System.Drawing.Point(635, 387)
+        Me.lblRuntime.Location = New System.Drawing.Point(794, 385)
         Me.lblRuntime.Name = "lblRuntime"
         Me.lblRuntime.Size = New System.Drawing.Size(54, 13)
         Me.lblRuntime.TabIndex = 78
@@ -1182,7 +1197,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblStatus.AutoSize = True
         Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblStatus.Location = New System.Drawing.Point(635, 346)
+        Me.lblStatus.Location = New System.Drawing.Point(794, 344)
         Me.lblStatus.Name = "lblStatus"
         Me.lblStatus.Size = New System.Drawing.Size(42, 13)
         Me.lblStatus.TabIndex = 68
@@ -1191,7 +1206,7 @@ Partial Class dlgEditTVShow
         'btnActorDown
         '
         Me.btnActorDown.Image = CType(resources.GetObject("btnActorDown.Image"), System.Drawing.Image)
-        Me.btnActorDown.Location = New System.Drawing.Point(434, 431)
+        Me.btnActorDown.Location = New System.Drawing.Point(515, 462)
         Me.btnActorDown.Name = "btnActorDown"
         Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
         Me.btnActorDown.TabIndex = 14
@@ -1200,7 +1215,7 @@ Partial Class dlgEditTVShow
         'btnActorUp
         '
         Me.btnActorUp.Image = CType(resources.GetObject("btnActorUp.Image"), System.Drawing.Image)
-        Me.btnActorUp.Location = New System.Drawing.Point(410, 431)
+        Me.btnActorUp.Location = New System.Drawing.Point(491, 462)
         Me.btnActorUp.Name = "btnActorUp"
         Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
         Me.btnActorUp.TabIndex = 13
@@ -1214,14 +1229,14 @@ Partial Class dlgEditTVShow
         Me.clbGenre.IntegralHeight = False
         Me.clbGenre.Location = New System.Drawing.Point(7, 245)
         Me.clbGenre.Name = "clbGenre"
-        Me.clbGenre.Size = New System.Drawing.Size(192, 212)
+        Me.clbGenre.Size = New System.Drawing.Size(192, 240)
         Me.clbGenre.TabIndex = 6
         '
         'lblStudio
         '
         Me.lblStudio.AutoSize = True
         Me.lblStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblStudio.Location = New System.Drawing.Point(635, 305)
+        Me.lblStudio.Location = New System.Drawing.Point(794, 303)
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(44, 13)
         Me.lblStudio.TabIndex = 18
@@ -1230,7 +1245,7 @@ Partial Class dlgEditTVShow
         'btnActorEdit
         '
         Me.btnActorEdit.Image = CType(resources.GetObject("btnActorEdit.Image"), System.Drawing.Image)
-        Me.btnActorEdit.Location = New System.Drawing.Point(246, 431)
+        Me.btnActorEdit.Location = New System.Drawing.Point(246, 462)
         Me.btnActorEdit.Name = "btnActorEdit"
         Me.btnActorEdit.Size = New System.Drawing.Size(23, 23)
         Me.btnActorEdit.TabIndex = 12
@@ -1239,7 +1254,7 @@ Partial Class dlgEditTVShow
         'btnActorAdd
         '
         Me.btnActorAdd.Image = CType(resources.GetObject("btnActorAdd.Image"), System.Drawing.Image)
-        Me.btnActorAdd.Location = New System.Drawing.Point(217, 431)
+        Me.btnActorAdd.Location = New System.Drawing.Point(217, 462)
         Me.btnActorAdd.Name = "btnActorAdd"
         Me.btnActorAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnActorAdd.TabIndex = 11
@@ -1248,7 +1263,7 @@ Partial Class dlgEditTVShow
         'btnManual
         '
         Me.btnManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnManual.Location = New System.Drawing.Point(738, 434)
+        Me.btnManual.Location = New System.Drawing.Point(898, 462)
         Me.btnManual.Name = "btnManual"
         Me.btnManual.Size = New System.Drawing.Size(92, 23)
         Me.btnManual.TabIndex = 20
@@ -1258,7 +1273,7 @@ Partial Class dlgEditTVShow
         'btnActorRemove
         '
         Me.btnActorRemove.Image = CType(resources.GetObject("btnActorRemove.Image"), System.Drawing.Image)
-        Me.btnActorRemove.Location = New System.Drawing.Point(602, 431)
+        Me.btnActorRemove.Location = New System.Drawing.Point(765, 462)
         Me.btnActorRemove.Name = "btnActorRemove"
         Me.btnActorRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnActorRemove.TabIndex = 15
@@ -1279,9 +1294,10 @@ Partial Class dlgEditTVShow
         Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvActors.FullRowSelect = True
+        Me.lvActors.HideSelection = False
         Me.lvActors.Location = New System.Drawing.Point(217, 245)
         Me.lvActors.Name = "lvActors"
-        Me.lvActors.Size = New System.Drawing.Size(408, 180)
+        Me.lvActors.Size = New System.Drawing.Size(571, 211)
         Me.lvActors.TabIndex = 10
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
@@ -1313,7 +1329,7 @@ Partial Class dlgEditTVShow
         Me.txtPlot.Location = New System.Drawing.Point(268, 26)
         Me.txtPlot.Multiline = True
         Me.txtPlot.Name = "txtPlot"
-        Me.txtPlot.Size = New System.Drawing.Size(560, 108)
+        Me.txtPlot.Size = New System.Drawing.Size(722, 108)
         Me.txtPlot.TabIndex = 8
         '
         'txtSortTitle
@@ -1321,7 +1337,7 @@ Partial Class dlgEditTVShow
         Me.txtSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSortTitle.Location = New System.Drawing.Point(6, 107)
         Me.txtSortTitle.Name = "txtSortTitle"
-        Me.txtSortTitle.Size = New System.Drawing.Size(192, 22)
+        Me.txtSortTitle.Size = New System.Drawing.Size(252, 22)
         Me.txtSortTitle.TabIndex = 1
         '
         'txtOriginalTitle
@@ -1329,7 +1345,7 @@ Partial Class dlgEditTVShow
         Me.txtOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtOriginalTitle.Location = New System.Drawing.Point(6, 66)
         Me.txtOriginalTitle.Name = "txtOriginalTitle"
-        Me.txtOriginalTitle.Size = New System.Drawing.Size(192, 22)
+        Me.txtOriginalTitle.Size = New System.Drawing.Size(252, 22)
         Me.txtOriginalTitle.TabIndex = 1
         '
         'txtTitle
@@ -1337,14 +1353,14 @@ Partial Class dlgEditTVShow
         Me.txtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTitle.Location = New System.Drawing.Point(6, 23)
         Me.txtTitle.Name = "txtTitle"
-        Me.txtTitle.Size = New System.Drawing.Size(192, 22)
+        Me.txtTitle.Size = New System.Drawing.Size(252, 22)
         Me.txtTitle.TabIndex = 1
         '
         'lbMPAA
         '
         Me.lbMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbMPAA.FormattingEnabled = True
-        Me.lbMPAA.Location = New System.Drawing.Point(635, 155)
+        Me.lbMPAA.Location = New System.Drawing.Point(797, 153)
         Me.lbMPAA.Name = "lbMPAA"
         Me.lbMPAA.Size = New System.Drawing.Size(193, 108)
         Me.lbMPAA.TabIndex = 17
@@ -1363,7 +1379,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblMPAA.AutoSize = True
         Me.lblMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMPAA.Location = New System.Drawing.Point(632, 139)
+        Me.lblMPAA.Location = New System.Drawing.Point(794, 137)
         Me.lblMPAA.Name = "lblMPAA"
         Me.lblMPAA.Size = New System.Drawing.Size(80, 13)
         Me.lblMPAA.TabIndex = 16
@@ -1485,7 +1501,7 @@ Partial Class dlgEditTVShow
         Me.tcEdit.Location = New System.Drawing.Point(4, 70)
         Me.tcEdit.Name = "tcEdit"
         Me.tcEdit.SelectedIndex = 0
-        Me.tcEdit.Size = New System.Drawing.Size(844, 516)
+        Me.tcEdit.Size = New System.Drawing.Size(1004, 517)
         Me.tcEdit.TabIndex = 3
         '
         'tpTheme
@@ -1500,7 +1516,7 @@ Partial Class dlgEditTVShow
         Me.tpTheme.Location = New System.Drawing.Point(4, 22)
         Me.tpTheme.Name = "tpTheme"
         Me.tpTheme.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpTheme.Size = New System.Drawing.Size(836, 490)
+        Me.tpTheme.Size = New System.Drawing.Size(996, 491)
         Me.tpTheme.TabIndex = 13
         Me.tpTheme.Text = "Theme"
         Me.tpTheme.UseVisualStyleBackColor = True
@@ -1508,53 +1524,17 @@ Partial Class dlgEditTVShow
         'pnlThemePreview
         '
         Me.pnlThemePreview.BackColor = System.Drawing.Color.DimGray
-        Me.pnlThemePreview.Controls.Add(Me.pnlThemePreviewNoPlayer)
         Me.pnlThemePreview.Location = New System.Drawing.Point(6, 6)
         Me.pnlThemePreview.Name = "pnlThemePreview"
-        Me.pnlThemePreview.Size = New System.Drawing.Size(724, 440)
+        Me.pnlThemePreview.Size = New System.Drawing.Size(800, 450)
         Me.pnlThemePreview.TabIndex = 61
-        '
-        'pnlThemePreviewNoPlayer
-        '
-        Me.pnlThemePreviewNoPlayer.BackColor = System.Drawing.Color.White
-        Me.pnlThemePreviewNoPlayer.Controls.Add(Me.tblThemePreviewNoPlayer)
-        Me.pnlThemePreviewNoPlayer.Location = New System.Drawing.Point(285, 203)
-        Me.pnlThemePreviewNoPlayer.Name = "pnlThemePreviewNoPlayer"
-        Me.pnlThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
-        Me.pnlThemePreviewNoPlayer.TabIndex = 0
-        '
-        'tblThemePreviewNoPlayer
-        '
-        Me.tblThemePreviewNoPlayer.AutoSize = True
-        Me.tblThemePreviewNoPlayer.ColumnCount = 1
-        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblThemePreviewNoPlayer.Controls.Add(Me.lblThemePreviewNoPlayer, 0, 0)
-        Me.tblThemePreviewNoPlayer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblThemePreviewNoPlayer.Location = New System.Drawing.Point(0, 0)
-        Me.tblThemePreviewNoPlayer.Name = "tblThemePreviewNoPlayer"
-        Me.tblThemePreviewNoPlayer.RowCount = 1
-        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56.0!))
-        Me.tblThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
-        Me.tblThemePreviewNoPlayer.TabIndex = 0
-        '
-        'lblThemePreviewNoPlayer
-        '
-        Me.lblThemePreviewNoPlayer.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblThemePreviewNoPlayer.AutoSize = True
-        Me.lblThemePreviewNoPlayer.Location = New System.Drawing.Point(52, 21)
-        Me.lblThemePreviewNoPlayer.Name = "lblThemePreviewNoPlayer"
-        Me.lblThemePreviewNoPlayer.Size = New System.Drawing.Size(137, 13)
-        Me.lblThemePreviewNoPlayer.TabIndex = 0
-        Me.lblThemePreviewNoPlayer.Text = "no Media Player enabled"
         '
         'btnSetThemeDL
         '
         Me.btnSetThemeDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetThemeDL.Image = CType(resources.GetObject("btnSetThemeDL.Image"), System.Drawing.Image)
         Me.btnSetThemeDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetThemeDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetThemeDL.Location = New System.Drawing.Point(810, 184)
         Me.btnSetThemeDL.Name = "btnSetThemeDL"
         Me.btnSetThemeDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetThemeDL.TabIndex = 59
@@ -1567,7 +1547,7 @@ Partial Class dlgEditTVShow
         Me.btnRemoveTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRemoveTheme.Image = CType(resources.GetObject("btnRemoveTheme.Image"), System.Drawing.Image)
         Me.btnRemoveTheme.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveTheme.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveTheme.Location = New System.Drawing.Point(810, 373)
         Me.btnRemoveTheme.Name = "btnRemoveTheme"
         Me.btnRemoveTheme.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveTheme.TabIndex = 60
@@ -1580,7 +1560,7 @@ Partial Class dlgEditTVShow
         Me.btnSetThemeScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetThemeScrape.Image = CType(resources.GetObject("btnSetThemeScrape.Image"), System.Drawing.Image)
         Me.btnSetThemeScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetThemeScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetThemeScrape.Location = New System.Drawing.Point(810, 95)
         Me.btnSetThemeScrape.Name = "btnSetThemeScrape"
         Me.btnSetThemeScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetThemeScrape.TabIndex = 58
@@ -1593,7 +1573,7 @@ Partial Class dlgEditTVShow
         Me.btnSetThemeLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSetThemeLocal.Image = CType(resources.GetObject("btnSetThemeLocal.Image"), System.Drawing.Image)
         Me.btnSetThemeLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetThemeLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetThemeLocal.Location = New System.Drawing.Point(810, 6)
         Me.btnSetThemeLocal.Name = "btnSetThemeLocal"
         Me.btnSetThemeLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetThemeLocal.TabIndex = 57
@@ -1606,7 +1586,7 @@ Partial Class dlgEditTVShow
         Me.btnLocalThemePlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnLocalThemePlay.Enabled = False
         Me.btnLocalThemePlay.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnLocalThemePlay.Location = New System.Drawing.Point(707, 452)
+        Me.btnLocalThemePlay.Location = New System.Drawing.Point(783, 462)
         Me.btnLocalThemePlay.Name = "btnLocalThemePlay"
         Me.btnLocalThemePlay.Size = New System.Drawing.Size(23, 22)
         Me.btnLocalThemePlay.TabIndex = 63
@@ -1615,17 +1595,17 @@ Partial Class dlgEditTVShow
         'txtLocalTheme
         '
         Me.txtLocalTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtLocalTheme.Location = New System.Drawing.Point(6, 452)
+        Me.txtLocalTheme.Location = New System.Drawing.Point(6, 462)
         Me.txtLocalTheme.Name = "txtLocalTheme"
         Me.txtLocalTheme.ReadOnly = True
-        Me.txtLocalTheme.Size = New System.Drawing.Size(695, 22)
+        Me.txtLocalTheme.Size = New System.Drawing.Size(771, 22)
         Me.txtLocalTheme.TabIndex = 62
         '
         'lblLanguage
         '
         Me.lblLanguage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblLanguage.AutoSize = True
-        Me.lblLanguage.Location = New System.Drawing.Point(339, 597)
+        Me.lblLanguage.Location = New System.Drawing.Point(339, 616)
         Me.lblLanguage.Name = "lblLanguage"
         Me.lblLanguage.Size = New System.Drawing.Size(61, 13)
         Me.lblLanguage.TabIndex = 4
@@ -1636,29 +1616,23 @@ Partial Class dlgEditTVShow
         Me.cbSourceLanguage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbSourceLanguage.Location = New System.Drawing.Point(418, 592)
+        Me.cbSourceLanguage.Location = New System.Drawing.Point(418, 611)
         Me.cbSourceLanguage.Name = "cbSourceLanguage"
         Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
         Me.cbSourceLanguage.TabIndex = 9
         '
-        'lblUserRating
+        'btnSetExtrafanartsScrape
         '
-        Me.lblUserRating.AutoSize = True
-        Me.lblUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblUserRating.Location = New System.Drawing.Point(354, 173)
-        Me.lblUserRating.Name = "lblUserRating"
-        Me.lblUserRating.Size = New System.Drawing.Size(70, 13)
-        Me.lblUserRating.TabIndex = 80
-        Me.lblUserRating.Text = "User Rating:"
-        '
-        'txtUserRating
-        '
-        Me.txtUserRating.BackColor = System.Drawing.SystemColors.Window
-        Me.txtUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtUserRating.Location = New System.Drawing.Point(357, 188)
-        Me.txtUserRating.Name = "txtUserRating"
-        Me.txtUserRating.Size = New System.Drawing.Size(66, 22)
-        Me.txtUserRating.TabIndex = 81
+        Me.btnSetExtrafanartsScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetExtrafanartsScrape.Image = CType(resources.GetObject("btnSetExtrafanartsScrape.Image"), System.Drawing.Image)
+        Me.btnSetExtrafanartsScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetExtrafanartsScrape.Location = New System.Drawing.Point(882, 95)
+        Me.btnSetExtrafanartsScrape.Name = "btnSetExtrafanartsScrape"
+        Me.btnSetExtrafanartsScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetExtrafanartsScrape.TabIndex = 17
+        Me.btnSetExtrafanartsScrape.Text = "Scrape"
+        Me.btnSetExtrafanartsScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetExtrafanartsScrape.UseVisualStyleBackColor = True
         '
         'dlgEditTVShow
         '
@@ -1666,7 +1640,7 @@ Partial Class dlgEditTVShow
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(853, 648)
+        Me.ClientSize = New System.Drawing.Size(1008, 667)
         Me.Controls.Add(Me.cbSourceLanguage)
         Me.Controls.Add(Me.lblEpisodeSorting)
         Me.Controls.Add(Me.cbEpisodeSorting)
@@ -1719,11 +1693,6 @@ Partial Class dlgEditTVShow
         Me.tcEdit.ResumeLayout(False)
         Me.tpTheme.ResumeLayout(False)
         Me.tpTheme.PerformLayout()
-        Me.pnlThemePreview.ResumeLayout(False)
-        Me.pnlThemePreviewNoPlayer.ResumeLayout(False)
-        Me.pnlThemePreviewNoPlayer.PerformLayout()
-        Me.tblThemePreviewNoPlayer.ResumeLayout(False)
-        Me.tblThemePreviewNoPlayer.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1848,9 +1817,6 @@ Partial Class dlgEditTVShow
     Friend WithEvents cbSourceLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents tpTheme As TabPage
     Friend WithEvents pnlThemePreview As Panel
-    Friend WithEvents pnlThemePreviewNoPlayer As Panel
-    Friend WithEvents tblThemePreviewNoPlayer As TableLayoutPanel
-    Friend WithEvents lblThemePreviewNoPlayer As Label
     Friend WithEvents btnSetThemeDL As Button
     Friend WithEvents btnRemoveTheme As Button
     Friend WithEvents btnSetThemeScrape As Button
@@ -1859,4 +1825,5 @@ Partial Class dlgEditTVShow
     Friend WithEvents txtLocalTheme As TextBox
     Friend WithEvents txtUserRating As TextBox
     Friend WithEvents lblUserRating As Label
+    Friend WithEvents btnSetExtrafanartsScrape As Button
 End Class

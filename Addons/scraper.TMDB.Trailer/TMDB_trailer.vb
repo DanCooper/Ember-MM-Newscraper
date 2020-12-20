@@ -138,7 +138,7 @@ Public Class TMDB_Trailer
 
     End Sub
 
-    Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.MediaFile)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
         logger.Trace("[TMDB_Trailer] [Scraper_Movie] [Start]")
 
         _TMDBAPI.DefaultLanguage = oDBElement.Language
