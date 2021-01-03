@@ -119,11 +119,12 @@ Public Class dlgMediaFileSelect
         End Select
         If _disableOfd Then btnCustomLocalFile_Browse.Enabled = False
         btnOK.Text = Master.eLang.GetString(373, "Download")
-        'colAudioBitrate.Text = Master.eLang.GetString(1158, "Bitrate")
-        'colDescription.Text = Master.eLang.GetString(979, "Description")
-        'colDuration.Text = Master.eLang.GetString(609, "Duration")
-        'colVideoResolution.Text = Master.eLang.GetString(1138, "Quality")
-        'colSource.Text = Master.eLang.GetString(1173, "Source")
+        colMediaFileAddon.HeaderText = Master.eLang.GetString(1117, "Addon")
+        colMediaFileDuration.HeaderText = Master.eLang.GetString(609, "Duration")
+        colMediaFileSource.HeaderText = Master.eLang.GetString(1173, "Source")
+        colMediaFileTitel.HeaderText = Master.eLang.GetString(21, "Title")
+        colMediaFileVariant.HeaderText = Master.eLang.GetString(1136, "Variant")
+        colMediaFileVideoType.HeaderText = Master.eLang.GetString(1143, "Type")
         btnOpenInBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
         btnScrape.Text = Master.eLang.GetString(79, "Scrape")
         btnYouTubeSearch.Text = Master.eLang.GetString(977, "Search")
@@ -345,8 +346,8 @@ Public Class dlgMediaFileSelect
         For Each nMediaFile In mediafiles
             Dim i As Integer = dgvMediaFiles.Rows.Add()
             dgvMediaFiles.Rows(i).Tag = nMediaFile
+            dgvMediaFiles.Rows(i).Cells(colMediaFileAddon.Name).Value = nMediaFile.Scraper
             dgvMediaFiles.Rows(i).Cells(colMediaFileDuration.Name).Value = nMediaFile.Duration
-            dgvMediaFiles.Rows(i).Cells(colMediaFileScraper.Name).Value = nMediaFile.Scraper
             dgvMediaFiles.Rows(i).Cells(colMediaFileSource.Name).Value = nMediaFile.Source
             dgvMediaFiles.Rows(i).Cells(colMediaFileTitel.Name).Value = nMediaFile.Title
             dgvMediaFiles.Rows(i).Cells(colMediaFileVideoType.Name).Value = nMediaFile.VideoType
@@ -388,7 +389,7 @@ Public Class dlgMediaFileSelect
             ElseIf lstVariants.Count > 0 Then
                 dcbVariants.Value = lstVariants(0).Stream
             End If
-            dgvMediaFiles.Rows(i).Cells("colMediaFileVariants") = dcbVariants
+            dgvMediaFiles.Rows(i).Cells(colMediaFileVariant.Name) = dcbVariants
         Next
 
         dgvMediaFiles.ResumeLayout()
@@ -402,7 +403,7 @@ Public Class dlgMediaFileSelect
     Private Sub DataGridView_DoubleClick_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvMediaFiles.CellDoubleClick
         'skip column header row, video and audio stream column
         If Not e.RowIndex = -1 AndAlso
-            Not e.ColumnIndex = dgvMediaFiles.Columns("colMediaFileVariants").Index Then
+            Not e.ColumnIndex = dgvMediaFiles.Columns(colMediaFileVariant.Name).Index Then
             If Not String.IsNullOrEmpty(dgvMediaFiles.SelectedRows(0).Cells(colMediaFileUrlWebsite.Name).Value.ToString) Then Process.Start(dgvMediaFiles.SelectedRows(0).Cells(colMediaFileUrlWebsite.Name).Value.ToString)
         End If
     End Sub
@@ -495,7 +496,7 @@ Public Class dlgMediaFileSelect
                 If Result IsNot Nothing Then
                     If _NoDownload Then DialogResult = DialogResult.OK
                     If Result.StreamsSpecified Then
-                        Dim selStreamVaraint = DirectCast(dgvMediaFiles.SelectedRows(0).Cells("colMediaFileVariants").Value, MediaContainers.MediaFile.StreamCollection.StreamVariant)
+                        Dim selStreamVaraint = DirectCast(dgvMediaFiles.SelectedRows(0).Cells(colMediaFileVariant.Name).Value, MediaContainers.MediaFile.StreamCollection.StreamVariant)
                         If selStreamVaraint IsNot Nothing Then
                             Result.SetVariant(selStreamVaraint)
                             StartDownload()

@@ -1206,7 +1206,7 @@
   <string id="1114">Certification Mapping</string>
   <string id="1115">Input</string>
   <string id="1116">Mapped to</string>
-  <string id="1117"></string>
+  <string id="1117">Addon</string>
   <string id="1118">Theme</string>
   <string id="1119">To prevent a memory overflow will not display more than {0} Extrafanarts.</string>
   <string id="1120">To prevent a memory overflow will not display more than {0} Extrathumbs.</string>
@@ -1225,14 +1225,14 @@
   <string id="1133">You need your own API key for that</string>
   <string id="1134">Error</string>
   <string id="1135">Collection ID</string>
-  <string id="1136"></string>
+  <string id="1136">Variant</string>
   <string id="1137">Lenght</string>
   <string id="1138">Quality</string>
   <string id="1139">Select None</string>
   <string id="1140">CharacterArt</string>
   <string id="1141">The Trakt addon CAN NOT be used without authorizing it to access your trakt.tv account.</string>
   <string id="1142">PIN Code</string>
-  <string id="1143"></string>
+  <string id="1143">Type</string>
   <string id="1144"></string>
   <string id="1145"></string>
   <string id="1146">Display Banner</string>

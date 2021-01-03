@@ -40,6 +40,43 @@ Namespace YouTube
 #End Region 'Fields
 
 #Region "Methods"
+
+        Private Shared Function ConvertAudioBitrate(ByVal bitrate As Integer) As Enums.AudioBitrate
+            Select Case bitrate
+                Case 48
+                    Return Enums.AudioBitrate.Q48kbps
+                Case 64
+                    Return Enums.AudioBitrate.Q64kbps
+                Case 128
+                    Return Enums.AudioBitrate.Q128kbps
+                Case 192
+                    Return Enums.AudioBitrate.Q192kbps
+                Case 256
+                    Return Enums.AudioBitrate.Q256kbps
+                Case 384
+                    Return Enums.AudioBitrate.Q384kbps
+                Case 512
+                    Return Enums.AudioBitrate.Q512kbps
+                Case Else
+                    Return Enums.AudioBitrate.UNKNOWN
+            End Select
+        End Function
+
+        Private Shared Function ConvertAudioCodec(ByVal codec As VideoLibrary.AudioFormat) As Enums.AudioCodec
+            Select Case codec
+                Case AudioFormat.Aac
+                    Return Enums.AudioCodec.AAC
+                Case AudioFormat.Mp3
+                    Return Enums.AudioCodec.MP3
+                Case AudioFormat.Opus
+                    Return Enums.AudioCodec.Opus
+                Case AudioFormat.Vorbis
+                    Return Enums.AudioCodec.Vorbis
+                Case Else
+                    Return Enums.AudioCodec.UNKNOWN
+            End Select
+        End Function
+
         Public Shared Function GetVideoDetails(ByVal videoIdOrUrl As String) As MediaContainers.MediaFile
             If String.IsNullOrEmpty(videoIdOrUrl) Then Return Nothing
 
@@ -500,13 +537,18 @@ Namespace YouTube
 
                 If videoStream IsNot Nothing Then
                     videoStream.FileExtension = tStream.FileExtension
-                    videoStream.IsAdaptive = tStream.IsAdaptive
                     If tStream.IsEncrypted Then
                         videoStream.YouTubeContainer = tStream
                         nStreams.VideoStreams.Add(videoStream)
                     Else
                         videoStream.StreamUrl = tStream.Uri
                         nStreams.VideoStreams.Add(videoStream)
+                    End If
+                    If tStream.IsAdaptive Then
+                        videoStream.IsAdaptive = True
+                    Else
+                        videoStream.AudioBitrate = ConvertAudioBitrate(tStream.AudioBitrate)
+                        videoStream.AudioCodec = ConvertAudioCodec(tStream.AudioFormat)
                     End If
                 ElseIf audioStream IsNot Nothing Then
                     audioStream.FileExtension = tStream.FileExtension

@@ -1137,7 +1137,7 @@ Namespace MediaContainers
 
 #Region "Methods"
 
-            Private Shared Function BitrateToString(ByVal audioBitrate As Enums.AudioBitrate) As String
+            Public Shared Function BitrateToString(ByVal audioBitrate As Enums.AudioBitrate) As String
                 Select Case audioBitrate
                     Case Enums.AudioBitrate.UNKNOWN
                         Return "Unknown"
@@ -1146,7 +1146,7 @@ Namespace MediaContainers
                 End Select
             End Function
 
-            Private Shared Function CodecToString(ByVal audioCodec As Enums.AudioCodec) As String
+            Public Shared Function CodecToString(ByVal audioCodec As Enums.AudioCodec) As String
                 Select Case audioCodec
                     Case Enums.AudioCodec.UNKNOWN
                         Return "Unknown"
@@ -1225,12 +1225,20 @@ Namespace MediaContainers
                 If audioStream IsNot Nothing Then
                     nDescription = String.Format("{0} {1} {2}",
                                                  nDescription,
-                                                 If(videoStream IsNot Nothing, " | ", String.Empty),
+                                                 If(videoStream IsNot Nothing, "|", String.Empty),
                                                  audioStream.Description
                                                  )
                     nVariant.AudioBitrate = audioStream.Bitrate
                     nVariant.AudioCodec = audioStream.Codec
                     nVariant.AudioStream = audioStream
+                Else
+                    nDescription = String.Format("{0} {1} {2}",
+                                                 nDescription,
+                                                 "|",
+                                                 videoStream.AudioDescription
+                                                 )
+                    nVariant.AudioBitrate = videoStream.AudioBitrate
+                    nVariant.AudioCodec = videoStream.AudioCodec
                 End If
 
                 If videoStream IsNot Nothing AndAlso audioStream IsNot Nothing Then
@@ -1240,6 +1248,7 @@ Namespace MediaContainers
                 ElseIf audioStream IsNot Nothing AndAlso Not String.IsNullOrEmpty(audioStream.FileExtension) Then
                     nDescription = String.Format("{0} | {1}", nDescription, audioStream.FileExtension)
                 End If
+
                 nVariant.Description = nDescription.Trim
 
                 Return nVariant
@@ -1302,6 +1311,16 @@ Namespace MediaContainers
 #End Region 'Fields
 
 #Region "Properties"
+
+            Public Property AudioBitrate As Enums.AudioBitrate = Enums.AudioBitrate.UNKNOWN
+
+            Public Property AudioCodec As Enums.AudioCodec = Enums.AudioCodec.UNKNOWN
+
+            Public ReadOnly Property AudioDescription() As String
+                Get
+                    Return String.Format("{0} ({1})", AudioStream.BitrateToString(AudioBitrate), AudioStream.CodecToString(AudioCodec))
+                End Get
+            End Property
 
             Public Property Codec As Enums.VideoCodec = Enums.VideoCodec.UNKNOWN
 

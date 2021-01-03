@@ -51,10 +51,10 @@ Partial Class dlgMediaFileSelect
         Me.colMediaFileTitel = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colMediaFileUrlWebsite = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colMediaFileDuration = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colMediaFileVariants = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.colMediaFileVariant = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.colMediaFileVideoType = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colMediaFileSource = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colMediaFileScraper = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colMediaFileAddon = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.gbYouTubeSearch.SuspendLayout()
         Me.tblYouTubeSearch.SuspendLayout()
         Me.gbCustom.SuspendLayout()
@@ -283,7 +283,7 @@ Partial Class dlgMediaFileSelect
         Me.dgvMediaFiles.AllowUserToDeleteRows = False
         Me.dgvMediaFiles.AllowUserToResizeRows = False
         Me.dgvMediaFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvMediaFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colMediaFileTitel, Me.colMediaFileUrlWebsite, Me.colMediaFileDuration, Me.colMediaFileVariants, Me.colMediaFileVideoType, Me.colMediaFileSource, Me.colMediaFileScraper})
+        Me.dgvMediaFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colMediaFileTitel, Me.colMediaFileUrlWebsite, Me.colMediaFileDuration, Me.colMediaFileVariant, Me.colMediaFileVideoType, Me.colMediaFileSource, Me.colMediaFileAddon})
         Me.tblMain.SetColumnSpan(Me.dgvMediaFiles, 2)
         Me.dgvMediaFiles.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMediaFiles.Location = New System.Drawing.Point(3, 3)
@@ -376,13 +376,13 @@ Partial Class dlgMediaFileSelect
         Me.colMediaFileDuration.ReadOnly = True
         Me.colMediaFileDuration.Width = 70
         '
-        'colMediaFileVariants
+        'colMediaFileVariant
         '
-        Me.colMediaFileVariants.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.colMediaFileVariants.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.colMediaFileVariants.HeaderText = "Variants"
-        Me.colMediaFileVariants.Name = "colMediaFileVariants"
-        Me.colMediaFileVariants.Width = 54
+        Me.colMediaFileVariant.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.colMediaFileVariant.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.colMediaFileVariant.HeaderText = "Variant"
+        Me.colMediaFileVariant.Name = "colMediaFileVariant"
+        Me.colMediaFileVariant.Width = 49
         '
         'colMediaFileVideoType
         '
@@ -400,13 +400,13 @@ Partial Class dlgMediaFileSelect
         Me.colMediaFileSource.ReadOnly = True
         Me.colMediaFileSource.Width = 67
         '
-        'colMediaFileScraper
+        'colMediaFileAddon
         '
-        Me.colMediaFileScraper.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.colMediaFileScraper.HeaderText = "Scraper"
-        Me.colMediaFileScraper.Name = "colMediaFileScraper"
-        Me.colMediaFileScraper.ReadOnly = True
-        Me.colMediaFileScraper.Width = 70
+        Me.colMediaFileAddon.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.colMediaFileAddon.HeaderText = "Addon"
+        Me.colMediaFileAddon.Name = "colMediaFileAddon"
+        Me.colMediaFileAddon.ReadOnly = True
+        Me.colMediaFileAddon.Width = 67
         '
         'dlgMediaFileSelect
         '
@@ -474,8 +474,8 @@ Partial Class dlgMediaFileSelect
     Friend WithEvents colMediaFileTitel As DataGridViewTextBoxColumn
     Friend WithEvents colMediaFileUrlWebsite As DataGridViewTextBoxColumn
     Friend WithEvents colMediaFileDuration As DataGridViewTextBoxColumn
-    Friend WithEvents colMediaFileVariants As DataGridViewComboBoxColumn
+    Friend WithEvents colMediaFileVariant As DataGridViewComboBoxColumn
     Friend WithEvents colMediaFileVideoType As DataGridViewTextBoxColumn
     Friend WithEvents colMediaFileSource As DataGridViewTextBoxColumn
-    Friend WithEvents colMediaFileScraper As DataGridViewTextBoxColumn
+    Friend WithEvents colMediaFileAddon As DataGridViewTextBoxColumn
 End Class

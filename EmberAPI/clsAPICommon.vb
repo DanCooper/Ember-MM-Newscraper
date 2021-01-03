@@ -577,17 +577,18 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum AudioCodec As Integer
-        AAC = 0
-        AAC_SPATIAL = 1
-        AC3_SPATIAL = 2
-        DTSE_SPATIAL = 3
-        EC3_SPATIAL = 4
-        Opus = 5
-        Opus_SPATIAL = 6
-        Vorbis = 7
-        Vorbis_SPATIAL = 8
-        UNKNOWN = 9
-        Any = 99
+        AAC
+        AAC_SPATIAL
+        AC3_SPATIAL
+        DTSE_SPATIAL
+        EC3_SPATIAL
+        MP3
+        Opus
+        Opus_SPATIAL
+        Vorbis
+        Vorbis_SPATIAL
+        UNKNOWN
+        Any
     End Enum
 
     Public Enum ContentType As Integer

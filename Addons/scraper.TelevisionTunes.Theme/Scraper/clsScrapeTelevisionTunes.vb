@@ -108,10 +108,11 @@ Namespace TelevisionTunes
                                     .AudioBitrate = Enums.AudioBitrate.UNKNOWN,
                                     .Duration = tLength,
                                     .Scraper = "TelevisionTunes",
+                                    .Source = "TelevisionTunes",
                                     .Title = tTitle,
                                     .URLWebsite = tWebURL
                                 }
-                                nTheme.Streams.AudioStreams.Add(New MediaContainers.MediaFile.AudioStream With {.StreamUrl = tURL})
+                                nTheme.Streams.AudioStreams.Add(New MediaContainers.MediaFile.AudioStream With {.Codec = Enums.AudioCodec.MP3, .FileExtension = ".mp3", .StreamUrl = tURL})
                                 _themelist.Add(nTheme)
                             End If
                         Next
