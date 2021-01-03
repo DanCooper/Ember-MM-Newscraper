@@ -688,6 +688,7 @@ Public Class NFO
             If (DBTV.TVShow.StatusSpecified OrElse Not Master.eSettings.TVLockShowStatus) AndAlso ScrapeOptions.bMainStatus AndAlso
                 scrapedshow.StatusSpecified AndAlso Master.eSettings.TVScraperShowStatus AndAlso Not new_Status Then
                 DBTV.TVShow.Status = scrapedshow.Status
+                APIXML.StatusMapping.RunMapping(DBTV.TVShow.Status)
                 new_Status = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStatus AndAlso Not Master.eSettings.TVLockShowStatus Then
                 DBTV.TVShow.Status = String.Empty

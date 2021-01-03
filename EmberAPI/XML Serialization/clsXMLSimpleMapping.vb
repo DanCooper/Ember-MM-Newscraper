@@ -95,6 +95,39 @@ Public Class clsXMLSimpleMapping
         End If
     End Sub
 
+    Public Function RunMapping(ByRef singleString As String, Optional ByVal addNewInputs As Boolean = True) As Boolean
+        Dim nResult As String = String.Empty
+        Dim bNewInputAdded As Boolean
+        If Not String.IsNullOrEmpty(singleString) Then
+            Dim strInput = singleString
+            Dim existingInput As SimpleMapping = Mappings.FirstOrDefault(Function(f) f.Input = strInput)
+            If existingInput IsNot Nothing Then
+                nResult = existingInput.MappedTo
+            ElseIf addNewInputs Then
+                Mappings.Add(New SimpleMapping With {
+                             .Input = singleString,
+                             .MappedTo = singleString
+                             })
+                bNewInputAdded = True
+            End If
+        End If
+
+        'Cleanup Mappings list (not important but nice)
+        If bNewInputAdded Then
+            Mappings.Sort()
+            Save()
+        End If
+
+        'Comparing (check if something has been changed)
+        Dim bNoChanges = (singleString = nResult)
+
+        'Set nResult as mapping result
+        singleString = nResult
+
+        'Return if the string has been changed or not
+        Return Not bNoChanges
+    End Function
+
     Public Function RunMapping(ByRef listToBeMapped As List(Of String), Optional ByVal addNewInputs As Boolean = True) As Boolean
         Dim nResult As New List(Of String)
         Dim bNewInputAdded As Boolean

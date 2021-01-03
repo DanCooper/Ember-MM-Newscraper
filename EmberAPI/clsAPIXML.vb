@@ -37,6 +37,7 @@ Public Class APIXML
     Public Shared LanguageIcons As New Dictionary(Of String, String)
     Public Shared RatingXML As New clsXMLRatings
     Public Shared ScraperLanguagesXML As New clsXMLScraperLanguages
+    Public Shared StatusMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Status.xml"))
     Public Shared StudioMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Studios.xml"))
     Public Shared StudioIcons As New Dictionary(Of String, String)
     Public Shared alGenres As New List(Of String)
@@ -129,6 +130,11 @@ Public Class APIXML
                 Catch
                 End Try
                 alGenres = alGenres.ConvertAll(Function(s) s.ToLower)
+            End If
+
+            'Status mapping
+            If File.Exists(StatusMapping.FileNameFullPath) Then
+                StatusMapping.Load()
             End If
 
             'Studio mapping

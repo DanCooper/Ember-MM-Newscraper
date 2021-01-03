@@ -868,6 +868,41 @@ Public Class Database
         Return iCounter
     End Function
 
+    Public Function Cleanup_Status() As Integer
+        logger.Info("[Database] [Cleanup_Status] Started")
+        Dim iCounter As Integer
+        Dim TVShowList As New List(Of Long)
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT DISTINCT idShow FROM tvshow"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    TVShowList.Add(Convert.ToInt64(SQLreader("idShow")))
+                End While
+            End Using
+        End Using
+
+        Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+            'Process all TVShows, which are assigned to a studio
+            logger.Info("[Database] [Cleanup_Status] Process all TVShows")
+            For Each lTVShowID In TVShowList
+                Dim tmpDBElement As DBElement = Load_TVShow(lTVShowID, False, False)
+                If tmpDBElement.IsOnline Then
+                    If APIXML.StatusMapping.RunMapping(tmpDBElement.TVShow.Status, False) Then
+                        Save_TVShow(tmpDBElement, True, True, False, False)
+                        iCounter += 1
+                    End If
+                Else
+                    logger.Warn(String.Concat("[Database] [Cleanup_Status] Skip TV Show (not online): ", tmpDBElement.ShowPath))
+                End If
+            Next
+            SQLtransaction.Commit()
+        End Using
+        logger.Info(String.Format("[Database] [Cleanup_Status] {0} items changed", iCounter))
+        logger.Info("[Database] [Cleanup_Status] Done")
+        Return iCounter
+    End Function
+
     Public Function Cleanup_Studios() As Integer
         logger.Info("[Database] [Cleanup_Studios] Started")
         Dim iCounter As Integer
@@ -1600,6 +1635,19 @@ Public Class Database
         Return nList.ToArray
     End Function
 
+    Public Function GetAllStatus() As String()
+        Dim nList As New List(Of String)
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT DISTINCT Status FROM tvshow ORDER BY Status;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    nList.Add(SQLreader("Status").ToString)
+                End While
+            End Using
+        End Using
+        Return nList.ToArray
+    End Function
+
     Public Function GetAllStudios() As String()
         Dim nList As New List(Of String)
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1684,6 +1732,16 @@ Public Class Database
                 End If
                 'add a new mapping if tGenre is not in the MappingTable
                 APIXML.GenreMapping.Mappings.Add(New GenreMapping With {.isNew = False, .MappedTo = New List(Of String) From {aGenre}, .SearchString = aGenre})
+            End If
+        Next
+    End Sub
+
+    Public Sub LoadAllStatus()
+        For Each aElement As String In GetAllStatus()
+            Dim nMapping As SimpleMapping = APIXML.StatusMapping.Mappings.FirstOrDefault(Function(f) f.Input = aElement)
+            If nMapping Is Nothing Then
+                'add a new mapping if aElement is not in the MappingTable
+                APIXML.StatusMapping.Mappings.Add(New SimpleMapping With {.Input = aElement, .MappedTo = aElement})
             End If
         Next
     End Sub

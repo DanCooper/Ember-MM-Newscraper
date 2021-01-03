@@ -45,10 +45,12 @@ Public Class genericMapping
     Private WithEvents cmnuTrayToolsCertificationMapping As New ToolStripMenuItem
     Private WithEvents cmnuTrayToolsCountryMapping As New ToolStripMenuItem
     Private WithEvents cmnuTrayToolsGenreMapping As New ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsStatusMapping As New ToolStripMenuItem
     Private WithEvents cmnuTrayToolsStudioMapping As New ToolStripMenuItem
     Private WithEvents mnuMainToolsCertificationMapping As New ToolStripMenuItem
     Private WithEvents mnuMainToolsCountryMapping As New ToolStripMenuItem
     Private WithEvents mnuMainToolsGenreMapping As New ToolStripMenuItem
+    Private WithEvents mnuMainToolsStatusMapping As New ToolStripMenuItem
     Private WithEvents mnuMainToolsStudioMapping As New ToolStripMenuItem
 
 
@@ -144,6 +146,7 @@ Public Class genericMapping
         tsi.DropDownItems.Remove(mnuMainToolsCertificationMapping)
         tsi.DropDownItems.Remove(mnuMainToolsCountryMapping)
         tsi.DropDownItems.Remove(mnuMainToolsGenreMapping)
+        tsi.DropDownItems.Remove(mnuMainToolsStatusMapping)
         tsi.DropDownItems.Remove(mnuMainToolsStudioMapping)
 
         'cmnuTrayTools
@@ -151,6 +154,7 @@ Public Class genericMapping
         tsi.DropDownItems.Remove(cmnuTrayToolsCertificationMapping)
         tsi.DropDownItems.Remove(cmnuTrayToolsCountryMapping)
         tsi.DropDownItems.Remove(cmnuTrayToolsGenreMapping)
+        tsi.DropDownItems.Remove(cmnuTrayToolsStatusMapping)
         tsi.DropDownItems.Remove(cmnuTrayToolsStudioMapping)
     End Sub
 
@@ -176,6 +180,12 @@ Public Class genericMapping
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsGenreMapping)
 
+        mnuMainToolsStatusMapping.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsStatusMapping.Text = Master.eLang.GetString(1144, "Status Mapping")
+        mnuMainToolsStatusMapping.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, mnuMainToolsStatusMapping)
+
         mnuMainToolsStudioMapping.Image = New Bitmap(My.Resources.icon)
         mnuMainToolsStudioMapping.Text = Master.eLang.GetString(1113, "Studio Mapping")
         mnuMainToolsStudioMapping.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
@@ -197,6 +207,11 @@ Public Class genericMapping
         cmnuTrayToolsGenreMapping.Text = Master.eLang.GetString(782, "Genre Manager")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, cmnuTrayToolsGenreMapping)
+
+        cmnuTrayToolsStatusMapping.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsStatusMapping.Text = Master.eLang.GetString(1144, "Status Mapping")
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, cmnuTrayToolsStatusMapping)
 
         cmnuTrayToolsStudioMapping.Image = New Bitmap(My.Resources.icon)
         cmnuTrayToolsStudioMapping.Text = Master.eLang.GetString(1113, "Studio Mapping")
@@ -233,6 +248,15 @@ Public Class genericMapping
     Private Sub GenereMapping_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsGenreMapping.Click, cmnuTrayToolsGenreMapping.Click
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
         Using dlgMapping As New dlgGenreManager
+            dlgMapping.ShowDialog()
+        End Using
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
+    End Sub
+
+    Private Sub StatusMapping_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsStatusMapping.Click, cmnuTrayToolsStatusMapping.Click
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        Using dlgMapping As New dlgSimpleMapping(dlgSimpleMapping.MappingType.StatusMapping)
             dlgMapping.ShowDialog()
         End Using
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))

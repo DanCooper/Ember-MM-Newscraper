@@ -70,6 +70,8 @@ Public Class dlgSimpleMapping
                 e.Result = Master.DB.Cleanup_Certifications()
             Case MappingType.CountryMapping
                 e.Result = Master.DB.Cleanup_Countries()
+            Case MappingType.StatusMapping
+                e.Result = Master.DB.Cleanup_Status()
             Case MappingType.StudioMapping
                 e.Result = Master.DB.Cleanup_Studios()
         End Select
@@ -84,6 +86,9 @@ Public Class dlgSimpleMapping
             Case MappingType.CountryMapping
                 Master.DB.LoadAllCountries()
                 nMapping = CType(APIXML.CountryMapping.CloneDeep, clsXMLSimpleMapping)
+            Case MappingType.StatusMapping
+                Master.DB.LoadAllStatus()
+                nMapping = CType(APIXML.StatusMapping.CloneDeep, clsXMLSimpleMapping)
             Case MappingType.StudioMapping
                 Master.DB.LoadAllStudios()
                 nMapping = CType(APIXML.StudioMapping.CloneDeep, clsXMLSimpleMapping)
@@ -117,6 +122,9 @@ Public Class dlgSimpleMapping
             Case MappingType.CountryMapping
                 APIXML.CountryMapping.Mappings = nSimpleMapping
                 APIXML.CountryMapping.Save()
+            Case MappingType.StatusMapping
+                APIXML.StatusMapping.Mappings = nSimpleMapping
+                APIXML.StatusMapping.Save()
             Case MappingType.StudioMapping
                 APIXML.StudioMapping.Mappings = nSimpleMapping
                 APIXML.StudioMapping.Save()
@@ -129,6 +137,8 @@ Public Class dlgSimpleMapping
                 Text = Master.eLang.GetString(1114, "Certification Mapping")
             Case MappingType.CountryMapping
                 Text = Master.eLang.GetString(884, "Country Mapping")
+            Case MappingType.StatusMapping
+                Text = Master.eLang.GetString(1144, "Status Mapping")
             Case MappingType.StudioMapping
                 Text = Master.eLang.GetString(1113, "Studio Mapping")
         End Select
@@ -145,6 +155,7 @@ Public Class dlgSimpleMapping
     Public Enum MappingType As Integer
         CountryMapping
         CertificationMapping
+        StatusMapping
         StudioMapping
     End Enum
 
