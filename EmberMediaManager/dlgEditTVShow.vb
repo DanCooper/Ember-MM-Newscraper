@@ -304,7 +304,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub btnRemoveTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTheme.Click
-        tmpDBElement.Theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
+        tmpDBElement.Theme = New MediaContainers.MediaFile
         txtLocalTheme.Text = String.Empty
     End Sub
 
@@ -862,7 +862,7 @@ Public Class dlgEditTVShow
         End With
 
         If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-            tmpDBElement.Theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme) With {.LocalFilePath = ofdLocalFiles.FileName}
+            tmpDBElement.Theme = New MediaContainers.MediaFile With {.LocalFilePath = ofdLocalFiles.FileName}
             tmpDBElement.Theme.LoadAndCache()
             LoadTheme(tmpDBElement.Theme)
         End If

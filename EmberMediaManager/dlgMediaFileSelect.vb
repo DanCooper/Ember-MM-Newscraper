@@ -33,10 +33,12 @@ Public Class dlgMediaFileSelect
 
     Private _TmpDBElement As Database.DBElement
     Private _Array As New List(Of String)
+    Private _disableOfd As Boolean = False
     Private _URL As String = String.Empty
     Private _MediaFileList As New List(Of MediaContainers.MediaFile)
     Private _NoDownload As Boolean
-    Private _Type As Enums.ModifierType
+    Private _PreferredVideoResolution As Enums.VideoResolution = Enums.VideoResolution.Any
+    Private _MediaType As Enums.ModifierType
 
 #End Region 'Fields
 
@@ -48,13 +50,14 @@ Public Class dlgMediaFileSelect
 
 #Region "Dialog"
 
-    Public Sub New(ByVal type As Enums.ModifierType)
+    Public Sub New(ByVal type As Enums.ModifierType, Optional disableOfd As Boolean = False)
         ' This call is required by the designer.
         InitializeComponent()
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
         Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
         StartPosition = FormStartPosition.Manual
-        _Type = type
+        _disableOfd = disableOfd
+        _MediaType = type
     End Sub
 
     Private Sub Dialog_FormClosing(sender As Object, e As EventArgs) Handles Me.FormClosing
@@ -79,57 +82,48 @@ Public Class dlgMediaFileSelect
                                          Optional ByVal onlyToNFO As Boolean = False) As DialogResult
         _NoDownload = onlyToNFO
 
-        'set ListView
-        lvMediaFiles.MultiSelect = False
-        lvMediaFiles.FullRowSelect = True
-        lvMediaFiles.HideSelection = False
-
         Select Case dbElement.ContentType
             Case Enums.ContentType.Movie
-                Select Case _Type
+                Select Case _MediaType
                     Case Enums.ModifierType.MainTheme
                         txtYouTubeSearch.Text = String.Format("{0} {1}", dbElement.Movie.Title, Master.eSettings.MovieThemeDefaultSearch)
-                        colVideoResolution.Width = 0
                     Case Enums.ModifierType.MainTrailer
                         txtYouTubeSearch.Text = String.Format("{0} {1}", dbElement.Movie.Title, Master.eSettings.MovieTrailerDefaultSearch)
+                        _PreferredVideoResolution = Master.eSettings.MovieTrailerPrefVideoQual
                 End Select
             Case Enums.ContentType.TVShow
-                Select Case _Type
+                Select Case _MediaType
                     Case Enums.ModifierType.MainTheme
                         txtYouTubeSearch.Text = String.Format("{0} {1}", dbElement.TVShow.Title, Master.eSettings.TVShowThemeDefaultSearch)
-                        colVideoResolution.Width = 0
                 End Select
         End Select
 
         _TmpDBElement = dbElement
 
-        ListView_AddMediaFiles(urlList)
+        DataGridView_AddMediaFiles(urlList)
 
         lblStatus.Visible = False
         pbStatus.Visible = False
         SetControlsEnabled(True)
         SetEnabled()
-        If lvMediaFiles.Items.Count = 1 Then
-            lvMediaFiles.Select()
-            lvMediaFiles.Items(0).Selected = True
-        End If
 
         Return ShowDialog()
     End Function
 
     Private Sub Setup()
-        Select Case _Type
+        Select Case _MediaType
             Case Enums.ModifierType.MainTheme
                 Text = Master.eLang.GetString(916, "Select Theme to download")
             Case Enums.ModifierType.MainTrailer
                 Text = Master.eLang.GetString(915, "Select Trailer to download")
         End Select
+        If _disableOfd Then btnCustomLocalFile_Browse.Enabled = False
         btnOK.Text = Master.eLang.GetString(373, "Download")
-        colAudioBitrate.Text = Master.eLang.GetString(1158, "Bitrate")
-        colDescription.Text = Master.eLang.GetString(979, "Description")
-        colDuration.Text = Master.eLang.GetString(609, "Duration")
-        colVideoResolution.Text = Master.eLang.GetString(1138, "Quality")
-        colSource.Text = Master.eLang.GetString(1173, "Source")
+        'colAudioBitrate.Text = Master.eLang.GetString(1158, "Bitrate")
+        'colDescription.Text = Master.eLang.GetString(979, "Description")
+        'colDuration.Text = Master.eLang.GetString(609, "Duration")
+        'colVideoResolution.Text = Master.eLang.GetString(1138, "Quality")
+        'colSource.Text = Master.eLang.GetString(1173, "Source")
         btnOpenInBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
         btnScrape.Text = Master.eLang.GetString(79, "Scrape")
         btnYouTubeSearch.Text = Master.eLang.GetString(977, "Search")
@@ -147,9 +141,17 @@ Public Class dlgMediaFileSelect
 
     Private Sub btnCustomLocalFile_Browse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCustomLocalFile_Browse.Click
         Try
+            Dim strFilter = String.Empty
+            Select Case _MediaType
+                Case Enums.ModifierType.MainTheme
+                    strFilter = FileUtils.Common.GetOpenFileDialogFilter_Theme()
+                Case Enums.ModifierType.MainTrailer
+                    strFilter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))
+            End Select
+
             With ofdFile
                 .InitialDirectory = Directory.GetParent(_TmpDBElement.Filename).FullName
-                .Filter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))
+                .Filter = strFilter
                 .FilterIndex = 0
             End With
 
@@ -185,8 +187,8 @@ Public Class dlgMediaFileSelect
         If Not String.IsNullOrEmpty(txtCustomURL.Text) Then
             Process.Start(txtCustomURL.Text)
         Else
-            If Not String.IsNullOrEmpty(lvMediaFiles.SelectedItems(0).SubItems(2).Text.ToString) Then
-                Process.Start(lvMediaFiles.SelectedItems(0).SubItems(2).Text.ToString)
+            If Not String.IsNullOrEmpty(dgvMediaFiles.SelectedRows(0).Cells("colMediaFileUrlWebsite").Value.ToString) Then
+                Process.Start(dgvMediaFiles.SelectedRows(0).Cells("colMediaFileUrlWebsite").Value.ToString)
             End If
         End If
     End Sub
@@ -208,7 +210,7 @@ Public Class dlgMediaFileSelect
             .WorkerReportsProgress = False,
             .WorkerSupportsCancellation = True
         }
-        bwCompileList.RunWorkerAsync(New Arguments With {.IsSearch = False})
+        bwCompileList.RunWorkerAsync(New Arguments With {.Type = CompileType.Scrape})
     End Sub
 
     Private Sub btnYouTubeSearch_Click(sender As Object, e As EventArgs) Handles btnYouTubeSearch.Click
@@ -228,31 +230,42 @@ Public Class dlgMediaFileSelect
             .WorkerReportsProgress = False,
             .WorkerSupportsCancellation = True
         }
-        bwCompileList.RunWorkerAsync(New Arguments With {.IsSearch = True, .SearchString = txtYouTubeSearch.Text})
+        bwCompileList.RunWorkerAsync(New Arguments With {
+                                     .SearchString = txtYouTubeSearch.Text,
+                                     .Type = CompileType.YouTubeSearch})
     End Sub
 
     Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
         Try
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-            If Args.IsSearch Then
-                _MediaFileList = YouTube.Scraper.SearchOnYouTube(Args.SearchString, _Type)
-                e.Result = _MediaFileList.Count > 0
-            Else
-                Select Case _Type
-                    Case Enums.ModifierType.MainTheme
-                        Select Case _TmpDBElement.ContentType
-                            Case Enums.ContentType.Movie
-                                e.Result = Not ModulesManager.Instance.ScrapeTheme_Movie(_TmpDBElement, Enums.ModifierType.MainTheme, _MediaFileList)
-                            Case Enums.ContentType.TVShow
-                                e.Result = Not ModulesManager.Instance.ScrapeTheme_TVShow(_TmpDBElement, Enums.ModifierType.MainTrailer, _MediaFileList)
-                        End Select
-                    Case Enums.ModifierType.MainTrailer
-                        Select Case _TmpDBElement.ContentType
-                            Case Enums.ContentType.Movie
-                                e.Result = Not ModulesManager.Instance.ScrapeTrailer_Movie(_TmpDBElement, Enums.ModifierType.MainTrailer, _MediaFileList)
-                        End Select
-                End Select
-            End If
+            Select Case Args.Type
+                Case CompileType.Scrape
+                    Select Case _MediaType
+                        Case Enums.ModifierType.MainTheme
+                            Select Case _TmpDBElement.ContentType
+                                Case Enums.ContentType.Movie
+                                    e.Result = Not ModulesManager.Instance.ScrapeTheme_Movie(_TmpDBElement, Enums.ModifierType.MainTheme, _MediaFileList)
+                                Case Enums.ContentType.TVShow
+                                    e.Result = Not ModulesManager.Instance.ScrapeTheme_TVShow(_TmpDBElement, Enums.ModifierType.MainTrailer, _MediaFileList)
+                            End Select
+                        Case Enums.ModifierType.MainTrailer
+                            Select Case _TmpDBElement.ContentType
+                                Case Enums.ContentType.Movie
+                                    e.Result = Not ModulesManager.Instance.ScrapeTrailer_Movie(_TmpDBElement, Enums.ModifierType.MainTrailer, _MediaFileList)
+                            End Select
+                    End Select
+                Case CompileType.YouTubeParse
+                    If Not String.IsNullOrEmpty(Args.SearchString) Then
+                        Dim nMediaFile = YouTube.Scraper.GetVideoDetails(Args.SearchString)
+                        If nMediaFile IsNot Nothing Then
+                            _MediaFileList.Add(nMediaFile)
+                        End If
+                    End If
+                    e.Result = _MediaFileList.Count > 0
+                Case CompileType.YouTubeSearch
+                    _MediaFileList = YouTube.Scraper.SearchOnYouTube(Args.SearchString)
+                    e.Result = _MediaFileList.Count > 0
+            End Select
         Catch ex As Exception
             _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
@@ -264,20 +277,11 @@ Public Class dlgMediaFileSelect
 
     Private Sub bwCompileList_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCompileList.RunWorkerCompleted
         If Not e.Cancelled Then
-            If Convert.ToBoolean(e.Result) Then
-                If _MediaFileList.Count > 0 Then
-                    lvMediaFiles.Items.Clear()
-                    ListView_AddMediaFiles(_MediaFileList)
-                Else
-                    Select Case _Type
-                        Case Enums.ModifierType.MainTheme
-                            MessageBox.Show(Master.eLang.GetString(1163, "No Themes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        Case Enums.ModifierType.MainTrailer
-                            MessageBox.Show(Master.eLang.GetString(225, "No Trailers found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    End Select
-                End If
+            If Convert.ToBoolean(e.Result) AndAlso _MediaFileList.Count > 0 Then
+                dgvMediaFiles.Rows.Clear()
+                DataGridView_AddMediaFiles(_MediaFileList)
             Else
-                Select Case _Type
+                Select Case _MediaType
                     Case Enums.ModifierType.MainTheme
                         MessageBox.Show(Master.eLang.GetString(1163, "No Themes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Case Enums.ModifierType.MainTrailer
@@ -335,37 +339,75 @@ Public Class dlgMediaFileSelect
         bwDownloadMediaFile.ReportProgress(iProgress, strInfo)
     End Sub
 
-    Private Sub ListView_AddMediaFiles(ByVal tList As List(Of MediaContainers.MediaFile))
-        Dim ID As Integer = lvMediaFiles.Items.Count + 1
-        Dim nList As List(Of MediaContainers.MediaFile) = tList
+    Private Sub DataGridView_AddMediaFiles(ByVal mediafiles As List(Of MediaContainers.MediaFile))
+        dgvMediaFiles.SuspendLayout()
 
-        Dim str(10) As String
-        For Each aMediaFile In nList
-            Dim itm As ListViewItem
-            str(0) = ID.ToString
-            str(1) = aMediaFile.URLVideoStream.ToString
-            str(2) = aMediaFile.URLWebsite.ToString
-            str(3) = aMediaFile.Title.ToString
-            str(4) = aMediaFile.Duration.ToString
-            str(5) = aMediaFile.VideoResolution.ToString
-            str(6) = aMediaFile.AudioBitrate.ToString
-            str(7) = aMediaFile.VideoType.ToString
-            str(8) = aMediaFile.Source.ToString
-            str(9) = aMediaFile.Scraper.ToString
-            str(10) = aMediaFile.FileOriginal.Extension.ToString
-            itm = New ListViewItem(str) With {
-                .Tag = aMediaFile
+        For Each nMediaFile In mediafiles
+            Dim i As Integer = dgvMediaFiles.Rows.Add()
+            dgvMediaFiles.Rows(i).Tag = nMediaFile
+            dgvMediaFiles.Rows(i).Cells(colMediaFileDuration.Name).Value = nMediaFile.Duration
+            dgvMediaFiles.Rows(i).Cells(colMediaFileScraper.Name).Value = nMediaFile.Scraper
+            dgvMediaFiles.Rows(i).Cells(colMediaFileSource.Name).Value = nMediaFile.Source
+            dgvMediaFiles.Rows(i).Cells(colMediaFileTitel.Name).Value = nMediaFile.Title
+            dgvMediaFiles.Rows(i).Cells(colMediaFileVideoType.Name).Value = nMediaFile.VideoType
+            dgvMediaFiles.Rows(i).Cells(colMediaFileUrlWebsite.Name).Value = nMediaFile.URLWebsite
+            Dim lstVariants As New List(Of VariantInformation)
+            Select Case _MediaType
+                Case Enums.ModifierType.MainTheme
+                    nMediaFile.Streams.BuildStreamVariants(True)
+                    For Each nVariant In nMediaFile.Streams.Variants.Where(Function(f) f.StreamType = MediaContainers.MediaFile.StreamCollection.StreamType.Audio)
+                        lstVariants.Add(New VariantInformation With {
+                                            .Description = nVariant.Description,
+                                            .Stream = nVariant
+                                            })
+                    Next
+                Case Enums.ModifierType.MainTrailer
+                    nMediaFile.Streams.BuildStreamVariants()
+                    For Each nVariant In nMediaFile.Streams.Variants.Where(Function(f) f.StreamType = MediaContainers.MediaFile.StreamCollection.StreamType.Video)
+                        lstVariants.Add(New VariantInformation With {
+                                            .Description = nVariant.Description,
+                                            .Stream = nVariant
+                                            })
+                    Next
+            End Select
+            Dim nBindingSource As New BindingSource With {.DataSource = lstVariants.ToArray}
+            Dim dcbVariants As New DataGridViewComboBoxCell With {
+                .DataSource = nBindingSource,
+                .DisplayMember = "Description",
+                .ValueMember = "Stream"
             }
-            lvMediaFiles.Items.Add(itm)
-            ID = ID + 1
+            Dim prefVariant As VariantInformation = Nothing
+            Select Case _MediaType
+                Case Enums.ModifierType.MainTheme
+                    prefVariant = lstVariants.Find(Function(f) f.Stream.AudioBitrate = Enums.AudioBitrate.Q128kbps)
+                Case Enums.ModifierType.MainTrailer
+                    prefVariant = lstVariants.Find(Function(f) f.Stream.VideoResolution = _PreferredVideoResolution)
+            End Select
+            If prefVariant IsNot Nothing Then
+                dcbVariants.Value = prefVariant.Stream
+            ElseIf lstVariants.Count > 0 Then
+                dcbVariants.Value = lstVariants(0).Stream
+            End If
+            dgvMediaFiles.Rows(i).Cells("colMediaFileVariants") = dcbVariants
         Next
+
+        dgvMediaFiles.ResumeLayout()
+        dgvMediaFiles.Enabled = True
     End Sub
 
-    Private Sub ListView_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvMediaFiles.DoubleClick
-        If Not String.IsNullOrEmpty(lvMediaFiles.SelectedItems(0).SubItems(2).Text.ToString) Then Process.Start(lvMediaFiles.SelectedItems(0).SubItems(2).Text.ToString)
+    Private Sub DataGridView_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles dgvMediaFiles.DataError
+        'do nothing
     End Sub
 
-    Private Sub ListView_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lvMediaFiles.SelectedIndexChanged
+    Private Sub DataGridView_DoubleClick_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvMediaFiles.CellDoubleClick
+        'skip column header row, video and audio stream column
+        If Not e.RowIndex = -1 AndAlso
+            Not e.ColumnIndex = dgvMediaFiles.Columns("colMediaFileVariants").Index Then
+            If Not String.IsNullOrEmpty(dgvMediaFiles.SelectedRows(0).Cells(colMediaFileUrlWebsite.Name).Value.ToString) Then Process.Start(dgvMediaFiles.SelectedRows(0).Cells(colMediaFileUrlWebsite.Name).Value.ToString)
+        End If
+    End Sub
+
+    Private Sub DataGridView_SelectionChanged(sender As Object, e As EventArgs) Handles dgvMediaFiles.SelectionChanged
         SetEnabled()
     End Sub
 
@@ -383,16 +425,16 @@ Public Class dlgMediaFileSelect
         Select Case True
             Case txtCustomLocalFile.Text.Length > 0
                 '
-                'Local trailer
+                'Local file
                 '
                 lblStatus.Text = String.Concat(Master.eLang.GetString(907, "Copying specified file"), "...")
                 If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(txtCustomLocalFile.Text)) AndAlso File.Exists(txtCustomLocalFile.Text) Then
                     If _NoDownload Then
-                        Result = New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer) With {
+                        Result = New MediaContainers.MediaFile With {
                             .URLWebsite = txtCustomLocalFile.Text
                         }
                     Else
-                        Result = New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
+                        Result = New MediaContainers.MediaFile
                         Result.FileOriginal.LoadFromFile(txtCustomLocalFile.Text)
                     End If
                     DialogResult = DialogResult.OK
@@ -402,29 +444,27 @@ Public Class dlgMediaFileSelect
                 End If
             Case YouTube.UrlUtils.IsYouTubeUrl(txtCustomURL.Text)
                 '
-                'Manual YouTube Link
+                'Manual YouTube URL
                 '
-                Result = YouTube.Scraper.GetVideoDetails(txtCustomURL.Text, _Type)
-                If Result IsNot Nothing Then
-                    If _NoDownload Then
-                        DialogResult = DialogResult.OK
-                    Else
-                        If Result.StreamsSpecified Then
-                            If SetFormat() Then
-                                StartDownload()
-                            Else
-                                didCancel = True
-                            End If
-                        ElseIf Result.URLVideoStreamSpecified Then
-                            StartDownload()
-                        Else
-                            didCancel = True
-                        End If
-                    End If
-                Else
-                    MessageBox.Show(Master.eLang.GetString(1170, "Trailer could not be parsed"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    didCancel = True
-                End If
+                Dim strYouTubeUrl = txtCustomURL.Text
+                txtCustomLocalFile.Text = String.Empty
+                txtCustomURL.Text = String.Empty
+                SetControlsEnabled(False)
+                lblStatus.Text = Master.eLang.GetString(918, "Compiling list...")
+                lblStatus.Visible = True
+                pbStatus.Style = ProgressBarStyle.Marquee
+                pbStatus.Visible = True
+                Application.DoEvents()
+
+                _MediaFileList.Clear()
+
+                bwCompileList = New ComponentModel.BackgroundWorker With {
+                    .WorkerReportsProgress = False,
+                    .WorkerSupportsCancellation = True
+                }
+                bwCompileList.RunWorkerAsync(New Arguments With {
+                                     .SearchString = strYouTubeUrl,
+                                     .Type = CompileType.YouTubeParse})
             Case StringUtils.isValidURL(txtCustomURL.Text)
                 '
                 'Manual direct URL
@@ -433,22 +473,31 @@ Public Class dlgMediaFileSelect
                     Result.URLWebsite = txtCustomURL.Text
                     DialogResult = DialogResult.OK
                 Else
-                    Dim ManualTrailer As New MediaFileLinkContainer With {.VideoURL = txtCustomURL.Text}
+                    Select Case _MediaType
+                        Case Enums.ModifierType.MainTheme
+                            Result = New MediaContainers.MediaFile With {.URLAudioStream = txtCustomURL.Text}
+                        Case Enums.ModifierType.MainTrailer
+                            Result = New MediaContainers.MediaFile With {.URLVideoStream = txtCustomURL.Text}
+                    End Select
                     bwDownloadMediaFile = New ComponentModel.BackgroundWorker With {
                         .WorkerReportsProgress = True,
                         .WorkerSupportsCancellation = True
                     }
                     bwDownloadMediaFile.RunWorkerAsync()
                 End If
-            Case lvMediaFiles.SelectedItems.Count = 1 AndAlso String.IsNullOrEmpty(txtCustomLocalFile.Text.Trim) AndAlso String.IsNullOrEmpty(txtCustomURL.Text.Trim)
+            Case dgvMediaFiles.SelectedRows.Count = 1 AndAlso
+                String.IsNullOrEmpty(txtCustomLocalFile.Text.Trim) AndAlso
+                String.IsNullOrEmpty(txtCustomURL.Text.Trim)
                 '
-                'List trailer
+                'List item
                 '
-                Result = DirectCast(lvMediaFiles.SelectedItems(0).Tag, MediaContainers.MediaFile)
+                Result = DirectCast(dgvMediaFiles.SelectedRows(0).Tag, MediaContainers.MediaFile)
                 If Result IsNot Nothing Then
                     If _NoDownload Then DialogResult = DialogResult.OK
                     If Result.StreamsSpecified Then
-                        If SetFormat() Then
+                        Dim selStreamVaraint = DirectCast(dgvMediaFiles.SelectedRows(0).Cells("colMediaFileVariants").Value, MediaContainers.MediaFile.StreamCollection.StreamVariant)
+                        If selStreamVaraint IsNot Nothing Then
+                            Result.SetVariant(selStreamVaraint)
                             StartDownload()
                         Else
                             didCancel = True
@@ -474,19 +523,21 @@ Public Class dlgMediaFileSelect
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
         btnOK.Enabled = isEnabled
-        btnCustomLocalFile_Browse.Enabled = isEnabled
+        btnCustomLocalFile_Browse.Enabled = isEnabled AndAlso Not _disableOfd
         btnCustomURL_Remove.Enabled = isEnabled
         btnOpenInBrowser.Enabled = isEnabled
         btnScrape.Enabled = isEnabled
         btnYouTubeSearch.Enabled = isEnabled
-        lvMediaFiles.Enabled = isEnabled
+        dgvMediaFiles.Enabled = isEnabled
         txtCustomLocalFile.Enabled = isEnabled
         txtCustomURL.Enabled = isEnabled
         txtYouTubeSearch.Enabled = isEnabled
     End Sub
 
     Private Sub SetEnabled()
-        If StringUtils.isValidURL(txtCustomURL.Text) OrElse lvMediaFiles.SelectedItems.Count > 0 OrElse txtCustomLocalFile.Text.Length > 0 Then
+        If StringUtils.isValidURL(txtCustomURL.Text) OrElse
+            dgvMediaFiles.SelectedRows.Count > 0 OrElse
+            txtCustomLocalFile.Text.Length > 0 Then
             btnOK.Enabled = True
             If txtCustomLocalFile.Text.Length > 0 Then
                 btnOpenInBrowser.Enabled = False
@@ -526,18 +577,6 @@ Public Class dlgMediaFileSelect
         End If
     End Sub
 
-    Private Function SetFormat() As Boolean
-        Using dFormats As New dlgMediaFileSelectFormat
-            If dFormats.ShowDialog(Result) = DialogResult.OK Then
-                Result.URLAudioStream = dFormats.Result.AudioURL
-                Result.URLVideoStream = dFormats.Result.VideoURL
-                Return True
-            Else
-                Return False
-            End If
-        End Using
-    End Function
-
     Private Sub txtManual_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtCustomLocalFile.TextChanged
         SetEnabled()
     End Sub
@@ -562,16 +601,30 @@ Public Class dlgMediaFileSelect
 
 #Region "Nested Types"
 
+    Private Enum CompileType
+        Scrape
+        YouTubeParse
+        YouTubeSearch
+    End Enum
+
     Private Structure Arguments
 
 #Region "Fields"
 
-        Dim IsSearch As Boolean
         Dim SearchString As String
+        Dim Type As CompileType
 
 #End Region 'Fields
 
     End Structure
+
+    Public Class VariantInformation
+
+        Public Property Description As String = String.Empty
+
+        Public Property Stream As New MediaContainers.MediaFile.StreamCollection.StreamVariant
+
+    End Class
 
 #End Region 'Nested Types
 

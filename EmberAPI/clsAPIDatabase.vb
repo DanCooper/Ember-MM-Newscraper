@@ -4110,8 +4110,8 @@ Public Class Database
             If bToDisk Then
                 _movieDB.ImagesContainer.SaveAllImages(_movieDB, bForceFileCleanup)
                 _movieDB.Movie.SaveAllActorThumbs(_movieDB)
-                _movieDB.Theme.Save(_movieDB, bForceFileCleanup)
-                _movieDB.Trailer.Save(_movieDB, bForceFileCleanup)
+                _movieDB.Theme.Save(_movieDB, Enums.ModifierType.MainTheme, bForceFileCleanup)
+                _movieDB.Trailer.Save(_movieDB, Enums.ModifierType.MainTrailer, bForceFileCleanup)
             End If
 
             par_movie_MoviePath.Value = _movieDB.Filename
@@ -5430,7 +5430,7 @@ Public Class Database
             If bToNFO Then NFO.SaveToNFO_TVShow(_show)
             If bToDisk Then
                 _show.ImagesContainer.SaveAllImages(_show, False)
-                _show.Theme.Save(_show, False)
+                _show.Theme.Save(_show, Enums.ModifierType.MainTheme, False)
                 _show.TVShow.SaveAllActorThumbs(_show)
             End If
 
@@ -5840,8 +5840,8 @@ Public Class Database
         Private _sortmethod As Enums.SortMethod_MovieSet
         Private _source As New DBSource
         Private _subtitles As New List(Of MediaContainers.Subtitle)
-        Private _theme As New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
-        Private _trailer As New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
+        Private _theme As New MediaContainers.MediaFile
+        Private _trailer As New MediaContainers.MediaFile
         Private _tvepisode As MediaContainers.EpisodeDetails
         Private _tvseason As MediaContainers.SeasonDetails
         Private _tvshow As MediaContainers.TVShow
@@ -6413,8 +6413,8 @@ Public Class Database
             _sortmethod = Enums.SortMethod_MovieSet.Year
             _source = New DBSource
             _subtitles = New List(Of MediaContainers.Subtitle)
-            _theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
-            _trailer = New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
+            _theme = New MediaContainers.MediaFile
+            _trailer = New MediaContainers.MediaFile
             _tvepisode = Nothing
             _tvseason = Nothing
             _tvshow = Nothing

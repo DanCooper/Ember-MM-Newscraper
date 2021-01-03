@@ -122,7 +122,7 @@ Public Class YouTube_Trailer
 
         LoadSettings()
 
-        If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+        If DBMovie.Movie.TitleSpecified Then
             Dim _scraper As New Scraper()
             TrailerList = _scraper.GetTrailers(DBMovie.Movie.Title)
         End If

@@ -25,7 +25,7 @@ Public Class Scraper
 #Region "Methods"
 
     Public Function GetThemes(ByVal title As String, ByVal type As Enums.ContentType) As List(Of MediaContainers.MediaFile)
-        Dim nThemes As New List(Of MediaContainers.MediaFile)
+        Dim lstThemes As New List(Of MediaContainers.MediaFile)
         Dim strDefaultSearch As String = String.Empty
         Select Case type
             Case Enums.ContentType.Movie
@@ -33,12 +33,11 @@ Public Class Scraper
             Case Enums.ContentType.TV, Enums.ContentType.TVShow
                 strDefaultSearch = Master.eSettings.TVShowThemeDefaultSearch
         End Select
-        Dim lstThemes = YouTube.Scraper.SearchOnYouTube(String.Format("{0} {1}", title, strDefaultSearch), Enums.ModifierType.MainTheme)
-        nThemes.AddRange(lstThemes.Where(Function(f) f IsNot Nothing AndAlso f.Streams.AudioStreams.Count > 0))
-        For Each tTheme In nThemes
+        lstThemes = YouTube.Scraper.SearchOnYouTube(String.Format("{0} {1}", title, strDefaultSearch))
+        For Each tTheme In lstThemes
             tTheme.Scraper = "YouTube"
         Next
-        Return nThemes
+        Return lstThemes
     End Function
 
 #End Region 'Methods

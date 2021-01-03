@@ -2022,7 +2022,7 @@ Public Class frmMain
         logger.Trace(String.Format("[Movie Scraper] [Start] Movies Count [{0}]", Args.ScrapeList.Count.ToString))
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
-            Dim Theme As New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
+            Dim Theme As New MediaContainers.MediaFile
             Dim tURL As String = String.Empty
             Dim OldListTitle As String = String.Empty
             Dim NewListTitle As String = String.Empty
@@ -2115,7 +2115,7 @@ Public Class frmMain
                     Dim SearchResults As New List(Of MediaContainers.MediaFile)
                     If Not ModulesManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, Enums.ModifierType.MainTheme, SearchResults) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Using dThemeSelect As New dlgMediaFileSelect(Enums.ModifierType.MainTheme)
+                            Using dThemeSelect As New dlgMediaFileSelect(Enums.ModifierType.MainTheme, True)
                                 If dThemeSelect.ShowDialog(DBScrapeMovie, SearchResults) = DialogResult.OK Then
                                     DBScrapeMovie.Theme = dThemeSelect.Result
                                 End If
@@ -2123,7 +2123,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredTheme As New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
+                            Dim newPreferredTheme As New MediaContainers.MediaFile
                             If MediaFiles.GetPreferredMovieTheme(SearchResults, newPreferredTheme) Then
                                 DBScrapeMovie.Theme = newPreferredTheme
                             End If
@@ -2139,7 +2139,7 @@ Public Class frmMain
                     Dim SearchResults As New List(Of MediaContainers.MediaFile)
                     If Not ModulesManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ModifierType.MainTrailer, SearchResults) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Using dTrailerSelect As New dlgMediaFileSelect(Enums.ModifierType.MainTrailer)
+                            Using dTrailerSelect As New dlgMediaFileSelect(Enums.ModifierType.MainTrailer, True)
                                 If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults) = DialogResult.OK Then
                                     DBScrapeMovie.Trailer = dTrailerSelect.Result
                                 End If
@@ -2147,7 +2147,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredTrailer As New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
+                            Dim newPreferredTrailer As New MediaContainers.MediaFile
                             If MediaFiles.GetPreferredMovieTrailer(SearchResults, newPreferredTrailer) Then
                                 DBScrapeMovie.Trailer = newPreferredTrailer
                             End If
@@ -2384,7 +2384,7 @@ Public Class frmMain
         logger.Trace(String.Format("[TVScraper] [Start] TV Shows Count [{0}]", Args.ScrapeList.Count.ToString))
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
-            Dim Theme As New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
+            Dim Theme As New MediaContainers.MediaFile
             Dim tURL As String = String.Empty
             Dim OldListTitle As String = String.Empty
             Dim NewListTitle As String = String.Empty
@@ -2457,7 +2457,7 @@ Public Class frmMain
                     Dim SearchResults As New List(Of MediaContainers.MediaFile)
                     If Not ModulesManager.Instance.ScrapeTheme_TVShow(DBScrapeShow, Enums.ModifierType.MainTheme, SearchResults) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Using dThemeSelect As New dlgMediaFileSelect(Enums.ModifierType.MainTheme)
+                            Using dThemeSelect As New dlgMediaFileSelect(Enums.ModifierType.MainTheme, True)
                                 If dThemeSelect.ShowDialog(DBScrapeShow, SearchResults) = DialogResult.OK Then
                                     DBScrapeShow.Theme = dThemeSelect.Result
                                 End If
@@ -2465,7 +2465,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredTheme As New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
+                            Dim newPreferredTheme As New MediaContainers.MediaFile
                             If MediaFiles.GetPreferredTVShowTheme(SearchResults, newPreferredTheme) Then
                                 DBScrapeShow.Theme = newPreferredTheme
                             End If

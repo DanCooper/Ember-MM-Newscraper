@@ -294,7 +294,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnDLTrailer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDLTrailer.Click
-        Dim tResults As New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
+        Dim tResults As New MediaContainers.MediaFile
         Dim dlgTrlS As dlgMediaFileSelect
         Dim tList As New List(Of MediaContainers.MediaFile)
         Dim tURL As String = String.Empty
@@ -478,12 +478,12 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnRemoveTheme_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveTheme.Click
-        tmpDBElement.Theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
+        tmpDBElement.Theme = New MediaContainers.MediaFile
         txtLocalTheme.Text = String.Empty
     End Sub
 
     Private Sub btnRemoveTrailer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveTrailer.Click
-        tmpDBElement.Trailer = New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
+        tmpDBElement.Trailer = New MediaContainers.MediaFile
         txtLocalTrailer.Text = String.Empty
     End Sub
 
@@ -1055,7 +1055,7 @@ Public Class dlgEditMovie
         End With
 
         If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-            tmpDBElement.Theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme) With {.LocalFilePath = ofdLocalFiles.FileName}
+            tmpDBElement.Theme = New MediaContainers.MediaFile With {.LocalFilePath = ofdLocalFiles.FileName}
             tmpDBElement.Theme.LoadAndCache()
             LoadTheme(tmpDBElement.Theme)
         End If
@@ -1086,7 +1086,7 @@ Public Class dlgEditMovie
         End With
 
         If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-            tmpDBElement.Trailer = New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer) With {.LocalFilePath = ofdLocalFiles.FileName}
+            tmpDBElement.Trailer = New MediaContainers.MediaFile With {.LocalFilePath = ofdLocalFiles.FileName}
             tmpDBElement.Trailer.LoadAndCache()
             LoadTrailer(tmpDBElement.Trailer)
         End If

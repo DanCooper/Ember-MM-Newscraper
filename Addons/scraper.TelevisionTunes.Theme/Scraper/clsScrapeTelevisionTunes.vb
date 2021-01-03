@@ -104,14 +104,15 @@ Namespace TelevisionTunes
                             tURL = GetDownloadURL(tWebURL)
 
                             If Not String.IsNullOrEmpty(tURL) Then
-                                _themelist.Add(New MediaContainers.MediaFile(Enums.ModifierType.MainTheme) With {
-                                               .AudioBitrate = Enums.AudioBitrate.UNKNOWN,
-                                               .Duration = tLength,
-                                               .Scraper = "TelevisionTunes",
-                                               .Title = tTitle,
-                                               .URLAudioStream = tURL,
-                                               .URLWebsite = tWebURL
-                                               })
+                                Dim nTheme As New MediaContainers.MediaFile With {
+                                    .AudioBitrate = Enums.AudioBitrate.UNKNOWN,
+                                    .Duration = tLength,
+                                    .Scraper = "TelevisionTunes",
+                                    .Title = tTitle,
+                                    .URLWebsite = tWebURL
+                                }
+                                nTheme.Streams.AudioStreams.Add(New MediaContainers.MediaFile.AudioStream With {.StreamUrl = tURL})
+                                _themelist.Add(nTheme)
                             End If
                         Next
 

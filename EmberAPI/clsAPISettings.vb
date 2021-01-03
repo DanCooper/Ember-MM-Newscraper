@@ -7289,7 +7289,7 @@ Public Class Settings
         MovieSortTokensIsEmpty = False
         MovieSetSortTokensIsEmpty = False
         MovieThemeTvTunesEnable = True
-        MovieThemeDefaultSearch = "theme"
+        MovieThemeDefaultSearch = "theme soundtrack"
         MovieThemeKeepExisting = False
         MovieTrailerDefaultSearch = "trailer"
         MovieTrailerKeepExisting = False
@@ -7526,7 +7526,7 @@ Public Class Settings
         TVShowPosterResize = False
         TVShowPosterWidth = 0
         TVShowProperCase = True
-        TVShowThemeDefaultSearch = "theme"
+        TVShowThemeDefaultSearch = "theme soundtrack"
         TVShowThemeKeepExisting = False
         TVSkipLessThan = 0
         TVSortTokens = New List(Of String)

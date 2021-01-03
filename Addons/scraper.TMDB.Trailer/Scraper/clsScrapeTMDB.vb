@@ -91,7 +91,7 @@ Public Class clsAPITMDB
         End If
         If trailers IsNot Nothing AndAlso trailers.Results IsNot Nothing Then
             For Each Video As TMDbLib.Objects.General.Video In trailers.Results.Where(Function(f) f.Site = "YouTube")
-                Dim nTrailer = YouTube.Scraper.GetVideoDetails(Video.Key, Enums.ModifierType.MainTrailer)
+                Dim nTrailer = YouTube.Scraper.GetVideoDetails(Video.Key)
                 If nTrailer IsNot Nothing Then
                     nTrailer.LongLanguage = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1))
                     nTrailer.Scraper = "TMDb"

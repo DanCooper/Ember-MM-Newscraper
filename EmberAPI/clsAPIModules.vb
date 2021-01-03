@@ -1211,7 +1211,7 @@ Public Class ModulesManager
                 DBElement.ImagesContainer = New MediaContainers.ImagesContainer
                 DBElement.NfoPath = String.Empty
                 DBElement.Seasons.Clear()
-                DBElement.Theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
+                DBElement.Theme = New MediaContainers.MediaFile
                 DBElement.TVShow = New MediaContainers.TVShow
 
                 DBElement.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
@@ -1503,7 +1503,7 @@ Public Class ModulesManager
             Application.DoEvents()
         End While
 
-        If (modules.Count() <= 0) Then
+        If (modules.Count <= 0) Then
             logger.Warn("[ModulesManager] [ScrapeTheme_Movie] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Theme_Movie In modules
@@ -1574,7 +1574,7 @@ Public Class ModulesManager
             Application.DoEvents()
         End While
 
-        If (modules.Count() <= 0) Then
+        If (modules.Count <= 0) Then
             logger.Warn("[ModulesManager] [ScrapeTrailer_Movie] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Trailer_Movie In modules

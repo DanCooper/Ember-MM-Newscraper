@@ -26,17 +26,6 @@ Partial Class dlgMediaFileSelect
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnScrape = New System.Windows.Forms.Button()
-        Me.lvMediaFiles = New System.Windows.Forms.ListView()
-        Me.colNumber = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colWebURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colDuration = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colVideoResolution = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colAudioBitrate = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colVideoType = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colSource = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colScraper = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbYouTubeSearch = New System.Windows.Forms.GroupBox()
         Me.tblYouTubeSearch = New System.Windows.Forms.TableLayoutPanel()
         Me.txtYouTubeSearch = New System.Windows.Forms.TextBox()
@@ -52,18 +41,27 @@ Partial Class dlgMediaFileSelect
         Me.ofdFile = New System.Windows.Forms.OpenFileDialog()
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.dgvMediaFiles = New System.Windows.Forms.DataGridView()
         Me.btnOpenInBrowser = New System.Windows.Forms.Button()
         Me.pblBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.pbStatus = New System.Windows.Forms.ToolStripProgressBar()
         Me.lblStatus = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.colMediaFileTitel = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colMediaFileUrlWebsite = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colMediaFileDuration = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colMediaFileVariants = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.colMediaFileVideoType = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colMediaFileSource = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colMediaFileScraper = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.gbYouTubeSearch.SuspendLayout()
         Me.tblYouTubeSearch.SuspendLayout()
         Me.gbCustom.SuspendLayout()
         Me.tblCustom.SuspendLayout()
         Me.pnlMain.SuspendLayout()
         Me.tblMain.SuspendLayout()
+        CType(Me.dgvMediaFiles, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pblBottom.SuspendLayout()
         Me.tblBottom.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
@@ -72,7 +70,7 @@ Partial Class dlgMediaFileSelect
         'btnOK
         '
         Me.btnOK.Enabled = False
-        Me.btnOK.Location = New System.Drawing.Point(635, 3)
+        Me.btnOK.Location = New System.Drawing.Point(735, 3)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(120, 23)
         Me.btnOK.TabIndex = 6
@@ -81,7 +79,7 @@ Partial Class dlgMediaFileSelect
         'btnCancel
         '
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(761, 3)
+        Me.btnCancel.Location = New System.Drawing.Point(861, 3)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(120, 23)
         Me.btnCancel.TabIndex = 7
@@ -97,71 +95,6 @@ Partial Class dlgMediaFileSelect
         Me.btnScrape.Text = "Scrape"
         Me.btnScrape.UseVisualStyleBackColor = True
         '
-        'lvMediaFiles
-        '
-        Me.lvMediaFiles.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lvMediaFiles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colDuration, Me.colVideoResolution, Me.colAudioBitrate, Me.colVideoType, Me.colSource, Me.colScraper})
-        Me.tblMain.SetColumnSpan(Me.lvMediaFiles, 2)
-        Me.lvMediaFiles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lvMediaFiles.HideSelection = False
-        Me.lvMediaFiles.Location = New System.Drawing.Point(3, 3)
-        Me.lvMediaFiles.Name = "lvMediaFiles"
-        Me.lvMediaFiles.Size = New System.Drawing.Size(878, 354)
-        Me.lvMediaFiles.TabIndex = 4
-        Me.lvMediaFiles.UseCompatibleStateImageBehavior = False
-        Me.lvMediaFiles.View = System.Windows.Forms.View.Details
-        '
-        'colNumber
-        '
-        Me.colNumber.Text = "#"
-        Me.colNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.colNumber.Width = 20
-        '
-        'colURL
-        '
-        Me.colURL.Text = "URL"
-        Me.colURL.Width = 0
-        '
-        'colWebURL
-        '
-        Me.colWebURL.Text = "WebURL"
-        Me.colWebURL.Width = 0
-        '
-        'colDescription
-        '
-        Me.colDescription.Text = "Description"
-        Me.colDescription.Width = 400
-        '
-        'colDuration
-        '
-        Me.colDuration.Text = "Duration"
-        '
-        'colVideoResolution
-        '
-        Me.colVideoResolution.Text = "Resolution"
-        Me.colVideoResolution.Width = 80
-        '
-        'colAudioBitrate
-        '
-        Me.colAudioBitrate.Text = "Bitrate"
-        Me.colAudioBitrate.Width = 80
-        '
-        'colVideoType
-        '
-        Me.colVideoType.Text = "Type"
-        '
-        'colSource
-        '
-        Me.colSource.Text = "Source"
-        Me.colSource.Width = 120
-        '
-        'colScraper
-        '
-        Me.colScraper.Text = "Scraper"
-        Me.colScraper.Width = 120
-        '
         'gbYouTubeSearch
         '
         Me.gbYouTubeSearch.AutoSize = True
@@ -170,7 +103,7 @@ Partial Class dlgMediaFileSelect
         Me.gbYouTubeSearch.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbYouTubeSearch.Location = New System.Drawing.Point(3, 412)
         Me.gbYouTubeSearch.Name = "gbYouTubeSearch"
-        Me.gbYouTubeSearch.Size = New System.Drawing.Size(878, 50)
+        Me.gbYouTubeSearch.Size = New System.Drawing.Size(978, 50)
         Me.gbYouTubeSearch.TabIndex = 9
         Me.gbYouTubeSearch.TabStop = False
         Me.gbYouTubeSearch.Text = "Search On YouTube"
@@ -188,7 +121,7 @@ Partial Class dlgMediaFileSelect
         Me.tblYouTubeSearch.Name = "tblYouTubeSearch"
         Me.tblYouTubeSearch.RowCount = 1
         Me.tblYouTubeSearch.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblYouTubeSearch.Size = New System.Drawing.Size(872, 29)
+        Me.tblYouTubeSearch.Size = New System.Drawing.Size(972, 29)
         Me.tblYouTubeSearch.TabIndex = 2
         '
         'txtYouTubeSearch
@@ -197,13 +130,13 @@ Partial Class dlgMediaFileSelect
         Me.txtYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtYouTubeSearch.Location = New System.Drawing.Point(3, 3)
         Me.txtYouTubeSearch.Name = "txtYouTubeSearch"
-        Me.txtYouTubeSearch.Size = New System.Drawing.Size(785, 22)
+        Me.txtYouTubeSearch.Size = New System.Drawing.Size(885, 22)
         Me.txtYouTubeSearch.TabIndex = 0
         '
         'btnYouTubeSearch
         '
         Me.btnYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnYouTubeSearch.Location = New System.Drawing.Point(794, 3)
+        Me.btnYouTubeSearch.Location = New System.Drawing.Point(894, 3)
         Me.btnYouTubeSearch.Name = "btnYouTubeSearch"
         Me.btnYouTubeSearch.Size = New System.Drawing.Size(75, 23)
         Me.btnYouTubeSearch.TabIndex = 1
@@ -218,7 +151,7 @@ Partial Class dlgMediaFileSelect
         Me.gbCustom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbCustom.Location = New System.Drawing.Point(3, 488)
         Me.gbCustom.Name = "gbCustom"
-        Me.gbCustom.Size = New System.Drawing.Size(878, 119)
+        Me.gbCustom.Size = New System.Drawing.Size(978, 119)
         Me.gbCustom.TabIndex = 3
         Me.gbCustom.TabStop = False
         Me.gbCustom.Text = "Custom"
@@ -243,12 +176,12 @@ Partial Class dlgMediaFileSelect
         Me.tblCustom.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblCustom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblCustom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblCustom.Size = New System.Drawing.Size(872, 98)
+        Me.tblCustom.Size = New System.Drawing.Size(972, 98)
         Me.tblCustom.TabIndex = 5
         '
         'btnCustomLocalFile_Browse
         '
-        Me.btnCustomLocalFile_Browse.Location = New System.Drawing.Point(844, 72)
+        Me.btnCustomLocalFile_Browse.Location = New System.Drawing.Point(944, 72)
         Me.btnCustomLocalFile_Browse.Name = "btnCustomLocalFile_Browse"
         Me.btnCustomLocalFile_Browse.Size = New System.Drawing.Size(25, 23)
         Me.btnCustomLocalFile_Browse.TabIndex = 4
@@ -258,7 +191,7 @@ Partial Class dlgMediaFileSelect
         'btnCustomURL_Remove
         '
         Me.btnCustomURL_Remove.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
-        Me.btnCustomURL_Remove.Location = New System.Drawing.Point(844, 23)
+        Me.btnCustomURL_Remove.Location = New System.Drawing.Point(944, 23)
         Me.btnCustomURL_Remove.Name = "btnCustomURL_Remove"
         Me.btnCustomURL_Remove.Size = New System.Drawing.Size(25, 23)
         Me.btnCustomURL_Remove.TabIndex = 5
@@ -271,7 +204,7 @@ Partial Class dlgMediaFileSelect
         Me.txtCustomLocalFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCustomLocalFile.Location = New System.Drawing.Point(3, 72)
         Me.txtCustomLocalFile.Name = "txtCustomLocalFile"
-        Me.txtCustomLocalFile.Size = New System.Drawing.Size(835, 22)
+        Me.txtCustomLocalFile.Size = New System.Drawing.Size(935, 22)
         Me.txtCustomLocalFile.TabIndex = 3
         '
         'lblCustomURL
@@ -303,19 +236,20 @@ Partial Class dlgMediaFileSelect
         Me.txtCustomURL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCustomURL.Location = New System.Drawing.Point(3, 23)
         Me.txtCustomURL.Name = "txtCustomURL"
-        Me.txtCustomURL.Size = New System.Drawing.Size(835, 22)
+        Me.txtCustomURL.Size = New System.Drawing.Size(935, 22)
         Me.txtCustomURL.TabIndex = 1
         '
         'pnlMain
         '
         Me.pnlMain.AutoScroll = True
         Me.pnlMain.AutoSize = True
+        Me.pnlMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlMain.BackColor = System.Drawing.Color.White
         Me.pnlMain.Controls.Add(Me.tblMain)
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(884, 610)
+        Me.pnlMain.Size = New System.Drawing.Size(984, 610)
         Me.pnlMain.TabIndex = 2
         '
         'tblMain
@@ -327,8 +261,8 @@ Partial Class dlgMediaFileSelect
         Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMain.Controls.Add(Me.gbYouTubeSearch, 0, 3)
         Me.tblMain.Controls.Add(Me.gbCustom, 0, 6)
-        Me.tblMain.Controls.Add(Me.lvMediaFiles, 0, 0)
         Me.tblMain.Controls.Add(Me.btnScrape, 0, 1)
+        Me.tblMain.Controls.Add(Me.dgvMediaFiles, 0, 0)
         Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMain.Location = New System.Drawing.Point(0, 0)
         Me.tblMain.Name = "tblMain"
@@ -340,8 +274,25 @@ Partial Class dlgMediaFileSelect
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.Size = New System.Drawing.Size(884, 610)
+        Me.tblMain.Size = New System.Drawing.Size(984, 610)
         Me.tblMain.TabIndex = 4
+        '
+        'dgvMediaFiles
+        '
+        Me.dgvMediaFiles.AllowUserToAddRows = False
+        Me.dgvMediaFiles.AllowUserToDeleteRows = False
+        Me.dgvMediaFiles.AllowUserToResizeRows = False
+        Me.dgvMediaFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvMediaFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colMediaFileTitel, Me.colMediaFileUrlWebsite, Me.colMediaFileDuration, Me.colMediaFileVariants, Me.colMediaFileVideoType, Me.colMediaFileSource, Me.colMediaFileScraper})
+        Me.tblMain.SetColumnSpan(Me.dgvMediaFiles, 2)
+        Me.dgvMediaFiles.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvMediaFiles.Location = New System.Drawing.Point(3, 3)
+        Me.dgvMediaFiles.MultiSelect = False
+        Me.dgvMediaFiles.Name = "dgvMediaFiles"
+        Me.dgvMediaFiles.RowHeadersVisible = False
+        Me.dgvMediaFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvMediaFiles.Size = New System.Drawing.Size(978, 354)
+        Me.dgvMediaFiles.TabIndex = 10
         '
         'btnOpenInBrowser
         '
@@ -360,7 +311,7 @@ Partial Class dlgMediaFileSelect
         Me.pblBottom.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pblBottom.Location = New System.Drawing.Point(0, 610)
         Me.pblBottom.Name = "pblBottom"
-        Me.pblBottom.Size = New System.Drawing.Size(884, 29)
+        Me.pblBottom.Size = New System.Drawing.Size(984, 29)
         Me.pblBottom.TabIndex = 8
         '
         'tblBottom
@@ -380,7 +331,7 @@ Partial Class dlgMediaFileSelect
         Me.tblBottom.RowCount = 1
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29.0!))
-        Me.tblBottom.Size = New System.Drawing.Size(884, 29)
+        Me.tblBottom.Size = New System.Drawing.Size(984, 29)
         Me.tblBottom.TabIndex = 0
         '
         'StatusStrip
@@ -388,7 +339,7 @@ Partial Class dlgMediaFileSelect
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.pbStatus, Me.lblStatus})
         Me.StatusStrip.Location = New System.Drawing.Point(0, 639)
         Me.StatusStrip.Name = "StatusStrip"
-        Me.StatusStrip.Size = New System.Drawing.Size(884, 22)
+        Me.StatusStrip.Size = New System.Drawing.Size(984, 22)
         Me.StatusStrip.TabIndex = 9
         Me.StatusStrip.Text = "StatusStrip1"
         '
@@ -403,6 +354,60 @@ Partial Class dlgMediaFileSelect
         Me.lblStatus.Size = New System.Drawing.Size(90, 17)
         Me.lblStatus.Text = "Compiling list..."
         '
+        'colMediaFileTitel
+        '
+        Me.colMediaFileTitel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colMediaFileTitel.HeaderText = "Title"
+        Me.colMediaFileTitel.Name = "colMediaFileTitel"
+        Me.colMediaFileTitel.ReadOnly = True
+        '
+        'colMediaFileUrlWebsite
+        '
+        Me.colMediaFileUrlWebsite.HeaderText = "Website"
+        Me.colMediaFileUrlWebsite.Name = "colMediaFileUrlWebsite"
+        Me.colMediaFileUrlWebsite.ReadOnly = True
+        Me.colMediaFileUrlWebsite.Visible = False
+        Me.colMediaFileUrlWebsite.Width = 5
+        '
+        'colMediaFileDuration
+        '
+        Me.colMediaFileDuration.HeaderText = "Duration"
+        Me.colMediaFileDuration.Name = "colMediaFileDuration"
+        Me.colMediaFileDuration.ReadOnly = True
+        Me.colMediaFileDuration.Width = 70
+        '
+        'colMediaFileVariants
+        '
+        Me.colMediaFileVariants.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.colMediaFileVariants.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.colMediaFileVariants.HeaderText = "Variants"
+        Me.colMediaFileVariants.Name = "colMediaFileVariants"
+        Me.colMediaFileVariants.Width = 54
+        '
+        'colMediaFileVideoType
+        '
+        Me.colMediaFileVideoType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.colMediaFileVideoType.HeaderText = "Type"
+        Me.colMediaFileVideoType.Name = "colMediaFileVideoType"
+        Me.colMediaFileVideoType.ReadOnly = True
+        Me.colMediaFileVideoType.Width = 55
+        '
+        'colMediaFileSource
+        '
+        Me.colMediaFileSource.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.colMediaFileSource.HeaderText = "Source"
+        Me.colMediaFileSource.Name = "colMediaFileSource"
+        Me.colMediaFileSource.ReadOnly = True
+        Me.colMediaFileSource.Width = 67
+        '
+        'colMediaFileScraper
+        '
+        Me.colMediaFileScraper.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.colMediaFileScraper.HeaderText = "Scraper"
+        Me.colMediaFileScraper.Name = "colMediaFileScraper"
+        Me.colMediaFileScraper.ReadOnly = True
+        Me.colMediaFileScraper.Width = 70
+        '
         'dlgMediaFileSelect
         '
         Me.AcceptButton = Me.btnOK
@@ -410,7 +415,7 @@ Partial Class dlgMediaFileSelect
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(884, 661)
+        Me.ClientSize = New System.Drawing.Size(984, 661)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pblBottom)
         Me.Controls.Add(Me.StatusStrip)
@@ -431,6 +436,7 @@ Partial Class dlgMediaFileSelect
         Me.pnlMain.PerformLayout()
         Me.tblMain.ResumeLayout(False)
         Me.tblMain.PerformLayout()
+        CType(Me.dgvMediaFiles, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pblBottom.ResumeLayout(False)
         Me.pblBottom.PerformLayout()
         Me.tblBottom.ResumeLayout(False)
@@ -451,28 +457,25 @@ Partial Class dlgMediaFileSelect
     Friend WithEvents ofdFile As System.Windows.Forms.OpenFileDialog
     Friend WithEvents pnlMain As System.Windows.Forms.Panel
     Friend WithEvents btnOpenInBrowser As System.Windows.Forms.Button
-    Friend WithEvents lvMediaFiles As System.Windows.Forms.ListView
     Friend WithEvents btnCustomURL_Remove As System.Windows.Forms.Button
     Friend WithEvents gbYouTubeSearch As System.Windows.Forms.GroupBox
     Friend WithEvents btnYouTubeSearch As System.Windows.Forms.Button
     Friend WithEvents txtYouTubeSearch As System.Windows.Forms.TextBox
     Friend WithEvents btnScrape As System.Windows.Forms.Button
-    Friend WithEvents colURL As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colWebURL As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colDescription As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colDuration As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colVideoResolution As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colSource As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colNumber As System.Windows.Forms.ColumnHeader
     Friend WithEvents pblBottom As System.Windows.Forms.Panel
     Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents colScraper As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colVideoType As System.Windows.Forms.ColumnHeader
     Friend WithEvents tblMain As TableLayoutPanel
     Friend WithEvents tblYouTubeSearch As TableLayoutPanel
     Friend WithEvents tblCustom As TableLayoutPanel
     Friend WithEvents StatusStrip As StatusStrip
     Friend WithEvents pbStatus As ToolStripProgressBar
     Friend WithEvents lblStatus As ToolStripStatusLabel
-    Friend WithEvents colAudioBitrate As ColumnHeader
+    Friend WithEvents dgvMediaFiles As DataGridView
+    Friend WithEvents colMediaFileTitel As DataGridViewTextBoxColumn
+    Friend WithEvents colMediaFileUrlWebsite As DataGridViewTextBoxColumn
+    Friend WithEvents colMediaFileDuration As DataGridViewTextBoxColumn
+    Friend WithEvents colMediaFileVariants As DataGridViewComboBoxColumn
+    Friend WithEvents colMediaFileVideoType As DataGridViewTextBoxColumn
+    Friend WithEvents colMediaFileSource As DataGridViewTextBoxColumn
+    Friend WithEvents colMediaFileScraper As DataGridViewTextBoxColumn
 End Class

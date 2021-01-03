@@ -72,8 +72,8 @@ Public Class Scanner
         tDBElement.ImagesContainer = New MediaContainers.ImagesContainer
         tDBElement.NfoPath = String.Empty
         tDBElement.Subtitles = New List(Of MediaContainers.Subtitle)
-        tDBElement.Theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
-        tDBElement.Trailer = New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer)
+        tDBElement.Theme = New MediaContainers.MediaFile
+        tDBElement.Trailer = New MediaContainers.MediaFile
 
         'actor thumbs
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainActorThumbs, bForced)
@@ -457,7 +457,7 @@ Public Class Scanner
         tDBElement.ExtrafanartsPath = String.Empty
         tDBElement.ImagesContainer = New MediaContainers.ImagesContainer
         tDBElement.NfoPath = String.Empty
-        tDBElement.Theme = New MediaContainers.MediaFile(Enums.ModifierType.MainTheme)
+        tDBElement.Theme = New MediaContainers.MediaFile
 
         'actor thumbs
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainActorThumbs)

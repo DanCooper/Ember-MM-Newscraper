@@ -18,12 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports Newtonsoft.Json
 Imports NLog
 Imports VideoLibrary
 Imports System.Runtime.CompilerServices
 Imports System.Text.RegularExpressions
-Imports System.Threading.Tasks
 Imports System.Web
 
 'The InternalsVisibleTo is required for unit testing the friend methods
@@ -42,52 +40,34 @@ Namespace YouTube
 #End Region 'Fields
 
 #Region "Methods"
-
-        Public Shared Function GetVideoDetails(ByVal videoIdOrUrl As String, ByVal type As Enums.ModifierType) As MediaContainers.MediaFile
+        Public Shared Function GetVideoDetails(ByVal videoIdOrUrl As String) As MediaContainers.MediaFile
             If String.IsNullOrEmpty(videoIdOrUrl) Then Return Nothing
-            Try
-                Dim nResults = _Client.GetAllVideosAsync(String.Concat("https://www.youtube.com/watch?v=", videoIdOrUrl)).Result
 
+            Dim strVideoId As String = String.Empty
+            If UrlUtils.IsYouTubeUrl(videoIdOrUrl) Then
+                UrlUtils.GetVideoIDFromURL(videoIdOrUrl, strVideoId)
+            Else
+                strVideoId = videoIdOrUrl
+            End If
+
+            Try
+                Dim nResults = _Client.GetAllVideosAsync(String.Concat("https://www.youtube.com/watch?v=", strVideoId)).Result
                 If nResults IsNot Nothing AndAlso nResults.Count > 0 Then
                     Dim nStreams = SetInformationByITag(nResults)
                     If nStreams IsNot Nothing Then
-                        Return New MediaContainers.MediaFile(type) With {
+                        Return New MediaContainers.MediaFile With {
                             .AudioBitrate = If(nStreams.AudioStreams(0) IsNot Nothing, nStreams.AudioStreams(0).Bitrate, Enums.AudioBitrate.UNKNOWN),
                             .VideoResolution = If(nStreams.VideoStreams(0) IsNot Nothing, nStreams.VideoStreams(0).Resolution, Enums.VideoResolution.UNKNOWN),
                             .Source = "YouTube",
                             .Streams = nStreams,
                             .Title = nResults(0).Title,
-                            .URLWebsite = String.Concat("http://www.youtube.com/watch?v=", videoIdOrUrl)
+                            .URLWebsite = String.Concat("http://www.youtube.com/watch?v=", strVideoId)
                         }
                     End If
                 End If
             Catch ex As Exception
                 _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
-
-            'Dim strVideoId As String = String.Empty
-            'If UrlUtils.IsYouTubeUrl(videoIdOrUrl) Then
-            '    UrlUtils.GetVideoIDFromURL(videoIdOrUrl, strVideoId)
-            'Else
-            '    strVideoId = videoIdOrUrl
-            'End If
-            'Dim nVideoInfo = GetVideoInfo(strVideoId)
-            ''Dim nStreams As New MediaContainers.MediaFile.StreamCollection
-            'If nVideoInfo IsNot Nothing AndAlso nVideoInfo.playabilityStatus.status = "OK" AndAlso nVideoInfo.streamingData.HasStreams Then
-            '    nStreams = GetStreams(nVideoInfo)
-            'Else
-            '    nStreams = GetStreamsAlternatively(nVideoInfo)
-            'End If
-            'If nStreams IsNot Nothing AndAlso nStreams.VideoStreams.Count > 0 Then
-            '    Return New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer) With {
-            '        .Duration = StringUtils.SecondsToDuration(nVideoInfo.videoDetails.lengthSeconds),
-            '        .VideoResolution = nStreams.VideoStreams(0).Resolution,
-            '        .Source = "YouTube",
-            '        .Streams = nStreams,
-            '        .Title = nVideoInfo.videoDetails.title,
-            '        .URLWebsite = String.Concat("http://www.youtube.com/watch?v=", nVideoInfo.videoDetails.videoId)
-            '    }
-            'End If
             Return Nothing
         End Function
 
@@ -106,7 +86,7 @@ Namespace YouTube
         ''' <param name="searchString"><c>String</c> to search for</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function SearchOnYouTube(ByVal searchString As String, ByVal type As Enums.ModifierType) As List(Of MediaContainers.MediaFile)
+        Public Shared Function SearchOnYouTube(ByVal searchString As String) As List(Of MediaContainers.MediaFile)
             Dim tHTTP As New HTTP
             Dim nVideoList As New List(Of MediaContainers.MediaFile)
 
@@ -128,7 +108,7 @@ Namespace YouTube
                     'clean the list from duplicate entries
                     lstVideoIds = lstVideoIds.Distinct.ToList
                     For Each tId In lstVideoIds
-                        Dim nVideoDetails = GetVideoDetails(tId, type)
+                        Dim nVideoDetails = GetVideoDetails(tId)
                         If nVideoDetails IsNot Nothing Then nVideoList.Add(nVideoDetails)
                     Next
                     For Each tVideo In nVideoList
@@ -519,20 +499,22 @@ Namespace YouTube
                 End Select
 
                 If videoStream IsNot Nothing Then
+                    videoStream.FileExtension = tStream.FileExtension
                     videoStream.IsAdaptive = tStream.IsAdaptive
                     If tStream.IsEncrypted Then
                         videoStream.YouTubeContainer = tStream
                         nStreams.VideoStreams.Add(videoStream)
                     Else
-                        videoStream.URL = tStream.Uri
+                        videoStream.StreamUrl = tStream.Uri
                         nStreams.VideoStreams.Add(videoStream)
                     End If
                 ElseIf audioStream IsNot Nothing Then
+                    audioStream.FileExtension = tStream.FileExtension
                     If tStream.IsEncrypted Then
                         audioStream.YouTubeContainer = tStream
                         nStreams.AudioStreams.Add(audioStream)
                     Else
-                        audioStream.URL = tStream.Uri
+                        audioStream.StreamUrl = tStream.Uri
                         nStreams.AudioStreams.Add(audioStream)
                     End If
                 End If

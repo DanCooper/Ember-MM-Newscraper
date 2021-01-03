@@ -974,8 +974,6 @@ Namespace MediaContainers
         End Property
 
         Public Property Title As String = String.Empty
-
-        Public ReadOnly Property Type As Enums.ModifierType
         ''' <summary>
         ''' Download URL of the selected audio stream
         ''' </summary>
@@ -1025,28 +1023,14 @@ Namespace MediaContainers
 
 #End Region 'Properties
 
-#Region "Constructors"
-
-        Public Sub New(ByVal modType As Enums.ModifierType)
-            Type = modType
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Methods"
 
         Public Function LoadAndCache() As Boolean
-
             If Not FileOriginal.HasMemoryStream Then
                 If File.Exists(LocalFilePath) Then
                     FileOriginal.LoadFromFile(LocalFilePath)
                 Else
-                    Select Case Type
-                        Case Enums.ModifierType.MainTheme
-                            If URLAudioStreamSpecified Then FileOriginal.LoadFromWeb(Me)
-                        Case Enums.ModifierType.MainTrailer
-                            If URLVideoStreamSpecified Then FileOriginal.LoadFromWeb(Me)
-                    End Select
+                    FileOriginal.LoadFromWeb(Me)
                 End If
             End If
 
@@ -1057,20 +1041,20 @@ Namespace MediaContainers
             End If
         End Function
 
-        Public Sub Save(ByRef dbElement As Database.DBElement, ByVal forceFileCleanup As Boolean)
+        Public Sub Save(ByRef dbElement As Database.DBElement, ByVal type As Enums.ModifierType, ByVal forceFileCleanup As Boolean)
             Dim tContentType As Enums.ContentType = dbElement.ContentType
 
             With dbElement
                 Select Case tContentType
                     Case Enums.ContentType.Movie
-                        Select Case Type
+                        Select Case type
                             Case Enums.ModifierType.MainTheme
                                 If .Theme.LoadAndCache() Then
                                     MediaFiles.Delete_Movie(dbElement, Enums.ModifierType.MainTheme, forceFileCleanup)
                                     .Theme.LocalFilePath = .Theme.FileOriginal.Save_Movie(dbElement, Enums.ModifierType.MainTheme)
                                 Else
                                     MediaFiles.Delete_Movie(dbElement, Enums.ModifierType.MainTheme, forceFileCleanup)
-                                    .Theme = New MediaFile(Enums.ModifierType.MainTheme)
+                                    .Theme = New MediaFile
                                 End If
 
                             Case Enums.ModifierType.MainTrailer
@@ -1079,22 +1063,31 @@ Namespace MediaContainers
                                     .Trailer.LocalFilePath = .Trailer.FileOriginal.Save_Movie(dbElement, Enums.ModifierType.MainTrailer)
                                 Else
                                     MediaFiles.Delete_Movie(dbElement, Enums.ModifierType.MainTrailer, forceFileCleanup)
-                                    .Trailer = New MediaFile(Enums.ModifierType.MainTrailer)
+                                    .Trailer = New MediaFile
                                 End If
                         End Select
                     Case Enums.ContentType.TVShow
-                        Select Case Type
+                        Select Case type
                             Case Enums.ModifierType.MainTheme
                                 If .Theme.LoadAndCache() Then
                                     MediaFiles.Delete_TVShow(dbElement, Enums.ModifierType.MainTheme) ', ForceFileCleanup)
                                     .Theme.LocalFilePath = .Theme.FileOriginal.Save_TVShow(dbElement, Enums.ModifierType.MainTheme)
                                 Else
                                     MediaFiles.Delete_TVShow(dbElement, Enums.ModifierType.MainTheme) ', ForceFileCleanup)
-                                    .Theme = New MediaFile(Enums.ModifierType.MainTheme)
+                                    .Theme = New MediaFile
                                 End If
                         End Select
                 End Select
             End With
+        End Sub
+
+        Public Sub SetVariant(ByRef streamVariant As StreamCollection.StreamVariant)
+            If streamVariant IsNot Nothing Then
+                With streamVariant
+                    URLAudioStream = If(.AudioStream IsNot Nothing, .AudioStream.StreamUrl, String.Empty)
+                    URLVideoStream = If(.VideoStream IsNot Nothing, .VideoStream.StreamUrl, String.Empty)
+                End With
+            End If
         End Sub
 
 #End Region 'Methods
@@ -1123,7 +1116,9 @@ Namespace MediaContainers
                 End Get
             End Property
 
-            Public Property URL() As String
+            Public Property FileExtension As String = String.Empty
+
+            Public Property StreamUrl() As String
                 Get
                     If YouTubeContainer IsNot Nothing AndAlso Not String.IsNullOrEmpty(YouTubeContainer.Uri) Then
                         Return YouTubeContainer.Uri
@@ -1193,9 +1188,106 @@ Namespace MediaContainers
                 End Get
             End Property
 
+            Public Property Variants As New List(Of StreamVariant)
+
             Public Property VideoStreams As New List(Of VideoStream)
 
 #End Region 'Properties
+
+#Region "Methods"
+
+            Public Sub BuildStreamVariants(Optional ByVal audioStreamsOnly As Boolean = False)
+                For Each vStream In VideoStreams
+                    If vStream.IsAdaptive Then
+                        For Each aStream In AudioStreams
+                            Variants.Add(BuildVariant(vStream, aStream))
+                        Next
+                    Else
+                        Variants.Add(BuildVariant(vStream, Nothing))
+                    End If
+                Next
+                For Each aStream In AudioStreams
+                    Variants.Add(BuildVariant(Nothing, aStream))
+                Next
+            End Sub
+
+            Private Shared Function BuildVariant(ByRef videoStream As VideoStream, ByRef audioStream As AudioStream) As StreamVariant
+                Dim nVariant As New StreamVariant With {.StreamType = If(videoStream IsNot Nothing, StreamType.Video, StreamType.Audio)
+                }
+                'Build description and set addition information
+                Dim nDescription As String = String.Empty
+                If videoStream IsNot Nothing Then
+                    nDescription = String.Format("{0}", videoStream.Description)
+                    nVariant.VideoCodec = videoStream.Codec
+                    nVariant.VideoResolution = videoStream.Resolution
+                    nVariant.VideoStream = videoStream
+                End If
+                If audioStream IsNot Nothing Then
+                    nDescription = String.Format("{0} {1} {2}",
+                                                 nDescription,
+                                                 If(videoStream IsNot Nothing, " | ", String.Empty),
+                                                 audioStream.Description
+                                                 )
+                    nVariant.AudioBitrate = audioStream.Bitrate
+                    nVariant.AudioCodec = audioStream.Codec
+                    nVariant.AudioStream = audioStream
+                End If
+
+                If videoStream IsNot Nothing AndAlso audioStream IsNot Nothing Then
+                    nDescription = String.Format("{0} | .mkv", nDescription)
+                ElseIf videoStream IsNot Nothing AndAlso Not String.IsNullOrEmpty(videoStream.FileExtension) Then
+                    nDescription = String.Format("{0} | {1}", nDescription, videoStream.FileExtension)
+                ElseIf audioStream IsNot Nothing AndAlso Not String.IsNullOrEmpty(audioStream.FileExtension) Then
+                    nDescription = String.Format("{0} | {1}", nDescription, audioStream.FileExtension)
+                End If
+                nVariant.Description = nDescription.Trim
+
+                Return nVariant
+            End Function
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+            <Serializable()>
+            Public Class StreamVariant
+
+#Region "Properties"
+
+                Public Property AudioBitrate As Enums.AudioBitrate = Enums.AudioBitrate.UNKNOWN
+
+                Public Property AudioCodec As Enums.AudioCodec = Enums.AudioCodec.UNKNOWN
+
+                Public Property AudioStream As AudioStream = Nothing
+
+                Public Property Description As String = String.Empty
+
+                Public ReadOnly Property IsDash As Boolean
+                    Get
+                        Return AudioStream IsNot Nothing AndAlso
+                            VideoStream IsNot Nothing
+                    End Get
+                End Property
+
+                Public Property StreamType As StreamType = StreamType.Unknown
+
+                Public Property VideoCodec As Enums.VideoCodec = Enums.VideoCodec.UNKNOWN
+
+                Public Property VideoResolution As Enums.VideoResolution = Enums.VideoResolution.UNKNOWN
+
+                Public Property VideoStream As VideoStream = Nothing
+
+#End Region 'Properties
+
+            End Class
+
+            Public Enum StreamType As Integer
+                Audio
+                Unknown
+                Video
+            End Enum
+
+#End Region 'Nested Types
 
         End Class
 
@@ -1219,11 +1311,13 @@ Namespace MediaContainers
                 End Get
             End Property
 
+            Public Property FileExtension As String = String.Empty
+
             Public Property IsAdaptive As Boolean = False
 
             Public Property Resolution As Enums.VideoResolution = Enums.VideoResolution.UNKNOWN
 
-            Public Property URL() As String
+            Public Property StreamUrl() As String
                 Get
                     If YouTubeContainer IsNot Nothing AndAlso Not String.IsNullOrEmpty(YouTubeContainer.Uri) Then
                         Return YouTubeContainer.Uri

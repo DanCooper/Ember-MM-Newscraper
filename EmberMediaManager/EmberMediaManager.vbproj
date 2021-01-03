@@ -351,12 +351,6 @@
     <Compile Include="dlgStudioSelect.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgMediaFileSelectFormat.Designer.vb">
-      <DependentUpon>dlgMediaFileSelectFormat.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgMediaFileSelectFormat.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgMediaFileSelect.Designer.vb">
       <DependentUpon>dlgMediaFileSelect.vb</DependentUpon>
     </Compile>
@@ -495,10 +489,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgStudioSelect.resx">
       <DependentUpon>dlgStudioSelect.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgMediaFileSelectFormat.resx">
-      <DependentUpon>dlgMediaFileSelectFormat.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgMediaFileSelect.resx">
       <DependentUpon>dlgMediaFileSelect.vb</DependentUpon>

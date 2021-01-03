@@ -26,7 +26,7 @@ Public Class Scraper
 
     Public Function GetTrailers(ByVal title As String) As List(Of MediaContainers.MediaFile)
         Dim lstTrailers As New List(Of MediaContainers.MediaFile)
-        lstTrailers = YouTube.Scraper.SearchOnYouTube(String.Format("{0} {1}", title, Master.eSettings.MovieTrailerDefaultSearch), Enums.ModifierType.MainTrailer)
+        lstTrailers = YouTube.Scraper.SearchOnYouTube(String.Format("{0} {1}", title, Master.eSettings.MovieTrailerDefaultSearch))
         For Each tTrailer In lstTrailers
             tTrailer.Scraper = "YouTube"
         Next

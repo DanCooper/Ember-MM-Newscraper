@@ -75,32 +75,33 @@ Public Class Scraper
                         If nDataPageResults IsNot Nothing AndAlso nDataPageResults.clips IsNot Nothing AndAlso nDataPageResults.clips.Count > 0 Then
                             Dim lstTrailers = From trailers In nDataPageResults.clips.Where(Function(f) f.versions IsNot Nothing AndAlso f.versions.enus IsNot Nothing AndAlso f.versions.enus.sizes IsNot Nothing)
                             For Each clip As ClipItem In lstTrailers
-                                Dim nTrailer As New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer) With {
+                                Dim nTrailer As New MediaContainers.MediaFile With {
                                     .Duration = clip.runtime,
                                     .Source = "Apple",
                                     .Scraper = "Apple",
                                     .Title = clip.title,
-                                    .URLWebsite = strMovieTrailersPage
+                                    .URLWebsite = strMovieTrailersPage,
+                                    .VideoType = GetVideoType(clip.title)
                                 }
                                 If clip.versions.enus.sizes.hd1080 IsNot Nothing AndAlso Not String.IsNullOrEmpty(clip.versions.enus.sizes.hd1080.src) Then
                                     nTrailer.Streams.VideoStreams.Add(New MediaContainers.MediaFile.VideoStream With {
                                                                       .Codec = Enums.VideoCodec.H264,
                                                                       .Resolution = Enums.VideoResolution.HD1080p,
-                                                                      .URL = clip.versions.enus.sizes.hd1080.src.Replace("1080p", "h1080p")
+                                                                      .StreamUrl = clip.versions.enus.sizes.hd1080.src.Replace("1080p", "h1080p")
                                                                       })
                                 End If
                                 If clip.versions.enus.sizes.hd720 IsNot Nothing AndAlso Not String.IsNullOrEmpty(clip.versions.enus.sizes.hd720.src) Then
                                     nTrailer.Streams.VideoStreams.Add(New MediaContainers.MediaFile.VideoStream With {
                                                                       .Codec = Enums.VideoCodec.H264,
                                                                       .Resolution = Enums.VideoResolution.HD720p,
-                                                                      .URL = clip.versions.enus.sizes.hd720.src.Replace("720p", "h720p")
+                                                                      .StreamUrl = clip.versions.enus.sizes.hd720.src.Replace("720p", "h720p")
                                                                       })
                                 End If
                                 If clip.versions.enus.sizes.sd IsNot Nothing AndAlso Not String.IsNullOrEmpty(clip.versions.enus.sizes.sd.src) Then
                                     nTrailer.Streams.VideoStreams.Add(New MediaContainers.MediaFile.VideoStream With {
                                                                       .Codec = Enums.VideoCodec.H264,
                                                                       .Resolution = Enums.VideoResolution.HQ480p,
-                                                                      .URL = clip.versions.enus.sizes.sd.src.Replace("480p", "h480p")
+                                                                      .StreamUrl = clip.versions.enus.sizes.sd.src.Replace("480p", "h480p")
                                                                       })
                                 End If
                                 If nTrailer.StreamsSpecified Then
@@ -117,6 +118,21 @@ Public Class Scraper
         End Try
 
         Return nTrailerList
+    End Function
+
+    Private Shared Function GetVideoType(ByVal title As String) As Enums.VideoType
+        Select Case True
+            Case title.ToLower.Contains("clip")
+                Return Enums.VideoType.Clip
+            Case title.ToLower.Contains("featurette")
+                Return Enums.VideoType.Featurette
+            Case title.ToLower.Contains("teaser")
+                Return Enums.VideoType.Teaser
+            Case title.ToLower.Contains("trailer")
+                Return Enums.VideoType.Trailer
+            Case Else
+                Return Enums.VideoType.Any
+        End Select
     End Function
 
 #End Region 'Methods

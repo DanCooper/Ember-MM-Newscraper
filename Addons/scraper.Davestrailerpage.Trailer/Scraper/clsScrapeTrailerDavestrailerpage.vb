@@ -147,27 +147,43 @@ Public Class Scraper
             'the <li> node that contains the movie title node should not have any <a> node so only the trailer nodes should be listed as result
             Dim ndTrailerGroup = aNode.ParentNode.SelectNodes("a")
             If ndTrailerGroup IsNot Nothing Then
-                Dim nTrailer As New MediaContainers.MediaFile(Enums.ModifierType.MainTrailer) With {
+                Dim nTrailer As New MediaContainers.MediaFile With {
                     .Title = aNode.InnerText,
-                    .Scraper = "DavesTrailerPage"
+                    .Scraper = "DavesTrailerPage",
+                    .VideoType = GetVideoType(aNode.InnerText)
                 }
                 For Each aStream In ndTrailerGroup
                     nTrailer.Streams.VideoStreams.Add(New MediaContainers.MediaFile.VideoStream With {
                                                       .Resolution = ConvertQuality(aStream.InnerText),
-                                                      .URL = aStream.Attributes(0).Value
+                                                      .StreamUrl = aStream.Attributes(0).Value
                                                       })
                 Next
                 If nTrailer.Streams.HasStreams Then
                     nTrailer.Streams.VideoStreams.Sort()
                     nTrailer.VideoResolution = nTrailer.Streams.VideoStreams(0).Resolution
-                    nTrailer.URLWebsite = nTrailer.Streams.VideoStreams(0).URL
-                    nTrailer.Source = If(nTrailer.URLWebsite.ToLower.Contains("apple"), "Apple", String.Empty)
+                    nTrailer.URLWebsite = nTrailer.Streams.VideoStreams(0).StreamUrl
+                    nTrailer.Source = If(nTrailer.URLWebsite.ToLower.Contains("apple"), "Apple", "Unknown")
                     nTrailerList.Add(nTrailer)
                 End If
             End If
         Next
 
         Return nTrailerList
+    End Function
+
+    Private Shared Function GetVideoType(ByVal title As String) As Enums.VideoType
+        Select Case True
+            Case title.ToLower.Contains("clip")
+                Return Enums.VideoType.Clip
+            Case title.ToLower.Contains("featurette")
+                Return Enums.VideoType.Featurette
+            Case title.ToLower.Contains("teaser")
+                Return Enums.VideoType.Teaser
+            Case title.ToLower.Contains("trailer")
+                Return Enums.VideoType.Trailer
+            Case Else
+                Return Enums.VideoType.Any
+        End Select
     End Function
 
 #End Region 'Methods
