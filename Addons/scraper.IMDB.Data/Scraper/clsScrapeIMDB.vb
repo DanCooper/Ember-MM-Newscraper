@@ -1344,7 +1344,7 @@ Public Class Scraper
         End If
         If htmldReleaseInfo IsNot Nothing Then
             'get all release dates from table
-            Dim selNodes = htmldReleaseInfo.DocumentNode.SelectNodes("//td[@class=""release_date""]")
+            Dim selNodes = htmldReleaseInfo.DocumentNode.SelectNodes("//td[@class=""release-date-item__date""]")
             If selNodes IsNot Nothing Then
                 Dim lstReleaseDates As New List(Of Date)
                 For Each ndReleaseDate In selNodes
