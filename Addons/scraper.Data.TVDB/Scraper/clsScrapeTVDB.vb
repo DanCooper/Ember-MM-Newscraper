@@ -295,7 +295,10 @@ Namespace TVDBs
 
             'Premiered
             If FilteredOptions.bMainPremiered Then
-                nTVShow.Premiered = CStr(TVShowInfo.Series.FirstAired)
+                If Not TVShowInfo.Series.FirstAired = Date.MinValue Then
+                    'always save date in same date format not depending on users language setting!
+                    nTVShow.Premiered = TVShowInfo.Series.FirstAired.ToString("yyyy-MM-dd")
+                End If
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
@@ -480,17 +483,11 @@ Namespace TVDBs
                 End If
             End If
 
-            'Aired
+            'Aired 
             If FilteredOptions.bEpisodeAired Then
-                Dim ScrapedDate As String = CStr(EpisodeInfo.FirstAired)
-                If Not String.IsNullOrEmpty(ScrapedDate) Then
-                    Dim RelDate As Date
-                    If Date.TryParse(ScrapedDate, RelDate) Then
-                        'always save date in same date format not depending on users language setting!
-                        nEpisode.Aired = RelDate.ToString("yyyy-MM-dd")
-                    Else
-                        nEpisode.Aired = ScrapedDate
-                    End If
+                If Not EpisodeInfo.FirstAired = Date.MinValue Then
+                    'always save date in same date format not depending on users language setting!
+                    nEpisode.Aired = EpisodeInfo.FirstAired.ToString("yyyy-MM-dd")
                 End If
             End If
 
@@ -678,4 +675,3 @@ Namespace TVDBs
     End Class
 
 End Namespace
-

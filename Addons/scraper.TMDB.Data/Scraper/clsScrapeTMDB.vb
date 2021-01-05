@@ -466,20 +466,15 @@ Public Class Scraper
 
         'ReleaseDate
         If FilteredOptions.bMainRelease Then
-            Dim strScrapedDate As String = String.Empty
-            If Not String.IsNullOrEmpty(CStr(Result.ReleaseDate)) Then
-                strScrapedDate = CStr(Result.ReleaseDate)
-            ElseIf RunFallback_Movie(Result.Id) AndAlso Not String.IsNullOrEmpty(CStr(_Fallback_Movie.ReleaseDate)) Then
-                strScrapedDate = CStr(_Fallback_Movie.ReleaseDate)
+            Dim nDate As Date? = Nothing
+            If Result.ReleaseDate.HasValue Then
+                nDate = Result.ReleaseDate.Value
+            ElseIf RunFallback_Movie(Result.Id) AndAlso _Fallback_Movie.ReleaseDate.HasValue Then
+                nDate = _Fallback_Movie.ReleaseDate.Value
             End If
-            If Not String.IsNullOrEmpty(strScrapedDate) Then
-                Dim RelDate As Date
-                If Date.TryParse(strScrapedDate, RelDate) Then
-                    'always save date in same date format not depending on users language setting!
-                    nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
-                Else
-                    nMovie.ReleaseDate = strScrapedDate
-                End If
+            If nDate.HasValue Then
+                'always save date in same date format not depending on users language setting!
+                nMovie.ReleaseDate = nDate.Value.ToString("yyyy-MM-dd")
             End If
         End If
 
@@ -549,10 +544,14 @@ Public Class Scraper
 
         'Year
         If FilteredOptions.bMainYear Then
-            If Not String.IsNullOrEmpty(CStr(Result.ReleaseDate)) Then
-                nMovie.Year = CStr(Result.ReleaseDate.Value.Year)
-            ElseIf RunFallback_Movie(Result.Id) AndAlso Not String.IsNullOrEmpty(CStr(_Fallback_Movie.ReleaseDate)) Then
-                nMovie.Year = CStr(_Fallback_Movie.ReleaseDate.Value.Year)
+            Dim nDate As Date? = Nothing
+            If Result.ReleaseDate.HasValue Then
+                nDate = Result.ReleaseDate.Value
+            ElseIf RunFallback_Movie(Result.Id) AndAlso _Fallback_Movie.ReleaseDate.HasValue Then
+                nDate = _Fallback_Movie.ReleaseDate.Value
+            End If
+            If nDate.HasValue Then
+                nMovie.Year = nDate.Value.Year.ToString
             End If
         End If
 
@@ -686,17 +685,13 @@ Public Class Scraper
 
         'Aired
         If filteredOptions.bEpisodeAired Then
-            If Not String.IsNullOrEmpty(CStr(Result.AirDate)) Then
-                Dim ScrapedDate As String = CStr(Result.AirDate)
-                If Not String.IsNullOrEmpty(ScrapedDate) AndAlso Not ScrapedDate = "00:00:00" Then
-                    Dim RelDate As Date
-                    If Date.TryParse(ScrapedDate, RelDate) Then
-                        'always save date in same date format not depending on users language setting!
-                        nTVEpisode.Aired = RelDate.ToString("yyyy-MM-dd")
-                    Else
-                        nTVEpisode.Aired = ScrapedDate
-                    End If
-                End If
+            Dim nDate As Date? = Nothing
+            If Result.AirDate.HasValue Then
+                nDate = Result.AirDate
+            End If
+            If nDate.HasValue Then
+                'always save date in same date format not depending on users language setting!
+                nTVEpisode.Aired = nDate.Value.ToString("yyyy-MM-dd")
             End If
         End If
 
@@ -783,17 +778,13 @@ Public Class Scraper
 
                 'Aired
                 If filteredOptions.bSeasonAired Then
-                    If Result.AirDate IsNot Nothing Then
-                        Dim ScrapedDate As String = CStr(Result.AirDate)
-                        If Not String.IsNullOrEmpty(ScrapedDate) Then
-                            Dim RelDate As Date
-                            If Date.TryParse(ScrapedDate, RelDate) Then
-                                'always save date in same date format not depending on users language setting!
-                                nTVSeason.Aired = RelDate.ToString("yyyy-MM-dd")
-                            Else
-                                nTVSeason.Aired = ScrapedDate
-                            End If
-                        End If
+                    Dim nDate As Date? = Nothing
+                    If Result.AirDate.HasValue Then
+                        nDate = Result.AirDate
+                    End If
+                    If nDate.HasValue Then
+                        'always save date in same date format not depending on users language setting!
+                        nTVSeason.Aired = nDate.Value.ToString("yyyy-MM-dd")
                     End If
                 End If
 
@@ -852,17 +843,13 @@ Public Class Scraper
 
         'Aired
         If filteredOptions.bSeasonAired Then
-            If Result.AirDate IsNot Nothing Then
-                Dim ScrapedDate As String = CStr(Result.AirDate)
-                If Not String.IsNullOrEmpty(ScrapedDate) Then
-                    Dim RelDate As Date
-                    If Date.TryParse(ScrapedDate, RelDate) Then
-                        'always save date in same date format not depending on users language setting!
-                        nTVSeason.Aired = RelDate.ToString("yyyy-MM-dd")
-                    Else
-                        nTVSeason.Aired = ScrapedDate
-                    End If
-                End If
+            Dim nDate As Date? = Nothing
+            If Result.AirDate.HasValue Then
+                nDate = Result.AirDate
+            End If
+            If nDate.HasValue Then
+                'always save date in same date format not depending on users language setting!
+                nTVSeason.Aired = nDate.Value.ToString("yyyy-MM-dd")
             End If
         End If
 
@@ -1013,20 +1000,15 @@ Public Class Scraper
 
             'Premiered
             If filteredOptions.bMainPremiered Then
-                Dim strScrapedDate As String = String.Empty
-                If Not String.IsNullOrEmpty(CStr(Result.FirstAirDate)) Then
-                    strScrapedDate = CStr(Result.FirstAirDate)
-                ElseIf RunFallback_TVShow(Result.Id) AndAlso Not String.IsNullOrEmpty(CStr(_Fallback_TVShow.FirstAirDate)) Then
-                    strScrapedDate = CStr(_Fallback_TVShow.FirstAirDate)
+                Dim nDate As Date? = Nothing
+                If Result.FirstAirDate.HasValue Then
+                    nDate = Result.FirstAirDate
+                ElseIf RunFallback_TVShow(Result.Id) AndAlso _Fallback_TVShow.FirstAirDate.HasValue Then
+                    nDate = _Fallback_TVShow.FirstAirDate
                 End If
-                If Not String.IsNullOrEmpty(strScrapedDate) Then
-                    Dim RelDate As Date
-                    If Date.TryParse(strScrapedDate, RelDate) Then
-                        'always save date in same date format not depending on users language setting!
-                        nTVShow.Premiered = RelDate.ToString("yyyy-MM-dd")
-                    Else
-                        nTVShow.Premiered = strScrapedDate
-                    End If
+                If nDate.HasValue Then
+                    'always save date in same date format not depending on users language setting!
+                    nTVShow.Premiered = nDate.Value.ToString("yyyy-MM-dd")
                 End If
             End If
 
