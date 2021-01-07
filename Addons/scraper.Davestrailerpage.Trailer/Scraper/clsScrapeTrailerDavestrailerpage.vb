@@ -51,7 +51,7 @@ Public Class Scraper
 
         Dim nTrailerlist As New List(Of MediaContainers.MediaFile)
 
-        Dim strBaseUrl As String = "http://www.davestrailerpage.co.uk/trailers_"
+        Dim strBaseUrl As String = "https://www.davestrailerpage.co.uk/trailers_"
         Dim strSubPagePath As String = String.Empty
 
         'clean title to search 

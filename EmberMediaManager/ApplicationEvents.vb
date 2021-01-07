@@ -28,7 +28,7 @@ Namespace My
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
         Private frmEmber As frmMain
 
 #End Region 'Fields
@@ -41,6 +41,8 @@ Namespace My
         Private Sub MyApplication_Startup(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
             logger.Info("====Ember Media Manager starting up====")
             logger.Info(String.Format("===={0}", Master.Version))
+
+            Net.ServicePointManager.SecurityProtocol = Net.ServicePointManager.SecurityProtocol Or Net.SecurityProtocolType.Tls11 Or Net.SecurityProtocolType.Tls12
 
             Master.fLoading = New frmSplash
             Master.appArgs = e
@@ -173,7 +175,7 @@ Namespace My
         Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
             logger.Error(e.Exception, e.Exception.Source)
             MessageBox.Show(e.Exception.Message, "Ember Media Manager", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            My.Application.Log.WriteException(e.Exception, TraceEventType.Critical, "Unhandled Exception.")
+            Application.Log.WriteException(e.Exception, TraceEventType.Critical, "Unhandled Exception.")
         End Sub
 
 #End Region 'Methods
@@ -181,4 +183,3 @@ Namespace My
     End Class
 
 End Namespace
-
