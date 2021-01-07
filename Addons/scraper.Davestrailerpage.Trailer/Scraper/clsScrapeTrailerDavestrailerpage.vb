@@ -154,6 +154,8 @@ Public Class Scraper
                 }
                 For Each aStream In ndTrailerGroup
                     nTrailer.Streams.VideoStreams.Add(New MediaContainers.MediaFile.VideoStream With {
+                                                      .Codec = If(aStream.Attributes(0).Value.ToLower.Contains("apple"), Enums.VideoCodec.H264, Enums.VideoCodec.UNKNOWN),
+                                                      .FileExtension = If(aStream.Attributes(0).Value.ToLower.Contains("apple"), ".mov", String.Empty),
                                                       .Resolution = ConvertQuality(aStream.InnerText),
                                                       .StreamUrl = aStream.Attributes(0).Value
                                                       })

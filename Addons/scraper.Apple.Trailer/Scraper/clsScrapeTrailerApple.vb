@@ -86,6 +86,7 @@ Public Class Scraper
                                 If clip.versions.enus.sizes.hd1080 IsNot Nothing AndAlso Not String.IsNullOrEmpty(clip.versions.enus.sizes.hd1080.src) Then
                                     nTrailer.Streams.VideoStreams.Add(New MediaContainers.MediaFile.VideoStream With {
                                                                       .Codec = Enums.VideoCodec.H264,
+                                                                      .FileExtension = ".mov",
                                                                       .Resolution = Enums.VideoResolution.HD1080p,
                                                                       .StreamUrl = clip.versions.enus.sizes.hd1080.src.Replace("1080p", "h1080p")
                                                                       })
@@ -93,6 +94,7 @@ Public Class Scraper
                                 If clip.versions.enus.sizes.hd720 IsNot Nothing AndAlso Not String.IsNullOrEmpty(clip.versions.enus.sizes.hd720.src) Then
                                     nTrailer.Streams.VideoStreams.Add(New MediaContainers.MediaFile.VideoStream With {
                                                                       .Codec = Enums.VideoCodec.H264,
+                                                                      .FileExtension = ".mov",
                                                                       .Resolution = Enums.VideoResolution.HD720p,
                                                                       .StreamUrl = clip.versions.enus.sizes.hd720.src.Replace("720p", "h720p")
                                                                       })
@@ -100,6 +102,7 @@ Public Class Scraper
                                 If clip.versions.enus.sizes.sd IsNot Nothing AndAlso Not String.IsNullOrEmpty(clip.versions.enus.sizes.sd.src) Then
                                     nTrailer.Streams.VideoStreams.Add(New MediaContainers.MediaFile.VideoStream With {
                                                                       .Codec = Enums.VideoCodec.H264,
+                                                                      .FileExtension = ".mov",
                                                                       .Resolution = Enums.VideoResolution.HQ480p,
                                                                       .StreamUrl = clip.versions.enus.sizes.sd.src.Replace("480p", "h480p")
                                                                       })
