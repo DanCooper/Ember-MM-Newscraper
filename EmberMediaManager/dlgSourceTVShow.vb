@@ -180,15 +180,15 @@ Public Class dlgSourceTVShow
             If s IsNot Nothing Then
                 bAutoName = False
                 If cbSourceLanguage.Items.Count > 0 Then
-                    Dim tLanguage As LanguageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language)
+                    Dim tLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language)
                     If tLanguage IsNot Nothing Then
                         cbSourceLanguage.Text = tLanguage.Description
                     Else
-                        tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(s.Language))
+                        tLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(s.Language))
                         If tLanguage IsNot Nothing Then
                             cbSourceLanguage.Text = tLanguage.Description
                         Else
-                            cbSourceLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                            cbSourceLanguage.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
                         End If
                     End If
                 End If
@@ -201,15 +201,15 @@ Public Class dlgSourceTVShow
             End If
         Else
             If cbSourceLanguage.Items.Count > 0 Then
-                Dim tLanguage As LanguageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVGeneralLanguage)
+                Dim tLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVGeneralLanguage)
                 If tLanguage IsNot Nothing Then
                     cbSourceLanguage.Text = tLanguage.Description
                 Else
-                    tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.TVGeneralLanguage))
+                    tLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.TVGeneralLanguage))
                     If tLanguage IsNot Nothing Then
                         cbSourceLanguage.Text = tLanguage.Description
                     Else
-                        cbSourceLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                        cbSourceLanguage.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
                     End If
                 End If
             End If
@@ -246,7 +246,7 @@ Public Class dlgSourceTVShow
                 parExclude.Value = chkExclude.Checked
                 parSingle.Value = chkSingle.Checked
                 If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
-                    parLanguage.Value = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
+                    parLanguage.Value = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
                 Else
                     parLanguage.Value = "en-US"
                 End If
@@ -284,7 +284,7 @@ Public Class dlgSourceTVShow
         fbdBrowse.Description = Master.eLang.GetString(706, "Select the parent folder for your TV Series folders/files.")
 
         cbSourceLanguage.Items.Clear()
-        cbSourceLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
+        cbSourceLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages Select lLang.Description).ToArray)
 
         cbSourceOrdering.Items.Clear()
         cbSourceOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(1332, "Day Of Year")})

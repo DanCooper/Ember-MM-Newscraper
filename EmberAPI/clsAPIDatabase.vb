@@ -1584,7 +1584,7 @@ Public Class Database
     Public Function GetAllCertifications() As String()
         Dim nList As New List(Of String)
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT Certification FROM movie;"
+            SQLcommand.CommandText = "SELECT Certification FROM movie WHERE Certification <> '';"
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     If SQLreader("Certification").ToString.Contains(" / ") Then
@@ -1638,7 +1638,7 @@ Public Class Database
     Public Function GetAllStatus() As String()
         Dim nList As New List(Of String)
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT DISTINCT Status FROM tvshow ORDER BY Status;"
+            SQLcommand.CommandText = "SELECT DISTINCT Status FROM tvshow WHERE Status <> '' ORDER BY Status;"
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     nList.Add(SQLreader("Status").ToString)

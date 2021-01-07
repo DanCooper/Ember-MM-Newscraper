@@ -196,7 +196,6 @@
     <Compile Include="clsAPIDatabase.vb" />
     <Compile Include="clsAPIDVD.vb" />
     <Compile Include="clsAPIFileUtils.vb" />
-    <Compile Include="clsAPIHashing.vb" />
     <Compile Include="clsAPIHTTP.vb" />
     <Compile Include="clsAPIImages.vb" />
     <Compile Include="clsAPIImageUtils.vb" />
@@ -257,7 +256,7 @@
     <Compile Include="XML Serialization\clsXMLLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLRatings.vb" />
     <Compile Include="XML Serialization\clsXMLSettings.vb" />
-    <Compile Include="XML Serialization\clsXMLMovieCertLanguages.vb" />
+    <Compile Include="XML Serialization\clsXMLCertificationLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLScraperLanguages.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -465,10 +464,10 @@
     <Content Include="Defaults\DefaultAdvancedSettings - VideoFormatConverts.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Defaults\DefaultCertLanguages.xml">
+    <Content Include="Defaults\Core.Languages.Certifications.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Defaults\Core.ScraperLanguages.xml">
+    <Content Include="Defaults\Core.Languages.Scrapers.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Defaults\DefaultGenre.jpg">

@@ -520,7 +520,7 @@ Public Class TaskManager
     Private Sub SetLanguage(ByVal tTaskItem As TaskItem)
         If String.IsNullOrEmpty(tTaskItem.CommonStringValue) Then Return
 
-        Dim nLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = tTaskItem.CommonStringValue)
+        Dim nLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = tTaskItem.CommonStringValue)
         If nLanguage IsNot Nothing AndAlso Not String.IsNullOrEmpty(nLanguage.Abbreviation) Then
             Dim strNewLanguage As String = nLanguage.Abbreviation
 

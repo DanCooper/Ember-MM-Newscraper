@@ -143,7 +143,7 @@ Public Class dlgWizard
     End Sub
     Private Sub cbTVGeneralLang_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbTVGeneralLang.SelectedIndexChanged
         If Not String.IsNullOrEmpty(cbTVGeneralLang.Text) Then
-            Master.eSettings.TVGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
+            Master.eSettings.TVGeneralLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
         End If
     End Sub
 
@@ -665,9 +665,9 @@ Public Class dlgWizard
         With Master.eSettings
 
             cbTVGeneralLang.Items.Clear()
-            cbTVGeneralLang.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
+            cbTVGeneralLang.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages Select lLang.Description).ToArray)
             If cbTVGeneralLang.Items.Count > 0 Then
-                cbTVGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = .TVGeneralLanguage).Description
+                cbTVGeneralLang.Text = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = .TVGeneralLanguage).Description
             End If
 
 
@@ -976,7 +976,7 @@ Public Class dlgWizard
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
-            lvItem.SubItems.Add(APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language).Description)
+            lvItem.SubItems.Add(APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language).Description)
             lvItem.SubItems.Add(s.Ordering.ToString)
             lvItem.SubItems.Add(If(s.Exclude, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvItem.SubItems.Add(s.EpisodeSorting.ToString)
@@ -1041,8 +1041,8 @@ Public Class dlgWizard
 
             .GeneralLanguage = tLang
 
-            If APIXML.ScraperLanguagesXML.Languages.Count > 0 Then
-                Dim tvLang As String = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
+            If APIXML.ScraperLanguages.Languages.Count > 0 Then
+                Dim tvLang As String = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
                 If Not String.IsNullOrEmpty(tvLang) Then
                     .TVGeneralLanguage = tvLang
                 Else

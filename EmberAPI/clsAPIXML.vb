@@ -30,13 +30,13 @@ Public Class APIXML
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
+    Public Shared CertificationLanguages As New clsXMLCertificationLanguages()
     Public Shared CertificationMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Certifications.xml"))
-    Public Shared CertLanguagesXML As New clsXMLCertLanguages
     Public Shared CountryMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Countries.xml"))
     Public Shared GenreMapping As New clsXMLGenreMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Genres.xml"))
     Public Shared LanguageIcons As New Dictionary(Of String, String)
     Public Shared RatingXML As New clsXMLRatings
-    Public Shared ScraperLanguagesXML As New clsXMLScraperLanguages
+    Public Shared ScraperLanguages As New clsXMLScraperLanguages
     Public Shared StatusMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Status.xml"))
     Public Shared StudioMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Studios.xml"))
     Public Shared StudioIcons As New Dictionary(Of String, String)
@@ -76,27 +76,7 @@ Public Class APIXML
             End If
 
             'Certification languages
-            Dim cPath As String = Path.Combine(Master.SettingsPath, "CertLanguages.xml")
-            If File.Exists(cPath) Then
-                objStreamReader = New StreamReader(cPath)
-                Dim xCert As New XmlSerializer(CertLanguagesXML.GetType)
-
-                CertLanguagesXML = CType(xCert.Deserialize(objStreamReader), clsXMLCertLanguages)
-                objStreamReader.Close()
-            Else
-                Dim cPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultCertLanguages.xml")
-                objStreamReader = New StreamReader(cPathD)
-                Dim xCert As New XmlSerializer(CertLanguagesXML.GetType)
-
-                CertLanguagesXML = CType(xCert.Deserialize(objStreamReader), clsXMLCertLanguages)
-                objStreamReader.Close()
-
-                Try
-                    File.Copy(cPathD, cPath)
-                Catch ex As Exception
-                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-            End If
+            CertificationLanguages.Load()
 
             'Country mapping
             If File.Exists(CountryMapping.FileNameFullPath) Then
@@ -185,23 +165,8 @@ Public Class APIXML
                 End Try
             End If
 
-
-            Dim slPath As String = Path.Combine(Master.SettingsPath, "Core.ScraperLanguages.xml")
-            If File.Exists(slPath) Then
-                objStreamReader = New StreamReader(slPath)
-                Dim xLang As New XmlSerializer(ScraperLanguagesXML.GetType)
-
-                ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), clsXMLScraperLanguages)
-                objStreamReader.Close()
-            Else
-                Dim slPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "Core.ScraperLanguages.xml")
-                objStreamReader = New StreamReader(slPathD)
-                Dim xLang As New XmlSerializer(ScraperLanguagesXML.GetType)
-
-                ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), clsXMLScraperLanguages)
-                objStreamReader.Close()
-                ScraperLanguagesXML.Save()
-            End If
+            'Scraper languages
+            ScraperLanguages.Load()
 
         Catch ex As Exception
             _Logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -527,7 +492,7 @@ Public Class APIXML
     Public Shared Function GetRatingList_Movie() As Object()
         Dim retRatings As New List(Of String)
         If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
-            Dim tCountry = CertLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieScraperCertLang)
+            Dim tCountry = CertificationLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieScraperCertLang)
             If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.Name) Then
                 For Each r In RatingXML.Movies.FindAll(Function(f) f.Country.ToLower = tCountry.Name.ToLower)
                     retRatings.Add(r.Searchstring)
@@ -545,7 +510,7 @@ Public Class APIXML
     Public Shared Function GetRatingList_TV() As Object()
         Dim retRatings As New List(Of String)
         If Master.eSettings.TVScraperShowCertForMPAA AndAlso Not Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
-            Dim tCountry = CertLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVScraperShowCertLang)
+            Dim tCountry = CertificationLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVScraperShowCertLang)
             If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.Name) Then
                 For Each r In RatingXML.TV.FindAll(Function(f) f.Country.ToLower = tCountry.Name.ToLower)
                     retRatings.Add(r.Searchstring)

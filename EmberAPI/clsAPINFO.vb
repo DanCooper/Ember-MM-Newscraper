@@ -116,7 +116,7 @@ Public Class NFO
                     DBMovie.Movie.Certifications = scrapedmovie.Certifications
                     new_Certification = True
                 Else
-                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieScraperCertLang)
+                    Dim CertificationLanguage = APIXML.CertificationLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieScraperCertLang)
                     If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.Name) Then
                         For Each tCert In scrapedmovie.Certifications
                             If tCert.StartsWith(CertificationLanguage.Name) Then
@@ -565,7 +565,7 @@ Public Class NFO
                     DBTV.TVShow.Certifications = scrapedshow.Certifications
                     new_Certification = True
                 Else
-                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVScraperShowCertLang)
+                    Dim CertificationLanguage = APIXML.CertificationLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVScraperShowCertLang)
                     If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.Name) Then
                         For Each tCert In scrapedshow.Certifications
                             If tCert.StartsWith(CertificationLanguage.Name) Then
@@ -1314,12 +1314,12 @@ Public Class NFO
 
             'changes a LongLanguage to Alpha2 code
             If mNFO.LanguageSpecified Then
-                Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
+                Dim Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
                 If Language IsNot Nothing Then
                     mNFO.Language = Language.Abbreviation
                 Else
                     'check if it's a valid Alpha2 code or remove the information the use the source default language
-                    Dim ShortLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
+                    Dim ShortLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
                     If ShortLanguage Is Nothing Then
                         mNFO.Language = String.Empty
                     End If
@@ -1362,12 +1362,12 @@ Public Class NFO
 
             'changes a LongLanguage to Alpha2 code
             If mNFO.LanguageSpecified Then
-                Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
+                Dim Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
                 If Language IsNot Nothing Then
                     mNFO.Language = Language.Abbreviation
                 Else
                     'check if it's a valid Alpha2 code or remove the information the use the source default language
-                    Dim ShortLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
+                    Dim ShortLanguage = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
                     If ShortLanguage Is Nothing Then
                         mNFO.Language = String.Empty
                     End If

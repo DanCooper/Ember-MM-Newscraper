@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<core.scraperlanguages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<core.languages.scrapers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <language>
     <name>Arabic</name>
     <abbreviation>ar-AR</abbreviation>
@@ -144,4 +144,4 @@
     <name>Vietnamese</name>
     <abbreviation>vi-VN</abbreviation>
   </language>
-</core.scraperlanguages>
+</core.languages.scrapers>

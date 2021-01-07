@@ -29,9 +29,9 @@ Public Class clsXMLSimpleMapping
 
 #Region "Fields"
 
-#End Region 'Fields
-
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
+
+#End Region 'Fields
 
 #Region "Properties"
 

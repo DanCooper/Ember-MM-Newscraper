@@ -6220,7 +6220,7 @@ Public Class frmMain
 
                     'Language submenu
                     Dim strLang As String = dgvMovies.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    Dim Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
                     If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
                         mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
@@ -6751,7 +6751,7 @@ Public Class frmMain
 
                     'Language submenu
                     Dim strLang As String = dgvMovieSets.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    Dim Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
                     If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
                         mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
@@ -8189,7 +8189,7 @@ Public Class frmMain
 
                     'Language submenu
                     Dim strLang As String = dgvTVShows.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    Dim Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
                     If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
                         mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
@@ -16769,7 +16769,7 @@ Public Class frmMain
             cbFilterLists_Shows.SelectedIndex = 0
 
             mnuLanguagesLanguage.Items.Clear()
-            mnuLanguagesLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages.OrderBy(Function(f) f.Description) Select lLang.Description).ToArray)
+            mnuLanguagesLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguages.Languages.OrderBy(Function(f) f.Description) Select lLang.Description).ToArray)
 
             'not technically a menu, but it's a good place to put it
             If ReloadFilters Then

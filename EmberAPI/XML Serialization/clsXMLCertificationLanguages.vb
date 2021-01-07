@@ -20,18 +20,17 @@
 
 Imports NLog
 Imports System.IO
-Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 
 <Serializable()>
-<XmlRoot("core.languages.scrapers")>
-Public Class clsXMLScraperLanguages
+<XmlRoot("core.languages.certifications")>
+Public Class clsXMLCertificationLanguages
 
 #Region "Fields"
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private Const _FileName As String = "Core.Languages.Scrapers.xml"
+    Private Const _FileName As String = "Core.Languages.Certifications.xml"
     Private _UserFile As String = Path.Combine(Master.SettingsPath, _FileName)
     Private _DefaultFile As String = FileUtils.Common.ReturnSettingsFile("Defaults", _FileName)
 
@@ -42,7 +41,7 @@ Public Class clsXMLScraperLanguages
     <XmlElement("language")>
     Public Property Languages() As List(Of LanguageProperty) = New List(Of LanguageProperty)
 
-#End Region 'Properties
+#End Region 'Properties 
 
 #Region "Methods"
 
@@ -60,7 +59,7 @@ Public Class clsXMLScraperLanguages
         If File.Exists(_UserFile) Then
             Dim objStreamReader = New StreamReader(_UserFile)
             Try
-                Languages = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), clsXMLScraperLanguages).Languages
+                Languages = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), clsXMLCertificationLanguages).Languages
                 objStreamReader.Close()
                 Languages.Sort()
             Catch ex As Exception
@@ -86,12 +85,12 @@ Public Class clsXMLScraperLanguages
 
     Private Function SearchOlderVersions() As Boolean
 #Disable Warning BC40000 'The type or member is obsolete.
-        Dim strVersion1 = Path.Combine(Master.SettingsPath, "Core.ScraperLanguages.xml")
+        Dim strVersion1 = Path.Combine(Master.SettingsPath, "CertLanguages.xml")
         Select Case True
             Case File.Exists(strVersion1)
                 Dim objStreamReader = New StreamReader(strVersion1)
                 Try
-                    Languages = CType(New XmlSerializer(GetType(clsXMLScraperLanguagesOld1)).Deserialize(objStreamReader), clsXMLScraperLanguagesOld1).Languages
+                    Languages = CType(New XmlSerializer(GetType(clsXMLCertificationLanguagesOld1)).Deserialize(objStreamReader), clsXMLCertificationLanguagesOld1).Languages
                     objStreamReader.Close()
                     Save()
                     File.Delete(strVersion1)
@@ -125,20 +124,6 @@ Public Class clsXMLScraperLanguages
         <XmlElement("abbreviation")>
         Public Property Abbreviation() As String = String.Empty
 
-        <XmlIgnore()>
-        Public ReadOnly Property Description() As String
-            Get
-                Return String.Format("{0} ({1})", Name, Abbreviation)
-            End Get
-        End Property
-
-        <XmlIgnore()>
-        Public ReadOnly Property Abbrevation_MainLanguage() As String
-            Get
-                Return Regex.Replace(Abbreviation, "-.*", String.Empty).Trim
-            End Get
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
@@ -161,14 +146,14 @@ Public Class clsXMLScraperLanguages
 
 End Class
 
-<XmlRoot("core.scraperlanguages")>
+<XmlRoot("CertLanguages")>
 <Obsolete("This class is only to load old versions of this XML")>
-Public Class clsXMLScraperLanguagesOld1
+Public Class clsXMLCertificationLanguagesOld1
 
 #Region "Properties"
 
-    <XmlElement("language")>
-    Public Property Languages() As List(Of clsXMLScraperLanguages.LanguageProperty) = New List(Of clsXMLScraperLanguages.LanguageProperty)
+    <XmlElement("Language")>
+    Public Property Languages() As List(Of clsXMLCertificationLanguages.LanguageProperty) = New List(Of clsXMLCertificationLanguages.LanguageProperty)
 
 #End Region 'Properties
 

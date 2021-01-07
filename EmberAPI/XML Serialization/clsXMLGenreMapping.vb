@@ -18,6 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
 Imports System.IO
 Imports System.Xml.Serialization
 
@@ -25,6 +26,12 @@ Imports System.Xml.Serialization
 <XmlRoot("core.genres")>
 Public Class clsXMLGenreMapping
     Implements ICloneable
+
+#Region "Fields"
+
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
+
+#End Region 'Fields
 
 #Region "Properties"
 
@@ -83,11 +90,21 @@ Public Class clsXMLGenreMapping
     Public Sub Load()
         If File.Exists(FileNameFullPath) Then
             Dim objStreamReader = New StreamReader(FileNameFullPath)
-            Dim nXML = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), clsXMLGenreMapping)
-            DefaultImage = nXML.DefaultImage
-            Genres = nXML.Genres
-            Mappings = nXML.Mappings
-            objStreamReader.Close()
+            Try
+                Dim nXML = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), clsXMLGenreMapping)
+                DefaultImage = nXML.DefaultImage
+                Genres = nXML.Genres
+                Mappings = nXML.Mappings
+                objStreamReader.Close()
+            Catch ex As Exception
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
+                objStreamReader.Close()
+                FileUtils.Common.CreateFileBackup(FileNameFullPath)
+                File.Delete(FileNameFullPath)
+                Clear()
+            End Try
+        ElseIf SearchOlderVersions Then
+            Load()
         Else
             Clear()
         End If
@@ -149,6 +166,26 @@ Public Class clsXMLGenreMapping
         xmlSerial.Serialize(xmlWriter, Me)
         xmlWriter.Close()
     End Sub
+
+    Private Function SearchOlderVersions() As Boolean
+#Disable Warning BC40000 'The type or member is obsolete.
+        Dim strVersion1 = Path.Combine(Master.SettingsPath, "Core.Genres.xml")
+        Select Case True
+            Case File.Exists(strVersion1)
+                Try
+                    File.Move(strVersion1, FileNameFullPath)
+                    Return True
+                Catch ex As Exception
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name)
+                    FileUtils.Common.CreateFileBackup(strVersion1)
+                    File.Delete(strVersion1)
+                    Return False
+                End Try
+            Case Else
+                Return False
+        End Select
+#Enable Warning BC40000 'The type or member is obsolete.
+    End Function
 
     Public Sub Sort()
         Genres.Sort()
