@@ -134,10 +134,10 @@
     <Compile Include="dlgSimpleMapping.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgGenreManager.Designer.vb">
-      <DependentUpon>dlgGenreManager.vb</DependentUpon>
+    <Compile Include="dlgGenreMapping.Designer.vb">
+      <DependentUpon>dlgGenreMapping.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgGenreManager.vb">
+    <Compile Include="dlgGenreMapping.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSettingsHolder.Designer.vb">
@@ -167,8 +167,8 @@
     <EmbeddedResource Include="dlgSimpleMapping.resx">
       <DependentUpon>dlgSimpleMapping.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgGenreManager.resx">
-      <DependentUpon>dlgGenreManager.vb</DependentUpon>
+    <EmbeddedResource Include="dlgGenreMapping.resx">
+      <DependentUpon>dlgGenreMapping.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsHolder.resx">

@@ -23,7 +23,7 @@ Imports System.Drawing
 Imports System.IO
 Imports System.Windows.Forms
 
-Public Class dlgGenreManager
+Public Class dlgGenreMapping
 
 #Region "Fields"
 
@@ -389,7 +389,7 @@ Public Class dlgGenreManager
     End Sub
 
     Private Sub Setup()
-        Text = Master.eLang.GetString(782, "Genre Manager")
+        Text = Master.eLang.GetString(782, "Genre Mapping")
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         btnGenreAdd.Text = Master.eLang.GetString(28, "Add")
         btnGenreConfirm.Text = Master.eLang.GetString(987, "Confirm")

@@ -175,7 +175,7 @@ Public Class genericMapping
         AddToolsStripItem(tsi, mnuMainToolsCountryMapping)
 
         mnuMainToolsGenreMapping.Image = New Bitmap(My.Resources.icon)
-        mnuMainToolsGenreMapping.Text = Master.eLang.GetString(782, "Genre Manager")
+        mnuMainToolsGenreMapping.Text = Master.eLang.GetString(782, "Genre Mapping")
         mnuMainToolsGenreMapping.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsGenreMapping)
@@ -204,7 +204,7 @@ Public Class genericMapping
         AddToolsStripItem(tsi, cmnuTrayToolsCountryMapping)
 
         cmnuTrayToolsGenreMapping.Image = New Bitmap(My.Resources.icon)
-        cmnuTrayToolsGenreMapping.Text = Master.eLang.GetString(782, "Genre Manager")
+        cmnuTrayToolsGenreMapping.Text = Master.eLang.GetString(782, "Genre Mapping")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, cmnuTrayToolsGenreMapping)
 
@@ -247,7 +247,7 @@ Public Class genericMapping
 
     Private Sub GenereMapping_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsGenreMapping.Click, cmnuTrayToolsGenreMapping.Click
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
-        Using dlgMapping As New dlgGenreManager
+        Using dlgMapping As New dlgGenreMapping
             dlgMapping.ShowDialog()
         End Using
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
