@@ -113,52 +113,101 @@ Public Class StringUtils
                              If(tDBElement.TVEpisode.SubEpisodeSpecified, String.Concat(".", tDBElement.TVEpisode.SubEpisode), String.Empty))
     End Function
     ''' <summary>
-    ''' Removes invalid token from the given filename string
+    ''' Removes invalid token from the given directory name
     ''' </summary>
-    ''' <param name="fName"><c>String</c> filename to clean</param>
-    ''' <returns>Cleaned <c>String</c></returns>
-    ''' <remarks>Removes all invalid filename characters)
-    ''' </remarks>
-    Public Shared Function CleanFileName(ByVal fName As String) As String
-        If String.IsNullOrEmpty(fName) Then Return String.Empty
-
-        'Do specific replaces first
-        fName = fName.Replace(":", " -")
-        fName = fName.Replace("/", "-")
-        fName = fName.Replace("?", String.Empty)
-        fName = fName.Replace("*", String.Empty)
-
-        'Everthing else gets removed
-        Dim invalidFileChars() As Char = Path.GetInvalidFileNameChars()
-        For Each someChar In invalidFileChars
-            fName = fName.Replace(someChar, String.Empty)
-        Next
-
-        Return fName
-    End Function
-    ''' <summary>
-    ''' Removes invalid token from the given path string
-    ''' </summary>
-    ''' <param name="fName"><c>String</c> path to clean</param>
+    ''' <param name="directoryName"><c>String</c> directory name to clean</param>
     ''' <returns>Cleaned <c>String</c></returns>
     ''' <remarks>Removes all invalid path characters)
     ''' </remarks>
-    Public Shared Function CleanPath(ByVal fName As String) As String
-        If String.IsNullOrEmpty(fName) Then Return String.Empty
-
+    Private Shared Function CleanDirectoryName(ByVal directoryName As String) As String
         'Do specific replaces first
-        fName = fName.Replace(":", " -")
-        fName = fName.Replace("/", "-")
-        fName = fName.Replace("?", String.Empty)
-        fName = fName.Replace("*", String.Empty)
+        directoryName = directoryName.Replace(":", " -")
+        directoryName = directoryName.Replace("/", "-")
+        directoryName = directoryName.Replace("?", String.Empty)
+        directoryName = directoryName.Replace("*", String.Empty)
 
         'Everthing else gets removed
         Dim invalidPathChars() As Char = Path.GetInvalidPathChars()
         For Each someChar In invalidPathChars
-            fName = fName.Replace(someChar, String.Empty)
+            directoryName = directoryName.Replace(someChar, String.Empty)
         Next
 
-        Return fName
+        'removes all leading DirectorySeparatorChar (otherwise Path.Combine later does not work)
+        While directoryName.StartsWith(Path.DirectorySeparatorChar)
+            directoryName = directoryName.Remove(0, 1).Trim
+        End While
+
+        'removes all leading dots in foldername (otherwise the folder will be hidden for OS)
+        While directoryName.First = "."
+            directoryName = directoryName.Remove(0, 1).Trim
+        End While
+
+        ' removes all trailing dots in foldername (dots are not allowed)
+        While directoryName.Last = "."
+            directoryName = directoryName.Remove(directoryName.Length - 1).Trim
+        End While
+
+        'remove all leading and trailing spaces
+        directoryName.Trim()
+
+        Return directoryName
+    End Function
+    ''' <summary>
+    ''' Removes invalid token from the given filename string
+    ''' </summary>
+    ''' <param name="fileName"><c>String</c> filename to clean</param>
+    ''' <returns>Cleaned <c>String</c></returns>
+    ''' <remarks>Removes all invalid filename characters)
+    ''' </remarks>
+    Public Shared Function CleanFileName(ByVal fileName As String) As String
+        If String.IsNullOrEmpty(fileName) Then Return String.Empty
+
+        'Do specific replaces first
+        fileName = fileName.Replace(":", " -")
+        fileName = fileName.Replace("/", "-")
+        fileName = fileName.Replace("?", String.Empty)
+        fileName = fileName.Replace("*", String.Empty)
+
+        'Everthing else gets removed
+        Dim invalidFileChars() As Char = Path.GetInvalidFileNameChars()
+        For Each someChar In invalidFileChars
+            fileName = fileName.Replace(someChar, String.Empty)
+        Next
+
+        ' removes all all leading dots in filename (otherwise the file will be hidden for OS)
+        While fileName.First = "."
+            fileName = fileName.Remove(0, 1).Trim
+        End While
+
+        ' removes all dots at the end of the filename (for accord with foldername)
+        While fileName.Last = "."
+            fileName = fileName.Remove(fileName.Length - 1).Trim
+        End While
+
+        ' remove all leading And trailing spaces
+        fileName.Trim()
+
+        Return fileName
+    End Function
+    ''' <summary>
+    ''' Removes invalid token from the given path string
+    ''' </summary>
+    ''' <param name="fullPath"><c>String</c> path to clean</param>
+    ''' <returns>Cleaned <c>String</c></returns>
+    ''' <remarks>Removes all invalid path characters)
+    ''' </remarks>
+    Public Shared Function CleanPath(ByVal fullPath As String) As String
+        If String.IsNullOrEmpty(fullPath) Then Return String.Empty
+
+        'split multi-directory paths into single paths and clean up 
+        Dim nDirectories As New List(Of String)
+        For Each tDirectory In fullPath.Split(New Char() {Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar}, StringSplitOptions.RemoveEmptyEntries)
+            nDirectories.Add(CleanDirectoryName(tDirectory))
+        Next
+
+        fullPath = Path.Combine(nDirectories.ToArray)
+
+        Return fullPath
     End Function
     ''' <summary>
     ''' Removes all URLs and HTML tags

@@ -18,15 +18,16 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
+Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class FileFolderRenamer
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public MovieFolders As New List(Of String)
     Public TVShowFolders As New List(Of String)
@@ -137,7 +138,7 @@ Public Class FileFolderRenamer
         Dim _movieDB As Database.DBElement = Nothing
         Dim iProg As Integer = 0
         Try
-            For Each f As FileFolderRenamer.FileRename In _movies.Where(Function(s) s.DoRename AndAlso Not s.FileExist AndAlso Not s.IsLock)
+            For Each f As FileRename In _movies.Where(Function(s) s.DoRename AndAlso Not s.FileExist AndAlso Not s.IsLock)
                 iProg += 1
                 If Not f.ID = -1 Then
                     _movieDB = Master.DB.Load_Movie(f.ID)
@@ -154,7 +155,7 @@ Public Class FileFolderRenamer
         Dim iProg As Integer = 0
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                For Each f As FileFolderRenamer.FileRename In _episodes.Where(Function(s) s.DoRename AndAlso Not s.FileExist AndAlso Not s.IsLock)
+                For Each f As FileRename In _episodes.Where(Function(s) s.DoRename AndAlso Not s.FileExist AndAlso Not s.IsLock)
                     iProg += 1
                     If Not f.ID = -1 Then
                         _tvDB = Master.DB.Load_TVEpisode(f.ID, True)
@@ -1077,21 +1078,6 @@ Public Class FileFolderRenamer
                 MovieFile.NewFileName = MovieFile.OldFileName
             End If
 
-            ' removes all leading DirectorySeparatorChar (otherwise, Path.Combine later does not work)
-            While MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar)
-                MovieFile.NewPath = MovieFile.NewPath.Remove(0, 1)
-            End While
-
-            ' removes all dots at the end of the foldername (dots are not allowed)
-            While MovieFile.NewPath.Last = "."
-                MovieFile.NewPath = MovieFile.NewPath.Remove(MovieFile.NewPath.Length - 1)
-            End While
-
-            ' removes all dots at the end of the filename (for accord with foldername)
-            While MovieFile.NewFileName.Last = "."
-                MovieFile.NewFileName = MovieFile.NewFileName.Remove(MovieFile.NewFileName.Length - 1)
-            End While
-
             Dim newFullFileName As String = Path.Combine(MovieFile.BasePath, Path.Combine(MovieFile.NewPath, String.Concat(MovieFile.NewFileName, MovieFile.Extension)))
             Dim newFullDirPath As String = Path.Combine(MovieFile.BasePath, MovieFile.NewPath)
             Dim newDirInfo As New DirectoryInfo(newFullDirPath)
@@ -1121,21 +1107,6 @@ Public Class FileFolderRenamer
                 EpisodeFile.NewFileName = EpisodeFile.OldFileName
             End If
 
-            ' removes all leading DirectorySeparatorChar (otherwise, Path.Combine later does not work)
-            While EpisodeFile.NewPath.StartsWith(Path.DirectorySeparatorChar)
-                EpisodeFile.NewPath = EpisodeFile.NewPath.Remove(0, 1)
-            End While
-
-            ' removes all dots at the end of the foldername (dots are not allowed)
-            While EpisodeFile.NewPath.Last = "."
-                EpisodeFile.NewPath = EpisodeFile.NewPath.Remove(EpisodeFile.NewPath.Length - 1)
-            End While
-
-            ' removes all dots at the end of the filename (for accord with foldername)
-            While EpisodeFile.NewFileName.Last = "."
-                EpisodeFile.NewFileName = EpisodeFile.NewFileName.Remove(EpisodeFile.NewFileName.Length - 1)
-            End While
-
             Dim newFullFileName As String = Path.Combine(EpisodeFile.BasePath, Path.Combine(EpisodeFile.NewPath, String.Concat(EpisodeFile.NewFileName, EpisodeFile.Extension)))
             EpisodeFile.FileExist = File.Exists(newFullFileName) AndAlso Not (newFullFileName.ToLower = EpisodeFile.OldFullFileName.ToLower)
             EpisodeFile.DoRename = Not EpisodeFile.NewPath = EpisodeFile.Path OrElse Not EpisodeFile.NewFileName = EpisodeFile.OldFileName
@@ -1152,16 +1123,6 @@ Public Class FileFolderRenamer
             Else
                 ShowFile.NewPath = Path.Combine(ShowFile.OldPath, ProccessPattern(ShowFile, folderPatternShows, True).Trim)
             End If
-
-            ' removes all leading DirectorySeparatorChar (otherwise, Path.Combine later does not work)
-            While ShowFile.NewPath.StartsWith(Path.DirectorySeparatorChar)
-                ShowFile.NewPath = ShowFile.NewPath.Remove(0, 1)
-            End While
-
-            ' removes all dots at the end of the foldername (dots are not allowed)
-            While ShowFile.NewPath.Last = "."
-                ShowFile.NewPath = ShowFile.NewPath.Remove(ShowFile.NewPath.Length - 1)
-            End While
 
             Dim newFullDirPath As String = Path.Combine(ShowFile.BasePath, ShowFile.NewPath)
             Dim newDirInfo As New DirectoryInfo(newFullDirPath)
@@ -1616,13 +1577,6 @@ Public Class FileFolderRenamer
                     pattern = StringUtils.CleanPath(pattern)
                 Else
                     pattern = StringUtils.CleanFileName(pattern)
-                End If
-
-                ' removes all dots at the end of the name (dots are not allowed)
-                If Not String.IsNullOrEmpty(pattern) Then
-                    While pattern.Last = "."
-                        pattern = pattern.Remove(pattern.Length - 1)
-                    End While
                 End If
 
                 Return pattern.Trim
@@ -2476,7 +2430,7 @@ Public Class FileFolderRenamer
             _title = String.Empty
         End Sub
 
-        Public Function CompareTo(ByVal obj As Episode) As Integer Implements System.IComparable(Of Episode).CompareTo
+        Public Function CompareTo(ByVal obj As Episode) As Integer Implements IComparable(Of Episode).CompareTo
             Return Episode.CompareTo(obj.Episode)
         End Function
 
