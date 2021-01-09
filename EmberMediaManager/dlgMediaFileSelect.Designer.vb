@@ -22,6 +22,7 @@ Partial Class dlgMediaFileSelect
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgMediaFileSelect))
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
@@ -50,6 +51,7 @@ Partial Class dlgMediaFileSelect
         Me.lblStatus = New System.Windows.Forms.ToolStripStatusLabel()
         Me.colMediaFileTitel = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colMediaFileUrlWebsite = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colMediaFileLanguage = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colMediaFileDuration = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colMediaFileVariant = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.colMediaFileVideoType = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -283,7 +285,7 @@ Partial Class dlgMediaFileSelect
         Me.dgvMediaFiles.AllowUserToDeleteRows = False
         Me.dgvMediaFiles.AllowUserToResizeRows = False
         Me.dgvMediaFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvMediaFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colMediaFileTitel, Me.colMediaFileUrlWebsite, Me.colMediaFileDuration, Me.colMediaFileVariant, Me.colMediaFileVideoType, Me.colMediaFileSource, Me.colMediaFileAddon})
+        Me.dgvMediaFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colMediaFileTitel, Me.colMediaFileUrlWebsite, Me.colMediaFileLanguage, Me.colMediaFileDuration, Me.colMediaFileVariant, Me.colMediaFileVideoType, Me.colMediaFileSource, Me.colMediaFileAddon})
         Me.tblMain.SetColumnSpan(Me.dgvMediaFiles, 2)
         Me.dgvMediaFiles.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMediaFiles.Location = New System.Drawing.Point(3, 3)
@@ -369,12 +371,23 @@ Partial Class dlgMediaFileSelect
         Me.colMediaFileUrlWebsite.Visible = False
         Me.colMediaFileUrlWebsite.Width = 5
         '
+        'colMediaFileLanguage
+        '
+        Me.colMediaFileLanguage.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.colMediaFileLanguage.HeaderText = "Language"
+        Me.colMediaFileLanguage.Name = "colMediaFileLanguage"
+        Me.colMediaFileLanguage.ReadOnly = True
+        Me.colMediaFileLanguage.Width = 83
+        '
         'colMediaFileDuration
         '
+        Me.colMediaFileDuration.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colMediaFileDuration.DefaultCellStyle = DataGridViewCellStyle1
         Me.colMediaFileDuration.HeaderText = "Duration"
         Me.colMediaFileDuration.Name = "colMediaFileDuration"
         Me.colMediaFileDuration.ReadOnly = True
-        Me.colMediaFileDuration.Width = 70
+        Me.colMediaFileDuration.Width = 78
         '
         'colMediaFileVariant
         '
@@ -473,6 +486,7 @@ Partial Class dlgMediaFileSelect
     Friend WithEvents dgvMediaFiles As DataGridView
     Friend WithEvents colMediaFileTitel As DataGridViewTextBoxColumn
     Friend WithEvents colMediaFileUrlWebsite As DataGridViewTextBoxColumn
+    Friend WithEvents colMediaFileLanguage As DataGridViewTextBoxColumn
     Friend WithEvents colMediaFileDuration As DataGridViewTextBoxColumn
     Friend WithEvents colMediaFileVariant As DataGridViewComboBoxColumn
     Friend WithEvents colMediaFileVideoType As DataGridViewTextBoxColumn

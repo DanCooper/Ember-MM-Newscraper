@@ -121,6 +121,7 @@ Public Class dlgMediaFileSelect
         btnOK.Text = Master.eLang.GetString(373, "Download")
         colMediaFileAddon.HeaderText = Master.eLang.GetString(1117, "Addon")
         colMediaFileDuration.HeaderText = Master.eLang.GetString(609, "Duration")
+        colMediaFileLanguage.HeaderText = Master.eLang.GetString(610, "Language")
         colMediaFileSource.HeaderText = Master.eLang.GetString(1173, "Source")
         colMediaFileTitel.HeaderText = Master.eLang.GetString(21, "Title")
         colMediaFileVariant.HeaderText = Master.eLang.GetString(1136, "Variant")
@@ -348,6 +349,7 @@ Public Class dlgMediaFileSelect
             dgvMediaFiles.Rows(i).Tag = nMediaFile
             dgvMediaFiles.Rows(i).Cells(colMediaFileAddon.Name).Value = nMediaFile.Scraper
             dgvMediaFiles.Rows(i).Cells(colMediaFileDuration.Name).Value = nMediaFile.Duration
+            dgvMediaFiles.Rows(i).Cells(colMediaFileLanguage.Name).Value = nMediaFile.LongLanguage
             dgvMediaFiles.Rows(i).Cells(colMediaFileSource.Name).Value = nMediaFile.Source
             dgvMediaFiles.Rows(i).Cells(colMediaFileTitel.Name).Value = nMediaFile.Title
             dgvMediaFiles.Rows(i).Cells(colMediaFileVideoType.Name).Value = nMediaFile.VideoType
