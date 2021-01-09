@@ -101,7 +101,7 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.OldFileName = "OldFileName"
         _fDummyMultiSeason.Genre = "Comedy / Lovestory"
         _fDummyMultiSeason.ID = -1
-        _fDummyMultiSeason.IMDB = "94413"
+        _fDummyMultiSeason.IMDB = "tt8440328"
         _fDummyMultiSeason.IsBDMV = False
         _fDummyMultiSeason.IsLock = False
         _fDummyMultiSeason.IsMultiEpisode = True
