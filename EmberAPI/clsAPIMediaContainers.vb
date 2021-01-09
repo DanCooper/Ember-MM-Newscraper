@@ -1140,7 +1140,7 @@ Namespace MediaContainers
             Public Shared Function BitrateToString(ByVal audioBitrate As Enums.AudioBitrate) As String
                 Select Case audioBitrate
                     Case Enums.AudioBitrate.UNKNOWN
-                        Return "Unknown"
+                        Return "?"
                     Case Else
                         Return [Enum].GetName(GetType(Enums.AudioBitrate), audioBitrate).Remove(0, 1).Replace("kbps", " kbit/s")
                 End Select
@@ -1149,7 +1149,7 @@ Namespace MediaContainers
             Public Shared Function CodecToString(ByVal audioCodec As Enums.AudioCodec) As String
                 Select Case audioCodec
                     Case Enums.AudioCodec.UNKNOWN
-                        Return "Unknown"
+                        Return "?"
                     Case Enums.AudioCodec.AAC_SPATIAL
                         Return "AAC 6Ch"
                     Case Enums.AudioCodec.AC3_SPATIAL
@@ -1358,7 +1358,7 @@ Namespace MediaContainers
             Private Shared Function CodecToString(ByVal videoCodec As Enums.VideoCodec) As String
                 Select Case videoCodec
                     Case Enums.VideoCodec.UNKNOWN
-                        Return "Unknown"
+                        Return "?"
                     Case Enums.VideoCodec.VP9_HDR
                         Return "VP9, HDR"
                     Case Else
@@ -1372,8 +1372,8 @@ Namespace MediaContainers
 
             Private Shared Function ResolutionToString(ByVal videoQuality As Enums.VideoResolution) As String
                 Select Case videoQuality
-                    Case Enums.VideoResolution.UNKNOWN
-                        Return "Unknown"
+                    Case Enums.VideoResolution.Any, Enums.VideoResolution.UNKNOWN
+                        Return "?"
                     Case Enums.VideoResolution.HD1080p60fps
                         Return "1080p, 60fps"
                     Case Enums.VideoResolution.HD2160p60fps
