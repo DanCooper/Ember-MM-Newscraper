@@ -23,6 +23,7 @@ Imports NLog
 Imports HtmlAgilityPack
 Imports System.IO
 Imports System.Text.RegularExpressions
+Imports System.Net
 
 Public Class Scraper
 
@@ -37,7 +38,7 @@ Public Class Scraper
         Dim nVideoStream As New MediaContainers.MediaFile.VideoStream With {
         .Codec = ConvertVideoCodec(codec),
         .FileExtension = Path.GetExtension(url),
-        .Resolution = ConvertVideoResolution(height),
+        .Resolution = ConvertVideoResolution(width, height),
         .StreamUrl = url
         }
 
@@ -55,16 +56,27 @@ Public Class Scraper
         End Select
     End Function
 
-    Private Shared Function ConvertVideoResolution(ByVal height As String) As Enums.VideoResolution
-        Select Case height.ToLower
-            Case "360"
+    Private Shared Function ConvertVideoResolution(ByVal width As String, ByVal height As String) As Enums.VideoResolution
+        Select Case width
+            Case "426"
+                Return Enums.VideoResolution.SQ240p
+            Case "480"
                 Return Enums.VideoResolution.SQ360p
-            Case "720"
+            Case "640"
+                Return Enums.VideoResolution.HQ480p
+            Case "1280"
                 Return Enums.VideoResolution.HD720p
-            Case "1080"
+            Case "1920"
                 Return Enums.VideoResolution.HD1080p
             Case Else
-                Return Enums.VideoResolution.Any
+                Select Case height
+                    Case "320", "362"
+                        Return Enums.VideoResolution.SQ360p
+                    Case "480"
+                        Return Enums.VideoResolution.HQ480p
+                    Case Else
+                        Return Enums.VideoResolution.UNKNOWN
+                End Select
         End Select
     End Function
 
@@ -89,8 +101,19 @@ Public Class Scraper
                 'take first search result and search the movie page in the attributes
                 Dim strMovieUrl = dnSearchResults(0).SelectSingleNode("//a[@class=""title""]").GetAttributeValue("href", String.Empty)
                 If Not String.IsNullOrEmpty(strMovieUrl) Then
-                    'load the movie page
-                    Dim htmldocMoviePage As HtmlDocument = webParsing.Load(String.Concat(strMainUrl, strMovieUrl))
+                    '-----------------------------------------------------------------------------------------
+                    ' load the movie page
+                    '-----------------------------------------------------------------------------------------
+                    ' "HtmlWeb.Load" does not work because of Java script doesn't get finished before parsing
+                    ' so we use HTTP.DownloadData to get the HTML and load that into a HtmlDocument
+                    '-----------------------------------------------------------------------------------------
+
+                    Dim sHTTP As New HTTP
+                    Dim MoviePage As String = sHTTP.DownloadData(String.Concat(strMainUrl, strMovieUrl))
+                    sHTTP = Nothing
+
+                    Dim htmldocMoviePage As New HtmlDocument
+                    If Not String.IsNullOrEmpty(MoviePage) Then htmldocMoviePage.LoadHtml(MoviePage)
                     If htmldocMoviePage IsNot Nothing Then
                         Dim dnTrailers = htmldocMoviePage.DocumentNode.SelectNodes("//div[@id=""trailer""]//div[@class=""playlist""]//div[@class=""item""]")
                         If dnTrailers IsNot Nothing Then
@@ -108,6 +131,7 @@ Public Class Scraper
                                     .Scraper = "Videobuster.de",
                                     .Source = "Videobuster.de",
                                     .Title = strTitle,
+                                    .URLWebsite = String.Concat(strMainUrl, strMovieUrl, "#trailer"),
                                     .VideoType = GetVideoType(strTitle)
                                 }
 
@@ -122,7 +146,11 @@ Public Class Scraper
                                     nTrailer.Streams.VideoStreams.Add(BuildStream(strUrl, strWidth, strHeight, strCodec))
                                 Next
 
-                                nTrailerList.Add(nTrailer)
+                                'get best quality
+                                If nTrailer.StreamsSpecified Then
+                                    nTrailer.VideoResolution = nTrailer.Streams.VideoStreams(0).Resolution
+                                    nTrailerList.Add(nTrailer)
+                                End If
                             Next
                         End If
                     End If
