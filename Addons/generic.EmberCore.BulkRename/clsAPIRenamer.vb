@@ -816,6 +816,16 @@ Public Class FileFolderRenamer
             EpisodeFile.ListTitle = StringUtils.SortTokens_TV(_DBElement.TVShow.Title)
         End If
 
+        'Show OriginalTitle
+        If _DBElement.TVShow.OriginalTitleSpecified Then
+            EpisodeFile.OriginalTitle = _DBElement.TVShow.OriginalTitle
+        End If
+
+        'Show SortTitle
+        If _DBElement.TVShow.SortTitleSpecified Then
+            EpisodeFile.SortTitle = _DBElement.TVShow.SortTitle
+        End If
+
         'Show Title
         If _DBElement.TVShow.TitleSpecified Then
             EpisodeFile.ShowTitle = _DBElement.TVShow.Title
@@ -950,7 +960,7 @@ Public Class FileFolderRenamer
         ShowFile.IsSingle = _DBElement.Source.IsSingle
 
         'ListTitle
-        If _DBElement.ListTitle IsNot Nothing Then
+        If _DBElement.ListTitleSpecified Then
             ShowFile.ListTitle = _DBElement.ListTitle
         End If
 
@@ -967,6 +977,11 @@ Public Class FileFolderRenamer
         'Rating
         If _DBElement.TVShow.RatingSpecified Then
             ShowFile.Rating = _DBElement.TVShow.Rating
+        End If
+
+        'SortTitle
+        If _DBElement.TVShow.SortTitleSpecified Then
+            ShowFile.SortTitle = _DBElement.TVShow.SortTitle
         End If
 
         'Title / ShowTitle

@@ -54,36 +54,36 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.OldFileName = "OldFileName"
         _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
         _fDummyMultiEpisode.ID = -1
-        _fDummyMultiEpisode.IMDB = ""
+        _fDummyMultiEpisode.IMDB = "tt8440328"
         _fDummyMultiEpisode.IsBDMV = False
         _fDummyMultiEpisode.IsLock = False
         _fDummyMultiEpisode.IsMultiEpisode = True
         _fDummyMultiEpisode.DoRename = False
         _fDummyMultiEpisode.IsSingle = True
         _fDummyMultiEpisode.IsVideoTS = False
-        _fDummyMultiEpisode.ListTitle = "Big Bang Theory, The"
+        _fDummyMultiEpisode.ListTitle = "Mess You Leave Behind, The"
         _fDummyMultiEpisode.MPAA = "TV-14"
         _fDummyMultiEpisode.MultiViewCount = "3d"
         _fDummyMultiEpisode.MultiViewLayout = "Side by Side (left eye first)"
         _fDummyMultiEpisode.NewFileName = ""
         _fDummyMultiEpisode.NewPath = ""
         _fDummyMultiEpisode.OldPath = ""
-        _fDummyMultiEpisode.OriginalTitle = ""
+        _fDummyMultiEpisode.OriginalTitle = "El desorden que dejas"
         _fDummyMultiEpisode.Parent = "OldDirectoryName"
         _fDummyMultiEpisode.Path = ""
         _fDummyMultiEpisode.Rating = "7.3"
         _fDummyMultiEpisode.Resolution = "720p"
         _fDummyMultiEpisode.ShortStereoMode = "sbs"
-        _fDummyMultiEpisode.ShowTitle = "The Big Bang Theory"
-        _fDummyMultiEpisode.SortTitle = "Big Bang Theory"
+        _fDummyMultiEpisode.ShowTitle = "The Mess You Leave Behind"
+        _fDummyMultiEpisode.SortTitle = "Mess You Leave Behind"
         _fDummyMultiEpisode.StereoMode = "left_right"
-        _fDummyMultiEpisode.Title = "Pilot"
+        _fDummyMultiEpisode.Title = "Into the Lion's Den"
         _fDummyMultiEpisode.TVDBID = "58056"
         _fDummyMultiEpisode.VideoCodec = "xvid"
         _fDummyMultiEpisode.VideoSource = "dvd"
         _fDummyMultiEpisode.Year = "2007"
-        Dim dMEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
-        Dim dMEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "The Big Bran Hypothesis"}
+        Dim dMEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Into the Lion's Den"}
+        Dim dMEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "They Know"}
         Dim dMEpisodeList As New List(Of FileFolderRenamer.Episode)
         dMEpisodeList.Add(dMEpisode1)
         dMEpisodeList.Add(dMEpisode2)
@@ -101,38 +101,38 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.OldFileName = "OldFileName"
         _fDummyMultiSeason.Genre = "Comedy / Lovestory"
         _fDummyMultiSeason.ID = -1
-        _fDummyMultiSeason.IMDB = ""
+        _fDummyMultiSeason.IMDB = "94413"
         _fDummyMultiSeason.IsBDMV = False
         _fDummyMultiSeason.IsLock = False
         _fDummyMultiSeason.IsMultiEpisode = True
         _fDummyMultiSeason.DoRename = False
         _fDummyMultiSeason.IsSingle = True
         _fDummyMultiSeason.IsVideoTS = False
-        _fDummyMultiSeason.ListTitle = "Big Bang Theory, The"
+        _fDummyMultiSeason.ListTitle = "Mess You Leave Behind, The"
         _fDummyMultiSeason.MPAA = "TV-14"
         _fDummyMultiSeason.MultiViewCount = "3d"
         _fDummyMultiSeason.MultiViewLayout = "Side by Side (left eye first)"
         _fDummyMultiSeason.NewFileName = ""
         _fDummyMultiSeason.NewPath = ""
         _fDummyMultiSeason.OldPath = ""
-        _fDummyMultiSeason.OriginalTitle = ""
+        _fDummyMultiSeason.OriginalTitle = "El desorden que dejas"
         _fDummyMultiSeason.Parent = "OldDirectoryName"
         _fDummyMultiSeason.Path = ""
         _fDummyMultiSeason.Rating = "7.3"
         _fDummyMultiSeason.Resolution = "720p"
         _fDummyMultiSeason.ShortStereoMode = "sbs"
-        _fDummyMultiSeason.ShowTitle = "The Big Bang Theory"
-        _fDummyMultiSeason.SortTitle = "Big Bang Theory"
+        _fDummyMultiSeason.ShowTitle = "The Mess You Leave Behind"
+        _fDummyMultiSeason.SortTitle = "Mess You Leave Behind"
         _fDummyMultiSeason.StereoMode = "left_right"
-        _fDummyMultiSeason.Title = "Pilot"
+        _fDummyMultiSeason.Title = "Into the Lion's Den"
         _fDummyMultiSeason.TVDBID = "58056"
         _fDummyMultiSeason.VideoCodec = "xvid"
         _fDummyMultiSeason.VideoSource = "dvd"
         _fDummyMultiSeason.Year = "2007"
-        Dim dMSEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
-        Dim dMSEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "The Big Bran Hypothesis"}
-        Dim dMSEpisode3 As New FileFolderRenamer.Episode With {.ID = 3, .Episode = 1, .Title = "The Bad Fish Paradigm"}
-        Dim dMSEpisode4 As New FileFolderRenamer.Episode With {.ID = 4, .Episode = 2, .Title = "The Codpiece Topology"}
+        Dim dMSEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Into the Lion's Den"}
+        Dim dMSEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "They Know"}
+        Dim dMSEpisode3 As New FileFolderRenamer.Episode With {.ID = 3, .Episode = 1, .Title = "Count to Three"}
+        Dim dMSEpisode4 As New FileFolderRenamer.Episode With {.ID = 4, .Episode = 2, .Title = "Downward Spiral"}
         Dim dMSEpisodeList1 As New List(Of FileFolderRenamer.Episode)
         Dim dMSEpisodeList2 As New List(Of FileFolderRenamer.Episode)
         dMSEpisodeList1.Add(dMSEpisode1)
@@ -154,35 +154,35 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.OldFileName = "OldFileName"
         _fDummySingleEpisode.Genre = "Comedy / Lovestory"
         _fDummySingleEpisode.ID = -1
-        _fDummySingleEpisode.IMDB = ""
+        _fDummySingleEpisode.IMDB = "tt8440328"
         _fDummySingleEpisode.IsBDMV = False
         _fDummySingleEpisode.IsLock = False
         _fDummySingleEpisode.IsMultiEpisode = False
         _fDummySingleEpisode.DoRename = False
         _fDummySingleEpisode.IsSingle = True
         _fDummySingleEpisode.IsVideoTS = False
-        _fDummySingleEpisode.ListTitle = "Big Bang Theory, The"
+        _fDummySingleEpisode.ListTitle = "Mess You Leave Behind, The"
         _fDummySingleEpisode.MPAA = "TV-14"
         _fDummySingleEpisode.MultiViewCount = "3d"
         _fDummySingleEpisode.MultiViewLayout = "Side by Side (left eye first)"
         _fDummySingleEpisode.NewFileName = ""
         _fDummySingleEpisode.NewPath = ""
         _fDummySingleEpisode.OldPath = ""
-        _fDummySingleEpisode.OriginalTitle = ""
+        _fDummySingleEpisode.OriginalTitle = "El desorden que dejas"
         _fDummySingleEpisode.Parent = "OldDirectoryName"
         _fDummySingleEpisode.Path = ""
         _fDummySingleEpisode.Rating = "7.3"
         _fDummySingleEpisode.Resolution = "720p"
         _fDummySingleEpisode.ShortStereoMode = "sbs"
-        _fDummySingleEpisode.ShowTitle = "The Big Bang Theory"
-        _fDummySingleEpisode.SortTitle = "Big Bang Theory"
+        _fDummySingleEpisode.ShowTitle = "The Mess You Leave Behind"
+        _fDummySingleEpisode.SortTitle = "Mess You Leave Behind"
         _fDummySingleEpisode.StereoMode = "left_right"
-        _fDummySingleEpisode.Title = "Pilot"
+        _fDummySingleEpisode.Title = "Into the Lion's Den"
         _fDummySingleEpisode.TVDBID = "58056"
         _fDummySingleEpisode.VideoCodec = "xvid"
         _fDummySingleEpisode.VideoSource = "dvd"
         _fDummySingleEpisode.Year = "2007"
-        Dim dSEpisode As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
+        Dim dSEpisode As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Into the Lion's Den"}
         Dim dSEpisodeList As New List(Of FileFolderRenamer.Episode)
         dSEpisodeList.Add(dSEpisode)
         _fDummySingleEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dSEpisodeList})
