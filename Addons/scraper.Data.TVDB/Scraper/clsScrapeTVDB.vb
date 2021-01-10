@@ -18,31 +18,17 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
 Imports NLog
-Imports System.Xml.Serialization
+Imports System.IO
 
 Namespace TVDBs
 
     Public Class SearchResults
 
-#Region "Fields"
-
-        Private _Matches As New List(Of MediaContainers.TVShow)
-
-#End Region 'Fields
-
 #Region "Properties"
 
-        Public Property Matches() As List(Of MediaContainers.TVShow)
-            Get
-                Return _Matches
-            End Get
-            Set(ByVal value As List(Of MediaContainers.TVShow))
-                _Matches = value
-            End Set
-        End Property
+        Public ReadOnly Property Matches() As New List(Of MediaContainers.TVShow)
 
 #End Region 'Properties
 
@@ -52,14 +38,14 @@ Namespace TVDBs
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-        Friend WithEvents bwTVDB As New System.ComponentModel.BackgroundWorker
+        Friend WithEvents bwTVDB As New ComponentModel.BackgroundWorker
 
+        Private _SpecialSettings As TVDB_Data.SpecialSettings
+        Private _PosterUrl As String
         Private _TVDBApi As TVDB.Web.WebInterface
         Private _TVDBMirror As TVDB.Model.Mirror
-        Private _SpecialSettings As TVDB_Data.SpecialSettings
-        Private _sPoster As String
 
 
 #End Region 'Fields
@@ -97,7 +83,7 @@ Namespace TVDBs
                 _TVDBMirror = New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
 
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -285,9 +271,9 @@ Namespace TVDBs
             'Posters (only for SearchResult dialog, auto fallback to "en" by TVDB)
             If GetPoster Then
                 If TVShowInfo.Series.Poster IsNot Nothing AndAlso Not String.IsNullOrEmpty(TVShowInfo.Series.Poster) Then
-                    _sPoster = String.Concat(_TVDBMirror.Address, "/banners/", TVShowInfo.Series.Poster)
+                    _PosterUrl = String.Concat(_TVDBMirror.Address, "/banners/", TVShowInfo.Series.Poster)
                 Else
-                    _sPoster = String.Empty
+                    _PosterUrl = String.Empty
                 End If
             End If
 
@@ -385,7 +371,7 @@ Namespace TVDBs
                     Return Nothing
                 End If
             Catch ex As Exception
-                logger.Error(String.Concat("TVDB Scraper: Can't get informations for TV Show with ID: ", tvdbID))
+                _Logger.Error(String.Concat("TVDB Scraper: Can't get informations for TV Show with ID: ", tvdbID))
                 Return Nothing
             End Try
         End Function
@@ -635,7 +621,7 @@ Namespace TVDBs
 
                 Case SearchType.SearchDetails_TVShow
                     Dim showInfo As MediaContainers.TVShow = DirectCast(Res.Result, MediaContainers.TVShow)
-                    RaiseEvent SearchInfoDownloaded(_sPoster, showInfo)
+                    RaiseEvent SearchInfoDownloaded(_PosterUrl, showInfo)
             End Select
         End Sub
 
