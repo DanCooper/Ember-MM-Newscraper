@@ -4459,8 +4459,8 @@ Public Class frmMain
 
         Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
         Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
-        Dim tmpDBMTVShow As Database.DBElement = Master.DB.Load_TVShow(ID, True, False)
-        Edit_TVShow(tmpDBMTVShow)
+        Dim tmpDBTVShow As Database.DBElement = Master.DB.Load_TVShow(ID, True, False)
+        Edit_TVShow(tmpDBTVShow)
     End Sub
 
     Private Sub cmnuEpisodeOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeOpenFolder.Click
