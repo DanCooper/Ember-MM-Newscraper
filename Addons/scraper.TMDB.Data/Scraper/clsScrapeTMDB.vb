@@ -1463,21 +1463,21 @@ Public Class Scraper
         End If
 
         If MovieSets.TotalResults > 0 Then
-            Dim t1 As String = String.Empty
-            Dim t2 As String = String.Empty
-            Dim t3 As String = String.Empty
+            Dim strTMDbId As String = String.Empty
+            Dim strTitle As String = String.Empty
+            Dim strPlot As String = String.Empty
             TotP = MovieSets.TotalPages
             While Page <= TotP AndAlso Page <= 3
                 If MovieSets.Results IsNot Nothing Then
                     For Each aMovieSet In MovieSets.Results
-                        t1 = CStr(aMovieSet.Id)
+                        strTMDbId = aMovieSet.Id.ToString
                         If aMovieSet.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(aMovieSet.Name) Then
-                            t2 = aMovieSet.Name
+                            strTitle = aMovieSet.Name
                         End If
                         'If aMovieSet.overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(aMovieSet.overview) Then
-                        '    t3 = aMovieSet.overview
+                        '    strPlot = aMovieSet.overview
                         'End If
-                        R.Matches.Add(New MediaContainers.MovieSet(t1, t2, t3))
+                        R.Matches.Add(New MediaContainers.MovieSet With {.TMDB = strTMDbId, .Title = strTitle})
                     Next
                 End If
                 Page = Page + 1
@@ -1515,25 +1515,27 @@ Public Class Scraper
         End If
 
         If Shows.TotalResults > 0 Then
-            Dim t1 As String = String.Empty
-            Dim t2 As String = String.Empty
+            Dim strTitle As String = String.Empty
+            Dim strYear As String = String.Empty
             TotP = Shows.TotalPages
             While Page <= TotP AndAlso Page <= 3
                 If Shows.Results IsNot Nothing Then
                     For Each aShow In Shows.Results
                         If aShow.Name Is Nothing OrElse (aShow.Name IsNot Nothing AndAlso String.IsNullOrEmpty(aShow.Name)) Then
                             If aShow.OriginalName IsNot Nothing AndAlso Not String.IsNullOrEmpty(aShow.OriginalName) Then
-                                t1 = aShow.OriginalName
+                                strTitle = aShow.OriginalName
                             End If
                         Else
-                            t1 = aShow.Name
+                            strTitle = aShow.Name
                         End If
                         If aShow.FirstAirDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(aShow.FirstAirDate)) Then
-                            t2 = CStr(aShow.FirstAirDate.Value.Year)
+                            strYear = CStr(aShow.FirstAirDate.Value.Year)
                         End If
-                        Dim lNewShow As MediaContainers.TVShow = New MediaContainers.TVShow(String.Empty, t1, t2)
-                        lNewShow.TMDB = CStr(aShow.Id)
-                        R.Matches.Add(lNewShow)
+                        R.Matches.Add(New MediaContainers.TVShow With {
+                                      .Premiered = strYear,
+                                      .Title = strTitle,
+                                      .TMDB = aShow.Id.ToString
+                                      })
                     Next
                 End If
                 Page = Page + 1

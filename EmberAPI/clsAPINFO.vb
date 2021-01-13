@@ -610,7 +610,7 @@ Public Class NFO
             If ScrapeOptions.bMainEpisodeGuide AndAlso scrapedshow.EpisodeGuideSpecified AndAlso Master.eSettings.TVScraperShowEpiGuideURL Then
                 DBTV.TVShow.EpisodeGuide = scrapedshow.EpisodeGuide
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowEpiGuideURL Then
-                DBTV.TVShow.EpisodeGuide.Clear()
+                DBTV.TVShow.EpisodeGuide = New MediaContainers.EpisodeGuide
             End If
 
             'Genres
@@ -1984,7 +1984,7 @@ Public Class NFO
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
 
-                xmlMov.Clear()
+                xmlMov = New MediaContainers.Movie
                 If Not String.IsNullOrEmpty(sPath) Then
 
                     'go ahead and rename it now, will still be picked up in getimdbfromnonconf
@@ -2033,7 +2033,7 @@ Public Class NFO
 
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
-                xmlMovSet.Clear()
+                xmlMovSet = New MediaContainers.MovieSet
             End Try
 
             If xmlSer IsNot Nothing Then

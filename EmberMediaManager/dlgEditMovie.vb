@@ -2330,7 +2330,7 @@ Public Class dlgEditMovie
 
         Dim removeSubtitles As New List(Of MediaContainers.Subtitle)
         For Each Subtitle In tmpDBElement.Subtitles
-            If Subtitle.toRemove Then
+            If Subtitle.ToRemove Then
                 removeSubtitles.Add(Subtitle)
             End If
         Next
@@ -2580,7 +2580,7 @@ Public Class dlgEditMovie
         If lvSubtitles.SelectedItems.Count > 0 Then
             Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
             If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                tmpDBElement.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
+                tmpDBElement.Subtitles(Convert.ToInt16(i.Text)).ToRemove = True
             End If
             'NeedToRefresh = True
             LoadSubtitles()
@@ -2624,7 +2624,7 @@ Public Class dlgEditMovie
                     i.SubItems.Add(s.SubsType)
                     i.SubItems.Add(If(s.SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
 
-                    If s.toRemove Then
+                    If s.ToRemove Then
                         i.ForeColor = Color.Red
                     End If
 

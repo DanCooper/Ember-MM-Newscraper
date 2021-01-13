@@ -208,62 +208,15 @@ Public Class Containers
 
     Public Class ImgResult
 
-#Region "Fields"
-
-        Dim _fanart As New MediaContainers.Fanart
-        Dim _imagepath As String
-        Dim _posters As New List(Of String)
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property Fanart() As MediaContainers.Fanart
-            Get
-                Return _fanart
-            End Get
-            Set(ByVal value As MediaContainers.Fanart)
-                _fanart = value
-            End Set
-        End Property
+        Public Property Fanart() As New MediaContainers.Fanart
 
-        Public Property ImagePath() As String
-            Get
-                Return _imagepath
-            End Get
-            Set(ByVal value As String)
-                _imagepath = value
-            End Set
-        End Property
+        Public Property ImagePath() As String = String.Empty
 
-        Public Property Posters() As List(Of String)
-            Get
-                Return _posters
-            End Get
-            Set(ByVal value As List(Of String))
-                _posters = value
-            End Set
-        End Property
+        Public Property Posters() As New List(Of String)
 
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _imagepath = String.Empty
-            _posters.Clear()
-            _fanart.Clear()
-        End Sub
-
-#End Region 'Methods
+#End Region 'Properties 
 
     End Class 'ImgResult
 

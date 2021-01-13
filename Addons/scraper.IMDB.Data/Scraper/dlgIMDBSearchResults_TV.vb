@@ -211,7 +211,7 @@ Public Class dlgIMDBSearchResults_TV
         lblIMDBID.Text = String.Empty
         pbPoster.Image = Nothing
 
-        _tmpTVShow.Clear()
+        _tmpTVShow = New MediaContainers.TVShow
 
         _IMDB.CancelAsync()
     End Sub

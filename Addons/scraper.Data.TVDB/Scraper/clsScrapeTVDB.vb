@@ -138,17 +138,18 @@ Namespace TVDBs
             End If
 
             If Shows.Count > 0 Then
-                Dim t1 As String = String.Empty
-                Dim t2 As String = String.Empty
+                Dim strTitle As String = String.Empty
+                Dim strPremiered As String = String.Empty
                 For Each aShow In Shows
                     If aShow.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(aShow.Name) Then
-                        t1 = aShow.Name
-                        If Not String.IsNullOrEmpty(CStr(aShow.FirstAired)) Then
-                            t2 = CStr(aShow.FirstAired.Year)
+                        strTitle = aShow.Name
+                        If Not String.IsNullOrEmpty(aShow.FirstAired.ToString) Then
+                            strPremiered = aShow.FirstAired.Year.ToString
                         End If
-                        Dim lNewShow As MediaContainers.TVShow = New MediaContainers.TVShow(String.Empty, t1, t2)
-                        lNewShow.TVDB = CStr(aShow.Id)
-                        R.Matches.Add(lNewShow)
+                        R.Matches.Add(New MediaContainers.TVShow With {
+                                      .Premiered = strPremiered,
+                                      .Title = strTitle,
+                                      .TMDB = aShow.Id.ToString})
                     End If
                 Next
             End If

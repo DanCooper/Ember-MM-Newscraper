@@ -162,7 +162,7 @@ Public Class dlgTMDBSearchResults_Movie
             _TMDB.CancelAsync()
         End If
 
-        _tmpMovie.Clear()
+        _tmpMovie = New MediaContainers.Movie
 
         DialogResult = DialogResult.Cancel
     End Sub
@@ -190,7 +190,7 @@ Public Class dlgTMDBSearchResults_Movie
         lblTMDBID.Text = String.Empty
         pbPoster.Image = Nothing
 
-        _tmpMovie.Clear()
+        _tmpMovie = New MediaContainers.Movie
 
         _TMDB.CancelAsync()
     End Sub
