@@ -1093,6 +1093,9 @@ Public Class FileFolderRenamer
                 MovieFile.NewFileName = MovieFile.OldFileName
             End If
 
+            'removes all leading DirectorySeparatorChar (otherwise, Path.Combine later does not work)
+            MovieFile.NewPath = StringUtils.CleanPath(MovieFile.NewPath)
+
             Dim newFullFileName As String = Path.Combine(MovieFile.BasePath, Path.Combine(MovieFile.NewPath, String.Concat(MovieFile.NewFileName, MovieFile.Extension)))
             Dim newFullDirPath As String = Path.Combine(MovieFile.BasePath, MovieFile.NewPath)
             Dim newDirInfo As New DirectoryInfo(newFullDirPath)
@@ -1138,6 +1141,9 @@ Public Class FileFolderRenamer
             Else
                 ShowFile.NewPath = Path.Combine(ShowFile.OldPath, ProccessPattern(ShowFile, folderPatternShows, True).Trim)
             End If
+
+            'removes all leading DirectorySeparatorChar (otherwise, Path.Combine later does not work)
+            ShowFile.NewPath = StringUtils.CleanPath(ShowFile.NewPath)
 
             Dim newFullDirPath As String = Path.Combine(ShowFile.BasePath, ShowFile.NewPath)
             Dim newDirInfo As New DirectoryInfo(newFullDirPath)
