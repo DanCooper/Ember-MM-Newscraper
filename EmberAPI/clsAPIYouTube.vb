@@ -23,6 +23,7 @@ Imports VideoLibrary
 Imports System.Runtime.CompilerServices
 Imports System.Text.RegularExpressions
 Imports System.Web
+Imports System.Threading.Tasks
 
 'The InternalsVisibleTo is required for unit testing the friend methods
 <Assembly: InternalsVisibleTo("EmberAPI_Test")>
@@ -140,14 +141,26 @@ Namespace YouTube
                     Dim regSearchResults As MatchCollection = Regex.Matches(regSearchResultsArea.Item(0).Value, strVideoIdPattern, RegexOptions.Singleline, TimeSpan.FromSeconds(1))
                     Dim lstVideoIds As New List(Of String)
                     For ctr = 0 To regSearchResults.Count - 1
-                        lstVideoIds.Add(regSearchResults.Item(ctr).Groups(1).Value)
+                        Dim tId As String
+                        tId = regSearchResults.Item(ctr).Groups(1).Value
+                        'prevent duplicate entries
+                        If (Not lstVideoIds.Contains(tId)) Then lstVideoIds.Add(tId)
                     Next
-                    'clean the list from duplicate entries
-                    lstVideoIds = lstVideoIds.Distinct.ToList
-                    For Each tId In lstVideoIds
-                        Dim nVideoDetails = GetVideoDetails(tId)
-                        If nVideoDetails IsNot Nothing Then nVideoList.Add(nVideoDetails)
-                    Next
+                    Dim nVideoDict As New SortedDictionary(Of Long, MediaContainers.MediaFile)
+                    Dim parallelOptions = New ParallelOptions()
+                    parallelOptions.MaxDegreeOfParallelism = 10
+                    Dim nVideoDictLock As New Object
+                    Parallel.ForEach(lstVideoIds, parallelOptions,
+                                     Sub(tId As String, loopstate As ParallelLoopState, index As Long)
+                                         Dim nVideoDetails = GetVideoDetails(tId)
+
+                                         If nVideoDetails IsNot Nothing Then
+                                             SyncLock nVideoDictLock
+                                                 nVideoDict.Add(index, nVideoDetails)
+                                             End SyncLock
+                                         End If
+                                     End Sub)
+                    nVideoList = nVideoDict.Values.ToList()
                     For Each tVideo In nVideoList
                         tVideo.Scraper = "Search"
                     Next
