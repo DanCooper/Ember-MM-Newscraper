@@ -147,8 +147,9 @@ Namespace YouTube
                         If (Not lstVideoIds.Contains(tId)) Then lstVideoIds.Add(tId)
                     Next
                     Dim nVideoDict As New SortedDictionary(Of Long, MediaContainers.MediaFile)
-                    Dim parallelOptions = New ParallelOptions()
-                    parallelOptions.MaxDegreeOfParallelism = 10
+                    Dim parallelOptions = New ParallelOptions With {
+                        .MaxDegreeOfParallelism = 10
+                    }
                     Dim nVideoDictLock As New Object
                     Parallel.ForEach(lstVideoIds, parallelOptions,
                                      Sub(tId As String, loopstate As ParallelLoopState, index As Long)
