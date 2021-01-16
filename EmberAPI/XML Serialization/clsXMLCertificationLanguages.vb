@@ -74,6 +74,10 @@ Public Class clsXMLCertificationLanguages
         Else
             If CopyDefaultFile() Then Load()
         End If
+        If Languages.Count = 0 Then
+            CopyDefaultFile()
+            Load()
+        End If
     End Sub
 
     Public Sub Save()
