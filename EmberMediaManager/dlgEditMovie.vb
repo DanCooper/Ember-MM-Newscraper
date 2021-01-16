@@ -302,7 +302,7 @@ Public Class dlgEditMovie
         Try
             dlgTrlS = New dlgMediaFileSelect(Enums.ModifierType.MainTrailer)
             If dlgTrlS.ShowDialog(tmpDBElement, tList, True) = DialogResult.OK Then
-                tURL = dlgTrlS.Result.URLWebsite
+                tURL = dlgTrlS.Result.UrlWebsite
             End If
 
             If Not String.IsNullOrEmpty(tURL) Then
@@ -1112,15 +1112,15 @@ Public Class dlgEditMovie
     Private Sub LoadTheme(ByVal Theme As MediaContainers.MediaFile)
         txtLocalTheme.Text =
             If(Theme.LocalFilePathSpecified, Theme.LocalFilePath,
-            If(Theme.URLAudioStreamSpecified, Theme.URLAudioStream,
-            If(Theme.URLWebsiteSpecified, Theme.URLWebsite, String.Empty)))
+            If(Theme.UrlAudioStreamSpecified, Theme.UrlAudioStream,
+            If(Theme.UrlWebsiteSpecified, Theme.UrlWebsite, String.Empty)))
     End Sub
 
     Private Sub LoadTrailer(ByVal Trailer As MediaContainers.MediaFile)
         txtLocalTrailer.Text =
             If(Trailer.LocalFilePathSpecified, Trailer.LocalFilePath,
-            If(Trailer.URLVideoStreamSpecified, Trailer.URLVideoStream,
-            If(Trailer.URLWebsiteSpecified, Trailer.URLWebsite, String.Empty)))
+            If(Trailer.UrlVideoStreamSpecified, Trailer.UrlVideoStream,
+            If(Trailer.UrlWebsiteSpecified, Trailer.UrlWebsite, String.Empty)))
     End Sub
 
     Private Sub BuildStars(ByVal sinRating As Single)
@@ -1729,7 +1729,7 @@ Public Class dlgEditMovie
 
             'Theme
             If Master.eSettings.MovieThemeAnyEnabled Then
-                If Not String.IsNullOrEmpty(tmpDBElement.Theme.LocalFilePath) OrElse Not String.IsNullOrEmpty(tmpDBElement.Theme.URLAudioStream) Then
+                If Not String.IsNullOrEmpty(tmpDBElement.Theme.LocalFilePath) OrElse Not String.IsNullOrEmpty(tmpDBElement.Theme.UrlAudioStream) Then
                     LoadTheme(tmpDBElement.Theme)
                 End If
             Else
@@ -1738,7 +1738,7 @@ Public Class dlgEditMovie
 
             'Trailer
             If Master.eSettings.MovieTrailerAnyEnabled Then
-                If Not String.IsNullOrEmpty(tmpDBElement.Trailer.LocalFilePath) OrElse Not String.IsNullOrEmpty(tmpDBElement.Trailer.URLVideoStream) Then
+                If Not String.IsNullOrEmpty(tmpDBElement.Trailer.LocalFilePath) OrElse Not String.IsNullOrEmpty(tmpDBElement.Trailer.UrlVideoStream) Then
                     LoadTrailer(tmpDBElement.Trailer)
                 End If
             Else

@@ -105,12 +105,11 @@ Namespace TelevisionTunes
 
                             If Not String.IsNullOrEmpty(tURL) Then
                                 Dim nTheme As New MediaContainers.MediaFile With {
-                                    .AudioBitrate = Enums.AudioBitrate.UNKNOWN,
                                     .Duration = tLength,
                                     .Scraper = "TelevisionTunes",
                                     .Source = "TelevisionTunes",
                                     .Title = tTitle,
-                                    .URLWebsite = tWebURL
+                                    .UrlWebsite = tWebURL
                                 }
                                 nTheme.Streams.AudioStreams.Add(New MediaContainers.MediaFile.AudioStream With {.Codec = Enums.AudioCodec.MP3, .FileExtension = ".mp3", .StreamUrl = tURL})
                                 _themelist.Add(nTheme)

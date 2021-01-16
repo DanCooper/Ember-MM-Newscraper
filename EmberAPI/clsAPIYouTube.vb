@@ -94,12 +94,10 @@ Namespace YouTube
                     Dim nStreams = SetInformationByITag(nResults)
                     If nStreams IsNot Nothing Then
                         Return New MediaContainers.MediaFile With {
-                            .AudioBitrate = If(nStreams.AudioStreams(0) IsNot Nothing, nStreams.AudioStreams(0).Bitrate, Enums.AudioBitrate.UNKNOWN),
-                            .VideoResolution = If(nStreams.VideoStreams(0) IsNot Nothing, nStreams.VideoStreams(0).Resolution, Enums.VideoResolution.UNKNOWN),
                             .Source = "YouTube",
                             .Streams = nStreams,
                             .Title = nResults(0).Title,
-                            .URLWebsite = String.Concat("http://www.youtube.com/watch?v=", strVideoId)
+                            .UrlWebsite = String.Concat("http://www.youtube.com/watch?v=", strVideoId)
                         }
                     End If
                 End If

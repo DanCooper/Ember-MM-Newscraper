@@ -353,11 +353,10 @@ Public Class dlgMediaFileSelect
             dgvMediaFiles.Rows(i).Cells(colMediaFileSource.Name).Value = nMediaFile.Source
             dgvMediaFiles.Rows(i).Cells(colMediaFileTitel.Name).Value = nMediaFile.Title
             dgvMediaFiles.Rows(i).Cells(colMediaFileVideoType.Name).Value = nMediaFile.VideoType
-            dgvMediaFiles.Rows(i).Cells(colMediaFileUrlWebsite.Name).Value = nMediaFile.URLWebsite
+            dgvMediaFiles.Rows(i).Cells(colMediaFileUrlWebsite.Name).Value = nMediaFile.UrlWebsite
             Dim lstVariants As New List(Of VariantInformation)
             Select Case _MediaType
                 Case Enums.ModifierType.MainTheme
-                    nMediaFile.Streams.BuildStreamVariants(True)
                     For Each nVariant In nMediaFile.Streams.Variants.Where(Function(f) f.StreamType = MediaContainers.MediaFile.StreamCollection.StreamType.Audio)
                         lstVariants.Add(New VariantInformation With {
                                             .Description = nVariant.Description,
@@ -365,7 +364,6 @@ Public Class dlgMediaFileSelect
                                             })
                     Next
                 Case Enums.ModifierType.MainTrailer
-                    nMediaFile.Streams.BuildStreamVariants()
                     For Each nVariant In nMediaFile.Streams.Variants.Where(Function(f) f.StreamType = MediaContainers.MediaFile.StreamCollection.StreamType.Video)
                         lstVariants.Add(New VariantInformation With {
                                             .Description = nVariant.Description,
@@ -434,7 +432,7 @@ Public Class dlgMediaFileSelect
                 If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(txtCustomLocalFile.Text)) AndAlso File.Exists(txtCustomLocalFile.Text) Then
                     If _NoDownload Then
                         Result = New MediaContainers.MediaFile With {
-                            .URLWebsite = txtCustomLocalFile.Text
+                            .UrlWebsite = txtCustomLocalFile.Text
                         }
                     Else
                         Result = New MediaContainers.MediaFile
@@ -473,14 +471,14 @@ Public Class dlgMediaFileSelect
                 'Manual direct URL
                 '
                 If _NoDownload Then
-                    Result.URLWebsite = txtCustomURL.Text
+                    Result.UrlWebsite = txtCustomURL.Text
                     DialogResult = DialogResult.OK
                 Else
                     Select Case _MediaType
                         Case Enums.ModifierType.MainTheme
-                            Result = New MediaContainers.MediaFile With {.URLAudioStream = txtCustomURL.Text}
+                            Result = New MediaContainers.MediaFile With {.UrlAudioStream = txtCustomURL.Text}
                         Case Enums.ModifierType.MainTrailer
-                            Result = New MediaContainers.MediaFile With {.URLVideoStream = txtCustomURL.Text}
+                            Result = New MediaContainers.MediaFile With {.UrlVideoStream = txtCustomURL.Text}
                     End Select
                     bwDownloadMediaFile = New ComponentModel.BackgroundWorker With {
                         .WorkerReportsProgress = True,
@@ -505,7 +503,7 @@ Public Class dlgMediaFileSelect
                         Else
                             didCancel = True
                         End If
-                    ElseIf Result.URLVideoStreamSpecified OrElse Result.URLAudioStreamSpecified Then
+                    ElseIf Result.UrlVideoStreamSpecified OrElse Result.UrlAudioStreamSpecified Then
                         StartDownload()
                     Else
                         didCancel = True

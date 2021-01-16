@@ -160,8 +160,8 @@ Public Class MediaFiles
         result = Nothing
 
         result = themeList.Item(0)
-        If Not result.URLAudioStreamSpecified AndAlso result.StreamsSpecified AndAlso result.Streams.AudioStreams.Count > 0 Then
-            result.URLAudioStream = result.Streams.AudioStreams(0).StreamUrl
+        If Not result.UrlAudioStreamSpecified AndAlso result.StreamsSpecified AndAlso result.Streams.AudioStreams.Count > 0 Then
+            result.UrlAudioStream = result.Streams.AudioStreams(0).StreamUrl
         End If
 
         If result IsNot Nothing Then
@@ -176,8 +176,8 @@ Public Class MediaFiles
         result = Nothing
 
         result = themeList.Item(0)
-        If Not result.URLAudioStreamSpecified AndAlso result.StreamsSpecified AndAlso result.Streams.AudioStreams.Count > 0 Then
-            result.URLAudioStream = result.Streams.AudioStreams(0).StreamUrl
+        If Not result.UrlAudioStreamSpecified AndAlso result.StreamsSpecified AndAlso result.Streams.AudioStreams.Count > 0 Then
+            result.UrlAudioStream = result.Streams.AudioStreams(0).StreamUrl
         End If
 
         If result IsNot Nothing Then
@@ -195,26 +195,19 @@ Public Class MediaFiles
         If Master.eSettings.MovieTrailerPrefVideoQual = Enums.VideoResolution.Any Then
             result = trailerList.FirstOrDefault
             If result IsNot Nothing Then
-                If Not result.URLVideoStreamSpecified AndAlso result.StreamsSpecified Then
-                    Dim firstStream = result.Streams.VideoStreams.FirstOrDefault
-                    If firstStream IsNot Nothing Then
-                        result.URLVideoStream = firstStream.StreamUrl
-                        If firstStream.IsAdaptive AndAlso result.Streams.AudioStreams.Count > 0 Then result.URLAudioStream = result.Streams.AudioStreams(0).StreamUrl
-                    End If
-                End If
+                result.SetVariant(result.Streams.Variants.FirstOrDefault)
             End If
         End If
 
         'Try to find first with PreferredQuality or save best quality stream URL to Trailer container
         If result Is Nothing Then
-            result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Master.eSettings.MovieTrailerPrefVideoQual)
+            result = trailerList.FirstOrDefault(Function(f) f.HasVariantWithVideoResolution(Master.eSettings.MovieTrailerPrefVideoQual))
             If result IsNot Nothing Then
-                If Not result.URLVideoStreamSpecified AndAlso result.StreamsSpecified Then
-                    Dim firstStream = result.Streams.VideoStreams.FirstOrDefault(Function(f) f.Resolution = Master.eSettings.MovieTrailerPrefVideoQual)
-                    If firstStream IsNot Nothing Then
-                        result.URLVideoStream = firstStream.StreamUrl
-                        If firstStream.IsAdaptive AndAlso result.Streams.AudioStreams.Count > 0 Then result.URLAudioStream = result.Streams.AudioStreams(0).StreamUrl
-                    End If
+                Dim nVariant = result.Streams.Variants.FirstOrDefault(Function(f) f.VideoResolution = Master.eSettings.MovieTrailerPrefVideoQual)
+                If nVariant IsNot Nothing Then
+                    result.SetVariant(nVariant)
+                Else
+                    result = Nothing
                 End If
             End If
         End If
@@ -223,196 +216,110 @@ Public Class MediaFiles
         If result Is Nothing Then
             Select Case Master.eSettings.MovieTrailerMinVideoQual
                 Case Enums.VideoResolution.HD2160p60fps
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    End If
+                    TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result)
                 Case Enums.VideoResolution.HD2160p
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) Then
                     End If
                 Case Enums.VideoResolution.HD1440p
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1440p, result) Then
                     End If
                 Case Enums.VideoResolution.HD1080p60fps
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1440p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p60fps, result) Then
                     End If
                 Case Enums.VideoResolution.HD1080p
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1440p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p, result) Then
                     End If
                 Case Enums.VideoResolution.HD720p60fps
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1440p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p60fps, result) Then
                     End If
                 Case Enums.VideoResolution.HD720p
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1440p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p, result) Then
                     End If
                 Case Enums.VideoResolution.HQ480p
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HQ480p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HQ480p)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1440p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HQ480p, result) Then
                     End If
                 Case Enums.VideoResolution.SQ360p
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HQ480p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HQ480p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.SQ360p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.SQ360p)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1440p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HQ480p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.SQ360p, result) Then
                     End If
                 Case Enums.VideoResolution.SQ240p
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HQ480p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HQ480p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.SQ360p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.SQ360p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.SQ240p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.SQ240p)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1440p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HQ480p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.SQ360p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.SQ240p, result) Then
                     End If
                 Case Enums.VideoResolution.SQ144p
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HQ480p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HQ480p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.SQ360p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.SQ360p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.SQ240p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.SQ240p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.SQ144p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.SQ144p)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1440p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HQ480p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.SQ360p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.SQ240p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.SQ144p, result) Then
                     End If
                 Case Enums.VideoResolution.SQ144p15fps
-                    If trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD2160p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1440p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD1080p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p60fps)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HD720p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.HQ480p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.HQ480p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.SQ360p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.SQ360p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.SQ240p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.SQ240p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.SQ144p).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.SQ144p)
-                    ElseIf trailerList.FindAll(Function(f) f.VideoResolution = Enums.VideoResolution.SQ144p15fps).Count > 0 Then
-                        result = trailerList.FirstOrDefault(Function(f) f.VideoResolution = Enums.VideoResolution.SQ144p15fps)
+                    If TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD2160p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1440p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD1080p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p60fps, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HD720p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.HQ480p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.SQ360p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.SQ240p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.SQ144p, result) OrElse
+                        TryGetItemWithVideoResolution(trailerList, Enums.VideoResolution.SQ144p15fps, result) Then
                     End If
             End Select
         End If
 
         If result IsNot Nothing Then
-            If Not result.URLVideoStreamSpecified AndAlso result.StreamsSpecified Then
-                Dim firstStream = result.Streams.VideoStreams.FirstOrDefault()
-                If firstStream IsNot Nothing Then
-                    result.URLVideoStream = firstStream.StreamUrl
-                    If firstStream.IsAdaptive AndAlso result.Streams.AudioStreams.Count > 0 Then result.URLAudioStream = result.Streams.AudioStreams(0).StreamUrl
-                End If
-            End If
             Return True
         Else
             Return False
@@ -444,7 +351,7 @@ Public Class MediaFiles
     ''' <param name="mediafile">media file container</param>
     ''' <remarks></remarks>
     Public Sub LoadFromWeb(ByVal mediaFile As MediaContainers.MediaFile)
-        If mediaFile.URLVideoStreamSpecified Then
+        If mediaFile.UrlVideoStreamSpecified Then
             Dim WebPage As New HTTP
             Dim tmpPath As String = Path.Combine(Master.TempPath, "DashMediaFile")
             Dim tURL As String = String.Empty
@@ -453,16 +360,16 @@ Public Class MediaFiles
             Dim strFileName As String = String.Empty
             AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
-            If mediaFile.IsDash Then
+            If mediaFile.IsAdaptive Then
                 strFileName = Path.Combine(tmpPath, "output.mkv")
                 If Directory.Exists(tmpPath) Then
                     Directory.Delete(tmpPath, True)
                 End If
                 Directory.CreateDirectory(tmpPath)
                 RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1334, "Downloading Dash Audio..."))
-                strAudioFilePath = WebPage.DownloadFile(mediaFile.URLAudioStream, Path.Combine(tmpPath, "audiostream"), True, "trailer")
+                strAudioFilePath = WebPage.DownloadFile(mediaFile.UrlAudioStream, Path.Combine(tmpPath, "audiostream"), True, "trailer")
                 RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1335, "Downloading Dash Video..."))
-                strVideoFilePath = WebPage.DownloadFile(mediaFile.URLVideoStream, Path.Combine(tmpPath, "videostream"), True, "trailer")
+                strVideoFilePath = WebPage.DownloadFile(mediaFile.UrlVideoStream, Path.Combine(tmpPath, "videostream"), True, "trailer")
                 RaiseEvent ProgressUpdated(-2, Master.eLang.GetString(1336, "Merging Trailer..."))
                 Using ffmpeg As New Process()
                     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -493,7 +400,7 @@ Public Class MediaFiles
                 RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
             Else
                 Try
-                    strFileName = WebPage.DownloadFile(mediaFile.URLVideoStream, String.Empty, True, "trailer")
+                    strFileName = WebPage.DownloadFile(mediaFile.UrlVideoStream, String.Empty, True, "trailer")
                     If Not String.IsNullOrEmpty(strFileName) Then
 
                         If _MS IsNot Nothing Then
@@ -507,15 +414,15 @@ Public Class MediaFiles
 
                         _Ext = Path.GetExtension(strFileName)
                     Else
-                        _Logger.Warn("Trailer NOT downloaded: " & mediaFile.URLVideoStream)
+                        _Logger.Warn("Trailer NOT downloaded: " & mediaFile.UrlVideoStream)
                     End If
 
                 Catch ex As Exception
-                    _Logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mediaFile.URLVideoStream & ">")
+                    _Logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mediaFile.UrlVideoStream & ">")
                 End Try
             End If
-        ElseIf mediaFile.URLAudioStreamSpecified Then
-            LoadFromWeb(mediaFile.URLAudioStream)
+        ElseIf mediaFile.UrlAudioStreamSpecified Then
+            LoadFromWeb(mediaFile.UrlAudioStream)
         End If
     End Sub
     ''' <summary>
@@ -615,6 +522,26 @@ Public Class MediaFiles
         End If
     End Sub
 
+    Private Shared Function TryGetItemWithVideoResolution(ByRef trailerList As List(Of MediaContainers.MediaFile), ByVal resolution As Enums.VideoResolution, ByRef result As MediaContainers.MediaFile) As Boolean
+        If trailerList Is Nothing OrElse trailerList.Count = 0 Then
+            result = Nothing
+            Return False
+        Else
+            Dim nList = trailerList.Where(Function(f) f.HasVariantWithVideoResolution(resolution))
+            If nList IsNot Nothing Then
+                For Each tItem In nList
+                    If tItem.SetFirstVariantWithVideoStreamResolution(resolution) Then
+                        result = tItem
+                        Return True
+                    End If
+                Next
+            End If
+            result = Nothing
+            Return False
+        End If
+    End Function
+
+
 #End Region 'Methods
 
 #Region "IDisposable Support"
@@ -655,23 +582,5 @@ Public Class MediaFiles
     End Sub
 
 #End Region
-
-End Class
-
-Public Class MediaFileLinkContainer
-
-#Region "Properties"
-
-    Public Property AudioURL() As String = String.Empty
-
-    Public ReadOnly Property IsAdpative() As Boolean
-        Get
-            Return Not String.IsNullOrEmpty(AudioURL)
-        End Get
-    End Property
-
-    Public Property VideoURL() As String = String.Empty
-
-#End Region 'Properties
 
 End Class

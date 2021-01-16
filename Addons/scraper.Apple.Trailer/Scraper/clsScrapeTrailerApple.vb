@@ -80,7 +80,7 @@ Public Class Scraper
                                     .Source = "Apple",
                                     .Scraper = "Apple",
                                     .Title = clip.title,
-                                    .URLWebsite = strMovieTrailersPage,
+                                    .UrlWebsite = strMovieTrailersPage,
                                     .VideoType = GetVideoType(clip.title)
                                 }
                                 If clip.versions.enus.sizes.hd1080 IsNot Nothing AndAlso Not String.IsNullOrEmpty(clip.versions.enus.sizes.hd1080.src) Then
@@ -107,8 +107,8 @@ Public Class Scraper
                                                                       .StreamUrl = clip.versions.enus.sizes.sd.src.Replace("480p", "h480p")
                                                                       })
                                 End If
+
                                 If nTrailer.StreamsSpecified Then
-                                    nTrailer.VideoResolution = nTrailer.Streams.VideoStreams(0).Resolution
                                     nTrailerList.Add(nTrailer)
                                 End If
                             Next

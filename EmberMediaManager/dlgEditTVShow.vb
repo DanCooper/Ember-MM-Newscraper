@@ -1367,7 +1367,7 @@ Public Class dlgEditTVShow
 
         'Theme
         If Master.eSettings.TvShowThemeAnyEnabled Then
-            If Not String.IsNullOrEmpty(tmpDBElement.Theme.LocalFilePath) OrElse Not String.IsNullOrEmpty(tmpDBElement.Theme.URLAudioStream) Then
+            If Not String.IsNullOrEmpty(tmpDBElement.Theme.LocalFilePath) OrElse Not String.IsNullOrEmpty(tmpDBElement.Theme.UrlAudioStream) Then
                 LoadTheme(tmpDBElement.Theme)
             End If
         Else
@@ -1409,8 +1409,8 @@ Public Class dlgEditTVShow
     Private Sub LoadTheme(ByVal Theme As MediaContainers.MediaFile)
         txtLocalTheme.Text =
             If(Theme.LocalFilePathSpecified, Theme.LocalFilePath,
-            If(Theme.URLAudioStreamSpecified, Theme.URLAudioStream,
-            If(Theme.URLWebsiteSpecified, Theme.URLWebsite, String.Empty)))
+            If(Theme.UrlAudioStreamSpecified, Theme.UrlAudioStream,
+            If(Theme.UrlWebsiteSpecified, Theme.UrlWebsite, String.Empty)))
     End Sub
 
     Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles lvActors.ColumnClick

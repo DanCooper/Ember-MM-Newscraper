@@ -1512,6 +1512,9 @@ Public Class ModulesManager
                 Dim aList As New List(Of MediaContainers.MediaFile)
                 ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, Type, aList)
                 If aList IsNot Nothing Then
+                    For Each tItem In aList
+                        tItem.Streams.BuildStreamVariants(True)
+                    Next
                     ThemeList.AddRange(aList)
                 End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
@@ -1547,6 +1550,9 @@ Public Class ModulesManager
                 Dim aList As New List(Of MediaContainers.MediaFile)
                 ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, Type, aList)
                 If aList IsNot Nothing Then
+                    For Each tItem In aList
+                        tItem.Streams.BuildStreamVariants(True)
+                    Next
                     ThemeList.AddRange(aList)
                 End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
@@ -1583,6 +1589,9 @@ Public Class ModulesManager
                 Dim aList As New List(Of MediaContainers.MediaFile)
                 ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, Type, aList)
                 If aList IsNot Nothing Then
+                    For Each tItem In aList
+                        tItem.Streams.BuildStreamVariants()
+                    Next
                     TrailerList.AddRange(aList)
                 End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie

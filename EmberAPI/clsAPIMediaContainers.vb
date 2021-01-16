@@ -568,24 +568,25 @@ Namespace MediaContainers
     Public Class MediaFile
 
 #Region "Properties"
-        ''' <summary>
-        ''' Audio bitrate of the (best) audio stream
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property AudioBitrate As Enums.AudioBitrate = Enums.AudioBitrate.UNKNOWN
 
         Public Property Duration As String = String.Empty
 
         Public Property FileOriginal As MediaFiles = New MediaFiles
+
+        Public ReadOnly Property HasVariantWithVideoResolution(ByVal resolution As Enums.VideoResolution) As Boolean
+            Get
+                Return Streams.Variants.Where(Function(f) f.VideoResolution = resolution).Count > 0
+            End Get
+        End Property
         ''' <summary>
         ''' If is a Dash video, we need also an audio URL to merge video and audio
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property IsDash() As Boolean
+        Public ReadOnly Property IsAdaptive() As Boolean
             Get
-                Return URLVideoStreamSpecified AndAlso URLAudioStreamSpecified
+                Return UrlVideoStreamSpecified AndAlso UrlAudioStreamSpecified
             End Get
         End Property
 
@@ -620,11 +621,11 @@ Namespace MediaContainers
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property URLAudioStream As String = String.Empty
+        Public Property UrlAudioStream As String = String.Empty
 
-        Public ReadOnly Property URLAudioStreamSpecified() As Boolean
+        Public ReadOnly Property UrlAudioStreamSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(URLAudioStream)
+                Return Not String.IsNullOrEmpty(UrlAudioStream)
             End Get
         End Property
         ''' <summary>
@@ -633,11 +634,11 @@ Namespace MediaContainers
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property URLVideoStream As String = String.Empty
+        Public Property UrlVideoStream As String = String.Empty
 
-        Public ReadOnly Property URLVideoStreamSpecified() As Boolean
+        Public ReadOnly Property UrlVideoStreamSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(URLVideoStream)
+                Return Not String.IsNullOrEmpty(UrlVideoStream)
             End Get
         End Property
         ''' <summary>
@@ -646,18 +647,13 @@ Namespace MediaContainers
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property URLWebsite As String = String.Empty
+        Public Property UrlWebsite As String = String.Empty
 
-        Public ReadOnly Property URLWebsiteSpecified() As Boolean
+        Public ReadOnly Property UrlWebsiteSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(URLWebsite)
+                Return Not String.IsNullOrEmpty(UrlWebsite)
             End Get
         End Property
-        ''' <summary>
-        ''' Video resolution of the (best) video stream
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property VideoResolution As Enums.VideoResolution = Enums.VideoResolution.UNKNOWN
 
         Public Property VideoType As Enums.VideoType = Enums.VideoType.Any
 
@@ -721,11 +717,20 @@ Namespace MediaContainers
             End With
         End Sub
 
+        Public Function SetFirstVariantWithVideoStreamResolution(ByVal resolution As Enums.VideoResolution) As Boolean
+            Dim nVariant = Streams.Variants.FirstOrDefault(Function(f) f.VideoResolution = resolution)
+            If nVariant IsNot Nothing Then
+                SetVariant(nVariant)
+                Return True
+            End If
+            Return False
+        End Function
+
         Public Sub SetVariant(ByRef streamVariant As StreamCollection.StreamVariant)
             If streamVariant IsNot Nothing Then
                 With streamVariant
-                    URLAudioStream = If(.AudioStream IsNot Nothing, .AudioStream.StreamUrl, String.Empty)
-                    URLVideoStream = If(.VideoStream IsNot Nothing, .VideoStream.StreamUrl, String.Empty)
+                    UrlAudioStream = If(.AudioStream IsNot Nothing, .AudioStream.StreamUrl, String.Empty)
+                    UrlVideoStream = If(.VideoStream IsNot Nothing, .VideoStream.StreamUrl, String.Empty)
                 End With
             End If
         End Sub
@@ -911,7 +916,7 @@ Namespace MediaContainers
 
                 Public Property Description As String = String.Empty
 
-                Public ReadOnly Property IsDash As Boolean
+                Public ReadOnly Property IsAdaptive As Boolean
                     Get
                         Return AudioStream IsNot Nothing AndAlso
                             VideoStream IsNot Nothing

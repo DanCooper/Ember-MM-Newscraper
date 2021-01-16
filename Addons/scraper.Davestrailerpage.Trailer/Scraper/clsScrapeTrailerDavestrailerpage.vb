@@ -162,9 +162,8 @@ Public Class Scraper
                 Next
                 If nTrailer.Streams.HasStreams Then
                     nTrailer.Streams.VideoStreams.Sort()
-                    nTrailer.VideoResolution = nTrailer.Streams.VideoStreams(0).Resolution
-                    nTrailer.URLWebsite = nTrailer.Streams.VideoStreams(0).StreamUrl
-                    nTrailer.Source = If(nTrailer.URLWebsite.ToLower.Contains("apple"), "Apple", "Unknown")
+                    nTrailer.UrlWebsite = nTrailer.Streams.VideoStreams(0).StreamUrl
+                    nTrailer.Source = If(nTrailer.UrlWebsite.ToLower.Contains("apple"), "Apple", "Unknown")
                     nTrailerList.Add(nTrailer)
                 End If
             End If

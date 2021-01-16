@@ -131,7 +131,7 @@ Public Class Scraper
                                     .Scraper = "Videobuster.de",
                                     .Source = "Videobuster.de",
                                     .Title = strTitle,
-                                    .URLWebsite = String.Concat(strMainUrl, strMovieUrl, "#trailer"),
+                                    .UrlWebsite = String.Concat(strMainUrl, strMovieUrl, "#trailer"),
                                     .VideoType = GetVideoType(strTitle)
                                 }
 
@@ -146,9 +146,7 @@ Public Class Scraper
                                     nTrailer.Streams.VideoStreams.Add(BuildStream(strUrl, strWidth, strHeight, strCodec))
                                 Next
 
-                                'get best quality
                                 If nTrailer.StreamsSpecified Then
-                                    nTrailer.VideoResolution = nTrailer.Streams.VideoStreams(0).Resolution
                                     nTrailerList.Add(nTrailer)
                                 End If
                             Next

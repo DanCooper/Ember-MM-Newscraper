@@ -534,7 +534,7 @@ Public Class Scraper
             For Each aTrailer In nTrailers
                 Dim nTrailer = YouTube.Scraper.GetVideoDetails(aTrailer.Key)
                 If nTrailer IsNot Nothing Then
-                    nMovie.Trailer = nTrailer.URLWebsite
+                    nMovie.Trailer = nTrailer.UrlWebsite
                     Exit For
                 End If
             Next
