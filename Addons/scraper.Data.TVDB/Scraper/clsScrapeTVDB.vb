@@ -149,7 +149,7 @@ Namespace TVDBs
                         R.Matches.Add(New MediaContainers.TVShow With {
                                       .Premiered = strPremiered,
                                       .Title = strTitle,
-                                      .TMDB = aShow.Id.ToString})
+                                      .TVDB = aShow.Id.ToString})
                     End If
                 Next
             End If
