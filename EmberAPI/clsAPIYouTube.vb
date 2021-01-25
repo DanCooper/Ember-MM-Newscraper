@@ -122,7 +122,7 @@ Namespace YouTube
         ''' <param name="searchString"><c>String</c> to search for</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function SearchOnYouTube(ByVal searchString As String) As List(Of MediaContainers.MediaFile)
+        Public Shared Function SearchOnYouTube(ByVal searchString As String, ByVal audioStreamsOnly As Boolean) As List(Of MediaContainers.MediaFile)
             Dim tHTTP As New HTTP
             Dim nVideoList As New List(Of MediaContainers.MediaFile)
 
@@ -161,6 +161,7 @@ Namespace YouTube
                                      End Sub)
                     nVideoList = nVideoDict.Values.ToList()
                     For Each tVideo In nVideoList
+                        tVideo.Streams.BuildStreamVariants(audioStreamsOnly)
                         tVideo.Scraper = "Search"
                     Next
                 End If

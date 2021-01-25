@@ -33,7 +33,7 @@ Public Class Scraper
             Case Enums.ContentType.TV, Enums.ContentType.TVShow
                 strDefaultSearch = Master.eSettings.TVShowThemeDefaultSearch
         End Select
-        lstThemes = YouTube.Scraper.SearchOnYouTube(String.Format("{0} {1}", title, strDefaultSearch))
+        lstThemes = YouTube.Scraper.SearchOnYouTube(String.Format("{0} {1}", title, strDefaultSearch), True)
         For Each tTheme In lstThemes
             tTheme.Scraper = "YouTube"
         Next

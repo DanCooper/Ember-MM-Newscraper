@@ -265,7 +265,7 @@ Public Class dlgMediaFileSelect
                     End If
                     e.Result = _MediaFileList.Count > 0
                 Case CompileType.YouTubeSearch
-                    _MediaFileList = YouTube.Scraper.SearchOnYouTube(Args.SearchString)
+                    _MediaFileList = YouTube.Scraper.SearchOnYouTube(Args.SearchString, _MediaType = Enums.ModifierType.MainTheme)
                     e.Result = _MediaFileList.Count > 0
             End Select
         Catch ex As Exception
