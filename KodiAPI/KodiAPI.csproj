@@ -283,9 +283,7 @@
     <Compile Include="XBMCRPC\XBMCRPC\List\Sort.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\List\Sort_method.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\List\Sort_order.cs" />
-    <Compile Include="XBMCRPC\XBMCRPC\Media\Artwork.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Media\Details\Base.cs" />
-    <Compile Include="XBMCRPC\XBMCRPC\Media\UniqueID.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item1.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item2.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item3.cs" />
@@ -506,10 +504,8 @@
     <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\OnRemove_data.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\OnUpdate_data.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Cast.cs" />
-    <Compile Include="XBMCRPC\XBMCRPC\Video\CastItem.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Base.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Episode.cs" />
-    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Episode_uniqueid.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Details\File.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Item.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Media.cs" />
@@ -524,13 +520,11 @@
     <Compile Include="XBMCRPC\XBMCRPC\Video\Fields\MusicVideo.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Fields\Season.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Fields\TVShow.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Rating.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Resume.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Streams.cs" />
-    <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_audio.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_audioItem.cs" />
-    <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_subtitle.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_subtitleItem.cs" />
-    <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_video.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_videoItem.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\XBMC\GetInfoBooleansResponse.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\XBMC\GetInfoBooleans_booleans.cs" />
