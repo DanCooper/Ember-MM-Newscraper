@@ -109,7 +109,7 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkRelease_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkRelease.CheckedChanged
+    Private Sub chkRelease_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkPremiered.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -213,8 +213,8 @@ Public Class frmSettingsHolder_Movie
         chkPlot.Text = Master.eLang.GetString(65, "Plot")
         chkPartialTitles.Text = Master.eLang.GetString(1183, "Partial Titles")
         chkPopularTitles.Text = Master.eLang.GetString(1182, "Popular Titles")
+        chkPremiered.Text = Master.eLang.GetString(724, "Premiered")
         chkRating.Text = Master.eLang.GetString(400, "Rating")
-        chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         chkRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkShortTitles.Text = Master.eLang.GetString(837, "Short Titles")
         chkStudios.Text = Master.eLang.GetString(226, "Studios")

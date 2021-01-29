@@ -456,16 +456,8 @@ Public Class Scraper
 
         If bwTMDB.CancellationPending Then Return Nothing
 
-        'Rating
-        If FilteredOptions.bMainRating Then
-            nMovie.Rating = CStr(Result.VoteAverage)
-            nMovie.Votes = CStr(Result.VoteCount)
-        End If
-
-        If bwTMDB.CancellationPending Then Return Nothing
-
-        'ReleaseDate
-        If FilteredOptions.bMainRelease Then
+        'Premiered
+        If FilteredOptions.bMainPremiered Then
             Dim nDate As Date? = Nothing
             If Result.ReleaseDate.HasValue Then
                 nDate = Result.ReleaseDate.Value
@@ -474,8 +466,20 @@ Public Class Scraper
             End If
             If nDate.HasValue Then
                 'always save date in same date format not depending on users language setting!
-                nMovie.ReleaseDate = nDate.Value.ToString("yyyy-MM-dd")
+                nMovie.Premiered = nDate.Value.ToString("yyyy-MM-dd")
             End If
+        End If
+
+        If bwTMDB.CancellationPending Then Return Nothing
+
+        'Rating
+        If FilteredOptions.bMainRating Then
+            nMovie.Ratings.Add(New MediaContainers.RatingDetails With {
+                               .Max = 10,
+                               .Name = "themoviedb",
+                               .Value = Result.VoteAverage,
+                               .Votes = Result.VoteCount
+                               })
         End If
 
         If bwTMDB.CancellationPending Then Return Nothing
@@ -734,8 +738,12 @@ Public Class Scraper
 
         'Rating
         If filteredOptions.bEpisodeRating Then
-            nTVEpisode.Rating = CStr(Result.VoteAverage)
-            nTVEpisode.Votes = CStr(Result.VoteCount)
+            nTVEpisode.Ratings.Add(New MediaContainers.RatingDetails With {
+                                   .Max = 10,
+                                   .Name = "themoviedb",
+                                   .Value = Result.VoteAverage,
+                                   .Votes = Result.VoteCount
+                                   })
         End If
 
         'ThumbPoster
@@ -1016,8 +1024,12 @@ Public Class Scraper
 
             'Rating
             If filteredOptions.bMainRating Then
-                nTVShow.Rating = CStr(Result.VoteAverage)
-                nTVShow.Votes = CStr(Result.VoteCount)
+                nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {
+                                    .Max = 10,
+                                    .Name = "themoviedb",
+                                    .Value = Result.VoteAverage,
+                                    .Votes = Result.VoteCount
+                                    })
             End If
 
             If bwTMDB.CancellationPending Then Return Nothing

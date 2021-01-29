@@ -46,7 +46,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkStudiowithDistributors = New System.Windows.Forms.CheckBox()
         Me.chkStudios = New System.Windows.Forms.CheckBox()
         Me.chkRuntime = New System.Windows.Forms.CheckBox()
-        Me.chkRelease = New System.Windows.Forms.CheckBox()
+        Me.chkPremiered = New System.Windows.Forms.CheckBox()
         Me.chkRating = New System.Windows.Forms.CheckBox()
         Me.chkOutline = New System.Windows.Forms.CheckBox()
         Me.chkPlot = New System.Windows.Forms.CheckBox()
@@ -234,8 +234,6 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudiowithDistributors, 2, 3)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudios, 2, 2)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkRuntime, 2, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRelease, 2, 0)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRating, 1, 5)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkOutline, 1, 4)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 1, 3)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkOriginalTitle, 1, 2)
@@ -243,6 +241,8 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkMPAADescription, 1, 1)
         Me.tblScraperFieldsOpts.Controls.Add(Me.lblInfoParsing, 0, 7)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkYear, 3, 1)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkPremiered, 1, 5)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRating, 2, 0)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
@@ -405,24 +405,24 @@ Partial Class frmSettingsHolder_Movie
         Me.chkRuntime.Text = "Runtime"
         Me.chkRuntime.UseVisualStyleBackColor = True
         '
-        'chkRelease
+        'chkPremiered
         '
-        Me.chkRelease.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkRelease.AutoSize = True
-        Me.chkRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRelease.Location = New System.Drawing.Point(277, 3)
-        Me.chkRelease.Name = "chkRelease"
-        Me.chkRelease.Size = New System.Drawing.Size(92, 17)
-        Me.chkRelease.TabIndex = 4
-        Me.chkRelease.Text = "Release Date"
-        Me.chkRelease.UseVisualStyleBackColor = True
+        Me.chkPremiered.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkPremiered.AutoSize = True
+        Me.chkPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPremiered.Location = New System.Drawing.Point(117, 118)
+        Me.chkPremiered.Name = "chkPremiered"
+        Me.chkPremiered.Size = New System.Drawing.Size(77, 17)
+        Me.chkPremiered.TabIndex = 4
+        Me.chkPremiered.Text = "Premiered"
+        Me.chkPremiered.UseVisualStyleBackColor = True
         '
         'chkRating
         '
         Me.chkRating.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkRating.AutoSize = True
         Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRating.Location = New System.Drawing.Point(117, 118)
+        Me.chkRating.Location = New System.Drawing.Point(277, 3)
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(60, 17)
         Me.chkRating.TabIndex = 6
@@ -774,7 +774,7 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents chkTagline As System.Windows.Forms.CheckBox
     Friend WithEvents chkActors As System.Windows.Forms.CheckBox
     Friend WithEvents chkRating As System.Windows.Forms.CheckBox
-    Friend WithEvents chkRelease As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPremiered As System.Windows.Forms.CheckBox
     Friend WithEvents chkYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
     Friend WithEvents gbScraperOpts As System.Windows.Forms.GroupBox

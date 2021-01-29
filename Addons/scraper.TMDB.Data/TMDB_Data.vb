@@ -203,8 +203,8 @@ Public Class TMDB_Data
         _setup_Movie.chkCertifications.Checked = ConfigScrapeOptions_Movie.bMainMPAA
         _setup_Movie.chkOriginalTitle.Checked = ConfigScrapeOptions_Movie.bMainOriginalTitle
         _setup_Movie.chkPlot.Checked = ConfigScrapeOptions_Movie.bMainPlot
+        _setup_Movie.chkPremiered.Checked = ConfigScrapeOptions_Movie.bMainPremiered
         _setup_Movie.chkRating.Checked = ConfigScrapeOptions_Movie.bMainRating
-        _setup_Movie.chkRelease.Checked = ConfigScrapeOptions_Movie.bMainRelease
         _setup_Movie.chkRuntime.Checked = ConfigScrapeOptions_Movie.bMainRuntime
         _setup_Movie.chkSearchDeviant.Checked = _SpecialSettings_Movie.SearchDeviant
         _setup_Movie.chkStudios.Checked = ConfigScrapeOptions_Movie.bMainStudios
@@ -339,8 +339,8 @@ Public Class TMDB_Data
         ConfigScrapeOptions_Movie.bMainOriginalTitle = AdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.Movie)
+        ConfigScrapeOptions_Movie.bMainPremiered = AdvancedSettings.GetBooleanSetting("DoPremiered", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.Movie)
-        ConfigScrapeOptions_Movie.bMainRelease = AdvancedSettings.GetBooleanSetting("DoRelease", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainRuntime = AdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainStudios = AdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainTagline = AdvancedSettings.GetBooleanSetting("DoTagline", True, , Enums.ContentType.Movie)
@@ -414,8 +414,8 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoOutline", ConfigScrapeOptions_Movie.bMainOutline, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions_Movie.bMainPlot, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.MainPoster, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoPremiered", ConfigScrapeOptions_Movie.bMainPremiered, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_Movie.bMainRating, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoRelease", ConfigScrapeOptions_Movie.bMainRelease, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoRuntime", ConfigScrapeOptions_Movie.bMainRuntime, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoStudio", ConfigScrapeOptions_Movie.bMainStudios, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoTagline", ConfigScrapeOptions_Movie.bMainTagline, , , Enums.ContentType.Movie)
@@ -484,8 +484,8 @@ Public Class TMDB_Data
         ConfigScrapeOptions_Movie.bMainOriginalTitle = _setup_Movie.chkOriginalTitle.Checked
         ConfigScrapeOptions_Movie.bMainOutline = _setup_Movie.chkPlot.Checked
         ConfigScrapeOptions_Movie.bMainPlot = _setup_Movie.chkPlot.Checked
+        ConfigScrapeOptions_Movie.bMainPremiered = _setup_Movie.chkPremiered.Checked
         ConfigScrapeOptions_Movie.bMainRating = _setup_Movie.chkRating.Checked
-        ConfigScrapeOptions_Movie.bMainRelease = _setup_Movie.chkRelease.Checked
         ConfigScrapeOptions_Movie.bMainRuntime = _setup_Movie.chkRuntime.Checked
         ConfigScrapeOptions_Movie.bMainStudios = _setup_Movie.chkStudios.Checked
         ConfigScrapeOptions_Movie.bMainTagline = _setup_Movie.chkTagline.Checked

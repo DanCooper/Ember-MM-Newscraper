@@ -355,27 +355,26 @@ Public Class Scraper
 
             If bwIMDB.CancellationPending Then Return Nothing
 
-            'Rating
-            If filteredoptions.bMainRating Then
-                Dim nRating = ParseRating(htmldReference)
-                If nRating IsNot Nothing Then
-                    nMovie.Rating = nRating.strRating
-                    nMovie.Votes = nRating.strVotes
+            'Premiered
+            If filteredoptions.bMainPremiered OrElse filteredoptions.bMainYear Then
+                Dim datePremiered As New Date
+                If ParsePremiered(htmldReference, datePremiered) Then
+                    If filteredoptions.bMainPremiered Then nMovie.Premiered = datePremiered.ToString("yyyy-MM-dd")
+                    If filteredoptions.bMainYear Then nMovie.Year = datePremiered.Year.ToString
                 Else
-                    logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Rating", id))
+                    logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Premiered/Year", id))
                 End If
             End If
 
             If bwIMDB.CancellationPending Then Return Nothing
 
-            'ReleaseDate / Year
-            If filteredoptions.bMainRelease OrElse filteredoptions.bMainYear Then
-                Dim dateRelease As New Date
-                If ParseReleaseDate(htmldReference, dateRelease) Then
-                    If filteredoptions.bMainRelease Then nMovie.ReleaseDate = dateRelease.ToString("yyyy-MM-dd")
-                    If filteredoptions.bMainYear Then nMovie.Year = dateRelease.Year.ToString
+            'Rating
+            If filteredoptions.bMainRating Then
+                Dim nRating = ParseRating(htmldReference)
+                If nRating IsNot Nothing Then
+                    nMovie.Ratings.Add(nRating)
                 Else
-                    logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse ReleaseDate/Year", id))
+                    logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Rating", id))
                 End If
             End If
 
@@ -525,7 +524,7 @@ Public Class Scraper
             'AiredDate
             If filteredoptions.bEpisodeAired Then
                 Dim dateRelease As New Date
-                If ParseReleaseDate(htmldReference, dateRelease) Then
+                If ParsePremiered(htmldReference, dateRelease) Then
                     nTVEpisode.Aired = dateRelease.ToString("yyyy-MM-dd")
                 Else
                     logger.Trace(String.Format("[IMDB] [GetTVEpisodeInfo] [ID:""{0}""] can't parse AiredDate", id))
@@ -583,8 +582,7 @@ Public Class Scraper
             If filteredoptions.bEpisodeRating Then
                 Dim nRating = ParseRating(htmldReference)
                 If nRating IsNot Nothing Then
-                    nTVEpisode.Rating = nRating.strRating
-                    nTVEpisode.Votes = nRating.strVotes
+                    nTVEpisode.Ratings.Add(nRating)
                 Else
                     logger.Trace(String.Format("[IMDB] [GetTVEpisodeInfo] [ID:""{0}""] can't parse Rating", id))
                 End If
@@ -803,10 +801,9 @@ Public Class Scraper
 
             'Rating
             If filteredoptions.bMainRating Then
-                Dim nRating As Rating = ParseRating(htmldReference)
+                Dim nRating = ParseRating(htmldReference)
                 If nRating IsNot Nothing Then
-                    nTVShow.Rating = nRating.strRating
-                    nTVShow.Votes = nRating.strVotes
+                    nTVShow.Ratings.Add(nRating)
                 Else
                     logger.Trace(String.Format("[IMDB] [GetTVShowInfo] [ID:""{0}""] can't parse Rating", id))
                 End If
@@ -1292,15 +1289,21 @@ Public Class Scraper
         End If
     End Sub
 
-    Private Function ParseRating(ByRef htmldReference As HtmlDocument) As Rating
+    Private Function ParseRating(ByRef htmldReference As HtmlDocument) As MediaContainers.RatingDetails
         Dim selNodeRating = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""ipl-rating-star__rating""]")
         Dim selNodeVotes = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""ipl-rating-star__total-votes""]")
-        If selNodeRating IsNot Nothing AndAlso
-                selNodeVotes IsNot Nothing Then
-            Return New Rating With {
-                    .strRating = selNodeRating.InnerText.Trim,
-                    .strVotes = Regex.Match(selNodeVotes.InnerText.Trim, "[0-9,.]+").Value
+        If selNodeRating IsNot Nothing AndAlso selNodeVotes IsNot Nothing Then
+            Dim dblRating As Double
+            Dim iVotes As Integer
+            If Double.TryParse(selNodeRating.InnerText.Trim, dblRating) AndAlso
+                Integer.TryParse(NumUtils.CleanVotes(Regex.Match(selNodeVotes.InnerText.Trim, "[0-9,.]+").Value), iVotes) Then
+                Return New MediaContainers.RatingDetails With {
+                    .Max = 10,
+                    .Name = "imdb",
+                    .Value = dblRating,
+                    .Votes = iVotes
                 }
+            End If
         End If
         Return Nothing
     End Function
@@ -1316,7 +1319,7 @@ Public Class Scraper
         Return Nothing
     End Function
 
-    Private Function ParseReleaseDate(ByRef htmldReference As HtmlDocument, ByRef releasedate As Date) As Boolean
+    Private Function ParsePremiered(ByRef htmldReference As HtmlDocument, ByRef releasedate As Date) As Boolean
         Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//div[@class=""titlereference-header""]")
         If selNode IsNot Nothing Then
             Dim test = selNode.Descendants("a").Where(Function(f) f.Attributes.Where(Function(a) a.Value.Contains("releaseinfo")).Any)
@@ -1596,17 +1599,6 @@ Public Class Scraper
 #End Region 'Fields
 
     End Structure
-
-    Private Class Rating
-
-#Region "Fields"
-
-        Public strRating As String
-        Public strVotes As String
-
-#End Region 'Fields
-
-    End Class
 
     Private Structure Results
 
