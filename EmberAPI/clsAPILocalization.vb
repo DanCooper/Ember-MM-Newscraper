@@ -27,6 +27,7 @@ Imports System.Windows.Forms
 Public Class Localization
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Shared help_logger As Logger = LogManager.GetLogger("HelpString")
     Shared lang_logger As Logger = LogManager.GetLogger("LanguageString")
@@ -36,9 +37,15 @@ Public Class Localization
     Private Shared htStrings As New clsXMLLanguage
     Private Shared _ISOLanguages As New clsXMLLanguages
 
+    Private _abort As String
     Private _all As String
+    Private _apply As String
+    Private _cancel As String
+    Private _close As String
     Private _disabled As String
     Private _none As String
+    Private _ok As String
+    Private _skip As String
 
 #If DEBUG Then
     Private Shared _loggingString As New Object
@@ -80,31 +87,58 @@ Public Class Localization
 
 #Region "Properties"
 
-    Public Property All() As String
+    Public ReadOnly Property Abort() As String
+        Get
+            Return _abort
+        End Get
+    End Property
+
+    Public ReadOnly Property All() As String
         Get
             Return _all
         End Get
-        Set(ByVal value As String)
-            _all = value
-        End Set
     End Property
 
-    Public Property Disabled() As String
+    Public ReadOnly Property Apply() As String
+        Get
+            Return _apply
+        End Get
+    End Property
+
+    Public ReadOnly Property Cancel() As String
+        Get
+            Return _cancel
+        End Get
+    End Property
+
+    Public ReadOnly Property Close() As String
+        Get
+            Return _close
+        End Get
+    End Property
+
+    Public ReadOnly Property Disabled() As String
         Get
             Return _disabled
         End Get
-        Set(ByVal value As String)
-            _disabled = value
-        End Set
     End Property
 
-    Public Property None() As String
+    Public ReadOnly Property None() As String
         Get
             Return _none
         End Get
-        Set(ByVal value As String)
-            _none = value
-        End Set
+    End Property
+
+    Public ReadOnly Property OK() As String
+        Get
+            Return _ok
+        End Get
+    End Property
+
+    Public ReadOnly Property Skip() As String
+        Get
+            Return _skip
+        End Get
     End Property
 
 #End Region 'Properties
@@ -202,9 +236,15 @@ Public Class Localization
 
     Public Sub Clear()
         _ISOLanguages.Language.Clear()
+        _abort = "Abort"
         _all = "All"
-        _none = "[none]"
+        _apply = "Apply"
+        _cancel = "Cancel"
+        _close = "Close"
         _disabled = "[Disabled]"
+        _none = "[none]"
+        _ok = "OK"
+        _skip = "Skip"
     End Sub
 
     Public Function GetHelpString(ByVal ctrlName As String) As String
@@ -313,9 +353,15 @@ Public Class Localization
 
                 htArrayStrings.Remove(htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly))
                 htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
+                _abort = GetString(1171, Master.eLang.Abort)
                 _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
-                _none = GetString(570, Master.eLang.None)
+                _apply = GetString(276, Master.eLang.Apply)
+                _cancel = GetString(167, Master.eLang.Cancel)
+                _close = GetString(19, Master.eLang.Close)
                 _disabled = GetString(571, Master.eLang.Disabled)
+                _none = GetString(570, Master.eLang.None)
+                _ok = GetString(179, Master.eLang.OK)
+                _skip = GetString(1228, Master.eLang.Skip)
             Else
                 Dim tLocs As Locs = htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly)
                 If tLocs.htStrings IsNot Nothing Then

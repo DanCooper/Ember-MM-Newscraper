@@ -58,12 +58,10 @@ Public Class dlgClearOrReplace
                 chkAired.Visible = False
                 chkCreators.Visible = False
                 chkGuestStars.Visible = False
-                chkPremiered.Visible = False
                 chkStatus.Visible = False
                 chkTitle.Visible = False
                 txtAired.Visible = False
                 txtCreators.Visible = False
-                txtPremiered.Visible = False
                 txtStatus.Visible = False
             Case Enums.ContentType.MovieSet
                 chkActors.Visible = False
@@ -79,7 +77,6 @@ Public Class dlgClearOrReplace
                 chkOutline.Visible = False
                 chkPremiered.Visible = False
                 chkRating.Visible = False
-                chkReleaseDate.Visible = False
                 chkRuntime.Visible = False
                 chkStatus.Visible = False
                 chkStudios.Visible = False
@@ -100,7 +97,6 @@ Public Class dlgClearOrReplace
                 txtGenres.Visible = False
                 txtMPAA.Visible = False
                 txtPremiered.Visible = False
-                txtReleaseDate.Visible = False
                 txtStatus.Visible = False
                 txtStudios.Visible = False
                 txtTagline.Visible = False
@@ -118,7 +114,6 @@ Public Class dlgClearOrReplace
                 chkOriginalTitle.Visible = False
                 chkOutline.Visible = False
                 chkPremiered.Visible = False
-                chkReleaseDate.Visible = False
                 chkStatus.Visible = False
                 chkStudios.Visible = False
                 chkTagline.Visible = False
@@ -133,7 +128,6 @@ Public Class dlgClearOrReplace
                 txtGenres.Visible = False
                 txtMPAA.Visible = False
                 txtPremiered.Visible = False
-                txtReleaseDate.Visible = False
                 txtStatus.Visible = False
                 txtStudios.Visible = False
                 txtTagline.Visible = False
@@ -152,7 +146,6 @@ Public Class dlgClearOrReplace
                 chkOutline.Visible = False
                 chkPremiered.Visible = False
                 chkRating.Visible = False
-                chkReleaseDate.Visible = False
                 chkRuntime.Visible = False
                 chkStatus.Visible = False
                 chkStudios.Visible = False
@@ -171,7 +164,6 @@ Public Class dlgClearOrReplace
                 txtGenres.Visible = False
                 txtMPAA.Visible = False
                 txtPremiered.Visible = False
-                txtReleaseDate.Visible = False
                 txtStatus.Visible = False
                 txtStudios.Visible = False
                 txtTagline.Visible = False
@@ -184,7 +176,6 @@ Public Class dlgClearOrReplace
                 chkAired.Visible = False
                 chkGuestStars.Visible = False
                 chkOutline.Visible = False
-                chkReleaseDate.Visible = False
                 chkTagline.Visible = False
                 chkTitle.Visible = False
                 chkTop250.Visible = False
@@ -193,7 +184,6 @@ Public Class dlgClearOrReplace
                 chkWriters.Visible = False
                 chkYear.Visible = False
                 txtAired.Visible = False
-                txtReleaseDate.Visible = False
                 txtTagline.Visible = False
                 txtVideoSource.Visible = False
                 txtWriters.Visible = False
@@ -237,9 +227,9 @@ Public Class dlgClearOrReplace
                     .bMainOriginalTitle = chkOriginalTitle.Checked
                     .bMainOutline = chkOutline.Checked
                     .bMainPlot = chkPlot.Checked
+                    .bMainPremiered = chkPremiered.Checked
+                    nInfo.Premiered = txtPremiered.Text.Trim
                     .bMainRating = chkRating.Checked
-                    .bMainRelease = chkReleaseDate.Checked
-                    nInfo.ReleaseDate = txtReleaseDate.Text.Trim
                     .bMainRuntime = chkRuntime.Checked
                     .bMainStudios = chkStudios.Checked
                     nInfo.Studios = DoSplit(txtStudios)
@@ -384,10 +374,6 @@ Public Class dlgClearOrReplace
         lblRating.Visible = chkRating.Checked
     End Sub
 
-    Private Sub chkReleaseDate_CheckedChanged(sender As Object, e As EventArgs) Handles chkReleaseDate.CheckedChanged
-        txtReleaseDate.Enabled = chkReleaseDate.Checked
-    End Sub
-
     Private Sub chkRuntime_CheckedChanged(sender As Object, e As EventArgs) Handles chkRuntime.CheckedChanged
         lblRuntime.Visible = chkRuntime.Checked
     End Sub
@@ -465,7 +451,6 @@ Public Class dlgClearOrReplace
         chkPlot.Text = Master.eLang.GetString(65, "Plot")
         chkPremiered.Text = Master.eLang.GetString(724, "Premiered")
         chkRating.Text = String.Format("{0} / {1}", Master.eLang.GetString(400, "Rating"), Master.eLang.GetString(244, "Votes"))
-        chkReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
         chkRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkStatus.Text = Master.eLang.GetString(215, "Status")
         chkStudios.Text = Master.eLang.GetString(226, "Studios")

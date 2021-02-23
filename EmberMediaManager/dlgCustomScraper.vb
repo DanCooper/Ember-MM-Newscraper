@@ -45,6 +45,7 @@ Public Class dlgCustomScraper
     Private mMainExtrafanartsAllowed As Boolean
     Private mMainExtrathumbsAllowed As Boolean
     Private mMainFanartAllowed As Boolean
+    Private mMainKeyartAllowed As Boolean
     Private mMainLandscapeAllowed As Boolean
     Private mMainMetaDataAllowed As Boolean
     Private mMainNFOAllowed As Boolean
@@ -81,7 +82,6 @@ Public Class dlgCustomScraper
     Private oMainPremieredAllowed As Boolean
     Private oMainProducersAllowed As Boolean
     Private oMainRatingAllowed As Boolean
-    Private oMainReleaseDateAllowed As Boolean
     Private oMainRuntimeAllowed As Boolean
     Private oMainStatusAllowed As Boolean
     Private oMainStudiosAllowed As Boolean
@@ -193,6 +193,7 @@ Public Class dlgCustomScraper
         chkMainModifierExtrafanarts.Checked = False
         chkMainModifierExtrathumbs.Checked = False
         chkMainModifierFanart.Checked = False
+        chkMainModifierKeyart.Checked = False
         chkMainModifierLandscape.Checked = False
         chkMainModifierMetaData.Checked = False
         chkMainModifierNFO.Checked = False
@@ -220,7 +221,6 @@ Public Class dlgCustomScraper
         chkMainOptionsPlot.Checked = False
         chkMainOptionsPremiered.Checked = False
         chkMainOptionsRating.Checked = False
-        chkMainOptionsReleaseDate.Checked = False
         chkMainOptionsRuntime.Checked = False
         chkMainOptionsStatus.Checked = False
         chkMainOptionsStudios.Checked = False
@@ -286,6 +286,8 @@ Public Class dlgCustomScraper
             chkMainModifierExtrathumbs.Enabled = False
             chkMainModifierFanart.Checked = mMainFanartAllowed
             chkMainModifierFanart.Enabled = False
+            chkMainModifierKeyart.Checked = mMainKeyartAllowed
+            chkMainModifierKeyart.Enabled = False
             chkMainModifierLandscape.Checked = mMainLandscapeAllowed
             chkMainModifierLandscape.Enabled = False
             chkMainModifierMetaData.Checked = mMainMetaDataAllowed
@@ -308,6 +310,7 @@ Public Class dlgCustomScraper
             chkMainModifierExtrafanarts.Enabled = mMainExtrafanartsAllowed
             chkMainModifierExtrathumbs.Enabled = mMainExtrathumbsAllowed
             chkMainModifierFanart.Enabled = mMainFanartAllowed
+            chkMainModifierKeyart.Enabled = mMainKeyartAllowed
             chkMainModifierLandscape.Enabled = mMainLandscapeAllowed
             chkMainModifierMetaData.Enabled = mMainMetaDataAllowed
             chkMainModifierNFO.Enabled = mMainNFOAllowed
@@ -348,8 +351,6 @@ Public Class dlgCustomScraper
                 chkMainOptionsPremiered.Enabled = False
                 chkMainOptionsRating.Checked = oMainRatingAllowed
                 chkMainOptionsRating.Enabled = False
-                chkMainOptionsReleaseDate.Checked = oMainReleaseDateAllowed
-                chkMainOptionsReleaseDate.Enabled = False
                 chkMainOptionsRuntime.Checked = oMainRuntimeAllowed
                 chkMainOptionsRuntime.Enabled = False
                 chkMainOptionsStatus.Checked = oMainStatusAllowed
@@ -383,7 +384,6 @@ Public Class dlgCustomScraper
                 chkMainOptionsPlot.Enabled = oMainPlotAllowed
                 chkMainOptionsPremiered.Enabled = oMainPremieredAllowed
                 chkMainOptionsRating.Enabled = oMainRatingAllowed
-                chkMainOptionsReleaseDate.Enabled = oMainReleaseDateAllowed
                 chkMainOptionsRuntime.Enabled = oMainRuntimeAllowed
                 chkMainOptionsStatus.Enabled = oMainStatusAllowed
                 chkMainOptionsStudios.Enabled = oMainStudiosAllowed
@@ -534,6 +534,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeModifiers.MainExtrathumbs = chkMainModifierExtrathumbs.Checked
         CustomUpdater.ScrapeModifiers.MainExtrafanarts = chkMainModifierExtrafanarts.Checked
         CustomUpdater.ScrapeModifiers.MainFanart = chkMainModifierFanart.Checked
+        CustomUpdater.ScrapeModifiers.MainKeyart = chkMainModifierKeyart.Checked
         CustomUpdater.ScrapeModifiers.MainLandscape = chkMainModifierLandscape.Checked
         CustomUpdater.ScrapeModifiers.MainMeta = chkMainModifierMetaData.Checked
         CustomUpdater.ScrapeModifiers.MainNFO = chkMainModifierNFO.Checked
@@ -575,7 +576,6 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bMainPlot = chkMainModifierNFO.Checked AndAlso chkMainOptionsPlot.Checked
         CustomUpdater.ScrapeOptions.bMainPremiered = chkMainModifierNFO.Checked AndAlso chkMainOptionsPremiered.Checked
         CustomUpdater.ScrapeOptions.bMainRating = chkMainModifierNFO.Checked AndAlso chkMainOptionsRating.Checked
-        CustomUpdater.ScrapeOptions.bMainRelease = chkMainModifierNFO.Checked AndAlso chkMainOptionsReleaseDate.Checked
         CustomUpdater.ScrapeOptions.bMainRuntime = chkMainModifierNFO.Checked AndAlso chkMainOptionsRuntime.Checked
         CustomUpdater.ScrapeOptions.bMainStatus = chkMainModifierNFO.Checked AndAlso chkMainOptionsStatus.Checked
         CustomUpdater.ScrapeOptions.bMainStudios = chkMainModifierNFO.Checked AndAlso chkMainOptionsStudios.Checked
@@ -603,6 +603,7 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeModifiers.MainExtrafanarts OrElse
             CustomUpdater.ScrapeModifiers.MainExtrathumbs OrElse
             CustomUpdater.ScrapeModifiers.MainFanart OrElse
+            CustomUpdater.ScrapeModifiers.MainKeyart OrElse
             CustomUpdater.ScrapeModifiers.MainLandscape OrElse
             CustomUpdater.ScrapeModifiers.MainMeta OrElse
             CustomUpdater.ScrapeModifiers.MainPoster OrElse
@@ -640,7 +641,6 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeOptions.bMainPlot OrElse
             CustomUpdater.ScrapeOptions.bMainPremiered OrElse
             CustomUpdater.ScrapeOptions.bMainRating OrElse
-            CustomUpdater.ScrapeOptions.bMainRelease OrElse
             CustomUpdater.ScrapeOptions.bMainRuntime OrElse
             CustomUpdater.ScrapeOptions.bMainStatus OrElse
             CustomUpdater.ScrapeOptions.bMainStudios OrElse
@@ -688,6 +688,7 @@ Public Class dlgCustomScraper
                     mMainExtrafanartsAllowed = .MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     mMainExtrathumbsAllowed = .MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     mMainFanartAllowed = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    mMainKeyartAllowed = .MovieKeyartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainKeyart)
                     mMainLandscapeAllowed = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
                     mMainMetaDataAllowed = .MovieScraperMetaDataScan
                     mMainNFOAllowed = .MovieNFOAnyEnabled
@@ -720,10 +721,9 @@ Public Class dlgCustomScraper
                     oMainOriginalTitleAllowed = .MovieScraperOriginalTitle
                     oMainOutlineAllowed = .MovieScraperOutline
                     oMainPlotAllowed = .MovieScraperPlot
-                    oMainPremieredAllowed = False
+                    oMainPremieredAllowed = .MovieScraperPremiered
                     oMainProducersAllowed = False
                     oMainRatingAllowed = .MovieScraperRating
-                    oMainReleaseDateAllowed = .MovieScraperRelease
                     oMainRuntimeAllowed = .MovieScraperRuntime
                     oMainStatusAllowed = False
                     oMainStudiosAllowed = .MovieScraperStudio
@@ -768,6 +768,7 @@ Public Class dlgCustomScraper
                     mMainExtrafanartsAllowed = False
                     mMainExtrathumbsAllowed = False
                     mMainFanartAllowed = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
+                    mMainKeyartAllowed = .MovieSetKeyartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainKeyart)
                     mMainLandscapeAllowed = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
                     mMainMetaDataAllowed = False
                     mMainNFOAllowed = .MovieSetNFOAnyEnabled
@@ -803,7 +804,6 @@ Public Class dlgCustomScraper
                     oMainPremieredAllowed = False
                     oMainProducersAllowed = False
                     oMainRatingAllowed = False
-                    oMainReleaseDateAllowed = False
                     oMainRuntimeAllowed = False
                     oMainStatusAllowed = False
                     oMainStudiosAllowed = False
@@ -843,6 +843,7 @@ Public Class dlgCustomScraper
                     mMainExtrafanartsAllowed = .TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
                     mMainExtrathumbsAllowed = False
                     mMainFanartAllowed = .TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+                    mMainKeyartAllowed = .TVShowKeyartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainKeyart)
                     mMainLandscapeAllowed = .TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
                     mMainMetaDataAllowed = False
                     mMainNFOAllowed = .TVShowNFOAnyEnabled
@@ -878,7 +879,6 @@ Public Class dlgCustomScraper
                     oMainPremieredAllowed = .TVScraperShowPremiered
                     oMainProducersAllowed = False
                     oMainRatingAllowed = .TVScraperShowRating
-                    oMainReleaseDateAllowed = False
                     oMainRuntimeAllowed = .TVScraperShowRuntime
                     oMainStatusAllowed = .TVScraperShowStatus
                     oMainStudiosAllowed = .TVScraperShowStudio
@@ -1071,6 +1071,7 @@ Public Class dlgCustomScraper
         chkMainModifierExtrafanarts.Click,
         chkMainModifierExtrathumbs.Click,
         chkMainModifierFanart.Click,
+        chkMainModifierKeyart.Click,
         chkMainModifierLandscape.Click,
         chkMainModifierMetaData.Click,
         chkMainModifierNFO.Click,
@@ -1092,7 +1093,6 @@ Public Class dlgCustomScraper
         chkMainOptionsPlot.Click,
         chkMainOptionsPremiered.Click,
         chkMainOptionsRating.Click,
-        chkMainOptionsReleaseDate.Click,
         chkMainOptionsRuntime.Click,
         chkMainOptionsStatus.Click,
         chkMainOptionsStudios.Click,
@@ -1182,6 +1182,10 @@ Public Class dlgCustomScraper
         chkMainModifierFanart.Text = strFanart
         chkSeasonModifierFanart.Text = strFanart
 
+        'Keyart
+        Dim strKeyart As String = Master.eLang.GetString(1237, "Keyart")
+        chkMainModifierKeyart.Text = strKeyart
+
         'Landscape
         Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
         chkMainModifierLandscape.Text = strLandscape
@@ -1244,7 +1248,6 @@ Public Class dlgCustomScraper
         chkMainOptionsOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         chkMainOptionsPlot.Text = Master.eLang.GetString(65, "Plot")
         chkMainOptionsRating.Text = Master.eLang.GetString(400, "Rating")
-        chkMainOptionsReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
         chkMainOptionsRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkMainOptionsStudios.Text = Master.eLang.GetString(226, "Studios")
         chkMainOptionsTagline.Text = Master.eLang.GetString(397, "Tagline")

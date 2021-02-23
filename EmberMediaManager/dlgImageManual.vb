@@ -21,7 +21,7 @@
 Imports EmberAPI
 Imports NLog
 
-Public Class dlgImgManual
+Public Class dlgImageManual
 
 #Region "Fields"
 
@@ -61,7 +61,7 @@ Public Class dlgImgManual
     Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
         tImage = New MediaContainers.Image With {.URLOriginal = txtURL.Text.Trim}
         If tImage.LoadAndCache(Enums.ContentType.None, True, True) Then
-            Using dImgView As New dlgImgView
+            Using dImgView As New dlgImageViewer
                 dImgView.ShowDialog(tImage.ImageOriginal.Image)
             End Using
         Else

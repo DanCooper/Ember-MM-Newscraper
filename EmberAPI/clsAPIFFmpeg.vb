@@ -18,13 +18,12 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Text
 Imports NLog
+Imports Newtonsoft.Json
 Imports System.Globalization
 Imports System.IO
+Imports System.Text
 Imports System.Text.RegularExpressions
-Imports Newtonsoft.Json
-
 
 Namespace FFmpeg
 
@@ -35,15 +34,19 @@ Namespace FFmpeg
     Public Class FFmpeg
 
 #Region "Fields"
-        Private ReadOnly _output As StringBuilder
+
         Shared logger As Logger = LogManager.GetCurrentClassLogger()
+        Private ReadOnly _output As StringBuilder
+
 #End Region
 
 #Region "Constructors"
-        Private Sub New(_FFmpegTask As FFmpegTask)
-            CurrentFFmpegTask = _FFmpegTask
+
+        Private Sub New(task As FFmpegTask)
+            CurrentFFmpegTask = task
             _output = New StringBuilder()
         End Sub
+
 #End Region
 
 #Region "Properties"
@@ -51,7 +54,6 @@ Namespace FFmpeg
         ''' Get or set the ffmpeg settings used to process the videofile
         ''' </summary>
         Private Property CurrentFFmpegTask() As FFmpegTask
-
         ''' <summary>
         ''' Current output of running ffmpeg process
         ''' </summary>
@@ -62,17 +64,72 @@ Namespace FFmpeg
                 End SyncLock
             End Get
         End Property
+
 #End Region
 
 #Region "FFmpeg Methods"
+        ''' <summary>
+        ''' Get a path to the ffmpeg included with the Ember distribution
+        ''' </summary>
+        ''' <returns>A path to an instance of ffmpeg</returns>
+        ''' <remarks>Windows distributions have ffmpeg in the Bin subdirectory.
+        ''' Note that no validation is done to ensure that ffmpeg actually exists.</remarks>
+        Public Shared Function GetFFMpeg() As String
+            Return Path.Combine(Functions.AppPath, "Bin", "ffmpeg.exe")
+        End Function
+
+        ''' <summary>
+        ''' Get a path to the FFProbe included with the Ember distribution
+        ''' </summary>
+        ''' <returns>A path to an instance of ffprobe</returns>
+        ''' <remarks>Windows distributions have FFProbe in the Bin subdirectory.
+        ''' Note that no validation is done to ensure that FFProbe actually exists.</remarks>
+        Public Shared Function GetFFProbe() As String
+            Return Path.Combine(Functions.AppPath, "Bin", "ffprobe.exe")
+        End Function
+
+        Public Shared Function ExtractImageFromVideo(ByVal videoFilePath As String,
+                                                     ByVal position As Integer,
+                                                     ByVal loadBitmap As Boolean) As ThumbnailWithVideoDuration
+            Dim strPath = Path.Combine(Master.TempPath, "FFmpeg")
+            If Not Directory.Exists(strPath) Then Directory.CreateDirectory(strPath)
+            Dim strFullPath = Path.Combine(strPath, "frame.jpg")
+            If File.Exists(strFullPath) Then File.Delete(strFullPath)
+
+            Dim iVideoDuration As Integer = GetDurationFromFFmpegOutput(GetMediaInfoByFFmpeg(Nothing, videoFilePath))
+            Dim cropsize As String = GetScreenSizeWithoutBars(Nothing, iVideoDuration, videoFilePath, 20000)
+
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            ' -ss       = When used as an input option (before -i), seeks in this input file to position.   '
+            ' -i        = input file url                                                                    '
+            ' -vf       = Create the filtergraph specified by filtergraph and use it to filter the stream.  '
+            ' -frames:v = Stop writing to the stream after framecount frames.                               '
+            ' -y        = Overwrite output files without asking                                             '
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim args As String = String.Empty
+            If Not String.IsNullOrEmpty(cropsize) Then
+                args = String.Format("-ss {0} -i ""{1}"" -vf {2} -frames:v 1 -y ""{3}""", position, videoFilePath, cropsize, strFullPath)
+            Else
+                args = String.Format("-ss {0} -i ""{1}"" -frames:v 1 -y ""{2}""", position, videoFilePath, strFullPath)
+            End If
+
+            Dim result = ExecuteFFmpeg(args)
+            If File.Exists(strFullPath) Then
+                Dim nImage As New MediaContainers.Image
+                nImage.ImageOriginal.LoadFromFile(strFullPath, loadBitmap)
+                File.Delete(strFullPath)
+                Return New ThumbnailWithVideoDuration With {
+                    .Duration = GetDurationFromFFmpegOutput(result),
+                    .Image = nImage}
+            End If
+            Return Nothing
+        End Function
         ''' <summary>
         ''' Generates and saves thumbnail(s) for a specific DBElement. Returns generated thumbs in ImageContainer. 
         ''' The generated thumbnail(s) won't have black bars!
         ''' </summary>
         ''' <param name="DBElement">Movie/Show/Episode for which thumbnails should be created</param>
         ''' <param name="ThumbCount">Number of thumbnails to generate</param>
-        ''' <param name="VideoFileDuration">Optional: The duration of videofile in seconds. Used to calculate the timeframe between thumbs. If not specified, duration will be calculated automatically</param>
-        ''' <param name="NoSpoilers">true: Don't create thumbs for second half of video. Defaults to false if not specified (create tumbnails over whole movie)</param>
         ''' <param name="Timeout">The timeout to apply to FFmpeg, in milliseconds. Defaults to 20 seconds if not specified</param>
         ''' <returns>Returns imagecontainer which contains generated thumbnails</returns>
         ''' <remarks>
@@ -84,78 +141,65 @@ Namespace FFmpeg
         ''' 4. Use all above information and execute ffmpeg statement based on "intelligent" thumbnail extracting of ffmpeg discussed here:  http://superuser.com/questions/538112/meaningful-thumbnails-for-a-video-using-ffmpeg
         ''' 5. Save created thumbs under Ember temp folder and return specified amount of thumbs (prefer larger thumbs) as list of imagecontainer
         ''' </remarks>
-        Public Shared Function GenerateThumbnailsWithoutBars(ByVal DBElement As Database.DBElement, ByVal ThumbCount As Integer, Optional ByVal VideoFileDuration As Integer = 0, Optional ByVal NoSpoilers As Boolean = False, Optional ByVal Timeout As Integer = 20000) As List(Of MediaContainers.Image)
-            'set TEMP folder as savepath for thumbs
-            Dim thumbPath As String = Path.Combine(Master.TempPath, "extrathumbs")
-            'Retrieve the full file path to the source video file
-            Dim ScanPath = GetVideoFileScanPath(DBElement)
+        Public Shared Function GenerateThumbnailsWithoutBars(ByVal DBElement As Database.DBElement,
+                                                             ByVal ThumbCount As Integer,
+                                                             Optional ByVal Timeout As Integer = 20000) As List(Of MediaContainers.Image)
             Dim lstThumbContainer As New List(Of MediaContainers.Image)
+            If Not DBElement.FilenameSpecified Then Return lstThumbContainer
+            'set TEMP folder as savepath for thumbs
+            Dim strThumbPath As String = Path.Combine(Master.TempPath, "FFmpeg")
+            'Retrieve the full file path to the source video file
+            Dim strScanPath = GetVideoFileScanPath(DBElement)
 
-
-            If String.IsNullOrEmpty(ScanPath) Then
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.Filename))
+            If String.IsNullOrEmpty(strScanPath) Then
+                logger.Warn(String.Format("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}", DBElement.Filename))
                 Return lstThumbContainer
             End If
 
             'Step 1: First get the duration if necessary since it is needed to calculate the timespan between thumbs
-            If VideoFileDuration = 0 Then
-                'using FFmpeg...
-                Dim s As String = GetMediaInfoByFFmpeg(DBElement, ScanPath)
-                If s.Contains("Duration: ") Then
-                    Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
-                    If Not sTime = "N/A" Then
-                        Dim ts As TimeSpan
-                        If TimeSpan.TryParse(sTime, ts) Then
-                            VideoFileDuration = CInt(Fix(ts.TotalSeconds))
-                        End If
-                    End If
-                End If
-                'using ffprobe...
-                'Dim JsonOutput = FFmpeg.FFmpeg.GetMediaInfoByFFProbe(_DBElement, videofilepath)
-                'If Not String.IsNullOrEmpty(JsonOutput) Then
-                '    Dim tmpMediainfo = FFmpeg.FFmpeg.ParseMediaInfoByFFProbe(JsonOutput)
-                '    If tmpMediainfo.StreamDetailsSpecified AndAlso tmpMediainfo.StreamDetails.VideoSpecified AndAlso tmpMediainfo.StreamDetails.Video(0).DurationSpecified Then
-                '        Integer.TryParse(tmpMediainfo.StreamDetails.Video(0).Duration, intSeconds)
-                '    End If
-                'End If
-            End If
+            'using FFmpeg...
+            Dim iVideoDuration As Integer = GetDurationFromFFmpegOutput(GetMediaInfoByFFmpeg(DBElement, strScanPath))
+            ''using ffprobe...
+            'dim jsonoutput = ffmpeg.getmediainfobyffprobe(dbelement, strscanpath)
+            'if not string.isnullorempty(jsonoutput) then
+            '    dim tmpmediainfo = ffmpeg.parsemediainfobyffprobe(jsonoutput)
+            '    if tmpmediainfo.streamdetailsspecified andalso tmpmediainfo.streamdetails.videospecified andalso tmpmediainfo.streamdetails.video(0).durationspecified then
+            '    end if
+            'end if
+
+            'fallback to 20 images if no limit (Thumbcount) has been set
+            If ThumbCount > 20 OrElse ThumbCount = 0 Then ThumbCount = 20
 
             'Step 2: Calculate timespan between thumbs
-            Dim secondsbetweenThumbs As Integer = 0
-            Dim videoThumbnailPositionStr As String = String.Empty
-            Dim output As String = String.Empty
+            Dim iSecondsBetweenThumbs As Integer = 0
+            Dim strVideoThumbnailPositionStr As String = String.Empty
+            Dim strOutput As String = String.Empty
             'video should be long enough to avoid opening credits! (=5min)
-            If VideoFileDuration < (301 + (ThumbCount * 2)) Then
+            If iVideoDuration < (301 + (ThumbCount * 2)) Then
                 'videofile should be at least 5min + thumbcount*2 long, otherwise exit and return empty imagecontainer
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Duration of file is shorter than required minimum: {0} seconds. Abort automatic creation of thumbnails! ScanPath: {1}"), 300 + (ThumbCount * 2), ScanPath))
+                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Duration of file is shorter than required minimum: {0} seconds. Abort automatic creation of thumbnails! ScanPath: {1}"), 300 + (ThumbCount * 2), strScanPath))
                 Return lstThumbContainer
             End If
             'calculate timeintervall for thumbnails (we always create double images, sort them later and only save the best ones)
-            If NoSpoilers AndAlso VideoFileDuration > (600 + (ThumbCount * 2)) Then
+            If iVideoDuration > (600 + (ThumbCount * 2)) Then
                 'We don't want to see spoilers in thumbs -> don't create images of second half of video, also avoid ending credits (5min)
-                secondsbetweenThumbs = CInt(((VideoFileDuration / 2) - 300) / (ThumbCount * 2))
-            ElseIf VideoFileDuration > (600 + (ThumbCount * 2)) Then
-                'don't avoid spoilers but avoid (possible) ending credits
-                secondsbetweenThumbs = CInt((VideoFileDuration - 600) / (ThumbCount * 2))
+                iSecondsBetweenThumbs = CInt(((iVideoDuration / 2) - 300) / (ThumbCount * 2))
             Else
                 'not possible to avoid spoilers and to avoid (possible) ending credits
-                secondsbetweenThumbs = CInt((VideoFileDuration - 300) / (ThumbCount * 2))
+                iSecondsBetweenThumbs = CInt((iVideoDuration - 300) / (ThumbCount * 2))
             End If
 
-            'Step 3: (Optional) Analyze video and retrieve real screensize without black bars
-            Dim cropsize As String = String.Empty
-            If Master.eSettings.MovieExtrathumbsCreatorNoBlackBars Then
-                cropsize = GetScreenSizeWithoutBars(DBElement, VideoFileDuration, ScanPath, Timeout)
-            End If
+            'Step 3: Analyze video and retrieve real screensize without black bars
+            Dim cropsize As String = GetScreenSizeWithoutBars(DBElement, iVideoDuration, strScanPath, Timeout)
 
             'Step 4: Build FFmpeg argument, which will generate the thumbs
             Dim args As String = String.Empty
 
-            If Not Directory.Exists(thumbPath) Then
-                Directory.CreateDirectory(thumbPath)
+            If Not Directory.Exists(strThumbPath) Then
+                Directory.CreateDirectory(strThumbPath)
             Else
-                FileUtils.Delete.DeleteDirectory(thumbPath)
-                Directory.CreateDirectory(thumbPath)
+                FileUtils.Delete.DeleteDirectory(strThumbPath)
+                Directory.CreateDirectory(strThumbPath)
             End If
             'explanations of parameters:
             'ss x: start x seconds from beginning
@@ -165,60 +209,75 @@ Namespace FFmpeg
             '-vf select= That's where all the magic happens. This is the selector function for video filter (like the value for crop we calculated earlier & autothumbnail(scene...) & mod..)
             ' not(mod(n\,x)): Select one frame every x frames see the documentation.+
             'create x images at specific timeframe starting from x second  onwards at calculcated intervall and crop them
-            Dim tmpSpan As New TimeSpan(0, 0, (secondsbetweenThumbs))
+            Dim tmpSpan As New TimeSpan(0, 0, (iSecondsBetweenThumbs))
             For i = 1 To (ThumbCount * 2)
                 'first screenshot should be taken around 5 minutes from start to avoid credits/openening scenes
                 If i = 1 Then
                     tmpSpan = tmpSpan + TimeSpan.FromSeconds(300)
                 Else
-                    tmpSpan = tmpSpan + TimeSpan.FromSeconds(secondsbetweenThumbs)
+                    tmpSpan = tmpSpan + TimeSpan.FromSeconds(iSecondsBetweenThumbs)
                 End If
-                videoThumbnailPositionStr = tmpSpan.ToString("hh\:mm\:ss")
+                strVideoThumbnailPositionStr = tmpSpan.ToString("hh\:mm\:ss")
                 '  args = String.Format(CultureInfo.InvariantCulture, "-ss {0} -i ""{1}"" -vf {2} -frames:v 1 -vsync vfr -q:v 0 ""{3}"" -y", videoThumbnailPositionStr, ScanPath, cropsize, Path.Combine(thumbPath, "thumb" & i & ".jpg"))
                 If String.IsNullOrEmpty(cropsize) Then
-                    args = String.Format(CultureInfo.InvariantCulture, "-ss {0} -i ""{1}"" -frames:v 1 -q:v 0 ""{2}"" -y", videoThumbnailPositionStr, ScanPath, Path.Combine(thumbPath, "thumb" & i & ".jpg"))
+                    args = String.Format(CultureInfo.InvariantCulture,
+                                         "-ss {0} -i ""{1}"" -frames:v 1 -q:v 0 ""{2}"" -y",
+                                         strVideoThumbnailPositionStr,
+                                         strScanPath,
+                                         Path.Combine(strThumbPath, String.Concat("thumb", i, ".jpg")))
                 Else
-                    args = String.Format(CultureInfo.InvariantCulture, "-ss {0} -i ""{1}"" -vf {2} -frames:v 1 -q:v 0 ""{3}"" -y", videoThumbnailPositionStr, ScanPath, cropsize, Path.Combine(thumbPath, "thumb" & i & ".jpg"))
+                    args = String.Format(CultureInfo.InvariantCulture,
+                                         "-ss {0} -i ""{1}"" -vf {2} -frames:v 1 -q:v 0 ""{3}"" -y",
+                                         strVideoThumbnailPositionStr,
+                                         strScanPath,
+                                         cropsize,
+                                         Path.Combine(strThumbPath, String.Concat("thumb", i, ".jpg")))
                 End If
                 'logger.Info(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Args: {0}"), args))
-                output = output & ExecuteFFmpeg(args:=args, timeout:=Timeout, dbelement:=DBElement)
+                strOutput = String.Concat(strOutput, ExecuteFFmpeg(args:=args, timeout:=Timeout))
             Next
 
             'Step 5: To find most interesting thumbs and to avoid black/white thumbs we sort all generated thumbs after size and pick the largest images (because those will contain more dynamic content)
-            If Not Directory.Exists(thumbPath) Then
-                Directory.CreateDirectory(thumbPath)
+            If Not Directory.Exists(strThumbPath) Then
+                Directory.CreateDirectory(strThumbPath)
             End If
-            Dim sortedThumbs = Directory.GetFiles(thumbPath, "*.jpg").OrderByDescending(Function(f) New FileInfo(f).Length).ToList
+            Dim sortedThumbs = Directory.GetFiles(strThumbPath, "*.jpg").OrderByDescending(Function(f) New FileInfo(f).Length).ToList
             If sortedThumbs.Count > 0 Then
-                logger.Info(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: {0} thumbs created. File: {1}"), sortedThumbs.Count, ScanPath))
-                'remove the old ones
-                ' Images.Delete_Movie(DBElement, Enums.ModifierType.MainExtrathumbs)
-                'Step 3: load all valid extrathumbs into imagecontainer
-                For i = 1 To sortedThumbs.Count
+                logger.Info(String.Format("[FFmpeg] GenerateThumbnailsWithoutBars: {0} thumbs created. File: {1}",
+                                          sortedThumbs.Count,
+                                          strScanPath))
+                'Step 6: load all valid extrathumbs into imagecontainer
+                For i = 0 To sortedThumbs.Count - 1
                     'need no more than thumbcount images
                     If lstThumbContainer.Count < ThumbCount Then
                         Dim eImg As New MediaContainers.Image
-                        'not needed to load it here, just set localpath
-                        'eImg.ImageOriginal.FromFile(sortedThumbs(i - 1), True)
-                        eImg.LocalFilePath = sortedThumbs(i - 1)
+                        eImg.ImageOriginal.LoadFromFile(sortedThumbs(i))
                         lstThumbContainer.Add(eImg)
+                        File.Delete(sortedThumbs(i))
                     Else
                         Exit For
                     End If
                 Next
-                'Don't save here - just return filled imagecontainers and let other processes do the saving task!
-                'For Each eImg As MediaContainers.Image In DBElement.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-                '    If eImg.LoadAndCache(DBElement.ContentType, True) Then
-                '        eImg.ImageOriginal.SaveAsMovieExtrathumb(DBElement)
-                '    End If
-                'Next
             Else
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: No thumbs created for {0}"), ScanPath))
+                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: No thumbs created for {0}"), strScanPath))
             End If
+            'Sort the files by file name to get the correct order
+            lstThumbContainer = lstThumbContainer.OrderBy(Function(f) f.LocalFilePath).ToList
             Return lstThumbContainer
         End Function
 
-
+        Private Shared Function GetDurationFromFFmpegOutput(ByVal ffmpegOutput As String) As Integer
+            If ffmpegOutput.Contains("Duration: ") Then
+                Dim strTime As String = Regex.Match(ffmpegOutput, "Duration: (?<DUR>.*?),").Groups("DUR").ToString
+                If Not strTime = "N/A" Then
+                    Dim ts As TimeSpan
+                    If TimeSpan.TryParse(strTime, ts) Then
+                        Return CInt(Fix(ts.TotalSeconds))
+                    End If
+                End If
+            End If
+            Return 0
+        End Function
         ''' <summary>
         ''' Calculates the "real" screensize by neglecting black bars which might be part of video
         ''' </summary>
@@ -239,7 +298,7 @@ Namespace FFmpeg
             End If
 
             'Retrieve the full file path to the source video file (if necessary)
-            If ScanPath = "" Then
+            If String.IsNullOrEmpty(ScanPath) Then
                 ScanPath = GetVideoFileScanPath(DBElement)
             End If
 
@@ -256,7 +315,10 @@ Namespace FFmpeg
             ' from beginning of video because often black bars are non existent in first seconds of a movie
             For i = 1 To 3
                 mc = Nothing
-                cropscanresult = ExecuteFFmpeg(String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2), DBElement, Timeout)
+                cropscanresult = ExecuteFFmpeg(String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL",
+                                                             CInt(Duration / 4) * i,
+                                                             ScanPath,
+                                                             2), Timeout)
                 'Example Output:
                 '[Parsed_cropdetect_0 @ 054d2a20] x1:0 x2:1919 y1:136 y2:935 w:1920 h:800 x:0 y:1
                 '36 pts:122291 t:1.358789 crop=1920:800:0:136
@@ -264,13 +326,13 @@ Namespace FFmpeg
                 'this means: crop=1920:800:0:136 is real resolution --> Aspect Ratio: 2:40
                 'put all detected cropvalues in collection
                 If Not String.IsNullOrEmpty(cropscanresult) Then
-                    mc = System.Text.RegularExpressions.Regex.Matches(cropscanresult, ".*(crop=\d+:\d+:\d+:\d+).*")
+                    mc = Regex.Matches(cropscanresult, ".*(crop=\d+:\d+:\d+:\d+).*")
                     If mc IsNot Nothing AndAlso mc.Count > 0 Then
                         For j = 0 To mc.Count - 1
                             'i.e. saving: [crop=1920:800:0:136,1920]
                             Dim tmpcropvalues As String() = mc(j).Groups(mc(j).Groups.Count - 1).Value.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                             If tmpcropvalues.Length = 4 Then
-                                tmpcropvalues(0) = tmpcropvalues(0).Replace("crop=", "")
+                                tmpcropvalues(0) = tmpcropvalues(0).Replace("crop=", String.Empty)
                                 'save width+height as Double to use for sorting later
                                 Double.TryParse(tmpcropvalues(0) & tmpcropvalues(1), cropvalue)
                             End If
@@ -290,11 +352,10 @@ Namespace FFmpeg
             Else
                 'sort list, highest resolution on top -> this one will be returned!
                 sortcrops = sortcrops.OrderByDescending(Function(X) X.Item2).ToList
-                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.Filename))
+                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, ScanPath))
                 Return sortcrops(0).Item1
             End If
         End Function
-
         ''' <summary>
         ''' Returns the output from the execution of FFmpeg against a specific videofile
         ''' </summary>
@@ -309,14 +370,13 @@ Namespace FFmpeg
         ''' </remarks>
         Public Shared Function GetMediaInfoByFFmpeg(ByVal DBElement As Database.DBElement, ScanPath As String, Optional ByVal Timeout As Integer = 20000) As String
             Dim args As String = String.Format(CultureInfo.InvariantCulture, "-i ""{0}""", ScanPath)
-            Return ExecuteFFmpeg(args:=args, timeout:=Timeout, dbelement:=DBElement)
+            Return ExecuteFFmpeg(args:=args, timeout:=Timeout)
         End Function
 
 
 #End Region
 
 #Region "FFProbe Methods"
-
         ''' <summary>
         ''' Returns the output from the execution of FFProbe against a specific videofile
         ''' </summary>
@@ -329,9 +389,8 @@ Namespace FFmpeg
         ''' </remarks>
         Public Shared Function GetMediaInfoByFFProbe(ByVal dbelement As Database.DBElement, videoFilePath As String, Optional ByVal timeout As Integer = 20000) As String
             Dim args As String = String.Format(CultureInfo.InvariantCulture, "-v quiet -print_format json -show_streams -show_format ""{0}""", videoFilePath)
-            Return ExecuteFFmpeg(args:=args, timeout:=timeout, dbelement:=dbelement, UseFFProbe:=True)
+            Return ExecuteFFmpeg(args:=args, timeout:=timeout, UseFFProbe:=True)
         End Function
-
         ''' <summary>
         ''' Parses videofile using FFprobe and return parsed information as MediaInfo object
         ''' </summary>
@@ -360,43 +419,36 @@ Namespace FFmpeg
                 End If
 
                 ' Process the video stream (skip MJPEG streams) and use only the first Video stream with a width (ignore subsequent ones)
-                If (stream.codec_type.Trim().ToLower() = "video") AndAlso (stream.codec_name.Trim().ToLower() <> "mjpeg") Then
+                If stream.codec_type.Trim.ToLower = "video" AndAlso Not stream.codec_name.Trim.ToLower = "mjpeg" Then
                     VideoInfo = New MediaContainers.Video
-
-
-                    'FileSize
-                    If Not Double.TryParse(ffprobeResults.format.size, VideoInfo.Filesize) Then
-                        logger.Warn("[FFmpeg] GetMediaInfoByFFProbe: Invalid Size: " & ffprobeResults.format.size)
-                    End If
                     'Bitrate
-                    Dim tmpnumber As Integer = 0
-                    If Not Integer.TryParse(stream.bit_rate, tmpnumber) Then
+                    Dim iBitrate As Integer = 0
+                    If Not Integer.TryParse(stream.bit_rate, iBitrate) Then
                         ' Video bitrate, sometimes it's a N/A, use overall bitrate instead
-                        VideoInfo.Bitrate = ffprobeResults.format.bit_rate
-                    Else
-                        VideoInfo.Bitrate = stream.bit_rate
+                        Integer.TryParse(ffprobeResults.format.bit_rate, iBitrate)
                     End If
+                    VideoInfo.Bitrate = iBitrate.ToString
                     'Duration
-                    If Not Integer.TryParse(ffprobeResults.format.duration, tmpnumber) Then
+                    Dim iDuration As Integer
+                    If Not Integer.TryParse(ffprobeResults.format.duration, iDuration) Then
                         If ffprobeResults.format.duration.Contains(".") Then
-                            VideoInfo.Duration = ffprobeResults.format.duration.Substring(0, ffprobeResults.format.duration.IndexOf("."))
-                        Else
-                            VideoInfo.Duration = ffprobeResults.format.duration
+                            Integer.TryParse(ffprobeResults.format.duration.Substring(0, ffprobeResults.format.duration.IndexOf(".")), iDuration)
                         End If
-                    Else
-                        VideoInfo.Duration = CStr(tmpnumber)
                     End If
+                    VideoInfo.Duration = iDuration.ToString
 
-                    'DAR , that display aspect ratio
-                    VideoInfo.Aspect = stream.display_aspect_ratio
+                    'Aspect ratio
+                    Dim dblAspect As Double
+                    Double.TryParse(stream.display_aspect_ratio, dblAspect)
+                    VideoInfo.Aspect = dblAspect.ToString
                     ' Height
-                    VideoInfo.Height = CStr((If(stream.height Is Nothing, 0, CInt(stream.height))))
+                    VideoInfo.Height = If(stream.height IsNot Nothing, CInt(stream.height), 0).ToString
                     ' Width
-                    VideoInfo.Width = CStr((If(stream.width Is Nothing, 0, CInt(stream.width))))
+                    VideoInfo.Width = If(stream.width IsNot Nothing, CInt(stream.width), 0).ToString
                     ' Video codec name
                     VideoInfo.Codec = stream.codec_name
                     'Language
-                    VideoInfo.Language = (If(stream.tags Is Nothing, "", stream.tags.language))
+                    VideoInfo.Language = If(stream.tags IsNot Nothing, stream.tags.language, String.Empty)
 
                     ' Not supported anymore:
                     'VideoInfo.Scantype = ???
@@ -416,18 +468,19 @@ Namespace FFmpeg
                     'Finally add Videoinformation to Ember MediaInfo object
                     MediaInfo.StreamDetails.Video.Add(VideoInfo)
 
-                ElseIf stream.codec_type.Trim().ToLower() = "audio" Then
-                    ' Create a new Audio object for each stream we find
+                ElseIf stream.codec_type.Trim.ToLower = "audio" Then
                     AudioInfo = New MediaContainers.Audio
 
                     ' Audio codec name
                     AudioInfo.Codec = stream.codec_name
                     ' Audio Bitrate
-                    AudioInfo.Bitrate = stream.bit_rate
+                    Dim iBitrate As Integer
+                    Integer.TryParse(stream.bit_rate, iBitrate)
+                    AudioInfo.Bitrate = iBitrate.ToString
                     ' Store the channel information
-                    AudioInfo.Channels = CStr((If(stream.channels Is Nothing, 0, CInt(stream.channels))))
+                    AudioInfo.Channels = If(stream.channels IsNot Nothing, CInt(stream.channels), 0).ToString
                     'Language
-                    AudioInfo.Language = (If(stream.tags Is Nothing, "", stream.tags.language))
+                    AudioInfo.Language = If(stream.tags IsNot Nothing, stream.tags.language, String.Empty)
 
                     'Currently not supported in existingn MEDIAINFO-structure of Ember:
                     'PID
@@ -441,11 +494,10 @@ Namespace FFmpeg
                     'Finally add Videoinformation to Ember MediaInfo object
                     MediaInfo.StreamDetails.Audio.Add(AudioInfo)
 
-                ElseIf stream.codec_type.Trim().ToLower() = "subtitle" Then
-                    ' Create a new Subtitle object for each stream we find
+                ElseIf stream.codec_type.Trim.ToLower = "subtitle" Then
                     SubtitleInfo = New MediaContainers.Subtitle
                     'Language
-                    SubtitleInfo.Language = (If(stream.tags Is Nothing, "", stream.tags.language))
+                    SubtitleInfo.Language = If(stream.tags IsNot Nothing, stream.tags.language, String.Empty)
 
                     'Currently not supported in existingn MEDIAINFO-structure of Ember:
                     ' Subtitle Codec name
@@ -475,25 +527,22 @@ Namespace FFmpeg
         ''' <param name="UseFFProbe">Use FFmpeg or FFprobe for query? By default FFmpeg is used to execute commands</param>
         ''' <returns>Returns the text output from the execution of FFmpeg/FFprobe</returns>
         ''' <remarks>
-        ''' 2016/01/22 Cocotus - First implementation
         ''' </remarks>
-        Private Shared Function ExecuteFFmpeg(args As String, ByVal dbelement As Database.DBElement, Optional timeout As Integer = 20000, Optional UseFFProbe As Boolean = False) As String
-            Dim FFmpegTaskSettings = New FFmpegTask() With {.DBElement = dbelement, .Timeout = timeout, .FFmpegArgs = args, .FFmpegOutput = String.Empty}
+        Private Shared Function ExecuteFFmpeg(args As String, Optional timeout As Integer = 20000, Optional UseFFProbe As Boolean = False) As String
+            Dim FFmpegTaskSettings = New FFmpegTask() With {.Timeout = timeout, .FFmpegArgs = args, .FFmpegOutput = String.Empty}
             If UseFFProbe Then
-                FFmpegTaskSettings.FFmpegPath = Functions.GetFFProbe
+                FFmpegTaskSettings.FFmpegPath = GetFFProbe()
             Else
-                FFmpegTaskSettings.FFmpegPath = Functions.GetFFMpeg
+                FFmpegTaskSettings.FFmpegPath = GetFFMpeg()
             End If
             Return ExecuteFFmpeg(FFmpegTaskSettings)
         End Function
-
         ''' <summary>
         ''' Execute the FFmpeg or FFprobe with the given <paramref name="_settings"/> and return the text output generated by it
         ''' </summary>
         ''' <param name="_settings">The ffmpeg task settings.</param>
         ''' <returns>Returns the text output from the execution of FFmpeg/FFprobe</returns>
         ''' <remarks>
-        ''' 2016/01/22 Cocotus - First implementation
         ''' </remarks>
         Private Shared Function ExecuteFFmpeg(_settings As FFmpegTask) As String
             Dim ffmpeg As New FFmpeg(_settings)
@@ -501,7 +550,6 @@ Namespace FFmpeg
             _settings.FFmpegOutput = ffmpeg.Output
             Return _settings.FFmpegOutput
         End Function
-
         ''' <summary>
         ''' Run the FFmpeg/FFprobe executable with the specified command line arguments
         ''' </summary>
@@ -511,13 +559,13 @@ Namespace FFmpeg
         Private Sub Execute()
             Dim processCompletedSuccessfully As Boolean = False
 
-            Dim ffmpeg As New ProcessStartInfo
-            ffmpeg.FileName = CurrentFFmpegTask.FFmpegPath
-            ffmpeg.Arguments = CurrentFFmpegTask.FFmpegArgs
-            ffmpeg.UseShellExecute = False
-            ffmpeg.CreateNoWindow = True
-            ffmpeg.RedirectStandardError = True
-            ffmpeg.RedirectStandardOutput = True
+            Dim psiFFmpeg As New ProcessStartInfo
+            psiFFmpeg.FileName = CurrentFFmpegTask.FFmpegPath
+            psiFFmpeg.Arguments = CurrentFFmpegTask.FFmpegArgs
+            psiFFmpeg.UseShellExecute = False
+            psiFFmpeg.CreateNoWindow = True
+            psiFFmpeg.RedirectStandardError = True
+            psiFFmpeg.RedirectStandardOutput = True
 
             'log the arguments/input
             '_output.AppendLine("Argument String:")
@@ -525,9 +573,9 @@ Namespace FFmpeg
 
             Using p As New Process()
                 Try
-                    p.StartInfo = ffmpeg
+                    p.StartInfo = psiFFmpeg
                     'For some reason, FFmpeg sends data to the ErrorDataReceived event rather than OutputDataReceived -> Listen to ErrorDataReceived
-                    If ffmpeg.FileName.ToLower.EndsWith("ffmpeg.exe") Then
+                    If psiFFmpeg.FileName.ToLower.EndsWith("ffmpeg.exe") Then
                         AddHandler p.ErrorDataReceived, AddressOf ErrorDataReceived
                         p.Start()
                         p.BeginErrorReadLine()
@@ -559,7 +607,6 @@ Namespace FFmpeg
                 logger.Warn(String.Format("Output: ", CurrentFFmpegTask.FFmpegOutput))
             End If
         End Sub
-
         ''' <summary>
         ''' The Data Received Event of current FFmpeg task
         ''' </summary>
@@ -573,7 +620,6 @@ Namespace FFmpeg
             _output.AppendLine(e.Data)
             CancelIfRequested(TryCast(sender, Process))
         End Sub
-
         ''' <summary>
         ''' The Data Received Event of current FFmpeg task
         ''' </summary>
@@ -607,90 +653,221 @@ Namespace FFmpeg
                 End If
             End If
         End Sub
-
         ''' <summary>
-        ''' Get the correct file which should be processed by MediaInfo/FFmpeg/FFprobe.
-        ''' Supports also .ISO/.BIN files!
+        ''' Get the correct file which should be processed by MediaInfo/FFmpeg/FFprobe
         ''' </summary>
-        ''' <param name="dbelement">Movie/Show/Episode which should be scanned</param>
-        ''' <returns>Returns full file path to the source video file which should be scanned by MediaInfo/FFmpeg/FFprobe</returns>
-        ''' <remarks>
-        ''' 2016/01/22 Cocotus - First implementation
-        ''' Code below is also part of clsMediaInfo(ScanMI) but now put in a separate function because ffmpeg/ffprobe needs this too!
-        ''' </remarks>
+        ''' <param name="fileItem"></param>
+        ''' <returns></returns>
         Private Shared Function GetVideoFileScanPath(ByVal DBElement As Database.DBElement) As String
-            Dim videofilepath As String = String.Empty
+            If Not DBElement.FilenameSpecified Then Return String.Empty
+
             Dim videofileExt As String = Path.GetExtension(DBElement.Filename).ToLower
-            If videofileExt = ".rar" AndAlso Not videofileExt = ".img" AndAlso Not videofileExt = ".cue" Then
-                'not supported?!
+
+            If FileUtils.Common.isBDRip(DBElement.Filename) OrElse FileUtils.Common.isVideoTS(DBElement.Filename) Then
+                Return FileUtils.Common.GetLongestFromRip(DBElement.Filename)
+            ElseIf videofileExt = ".iso" OrElse videofileExt = ".bin" Then
+                Dim nVirtualDrive = New FileUtils.VirtualCloneDrive(DBElement.Filename)
+                If nVirtualDrive.IsReady Then
+                    Return FileUtils.Common.GetLongestFromRip(nVirtualDrive.Path)
+                End If
+            ElseIf Not FileUtils.Common.IsArchive(DBElement.Filename) AndAlso Not FileUtils.Common.IsDiscStub(DBElement.Filename) Then
+                Return DBElement.Filename
             End If
-            Select Case DBElement.ContentType
-                Case Enums.ContentType.Movie
-                    If FileUtils.Common.isBDRip(DBElement.Filename) Then
-                        'filename points to largest m2ts file, i.e:
-                        'E:\Media_1\Movie\Horror\Europa Report\BDMV\STREAM\00000.m2ts
-                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.Filename)
-                    ElseIf FileUtils.Common.isVideoTS(DBElement.Filename) Then
-                        'filename points to largest VOB  file
-                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.Filename)
-                    ElseIf videofileExt = ".iso" OrElse videofileExt = ".bin" Then
-                        Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F:\"
-                        'Toolpath either VCDMOUNT.exe or DTLite.exe!
-                        Dim ToolPath As String = Master.eSettings.GeneralDaemonPath
-                        'Now only use DAEMON Tools to mount ISO if installed on user system
-                        If Not String.IsNullOrEmpty(driveletter) AndAlso Not String.IsNullOrEmpty(ToolPath) Then
-                            'Either DAEMONToolsLite or VirtualCloneDrive (http://www.slysoft.com/en/virtual-clonedrive.html)
-                            If ToolPath.ToUpper.Contains("VCDMOUNT") Then
-                                'First unmount, i.e "C:\Program Files\Elaborate Bytes\VirtualCloneDrive\VCDMount.exe" /u
-                                '  Run_Process(ToolPath, " /u", False, True)
-                                'Mount ISO on virtual drive, i.e c:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe U:\isotest\test2iso.ISO
-                                Functions.Run_Process(ToolPath, """" & videofilepath & """", False, True)
-                                System.Threading.Thread.Sleep(8000)
-                                'Toolpath doesn't contain virtualclonedrive.exe -> assume daemon tools with DS type drive!
-                            Else
-                                'Unmount
-                                '   Run_Process(ToolPath, " -unmount 0", False, True)
-                                'Mount
-                                Functions.Run_Process(ToolPath, " -mount 0, " & """" & videofilepath & """", False, True)
-                                System.Threading.Thread.Sleep(8000)
-                            End If
-                            'now check if it's bluray or dvd image/VIDEO_TS/BMDV Folder-Scanning!
-                            If Directory.Exists(driveletter & "VIDEO_TS") Then
-                                'get biggest VOB file for thumbscraping
-                                Dim lFileList As New List(Of FileInfo)
-                                lFileList.AddRange(New DirectoryInfo(driveletter & "VIDEO_TS").GetFiles("*.vob"))
-                                videofilepath = lFileList.OrderByDescending(Function(a) a.Length).Select(Function(a) a.FullName).FirstOrDefault()
-                            ElseIf Directory.Exists(driveletter & "BDMV\STREAM") Then
-                                'get biggest m2ts file for thumbscraping
-                                Dim lFileList As New List(Of FileInfo)
-                                lFileList.AddRange(New DirectoryInfo(driveletter & "BDMV\STREAM").GetFiles("*.m2ts"))
-                                videofilepath = lFileList.OrderByDescending(Function(b) b.Length).Select(Function(b) b.FullName).FirstOrDefault()
-                            End If
-                        End If
-                        'default case
-                    Else
-                        videofilepath = DBElement.Filename
-                    End If
-                Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    logger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.Filename))
-                    If FileUtils.Common.isBDRip(DBElement.ShowPath) Then
-                        'no tv support for now...
-                    ElseIf FileUtils.Common.isVideoTS(DBElement.ShowPath) Then
-                        'no tv support for now...
-                    Else
-                        'no tv support for now...
-                    End If
-                Case Enums.ContentType.TVEpisode
-                    'no tv support for now...
-            End Select
-            Return videofilepath
+            Return String.Empty
         End Function
 
 #End Region
 
     End Class
 
+    Public Class FFProbeDisposition
 
+        Public Property [default]() As Integer
+
+        Public Property dub() As Integer
+
+        Public Property original() As Integer
+
+        Public Property comment() As Integer
+
+        Public Property lyrics() As Integer
+
+        Public Property karaoke() As Integer
+
+        Public Property forced() As Integer
+
+        Public Property hearing_impaired() As Integer
+
+        Public Property visual_impaired() As Integer
+
+        Public Property clean_effects() As Integer
+
+        Public Property attached_pic() As Integer
+
+    End Class
+
+    Public Class FFProbeFormat
+
+        Public Property filename() As String
+
+        Public Property nb_streams() As Integer
+
+        Public Property nb_programs() As Integer
+
+        Public Property format_name() As String
+
+        Public Property format_long_name() As String
+
+        Public Property start_time() As String
+
+        Public Property duration() As String
+
+        Public Property size() As String
+
+        Public Property bit_rate() As String
+
+        Public Property probe_score() As Integer
+
+        Public Property tags() As Object
+
+    End Class
+
+    Public Class FFProbeProgram
+
+        Public Property program_id() As Integer
+
+        Public Property program_num() As Integer
+
+        Public Property nb_streams() As Integer
+
+        Public Property pmt_pid() As Integer
+
+        Public Property pcr_pid() As Integer
+
+        Public Property start_pts() As Long
+
+        Public Property start_time() As String
+
+        Public Property end_pts() As Long
+
+        Public Property end_time() As String
+
+        Public Property tags() As FFProbeTagsP
+
+        Public Property streams() As List(Of FFProbeStream)
+
+    End Class
+
+    Public Class FFProbeInterlaceDetection
+
+        Public TFF As Long
+        Public BFF As Long
+        Public Progressive As Long
+        Public Undetermined As Long
+
+        Public Overrides Function ToString() As String
+            Dim ret As String = String.Empty
+            ret += "Top Frame First -> " + TFF.ToString() + vbCr & vbLf
+            ret += "Bottom Frame First -> " + BFF.ToString() + vbCr & vbLf
+            ret += "Progressive Frames -> " + Progressive.ToString() + vbCr & vbLf
+            ret += "Undetermined Frames -> " + Undetermined.ToString() + vbCr & vbLf
+            Return ret
+        End Function
+
+    End Class
+    ''' <summary>
+    ''' Helper class for storing JSON output from FFprobe
+    ''' </summary>
+    ''' <remarks>
+    ''' 2016/01/22 Cocotus - First implementation
+    ''' Use this class to store all necessary information for a ffprobe scrape
+    ''' The properties defined here will be used to create argument(s) for ffmpeg/ffprobe
+    ''' </remarks>
+    Public Class FFProbeResults
+
+        Property programs() As List(Of FFProbeProgram)
+
+        Property streams() As List(Of FFProbeStream)
+
+        Property format() As FFProbeFormat
+
+    End Class
+
+    Public Class FFProbeStream
+
+        Public Property index() As Integer
+
+        Public Property codec_type() As String
+
+        Public Property codec_time_base() As String
+
+        Public Property codec_tag_string() As String
+
+        Public Property codec_tag() As String
+
+        Public Property id() As String
+
+        Public Property r_frame_rate() As String
+
+        Public Property avg_frame_rate() As String
+
+        Public Property time_base() As String
+
+        Public Property start_pts() As Long
+
+        Public Property start_time() As String
+
+        Public Property duration_ts() As Long
+
+        Public Property duration() As String
+
+        Public Property disposition() As FFProbeDisposition
+
+        Public Property codec_name() As String
+
+        Public Property codec_long_name() As String
+
+        Public Property sample_fmt() As String
+
+        Public Property sample_rate() As String
+
+        Public Property channels() As Integer?
+        Public Property channel_layout() As String
+
+        Public Property bits_per_sample() As Integer?
+        Public Property dmix_mode() As String
+
+        Public Property ltrt_cmixlev() As String
+
+        Public Property ltrt_surmixlev() As String
+
+        Public Property loro_cmixlev() As String
+
+        Public Property loro_surmixlev() As String
+
+        Public Property bit_rate() As String
+
+        Public Property tags() As FFProbeTags
+
+        Public Property profile() As String
+
+        Public Property width() As Integer?
+
+        Public Property height() As Integer?
+
+        Public Property has_b_frames() As Integer?
+
+        Public Property sample_aspect_ratio() As String
+
+        Public Property display_aspect_ratio() As String
+
+        Public Property pix_fmt() As String
+
+        Public Property level() As Integer?
+
+        Public Property timecode() As String
+
+    End Class
     ''' <summary>
     ''' Every information for a single ffmpeg task is stored in this object
     ''' </summary>
@@ -703,157 +880,56 @@ Namespace FFmpeg
         ''' <summary>
         ''' Either path to ffmpeg.exe or ffprobe.exe
         ''' </summary>
-        Public Property FFmpegPath() As String = Functions.GetFFMpeg
-
+        Public Property FFmpegPath() As String = FFmpeg.GetFFMpeg
         ''' <summary>
         ''' The (console) output that FFmpeg generates
         ''' </summary>
         Public Property FFmpegOutput() As String = String.Empty
-
         ''' <summary>
         ''' Arguments to provide for FFmpeg conversion . 
         ''' May contains replacement tokens like {VideofilePath}
         ''' </summary>
         Public Property FFmpegArgs() As String = String.Empty
-
         ''' <summary>
         ''' Timeout to apply for conversion [ms]
         ''' 20 seconds as default value
         ''' </summary>
         Public Property Timeout() As Integer = 20000
-
-        ''' <summary>
-        ''' Current database element (movie/show/episode..)
-        ''' </summary>
-        Public Property DBElement() As Database.DBElement = Nothing
-
         ''' <summary>
         ''' Can be used to cancel the conversion process when whole conversion is running asynchronously
         ''' </summary>
         Public Property CancelToken() As Threading.CancellationToken
-    End Class
 
-    ''' <summary>
-    ''' Helper class for storing JSON output from FFprobe
-    ''' </summary>
-    ''' <remarks>
-    ''' 2016/01/22 Cocotus - First implementation
-    ''' Use this class to store all necessary information for a ffprobe scrape
-    ''' The properties defined here will be used to create argument(s) for ffmpeg/ffprobe
-    ''' </remarks>
-    Public Class FFProbeResults
-        Property programs() As List(Of FFProbeProgram)
-        Property streams() As List(Of FFProbeStream)
-        Property format() As FFProbeFormat
-    End Class
-    Public Class FFProbeInterlaceDetection
-        Public TFF As Long
-        Public BFF As Long
-        Public Progressive As Long
-        Public Undetermined As Long
-
-        Public Overrides Function ToString() As String
-            Dim ret As String = ""
-
-            ret += "Top Frame First -> " + TFF.ToString() + vbCr & vbLf
-            ret += "Bottom Frame First -> " + BFF.ToString() + vbCr & vbLf
-            ret += "Progressive Frames -> " + Progressive.ToString() + vbCr & vbLf
-            ret += "Undetermined Frames -> " + Undetermined.ToString() + vbCr & vbLf
-
-            Return ret
-        End Function
-    End Class
-
-    Public Class FFProbeDisposition
-        Public Property [default]() As Integer
-        Public Property dub() As Integer
-        Public Property original() As Integer
-        Public Property comment() As Integer
-        Public Property lyrics() As Integer
-        Public Property karaoke() As Integer
-        Public Property forced() As Integer
-        Public Property hearing_impaired() As Integer
-        Public Property visual_impaired() As Integer
-        Public Property clean_effects() As Integer
-        Public Property attached_pic() As Integer
     End Class
 
     Public Class FFProbeTags
+
         Public Property language() As String
+
         Public Property title() As String
-    End Class
 
-    Public Class FFProbeStream
-        Public Property index() As Integer
-        Public Property codec_type() As String
-        Public Property codec_time_base() As String
-        Public Property codec_tag_string() As String
-        Public Property codec_tag() As String
-        Public Property id() As String
-        Public Property r_frame_rate() As String
-        Public Property avg_frame_rate() As String
-        Public Property time_base() As String
-        Public Property start_pts() As Long
-        Public Property start_time() As String
-        Public Property duration_ts() As Long
-        Public Property duration() As String
-        Public Property disposition() As FFProbeDisposition
-        Public Property codec_name() As String
-        Public Property codec_long_name() As String
-        Public Property sample_fmt() As String
-        Public Property sample_rate() As String
-        Public Property channels() As System.Nullable(Of Integer)
-        Public Property channel_layout() As String
-        Public Property bits_per_sample() As System.Nullable(Of Integer)
-        Public Property dmix_mode() As String
-        Public Property ltrt_cmixlev() As String
-        Public Property ltrt_surmixlev() As String
-        Public Property loro_cmixlev() As String
-        Public Property loro_surmixlev() As String
-        Public Property bit_rate() As String
-        Public Property tags() As FFProbeTags
-        Public Property profile() As String
-        Public Property width() As System.Nullable(Of Integer)
-        Public Property height() As System.Nullable(Of Integer)
-        Public Property has_b_frames() As System.Nullable(Of Integer)
-        Public Property sample_aspect_ratio() As String
-        Public Property display_aspect_ratio() As String
-        Public Property pix_fmt() As String
-        Public Property level() As System.Nullable(Of Integer)
-        Public Property timecode() As String
-    End Class
-
-    Public Class FFProbeFormat
-        Public Property filename() As String
-        Public Property nb_streams() As Integer
-        Public Property nb_programs() As Integer
-        Public Property format_name() As String
-        Public Property format_long_name() As String
-        Public Property start_time() As String
-        Public Property duration() As String
-        Public Property size() As String
-        Public Property bit_rate() As String
-        Public Property probe_score() As Integer
-        Public Property tags() As Object
     End Class
 
     Public Class FFProbeTagsP
+
         Public Property service_name() As String
+
         Public Property service_provider() As String
+
     End Class
 
-    Public Class FFProbeProgram
-        Public Property program_id() As Integer
-        Public Property program_num() As Integer
-        Public Property nb_streams() As Integer
-        Public Property pmt_pid() As Integer
-        Public Property pcr_pid() As Integer
-        Public Property start_pts() As Long
-        Public Property start_time() As String
-        Public Property end_pts() As Long
-        Public Property end_time() As String
-        Public Property tags() As FFProbeTagsP
-        Public Property streams() As List(Of FFProbeStream)
+    Public Class ThumbnailWithVideoDuration
+        ''' <summary>
+        ''' Extracted Image
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Image As MediaContainers.Image = Nothing
+        ''' <summary>
+        ''' Duration in seconds
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Duration As Integer
+
     End Class
 
 End Namespace

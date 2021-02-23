@@ -282,7 +282,7 @@ Public Class MediaInfo
                             End If
                             If Not String.IsNullOrEmpty(miSubtitle.Language) Then
                                 'miSubtitle.SubsForced = Not supported(?)
-                                miSubtitle.SubsType = "Embedded"
+                                miSubtitle.Type = "Embedded"
                                 fiOut.StreamDetails.Subtitle.Add(miSubtitle)
                             End If
                         End If
@@ -665,8 +665,8 @@ Public Class MediaInfo
                 End If
             End If
             If Not String.IsNullOrEmpty(miSubtitle.Language) Then
-                miSubtitle.SubsForced = FormatBoolean(Get_(StreamKind.Text, s, "Forced/String"))
-                miSubtitle.SubsType = "Embedded"
+                miSubtitle.Forced = FormatBoolean(Get_(StreamKind.Text, s, "Forced/String"))
+                miSubtitle.Type = "Embedded"
                 fiOut.StreamDetails.Subtitle.Add(miSubtitle)
             End If
         Next
@@ -941,7 +941,7 @@ Public Class MediaInfo
                         If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
                             miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
                         End If
-                        miSubtitle.SubsForced = True
+                        miSubtitle.Forced = True
 
                         'IFO Scan results (used when scanning VIDEO_TS files)
                     ElseIf fiIFO.StreamDetails.Subtitle.Count > 0 Then
@@ -952,8 +952,8 @@ Public Class MediaInfo
                     End If
 
                     If Not String.IsNullOrEmpty(miSubtitle.Language) Then
-                        miSubtitle.SubsForced = FormatBoolean(Get_(StreamKind.Text, s, "Forced/String"))
-                        miSubtitle.SubsType = "Embedded"
+                        miSubtitle.Forced = FormatBoolean(Get_(StreamKind.Text, s, "Forced/String"))
+                        miSubtitle.Type = "Embedded"
                         fiOut.StreamDetails.Subtitle.Add(miSubtitle)
                     End If
                 Next

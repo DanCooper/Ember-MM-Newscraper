@@ -21,7 +21,7 @@
 Imports EmberAPI
 Imports NLog
 
-Public Class dlgImgView
+Public Class dlgImageViewer
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()

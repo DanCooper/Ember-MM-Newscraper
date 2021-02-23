@@ -30,7 +30,7 @@ Public Class frmMovieExtractor
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Private PreviousFrameValue As Integer
     Private _strFilename As String
 
@@ -38,7 +38,7 @@ Public Class frmMovieExtractor
 
 #Region "Events"
 
-    Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
+    Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
 
 #End Region 'Events
 
@@ -47,13 +47,13 @@ Public Class frmMovieExtractor
     Public Sub New(ByVal strFilename As String)
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
         _strFilename = strFilename
     End Sub
 
-    Private Sub btnFrameLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameLoad.Click
+    Private Sub btnFrameLoad_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFrameLoad.Click
         Try
             Using ffmpeg As New Process()
 
@@ -72,7 +72,7 @@ Public Class frmMovieExtractor
                         If s.Contains("Duration: ") Then
                             Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
                             If Not sTime = "N/A" Then
-                                Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
+                                Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", Date.Today.ToString("d"), sTime))).Subtract(CDate(Date.Today))
                                 Dim intSeconds As Integer = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
                                 tbFrame.Maximum = intSeconds
                             Else
@@ -112,19 +112,19 @@ Public Class frmMovieExtractor
         End Try
     End Sub
 
-    Private Sub tbFrame_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tbFrame.KeyUp
+    Private Sub tbFrame_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles tbFrame.KeyUp
         If tbFrame.Value <> PreviousFrameValue Then
             GrabTheFrame()
         End If
     End Sub
 
-    Private Sub tbFrame_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tbFrame.MouseUp
+    Private Sub tbFrame_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles tbFrame.MouseUp
         If tbFrame.Value <> PreviousFrameValue Then
             GrabTheFrame()
         End If
     End Sub
 
-    Private Sub tbFrame_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbFrame.Scroll
+    Private Sub tbFrame_Scroll(ByVal sender As Object, ByVal e As EventArgs) Handles tbFrame.Scroll
         Try
             Dim sec2Time As New TimeSpan(0, 0, tbFrame.Value)
             lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
@@ -198,7 +198,7 @@ Public Class frmMovieExtractor
         End Try
     End Sub
 
-    Private Sub btnFrameSaveAsExtrafanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsExtrafanart.Click
+    Private Sub btnFrameSaveAsExtrafanart_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFrameSaveAsExtrafanart.Click
         Try
             Dim tPath As String = Path.Combine(Master.TempPath, "extrafanarts")
 
@@ -222,7 +222,7 @@ Public Class frmMovieExtractor
         btnFrameSaveAsExtrafanart.Enabled = False
     End Sub
 
-    Private Sub btnFrameSaveAsExtrathumb_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsExtrathumb.Click
+    Private Sub btnFrameSaveAsExtrathumb_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFrameSaveAsExtrathumb.Click
         Try
             Dim tPath As String = Path.Combine(Master.TempPath, "extrathumbs")
 
@@ -246,7 +246,7 @@ Public Class frmMovieExtractor
         btnFrameSaveAsExtrathumb.Enabled = False
     End Sub
 
-    Private Sub btnFrameSaveAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsFanart.Click
+    Private Sub btnFrameSaveAsFanart_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFrameSaveAsFanart.Click
         Try
             If pbFrame.Image IsNot Nothing Then
                 RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"FanartToSave"}))
@@ -258,12 +258,12 @@ Public Class frmMovieExtractor
         btnFrameSaveAsFanart.Enabled = False
     End Sub
 
-    Private Sub DelayTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrDelay.Tick
+    Private Sub DelayTimer_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrDelay.Tick
         tmrDelay.Stop()
         GrabTheFrame()
     End Sub
 
-    Private Sub btnAutoGen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAutoGen.Click
+    Private Sub btnAutoGen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAutoGen.Click
         Try
             'If Convert.ToInt32(txtThumbCount.Text) > 0 Then
             '    pnlFrameProgress.Visible = True
@@ -278,15 +278,15 @@ Public Class frmMovieExtractor
         End Try
     End Sub
 
-    Private Sub txtThumbCount_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtThumbCount.GotFocus
-        Me.AcceptButton = Me.btnAutoGen
+    Private Sub txtThumbCount_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles txtThumbCount.GotFocus
+        AcceptButton = btnAutoGen
     End Sub
 
-    Private Sub txtThumbCount_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtThumbCount.TextChanged
+    Private Sub txtThumbCount_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtThumbCount.TextChanged
         btnAutoGen.Enabled = Not String.IsNullOrEmpty(txtThumbCount.Text)
     End Sub
 
-    Private Sub frmMovieExtrator_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub frmMovieExtrator_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         'If Master.eSettings.AutoThumbs > 0 Then
         '	txtThumbCount.Text = Master.eSettings.AutoThumbs.ToString
         'End If
@@ -294,14 +294,14 @@ Public Class frmMovieExtractor
     End Sub
 
     Public Sub SetUp()
-        Me.gbAutoGenerate.Text = Master.eLang.GetString(296, "Auto-Generate")
-        Me.lblToCreate.Text = Master.eLang.GetString(303, "# to Create:")
-        Me.btnAutoGen.Text = Master.eLang.GetString(304, "Auto-Gen")
-        Me.btnFrameSaveAsExtrafanart.Text = Master.eLang.GetString(1050, "Save as Extrafanart")
-        Me.btnFrameSaveAsExtrathumb.Text = Master.eLang.GetString(305, "Save as Extrathumb")
-        Me.btnFrameSaveAsFanart.Text = Master.eLang.GetString(1049, "Save as Fanart")
-        Me.lblExtractingFrame.Text = Master.eLang.GetString(306, "Extracting Frame...")
-        Me.btnFrameLoad.Text = Master.eLang.GetString(307, "Load Movie")
+        gbAutoGenerate.Text = Master.eLang.GetString(296, "Auto-Generate")
+        lblToCreate.Text = Master.eLang.GetString(303, "# to Create:")
+        btnAutoGen.Text = Master.eLang.GetString(304, "Auto-Gen")
+        btnFrameSaveAsExtrafanart.Text = Master.eLang.GetString(1050, "Save as Extrafanart")
+        btnFrameSaveAsExtrathumb.Text = Master.eLang.GetString(305, "Save as Extrathumb")
+        btnFrameSaveAsFanart.Text = Master.eLang.GetString(1049, "Save as Fanart")
+        lblExtractingFrame.Text = Master.eLang.GetString(306, "Extracting Frame...")
+        btnFrameLoad.Text = Master.eLang.GetString(307, "Load Video")
 
     End Sub
 

@@ -435,6 +435,11 @@ Public Class Images
                 intHeight = Master.eSettings.MovieFanartHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.Movie))
                 intWidth = Master.eSettings.MovieFanartWidth
+            Case Enums.ModifierType.MainKeyart
+                bResizeEnabled = Master.eSettings.MovieKeyartResize
+                intHeight = Master.eSettings.MovieKeyartHeight
+                intQuality = CInt(AdvancedSettings.GetSetting("KeyartQuality", "100", , Enums.ContentType.Movie))
+                intWidth = Master.eSettings.MovieKeyartWidth
             Case Enums.ModifierType.MainPoster
                 bResizeEnabled = Master.eSettings.MoviePosterResize
                 intHeight = Master.eSettings.MoviePosterHeight
@@ -499,6 +504,11 @@ Public Class Images
                 intHeight = Master.eSettings.MovieSetFanartHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.MovieSet))
                 intWidth = Master.eSettings.MovieSetFanartWidth
+            Case Enums.ModifierType.MainKeyart
+                bResizeEnabled = Master.eSettings.MovieSetKeyartResize
+                intHeight = Master.eSettings.MovieSetKeyartHeight
+                intQuality = CInt(AdvancedSettings.GetSetting("KeyartQuality", "100", , Enums.ContentType.MovieSet))
+                intWidth = Master.eSettings.MovieSetKeyartWidth
             Case Enums.ModifierType.MainPoster
                 bResizeEnabled = Master.eSettings.MovieSetPosterResize
                 intHeight = Master.eSettings.MovieSetPosterHeight
@@ -735,6 +745,11 @@ Public Class Images
                 intHeight = Master.eSettings.TVShowFanartHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVShow))
                 intWidth = Master.eSettings.TVShowFanartWidth
+            Case Enums.ModifierType.MainKeyart
+                bResizeEnabled = Master.eSettings.TVShowKeyartResize
+                intHeight = Master.eSettings.TVShowKeyartHeight
+                intQuality = CInt(AdvancedSettings.GetSetting("KeyartQuality", "100", , Enums.ContentType.TVShow))
+                intWidth = Master.eSettings.TVShowKeyartWidth
             Case Enums.ModifierType.MainPoster
                 bResizeEnabled = Master.eSettings.TVShowPosterResize
                 intHeight = Master.eSettings.TVShowPosterHeight
@@ -1118,6 +1133,7 @@ Public Class Images
         Dim DoMainExtrafanarts As Boolean
         Dim DoMainExtrathumbs As Boolean
         Dim DoMainFanart As Boolean
+        Dim DoMainKeyart As Boolean
         Dim DoMainLandscape As Boolean
         Dim DoMainPoster As Boolean
         Dim DoSeasonBanner As Boolean
@@ -1136,6 +1152,7 @@ Public Class Images
                 DoMainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.MovieExtrafanartsAnyEnabled
                 DoMainExtrathumbs = ScrapeModifiers.MainExtrathumbs AndAlso Master.eSettings.MovieExtrathumbsAnyEnabled
                 DoMainFanart = ScrapeModifiers.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
+                DoMainKeyart = ScrapeModifiers.MainKeyart AndAlso Master.eSettings.MovieKeyartAnyEnabled
                 DoMainLandscape = ScrapeModifiers.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
                 DoMainPoster = ScrapeModifiers.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
             Case Enums.ContentType.MovieSet
@@ -1144,6 +1161,7 @@ Public Class Images
                 DoMainClearLogo = ScrapeModifiers.MainClearLogo AndAlso Master.eSettings.MovieSetClearLogoAnyEnabled
                 DoMainDiscArt = ScrapeModifiers.MainDiscArt AndAlso Master.eSettings.MovieSetDiscArtAnyEnabled
                 DoMainFanart = ScrapeModifiers.MainFanart AndAlso Master.eSettings.MovieSetFanartAnyEnabled
+                DoMainKeyart = ScrapeModifiers.MainKeyart AndAlso Master.eSettings.MovieSetKeyartAnyEnabled
                 DoMainLandscape = ScrapeModifiers.MainLandscape AndAlso Master.eSettings.MovieSetLandscapeAnyEnabled
                 DoMainPoster = ScrapeModifiers.MainPoster AndAlso Master.eSettings.MovieSetPosterAnyEnabled
             Case Enums.ContentType.TVEpisode
@@ -1163,6 +1181,7 @@ Public Class Images
                 DoMainClearLogo = ScrapeModifiers.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
                 DoMainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.TVShowExtrafanartsAnyEnabled
                 DoMainFanart = ScrapeModifiers.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
+                DoMainKeyart = ScrapeModifiers.MainKeyart AndAlso Master.eSettings.TVShowKeyartAnyEnabled
                 DoMainLandscape = ScrapeModifiers.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
                 DoMainPoster = ScrapeModifiers.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
                 DoSeasonBanner = ScrapeModifiers.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
@@ -1430,6 +1449,34 @@ Public Class Images
             End If
         Else
             nPreferredImagesContainer.ImagesContainer.Extrathumbs = DBElement.ImagesContainer.Extrathumbs
+        End If
+
+        'Main Keyart
+        If DoMainKeyart Then
+            Dim defImg As MediaContainers.Image = Nothing
+
+            Select Case tContentType
+                Case Enums.ContentType.Movie
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Keyart.LocalFilePath) OrElse Not Master.eSettings.MovieKeyartKeepExisting Then
+                        GetPreferredMovieKeyart(SearchResultsContainer.MainKeyarts, defImg)
+                    End If
+                Case Enums.ContentType.MovieSet
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Keyart.LocalFilePath) OrElse Not Master.eSettings.MovieSetKeyartKeepExisting Then
+                        GetPreferredMovieSetKeyart(SearchResultsContainer.MainKeyarts, defImg)
+                    End If
+                Case Enums.ContentType.TVShow
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Keyart.LocalFilePath) OrElse Not Master.eSettings.TVShowKeyartKeepExisting Then
+                        GetPreferredTVShowKeyart(SearchResultsContainer.MainKeyarts, defImg)
+                    End If
+            End Select
+
+            If defImg IsNot Nothing Then
+                nPreferredImagesContainer.ImagesContainer.Keyart = defImg
+            Else
+                nPreferredImagesContainer.ImagesContainer.Keyart = DBElement.ImagesContainer.Keyart
+            End If
+        Else
+            nPreferredImagesContainer.ImagesContainer.Keyart = DBElement.ImagesContainer.Keyart
         End If
 
         'Main Landscape
@@ -1983,7 +2030,8 @@ Public Class Images
         'Generate thumbnails?
         If (Master.eSettings.MovieExtrathumbsCreatorAutoThumbs OrElse (Master.eSettings.MovieExtrathumbsCreatorUseETasFA AndAlso imgResultList.Count = 0)) AndAlso iLimit > 0 Then
             imgResultList.Clear()
-            imgResultList = FFmpeg.FFmpeg.GenerateThumbnailsWithoutBars(DBElement, ThumbCount:=iLimit, NoSpoilers:=Master.eSettings.MovieExtrathumbsCreatorNoSpoilers, Timeout:=30000)
+            'imgResultList = FFmpeg.FFmpeg.GenerateThumbnailsWithoutBars(DBElement, ThumbCount:=iLimit, NoSpoilers:=Master.eSettings.MovieExtrathumbsCreatorNoSpoilers, Timeout:=30000)
+            imgResultList = FFmpeg.FFmpeg.GenerateThumbnailsWithoutBars(DBElement, ThumbCount:=iLimit, Timeout:=30000)
             'dont't care about the following extrathumb PrefQuality setting(s) of scrapers since it doesn't make sense for frame extraction (we only respect the Keep and Limit setting and Resize options for extracted frames)
             'if it necessary to mix scraped fanarts with extracted frames then special handling is needed in this function but for now don't care about this
             Return True
@@ -2048,6 +2096,64 @@ Public Class Images
         If ImageList.Count = 0 Then Return False
 
         imgResult = ImageList.First
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    ''' <summary>
+    ''' Select the single most preferred Keyart image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available posters</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredMovieKeyart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
+
+        If Master.eSettings.MovieKeyartPrefSize = Enums.MoviePosterSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MoviePosterSize = Master.eSettings.MovieKeyartPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieKeyartPrefSizeOnly AndAlso Not Master.eSettings.MovieKeyartPrefSize = Enums.MoviePosterSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    ''' <summary>
+    ''' Select the single most preferred Keyart image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available posters</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredMovieSetKeyart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
+
+        If Master.eSettings.MovieSetKeyartPrefSize = Enums.MoviePosterSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MoviePosterSize = Master.eSettings.MovieSetKeyartPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetKeyartPrefSizeOnly AndAlso Not Master.eSettings.MovieSetKeyartPrefSize = Enums.MoviePosterSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2568,6 +2674,34 @@ Public Class Images
         End If
 
         If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowFanartPrefSizeOnly AndAlso Not Master.eSettings.TVShowFanartPrefSize = Enums.TVFanartSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    ''' <summary>
+    ''' Select the single most preferred Keyart image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredTVShowKeyart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        If Master.eSettings.TVShowKeyartPrefSize = Enums.TVPosterSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.TVPosterSize = Master.eSettings.TVShowKeyartPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowKeyartPrefSizeOnly AndAlso Not Master.eSettings.TVShowKeyartPrefSize = Enums.TVPosterSize.Any Then
             imgResult = ImageList.First
         End If
 

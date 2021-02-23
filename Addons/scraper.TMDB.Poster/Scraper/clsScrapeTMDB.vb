@@ -83,8 +83,8 @@ Public Class clsAPITMDB
                 Next
             End If
 
-            'MainPoster
-            If FilteredModifiers.MainPoster AndAlso Results.Posters IsNot Nothing Then
+            'MainPoster / MainKeyart
+            If (FilteredModifiers.MainPoster OrElse FilteredModifiers.MainKeyart) AndAlso Results.Posters IsNot Nothing Then
                 For Each tImage In Results.Posters
                     Dim newImage As New MediaContainers.Image With {
                                 .Height = tImage.Height.ToString,
@@ -141,8 +141,8 @@ Public Class clsAPITMDB
                 Next
             End If
 
-            'MainPoster
-            If FilteredModifiers.MainPoster AndAlso Result.Images.Posters IsNot Nothing Then
+            'MainPoster / MainKeyart
+            If (FilteredModifiers.MainPoster OrElse FilteredModifiers.MainKeyart) AndAlso Result.Images.Posters IsNot Nothing Then
                 For Each tImage In Result.Images.Posters
                     Dim newImage As New MediaContainers.Image With {
                                 .Height = tImage.Height.ToString,

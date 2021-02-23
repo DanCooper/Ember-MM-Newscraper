@@ -173,6 +173,16 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("originaltitle")>
+        Public Property OriginalTitle() As String = String.Empty
+
+        <XmlIgnore()>
+        Public ReadOnly Property OriginalTitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(OriginalTitle)
+            End Get
+        End Property
+
         <XmlElement("runtime")>
         Public Property Runtime() As String = String.Empty
 
@@ -217,6 +227,17 @@ Namespace MediaContainers
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Votes) AndAlso Not String.IsNullOrEmpty(Rating)
+            End Get
+        End Property
+
+        <XmlArray("ratings")>
+        <XmlArrayItem("rating")>
+        Public Property Ratings() As List(Of RatingDetails) = New List(Of RatingDetails)
+
+        <XmlIgnore()>
+        Public ReadOnly Property RatingsSpecified() As Boolean
+            Get
+                Return Ratings.Count > 0
             End Get
         End Property
 
@@ -545,6 +566,7 @@ Namespace MediaContainers
     <Serializable()>
     <XmlRoot("fileinfo")>
     Public Class Fileinfo
+        Implements ICloneable
 
 #Region "Properties"
 
@@ -561,6 +583,22 @@ Namespace MediaContainers
         End Property
 
 #End Region 'Properties
+
+#Region "Methods"
+
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New MemoryStream(50000)
+            Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
+
+#End Region 'Methods
 
     End Class
 
@@ -1173,14 +1211,34 @@ Namespace MediaContainers
                 Return Not String.IsNullOrEmpty(Year)
             End Get
         End Property
-
+        ''' <summary>
+        ''' use Premiered instead !
+        ''' </summary>
+        ''' <returns></returns>
         <XmlElement("releasedate")>
-        Public Property ReleaseDate() As String = String.Empty
+        Public Property ReleaseDate() As String
+            Get
+                Return Premiered
+            End Get
+            Set(value As String)
+                Premiered = value
+            End Set
+        End Property
 
         <XmlIgnore()>
         Public ReadOnly Property ReleaseDateSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(ReleaseDate)
+                Return Not String.IsNullOrEmpty(ReleaseDate) AndAlso Master.eSettings.MovieScraperReleaseDate
+            End Get
+        End Property
+
+        <XmlElement("premiered")>
+        Public Property Premiered() As String = String.Empty
+
+        <XmlIgnore()>
+        Public ReadOnly Property PremieredSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Premiered)
             End Get
         End Property
 
@@ -1215,6 +1273,7 @@ Namespace MediaContainers
             End Get
         End Property
 
+
         <XmlElement("rating")>
         Public Property Rating() As String
             Get
@@ -1232,6 +1291,7 @@ Namespace MediaContainers
             End Get
         End Property
 
+
         <XmlElement("votes")>
         Public Property Votes() As String = String.Empty
 
@@ -1239,6 +1299,17 @@ Namespace MediaContainers
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Votes) AndAlso Not String.IsNullOrEmpty(Rating)
+            End Get
+        End Property
+
+        <XmlArray("ratings")>
+        <XmlArrayItem("rating")>
+        Public Property Ratings() As List(Of RatingDetails) = New List(Of RatingDetails)
+
+        <XmlIgnore()>
+        Public ReadOnly Property RatingsSpecified() As Boolean
+            Get
+                Return Ratings.Count > 0
             End Get
         End Property
 
@@ -1568,6 +1639,16 @@ Namespace MediaContainers
             Set(ByVal value As SetContainer)
                 AddSet(value)
             End Set
+        End Property
+
+        <XmlElement("showlink")>
+        Public Property ShowLinks() As List(Of String) = New List(Of String)
+
+        <XmlIgnore()>
+        Public ReadOnly Property ShowLinksSpecified() As Boolean
+            Get
+                Return ShowLinks.Count > 0
+            End Get
         End Property
 
         <XmlElement("fileinfo")>
@@ -2136,6 +2217,79 @@ Namespace MediaContainers
     End Class
 
     <Serializable()>
+    Public Class RatingDetails
+
+#Region "Properties"
+
+        <XmlIgnore()>
+        Public Property ID() As Long = -1
+
+        <XmlAttribute("name")>
+        Public Property Name() As String = String.Empty
+
+        <XmlIgnore()>
+        Public ReadOnly Property NameSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Name)
+            End Get
+        End Property
+
+        <XmlAttribute("max")>
+        Public Property Max() As Integer = -1
+
+        <XmlIgnore()>
+        Public ReadOnly Property MaxSpecified() As Boolean
+            Get
+                Return Not Max = -1
+            End Get
+        End Property
+
+        <XmlAttribute("default")>
+        Public Property IsDefault() As Boolean = False
+
+        <XmlElement("value")>
+        Public Property Value() As Double = -1
+
+        <XmlIgnore()>
+        Public ReadOnly Property ValueSpecified() As Boolean
+            Get
+                Return Not Value = -1
+            End Get
+        End Property
+
+        <XmlIgnore>
+        Public ReadOnly Property ValueNormalized() As Double
+            Get
+                If ValueSpecified AndAlso MaxSpecified Then
+                    Return Value / Max * 10
+                Else
+                    Return 0
+                End If
+            End Get
+        End Property
+
+        <XmlIgnore>
+        Public ReadOnly Property ValueNormalizedSpezified() As Boolean
+            Get
+                Return Not ValueNormalized = 0
+            End Get
+        End Property
+
+        <XmlElement("votes")>
+        Public Property Votes() As Integer = 0
+
+        <XmlIgnore()>
+        Public ReadOnly Property VotesSpecified() As Boolean
+            Get
+                Return Not Votes = 0
+            End Get
+        End Property
+
+#End Region 'Properties
+
+    End Class
+
+    <Serializable()>
     <XmlRoot("seasondetails")>
     Public Class SeasonDetails
 
@@ -2445,6 +2599,17 @@ Namespace MediaContainers
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Votes) AndAlso Not String.IsNullOrEmpty(Rating)
+            End Get
+        End Property
+
+        <XmlArray("ratings")>
+        <XmlArrayItem("rating")>
+        Public Property Ratings() As List(Of RatingDetails) = New List(Of RatingDetails)
+
+        <XmlIgnore()>
+        Public ReadOnly Property RatingsSpecified() As Boolean
+            Get
+                Return Ratings.Count > 0
             End Get
         End Property
 
@@ -3106,6 +3271,8 @@ Namespace MediaContainers
 
         Public Property Fanart As New Image
 
+        Public Property Keyart As New Image
+
         Public Property Landscape As New Image
 
         Public Property Poster As New Image
@@ -3114,6 +3281,40 @@ Namespace MediaContainers
 
 #Region "Methods"
 
+        Public Function GetImageByType(ByVal ImageType As Enums.ModifierType) As Image
+            Select Case ImageType
+                Case Enums.ModifierType.MainBanner, Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
+                    Return Banner
+                Case Enums.ModifierType.MainCharacterArt
+                    Return CharacterArt
+                Case Enums.ModifierType.MainClearArt
+                    Return ClearArt
+                Case Enums.ModifierType.MainClearLogo
+                    Return ClearLogo
+                Case Enums.ModifierType.MainDiscArt
+                    Return DiscArt
+                Case Enums.ModifierType.MainFanart, Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.EpisodeFanart, Enums.ModifierType.SeasonFanart
+                    Return Fanart
+                Case Enums.ModifierType.MainKeyart
+                    Return Keyart
+                Case Enums.ModifierType.MainLandscape, Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
+                    Return Landscape
+                Case Enums.ModifierType.MainPoster, Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.EpisodePoster, Enums.ModifierType.SeasonPoster
+                    Return Poster
+            End Select
+            Return Nothing
+        End Function
+
+        Public Function GetImagesByType(ByVal ImageType As Enums.ModifierType) As List(Of Image)
+            Select Case ImageType
+                Case Enums.ModifierType.MainExtrafanarts
+                    Return Extrafanarts
+                Case Enums.ModifierType.MainExtrathumbs
+                    Return Extrathumbs
+            End Select
+            Return Nothing
+        End Function
+
         Public Sub LoadAllImages(ByVal Type As Enums.ContentType, ByVal LoadBitmap As Boolean, ByVal withExtraImages As Boolean)
             Banner.LoadAndCache(Type, True, LoadBitmap)
             CharacterArt.LoadAndCache(Type, True, LoadBitmap)
@@ -3121,6 +3322,7 @@ Namespace MediaContainers
             ClearLogo.LoadAndCache(Type, True, LoadBitmap)
             DiscArt.LoadAndCache(Type, True, LoadBitmap)
             Fanart.LoadAndCache(Type, True, LoadBitmap)
+            Keyart.LoadAndCache(Type, True, LoadBitmap)
             Landscape.LoadAndCache(Type, True, LoadBitmap)
             Poster.LoadAndCache(Type, True, LoadBitmap)
 
@@ -3205,6 +3407,15 @@ Namespace MediaContainers
                         Fanart = New Image
                     End If
 
+                    'Movie Keyart
+                    If Keyart.LoadAndCache(tContentType, True) Then
+                        If ForceFileCleanup Then Images.Delete_Movie(DBElement, Enums.ModifierType.MainKeyart, ForceFileCleanup)
+                        Keyart.LocalFilePath = Keyart.ImageOriginal.Save_Movie(DBElement, Enums.ModifierType.MainKeyart)
+                    Else
+                        Images.Delete_Movie(DBElement, Enums.ModifierType.MainKeyart, ForceFileCleanup)
+                        Keyart = New Image
+                    End If
+
                     'Movie Landscape
                     If Landscape.LoadAndCache(tContentType, True) Then
                         If ForceFileCleanup Then Images.Delete_Movie(DBElement, Enums.ModifierType.MainLandscape, ForceFileCleanup)
@@ -3268,6 +3479,15 @@ Namespace MediaContainers
                     Else
                         Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainFanart, DBElement.MovieSet.TitleHasChanged)
                         Fanart = New Image
+                    End If
+
+                    'MovieSet Keyart
+                    If Keyart.LoadAndCache(tContentType, True) Then
+                        If DBElement.MovieSet.TitleHasChanged Then Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainKeyart, True)
+                        Keyart.LocalFilePath = Keyart.ImageOriginal.Save_MovieSet(DBElement, Enums.ModifierType.MainKeyart)
+                    Else
+                        Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainKeyart, DBElement.MovieSet.TitleHasChanged)
+                        Keyart = New Image
                     End If
 
                     'MovieSet Landscape
@@ -3427,6 +3647,14 @@ Namespace MediaContainers
                         Fanart = New Image
                     End If
 
+                    'Show Keyart
+                    If Keyart.LoadAndCache(tContentType, True) Then
+                        Keyart.LocalFilePath = Keyart.ImageOriginal.Save_TVShow(DBElement, Enums.ModifierType.MainKeyart)
+                    Else
+                        Images.Delete_TVShow(DBElement, Enums.ModifierType.MainKeyart)
+                        Keyart = New Image
+                    End If
+
                     'Show Landscape
                     If Landscape.LoadAndCache(tContentType, True) Then
                         Landscape.LocalFilePath = Landscape.ImageOriginal.Save_TVShow(DBElement, Enums.ModifierType.MainLandscape)
@@ -3442,6 +3670,38 @@ Namespace MediaContainers
                         Images.Delete_TVShow(DBElement, Enums.ModifierType.MainPoster)
                         Poster = New Image
                     End If
+            End Select
+        End Sub
+
+        Public Sub SetImageByType(ByRef Image As Image, ByVal ImageType As Enums.ModifierType)
+            Select Case ImageType
+                Case Enums.ModifierType.MainBanner, Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
+                    Banner = Image
+                Case Enums.ModifierType.MainCharacterArt
+                    CharacterArt = Image
+                Case Enums.ModifierType.MainClearArt
+                    ClearArt = Image
+                Case Enums.ModifierType.MainClearLogo
+                    ClearLogo = Image
+                Case Enums.ModifierType.MainDiscArt
+                    DiscArt = Image
+                Case Enums.ModifierType.MainFanart, Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.EpisodeFanart, Enums.ModifierType.SeasonFanart
+                    Fanart = Image
+                Case Enums.ModifierType.MainKeyart
+                    Keyart = Image
+                Case Enums.ModifierType.MainLandscape, Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
+                    Landscape = Image
+                Case Enums.ModifierType.MainPoster, Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.EpisodePoster, Enums.ModifierType.SeasonPoster
+                    Poster = Image
+            End Select
+        End Sub
+
+        Public Sub SetImagesByType(ByRef Images As List(Of Image), ByVal ImageType As Enums.ModifierType)
+            Select Case ImageType
+                Case Enums.ModifierType.MainExtrafanarts
+                    Extrafanarts = Images
+                Case Enums.ModifierType.MainExtrathumbs
+                    Extrathumbs = Images
             End Select
         End Sub
 
@@ -3530,6 +3790,8 @@ Namespace MediaContainers
         Public Property MainDiscArts() As New List(Of Image)
 
         Public Property MainFanarts() As New List(Of Image)
+
+        Public Property MainKeyarts() As New List(Of Image)
 
         Public Property MainLandscapes() As New List(Of Image)
 
@@ -3728,6 +3990,14 @@ Namespace MediaContainers
             MainDiscArts = FilterImages(MainDiscArts, cSettings)
             'Language preference settings aren't needed for sorting fanarts since here we only care about size of image (unlike poster/banner)
             ' mainfanarts = FilterImages(_mainfanarts, cSettings)
+            MainKeyarts = FilterImages(MainPosters, New FilterSettings With {
+                                       .ForcedLanguage = String.Empty,
+                                       .ForceLanguage = True,
+                                       .GetBlankImages = True,
+                                       .GetEnglishImages = False,
+                                       .MediaLanguageOnly = True,
+                                       .MediaLanguage = String.Empty
+                                       })
             MainLandscapes = FilterImages(MainLandscapes, cSettings)
             MainPosters = FilterImages(MainPosters, cSettings)
         End Sub
@@ -4076,32 +4346,25 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("forced")>
-        Public Property SubsForced() As Boolean
-
-        <XmlIgnore>
-        Public ReadOnly Property SubsForcedSpecified() As Boolean
-            Get
-                Return SubsForced
-            End Get
-        End Property
+        Public Property Forced() As Boolean
 
         <XmlElement("path")>
-        Public Property SubsPath() As String = String.Empty
+        Public Property Path() As String = String.Empty
 
         <XmlIgnore>
-        Public ReadOnly Property SubsPathSpecified() As Boolean
+        Public ReadOnly Property PathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(SubsPath)
+                Return Not String.IsNullOrEmpty(Path)
             End Get
         End Property
 
         <XmlElement("type")>
-        Public Property SubsType() As String = String.Empty
+        Public Property Type() As String = String.Empty
 
         <XmlIgnore>
-        Public ReadOnly Property SubsTypeSpecified() As Boolean
+        Public ReadOnly Property TypeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(SubsType)
+                Return Not String.IsNullOrEmpty(Type)
             End Get
         End Property
         ''' <summary>

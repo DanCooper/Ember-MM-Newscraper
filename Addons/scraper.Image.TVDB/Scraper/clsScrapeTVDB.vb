@@ -158,8 +158,8 @@ Namespace TVDBs
                         Next
                     End If
 
-                    'MainPoster
-                    If filteredModifiers.MainPoster Then
+                    'MainPoster / MainKeyart
+                    If filteredModifiers.MainPoster OrElse filteredModifiers.MainKeyart Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.poster)
                             Dim img As New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString,
                                                                        .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),

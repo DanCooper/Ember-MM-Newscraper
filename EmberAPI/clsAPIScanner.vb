@@ -161,6 +161,14 @@ Public Class Scanner
             End If
         Next
 
+        'keyart
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainKeyart, bForced)
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Keyart.LocalFilePath = a
+                Exit For
+            End If
+        Next
+
         'landscape
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainLandscape, bForced)
             If File.Exists(a) Then
@@ -200,7 +208,7 @@ Public Class Scanner
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
                 If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
-                    tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                    tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.Path = fFile, .Type = "External", .Forced = isForced})
                 End If
             Next
         Next
@@ -273,6 +281,14 @@ Public Class Scanner
         For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainFanart)
             If File.Exists(a) Then
                 tDBElement.ImagesContainer.Fanart.LocalFilePath = a
+                Exit For
+            End If
+        Next
+
+        'keyart
+        For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainKeyart)
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Keyart.LocalFilePath = a
                 Exit For
             End If
         Next
@@ -362,7 +378,7 @@ Public Class Scanner
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
                 If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
-                    tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                    tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.Path = fFile, .Type = "External", .Forced = isForced})
                 End If
             Next
         Next
@@ -530,6 +546,14 @@ Public Class Scanner
             End If
         Next
 
+        'keyart
+        For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainKeyart)
+            If File.Exists(a) Then
+                tDBElement.ImagesContainer.Keyart.LocalFilePath = a
+                Exit For
+            End If
+        Next
+
         'landscape
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainLandscape)
             If File.Exists(a) Then
@@ -640,13 +664,8 @@ Public Class Scanner
             DBMovie.Movie.Title = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
-        'ListTitle
-        Dim tTitle As String = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
-        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
-            DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
-        Else
-            DBMovie.ListTitle = tTitle
-        End If
+        'ListTitle 
+        DBMovie.ListTitle = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
 
         If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainWatchedFile)
@@ -948,12 +967,7 @@ Public Class Scanner
                 End If
 
                 'ListTitle
-                Dim tTitle As String = StringUtils.SortTokens_TV(DBTVShow.TVShow.Title)
-                If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(DBTVShow.TVShow.Status) Then
-                    DBTVShow.ListTitle = String.Format("{0} ({1})", tTitle, DBTVShow.TVShow.Status)
-                Else
-                    DBTVShow.ListTitle = tTitle
-                End If
+                DBTVShow.ListTitle = StringUtils.SortTokens_TV(DBTVShow.TVShow.Title)
 
                 If DBTVShow.ListTitleSpecified Then
                     'search local actor thumb for each actor in NFO

@@ -284,9 +284,9 @@ Partial Class dlgTMDBSearchResults_TV
         Me.lblGenreHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblGenreHeader.Location = New System.Drawing.Point(416, 240)
         Me.lblGenreHeader.Name = "lblGenreHeader"
-        Me.lblGenreHeader.Size = New System.Drawing.Size(54, 13)
+        Me.lblGenreHeader.Size = New System.Drawing.Size(46, 13)
         Me.lblGenreHeader.TabIndex = 16
-        Me.lblGenreHeader.Text = "Genre(s):"
+        Me.lblGenreHeader.Text = "Genres:"
         Me.lblGenreHeader.Visible = False
         '
         'lblTMDBHeader

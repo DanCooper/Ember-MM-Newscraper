@@ -56,33 +56,35 @@ Public Class dlgMovieDataScraperPreview
     ''' 2014/09/13 Cocotus - First implementation
     ''' </remarks>
     Private Sub SetUp()
-        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        colNameIMDB.Text = Master.eLang.GetString(232, "Name")
-        colRoleIMDB.Text = Master.eLang.GetString(233, "Role")
-        colThumbIMDB.Text = Master.eLang.GetString(234, "Thumb")
-        lblActors.Text = String.Concat(Master.eLang.GetString(231, "Actors"), ":")
-        lblCertifications.Text = String.Concat(Master.eLang.GetString(56, "Certifications"), ":")
-        lblCountries.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
-        lblCredits.Text = Master.eLang.GetString(228, "Credits:")
-        lblDirectors.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
-        lblGenres.Text = Master.eLang.GetString(51, "Genre(s):")
-        lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
-        lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
-        lblOutline.Text = Master.eLang.GetString(242, "Plot Outline:")
-        lblPlot.Text = Master.eLang.GetString(241, "Plot:")
-        lblRating.Text = Master.eLang.GetString(245, "Rating:")
-        lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
-        lblRuntime.Text = String.Concat(Master.eLang.GetString(238, "Runtime"), ":")
-        lblStudios.Text = String.Concat(Master.eLang.GetString(226, "Studios"), ":")
-        lblTagline.Text = String.Concat(Master.eLang.GetString(397, "Tagline"), ":")
-        lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
-        lblTop250.Text = String.Concat(Master.eLang.GetString(591, "Top 250"), ":")
-        lblTopDetails.Text = Master.eLang.GetString(1254, "Only data in selected tabs will be used!")
-        lblTopTitle.Text = Master.eLang.GetString(1253, "Scraperresults")
-        lblTrailerURL.Text = String.Concat(Master.eLang.GetString(227, "Trailer URL"), ":")
-        lblVotes.Text = String.Concat(Master.eLang.GetString(244, "Votes"), ":")
-        lblYear.Text = String.Concat(Master.eLang.GetString(278, "Year"), ":")
+        With Master.eLang
+            Cancel_Button.Text = .GetString(167, "Cancel")
+            OK_Button.Text = .GetString(179, "OK")
+            colNameIMDB.Text = .GetString(232, "Name")
+            colRoleIMDB.Text = .GetString(233, "Role")
+            colThumbIMDB.Text = .GetString(234, "Thumb")
+            lblActors.Text = String.Concat(.GetString(231, "Actors"), ":")
+            lblCertifications.Text = String.Concat(.GetString(56, "Certifications"), ":")
+            lblCountries.Text = String.Concat(.GetString(237, "Countries"), ":")
+            lblCredits.Text = String.Concat(.GetString(228, "Credits"), ":")
+            lblDirectors.Text = String.Concat(.GetString(940, "Directors"), ":")
+            lblGenres.Text = String.Concat(.GetString(725, "Genres"), ":")
+            lblMPAA.Text = .GetString(235, "MPAA Rating:")
+            lblOriginalTitle.Text = String.Concat(.GetString(302, "Original Title"), ":")
+            lblOutline.Text = .GetString(242, "Plot Outline:")
+            lblPlot.Text = .GetString(241, "Plot:")
+            lblRating.Text = .GetString(245, "Rating:")
+            lblReleaseDate.Text = .GetString(236, "Release Date:")
+            lblRuntime.Text = String.Concat(.GetString(238, "Runtime"), ":")
+            lblStudios.Text = String.Concat(.GetString(226, "Studios"), ":")
+            lblTagline.Text = String.Concat(.GetString(397, "Tagline"), ":")
+            lblTitle.Text = String.Concat(.GetString(21, "Title"), ":")
+            lblTop250.Text = String.Concat(.GetString(591, "Top 250"), ":")
+            lblTopDetails.Text = .GetString(1254, "Only data in selected tabs will be used!")
+            lblTopTitle.Text = .GetString(1253, "Scraperresults")
+            lblTrailerURL.Text = String.Concat(.GetString(227, "Trailer URL"), ":")
+            lblVotes.Text = String.Concat(.GetString(244, "Votes"), ":")
+            lblYear.Text = String.Concat(.GetString(278, "Year"), ":")
+        End With
     End Sub
 
     ''' <summary>
@@ -195,8 +197,8 @@ Public Class dlgMovieDataScraperPreview
                     End If
 
                     'ReleaseDate
-                    If scraperresult.ReleaseDateSpecified Then
-                        .txtReleaseDateIMDB.Text = scraperresult.ReleaseDate
+                    If scraperresult.PremieredSpecified Then
+                        .txtReleaseDateIMDB.Text = scraperresult.Premiered
                         tbReleaseYear.SelectedTab = tbReleaseYearIMDB
                     Else
                         tbReleaseYear.TabPages.Remove(tbReleaseYearIMDB)
@@ -363,8 +365,8 @@ Public Class dlgMovieDataScraperPreview
                     End If
 
                     'ReleaseDate
-                    If scraperresult.ReleaseDateSpecified Then
-                        .txtReleaseDateTMDB.Text = scraperresult.ReleaseDate
+                    If scraperresult.PremieredSpecified Then
+                        .txtReleaseDateTMDB.Text = scraperresult.Premiered
                         tbReleaseYear.SelectedTab = tbReleaseYearTMDB
                     Else
                         tbReleaseYear.TabPages.Remove(tbReleaseYearTMDB)
@@ -530,8 +532,8 @@ Public Class dlgMovieDataScraperPreview
                     End If
 
                     'ReleaseDate
-                    If scraperresult.ReleaseDateSpecified Then
-                        .txtReleaseDateOFDB.Text = scraperresult.ReleaseDate
+                    If scraperresult.PremieredSpecified Then
+                        .txtReleaseDateOFDB.Text = scraperresult.Premiered
                         tbReleaseYear.SelectedTab = tbReleaseYearOFDB
                     Else
                         tbReleaseYear.TabPages.Remove(tbReleaseYearOFDB)
@@ -697,8 +699,8 @@ Public Class dlgMovieDataScraperPreview
                     End If
 
                     'ReleaseDate
-                    If scraperresult.ReleaseDateSpecified Then
-                        .txtReleaseDateMoviepilot.Text = scraperresult.ReleaseDate
+                    If scraperresult.PremieredSpecified Then
+                        .txtReleaseDateMoviepilot.Text = scraperresult.Premiered
                         tbReleaseYear.SelectedTab = tbReleaseYearMoviepilot
                     Else
                         tbReleaseYear.TabPages.Remove(tbReleaseYearMoviepilot)
@@ -915,7 +917,7 @@ Public Class dlgMovieDataScraperPreview
                 _nmovie.Rating = scraperresult.Rating
             End If
             If tbReleaseYear.TabCount > 0 AndAlso tbReleaseYear.SelectedTab.Name.ToUpper.Contains(scraperresult.Scrapersource.ToUpper) Then
-                _nmovie.ReleaseDate = scraperresult.ReleaseDate
+                _nmovie.Premiered = scraperresult.Premiered
             End If
             If tbRuntime.TabCount > 0 AndAlso tbRuntime.SelectedTab.Name.ToUpper.Contains(scraperresult.Scrapersource.ToUpper) Then
                 _nmovie.Runtime = scraperresult.Runtime
@@ -955,7 +957,7 @@ Public Class dlgMovieDataScraperPreview
             scraperresult.Outline = _nmovie.Outline
             scraperresult.Plot = _nmovie.Plot
             scraperresult.Rating = _nmovie.Rating
-            scraperresult.ReleaseDate = _nmovie.ReleaseDate
+            scraperresult.Premiered = _nmovie.Premiered
             scraperresult.Runtime = _nmovie.Runtime
             scraperresult.Studios = _nmovie.Studios
             scraperresult.Tagline = _nmovie.Tagline

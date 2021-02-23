@@ -1,0 +1,302 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v46_to_v47">
+    <command type="DB">
+      <description>create table rating</description>
+      <execute>
+        CREATE TABLE rating (
+        idRating     integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+        idMedia      integer,
+        media_type   text,
+        rating_type  text,
+        rating_max   integer,
+        rating       float(50),
+        votes        integer,
+        isDefault    boolean
+        );
+
+        CREATE INDEX ix_rating
+        ON rating
+        (idMedia, media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy rating from table episode to table rating</description>
+      <execute>
+        INSERT INTO rating
+        (idMedia,
+        media_type,
+        rating_type,
+        rating_max,
+        rating,
+        votes,
+        isDefault)
+        SELECT
+        idEpisode,
+        'episode',
+        'default',
+        10,
+        Rating,
+        Votes,
+        1
+        FROM
+        episode
+        WHERE
+        Rating IS NOT '' AND Rating IS NOT 0 AND Votes IS NOT '' AND Votes IS NOT 0
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy rating from table movie to table rating</description>
+      <execute>
+        INSERT INTO rating
+        (idMedia,
+        media_type,
+        rating_type,
+        rating_max,
+        rating,
+        votes,
+        isDefault)
+        SELECT
+        idMovie,
+        'movie',
+        'default',
+        10,
+        Rating,
+        Votes,
+        1
+        FROM
+        movie
+        WHERE
+        Rating IS NOT '' AND Rating IS NOT 0 AND Votes IS NOT '' AND Votes IS NOT 0
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy rating from table tvshow to table rating</description>
+      <execute>
+        INSERT INTO rating
+        (idMedia,
+        media_type,
+        rating_type,
+        rating_max,
+        rating,
+        votes,
+        isDefault)
+        SELECT
+        idShow,
+        'tvshow',
+        'default',
+        10,
+        Rating,
+        Votes,
+        1
+        FROM
+        tvshow
+        WHERE
+        Rating IS NOT '' AND Rating IS NOT 0 AND Votes IS NOT '' AND Votes IS NOT 0
+      </execute>
+    </command>
+    <command type="DB">
+      <description>update view movielist</description>
+      <execute>
+        DROP VIEW movielist;
+
+        CREATE VIEW movielist
+        AS
+        SELECT
+        movie.*,
+        CASE WHEN movie.SortTitle IS NOT '' THEN movie.SortTitle ELSE movie.ListTitle END AS SortedTitle,
+        source.strName AS Source,
+        banner.url AS BannerPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        discart.url AS DiscArtPath,
+        fanart.url AS FanartPath,
+        keyart.url AS KeyartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath,
+        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT credits.strActor) AS Credits,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
+        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
+        GROUP_CONCAT(DISTINCT tags.strTag) AS 'Tag'
+        FROM
+        movie
+        LEFT OUTER JOIN moviesource AS source ON (source.idSource = movie.idSource)
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = movie.idMovie)
+        AND (banner.media_type = 'movie')
+        AND (banner.type = 'banner')
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = movie.idMovie)
+        AND (clearart.media_type = 'movie')
+        AND (clearart.type = 'clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = movie.idMovie)
+        AND (clearlogo.media_type = 'movie')
+        AND (clearlogo.type = 'clearlogo')
+        LEFT OUTER JOIN art AS discart ON (discart.media_id = movie.idMovie)
+        AND (discart.media_type = 'movie')
+        AND (discart.type = 'discart')
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = movie.idMovie)
+        AND (fanart.media_type = 'movie')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = movie.idMovie)
+        AND (keyart.media_type = 'movie')
+        AND (keyart.type = 'keyart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = movie.idMovie)
+        AND (landscape.media_type = 'movie')
+        AND (landscape.type = 'landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = movie.idMovie)
+        AND (poster.media_type = 'movie')
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN countrylinkmovie AS countrylink ON (countrylink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN country AS countries ON (countries.idCountry = countrylink.idCountry)
+        LEFT OUTER JOIN writerlinkmovie AS writerlink ON (writerlink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN actors AS credits ON (credits.idActor = writerlink.idWriter)
+        LEFT OUTER JOIN directorlinkmovie AS directorlink ON (directorlink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
+        LEFT OUTER JOIN genrelinkmovie AS genrelink ON (genrelink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN genre AS genres ON (genres.idGenre = genrelink.idGenre)
+        LEFT OUTER JOIN studiolinkmovie AS studiolink ON (studiolink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN studio AS studios ON (studios.idStudio = studiolink.idStudio)
+        LEFT OUTER JOIN taglinks AS taglink ON (taglink.idMedia = movie.idMovie)
+        AND (taglink.media_type = 'movie')
+        LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglink.idTag)
+        GROUP BY movie.idMovie;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>update view setslist</description>
+      <execute>
+        DROP VIEW setslist;
+
+        CREATE VIEW setslist
+        AS
+        SELECT
+        sets.*,
+        banner.url AS BannerPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        discart.url AS DiscArtPath,
+        fanart.url AS FanartPath,
+        keyart.url AS KeyartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath,
+        COUNT(setlink.idMovie) AS 'Count',
+        GROUP_CONCAT(DISTINCT movies.Title) AS 'MovieTitles'
+        FROM
+        sets
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = sets.idSet)
+        AND (banner.media_type = 'set')
+        AND (banner.type = 'banner')
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = sets.idSet)
+        AND (clearart.media_type = 'set')
+        AND (clearart.type = 'clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = sets.idSet)
+        AND (clearlogo.media_type = 'set')
+        AND (clearlogo.type = 'clearlogo')
+        LEFT OUTER JOIN art AS discart ON (discart.media_id = sets.idSet)
+        AND (discart.media_type = 'set')
+        AND (discart.type = 'discart')
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = sets.idSet)
+        AND (fanart.media_type = 'set')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = sets.idSet)
+        AND (keyart.media_type = 'set')
+        AND (keyart.type = 'keyart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = sets.idSet)
+        AND (landscape.media_type = 'set')
+        AND (landscape.type = 'landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = sets.idSet)
+        AND (poster.media_type = 'set')
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN setlinkmovie AS setlink ON (setlink.idSet = sets.idSet)
+        LEFT OUTER JOIN movie AS movies ON (movies.idMovie = setlink.idMovie)
+        GROUP BY sets.idSet;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>update view tvshowlist</description>
+      <execute>
+        DROP VIEW tvshowlist;
+
+        CREATE VIEW tvshowlist
+        AS
+        SELECT
+        tvshow.*,
+        CASE WHEN tvshow.SortTitle IS NOT '' THEN tvshow.SortTitle ELSE tvshow.ListTitle END AS SortedTitle,
+        source.strName AS Source,
+        banner.url AS BannerPath,
+        characterart.url AS CharacterArtPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        fanart.url AS FanartPath,
+        keyart.url AS KeyartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath,
+        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT creators.strActor) AS Creator,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
+        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
+        GROUP_CONCAT(DISTINCT tags.strTag) AS Tag,
+        COUNT(DISTINCT episodelist.idEpisode) AS Episodes,
+        COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS Playcount,
+        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END AS HasWatched,
+        COUNT(DISTINCT CASE WHEN episodelist.New IS 1 THEN episodelist.idEpisode ELSE NULL END) AS NewEpisodes,
+        COUNT(DISTINCT CASE WHEN episodelist.Mark IS 1 THEN episodelist.idEpisode ELSE NULL END) AS MarkedEpisodes,
+        COUNT(DISTINCT CASE WHEN episodelist.Lock IS 1 THEN episodelist.idEpisode ELSE NULL END) AS LockedEpisodes
+        FROM
+        tvshow
+        LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = tvshow.idSource)
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = tvshow.idShow)
+        AND (banner.media_type = 'tvshow')
+        AND (banner.type = 'banner')
+        LEFT OUTER JOIN art AS characterart ON (characterart.media_id = tvshow.idShow)
+        AND (characterart.media_type = 'tvshow')
+        AND (characterart.type = 'characterart')
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = tvshow.idShow)
+        AND (clearart.media_type = 'tvshow')
+        AND (clearart.type = 'clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = tvshow.idShow)
+        AND (clearlogo.media_type = 'tvshow')
+        AND (clearlogo.type = 'clearlogo')
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = tvshow.idShow)
+        AND (fanart.media_type = 'tvshow')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = tvshow.idShow)
+        AND (keyart.media_type = 'tvshow')
+        AND (keyart.type = 'keyart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = tvshow.idShow)
+        AND (landscape.media_type = 'tvshow')
+        AND (landscape.type = 'landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = tvshow.idShow)
+        AND (poster.media_type = 'tvshow')
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN countrylinktvshow AS countrylink ON (countrylink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN country AS countries ON (countries.idCountry = countrylink.idCountry)
+        LEFT OUTER JOIN creatorlinktvshow AS creatorlink ON (creatorlink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN actors AS creators ON (creators.idActor = creatorlink.idActor)
+        LEFT OUTER JOIN directorlinktvshow AS directorlink ON (directorlink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
+        LEFT OUTER JOIN genrelinktvshow AS genrelink ON (genrelink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN genre AS genres ON (genres.idGenre = genrelink.idGenre)
+        LEFT OUTER JOIN studiolinktvshow AS studiolink ON (studiolink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN studio AS studios ON (studios.idStudio = studiolink.idStudio)
+        LEFT OUTER JOIN taglinks AS taglink ON (taglink.idMedia = tvshow.idShow)
+        AND (taglink.media_type = 'tvshow')
+        LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglink.idTag)
+        LEFT OUTER JOIN episodelist ON (tvshow.idShow = episodelist.idShow)
+        AND (episodelist.Missing = 0)
+        GROUP BY
+        tvshow.idShow;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

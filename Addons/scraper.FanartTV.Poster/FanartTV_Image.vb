@@ -381,6 +381,7 @@ Public Class FanartTV_Image
         ConfigModifier_Movie.MainLandscape = AdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainExtrafanarts = ConfigModifier_Movie.MainFanart
         ConfigModifier_Movie.MainExtrathumbs = ConfigModifier_Movie.MainFanart
+        ConfigModifier_Movie.MainKeyart = ConfigModifier_Movie.MainPoster
     End Sub
 
     Sub LoadSettings_MovieSet()
@@ -396,7 +397,7 @@ Public Class FanartTV_Image
         ConfigModifier_MovieSet.MainDiscArt = AdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainLandscape = AdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainExtrafanarts = ConfigModifier_MovieSet.MainFanart
-        ConfigModifier_MovieSet.MainExtrathumbs = ConfigModifier_MovieSet.MainFanart
+        ConfigModifier_MovieSet.MainKeyart = ConfigModifier_MovieSet.MainPoster
     End Sub
 
     Sub LoadSettings_TV()
@@ -415,6 +416,7 @@ Public Class FanartTV_Image
         ConfigModifier_TV.MainLandscape = AdvancedSettings.GetBooleanSetting("DoShowLandscape", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainPoster = AdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainExtrafanarts = ConfigModifier_TV.MainFanart
+        ConfigModifier_TV.MainKeyart = ConfigModifier_TV.MainPoster
     End Sub
 
     Sub SaveSettings_Movie()
@@ -478,6 +480,9 @@ Public Class FanartTV_Image
         ConfigModifier_Movie.MainClearLogo = _setup_Movie.chkScrapeClearLogo.Checked
         ConfigModifier_Movie.MainDiscArt = _setup_Movie.chkScrapeDiscArt.Checked
         ConfigModifier_Movie.MainLandscape = _setup_Movie.chkScrapeLandscape.Checked
+        ConfigModifier_Movie.MainExtrafanarts = ConfigModifier_Movie.MainFanart
+        ConfigModifier_Movie.MainExtrathumbs = ConfigModifier_Movie.MainFanart
+        ConfigModifier_Movie.MainKeyart = ConfigModifier_Movie.MainPoster
         SaveSettings_Movie()
         If DoDispose Then
             RemoveHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
@@ -497,6 +502,8 @@ Public Class FanartTV_Image
         ConfigModifier_MovieSet.MainClearLogo = _setup_MovieSet.chkScrapeClearLogo.Checked
         ConfigModifier_MovieSet.MainDiscArt = _setup_MovieSet.chkScrapeDiscArt.Checked
         ConfigModifier_MovieSet.MainLandscape = _setup_MovieSet.chkScrapeLandscape.Checked
+        ConfigModifier_MovieSet.MainExtrafanarts = ConfigModifier_MovieSet.MainFanart
+        ConfigModifier_MovieSet.MainKeyart = ConfigModifier_MovieSet.MainPoster
         SaveSettings_MovieSet()
         If DoDispose Then
             RemoveHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_MovieSet
@@ -519,6 +526,8 @@ Public Class FanartTV_Image
         ConfigModifier_TV.MainFanart = _setup_TV.chkScrapeShowFanart.Checked
         ConfigModifier_TV.MainLandscape = _setup_TV.chkScrapeShowLandscape.Checked
         ConfigModifier_TV.MainPoster = _setup_TV.chkScrapeShowPoster.Checked
+        ConfigModifier_TV.MainExtrafanarts = ConfigModifier_TV.MainFanart
+        ConfigModifier_TV.MainKeyart = ConfigModifier_TV.MainPoster
         SaveSettings_TV()
         If DoDispose Then
             RemoveHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV

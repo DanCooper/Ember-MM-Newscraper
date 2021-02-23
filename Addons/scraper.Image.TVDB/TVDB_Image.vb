@@ -157,6 +157,8 @@ Public Class TVDB_Image
         ConfigModifier.MainBanner = AdvancedSettings.GetBooleanSetting("DoShowBanner", True)
         ConfigModifier.MainFanart = AdvancedSettings.GetBooleanSetting("DoShowFanart", True)
         ConfigModifier.MainPoster = AdvancedSettings.GetBooleanSetting("DoShowPoster", True)
+        ConfigModifier.MainExtrafanarts = ConfigModifier.MainFanart
+        ConfigModifier.MainFanart = ConfigModifier.MainPoster
 
         strPrivateAPIKey = AdvancedSettings.GetSetting("ApiKey", "")
         _SpecialSettings.ApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
@@ -182,6 +184,8 @@ Public Class TVDB_Image
         ConfigModifier.MainBanner = _setup.chkScrapeShowBanner.Checked
         ConfigModifier.MainFanart = _setup.chkScrapeShowFanart.Checked
         ConfigModifier.MainPoster = _setup.chkScrapeShowPoster.Checked
+        ConfigModifier.MainExtrafanarts = ConfigModifier.MainFanart
+        ConfigModifier.MainFanart = ConfigModifier.MainPoster
         SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged

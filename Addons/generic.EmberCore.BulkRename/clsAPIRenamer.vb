@@ -222,8 +222,8 @@ Public Class FileFolderRenamer
                         Dim lFi As New List(Of FileInfo)
                         Try
                             lFi.AddRange(di.GetFiles())
-                            For Each subtitle In _movie.Subtitles.Where(Function(f) f.SubsPathSpecified)
-                                Dim nPath = subtitle.SubsPath.Replace(srcDir, destDir)
+                            For Each subtitle In _movie.Subtitles.Where(Function(f) f.PathSpecified)
+                                Dim nPath = subtitle.Path.Replace(srcDir, destDir)
                                 If lFi.Where(Function(f) f.FullName = nPath).Count = 0 Then
                                     lFi.Add(New FileInfo(nPath))
                                 End If
@@ -351,9 +351,9 @@ Public Class FileFolderRenamer
 
                         Try
                             lFi.AddRange(di.GetFiles(String.Concat(_frename.OldFileName, "*")))
-                            For Each subtitle In _tv.Subtitles.Where(Function(f) f.SubsPathSpecified)
-                                If lFi.Where(Function(f) f.FullName = subtitle.SubsPath).Count = 0 Then
-                                    lFi.Add(New FileInfo(subtitle.SubsPath))
+                            For Each subtitle In _tv.Subtitles.Where(Function(f) f.PathSpecified)
+                                If lFi.Where(Function(f) f.FullName = subtitle.Path).Count = 0 Then
+                                    lFi.Add(New FileInfo(subtitle.Path))
                                 End If
                             Next
                         Catch ex As Exception
@@ -1743,8 +1743,8 @@ Public Class FileFolderRenamer
             Next
         End If
         If _DBM.SubtitlesSpecified Then
-            For Each subtitle In _DBM.Subtitles.Where(Function(f) f.SubsPathSpecified)
-                subtitle.SubsPath = Path.Combine(Directory.GetParent(subtitle.SubsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(subtitle.SubsPath).Replace(oldFile, newFile))
+            For Each subtitle In _DBM.Subtitles.Where(Function(f) f.PathSpecified)
+                subtitle.Path = Path.Combine(Directory.GetParent(subtitle.Path).FullName.Replace(oldPath, newPath), Path.GetFileName(subtitle.Path).Replace(oldFile, newFile))
             Next
         End If
     End Sub
@@ -1755,8 +1755,8 @@ Public Class FileFolderRenamer
         If _DBE.ImagesContainer.Poster.LocalFilePathSpecified Then _DBE.ImagesContainer.Poster.LocalFilePath = Path.Combine(Directory.GetParent(_DBE.ImagesContainer.Poster.LocalFilePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.ImagesContainer.Poster.LocalFilePath).Replace(oldFile, newFile))
         If _DBE.NfoPathSpecified Then _DBE.NfoPath = Path.Combine(Directory.GetParent(_DBE.NfoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.NfoPath).Replace(oldFile, newFile))
         If _DBE.SubtitlesSpecified Then
-            For Each subtitle In _DBE.Subtitles.Where(Function(f) f.SubsPathSpecified)
-                subtitle.SubsPath = Path.Combine(Directory.GetParent(subtitle.SubsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(subtitle.SubsPath).Replace(oldFile, newFile))
+            For Each subtitle In _DBE.Subtitles.Where(Function(f) f.PathSpecified)
+                subtitle.Path = Path.Combine(Directory.GetParent(subtitle.Path).FullName.Replace(oldPath, newPath), Path.GetFileName(subtitle.Path).Replace(oldFile, newFile))
             Next
         End If
     End Sub
@@ -1775,8 +1775,8 @@ Public Class FileFolderRenamer
         If _DBE.ShowPathSpecified Then _DBE.ShowPath = _DBE.ShowPath.Replace(oldPath, newPath)
         If Not String.IsNullOrEmpty(_DBE.Theme.LocalFilePath) Then _DBE.Theme.LocalFilePath = _DBE.Theme.LocalFilePath.Replace(oldPath, newPath)
         If _DBE.SubtitlesSpecified Then
-            For Each subtitle In _DBE.Subtitles.Where(Function(f) f.SubsPathSpecified)
-                subtitle.SubsPath = subtitle.SubsPath.Replace(oldPath, newPath)
+            For Each subtitle In _DBE.Subtitles.Where(Function(f) f.PathSpecified)
+                subtitle.Path = subtitle.Path.Replace(oldPath, newPath)
             Next
         End If
     End Sub

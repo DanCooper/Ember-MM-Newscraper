@@ -311,7 +311,7 @@ Public Class APIXML
                             sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
                             sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Subtitle(i).LongLanguage)
                             sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1287, "Forced"),
-                                                          If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                                                          If(fiAV.StreamDetails.Subtitle(i).Forced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                             iReturn(sIcon) = sLangFlag
                             sIcon += 1
                         Else
@@ -319,7 +319,7 @@ Public Class APIXML
                             sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
                             sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
                             sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1287, "Forced"),
-                                                          If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                                                          If(fiAV.StreamDetails.Subtitle(i).Forced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                             iReturn(sIcon) = sLangFlag
                             aIcon += 1
                         End If

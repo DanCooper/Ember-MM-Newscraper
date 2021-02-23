@@ -133,8 +133,8 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="libvideo, Version=3.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VideoLibrary.3.0.8\lib\netstandard1.1\libvideo.dll</HintPath>
+    <Reference Include="libvideo, Version=3.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VideoLibrary.3.0.9\lib\netstandard1.1\libvideo.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -187,9 +187,7 @@
     <Compile Include="clsAPIAdvancedSettings.vb" />
     <Compile Include="clsAPICommandLine.vb" />
     <Compile Include="clsAPIFFmpeg.vb" />
-    <Compile Include="clsAPIFormsUtils.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="clsAPIFormsUtils.vb" />
     <Compile Include="clsAPIProfiles.vb" />
     <Compile Include="clsAPITaskManager.vb" />
     <Compile Include="clsAPICommon.vb" />
@@ -255,7 +253,6 @@
     <Compile Include="XML Serialization\clsXMLLanguageHelp.vb" />
     <Compile Include="XML Serialization\clsXMLLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLRatings.vb" />
-    <Compile Include="XML Serialization\clsXMLSettings.vb" />
     <Compile Include="XML Serialization\clsXMLCertificationLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLScraperLanguages.vb" />
   </ItemGroup>
@@ -455,6 +452,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="DB\MyVideosDBSQL_v45_Patch.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v46_Patch.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

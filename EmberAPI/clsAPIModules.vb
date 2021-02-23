@@ -648,6 +648,7 @@ Public Class ModulesManager
         If ScrapeModifiers.MainExtrafanarts AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) Then Return True
         If ScrapeModifiers.MainExtrathumbs AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) Then Return True
         If ScrapeModifiers.MainFanart AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) Then Return True
+        If ScrapeModifiers.MainKeyart AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) Then Return True
         If ScrapeModifiers.MainLandscape AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainLandscape) Then Return True
         If ScrapeModifiers.MainPoster AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) Then Return True
 
@@ -664,6 +665,8 @@ Public Class ModulesManager
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
             Case Enums.ModifierType.MainExtrathumbs
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
+            Case Enums.ModifierType.MainKeyart
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster)
             Case Else
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)
         End Select
@@ -681,6 +684,7 @@ Public Class ModulesManager
         If ScrapeModifiers.MainClearLogo AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainClearLogo) Then Return True
         If ScrapeModifiers.MainDiscArt AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainDiscArt) Then Return True
         If ScrapeModifiers.MainFanart AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) Then Return True
+        If ScrapeModifiers.MainKeyart AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) Then Return True
         If ScrapeModifiers.MainLandscape AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainLandscape) Then Return True
         If ScrapeModifiers.MainPoster AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) Then Return True
 
@@ -692,7 +696,12 @@ Public Class ModulesManager
             Application.DoEvents()
         End While
 
-        Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)
+        Select Case ImageType
+            Case Enums.ModifierType.MainKeyart
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster)
+            Case Else
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)
+        End Select
 
         Return False
     End Function
@@ -709,6 +718,7 @@ Public Class ModulesManager
         If ScrapeModifiers.MainClearArt AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainClearArt) Then Return True
         If ScrapeModifiers.MainClearLogo AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainClearLogo) Then Return True
         If ScrapeModifiers.MainFanart AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) Then Return True
+        If ScrapeModifiers.MainKeyart AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) Then Return True
         If ScrapeModifiers.MainLandscape AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainLandscape) Then Return True
         If ScrapeModifiers.MainPoster AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) Then Return True
         If ScrapeModifiers.SeasonBanner AndAlso externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonBanner) Then Return True
@@ -726,25 +736,27 @@ Public Class ModulesManager
 
         Select Case ImageType
             Case Enums.ModifierType.AllSeasonsBanner
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainBanner) OrElse
-                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonBanner) Then Return True
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainBanner) OrElse
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonBanner)
             Case Enums.ModifierType.AllSeasonsFanart
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse
-                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonFanart) Then Return True
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonFanart)
             Case Enums.ModifierType.AllSeasonsLandscape
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainLandscape) OrElse
-                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonLandscape) Then Return True
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainLandscape) OrElse
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonLandscape)
             Case Enums.ModifierType.AllSeasonsPoster
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) OrElse
-                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonPoster) Then Return True
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) OrElse
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonPoster)
             Case Enums.ModifierType.EpisodeFanart
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse
-                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.EpisodeFanart) Then Return True
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.EpisodeFanart)
             Case Enums.ModifierType.MainExtrafanarts
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
+            Case Enums.ModifierType.MainKeyart
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster)
             Case Enums.ModifierType.SeasonFanart
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse
-                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonFanart) Then Return True
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonFanart)
             Case Else
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)
         End Select
@@ -1376,6 +1388,7 @@ Public Class ModulesManager
                         ImagesContainer.MainClearLogos.AddRange(aContainer.MainClearLogos)
                         ImagesContainer.MainDiscArts.AddRange(aContainer.MainDiscArts)
                         ImagesContainer.MainFanarts.AddRange(aContainer.MainFanarts)
+                        ImagesContainer.MainKeyarts.AddRange(aContainer.MainKeyarts)
                         ImagesContainer.MainLandscapes.AddRange(aContainer.MainLandscapes)
                         ImagesContainer.MainPosters.AddRange(aContainer.MainPosters)
                     End If
@@ -1464,6 +1477,7 @@ Public Class ModulesManager
                             ImagesContainer.MainClearArts.AddRange(aContainer.MainClearArts)
                             ImagesContainer.MainClearLogos.AddRange(aContainer.MainClearLogos)
                             ImagesContainer.MainFanarts.AddRange(aContainer.MainFanarts)
+                            ImagesContainer.MainKeyarts.AddRange(aContainer.MainKeyarts)
                             ImagesContainer.MainLandscapes.AddRange(aContainer.MainLandscapes)
                             ImagesContainer.MainPosters.AddRange(aContainer.MainPosters)
                         End If

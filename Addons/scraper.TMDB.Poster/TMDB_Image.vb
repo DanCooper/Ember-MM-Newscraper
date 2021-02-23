@@ -330,6 +330,7 @@ Public Class TMDB_Image
         ConfigModifier_Movie.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainExtrafanarts = ConfigModifier_Movie.MainFanart
         ConfigModifier_Movie.MainExtrathumbs = ConfigModifier_Movie.MainFanart
+        ConfigModifier_Movie.MainKeyart = ConfigModifier_Movie.MainPoster
 
         strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
@@ -339,7 +340,7 @@ Public Class TMDB_Image
         ConfigModifier_MovieSet.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainExtrafanarts = ConfigModifier_MovieSet.MainFanart
-        ConfigModifier_MovieSet.MainExtrathumbs = ConfigModifier_MovieSet.MainFanart
+        ConfigModifier_MovieSet.MainKeyart = ConfigModifier_MovieSet.MainPoster
 
         strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.MovieSet)
         _SpecialSettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
@@ -351,6 +352,7 @@ Public Class TMDB_Image
         ConfigModifier_TV.MainFanart = AdvancedSettings.GetBooleanSetting("DoShowFanart", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainPoster = AdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainExtrafanarts = ConfigModifier_TV.MainFanart
+        ConfigModifier_TV.MainKeyart = ConfigModifier_TV.MainPoster
 
         strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.TV)
         _SpecialSettings_TV.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
@@ -457,6 +459,9 @@ Public Class TMDB_Image
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_Movie.SaveSetupScraper
         ConfigModifier_Movie.MainPoster = _setup_Movie.chkScrapePoster.Checked
         ConfigModifier_Movie.MainFanart = _setup_Movie.chkScrapeFanart.Checked
+        ConfigModifier_Movie.MainExtrafanarts = ConfigModifier_Movie.MainFanart
+        ConfigModifier_Movie.MainExtrathumbs = ConfigModifier_Movie.MainFanart
+        ConfigModifier_Movie.MainKeyart = ConfigModifier_Movie.MainPoster
 
         Dim bAPIKeyChanged = Not strPrivateAPIKey = _setup_Movie.txtApiKey.Text.Trim
         strPrivateAPIKey = _setup_Movie.txtApiKey.Text.Trim
@@ -477,6 +482,8 @@ Public Class TMDB_Image
     Sub SaveSetupScraper_MovieSet(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_MovieSet.SaveSetupScraper
         ConfigModifier_MovieSet.MainPoster = _setup_MovieSet.chkScrapePoster.Checked
         ConfigModifier_MovieSet.MainFanart = _setup_MovieSet.chkScrapeFanart.Checked
+        ConfigModifier_MovieSet.MainExtrafanarts = ConfigModifier_MovieSet.MainFanart
+        ConfigModifier_MovieSet.MainKeyart = ConfigModifier_MovieSet.MainPoster
 
         Dim bAPIKeyChanged = Not strPrivateAPIKey = _setup_MovieSet.txtApiKey.Text.Trim
         strPrivateAPIKey = _setup_MovieSet.txtApiKey.Text.Trim
@@ -499,6 +506,8 @@ Public Class TMDB_Image
         ConfigModifier_TV.SeasonPoster = _setup_TV.chkScrapeSeasonPoster.Checked
         ConfigModifier_TV.MainFanart = _setup_TV.chkScrapeShowFanart.Checked
         ConfigModifier_TV.MainPoster = _setup_TV.chkScrapeShowPoster.Checked
+        ConfigModifier_TV.MainExtrafanarts = ConfigModifier_TV.MainFanart
+        ConfigModifier_TV.MainKeyart = ConfigModifier_TV.MainPoster
 
         Dim bAPIKeyChanged = Not strPrivateAPIKey = _setup_TV.txtApiKey.Text.Trim
         strPrivateAPIKey = _setup_TV.txtApiKey.Text.Trim

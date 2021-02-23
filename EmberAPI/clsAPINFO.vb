@@ -61,8 +61,7 @@ Public Class NFO
         Dim new_OriginalTitle As Boolean = False
         Dim new_Outline As Boolean = False
         Dim new_Plot As Boolean = False
-        Dim new_Rating As Boolean = False
-        Dim new_ReleaseDate As Boolean = False
+        Dim new_Premierede As Boolean = False
         Dim new_Runtime As Boolean = False
         Dim new_Studio As Boolean = False
         Dim new_Tagline As Boolean = False
@@ -248,24 +247,30 @@ Public Class NFO
                 DBMovie.Movie.Plot = StringUtils.RemoveBrackets(DBMovie.Movie.Plot)
             End If
 
-            'Rating/Votes
-            If (Not DBMovie.Movie.RatingSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bMainRating AndAlso
-                scrapedmovie.RatingSpecified AndAlso Master.eSettings.MovieScraperRating AndAlso Not new_Rating Then
-                DBMovie.Movie.Rating = scrapedmovie.Rating
-                DBMovie.Movie.Votes = NumUtils.CleanVotes(scrapedmovie.Votes)
-                new_Rating = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRating AndAlso Not Master.eSettings.MovieLockRating Then
-                DBMovie.Movie.Rating = String.Empty
-                DBMovie.Movie.Votes = String.Empty
+            'Premiered
+            If (Not DBMovie.Movie.PremieredSpecified OrElse Not Master.eSettings.MovieLockPremiered) AndAlso ScrapeOptions.bMainPremiered AndAlso
+                scrapedmovie.PremieredSpecified AndAlso Master.eSettings.MovieScraperPremiered AndAlso Not new_Premierede Then
+                DBMovie.Movie.Premiered = NumUtils.DateToISO8601Date(scrapedmovie.Premiered)
+                new_Premierede = True
+            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperPremiered AndAlso Not Master.eSettings.MovieLockPremiered Then
+                DBMovie.Movie.Premiered = String.Empty
             End If
 
-            'ReleaseDate
-            If (Not DBMovie.Movie.ReleaseDateSpecified OrElse Not Master.eSettings.MovieLockReleaseDate) AndAlso ScrapeOptions.bMainRelease AndAlso
-                scrapedmovie.ReleaseDateSpecified AndAlso Master.eSettings.MovieScraperRelease AndAlso Not new_ReleaseDate Then
-                DBMovie.Movie.ReleaseDate = NumUtils.DateToISO8601Date(scrapedmovie.ReleaseDate)
-                new_ReleaseDate = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRelease AndAlso Not Master.eSettings.MovieLockReleaseDate Then
-                DBMovie.Movie.ReleaseDate = String.Empty
+            'Ratings
+            If ScrapeOptions.bMainRating AndAlso scrapedmovie.RatingsSpecified AndAlso Master.eSettings.MovieScraperRating Then
+                'remove old entries that cannot be assigned to a source
+                DBMovie.Movie.Ratings.RemoveAll(Function(f) f.Name = "default")
+                'remove old rating(s) from the same source
+                For Each nRating In scrapedmovie.Ratings
+                    'remove old rating(s) from the same source
+                    DBMovie.Movie.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
+                    'check if it has to be set as default
+                    If nRating.Name.ToLower = Master.eSettings.MovieScraperRatingDefault.ToLower Then nRating.IsDefault = True
+                    'add new rating
+                    DBMovie.Movie.Ratings.Add(nRating)
+                Next
+            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRating AndAlso Not Master.eSettings.MovieLockRating Then
+                DBMovie.Movie.Ratings.Clear()
             End If
 
             'Studios
@@ -399,6 +404,23 @@ Public Class NFO
             DBMovie.Movie.MPAA = Master.eSettings.MovieScraperMPAANotRated
         End If
 
+        'Rating/Votes (old nodes)
+        If (Not DBMovie.Movie.RatingSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bMainRating AndAlso
+                DBMovie.Movie.RatingsSpecified AndAlso Master.eSettings.MovieScraperRating AndAlso Master.eSettings.MovieScraperRatingSingleRating Then
+            'try to get the default rating
+            Dim nRating = DBMovie.Movie.Ratings.FirstOrDefault(Function(f) f.IsDefault)
+            If nRating IsNot Nothing Then
+                DBMovie.Movie.Rating = nRating.Value.ToString
+                DBMovie.Movie.Votes = nRating.Votes.ToString
+            Else
+                DBMovie.Movie.Rating = DBMovie.Movie.Ratings(0).Value.ToString
+                DBMovie.Movie.Votes = DBMovie.Movie.Ratings(0).Votes.ToString
+            End If
+        ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRatingSingleRating AndAlso Not Master.eSettings.MovieLockRating Then
+            DBMovie.Movie.Rating = String.Empty
+            DBMovie.Movie.Votes = String.Empty
+        End If
+
         'OriginalTitle as Title
         If (Not DBMovie.Movie.TitleSpecified OrElse Not Master.eSettings.MovieLockTitle) AndAlso Master.eSettings.MovieScraperOriginalTitleAsTitle AndAlso DBMovie.Movie.OriginalTitleSpecified Then
             DBMovie.Movie.Title = DBMovie.Movie.OriginalTitle
@@ -412,12 +434,7 @@ Public Class NFO
 
         'set ListTitle at the end of merging
         If DBMovie.Movie.TitleSpecified Then
-            Dim tTitle As String = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
-            If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
-                DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
-            Else
-                DBMovie.ListTitle = tTitle
-            End If
+            DBMovie.ListTitle = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
         Else
             DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
@@ -663,15 +680,21 @@ Public Class NFO
                 DBTV.TVShow.Premiered = String.Empty
             End If
 
-            'Rating/Votes
-            If (Not DBTV.TVShow.RatingSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
-                scrapedshow.RatingSpecified AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
-                DBTV.TVShow.Rating = scrapedshow.Rating
-                DBTV.TVShow.Votes = NumUtils.CleanVotes(scrapedshow.Votes)
-                new_Rating = True
+            'Ratings
+            If ScrapeOptions.bMainRating AndAlso scrapedshow.RatingsSpecified AndAlso Master.eSettings.TVScraperShowRating Then
+                'remove old entries that cannot be assigned to a source
+                DBTV.TVShow.Ratings.RemoveAll(Function(f) f.Name = "default")
+                'remove old rating(s) from the same source
+                For Each nRating In scrapedshow.Ratings
+                    'remove old rating(s) from the same source
+                    DBTV.TVShow.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
+                    'check if it has to be set as default
+                    If nRating.Name.ToLower = Master.eSettings.TVScraperShowRatingDefault.ToLower Then nRating.IsDefault = True
+                    'add new rating
+                    DBTV.TVShow.Ratings.Add(nRating)
+                Next
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRating AndAlso Not Master.eSettings.TVLockShowRating Then
-                DBTV.TVShow.Rating = String.Empty
-                DBTV.TVShow.Votes = String.Empty
+                DBTV.TVShow.Ratings.Clear()
             End If
 
             'Runtime
@@ -800,6 +823,23 @@ Public Class NFO
         'MPAA value if MPAA is not available
         If Not DBTV.TVShow.MPAASpecified AndAlso Not String.IsNullOrEmpty(Master.eSettings.TVScraperShowMPAANotRated) Then
             DBTV.TVShow.MPAA = Master.eSettings.TVScraperShowMPAANotRated
+        End If
+
+        'Rating/Votes (old nodes)
+        If (Not DBTV.TVShow.RatingSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
+                DBTV.TVShow.RatingsSpecified AndAlso Master.eSettings.TVScraperShowRating Then
+            'try to get the default rating
+            Dim nRating = DBTV.TVShow.Ratings.FirstOrDefault(Function(f) f.IsDefault)
+            If nRating IsNot Nothing Then
+                DBTV.TVShow.Rating = nRating.Value.ToString
+                DBTV.TVShow.Votes = nRating.Votes.ToString
+            Else
+                DBTV.TVShow.Rating = DBTV.TVShow.Ratings(0).Value.ToString
+                DBTV.TVShow.Votes = DBTV.TVShow.Ratings(0).Votes.ToString
+            End If
+        ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRating AndAlso Not Master.eSettings.TVLockShowRating Then
+            DBTV.TVShow.Rating = String.Empty
+            DBTV.TVShow.Votes = String.Empty
         End If
 
         'OriginalTitle as Title
@@ -1122,15 +1162,21 @@ Public Class NFO
                 DBTVEpisode.TVEpisode.Plot = String.Empty
             End If
 
-            'Rating/Votes
-            If (Not DBTVEpisode.TVEpisode.RatingSpecified OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso
-                scrapedepisode.RatingSpecified AndAlso Master.eSettings.TVScraperEpisodeRating AndAlso Not new_Rating Then
-                DBTVEpisode.TVEpisode.Rating = scrapedepisode.Rating
-                DBTVEpisode.TVEpisode.Votes = NumUtils.CleanVotes(scrapedepisode.Votes)
-                new_Rating = True
+            'Ratings
+            If ScrapeOptions.bMainRating AndAlso scrapedepisode.RatingsSpecified AndAlso Master.eSettings.TVScraperEpisodeRating Then
+                'remove old entries that cannot be assigned to a source
+                DBTVEpisode.TVEpisode.Ratings.RemoveAll(Function(f) f.Name = "default")
+                'remove old rating(s) from the same source
+                For Each nRating In scrapedepisode.Ratings
+                    'remove old rating(s) from the same source
+                    DBTVEpisode.TVEpisode.Ratings.RemoveAll(Function(f) f.Name = nRating.Name)
+                    'check if it has to be set as default
+                    If nRating.Name.ToLower = Master.eSettings.TVScraperEpisodeRatingDefault.ToLower Then nRating.IsDefault = True
+                    'add new rating
+                    DBTVEpisode.TVEpisode.Ratings.Add(nRating)
+                Next
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
-                DBTVEpisode.TVEpisode.Rating = String.Empty
-                DBTVEpisode.TVEpisode.Votes = String.Empty
+                DBTVEpisode.TVEpisode.Ratings.Clear()
             End If
 
             'User Rating
@@ -1197,6 +1243,23 @@ Public Class NFO
 
             'reorder again
             ReorderPersons(DBTVEpisode.TVEpisode.Actors)
+        End If
+
+        'Rating/Votes (old nodes)
+        If (Not DBTVEpisode.TVEpisode.RatingSpecified OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso
+                DBTVEpisode.TVEpisode.RatingsSpecified AndAlso Master.eSettings.TVScraperEpisodeRating Then
+            'try to get the default rating
+            Dim nRating = DBTVEpisode.TVEpisode.Ratings.FirstOrDefault(Function(f) f.IsDefault)
+            If nRating IsNot Nothing Then
+                DBTVEpisode.TVEpisode.Rating = nRating.Value.ToString
+                DBTVEpisode.TVEpisode.Votes = nRating.Votes.ToString
+            Else
+                DBTVEpisode.TVEpisode.Rating = DBTVEpisode.TVEpisode.Ratings(0).Value.ToString
+                DBTVEpisode.TVEpisode.Votes = DBTVEpisode.TVEpisode.Ratings(0).Votes.ToString
+            End If
+        ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
+            DBTVEpisode.TVEpisode.Rating = String.Empty
+            DBTVEpisode.TVEpisode.Votes = String.Empty
         End If
 
         'TV Show Runtime for Episode Runtime
@@ -1290,7 +1353,7 @@ Public Class NFO
         If mNFO IsNot Nothing Then
             mNFO.Outline = mNFO.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-            mNFO.ReleaseDate = NumUtils.DateToISO8601Date(mNFO.ReleaseDate)
+            mNFO.Premiered = NumUtils.DateToISO8601Date(mNFO.Premiered)
             mNFO.Votes = NumUtils.CleanVotes(mNFO.Votes)
             If mNFO.FileInfoSpecified Then
                 If mNFO.FileInfo.StreamDetails.AudioSpecified Then

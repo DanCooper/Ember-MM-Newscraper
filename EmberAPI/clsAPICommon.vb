@@ -607,43 +607,44 @@ Public Class Enums
     End Enum
 
     Public Enum ModifierType As Integer
-        All = 0
-        AllSeasonsBanner = 1
-        AllSeasonsFanart = 2
-        AllSeasonsLandscape = 3
-        AllSeasonsPoster = 4
-        DoSearch = 5
-        EpisodeActorThumbs = 6
-        EpisodeFanart = 7
-        EpisodePoster = 8
-        EpisodeMeta = 9
-        EpisodeNFO = 10
-        EpisodeSubtitle = 11
-        EpisodeWatchedFile = 12
-        MainActorThumbs = 13
-        MainBanner = 14
-        MainCharacterArt = 15
-        MainClearArt = 16
-        MainClearLogo = 17
-        MainDiscArt = 18
-        MainExtrafanarts = 19
-        MainExtrathumbs = 20
-        MainFanart = 21
-        MainLandscape = 22
-        MainMeta = 23
-        MainNFO = 24
-        MainPoster = 25
-        MainSubtitle = 26
-        MainTheme = 27
-        MainTrailer = 28
-        MainWatchedFile = 29
-        SeasonBanner = 30
-        SeasonFanart = 31
-        SeasonLandscape = 32
-        SeasonNFO = 33
-        SeasonPoster = 34
-        withEpisodes = 35
-        withSeasons = 36
+        All
+        AllSeasonsBanner
+        AllSeasonsFanart
+        AllSeasonsLandscape
+        AllSeasonsPoster
+        DoSearch
+        EpisodeActorThumbs
+        EpisodeFanart
+        EpisodePoster
+        EpisodeMeta
+        EpisodeNFO
+        EpisodeSubtitle
+        EpisodeWatchedFile
+        MainActorThumbs
+        MainBanner
+        MainCharacterArt
+        MainClearArt
+        MainClearLogo
+        MainDiscArt
+        MainExtrafanarts
+        MainExtrathumbs
+        MainFanart
+        MainKeyart
+        MainLandscape
+        MainMeta
+        MainNFO
+        MainPoster
+        MainSubtitle
+        MainTheme
+        MainTrailer
+        MainWatchedFile
+        SeasonBanner
+        SeasonFanart
+        SeasonLandscape
+        SeasonNFO
+        SeasonPoster
+        withEpisodes
+        withSeasons
     End Enum
 
     Public Enum ModuleEventType As Integer
@@ -1152,8 +1153,8 @@ Public Class Functions
             .bMainOriginalTitle = Master.eSettings.MovieScraperOriginalTitle
             .bMainOutline = Master.eSettings.MovieScraperOutline
             .bMainPlot = Master.eSettings.MovieScraperPlot
+            .bMainPremiered = Master.eSettings.MovieScraperPremiered
             .bMainRating = Master.eSettings.MovieScraperRating
-            .bMainRelease = Master.eSettings.MovieScraperRelease
             .bMainRuntime = Master.eSettings.MovieScraperRuntime
             .bMainStudios = Master.eSettings.MovieScraperStudio
             .bMainTagline = Master.eSettings.MovieScraperTagline
@@ -1475,7 +1476,6 @@ Public Class Functions
         FilteredOptions.bMainPlot = Options.bMainPlot AndAlso Options2.bMainPlot
         FilteredOptions.bMainPremiered = Options.bMainPremiered AndAlso Options2.bMainPremiered
         FilteredOptions.bMainRating = Options.bMainRating AndAlso Options2.bMainRating
-        FilteredOptions.bMainRelease = Options.bMainRelease AndAlso Options2.bMainRelease
         FilteredOptions.bMainRuntime = Options.bMainRuntime AndAlso Options2.bMainRuntime
         FilteredOptions.bMainStatus = Options.bMainStatus AndAlso Options2.bMainStatus
         FilteredOptions.bMainStudios = Options.bMainStudios AndAlso Options2.bMainStudios
@@ -1515,6 +1515,7 @@ Public Class Functions
         FilteredModifiers.MainExtrafanarts = Options.MainExtrafanarts AndAlso Options2.MainExtrafanarts
         FilteredModifiers.MainExtrathumbs = Options.MainExtrathumbs AndAlso Options2.MainExtrathumbs
         FilteredModifiers.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
+        FilteredModifiers.MainKeyart = Options.MainKeyart AndAlso Options2.MainKeyart
         FilteredModifiers.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
         FilteredModifiers.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
         FilteredModifiers.MainPoster = Options.MainPoster AndAlso Options2.MainPoster
@@ -1554,6 +1555,7 @@ Public Class Functions
                 .MainExtrafanarts OrElse
                 .MainExtrathumbs OrElse
                 .MainFanart OrElse
+                .MainKeyart OrElse
                 .MainLandscape OrElse
                 .MainMeta OrElse
                 .MainNFO OrElse
@@ -1599,6 +1601,7 @@ Public Class Functions
                     .MainExtrafanarts = MValue
                     .MainExtrathumbs = MValue
                     .MainFanart = MValue
+                    .MainKeyart = MValue
                     .MainLandscape = MValue
                     .MainMeta = MValue
                     .MainNFO = MValue
@@ -1656,6 +1659,8 @@ Public Class Functions
                     .MainExtrathumbs = MValue
                 Case Enums.ModifierType.MainFanart
                     .MainFanart = MValue
+                Case Enums.ModifierType.MainKeyart
+                    .MainKeyart = MValue
                 Case Enums.ModifierType.MainLandscape
                     .MainLandscape = MValue
                 Case Enums.ModifierType.MainMeta
@@ -1879,6 +1884,7 @@ Public Class Structures
         Dim MainExtrafanarts As Boolean
         Dim MainExtrathumbs As Boolean
         Dim MainFanart As Boolean
+        Dim MainKeyart As Boolean
         Dim MainLandscape As Boolean
         Dim MainMeta As Boolean
         Dim MainNFO As Boolean
@@ -1926,7 +1932,6 @@ Public Class Structures
         Dim bMainPlot As Boolean
         Dim bMainPremiered As Boolean
         Dim bMainRating As Boolean
-        Dim bMainRelease As Boolean
         Dim bMainRuntime As Boolean
         Dim bMainStatus As Boolean
         Dim bMainStudios As Boolean

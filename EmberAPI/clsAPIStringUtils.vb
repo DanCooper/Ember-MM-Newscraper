@@ -627,23 +627,11 @@ Public Class StringUtils
     End Function
 
     Public Shared Function ListTitle_Movie(ByVal MovieTitle As String, ByVal MovieYear As String) As String
-        Dim ListTitle As String = MovieTitle
-        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(MovieYear) Then
-            ListTitle = String.Format("{0} ({1})", SortTokens_Movie(MovieTitle.Trim), MovieYear.Trim)
-        Else
-            ListTitle = SortTokens_Movie(MovieTitle.Trim)
-        End If
-        Return ListTitle
+        Return SortTokens_Movie(MovieTitle)
     End Function
 
     Public Shared Function ListTitle_TVShow(ByVal TVShowTitle As String, ByVal MovieYear As String) As String
-        Dim ListTitle As String = TVShowTitle
-        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(MovieYear) Then
-            ListTitle = String.Format("{0} ({1})", SortTokens_Movie(TVShowTitle.Trim), MovieYear.Trim)
-        Else
-            ListTitle = SortTokens_Movie(TVShowTitle.Trim)
-        End If
-        Return ListTitle
+        Return SortTokens_TV(TVShowTitle)
     End Function
     ''' <summary>
     ''' Determines whether the supplied character is valid for a numeric-only field such as a text-box.
@@ -810,7 +798,7 @@ Public Class StringUtils
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
     Public Shared Function SortTokens_Movie(ByVal strTitle As String) As String
-        Return SortTokens(strTitle, Master.eSettings.MovieSortTokens)
+        Return SortTokens(strTitle.Trim, Master.eSettings.MovieSortTokens)
     End Function
     ''' <summary>
     ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
@@ -828,7 +816,7 @@ Public Class StringUtils
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
     Public Shared Function SortTokens_MovieSet(ByVal strTitle As String) As String
-        Return SortTokens(strTitle, Master.eSettings.MovieSetSortTokens)
+        Return SortTokens(strTitle.Trim, Master.eSettings.MovieSetSortTokens).Trim
     End Function
     ''' <summary>
     ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
@@ -846,7 +834,7 @@ Public Class StringUtils
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
     Public Shared Function SortTokens_TV(ByVal strTitle As String) As String
-        Return SortTokens(strTitle, Master.eSettings.TVSortTokens)
+        Return SortTokens(strTitle, Master.eSettings.TVSortTokens).Trim
     End Function
     ''' <summary>
     ''' Converts a string indicating a size into an actual <c>Size</c> object

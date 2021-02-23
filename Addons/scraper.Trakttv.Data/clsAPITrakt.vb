@@ -230,8 +230,12 @@ Public Class clsAPITrakt
             If tFilteredOptions.bMainRating Then
                 Dim nGlobalRating = Await _client.Movies.GetMovieRatingsAsync(CStr(uintTraktID.Result))
                 If nGlobalRating IsNot Nothing AndAlso nGlobalRating.Rating IsNot Nothing AndAlso nGlobalRating.Votes IsNot Nothing Then
-                    nMovie.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1))
-                    nMovie.Votes = CStr(nGlobalRating.Votes)
+                    nMovie.Ratings.Add(New MediaContainers.RatingDetails With {
+                                       .Max = 10,
+                                       .Name = "trakt",
+                                       .Value = Math.Round(nGlobalRating.Rating.Value, 1),
+                                       .Votes = CInt(nGlobalRating.Votes)
+                                       })
                 End If
             End If
 
@@ -274,8 +278,12 @@ Public Class clsAPITrakt
             If tFilteredOptions.bEpisodeRating Then
                 Dim nGlobalRating = Await _client.Episodes.GetEpisodeRatingsAsync(CStr(uintTVShowTraktID.Result), uintSeason, uintEpisode)
                 If nGlobalRating IsNot Nothing AndAlso nGlobalRating.Rating IsNot Nothing AndAlso nGlobalRating.Votes IsNot Nothing Then
-                    nTVEpisode.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1))
-                    nTVEpisode.Votes = CStr(nGlobalRating.Votes)
+                    nTVEpisode.Ratings.Add(New MediaContainers.RatingDetails With {
+                                           .Max = 10,
+                                           .Name = "trakt",
+                                           .Value = CDbl(Math.Round(nGlobalRating.Rating.Value, 1)),
+                                           .Votes = CInt(nGlobalRating.Votes)
+                                           })
                 End If
             End If
 
@@ -314,8 +322,12 @@ Public Class clsAPITrakt
             If FilteredOptions.bMainRating Then
                 Dim nGlobalRating = Await _client.Shows.GetShowRatingsAsync(CStr(uintTraktID.Result))
                 If nGlobalRating IsNot Nothing AndAlso nGlobalRating.Rating IsNot Nothing AndAlso nGlobalRating.Votes IsNot Nothing Then
-                    nTVShow.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1))
-                    nTVShow.Votes = CStr(nGlobalRating.Votes)
+                    nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {
+                                        .Max = 10,
+                                        .Name = "trakt",
+                                        .Value = CDbl(Math.Round(nGlobalRating.Rating.Value, 1)),
+                                        .Votes = CInt(nGlobalRating.Votes)
+                                        })
                 End If
             End If
 

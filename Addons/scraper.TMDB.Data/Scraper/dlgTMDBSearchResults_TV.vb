@@ -332,7 +332,7 @@ Public Class dlgTMDBSearchResults_TV
         btnVerify.Text = Master.eLang.GetString(848, "Verify")
         lblAiredHeader.Text = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
         lblCreatorsHeader.Text = String.Concat(Master.eLang.GetString(744, "Creators"), ":")
-        lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
+        lblGenreHeader.Text = String.Concat(Master.eLang.GetString(725, "Genres"), ":")
         lblTMDBHeader.Text = String.Concat(Master.eLang.GetString(933, "TMDB ID"), ":")
         lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
         Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")

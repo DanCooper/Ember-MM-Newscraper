@@ -334,6 +334,22 @@ Public Class MediaExporter
                             File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
+                Case Enums.ModifierType.MainKeyart
+                    If _tExportSettings.MainKeyarts Then
+                        If Not _tExportSettings.MainKeyarts_MaxHeight = -1 OrElse Not _tExportSettings.MainKeyarts_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.MainKeyarts_MaxWidth, _tExportSettings.MainKeyarts_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("exportdata/{0}-keyart.jpg", _iCounter_Global)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
+                                tImage.ImageOriginal.Clear() 'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("exportdata/{0}-keyart.jpg", _iCounter_Global)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
+                        End If
+                    End If
                 Case Enums.ModifierType.MainLandscape
                     If _tExportSettings.MainLandscapes Then
                         If Not _tExportSettings.MainLandscapes_MaxHeight = -1 OrElse Not _tExportSettings.MainLandscapes_MaxWidth = -1 Then
@@ -486,8 +502,8 @@ Public Class MediaExporter
                         If Not String.IsNullOrEmpty(subtitleinfo.LongLanguage) Then
                             nInfo.subLongLanguage = nInfo.subLongLanguage & ";" & subtitleinfo.LongLanguage
                         End If
-                        If Not String.IsNullOrEmpty(subtitleinfo.SubsType) Then
-                            nInfo.subType = nInfo.subType & ";" & subtitleinfo.SubsType
+                        If Not String.IsNullOrEmpty(subtitleinfo.Type) Then
+                            nInfo.subType = nInfo.subType & ";" & subtitleinfo.Type
                         End If
                     End If
                 Next
@@ -724,6 +740,7 @@ Public Class MediaExporter
             strRow = strRow.Replace("<$CLEARLOGO>", ExportImage(.ClearLogo, Enums.ModifierType.MainClearLogo))
             strRow = strRow.Replace("<$DISCART>", ExportImage(.DiscArt, Enums.ModifierType.MainDiscArt))
             strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ModifierType.MainFanart))
+            strRow = strRow.Replace("<$KEYART>", ExportImage(.Keyart, Enums.ModifierType.MainKeyart))
             strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ModifierType.MainLandscape))
             strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ModifierType.MainPoster))
         End With
@@ -747,8 +764,8 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$CERTIFICATIONS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Certifications.ToArray)))
         strRow = strRow.Replace("<$COUNTRIES>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Countries.ToArray)))
         strRow = strRow.Replace("<$CREDITS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Credits.ToArray)))
-        strRow = strRow.Replace("<$DATEADDED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tMovie.DateAdded).ToString("dd.MM.yyyy")))
-        strRow = strRow.Replace("<$DATEMODIFIED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tMovie.DateModified).ToString("dd.MM.yyyy")))
+        strRow = strRow.Replace("<$DATEADDED>", StringUtils.HtmlEncode(tMovie.Movie.DateAdded))
+        strRow = strRow.Replace("<$DATEMODIFIED>", StringUtils.HtmlEncode(tMovie.Movie.DateModified))
         strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Directors.ToArray)))
         strRow = strRow.Replace("<$GENRES>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Genres.ToArray)))
         strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tMovie.Movie.IMDB))
@@ -761,7 +778,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$PLAYCOUNT>", CStr(tMovie.Movie.PlayCount))
         strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tMovie.Movie.Plot))
         strRow = strRow.Replace("<$RATING>", StringUtils.HtmlEncode(If(tMovie.Movie.RatingSpecified, Double.Parse(tMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), String.Empty)))
-        strRow = strRow.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(tMovie.Movie.ReleaseDate))
+        strRow = strRow.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(tMovie.Movie.Premiered))
         strRow = strRow.Replace("<$RUNTIME>", StringUtils.HtmlEncode(tMovie.Movie.Runtime))
         strRow = strRow.Replace("<$STUDIOS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Studios.ToArray)))
         strRow = strRow.Replace("<$TAGLINE>", StringUtils.HtmlEncode(tMovie.Movie.Tagline))
@@ -819,7 +836,7 @@ Public Class MediaExporter
     End Function
 
     Private Function ProcessPattern_Settings(ByVal strPattern As String) As String
-        _tExportSettings.Clear()
+        _tExportSettings = New ExportSettings
 
         Dim regSettings As Match = Regex.Match(strPattern, "<exportsettings>.*?</exportsettings>", RegexOptions.Singleline)
         If regSettings.Success Then
@@ -868,7 +885,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$ACTORS>", StringUtils.HtmlEncode(String.Join(", ", ActorsList_Episode.ToArray)))
         strRow = strRow.Replace("<$AIRED>", StringUtils.HtmlEncode(tEpisode.TVEpisode.Aired))
         strRow = strRow.Replace("<$CREDITS>", StringUtils.HtmlEncode(String.Join(" / ", tEpisode.TVEpisode.Credits.ToArray)))
-        strRow = strRow.Replace("<$DATEADDED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tEpisode.DateAdded).ToString("dd.MM.yyyy")))
+        strRow = strRow.Replace("<$DATEADDED>", StringUtils.HtmlEncode(tEpisode.TVEpisode.DateAdded))
         strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tEpisode.TVEpisode.Directors.ToArray)))
         strRow = strRow.Replace("<$EPISODE>", StringUtils.HtmlEncode(CStr(tEpisode.TVEpisode.Episode)))
         strRow = strRow.Replace("<$GUESTSTARS>", StringUtils.HtmlEncode(String.Join(" / ", GuestStarsList_Episode.ToArray)))
@@ -978,6 +995,7 @@ Public Class MediaExporter
             strRow = strRow.Replace("<$CLEARART>", ExportImage(.ClearArt, Enums.ModifierType.MainClearArt))
             strRow = strRow.Replace("<$CLEARLOGO>", ExportImage(.ClearLogo, Enums.ModifierType.MainClearLogo))
             strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ModifierType.MainFanart))
+            strRow = strRow.Replace("<$KEYART>", ExportImage(.Keyart, Enums.ModifierType.MainKeyart))
             strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ModifierType.MainLandscape))
             strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ModifierType.MainPoster))
         End With
@@ -1001,8 +1019,8 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$CERTIFICATIONS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Certifications.ToArray)))
         strRow = strRow.Replace("<$COUNTRIES>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Countries.ToArray)))
         strRow = strRow.Replace("<$CREATORS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Creators.ToArray)))
-        strRow = strRow.Replace("<$DATEADDED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tShow.DateAdded).ToString("dd.MM.yyyy")))
-        strRow = strRow.Replace("<$DATEMODIFIED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tShow.DateModified).ToString("dd.MM.yyyy")))
+        'strRow = strRow.Replace("<$DATEADDED>", StringUtils.HtmlEncode(tShow.TVShow.DateAdded))
+        'strRow = strRow.Replace("<$DATEMODIFIED>", StringUtils.HtmlEncode(tShow.TVShow.DateModified))
         strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Directors.ToArray)))
         strRow = strRow.Replace("<$GENRES>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Genres.ToArray)))
         strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tShow.TVShow.IMDB))
@@ -1353,473 +1371,129 @@ Public Class MediaExporter
     <XmlRoot("exportsettings")>
     Public Class ExportSettings
 
-#Region "Fields"
-
-        Private _episodeposters As Boolean
-        Private _episodeposters_maxheight As Integer
-        Private _episodeposters_maxwidth As Integer
-        Private _episodefanarts As Boolean
-        Private _episodefanarts_maxheight As Integer
-        Private _episodefanarts_maxwidth As Integer
-        Private _filename As String
-        Private _flags As Boolean
-        Private _info As String
-        Private _mainbanners As Boolean
-        Private _mainbanners_maxheight As Integer
-        Private _mainbanners_maxwidth As Integer
-        Private _maincharacterarts As Boolean
-        Private _maincleararts As Boolean
-        Private _mainclearlogos As Boolean
-        Private _maindiscarts As Boolean
-        Private _mainfanarts As Boolean
-        Private _mainfanarts_maxheight As Integer
-        Private _mainfanarts_maxwidth As Integer
-        Private _mainlandscapes As Boolean
-        Private _mainlandscapes_maxheight As Integer
-        Private _mainlandscapes_maxwidth As Integer
-        Private _mainposters As Boolean
-        Private _mainposters_maxheight As Integer
-        Private _mainposters_maxwidth As Integer
-        Private _seasonbanners As Boolean
-        Private _seasonbanners_maxheight As Integer
-        Private _seasonbanners_maxwidth As Integer
-        Private _seasonfanarts As Boolean
-        Private _seasonfanarts_maxheight As Integer
-        Private _seasonfanarts_maxwidth As Integer
-        Private _seasonlandscapes As Boolean
-        Private _seasonlandscapes_maxheight As Integer
-        Private _seasonlandscapes_maxwidth As Integer
-        Private _seasonposters As Boolean
-        Private _seasonposters_maxheight As Integer
-        Private _seasonposters_maxwidth As Integer
-
-#End Region 'Fields
-
 #Region "Properties"
 
         <XmlElement("episodefanarts")>
-        Public Property EpisodeFanarts() As Boolean
-            Get
-                Return _episodefanarts
-            End Get
-            Set(ByVal value As Boolean)
-                _episodefanarts = value
-            End Set
-        End Property
+        Public Property EpisodeFanarts() As Boolean = False
 
         <XmlElement("episodefanarts_maxheight")>
-        Public Property EpisodeFanarts_MaxHeight() As Integer
-            Get
-                Return _episodefanarts_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _episodefanarts_maxheight = value
-            End Set
-        End Property
+        Public Property EpisodeFanarts_MaxHeight() As Integer = -1
 
         <XmlElement("episodefanarts_maxwidth")>
-        Public Property EpisodeFanarts_MaxWidth() As Integer
-            Get
-                Return _episodefanarts_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _episodefanarts_maxwidth = value
-            End Set
-        End Property
+        Public Property EpisodeFanarts_MaxWidth() As Integer = -1
 
         <XmlElement("episodeposters")>
-        Public Property EpisodePosters() As Boolean
-            Get
-                Return _episodeposters
-            End Get
-            Set(ByVal value As Boolean)
-                _episodeposters = value
-            End Set
-        End Property
+        Public Property EpisodePosters() As Boolean = False
 
         <XmlElement("episodeposters_maxheight")>
-        Public Property EpisodePosters_MaxHeight() As Integer
-            Get
-                Return _episodeposters_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _episodeposters_maxheight = value
-            End Set
-        End Property
+        Public Property EpisodePosters_MaxHeight() As Integer = -1
 
         <XmlElement("episodeposters_maxwidth")>
-        Public Property EpisodePosters_MaxWidth() As Integer
-            Get
-                Return _episodeposters_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _episodeposters_maxwidth = value
-            End Set
-        End Property
+        Public Property EpisodePosters_MaxWidth() As Integer = -1
 
         <XmlElement("filename")>
-        Public Property Filename() As String
-            Get
-                Return _filename
-            End Get
-            Set(ByVal value As String)
-                _filename = value
-            End Set
-        End Property
+        Public Property Filename() As String = "index.html"
 
         <XmlElement("flags")>
-        Public Property Flags() As Boolean
-            Get
-                Return _flags
-            End Get
-            Set(ByVal value As Boolean)
-                _flags = value
-            End Set
-        End Property
+        Public Property Flags() As Boolean = False
 
         <XmlElement("info")>
-        Public Property Info() As String
-            Get
-                Return _info
-            End Get
-            Set(ByVal value As String)
-                _info = value
-            End Set
-        End Property
+        Public Property Info() As String = String.Empty
 
         <XmlElement("mainbanners")>
-        Public Property MainBanners() As Boolean
-            Get
-                Return _mainbanners
-            End Get
-            Set(ByVal value As Boolean)
-                _mainbanners = value
-            End Set
-        End Property
+        Public Property MainBanners() As Boolean = False
 
         <XmlElement("mainbanners_maxheight")>
-        Public Property MainBanners_MaxHeight() As Integer
-            Get
-                Return _mainbanners_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _mainbanners_maxheight = value
-            End Set
-        End Property
+        Public Property MainBanners_MaxHeight() As Integer = -1
 
         <XmlElement("mainbanners_maxwidth")>
-        Public Property MainBanners_MaxWidth() As Integer
-            Get
-                Return _mainbanners_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _mainbanners_maxwidth = value
-            End Set
-        End Property
+        Public Property MainBanners_MaxWidth() As Integer = -1
 
         <XmlElement("maincharacterarts")>
-        Public Property MainCharacterarts() As Boolean
-            Get
-                Return _maincharacterarts
-            End Get
-            Set(ByVal value As Boolean)
-                _maincharacterarts = value
-            End Set
-        End Property
+        Public Property MainCharacterarts() As Boolean = False
 
         <XmlElement("maincleararts")>
-        Public Property MainClearArts() As Boolean
-            Get
-                Return _maincleararts
-            End Get
-            Set(ByVal value As Boolean)
-                _maincleararts = value
-            End Set
-        End Property
+        Public Property MainClearArts() As Boolean = False
 
         <XmlElement("mainclearlogos")>
-        Public Property MainClearLogos() As Boolean
-            Get
-                Return _mainclearlogos
-            End Get
-            Set(ByVal value As Boolean)
-                _mainclearlogos = value
-            End Set
-        End Property
+        Public Property MainClearLogos() As Boolean = False
 
         <XmlElement("maindiscarts")>
-        Public Property MainDiscArts() As Boolean
-            Get
-                Return _maindiscarts
-            End Get
-            Set(ByVal value As Boolean)
-                _maindiscarts = value
-            End Set
-        End Property
+        Public Property MainDiscArts() As Boolean = False
 
         <XmlElement("mainfanarts")>
-        Public Property MainFanarts() As Boolean
-            Get
-                Return _mainfanarts
-            End Get
-            Set(ByVal value As Boolean)
-                _mainfanarts = value
-            End Set
-        End Property
+        Public Property MainFanarts() As Boolean = False
 
         <XmlElement("mainfanarts_maxheight")>
-        Public Property MainFanarts_MaxHeight() As Integer
-            Get
-                Return _mainfanarts_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _mainfanarts_maxheight = value
-            End Set
-        End Property
+        Public Property MainFanarts_MaxHeight() As Integer = -1
 
         <XmlElement("mainfanarts_maxwidth")>
-        Public Property MainFanarts_MaxWidth() As Integer
-            Get
-                Return _mainfanarts_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _mainfanarts_maxwidth = value
-            End Set
-        End Property
+        Public Property MainFanarts_MaxWidth() As Integer = -1
+
+        <XmlElement("mainkeyarts")>
+        Public Property MainKeyarts() As Boolean = False
+
+        <XmlElement("mainkeyarts_maxheight")>
+        Public Property MainKeyarts_MaxHeight() As Integer = -1
+
+        <XmlElement("mainkeyarts_maxwidth")>
+        Public Property MainKeyarts_MaxWidth() As Integer = -1
 
         <XmlElement("mainlandscapes")>
-        Public Property MainLandscapes() As Boolean
-            Get
-                Return _mainlandscapes
-            End Get
-            Set(ByVal value As Boolean)
-                _mainlandscapes = value
-            End Set
-        End Property
+        Public Property MainLandscapes() As Boolean = False
 
         <XmlElement("mainlandscapes_maxheight")>
-        Public Property MainLandscapes_MaxHeight() As Integer
-            Get
-                Return _mainlandscapes_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _mainlandscapes_maxheight = value
-            End Set
-        End Property
+        Public Property MainLandscapes_MaxHeight() As Integer = -1
 
         <XmlElement("mainlandscapes_maxwidth")>
-        Public Property MainLandscapes_MaxWidth() As Integer
-            Get
-                Return _mainlandscapes_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _mainlandscapes_maxwidth = value
-            End Set
-        End Property
+        Public Property MainLandscapes_MaxWidth() As Integer = -1
 
         <XmlElement("mainposters")>
-        Public Property MainPosters() As Boolean
-            Get
-                Return _mainposters
-            End Get
-            Set(ByVal value As Boolean)
-                _mainposters = value
-            End Set
-        End Property
+        Public Property MainPosters() As Boolean = False
 
         <XmlElement("mainposters_maxheight")>
-        Public Property MainPosters_MaxHeight() As Integer
-            Get
-                Return _mainposters_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _mainposters_maxheight = value
-            End Set
-        End Property
+        Public Property MainPosters_MaxHeight() As Integer = -1
 
         <XmlElement("mainposters_maxwidth")>
-        Public Property MainPosters_MaxWidth() As Integer
-            Get
-                Return _mainposters_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _mainposters_maxwidth = value
-            End Set
-        End Property
+        Public Property MainPosters_MaxWidth() As Integer = -1
 
         <XmlElement("seasonbanners")>
-        Public Property SeasonBanners() As Boolean
-            Get
-                Return _seasonbanners
-            End Get
-            Set(ByVal value As Boolean)
-                _seasonbanners = value
-            End Set
-        End Property
+        Public Property SeasonBanners() As Boolean = False
 
         <XmlElement("seasonbanners_maxheight")>
-        Public Property SeasonBanners_MaxHeight() As Integer
-            Get
-                Return _seasonbanners_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _seasonbanners_maxheight = value
-            End Set
-        End Property
+        Public Property SeasonBanners_MaxHeight() As Integer = -1
 
         <XmlElement("seasonbanners_maxwidth")>
-        Public Property SeasonBanners_MaxWidth() As Integer
-            Get
-                Return _seasonbanners_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _seasonbanners_maxwidth = value
-            End Set
-        End Property
+        Public Property SeasonBanners_MaxWidth() As Integer = -1
 
         <XmlElement("seasonfanarts")>
-        Public Property SeasonFanarts() As Boolean
-            Get
-                Return _seasonfanarts
-            End Get
-            Set(ByVal value As Boolean)
-                _seasonfanarts = value
-            End Set
-        End Property
+        Public Property SeasonFanarts() As Boolean = False
 
         <XmlElement("seasonfanarts_maxheight")>
-        Public Property SeasonFanarts_MaxHeight() As Integer
-            Get
-                Return _seasonfanarts_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _seasonfanarts_maxheight = value
-            End Set
-        End Property
+        Public Property SeasonFanarts_MaxHeight() As Integer = -1
 
         <XmlElement("seasonfanarts_maxwidth")>
-        Public Property SeasonFanarts_MaxWidth() As Integer
-            Get
-                Return _seasonfanarts_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _seasonfanarts_maxwidth = value
-            End Set
-        End Property
+        Public Property SeasonFanarts_MaxWidth() As Integer = -1
 
         <XmlElement("seasonlandscapes")>
-        Public Property SeasonLandscapes() As Boolean
-            Get
-                Return _seasonlandscapes
-            End Get
-            Set(ByVal value As Boolean)
-                _seasonlandscapes = value
-            End Set
-        End Property
+        Public Property SeasonLandscapes() As Boolean = False
 
         <XmlElement("seasonlandscapes_maxheight")>
-        Public Property SeasonLandscapes_MaxHeight() As Integer
-            Get
-                Return _seasonlandscapes_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _seasonlandscapes_maxheight = value
-            End Set
-        End Property
+        Public Property SeasonLandscapes_MaxHeight() As Integer = -1
 
         <XmlElement("seasonlandscapes_maxwidth")>
-        Public Property SeasonLandscapes_MaxWidth() As Integer
-            Get
-                Return _seasonlandscapes_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _seasonlandscapes_maxwidth = value
-            End Set
-        End Property
+        Public Property SeasonLandscapes_MaxWidth() As Integer = -1
 
         <XmlElement("seasonposters")>
-        Public Property SeasonPosters() As Boolean
-            Get
-                Return _seasonposters
-            End Get
-            Set(ByVal value As Boolean)
-                _seasonposters = value
-            End Set
-        End Property
+        Public Property SeasonPosters() As Boolean = False
 
         <XmlElement("seasonposters_maxheight")>
-        Public Property SeasonPosters_MaxHeight() As Integer
-            Get
-                Return _seasonposters_maxheight
-            End Get
-            Set(ByVal value As Integer)
-                _seasonposters_maxheight = value
-            End Set
-        End Property
+        Public Property SeasonPosters_MaxHeight() As Integer = -1
 
         <XmlElement("seasonposters_maxwidth")>
-        Public Property SeasonPosters_MaxWidth() As Integer
-            Get
-                Return _seasonposters_maxwidth
-            End Get
-            Set(ByVal value As Integer)
-                _seasonposters_maxwidth = value
-            End Set
-        End Property
+        Public Property SeasonPosters_MaxWidth() As Integer = -1
 
 #End Region 'Properties
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _episodefanarts = False
-            _episodefanarts_maxheight = -1
-            _episodefanarts_maxwidth = -1
-            _episodeposters = False
-            _episodeposters_maxheight = -1
-            _episodeposters_maxwidth = -1
-            _filename = "index.html"
-            _flags = False
-            _info = String.Empty
-            _mainbanners = False
-            _mainbanners_maxheight = -1
-            _mainbanners_maxwidth = -1
-            _maincharacterarts = False
-            _maincleararts = False
-            _mainclearlogos = False
-            _maindiscarts = False
-            _mainfanarts = False
-            _mainfanarts_maxheight = -1
-            _mainfanarts_maxwidth = -1
-            _mainlandscapes = False
-            _mainlandscapes_maxheight = -1
-            _mainlandscapes_maxwidth = -1
-            _mainposters = False
-            _mainposters_maxheight = -1
-            _mainposters_maxwidth = -1
-            _seasonbanners = False
-            _seasonbanners_maxheight = -1
-            _seasonbanners_maxwidth = -1
-            _seasonfanarts = False
-            _seasonfanarts_maxheight = -1
-            _seasonfanarts_maxwidth = -1
-            _seasonlandscapes = False
-            _seasonlandscapes_maxheight = -1
-            _seasonlandscapes_maxwidth = -1
-            _seasonposters = False
-            _seasonposters_maxheight = -1
-            _seasonposters_maxwidth = -1
-        End Sub
-
-#End Region 'Methods
 
     End Class
 

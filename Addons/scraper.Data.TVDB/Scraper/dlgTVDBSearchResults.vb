@@ -331,7 +331,7 @@ Public Class dlgTVDBSearchResults
         btnVerify.Text = Master.eLang.GetString(848, "Verify")
         lblAiredHeader.Text = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
         lblCreatorsHeader.Text = String.Concat(Master.eLang.GetString(744, "Creators"), ":")
-        lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
+        lblGenreHeader.Text = String.Concat(Master.eLang.GetString(725, "Genres"), ":")
         lblTVDBHeader.Text = String.Concat(Master.eLang.GetString(941, "TVDB ID"), ":")
         lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
         Label3.Text = String.Concat(Master.eLang.GetString(758, "Searching TVDB"), "...")

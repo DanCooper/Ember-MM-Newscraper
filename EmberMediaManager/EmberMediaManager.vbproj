@@ -207,6 +207,12 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="clsTheming.vb" />
+    <Compile Include="dlgEdit_TVEpisode.Designer.vb">
+      <DependentUpon>dlgEdit_TVEpisode.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgEdit_TVEpisode.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgAbout.Designer.vb">
       <DependentUpon>dlgAbout.vb</DependentUpon>
     </Compile>
@@ -237,34 +243,28 @@
     <Compile Include="dlgClearOrReplace.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgEditTVEpisode.Designer.vb">
-      <DependentUpon>dlgEditTVEpisode.vb</DependentUpon>
+    <Compile Include="dlgEdit_TVSeason.Designer.vb">
+      <DependentUpon>dlgEdit_TVSeason.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgEditTVEpisode.vb">
+    <Compile Include="dlgEdit_TVSeason.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgEditMovieSet.Designer.vb">
-      <DependentUpon>dlgEditMovieSet.vb</DependentUpon>
+    <Compile Include="dlgEdit_Movie.designer.vb">
+      <DependentUpon>dlgEdit_Movie.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgEditMovieSet.vb">
+    <Compile Include="dlgEdit_Movie.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgEditMovie.Designer.vb">
-      <DependentUpon>dlgEditMovie.vb</DependentUpon>
+    <Compile Include="dlgEdit_Movieset.designer.vb">
+      <DependentUpon>dlgEdit_Movieset.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgEditMovie.vb">
+    <Compile Include="dlgEdit_Movieset.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgEditTVSeason.Designer.vb">
-      <DependentUpon>dlgEditTVSeason.vb</DependentUpon>
+    <Compile Include="dlgEdit_TVShow.Designer.vb">
+      <DependentUpon>dlgEdit_TVShow.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgEditTVSeason.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgEditTVShow.Designer.vb">
-      <DependentUpon>dlgEditTVShow.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgEditTVShow.vb">
+    <Compile Include="dlgEdit_TVShow.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgErrorViewer.Designer.vb">
@@ -285,16 +285,16 @@
     <Compile Include="dlgFIStreamEditor.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgImgManual.Designer.vb">
-      <DependentUpon>dlgImgManual.vb</DependentUpon>
+    <Compile Include="dlgImageManual.Designer.vb">
+      <DependentUpon>dlgImageManual.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgImgManual.vb">
+    <Compile Include="dlgImageManual.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgImgView.Designer.vb">
-      <DependentUpon>dlgImgView.vb</DependentUpon>
+    <Compile Include="dlgImageViewer.Designer.vb">
+      <DependentUpon>dlgImageViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgImgView.vb">
+    <Compile Include="dlgImageViewer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgManualEdit.Designer.vb">
@@ -375,12 +375,6 @@
     <Compile Include="dlgSourceTVShow.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgWizard.Designer.vb">
-      <DependentUpon>dlgWizard.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgWizard.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgImgSelect.Designer.vb">
       <DependentUpon>dlgImgSelect.vb</DependentUpon>
     </Compile>
@@ -415,6 +409,9 @@
     <Compile Include="XMLViewer\XMLViewerSettings.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="dlgEdit_TVEpisode.resx">
+      <DependentUpon>dlgEdit_TVEpisode.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgAbout.resx">
       <DependentUpon>dlgAbout.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -432,20 +429,17 @@
     <EmbeddedResource Include="dlgClearOrReplace.resx">
       <DependentUpon>dlgClearOrReplace.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditTVEpisode.resx">
-      <DependentUpon>dlgEditTVEpisode.vb</DependentUpon>
+    <EmbeddedResource Include="dlgEdit_TVSeason.resx">
+      <DependentUpon>dlgEdit_TVSeason.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditMovieSet.resx">
-      <DependentUpon>dlgEditMovieSet.vb</DependentUpon>
+    <EmbeddedResource Include="dlgEdit_Movie.resx">
+      <DependentUpon>dlgEdit_Movie.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditMovie.resx">
-      <DependentUpon>dlgEditMovie.vb</DependentUpon>
+    <EmbeddedResource Include="dlgEdit_Movieset.resx">
+      <DependentUpon>dlgEdit_Movieset.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditTVSeason.resx">
-      <DependentUpon>dlgEditTVSeason.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditTVShow.resx">
-      <DependentUpon>dlgEditTVShow.vb</DependentUpon>
+    <EmbeddedResource Include="dlgEdit_TVShow.resx">
+      <DependentUpon>dlgEdit_TVShow.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgErrorViewer.resx">
       <DependentUpon>dlgErrorViewer.vb</DependentUpon>
@@ -456,11 +450,11 @@
     <EmbeddedResource Include="dlgFIStreamEditor.resx">
       <DependentUpon>dlgFIStreamEditor.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgImgManual.resx">
-      <DependentUpon>dlgImgManual.vb</DependentUpon>
+    <EmbeddedResource Include="dlgImageManual.resx">
+      <DependentUpon>dlgImageManual.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgImgView.resx">
-      <DependentUpon>dlgImgView.vb</DependentUpon>
+    <EmbeddedResource Include="dlgImageViewer.resx">
+      <DependentUpon>dlgImageViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgManualEdit.resx">
       <DependentUpon>dlgManualEdit.vb</DependentUpon>
@@ -503,9 +497,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgSourceTVShow.resx">
       <DependentUpon>dlgSourceTVShow.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgWizard.resx">
-      <DependentUpon>dlgWizard.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgImgSelect.resx">
       <DependentUpon>dlgImgSelect.vb</DependentUpon>

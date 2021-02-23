@@ -107,7 +107,7 @@ Public Class VideobusterDE_Trailer
         _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
-        SPanel.Text = "Videbuster.de"
+        SPanel.Text = "Videobuster.de"
         SPanel.Name = String.Concat(_Name, "Scraper")
         SPanel.Prefix = "VideobusterDETrailer_"
         SPanel.Order = 110

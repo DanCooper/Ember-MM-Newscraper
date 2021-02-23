@@ -214,8 +214,8 @@ Namespace FanartTVs
                     Next
                 End If
 
-                'Poster
-                If FilteredModifiers.MainPoster AndAlso Results.List.Movieposter IsNot Nothing Then
+                'Poster / Keyart
+                If (FilteredModifiers.MainPoster OrElse FilteredModifiers.MainKeyart) AndAlso Results.List.Movieposter IsNot Nothing Then
                     For Each image In Results.List.Movieposter
                         Dim tmpPoster As New MediaContainers.Image With {
                             .Height = "1426",
@@ -378,8 +378,8 @@ Namespace FanartTVs
                     Next
                 End If
 
-                'MainPoster
-                If FilteredModifiers.MainPoster AndAlso Results.List.Tvposter IsNot Nothing Then
+                'MainPoster / MainKeyart
+                If (FilteredModifiers.MainPoster OrElse FilteredModifiers.MainKeyart) AndAlso Results.List.Tvposter IsNot Nothing Then
                     For Each image In Results.List.Tvposter
                         Dim tmpPoster As New MediaContainers.Image With {
                             .Height = "1426",
