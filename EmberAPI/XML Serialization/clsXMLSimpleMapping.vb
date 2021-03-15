@@ -104,6 +104,7 @@ Public Class clsXMLSimpleMapping
             If existingInput IsNot Nothing Then
                 nResult = existingInput.MappedTo
             ElseIf addNewInputs Then
+                nResult = singleString
                 Mappings.Add(New SimpleMapping With {
                              .Input = singleString,
                              .MappedTo = singleString
@@ -137,6 +138,7 @@ Public Class clsXMLSimpleMapping
                 If existingInput IsNot Nothing Then
                     nResult.Add(existingInput.MappedTo)
                 ElseIf addNewInputs Then
+                    nResult.Add(aInput)
                     Mappings.Add(New SimpleMapping With {
                                  .Input = aInput,
                                  .MappedTo = aInput
