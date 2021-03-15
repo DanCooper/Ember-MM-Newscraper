@@ -175,6 +175,7 @@ CREATE TABLE episode (
         idSource        integer NOT NULL,
         Episode         integer,
         Title           text,
+        OriginalTitle   text,
         "New"           bool DEFAULT 0,
         Mark            bool NOT NULL DEFAULT 0,
         Lock            bool NOT NULL DEFAULT 0,
@@ -207,7 +208,9 @@ CREATE TABLE episode (
         DELETE FROM art WHERE media_id=old.idEpisode AND media_type='episode';
         DELETE FROM directorlinkepisode WHERE idEpisode=old.idEpisode;
         DELETE FROM files WHERE idFile=old.idFile;
+        DELETE FROM rating WHERE media_id=old.idEpisode AND media_type='episode';
         DELETE FROM gueststarlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM uniqueid WHERE media_id=old.idEpisode AND media_type='episode';
         DELETE FROM writerlinkepisode WHERE idEpisode=old.idEpisode;
         DELETE FROM TVVStreams WHERE TVEpID=old.idEpisode;
         DELETE FROM TVAStreams WHERE TVEpID=old.idEpisode;
@@ -253,7 +256,7 @@ CREATE TABLE genrelinktvshow (
 
 CREATE TABLE rating (
         idRating     integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-        idMedia      integer,
+        media_id     integer,
         media_type   text,
         rating_type  text,
         rating_max   integer,
@@ -264,7 +267,7 @@ CREATE TABLE rating (
 
         CREATE INDEX ix_rating
         ON rating
-        (idMedia, media_type);
+        (media_id, media_type);
 
 CREATE TABLE tag (
         idTag   integer PRIMARY KEY,
@@ -359,9 +362,11 @@ CREATE TABLE movie (
         DELETE FROM directorlinkmovie WHERE idMovie=old.idMovie;
         DELETE FROM genrelinkmovie WHERE idMovie=old.idMovie;
         DELETE FROM movielinktvshow WHERE idMovie=old.idMovie;
+        DELETE FROM rating WHERE media_id=old.idMovie AND media_type='movie';
         DELETE FROM setlinkmovie WHERE idMovie=old.idMovie;
         DELETE FROM studiolinkmovie WHERE idMovie=old.idMovie;
         DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM uniqueid WHERE media_id=old.idMovie AND media_type='movie';
         DELETE FROM writerlinkmovie WHERE idMovie=old.idMovie;
         DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
         DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
@@ -403,8 +408,9 @@ CREATE TABLE seasons (
         AFTER DELETE
         ON seasons
         BEGIN
-        DELETE FROM art WHERE media_id=old.idSeason AND media_type='season';
+        DELETE FROM art WHERE media_id=old.idSeason AND media_type='season'; 
         DELETE FROM episode WHERE Season=old.Season AND idShow=old.idShow;
+        DELETE FROM uniqueid WHERE media_id=old.idSeason AND media_type='season';
         END;
 
 CREATE TABLE sets (
@@ -426,6 +432,7 @@ CREATE TABLE sets (
         ON sets
         BEGIN
         DELETE FROM art WHERE media_id=old.idSet AND media_type='set';
+        DELETE FROM uniqueid WHERE media_id=old.idSet AND media_type='set';
         END;
 
 CREATE TABLE studio (
@@ -506,10 +513,29 @@ CREATE TABLE tvshow (
         DELETE FROM episode WHERE idShow=old.idShow;
         DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
         DELETE FROM movielinktvshow WHERE idShow=old.idShow;
+        DELETE FROM rating WHERE media_id=old.idShow AND media_type='tvshow';
         DELETE FROM seasons WHERE idShow=old.idShow;
         DELETE FROM studiolinktvshow WHERE idShow=old.idShow;
         DELETE FROM taglinks WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM uniqueid WHERE media_id=old.idShow AND media_type='tvshow';
         END;
+
+CREATE TABLE uniqueid (
+        idUniqueID  integer PRIMARY KEY,
+        media_id    integer,
+        media_type  text,
+        value       text,
+        type        text,
+        isDefault   boolean DEFAULT 0
+        );
+
+        CREATE INDEX ix_uniqueid1
+        ON uniqueid
+	    (media_id, media_type, type);
+
+        CREATE INDEX ix_uniqueid2
+        ON uniqueid
+        (media_type, value);
 
 CREATE TABLE writerlinkepisode (
         idWriter   integer,

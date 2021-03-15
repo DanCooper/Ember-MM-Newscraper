@@ -360,13 +360,13 @@ Public Class TMDB_Image
 
     Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("[TMDB_Image] [Scraper_Movie] [Start]")
-        If String.IsNullOrEmpty(DBMovie.Movie.TMDB) Then
-            DBMovie.Movie.TMDB = ModulesManager.Instance.GetMovieTMDBID(DBMovie.Movie.IMDB)
+        If Not DBMovie.Movie.UniqueIDs.TMDbIdSpecified Then
+            DBMovie.Movie.UniqueIDs.TMDbId = ModulesManager.Instance.GetMovieTMDbIdByIMDbId(DBMovie.Movie.UniqueIDs.IMDbId)
         End If
 
-        If Not String.IsNullOrEmpty(DBMovie.Movie.TMDB) Then
+        If DBMovie.Movie.UniqueIDs.TMDbIdSpecified Then
             Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_Movie)
-            ImagesContainer = _TMDBAPI_Movie.GetImages_Movie_MovieSet(DBMovie.Movie.TMDB, FilteredModifiers, Enums.ContentType.Movie)
+            ImagesContainer = _TMDBAPI_Movie.GetImages_Movie_MovieSet(DBMovie.Movie.UniqueIDs.TMDbId, FilteredModifiers, Enums.ContentType.Movie)
         End If
 
         logger.Trace("[TMDB_Image] [Scraper_Movie] [Done]")
@@ -375,13 +375,13 @@ Public Class TMDB_Image
 
     Function Scraper_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Start]")
-        If String.IsNullOrEmpty(DBMovieSet.MovieSet.TMDB) AndAlso DBMovieSet.MoviesInSetSpecified Then
-            DBMovieSet.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieSet.MoviesInSet.Item(0).DBMovie.Movie.IMDB)
+        If Not DBMovieSet.MovieSet.UniqueIDs.TMDbIdSpecified AndAlso DBMovieSet.MoviesInSetSpecified Then
+            DBMovieSet.MovieSet.UniqueIDs.TMDbId = ModulesManager.Instance.GetMovieCollectionID(DBMovieSet.MoviesInSet.Item(0).DBMovie.Movie.UniqueIDs.IMDbId)
         End If
 
-        If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.TMDB) Then
+        If DBMovieSet.MovieSet.UniqueIDs.TMDbIdSpecified Then
             Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_MovieSet)
-            ImagesContainer = _TMDBAPI_MovieSet.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.TMDB, FilteredModifiers, Enums.ContentType.MovieSet)
+            ImagesContainer = _TMDBAPI_MovieSet.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.UniqueIDs.TMDbId, FilteredModifiers, Enums.ContentType.MovieSet)
         End If
 
         logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Done]")
@@ -392,33 +392,33 @@ Public Class TMDB_Image
         logger.Trace("[TMDB_Image] [Scraper_TV] [Start]")
         Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_TV)
 
-        If DBTV.TVShow IsNot Nothing AndAlso String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-            If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
-                DBTV.TVShow.TMDB = _TMDBAPI_TV.GetTMDBbyTVDB(DBTV.TVShow.TVDB)
-            ElseIf Not String.IsNullOrEmpty(DBTV.TVShow.IMDB) Then
-                DBTV.TVShow.TMDB = _TMDBAPI_TV.GetTMDBbyIMDB(DBTV.TVShow.IMDB)
+        If DBTV.TVShow IsNot Nothing AndAlso Not DBTV.TVShow.UniqueIDs.TMDbIdSpecified Then
+            If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
+                DBTV.TVShow.UniqueIDs.TMDbId = _TMDBAPI_TV.GetTMDBbyTVDB(DBTV.TVShow.UniqueIDs.TVDbId)
+            ElseIf DBTV.TVShow.UniqueIDs.IMDbIdSpecified Then
+                DBTV.TVShow.UniqueIDs.TMDbId = _TMDBAPI_TV.GetTMDBbyIMDB(DBTV.TVShow.UniqueIDs.IMDbId)
             End If
         End If
 
         Select Case DBTV.ContentType
             Case Enums.ContentType.TVEpisode
-                If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                    ImagesContainer = _TMDBAPI_TV.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, FilteredModifiers)
+                If DBTV.TVShow.UniqueIDs.TMDbIdSpecified Then
+                    ImagesContainer = _TMDBAPI_TV.GetImages_TVEpisode(DBTV.TVShow.UniqueIDs.TMDbId, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, FilteredModifiers)
                     If FilteredModifiers.MainFanart Then
-                        ImagesContainer.MainFanarts = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers).MainFanarts
+                        ImagesContainer.MainFanarts = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.UniqueIDs.TMDbId, FilteredModifiers).MainFanarts
                     End If
                 Else
                     logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TMDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVSeason
-                If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                    ImagesContainer = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers)
+                If DBTV.TVShow.UniqueIDs.TMDbIdSpecified Then
+                    ImagesContainer = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.UniqueIDs.TMDbId, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVShow
-                If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                    ImagesContainer = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers)
+                If DBTV.TVShow.UniqueIDs.TMDbIdSpecified Then
+                    ImagesContainer = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.UniqueIDs.TMDbId, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If

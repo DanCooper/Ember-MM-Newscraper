@@ -1601,7 +1601,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieSetGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MoviesetListSorting, True)
         MovieSetGeneralMediaListSorting.Clear()
         MovieSetGeneralMediaListSorting.AddRange(Master.eSettings.MovieSetGeneralMediaListSorting)
         LoadMovieSetGeneralMediaListSorting()
@@ -1684,7 +1684,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieSetSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetSortTokens, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MoviesetSortTokens, True)
         RefreshMovieSetSortTokens()
         sResult.NeedsReload_MovieSet = True
         SetApplyButton(True)
@@ -2885,10 +2885,7 @@ Public Class dlgSettings
             cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
             cbGeneralDateTime.SelectedValue = .GeneralDateTime
             cbGeneralLanguage.SelectedItem = .GeneralLanguage
-            cbGeneralMovieTheme.SelectedItem = .GeneralMovieTheme
-            cbGeneralMovieSetTheme.SelectedItem = .GeneralMovieSetTheme
-            cbGeneralTVEpisodeTheme.SelectedItem = .GeneralTVEpisodeTheme
-            cbGeneralTVShowTheme.SelectedItem = .GeneralTVShowTheme
+            cbGeneralTheme.SelectedItem = .GeneralTheme
             cbMovieBannerPrefSize.SelectedValue = .MovieBannerPrefSize
             cbMovieExtrafanartsPrefSize.SelectedValue = .MovieExtrafanartsPrefSize
             cbMovieExtrathumbsPrefSize.SelectedValue = .MovieExtrathumbsPrefSize
@@ -2954,13 +2951,13 @@ Public Class dlgSettings
             chkGeneralDisplayClearArt.Checked = .GeneralDisplayClearArt
             chkGeneralDisplayClearLogo.Checked = .GeneralDisplayClearLogo
             chkGeneralDisplayDiscArt.Checked = .GeneralDisplayDiscArt
-            chkGeneralDisplayFanart.Checked = .GeneralDisplayFanart
-            chkGeneralDisplayFanartSmall.Checked = .GeneralDisplayFanartSmall
+            chkGeneralDisplayFanart.Checked = .GeneralDisplayFanartAsBackground
+            chkGeneralDisplayFanartSmall.Checked = .GeneralDisplayFanart
             chkGeneralDisplayLandscape.Checked = .GeneralDisplayLandscape
             chkGeneralDisplayPoster.Checked = .GeneralDisplayPoster
             chkGeneralImagesGlassOverlay.Checked = .GeneralImagesGlassOverlay
             chkGeneralOverwriteNfo.Checked = .GeneralOverwriteNfo
-            chkGeneralDisplayGenresText.Checked = .GeneralShowGenresText
+            'chkGeneralDisplayGenresText.Checked = .GeneralShowGenresText
             chkGeneralDisplayLangFlags.Checked = .GeneralShowLangFlags
             chkGeneralDisplayImgDims.Checked = .GeneralShowImgDims
             chkGeneralDisplayImgNames.Checked = .GeneralShowImgNames
@@ -3050,7 +3047,6 @@ Public Class dlgSettings
             chkMovieLockTop250.Checked = .MovieLockTop250
             chkMovieLockTrailer.Checked = .MovieLockTrailer
             chkMovieLockCredits.Checked = .MovieLockCredits
-            chkMovieLockYear.Checked = .MovieLockYear
             chkMoviePosterKeepExisting.Checked = .MoviePosterKeepExisting
             chkMoviePosterPrefOnly.Checked = .MoviePosterPrefSizeOnly
             chkMoviePosterResize.Checked = .MoviePosterResize
@@ -3122,7 +3118,6 @@ Public Class dlgSettings
             chkMovieScraperMPAA.Checked = .MovieScraperMPAA
             chkMovieScraperOriginalTitle.Checked = .MovieScraperOriginalTitle
             chkMovieScraperOriginalTitleAsTitle.Checked = .MovieScraperOriginalTitleAsTitle
-            chkMovieScraperDetailView.Checked = .MovieScraperUseDetailView
             chkMovieScraperOutline.Checked = .MovieScraperOutline
             chkMovieScraperPlot.Checked = .MovieScraperPlot
             chkMovieScraperPlotForOutline.Checked = .MovieScraperPlotForOutline
@@ -3142,7 +3137,6 @@ Public Class dlgSettings
             chkMovieScraperUseMDDuration.Checked = .MovieScraperUseMDDuration
             chkMovieScraperCredits.Checked = .MovieScraperCredits
             chkMovieScraperXBMCTrailerFormat.Checked = .MovieScraperXBMCTrailerFormat
-            chkMovieScraperYear.Checked = .MovieScraperYear
             chkMovieSkipStackedSizeCheck.Checked = .MovieSkipStackedSizeCheck
             chkMovieSortBeforeScan.Checked = .MovieSortBeforeScan
             chkMovieThemeKeepExisting.Checked = .MovieThemeKeepExisting
@@ -4070,9 +4064,9 @@ Public Class dlgSettings
 
     Private Sub LoadLangs()
         cbMovieLanguageOverlay.Items.Add(Master.eLang.Disabled)
-        cbMovieLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
+        cbMovieLanguageOverlay.Items.AddRange(Localization.IsoLangGetLanguagesList.ToArray)
         cbTVLanguageOverlay.Items.Add(Master.eLang.Disabled)
-        cbTVLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
+        cbTVLanguageOverlay.Items.AddRange(Localization.IsoLangGetLanguagesList.ToArray)
     End Sub
 
     Private Sub LoadMovieGeneralMediaListSorting()
@@ -4155,36 +4149,12 @@ Public Class dlgSettings
     End Sub
 
     Private Sub LoadThemes()
-        cbGeneralMovieTheme.Items.Clear()
-        cbGeneralMovieSetTheme.Items.Clear()
-        cbGeneralTVShowTheme.Items.Clear()
-        cbGeneralTVEpisodeTheme.Items.Clear()
-        If Directory.Exists(Path.Combine(Functions.AppPath, "Themes")) Then
-            Dim mT As New List(Of String)
-            Dim msT As New List(Of String)
-            Dim sT As New List(Of String)
-            Dim eT As New List(Of String)
-            Try
-                mT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "movie-*.xml"))
-            Catch
-            End Try
-            cbGeneralMovieTheme.Items.AddRange(mT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movie-", String.Empty)).ToArray)
-            Try
-                msT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "movieset-*.xml"))
-            Catch
-            End Try
-            cbGeneralMovieSetTheme.Items.AddRange(msT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movieset-", String.Empty)).ToArray)
-            Try
-                sT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "tvshow-*.xml"))
-            Catch
-            End Try
-            cbGeneralTVShowTheme.Items.AddRange(sT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvshow-", String.Empty)).ToArray)
-            Try
-                eT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "tvep-*.xml"))
-            Catch
-            End Try
-            cbGeneralTVEpisodeTheme.Items.AddRange(eT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvep-", String.Empty)).ToArray)
-        End If
+        cbGeneralTheme.Items.Clear()
+        Dim diDefaults As DirectoryInfo = New DirectoryInfo(Path.Combine(Functions.AppPath, "Themes"))
+        If diDefaults.Exists Then cbGeneralTheme.Items.AddRange(diDefaults.GetFiles("*.xml").Cast(Of FileInfo)().Select(Function(f) Path.GetFileNameWithoutExtension(f.Name)).ToArray)
+
+        Dim diCustom As DirectoryInfo = New DirectoryInfo(Path.Combine(Master.SettingsPath, "Themes"))
+        If diCustom.Exists Then cbGeneralTheme.Items.AddRange(diCustom.GetFiles("*.xml").Cast(Of FileInfo)().Select(Function(f) Path.GetFileNameWithoutExtension(f.Name)).ToArray)
     End Sub
 
     Private Sub LoadCustomScraperButtonModifierTypes_Movie()
@@ -4952,8 +4922,8 @@ Public Class dlgSettings
             .GeneralDisplayClearArt = chkGeneralDisplayClearArt.Checked
             .GeneralDisplayClearLogo = chkGeneralDisplayClearLogo.Checked
             .GeneralDisplayDiscArt = chkGeneralDisplayDiscArt.Checked
-            .GeneralDisplayFanart = chkGeneralDisplayFanart.Checked
-            .GeneralDisplayFanartSmall = chkGeneralDisplayFanartSmall.Checked
+            .GeneralDisplayFanartAsBackground = chkGeneralDisplayFanart.Checked
+            .GeneralDisplayFanart = chkGeneralDisplayFanartSmall.Checked
             .GeneralDisplayLandscape = chkGeneralDisplayLandscape.Checked
             .GeneralDisplayPoster = chkGeneralDisplayPoster.Checked
             .GeneralImagesGlassOverlay = chkGeneralImagesGlassOverlay.Checked
@@ -4973,16 +4943,13 @@ Public Class dlgSettings
                 .GeneralImageFilterPosterMatchTolerance = 1
             End If
             .GeneralLanguage = cbGeneralLanguage.Text
-            .GeneralMovieTheme = cbGeneralMovieTheme.Text
-            .GeneralMovieSetTheme = cbGeneralMovieSetTheme.Text
+            .GeneralTheme = cbGeneralTheme.Text
             .GeneralOverwriteNfo = chkGeneralOverwriteNfo.Checked
-            .GeneralShowGenresText = chkGeneralDisplayGenresText.Checked
+            '.GeneralShowGenresText = chkGeneralDisplayGenresText.Checked
             .GeneralShowLangFlags = chkGeneralDisplayLangFlags.Checked
             .GeneralShowImgDims = chkGeneralDisplayImgDims.Checked
             .GeneralShowImgNames = chkGeneralDisplayImgNames.Checked
             .GeneralSourceFromFolder = chkGeneralSourceFromFolder.Checked
-            .GeneralTVEpisodeTheme = cbGeneralTVEpisodeTheme.Text
-            .GeneralTVShowTheme = cbGeneralTVShowTheme.Text
             .MovieActorThumbsKeepExisting = chkMovieActorThumbsKeepExisting.Checked
             '.MovieActorThumbsQual = Me.tbMovieActorThumbsQual.value
             .MovieBackdropsPath = txtMovieSourcesBackdropsFolderPath.Text
@@ -5093,7 +5060,6 @@ Public Class dlgSettings
             .MovieLockTrailer = chkMovieLockTrailer.Checked
             .MovieLockUserRating = chkMovieLockUserRating.Checked
             .MovieLockCredits = chkMovieLockCredits.Checked
-            .MovieLockYear = chkMovieLockYear.Checked
             .MovieMetadataPerFileType.Clear()
             .MovieMetadataPerFileType.AddRange(MovieMeta)
             .MoviePosterHeight = If(Not String.IsNullOrEmpty(txtMoviePosterHeight.Text), Convert.ToInt32(txtMoviePosterHeight.Text), 0)
@@ -5204,11 +5170,9 @@ Public Class dlgSettings
             .MovieScraperTop250 = chkMovieScraperTop250.Checked
             .MovieScraperTrailer = chkMovieScraperTrailer.Checked
             .MovieScraperUserRating = chkMovieScraperUserRating.Checked
-            .MovieScraperUseDetailView = chkMovieScraperDetailView.Checked
             .MovieScraperUseMDDuration = chkMovieScraperUseMDDuration.Checked
             .MovieScraperCredits = chkMovieScraperCredits.Checked
             .MovieScraperXBMCTrailerFormat = chkMovieScraperXBMCTrailerFormat.Checked
-            .MovieScraperYear = chkMovieScraperYear.Checked
             If Not String.IsNullOrEmpty(txtMovieSkipLessThan.Text) AndAlso Integer.TryParse(txtMovieSkipLessThan.Text, 0) Then
                 .MovieSkipLessThan = Convert.ToInt32(txtMovieSkipLessThan.Text)
             Else
@@ -6861,10 +6825,6 @@ Public Class dlgSettings
         lblMovieScraperGlobalCredits.Text = strWriters
         lblTVScraperGlobalCredits.Text = strWriters
 
-        'Year
-        Dim strYear As String = Master.eLang.GetString(278, "Year")
-        lblMovieScraperGlobalYear.Text = strYear
-
         Text = Master.eLang.GetString(420, "Settings")
         btnApply.Text = Master.eLang.GetString(276, "Apply")
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
@@ -6924,7 +6884,6 @@ Public Class dlgSettings
         chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
         chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
         chkMovieScraperCollectionsAuto.Text = Master.eLang.GetString(1266, "Add Movie automatically to Collections")
-        chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
         chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Plot Outline")
@@ -6961,7 +6920,6 @@ Public Class dlgSettings
         gbGeneralDaemon.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
         gbGeneralDateAdded.Text = Master.eLang.GetString(792, "Adding Date")
         gbGeneralInterface.Text = Master.eLang.GetString(795, "Interface")
-        gbGeneralThemes.Text = Master.eLang.GetString(629, "GUI Themes")
         gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         gbMovieSourcesBackdropsFolderOpts.Text = Master.eLang.GetString(520, "Backdrops Folder")
         gbMovieImagesFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
@@ -6985,11 +6943,8 @@ Public Class dlgSettings
         lblGeneralDaemonPath.Text = Master.eLang.GetString(990, "Path to DTAgent.exe/VCDMount.exe")
         lblGeneralImageFilterPosterMatchRate.Text = Master.eLang.GetString(148, "Poster") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
         lblGeneralImageFilterFanartMatchRate.Text = Master.eLang.GetString(149, "Fanart") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
-        lblGeneralMovieSetTheme.Text = String.Concat(Master.eLang.GetString(1155, "MovieSet Theme"), ":")
-        lblGeneralMovieTheme.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
         lblGeneralOverwriteNfo.Text = Master.eLang.GetString(434, "(If unchecked, non-conforming nfos will be renamed to <filename>.info)")
-        lblGeneralTVEpisodeTheme.Text = String.Concat(Master.eLang.GetString(667, "Episode Theme"), ":")
-        lblGeneralTVShowTheme.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
+        lblGeneralTheme.Text = String.Concat(Master.eLang.GetString(620, "Theme"), ":")
         lblGeneralntLang.Text = Master.eLang.GetString(430, "Interface Language:")
         lblMovieGeneralCustomMarker1.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #1")
         lblMovieGeneralCustomMarker2.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #2")
@@ -8087,10 +8042,7 @@ Public Class dlgSettings
 
     Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
         cbGeneralDateTime.SelectedIndexChanged,
-        cbGeneralMovieSetTheme.SelectedIndexChanged,
-        cbGeneralMovieTheme.SelectedIndexChanged,
-        cbGeneralTVEpisodeTheme.SelectedIndexChanged,
-        cbGeneralTVShowTheme.SelectedIndexChanged,
+        cbGeneralTheme.SelectedIndexChanged,
         cbMovieBannerPrefSize.SelectedIndexChanged,
         cbMovieExtrafanartsPrefSize.SelectedIndexChanged,
         cbMovieExtrathumbsPrefSize.SelectedIndexChanged,
@@ -8243,7 +8195,6 @@ Public Class dlgSettings
         chkMovieLockTop250.CheckedChanged,
         chkMovieLockTrailer.CheckedChanged,
         chkMovieLockUserRating.CheckedChanged,
-        chkMovieLockYear.CheckedChanged,
         chkMovieNFOBoxee.CheckedChanged,
         chkMovieNFOEden.CheckedChanged,
         chkMovieNFOFrodo.CheckedChanged,
@@ -8267,7 +8218,6 @@ Public Class dlgSettings
         chkMovieScraperCollectionsExtendedInfo.CheckedChanged,
         chkMovieScraperCollectionsYAMJCompatibleSets.CheckedChanged,
         chkMovieScraperCredits.CheckedChanged,
-        chkMovieScraperDetailView.CheckedChanged,
         chkMovieScraperDirector.CheckedChanged,
         chkMovieScraperMPAA.CheckedChanged,
         chkMovieScraperMetaDataIFOScan.CheckedChanged,
@@ -8287,7 +8237,6 @@ Public Class dlgSettings
         chkMovieScraperTrailer.CheckedChanged,
         chkMovieScraperUserRating.CheckedChanged,
         chkMovieScraperXBMCTrailerFormat.CheckedChanged,
-        chkMovieScraperYear.CheckedChanged,
         chkMovieSetBannerExtended.CheckedChanged,
         chkMovieSetBannerKeepExisting.CheckedChanged,
         chkMovieSetBannerMSAA.CheckedChanged,
@@ -8618,7 +8567,7 @@ Public Class dlgSettings
         txtTVShowPosterWidth.TextChanged,
         txtTVShowThemeDefaultSearch.TextChanged,
         txtTVShowThemeTvTunesCustomPath.TextChanged,
-        txtTVShowThemeTvTunesSubDir.TextChanged
+        txtTVShowThemeTvTunesSubDir.TextChanged, cbGeneralMovieTheme.SelectedIndexChanged
 
         SetApplyButton(True)
     End Sub

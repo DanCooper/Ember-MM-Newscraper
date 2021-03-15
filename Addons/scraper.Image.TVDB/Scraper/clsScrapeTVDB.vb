@@ -51,7 +51,7 @@ Namespace TVDBs
             End Try
         End Sub
 
-        Public Function GetAllImages_TV(ByVal tvdbId As String, ByVal filteredModifiers As Structures.ScrapeModifiers, ByVal language As String) As MediaContainers.SearchResultsContainer
+        Public Function GetAllImages_TV(ByVal tvdbId As Integer, ByVal filteredModifiers As Structures.ScrapeModifiers, ByVal language As String) As MediaContainers.SearchResultsContainer
             'get images for the content language
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
             alImagesContainer = GetImages_TV(tvdbId, filteredModifiers, language)
@@ -76,11 +76,11 @@ Namespace TVDBs
             Return Result
         End Function
 
-        Private Function GetImages_TV(ByVal tvdbId As String, ByVal filteredModifiers As Structures.ScrapeModifiers, ByVal language As String) As MediaContainers.SearchResultsContainer
+        Private Function GetImages_TV(ByVal tvdbId As Integer, ByVal filteredModifiers As Structures.ScrapeModifiers, ByVal language As String) As MediaContainers.SearchResultsContainer
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             Try
-                Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbId), language))
+                Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(tvdbId, language))
                 If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                     Return alImagesContainer
                 End If
@@ -201,11 +201,11 @@ Namespace TVDBs
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tvdbId As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal tEpisodeOrdering As Enums.EpisodeOrdering, ByVal filteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVEpisode(ByVal tvdbId As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal tEpisodeOrdering As Enums.EpisodeOrdering, ByVal filteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             Try
-                Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbId), "en"))
+                Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(tvdbId, "en"))
                 If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                     Return alImagesContainer
                 End If

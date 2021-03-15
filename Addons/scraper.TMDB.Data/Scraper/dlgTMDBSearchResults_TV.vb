@@ -259,11 +259,11 @@ Public Class dlgTMDBSearchResults_TV
             lblCreator.Text = String.Join(" / ", _tmpTVShow.Creators.ToArray)
             lblGenre.Text = String.Join(" / ", _tmpTVShow.Genres.ToArray)
             txtPlot.Text = StringUtils.ShortenOutline(_tmpTVShow.Plot, 410)
-            lblTMDBID.Text = _tmpTVShow.TMDB
+            lblTMDBID.Text = _tmpTVShow.UniqueIDs.TMDbId.ToString
 
-            If _PosterCache.ContainsKey(_tmpTVShow.TMDB) Then
+            If _PosterCache.ContainsKey(_tmpTVShow.UniqueIDs.TMDbId.ToString) Then
                 'just set it
-                pbPoster.Image = _PosterCache(_tmpTVShow.TMDB)
+                pbPoster.Image = _PosterCache(_tmpTVShow.UniqueIDs.TMDbId.ToString)
             Else
                 'go download it, if available
                 If Not String.IsNullOrEmpty(sPoster) Then
@@ -273,14 +273,14 @@ Public Class dlgTMDBSearchResults_TV
                     pnlPicStatus.Visible = True
                     bwDownloadPic = New System.ComponentModel.BackgroundWorker
                     bwDownloadPic.WorkerSupportsCancellation = True
-                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpTVShow.TMDB})
+                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpTVShow.UniqueIDs.TMDbId.ToString})
                 End If
 
             End If
 
             'store clone of tmpshow
-            If Not _InfoCache.ContainsKey(_tmpTVShow.TMDB) Then
-                _InfoCache.Add(_tmpTVShow.TMDB, GetTVShowClone(_tmpTVShow))
+            If Not _InfoCache.ContainsKey(_tmpTVShow.UniqueIDs.TMDbId.ToString) Then
+                _InfoCache.Add(_tmpTVShow.UniqueIDs.TMDbId.ToString, GetTVShowClone(_tmpTVShow))
             End If
 
 
@@ -298,7 +298,7 @@ Public Class dlgTMDBSearchResults_TV
         ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
             For Each Show As MediaContainers.TVShow In M.Matches
-                tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Show.Title), .Tag = Show.TMDB})
+                tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Show.Title), .Tag = Show.UniqueIDs.TMDbId})
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)
 

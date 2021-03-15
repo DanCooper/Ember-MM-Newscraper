@@ -1158,7 +1158,7 @@ Namespace Kodi
 
                     'string or string.empty
                     Dim mDateAdded As String = If(mDBElement.Movie.DateAddedSpecified, mDBElement.Movie.DateAdded, Nothing)
-                    Dim mImdbnumber As String = mDBElement.Movie.IMDB
+                    Dim mImdbnumber As String = mDBElement.Movie.UniqueIDs.IMDbId
                     Dim mLastPlayed As String = mDBElement.Movie.LastPlayed
                     Dim mMPAA As String = mDBElement.Movie.MPAA
                     Dim mOriginalTitle As String = mDBElement.Movie.OriginalTitle
@@ -1253,7 +1253,7 @@ Namespace Kodi
 
                     'UniquieIDs
                     Dim mUniqueID As New Dictionary(Of String, String)
-                    For Each nUniqueID In mDBElement.Movie.UniqueIDs
+                    For Each nUniqueID In mDBElement.Movie.UniqueIDs.Items
                         mUniqueID.Add(nUniqueID.Type, nUniqueID.Value)
                     Next
                     'remove other unique ID's stored in Kodi's database
@@ -1531,7 +1531,7 @@ Namespace Kodi
 
                     'UniquieIDs
                     Dim mUniqueID As New Dictionary(Of String, String)
-                    For Each nUniqueID In mDBElement.TVEpisode.UniqueIDs
+                    For Each nUniqueID In mDBElement.TVEpisode.UniqueIDs.Items
                         mUniqueID.Add(nUniqueID.Type, nUniqueID.Value)
                     Next
                     'remove other unique ID's stored in Kodi's database
@@ -1685,7 +1685,7 @@ Namespace Kodi
                         'Sync Episodes
                         If mDBElement.EpisodesSpecified Then
                             For Each tEpisode As Database.DBElement In mDBElement.Episodes
-                                If tEpisode.TVShow Is Nothing Then Master.DB.AddTVShowInfoToDBElement(tEpisode, mDBElement)
+                                If tEpisode.TVShow Is Nothing Then Master.DB.Load_TVShowInfoIntoDBElement(tEpisode, mDBElement)
                                 Await Task.Run(Function() UpdateInfo_TVEpisode(tEpisode, blnSendHostNotification, GenericSubEvent, GenericMainEvent))
                             Next
                         End If
@@ -1751,7 +1751,7 @@ Namespace Kodi
 
                     'string or string.empty
                     Dim mEpisodeGuide As String = mDBElement.TVShow.EpisodeGuide.URL
-                    Dim mImdbnumber As String = mDBElement.TVShow.TVDB
+                    Dim mImdbnumber As String = mDBElement.TVShow.UniqueIDs.TVDbId.ToString
                     Dim mMPAA As String = mDBElement.TVShow.MPAA
                     Dim mOriginalTitle As String = mDBElement.TVShow.OriginalTitle
                     Dim mPlot As String = mDBElement.TVShow.Plot
@@ -1822,7 +1822,7 @@ Namespace Kodi
 
                     'UniquieIDs
                     Dim mUniqueID As New Dictionary(Of String, String)
-                    For Each nUniqueID In mDBElement.TVShow.UniqueIDs
+                    For Each nUniqueID In mDBElement.TVShow.UniqueIDs.Items
                         mUniqueID.Add(nUniqueID.Type, nUniqueID.Value)
                     Next
                     'remove other unique ID's stored in Kodi's database
@@ -1888,7 +1888,7 @@ Namespace Kodi
                         'Sync Episodes
                         If mDBElement.EpisodesSpecified Then
                             For Each tEpisode As Database.DBElement In mDBElement.Episodes.Where(Function(f) f.FilenameSpecified)
-                                If tEpisode.TVShow Is Nothing Then Master.DB.AddTVShowInfoToDBElement(tEpisode, mDBElement)
+                                If tEpisode.TVShow Is Nothing Then Master.DB.Load_TVShowInfoIntoDBElement(tEpisode, mDBElement)
                                 Await Task.Run(Function() UpdateInfo_TVEpisode(tEpisode, blnSendHostNotification, GenericSubEvent, GenericMainEvent))
                             Next
                         End If
@@ -1896,7 +1896,7 @@ Namespace Kodi
                         'Sync Seasons
                         If mDBElement.SeasonsSpecified Then
                             For Each tSeason As Database.DBElement In mDBElement.Seasons
-                                If tSeason.TVShow Is Nothing Then Master.DB.AddTVShowInfoToDBElement(tSeason, mDBElement)
+                                If tSeason.TVShow Is Nothing Then Master.DB.Load_TVShowInfoIntoDBElement(tSeason, mDBElement)
                                 Await Task.Run(Function() UpdateInfo_TVSeason(tSeason, blnSendHostNotification, GenericSubEvent, GenericMainEvent))
                             Next
                         End If

@@ -95,8 +95,8 @@ Public Class dlgWorker
                                 Return
                             End If
                             bwGetWatchedState.ReportProgress(3, nWatchedMovie.Movie.Title)
-                            Dim lstDBElement = lstMoviesInDB.Where(Function(f) (nWatchedMovie.Movie.Ids.Imdb IsNot Nothing AndAlso f.Movie.IMDB = nWatchedMovie.Movie.Ids.Imdb) OrElse
-                                                                       (nWatchedMovie.Movie.Ids.Tmdb IsNot Nothing AndAlso f.Movie.TMDB = nWatchedMovie.Movie.Ids.Tmdb.ToString))
+                            Dim lstDBElement = lstMoviesInDB.Where(Function(f) (nWatchedMovie.Movie.Ids.Imdb IsNot Nothing AndAlso f.Movie.UniqueIDs.IMDbId = nWatchedMovie.Movie.Ids.Imdb) OrElse
+                                                                       (nWatchedMovie.Movie.Ids.Tmdb IsNot Nothing AndAlso f.Movie.UniqueIDs.TMDbId = CInt(nWatchedMovie.Movie.Ids.Tmdb)))
                             If lstDBElement IsNot Nothing Then
                                 Dim strLastPlayed = Functions.ConvertToProperDateTime(nWatchedMovie.LastWatchedAt.Value.ToLocalTime.ToString)
                                 Dim iPlayCount = nWatchedMovie.Plays.Value
@@ -141,9 +141,9 @@ Public Class dlgWorker
                         For Each nWatchedShow In lstWatchedShows
                             Dim lstTVShowIDsToRefresh As New List(Of Long)
                             bwGetWatchedState.ReportProgress(3, nWatchedShow.Show.Title)
-                            Dim lstDBTVShow = lstTVShowsInDB.Where(Function(f) (nWatchedShow.Show.Ids.Imdb IsNot Nothing AndAlso f.TVShow.IMDB = nWatchedShow.Show.Ids.Imdb) OrElse
-                                                                       (nWatchedShow.Show.Ids.Tmdb IsNot Nothing AndAlso f.TVShow.TMDB = nWatchedShow.Show.Ids.Tmdb.ToString) OrElse
-                                                                       (nWatchedShow.Show.Ids.Tvdb IsNot Nothing AndAlso f.TVShow.TVDB = nWatchedShow.Show.Ids.Tvdb.ToString))
+                            Dim lstDBTVShow = lstTVShowsInDB.Where(Function(f) (nWatchedShow.Show.Ids.Imdb IsNot Nothing AndAlso f.TVShow.UniqueIDs.IMDbId = nWatchedShow.Show.Ids.Imdb) OrElse
+                                                                       (nWatchedShow.Show.Ids.Tmdb IsNot Nothing AndAlso f.TVShow.UniqueIDs.TMDbId = CInt(nWatchedShow.Show.Ids.Tmdb)) OrElse
+                                                                       (nWatchedShow.Show.Ids.Tvdb IsNot Nothing AndAlso f.TVShow.UniqueIDs.TVDbId = CInt(nWatchedShow.Show.Ids.Tvdb)))
                             If lstDBTVShow IsNot Nothing Then
                                 For Each nWatchedSeason In nWatchedShow.Seasons
                                     For Each nWatchedEpisode In nWatchedSeason.Episodes

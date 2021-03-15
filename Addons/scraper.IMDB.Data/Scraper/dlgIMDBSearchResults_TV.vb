@@ -265,7 +265,7 @@ Public Class dlgIMDBSearchResults_TV
                 If MessageBox.Show(String.Concat(Master.eLang.GetString(821, "You have manually entered an IMDB ID but have not verified it is correct."), Environment.NewLine, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), Master.eLang.GetString(823, "Continue without verification?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
                     Exit Sub
                 Else
-                    _tmpTVShow.IMDB = txtIMDBID.Text.Replace("tt", String.Empty)
+                    _tmpTVShow.UniqueIDs.IMDbId = txtIMDBID.Text.Replace("tt", String.Empty)
                 End If
             End If
         End If
@@ -285,11 +285,11 @@ Public Class dlgIMDBSearchResults_TV
             lblCreators.Text = String.Join(" / ", _tmpTVShow.Creators)
             lblGenre.Text = String.Join(" / ", _tmpTVShow.Genres.ToArray)
             txtPlot.Text = _tmpTVShow.Plot
-            lblIMDBID.Text = _tmpTVShow.IMDB
+            lblIMDBID.Text = _tmpTVShow.UniqueIDs.IMDbId
 
-            If _PosterCache.ContainsKey(_tmpTVShow.IMDB) Then
+            If _PosterCache.ContainsKey(_tmpTVShow.UniqueIDs.IMDbId) Then
                 'just set it
-                pbPoster.Image = _PosterCache(_tmpTVShow.IMDB)
+                pbPoster.Image = _PosterCache(_tmpTVShow.UniqueIDs.IMDbId)
             Else
                 'go download it, if available
                 If Not String.IsNullOrEmpty(sPoster) Then
@@ -299,14 +299,14 @@ Public Class dlgIMDBSearchResults_TV
                     pnlPicStatus.Visible = True
                     bwDownloadPic = New System.ComponentModel.BackgroundWorker
                     bwDownloadPic.WorkerSupportsCancellation = True
-                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpTVShow.IMDB})
+                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpTVShow.UniqueIDs.IMDbId})
                 End If
 
             End If
 
             'store clone of tmpmovie
-            If Not _InfoCache.ContainsKey(_tmpTVShow.IMDB) Then
-                _InfoCache.Add(_tmpTVShow.IMDB, GetTVShowClone(_tmpTVShow))
+            If Not _InfoCache.ContainsKey(_tmpTVShow.UniqueIDs.IMDbId) Then
+                _InfoCache.Add(_tmpTVShow.UniqueIDs.IMDbId, GetTVShowClone(_tmpTVShow))
             End If
 
 
@@ -324,7 +324,7 @@ Public Class dlgIMDBSearchResults_TV
         ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
             For Each Show As MediaContainers.TVShow In M.Matches
-                tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Show.Title), .Tag = Show.IMDB})
+                tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Show.Title), .Tag = Show.UniqueIDs.IMDbId})
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)
 

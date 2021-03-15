@@ -250,13 +250,13 @@ Public Class TVDB_Data
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
-            If oDBTV.TVShow.TVDBSpecified Then
+            If oDBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-                nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, ScrapeModifiers, FilteredOptions, False)
-            ElseIf oDBTV.TVShow.IMDBSpecified Then
-                oDBTV.TVShow.TVDB = _scraper.GetTVDBbyIMDB(oDBTV.TVShow.IMDB)
-                If Not oDBTV.TVShow.TVDBSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
-                nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, ScrapeModifiers, FilteredOptions, False)
+                nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.UniqueIDs.TVDbId.ToString, ScrapeModifiers, FilteredOptions, False)
+            ElseIf oDBTV.TVShow.UniqueIDs.IMDbIdSpecified Then
+                oDBTV.TVShow.UniqueIDs.TVDbId = _scraper.GetTVDBbyIMDB(oDBTV.TVShow.UniqueIDs.IMDbId)
+                If Not oDBTV.TVShow.UniqueIDs.TVDbIdSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+                nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.UniqueIDs.TVDbId.ToString, ScrapeModifiers, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If oDBTV.TVShow.TitleSpecified Then
@@ -282,10 +282,10 @@ Public Class TVDB_Data
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
-            If Not oDBTV.TVShow.TVDBSpecified Then
+            If Not oDBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
                 Using dlgSearch As New dlgTVDBSearchResults(Settings, _scraper)
                     If dlgSearch.ShowDialog(oDBTV.TVShow.Title, oDBTV.ShowPath, ScrapeModifiers, FilteredOptions) = DialogResult.OK Then
-                        nTVShow = _scraper.GetTVShowInfo(dlgSearch.Result.TVDB, ScrapeModifiers, FilteredOptions, False)
+                        nTVShow = _scraper.GetTVShowInfo(dlgSearch.Result.UniqueIDs.TVDbId.ToString, ScrapeModifiers, FilteredOptions, False)
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
@@ -314,11 +314,11 @@ Public Class TVDB_Data
         Dim _scraper As New TVDBs.Scraper(Settings)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
-        If oDBTVEpisode.TVShow.TVDBSpecified Then
+        If oDBTVEpisode.TVShow.UniqueIDs.TVDbIdSpecified Then
             If Not oDBTVEpisode.TVEpisode.Episode = -1 AndAlso Not oDBTVEpisode.TVEpisode.Season = -1 Then
-                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEpisode.Season, oDBTVEpisode.TVEpisode.Episode, oDBTVEpisode.Ordering, FilteredOptions)
+                nTVEpisode = _scraper.GetTVEpisodeInfo(oDBTVEpisode.TVShow.UniqueIDs.TVDbId, oDBTVEpisode.TVEpisode.Season, oDBTVEpisode.TVEpisode.Episode, oDBTVEpisode.Ordering, FilteredOptions)
             ElseIf oDBTVEpisode.TVEpisode.AiredSpecified Then
-                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEpisode.Aired, FilteredOptions)
+                nTVEpisode = _scraper.GetTVEpisodeInfo(oDBTVEpisode.TVShow.UniqueIDs.TVDbId, oDBTVEpisode.TVEpisode.Aired, FilteredOptions)
             Else
                 logger.Trace("[TVDB_Data] [Scraper_TVEpisode] [Abort] No TV Show TVDB ID and also no AiredDate available")
                 Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}

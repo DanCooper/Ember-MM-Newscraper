@@ -146,21 +146,21 @@ Public Class ModulesManager
         BuildVersionList()
     End Sub
 
-    Public Function GetMovieCollectionID(ByVal sIMDBID As String) As String
-        Dim CollectionID As String = String.Empty
+    Public Function GetMovieCollectionID(ByVal imdbIdOrTmdbId As String) As Integer
+        Dim TMDbCollectionId As Integer = -1
 
         While Not ModulesLoaded
             Application.DoEvents()
         End While
 
-        If Not String.IsNullOrEmpty(sIMDBID) Then
+        If Not String.IsNullOrEmpty(imdbIdOrTmdbId) Then
             Dim ret As Interfaces.ModuleResult
             For Each _externalScraperModuleClass_Data As _externalScraperModuleClass_Data_MovieSet In externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ModuleName = "TMDB_Data")
-                ret = _externalScraperModuleClass_Data.ProcessorModule.GetCollectionID(sIMDBID, CollectionID)
+                ret = _externalScraperModuleClass_Data.ProcessorModule.GetTMDbCollectionId(imdbIdOrTmdbId, TMDbCollectionId)
                 If ret.breakChain Then Exit For
             Next
         End If
-        Return CollectionID
+        Return TMDbCollectionId
     End Function
 
     Function GetMovieStudio(ByRef DBMovie As Database.DBElement) As List(Of String)
@@ -180,21 +180,21 @@ Public Class ModulesManager
         Return sStudio
     End Function
 
-    Public Function GetMovieTMDBID(ByRef sIMDBID As String) As String
-        Dim TMDBID As String = String.Empty
+    Public Function GetMovieTMDbIdByIMDbId(ByRef imdbId As String) As Integer
+        Dim iTMDbId As Integer = -1
 
         While Not ModulesLoaded
             Application.DoEvents()
         End While
 
-        If Not String.IsNullOrEmpty(sIMDBID) Then
+        If Not String.IsNullOrEmpty(imdbId) Then
             Dim ret As Interfaces.ModuleResult
             For Each _externalScraperModuleClass_Data As _externalScraperModuleClass_Data_Movie In externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ModuleName = "TMDB_Data")
-                ret = _externalScraperModuleClass_Data.ProcessorModule.GetTMDBID(sIMDBID, TMDBID)
+                ret = _externalScraperModuleClass_Data.ProcessorModule.GetTMDbIdByIMDbId(imdbId, iTMDbId)
                 If ret.breakChain Then Exit For
             Next
         End If
-        Return TMDBID
+        Return iTMDbId
     End Function
 
     Public Sub GetVersions()
@@ -951,17 +951,14 @@ Public Class ModulesManager
                         ScrapedList.Add(ret.Result)
 
                         'set new informations for following scrapers
-                        If ret.Result.IMDBSpecified Then
-                            oDBMovie.Movie.IMDB = ret.Result.IMDB
+                        If ret.Result.UniqueIDsSpecified Then
+                            oDBMovie.Movie.UniqueIDs.AddRange(ret.Result.UniqueIDs)
                         End If
                         If ret.Result.OriginalTitleSpecified Then
                             oDBMovie.Movie.OriginalTitle = ret.Result.OriginalTitle
                         End If
                         If ret.Result.TitleSpecified Then
                             oDBMovie.Movie.Title = ret.Result.Title
-                        End If
-                        If ret.Result.TMDBSpecified Then
-                            oDBMovie.Movie.TMDB = ret.Result.TMDB
                         End If
                         If ret.Result.YearSpecified Then
                             oDBMovie.Movie.Year = ret.Result.Year
@@ -1003,7 +1000,7 @@ Public Class ModulesManager
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_MovieSet(DBMovieSet, showMessage) Then
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult_Data_MovieSet
-        Dim ScrapedList As New List(Of MediaContainers.MovieSet)
+        Dim ScrapedList As New List(Of MediaContainers.Movieset)
 
         While Not ModulesLoaded
             Application.DoEvents()
@@ -1014,7 +1011,7 @@ Public Class ModulesManager
             Dim tmpTitle As String = DBElement.MovieSet.Title
 
             DBElement.ImagesContainer = New MediaContainers.ImagesContainer
-            DBElement.MovieSet = New MediaContainers.MovieSet
+            DBElement.MovieSet = New MediaContainers.Movieset
 
             DBElement.MovieSet.Title = tmpTitle
         End If
@@ -1040,11 +1037,11 @@ Public Class ModulesManager
                     ScrapedList.Add(ret.Result)
 
                     'set new informations for following scrapers
+                    If ret.Result.UniqueIDsSpecified Then
+                        oDBMovieSet.MovieSet.UniqueIDs.AddRange(ret.Result.UniqueIDs)
+                    End If
                     If ret.Result.TitleSpecified Then
                         oDBMovieSet.MovieSet.Title = ret.Result.Title
-                    End If
-                    If ret.Result.TMDBSpecified Then
-                        oDBMovieSet.MovieSet.TMDB = ret.Result.TMDB
                     End If
                 End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
@@ -1096,26 +1093,20 @@ Public Class ModulesManager
                         ScrapedList.Add(ret.Result)
 
                         'set new informations for following scrapers
+                        If ret.Result.UniqueIDsSpecified Then
+                            oEpisode.TVEpisode.UniqueIDs.AddRange(ret.Result.UniqueIDs)
+                        End If
                         If ret.Result.AiredSpecified Then
                             oEpisode.TVEpisode.Aired = ret.Result.Aired
                         End If
                         If ret.Result.EpisodeSpecified Then
                             oEpisode.TVEpisode.Episode = ret.Result.Episode
                         End If
-                        If ret.Result.IMDBSpecified Then
-                            oEpisode.TVEpisode.IMDB = ret.Result.IMDB
-                        End If
                         If ret.Result.SeasonSpecified Then
                             oEpisode.TVEpisode.Season = ret.Result.Season
                         End If
                         If ret.Result.TitleSpecified Then
                             oEpisode.TVEpisode.Title = ret.Result.Title
-                        End If
-                        If ret.Result.TMDBSpecified Then
-                            oEpisode.TVEpisode.TMDB = ret.Result.TMDB
-                        End If
-                        If ret.Result.TVDBSpecified Then
-                            oEpisode.TVEpisode.TVDB = ret.Result.TVDB
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
@@ -1171,11 +1162,8 @@ Public Class ModulesManager
                         ScrapedList.Add(ret.Result)
 
                         'set new informations for following scrapers
-                        If ret.Result.TMDBSpecified Then
-                            oSeason.TVSeason.TMDB = ret.Result.TMDB
-                        End If
-                        If ret.Result.TVDBSpecified Then
-                            oSeason.TVSeason.TVDB = ret.Result.TVDB
+                        If ret.Result.UniqueIDsSpecified Then
+                            oSeason.TVSeason.UniqueIDs.AddRange(ret.Result.UniqueIDs)
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
@@ -1257,20 +1245,14 @@ Public Class ModulesManager
                         ScrapedList.Add(ret.Result)
 
                         'set new informations for following scrapers
-                        If ret.Result.IMDBSpecified Then
-                            oShow.TVShow.IMDB = ret.Result.IMDB
+                        If ret.Result.UniqueIDsSpecified Then
+                            oShow.TVShow.UniqueIDs.AddRange(ret.Result.UniqueIDs)
                         End If
                         If ret.Result.OriginalTitleSpecified Then
                             oShow.TVShow.OriginalTitle = ret.Result.OriginalTitle
                         End If
                         If ret.Result.TitleSpecified Then
                             oShow.TVShow.Title = ret.Result.Title
-                        End If
-                        If ret.Result.TMDBSpecified Then
-                            oShow.TVShow.TMDB = ret.Result.TMDB
-                        End If
-                        If ret.Result.TVDBSpecified Then
-                            oShow.TVShow.TVDB = ret.Result.TVDB
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
@@ -1962,32 +1944,11 @@ Public Class ModulesManager
 
 #Region "Fields"
 
-        Private _ContextMenuMovieList As ContextMenuStrip
-        Private _ContextMenuMovieSetList As ContextMenuStrip
-        Private _ContextMenuTVEpisodeList As ContextMenuStrip
-        Private _ContextMenuTVSeasonList As ContextMenuStrip
-        Private _ContextMenuTVShowList As ContextMenuStrip
-        Private _FilterMovies As String
-        Private _FilterMoviesSearch As String
-        Private _FilterMoviesType As String
-        Private _FilterTVShows As String
-        Private _FilterTVShowsSearch As String
-        Private _FilterTVShowsType As String
         Private _ListMovieSets As String
         Private _ListMovies As String
         Private _ListTVShows As String
         Private _LoadMedia As LoadMedia
-        Private _MainMenu As MenuStrip
-        Private _MainTabControl As TabControl
-        Private _MainToolStrip As ToolStrip
-        Private _MediaListMovieSets As DataGridView
-        Private _MediaListMovies As DataGridView
-        Private _MediaListTVEpisodes As DataGridView
-        Private _MediaListTVSeasons As DataGridView
-        Private _MediaListTVShows As DataGridView
-        Private _MediaTabSelected As Structures.MainTabType
         Private _OpenImageViewer As OpenImageViewer
-        Private _TrayMenu As ContextMenuStrip
 
 
 #End Region 'Fields
@@ -2030,193 +1991,47 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property FilterMovies() As String
-            Get
-                Return _FilterMovies
-            End Get
-            Set(ByVal value As String)
-                _FilterMovies = value
-            End Set
-        End Property
+        Public Property FilterMovies() As String = String.Empty
 
-        Public Property FilterMoviesSearch() As String
-            Get
-                Return _FilterMoviesSearch
-            End Get
-            Set(ByVal value As String)
-                _FilterMoviesSearch = value
-            End Set
-        End Property
+        Public Property FilterMoviesSearch() As String = String.Empty
 
-        Public Property FilterMoviesType() As String
-            Get
-                Return _FilterMoviesType
-            End Get
-            Set(ByVal value As String)
-                _FilterMoviesType = value
-            End Set
-        End Property
-        Public Property FilterTVShows() As String
-            Get
-                Return _FilterTVShows
-            End Get
-            Set(ByVal value As String)
-                _FilterTVShows = value
-            End Set
-        End Property
+        Public Property FilterMoviesType() As String = String.Empty
 
-        Public Property FilterTVShowsSearch() As String
-            Get
-                Return _FilterTVShowsSearch
-            End Get
-            Set(ByVal value As String)
-                _FilterTVShowsSearch = value
-            End Set
-        End Property
+        Public Property FilterTVShows() As String = String.Empty
 
-        Public Property FilterTVShowsType() As String
-            Get
-                Return _FilterTVShowsType
-            End Get
-            Set(ByVal value As String)
-                _FilterTVShowsType = value
-            End Set
-        End Property
+        Public Property FilterTVShowsSearch() As String = String.Empty
 
-        Public Property MediaTabSelected() As Structures.MainTabType
-            Get
-                Return _MediaTabSelected
-            End Get
-            Set(ByVal value As Structures.MainTabType)
-                _MediaTabSelected = value
-            End Set
-        End Property
+        Public Property FilterTVShowsType() As String = String.Empty
 
-        Public Property MainToolStrip() As ToolStrip
-            Get
-                Return _MainToolStrip
-            End Get
-            Set(ByVal value As ToolStrip)
-                _MainToolStrip = value
-            End Set
-        End Property
+        Public Property MediaTabSelected() As Settings.MainTabSorting = New Settings.MainTabSorting
 
-        Public Property MediaListMovies() As DataGridView
-            Get
-                Return _MediaListMovies
-            End Get
-            Set(ByVal value As DataGridView)
-                _MediaListMovies = value
-            End Set
-        End Property
+        Public Property MainToolStrip() As ToolStrip = New ToolStrip
 
-        Public Property MediaListMovieSets() As DataGridView
-            Get
-                Return _MediaListMovieSets
-            End Get
-            Set(ByVal value As DataGridView)
-                _MediaListMovieSets = value
-            End Set
-        End Property
+        Public Property MediaListMovies() As DataGridView = New DataGridView
 
-        Public Property MediaListTVEpisodes() As DataGridView
-            Get
-                Return _MediaListTVEpisodes
-            End Get
-            Set(ByVal value As DataGridView)
-                _MediaListTVEpisodes = value
-            End Set
-        End Property
+        Public Property MediaListMovieSets() As DataGridView = New DataGridView
 
-        Public Property MediaListTVSeasons() As DataGridView
-            Get
-                Return _MediaListTVSeasons
-            End Get
-            Set(ByVal value As DataGridView)
-                _MediaListTVSeasons = value
-            End Set
-        End Property
+        Public Property MediaListTVEpisodes() As DataGridView = New DataGridView
 
-        Public Property MediaListTVShows() As DataGridView
-            Get
-                Return _MediaListTVShows
-            End Get
-            Set(ByVal value As DataGridView)
-                _MediaListTVShows = value
-            End Set
-        End Property
+        Public Property MediaListTVSeasons() As DataGridView = New DataGridView
 
-        Public Property ContextMenuMovieList() As ContextMenuStrip
-            Get
-                Return _ContextMenuMovieList
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _ContextMenuMovieList = value
-            End Set
-        End Property
+        Public Property MediaListTVShows() As DataGridView = New DataGridView
 
-        Public Property ContextMenuMovieSetList() As ContextMenuStrip
-            Get
-                Return _ContextMenuMovieSetList
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _ContextMenuMovieSetList = value
-            End Set
-        End Property
+        Public Property ContextMenuMovieList() As ContextMenuStrip = New ContextMenuStrip
 
-        Public Property ContextMenuTVEpisodeList() As ContextMenuStrip
-            Get
-                Return _ContextMenuTVEpisodeList
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _ContextMenuTVEpisodeList = value
-            End Set
-        End Property
+        Public Property ContextMenuMovieSetList() As ContextMenuStrip = New ContextMenuStrip
 
-        Public Property ContextMenuTVSeasonList() As ContextMenuStrip
-            Get
-                Return _ContextMenuTVSeasonList
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _ContextMenuTVSeasonList = value
-            End Set
-        End Property
+        Public Property ContextMenuTVEpisodeList() As ContextMenuStrip = New ContextMenuStrip
 
-        Public Property ContextMenuTVShowList() As ContextMenuStrip
-            Get
-                Return _ContextMenuTVShowList
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _ContextMenuTVShowList = value
-            End Set
-        End Property
+        Public Property ContextMenuTVSeasonList() As ContextMenuStrip = New ContextMenuStrip
 
-        Public Property MainMenu() As MenuStrip
-            Get
-                Return _MainMenu
-            End Get
-            Set(ByVal value As MenuStrip)
-                _MainMenu = value
-            End Set
-        End Property
+        Public Property ContextMenuTVShowList() As ContextMenuStrip = New ContextMenuStrip
 
-        Public Property TrayMenu() As ContextMenuStrip
-            Get
-                Return _TrayMenu
-            End Get
-            Set(ByVal value As ContextMenuStrip)
-                _TrayMenu = value
-            End Set
-        End Property
+        Public Property MainMenu() As MenuStrip = New MenuStrip
 
-        Public Property MainTabControl() As TabControl
-            Get
-                Return _MainTabControl
-            End Get
-            Set(ByVal value As TabControl)
-                _MainTabControl = value
-            End Set
-        End Property
+        Public Property TrayMenu() As ContextMenuStrip = New ContextMenuStrip
+
+        Public Property MainTabControl() As TabControl = New TabControl
 
 #End Region 'Properties
 

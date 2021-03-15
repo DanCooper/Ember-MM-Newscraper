@@ -45,18 +45,18 @@ Public Class clsAPITMDB
         End Try
     End Function
 
-    Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer
+    Public Function GetImages_Movie_MovieSet(ByVal tmdbId As Integer, ByVal filteredModifiers As Structures.ScrapeModifiers, ByVal contentType As Enums.ContentType) As MediaContainers.SearchResultsContainer
         Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
         Try
             Dim Results As TMDbLib.Objects.General.Images = Nothing
             Dim APIResult As Task(Of TMDbLib.Objects.General.ImagesWithId)
 
-            If ContentType = Enums.ContentType.Movie Then
-                APIResult = Task.Run(Function() _client.GetMovieImagesAsync(CInt(TMDBID)))
+            If contentType = Enums.ContentType.Movie Then
+                APIResult = Task.Run(Function() _client.GetMovieImagesAsync(tmdbId))
                 Results = APIResult.Result
-            ElseIf ContentType = Enums.ContentType.MovieSet Then
-                APIResult = Task.Run(Function() _client.GetCollectionImagesAsync(CInt(TMDBID)))
+            ElseIf contentType = Enums.ContentType.MovieSet Then
+                APIResult = Task.Run(Function() _client.GetCollectionImagesAsync(tmdbId))
                 Results = APIResult.Result
             End If
 
@@ -65,7 +65,7 @@ Public Class clsAPITMDB
             End If
 
             'MainFanart
-            If (FilteredModifiers.MainExtrafanarts OrElse FilteredModifiers.MainExtrathumbs OrElse FilteredModifiers.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
+            If (filteredModifiers.MainExtrafanarts OrElse filteredModifiers.MainExtrathumbs OrElse filteredModifiers.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
                 For Each tImage In Results.Backdrops
                     Dim newImage As New MediaContainers.Image With {
                             .Height = tImage.Height.ToString,
@@ -84,7 +84,7 @@ Public Class clsAPITMDB
             End If
 
             'MainPoster / MainKeyart
-            If (FilteredModifiers.MainPoster OrElse FilteredModifiers.MainKeyart) AndAlso Results.Posters IsNot Nothing Then
+            If (filteredModifiers.MainPoster OrElse filteredModifiers.MainKeyart) AndAlso Results.Posters IsNot Nothing Then
                 For Each tImage In Results.Posters
                     Dim newImage As New MediaContainers.Image With {
                                 .Height = tImage.Height.ToString,
@@ -109,12 +109,12 @@ Public Class clsAPITMDB
         Return alImagesContainer
     End Function
 
-    Public Function GetImages_TVShow(ByVal tmdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
+    Public Function GetImages_TVShow(ByVal tmdbID As Integer, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
         Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
         Try
             Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvShow)
-            APIResult = Task.Run(Function() _client.GetTvShowAsync(CInt(tmdbID), TMDbLib.Objects.TvShows.TvShowMethods.Images))
+            APIResult = Task.Run(Function() _client.GetTvShowAsync(tmdbID, TMDbLib.Objects.TvShows.TvShowMethods.Images))
 
             If APIResult Is Nothing Then
                 Return alImagesContainer
@@ -198,7 +198,7 @@ Public Class clsAPITMDB
                                     Dim newImage As New MediaContainers.Image With {
                                             .Episode = tEpisode.EpisodeNumber,
                                             .Scraper = "TMDB",
-                                            .Season = CInt(tEpisode.SeasonNumber),
+                                            .Season = tEpisode.SeasonNumber,
                                             .URLOriginal = _client.Config.Images.BaseUrl & "original" & tEpisode.StillPath,
                                             .URLThumb = _client.Config.Images.BaseUrl & "w185" & tEpisode.StillPath}
 
@@ -217,13 +217,13 @@ Public Class clsAPITMDB
         Return alImagesContainer
     End Function
 
-    Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
+    Public Function GetImages_TVEpisode(ByVal tmdbID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
         Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
         Try
             Dim Results As TMDbLib.Objects.General.StillImages = Nothing
             Dim APIResult As Task(Of TMDbLib.Objects.General.StillImages)
-            APIResult = Task.Run(Function() _client.GetTvEpisodeImagesAsync(CInt(tmdbID), iSeason, iEpisode))
+            APIResult = Task.Run(Function() _client.GetTvEpisodeImagesAsync(tmdbID, iSeason, iEpisode))
             Results = APIResult.Result
 
             If Results Is Nothing Then
@@ -258,39 +258,38 @@ Public Class clsAPITMDB
         Return alImagesContainer
     End Function
 
-    Public Function GetTMDBbyIMDB(ByVal imdbID As String) As String
+    Public Function GetTMDBbyIMDB(ByVal imdbID As String) As Integer
         Try
             Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
             APIResult = Task.Run(Function() _client.FindAsync(TMDbLib.Objects.Find.FindExternalSource.Imdb, imdbID))
 
             If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing AndAlso
                     APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
-                Return APIResult.Result.TvResults.Item(0).Id.ToString
+                Return APIResult.Result.TvResults.Item(0).Id
             End If
 
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
-        Return String.Empty
+        Return -1
     End Function
 
-    Public Function GetTMDBbyTVDB(ByVal tvdbID As String) As String
-
+    Public Function GetTMDBbyTVDB(ByVal tvdbId As Integer) As Integer
         Try
             Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
-            APIResult = Task.Run(Function() _client.FindAsync(TMDbLib.Objects.Find.FindExternalSource.TvDb, tvdbID))
+            APIResult = Task.Run(Function() _client.FindAsync(TMDbLib.Objects.Find.FindExternalSource.TvDb, tvdbId.ToString))
 
             If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing AndAlso
                     APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
-                Return APIResult.Result.TvResults.Item(0).Id.ToString
+                Return APIResult.Result.TvResults.Item(0).Id
             End If
 
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
-        Return String.Empty
+        Return -1
     End Function
 
 #End Region 'Methods

@@ -62,6 +62,7 @@ Public Class dlgCustomScraper
     Private oEpisodeAiredAllowed As Boolean
     Private oEpisodeDirectorsAllowed As Boolean
     Private oEpisodeGuestStarsAllowed As Boolean
+    Private oEpisodeOriginalTitleAllowed As Boolean
     Private oEpisodePlotAllowed As Boolean
     Private oEpisodeRatingAllowed As Boolean
     Private oEpisodeRuntimeAllowed As Boolean
@@ -90,7 +91,6 @@ Public Class dlgCustomScraper
     Private oMainTop250Allowed As Boolean
     Private oMainTrailerAllowed As Boolean
     Private oMainWritersAllowed As Boolean
-    Private oMainYearAllowed As Boolean
     Private oSeasonAiredAllowed As Boolean
     Private oSeasonPlotAllowed As Boolean
     Private oSeasonTitleAllowed As Boolean
@@ -145,11 +145,11 @@ Public Class dlgCustomScraper
         Activate()
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         DialogResult = DialogResult.Cancel
     End Sub
 
-    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnOK.Click
+    Private Sub btnOK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         DialogResult = DialogResult.OK
     End Sub
 
@@ -172,6 +172,7 @@ Public Class dlgCustomScraper
         chkEpisodeOptionsAired.Checked = False
         chkEpisodeOptionsDirectors.Checked = False
         chkEpisodeOptionsGuestStars.Checked = False
+        chkEpisodeOptionsOriginalTitle.Checked = False
         chkEpisodeOptionsPlot.Checked = False
         chkEpisodeOptionsRating.Checked = False
         chkEpisodeOptionsRuntime.Checked = False
@@ -229,7 +230,6 @@ Public Class dlgCustomScraper
         chkMainOptionsTop250.Checked = False
         chkMainOptionsTrailer.Checked = False
         chkMainOptionsWriters.Checked = False
-        chkMainOptionsYear.Checked = False
 
         CheckEnable()
     End Sub
@@ -367,8 +367,6 @@ Public Class dlgCustomScraper
                 chkMainOptionsTrailer.Enabled = False
                 chkMainOptionsWriters.Checked = oMainWritersAllowed
                 chkMainOptionsWriters.Enabled = False
-                chkMainOptionsYear.Checked = oMainYearAllowed
-                chkMainOptionsYear.Enabled = False
             Else
                 chkMainOptionsActors.Enabled = oMainActorsAllowed
                 chkMainOptionsCertifications.Enabled = oMainCertificationsAllowed
@@ -392,7 +390,6 @@ Public Class dlgCustomScraper
                 chkMainOptionsTop250.Enabled = oMainTop250Allowed
                 chkMainOptionsTrailer.Enabled = oMainTrailerAllowed
                 chkMainOptionsWriters.Enabled = oMainWritersAllowed
-                chkMainOptionsYear.Enabled = oMainYearAllowed
             End If
         Else
             gbMainScrapeOptions.Enabled = False
@@ -445,6 +442,8 @@ Public Class dlgCustomScraper
                     chkEpisodeOptionsDirectors.Enabled = False
                     chkEpisodeOptionsGuestStars.Checked = oEpisodeGuestStarsAllowed
                     chkEpisodeOptionsGuestStars.Enabled = False
+                    chkEpisodeOptionsOriginalTitle.Checked = oEpisodeOriginalTitleAllowed
+                    chkEpisodeOptionsOriginalTitle.Enabled = False
                     chkEpisodeOptionsPlot.Checked = oEpisodePlotAllowed
                     chkEpisodeOptionsPlot.Enabled = False
                     chkEpisodeOptionsRating.Checked = oEpisodeRatingAllowed
@@ -460,6 +459,7 @@ Public Class dlgCustomScraper
                     chkEpisodeOptionsAired.Enabled = oEpisodeAiredAllowed
                     chkEpisodeOptionsDirectors.Enabled = oEpisodeDirectorsAllowed
                     chkEpisodeOptionsGuestStars.Enabled = oEpisodeGuestStarsAllowed
+                    chkEpisodeOptionsOriginalTitle.Enabled = oEpisodeOriginalTitleAllowed
                     chkEpisodeOptionsPlot.Enabled = oEpisodePlotAllowed
                     chkEpisodeOptionsRating.Enabled = oEpisodeRatingAllowed
                     chkEpisodeOptionsRuntime.Enabled = oEpisodeRuntimeAllowed
@@ -558,6 +558,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bEpisodeCredits = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsWriters.Checked
         CustomUpdater.ScrapeOptions.bEpisodeDirectors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsDirectors.Checked
         CustomUpdater.ScrapeOptions.bEpisodeGuestStars = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsGuestStars.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeOriginalTitle = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsOriginalTitle.Checked
         CustomUpdater.ScrapeOptions.bEpisodePlot = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsPlot.Checked
         CustomUpdater.ScrapeOptions.bEpisodeRating = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRating.Checked
         CustomUpdater.ScrapeOptions.bEpisodeRuntime = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRuntime.Checked
@@ -584,7 +585,6 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bMainTop250 = chkMainModifierNFO.Checked AndAlso chkMainOptionsTop250.Checked
         CustomUpdater.ScrapeOptions.bMainTrailer = chkMainModifierNFO.Checked AndAlso chkMainOptionsTrailer.Checked
         CustomUpdater.ScrapeOptions.bMainWriters = chkMainModifierNFO.Checked AndAlso chkMainOptionsWriters.Checked
-        CustomUpdater.ScrapeOptions.bMainYear = chkMainModifierNFO.Checked AndAlso chkMainOptionsYear.Checked
         CustomUpdater.ScrapeOptions.bSeasonAired = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsAired.Checked   'TODO: check. Atm we save the season infos to tv show NFO
         CustomUpdater.ScrapeOptions.bSeasonPlot = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsPlot.Checked     'TODO: check. Atm we save the season infos to tv show NFO
         CustomUpdater.ScrapeOptions.bSeasonTitle = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsTitle.Checked     'TODO: check. Atm we save the season infos to tv show NFO
@@ -650,7 +650,6 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeOptions.bMainTop250 OrElse
             CustomUpdater.ScrapeOptions.bMainTrailer OrElse
             CustomUpdater.ScrapeOptions.bMainWriters OrElse
-            CustomUpdater.ScrapeOptions.bMainYear OrElse
             CustomUpdater.ScrapeOptions.bSeasonAired OrElse
             CustomUpdater.ScrapeOptions.bSeasonPlot) Then
             btnOK.Enabled = True
@@ -704,6 +703,7 @@ Public Class dlgCustomScraper
                     oEpisodeAiredAllowed = False
                     oEpisodeDirectorsAllowed = False
                     oEpisodeGuestStarsAllowed = False
+                    oEpisodeOriginalTitleAllowed = False
                     oEpisodePlotAllowed = False
                     oEpisodeRatingAllowed = False
                     oEpisodeRuntimeAllowed = False
@@ -732,7 +732,6 @@ Public Class dlgCustomScraper
                     oMainTop250Allowed = .MovieScraperTop250
                     oMainTrailerAllowed = .MovieScraperTrailer
                     oMainWritersAllowed = .MovieScraperCredits
-                    oMainYearAllowed = .MovieScraperYear
                     oSeasonAiredAllowed = False
                     oSeasonPlotAllowed = False
                     oSeasonTitleAllowed = False
@@ -784,6 +783,7 @@ Public Class dlgCustomScraper
                     oEpisodeAiredAllowed = False
                     oEpisodeDirectorsAllowed = False
                     oEpisodeGuestStarsAllowed = False
+                    oEpisodeOriginalTitleAllowed = False
                     oEpisodePlotAllowed = False
                     oEpisodeRatingAllowed = False
                     oEpisodeRuntimeAllowed = False
@@ -812,7 +812,6 @@ Public Class dlgCustomScraper
                     oMainTop250Allowed = False
                     oMainTrailerAllowed = False
                     oMainWritersAllowed = False
-                    oMainYearAllowed = False
                     oSeasonAiredAllowed = False
                     oSeasonPlotAllowed = False
                     oSeasonTitleAllowed = False
@@ -859,6 +858,7 @@ Public Class dlgCustomScraper
                     oEpisodeAiredAllowed = .TVScraperEpisodeAired
                     oEpisodeDirectorsAllowed = .TVScraperEpisodeDirector
                     oEpisodeGuestStarsAllowed = .TVScraperEpisodeGuestStars
+                    oEpisodeOriginalTitleAllowed = .TVScraperEpisodeOriginalTitle
                     oEpisodePlotAllowed = .TVScraperEpisodePlot
                     oEpisodeRatingAllowed = .TVScraperEpisodeRating
                     oEpisodeRuntimeAllowed = .TVScraperEpisodeRuntime
@@ -887,7 +887,6 @@ Public Class dlgCustomScraper
                     oMainTop250Allowed = False
                     oMainTrailerAllowed = False
                     oMainWritersAllowed = False
-                    oMainYearAllowed = False
                     oSeasonAiredAllowed = .TVScraperSeasonAired
                     oSeasonPlotAllowed = .TVScraperSeasonPlot
                     oSeasonTitleAllowed = .TVScraperSeasonTitle
@@ -927,7 +926,7 @@ Public Class dlgCustomScraper
         End If
     End Sub
 
-    Private Sub rbUpdateModifier_All_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_All.CheckedChanged
+    Private Sub rbUpdateModifier_All_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rbScrapeType_All.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
@@ -938,7 +937,7 @@ Public Class dlgCustomScraper
         End Select
     End Sub
 
-    Private Sub rbUpdateModifier_Filter_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Filter.CheckedChanged
+    Private Sub rbUpdateModifier_Filter_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rbScrapeType_Filter.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.FilterAsk
@@ -949,7 +948,7 @@ Public Class dlgCustomScraper
         End Select
     End Sub
 
-    Private Sub rbUpdateModifier_Marked_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Marked.CheckedChanged
+    Private Sub rbUpdateModifier_Marked_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rbScrapeType_Marked.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAsk
@@ -960,7 +959,7 @@ Public Class dlgCustomScraper
         End Select
     End Sub
 
-    Private Sub rbUpdateModifier_Missing_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Missing.CheckedChanged
+    Private Sub rbUpdateModifier_Missing_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rbScrapeType_Missing.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAsk
@@ -971,7 +970,7 @@ Public Class dlgCustomScraper
         End Select
     End Sub
 
-    Private Sub rbUpdateModifier_New_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_New.CheckedChanged
+    Private Sub rbUpdateModifier_New_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rbScrapeType_New.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
@@ -982,7 +981,7 @@ Public Class dlgCustomScraper
         End Select
     End Sub
 
-    Private Sub rbUpdateModifier_Selected_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Selected.CheckedChanged
+    Private Sub rbUpdateModifier_Selected_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rbScrapeType_Selected.CheckedChanged
         Select Case True
             Case rbScrapeType_Ask.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedAsk
@@ -993,7 +992,7 @@ Public Class dlgCustomScraper
         End Select
     End Sub
 
-    Private Sub rbUpdate_Ask_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Ask.CheckedChanged
+    Private Sub rbUpdate_Ask_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rbScrapeType_Ask.CheckedChanged
         Select Case True
             Case rbScrapeType_All.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
@@ -1010,7 +1009,7 @@ Public Class dlgCustomScraper
         End Select
     End Sub
 
-    Private Sub rbUpdate_Auto_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Auto.CheckedChanged
+    Private Sub rbUpdate_Auto_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rbScrapeType_Auto.CheckedChanged
         Select Case True
             Case rbScrapeType_All.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
@@ -1027,7 +1026,7 @@ Public Class dlgCustomScraper
         End Select
     End Sub
 
-    Private Sub rbUpdate_Skip_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Skip.CheckedChanged
+    Private Sub rbUpdate_Skip_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rbScrapeType_Skip.CheckedChanged
         Select Case True
             Case rbScrapeType_All.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
@@ -1056,6 +1055,7 @@ Public Class dlgCustomScraper
         chkEpisodeOptionsAll.Click,
         chkEpisodeOptionsDirectors.Click,
         chkEpisodeOptionsGuestStars.Click,
+        chkEpisodeOptionsOriginalTitle.Click,
         chkEpisodeOptionsPlot.Click,
         chkEpisodeOptionsRating.Click,
         chkEpisodeOptionsRuntime.Click,
@@ -1101,7 +1101,6 @@ Public Class dlgCustomScraper
         chkMainOptionsTop250.Click,
         chkMainOptionsTrailer.Click,
         chkMainOptionsWriters.Click,
-        chkMainOptionsYear.Click,
         chkSeasonModifierAll.Click,
         chkSeasonModifierBanner.Click,
         chkSeasonModifierFanart.Click,
@@ -1201,6 +1200,11 @@ Public Class dlgCustomScraper
         chkEpisodeModifierNFO.Text = strNFO
         chkMainModifierNFO.Text = strNFO
 
+        'Original Title
+        Dim strOriginalTitle As String = Master.eLang.GetString(302, "Original Title")
+        chkEpisodeOptionsOriginalTitle.Text = strOriginalTitle
+        chkMainOptionsOriginalTitle.Text = strOriginalTitle
+
         'Poster
         Dim strPoster As String = Master.eLang.GetString(148, "Poster")
         chkEpisodeModifierPoster.Text = strPoster
@@ -1244,7 +1248,6 @@ Public Class dlgCustomScraper
         chkMainOptionsEpisodeGuideURL.Text = Master.eLang.GetString(723, "Episode Guide URL")
         chkMainOptionsGenres.Text = Master.eLang.GetString(725, "Genres")
         chkMainOptionsMPAA.Text = Master.eLang.GetString(401, "MPAA")
-        chkMainOptionsOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         chkMainOptionsOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         chkMainOptionsPlot.Text = Master.eLang.GetString(65, "Plot")
         chkMainOptionsRating.Text = Master.eLang.GetString(400, "Rating")
@@ -1255,7 +1258,6 @@ Public Class dlgCustomScraper
         chkMainOptionsTop250.Text = Master.eLang.GetString(591, "Top 250")
         chkMainOptionsTrailer.Text = Master.eLang.GetString(151, "Trailer")
         chkMainOptionsWriters.Text = Master.eLang.GetString(394, "Writers")
-        chkMainOptionsYear.Text = Master.eLang.GetString(278, "Year")
         gbMainScrapeOptions.Text = Master.eLang.GetString(390, "Options")
         gbMainScrapeModifiers.Text = Master.eLang.GetString(388, "Modifiers")
         gbScrapeType_Filter.Text = Master.eLang.GetString(386, "Selection Filter")

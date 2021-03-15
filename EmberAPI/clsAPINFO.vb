@@ -69,21 +69,12 @@ Public Class NFO
         Dim new_Top250 As Boolean = False
         Dim new_Trailer As Boolean = False
         Dim new_UserRating As Boolean = False
-        Dim new_Year As Boolean = False
-
-        'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
-        If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
-            PreviewDataScraperResults_Movie(ScrapedList)
-        End If
 
         For Each scrapedmovie In ScrapedList
 
-            'IDs
-            If scrapedmovie.IMDBSpecified Then
-                DBMovie.Movie.IMDB = scrapedmovie.IMDB
-            End If
-            If scrapedmovie.TMDBSpecified Then
-                DBMovie.Movie.TMDB = scrapedmovie.TMDB
+            'UniqueIDs
+            If scrapedmovie.UniqueIDsSpecified Then
+                DBMovie.Movie.UniqueIDs.AddRange(scrapedmovie.UniqueIDs)
             End If
 
             'Actors
@@ -144,12 +135,12 @@ Public Class NFO
             End If
 
             'Collection ID
-            If (Not DBMovie.Movie.TMDBColIDSpecified OrElse Not Master.eSettings.MovieLockCollectionID) AndAlso ScrapeOptions.bMainCollectionID AndAlso
-                scrapedmovie.TMDBColIDSpecified AndAlso Master.eSettings.MovieScraperCollectionID AndAlso Not new_CollectionID Then
-                DBMovie.Movie.TMDBColID = scrapedmovie.TMDBColID
+            If (Not DBMovie.Movie.UniqueIDs.TMDbCollectionIdSpecified OrElse Not Master.eSettings.MovieLockCollectionID) AndAlso ScrapeOptions.bMainCollectionID AndAlso
+                scrapedmovie.UniqueIDs.TMDbCollectionIdSpecified AndAlso Master.eSettings.MovieScraperCollectionID AndAlso Not new_CollectionID Then
+                DBMovie.Movie.UniqueIDs.TMDbCollectionId = scrapedmovie.UniqueIDs.TMDbCollectionId
                 new_CollectionID = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCollectionID AndAlso Not Master.eSettings.MovieLockCollectionID Then
-                DBMovie.Movie.TMDBColID = String.Empty
+                DBMovie.Movie.UniqueIDs.TMDbCollectionId = -1
             End If
 
             'Collections
@@ -351,15 +342,6 @@ Public Class NFO
                 DBMovie.Movie.UserRating = 0
             End If
 
-            'Year
-            If (Not DBMovie.Movie.YearSpecified OrElse Not Master.eSettings.MovieLockYear) AndAlso ScrapeOptions.bMainYear AndAlso
-                scrapedmovie.YearSpecified AndAlso Master.eSettings.MovieScraperYear AndAlso Not new_Year Then
-                DBMovie.Movie.Year = scrapedmovie.Year
-                new_Year = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperYear AndAlso Not Master.eSettings.MovieLockYear Then
-                DBMovie.Movie.Year = String.Empty
-            End If
-
             'Runtime
             If (Not DBMovie.Movie.RuntimeSpecified OrElse Not Master.eSettings.MovieLockRuntime) AndAlso ScrapeOptions.bMainRuntime AndAlso
                 scrapedmovie.RuntimeSpecified AndAlso Master.eSettings.MovieScraperRuntime AndAlso Not new_Runtime Then
@@ -370,21 +352,6 @@ Public Class NFO
             End If
 
         Next
-
-        'UniqueIDs
-        DBMovie.Movie.UniqueIDs.Clear()
-        If DBMovie.Movie.IMDBSpecified Then
-            DBMovie.Movie.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = True,
-                                        .Type = "imdb",
-                                        .Value = DBMovie.Movie.IMDB})
-        End If
-        If DBMovie.Movie.TMDBSpecified Then
-            DBMovie.Movie.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = False,
-                                        .Type = "tmdb",
-                                        .Value = DBMovie.Movie.TMDB})
-        End If
 
         'Certification for MPAA
         If DBMovie.Movie.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCertForMPAA AndAlso
@@ -442,7 +409,7 @@ Public Class NFO
         Return DBMovie
     End Function
 
-    Public Shared Function MergeDataScraperResults_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.MovieSet), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions) As Database.DBElement
+    Public Shared Function MergeDataScraperResults_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.Movieset), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Plot As Boolean = False
@@ -450,9 +417,9 @@ Public Class NFO
 
         For Each scrapedmovieset In ScrapedList
 
-            'IDs
-            If scrapedmovieset.TMDBSpecified Then
-                DBMovieSet.MovieSet.TMDB = scrapedmovieset.TMDB
+            'UniqueIDs
+            If scrapedmovieset.UniqueIDsSpecified Then
+                DBMovieSet.MovieSet.UniqueIDs.AddRange(scrapedmovieset.UniqueIDs)
             End If
 
             'Plot
@@ -545,15 +512,9 @@ Public Class NFO
 
         For Each scrapedshow In ScrapedList
 
-            'IDs
-            If scrapedshow.TVDBSpecified Then
-                DBTV.TVShow.TVDB = scrapedshow.TVDB
-            End If
-            If scrapedshow.IMDBSpecified Then
-                DBTV.TVShow.IMDB = scrapedshow.IMDB
-            End If
-            If scrapedshow.TMDBSpecified Then
-                DBTV.TVShow.TMDB = scrapedshow.TMDB
+            'UniqueIDs
+            If scrapedshow.UniqueIDsSpecified Then
+                DBTV.TVShow.UniqueIDs.AddRange(scrapedshow.UniqueIDs)
             End If
 
             'Actors
@@ -786,27 +747,6 @@ Public Class NFO
             End If
         Next
 
-        'UniqueIDs
-        DBTV.TVShow.UniqueIDs.Clear()
-        If DBTV.TVShow.TVDBSpecified Then
-            DBTV.TVShow.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = True,
-                                        .Type = "tvdb",
-                                        .Value = DBTV.TVShow.TVDB})
-        End If
-        If DBTV.TVShow.IMDBSpecified Then
-            DBTV.TVShow.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = False,
-                                        .Type = "imdb",
-                                        .Value = DBTV.TVShow.IMDB})
-        End If
-        If DBTV.TVShow.TMDBSpecified Then
-            DBTV.TVShow.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = False,
-                                        .Type = "tmdb",
-                                        .Value = DBTV.TVShow.TMDB})
-        End If
-
         'Certification for MPAA
         If DBTV.TVShow.CertificationsSpecified AndAlso Master.eSettings.TVScraperShowCertForMPAA AndAlso
             (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (Not DBTV.TVShow.MPAASpecified OrElse Not Master.eSettings.TVLockShowMPAA) OrElse
@@ -872,7 +812,7 @@ Public Class NFO
             Else
                 'no existing season found -> add it as "missing" season
                 Dim mSeason As New Database.DBElement(Enums.ContentType.TVSeason) With {.TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
-                mSeason = Master.DB.AddTVShowInfoToDBElement(mSeason, DBTV)
+                mSeason = Master.DB.Load_TVShowInfoIntoDBElement(mSeason, DBTV)
                 DBTV.Seasons.Add(MergeDataScraperResults_TVSeason(mSeason, ScrapedSeasonList, ScrapeOptions))
             End If
         Next
@@ -886,7 +826,7 @@ Public Class NFO
         If withEpisodes Then
             'update the tvshow information for each local episode
             For Each lEpisode In DBTV.Episodes
-                lEpisode = Master.DB.AddTVShowInfoToDBElement(lEpisode, DBTV)
+                lEpisode = Master.DB.Load_TVShowInfoIntoDBElement(lEpisode, DBTV)
             Next
 
             For Each aKnownEpisode As KnownEpisode In KnownEpisodesIndex.OrderBy(Function(f) f.Episode).OrderBy(Function(f) f.Season)
@@ -939,7 +879,7 @@ Public Class NFO
                         Else
                             'no local episode found -> add it as "missing" episode
                             Dim mEpisode As New Database.DBElement(Enums.ContentType.TVEpisode) With {.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
-                            mEpisode = Master.DB.AddTVShowInfoToDBElement(mEpisode, DBTV)
+                            mEpisode = Master.DB.Load_TVShowInfoIntoDBElement(mEpisode, DBTV)
                             MergeDataScraperResults_TVEpisode(mEpisode, ScrapedEpisodeList, ScrapeOptions)
                             If mEpisode.TVEpisode.TitleSpecified Then
                                 DBTV.Episodes.Add(mEpisode)
@@ -959,7 +899,7 @@ Public Class NFO
         If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
             tmpAllSeasons = New Database.DBElement(Enums.ContentType.TVSeason)
             tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = -1}
-            tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTV)
+            tmpAllSeasons = Master.DB.Load_TVShowInfoIntoDBElement(tmpAllSeasons, DBTV)
             DBTV.Seasons.Add(tmpAllSeasons)
         End If
 
@@ -987,12 +927,9 @@ Public Class NFO
 
         For Each scrapedseason In ScrapedList
 
-            'IDs
-            If scrapedseason.TMDBSpecified Then
-                DBTVSeason.TVSeason.TMDB = scrapedseason.TMDB
-            End If
-            If scrapedseason.TVDBSpecified Then
-                DBTVSeason.TVSeason.TVDB = scrapedseason.TVDB
+            'UniqueIDs
+            If scrapedseason.UniqueIDsSpecified Then
+                DBTVSeason.TVSeason.UniqueIDs.AddRange(scrapedseason.UniqueIDs)
             End If
 
             'Season number
@@ -1068,15 +1005,9 @@ Public Class NFO
 
         For Each scrapedepisode In ScrapedList
 
-            'IDs
-            If scrapedepisode.IMDBSpecified Then
-                DBTVEpisode.TVEpisode.IMDB = scrapedepisode.IMDB
-            End If
-            If scrapedepisode.TMDBSpecified Then
-                DBTVEpisode.TVEpisode.TMDB = scrapedepisode.TMDB
-            End If
-            If scrapedepisode.TVDBSpecified Then
-                DBTVEpisode.TVEpisode.TVDB = scrapedepisode.TVDB
+            'UniqueIDs
+            If scrapedepisode.UniqueIDsSpecified Then
+                DBTVEpisode.TVEpisode.UniqueIDs.AddRange(scrapedepisode.UniqueIDs)
             End If
 
             'DisplayEpisode
@@ -1213,27 +1144,6 @@ Public Class NFO
             End If
         Next
 
-        'UniqueIDs
-        DBTVEpisode.TVEpisode.UniqueIDs.Clear()
-        If DBTVEpisode.TVEpisode.TVDBSpecified Then
-            DBTVEpisode.TVEpisode.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = True,
-                                        .Type = "tvdb",
-                                        .Value = DBTVEpisode.TVEpisode.TVDB})
-        End If
-        If DBTVEpisode.TVEpisode.IMDBSpecified Then
-            DBTVEpisode.TVEpisode.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = False,
-                                        .Type = "imdb",
-                                        .Value = DBTVEpisode.TVEpisode.IMDB})
-        End If
-        If DBTVEpisode.TVEpisode.TMDBSpecified Then
-            DBTVEpisode.TVEpisode.UniqueIDs.Add(New MediaContainers.Uniqueid With {
-                                        .IsDefault = False,
-                                        .Type = "tmdb",
-                                        .Value = DBTVEpisode.TVEpisode.TMDB})
-        End If
-
         'Add GuestStars to Actors
         If DBTVEpisode.TVEpisode.GuestStarsSpecified AndAlso Master.eSettings.TVScraperEpisodeGuestStarsToActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
             DBTVEpisode.TVEpisode.Actors.AddRange(DBTVEpisode.TVEpisode.GuestStars)
@@ -1327,27 +1237,6 @@ Public Class NFO
 
         Return DBTVEpisode
     End Function
-    ''' <summary>
-    ''' Open MovieDataScraperPreview Window
-    ''' </summary>
-    ''' <param name="ScrapedList"><c>List(Of MediaContainers.Movie)</c> which contains unfiltered results of each data scraper</param>
-    ''' <remarks>
-    ''' 2014/09/13 Cocotus - First implementation: Display all scrapedresults in preview window, so that user can select the information which should be used
-    ''' </remarks>
-    Public Shared Sub PreviewDataScraperResults_Movie(ByRef ScrapedList As List(Of MediaContainers.Movie))
-        Try
-            Application.DoEvents()
-            'Open/Show preview window
-            Using dlgMovieDataScraperPreview As New dlgMovieDataScraperPreview(ScrapedList)
-                Select Case dlgMovieDataScraperPreview.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        'For now nothing here
-                End Select
-            End Using
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
 
     Public Shared Function CleanNFO_Movies(ByVal mNFO As MediaContainers.Movie) As MediaContainers.Movie
         If mNFO IsNot Nothing Then
@@ -1439,8 +1328,8 @@ Public Class NFO
 
             'Boxee support
             If Master.eSettings.TVUseBoxee Then
-                If mNFO.BoxeeTvDbSpecified AndAlso Not mNFO.TVDBSpecified Then
-                    mNFO.TVDB = mNFO.BoxeeTvDb
+                If mNFO.BoxeeTvDbSpecified AndAlso Not mNFO.UniqueIDs.TVDbIdSpecified Then
+                    mNFO.UniqueIDs.TVDbId = mNFO.BoxeeTvDb
                     mNFO.BlankBoxeeId()
                 End If
             End If
@@ -2029,13 +1918,13 @@ Public Class NFO
                     If Not String.IsNullOrEmpty(sPath) Then
                         Dim sReturn As New NonConf
                         sReturn = GetIMDBFromNonConf(sPath, isSingle)
-                        xmlMov.IMDB = sReturn.IMDBID
+                        xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
                         Try
                             If Not String.IsNullOrEmpty(sReturn.Text) Then
                                 Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                     xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                     xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                    xmlMov.IMDB = sReturn.IMDBID
+                                    xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
                                     xmlMov = CleanNFO_Movies(xmlMov)
                                 End Using
                             End If
@@ -2057,13 +1946,13 @@ Public Class NFO
 
                     Dim sReturn As New NonConf
                     sReturn = GetIMDBFromNonConf(sPath, isSingle)
-                    xmlMov.IMDB = sReturn.IMDBID
+                    xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
                     Try
                         If Not String.IsNullOrEmpty(sReturn.Text) Then
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                 xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                 xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                xmlMov.IMDB = sReturn.IMDBID
+                                xmlMov.UniqueIDs.IMDbId = sReturn.IMDBID
                                 xmlMov = CleanNFO_Movies(xmlMov)
                             End Using
                         End If
@@ -2080,23 +1969,23 @@ Public Class NFO
         Return xmlMov
     End Function
 
-    Public Shared Function LoadFromNFO_MovieSet(ByVal sPath As String) As MediaContainers.MovieSet
+    Public Shared Function LoadFromNFO_MovieSet(ByVal sPath As String) As MediaContainers.Movieset
         Dim xmlSer As XmlSerializer = Nothing
-        Dim xmlMovSet As New MediaContainers.MovieSet
+        Dim xmlMovSet As New MediaContainers.Movieset
 
         If Not String.IsNullOrEmpty(sPath) Then
             Try
                 If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
                     Using xmlSR As StreamReader = New StreamReader(sPath)
-                        xmlSer = New XmlSerializer(GetType(MediaContainers.MovieSet))
-                        xmlMovSet = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.MovieSet)
+                        xmlSer = New XmlSerializer(GetType(MediaContainers.Movieset))
+                        xmlMovSet = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.Movieset)
                         xmlMovSet.Plot = xmlMovSet.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
                     End Using
                 End If
 
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
-                xmlMovSet = New MediaContainers.MovieSet
+                xmlMovSet = New MediaContainers.Movieset
             End Try
 
             If xmlSer IsNot Nothing Then
@@ -2371,8 +2260,8 @@ Public Class NFO
 
                 'YAMJ support
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieNFOYAMJ Then
-                    If tMovie.TMDBSpecified Then
-                        tMovie.TMDB = String.Empty
+                    If tMovie.UniqueIDs.TMDbIdSpecified Then
+                        tMovie.UniqueIDs.TMDbId = -1
                     End If
                 End If
 
@@ -2426,7 +2315,7 @@ Public Class NFO
             If Not String.IsNullOrEmpty(tDBElement.MovieSet.Title) Then
                 If tDBElement.MovieSet.TitleHasChanged Then DeleteNFO_MovieSet(tDBElement, False, True)
 
-                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MovieSet))
+                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movieset))
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
@@ -2575,8 +2464,8 @@ Public Class NFO
 
                 'Boxee support
                 If Master.eSettings.TVUseBoxee Then
-                    If tTVShow.TVDBSpecified() Then
-                        tTVShow.BoxeeTvDb = tTVShow.TVDB
+                    If tTVShow.UniqueIDs.TVDbIdSpecified() Then
+                        tTVShow.BoxeeTvDb = tTVShow.UniqueIDs.TVDbId
                         tTVShow.BlankId()
                     End If
                 End If

@@ -75,7 +75,8 @@ Public Class Settings
     Public Property GeneralDisplayClearLogo() As Boolean = True
     Public Property GeneralDisplayDiscArt() As Boolean = True
     Public Property GeneralDisplayFanart() As Boolean = True
-    Public Property GeneralDisplayFanartSmall() As Boolean = True
+    Public Property GeneralDisplayFanartAsBackground() As Boolean = True
+    Public Property GeneralDisplayKeyart() As Boolean = True
     Public Property GeneralDisplayLandscape() As Boolean = True
     Public Property GeneralDisplayPoster() As Boolean = True
     Public Property GeneralDoubleClickScrape() As Boolean = False
@@ -104,10 +105,8 @@ Public Class Settings
     Public Property GeneralMainFilterSortOrder_Movies() As Integer = 0
     Public Property GeneralMainFilterSortOrder_Seasons() As Integer = 0
     Public Property GeneralMainFilterSortOrder_Shows() As Integer = 0
-    Public Property GeneralMovieSetTheme() As String = "Default"
-    Public Property GeneralMovieTheme() As String = "Default"
+    Public Property GeneralMainTabSorting As List(Of MainTabSorting) = New List(Of MainTabSorting)
     Public Property GeneralOverwriteNfo() As Boolean = False
-    Public Property GeneralShowGenresText() As Boolean = True
     Public Property GeneralShowImgDims() As Boolean = True
     Public Property GeneralShowImgNames() As Boolean = True
     Public Property GeneralShowLangFlags() As Boolean = True
@@ -115,8 +114,7 @@ Public Class Settings
     Public Property GeneralSplitterDistanceMain() As Integer = 550
     Public Property GeneralSplitterDistanceTVSeason() As Integer = 200
     Public Property GeneralSplitterDistanceTVShow() As Integer = 200
-    Public Property GeneralTVEpisodeTheme() As String = "Default"
-    Public Property GeneralTVShowTheme() As String = "Default"
+    Public Property GeneralTheme() As String = "FullHD-Default"
     Public Property GeneralWindowLoc() As Point = New Point(10, 10)
     Public Property GeneralWindowSize() As Size = New Size(1024, 768)
     Public Property GeneralWindowState() As FormWindowState = FormWindowState.Maximized
@@ -226,7 +224,6 @@ Public Class Settings
     Public Property MovieLockTop250() As Boolean = False
     Public Property MovieLockTrailer() As Boolean = False
     Public Property MovieLockUserRating() As Boolean = False
-    Public Property MovieLockYear() As Boolean = False
     Public Property MovieMetadataPerFileType() As List(Of MetadataPerType) = New List(Of MetadataPerType)
     Public Property MovieMissingBanner() As Boolean = False
     Public Property MovieMissingClearArt() As Boolean = False
@@ -271,6 +268,7 @@ Public Class Settings
     Public Property MovieScraperDurationRuntimeFormat() As String = "<m>"
     Public Property MovieScraperGenre() As Boolean = True
     Public Property MovieScraperGenreLimit() As Integer = 0
+    Public Property MovieScraperIdDefault() As String = "imdb"
     Public Property MovieScraperMPAA() As Boolean = True
     Public Property MovieScraperMPAANotRated() As String = String.Empty
     <XmlIgnore>
@@ -301,11 +299,9 @@ Public Class Settings
     Public Property MovieScraperTitle() As Boolean = True
     Public Property MovieScraperTop250() As Boolean = True
     Public Property MovieScraperTrailer() As Boolean = True
-    Public Property MovieScraperUseDetailView() As Boolean = False
     Public Property MovieScraperUseMDDuration() As Boolean = True
     Public Property MovieScraperUserRating() As Boolean = True
     Public Property MovieScraperXBMCTrailerFormat() As Boolean = False
-    Public Property MovieScraperYear() As Boolean = True
     Public Property MovieSetBannerHeight() As Integer = 0
     Public Property MovieSetBannerKeepExisting() As Boolean = False
     Public Property MovieSetBannerPrefSize() As Enums.MovieBannerSize = Enums.MovieBannerSize.Any
@@ -360,6 +356,7 @@ Public Class Settings
     Public Property MovieSetPosterPrefSizeOnly() As Boolean = False
     Public Property MovieSetPosterResize() As Boolean = False
     Public Property MovieSetPosterWidth() As Integer = 0
+    Public Property MovieSetScraperIdDefault() As String = "tmdb"
     Public Property MovieSetScraperPlot() As Boolean = True
     Public Property MovieSetScraperTitle() As Boolean = True
     Public Property MovieSetSortTokens() As List(Of String) = New List(Of String)
@@ -499,6 +496,7 @@ Public Class Settings
     Public Property TVScraperEpisodeGuestStars() As Boolean = True
     Public Property TVScraperEpisodeGuestStarsLimit() As Integer = 0
     Public Property TVScraperEpisodeGuestStarsToActors() As Boolean = False
+    Public Property TVScraperEpisodeOriginalTitle() As Boolean = True
     Public Property TVScraperEpisodePlot() As Boolean = True
     Public Property TVScraperEpisodeRating() As Boolean = True
     Public Property TVScraperEpisodeRatingDefault() As String = "themoviedb"
@@ -523,6 +521,7 @@ Public Class Settings
     Public Property TVScraperShowEpiGuideURL() As Boolean = False
     Public Property TVScraperShowGenre() As Boolean = True
     Public Property TVScraperShowGenreLimit() As Integer = 0
+    Public Property TVScraperShowIdDefault() As String = "tvdb"
     Public Property TVScraperShowMPAA() As Boolean = True
     Public Property TVScraperShowMPAANotRated() As String = String.Empty
     Public Property TVScraperShowOriginalTitle() As Boolean = True
@@ -1027,6 +1026,14 @@ Public Class Settings
     End Sub
 
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MainTabSorting) AndAlso (Force OrElse Master.eSettings.GeneralMainTabSorting.Count = 0) Then
+            Master.eSettings.GeneralMainTabSorting.Clear()
+            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.Movie, .DefaultList = "movielist", .Order = 0, .Title = Master.eLang.GetString(36, "Movies")})
+            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist", .Order = 1, .Title = Master.eLang.GetString(366, "Sets")})
+            Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist", .Order = 2, .Title = Master.eLang.GetString(653, "TV Shows")})
+        End If
+
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
             Master.eSettings.MovieFilterCustom.Clear()
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]\(?\d{4}\)?.*")    'year in brakets
@@ -1137,7 +1144,7 @@ Public Class Settings
             Master.eSettings.MovieSortTokens.Add("the\s")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty)) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MoviesetSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty)) Then
             Master.eSettings.MovieSetSortTokens.Clear()
             Master.eSettings.MovieSetSortTokens.Add("a\s")
             Master.eSettings.MovieSetSortTokens.Add("an\s")
@@ -1227,7 +1234,7 @@ Public Class Settings
             Next
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetListSorting) AndAlso (Force OrElse Master.eSettings.MovieSetGeneralMediaListSorting.Count <= 0) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MoviesetListSorting) AndAlso (Force OrElse Master.eSettings.MovieSetGeneralMediaListSorting.Count <= 0) Then
             Master.eSettings.MovieSetGeneralMediaListSorting.Clear()
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.Hide = False, .Column = "ListTitle", .LabelID = 21, .LabelText = "Title"})
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.Hide = True, .Column = "Language", .LabelID = 610, .LabelText = "Language"})
@@ -1602,6 +1609,19 @@ Public Class Settings
 #End Region 'Methods
 
 #Region "Nested Types"
+
+    Public Class MainTabSorting
+
+#Region "Properties"
+
+        Public Property ContentType As Enums.ContentType = Enums.ContentType.None
+        Public Property DefaultList As String = String.Empty
+        Public Property Order As Integer = -1
+        Public Property Title As String = String.Empty
+
+#End Region 'Properties
+
+    End Class
 
     Public Class MetadataPerType
 

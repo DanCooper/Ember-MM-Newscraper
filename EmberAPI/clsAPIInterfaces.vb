@@ -78,7 +78,7 @@ Public Class Interfaces
 
         Sub ScraperOrderChanged()
         Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef sStudio As List(Of String)) As ModuleResult
-        Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As ModuleResult
+        Function GetTMDbIdByIMDbId(ByVal imdbId As String, ByRef tmdbId As Integer) As ModuleResult
         Sub Init(ByVal sAssemblyName As String)
         Function InjectSetupScraper() As Containers.SettingsPanel
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
@@ -118,7 +118,7 @@ Public Class Interfaces
 #Region "Methods"
 
         Sub ScraperOrderChanged()
-        Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As ModuleResult
+        Function GetTMDbCollectionId(ByVal imdbIdOrTmdbId As String, ByRef tmdbCollectionId As Integer) As ModuleResult
         Sub Init(ByVal sAssemblyName As String)
         Function InjectSetupScraper() As Containers.SettingsPanel
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
@@ -455,7 +455,7 @@ Public Class Interfaces
         ''' <remarks></remarks>
         Public Cancelled As Boolean
 
-        Public Result As MediaContainers.MovieSet
+        Public Result As MediaContainers.Movieset
 
 #End Region 'Fields
 

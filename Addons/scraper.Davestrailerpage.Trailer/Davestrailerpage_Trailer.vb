@@ -155,7 +155,7 @@ Public Class Davestrailerpage_Trailer
             strTitle = DBMovie.Movie.OriginalTitle
         End If
 
-        TrailerList = Scraper.GetTrailers(strTitle, DBMovie.Movie.IMDB)
+        TrailerList = Scraper.GetTrailers(strTitle, DBMovie.Movie.UniqueIDs.IMDbId)
 
         _Logger.Trace("[Davestrailerpage_Trailer] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}

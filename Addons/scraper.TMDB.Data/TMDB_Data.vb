@@ -212,7 +212,6 @@ Public Class TMDB_Data
         _setup_Movie.chkTitle.Checked = ConfigScrapeOptions_Movie.bMainTitle
         _setup_Movie.chkTrailer.Checked = ConfigScrapeOptions_Movie.bMainTrailer
         _setup_Movie.chkWriters.Checked = ConfigScrapeOptions_Movie.bMainWriters
-        _setup_Movie.chkYear.Checked = ConfigScrapeOptions_Movie.bMainYear
         _setup_Movie.txtApiKey.Text = strPrivateAPIKey
 
         If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
@@ -348,7 +347,6 @@ Public Class TMDB_Data
         ConfigScrapeOptions_Movie.bMainTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainWriters = AdvancedSettings.GetBooleanSetting("DoWriters", True, , Enums.ContentType.Movie)
-        ConfigScrapeOptions_Movie.bMainYear = AdvancedSettings.GetBooleanSetting("DoYear", True, , Enums.ContentType.Movie)
 
         strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), _strAPIKey, strPrivateAPIKey)
@@ -423,7 +421,6 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoTop250", ConfigScrapeOptions_Movie.bMainTop250, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoTrailer", ConfigScrapeOptions_Movie.bMainTrailer, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoWriters", ConfigScrapeOptions_Movie.bMainWriters, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoYear", ConfigScrapeOptions_Movie.bMainYear, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("FallBackEn", _SpecialSettings_Movie.FallBackEng, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("GetAdultItems", _SpecialSettings_Movie.GetAdultItems, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("SearchDeviant", _SpecialSettings_Movie.SearchDeviant, , , Enums.ContentType.Movie)
@@ -493,7 +490,6 @@ Public Class TMDB_Data
         ConfigScrapeOptions_Movie.bMainTop250 = False
         ConfigScrapeOptions_Movie.bMainTrailer = _setup_Movie.chkTrailer.Checked
         ConfigScrapeOptions_Movie.bMainWriters = _setup_Movie.chkWriters.Checked
-        ConfigScrapeOptions_Movie.bMainYear = _setup_Movie.chkYear.Checked
 
         Dim bAPIKeyChanged = Not strPrivateAPIKey = _setup_Movie.txtApiKey.Text.Trim
         strPrivateAPIKey = _setup_Movie.txtApiKey.Text.Trim
@@ -579,7 +575,7 @@ Public Class TMDB_Data
 
     Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef sStudio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
         logger.Trace("[TMDB_Data] [GetMovieStudio] [Start]")
-        If Not DBMovie.Movie.AnyUniqueIDSpecified Then
+        If Not DBMovie.Movie.UniqueIDsSpecified Then
             logger.Trace("[TMDB_Data] [GetMovieStudio] [Abort] Attempting to get studio for undefined movie")
             Return New Interfaces.ModuleResult
         End If
@@ -587,26 +583,26 @@ Public Class TMDB_Data
             Task.Run(Function() _TMDBAPI_Movie.CreateAPI(_SpecialSettings_Movie))
         End If
         If _TMDBAPI_Movie.IsClientCreated Then
-            If DBMovie.Movie.IMDBSpecified Then
+            If DBMovie.Movie.UniqueIDs.IMDbIdSpecified Then
                 'IMDB-ID is available
-                sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.IMDB))
-            ElseIf DBMovie.Movie.TMDBSpecified Then
+                sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.UniqueIDs.IMDbId))
+            ElseIf DBMovie.Movie.UniqueIDs.TMDbIdSpecified Then
                 'TMDB-ID is available
-                sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.TMDB))
+                sStudio.AddRange(_TMDBAPI_Movie.GetMovieStudios(DBMovie.Movie.UniqueIDs.TMDbId.ToString))
             End If
         End If
         logger.Trace("[TMDB_Data] [GetMovieStudio] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
+    Function GetTMDbIdByIMDbId(ByVal imdbId As String, ByRef tmdbId As Integer) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDbIdByIMDbId
         logger.Trace("[TMDB_Data] [GetTMDBID] [Start]")
-        If Not String.IsNullOrEmpty(sIMDBID) Then
+        If Not String.IsNullOrEmpty(imdbId) Then
             If Not _TMDBAPI_Movie.IsClientCreated Then
                 Task.Run(Function() _TMDBAPI_Movie.CreateAPI(_SpecialSettings_Movie))
             End If
             If _TMDBAPI_Movie.IsClientCreated Then
-                sTMDBID = _TMDBAPI_Movie.GetMovieID(sIMDBID)
+                tmdbId = _TMDBAPI_Movie.GetMovieID(imdbId)
             End If
         Else
             logger.Trace("[TMDB_Data] [GetTMDBID] [Abort] No IMDB ID to get the TMDB ID")
@@ -615,21 +611,21 @@ Public Class TMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.GetCollectionID
+    Function GetCollectionID(ByVal imdbIdOrTmdbId As String, ByRef tmdbCollectionId As Integer) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.GetTMDbCollectionId
         logger.Trace("[TMDB_Data] [GetCollectionID] [Start]")
-        If Not String.IsNullOrEmpty(sIMDBID) Then
+        If Not String.IsNullOrEmpty(imdbIdOrTmdbId) Then
             If Not _TMDBAPI_Movie.IsClientCreated Then
                 Task.Run(Function() _TMDBAPI_Movie.CreateAPI(_SpecialSettings_Movie))
             End If
             If _TMDBAPI_Movie.IsClientCreated Then
-                sCollectionID = _TMDBAPI_MovieSet.GetMovieCollectionID(sIMDBID)
-                If String.IsNullOrEmpty(sCollectionID) Then
+                tmdbCollectionId = _TMDBAPI_MovieSet.GetMovieCollectionID(imdbIdOrTmdbId)
+                If tmdbCollectionId = -1 Then
                     logger.Trace("[TMDB_Data] [GetCollectionID] [Abort] nor search result")
                     Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
                 End If
             End If
         End If
-            logger.Trace("[TMDB_Data] [GetCollectionID] [Done]")
+        logger.Trace("[TMDB_Data] [GetCollectionID] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
     ''' <summary>
@@ -647,12 +643,12 @@ Public Class TMDB_Data
         _TMDBAPI_Movie.DefaultLanguage = oDBElement.Language
 
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
-            If oDBElement.Movie.TMDBSpecified Then
+            If oDBElement.Movie.UniqueIDs.TMDbIdSpecified Then
                 'TMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                nMovie = _TMDBAPI_Movie.GetInfo_Movie(oDBElement.Movie.TMDB, FilteredOptions, False)
-            ElseIf oDBElement.Movie.IMDBSpecified Then
+                nMovie = _TMDBAPI_Movie.GetInfo_Movie(oDBElement.Movie.UniqueIDs.TMDbId.ToString, FilteredOptions, False)
+            ElseIf oDBElement.Movie.UniqueIDs.IMDbIdSpecified Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                nMovie = _TMDBAPI_Movie.GetInfo_Movie(oDBElement.Movie.IMDB, FilteredOptions, False)
+                nMovie = _TMDBAPI_Movie.GetInfo_Movie(oDBElement.Movie.UniqueIDs.IMDbId, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID or TMDB-ID for movie --> search first and try to get ID!
                 If oDBElement.Movie.TitleSpecified Then
@@ -678,10 +674,10 @@ Public Class TMDB_Data
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
-            If Not oDBElement.Movie.TMDBSpecified Then
+            If Not oDBElement.Movie.UniqueIDs.TMDbIdSpecified Then
                 Using dlgSearch As New dlgTMDBSearchResults_Movie(_SpecialSettings_Movie, _TMDBAPI_Movie)
                     If dlgSearch.ShowDialog(oDBElement.Movie.Title, oDBElement.Filename, FilteredOptions, oDBElement.Movie.Year) = DialogResult.OK Then
-                        nMovie = _TMDBAPI_Movie.GetInfo_Movie(dlgSearch.Result.TMDB, FilteredOptions, False)
+                        nMovie = _TMDBAPI_Movie.GetInfo_Movie(dlgSearch.Result.UniqueIDs.TMDbId.ToString, FilteredOptions, False)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
@@ -698,15 +694,15 @@ Public Class TMDB_Data
 
     Function Scraper_MovieSet(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_MovieSet Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
         logger.Trace("[TMDB_Data] [Scraper_MovieSet] [Start]")
-        Dim nMovieSet As MediaContainers.MovieSet = Nothing
+        Dim nMovieSet As MediaContainers.Movieset = Nothing
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_MovieSet)
 
         _TMDBAPI_MovieSet.DefaultLanguage = oDBElement.Language
 
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
-            If oDBElement.MovieSet.TMDBSpecified Then
+            If oDBElement.MovieSet.UniqueIDs.TMDbIdSpecified Then
                 'TMDB-ID already available -> scrape and save data into an empty movieset container (nMovieSet)
-                nMovieSet = _TMDBAPI_MovieSet.GetInfo_Movieset(oDBElement.MovieSet.TMDB, FilteredOptions, False)
+                nMovieSet = _TMDBAPI_MovieSet.GetInfo_Movieset(oDBElement.MovieSet.UniqueIDs.TMDbId, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no ITMDB-ID for movieset --> search first and try to get ID!
                 If oDBElement.MovieSet.TitleSpecified Then
@@ -732,10 +728,10 @@ Public Class TMDB_Data
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
-            If Not oDBElement.MovieSet.TMDBSpecified Then
+            If Not oDBElement.MovieSet.UniqueIDs.TMDbIdSpecified Then
                 Using dlgSearch As New dlgTMDBSearchResults_MovieSet(_SpecialSettings_MovieSet, _TMDBAPI_MovieSet)
                     If dlgSearch.ShowDialog(oDBElement.MovieSet.Title, FilteredOptions) = DialogResult.OK Then
-                        nMovieSet = _TMDBAPI_MovieSet.GetInfo_Movieset(dlgSearch.Result.TMDB, FilteredOptions, False)
+                        nMovieSet = _TMDBAPI_MovieSet.GetInfo_Movieset(dlgSearch.Result.UniqueIDs.TMDbId, FilteredOptions, False)
                         'if a movieset is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
@@ -764,17 +760,17 @@ Public Class TMDB_Data
         _TMDBAPI_TV.DefaultLanguage = oDBElement.Language
 
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
-            If oDBElement.TVShow.TMDBSpecified Then
+            If oDBElement.TVShow.UniqueIDs.TMDbIdSpecified Then
                 'TMDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-                nTVShow = _TMDBAPI_TV.GetInfo_TVShow(oDBElement.TVShow.TMDB, ScrapeModifiers, FilteredOptions, False)
-            ElseIf oDBElement.TVShow.TVDBSpecified Then
-                oDBElement.TVShow.TMDB = _TMDBAPI_TV.GetTMDBbyTVDB(oDBElement.TVShow.TVDB)
-                If Not oDBElement.TVShow.TMDBSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
-                nTVShow = _TMDBAPI_TV.GetInfo_TVShow(oDBElement.TVShow.TMDB, ScrapeModifiers, FilteredOptions, False)
-            ElseIf oDBElement.TVShow.IMDBSpecified Then
-                oDBElement.TVShow.TMDB = _TMDBAPI_TV.GetTMDBbyIMDB(oDBElement.TVShow.IMDB)
-                If Not oDBElement.TVShow.TMDBSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
-                nTVShow = _TMDBAPI_TV.GetInfo_TVShow(oDBElement.TVShow.TMDB, ScrapeModifiers, FilteredOptions, False)
+                nTVShow = _TMDBAPI_TV.GetInfo_TVShow(oDBElement.TVShow.UniqueIDs.TMDbId, ScrapeModifiers, FilteredOptions, False)
+            ElseIf oDBElement.TVShow.UniqueIDs.TVDBidSpecified Then
+                oDBElement.TVShow.UniqueIDs.TMDbId = _TMDBAPI_TV.GetTMDBbyTVDB(oDBElement.TVShow.UniqueIDs.TVDbId)
+                If Not oDBElement.TVShow.UniqueIDs.TMDbIdSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+                nTVShow = _TMDBAPI_TV.GetInfo_TVShow(oDBElement.TVShow.UniqueIDs.TMDbId, ScrapeModifiers, FilteredOptions, False)
+            ElseIf oDBElement.TVShow.UniqueIDs.IMDbIdSpecified Then
+                oDBElement.TVShow.UniqueIDs.TMDbId = _TMDBAPI_TV.GetTMDBbyIMDB(oDBElement.TVShow.UniqueIDs.IMDbId)
+                If Not oDBElement.TVShow.UniqueIDs.TMDbIdSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+                nTVShow = _TMDBAPI_TV.GetInfo_TVShow(oDBElement.TVShow.UniqueIDs.TMDbId, ScrapeModifiers, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If oDBElement.TVShow.TitleSpecified Then
@@ -800,10 +796,10 @@ Public Class TMDB_Data
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
-            If Not oDBElement.TVShow.TMDBSpecified Then
+            If Not oDBElement.TVShow.UniqueIDs.TMDbIdSpecified Then
                 Using dlgSearch As New dlgTMDBSearchResults_TV(_SpecialSettings_TV, _TMDBAPI_TV)
                     If dlgSearch.ShowDialog(oDBElement.TVShow.Title, oDBElement.ShowPath, FilteredOptions) = DialogResult.OK Then
-                        nTVShow = _TMDBAPI_TV.GetInfo_TVShow(dlgSearch.Result.TMDB, ScrapeModifiers, FilteredOptions, False)
+                        nTVShow = _TMDBAPI_TV.GetInfo_TVShow(dlgSearch.Result.UniqueIDs.TMDbId, ScrapeModifiers, FilteredOptions, False)
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
@@ -825,15 +821,15 @@ Public Class TMDB_Data
 
         _TMDBAPI_TV.DefaultLanguage = oDBElement.Language
 
-        If Not oDBElement.TVShow.TMDBSpecified AndAlso oDBElement.TVShow.TVDBSpecified Then
-            oDBElement.TVShow.TMDB = _TMDBAPI_TV.GetTMDBbyTVDB(oDBElement.TVShow.TVDB)
+        If Not oDBElement.TVShow.UniqueIDs.TMDbIdSpecified AndAlso oDBElement.TVShow.UniqueIDs.TVDbIdSpecified Then
+            oDBElement.TVShow.UniqueIDs.TMDbId = _TMDBAPI_TV.GetTMDBbyTVDB(oDBElement.TVShow.UniqueIDs.TVDbId)
         End If
 
-        If oDBElement.TVShow.TMDBSpecified Then
+        If oDBElement.TVShow.UniqueIDs.TMDbIdSpecified Then
             If Not oDBElement.TVEpisode.Episode = -1 AndAlso Not oDBElement.TVEpisode.Season = -1 Then
-                nTVEpisode = _TMDBAPI_TV.GetInfo_TVEpisode(CInt(oDBElement.TVShow.TMDB), oDBElement.TVEpisode.Season, oDBElement.TVEpisode.Episode, FilteredOptions)
+                nTVEpisode = _TMDBAPI_TV.GetInfo_TVEpisode(oDBElement.TVShow.UniqueIDs.TMDbId, oDBElement.TVEpisode.Season, oDBElement.TVEpisode.Episode, FilteredOptions)
             ElseIf oDBElement.TVEpisode.AiredSpecified Then
-                nTVEpisode = _TMDBAPI_TV.GetInfo_TVEpisode(CInt(oDBElement.TVShow.TMDB), oDBElement.TVEpisode.Aired, FilteredOptions)
+                nTVEpisode = _TMDBAPI_TV.GetInfo_TVEpisode(oDBElement.TVShow.UniqueIDs.TMDbId, oDBElement.TVEpisode.Aired, FilteredOptions)
             Else
                 logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No search result found"))
                 Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
@@ -859,13 +855,13 @@ Public Class TMDB_Data
 
         _TMDBAPI_TV.DefaultLanguage = oDBElement.Language
 
-        If Not oDBElement.TVShow.TMDBSpecified AndAlso oDBElement.TVShow.TVDBSpecified Then
-            oDBElement.TVShow.TMDB = _TMDBAPI_TV.GetTMDBbyTVDB(oDBElement.TVShow.TVDB)
+        If Not oDBElement.TVShow.UniqueIDs.TMDbIdSpecified AndAlso oDBElement.TVShow.UniqueIDs.TVDbIdSpecified Then
+            oDBElement.TVShow.UniqueIDs.TMDbId = _TMDBAPI_TV.GetTMDBbyTVDB(oDBElement.TVShow.UniqueIDs.TVDbId)
         End If
 
-        If oDBElement.TVShow.TMDBSpecified Then
+        If oDBElement.TVShow.UniqueIDs.TMDbIdSpecified Then
             If oDBElement.TVSeason.SeasonSpecified Then
-                nTVSeason = _TMDBAPI_TV.GetInfo_TVSeason(CInt(oDBElement.TVShow.TMDB), oDBElement.TVSeason.Season, FilteredOptions)
+                nTVSeason = _TMDBAPI_TV.GetInfo_TVSeason(oDBElement.TVShow.UniqueIDs.TMDbId, oDBElement.TVSeason.Season, FilteredOptions)
             Else
                 logger.Trace(String.Format("[TMDB_Data] [Scraper_TVSeason] [Abort] Season is not specified"))
                 Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}

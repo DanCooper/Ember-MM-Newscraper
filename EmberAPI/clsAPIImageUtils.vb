@@ -200,35 +200,49 @@ Public Class ImageUtils
     ''' Copies the image from <paramref name="pbSource"/> into <paramref name="pbDestination"/>,
     ''' resizing it (if necessary) so that it is no larger than the supplied width and height.
     ''' It only shrinks, but does not grow the image.
-    '''
     ''' </summary>
     ''' <param name="pbDestination">Destination picture box</param>
     ''' <param name="pbSource">Source picture box</param>
     ''' <param name="maxHeight">Maximum height for <paramref name="pbDestination"/></param>
     ''' <param name="maxWidth">Maximum width for <paramref name="pbDestination"/></param>
     ''' <remarks>Why not use "Zoom" for fanart background? - To keep the image at the top. Zoom centers vertically.</remarks>
-    Public Shared Sub ResizePB(ByRef pbDestination As PictureBox, ByRef pbSource As PictureBox, ByVal maxHeight As Integer, ByVal maxWidth As Integer)
+    Public Shared Sub ResizePB(ByRef pbDestination As PictureBox,
+                               ByRef pbSource As PictureBox,
+                               ByVal maxHeight As Integer,
+                               ByVal maxWidth As Integer,
+                               Optional DoClip As Boolean = False)
         If pbSource Is Nothing OrElse pbSource.Image Is Nothing Then Return
 
         If pbSource.Image IsNot Nothing Then
             Try
-                If Not pbDestination.Image Is Nothing Then pbDestination.Image.Dispose()
-
-                pbDestination.SizeMode = PictureBoxSizeMode.Normal
                 Dim sPropPerc As Single = 1.0 'no default scaling
-
                 pbDestination.Size = New Size(maxWidth, maxHeight)
 
-                ' Height
-                If pbSource.Image.Height > pbDestination.Height Then
-                    ' Reduce height first
-                    sPropPerc = CSng(pbDestination.Height / pbSource.Image.Height)
-                End If
+                If Not pbDestination.Image Is Nothing Then pbDestination.Image.Dispose()
 
-                ' Width
-                If (pbSource.Image.Width * sPropPerc) > pbDestination.Width Then
-                    ' Scaled width exceeds Box's width, recalculate scale_factor
-                    sPropPerc = CSng(pbDestination.Width / pbSource.Image.Width)
+                If Not DoClip Then
+                    pbDestination.SizeMode = PictureBoxSizeMode.Normal
+                    ' Height
+                    If pbSource.Image.Height > pbDestination.Height Then
+                        ' Reduce height first
+                        sPropPerc = CSng(pbDestination.Height / pbSource.Image.Height)
+                    End If
+                    ' Width 
+                    If (pbSource.Image.Width * sPropPerc) > pbDestination.Width Then
+                        ' Scaled width exceeds Box's width, recalculate scale_factor
+                        sPropPerc = CSng(pbDestination.Width / pbSource.Image.Width)
+                    End If
+                Else
+                    pbDestination.SizeMode = PictureBoxSizeMode.CenterImage
+                    Dim dblImageAspectRatio As Double = pbSource.Image.Height / pbSource.Image.Width
+                    Dim dblDestAspectRation As Double = pbDestination.Height / pbDestination.Width
+                    If dblDestAspectRation < dblImageAspectRatio Then
+                        'Image has to be clipped in height and use the full width of destination PB
+                        sPropPerc = CSng(pbDestination.Width / pbSource.Image.Width)
+                    Else
+                        'Image has to be clipped in width and use the full height of destination PB
+                        sPropPerc = CSng(pbDestination.Height / pbSource.Image.Height)
+                    End If
                 End If
 
                 ' Get the source bitmap.
@@ -246,9 +260,11 @@ Public Class ImageUtils
                         ' Display the result.
                         pbDestination.Image = bmDest
 
-                        'tweak pb after resizing pic
-                        pbDestination.Width = pbDestination.Image.Width
-                        pbDestination.Height = pbDestination.Image.Height
+                        If Not DoClip Then
+                            'tweak pb after resizing pic
+                            pbDestination.Width = pbDestination.Image.Width
+                            pbDestination.Height = pbDestination.Image.Height
+                        End If
 
                         'Clean up
                         bmDest = Nothing
@@ -264,8 +280,6 @@ Public Class ImageUtils
             pbDestination.Left = 0
             pbDestination.Size = New Size(maxWidth, maxHeight)
         End If
-
-
     End Sub
     ''' <summary>
     ''' Apply a glass overlay on the supplied <c>PictureBox</c>

@@ -1,30 +1,32 @@
 <?xml version="1.0"?>
 <CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <transaction name="MyVideosDBSQL_v46_to_v47">
+
+    <!-- START rating related modifications -->
     <command type="DB">
       <description>create table rating</description>
       <execute>
         CREATE TABLE rating (
-        idRating     integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-        idMedia      integer,
-        media_type   text,
-        rating_type  text,
-        rating_max   integer,
-        rating       float(50),
-        votes        integer,
-        isDefault    boolean
+        idRating      integer PRIMARY KEY AUTOINCREMENT,
+        media_id      integer,
+        media_type    text,
+        rating_type   text,
+        rating_max    integer,
+        rating        float(50),
+        votes         integer,
+        isDefault     boolean
         );
 
         CREATE INDEX ix_rating
         ON rating
-        (idMedia, media_type);
+        (media_id, media_type);
       </execute>
     </command>
     <command type="DB">
       <description>copy rating from table episode to table rating</description>
       <execute>
         INSERT INTO rating
-        (idMedia,
+        (media_id,
         media_type,
         rating_type,
         rating_max,
@@ -38,18 +40,18 @@
         10,
         Rating,
         Votes,
-        1
+        0
         FROM
         episode
         WHERE
-        Rating IS NOT '' AND Rating IS NOT 0 AND Votes IS NOT '' AND Votes IS NOT 0
+        Rating IS NOT '' and Votes IS NOT ''
       </execute>
     </command>
     <command type="DB">
       <description>copy rating from table movie to table rating</description>
       <execute>
         INSERT INTO rating
-        (idMedia,
+        (media_id,
         media_type,
         rating_type,
         rating_max,
@@ -63,18 +65,18 @@
         10,
         Rating,
         Votes,
-        1
+        0
         FROM
         movie
         WHERE
-        Rating IS NOT '' AND Rating IS NOT 0 AND Votes IS NOT '' AND Votes IS NOT 0
+        Rating IS NOT '' and Votes IS NOT ''
       </execute>
     </command>
     <command type="DB">
       <description>copy rating from table tvshow to table rating</description>
       <execute>
         INSERT INTO rating
-        (idMedia,
+        (media_id,
         media_type,
         rating_type,
         rating_max,
@@ -88,13 +90,393 @@
         10,
         Rating,
         Votes,
+        0
+        FROM
+        tvshow
+        WHERE
+        Rating IS NOT '' and Votes IS NOT ''
+      </execute>
+    </command>
+    <!-- END rating related modifications -->
+
+    <!-- START uniqueid related modifications -->
+    <command type="DB">
+      <description>create table uniqueid</description>
+      <execute>
+        CREATE TABLE uniqueid (
+        idUniqueID   integer PRIMARY KEY,
+        media_id     integer,
+        media_type   text,
+        value        text,
+        type         text,
+        isDefault    boolean DEFAULT 0
+        );
+
+        CREATE INDEX ix_uniqueid1
+        ON uniqueid
+        (media_id, media_type, type);
+
+        CREATE INDEX ix_uniqueid2
+        ON uniqueid
+        (media_type, value);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TVDB ID from table episode to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idEpisode,
+        'episode',
+        strTVDB,
+        'tvdb',
+        1
+        FROM
+        episode
+        WHERE
+        strTVDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy IMDB ID from table episode to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idEpisode,
+        'episode',
+        strIMDB,
+        'imdb',
+        0
+        FROM
+        episode
+        WHERE
+        strIMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table episode to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idEpisode,
+        'episode',
+        strTMDB,
+        'tmdb',
+        0
+        FROM
+        episode
+        WHERE
+        strTMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy IMDB ID from table movie to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idMovie,
+        'movie',
+        Imdb,
+        'imdb',
+        1
+        FROM
+        movie
+        WHERE
+        Imdb IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table movie to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idMovie,
+        'movie',
+        TMDB,
+        'tmdb',
+        0
+        FROM
+        movie
+        WHERE
+        TMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB collection ID from table movie to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idMovie,
+        'movie',
+        TMDBColID,
+        'tmdbcol',
+        0
+        FROM
+        movie
+        WHERE
+        TMDBColID IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table sets to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idSet,
+        'set',
+        TMDBColID,
+        'tmdb',
+        0
+        FROM
+        sets
+        WHERE
+        TMDBColID IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TVDB ID from table seasons to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idSeason,
+        'season',
+        strTVDB,
+        'tvdb',
+        1
+        FROM
+        seasons
+        WHERE
+        strTVDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table seasons to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idSeason,
+        'season',
+        strTMDB,
+        'tmdb',
+        0
+        FROM
+        seasons
+        WHERE
+        strTMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TVDB ID from table tvshow to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idShow,
+        'tvshow',
+        TVDB,
+        'tvdb',
         1
         FROM
         tvshow
         WHERE
-        Rating IS NOT '' AND Rating IS NOT 0 AND Votes IS NOT '' AND Votes IS NOT 0
+        TVDB IS NOT ''
       </execute>
     </command>
+    <command type="DB">
+      <description>copy IMDB ID from table tvshow to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idShow,
+        'tvshow',
+        strIMDB,
+        'imdb',
+        0
+        FROM
+        tvshow
+        WHERE
+        strIMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table tvshow to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (media_id,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idShow,
+        'tvshow',
+        strTMDB,
+        'tmdb',
+        0
+        FROM
+        tvshow
+        WHERE
+        strTMDB IS NOT ''
+      </execute>
+    </command>
+    <!-- END uniqueid related modifications -->
+
+    <!-- START table/view episode/episodelist modifications-->
+    <command type="DB">
+      <description>add "OriginalTitle" to table episode</description>
+      <execute>
+        ALTER TABLE episode
+        ADD COLUMN OriginalTitle text;
+      </execute>
+    </command>
+    <!-- END table/view episode/episodelist modifications-->
+
+    <!-- START delete trigger modifications-->
+    <command type="DB">
+      <description>update delete triggers</description>
+      <execute>
+        DROP TRIGGER delete_episode;
+
+        CREATE TRIGGER delete_episode
+        AFTER DELETE
+        ON episode
+        BEGIN
+        DELETE FROM actorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM art WHERE media_id=old.idEpisode AND media_type='episode';
+        DELETE FROM directorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM files WHERE idFile=old.idFile;
+        DELETE FROM rating WHERE media_id=old.idEpisode AND media_type='episode';
+        DELETE FROM gueststarlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM uniqueid WHERE media_id=old.idEpisode AND media_type='episode';
+        DELETE FROM writerlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM TVVStreams WHERE TVEpID=old.idEpisode;
+        DELETE FROM TVAStreams WHERE TVEpID=old.idEpisode;
+        DELETE FROM TVSubs WHERE TVEpID=old.idEpisode;
+        END;
+
+        DROP TRIGGER delete_movie;
+
+        CREATE TRIGGER delete_movie
+        AFTER DELETE
+        ON movie
+        BEGIN
+        DELETE FROM actorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM art WHERE media_id=old.idMovie AND media_type='movie';
+        DELETE FROM countrylinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM directorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM genrelinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM movielinktvshow WHERE idMovie=old.idMovie;
+        DELETE FROM rating WHERE media_id=old.idMovie AND media_type='movie';
+        DELETE FROM setlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM studiolinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM uniqueid WHERE media_id=old.idMovie AND media_type='movie';
+        DELETE FROM writerlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesVStreams WHERE MovieID=old.idMovie;
+        END;
+
+        DROP TRIGGER delete_season;
+
+        CREATE TRIGGER delete_season
+        AFTER DELETE
+        ON seasons
+        BEGIN
+        DELETE FROM art WHERE media_id=old.idSeason AND media_type='season';
+        DELETE FROM episode WHERE Season=old.Season AND idShow=old.idShow;
+        DELETE FROM uniqueid WHERE media_id=old.idSeason AND media_type='season';
+        END;
+
+        DROP TRIGGER delete_set;
+
+        CREATE TRIGGER delete_set
+        AFTER DELETE
+        ON sets
+        BEGIN
+        DELETE FROM art WHERE media_id=old.idSet AND media_type='set';
+        DELETE FROM uniqueid WHERE media_id=old.idSet AND media_type='set';
+        END;
+        
+        DROP TRIGGER delete_tvshow;
+
+        CREATE TRIGGER delete_tvshow
+        AFTER DELETE
+        ON tvshow
+        BEGIN
+        DELETE FROM actorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM art WHERE media_id=old.idShow AND media_type='tvshow';
+        DELETE FROM creatorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM countrylinktvshow WHERE idShow=old.idShow;
+        DELETE FROM directorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM episode WHERE idShow=old.idShow;
+        DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
+        DELETE FROM movielinktvshow WHERE idShow=old.idShow;
+        DELETE FROM rating WHERE media_id=old.idShow AND media_type='tvshow';
+        DELETE FROM seasons WHERE idShow=old.idShow;
+        DELETE FROM studiolinktvshow WHERE idShow=old.idShow;
+        DELETE FROM taglinks WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM uniqueid WHERE media_id=old.idShow AND media_type='tvshow';
+        END;
+      </execute>
+    </command>
+    <!-- END trigger modifications-->
+
+    <!-- START view movielist modifications-->
     <command type="DB">
       <description>update view movielist</description>
       <execute>
@@ -163,6 +545,9 @@
         GROUP BY movie.idMovie;
       </execute>
     </command>
+    <!-- END view movielist modifications-->
+
+    <!-- START view setslist modifications-->
     <command type="DB">
       <description>update view setslist</description>
       <execute>
@@ -213,6 +598,9 @@
         GROUP BY sets.idSet;
       </execute>
     </command>
+    <!-- END view setslist modifications-->
+
+    <!-- START view tvshowlist modifications-->
     <command type="DB">
       <description>update view tvshowlist</description>
       <execute>
@@ -290,10 +678,11 @@
         tvshow.idShow;
       </execute>
     </command>
+    <!-- END view tvshowlist modifications-->
   </transaction>
   <noTransaction type="">
   </noTransaction>
-<!-- 
+  <!-- 
   <noTransaction type="DB">
     <description>nd1</description>
     <execute>ne1</execute>

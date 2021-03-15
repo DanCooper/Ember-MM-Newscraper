@@ -196,7 +196,10 @@ Public Class Scraper
             Dim bIsScraperLanguage As Boolean = _SpecialSettings.PrefLanguage.ToLower.StartsWith("en")
 
             strPosterURL = String.Empty
-            Dim nMovie As New MediaContainers.Movie With {.IMDB = id, .Scrapersource = "IMDB"}
+            Dim nMovie As New MediaContainers.Movie With {
+                .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = id},
+                .Scrapersource = "IMDB"
+            }
 
             'reset all local objects
             htmldPlotSummary = Nothing
@@ -356,11 +359,10 @@ Public Class Scraper
             If bwIMDB.CancellationPending Then Return Nothing
 
             'Premiered
-            If filteredoptions.bMainPremiered OrElse filteredoptions.bMainYear Then
+            If filteredoptions.bMainPremiered Then
                 Dim datePremiered As New Date
                 If ParsePremiered(htmldReference, datePremiered) Then
                     If filteredoptions.bMainPremiered Then nMovie.Premiered = datePremiered.ToString("yyyy-MM-dd")
-                    If filteredoptions.bMainYear Then nMovie.Year = datePremiered.Year.ToString
                 Else
                     logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Premiered/Year", id))
                 End If
@@ -441,15 +443,15 @@ Public Class Scraper
                 End If
             End If
 
-            'Year (fallback if ReleaseDate can't be parsed)
-            If filteredoptions.bMainYear AndAlso Not nMovie.YearSpecified Then
-                Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""titlereference-title-year""]/a")
-                If selNode IsNot Nothing Then
-                    nMovie.Year = selNode.InnerText
-                Else
-                    logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Year (fallback)", id))
-                End If
-            End If
+            ''Year (fallback if ReleaseDate can't be parsed)
+            'If filteredoptions.bMainYear AndAlso Not nMovie.YearSpecified Then
+            '    Dim selNode = htmldReference.DocumentNode.SelectSingleNode("//span[@class=""titlereference-title-year""]/a")
+            '    If selNode IsNot Nothing Then
+            '        nMovie.Year = selNode.InnerText
+            '    Else
+            '        logger.Trace(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Year (fallback)", id))
+            '    End If
+            'End If
 
             Return nMovie
         Catch ex As Exception
@@ -476,7 +478,10 @@ Public Class Scraper
             If bwIMDB.CancellationPending Then Return Nothing
 
             strPosterURL = String.Empty
-            Dim nTVEpisode As New MediaContainers.EpisodeDetails With {.IMDB = id, .Scrapersource = "IMDB"}
+            Dim nTVEpisode As New MediaContainers.EpisodeDetails With {
+                .Scrapersource = "IMDB",
+                .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = id}
+            }
 
             'get season and episode number
             Dim selSENode = htmldReference.DocumentNode.SelectSingleNode("//ul[@class=""ipl-inline-list titlereference-overview-season-episode-numbers""]")
@@ -669,7 +674,10 @@ Public Class Scraper
             Dim bIsScraperLanguage As Boolean = _SpecialSettings.PrefLanguage.ToLower.StartsWith("en")
 
             strPosterURL = String.Empty
-            Dim nTVShow As New MediaContainers.TVShow With {.IMDB = id, .Scrapersource = "IMDB"}
+            Dim nTVShow As New MediaContainers.TVShow With {
+                .Scrapersource = "IMDB",
+                .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = id}
+            }
 
             'reset all local objects
             htmldPlotSummary = Nothing
@@ -865,7 +873,7 @@ Public Class Scraper
 
                 For Each tSeason In lstSeasons
                     If bwIMDB.CancellationPending Then Return Nothing
-                    GetTVSeasonInfo(nTVShow, nTVShow.IMDB, tSeason, scrapemodifier, filteredoptions)
+                    GetTVSeasonInfo(nTVShow, nTVShow.UniqueIDs.IMDbId, tSeason, scrapemodifier, filteredoptions)
                     If scrapemodifier.withSeasons Then
                         nTVShow.KnownSeasons.Add(New MediaContainers.SeasonDetails With {.Season = tSeason})
                     End If
@@ -902,16 +910,16 @@ Public Class Scraper
             Select Case scrapetype
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.ExactMatches.Count = 1 Then
-                        Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, filteredoptions)
+                        Return GetMovieInfo(r.ExactMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                     ElseIf r.PopularTitles.Count = 1 AndAlso r.PopularTitles(0).Lev <= 5 Then
-                        Return GetMovieInfo(r.PopularTitles.Item(0).IMDB, False, filteredoptions)
+                        Return GetMovieInfo(r.PopularTitles.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                     ElseIf r.ExactMatches.Count = 1 AndAlso r.ExactMatches(0).Lev <= 5 Then
-                        Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, filteredoptions)
+                        Return GetMovieInfo(r.ExactMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                     Else
                         Using dlgSearch As New dlgIMDBSearchResults_Movie(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, title, oDBElement.Filename) = DialogResult.OK Then
-                                If Not String.IsNullOrEmpty(dlgSearch.Result.IMDB) Then
-                                    Return GetMovieInfo(dlgSearch.Result.IMDB, False, filteredoptions)
+                                If Not String.IsNullOrEmpty(dlgSearch.Result.UniqueIDs.IMDbId) Then
+                                    Return GetMovieInfo(dlgSearch.Result.UniqueIDs.IMDbId, False, filteredoptions)
                                 End If
                             End If
                         End Using
@@ -919,7 +927,7 @@ Public Class Scraper
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.ExactMatches.Count = 1 Then
-                        Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, filteredoptions)
+                        Return GetMovieInfo(r.ExactMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
@@ -933,17 +941,17 @@ Public Class Scraper
                     Dim exactHaveYear As Integer = FindYear(oDBElement.Filename, r.ExactMatches)
                     Dim popularHaveYear As Integer = FindYear(oDBElement.Filename, r.PopularTitles)
                     If r.ExactMatches.Count = 1 Then
-                        Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, filteredoptions)
+                        Return GetMovieInfo(r.ExactMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                     ElseIf r.ExactMatches.Count > 1 AndAlso exactHaveYear >= 0 Then
-                        Return GetMovieInfo(r.ExactMatches.Item(exactHaveYear).IMDB, False, filteredoptions)
+                        Return GetMovieInfo(r.ExactMatches.Item(exactHaveYear).UniqueIDs.IMDbId, False, filteredoptions)
                     ElseIf r.PopularTitles.Count > 0 AndAlso popularHaveYear >= 0 Then
-                        Return GetMovieInfo(r.PopularTitles.Item(popularHaveYear).IMDB, False, filteredoptions)
+                        Return GetMovieInfo(r.PopularTitles.Item(popularHaveYear).UniqueIDs.IMDbId, False, filteredoptions)
                     ElseIf r.ExactMatches.Count > 0 AndAlso (r.ExactMatches(0).Lev <= 5 OrElse useAnyway) Then
-                        Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, filteredoptions)
+                        Return GetMovieInfo(r.ExactMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                     ElseIf r.PopularTitles.Count > 0 AndAlso (r.PopularTitles(0).Lev <= 5 OrElse useAnyway) Then
-                        Return GetMovieInfo(r.PopularTitles.Item(0).IMDB, False, filteredoptions)
+                        Return GetMovieInfo(r.PopularTitles.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                     ElseIf r.PartialMatches.Count > 0 AndAlso (r.PartialMatches(0).Lev <= 5 OrElse useAnyway) Then
-                        Return GetMovieInfo(r.PartialMatches.Item(0).IMDB, False, filteredoptions)
+                        Return GetMovieInfo(r.PartialMatches.Item(0).UniqueIDs.IMDbId, False, filteredoptions)
                     End If
             End Select
 
@@ -973,12 +981,12 @@ Public Class Scraper
         Select Case scrapetype
             Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                 If r.Matches.Count = 1 Then
-                    Return GetTVShowInfo(r.Matches.Item(0).IMDB, scrapemodifier, FilteredOptions, False)
+                    Return GetTVShowInfo(r.Matches.Item(0).UniqueIDs.IMDbId, scrapemodifier, FilteredOptions, False)
                 Else
                     Using dlgSearch As New dlgIMDBSearchResults_TV(_SpecialSettings, Me)
                         If dlgSearch.ShowDialog(r, title, oDBElement.ShowPath) = DialogResult.OK Then
-                            If Not String.IsNullOrEmpty(dlgSearch.Result.IMDB) Then
-                                Return GetTVShowInfo(dlgSearch.Result.IMDB, scrapemodifier, FilteredOptions, False)
+                            If Not String.IsNullOrEmpty(dlgSearch.Result.UniqueIDs.IMDbId) Then
+                                Return GetTVShowInfo(dlgSearch.Result.UniqueIDs.IMDbId, scrapemodifier, FilteredOptions, False)
                             End If
                         End If
                     End Using
@@ -986,12 +994,12 @@ Public Class Scraper
 
             Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                 If r.Matches.Count = 1 Then
-                    Return GetTVShowInfo(r.Matches.Item(0).IMDB, scrapemodifier, FilteredOptions, False)
+                    Return GetTVShowInfo(r.Matches.Item(0).UniqueIDs.IMDbId, scrapemodifier, FilteredOptions, False)
                 End If
 
             Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                 If r.Matches.Count > 0 Then
-                    Return GetTVShowInfo(r.Matches.Item(0).IMDB, scrapemodifier, FilteredOptions, False)
+                    Return GetTVShowInfo(r.Matches.Item(0).UniqueIDs.IMDbId, scrapemodifier, FilteredOptions, False)
                 End If
         End Select
 
@@ -1445,11 +1453,11 @@ Public Class Scraper
             If searchResults IsNot Nothing Then
                 For Each nResult In searchResults
                     R.PopularTitles.Add(New MediaContainers.Movie With {
-                                            .IMDB = StringUtils.GetIMDBIDFromString(nResult.OuterHtml),
-                                            .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                            .Title = nResult.SelectSingleNode("a").InnerText,
-                                            .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
-                                            })
+                                        .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                        .Title = nResult.SelectSingleNode("a").InnerText,
+                                        .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.OuterHtml)},
+                                        .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
+                                        })
                 Next
             End If
         End If
@@ -1460,11 +1468,11 @@ Public Class Scraper
             If searchResults IsNot Nothing Then
                 For Each nResult In searchResults
                     R.PartialMatches.Add(New MediaContainers.Movie With {
-                                             .IMDB = StringUtils.GetIMDBIDFromString(nResult.OuterHtml),
-                                             .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                             .Title = nResult.SelectSingleNode("a").InnerText,
-                                             .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
-                                             })
+                                         .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                         .Title = nResult.SelectSingleNode("a").InnerText,
+                                         .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.OuterHtml)},
+                                         .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
+                                         })
                 Next
             End If
         End If
@@ -1475,11 +1483,11 @@ Public Class Scraper
             If searchResults IsNot Nothing Then
                 For Each nResult In searchResults
                     R.TvTitles.Add(New MediaContainers.Movie With {
-                                       .IMDB = StringUtils.GetIMDBIDFromString(nResult.InnerHtml),
-                                       .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                       .Title = nResult.SelectSingleNode("a").InnerText,
-                                       .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
-                                       })
+                                   .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                   .Title = nResult.SelectSingleNode("a").InnerText,
+                                   .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.InnerHtml)},
+                                   .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
+                                   })
                 Next
             End If
         End If
@@ -1490,11 +1498,11 @@ Public Class Scraper
             If searchResults IsNot Nothing Then
                 For Each nResult In searchResults
                     R.VideoTitles.Add(New MediaContainers.Movie With {
-                                          .IMDB = StringUtils.GetIMDBIDFromString(nResult.InnerHtml),
-                                          .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                          .Title = nResult.SelectSingleNode("a").InnerText,
-                                          .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
-                                          })
+                                      .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                      .Title = nResult.SelectSingleNode("a").InnerText,
+                                      .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.InnerHtml)},
+                                      .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
+                                      })
                 Next
             End If
         End If
@@ -1505,11 +1513,11 @@ Public Class Scraper
             If searchResults IsNot Nothing Then
                 For Each nResult In searchResults
                     R.ShortTitles.Add(New MediaContainers.Movie With {
-                                          .IMDB = StringUtils.GetIMDBIDFromString(nResult.InnerHtml),
-                                          .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
-                                          .Title = nResult.SelectSingleNode("a").InnerText,
-                                          .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
-                                          })
+                                      .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                      .Title = nResult.SelectSingleNode("a").InnerText,
+                                      .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.InnerHtml)},
+                                      .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
+                                      })
                 Next
             End If
         End If
@@ -1520,9 +1528,9 @@ Public Class Scraper
             If searchResults IsNot Nothing Then
                 For Each nResult In searchResults
                     R.ExactMatches.Add(New MediaContainers.Movie With {
-                                           .IMDB = StringUtils.GetIMDBIDFromString(nResult.OuterHtml),
                                            .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
                                            .Title = nResult.SelectSingleNode("a").InnerText,
+                                           .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.OriginalName)},
                                            .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
                                            })
                 Next
@@ -1560,7 +1568,10 @@ Public Class Scraper
                     Dim attIMDBID = ndInfo.Attributes.Where(Function(f) f.Name = "data-tconst").FirstOrDefault
                     Dim attTitle = ndInfo.Attributes.Where(Function(f) f.Name = "alt").FirstOrDefault
                     If attIMDBID IsNot Nothing AndAlso attTitle IsNot Nothing Then
-                        R.Matches.Add(New MediaContainers.TVShow With {.IMDB = attIMDBID.Value, .Title = attTitle.Value})
+                        R.Matches.Add(New MediaContainers.TVShow With {
+                                      .Title = attTitle.Value,
+                                      .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = attIMDBID.Value}
+                                      })
                     End If
                 End If
             Next

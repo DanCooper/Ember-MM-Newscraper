@@ -545,10 +545,10 @@ Public Class FanartTV_Image
 
         Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_Movie)
 
-        If DBMovie.Movie.TMDBSpecified Then
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDB, FilteredModifiers)
-        ElseIf DBMovie.Movie.IMDBSpecified Then
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.IMDB, FilteredModifiers)
+        If DBMovie.Movie.UniqueIDs.TMDbIdSpecified Then
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.UniqueIDs.TMDbId.ToString, FilteredModifiers)
+        ElseIf DBMovie.Movie.UniqueIDs.IMDbIdSpecified Then
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.UniqueIDs.IMDbId, FilteredModifiers)
         Else
             logger.Trace(String.Concat("[FanartTV_Image] [Scraper_Movie] [Abort] No TMDB and IMDB ID exist to search: ", DBMovie.ListTitle))
         End If
@@ -560,17 +560,17 @@ Public Class FanartTV_Image
     Function Scraper_MovieSet(ByRef DBMovieset As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("[FanartTV_Image] [Scraper_MovieSet] [Start]")
 
-        If String.IsNullOrEmpty(DBMovieset.MovieSet.TMDB) AndAlso DBMovieset.MoviesInSetSpecified Then
-            DBMovieset.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.MoviesInSet.Item(0).DBMovie.Movie.IMDB)
+        If Not DBMovieset.MovieSet.UniqueIDs.TMDbIdSpecified AndAlso DBMovieset.MoviesInSetSpecified Then
+            DBMovieset.MovieSet.UniqueIDs.TMDbId = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.MoviesInSet.Item(0).DBMovie.Movie.UniqueIDs.IMDbId)
         End If
 
-        If DBMovieset.MovieSet.TMDBSpecified Then
+        If DBMovieset.MovieSet.UniqueIDs.TMDbIdSpecified Then
             LoadSettings_MovieSet()
             Dim _scraper As New Scraper(_SpecialSettings_MovieSet)
 
             Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_MovieSet)
 
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.TMDB, FilteredModifiers)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.UniqueIDs.TMDbId.ToString, FilteredModifiers)
         End If
 
         logger.Trace("[FanartTV_Image] [Scraper_MovieSet] [Done]")
@@ -587,22 +587,22 @@ Public Class FanartTV_Image
 
         Select Case DBTV.ContentType
             Case Enums.ContentType.TVEpisode
-                If DBTV.TVShow.TVDBSpecified Then
+                If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
                     If FilteredModifiers.MainFanart Then
-                        ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers).MainFanarts
+                        ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers).MainFanarts
                     End If
                 Else
                     logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVSeason
-                If DBTV.TVShow.TVDBSpecified Then
-                    ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers)
+                If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
+                    ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVShow
-                If DBTV.TVShow.TVDBSpecified Then
-                    ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers)
+                If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
+                    ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If

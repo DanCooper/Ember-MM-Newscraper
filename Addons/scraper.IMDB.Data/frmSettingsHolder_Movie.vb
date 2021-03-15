@@ -163,10 +163,6 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkYear_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkYear.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
     Private Sub chkFallBackworldwide_CheckedChanged(sender As Object, e As EventArgs) Handles chkFallBackworldwide.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -184,7 +180,7 @@ Public Class frmSettingsHolder_Movie
 
     Public Sub New()
         InitializeComponent()
-        SetUp()
+        Setup()
     End Sub
 
     Sub orderChanged()
@@ -198,7 +194,7 @@ Public Class frmSettingsHolder_Movie
         End If
     End Sub
 
-    Private Sub SetUp()
+    Private Sub Setup()
         chkActors.Text = Master.eLang.GetString(231, "Actors")
         chkCertifications.Text = Master.eLang.GetString(56, "Certifications")
         chkCountries.Text = Master.eLang.GetString(237, "Countries")
@@ -224,7 +220,6 @@ Public Class frmSettingsHolder_Movie
         chkTvTitles.Text = Master.eLang.GetString(1184, "TV Movie Titles")
         chkVideoTitles.Text = Master.eLang.GetString(1185, "Video Titles")
         chkWriters.Text = Master.eLang.GetString(394, "Writers")
-        chkYear.Text = Master.eLang.GetString(278, "Year")
         gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")

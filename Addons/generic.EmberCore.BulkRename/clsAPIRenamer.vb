@@ -552,8 +552,8 @@ Public Class FileFolderRenamer
         End If
 
         'IMDB
-        If _DBElement.Movie.IMDBSpecified Then
-            MovieFile.IMDB = _DBElement.Movie.IMDB
+        If _DBElement.Movie.UniqueIDs.IMDbIdSpecified Then
+            MovieFile.IMDB = _DBElement.Movie.UniqueIDs.IMDbId
         End If
 
         'IsLock
@@ -994,8 +994,8 @@ Public Class FileFolderRenamer
         End If
 
         'TVDB
-        If _DBElement.TVShow.TVDBSpecified Then
-            ShowFile.TVDBID = _DBElement.TVShow.TVDB
+        If _DBElement.TVShow.UniqueIDs.TVDbIdSpecified Then
+            ShowFile.TVDBID = _DBElement.TVShow.UniqueIDs.TVDbId.ToString
         End If
 
         'Year

@@ -1100,7 +1100,7 @@ Public Class dlgEdit_TVEpisode
     Private Sub UniqueIds_Fill()
         dgvUniqueIds.SuspendLayout()
 
-        For Each tId In tmpDBElement.TVEpisode.UniqueIDs.OrderBy(Function(f) Not f.IsDefault)
+        For Each tId In tmpDBElement.TVEpisode.UniqueIDs.Items.OrderBy(Function(f) Not f.IsDefault)
             Dim i As Integer = dgvUniqueIds.Rows.Add
             dgvUniqueIds.Rows(i).Tag = tId
             dgvUniqueIds.Rows(i).Cells(colUniqueIdsDefault.Name).Value = tId.IsDefault
@@ -1111,19 +1111,19 @@ Public Class dlgEdit_TVEpisode
         dgvUniqueIds.ResumeLayout()
     End Sub
 
-    Private Function UniqueIds_Get() As List(Of MediaContainers.Uniqueid)
-        Dim nList As New List(Of MediaContainers.Uniqueid)
+    Private Function UniqueIds_Get() As MediaContainers.UniqueidContainer
+        Dim nList As New MediaContainers.UniqueidContainer
         For Each r As DataGridViewRow In dgvUniqueIds.Rows
             If Not r.IsNewRow Then
                 If r.Cells(colUniqueIdsType.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colUniqueIdsType.Name).Value.ToString.Trim) AndAlso
                     r.Cells(colUniqueIdsValue.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim) Then
-                    nList.Add(New MediaContainers.Uniqueid With {
-                             .IsDefault = CBool(r.Cells(colUniqueIdsDefault.Name).Value),
-                             .Type = r.Cells(colUniqueIdsType.Name).Value.ToString.Trim,
-                             .Value = r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim
-                             })
+                    nList.Items.Add(New MediaContainers.Uniqueid With {
+                                    .IsDefault = CBool(r.Cells(colUniqueIdsDefault.Name).Value),
+                                    .Type = r.Cells(colUniqueIdsType.Name).Value.ToString.Trim,
+                                    .Value = r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim
+                                    })
                 End If
             End If
         Next

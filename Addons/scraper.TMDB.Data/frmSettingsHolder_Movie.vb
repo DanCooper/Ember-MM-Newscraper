@@ -30,19 +30,11 @@ Public Class frmSettingsHolder_Movie
 
 #End Region 'Events
 
-#Region "Fields"
-
-#End Region 'Fields
-
-#Region "Properties"
-
-#End Region 'Properties
-
 #Region "Methods"
 
     Public Sub New()
         InitializeComponent()
-        SetUp()
+        Setup()
     End Sub
 
     Private Sub pbTMDBApiKeyInfo_Click(sender As Object, e As EventArgs) Handles pbTMDBApiKeyInfo.Click
@@ -158,19 +150,7 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkVotes_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkYear_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkYear.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
     Private Sub chkFallBackEng_CheckedChanged(sender As Object, e As EventArgs) Handles chkFallBackEng.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As Object, e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -189,7 +169,7 @@ Public Class frmSettingsHolder_Movie
         End If
     End Sub
 
-    Private Sub SetUp()
+    Private Sub Setup()
         btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         chkActors.Text = Master.eLang.GetString(231, "Actors")
         chkCertifications.Text = Master.eLang.GetString(56, "Certifications")
@@ -211,7 +191,6 @@ Public Class frmSettingsHolder_Movie
         chkTitle.Text = Master.eLang.GetString(21, "Title")
         chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
         chkWriters.Text = Master.eLang.GetString(394, "Writers")
-        chkYear.Text = Master.eLang.GetString(278, "Year")
         gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         lblApiKey.Text = String.Concat(Master.eLang.GetString(870, "TMDB API Key"), ":")

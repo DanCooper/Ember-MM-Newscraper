@@ -574,6 +574,7 @@ Public Class Enums
         MovieSortTokens = 14
         MovieSetSortTokens = 15
         TVSortTokens = 16
+        MainTabSorting = 17
     End Enum
     ''' <summary>
     ''' 0 results in using the current datetime when adding a video
@@ -1113,6 +1114,19 @@ Public Class Functions
         Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
         Return origin.AddSeconds(timestamp)
     End Function
+
+    Public Shared Function ConvertStringToColor(ByVal value As String) As Color
+        If Not String.IsNullOrEmpty(value) Then
+            If Integer.TryParse(value, 0) Then
+                Return Color.FromArgb(Convert.ToInt32(value))
+            ElseIf Color.FromName(value).IsKnownColor OrElse value.StartsWith("#") Then
+                Return ColorTranslator.FromHtml(value)
+            Else
+                logger.Error(String.Concat("No valid color value: ", value))
+                Return New Color
+            End If
+        End If
+    End Function
     ''' <summary>
     ''' Convert a VB-styled DateTime to a valid Unix-style timestamp
     ''' </summary>
@@ -1163,7 +1177,6 @@ Public Class Functions
             .bMainTrailer = Master.eSettings.MovieScraperTrailer
             .bMainUserRating = Master.eSettings.MovieScraperUserRating
             .bMainWriters = Master.eSettings.MovieScraperCredits
-            .bMainYear = Master.eSettings.MovieScraperYear
         End With
 
         With Master.DefaultOptions_MovieSet
@@ -1485,7 +1498,6 @@ Public Class Functions
         FilteredOptions.bMainTrailer = Options.bMainTrailer AndAlso Options2.bMainTrailer
         FilteredOptions.bMainUserRating = Options.bMainUserRating AndAlso Options2.bMainUserRating
         FilteredOptions.bMainWriters = Options.bMainWriters AndAlso Options2.bMainWriters
-        FilteredOptions.bMainYear = Options.bMainYear AndAlso Options2.bMainYear
         FilteredOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
         FilteredOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
         FilteredOptions.bSeasonTitle = Options.bSeasonTitle AndAlso Options2.bSeasonTitle
@@ -1912,6 +1924,7 @@ Public Class Structures
         Dim bEpisodeCredits As Boolean
         Dim bEpisodeDirectors As Boolean
         Dim bEpisodeGuestStars As Boolean
+        Dim bEpisodeOriginalTitle As Boolean
         Dim bEpisodePlot As Boolean
         Dim bEpisodeRating As Boolean
         Dim bEpisodeRuntime As Boolean
@@ -1943,7 +1956,6 @@ Public Class Structures
         Dim bMainUserRating As Boolean
         Dim bMainVideoSource As Boolean
         Dim bMainWriters As Boolean
-        Dim bMainYear As Boolean
         Dim bSeasonAired As Boolean
         Dim bSeasonPlot As Boolean
         Dim bSeasonTitle As Boolean
@@ -1972,12 +1984,6 @@ Public Class Structures
         Dim IfNoMovies As Boolean       'Show also if the Movies list is empty
         Dim IfNoMovieSets As Boolean    'Show also if the MovieSets list is empty
         Dim IfNoTVShows As Boolean      'Show also if the TV Shows list is empty
-    End Structure
-
-    Public Structure MainTabType
-        Dim ContentName As String
-        Dim ContentType As Enums.ContentType
-        Dim DefaultList As String
     End Structure
 
 #End Region 'Nested Types

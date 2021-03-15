@@ -81,7 +81,7 @@ Public Class OFDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
+    Function GetTMDbIdByIMDbId(ByVal imdbId As String, ByRef tmdbId As Integer) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDbIdByIMDbId
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -174,20 +174,20 @@ Public Class OFDB_Data
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         'datascraper needs imdb of movie!
-        If String.IsNullOrEmpty(oDBMovie.Movie.IMDB) Then
+        If String.IsNullOrEmpty(oDBMovie.Movie.UniqueIDs.IMDbId) Then
             logger.Trace("[OFDB_Data] [Scraper_Movie] [Abort] IMDB-ID of movie is needed, but not availaible")
             Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
         End If
 
         If Modifier.MainNFO Then
-            nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.IMDB, FilteredOptions, oDBMovie.Language)
+            nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.UniqueIDs.IMDbId, FilteredOptions, oDBMovie.Language)
         End If
 
         logger.Trace("[OFDB_Data] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
     End Function
 
-    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged
+    Public Sub ScraperOrderChanged() Implements Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged
         _setup.orderChanged()
     End Sub
 

@@ -72,11 +72,11 @@ Namespace FanartTVs
             End Try
         End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_Movie_MovieSet(ByVal imdbIdOrTmdbId As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             Try
-                Dim Results = New FanartTv.Movies.Movie(imdbID_tmdbID)
+                Dim Results = New FanartTv.Movies.Movie(imdbIdOrTmdbId)
                 If Results Is Nothing OrElse FanartTv.API.ErrorOccurred Then
                     If FanartTv.API.ErrorMessage IsNot Nothing Then
                         logger.Error(FanartTv.API.ErrorMessage)
@@ -238,11 +238,11 @@ Namespace FanartTVs
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TV(ByVal tvdbId As Integer, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             Try
-                Dim Results = New FanartTv.TV.Show(tvdbID)
+                Dim Results = New FanartTv.TV.Show(tvdbId.ToString)
                 If Results Is Nothing OrElse FanartTv.API.ErrorOccurred Then
                     If FanartTv.API.ErrorMessage IsNot Nothing Then
                         logger.Error(FanartTv.API.ErrorMessage)

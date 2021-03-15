@@ -401,53 +401,12 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-        '''&lt;Languages&gt;
-        '''  &lt;Language&gt;
-        '''    &lt;name&gt;Dansk&lt;/name&gt;
-        '''    &lt;abbreviation&gt;da&lt;/abbreviation&gt;
-        '''    &lt;id&gt;10&lt;/id&gt;
-        '''  &lt;/Language&gt;
-        '''  &lt;Language&gt;
-        '''    &lt;name&gt;Suomeksi&lt;/name&gt;
-        '''    &lt;abbreviation&gt;fi&lt;/abbreviation&gt;
-        '''    &lt;id&gt;11&lt;/id&gt;
-        '''  &lt;/Language&gt;
-        '''  &lt;Language&gt;
-        '''    &lt;name&gt;Nederlands&lt;/name&gt;
-        '''    &lt;abbreviation&gt;nl&lt;/abbreviation&gt;
-        '''    &lt;id&gt;13&lt;/id&gt;
-        '''  &lt;/Language&gt;
-        '''  &lt;Language&gt;
-        '''    &lt;name&gt;Deutsch&lt;/name&gt;
-        '''    &lt;abbreviation&gt;de&lt;/abbreviation&gt;
-        '''    &lt;id&gt;14&lt;/id&gt;
-        '''  &lt;/Language&gt;
-        '''  &lt;Language&gt;
-        '''    &lt;n [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property languages() As String
-            Get
-                Return ResourceManager.GetString("languages", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property Logo() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Logo", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;center&gt;&lt;b&gt;Movie List&lt;/b&gt;&lt;/center&gt;&lt;/br&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property MediaListLogo() As String
-            Get
-                Return ResourceManager.GetString("MediaListLogo", resourceCulture)
             End Get
         End Property
         
@@ -492,164 +451,12 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        '''&lt;!--
-        '''### Anchor Help ###
-        '''0 = none
-        '''1 = Top
-        '''2 = Bottom
-        '''4 = Left
-        '''8 = Right
-        '''
-        '''Can be combined by adding values. For example, the standard TopLeft anchor would
-        '''be anchor code 5.
-        '''
-        '''### FontStyle Help ###
-        '''0 = Regular
-        '''1 = Bold
-        '''2 = Italic
-        '''4 = Underline
-        '''8 = Strikeout
-        '''
-        '''Can be combined by adding values. For example, bold and underlined would be
-        '''fontstyle code 5.
-        '''
-        '''### Color Help ###
-        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property movie_Default() As String
-            Get
-                Return ResourceManager.GetString("movie_Default", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die 
-        '''&lt;/body&gt;
-        '''&lt;/html&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property MovieListFooter() As String
-            Get
-                Return ResourceManager.GetString("MovieListFooter", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;html&gt;
-        '''&lt;head&gt;
-        '''&lt;style type=&quot;text/css&quot;&gt;
-        '''&lt;!--
-        '''body {background: #FFFFFF; /* The background of the page will be colored white */}
-        '''a:link {color: #000000; /* All unvisited links will be colored black */ }
-        '''a:visited {color: #FF9900; /* All visited links will be colored tan */ }
-        '''a:active {color: #FF0000; /* All active links will be colored red */}
-        '''a:hover {color: #0000FF; background: #FFFF00;}
-        '''/* When the mouse pointer is over the link the link will be colored blue
-        '''and the background color of the link wi [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property MovieListHeader() As String
-            Get
-                Return ResourceManager.GetString("MovieListHeader", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;td&gt;&lt;span style=&quot;color:darkblue;&quot;&gt;{0}&lt;/span&gt;&lt;/td&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property MovieListTableCol() As String
-            Get
-                Return ResourceManager.GetString("MovieListTableCol", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;/table&gt;
-        '''&lt;/center&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property MovieListTableEnd() As String
-            Get
-                Return ResourceManager.GetString("MovieListTableEnd", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;th style=&quot;text-align:left; &quot;&gt;{0}&lt;/th&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property MovieListTableHeader() As String
-            Get
-                Return ResourceManager.GetString("MovieListTableHeader", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;/tr&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property MovieListTableRowEnd() As String
-            Get
-                Return ResourceManager.GetString("MovieListTableRowEnd", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die 
-        '''&lt;tr&gt; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property MovieListTableRowStart() As String
-            Get
-                Return ResourceManager.GetString("MovieListTableRowStart", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;center&gt;
-        '''&lt;table class=&quot;emm_table&quot;&gt;
-        ''' ähnelt.
-        '''</summary>
-        Friend ReadOnly Property MovieListTableStart() As String
-            Get
-                Return ResourceManager.GetString("MovieListTableStart", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property MovieSet() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("MovieSet", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        '''&lt;!--
-        '''### Anchor Help ###
-        '''0 = none
-        '''1 = Top
-        '''2 = Bottom
-        '''4 = Left
-        '''8 = Right
-        '''
-        '''Can be combined by adding values. For example, the standard TopLeft anchor would
-        '''be anchor code 5.
-        '''
-        '''### FontStyle Help ###
-        '''0 = Regular
-        '''1 = Bold
-        '''2 = Italic
-        '''4 = Underline
-        '''8 = Strikeout
-        '''
-        '''Can be combined by adding values. For example, bold and underlined would be
-        '''fontstyle code 5.
-        '''
-        '''### Color Help ###
-        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property movieset_Default() As String
-            Get
-                Return ResourceManager.GetString("movieset_Default", resourceCulture)
             End Get
         End Property
         
@@ -770,70 +577,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("tvdb", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        '''&lt;!--
-        '''### Anchor Help ###
-        '''0 = none
-        '''1 = Top
-        '''2 = Bottom
-        '''4 = Left
-        '''8 = Right
-        '''
-        '''Can be combined by adding values. For example, the standard TopLeft anchor would
-        '''be anchor code 5.
-        '''
-        '''### FontStyle Help ###
-        '''0 = Regular
-        '''1 = Bold
-        '''2 = Italic
-        '''4 = Underline
-        '''8 = Strikeout
-        '''
-        '''Can be combined by adding values. For example, bold and underlined would be
-        '''fontstyle code 5.
-        '''
-        '''### Color Help ###
-        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property tvep_Default() As String
-            Get
-                Return ResourceManager.GetString("tvep_Default", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        '''&lt;!--
-        '''### Anchor Help ###
-        '''0 = none
-        '''1 = Top
-        '''2 = Bottom
-        '''4 = Left
-        '''8 = Right
-        '''
-        '''Can be combined by adding values. For example, the standard TopLeft anchor would
-        '''be anchor code 5.
-        '''
-        '''### FontStyle Help ###
-        '''0 = Regular
-        '''1 = Bold
-        '''2 = Italic
-        '''4 = Underline
-        '''8 = Strikeout
-        '''
-        '''Can be combined by adding values. For example, bold and underlined would be
-        '''fontstyle code 5.
-        '''
-        '''### Color Help ###
-        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property tvshow_Default() As String
-            Get
-                Return ResourceManager.GetString("tvshow_Default", resourceCulture)
             End Get
         End Property
         

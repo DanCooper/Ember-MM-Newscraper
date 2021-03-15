@@ -884,7 +884,7 @@ Public Class dlgEdit_Movie
         If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then tmpDBElement.Movie.Fanart = pResults.Fanart
     End Sub
 
-    Private Sub DataGridView_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRatings.CellValueChanged, DataGridView1.CellValueChanged, DataGridView3.CellValueChanged
+    Private Sub DataGridView_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRatings.CellValueChanged
         If e.RowIndex > -1 AndAlso e.ColumnIndex = 0 Then
             If CBool(dgvRatings.Rows(e.RowIndex).Cells(colRatingsDefault.Name).Value) Then
                 For Each tRow As DataGridViewRow In dgvRatings.Rows
@@ -900,7 +900,7 @@ Public Class dlgEdit_Movie
         dgvDirectors.Leave,
         dgvRatings.Leave,
         dgvStudios.Leave,
-        dgvUniqueIds.Leave, DataGridView1.Leave, DataGridView3.Leave
+        dgvUniqueIds.Leave
         'skip dgvCertifications otherwise it's not possible to copy the selection to the MPAA field
         DirectCast(sender, DataGridView).ClearSelection()
     End Sub
@@ -1902,13 +1902,13 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub TextBox_NumericOnly(sender As Object, e As KeyPressEventArgs) Handles _
-        txtTop250.KeyPress, txtSeason.KeyPress, txtEpisode.KeyPress, txtDisplaySeason.KeyPress, txtDisplayEpisode.KeyPress, TextBox5.KeyPress, TextBox12.KeyPress, TextBox11.KeyPress, TextBox10.KeyPress
+        txtTop250.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub TextBox_SelectAll(ByVal sender As Object, e As KeyEventArgs) Handles _
         txtOutline.KeyDown,
-        txtPlot.KeyDown, TextBox2.KeyDown, TextBox7.KeyDown
+        txtPlot.KeyDown
         If e.KeyData = (Keys.Control Or Keys.A) Then
             DirectCast(sender, TextBox).SelectAll()
         End If
@@ -2111,7 +2111,7 @@ Public Class dlgEdit_Movie
     Private Sub UniqueIds_Fill()
         dgvUniqueIds.SuspendLayout()
 
-        For Each tId In tmpDBElement.Movie.UniqueIDs.OrderBy(Function(f) Not f.IsDefault)
+        For Each tId In tmpDBElement.Movie.UniqueIDs.Items.OrderBy(Function(f) Not f.IsDefault)
             Dim i As Integer = dgvUniqueIds.Rows.Add
             dgvUniqueIds.Rows(i).Tag = tId
             dgvUniqueIds.Rows(i).Cells(colUniqueIdsDefault.Name).Value = tId.IsDefault
@@ -2122,19 +2122,19 @@ Public Class dlgEdit_Movie
         dgvUniqueIds.ResumeLayout()
     End Sub
 
-    Private Function UniqueIds_Get() As List(Of MediaContainers.Uniqueid)
-        Dim nList As New List(Of MediaContainers.Uniqueid)
+    Private Function UniqueIds_Get() As MediaContainers.UniqueidContainer
+        Dim nList As New MediaContainers.UniqueidContainer
         For Each r As DataGridViewRow In dgvUniqueIds.Rows
             If Not r.IsNewRow Then
                 If r.Cells(colUniqueIdsType.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colUniqueIdsType.Name).Value.ToString.Trim) AndAlso
                     r.Cells(colUniqueIdsValue.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim) Then
-                    nList.Add(New MediaContainers.Uniqueid With {
-                             .IsDefault = CBool(r.Cells(colUniqueIdsDefault.Name).Value),
-                             .Type = r.Cells(colUniqueIdsType.Name).Value.ToString.Trim,
-                             .Value = r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim
-                             })
+                    nList.Items.Add(New MediaContainers.Uniqueid With {
+                                    .IsDefault = CBool(r.Cells(colUniqueIdsDefault.Name).Value),
+                                    .Type = r.Cells(colUniqueIdsType.Name).Value.ToString.Trim,
+                                    .Value = r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim
+                                    })
                 End If
             End If
         Next
@@ -2149,7 +2149,7 @@ Public Class dlgEdit_Movie
         cbVideoSource.Items.AddRange(Master.DB.GetAllVideoSources_Movie.Where(Function(f) Not cbVideoSource.Items.Contains(f)).ToArray)
     End Sub
 
-    Private Sub Watched_CheckedChanged(sender As Object, e As EventArgs) Handles chkWatched.CheckedChanged, CheckBox1.CheckedChanged, CheckBox2.CheckedChanged
+    Private Sub Watched_CheckedChanged(sender As Object, e As EventArgs) Handles chkWatched.CheckedChanged
         dtpLastPlayed_Date.Enabled = chkWatched.Checked
         dtpLastPlayed_Time.Enabled = chkWatched.Checked
     End Sub

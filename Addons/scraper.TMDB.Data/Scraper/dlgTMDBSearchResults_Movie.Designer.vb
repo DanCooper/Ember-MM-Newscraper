@@ -41,7 +41,7 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.chkManual = New System.Windows.Forms.CheckBox()
         Me.btnVerify = New System.Windows.Forms.Button()
         Me.lblTMDBID = New System.Windows.Forms.Label()
-        Me.lblYearHeader = New System.Windows.Forms.Label()
+        Me.lblPremieredHeader = New System.Windows.Forms.Label()
         Me.lblDirectorsHeader = New System.Windows.Forms.Label()
         Me.lblGenreHeader = New System.Windows.Forms.Label()
         Me.lblTMDBHeader = New System.Windows.Forms.Label()
@@ -171,9 +171,9 @@ Partial Class dlgTMDBSearchResults_Movie
         '
         Me.txtTMDBID.Enabled = False
         Me.txtTMDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTMDBID.Location = New System.Drawing.Point(143, 429)
+        Me.txtTMDBID.Location = New System.Drawing.Point(192, 429)
         Me.txtTMDBID.Name = "txtTMDBID"
-        Me.txtTMDBID.Size = New System.Drawing.Size(100, 22)
+        Me.txtTMDBID.Size = New System.Drawing.Size(97, 22)
         Me.txtTMDBID.TabIndex = 7
         '
         'pnlTop
@@ -230,16 +230,16 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.chkManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkManual.Location = New System.Drawing.Point(8, 433)
         Me.chkManual.Name = "chkManual"
-        Me.chkManual.Size = New System.Drawing.Size(130, 17)
+        Me.chkManual.Size = New System.Drawing.Size(190, 17)
         Me.chkManual.TabIndex = 6
-        Me.chkManual.Text = "Manual TMDB Entry:"
+        Me.chkManual.Text = "Manual TMDb or IMDb ID Entry:"
         Me.chkManual.UseVisualStyleBackColor = True
         '
         'btnVerify
         '
         Me.btnVerify.Enabled = False
         Me.btnVerify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnVerify.Location = New System.Drawing.Point(249, 429)
+        Me.btnVerify.Location = New System.Drawing.Point(298, 429)
         Me.btnVerify.Name = "btnVerify"
         Me.btnVerify.Size = New System.Drawing.Size(75, 22)
         Me.btnVerify.TabIndex = 8
@@ -257,16 +257,16 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.lblTMDBID.Text = "TMDB"
         Me.lblTMDBID.Visible = False
         '
-        'lblYearHeader
+        'lbPremieredHeader
         '
-        Me.lblYearHeader.AutoSize = True
-        Me.lblYearHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblYearHeader.Location = New System.Drawing.Point(414, 160)
-        Me.lblYearHeader.Name = "lblYearHeader"
-        Me.lblYearHeader.Size = New System.Drawing.Size(32, 13)
-        Me.lblYearHeader.TabIndex = 12
-        Me.lblYearHeader.Text = "Year:"
-        Me.lblYearHeader.Visible = False
+        Me.lblPremieredHeader.AutoSize = True
+        Me.lblPremieredHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblPremieredHeader.Location = New System.Drawing.Point(414, 160)
+        Me.lblPremieredHeader.Name = "lbPremieredHeader"
+        Me.lblPremieredHeader.Size = New System.Drawing.Size(63, 13)
+        Me.lblPremieredHeader.TabIndex = 12
+        Me.lblPremieredHeader.Text = "Premiered:"
+        Me.lblPremieredHeader.Visible = False
         '
         'lblDirectorsHeader
         '
@@ -422,7 +422,7 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.Controls.Add(Me.lblTMDBHeader)
         Me.Controls.Add(Me.lblGenreHeader)
         Me.Controls.Add(Me.lblDirectorsHeader)
-        Me.Controls.Add(Me.lblYearHeader)
+        Me.Controls.Add(Me.lblPremieredHeader)
         Me.Controls.Add(Me.lblTMDBID)
         Me.Controls.Add(Me.btnVerify)
         Me.Controls.Add(Me.chkManual)
@@ -473,7 +473,7 @@ Partial Class dlgTMDBSearchResults_Movie
     Friend WithEvents chkManual As System.Windows.Forms.CheckBox
     Friend WithEvents btnVerify As System.Windows.Forms.Button
     Friend WithEvents lblTMDBID As System.Windows.Forms.Label
-    Friend WithEvents lblYearHeader As System.Windows.Forms.Label
+    Friend WithEvents lblPremieredHeader As System.Windows.Forms.Label
     Friend WithEvents lblDirectorsHeader As System.Windows.Forms.Label
     Friend WithEvents lblGenreHeader As System.Windows.Forms.Label
     Friend WithEvents lblTMDBHeader As System.Windows.Forms.Label

@@ -40,7 +40,6 @@ Partial Class dlgClearOrReplace
         Me.chkTop250 = New System.Windows.Forms.CheckBox()
         Me.chkTrailer = New System.Windows.Forms.CheckBox()
         Me.chkWriters = New System.Windows.Forms.CheckBox()
-        Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkVideoSource = New System.Windows.Forms.CheckBox()
         Me.chkUserRating = New System.Windows.Forms.CheckBox()
         Me.txtVideoSource = New System.Windows.Forms.TextBox()
@@ -52,7 +51,6 @@ Partial Class dlgClearOrReplace
         Me.chkPremiered = New System.Windows.Forms.CheckBox()
         Me.txtPremiered = New EmberAPI.FormUtils.TextBox_with_Watermark()
         Me.txtUserRating = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtYear = New EmberAPI.FormUtils.TextBox_with_Watermark()
         Me.txtAired = New EmberAPI.FormUtils.TextBox_with_Watermark()
         Me.chkStatus = New System.Windows.Forms.CheckBox()
         Me.txtStatus = New System.Windows.Forms.TextBox()
@@ -110,7 +108,6 @@ Partial Class dlgClearOrReplace
         Me.tblMain.Controls.Add(Me.chkTop250, 0, 20)
         Me.tblMain.Controls.Add(Me.chkTrailer, 0, 21)
         Me.tblMain.Controls.Add(Me.chkWriters, 0, 24)
-        Me.tblMain.Controls.Add(Me.chkYear, 0, 25)
         Me.tblMain.Controls.Add(Me.chkVideoSource, 0, 23)
         Me.tblMain.Controls.Add(Me.chkUserRating, 0, 22)
         Me.tblMain.Controls.Add(Me.txtVideoSource, 1, 23)
@@ -122,7 +119,6 @@ Partial Class dlgClearOrReplace
         Me.tblMain.Controls.Add(Me.chkPremiered, 0, 12)
         Me.tblMain.Controls.Add(Me.txtPremiered, 1, 12)
         Me.tblMain.Controls.Add(Me.txtUserRating, 1, 22)
-        Me.tblMain.Controls.Add(Me.txtYear, 1, 25)
         Me.tblMain.Controls.Add(Me.txtAired, 1, 1)
         Me.tblMain.Controls.Add(Me.chkStatus, 0, 15)
         Me.tblMain.Controls.Add(Me.txtStatus, 1, 15)
@@ -149,8 +145,7 @@ Partial Class dlgClearOrReplace
         Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMain.Location = New System.Drawing.Point(0, 0)
         Me.tblMain.Name = "tblMain"
-        Me.tblMain.RowCount = 27
-        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.RowCount = 26
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -357,17 +352,6 @@ Partial Class dlgClearOrReplace
         Me.chkWriters.Text = "Credits (Writers)"
         Me.chkWriters.UseVisualStyleBackColor = True
         '
-        'chkYear
-        '
-        Me.chkYear.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkYear.AutoSize = True
-        Me.chkYear.Location = New System.Drawing.Point(3, 624)
-        Me.chkYear.Name = "chkYear"
-        Me.chkYear.Size = New System.Drawing.Size(48, 17)
-        Me.chkYear.TabIndex = 42
-        Me.chkYear.Text = "Year"
-        Me.chkYear.UseVisualStyleBackColor = True
-        '
         'chkVideoSource
         '
         Me.chkVideoSource.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -477,16 +461,6 @@ Partial Class dlgClearOrReplace
         Me.txtUserRating.TabIndex = 37
         Me.txtUserRating.WatermarkColor = System.Drawing.Color.Gray
         Me.txtUserRating.WatermarkText = "0-9"
-        '
-        'txtYear
-        '
-        Me.txtYear.Enabled = False
-        Me.txtYear.Location = New System.Drawing.Point(109, 623)
-        Me.txtYear.Name = "txtYear"
-        Me.txtYear.Size = New System.Drawing.Size(40, 20)
-        Me.txtYear.TabIndex = 43
-        Me.txtYear.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtYear.WatermarkText = "yyyy"
         '
         'txtAired
         '
@@ -860,7 +834,6 @@ Partial Class dlgClearOrReplace
     Friend WithEvents chkTrailer As CheckBox
     Friend WithEvents chkUserRating As CheckBox
     Friend WithEvents chkWriters As CheckBox
-    Friend WithEvents chkYear As CheckBox
     Friend WithEvents chkVideoSource As CheckBox
     Friend WithEvents txtVideoSource As TextBox
     Friend WithEvents txtTagline As TextBox
@@ -871,7 +844,6 @@ Partial Class dlgClearOrReplace
     Friend WithEvents chkPremiered As CheckBox
     Friend WithEvents txtPremiered As EmberAPI.FormUtils.TextBox_with_Watermark
     Friend WithEvents txtUserRating As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents txtYear As EmberAPI.FormUtils.TextBox_with_Watermark
     Friend WithEvents txtAired As EmberAPI.FormUtils.TextBox_with_Watermark
     Friend WithEvents chkStatus As CheckBox
     Friend WithEvents txtStatus As TextBox

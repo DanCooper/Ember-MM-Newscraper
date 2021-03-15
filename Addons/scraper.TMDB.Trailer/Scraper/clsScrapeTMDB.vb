@@ -72,18 +72,18 @@ Public Class clsAPITMDB
         End Try
     End Function
 
-    Public Function GetTrailers(ByVal tmdbID As String) As List(Of MediaContainers.MediaFile)
+    Public Function GetTrailers(ByVal tmdbID As Integer) As List(Of MediaContainers.MediaFile)
         Dim alTrailers As New List(Of MediaContainers.MediaFile)
         Dim trailers As TMDbLib.Objects.General.ResultContainer(Of TMDbLib.Objects.General.Video)
 
-        If String.IsNullOrEmpty(tmdbID) OrElse Not Integer.TryParse(tmdbID, 0) Then Return alTrailers
+        If tmdbID = -1 Then Return alTrailers
 
         Dim APIResult As Task(Of TMDbLib.Objects.Movies.Movie)
-        APIResult = Task.Run(Function() _client.GetMovieAsync(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos))
+        APIResult = Task.Run(Function() _client.GetMovieAsync(tmdbID, TMDbLib.Objects.Movies.MovieMethods.Videos))
 
         trailers = APIResult.Result.Videos
         If trailers Is Nothing OrElse trailers.Results Is Nothing OrElse trailers.Results.Count = 0 AndAlso _addonSettings.FallBackEng Then
-            APIResult = Task.Run(Function() _clientE.GetMovieAsync(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos))
+            APIResult = Task.Run(Function() _clientE.GetMovieAsync(tmdbID, TMDbLib.Objects.Movies.MovieMethods.Videos))
             trailers = APIResult.Result.Videos
             If trailers Is Nothing OrElse trailers.Results Is Nothing OrElse trailers.Results.Count = 0 Then
                 Return alTrailers

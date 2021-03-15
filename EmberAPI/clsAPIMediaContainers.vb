@@ -99,68 +99,59 @@ Namespace MediaContainers
         Private _credits As New List(Of String)
         Private _directors As New List(Of String)
         Private _rating As String = String.Empty
-        Private _uniqueids As New List(Of Uniqueid)
 
 #End Region 'Fields
 
 #Region "Properties"
 
         <XmlElement("id")>
-        Public Property TVDB() As String = String.Empty
+        Public Property ID() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property TVDBSpecified() As Boolean
+        Public ReadOnly Property IDSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TVDB)
+                Return Not String.IsNullOrEmpty(ID)
             End Get
         End Property
 
         <XmlElement("imdb")>
-        Public Property IMDB() As String = String.Empty
+        Public Property IMDbId() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property IMDBSpecified() As Boolean
+        Public ReadOnly Property IMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(IMDB)
+                Return Not String.IsNullOrEmpty(IMDbId)
             End Get
         End Property
 
         <XmlElement("tmdb")>
-        Public Property TMDB() As String = String.Empty
+        Public Property TMDbId() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property TMDBSpecified() As Boolean
+        Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TMDB)
+                Return Not String.IsNullOrEmpty(TMDbId)
             End Get
         End Property
 
         <XmlIgnore()>
-        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
-            Get
-                Return IMDBSpecified OrElse TMDBSpecified OrElse TVDBSpecified
-            End Get
-        End Property
-
-        <XmlElement("uniqueid")>
-        Public Property UniqueIDs() As List(Of Uniqueid)
-            Get
-                Return _uniqueids
-            End Get
-            Set(ByVal value As List(Of Uniqueid))
-                If value Is Nothing Then
-                    _uniqueids.Clear()
-                Else
-                    _uniqueids = value
-                End If
-            End Set
-        End Property
+        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return UniqueIDs.Count > 0
+                Return UniqueIDs.Items.Count > 0
             End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return UniqueIDs.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                UniqueIDs.AddRange(value)
+            End Set
         End Property
 
         <XmlElement("title")>
@@ -1098,68 +1089,81 @@ Namespace MediaContainers
         Private _sets As New List(Of SetDetails)
         Private _studios As New List(Of String)
         Private _tags As New List(Of String)
-        Private _uniqueids As New List(Of Uniqueid)
 
 #End Region 'Fields
 
 #Region "Properties"
         <XmlElement("id")>
-        Public Property IMDB() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property IMDBSpecified() As Boolean
+        Public Property ID() As String
             Get
-                Return Not String.IsNullOrEmpty(IMDB)
+                Return UniqueIDs.GetDefaultId(Enums.ContentType.Movie)
             End Get
-        End Property
-
-        <XmlElement("tmdb")>
-        Public Property TMDB() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property TMDBSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(TMDB)
-            End Get
-        End Property
-
-
-        <XmlIgnore()>
-        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
-            Get
-                Return IMDBSpecified OrElse TMDBSpecified
-            End Get
-        End Property
-
-        <XmlElement("tmdbcolid")>
-        Public Property TMDBColID() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property TMDBColIDSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(TMDBColID)
-            End Get
-        End Property
-
-        <XmlElement("uniqueid")>
-        Public Property UniqueIDs() As List(Of Uniqueid)
-            Get
-                Return _uniqueids
-            End Get
-            Set(ByVal value As List(Of Uniqueid))
-                If value Is Nothing Then
-                    _uniqueids.Clear()
-                Else
-                    _uniqueids = value
-                End If
+            Set(value As String)
+                UniqueIDs.Add("imdb", value)
             End Set
         End Property
 
         <XmlIgnore()>
+        Public ReadOnly Property IDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(ID)
+            End Get
+        End Property
+
+        <XmlElement("tmdb")>
+        Public Property TMDbId() As String
+            Get
+                Return UniqueIDs.TMDbId.ToString
+            End Get
+            Set(value As String)
+                UniqueIDs.Add("tmdb", value)
+            End Set
+        End Property
+
+        <Obsolete>
+        <XmlIgnore()>
+        Public ReadOnly Property TMDbIdSpecified() As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
+        <XmlElement("tmdbcolid")>
+        Public Property TMDbCollectionId() As String
+            Get
+                Return UniqueIDs.TMDbCollectionId.ToString
+            End Get
+            Set(value As String)
+                UniqueIDs.Add("tmdbcol", value)
+            End Set
+        End Property
+
+        <Obsolete>
+        <XmlIgnore()>
+        Public ReadOnly Property TMDbCollectionIdSpecified() As Boolean
+            Get
+                Return UniqueIDs.TMDbCollectionIdSpecified
+            End Get
+        End Property
+
+        <XmlIgnore()>
+        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
+
+        <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return UniqueIDs.Count > 0
+                Return UniqueIDs.Items.Count > 0
             End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return UniqueIDs.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                UniqueIDs.AddRange(value)
+            End Set
         End Property
 
         <XmlElement("title")>
@@ -1687,7 +1691,7 @@ Namespace MediaContainers
         Public Sub AddSet(ByVal tSetDetails As SetDetails)
             If tSetDetails IsNot Nothing AndAlso tSetDetails.TitleSpecified Then
                 Dim tSet = From bSet As SetDetails In Sets Where bSet.ID = tSetDetails.ID
-                Dim iSet = From bset As SetDetails In Sets Where bset.TMDB = tSetDetails.TMDB
+                Dim iSet = From bset As SetDetails In Sets Where bset.UniqueIDs.TMDbId = tSetDetails.UniqueIDs.TMDbId
 
                 If tSet.Count > 0 Then
                     _sets.Remove(tSet(0))
@@ -1727,7 +1731,10 @@ Namespace MediaContainers
                                     Case "overview"
                                         nSetInfo.Plot = xNode.InnerText
                                     Case "tmdb"
-                                        nSetInfo.TMDB = xNode.InnerText
+                                        Dim intTmdbId As Integer = -1
+                                        If Integer.TryParse(xNode.InnerText, intTmdbId) Then
+                                            nSetInfo.UniqueIDs.TMDbId = intTmdbId
+                                        End If
                                 End Select
                             Case XmlNodeType.Text
                                 nSetInfo.Title = xNode.InnerText
@@ -1931,11 +1938,11 @@ Namespace MediaContainers
                         NodeOverview.AppendChild(NodeOverview_Text)
                     End If
 
-                    If firstSet.TMDBSpecified Then
+                    If firstSet.UniqueIDs.TMDbIdSpecified Then
                         'Create a new <tmdb> element and add it to the root node
                         Dim NodeTMDB As XmlElement = XmlDoc.CreateElement("tmdb")
                         RootNode.AppendChild(NodeTMDB)
-                        Dim NodeTMDB_Text As XmlText = XmlDoc.CreateTextNode(firstSet.TMDB)
+                        Dim NodeTMDB_Text As XmlText = XmlDoc.CreateTextNode(firstSet.UniqueIDs.TMDbId.ToString)
                         NodeTMDB.AppendChild(NodeTMDB_Text)
                     End If
 
@@ -2036,9 +2043,46 @@ Namespace MediaContainers
 
     <Serializable()>
     <XmlRoot("movieset")>
-    Public Class MovieSet
+    Public Class Movieset
 
 #Region "Properties"
+
+        <XmlElement("id")>
+        Public Property TMDbId() As String
+            Get
+                Return UniqueIDs.GetDefaultId(Enums.ContentType.MovieSet)
+            End Get
+            Set(value As String)
+
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property TMDbIdSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(TMDbId)
+            End Get
+        End Property
+
+        <XmlIgnore()>
+        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
+
+        <XmlIgnore()>
+        Public ReadOnly Property UniqueIDsSpecified() As Boolean
+            Get
+                Return UniqueIDs.Items.Count > 0
+            End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return UniqueIDs.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                UniqueIDs.AddRange(value)
+            End Set
+        End Property
 
         <XmlElement("title")>
         Public Property Title() As String = String.Empty
@@ -2047,16 +2091,6 @@ Namespace MediaContainers
         Public ReadOnly Property TitleSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Title)
-            End Get
-        End Property
-
-        <XmlElement("id")>
-        Public Property TMDB() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property TMDBSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(TMDB)
             End Get
         End Property
 
@@ -2088,13 +2122,6 @@ Namespace MediaContainers
         ''' <returns></returns>
         <XmlIgnore()>
         Public Property OldTitle() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
-            Get
-                Return TMDBSpecified
-            End Get
-        End Property
 
         <XmlIgnore()>
         Public ReadOnly Property TitleHasChanged() As Boolean
@@ -2353,22 +2380,22 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("tmdb")>
-        Public Property TMDB() As String = String.Empty
+        Public Property TMDbId() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property TMDBSpecified() As Boolean
+        Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TMDB)
+                Return Not String.IsNullOrEmpty(TMDbId)
             End Get
         End Property
 
         <XmlElement("tvdb")>
-        Public Property TVDB() As String = String.Empty
+        Public Property TVDbId() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property TVDBSpecified() As Boolean
+        Public ReadOnly Property TVDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TVDB)
+                Return Not String.IsNullOrEmpty(TVDbId)
             End Get
         End Property
 
@@ -2376,10 +2403,23 @@ Namespace MediaContainers
         Public Property Locked() As Boolean
 
         <XmlIgnore()>
-        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
+        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
+
+        <XmlIgnore()>
+        Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TMDB) OrElse Not String.IsNullOrEmpty(TVDB)
+                Return UniqueIDs.Items.Count > 0
             End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return UniqueIDs.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                UniqueIDs.AddRange(value)
+            End Set
         End Property
 
 #End Region 'Properties 
@@ -2428,7 +2468,6 @@ Namespace MediaContainers
 
 #Region "Fields"
 
-        Private _boxeeTvDb As String = String.Empty
         Private _certifications As New List(Of String)
         Private _countries As New List(Of String)
         Private _creators As New List(Of String)
@@ -2436,76 +2475,66 @@ Namespace MediaContainers
         Private _genres As New List(Of String)
         Private _rating As String = String.Empty
         Private _tags As New List(Of String)
-        Private _tvdb As String = String.Empty
-        Private _uniqueids As New List(Of Uniqueid)
 
 #End Region 'Fields 
 
 #Region "Properties"
 
         <XmlElement("id")>
-        Public Property TVDB() As String
+        Public Property ID() As String
             Get
-                Return _tvdb.Trim
+                Return UniqueIDs.GetDefaultId(Enums.ContentType.TVShow)
             End Get
             Set(ByVal value As String)
-                If Integer.TryParse(value, 0) Then _tvdb = value.Trim
+
             End Set
         End Property
 
         <XmlIgnore()>
-        Public ReadOnly Property TVDBSpecified() As Boolean
+        Public ReadOnly Property IDSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TVDB)
+                Return Not String.IsNullOrEmpty(ID)
             End Get
         End Property
 
         <XmlElement("imdb")>
-        Public Property IMDB() As String = String.Empty
+        Public Property IMDbId() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property IMDBSpecified() As Boolean
+        Public ReadOnly Property IMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(IMDB)
+                Return Not String.IsNullOrEmpty(IMDbId)
             End Get
         End Property
 
         <XmlElement("tmdb")>
-        Public Property TMDB() As String = String.Empty
+        Public Property TMDbId() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property TMDBSpecified() As Boolean
+        Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TMDB)
+                Return Not String.IsNullOrEmpty(TMDbId)
             End Get
         End Property
 
         <XmlIgnore()>
-        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
-            Get
-                Return IMDBSpecified OrElse TMDBSpecified OrElse TVDBSpecified
-            End Get
-        End Property
-
-        <XmlElement("uniqueid")>
-        Public Property UniqueIDs() As List(Of UniqueId)
-            Get
-                Return _uniqueids
-            End Get
-            Set(ByVal value As List(Of UniqueId))
-                If value Is Nothing Then
-                    _uniqueids.Clear()
-                Else
-                    _uniqueids = value
-                End If
-            End Set
-        End Property
+        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
             Get
-                Return UniqueIDs.Count > 0
+                Return UniqueIDs.Items.Count > 0
             End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+            Get
+                Return UniqueIDs.Items
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                UniqueIDs.AddRange(value)
+            End Set
         End Property
 
         <XmlElement("title")>
@@ -2549,19 +2578,12 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("boxeeTvDb")>
-        Public Property BoxeeTvDb() As String
-            Get
-                Return _boxeeTvDb
-            End Get
-            Set(ByVal value As String)
-                If Integer.TryParse(value, 0) Then _boxeeTvDb = value
-            End Set
-        End Property
+        Public Property BoxeeTvDb() As Integer = -1
 
         <XmlIgnore()>
         Public ReadOnly Property BoxeeTvDbSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(BoxeeTvDb)
+                Return Not BoxeeTvDb = -1
             End Get
         End Property
 
@@ -2967,11 +2989,11 @@ Namespace MediaContainers
         End Sub
 
         Public Sub BlankId()
-            _tvdb = String.Empty
+            ID = String.Empty
         End Sub
 
         Public Sub BlankBoxeeId()
-            _boxeeTvDb = String.Empty
+            _BoxeeTvDb = -1
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
@@ -3807,22 +3829,22 @@ Namespace MediaContainers
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
-                    sID = tDBElement.Movie.IMDB
+                    sID = tDBElement.Movie.UniqueIDs.IMDbId
                     If String.IsNullOrEmpty(sID) Then
-                        sID = tDBElement.Movie.TMDB
+                        sID = tDBElement.Movie.UniqueIDs.TMDbId.ToString
                     End If
                     If String.IsNullOrEmpty(sID) Then
                         sID = "Unknown"
                     End If
                     sPath = Path.Combine(Master.TempPath, String.Concat("Movies", Path.DirectorySeparatorChar, sID))
                 Case Enums.ContentType.MovieSet
-                    sID = tDBElement.MovieSet.TMDB
+                    sID = tDBElement.MovieSet.UniqueIDs.TMDbId.ToString
                     If String.IsNullOrEmpty(sID) Then
                         sID = "Unknown"
                     End If
                     sPath = Path.Combine(Master.TempPath, String.Concat("MovieSets", Path.DirectorySeparatorChar, sID))
                 Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    sID = tDBElement.TVShow.TVDB
+                    sID = tDBElement.TVShow.UniqueIDs.TVDbId.ToString
                     If String.IsNullOrEmpty(sID) Then
                         sID = "Unknown"
                     End If
@@ -4223,9 +4245,13 @@ Namespace MediaContainers
 
     <Serializable()>
     Public Class SetDetails
+        Inherits Movieset
 
 #Region "Properties"
-
+        ''' <summary>
+        ''' Database Id
+        ''' </summary>
+        ''' <returns></returns>
         <XmlIgnore()>
         Public Property ID() As Long = -1
 
@@ -4243,36 +4269,6 @@ Namespace MediaContainers
         Public ReadOnly Property OrderSpecified() As Boolean
             Get
                 Return Not Order = -1
-            End Get
-        End Property
-
-        <XmlIgnore()>
-        Public Property Plot() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property PlotSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Plot)
-            End Get
-        End Property
-
-        <XmlText()>
-        Public Property Title() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property TitleSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Title)
-            End Get
-        End Property
-
-        <XmlIgnore()>
-        Public Property TMDB() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property TMDBSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(TMDB)
             End Get
         End Property
 
@@ -4386,6 +4382,13 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public Property ID() As Long = -1
 
+        <XmlIgnore()>
+        Public ReadOnly Property IDSpecified() As Boolean
+            Get
+                Return Not ID = -1
+            End Get
+        End Property
+
         <XmlAttribute("type")>
         Public Property Type() As String = "unknown"
 
@@ -4397,12 +4400,231 @@ Namespace MediaContainers
         End Property
 
         <XmlAttribute("default")>
-        Public Property IsDefault() As Boolean
+        Public Property IsDefault() As Boolean = False
 
         <XmlText()>
         Public Property Value() As String = String.Empty
 
-#End Region 'Properties 
+        <XmlIgnore()>
+        Public ReadOnly Property ValueSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Value)
+            End Get
+        End Property
+
+#End Region 'Properties
+
+    End Class
+
+
+    <Serializable()>
+    Public Class UniqueidContainer
+
+#Region "Properties"
+
+        <XmlIgnore>
+        Public ReadOnly Property AnyUniqueIdSpecified As Boolean
+            Get
+                Return Items.Count > 0
+            End Get
+        End Property
+
+        Public Property Items() As List(Of Uniqueid) = New List(Of Uniqueid)
+
+        <XmlIgnore>
+        Public Property IMDbId() As String
+            Get
+                Dim nID = Items.FirstOrDefault(Function(f) f.Type = "imdb")
+                If nID IsNot Nothing AndAlso nID.ValueSpecified Then Return nID.Value
+                Return String.Empty
+            End Get
+            Set(value As String)
+                If Not String.IsNullOrEmpty(value) Then
+                    Add("imdb", value)
+                Else
+                    RemoveAll("imdb")
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore>
+        Public ReadOnly Property IMDbIdSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(IMDbId)
+            End Get
+        End Property
+
+        <XmlIgnore>
+        Public Property TMDbId() As Integer
+            Get
+                Dim nID = Items.FirstOrDefault(Function(f) f.Type = "tmdb")
+                If nID IsNot Nothing AndAlso
+                    nID.ValueSpecified AndAlso
+                    Integer.TryParse(nID.Value, 0) Then Return CInt(nID.Value)
+                Return -1
+            End Get
+            Set(value As Integer)
+                If Not value = -1 Then
+                    Add("tmdb", value.ToString)
+                Else
+                    RemoveAll("tmdb")
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore>
+        Public ReadOnly Property TMDbIdSpecified() As Boolean
+            Get
+                Return Not TMDbId = -1
+            End Get
+        End Property
+
+        <XmlIgnore>
+        Public Property TMDbCollectionId() As Integer
+            Get
+                Dim nID = Items.FirstOrDefault(Function(f) f.Type = "tmdbcol")
+                If nID IsNot Nothing AndAlso
+                    nID.ValueSpecified AndAlso
+                    Integer.TryParse(nID.Value, 0) Then Return CInt(nID.Value)
+                Return -1
+            End Get
+            Set(value As Integer)
+                If Not value = -1 Then
+                    Add("tmdbcol", value.ToString)
+                Else
+                    RemoveAll("tmdbcol")
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore>
+        Public ReadOnly Property TMDbCollectionIdSpecified() As Boolean
+            Get
+                Return Not TMDbCollectionId = -1
+            End Get
+        End Property
+
+        <XmlIgnore>
+        Public Property TVDbId() As Integer
+            Get
+                Dim nID = Items.FirstOrDefault(Function(f) f.Type = "tvdb")
+                If nID IsNot Nothing AndAlso
+                    nID.ValueSpecified AndAlso
+                    Integer.TryParse(nID.Value, 0) Then Return CInt(nID.Value)
+                Return -1
+            End Get
+            Set(value As Integer)
+                If Not value = -1 Then
+                    Add("tvdb", value.ToString)
+                Else
+                    RemoveAll("tvdb")
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore>
+        Public ReadOnly Property TVDbIdSpecified() As Boolean
+            Get
+                Return Not TVDbId = -1
+            End Get
+        End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            Items = New List(Of Uniqueid)
+        End Sub
+
+        Public Sub New(ByVal uniqueids As String)
+            If Not String.IsNullOrEmpty(uniqueids) Then
+                Dim aUniqueID = Regex.Split(uniqueids, ",")
+                For Each entry In aUniqueID
+                    Dim lstEntry = Regex.Split(entry, ":")
+                    If lstEntry.Count = 2 Then
+                        Items.Add(New Uniqueid With {
+                                  .Type = lstEntry(0),
+                                  .Value = lstEntry(1)
+                                  })
+                    End If
+                Next
+            End If
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub Add(ByVal type As String, ByVal value As String)
+            If Not String.IsNullOrEmpty(type) AndAlso Not String.IsNullOrEmpty(value) Then
+                'remove existing entry with same "type", only one entry per "type" is allowed
+                RemoveAll(type)
+                Items.Add(New Uniqueid With {.Type = type, .Value = value})
+            End If
+        End Sub
+
+        Public Sub AddRange(ByVal idList As List(Of Uniqueid))
+            For Each entry In idList
+                Add(entry.Type, entry.Value)
+            Next
+        End Sub
+
+        Public Sub AddRange(ByVal uniqueidContainer As UniqueidContainer)
+            For Each entry In uniqueidContainer.Items
+                Add(entry.Type, entry.Value)
+            Next
+        End Sub
+
+        Public Function GetDefaultId(ByVal contentType As Enums.ContentType) As String
+            Dim nID = Items.FirstOrDefault(Function(f) f.IsDefault)
+            If nID IsNot Nothing Then
+                Return nID.Value
+            Else
+                Return GetDefaultBySettings(contentType)
+            End If
+        End Function
+
+        Public Function GetDefaultBySettings(ByVal contentType As Enums.ContentType) As String
+            Dim strIdDefaultType As String = String.Empty
+            Select Case contentType
+                Case Enums.ContentType.Movie
+                    strIdDefaultType = Master.eSettings.MovieScraperIdDefault
+                Case Enums.ContentType.MovieSet
+                    strIdDefaultType = Master.eSettings.MoviesetScraperIdDefault
+                Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
+                    strIdDefaultType = Master.eSettings.TVScraperShowIdDefault
+            End Select
+            If Not String.IsNullOrEmpty(strIdDefaultType) Then
+                Dim nID = Items.FirstOrDefault(Function(f) f.Type = strIdDefaultType)
+                If nID IsNot Nothing Then
+                    Return nID.Value
+                End If
+            End If
+            Return String.Empty
+        End Function
+
+        Public Function GetIdByName(ByVal name As String) As String
+            Dim nID = Items.FirstOrDefault(Function(f) f.Type.ToLower = name.ToLower)
+            If nID IsNot Nothing Then
+                Return nID.Value
+            Else
+                Return String.Empty
+            End If
+        End Function
+
+        Public Function IsAvailable(ByVal type As String) As Boolean
+            If Not String.IsNullOrEmpty(type) Then
+                Return Items.FirstOrDefault(Function(f) f.Type = type) IsNot Nothing
+            End If
+            Return False
+        End Function
+
+        Public Sub RemoveAll(ByVal type As String)
+            Items.RemoveAll(Function(f) f.Type = type)
+        End Sub
+
+#End Region 'Methods
 
     End Class
 

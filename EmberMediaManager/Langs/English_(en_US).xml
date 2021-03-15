@@ -627,7 +627,7 @@
   <string id="626">File Type</string>
   <string id="627">Selected Items: {0}</string>
   <string id="628">Enable IFO Parsing</string>
-  <string id="629">GUI Themes</string>
+  <string id="629"></string>
   <string id="630">Reconnect the source and press Retry</string>
   <string id="631">Fanart as backdrop.jpg</string>
   <string id="632">Media Browser mymovies.xml</string>
@@ -664,8 +664,8 @@
   <string id="663">Edit Show</string>
   <string id="664">Edit the details for the selected show.</string>
   <string id="665">Movies sorted by</string>
-  <string id="666">TV Show Theme</string>
-  <string id="667">Episode Theme</string>
+  <string id="666"></string>
+  <string id="667"></string>
   <string id="668">Clean database after updating library</string>
   <string id="669">Ignore last scan time when updating library</string>
   <string id="670">Show Folder/File Name Filters</string>
@@ -1244,7 +1244,7 @@
   <string id="1152">Main Window</string>
   <string id="1153">Scraped</string>
   <string id="1154">No information is available for this MovieSet</string>
-  <string id="1155">MovieSet Theme</string>
+  <string id="1155"></string>
   <string id="1156">MultiView Count</string>
   <string id="1157">MultiView Layout</string>
   <string id="1158">Bitrate</string>

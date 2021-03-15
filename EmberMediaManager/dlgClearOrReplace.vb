@@ -88,7 +88,6 @@ Public Class dlgClearOrReplace
                 chkUserRating.Visible = False
                 chkVideoSource.Visible = False
                 chkWriters.Visible = False
-                chkYear.Visible = False
                 txtAired.Visible = False
                 txtCertifications.Visible = False
                 txtCountries.Visible = False
@@ -104,14 +103,13 @@ Public Class dlgClearOrReplace
                 txtUserRating.Visible = False
                 txtVideoSource.Visible = False
                 txtWriters.Visible = False
-                txtYear.Visible = False
             Case Enums.ContentType.TVEpisode
                 chkCertifications.Visible = False
                 chkCountries.Visible = False
                 chkCreators.Visible = False
                 chkGenres.Visible = False
                 chkMPAA.Visible = False
-                chkOriginalTitle.Visible = False
+                chkOriginalTitle.Visible = True
                 chkOutline.Visible = False
                 chkPremiered.Visible = False
                 chkStatus.Visible = False
@@ -121,7 +119,6 @@ Public Class dlgClearOrReplace
                 chkTitle.Visible = False
                 chkTop250.Visible = False
                 chkTrailer.Visible = False
-                chkYear.Visible = False
                 txtCertifications.Visible = False
                 txtCountries.Visible = False
                 txtCreators.Visible = False
@@ -132,7 +129,6 @@ Public Class dlgClearOrReplace
                 txtStudios.Visible = False
                 txtTagline.Visible = False
                 txtTags.Visible = False
-                txtYear.Visible = False
             Case Enums.ContentType.TVSeason
                 chkActors.Visible = False
                 chkCertifications.Visible = False
@@ -156,7 +152,6 @@ Public Class dlgClearOrReplace
                 chkUserRating.Visible = False
                 chkVideoSource.Visible = False
                 chkWriters.Visible = False
-                chkYear.Visible = False
                 txtCertifications.Visible = False
                 txtCountries.Visible = False
                 txtCreators.Visible = False
@@ -171,7 +166,6 @@ Public Class dlgClearOrReplace
                 txtUserRating.Visible = False
                 txtVideoSource.Visible = False
                 txtWriters.Visible = False
-                txtYear.Visible = False
             Case Enums.ContentType.TVShow
                 chkAired.Visible = False
                 chkGuestStars.Visible = False
@@ -182,12 +176,10 @@ Public Class dlgClearOrReplace
                 chkTrailer.Visible = False
                 chkVideoSource.Visible = False
                 chkWriters.Visible = False
-                chkYear.Visible = False
                 txtAired.Visible = False
                 txtTagline.Visible = False
                 txtVideoSource.Visible = False
                 txtWriters.Visible = False
-                txtYear.Visible = False
         End Select
         Return ShowDialog()
     End Function
@@ -247,10 +239,6 @@ Public Class dlgClearOrReplace
                     nInfo.VideoSource = txtVideoSource.Text.Trim
                     .bMainWriters = chkWriters.Checked
                     nInfo.Credits = DoSplit(txtWriters)
-                    .bMainYear = chkYear.Checked
-                    Dim uiYear As UInteger = 0
-                    UInteger.TryParse(txtYear.Text.Trim, uiYear)
-                    nInfo.Year = uiYear.ToString
                     _Result.GenericObject = nInfo
                 Case Enums.ContentType.MovieSet
                     .bMainPlot = chkPlot.Checked
@@ -264,6 +252,7 @@ Public Class dlgClearOrReplace
                     .bEpisodeDirectors = chkDirectors.Checked
                     nInfo.Directors = DoSplit(txtDirectors)
                     .bEpisodeGuestStars = chkGuestStars.Checked
+                    .bEpisodeOriginalTitle = chkOriginalTitle.Checked
                     .bEpisodePlot = chkPlot.Checked
                     .bEpisodeRating = chkRating.Checked
                     .bEpisodeRuntime = chkRuntime.Checked
@@ -418,10 +407,6 @@ Public Class dlgClearOrReplace
         txtWriters.Enabled = chkWriters.Checked
     End Sub
 
-    Private Sub chkYear_CheckedChanged(sender As Object, e As EventArgs) Handles chkYear.CheckedChanged
-        txtYear.Enabled = chkYear.Checked
-    End Sub
-
     Private Function DoSplit(tTextbox As TextBox) As List(Of String)
         Dim nList = tTextbox.Text.Trim.Split(",".ToCharArray, StringSplitOptions.RemoveEmptyEntries).Distinct.ToList
         'remove empty entries that has not been removed with "StringSplitOptions.RemoveEmptyEntries"
@@ -462,7 +447,6 @@ Public Class dlgClearOrReplace
         chkUserRating.Text = Master.eLang.GetString(1467, "User Rating")
         chkVideoSource.Text = Master.eLang.GetString(824, "Video Source")
         chkWriters.Text = Master.eLang.GetString(394, "Credits (Writers)")
-        chkYear.Text = Master.eLang.GetString(278, "Year")
 
 
         Dim strCommaSeparated As String = Master.eLang.GetString(882, "comma separated")

@@ -1,0 +1,1383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+### Anchor Help ###
+0 = none
+1 = Top
+2 = Bottom
+4 = Left
+8 = Right
+
+Can be combined by adding values. For example, the standard TopLeft anchor would
+be anchor code 5.
+
+### FontStyle Help ###
+0 = Regular
+1 = Bold
+2 = Italic
+4 = Underline
+8 = Strikeout
+
+Can be combined by adding values. For example, bold and underlined would be
+fontstyle code 5.
+
+### Color Help ###
+Color can be a "system-defined color" https://msdn.microsoft.com/en-us/library/system.drawing.knowncolor%28v=vs.110%29.aspx
+or a "32-bit ARGB value"
+
+### theme class ###
+
+-->
+
+<theme>  
+  <imagepanel>
+    <backcolor>Black</backcolor>
+    <genre>
+      <backcolor>Black</backcolor>
+    </genre>
+    <imagename>
+      <backcolor>#007acc</backcolor>
+      <forecolor>HighlightText</forecolor>
+    </imagename>
+    <imagesize>
+      <backcolor>Black</backcolor>
+      <forecolor>HighlightText</forecolor>
+    </imagesize>
+    <mpaa>
+      <backcolor>#FEFCFF</backcolor>
+    </mpaa>
+    <movie>
+      <banner>
+        <left>246</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>319</top>
+      </banner>
+      <clearart>
+        <left>832</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </clearart>
+      <clearlogo>
+        <left>539</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>319</top>
+      </clearlogo>
+      <discart>
+        <left>1125</left>
+        <maxheight>160</maxheight>
+        <maxwidth>160</maxwidth>
+        <top>125</top>
+      </discart>
+      <fanartsmall>
+        <left>246</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </fanartsmall>
+      <keyart>
+        <left>125</left>
+        <maxheight>160</maxheight>
+        <maxwidth>160</maxwidth>
+        <top>125</top>
+      </keyart>
+      <landscape>
+        <left>539</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </landscape>
+      <poster>
+        <left>4</left>
+        <maxheight>160</maxheight>
+        <maxwidth>113</maxwidth>
+        <top>125</top>
+      </poster>
+    </movie>
+    <movieset>
+      <banner>
+        <left>246</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>319</top>
+      </banner>
+      <clearart>
+        <left>832</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </clearart>
+      <clearlogo>
+        <left>539</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>319</top>
+      </clearlogo>
+      <discart>
+        <left>1125</left>
+        <maxheight>160</maxheight>
+        <maxwidth>160</maxwidth>
+        <top>125</top>
+      </discart>
+      <fanartsmall>
+        <left>246</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </fanartsmall>
+      <keyart>
+        <left>125</left>
+        <maxheight>160</maxheight>
+        <maxwidth>160</maxwidth>
+        <top>125</top>
+      </keyart>
+      <landscape>
+        <left>539</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </landscape>
+      <poster>
+        <left>4</left>
+        <maxheight>160</maxheight>
+        <maxwidth>113</maxwidth>
+        <top>125</top>
+      </poster>
+    </movieset>
+    <tvepisode>
+      <fanartsmall>
+        <left>297</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </fanartsmall>
+      <poster>
+        <left>4</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </poster>
+    </tvepisode>
+    <tvseason>
+      <banner>
+        <left>125</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>319</top>
+      </banner>
+      <fanartsmall>
+        <left>125</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </fanartsmall>
+      <landscape>
+        <left>418</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </landscape>
+      <poster>
+        <left>4</left>
+        <maxheight>160</maxheight>
+        <maxwidth>113</maxwidth>
+        <top>125</top>
+      </poster>
+    </tvseason>
+    <tvshow>
+      <banner>
+        <left>246</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>319</top>
+      </banner>
+      <characterart>
+        <left>1125</left>
+        <maxheight>160</maxheight>
+        <maxwidth>160</maxwidth>
+        <top>125</top>
+      </characterart>
+      <clearart>
+        <left>832</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </clearart>
+      <clearlogo>
+        <left>539</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>319</top>
+      </clearlogo>
+      <fanartsmall>
+        <left>246</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </fanartsmall>
+      <keyart>
+        <left>125</left>
+        <maxheight>160</maxheight>
+        <maxwidth>160</maxwidth>
+        <top>125</top>
+      </keyart>
+      <landscape>
+        <left>539</left>
+        <maxheight>160</maxheight>
+        <maxwidth>285</maxwidth>
+        <top>125</top>
+      </landscape>
+      <poster>
+        <left>4</left>
+        <maxheight>160</maxheight>
+        <maxwidth>113</maxwidth>
+        <top>125</top>
+      </poster>
+    </tvshow>
+  </imagepanel>
+  <infopanel>
+    <movie>
+      <posmid>261</posmid>
+      <posup>470</posup>
+
+      <backcolor>#2A2728</backcolor>
+
+      <globalheadersettings>
+        <backcolor>#007acc</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>1</fontstyle>
+        <forecolor>White</forecolor>
+        <height>17</height>
+      </globalheadersettings>
+
+      <globalvaluesettings>
+        <backcolor>#2A2728</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <forecolor>White</forecolor>
+        <height>17</height>
+      </globalvaluesettings>
+
+      <control name="lblInfoPanelHeader">
+        <anchor>13</anchor>
+        <height>24</height>
+        <left>3</left>
+        <top>3</top>
+        <width>pnlInfoPanel.Width - 8</width>
+      </control>
+
+      <control name="btnDown">
+        <anchor>9</anchor>
+        <height>22</height>
+        <left>pnlInfoPanel.Width - 38</left>
+        <top>4</top>
+        <width>30</width>
+      </control>
+
+      <control name="btnMid">
+        <anchor>9</anchor>
+        <height>btnDown.Height</height>
+        <left>btnDown.Left - 33</left>
+        <top>btnDown.Top</top>
+        <width>btnDown.Width</width>
+      </control>
+
+      <control name="btnUp">
+        <anchor>9</anchor>
+        <height>btnDown.Height</height>
+        <left>btnMid.Left - 33</left>
+        <top>btnDown.Top</top>
+        <width>btnDown.Width</width>
+      </control>
+
+      <control name="pnlActors">
+        <anchor>9</anchor>
+        <height>226</height>
+        <left>pnlInfoPanel.Width - 307</left>
+        <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
+        <width>302</width>
+      </control>
+
+      <!-- BEGIN INTERNAL OF PNLACTORS -->
+      <control name="lblActorsHeader">
+        <anchor>5</anchor>
+        <left>0</left>
+        <top>0</top>
+        <width>302</width>
+      </control>
+
+      <control name="lstActors">
+        <anchor>5</anchor>
+        <!-- Must be a multiple of 13!! -->
+        <height>208</height>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>lblActorsHeader.Top + lblActorsHeader.Height + 1</top>
+        <width>217</width>
+      </control>
+
+      <control name="pbActors">
+        <anchor>5</anchor>
+        <height>106</height>
+        <left>223</left>
+        <top>75</top>
+        <width>80</width>
+      </control>
+
+      <control name="pbActorsLoad">
+        <anchor>5</anchor>
+        <height>39</height>
+        <left>240</left>
+        <top>111</top>
+        <width>41</width>
+      </control>
+      <!-- END INTERNAL OF PNLACTORS -->
+
+      <control name="lblPremieredHeader">
+        <anchor>9</anchor>
+        <left>pnlActors.Left - 103</left>
+        <top>pnlActors.Top</top>
+        <width>100</width>
+      </control>
+
+      <control name="lblPremiered">
+        <anchor>9</anchor>
+        <left>lblPremieredHeader.Left</left>
+        <top>lblPremieredHeader.Top + lblPremieredHeader.Height + 3</top>
+        <width>lblPremieredHeader.Width</width>
+      </control>
+
+      <control name="lblDirectorsHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>pnlActors.Top</top>
+        <width>(lblPremieredHeader.Left - 3) / 2 - 3</width>
+      </control>
+
+      <control name="lblDirectors">
+        <anchor>13</anchor>
+        <left>lblDirectorsHeader.Left</left>
+        <top>lblDirectorsHeader.Top + lblDirectorsHeader.Height + 3</top>
+        <width>lblDirectorsHeader.Width</width>
+      </control>
+
+      <control name="lblCreditsHeader">
+        <anchor>9</anchor>
+        <left>lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3</left>
+        <top>pnlActors.Top</top>
+        <width>lblPremiered.Left - (lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3) - 3</width>
+      </control>
+
+      <control name="lblCredits">
+        <anchor>9</anchor>
+        <left>lblCreditsHeader.Left</left>
+        <top>lblCreditsHeader.Top + lblCreditsHeader.Height + 3</top>
+        <width>lblCreditsHeader.Width</width>
+      </control>
+
+      <control name="lblOutlineHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>lblDirectors.Top + lblDirectors.Height + 3</top>
+        <width>pnlActors.Left - 6</width>
+      </control>
+
+      <control name="txtOutline">
+        <anchor>13</anchor>
+        <height>80</height>
+        <left>lblOutlineHeader.Left + 3</left>
+        <top>lblOutlineHeader.Top + lblOutlineHeader.Height + 3</top>
+        <width>lblOutlineHeader.Width - 3</width>
+      </control>
+
+      <control name="lblIMDBHeader">
+        <anchor>5</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>txtOutline.Top + txtOutline.Height + 3</top>
+        <width>100</width>
+      </control>
+
+      <control name="txtIMDBID">
+        <anchor>5</anchor>
+        <height>20</height>
+        <left>lblIMDBHeader.Left</left>
+        <top>lblIMDBHeader.Top + lblIMDBHeader.Height + 3</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="lblTMDBHeader">
+        <anchor>5</anchor>
+        <left>lblIMDBHeader.Left + lblIMDBHeader.Width + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="txtTMDBID">
+        <anchor>5</anchor>
+        <height>20</height>
+        <left>lblTMDBHeader.Left</left>
+        <top>lblTMDBHeader.Top + lblTMDBHeader.Height + 3</top>
+        <width>lblTMDBHeader.Width</width>
+      </control>
+
+      <control name="lblCollectionsHeader">
+        <anchor>13</anchor>
+        <left>lblTMDBHeader.Left + lblTMDBHeader.Width + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblOutlineHeader.Width / 2 - (lblTMDBHeader.Left + lblTMDBHeader.Width + 3)</width>
+      </control>
+
+      <control name="lblCollections">
+        <anchor>13</anchor>
+        <left>lblCollectionsHeader.Left</left>
+        <top>lblCollectionsHeader.Top + lblCollectionsHeader.Height + 3</top>
+        <width>lblCollectionsHeader.Width</width>
+      </control>
+
+      <control name="lblCertificationsHeader">
+        <anchor>9</anchor>
+        <left>(lblOutlineHeader.Width / 2) + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblOutlineHeader.Width /2</width>
+      </control>
+
+      <control name="lblCertifications">
+        <anchor>9</anchor>
+        <left>lblCertificationsHeader.Left</left>
+        <top>lblCertificationsHeader.Top + lblCertificationsHeader.Height + 3</top>
+        <width>lblCertificationsHeader.Width</width>
+      </control>
+
+      <control name="lblFilePathHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>txtIMDBID.Top + txtIMDBID.Height + 3</top>
+        <width>(lblOutlineHeader.Width / 2) - 3</width>
+      </control>
+
+      <control name="txtFilePath">
+        <anchor>13</anchor>
+        <height>20</height>
+        <left>lblFilePathHeader.Left</left>
+        <top>lblFilePathHeader.Top + lblFilePathHeader.Height + 3</top>
+        <width>lblFilePathHeader.Width - 23</width>
+      </control>
+
+      <control name="btnFilePlay">
+        <anchor>9</anchor>
+        <height>20</height>
+        <left>txtFilePath.Left + txtFilePath.Width + 3</left>
+        <top>txtFilePath.Top</top>
+        <width>20</width>
+      </control>
+
+      <control name="lblTrailerPathHeader">
+        <anchor>9</anchor>
+        <left>(lblOutlineHeader.Width / 2) + 3</left>
+        <top>lblFilePathHeader.Top</top>
+        <width>lblOutlineHeader.Width / 2</width>
+      </control>
+
+      <control name="txtTrailerPath">
+        <anchor>9</anchor>
+        <height>20</height>
+        <left>lblTrailerPathHeader.Left</left>
+        <top>txtFilePath.Top</top>
+        <width>lblTrailerPathHeader.Width - 23</width>
+      </control>
+
+      <control name="btnTrailerPlay">
+        <anchor>9</anchor>
+        <height>20</height>
+        <left>txtTrailerPath.Left + txtTrailerPath.Width + 3</left>
+        <top>txtTrailerPath.Top</top>
+        <width>20</width>
+      </control>
+
+      <control name="lblCountriesHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>pnlActors.Top + pnlActors.Height + 6</top>
+        <width>(lblOutlineHeader.Width / 2) - 3</width>
+      </control>
+
+      <control name="lblCountries">
+        <anchor>13</anchor>
+        <left>lblCountriesHeader.Left</left>
+        <top>lblCountriesHeader.Top + lblCountriesHeader.Height + 3</top>
+        <width>lblCountriesHeader.Width</width>
+      </control>
+
+      <control name="lblTagsHeader">
+        <anchor>9</anchor>
+        <left>(lblOutlineHeader.Width / 2) + 3</left>
+        <top>lblCountriesHeader.Top</top>
+        <width>lblOutlineHeader.Width / 2</width>
+      </control>
+
+      <control name="lblTags">
+        <anchor>9</anchor>
+        <left>lblTagsHeader.Left</left>
+        <top>lblTagsHeader.Top + lblTagsHeader.Height + 3</top>
+        <width>lblTagsHeader.Width</width>
+      </control>
+
+      <control name="lblPlotHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>lblCountries.Top + lblCountries.Height + 3</top>
+        <width>lblOutlineHeader.Width</width>
+      </control>
+
+      <control name="txtPlot">
+        <anchor>13</anchor>
+        <height>144</height>
+        <left>lblPlotHeader.Left + 3</left>
+        <top>lblPlotHeader.Top + lblPlotHeader.Height + 3</top>
+        <width>lblPlotHeader.Width - 3</width>
+      </control>
+
+      <control name="lblMetaDataHeader">
+        <anchor>9</anchor>
+        <left>pnlActors.Left</left>
+        <top>lblTagsHeader.Top</top>
+        <width>pnlActors.Width</width>
+      </control>
+
+      <control name="btnMetaDataRefresh">
+        <anchor>9</anchor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <height>23</height>
+        <left>lblMetaDataHeader.Left + lblMetaDataHeader.Width - 75 - 24</left>
+        <top>lblMetaDataHeader.Top - 3</top>
+        <width>75</width>
+      </control>
+
+      <control name="txtMetaData">
+        <anchor>9</anchor>
+        <height>184</height>
+        <left>lblMetaDataHeader.Left + 3</left>
+        <top>lblMetaDataHeader.Top + lblMetaDataHeader.Height + 3</top>
+        <width>lblMetaDataHeader.Width - 3</width>
+      </control>
+    </movie>
+    <movieset>
+      <posmid>290</posmid>
+      <posup>290</posup>
+
+      <backcolor>#2A2728</backcolor>
+
+      <globalheadersettings>
+        <backcolor>#007acc</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>1</fontstyle>
+        <forecolor>White</forecolor>
+        <height>17</height>
+      </globalheadersettings>
+
+      <globalvaluesettings>
+        <backcolor>#2A2728</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <forecolor>White</forecolor>
+        <height>17</height>
+      </globalvaluesettings>
+
+      <control name="lblInfoPanelHeader">
+        <anchor>13</anchor>
+        <height>24</height>
+        <left>3</left>
+        <top>3</top>
+        <width>pnlInfoPanel.Width - 8</width>
+      </control>
+
+      <control name="btnDown">
+        <anchor>9</anchor>
+        <height>22</height>
+        <left>pnlInfoPanel.Width - 38</left>
+        <top>4</top>
+        <width>30</width>
+      </control>
+
+      <control name="btnUp">
+        <anchor>9</anchor>
+        <height>btnDown.Height</height>
+        <left>btnDown.Left - 33</left>
+        <top>btnDown.Top</top>
+        <width>btnDown.Width</width>
+      </control>
+
+      <control name="lblTMDBHeader">
+        <anchor>5</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
+        <width>100</width>
+      </control>
+
+      <control name="txtTMDBID">
+        <anchor>5</anchor>
+        <height>20</height>
+        <left>lblTMDBHeader.Left</left>
+        <top>lblTMDBHeader.Top + lblTMDBHeader.Height + 3</top>
+        <width>lblTMDBHeader.Width</width>
+      </control>
+
+      <control name="lblPlotHeader">
+        <anchor>13</anchor>
+        <left>lblTMDBHeader.Left + lblTMDBHeader.Width + 3</left>
+        <top>lblTMDBHeader.Top</top>
+        <width>lblInfoPanelHeader.Width - (lblTMDBHeader.Left + lblTMDBHeader.Width)</width>
+      </control>
+
+      <control name="txtPlot">
+        <anchor>13</anchor>
+        <height>74</height>
+        <left>lblPlotHeader.Left + 3</left>
+        <top>lblPlotHeader.Top + lblPlotHeader.Height + 3 + 2</top>
+        <width>lblPlotHeader.Width - 3</width>
+      </control>
+
+      <control name="pnlMoviesInSet">
+        <anchor>13</anchor>
+        <height>166</height>
+        <left>3</left>
+        <top>txtPlot.Top + txtPlot.Height + 3</top>
+        <width>lblInfoPanelHeader.Width</width>
+      </control>
+
+      <!-- BEGIN INTERNAL OF PNLMOVIESINSET -->
+      <control name="lblMoviesInSetHeader">
+        <anchor>13</anchor>
+        <left>0</left>
+        <top>0</top>
+        <width>pnlMoviesInSet.Width</width>
+      </control>
+
+      <control name="lvMoviesInSet">
+        <anchor>13</anchor>
+        <height>135</height>
+        <left>0</left>
+        <top>21</top>
+        <width>lblMoviesInSetHeader.Width</width>
+      </control>
+      <!-- END INTERNAL OF PNLMOVIESINSET -->
+    </movieset>
+    <tvepisode>
+      <posmid>261</posmid>
+      <posup>470</posup>
+
+      <backcolor>#2A2728</backcolor>
+
+      <globalheadersettings>
+        <backcolor>#007acc</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>1</fontstyle>
+        <forecolor>White</forecolor>
+        <height>17</height>
+      </globalheadersettings>
+
+      <globalvaluesettings>
+        <backcolor>#2A2728</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <forecolor>White</forecolor>
+        <height>17</height>
+      </globalvaluesettings>
+
+      <control name="lblInfoPanelHeader">
+        <anchor>13</anchor>
+        <height>24</height>
+        <left>3</left>
+        <top>3</top>
+        <width>pnlInfoPanel.Width - 8</width>
+      </control>
+
+      <control name="btnDown">
+        <anchor>9</anchor>
+        <height>22</height>
+        <left>pnlInfoPanel.Width - 38</left>
+        <top>4</top>
+        <width>30</width>
+      </control>
+
+      <control name="btnMid">
+        <anchor>9</anchor>
+        <height>btnDown.Height</height>
+        <left>btnDown.Left - 33</left>
+        <top>btnDown.Top</top>
+        <width>btnDown.Width</width>
+      </control>
+
+      <control name="btnUp">
+        <anchor>9</anchor>
+        <height>btnDown.Height</height>
+        <left>btnMid.Left - 33</left>
+        <top>btnDown.Top</top>
+        <width>btnDown.Width</width>
+      </control>
+
+      <control name="pnlActors">
+        <anchor>9</anchor>
+        <height>226</height>
+        <left>pnlInfoPanel.Width - 307</left>
+        <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
+        <width>302</width>
+      </control>
+
+      <!-- BEGIN INTERNAL OF PNLACTORS -->
+      <control name="lblActorsHeader">
+        <anchor>5</anchor>
+        <left>0</left>
+        <top>0</top>
+        <width>302</width>
+      </control>
+
+      <control name="lstActors">
+        <anchor>5</anchor>
+        <!-- Must be a multiple of 13!! -->
+        <height>208</height>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>lblActorsHeader.Top + lblActorsHeader.Height + 1</top>
+        <width>217</width>
+      </control>
+
+      <control name="pbActors">
+        <anchor>5</anchor>
+        <height>106</height>
+        <left>223</left>
+        <top>75</top>
+        <width>80</width>
+      </control>
+
+      <control name="pbActorsLoad">
+        <anchor>5</anchor>
+        <height>39</height>
+        <left>240</left>
+        <top>111</top>
+        <width>41</width>
+      </control>
+      <!-- END INTERNAL OF PNLACTORS -->
+
+      <control name="pnlGuestStars">
+        <anchor>9</anchor>
+        <height>226</height>
+        <left>pnlActors.Left - 305</left>
+        <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
+        <width>302</width>
+      </control>
+
+      <!-- BEGIN INTERNAL OF PNLGUESTSTARS -->
+      <control name="lblGuestStarsHeader">
+        <anchor>5</anchor>
+        <left>0</left>
+        <top>0</top>
+        <width>302</width>
+      </control>
+
+      <control name="lstGuestStars">
+        <anchor>5</anchor>
+        <!-- Must be a multiple of 13!! -->
+        <height>208</height>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>lblGuestStarsHeader.Top + lblGuestStarsHeader.Height + 1</top>
+        <width>217</width>
+      </control>
+
+      <control name="pbGuestStars">
+        <anchor>5</anchor>
+        <height>106</height>
+        <left>223</left>
+        <top>75</top>
+        <width>80</width>
+      </control>
+
+      <control name="pbGuestStarsLoad">
+        <anchor>5</anchor>
+        <height>39</height>
+        <left>240</left>
+        <top>111</top>
+        <width>41</width>
+      </control>
+      <!-- END INTERNAL OF PNLGUESTSTARS -->
+
+      <control name="lblPremieredHeader">
+        <anchor>9</anchor>
+        <left>pnlGuestStars.Left - 103</left>
+        <top>pnlGuestStars.Top</top>
+        <width>100</width>
+      </control>
+
+      <control name="lblPremiered">
+        <anchor>9</anchor>
+        <left>lblPremieredHeader.Left</left>
+        <top>lblPremieredHeader.Top + lblPremieredHeader.Height + 3</top>
+        <width>lblPremieredHeader.Width</width>
+      </control>
+
+      <control name="lblDirectorsHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>pnlActors.Top</top>
+        <width>(lblPremieredHeader.Left - 3) / 2 - 3</width>
+      </control>
+
+      <control name="lblDirectors">
+        <anchor>13</anchor>
+        <left>lblDirectorsHeader.Left</left>
+        <top>lblDirectorsHeader.Top + lblDirectorsHeader.Height + 3</top>
+        <width>lblDirectorsHeader.Width</width>
+      </control>
+
+      <control name="lblCreditsHeader">
+        <anchor>9</anchor>
+        <left>lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3</left>
+        <top>pnlActors.Top</top>
+        <width>lblPremiered.Left - (lblDirectorsHeader.Left + lblDirectorsHeader.Width + 3) - 3</width>
+      </control>
+
+      <control name="lblCredits">
+        <anchor>9</anchor>
+        <left>lblCreditsHeader.Left</left>
+        <top>lblCreditsHeader.Top + lblCreditsHeader.Height + 3</top>
+        <width>lblCreditsHeader.Width</width>
+      </control>
+
+      <control name="lblPlotHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>lblDirectors.Top + lblDirectors.Height + 3</top>
+        <width>pnlGuestStars.Left - 6</width>
+      </control>
+
+      <control name="txtPlot">
+        <anchor>13</anchor>
+        <height>80</height>
+        <left>lblPlotHeader.Left + 3</left>
+        <top>lblPlotHeader.Top + lblPlotHeader.Height + 3</top>
+        <width>lblPlotHeader.Width - 3</width>
+      </control>
+
+      <control name="lblIMDBHeader">
+        <anchor>5</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>txtPlot.Top + txtPlot.Height + 3</top>
+        <width>100</width>
+      </control>
+
+      <control name="txtIMDBID">
+        <anchor>5</anchor>
+        <height>20</height>
+        <left>lblIMDBHeader.Left</left>
+        <top>lblIMDBHeader.Top + lblIMDBHeader.Height + 3</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="lblTMDBHeader">
+        <anchor>5</anchor>
+        <left>lblIMDBHeader.Left + lblIMDBHeader.Width + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="txtTMDBID">
+        <anchor>5</anchor>
+        <height>txtIMDBID.Height</height>
+        <left>lblTMDBHeader.Left</left>
+        <top>lblTMDBHeader.Top + lblTMDBHeader.Height + 3</top>
+        <width>lblTMDBHeader.Width</width>
+      </control>
+
+      <control name="lblTVDBHeader">
+        <anchor>5</anchor>
+        <left>lblTMDBHeader.Left + lblTMDBHeader.Width + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="txtTVDBID">
+        <anchor>5</anchor>
+        <height>txtIMDBID.Height</height>
+        <left>lblTVDBHeader.Left</left>
+        <top>lblTVDBHeader.Top + lblTVDBHeader.Height + 3</top>
+        <width>lblTVDBHeader.Width</width>
+      </control>
+
+      <control name="lblFilePathHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>txtIMDBID.Top + txtIMDBID.Height + 3</top>
+        <width>lblPlotHeader.Width</width>
+      </control>
+
+      <control name="txtFilePath">
+        <anchor>13</anchor>
+        <height>20</height>
+        <left>lblFilePathHeader.Left</left>
+        <top>lblFilePathHeader.Top + lblFilePathHeader.Height + 3</top>
+        <width>lblFilePathHeader.Width - 23</width>
+      </control>
+
+      <control name="btnFilePlay">
+        <anchor>9</anchor>
+        <height>20</height>
+        <left>txtFilePath.Left + txtFilePath.Width + 3</left>
+        <top>txtFilePath.Top</top>
+        <width>20</width>
+      </control>
+
+      <control name="lblMetaDataHeader">
+        <anchor>9</anchor>
+        <left>pnlActors.Left</left>
+        <top>pnlActors.Top + pnlActors.Height + 6</top>
+        <width>pnlActors.Width</width>
+      </control>
+
+      <control name="btnMetaDataRefresh">
+        <anchor>9</anchor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <height>23</height>
+        <left>lblMetaDataHeader.Left + lblMetaDataHeader.Width - 75 - 24</left>
+        <top>lblMetaDataHeader.Top - 3</top>
+        <width>75</width>
+      </control>
+
+      <control name="txtMetaData">
+        <anchor>9</anchor>
+        <height>184</height>
+        <left>lblMetaDataHeader.Left + 3</left>
+        <top>lblMetaDataHeader.Top + lblMetaDataHeader.Height + 3</top>
+        <width>lblMetaDataHeader.Width - 3</width>
+      </control>
+    </tvepisode>
+    <tvseason>
+      <posmid>178</posmid>
+      <posup>178</posup>
+
+      <backcolor>#2A2728</backcolor>
+
+      <globalheadersettings>
+        <backcolor>#007acc</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>1</fontstyle>
+        <forecolor>White</forecolor>
+        <height>17</height>
+      </globalheadersettings>
+
+      <globalvaluesettings>
+        <backcolor>#2A2728</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <forecolor>White</forecolor>
+        <height>17</height>
+      </globalvaluesettings>
+
+      <control name="lblInfoPanelHeader">
+        <anchor>13</anchor>
+        <height>24</height>
+        <left>3</left>
+        <top>3</top>
+        <width>pnlInfoPanel.Width - 8</width>
+      </control>
+
+      <control name="btnDown">
+        <anchor>9</anchor>
+        <height>22</height>
+        <left>pnlInfoPanel.Width - 38</left>
+        <top>4</top>
+        <width>30</width>
+      </control>
+
+      <control name="btnUp">
+        <anchor>9</anchor>
+        <height>btnDown.Height</height>
+        <left>btnDown.Left - 33</left>
+        <top>btnDown.Top</top>
+        <width>btnDown.Width</width>
+      </control>
+
+      <control name="lblPremieredHeader">
+        <anchor>9</anchor>
+        <left>pnlInfoPanel.Width - 105</left>
+        <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
+        <width>100</width>
+      </control>
+
+      <control name="lblPremiered">
+        <anchor>9</anchor>
+        <left>lblPremieredHeader.Left</left>
+        <top>lblPremieredHeader.Top + lblPremieredHeader.Height + 3</top>
+        <width>lblPremieredHeader.Width</width>
+      </control>
+
+      <control name="lblPlotHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>lblPremieredHeader.Top</top>
+        <width>lblPremieredHeader.Left - 6</width>
+      </control>
+
+      <control name="txtPlot">
+        <anchor>13</anchor>
+        <height>80</height>
+        <left>lblPlotHeader.Left + 3</left>
+        <top>lblPlotHeader.Top + lblPlotHeader.Height + 3</top>
+        <width>lblPlotHeader.Width - 3</width>
+      </control>
+
+      <control name="lblIMDBHeader">
+        <anchor>5</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>txtPlot.Top + txtPlot.Height + 3</top>
+        <width>100</width>
+      </control>
+
+      <control name="txtIMDBID">
+        <anchor>5</anchor>
+        <height>20</height>
+        <left>lblIMDBHeader.Left</left>
+        <top>lblIMDBHeader.Top + lblIMDBHeader.Height + 3</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="lblTMDBHeader">
+        <anchor>5</anchor>
+        <left>lblIMDBHeader.Left + lblIMDBHeader.Width + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="txtTMDBID">
+        <anchor>5</anchor>
+        <height>txtIMDBID.Height</height>
+        <left>lblTMDBHeader.Left</left>
+        <top>lblTMDBHeader.Top + lblTMDBHeader.Height + 3</top>
+        <width>lblTMDBHeader.Width</width>
+      </control>
+
+      <control name="lblTVDBHeader">
+        <anchor>5</anchor>
+        <left>lblTMDBHeader.Left + lblTMDBHeader.Width + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="txtTVDBID">
+        <anchor>5</anchor>
+        <height>txtIMDBID.Height</height>
+        <left>lblTVDBHeader.Left</left>
+        <top>lblTVDBHeader.Top + lblTVDBHeader.Height + 3</top>
+        <width>lblTVDBHeader.Width</width>
+      </control>
+    </tvseason>
+    <tvshow>
+      <posmid>261</posmid>
+      <posup>261</posup>
+
+      <backcolor>#2A2728</backcolor>
+
+      <globalheadersettings>
+        <backcolor>#007acc</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>1</fontstyle>
+        <forecolor>White</forecolor>
+        <height>17</height>
+      </globalheadersettings>
+
+      <globalvaluesettings>
+        <backcolor>#2A2728</backcolor>
+        <font>Microsoft Sans Serif</font>
+        <fontsize>8</fontsize>
+        <fontstyle>0</fontstyle>
+        <forecolor>White</forecolor>
+        <height>17</height>
+      </globalvaluesettings>
+
+      <control name="lblInfoPanelHeader">
+        <anchor>13</anchor>
+        <height>24</height>
+        <left>3</left>
+        <top>3</top>
+        <width>pnlInfoPanel.Width - 8</width>
+      </control>
+
+      <control name="btnDown">
+        <anchor>9</anchor>
+        <height>22</height>
+        <left>pnlInfoPanel.Width - 38</left>
+        <top>4</top>
+        <width>30</width>
+      </control>
+
+      <control name="btnUp">
+        <anchor>9</anchor>
+        <height>btnDown.Height</height>
+        <left>btnDown.Left - 33</left>
+        <top>btnDown.Top</top>
+        <width>btnDown.Width</width>
+      </control>
+
+      <control name="pnlActors">
+        <anchor>9</anchor>
+        <height>226</height>
+        <left>pnlInfoPanel.Width - 307</left>
+        <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
+        <width>302</width>
+      </control>
+
+      <!-- BEGIN INTERNAL OF PNLACTORS -->
+      <control name="lblActorsHeader">
+        <anchor>5</anchor>
+        <left>0</left>
+        <top>0</top>
+        <width>302</width>
+      </control>
+
+      <control name="lstActors">
+        <anchor>5</anchor>
+        <!-- Must be a multiple of 13!! -->
+        <height>208</height>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>lblActorsHeader.Top + lblActorsHeader.Height + 1</top>
+        <width>217</width>
+      </control>
+
+      <control name="pbActors">
+        <anchor>5</anchor>
+        <height>106</height>
+        <left>223</left>
+        <top>75</top>
+        <width>80</width>
+      </control>
+
+      <control name="pbActorsLoad">
+        <anchor>5</anchor>
+        <height>39</height>
+        <left>240</left>
+        <top>111</top>
+        <width>41</width>
+      </control>
+      <!-- END INTERNAL OF PNLACTORS -->
+
+      <control name="lblPremieredHeader">
+        <anchor>9</anchor>
+        <left>pnlActors.Left - 103</left>
+        <top>pnlActors.Top</top>
+        <width>100</width>
+      </control>
+
+      <control name="lblPremiered">
+        <anchor>9</anchor>
+        <left>lblPremieredHeader.Left</left>
+        <top>lblPremieredHeader.Top + lblPremieredHeader.Height + 3</top>
+        <width>lblPremieredHeader.Width</width>
+      </control>
+
+      <control name="lblStatusHeader">
+        <anchor>9</anchor>
+        <left>lblPremieredHeader.Left - 153</left>
+        <top>lblInfoPanelHeader.Top + lblInfoPanelHeader.Height + 3</top>
+        <width>150</width>
+      </control>
+
+      <control name="lblStatus">
+        <anchor>9</anchor>
+        <left>lblStatusHeader.Left</left>
+        <top>lblStatusHeader.Top + lblStatusHeader.Height + 3</top>
+        <width>lblStatusHeader.Width</width>
+      </control>
+
+      <control name="lblDirectorsHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>pnlActors.Top</top>
+        <width>lblStatusHeader.Left - 6</width>
+      </control>
+
+      <control name="lblDirectors">
+        <anchor>13</anchor>
+        <left>lblDirectorsHeader.Left</left>
+        <top>lblDirectorsHeader.Top + lblDirectorsHeader.Height + 3</top>
+        <width>lblDirectorsHeader.Width</width>
+      </control>
+
+      <control name="lblPlotHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>lblDirectors.Top + lblDirectors.Height + 3</top>
+        <width>pnlActors.Left - 6</width>
+      </control>
+
+      <control name="txtPlot">
+        <anchor>13</anchor>
+        <height>80</height>
+        <left>lblPlotHeader.Left + 3</left>
+        <top>lblPlotHeader.Top + lblPlotHeader.Height + 3</top>
+        <width>lblPlotHeader.Width - 3</width>
+      </control>
+
+      <control name="lblIMDBHeader">
+        <anchor>5</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>txtPlot.Top + txtPlot.Height + 3</top>
+        <width>100</width>
+      </control>
+
+      <control name="txtIMDBID">
+        <anchor>5</anchor>
+        <height>20</height>
+        <left>lblIMDBHeader.Left</left>
+        <top>lblIMDBHeader.Top + lblIMDBHeader.Height + 3</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="lblTMDBHeader">
+        <anchor>5</anchor>
+        <left>lblIMDBHeader.Left + lblIMDBHeader.Width + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="txtTMDBID">
+        <anchor>5</anchor>
+        <height>txtIMDBID.Height</height>
+        <left>lblTMDBHeader.Left</left>
+        <top>lblTMDBHeader.Top + lblTMDBHeader.Height + 3</top>
+        <width>lblTMDBHeader.Width</width>
+      </control>
+
+      <control name="lblTVDBHeader">
+        <anchor>5</anchor>
+        <left>lblTMDBHeader.Left + lblTMDBHeader.Width + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblIMDBHeader.Width</width>
+      </control>
+
+      <control name="txtTVDBID">
+        <anchor>5</anchor>
+        <height>20</height>
+        <left>lblTVDBHeader.Left</left>
+        <top>lblTVDBHeader.Top + lblTVDBHeader.Height + 3</top>
+        <width>lblTVDBHeader.Width</width>
+      </control>
+
+      <control name="lblCertificationsHeader">
+        <anchor>13</anchor>
+        <left>lblTVDBHeader.Left + lblTVDBHeader.Width + 3</left>
+        <top>lblIMDBHeader.Top</top>
+        <width>lblPlotHeader.Width - (lblTVDBHeader.Left + lblTVDBHeader.Width)</width>
+      </control>
+
+      <control name="lblCertifications">
+        <anchor>13</anchor>
+        <left>lblCertificationsHeader.Left</left>
+        <top>lblCertificationsHeader.Top + lblCertificationsHeader.Height + 3</top>
+        <width>lblCertificationsHeader.Width</width>
+      </control>
+
+      <control name="lblCountriesHeader">
+        <anchor>13</anchor>
+        <left>lblInfoPanelHeader.Left</left>
+        <top>txtIMDBID.Top + txtIMDBID.Height + 3</top>
+        <width>(lblPlotHeader.Width / 2) - 3</width>
+      </control>
+
+      <control name="lblCountries">
+        <anchor>13</anchor>
+        <left>lblCountriesHeader.Left</left>
+        <top>lblCountriesHeader.Top + lblCountriesHeader.Height + 3</top>
+        <width>lblCountriesHeader.Width</width>
+      </control>
+
+      <control name="lblTagsHeader">
+        <anchor>9</anchor>
+        <left>(lblPlotHeader.Width / 2) + 3</left>
+        <top>lblCountriesHeader.Top</top>
+        <width>lblPlotHeader.Width / 2</width>
+      </control>
+
+      <control name="lblTags">
+        <anchor>9</anchor>
+        <left>lblTagsHeader.Left</left>
+        <top>lblTagsHeader.Top + lblTagsHeader.Height + 3</top>
+        <width>lblTagsHeader.Width</width>
+      </control>
+    </tvshow>
+  </infopanel>
+  <medialist>
+    <backcolor>White</backcolor>
+    <gridcolor>#f0f0f0</gridcolor>
+    <default>
+      <backcolor>White</backcolor>
+      <forecolor>Black</forecolor>
+      <selectionbackcolor>Highlight</selectionbackcolor>
+      <selectionforecolor>HighlightText</selectionforecolor>
+    </default>
+    <locked>
+      <backcolor>LightSteelBlue</backcolor>
+      <forecolor>Black</forecolor>
+      <selectionbackcolor>DarkTurquoise</selectionbackcolor>
+      <selectionforecolor>Black</selectionforecolor>
+    </locked>
+    <marked>
+      <backcolor>White</backcolor>
+      <forecolor>Crimson</forecolor>
+      <selectionbackcolor>Highlight</selectionbackcolor>
+      <selectionforecolor>Crimson</selectionforecolor>
+    </marked>
+    <missing>
+      <backcolor>White</backcolor>
+      <forecolor>Gray</forecolor>
+      <selectionbackcolor>DarkGray</selectionbackcolor>
+      <selectionforecolor>LightGray</selectionforecolor>
+    </missing>
+    <new>
+      <backcolor>White</backcolor>
+      <forecolor>Green</forecolor>
+      <selectionbackcolor>Highlight</selectionbackcolor>
+      <selectionforecolor>Green</selectionforecolor>
+    </new>
+    <outoftolerance>
+      <backcolor>MistyRose</backcolor>
+      <forecolor>Black</forecolor>
+      <selectionbackcolor>DarkMagenta</selectionbackcolor>
+      <selectionforecolor>HighlightText</selectionforecolor>
+    </outoftolerance>
+  </medialist>
+  <toppanel>
+    <globalsettings>
+      <backcolor>#2A2728</backcolor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+      <forecolor>Peru</forecolor>
+    </globalsettings>
+    <originaltitle>
+    </originaltitle>
+    <rating>
+    </rating>
+    <runtime>
+    </runtime>
+    <studio>
+      <font>Segoe UI</font>
+    </studio>
+    <title>
+      <fontsize>12</fontsize>
+      <fontstyle>1</fontstyle>
+    </title>
+    <tagline>
+    </tagline>
+  </toppanel>  
+</theme>

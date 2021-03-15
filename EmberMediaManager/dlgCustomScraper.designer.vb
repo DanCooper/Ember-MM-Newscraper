@@ -27,7 +27,6 @@ Partial Class dlgCustomScraper
     Friend WithEvents chkMainOptionsTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkMainModifierTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkMainOptionsWriters As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMainOptionsYear As System.Windows.Forms.CheckBox
     Friend WithEvents gbMainScrapeOptions As System.Windows.Forms.GroupBox
     Friend WithEvents gbMainScrapeModifiers As System.Windows.Forms.GroupBox
     Friend WithEvents gbScrapeType_Filter As System.Windows.Forms.GroupBox
@@ -91,13 +90,7 @@ Partial Class dlgCustomScraper
         Me.rbScrapeType_Ask = New System.Windows.Forms.RadioButton()
         Me.gbMainScrapeModifiers = New System.Windows.Forms.GroupBox()
         Me.tblMainScrapeModifiers = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkMainModifierTrailer = New System.Windows.Forms.CheckBox()
-        Me.chkMainModifierTheme = New System.Windows.Forms.CheckBox()
-        Me.chkMainModifierLandscape = New System.Windows.Forms.CheckBox()
         Me.btnMainScrapeModifierNone = New System.Windows.Forms.Button()
-        Me.chkMainModifierPoster = New System.Windows.Forms.CheckBox()
-        Me.chkMainModifierMetaData = New System.Windows.Forms.CheckBox()
-        Me.chkMainModifierNFO = New System.Windows.Forms.CheckBox()
         Me.chkMainModifierDiscArt = New System.Windows.Forms.CheckBox()
         Me.chkMainModifierExtrafanarts = New System.Windows.Forms.CheckBox()
         Me.chkMainModifierExtrathumbs = New System.Windows.Forms.CheckBox()
@@ -108,6 +101,13 @@ Partial Class dlgCustomScraper
         Me.chkMainModifierBanner = New System.Windows.Forms.CheckBox()
         Me.chkMainModifierActorThumbs = New System.Windows.Forms.CheckBox()
         Me.chkMainModifierAll = New System.Windows.Forms.CheckBox()
+        Me.chkMainModifierTrailer = New System.Windows.Forms.CheckBox()
+        Me.chkMainModifierTheme = New System.Windows.Forms.CheckBox()
+        Me.chkMainModifierPoster = New System.Windows.Forms.CheckBox()
+        Me.chkMainModifierNFO = New System.Windows.Forms.CheckBox()
+        Me.chkMainModifierMetaData = New System.Windows.Forms.CheckBox()
+        Me.chkMainModifierLandscape = New System.Windows.Forms.CheckBox()
+        Me.chkMainModifierKeyart = New System.Windows.Forms.CheckBox()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.gbMainScrapeOptions = New System.Windows.Forms.GroupBox()
         Me.tblMainScrapeOptions = New System.Windows.Forms.TableLayoutPanel()
@@ -135,7 +135,6 @@ Partial Class dlgCustomScraper
         Me.chkMainOptionsTop250 = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsTrailer = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsWriters = New System.Windows.Forms.CheckBox()
-        Me.chkMainOptionsYear = New System.Windows.Forms.CheckBox()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlMain = New System.Windows.Forms.Panel()
@@ -183,7 +182,7 @@ Partial Class dlgCustomScraper
         Me.chkSeasonOptionsAired = New System.Windows.Forms.CheckBox()
         Me.chkSeasonOptionsPlot = New System.Windows.Forms.CheckBox()
         Me.chkSeasonOptionsTitle = New System.Windows.Forms.CheckBox()
-        Me.chkMainModifierKeyart = New System.Windows.Forms.CheckBox()
+        Me.chkEpisodeOptionsOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.pnlTop.SuspendLayout()
         Me.tblTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -215,7 +214,7 @@ Partial Class dlgCustomScraper
         '
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(893, 3)
+        Me.btnCancel.Location = New System.Drawing.Point(922, 3)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(80, 23)
         Me.btnCancel.TabIndex = 1
@@ -230,7 +229,7 @@ Partial Class dlgCustomScraper
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(976, 66)
+        Me.pnlTop.Size = New System.Drawing.Size(1005, 66)
         Me.pnlTop.TabIndex = 2
         '
         'tblTop
@@ -249,7 +248,7 @@ Partial Class dlgCustomScraper
         Me.tblTop.RowCount = 2
         Me.tblTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTop.Size = New System.Drawing.Size(974, 64)
+        Me.tblTop.Size = New System.Drawing.Size(1003, 64)
         Me.tblTop.TabIndex = 2
         '
         'pbTopLogo
@@ -524,39 +523,6 @@ Partial Class dlgCustomScraper
         Me.tblMainScrapeModifiers.Size = New System.Drawing.Size(225, 246)
         Me.tblMainScrapeModifiers.TabIndex = 15
         '
-        'chkMainModifierTrailer
-        '
-        Me.chkMainModifierTrailer.AutoSize = True
-        Me.chkMainModifierTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainModifierTrailer.Location = New System.Drawing.Point(106, 193)
-        Me.chkMainModifierTrailer.Name = "chkMainModifierTrailer"
-        Me.chkMainModifierTrailer.Size = New System.Drawing.Size(57, 17)
-        Me.chkMainModifierTrailer.TabIndex = 5
-        Me.chkMainModifierTrailer.Text = "Trailer"
-        Me.chkMainModifierTrailer.UseVisualStyleBackColor = True
-        '
-        'chkMainModifierTheme
-        '
-        Me.chkMainModifierTheme.AutoSize = True
-        Me.chkMainModifierTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainModifierTheme.Location = New System.Drawing.Point(106, 170)
-        Me.chkMainModifierTheme.Name = "chkMainModifierTheme"
-        Me.chkMainModifierTheme.Size = New System.Drawing.Size(60, 17)
-        Me.chkMainModifierTheme.TabIndex = 8
-        Me.chkMainModifierTheme.Text = "Theme"
-        Me.chkMainModifierTheme.UseVisualStyleBackColor = True
-        '
-        'chkMainModifierLandscape
-        '
-        Me.chkMainModifierLandscape.AutoSize = True
-        Me.chkMainModifierLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainModifierLandscape.Location = New System.Drawing.Point(106, 78)
-        Me.chkMainModifierLandscape.Name = "chkMainModifierLandscape"
-        Me.chkMainModifierLandscape.Size = New System.Drawing.Size(80, 17)
-        Me.chkMainModifierLandscape.TabIndex = 13
-        Me.chkMainModifierLandscape.Text = "Landscape"
-        Me.chkMainModifierLandscape.UseVisualStyleBackColor = True
-        '
         'btnMainScrapeModifierNone
         '
         Me.btnMainScrapeModifierNone.Location = New System.Drawing.Point(106, 3)
@@ -565,39 +531,6 @@ Partial Class dlgCustomScraper
         Me.btnMainScrapeModifierNone.TabIndex = 14
         Me.btnMainScrapeModifierNone.Text = "Select None"
         Me.btnMainScrapeModifierNone.UseVisualStyleBackColor = True
-        '
-        'chkMainModifierPoster
-        '
-        Me.chkMainModifierPoster.AutoSize = True
-        Me.chkMainModifierPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainModifierPoster.Location = New System.Drawing.Point(106, 147)
-        Me.chkMainModifierPoster.Name = "chkMainModifierPoster"
-        Me.chkMainModifierPoster.Size = New System.Drawing.Size(58, 17)
-        Me.chkMainModifierPoster.TabIndex = 2
-        Me.chkMainModifierPoster.Text = "Poster"
-        Me.chkMainModifierPoster.UseVisualStyleBackColor = True
-        '
-        'chkMainModifierMetaData
-        '
-        Me.chkMainModifierMetaData.AutoSize = True
-        Me.chkMainModifierMetaData.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainModifierMetaData.Location = New System.Drawing.Point(106, 101)
-        Me.chkMainModifierMetaData.Name = "chkMainModifierMetaData"
-        Me.chkMainModifierMetaData.Size = New System.Drawing.Size(79, 17)
-        Me.chkMainModifierMetaData.TabIndex = 3
-        Me.chkMainModifierMetaData.Text = "Meta Data"
-        Me.chkMainModifierMetaData.UseVisualStyleBackColor = True
-        '
-        'chkMainModifierNFO
-        '
-        Me.chkMainModifierNFO.AutoSize = True
-        Me.chkMainModifierNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainModifierNFO.Location = New System.Drawing.Point(106, 124)
-        Me.chkMainModifierNFO.Name = "chkMainModifierNFO"
-        Me.chkMainModifierNFO.Size = New System.Drawing.Size(49, 17)
-        Me.chkMainModifierNFO.TabIndex = 1
-        Me.chkMainModifierNFO.Text = "NFO"
-        Me.chkMainModifierNFO.UseVisualStyleBackColor = True
         '
         'chkMainModifierDiscArt
         '
@@ -709,11 +642,88 @@ Partial Class dlgCustomScraper
         Me.chkMainModifierAll.Text = "All Items"
         Me.chkMainModifierAll.UseVisualStyleBackColor = True
         '
+        'chkMainModifierTrailer
+        '
+        Me.chkMainModifierTrailer.AutoSize = True
+        Me.chkMainModifierTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMainModifierTrailer.Location = New System.Drawing.Point(106, 193)
+        Me.chkMainModifierTrailer.Name = "chkMainModifierTrailer"
+        Me.chkMainModifierTrailer.Size = New System.Drawing.Size(57, 17)
+        Me.chkMainModifierTrailer.TabIndex = 5
+        Me.chkMainModifierTrailer.Text = "Trailer"
+        Me.chkMainModifierTrailer.UseVisualStyleBackColor = True
+        '
+        'chkMainModifierTheme
+        '
+        Me.chkMainModifierTheme.AutoSize = True
+        Me.chkMainModifierTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMainModifierTheme.Location = New System.Drawing.Point(106, 170)
+        Me.chkMainModifierTheme.Name = "chkMainModifierTheme"
+        Me.chkMainModifierTheme.Size = New System.Drawing.Size(60, 17)
+        Me.chkMainModifierTheme.TabIndex = 8
+        Me.chkMainModifierTheme.Text = "Theme"
+        Me.chkMainModifierTheme.UseVisualStyleBackColor = True
+        '
+        'chkMainModifierPoster
+        '
+        Me.chkMainModifierPoster.AutoSize = True
+        Me.chkMainModifierPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMainModifierPoster.Location = New System.Drawing.Point(106, 147)
+        Me.chkMainModifierPoster.Name = "chkMainModifierPoster"
+        Me.chkMainModifierPoster.Size = New System.Drawing.Size(58, 17)
+        Me.chkMainModifierPoster.TabIndex = 2
+        Me.chkMainModifierPoster.Text = "Poster"
+        Me.chkMainModifierPoster.UseVisualStyleBackColor = True
+        '
+        'chkMainModifierNFO
+        '
+        Me.chkMainModifierNFO.AutoSize = True
+        Me.chkMainModifierNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMainModifierNFO.Location = New System.Drawing.Point(106, 124)
+        Me.chkMainModifierNFO.Name = "chkMainModifierNFO"
+        Me.chkMainModifierNFO.Size = New System.Drawing.Size(49, 17)
+        Me.chkMainModifierNFO.TabIndex = 1
+        Me.chkMainModifierNFO.Text = "NFO"
+        Me.chkMainModifierNFO.UseVisualStyleBackColor = True
+        '
+        'chkMainModifierMetaData
+        '
+        Me.chkMainModifierMetaData.AutoSize = True
+        Me.chkMainModifierMetaData.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMainModifierMetaData.Location = New System.Drawing.Point(106, 101)
+        Me.chkMainModifierMetaData.Name = "chkMainModifierMetaData"
+        Me.chkMainModifierMetaData.Size = New System.Drawing.Size(79, 17)
+        Me.chkMainModifierMetaData.TabIndex = 3
+        Me.chkMainModifierMetaData.Text = "Meta Data"
+        Me.chkMainModifierMetaData.UseVisualStyleBackColor = True
+        '
+        'chkMainModifierLandscape
+        '
+        Me.chkMainModifierLandscape.AutoSize = True
+        Me.chkMainModifierLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMainModifierLandscape.Location = New System.Drawing.Point(106, 78)
+        Me.chkMainModifierLandscape.Name = "chkMainModifierLandscape"
+        Me.chkMainModifierLandscape.Size = New System.Drawing.Size(80, 17)
+        Me.chkMainModifierLandscape.TabIndex = 13
+        Me.chkMainModifierLandscape.Text = "Landscape"
+        Me.chkMainModifierLandscape.UseVisualStyleBackColor = True
+        '
+        'chkMainModifierKeyart
+        '
+        Me.chkMainModifierKeyart.AutoSize = True
+        Me.chkMainModifierKeyart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMainModifierKeyart.Location = New System.Drawing.Point(106, 55)
+        Me.chkMainModifierKeyart.Name = "chkMainModifierKeyart"
+        Me.chkMainModifierKeyart.Size = New System.Drawing.Size(57, 17)
+        Me.chkMainModifierKeyart.TabIndex = 13
+        Me.chkMainModifierKeyart.Text = "Keyart"
+        Me.chkMainModifierKeyart.UseVisualStyleBackColor = True
+        '
         'btnOK
         '
         Me.btnOK.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.btnOK.Enabled = False
-        Me.btnOK.Location = New System.Drawing.Point(807, 3)
+        Me.btnOK.Location = New System.Drawing.Point(836, 3)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(80, 23)
         Me.btnOK.TabIndex = 0
@@ -764,7 +774,6 @@ Partial Class dlgCustomScraper
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsTop250, 1, 8)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsTrailer, 1, 9)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsWriters, 1, 10)
-        Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsYear, 1, 11)
         Me.tblMainScrapeOptions.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMainScrapeOptions.Location = New System.Drawing.Point(3, 18)
         Me.tblMainScrapeOptions.Name = "tblMainScrapeOptions"
@@ -1049,17 +1058,6 @@ Partial Class dlgCustomScraper
         Me.chkMainOptionsWriters.Text = "Credits (Writers)"
         Me.chkMainOptionsWriters.UseVisualStyleBackColor = True
         '
-        'chkMainOptionsYear
-        '
-        Me.chkMainOptionsYear.AutoSize = True
-        Me.chkMainOptionsYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainOptionsYear.Location = New System.Drawing.Point(133, 262)
-        Me.chkMainOptionsYear.Name = "chkMainOptionsYear"
-        Me.chkMainOptionsYear.Size = New System.Drawing.Size(46, 17)
-        Me.chkMainOptionsYear.TabIndex = 1
-        Me.chkMainOptionsYear.Text = "Year"
-        Me.chkMainOptionsYear.UseVisualStyleBackColor = True
-        '
         'pnlBottom
         '
         Me.pnlBottom.AutoSize = True
@@ -1067,7 +1065,7 @@ Partial Class dlgCustomScraper
         Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlBottom.Location = New System.Drawing.Point(0, 548)
         Me.pnlBottom.Name = "pnlBottom"
-        Me.pnlBottom.Size = New System.Drawing.Size(976, 29)
+        Me.pnlBottom.Size = New System.Drawing.Size(1005, 29)
         Me.pnlBottom.TabIndex = 4
         '
         'tblBottom
@@ -1084,7 +1082,7 @@ Partial Class dlgCustomScraper
         Me.tblBottom.Name = "tblBottom"
         Me.tblBottom.RowCount = 1
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblBottom.Size = New System.Drawing.Size(976, 29)
+        Me.tblBottom.Size = New System.Drawing.Size(1005, 29)
         Me.tblBottom.TabIndex = 0
         '
         'pnlMain
@@ -1095,7 +1093,7 @@ Partial Class dlgCustomScraper
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 66)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(976, 482)
+        Me.pnlMain.Size = New System.Drawing.Size(1005, 482)
         Me.pnlMain.TabIndex = 5
         '
         'tblMain
@@ -1128,7 +1126,7 @@ Partial Class dlgCustomScraper
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.Size = New System.Drawing.Size(976, 482)
+        Me.tblMain.Size = New System.Drawing.Size(1005, 482)
         Me.tblMain.TabIndex = 0
         '
         'gbSeasonScrapeModifiers
@@ -1438,7 +1436,7 @@ Partial Class dlgCustomScraper
         Me.gbEpisodeScrapeOptions.Location = New System.Drawing.Point(746, 201)
         Me.gbEpisodeScrapeOptions.Name = "gbEpisodeScrapeOptions"
         Me.tblMain.SetRowSpan(Me.gbEpisodeScrapeOptions, 2)
-        Me.gbEpisodeScrapeOptions.Size = New System.Drawing.Size(223, 165)
+        Me.gbEpisodeScrapeOptions.Size = New System.Drawing.Size(232, 165)
         Me.gbEpisodeScrapeOptions.TabIndex = 3
         Me.gbEpisodeScrapeOptions.TabStop = False
         Me.gbEpisodeScrapeOptions.Text = "Episodes Options"
@@ -1456,11 +1454,12 @@ Partial Class dlgCustomScraper
         Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsAired, 0, 2)
         Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsDirectors, 0, 3)
         Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsGuestStars, 0, 4)
-        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsPlot, 0, 5)
-        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsRating, 1, 1)
-        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsRuntime, 1, 2)
-        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsTitle, 1, 3)
-        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsWriters, 1, 4)
+        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsWriters, 1, 5)
+        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsTitle, 1, 4)
+        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsRuntime, 1, 3)
+        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsRating, 1, 2)
+        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsPlot, 1, 1)
+        Me.tblEpisodeScrapeOptions.Controls.Add(Me.chkEpisodeOptionsOriginalTitle, 0, 5)
         Me.tblEpisodeScrapeOptions.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblEpisodeScrapeOptions.Location = New System.Drawing.Point(3, 18)
         Me.tblEpisodeScrapeOptions.Name = "tblEpisodeScrapeOptions"
@@ -1480,7 +1479,7 @@ Partial Class dlgCustomScraper
         Me.tblEpisodeScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblEpisodeScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblEpisodeScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblEpisodeScrapeOptions.Size = New System.Drawing.Size(217, 144)
+        Me.tblEpisodeScrapeOptions.Size = New System.Drawing.Size(226, 144)
         Me.tblEpisodeScrapeOptions.TabIndex = 25
         '
         'chkEpisodeOptionsAll
@@ -1496,7 +1495,7 @@ Partial Class dlgCustomScraper
         '
         'btnEpisodeScrapeOptionsNone
         '
-        Me.btnEpisodeScrapeOptionsNone.Location = New System.Drawing.Point(93, 3)
+        Me.btnEpisodeScrapeOptionsNone.Location = New System.Drawing.Point(102, 3)
         Me.btnEpisodeScrapeOptionsNone.Name = "btnEpisodeScrapeOptionsNone"
         Me.btnEpisodeScrapeOptionsNone.Size = New System.Drawing.Size(121, 23)
         Me.btnEpisodeScrapeOptionsNone.TabIndex = 15
@@ -1551,7 +1550,7 @@ Partial Class dlgCustomScraper
         '
         Me.chkEpisodeOptionsPlot.AutoSize = True
         Me.chkEpisodeOptionsPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkEpisodeOptionsPlot.Location = New System.Drawing.Point(3, 124)
+        Me.chkEpisodeOptionsPlot.Location = New System.Drawing.Point(102, 32)
         Me.chkEpisodeOptionsPlot.Name = "chkEpisodeOptionsPlot"
         Me.chkEpisodeOptionsPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkEpisodeOptionsPlot.TabIndex = 13
@@ -1562,7 +1561,7 @@ Partial Class dlgCustomScraper
         '
         Me.chkEpisodeOptionsRating.AutoSize = True
         Me.chkEpisodeOptionsRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkEpisodeOptionsRating.Location = New System.Drawing.Point(93, 32)
+        Me.chkEpisodeOptionsRating.Location = New System.Drawing.Point(102, 55)
         Me.chkEpisodeOptionsRating.Name = "chkEpisodeOptionsRating"
         Me.chkEpisodeOptionsRating.Size = New System.Drawing.Size(60, 17)
         Me.chkEpisodeOptionsRating.TabIndex = 6
@@ -1573,7 +1572,7 @@ Partial Class dlgCustomScraper
         '
         Me.chkEpisodeOptionsRuntime.AutoSize = True
         Me.chkEpisodeOptionsRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkEpisodeOptionsRuntime.Location = New System.Drawing.Point(93, 55)
+        Me.chkEpisodeOptionsRuntime.Location = New System.Drawing.Point(102, 78)
         Me.chkEpisodeOptionsRuntime.Name = "chkEpisodeOptionsRuntime"
         Me.chkEpisodeOptionsRuntime.Size = New System.Drawing.Size(69, 17)
         Me.chkEpisodeOptionsRuntime.TabIndex = 5
@@ -1584,7 +1583,7 @@ Partial Class dlgCustomScraper
         '
         Me.chkEpisodeOptionsTitle.AutoSize = True
         Me.chkEpisodeOptionsTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkEpisodeOptionsTitle.Location = New System.Drawing.Point(93, 78)
+        Me.chkEpisodeOptionsTitle.Location = New System.Drawing.Point(102, 101)
         Me.chkEpisodeOptionsTitle.Name = "chkEpisodeOptionsTitle"
         Me.chkEpisodeOptionsTitle.Size = New System.Drawing.Size(48, 17)
         Me.chkEpisodeOptionsTitle.TabIndex = 0
@@ -1595,7 +1594,7 @@ Partial Class dlgCustomScraper
         '
         Me.chkEpisodeOptionsWriters.AutoSize = True
         Me.chkEpisodeOptionsWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkEpisodeOptionsWriters.Location = New System.Drawing.Point(93, 101)
+        Me.chkEpisodeOptionsWriters.Location = New System.Drawing.Point(102, 124)
         Me.chkEpisodeOptionsWriters.Name = "chkEpisodeOptionsWriters"
         Me.chkEpisodeOptionsWriters.Size = New System.Drawing.Size(108, 17)
         Me.chkEpisodeOptionsWriters.TabIndex = 16
@@ -1610,7 +1609,7 @@ Partial Class dlgCustomScraper
         Me.gbSeasonScrapeOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSeasonScrapeOptions.Location = New System.Drawing.Point(746, 99)
         Me.gbSeasonScrapeOptions.Name = "gbSeasonScrapeOptions"
-        Me.gbSeasonScrapeOptions.Size = New System.Drawing.Size(223, 96)
+        Me.gbSeasonScrapeOptions.Size = New System.Drawing.Size(232, 96)
         Me.gbSeasonScrapeOptions.TabIndex = 3
         Me.gbSeasonScrapeOptions.TabStop = False
         Me.gbSeasonScrapeOptions.Text = "Seasons Options"
@@ -1646,7 +1645,7 @@ Partial Class dlgCustomScraper
         Me.tblSeasonScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSeasonScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSeasonScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSeasonScrapeOptions.Size = New System.Drawing.Size(217, 75)
+        Me.tblSeasonScrapeOptions.Size = New System.Drawing.Size(226, 75)
         Me.tblSeasonScrapeOptions.TabIndex = 25
         '
         'chkSeasonOptionsAll
@@ -1702,16 +1701,16 @@ Partial Class dlgCustomScraper
         Me.chkSeasonOptionsTitle.Text = "Title"
         Me.chkSeasonOptionsTitle.UseVisualStyleBackColor = True
         '
-        'chkMainModifierKeyart
+        'chkEpisodeOptionsOriginalTitle
         '
-        Me.chkMainModifierKeyart.AutoSize = True
-        Me.chkMainModifierKeyart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainModifierKeyart.Location = New System.Drawing.Point(106, 55)
-        Me.chkMainModifierKeyart.Name = "chkMainModifierKeyart"
-        Me.chkMainModifierKeyart.Size = New System.Drawing.Size(57, 17)
-        Me.chkMainModifierKeyart.TabIndex = 13
-        Me.chkMainModifierKeyart.Text = "Keyart"
-        Me.chkMainModifierKeyart.UseVisualStyleBackColor = True
+        Me.chkEpisodeOptionsOriginalTitle.AutoSize = True
+        Me.chkEpisodeOptionsOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkEpisodeOptionsOriginalTitle.Location = New System.Drawing.Point(3, 124)
+        Me.chkEpisodeOptionsOriginalTitle.Name = "chkEpisodeOptionsOriginalTitle"
+        Me.chkEpisodeOptionsOriginalTitle.Size = New System.Drawing.Size(93, 17)
+        Me.chkEpisodeOptionsOriginalTitle.TabIndex = 13
+        Me.chkEpisodeOptionsOriginalTitle.Text = "Original Title"
+        Me.chkEpisodeOptionsOriginalTitle.UseVisualStyleBackColor = True
         '
         'dlgCustomScraper
         '
@@ -1721,7 +1720,7 @@ Partial Class dlgCustomScraper
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(976, 577)
+        Me.ClientSize = New System.Drawing.Size(1005, 577)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlBottom)
         Me.Controls.Add(Me.pnlTop)
@@ -1858,6 +1857,7 @@ Partial Class dlgCustomScraper
     Friend WithEvents rbScrapeType_Selected As RadioButton
     Friend WithEvents rbScrapeType_Filter As RadioButton
     Friend WithEvents chkMainModifierKeyart As CheckBox
+    Friend WithEvents chkEpisodeOptionsOriginalTitle As CheckBox
 
 #End Region 'Methods
 

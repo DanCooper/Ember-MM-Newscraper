@@ -37,17 +37,17 @@ Public Class dlgTMDBSearchResults_MovieSet
     Private _prevnode As Integer = -2
     Private _SpecialSettings As TMDB_Data.SpecialSettings
 
-    Private _InfoCache As New Dictionary(Of String, MediaContainers.MovieSet)
+    Private _InfoCache As New Dictionary(Of String, MediaContainers.Movieset)
     Private _PosterCache As New Dictionary(Of String, Image)
     Private _filterOptions As Structures.ScrapeOptions
 
-    Private _tmpMovieSet As New MediaContainers.MovieSet
+    Private _tmpMovieSet As New MediaContainers.Movieset
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As MediaContainers.MovieSet
+    Public ReadOnly Property Result As MediaContainers.Movieset
         Get
             Return _tmpMovieSet
         End Get
@@ -125,14 +125,14 @@ Public Class dlgTMDBSearchResults_MovieSet
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
-        sHTTP.StartDownloadImage(Args.pURL)
+        sHTTP.StartDownloadImage(Args.Url)
 
         While sHTTP.IsDownloading
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
 
-        e.Result = New Results With {.Result = sHTTP.Image, .IMDBId = Args.IMDBId}
+        e.Result = New Results With {.Result = sHTTP.Image, .TmdbId = Args.TmdbId}
     End Sub
 
     Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
@@ -144,8 +144,8 @@ Public Class dlgTMDBSearchResults_MovieSet
 
         Try
             pbPoster.Image = Res.Result
-            If Not _PosterCache.ContainsKey(Res.IMDBId) Then
-                _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
+            If Not _PosterCache.ContainsKey(Res.TmdbId) Then
+                _PosterCache.Add(Res.TmdbId, CType(Res.Result.Clone, Image))
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -158,7 +158,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         If _TMDB.bwTMDB.IsBusy Then
             _TMDB.CancelAsync()
         End If
-        _tmpMovieSet = New MediaContainers.MovieSet
+        _tmpMovieSet = New MediaContainers.Movieset
 
         DialogResult = DialogResult.Cancel
     End Sub
@@ -182,7 +182,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         lblTMDBID.Text = String.Empty
         pbPoster.Image = Nothing
 
-        _tmpMovieSet = New MediaContainers.MovieSet
+        _tmpMovieSet = New MediaContainers.Movieset
 
         _TMDB.CancelAsync()
     End Sub
@@ -201,7 +201,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     End Sub
 
     Private Sub dlgTMDBSearchResults_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-        SetUp()
+        Setup()
         pnlPicStatus.Visible = False
         AddHandler _TMDB.SearchInfoDownloaded_MovieSet, AddressOf SearchMovieSetInfoDownloaded
         AddHandler _TMDB.SearchResultsDownloaded_MovieSet, AddressOf SearchResultsDownloaded_MovieSet
@@ -226,37 +226,41 @@ Public Class dlgTMDBSearchResults_MovieSet
         DialogResult = DialogResult.OK
     End Sub
 
-    Private Sub SearchMovieSetInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.MovieSet)
+    Private Sub SearchMovieSetInfoDownloaded(ByVal poster As String, ByVal info As MediaContainers.Movieset)
         pnlLoading.Visible = False
         OK_Button.Enabled = True
 
-        If sInfo IsNot Nothing Then
+        If info IsNot Nothing Then
             ControlsVisible(True)
-            _tmpMovieSet = sInfo
+            _tmpMovieSet = info
             lblTitle.Text = _tmpMovieSet.Title
             txtPlot.Text = _tmpMovieSet.Plot
-            lblTMDBID.Text = _tmpMovieSet.TMDB
+            lblTMDBID.Text = _tmpMovieSet.UniqueIDs.TMDbId.ToString
 
-            If _PosterCache.ContainsKey(_tmpMovieSet.TMDB) Then
+            If _PosterCache.ContainsKey(_tmpMovieSet.UniqueIDs.TMDbId.ToString) Then
                 'just set it
-                pbPoster.Image = _PosterCache(_tmpMovieSet.TMDB)
+                pbPoster.Image = _PosterCache(_tmpMovieSet.UniqueIDs.TMDbId.ToString)
             Else
                 'go download it, if available
-                If Not String.IsNullOrEmpty(sPoster) Then
+                If Not String.IsNullOrEmpty(poster) Then
                     If bwDownloadPic.IsBusy Then
                         bwDownloadPic.CancelAsync()
                     End If
                     pnlPicStatus.Visible = True
-                    bwDownloadPic = New System.ComponentModel.BackgroundWorker
-                    bwDownloadPic.WorkerSupportsCancellation = True
-                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpMovieSet.TMDB})
+                    bwDownloadPic = New ComponentModel.BackgroundWorker With {
+                        .WorkerSupportsCancellation = True
+                    }
+                    bwDownloadPic.RunWorkerAsync(New Arguments With {
+                                                 .Url = poster,
+                                                 .TmdbId = _tmpMovieSet.UniqueIDs.TMDbId.ToString
+                                                 })
                 End If
 
             End If
 
             'store clone of tmpmovie
-            If Not _InfoCache.ContainsKey(_tmpMovieSet.TMDB) Then
-                _InfoCache.Add(_tmpMovieSet.TMDB, GetMovieSetClone(_tmpMovieSet))
+            If Not _InfoCache.ContainsKey(_tmpMovieSet.UniqueIDs.TMDbId.ToString) Then
+                _InfoCache.Add(_tmpMovieSet.UniqueIDs.TMDbId.ToString, GetMovieSetClone(_tmpMovieSet))
             End If
 
 
@@ -269,12 +273,15 @@ Public Class dlgTMDBSearchResults_MovieSet
         End If
     End Sub
 
-    Private Sub SearchResultsDownloaded_MovieSet(ByVal M As SearchResults_MovieSet)
+    Private Sub SearchResultsDownloaded_MovieSet(ByVal m As SearchResults_MovieSet)
         tvResults.Nodes.Clear()
         ClearInfo()
-        If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
-            For Each MovieSet As MediaContainers.MovieSet In M.Matches
-                tvResults.Nodes.Add(New TreeNode() With {.Text = MovieSet.Title, .Tag = MovieSet.TMDB})
+        If m IsNot Nothing AndAlso m.Matches.Count > 0 Then
+            For Each MovieSet As MediaContainers.Movieset In m.Matches
+                tvResults.Nodes.Add(New TreeNode() With {
+                                    .Text = MovieSet.Title,
+                                    .Tag = MovieSet.UniqueIDs.TMDbId.ToString
+                                    })
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)
 
@@ -296,7 +303,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         Return aOpt
     End Function
 
-    Private Sub SetUp()
+    Private Sub Setup()
         OK_Button.Text = Master.eLang.GetString(179, "OK")
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Label2.Text = Master.eLang.GetString(1231, "View details of each result to find the proper movieset.")
@@ -331,7 +338,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         End If
     End Sub
 
-    Private Sub tvResults_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
+    Private Sub tvResults_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles tvResults.AfterSelect
         Try
             tmrWait.Stop()
             tmrLoad.Stop()
@@ -379,13 +386,13 @@ Public Class dlgTMDBSearchResults_MovieSet
         AcceptButton = btnSearch
     End Sub
 
-    Private Function GetMovieSetClone(ByVal original As MediaContainers.MovieSet) As MediaContainers.MovieSet
+    Private Function GetMovieSetClone(ByVal original As MediaContainers.Movieset) As MediaContainers.Movieset
         Try
             Using mem As New IO.MemoryStream()
-                Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
+                Dim bin As New Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
                 bin.Serialize(mem, original)
                 mem.Seek(0, IO.SeekOrigin.Begin)
-                Return DirectCast(bin.Deserialize(mem), MediaContainers.MovieSet)
+                Return DirectCast(bin.Deserialize(mem), MediaContainers.Movieset)
             End Using
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -403,8 +410,8 @@ Public Class dlgTMDBSearchResults_MovieSet
 
 #Region "Fields"
 
-        Dim pURL As String
-        Dim IMDBId As String
+        Dim Url As String
+        Dim TmdbId As String
 
 #End Region 'Fields
 
@@ -415,7 +422,7 @@ Public Class dlgTMDBSearchResults_MovieSet
 #Region "Fields"
 
         Dim Result As Image
-        Dim IMDBId As String
+        Dim TmdbId As String
 
 #End Region 'Fields
 

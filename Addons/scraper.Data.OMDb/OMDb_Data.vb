@@ -369,8 +369,8 @@ Public Class OMDb_Data
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_Movie)
 
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch AndAlso _OMDbAPI_Movie.IsClientCreated Then
-            If oDBElement.Movie.IMDBSpecified Then
-                nMovie = _OMDbAPI_Movie.GetInfo_Movie(oDBElement.Movie.IMDB, FilteredOptions)
+            If oDBElement.Movie.UniqueIDs.IMDbIdSpecified Then
+                nMovie = _OMDbAPI_Movie.GetInfo_Movie(oDBElement.Movie.UniqueIDs.IMDbId, FilteredOptions)
             Else
                 _Logger.Trace("[OMDb_Data] [Scraper_Movie] [Abort] Need IMDb ID to get data")
                 Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
@@ -477,7 +477,7 @@ Public Class OMDb_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
+    Function GetTMDbIdByIMDbId(ByVal imdbId As String, ByRef tmdbId As Integer) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDbIdByIMDbId
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
