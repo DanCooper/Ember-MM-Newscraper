@@ -189,7 +189,7 @@ Public Class XMLTheme
         <XmlElement("fanartsmall")>
         Public Property FanartSmall As New ImageSettings
         <XmlElement("keyart")>
-        Public Property KeyArt As New ImageSettings
+        Public Property Keyart As New ImageSettings
         <XmlElement("landscape")>
         Public Property Landscape As New ImageSettings
         <XmlElement("poster")>
@@ -540,14 +540,14 @@ Public Class Theming
             frmMain.pnlFanartSmallTop.BackColor = .ImageName.BackColor
             SetControlSettings_ImagePanel(frmMain.lblFanartSmallTitle, .ImageName)
             SetControlSettings_ImagePanel(frmMain.lblFanartSmallSize, .ImageSize)
-            'KeyArt
-            frmMain.pbKeyArt.BackColor = .BackColor
-            frmMain.pnlKeyArt.BackColor = .BackColor
-            frmMain.pnlKeyArtBottom.BackColor = .ImageSize.BackColor
-            frmMain.pnlKeyArtMain.BackColor = .BackColor
-            frmMain.pnlKeyArtTop.BackColor = .ImageName.BackColor
-            SetControlSettings_ImagePanel(frmMain.lblKeyArtTitle, .ImageName)
-            SetControlSettings_ImagePanel(frmMain.lblKeyArtSize, .ImageSize)
+            'Keyart
+            frmMain.pbKeyart.BackColor = .BackColor
+            frmMain.pnlKeyart.BackColor = .BackColor
+            frmMain.pnlKeyartBottom.BackColor = .ImageSize.BackColor
+            frmMain.pnlKeyartMain.BackColor = .BackColor
+            frmMain.pnlKeyartTop.BackColor = .ImageName.BackColor
+            SetControlSettings_ImagePanel(frmMain.lblKeyartTitle, .ImageName)
+            SetControlSettings_ImagePanel(frmMain.lblKeyartSize, .ImageSize)
             'Landscape
             frmMain.pbLandscape.BackColor = .BackColor
             frmMain.pnlLandscape.BackColor = .BackColor
@@ -878,10 +878,10 @@ Public Class Theming
             frmMain.FanartSmallMaxHeight = .FanartSmall.MaxHeight
             frmMain.FanartSmallMaxWidth = .FanartSmall.MaxWidth
             frmMain.pnlFanartSmall.Location = .FanartSmall.Location
-            'KeyArt
-            frmMain.KeyartMaxHeight = .KeyArt.MaxHeight
-            frmMain.KeyartMaxWidth = .KeyArt.MaxWidth
-            frmMain.pnlKeyArt.Location = .KeyArt.Location
+            'Keyart
+            frmMain.KeyartMaxHeight = .Keyart.MaxHeight
+            frmMain.KeyartMaxWidth = .Keyart.MaxWidth
+            frmMain.pnlKeyart.Location = .Keyart.Location
             'Landscape
             frmMain.LandscapeMaxHeight = .Landscape.MaxHeight
             frmMain.LandscapeMaxWidth = .Landscape.MaxWidth

@@ -83,7 +83,7 @@ Partial Class dlgImgSelect
         Me.pnlImgSelect.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlImgSelect.Location = New System.Drawing.Point(0, 0)
         Me.pnlImgSelect.Name = "pnlImgSelect"
-        Me.pnlImgSelect.Size = New System.Drawing.Size(1534, 774)
+        Me.pnlImgSelect.Size = New System.Drawing.Size(1704, 774)
         Me.pnlImgSelect.TabIndex = 3
         '
         'pnlImgSelectMain
@@ -92,7 +92,7 @@ Partial Class dlgImgSelect
         Me.pnlImgSelectMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlImgSelectMain.Location = New System.Drawing.Point(211, 200)
         Me.pnlImgSelectMain.Name = "pnlImgSelectMain"
-        Me.pnlImgSelectMain.Size = New System.Drawing.Size(1323, 545)
+        Me.pnlImgSelectMain.Size = New System.Drawing.Size(1493, 545)
         Me.pnlImgSelectMain.TabIndex = 3
         '
         'pnlTopImages
@@ -102,7 +102,7 @@ Partial Class dlgImgSelect
         Me.pnlTopImages.Location = New System.Drawing.Point(211, 0)
         Me.pnlTopImages.Margin = New System.Windows.Forms.Padding(0, 3, 3, 3)
         Me.pnlTopImages.Name = "pnlTopImages"
-        Me.pnlTopImages.Size = New System.Drawing.Size(1323, 200)
+        Me.pnlTopImages.Size = New System.Drawing.Size(1493, 200)
         Me.pnlTopImages.TabIndex = 3
         '
         'pnlImgSelectBottom
@@ -112,7 +112,7 @@ Partial Class dlgImgSelect
         Me.pnlImgSelectBottom.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlImgSelectBottom.Location = New System.Drawing.Point(211, 745)
         Me.pnlImgSelectBottom.Name = "pnlImgSelectBottom"
-        Me.pnlImgSelectBottom.Size = New System.Drawing.Size(1323, 29)
+        Me.pnlImgSelectBottom.Size = New System.Drawing.Size(1493, 29)
         Me.pnlImgSelectBottom.TabIndex = 1
         '
         'tblImgSelectBottom
@@ -131,13 +131,13 @@ Partial Class dlgImgSelect
         Me.tblImgSelectBottom.Name = "tblImgSelectBottom"
         Me.tblImgSelectBottom.RowCount = 1
         Me.tblImgSelectBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblImgSelectBottom.Size = New System.Drawing.Size(1323, 29)
+        Me.tblImgSelectBottom.Size = New System.Drawing.Size(1493, 29)
         Me.tblImgSelectBottom.TabIndex = 0
         '
         'btnOK
         '
         Me.btnOK.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnOK.Location = New System.Drawing.Point(1164, 3)
+        Me.btnOK.Location = New System.Drawing.Point(1334, 3)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 0
@@ -148,7 +148,7 @@ Partial Class dlgImgSelect
         '
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(1245, 3)
+        Me.btnCancel.Location = New System.Drawing.Point(1415, 3)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 1
@@ -308,7 +308,7 @@ Partial Class dlgImgSelect
         Me.ssImgSelect.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblStatus, Me.pbStatus})
         Me.ssImgSelect.Location = New System.Drawing.Point(0, 774)
         Me.ssImgSelect.Name = "ssImgSelect"
-        Me.ssImgSelect.Size = New System.Drawing.Size(1534, 22)
+        Me.ssImgSelect.Size = New System.Drawing.Size(1704, 22)
         Me.ssImgSelect.TabIndex = 4
         Me.ssImgSelect.Text = "StatusStrip1"
         '
@@ -338,9 +338,9 @@ Partial Class dlgImgSelect
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlLoading.Controls.Add(Me.pbLoading)
         Me.pnlLoading.Controls.Add(Me.lblLoading)
-        Me.pnlLoading.Location = New System.Drawing.Point(595, 368)
+        Me.pnlLoading.Location = New System.Drawing.Point(700, 370)
         Me.pnlLoading.Name = "pnlLoading"
-        Me.pnlLoading.Size = New System.Drawing.Size(281, 83)
+        Me.pnlLoading.Size = New System.Drawing.Size(280, 83)
         Me.pnlLoading.TabIndex = 0
         Me.pnlLoading.Visible = False
         '
@@ -456,7 +456,7 @@ Partial Class dlgImgSelect
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(1534, 796)
+        Me.ClientSize = New System.Drawing.Size(1704, 796)
         Me.Controls.Add(Me.pnlLoading)
         Me.Controls.Add(Me.pnlImgSelect)
         Me.Controls.Add(Me.ssImgSelect)

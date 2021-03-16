@@ -91,6 +91,7 @@ Partial Class dlgEdit_Movie
         Me.lblMPAADesc = New System.Windows.Forms.Label()
         Me.txtMPAADescription = New System.Windows.Forms.TextBox()
         Me.txtMPAA = New EmberAPI.FormUtils.TextBox_with_Watermark()
+        Me.lblOutlineCharacterCount = New System.Windows.Forms.Label()
         Me.tpDetails2 = New System.Windows.Forms.TabPage()
         Me.tblDetails2 = New System.Windows.Forms.TableLayoutPanel()
         Me.lblDateAdded = New System.Windows.Forms.Label()
@@ -269,7 +270,7 @@ Partial Class dlgEdit_Movie
         Me.btnDLClearArt = New System.Windows.Forms.Button()
         Me.btnRemoveClearArt = New System.Windows.Forms.Button()
         Me.btnClipboardClearArt = New System.Windows.Forms.Button()
-        Me.pnlKeyArt = New System.Windows.Forms.Panel()
+        Me.pnlKeyart = New System.Windows.Forms.Panel()
         Me.tblKeyart = New System.Windows.Forms.TableLayoutPanel()
         Me.pbKeyart = New System.Windows.Forms.PictureBox()
         Me.lblKeyart = New System.Windows.Forms.Label()
@@ -356,7 +357,7 @@ Partial Class dlgEdit_Movie
         Me.pnlClearArt.SuspendLayout()
         Me.tblClearArt.SuspendLayout()
         CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlKeyArt.SuspendLayout()
+        Me.pnlKeyart.SuspendLayout()
         Me.tblKeyart.SuspendLayout()
         CType(Me.pbKeyart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlImagesRight.SuspendLayout()
@@ -633,6 +634,7 @@ Partial Class dlgEdit_Movie
         Me.tblDetails.Controls.Add(Me.lblMPAADesc, 6, 8)
         Me.tblDetails.Controls.Add(Me.txtMPAADescription, 6, 9)
         Me.tblDetails.Controls.Add(Me.txtMPAA, 4, 10)
+        Me.tblDetails.Controls.Add(Me.lblOutlineCharacterCount, 0, 7)
         Me.tblDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblDetails.Location = New System.Drawing.Point(3, 3)
         Me.tblDetails.Name = "tblDetails"
@@ -1049,6 +1051,16 @@ Partial Class dlgEdit_Movie
         Me.txtMPAA.TabIndex = 60
         Me.txtMPAA.WatermarkColor = System.Drawing.Color.Gray
         Me.txtMPAA.WatermarkText = "MPAA Rating + Description"
+        '
+        'lblOutlineCharacterCount
+        '
+        Me.lblOutlineCharacterCount.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblOutlineCharacterCount.AutoSize = True
+        Me.lblOutlineCharacterCount.Location = New System.Drawing.Point(41, 253)
+        Me.lblOutlineCharacterCount.Name = "lblOutlineCharacterCount"
+        Me.lblOutlineCharacterCount.Size = New System.Drawing.Size(40, 13)
+        Me.lblOutlineCharacterCount.TabIndex = 61
+        Me.lblOutlineCharacterCount.Text = "( ### )"
         '
         'tpDetails2
         '
@@ -2109,7 +2121,7 @@ Partial Class dlgEdit_Movie
         Me.tblImages.Controls.Add(Me.pnlLandscape, 2, 1)
         Me.tblImages.Controls.Add(Me.pnlBanner, 0, 2)
         Me.tblImages.Controls.Add(Me.pnlClearArt, 1, 1)
-        Me.tblImages.Controls.Add(Me.pnlKeyArt, 1, 0)
+        Me.tblImages.Controls.Add(Me.pnlKeyart, 1, 0)
         Me.tblImages.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblImages.Location = New System.Drawing.Point(3, 3)
         Me.tblImages.Name = "tblImages"
@@ -3319,16 +3331,16 @@ Partial Class dlgEdit_Movie
         Me.btnClipboardClearArt.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnClipboardClearArt.UseVisualStyleBackColor = True
         '
-        'pnlKeyArt
+        'pnlKeyart
         '
-        Me.pnlKeyArt.AutoSize = True
-        Me.pnlKeyArt.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.pnlKeyArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlKeyArt.Controls.Add(Me.tblKeyart)
-        Me.pnlKeyArt.Location = New System.Drawing.Point(273, 3)
-        Me.pnlKeyArt.Name = "pnlKeyArt"
-        Me.pnlKeyArt.Size = New System.Drawing.Size(264, 221)
-        Me.pnlKeyArt.TabIndex = 0
+        Me.pnlKeyart.AutoSize = True
+        Me.pnlKeyart.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.pnlKeyart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlKeyart.Controls.Add(Me.tblKeyart)
+        Me.pnlKeyart.Location = New System.Drawing.Point(273, 3)
+        Me.pnlKeyart.Name = "pnlKeyart"
+        Me.pnlKeyart.Size = New System.Drawing.Size(264, 221)
+        Me.pnlKeyart.TabIndex = 0
         '
         'tblKeyart
         '
@@ -3852,8 +3864,8 @@ Partial Class dlgEdit_Movie
         Me.tblClearArt.ResumeLayout(False)
         Me.tblClearArt.PerformLayout()
         CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pnlKeyArt.ResumeLayout(False)
-        Me.pnlKeyArt.PerformLayout()
+        Me.pnlKeyart.ResumeLayout(False)
+        Me.pnlKeyart.PerformLayout()
         Me.tblKeyart.ResumeLayout(False)
         Me.tblKeyart.PerformLayout()
         CType(Me.pbKeyart, System.ComponentModel.ISupportInitialize).EndInit()
@@ -4075,7 +4087,7 @@ Partial Class dlgEdit_Movie
     Friend WithEvents btnClipboardClearArt As Button
     Friend WithEvents btnClipboardExtrafanarts As Button
     Friend WithEvents btnClipboardExtrathumbs As Button
-    Friend WithEvents pnlKeyArt As Panel
+    Friend WithEvents pnlKeyart As Panel
     Friend WithEvents tblKeyart As TableLayoutPanel
     Friend WithEvents pbKeyart As PictureBox
     Friend WithEvents lblKeyart As Label
@@ -4144,4 +4156,5 @@ Partial Class dlgEdit_Movie
     Friend WithEvents colUniqueIdsType As DataGridViewTextBoxColumn
     Friend WithEvents colUniqueIdsValue As DataGridViewTextBoxColumn
     Friend WithEvents cbVideoSource As ComboBox
+    Friend WithEvents lblOutlineCharacterCount As Label
 End Class

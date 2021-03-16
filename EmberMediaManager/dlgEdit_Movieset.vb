@@ -281,7 +281,7 @@ Public Class dlgEdit_Movieset
                     pnlFanart.Visible = False
                 End If
 
-                'KeyArt
+                'Keyart
                 If Master.eSettings.MovieSetKeyartAnyEnabled Then
                     btnScrapeKeyart.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainKeyart)
                     If .Keyart.ImageOriginal.Image IsNot Nothing Then

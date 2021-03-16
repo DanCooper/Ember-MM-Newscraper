@@ -4748,7 +4748,7 @@ Public Class Database
         If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "poster", _moviesetDB.ImagesContainer.Poster.LocalFilePath)
 
         'UniqueIDs
-        SetUniqueIDsForItem(_moviesetDB.ID, _moviesetDB.ContentType, _moviesetDB.Movie.UniqueIDs)
+        SetUniqueIDsForItem(_moviesetDB.ID, _moviesetDB.ContentType, _moviesetDB.MovieSet.UniqueIDs)
 
         'save set informations to movies
         For Each tMovie In _moviesetDB.MoviesInSet
@@ -5718,7 +5718,7 @@ Public Class Database
                     'first check if a movieset with the same TMDBColID is already existing
                     If entry.UniqueIDs.TMDbIdSpecified Then
                         Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            sqlCommand.CommandText = String.Format("SELECT sets.idSet, sets.SetName, sets.Plot FROM uniqueid INNER JOIN sets ON (uniqueid.idMedia = sets.idSet) WHERE uniqueid.media_type = 'movieset' AND uniqueid.type = 'tmdb' AND uniqueid.value = '{0}'", entry.UniqueIDs.TMDbId)
+                            sqlCommand.CommandText = String.Format("SELECT sets.idSet, sets.SetName, sets.Plot FROM uniqueid INNER JOIN sets ON (uniqueid.media_id = sets.idSet) WHERE uniqueid.media_type = 'movieset' AND uniqueid.type = 'tmdb' AND uniqueid.value = '{0}'", entry.UniqueIDs.TMDbId)
                             Using sqlReader As SQLiteDataReader = sqlCommand.ExecuteReader()
                                 If sqlReader.HasRows Then
                                     sqlReader.Read()
@@ -6108,186 +6108,81 @@ Public Class Database
 
 #Region "Fields"
 
-        Private _actorthumbs As New List(Of String)
-        Private _contenttype As Enums.ContentType
-        Private _episodes As New List(Of DBElement)
-        Private _episodesorting As Enums.EpisodeSorting
-        Private _extrafanartspath As String
-        Private _extrathumbspath As String
-        Private _filename As String
-        Private _filenameid As Long
-        Private _id As Long
-        Private _imagescontainer As New MediaContainers.ImagesContainer
         Private _islock As Boolean
-        Private _ismark As Boolean
-        Private _ismarkcustom1 As Boolean
-        Private _ismarkcustom2 As Boolean
-        Private _ismarkcustom3 As Boolean
-        Private _ismarkcustom4 As Boolean
-        Private _isonline As Boolean
-        Private _issingle As Boolean
-        Private _language As String
-        Private _listtitle As String
-        Private _movie As MediaContainers.Movie
-        Private _movieset As MediaContainers.Movieset
-        Private _moviesinset As List(Of MediaContainers.MovieInSet)
-        Private _nfopath As String
-        Private _ordering As Enums.EpisodeOrdering
-        Private _outoftolerance As Boolean
-        Private _seasons As New List(Of DBElement)
-        Private _showid As Long
-        Private _showpath As String
-        Private _sortmethod As Enums.SortMethod_MovieSet
-        Private _source As New DBSource
-        Private _subtitles As New List(Of MediaContainers.Subtitle)
-        Private _theme As New MediaContainers.MediaFile
-        Private _trailer As New MediaContainers.MediaFile
-        Private _tvepisode As MediaContainers.EpisodeDetails
-        Private _tvseason As MediaContainers.SeasonDetails
-        Private _tvshow As MediaContainers.TVShow
-        Private _videosource As String
 
 #End Region 'Fields
 
 #Region "Constructors"
 
-        Public Sub New(ByVal ContentType As Enums.ContentType)
-            Clear()
-            _contenttype = ContentType
+        Public Sub New(ByVal type As Enums.ContentType)
+            ContentType = type
         End Sub
 
 #End Region 'Constructors
 
 #Region "Properties"
 
-        Public Property ActorThumbs() As List(Of String)
-            Get
-                Return _actorthumbs
-            End Get
-            Set(ByVal value As List(Of String))
-                _actorthumbs = value
-            End Set
-        End Property
+        Public Property ActorThumbs() As New List(Of String)
 
         Public ReadOnly Property ActorThumbsSpecified() As Boolean
             Get
-                Return _actorthumbs.Count > 0
+                Return ActorThumbs.Count > 0
             End Get
         End Property
 
         Public ReadOnly Property ContentType() As Enums.ContentType
-            Get
-                Return _contenttype
-            End Get
-        End Property
 
-        Public Property Episodes() As List(Of DBElement)
-            Get
-                Return _episodes
-            End Get
-            Set(ByVal value As List(Of DBElement))
-                _episodes = value
-            End Set
-        End Property
+        Public Property Episodes() As New List(Of DBElement)
 
         Public ReadOnly Property EpisodesSpecified() As Boolean
             Get
-                Return _episodes.Count > 0
+                Return Episodes.Count > 0
             End Get
         End Property
 
-        Public Property EpisodeSorting() As Enums.EpisodeSorting
-            Get
-                Return _episodesorting
-            End Get
-            Set(ByVal value As Enums.EpisodeSorting)
-                _episodesorting = value
-            End Set
-        End Property
+        Public Property EpisodeSorting() As Enums.EpisodeSorting = Enums.EpisodeSorting.Episode
 
-        Public Property ExtrafanartsPath() As String
-            Get
-                Return _extrafanartspath
-            End Get
-            Set(ByVal value As String)
-                _extrafanartspath = value
-            End Set
-        End Property
+        Public Property ExtrafanartsPath() As String = String.Empty
 
         Public ReadOnly Property ExtrafanartsPathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_extrafanartspath)
+                Return Not String.IsNullOrEmpty(ExtrafanartsPath)
             End Get
         End Property
 
-        Public Property ExtrathumbsPath() As String
-            Get
-                Return _extrathumbspath
-            End Get
-            Set(ByVal value As String)
-                _extrathumbspath = value
-            End Set
-        End Property
+        Public Property ExtrathumbsPath() As String = String.Empty
 
         Public ReadOnly Property ExtrathumbsPathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_extrathumbspath)
+                Return Not String.IsNullOrEmpty(ExtrathumbsPath)
             End Get
         End Property
 
-        Public Property Filename() As String
-            Get
-                Return _filename
-            End Get
-            Set(ByVal value As String)
-                _filename = value
-            End Set
-        End Property
+        Public Property Filename() As String = String.Empty
 
         Public ReadOnly Property FilenameSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_filename)
+                Return Not String.IsNullOrEmpty(Filename)
             End Get
         End Property
 
-        Public Property FilenameID() As Long
-            Get
-                Return _filenameid
-            End Get
-            Set(ByVal value As Long)
-                _filenameid = value
-            End Set
-        End Property
+        Public Property FilenameID() As Long = -1
 
         Public ReadOnly Property FilenameIDSpecified() As Boolean
             Get
-                Return Not _filenameid = -1
+                Return Not FilenameID = -1
             End Get
         End Property
 
-        Public Property ID() As Long
-            Get
-                Return _id
-            End Get
-            Set(ByVal value As Long)
-                _id = value
-            End Set
-        End Property
+        Public Property ID() As Long = -1
 
         Public ReadOnly Property IDSpecified() As Boolean
             Get
-                Return Not _id = -1
+                Return Not ID = -1
             End Get
         End Property
 
-        Public Property ImagesContainer() As MediaContainers.ImagesContainer
-            Get
-                Return _imagescontainer
-            End Get
-            Set(ByVal value As MediaContainers.ImagesContainer)
-                _imagescontainer = value
-            End Set
-        End Property
+        Public Property ImagesContainer() As New MediaContainers.ImagesContainer
 
         Public Property IsLock() As Boolean
             Get
@@ -6297,409 +6192,184 @@ Public Class Database
                 _islock = value
                 Select Case _contenttype
                     Case Enums.ContentType.Movie
-                        If _movie IsNot Nothing Then _movie.Locked = value
+                        If Movie IsNot Nothing Then Movie.Locked = value
                     Case Enums.ContentType.MovieSet
-                        If _movieset IsNot Nothing Then _movieset.Locked = value
+                        If MovieSet IsNot Nothing Then MovieSet.Locked = value
                     Case Enums.ContentType.TVEpisode
-                        If _tvepisode IsNot Nothing Then _tvepisode.Locked = value
+                        If TVEpisode IsNot Nothing Then TVEpisode.Locked = value
                     Case Enums.ContentType.TVSeason
-                        If _tvseason IsNot Nothing Then _tvseason.Locked = value
+                        If TVSeason IsNot Nothing Then TVSeason.Locked = value
                     Case Enums.ContentType.TVShow
-                        If _tvshow IsNot Nothing Then _tvshow.Locked = value
+                        If TVShow IsNot Nothing Then TVShow.Locked = value
                 End Select
             End Set
         End Property
 
-        Public Property IsMark() As Boolean
-            Get
-                Return _ismark
-            End Get
-            Set(ByVal value As Boolean)
-                _ismark = value
-            End Set
-        End Property
+        Public Property IsMark() As Boolean = False
 
-        Public Property IsMarkCustom1() As Boolean
-            Get
-                Return _ismarkcustom1
-            End Get
-            Set(ByVal value As Boolean)
-                _ismarkcustom1 = value
-            End Set
-        End Property
+        Public Property IsMarkCustom1() As Boolean = False
 
-        Public Property IsMarkCustom2() As Boolean
-            Get
-                Return _ismarkcustom2
-            End Get
-            Set(ByVal value As Boolean)
-                _ismarkcustom2 = value
-            End Set
-        End Property
+        Public Property IsMarkCustom2() As Boolean = False
 
-        Public Property IsMarkCustom3() As Boolean
-            Get
-                Return _ismarkcustom3
-            End Get
-            Set(ByVal value As Boolean)
-                _ismarkcustom3 = value
-            End Set
-        End Property
+        Public Property IsMarkCustom3() As Boolean = False
 
-        Public Property IsMarkCustom4() As Boolean
-            Get
-                Return _ismarkcustom4
-            End Get
-            Set(ByVal value As Boolean)
-                _ismarkcustom4 = value
-            End Set
-        End Property
+        Public Property IsMarkCustom4() As Boolean = False
 
-        Public Property IsOnline() As Boolean
-            Get
-                Return _isonline
-            End Get
-            Set(ByVal value As Boolean)
-                _isonline = value
-            End Set
-        End Property
+        Public Property IsOnline() As Boolean = False
 
-        Public Property IsSingle() As Boolean
-            Get
-                Return _issingle
-            End Get
-            Set(ByVal value As Boolean)
-                _issingle = value
-            End Set
-        End Property
+        Public Property IsSingle() As Boolean = False
 
-        Public Property Language() As String
-            Get
-                Return _language
-            End Get
-            Set(ByVal value As String)
-                _language = value
-            End Set
-        End Property
+        Public Property Language() As String = String.Empty
 
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_language)
+                Return Not String.IsNullOrEmpty(Language)
             End Get
         End Property
 
         Public ReadOnly Property Language_Main() As String
             Get
-                Return Regex.Replace(_language, "-.*", String.Empty).Trim
+                Return Regex.Replace(Language, "-.*", String.Empty).Trim
             End Get
         End Property
 
-        Public Property ListTitle() As String
-            Get
-                Return _listtitle
-            End Get
-            Set(ByVal value As String)
-                _listtitle = value
-            End Set
-        End Property
+        Public Property ListTitle() As String = String.Empty
 
         Public ReadOnly Property ListTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_listtitle)
+                Return Not String.IsNullOrEmpty(ListTitle)
             End Get
         End Property
 
-        Public Property Movie() As MediaContainers.Movie
-            Get
-                Return _movie
-            End Get
-            Set(ByVal value As MediaContainers.Movie)
-                _movie = value
-            End Set
-        End Property
+        Public Property Movie() As MediaContainers.Movie = Nothing
 
         Public ReadOnly Property MovieSpecified() As Boolean
             Get
-                Return _movie IsNot Nothing
+                Return Movie IsNot Nothing
             End Get
         End Property
 
-        Public Property MoviesInSet() As List(Of MediaContainers.MovieInSet)
-            Get
-                Return _moviesinset
-            End Get
-            Set(ByVal value As List(Of MediaContainers.MovieInSet))
-                _moviesinset = value
-            End Set
-        End Property
+        Public Property MoviesInSet() As New List(Of MediaContainers.MovieInSet)
 
         Public ReadOnly Property MoviesInSetSpecified() As Boolean
             Get
-                Return _moviesinset.Count > 0
+                Return MoviesInSet.Count > 0
             End Get
         End Property
 
-        Public Property MovieSet() As MediaContainers.Movieset
-            Get
-                Return _movieset
-            End Get
-            Set(ByVal value As MediaContainers.Movieset)
-                _movieset = value
-            End Set
-        End Property
+        Public Property MovieSet() As MediaContainers.Movieset = Nothing
 
         Public ReadOnly Property MovieSetSpecified() As Boolean
             Get
-                Return _movieset IsNot Nothing
+                Return MovieSet IsNot Nothing
             End Get
         End Property
 
-        Public Property NfoPath() As String
-            Get
-                Return _nfopath
-            End Get
-            Set(ByVal value As String)
-                _nfopath = value
-            End Set
-        End Property
+        Public Property NfoPath() As String = String.Empty
 
         Public ReadOnly Property NfoPathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_nfopath)
+                Return Not String.IsNullOrEmpty(NfoPath)
             End Get
         End Property
 
-        Public Property Ordering() As Enums.EpisodeOrdering
-            Get
-                Return _ordering
-            End Get
-            Set(ByVal value As Enums.EpisodeOrdering)
-                _ordering = value
-            End Set
-        End Property
+        Public Property Ordering() As Enums.EpisodeOrdering = Enums.EpisodeOrdering.Standard
 
-        Public Property OutOfTolerance() As Boolean
-            Get
-                Return _outoftolerance
-            End Get
-            Set(ByVal value As Boolean)
-                _outoftolerance = value
-            End Set
-        End Property
+        Public Property OutOfTolerance() As Boolean = False
 
-        Public Property Seasons() As List(Of DBElement)
-            Get
-                Return _seasons
-            End Get
-            Set(ByVal value As List(Of DBElement))
-                _seasons = value
-            End Set
-        End Property
+        Public Property Seasons() As New List(Of DBElement)
 
         Public ReadOnly Property SeasonsSpecified() As Boolean
             Get
-                Return _seasons.Count > 0
+                Return Seasons.Count > 0
             End Get
         End Property
 
-        Public Property ShowID() As Long
-            Get
-                Return _showid
-            End Get
-            Set(ByVal value As Long)
-                _showid = value
-            End Set
-        End Property
+        Public Property ShowID() As Long = -1
 
         Public ReadOnly Property ShowIDSpecified() As Boolean
             Get
-                Return Not _showid = -1
+                Return Not ShowID = -1
             End Get
         End Property
 
-        Public Property ShowPath() As String
-            Get
-                Return _showpath
-            End Get
-            Set(ByVal value As String)
-                _showpath = value
-            End Set
-        End Property
+        Public Property ShowPath() As String = String.Empty
 
         Public ReadOnly Property ShowPathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_showpath)
+                Return Not String.IsNullOrEmpty(ShowPath)
             End Get
         End Property
 
-        Public Property SortMethod() As Enums.SortMethod_MovieSet
-            Get
-                Return _sortmethod
-            End Get
-            Set(ByVal value As Enums.SortMethod_MovieSet)
-                _sortmethod = value
-            End Set
-        End Property
+        Public Property SortMethod() As Enums.SortMethod_MovieSet = Enums.SortMethod_MovieSet.Year
 
-        Public Property Source() As DBSource
-            Get
-                Return _source
-            End Get
-            Set(ByVal value As DBSource)
-                _source = value
-            End Set
-        End Property
+        Public Property Source() As New DBSource
 
         Public ReadOnly Property SourceSpecified() As Boolean
             Get
-                Return Not _source.ID = -1
+                Return Not Source.ID = -1
             End Get
         End Property
 
-        Public Property Subtitles() As List(Of MediaContainers.Subtitle)
-            Get
-                Return _subtitles
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Subtitle))
-                _subtitles = value
-            End Set
-        End Property
+        Public Property Subtitles() As New List(Of MediaContainers.Subtitle)
 
         Public ReadOnly Property SubtitlesSpecified() As Boolean
             Get
-                Return _subtitles.Count > 0
+                Return Subtitles.Count > 0
             End Get
         End Property
 
-        Public Property Theme() As MediaContainers.MediaFile
-            Get
-                Return _theme
-            End Get
-            Set(ByVal value As MediaContainers.MediaFile)
-                _theme = value
-            End Set
-        End Property
+        Public Property Theme() As New MediaContainers.MediaFile
 
         Public ReadOnly Property ThemeSpecified() As Boolean
             Get
-                Return _theme.FileOriginal IsNot Nothing AndAlso _theme.FileOriginal.HasMemoryStream
+                Return Theme.FileOriginal IsNot Nothing AndAlso Theme.FileOriginal.HasMemoryStream
             End Get
         End Property
 
-        Public Property Trailer() As MediaContainers.MediaFile
-            Get
-                Return _trailer
-            End Get
-            Set(ByVal value As MediaContainers.MediaFile)
-                _trailer = value
-            End Set
-        End Property
+        Public Property Trailer() As New MediaContainers.MediaFile
 
         Public ReadOnly Property TrailerSpecified() As Boolean
             Get
-                Return _trailer.FileOriginal IsNot Nothing AndAlso _trailer.FileOriginal.HasMemoryStream
+                Return Trailer.FileOriginal IsNot Nothing AndAlso Trailer.FileOriginal.HasMemoryStream
             End Get
         End Property
 
-        Public Property TVEpisode() As MediaContainers.EpisodeDetails
-            Get
-                Return _tvepisode
-            End Get
-            Set(ByVal value As MediaContainers.EpisodeDetails)
-                _tvepisode = value
-            End Set
-        End Property
+        Public Property TVEpisode() As MediaContainers.EpisodeDetails = Nothing
 
         Public ReadOnly Property TVEpisodeSpecified() As Boolean
             Get
-                Return _tvepisode IsNot Nothing
+                Return TVEpisode IsNot Nothing
             End Get
         End Property
 
-        Public Property TVSeason() As MediaContainers.SeasonDetails
-            Get
-                Return _tvseason
-            End Get
-            Set(ByVal value As MediaContainers.SeasonDetails)
-                _tvseason = value
-            End Set
-        End Property
+        Public Property TVSeason() As MediaContainers.SeasonDetails = Nothing
 
         Public ReadOnly Property TVSeasonSpecified() As Boolean
             Get
-                Return _tvseason IsNot Nothing
+                Return TVSeason IsNot Nothing
             End Get
         End Property
 
-        Public Property TVShow() As MediaContainers.TVShow
-            Get
-                Return _tvshow
-            End Get
-            Set(ByVal value As MediaContainers.TVShow)
-                _tvshow = value
-            End Set
-        End Property
+        Public Property TVShow() As MediaContainers.TVShow = Nothing
 
         Public ReadOnly Property TVShowSpecified() As Boolean
             Get
-                Return _tvshow IsNot Nothing
+                Return TVShow IsNot Nothing
             End Get
         End Property
 
-        Public Property VideoSource() As String
-            Get
-                Return _videosource
-            End Get
-            Set(ByVal value As String)
-                _videosource = value
-            End Set
-        End Property
+        Public Property VideoSource() As String = String.Empty
 
         Public ReadOnly Property VideoSourceSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_videosource)
+                Return Not String.IsNullOrEmpty(VideoSource)
             End Get
         End Property
 
 #End Region 'Properties
 
 #Region "Methods"
-
-        Public Sub Clear()
-            _actorthumbs = New List(Of String)
-            _episodes = New List(Of DBElement)
-            _episodesorting = Enums.EpisodeSorting.Episode
-            _extrafanartspath = String.Empty
-            _extrathumbspath = String.Empty
-            _filename = String.Empty
-            _filenameid = -1
-            _id = -1
-            _imagescontainer = New MediaContainers.ImagesContainer
-            _islock = False
-            _ismark = False
-            _isonline = False
-            _issingle = False
-            _language = String.Empty
-            _listtitle = String.Empty
-            _movie = Nothing
-            _movieset = Nothing
-            _moviesinset = New List(Of MediaContainers.MovieInSet)
-            _nfopath = String.Empty
-            _ordering = Enums.EpisodeOrdering.Standard
-            _outoftolerance = False
-            _seasons = New List(Of DBElement)
-            _showid = -1
-            _showpath = String.Empty
-            _sortmethod = Enums.SortMethod_MovieSet.Year
-            _source = New DBSource
-            _subtitles = New List(Of MediaContainers.Subtitle)
-            _theme = New MediaContainers.MediaFile
-            _trailer = New MediaContainers.MediaFile
-            _tvepisode = Nothing
-            _tvseason = Nothing
-            _tvshow = Nothing
-            _videosource = String.Empty
-        End Sub
 
         Public Function CloneDeep() As Object Implements ICloneable.Clone
             Dim Stream As New MemoryStream(50000)
@@ -6724,191 +6394,63 @@ Public Class Database
     <Serializable()>
     Public Class DBSource
 
-#Region "Fields"
-
-        Private _episodesorting As Enums.EpisodeSorting
-        Private _exclude As Boolean
-        Private _getyear As Boolean
-        Private _id As Long
-        Private _issingle As Boolean
-        Private _language As String
-        Private _lastscan As String
-        Private _name As String
-        Private _ordering As Enums.EpisodeOrdering
-        Private _path As String
-        Private _recursive As Boolean
-        Private _usefoldername As Boolean
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property EpisodeSorting() As Enums.EpisodeSorting
-            Get
-                Return _episodesorting
-            End Get
-            Set(ByVal value As Enums.EpisodeSorting)
-                _episodesorting = value
-            End Set
-        End Property
+        Public Property EpisodeSorting() As Enums.EpisodeSorting = Enums.EpisodeSorting.Episode
 
-        Public Property Exclude() As Boolean
-            Get
-                Return _exclude
-            End Get
-            Set(ByVal value As Boolean)
-                _exclude = value
-            End Set
-        End Property
+        Public Property Exclude() As Boolean = False
 
-        Public Property GetYear() As Boolean
-            Get
-                Return _getyear
-            End Get
-            Set(ByVal value As Boolean)
-                _getyear = value
-            End Set
-        End Property
+        Public Property GetYear() As Boolean = False
 
-        Public Property ID() As Long
-            Get
-                Return _id
-            End Get
-            Set(ByVal value As Long)
-                _id = value
-            End Set
-        End Property
+        Public Property ID() As Long = -1
 
         Public ReadOnly Property IDSpecified() As Boolean
             Get
-                Return Not _id = -1
+                Return Not ID = -1
             End Get
         End Property
 
-        Public Property IsSingle() As Boolean
-            Get
-                Return _issingle
-            End Get
-            Set(ByVal value As Boolean)
-                _issingle = value
-            End Set
-        End Property
+        Public Property IsSingle() As Boolean = False
 
-        Public Property Language() As String
-            Get
-                Return _language
-            End Get
-            Set(ByVal value As String)
-                _language = value
-            End Set
-        End Property
+        Public Property Language() As String = String.Empty
 
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_language)
+                Return Not String.IsNullOrEmpty(Language)
             End Get
         End Property
 
-        Public Property LastScan() As String
-            Get
-                Return _lastscan
-            End Get
-            Set(ByVal value As String)
-                _lastscan = value
-            End Set
-        End Property
+        Public Property LastScan() As String = String.Empty
 
         Public ReadOnly Property LastScanSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_lastscan)
+                Return Not String.IsNullOrEmpty(LastScan)
             End Get
         End Property
 
-        Public Property Name() As String
-            Get
-                Return _name
-            End Get
-            Set(ByVal value As String)
-                _name = value
-            End Set
-        End Property
+        Public Property Name() As String = String.Empty
 
         Public ReadOnly Property NameSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_name)
+                Return Not String.IsNullOrEmpty(Name)
             End Get
         End Property
 
-        Public Property Ordering() As Enums.EpisodeOrdering
-            Get
-                Return _ordering
-            End Get
-            Set(ByVal value As Enums.EpisodeOrdering)
-                _ordering = value
-            End Set
-        End Property
+        Public Property Ordering() As Enums.EpisodeOrdering = Enums.EpisodeOrdering.Standard
 
-        Public Property Path() As String
-            Get
-                Return _path
-            End Get
-            Set(ByVal value As String)
-                _path = value
-            End Set
-        End Property
+        Public Property Path() As String = String.Empty
 
         Public ReadOnly Property PathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_path)
+                Return Not String.IsNullOrEmpty(Path)
             End Get
         End Property
 
-        Public Property Recursive() As Boolean
-            Get
-                Return _recursive
-            End Get
-            Set(ByVal value As Boolean)
-                _recursive = value
-            End Set
-        End Property
+        Public Property Recursive() As Boolean = False
 
-        Public Property UseFolderName() As Boolean
-            Get
-                Return _usefoldername
-            End Get
-            Set(ByVal value As Boolean)
-                _usefoldername = value
-            End Set
-        End Property
+        Public Property UseFolderName() As Boolean = False
 
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _episodesorting = Enums.EpisodeSorting.Episode
-            _exclude = False
-            _getyear = False
-            _id = -1
-            _issingle = False
-            _language = String.Empty
-            _lastscan = String.Empty
-            _name = String.Empty
-            _ordering = Enums.EpisodeOrdering.Standard
-            _path = String.Empty
-            _recursive = False
-            _usefoldername = False
-        End Sub
-
-#End Region 'Methods
+#End Region 'Properties 
 
     End Class
 

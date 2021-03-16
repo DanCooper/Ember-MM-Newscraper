@@ -305,11 +305,11 @@ Public Class frmMain
         pnlFanartSmall.Visible = False
         MainFanart.Clear()
 
-        If pbKeyArt.Image IsNot Nothing Then
-            pbKeyArt.Image.Dispose()
-            pbKeyArt.Image = Nothing
+        If pbKeyart.Image IsNot Nothing Then
+            pbKeyart.Image.Dispose()
+            pbKeyart.Image = Nothing
         End If
-        pnlKeyArt.Visible = False
+        pnlKeyart.Visible = False
         MainKeyart.Clear()
 
         If pbLandscape.Image IsNot Nothing Then
@@ -9619,7 +9619,7 @@ Public Class frmMain
         End If
 
         'Keyart
-        If MainKeyArt.Image IsNot Nothing OrElse MainKeyArt.LoadFromMemoryStream Then
+        If MainKeyart.Image IsNot Nothing OrElse MainKeyart.LoadFromMemoryStream Then
             lblKeyartSize.Text = String.Format("{0} x {1}", MainKeyart.Image.Width, MainKeyart.Image.Height)
             pbKeyartCache.Image = MainKeyart.Image
             ImageUtils.ResizePB(pbKeyart, pbKeyartCache, KeyartMaxHeight, KeyartMaxWidth)
@@ -17774,7 +17774,6 @@ Public Class frmMain
         cmnuShowClearCacheDataOnly.Text = Master.eLang.GetString(566, "Data Only")
         cmnuShowClearCacheImagesOnly.Text = Master.eLang.GetString(567, "Images Only")
         cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
-        cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
         cmnuShowReload.Text = Master.eLang.GetString(22, "Reload")
         cmnuShowRemove.Text = Master.eLang.GetString(30, "Remove")
         cmnuShowRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
@@ -17824,6 +17823,7 @@ Public Class frmMain
         lblFilterDataFields_Movies.Text = Master.eLang.GetString(1290, "Data Field")
         lblIMDBHeader.Text = Master.eLang.GetString(61, "IMDB ID")
         lblInfoPanelHeader.Text = Master.eLang.GetString(66, "Info")
+        lblKeyartTitle.Text = Master.eLang.GetString(1237, "Keyart")
         lblLandscapeTitle.Text = Master.eLang.GetString(1035, "Landscape")
         lblLoadSettings.Text = Master.eLang.GetString(484, "Loading Settings...")
         lblMetaDataHeader.Text = Master.eLang.GetString(59, "Meta Data")

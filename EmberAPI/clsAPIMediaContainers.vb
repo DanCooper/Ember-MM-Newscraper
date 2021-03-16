@@ -96,8 +96,6 @@ Namespace MediaContainers
 
 #Region "Fields"
 
-        Private _credits As New List(Of String)
-        Private _directors As New List(Of String)
         Private _rating As String = String.Empty
 
 #End Region 'Fields
@@ -313,18 +311,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("credits")>
-        Public Property Credits() As List(Of String)
-            Get
-                Return _credits
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _credits.Clear()
-                Else
-                    _credits = value
-                End If
-            End Set
-        End Property
+        Public Property Credits() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property CreditsSpecified() As Boolean
@@ -354,18 +341,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("director")>
-        Public Property Directors() As List(Of String)
-            Get
-                Return _directors
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _directors.Clear()
-                Else
-                    _directors = value
-                End If
-            End Set
-        End Property
+        Public Property Directors() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property DirectorsSpecified() As Boolean
@@ -448,46 +424,6 @@ Namespace MediaContainers
 #End Region 'Properties
 
 #Region "Methods"
-
-        Public Sub AddCreditsFromString(ByVal value As String)
-            _credits.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
-                For Each credit As String In values
-                    credit = credit.Trim
-                    If Not _credits.Contains(credit) And Not value = "See more" Then
-                        _credits.Add(credit)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not _credits.Contains(value) And Not value = "See more" Then
-                    _credits.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddDirectorsFromString(ByVal value As String)
-            _directors.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
-                For Each director As String In values
-                    director = director.Trim
-                    If Not _directors.Contains(director) And Not value = "See more" Then
-                        _directors.Add(director)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not _directors.Contains(value) And Not value = "See more" Then
-                    _directors.Add(value.Trim)
-                End If
-            End If
-        End Sub
 
         Public Function CloneDeep() As Object Implements ICloneable.Clone
             Dim Stream As New MemoryStream(50000)
@@ -1080,19 +1016,15 @@ Namespace MediaContainers
         Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
         Private _certifications As New List(Of String)
-        Private _countries As New List(Of String)
-        Private _credits As New List(Of String)
-        Private _directors As New List(Of String)
-        Private _genres As New List(Of String)
         Private _lastplayed As String = String.Empty
         Private _rating As String = String.Empty
         Private _sets As New List(Of SetDetails)
-        Private _studios As New List(Of String)
         Private _tags As New List(Of String)
 
 #End Region 'Fields
 
 #Region "Properties"
+
         <XmlElement("id")>
         Public Property ID() As String
             Get
@@ -1257,18 +1189,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("country")>
-        Public Property Countries() As List(Of String)
-            Get
-                Return _countries
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _countries.Clear()
-                Else
-                    _countries = value
-                End If
-            End Set
-        End Property
+        Public Property Countries() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property CountriesSpecified() As Boolean
@@ -1380,18 +1301,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("genre")>
-        Public Property Genres() As List(Of String)
-            Get
-                Return _genres
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _genres.Clear()
-                Else
-                    _genres = value
-                End If
-            End Set
-        End Property
+        Public Property Genres() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property GenresSpecified() As Boolean
@@ -1401,18 +1311,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("studio")>
-        Public Property Studios() As List(Of String)
-            Get
-                Return _studios
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _studios.Clear()
-                Else
-                    _studios = value
-                End If
-            End Set
-        End Property
+        Public Property Studios() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property StudiosSpecified() As Boolean
@@ -1422,18 +1321,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("director")>
-        Public Property Directors() As List(Of String)
-            Get
-                Return _directors
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _directors.Clear()
-                Else
-                    _directors = value
-                End If
-            End Set
-        End Property
+        Public Property Directors() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property DirectorsSpecified() As Boolean
@@ -1443,18 +1331,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("credits")>
-        Public Property Credits() As List(Of String)
-            Get
-                Return _credits
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _credits.Clear()
-                Else
-                    _credits = value
-                End If
-            End Set
-        End Property
+        Public Property Credits() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property CreditsSpecified() As Boolean
@@ -1777,104 +1654,6 @@ Namespace MediaContainers
             Else
                 If Not _certifications.Contains(value) Then
                     _certifications.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddGenresFromString(ByVal value As String)
-            _genres.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each genre As String In values
-                    genre = genre.Trim
-                    If Not _genres.Contains(genre) Then
-                        _genres.Add(genre)
-                    End If
-                Next
-            Else
-                If Not _genres.Contains(value) Then
-                    _genres.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddStudiosFromString(ByVal value As String)
-            _studios.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each studio As String In values
-                    studio = studio.Trim
-                    If Not _studios.Contains(studio) Then
-                        _studios.Add(studio)
-                    End If
-                Next
-            Else
-                If Not _studios.Contains(value) Then
-                    _studios.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddDirectorsFromString(ByVal value As String)
-            _directors.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each director As String In values
-                    director = director.Trim
-                    If Not _directors.Contains(director) And Not value = "See more" Then
-                        _directors.Add(director)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not _directors.Contains(value) And Not value = "See more" Then
-                    _directors.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddCreditsFromString(ByVal value As String)
-            _credits.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each credit As String In values
-                    credit = credit.Trim
-                    If Not _credits.Contains(credit) And Not value = "See more" Then
-                        _credits.Add(credit)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not _credits.Contains(value) And Not value = "See more" Then
-                    _credits.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddCountriesFromString(ByVal value As String)
-            _countries.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each country As String In values
-                    country = country.Trim
-                    If Not _countries.Contains(country) Then
-                        _countries.Add(country)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not _countries.Contains(value) Then
-                    _countries.Add(value.Trim)
                 End If
             End If
         End Sub
@@ -2469,10 +2248,6 @@ Namespace MediaContainers
 #Region "Fields"
 
         Private _certifications As New List(Of String)
-        Private _countries As New List(Of String)
-        Private _creators As New List(Of String)
-        Private _directors As New List(Of String)
-        Private _genres As New List(Of String)
         Private _rating As String = String.Empty
         Private _tags As New List(Of String)
 
@@ -2646,18 +2421,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("genre")>
-        Public Property Genres() As List(Of String)
-            Get
-                Return _genres
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _genres.Clear()
-                Else
-                    _genres = value
-                End If
-            End Set
-        End Property
+        Public Property Genres() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property GenresSpecified() As Boolean
@@ -2667,18 +2431,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("director")>
-        Public Property Directors() As List(Of String)
-            Get
-                Return _directors
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _directors.Clear()
-                Else
-                    _directors = value
-                End If
-            End Set
-        End Property
+        Public Property Directors() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property DirectorsSpecified() As Boolean
@@ -2719,18 +2472,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("country")>
-        Public Property Countries() As List(Of String)
-            Get
-                Return _countries
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _countries.Clear()
-                Else
-                    _countries = value
-                End If
-            End Set
-        End Property
+        Public Property Countries() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property CountriesSpecified() As Boolean
@@ -2831,18 +2573,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("creator")>
-        Public Property Creators() As List(Of String)
-            Get
-                Return _creators
-            End Get
-            Set(ByVal value As List(Of String))
-                If value Is Nothing Then
-                    _creators.Clear()
-                Else
-                    _creators = value
-                End If
-            End Set
-        End Property
+        Public Property Creators() As New List(Of String)
 
         <XmlIgnore()>
         Public ReadOnly Property CreatorsSpecified() As Boolean
@@ -2903,64 +2634,6 @@ Namespace MediaContainers
             Else
                 If Not _certifications.Contains(value) Then
                     _certifications.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddCountriesFromString(ByVal value As String)
-            _countries.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each country As String In values
-                    country = country.Trim
-                    If Not _countries.Contains(country) Then
-                        _countries.Add(country)
-                    End If
-                Next
-            Else
-                value = value.Trim
-                If Not _countries.Contains(value) Then
-                    _countries.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddGenresFromString(ByVal value As String)
-            _genres.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
-                For Each genre As String In values
-                    genre = genre.Trim
-                    If Not _genres.Contains(genre) Then
-                        _genres.Add(genre)
-                    End If
-                Next
-            Else
-                If Not _genres.Contains(value) Then
-                    _genres.Add(value.Trim)
-                End If
-            End If
-        End Sub
-
-        Public Sub AddStudiosFromString(ByVal value As String)
-            Studios.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
-                For Each studio As String In values
-                    studio = studio.Trim
-                    If Not Studios.Contains(studio) Then
-                        Studios.Add(studio)
-                    End If
-                Next
-            Else
-                If Not Studios.Contains(value) Then
-                    Studios.Add(value.Trim)
                 End If
             End If
         End Sub
@@ -4531,28 +4204,28 @@ Namespace MediaContainers
 
 #End Region 'Properties
 
-#Region "Constructors"
+        '#Region "Constructors"
 
-        Public Sub New()
-            Items = New List(Of Uniqueid)
-        End Sub
+        '        Public Sub New()
+        '            Items = New List(Of Uniqueid)
+        '        End Sub
 
-        Public Sub New(ByVal uniqueids As String)
-            If Not String.IsNullOrEmpty(uniqueids) Then
-                Dim aUniqueID = Regex.Split(uniqueids, ",")
-                For Each entry In aUniqueID
-                    Dim lstEntry = Regex.Split(entry, ":")
-                    If lstEntry.Count = 2 Then
-                        Items.Add(New Uniqueid With {
-                                  .Type = lstEntry(0),
-                                  .Value = lstEntry(1)
-                                  })
-                    End If
-                Next
-            End If
-        End Sub
+        '        Public Sub New(ByVal uniqueids As String)
+        '            If Not String.IsNullOrEmpty(uniqueids) Then
+        '                Dim aUniqueID = Regex.Split(uniqueids, ",")
+        '                For Each entry In aUniqueID
+        '                    Dim lstEntry = Regex.Split(entry, ":")
+        '                    If lstEntry.Count = 2 Then
+        '                        Items.Add(New Uniqueid With {
+        '                                  .Type = lstEntry(0),
+        '                                  .Value = lstEntry(1)
+        '                                  })
+        '                    End If
+        '                Next
+        '            End If
+        '        End Sub
 
-#End Region 'Constructors
+        '#End Region 'Constructors
 
 #Region "Methods"
 

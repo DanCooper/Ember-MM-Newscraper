@@ -614,7 +614,7 @@ Public Class dlgEdit_Movie
                     End If
                     bNeedTab_Images = True
                 Else
-                    pnlKeyArt.Visible = False
+                    pnlKeyart.Visible = False
                 End If
 
                 'Landscape
@@ -1719,6 +1719,10 @@ Public Class dlgEdit_Movie
             lbMPAA.SelectedIndex = 0
             lbMPAA.TopIndex = 0
         End If
+    End Sub
+
+    Private Sub Outline_TextChanged(sender As Object, e As EventArgs) Handles txtOutline.TextChanged
+        lblOutlineCharacterCount.Text = String.Format("( {0} )", txtOutline.TextLength)
     End Sub
 
     Private Sub Ratings_Fill()

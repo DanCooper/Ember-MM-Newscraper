@@ -235,6 +235,7 @@ Partial Class frmMain
         Me.mnuGenresAdd = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenresSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenresRemove = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowEditGenres = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieEditTags = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTags = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuTagsTitleSelect = New System.Windows.Forms.ToolStripMenuItem()
@@ -246,6 +247,7 @@ Partial Class frmMain
         Me.mnuTagsAdd = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTagsSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTagsRemove = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowEditTags = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieEditDataFields = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieRescrapeSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieScrape = New System.Windows.Forms.ToolStripMenuItem()
@@ -270,8 +272,9 @@ Partial Class frmMain
         Me.mnuScrapeModifierPoster = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeModifierTheme = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeModifierTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeTypeAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeTypeSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeTypeAsk = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOption = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuScrapeOptionActors = New System.Windows.Forms.ToolStripMenuItem()
@@ -299,6 +302,7 @@ Partial Class frmMain
         Me.mnuScrapeOptionTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOptionUserRating = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOptionWriters = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuEpisodeScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChangeAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieLanguage = New System.Windows.Forms.ToolStripMenuItem()
@@ -307,7 +311,7 @@ Partial Class frmMain
         Me.mnuLanguagesLanguage = New System.Windows.Forms.ToolStripComboBox()
         Me.mnuLanguagesSep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuLanguagesSet = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieSetLanguage = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowLanguage = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieBrowseIMDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieBrowseTMDB = New System.Windows.Forms.ToolStripMenuItem()
@@ -337,6 +341,7 @@ Partial Class frmMain
         Me.cmnuMovieSetScrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetScrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieSetLanguage = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieSetBrowseTMDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetRemoveSeparator = New System.Windows.Forms.ToolStripSeparator()
@@ -356,8 +361,6 @@ Partial Class frmMain
         Me.cmnuShowUnlock = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowEditSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowEdit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuShowEditGenres = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuShowEditTags = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowEditDataFields = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowScrapeSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowScrape = New System.Windows.Forms.ToolStripMenuItem()
@@ -365,7 +368,6 @@ Partial Class frmMain
         Me.cmnuShowScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowGetMissingEpisodes = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowChange = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuShowLanguage = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowBrowseIMDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowBrowseTMDB = New System.Windows.Forms.ToolStripMenuItem()
@@ -427,7 +429,6 @@ Partial Class frmMain
         Me.cmnuEpisodeScrapeSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuEpisodeScrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeScrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuEpisodeScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuEpisodeBrowseIMDB = New System.Windows.Forms.ToolStripMenuItem()
@@ -639,16 +640,16 @@ Partial Class frmMain
         Me.btnUp = New System.Windows.Forms.Button()
         Me.lblInfoPanelHeader = New System.Windows.Forms.Label()
         Me.pbKeyartCache = New System.Windows.Forms.PictureBox()
-        Me.pnlKeyArt = New System.Windows.Forms.Panel()
-        Me.pnlKeyArtMain = New System.Windows.Forms.Panel()
-        Me.tblKeyArtMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.pbKeyArt = New System.Windows.Forms.PictureBox()
-        Me.pnlKeyArtBottom = New System.Windows.Forms.Panel()
-        Me.tblKeyArtBottom = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblKeyArtSize = New System.Windows.Forms.Label()
-        Me.pnlKeyArtTop = New System.Windows.Forms.Panel()
-        Me.tblKeyArtTop = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblKeyArtTitle = New System.Windows.Forms.Label()
+        Me.pnlKeyart = New System.Windows.Forms.Panel()
+        Me.pnlKeyartMain = New System.Windows.Forms.Panel()
+        Me.tblKeyartMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.pbKeyart = New System.Windows.Forms.PictureBox()
+        Me.pnlKeyartBottom = New System.Windows.Forms.Panel()
+        Me.tblKeyartBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblKeyartSize = New System.Windows.Forms.Label()
+        Me.pnlKeyartTop = New System.Windows.Forms.Panel()
+        Me.tblKeyartTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblKeyartTitle = New System.Windows.Forms.Label()
         Me.pnlCancel = New System.Windows.Forms.Panel()
         Me.prbCanceling = New System.Windows.Forms.ProgressBar()
         Me.lblCanceling = New System.Windows.Forms.Label()
@@ -801,8 +802,8 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuMissing = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuMarked = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuCustom = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeMovieSets = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuScrapeTVShows = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
@@ -810,7 +811,6 @@ Partial Class frmMain
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
@@ -1009,14 +1009,14 @@ Partial Class frmMain
         CType(Me.pbActorsLoad, System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.pbActors, System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.pbKeyartCache, System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlKeyArt.SuspendLayout
-        Me.pnlKeyArtMain.SuspendLayout
-        Me.tblKeyArtMain.SuspendLayout
-        CType(Me.pbKeyArt, System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlKeyArtBottom.SuspendLayout
-        Me.tblKeyArtBottom.SuspendLayout
-        Me.pnlKeyArtTop.SuspendLayout
-        Me.tblKeyArtTop.SuspendLayout
+        Me.pnlKeyart.SuspendLayout
+        Me.pnlKeyartMain.SuspendLayout
+        Me.tblKeyartMain.SuspendLayout
+        CType(Me.pbKeyart, System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlKeyartBottom.SuspendLayout
+        Me.tblKeyartBottom.SuspendLayout
+        Me.pnlKeyartTop.SuspendLayout
+        Me.tblKeyartTop.SuspendLayout
         Me.pnlCancel.SuspendLayout
         Me.pnlNoInfo.SuspendLayout
         Me.pnlNoInfoBG.SuspendLayout
@@ -1620,7 +1620,7 @@ Partial Class frmMain
         Me.scMain.Panel2.BackColor = System.Drawing.SystemColors.Control
         Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
         Me.scMain.Panel2.Controls.Add(Me.pbKeyartCache)
-        Me.scMain.Panel2.Controls.Add(Me.pnlKeyArt)
+        Me.scMain.Panel2.Controls.Add(Me.pnlKeyart)
         Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
         Me.scMain.Panel2.Controls.Add(Me.pnlNoInfo)
         Me.scMain.Panel2.Controls.Add(Me.pbBannerCache)
@@ -3334,7 +3334,7 @@ Partial Class frmMain
         '
         Me.mnuGenres.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuGenresTitleSelect, Me.mnuGenresGenre, Me.mnuGenresSep1, Me.mnuGenresTitleNew, Me.mnuGenresNew, Me.mnuGenresSep2, Me.mnuGenresAdd, Me.mnuGenresSet, Me.mnuGenresRemove})
         Me.mnuGenres.Name = "mnuGenres"
-        Me.mnuGenres.OwnerItem = Me.cmnuShowEditGenres
+        Me.mnuGenres.OwnerItem = Me.cmnuMovieEditGenres
         Me.mnuGenres.Size = New System.Drawing.Size(196, 178)
         '
         'mnuGenresTitleSelect
@@ -3392,6 +3392,15 @@ Partial Class frmMain
         Me.mnuGenresRemove.Size = New System.Drawing.Size(195, 22)
         Me.mnuGenresRemove.Text = "Remove"
         '
+        'cmnuShowEditGenres
+        '
+        Me.cmnuShowEditGenres.DropDown = Me.mnuGenres
+        Me.cmnuShowEditGenres.Image = Global.Ember_Media_Manager.My.Resources.Resources.heart
+        Me.cmnuShowEditGenres.Name = "cmnuShowEditGenres"
+        Me.cmnuShowEditGenres.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuShowEditGenres.Tag = "tvshow"
+        Me.cmnuShowEditGenres.Text = "Edit Genres"
+        '
         'cmnuMovieEditTags
         '
         Me.cmnuMovieEditTags.DropDown = Me.mnuTags
@@ -3405,7 +3414,7 @@ Partial Class frmMain
         '
         Me.mnuTags.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuTagsTitleSelect, Me.mnuTagsTag, Me.mnuTagsSep1, Me.mnuTagsTitleNew, Me.mnuTagsNew, Me.mnuTagsSep2, Me.mnuTagsAdd, Me.mnuTagsSet, Me.mnuTagsRemove})
         Me.mnuTags.Name = "mnuTags"
-        Me.mnuTags.OwnerItem = Me.cmnuShowEditTags
+        Me.mnuTags.OwnerItem = Me.cmnuMovieEditTags
         Me.mnuTags.Size = New System.Drawing.Size(196, 178)
         '
         'mnuTagsTitleSelect
@@ -3464,6 +3473,15 @@ Partial Class frmMain
         Me.mnuTagsRemove.Size = New System.Drawing.Size(195, 22)
         Me.mnuTagsRemove.Text = "Remove"
         '
+        'cmnuShowEditTags
+        '
+        Me.cmnuShowEditTags.DropDown = Me.mnuTags
+        Me.cmnuShowEditTags.Image = Global.Ember_Media_Manager.My.Resources.Resources.MovieSet
+        Me.cmnuShowEditTags.Name = "cmnuShowEditTags"
+        Me.cmnuShowEditTags.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuShowEditTags.Tag = "tvshow"
+        Me.cmnuShowEditTags.Text = "Edit Tags"
+        '
         'cmnuMovieEditDataFields
         '
         Me.cmnuMovieEditDataFields.Name = "cmnuMovieEditDataFields"
@@ -3497,7 +3515,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeType.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeTypeAuto, Me.mnuScrapeTypeAsk, Me.mnuScrapeTypeSkip})
         Me.mnuScrapeType.Name = "mnuScrapeType"
-        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuFilter
+        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuMarked
         Me.mnuScrapeType.Size = New System.Drawing.Size(273, 70)
         '
         'mnuScrapeTypeAuto
@@ -3512,7 +3530,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeModifier.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeModifierAll, Me.mnuScrapeModifierActorthumbs, Me.mnuScrapeModifierBanner, Me.mnuScrapeModifierCharacterArt, Me.mnuScrapeModifierClearArt, Me.mnuScrapeModifierClearLogo, Me.mnuScrapeModifierDiscArt, Me.mnuScrapeModifierExtrafanarts, Me.mnuScrapeModifierExtrathumbs, Me.mnuScrapeModifierFanart, Me.mnuScrapeModifierKeyart, Me.mnuScrapeModifierLandscape, Me.mnuScrapeModifierMetaData, Me.mnuScrapeModifierNFO, Me.mnuScrapeModifierPoster, Me.mnuScrapeModifierTheme, Me.mnuScrapeModifierTrailer})
         Me.mnuScrapeModifier.Name = "mnuScrapeModifier"
-        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeSkip
+        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeAsk
         Me.mnuScrapeModifier.Size = New System.Drawing.Size(178, 378)
         '
         'mnuScrapeModifierAll
@@ -3650,6 +3668,14 @@ Partial Class frmMain
         Me.mnuScrapeModifierTrailer.Tag = "trailer"
         Me.mnuScrapeModifierTrailer.Text = "Trailer Only"
         '
+        'mnuScrapeTypeSkip
+        '
+        Me.mnuScrapeTypeSkip.DropDown = Me.mnuScrapeModifier
+        Me.mnuScrapeTypeSkip.Name = "mnuScrapeTypeSkip"
+        Me.mnuScrapeTypeSkip.Size = New System.Drawing.Size(272, 22)
+        Me.mnuScrapeTypeSkip.Tag = "skip"
+        Me.mnuScrapeTypeSkip.Text = "Skip (Skip If More Than One Match)"
+        '
         'mnuScrapeTypeAsk
         '
         Me.mnuScrapeTypeAsk.DropDown = Me.mnuScrapeModifier
@@ -3658,13 +3684,13 @@ Partial Class frmMain
         Me.mnuScrapeTypeAsk.Tag = "ask"
         Me.mnuScrapeTypeAsk.Text = "Ask (Require Input If No Exact Match)"
         '
-        'mnuScrapeTypeSkip
+        'mnuScrapeSubmenuFilter
         '
-        Me.mnuScrapeTypeSkip.DropDown = Me.mnuScrapeModifier
-        Me.mnuScrapeTypeSkip.Name = "mnuScrapeTypeSkip"
-        Me.mnuScrapeTypeSkip.Size = New System.Drawing.Size(272, 22)
-        Me.mnuScrapeTypeSkip.Tag = "skip"
-        Me.mnuScrapeTypeSkip.Text = "Skip (Skip If More Than One Match)"
+        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
+        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuFilter.Tag = "filter"
+        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
         '
         'cmnuMovieScrapeSingleDataField
         '
@@ -3678,7 +3704,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeOption.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeOptionActors, Me.mnuScrapeOptionAired, Me.mnuScrapeOptionCertifications, Me.mnuScrapeOptionCollectionID, Me.mnuScrapeOptionCreators, Me.mnuScrapeOptionCountries, Me.mnuScrapeOptionDirectors, Me.mnuScrapeOptionEpiGuideURL, Me.mnuScrapeOptionGenres, Me.mnuScrapeOptionGuestStars, Me.mnuScrapeOptionMPAA, Me.mnuScrapeOptionOriginalTitle, Me.mnuScrapeOptionPlot, Me.mnuScrapeOptionOutline, Me.mnuScrapeOptionPremiered, Me.mnuScrapeOptionRating, Me.mnuScrapeOptionRuntime, Me.mnuScrapeOptionStatus, Me.mnuScrapeOptionStudios, Me.mnuScrapeOptionTagline, Me.mnuScrapeOptionTitle, Me.mnuScrapeOptionTop250, Me.mnuScrapeOptionTrailer, Me.mnuScrapeOptionUserRating, Me.mnuScrapeOptionWriters})
         Me.mnuScrapeOption.Name = "mnuScrapeOption"
-        Me.mnuScrapeOption.OwnerItem = Me.cmnuEpisodeScrapeSingleDataField
+        Me.mnuScrapeOption.OwnerItem = Me.cmnuSeasonScrapeSingleDataField
         Me.mnuScrapeOption.Size = New System.Drawing.Size(174, 554)
         '
         'mnuScrapeOptionActors
@@ -3856,6 +3882,14 @@ Partial Class frmMain
         Me.mnuScrapeOptionWriters.Tag = "writers"
         Me.mnuScrapeOptionWriters.Text = "Writers"
         '
+        'cmnuEpisodeScrapeSingleDataField
+        '
+        Me.cmnuEpisodeScrapeSingleDataField.DropDown = Me.mnuScrapeOption
+        Me.cmnuEpisodeScrapeSingleDataField.Name = "cmnuEpisodeScrapeSingleDataField"
+        Me.cmnuEpisodeScrapeSingleDataField.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuEpisodeScrapeSingleDataField.Tag = "tvepisode"
+        Me.cmnuEpisodeScrapeSingleDataField.Text = "(Re)Scrape Single Data Field"
+        '
         'cmnuMovieChange
         '
         Me.cmnuMovieChange.Image = CType(resources.GetObject("cmnuMovieChange.Image"), System.Drawing.Image)
@@ -3883,7 +3917,7 @@ Partial Class frmMain
         '
         Me.mnuLanguages.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLanguagesTitleSelect, Me.mnuLanguagesLanguage, Me.mnuLanguagesSep1, Me.mnuLanguagesSet})
         Me.mnuLanguages.Name = "mnuLanguages"
-        Me.mnuLanguages.OwnerItem = Me.cmnuShowLanguage
+        Me.mnuLanguages.OwnerItem = Me.cmnuMovieSetLanguage
         Me.mnuLanguages.Size = New System.Drawing.Size(199, 81)
         '
         'mnuLanguagesTitleSelect
@@ -3911,13 +3945,13 @@ Partial Class frmMain
         Me.mnuLanguagesSet.Size = New System.Drawing.Size(198, 22)
         Me.mnuLanguagesSet.Text = "Set"
         '
-        'cmnuMovieSetLanguage
+        'cmnuShowLanguage
         '
-        Me.cmnuMovieSetLanguage.DropDown = Me.mnuLanguages
-        Me.cmnuMovieSetLanguage.Name = "cmnuMovieSetLanguage"
-        Me.cmnuMovieSetLanguage.Size = New System.Drawing.Size(234, 22)
-        Me.cmnuMovieSetLanguage.Tag = "movieset"
-        Me.cmnuMovieSetLanguage.Text = "Change Language"
+        Me.cmnuShowLanguage.DropDown = Me.mnuLanguages
+        Me.cmnuShowLanguage.Name = "cmnuShowLanguage"
+        Me.cmnuShowLanguage.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuShowLanguage.Tag = "tvshow"
+        Me.cmnuShowLanguage.Text = "Change Language"
         '
         'cmnuMovieSep3
         '
@@ -4145,6 +4179,14 @@ Partial Class frmMain
         Me.cmnuMovieSetScrapeSingleDataField.Tag = "movieset"
         Me.cmnuMovieSetScrapeSingleDataField.Text = "(Re)Scrape Single Data Field"
         '
+        'cmnuMovieSetLanguage
+        '
+        Me.cmnuMovieSetLanguage.DropDown = Me.mnuLanguages
+        Me.cmnuMovieSetLanguage.Name = "cmnuMovieSetLanguage"
+        Me.cmnuMovieSetLanguage.Size = New System.Drawing.Size(234, 22)
+        Me.cmnuMovieSetLanguage.Tag = "movieset"
+        Me.cmnuMovieSetLanguage.Text = "Change Language"
+        '
         'cmnuMovieSetSep3
         '
         Me.cmnuMovieSetSep3.Name = "cmnuMovieSetSep3"
@@ -4318,24 +4360,6 @@ Partial Class frmMain
         Me.cmnuShowEdit.Size = New System.Drawing.Size(248, 22)
         Me.cmnuShowEdit.Text = "Edit Show"
         '
-        'cmnuShowEditGenres
-        '
-        Me.cmnuShowEditGenres.DropDown = Me.mnuGenres
-        Me.cmnuShowEditGenres.Image = Global.Ember_Media_Manager.My.Resources.Resources.heart
-        Me.cmnuShowEditGenres.Name = "cmnuShowEditGenres"
-        Me.cmnuShowEditGenres.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuShowEditGenres.Tag = "tvshow"
-        Me.cmnuShowEditGenres.Text = "Edit Genres"
-        '
-        'cmnuShowEditTags
-        '
-        Me.cmnuShowEditTags.DropDown = Me.mnuTags
-        Me.cmnuShowEditTags.Image = Global.Ember_Media_Manager.My.Resources.Resources.MovieSet
-        Me.cmnuShowEditTags.Name = "cmnuShowEditTags"
-        Me.cmnuShowEditTags.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuShowEditTags.Tag = "tvshow"
-        Me.cmnuShowEditTags.Text = "Edit Tags"
-        '
         'cmnuShowEditDataFields
         '
         Me.cmnuShowEditDataFields.Name = "cmnuShowEditDataFields"
@@ -4387,14 +4411,6 @@ Partial Class frmMain
         Me.cmnuShowChange.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
         Me.cmnuShowChange.Size = New System.Drawing.Size(248, 22)
         Me.cmnuShowChange.Text = "Change Show"
-        '
-        'cmnuShowLanguage
-        '
-        Me.cmnuShowLanguage.DropDown = Me.mnuLanguages
-        Me.cmnuShowLanguage.Name = "cmnuShowLanguage"
-        Me.cmnuShowLanguage.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuShowLanguage.Tag = "tvshow"
-        Me.cmnuShowLanguage.Text = "Change Language"
         '
         'cmnuShowSep3
         '
@@ -4885,14 +4901,6 @@ Partial Class frmMain
         Me.cmnuEpisodeScrapeSelected.Size = New System.Drawing.Size(248, 22)
         Me.cmnuEpisodeScrapeSelected.Tag = "tvepisode"
         Me.cmnuEpisodeScrapeSelected.Text = "(Re)Scrape Selected Episodes"
-        '
-        'cmnuEpisodeScrapeSingleDataField
-        '
-        Me.cmnuEpisodeScrapeSingleDataField.DropDown = Me.mnuScrapeOption
-        Me.cmnuEpisodeScrapeSingleDataField.Name = "cmnuEpisodeScrapeSingleDataField"
-        Me.cmnuEpisodeScrapeSingleDataField.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuEpisodeScrapeSingleDataField.Tag = "tvepisode"
-        Me.cmnuEpisodeScrapeSingleDataField.Text = "(Re)Scrape Single Data Field"
         '
         'cmnuEpisodeChange
         '
@@ -7806,140 +7814,140 @@ Partial Class frmMain
         Me.pbKeyartCache.TabStop = False
         Me.pbKeyartCache.Visible = False
         '
-        'pnlKeyArt
+        'pnlKeyart
         '
-        Me.pnlKeyArt.AutoSize = True
-        Me.pnlKeyArt.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.pnlKeyArt.BackColor = System.Drawing.Color.Gainsboro
-        Me.pnlKeyArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlKeyArt.Controls.Add(Me.pnlKeyArtMain)
-        Me.pnlKeyArt.Controls.Add(Me.pnlKeyArtBottom)
-        Me.pnlKeyArt.Controls.Add(Me.pnlKeyArtTop)
-        Me.pnlKeyArt.Location = New System.Drawing.Point(63, 125)
-        Me.pnlKeyArt.Name = "pnlKeyArt"
-        Me.pnlKeyArt.Padding = New System.Windows.Forms.Padding(2)
-        Me.pnlKeyArt.Size = New System.Drawing.Size(56, 82)
-        Me.pnlKeyArt.TabIndex = 29
-        Me.pnlKeyArt.Visible = False
+        Me.pnlKeyart.AutoSize = True
+        Me.pnlKeyart.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.pnlKeyart.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlKeyart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlKeyart.Controls.Add(Me.pnlKeyartMain)
+        Me.pnlKeyart.Controls.Add(Me.pnlKeyartBottom)
+        Me.pnlKeyart.Controls.Add(Me.pnlKeyartTop)
+        Me.pnlKeyart.Location = New System.Drawing.Point(63, 125)
+        Me.pnlKeyart.Name = "pnlKeyart"
+        Me.pnlKeyart.Padding = New System.Windows.Forms.Padding(2)
+        Me.pnlKeyart.Size = New System.Drawing.Size(56, 82)
+        Me.pnlKeyart.TabIndex = 29
+        Me.pnlKeyart.Visible = False
         '
-        'pnlKeyArtMain
+        'pnlKeyartMain
         '
-        Me.pnlKeyArtMain.AutoSize = True
-        Me.pnlKeyArtMain.Controls.Add(Me.tblKeyArtMain)
-        Me.pnlKeyArtMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlKeyArtMain.Location = New System.Drawing.Point(2, 15)
-        Me.pnlKeyArtMain.Name = "pnlKeyArtMain"
-        Me.pnlKeyArtMain.Size = New System.Drawing.Size(50, 50)
-        Me.pnlKeyArtMain.TabIndex = 3
+        Me.pnlKeyartMain.AutoSize = True
+        Me.pnlKeyartMain.Controls.Add(Me.tblKeyartMain)
+        Me.pnlKeyartMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlKeyartMain.Location = New System.Drawing.Point(2, 15)
+        Me.pnlKeyartMain.Name = "pnlKeyartMain"
+        Me.pnlKeyartMain.Size = New System.Drawing.Size(50, 50)
+        Me.pnlKeyartMain.TabIndex = 3
         '
-        'tblKeyArtMain
+        'tblKeyartMain
         '
-        Me.tblKeyArtMain.AutoSize = True
-        Me.tblKeyArtMain.ColumnCount = 1
-        Me.tblKeyArtMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblKeyArtMain.Controls.Add(Me.pbKeyArt, 0, 0)
-        Me.tblKeyArtMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblKeyArtMain.Location = New System.Drawing.Point(0, 0)
-        Me.tblKeyArtMain.Name = "tblKeyArtMain"
-        Me.tblKeyArtMain.RowCount = 1
-        Me.tblKeyArtMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblKeyArtMain.Size = New System.Drawing.Size(50, 50)
-        Me.tblKeyArtMain.TabIndex = 1
+        Me.tblKeyartMain.AutoSize = True
+        Me.tblKeyartMain.ColumnCount = 1
+        Me.tblKeyartMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblKeyartMain.Controls.Add(Me.pbKeyart, 0, 0)
+        Me.tblKeyartMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblKeyartMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblKeyartMain.Name = "tblKeyartMain"
+        Me.tblKeyartMain.RowCount = 1
+        Me.tblKeyartMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblKeyartMain.Size = New System.Drawing.Size(50, 50)
+        Me.tblKeyartMain.TabIndex = 1
         '
-        'pbKeyArt
+        'pbKeyart
         '
-        Me.pbKeyArt.BackColor = System.Drawing.Color.Gray
-        Me.pbKeyArt.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pbKeyArt.Location = New System.Drawing.Point(0, 0)
-        Me.pbKeyArt.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbKeyArt.Name = "pbKeyArt"
-        Me.pbKeyArt.Size = New System.Drawing.Size(50, 50)
-        Me.pbKeyArt.TabIndex = 0
-        Me.pbKeyArt.TabStop = False
+        Me.pbKeyart.BackColor = System.Drawing.Color.Gray
+        Me.pbKeyart.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pbKeyart.Location = New System.Drawing.Point(0, 0)
+        Me.pbKeyart.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbKeyart.Name = "pbKeyart"
+        Me.pbKeyart.Size = New System.Drawing.Size(50, 50)
+        Me.pbKeyart.TabIndex = 0
+        Me.pbKeyart.TabStop = False
         '
-        'pnlKeyArtBottom
+        'pnlKeyartBottom
         '
-        Me.pnlKeyArtBottom.AutoSize = True
-        Me.pnlKeyArtBottom.BackColor = System.Drawing.Color.DimGray
-        Me.pnlKeyArtBottom.Controls.Add(Me.tblKeyArtBottom)
-        Me.pnlKeyArtBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlKeyArtBottom.Location = New System.Drawing.Point(2, 65)
-        Me.pnlKeyArtBottom.Name = "pnlKeyArtBottom"
-        Me.pnlKeyArtBottom.Size = New System.Drawing.Size(50, 13)
-        Me.pnlKeyArtBottom.TabIndex = 2
+        Me.pnlKeyartBottom.AutoSize = True
+        Me.pnlKeyartBottom.BackColor = System.Drawing.Color.DimGray
+        Me.pnlKeyartBottom.Controls.Add(Me.tblKeyartBottom)
+        Me.pnlKeyartBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlKeyartBottom.Location = New System.Drawing.Point(2, 65)
+        Me.pnlKeyartBottom.Name = "pnlKeyartBottom"
+        Me.pnlKeyartBottom.Size = New System.Drawing.Size(50, 13)
+        Me.pnlKeyartBottom.TabIndex = 2
         '
-        'tblKeyArtBottom
+        'tblKeyartBottom
         '
-        Me.tblKeyArtBottom.AutoSize = True
-        Me.tblKeyArtBottom.ColumnCount = 3
-        Me.tblKeyArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblKeyArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblKeyArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblKeyArtBottom.Controls.Add(Me.lblKeyArtSize, 1, 0)
-        Me.tblKeyArtBottom.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblKeyArtBottom.Location = New System.Drawing.Point(0, 0)
-        Me.tblKeyArtBottom.Name = "tblKeyArtBottom"
-        Me.tblKeyArtBottom.RowCount = 2
-        Me.tblKeyArtBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblKeyArtBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblKeyArtBottom.Size = New System.Drawing.Size(50, 13)
-        Me.tblKeyArtBottom.TabIndex = 0
+        Me.tblKeyartBottom.AutoSize = True
+        Me.tblKeyartBottom.ColumnCount = 3
+        Me.tblKeyartBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblKeyartBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblKeyartBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblKeyartBottom.Controls.Add(Me.lblKeyartSize, 1, 0)
+        Me.tblKeyartBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblKeyartBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblKeyartBottom.Name = "tblKeyartBottom"
+        Me.tblKeyartBottom.RowCount = 2
+        Me.tblKeyartBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblKeyartBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblKeyartBottom.Size = New System.Drawing.Size(50, 13)
+        Me.tblKeyartBottom.TabIndex = 0
         '
-        'lblKeyArtSize
+        'lblKeyartSize
         '
-        Me.lblKeyArtSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblKeyArtSize.AutoSize = True
-        Me.lblKeyArtSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblKeyArtSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblKeyArtSize.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblKeyArtSize.Location = New System.Drawing.Point(11, 0)
-        Me.lblKeyArtSize.Name = "lblKeyArtSize"
-        Me.lblKeyArtSize.Size = New System.Drawing.Size(27, 13)
-        Me.lblKeyArtSize.TabIndex = 2
-        Me.lblKeyArtSize.Text = "Size"
-        Me.lblKeyArtSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblKeyartSize.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblKeyartSize.AutoSize = True
+        Me.lblKeyartSize.BackColor = System.Drawing.Color.Transparent
+        Me.lblKeyartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblKeyartSize.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblKeyartSize.Location = New System.Drawing.Point(11, 0)
+        Me.lblKeyartSize.Name = "lblKeyartSize"
+        Me.lblKeyartSize.Size = New System.Drawing.Size(27, 13)
+        Me.lblKeyartSize.TabIndex = 2
+        Me.lblKeyartSize.Text = "Size"
+        Me.lblKeyartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'pnlKeyArtTop
+        'pnlKeyartTop
         '
-        Me.pnlKeyArtTop.AutoSize = True
-        Me.pnlKeyArtTop.BackColor = System.Drawing.Color.DimGray
-        Me.pnlKeyArtTop.Controls.Add(Me.tblKeyArtTop)
-        Me.pnlKeyArtTop.Dock = System.Windows.Forms.DockStyle.Top
-        Me.pnlKeyArtTop.Location = New System.Drawing.Point(2, 2)
-        Me.pnlKeyArtTop.Name = "pnlKeyArtTop"
-        Me.pnlKeyArtTop.Size = New System.Drawing.Size(50, 13)
-        Me.pnlKeyArtTop.TabIndex = 1
+        Me.pnlKeyartTop.AutoSize = True
+        Me.pnlKeyartTop.BackColor = System.Drawing.Color.DimGray
+        Me.pnlKeyartTop.Controls.Add(Me.tblKeyartTop)
+        Me.pnlKeyartTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlKeyartTop.Location = New System.Drawing.Point(2, 2)
+        Me.pnlKeyartTop.Name = "pnlKeyartTop"
+        Me.pnlKeyartTop.Size = New System.Drawing.Size(50, 13)
+        Me.pnlKeyartTop.TabIndex = 1
         '
-        'tblKeyArtTop
+        'tblKeyartTop
         '
-        Me.tblKeyArtTop.AutoSize = True
-        Me.tblKeyArtTop.ColumnCount = 3
-        Me.tblKeyArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblKeyArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblKeyArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblKeyArtTop.Controls.Add(Me.lblKeyArtTitle, 1, 0)
-        Me.tblKeyArtTop.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblKeyArtTop.Location = New System.Drawing.Point(0, 0)
-        Me.tblKeyArtTop.Name = "tblKeyArtTop"
-        Me.tblKeyArtTop.RowCount = 2
-        Me.tblKeyArtTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblKeyArtTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblKeyArtTop.Size = New System.Drawing.Size(50, 13)
-        Me.tblKeyArtTop.TabIndex = 0
+        Me.tblKeyartTop.AutoSize = True
+        Me.tblKeyartTop.ColumnCount = 3
+        Me.tblKeyartTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblKeyartTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblKeyartTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tblKeyartTop.Controls.Add(Me.lblKeyartTitle, 1, 0)
+        Me.tblKeyartTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblKeyartTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblKeyartTop.Name = "tblKeyartTop"
+        Me.tblKeyartTop.RowCount = 2
+        Me.tblKeyartTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblKeyartTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblKeyartTop.Size = New System.Drawing.Size(50, 13)
+        Me.tblKeyartTop.TabIndex = 0
         '
-        'lblKeyArtTitle
+        'lblKeyartTitle
         '
-        Me.lblKeyArtTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblKeyArtTitle.AutoSize = True
-        Me.lblKeyArtTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblKeyArtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblKeyArtTitle.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblKeyArtTitle.Location = New System.Drawing.Point(4, 0)
-        Me.lblKeyArtTitle.Name = "lblKeyArtTitle"
-        Me.lblKeyArtTitle.Size = New System.Drawing.Size(42, 13)
-        Me.lblKeyArtTitle.TabIndex = 1
-        Me.lblKeyArtTitle.Text = "KeyArt"
-        Me.lblKeyArtTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblKeyartTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblKeyartTitle.AutoSize = True
+        Me.lblKeyartTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblKeyartTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblKeyartTitle.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblKeyartTitle.Location = New System.Drawing.Point(5, 0)
+        Me.lblKeyartTitle.Name = "lblKeyartTitle"
+        Me.lblKeyartTitle.Size = New System.Drawing.Size(40, 13)
+        Me.lblKeyartTitle.TabIndex = 1
+        Me.lblKeyartTitle.Text = "Keyart"
+        Me.lblKeyartTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'pnlCancel
         '
@@ -9801,7 +9809,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
         Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
-        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeTVShows
+        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeMovies
         Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
         '
         'mnuScrapeSubmenuAll
@@ -9836,20 +9844,21 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuMarked.Tag = "marked"
         Me.mnuScrapeSubmenuMarked.Text = "Marked"
         '
-        'mnuScrapeSubmenuFilter
-        '
-        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
-        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
-        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
-        Me.mnuScrapeSubmenuFilter.Tag = "filter"
-        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
-        '
         'mnuScrapeSubmenuCustom
         '
         Me.mnuScrapeSubmenuCustom.Name = "mnuScrapeSubmenuCustom"
         Me.mnuScrapeSubmenuCustom.Size = New System.Drawing.Size(167, 22)
         Me.mnuScrapeSubmenuCustom.Tag = "custom"
         Me.mnuScrapeSubmenuCustom.Text = "Custom Scraper..."
+        '
+        'cmnuTrayScrapeTVShows
+        '
+        Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeTVShows.Name = "cmnuTrayScrapeTVShows"
+        Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
+        Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
         '
         'mnuScrapeMovieSets
         '
@@ -9914,15 +9923,6 @@ Partial Class frmMain
         Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayScrapeMovies.Tag = "movie"
         Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
-        '
-        'cmnuTrayScrapeTVShows
-        '
-        Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeTVShows.Name = "cmnuTrayScrapeTVShows"
-        Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
-        Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
         '
         'ilColumnIcons
         '
@@ -10500,20 +10500,20 @@ Partial Class frmMain
         CType(Me.pbActorsLoad, System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.pbActors, System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.pbKeyartCache, System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlKeyArt.ResumeLayout(False)
-        Me.pnlKeyArt.PerformLayout
-        Me.pnlKeyArtMain.ResumeLayout(False)
-        Me.pnlKeyArtMain.PerformLayout
-        Me.tblKeyArtMain.ResumeLayout(False)
-        CType(Me.pbKeyArt, System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlKeyArtBottom.ResumeLayout(False)
-        Me.pnlKeyArtBottom.PerformLayout
-        Me.tblKeyArtBottom.ResumeLayout(False)
-        Me.tblKeyArtBottom.PerformLayout
-        Me.pnlKeyArtTop.ResumeLayout(False)
-        Me.pnlKeyArtTop.PerformLayout
-        Me.tblKeyArtTop.ResumeLayout(False)
-        Me.tblKeyArtTop.PerformLayout
+        Me.pnlKeyart.ResumeLayout(False)
+        Me.pnlKeyart.PerformLayout
+        Me.pnlKeyartMain.ResumeLayout(False)
+        Me.pnlKeyartMain.PerformLayout
+        Me.tblKeyartMain.ResumeLayout(False)
+        CType(Me.pbKeyart, System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlKeyartBottom.ResumeLayout(False)
+        Me.pnlKeyartBottom.PerformLayout
+        Me.tblKeyartBottom.ResumeLayout(False)
+        Me.tblKeyartBottom.PerformLayout
+        Me.pnlKeyartTop.ResumeLayout(False)
+        Me.pnlKeyartTop.PerformLayout
+        Me.tblKeyartTop.ResumeLayout(False)
+        Me.tblKeyartTop.PerformLayout
         Me.pnlCancel.ResumeLayout(False)
         Me.pnlCancel.PerformLayout
         Me.pnlNoInfo.ResumeLayout(False)
@@ -11469,16 +11469,16 @@ End Sub
     Friend WithEvents lblFilterVideoSourcesClose_Movies As Label
     Friend WithEvents mnuScrapeModifierKeyart As ToolStripMenuItem
     Friend WithEvents pbKeyartCache As PictureBox
-    Friend WithEvents pnlKeyArt As Panel
-    Friend WithEvents pnlKeyArtMain As Panel
-    Friend WithEvents tblKeyArtMain As TableLayoutPanel
-    Friend WithEvents pbKeyArt As PictureBox
-    Friend WithEvents pnlKeyArtBottom As Panel
-    Friend WithEvents tblKeyArtBottom As TableLayoutPanel
-    Friend WithEvents lblKeyArtSize As Label
-    Friend WithEvents pnlKeyArtTop As Panel
-    Friend WithEvents tblKeyArtTop As TableLayoutPanel
-    Friend WithEvents lblKeyArtTitle As Label
+    Friend WithEvents pnlKeyart As Panel
+    Friend WithEvents pnlKeyartMain As Panel
+    Friend WithEvents tblKeyartMain As TableLayoutPanel
+    Friend WithEvents pbKeyart As PictureBox
+    Friend WithEvents pnlKeyartBottom As Panel
+    Friend WithEvents tblKeyartBottom As TableLayoutPanel
+    Friend WithEvents lblKeyartSize As Label
+    Friend WithEvents pnlKeyartTop As Panel
+    Friend WithEvents tblKeyartTop As TableLayoutPanel
+    Friend WithEvents lblKeyartTitle As Label
     Friend WithEvents pnlInfoPanel As Panel
     Friend WithEvents pnlMoviesInSet As Panel
     Friend WithEvents lvMoviesInSet As ListView

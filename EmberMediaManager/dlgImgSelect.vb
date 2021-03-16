@@ -232,10 +232,8 @@ Public Class dlgImgSelect
 
     Private Sub dlgImgSelect_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         AddHandler MouseWheel, AddressOf MouseWheelEvent
-
         Functions.PNLDoubleBuffer(pnlImgSelectMain)
-
-        SetUp()
+        Setup()
     End Sub
 
     Private Sub dlgImgSelect_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
@@ -1177,6 +1175,11 @@ Public Class dlgImgSelect
             iCount += 1
             noTopImages = False
         End If
+        If DoMainKeyart Then
+            AddTopImage(Result.ImagesContainer.Keyart, iCount, Enums.ModifierType.MainKeyart)
+            iCount += 1
+            noTopImages = False
+        End If
         If DoMainFanart Then
             AddTopImage(Result.ImagesContainer.Fanart, iCount, Enums.ModifierType.MainFanart)
             iCount += 1
@@ -1204,11 +1207,6 @@ Public Class dlgImgSelect
         End If
         If DoMainDiscArt Then
             AddTopImage(Result.ImagesContainer.DiscArt, iCount, Enums.ModifierType.MainDiscArt)
-            iCount += 1
-            noTopImages = False
-        End If
-        If DoMainKeyart Then
-            AddTopImage(Result.ImagesContainer.Keyart, iCount, Enums.ModifierType.MainKeyart)
             iCount += 1
             noTopImages = False
         End If
@@ -2374,7 +2372,7 @@ Public Class dlgImgSelect
         End If
     End Sub
 
-    Private Sub SetUp()
+    Private Sub Setup()
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         btnExtrafanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
         btnExtrathumbs.Text = Master.eLang.GetString(153, "Extrathumbs")

@@ -515,7 +515,7 @@ Public Class dlgEdit_TVShow
                     pnlFanart.Visible = False
                 End If
 
-                'KeyArt
+                'Keyart
                 If Master.eSettings.TVShowKeyartAnyEnabled Then
                     btnScrapeKeyart.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainKeyart)
                     If .Keyart.ImageOriginal.Image IsNot Nothing Then
@@ -523,7 +523,7 @@ Public Class dlgEdit_TVShow
                     End If
                     bNeedTab_Images = True
                 Else
-                    pnlKeyArt.Visible = False
+                    pnlKeyart.Visible = False
                 End If
 
                 'Landscape

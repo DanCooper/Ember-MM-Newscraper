@@ -224,7 +224,7 @@ Partial Class dlgEdit_TVShow
         Me.btnDLClearArt = New System.Windows.Forms.Button()
         Me.btnRemoveClearArt = New System.Windows.Forms.Button()
         Me.btnClipboardClearArt = New System.Windows.Forms.Button()
-        Me.pnlKeyArt = New System.Windows.Forms.Panel()
+        Me.pnlKeyart = New System.Windows.Forms.Panel()
         Me.tblKeyart = New System.Windows.Forms.TableLayoutPanel()
         Me.pbKeyart = New System.Windows.Forms.PictureBox()
         Me.lblKeyart = New System.Windows.Forms.Label()
@@ -285,7 +285,7 @@ Partial Class dlgEdit_TVShow
         Me.pnlClearArt.SuspendLayout()
         Me.tblClearArt.SuspendLayout()
         CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlKeyArt.SuspendLayout()
+        Me.pnlKeyart.SuspendLayout()
         Me.tblKeyart.SuspendLayout()
         CType(Me.pbKeyart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlImagesRight.SuspendLayout()
@@ -1683,7 +1683,7 @@ Partial Class dlgEdit_TVShow
         Me.tblImages.Controls.Add(Me.pnlLandscape, 2, 1)
         Me.tblImages.Controls.Add(Me.pnlBanner, 0, 2)
         Me.tblImages.Controls.Add(Me.pnlClearArt, 1, 1)
-        Me.tblImages.Controls.Add(Me.pnlKeyArt, 1, 0)
+        Me.tblImages.Controls.Add(Me.pnlKeyart, 1, 0)
         Me.tblImages.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblImages.Location = New System.Drawing.Point(3, 3)
         Me.tblImages.Name = "tblImages"
@@ -2763,16 +2763,16 @@ Partial Class dlgEdit_TVShow
         Me.btnClipboardClearArt.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnClipboardClearArt.UseVisualStyleBackColor = True
         '
-        'pnlKeyArt
+        'pnlKeyart
         '
-        Me.pnlKeyArt.AutoSize = True
-        Me.pnlKeyArt.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.pnlKeyArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlKeyArt.Controls.Add(Me.tblKeyart)
-        Me.pnlKeyArt.Location = New System.Drawing.Point(273, 3)
-        Me.pnlKeyArt.Name = "pnlKeyArt"
-        Me.pnlKeyArt.Size = New System.Drawing.Size(264, 221)
-        Me.pnlKeyArt.TabIndex = 0
+        Me.pnlKeyart.AutoSize = True
+        Me.pnlKeyart.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.pnlKeyart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlKeyart.Controls.Add(Me.tblKeyart)
+        Me.pnlKeyart.Location = New System.Drawing.Point(273, 3)
+        Me.pnlKeyart.Name = "pnlKeyart"
+        Me.pnlKeyart.Size = New System.Drawing.Size(264, 221)
+        Me.pnlKeyart.TabIndex = 0
         '
         'tblKeyart
         '
@@ -3021,8 +3021,8 @@ Partial Class dlgEdit_TVShow
         Me.tblClearArt.ResumeLayout(False)
         Me.tblClearArt.PerformLayout()
         CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pnlKeyArt.ResumeLayout(False)
-        Me.pnlKeyArt.PerformLayout()
+        Me.pnlKeyart.ResumeLayout(False)
+        Me.pnlKeyart.PerformLayout()
         Me.tblKeyart.ResumeLayout(False)
         Me.tblKeyart.PerformLayout()
         CType(Me.pbKeyart, System.ComponentModel.ISupportInitialize).EndInit()
@@ -3230,7 +3230,7 @@ Partial Class dlgEdit_TVShow
     Friend WithEvents btnDLClearArt As Button
     Friend WithEvents btnRemoveClearArt As Button
     Friend WithEvents btnClipboardClearArt As Button
-    Friend WithEvents pnlKeyArt As Panel
+    Friend WithEvents pnlKeyart As Panel
     Friend WithEvents tblKeyart As TableLayoutPanel
     Friend WithEvents pbKeyart As PictureBox
     Friend WithEvents lblKeyart As Label
