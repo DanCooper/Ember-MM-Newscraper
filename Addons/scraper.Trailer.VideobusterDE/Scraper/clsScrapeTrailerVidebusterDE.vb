@@ -70,7 +70,9 @@ Public Class Scraper
                 Return Enums.VideoResolution.HD1080p
             Case Else
                 Select Case height
-                    Case "320", "362"
+                    Case "240", "288"
+                        Return Enums.VideoResolution.SQ240p
+                    Case "320", "334", "356", "360", "362"
                         Return Enums.VideoResolution.SQ360p
                     Case "480"
                         Return Enums.VideoResolution.HQ480p
@@ -115,7 +117,7 @@ Public Class Scraper
                     Dim htmldocMoviePage As New HtmlDocument
                     If Not String.IsNullOrEmpty(MoviePage) Then htmldocMoviePage.LoadHtml(MoviePage)
                     If htmldocMoviePage IsNot Nothing Then
-                        Dim dnTrailers = htmldocMoviePage.DocumentNode.SelectNodes("//div[@id=""trailer""]//div[@class=""playlist""]//div[@class=""item""]")
+                        Dim dnTrailers = htmldocMoviePage.DocumentNode.SelectNodes("//div[@id=""trailer""]//div[@class=""playlist""]//div[@class=""item active""]")
                         If dnTrailers IsNot Nothing Then
                             For Each tTrailer In dnTrailers
                                 'get trailer main information from first stream
