@@ -493,7 +493,7 @@ Public Class dlgEdit_TVEpisode
             'Plot
             .Plot = txtPlot.Text.Trim
             'Ratings
-            .Ratings = Ratings_Get()
+            .Ratings.Items = Ratings_Get()
             'Runtime
             .Runtime = txtRuntime.Text.Trim
             'Season
@@ -921,11 +921,11 @@ Public Class dlgEdit_TVEpisode
     Private Sub Ratings_Fill()
         dgvRatings.SuspendLayout()
 
-        For Each tRating In tmpDBElement.TVEpisode.Ratings.OrderBy(Function(f) Not f.IsDefault)
+        For Each tRating In tmpDBElement.TVEpisode.Ratings.Items.OrderBy(Function(f) Not f.IsDefault)
             Dim i As Integer = dgvRatings.Rows.Add
             dgvRatings.Rows(i).Tag = tRating
             dgvRatings.Rows(i).Cells(colRatingsDefault.Name).Value = tRating.IsDefault
-            dgvRatings.Rows(i).Cells(colRatingsSource.Name).Value = tRating.Name
+            dgvRatings.Rows(i).Cells(colRatingsSource.Name).Value = tRating.Type
             dgvRatings.Rows(i).Cells(colRatingsValue.Name).Value = tRating.Value
             dgvRatings.Rows(i).Cells(colRatingsMax.Name).Value = tRating.Max
             dgvRatings.Rows(i).Cells(colRatingsVotes.Name).Value = tRating.Votes
@@ -949,7 +949,7 @@ Public Class dlgEdit_TVEpisode
                     nList.Add(New MediaContainers.RatingDetails With {
                              .IsDefault = CBool(r.Cells(colRatingsDefault.Name).Value),
                              .Max = iMax,
-                             .Name = r.Cells(colRatingsSource.Name).Value.ToString.Trim,
+                             .Type = r.Cells(colRatingsSource.Name).Value.ToString.Trim,
                              .Value = dblValue,
                              .Votes = iVotes
                              })
@@ -1083,12 +1083,16 @@ Public Class dlgEdit_TVEpisode
         lvSubtitles.SelectedItems.Clear()
     End Sub
 
-    Private Sub TextBox_NumericOnly(sender As Object, e As KeyPressEventArgs) Handles _
+    Private Sub TextBox_IntegerOnly(sender As Object, e As KeyPressEventArgs) Handles _
         txtDisplayEpisode.KeyPress,
-        txtDisplaySeason.KeyPress,
+        txtDisplaySeason.KeyPress
+        e.Handled = StringUtils.IntegerOnly(e.KeyChar)
+    End Sub
+
+    Private Sub TextBox_UIntegerOnly(sender As Object, e As KeyPressEventArgs) Handles _
         txtEpisode.KeyPress,
         txtSeason.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.UIntegerOnly(e.KeyChar)
     End Sub
 
     Private Sub TextBox_SelectAll(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
@@ -1111,19 +1115,19 @@ Public Class dlgEdit_TVEpisode
         dgvUniqueIds.ResumeLayout()
     End Sub
 
-    Private Function UniqueIds_Get() As MediaContainers.UniqueidContainer
-        Dim nList As New MediaContainers.UniqueidContainer
+    Private Function UniqueIds_Get() As List(Of MediaContainers.Uniqueid)
+        Dim nList As New List(Of MediaContainers.Uniqueid)
         For Each r As DataGridViewRow In dgvUniqueIds.Rows
             If Not r.IsNewRow Then
                 If r.Cells(colUniqueIdsType.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colUniqueIdsType.Name).Value.ToString.Trim) AndAlso
                     r.Cells(colUniqueIdsValue.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim) Then
-                    nList.Items.Add(New MediaContainers.Uniqueid With {
-                                    .IsDefault = CBool(r.Cells(colUniqueIdsDefault.Name).Value),
-                                    .Type = r.Cells(colUniqueIdsType.Name).Value.ToString.Trim,
-                                    .Value = r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim
-                                    })
+                    nList.Add(New MediaContainers.Uniqueid With {
+                              .IsDefault = CBool(r.Cells(colUniqueIdsDefault.Name).Value),
+                              .Type = r.Cells(colUniqueIdsType.Name).Value.ToString.Trim,
+                              .Value = r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim
+                              })
                 End If
             End If
         Next

@@ -328,10 +328,7 @@ Public Class dlgEdit_Movie
         End If
     End Sub
 
-    Private Sub CheckedListBox_ItemCheck(ByVal sender As Object, ByVal e As ItemCheckEventArgs) Handles _
-        clbGenres.ItemCheck,
-        clbTags.ItemCheck,
-        clbTVShowLinks.ItemCheck
+    Private Sub CheckedListBox_ItemCheck(ByVal sender As Object, ByVal e As ItemCheckEventArgs) Handles clbTVShowLinks.ItemCheck
         Dim nCheckedListBox = DirectCast(sender, CheckedListBox)
         If e.Index = 0 Then
             For i As Integer = 1 To nCheckedListBox.Items.Count - 1
@@ -448,6 +445,8 @@ Public Class dlgEdit_Movie
                 dgvDirectors.Rows.Add(New Object() {v})
             Next
             dgvDirectors.ClearSelection()
+            'Edition
+            Editions_Fill()
             'Genres
             Genres_Fill()
             'Moviesets
@@ -490,6 +489,8 @@ Public Class dlgEdit_Movie
             TVShowLinks_Fill()
             'Unique IDs
             UniqueIds_Fill()
+            'UserNote
+            txtUserNote.Text = .UserNote
             'UserRating
             cbUserRating.Text = .UserRating.ToString
             'Videosource
@@ -753,6 +754,8 @@ Public Class dlgEdit_Movie
             .DateAdded = nDateAdded.ToString("yyyy-MM-dd HH:mm:ss")
             'Directors
             .Directors = DataGridView_RowsToList(dgvDirectors)
+            'Edition
+            .Edition = cbEdition.Text.Trim
             'FileInfo
             Dim cIndex = pnlFileInfo.Controls.IndexOfKey("dlgFileInfo")
             If Not cIndex = -1 Then
@@ -760,13 +763,10 @@ Public Class dlgEdit_Movie
                 tmpDBElement.Movie.FileInfo = nResult.Result
             End If
             'Genres
-            If clbGenres.CheckedItems.Count > 0 Then
-                If clbGenres.CheckedIndices.Contains(0) Then
-                    .Genres.Clear()
-                Else
-                    .Genres = clbGenres.CheckedItems.Cast(Of String).ToList
-                    .Genres.Sort()
-                End If
+            If lbGenres.Items.Count > 0 Then
+                .Genres = lbGenres.Items.Cast(Of String).ToList
+            Else
+                .Genres.Clear()
             End If
             'Movieset
             .Sets.Clear()
@@ -800,7 +800,7 @@ Public Class dlgEdit_Movie
             'Premiered
             .Premiered = dtpPremiered.Value.ToString("yyyy-MM-dd")
             'Ratings
-            .Ratings = Ratings_Get()
+            .Ratings.Items = Ratings_Get()
             'Runtime
             .Runtime = txtRuntime.Text.Trim
             'SortTitle
@@ -810,13 +810,10 @@ Public Class dlgEdit_Movie
             'Tagline
             .Tagline = txtTagline.Text.Trim
             'Tags
-            If clbTags.CheckedItems.Count > 0 Then
-                If clbTags.CheckedIndices.Contains(0) Then
-                    .Tags.Clear()
-                Else
-                    .Tags = clbTags.CheckedItems.Cast(Of String).ToList
-                    .Tags.Sort()
-                End If
+            If lbTags.Items.Count > 0 Then
+                .Tags = lbTags.Items.Cast(Of String).ToList
+            Else
+                .Tags.Clear()
             End If
             'Title
             .Title = txtTitle.Text.Trim
@@ -834,7 +831,9 @@ Public Class dlgEdit_Movie
                 End If
             End If
             'UniqueIDs
-            .UniqueIDs = UniqueIds_Get()
+            .UniqueIDs.Items = UniqueIds_Get()
+            'UserNote
+            .UserNote = txtUserNote.Text
             'UserRating
             .UserRating = CInt(cbUserRating.SelectedItem)
             'Watched/Lastplayed
@@ -932,6 +931,14 @@ Public Class dlgEdit_Movie
     '        Extrathumbs_DoSelect(iIndex - 1, CType(pnlExtrathumbsImage(iIndex - 1).Tag, MediaContainers.Image))
     '    End If
     'End Sub
+
+    Private Sub Editions_Fill()
+        If tmpDBElement.Movie.EditionSpecified Then
+            cbEdition.Items.Add(tmpDBElement.Movie.Edition)
+            cbEdition.SelectedItem = tmpDBElement.Movie.Edition
+        End If
+        cbEdition.Items.AddRange(Master.DB.GetAllEditions_Movie.Where(Function(f) Not cbEdition.Items.Contains(f)).ToArray)
+    End Sub
 
     Private Sub FrameExtraction_DelayTimer_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrDelay.Tick
         tmrDelay.Stop()
@@ -1034,24 +1041,39 @@ Public Class dlgEdit_Movie
         Dim sec2Time As New TimeSpan(0, 0, tbFrame.Value)
         lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
     End Sub
-    ''' <summary>
-    ''' Fills the genre list with selected genres first in list and all known genres from database as second
-    ''' </summary>
-    Private Sub Genres_Fill()
-        clbGenres.Items.Add(Master.eLang.None)
-        If tmpDBElement.Movie.GenresSpecified Then
-            tmpDBElement.Movie.Genres.Sort()
-            clbGenres.Items.AddRange(tmpDBElement.Movie.Genres.ToArray)
-            'enable all selected genres, skip the first entry "[none]"
-            For i As Integer = 1 To clbGenres.Items.Count - 1
-                clbGenres.SetItemChecked(i, True)
-            Next
-        Else
-            'select "[none]" if no genre has been specified
-            clbGenres.SetItemChecked(0, True)
+
+    Private Sub Genres_Add(sender As Object, e As EventArgs) Handles btnGenres_Add.Click
+        If Not String.IsNullOrEmpty(cbGenres.Text.Trim) AndAlso Not lbGenres.Items.Contains(cbGenres.Text.Trim) Then lbGenres.Items.Add(cbGenres.Text.Trim)
+    End Sub
+
+    Private Sub Genres_Down(sender As Object, e As EventArgs) Handles btnGenres_Down.Click
+        If lbGenres.SelectedIndex < lbGenres.Items.Count - 1 Then
+            Dim i = lbGenres.SelectedIndex + 2
+            lbGenres.Items.Insert(i, lbGenres.SelectedItem)
+            lbGenres.Items.RemoveAt(lbGenres.SelectedIndex)
+            lbGenres.SelectedIndex = i - 1
         End If
-        'add the rest of all genres
-        clbGenres.Items.AddRange(APIXML.GetGenreList.Where(Function(f) Not clbGenres.Items.Contains(f)).ToArray)
+    End Sub
+
+    Private Sub Genres_Fill()
+        If tmpDBElement.Movie.GenresSpecified Then
+            lbGenres.Items.AddRange(tmpDBElement.Movie.Genres.ToArray)
+        End If
+        'add the rest of all genres to the ComboBox
+        cbGenres.Items.AddRange(APIXML.GetGenreList.ToArray)
+    End Sub
+
+    Private Sub Genres_Remove(sender As Object, e As EventArgs) Handles btnGenres_Remove.Click
+        If lbGenres.SelectedItem IsNot Nothing Then lbGenres.Items.Remove(lbGenres.SelectedItem)
+    End Sub
+
+    Private Sub Genres_Up(sender As Object, e As EventArgs) Handles btnGenres_Up.Click
+        If lbGenres.SelectedIndex > 0 Then
+            Dim i = lbGenres.SelectedIndex - 1
+            lbGenres.Items.Insert(i, lbGenres.SelectedItem)
+            lbGenres.Items.RemoveAt(lbGenres.SelectedIndex)
+            lbGenres.SelectedIndex = i
+        End If
     End Sub
 
     Private Sub Image_Clipboard_Click(ByVal sender As Object, ByVal e As EventArgs) Handles _
@@ -1728,11 +1750,11 @@ Public Class dlgEdit_Movie
     Private Sub Ratings_Fill()
         dgvRatings.SuspendLayout()
 
-        For Each tRating In tmpDBElement.Movie.Ratings.OrderBy(Function(f) Not f.IsDefault)
+        For Each tRating In tmpDBElement.Movie.Ratings.Items.OrderBy(Function(f) Not f.IsDefault)
             Dim i As Integer = dgvRatings.Rows.Add
             dgvRatings.Rows(i).Tag = tRating
             dgvRatings.Rows(i).Cells(colRatingsDefault.Name).Value = tRating.IsDefault
-            dgvRatings.Rows(i).Cells(colRatingsSource.Name).Value = tRating.Name
+            dgvRatings.Rows(i).Cells(colRatingsSource.Name).Value = tRating.Type
             dgvRatings.Rows(i).Cells(colRatingsValue.Name).Value = tRating.Value
             dgvRatings.Rows(i).Cells(colRatingsMax.Name).Value = tRating.Max
             dgvRatings.Rows(i).Cells(colRatingsVotes.Name).Value = tRating.Votes
@@ -1756,7 +1778,7 @@ Public Class dlgEdit_Movie
                     nList.Add(New MediaContainers.RatingDetails With {
                              .IsDefault = CBool(r.Cells(colRatingsDefault.Name).Value),
                              .Max = iMax,
-                             .Name = r.Cells(colRatingsSource.Name).Value.ToString.Trim,
+                             .Type = r.Cells(colRatingsSource.Name).Value.ToString.Trim,
                              .Value = dblValue,
                              .Votes = iVotes
                              })
@@ -1885,29 +1907,34 @@ Public Class dlgEdit_Movie
             txtSubtitlesPreview.Clear()
         End If
     End Sub
-    ''' <summary>
-    ''' Fills the tag list with selected tags first in list and all known tags from database as second
-    ''' </summary>
-    Private Sub Tags_Fill()
-        clbTags.Items.Add(Master.eLang.None)
-        If tmpDBElement.Movie.TagsSpecified Then
-            tmpDBElement.Movie.Tags.Sort()
-            clbTags.Items.AddRange(tmpDBElement.Movie.Tags.ToArray)
-            'enable all selected tags, skip the first entry "[none]"
-            For i As Integer = 1 To clbTags.Items.Count - 1
-                clbTags.SetItemChecked(i, True)
-            Next
-        Else
-            'select "[none]" if no tag has been specified
-            clbTags.SetItemChecked(0, True)
-        End If
-        'add the rest of all tags
-        clbTags.Items.AddRange(Master.DB.GetAllTags.Where(Function(f) Not clbTags.Items.Contains(f)).ToArray)
+
+    Private Sub Tags_Add(sender As Object, e As EventArgs) Handles btnTags_Add.Click
+
     End Sub
 
-    Private Sub TextBox_NumericOnly(sender As Object, e As KeyPressEventArgs) Handles _
+    Private Sub Tags_Down(sender As Object, e As EventArgs) Handles btnTags_Down.Click
+
+    End Sub
+
+    Private Sub Tags_Fill()
+        If tmpDBElement.Movie.TagsSpecified Then
+            lbTags.Items.AddRange(tmpDBElement.Movie.Tags.ToArray)
+        End If
+        'add the rest of all tags to the ComboBox
+        cbTags.Items.AddRange(Master.DB.GetAllTags)
+    End Sub
+
+    Private Sub Tags_Remove(sender As Object, e As EventArgs) Handles btnTags_Remove.Click
+
+    End Sub
+
+    Private Sub Tags_Up(sender As Object, e As EventArgs) Handles btnTags_Up.Click
+
+    End Sub
+
+    Private Sub TextBox_UIntegerOnly(sender As Object, e As KeyPressEventArgs) Handles _
         txtTop250.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+        e.Handled = StringUtils.UIntegerOnly(e.KeyChar)
     End Sub
 
     Private Sub TextBox_SelectAll(ByVal sender As Object, e As KeyEventArgs) Handles _
@@ -2126,19 +2153,19 @@ Public Class dlgEdit_Movie
         dgvUniqueIds.ResumeLayout()
     End Sub
 
-    Private Function UniqueIds_Get() As MediaContainers.UniqueidContainer
-        Dim nList As New MediaContainers.UniqueidContainer
+    Private Function UniqueIds_Get() As List(Of MediaContainers.Uniqueid)
+        Dim nList As New List(Of MediaContainers.Uniqueid)
         For Each r As DataGridViewRow In dgvUniqueIds.Rows
             If Not r.IsNewRow Then
                 If r.Cells(colUniqueIdsType.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colUniqueIdsType.Name).Value.ToString.Trim) AndAlso
                     r.Cells(colUniqueIdsValue.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim) Then
-                    nList.Items.Add(New MediaContainers.Uniqueid With {
-                                    .IsDefault = CBool(r.Cells(colUniqueIdsDefault.Name).Value),
-                                    .Type = r.Cells(colUniqueIdsType.Name).Value.ToString.Trim,
-                                    .Value = r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim
-                                    })
+                    nList.Add(New MediaContainers.Uniqueid With {
+                              .IsDefault = CBool(r.Cells(colUniqueIdsDefault.Name).Value),
+                              .Type = r.Cells(colUniqueIdsType.Name).Value.ToString.Trim,
+                              .Value = r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim
+                              })
                 End If
             End If
         Next
@@ -2156,6 +2183,14 @@ Public Class dlgEdit_Movie
     Private Sub Watched_CheckedChanged(sender As Object, e As EventArgs) Handles chkWatched.CheckedChanged
         dtpLastPlayed_Date.Enabled = chkWatched.Checked
         dtpLastPlayed_Time.Enabled = chkWatched.Checked
+    End Sub
+
+    Private Sub Actors_Add(sender As Object, e As EventArgs) Handles btnActorsAdd.Click
+
+    End Sub
+
+    Private Sub Actors_Remove_Click(sender As Object, e As EventArgs) Handles btnActorsRemove.Click
+
     End Sub
 
 #End Region 'Methods

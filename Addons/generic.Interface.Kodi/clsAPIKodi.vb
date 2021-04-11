@@ -1263,8 +1263,8 @@ Namespace Kodi
 
                     'Ratings
                     Dim mRatings As New Dictionary(Of String, Video.Rating)
-                    For Each nRating In mDBElement.Movie.Ratings.Where(Function(f) f.ValueNormalizedSpezified)
-                        mRatings.Add(nRating.Name, New Video.Rating With {
+                    For Each nRating In mDBElement.Movie.Ratings.Items.Where(Function(f) f.ValueNormalizedSpezified)
+                        mRatings.Add(nRating.Type, New Video.Rating With {
                                      .[default] = nRating.IsDefault,
                                      .rating = nRating.ValueNormalized,
                                      .votes = nRating.Votes
@@ -1541,11 +1541,12 @@ Namespace Kodi
 
                     'Ratings
                     Dim mRatings As New Dictionary(Of String, Video.Rating)
-                    For Each nRating In mDBElement.TVEpisode.Ratings.Where(Function(f) f.ValueNormalizedSpezified)
-                        mRatings.Add(nRating.Name, New Video.Rating With {
+                    For Each nRating In mDBElement.TVEpisode.Ratings.Items.Where(Function(f) f.ValueNormalizedSpezified)
+                        mRatings.Add(nRating.Type, New Video.Rating With {
                                      .[default] = nRating.IsDefault,
                                      .rating = nRating.ValueNormalized,
-                                     .votes = nRating.Votes})
+                                     .votes = nRating.Votes
+                                     })
                     Next
                     'remove other ratings stored in Kodi's database
                     For Each oldRating In KodiElement.ratings.Where(Function(f) Not mRatings.ContainsKey(f.Key))
@@ -1832,11 +1833,12 @@ Namespace Kodi
 
                     'Ratings
                     Dim mRatings As New Dictionary(Of String, Video.Rating)
-                    For Each nRating In mDBElement.TVShow.Ratings.Where(Function(f) f.ValueNormalizedSpezified)
-                        mRatings.Add(nRating.Name, New Video.Rating With {
+                    For Each nRating In mDBElement.TVShow.Ratings.Items.Where(Function(f) f.ValueNormalizedSpezified)
+                        mRatings.Add(nRating.Type, New Video.Rating With {
                                      .[default] = nRating.IsDefault,
                                      .rating = nRating.ValueNormalized,
-                                     .votes = nRating.Votes})
+                                     .votes = nRating.Votes
+                                     })
                     Next
                     'remove other ratings stored in Kodi's database
                     For Each oldRating In KodiElement.ratings.Where(Function(f) Not mRatings.ContainsKey(f.Key))

@@ -403,7 +403,7 @@ Public Class Scraper
         'Countries
         If FilteredOptions.bMainCountries Then
             If Result.ProductionCountries IsNot Nothing AndAlso Result.ProductionCountries.Count > 0 Then
-                For Each aContry As TMDbLib.Objects.Movies.ProductionCountry In Result.ProductionCountries
+                For Each aContry As TMDbLib.Objects.General.ProductionCountry In Result.ProductionCountries
                     nMovie.Countries.Add(aContry.Name)
                 Next
             End If
@@ -487,7 +487,7 @@ Public Class Scraper
         If FilteredOptions.bMainRating Then
             nMovie.Ratings.Add(New MediaContainers.RatingDetails With {
                                .Max = 10,
-                               .Name = "themoviedb",
+                               .Type = "themoviedb",
                                .Value = Result.VoteAverage,
                                .Votes = Result.VoteCount
                                })
@@ -573,7 +573,7 @@ Public Class Scraper
 
         Dim Result As TMDbLib.Objects.Collections.Collection = APIResult.Result
         Dim nMovieSet As New MediaContainers.Movieset With {
-                .UniqueIDs = New MediaContainers.UniqueidContainer With {.TMDbId = Result.Id}
+                .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.MovieSet) With {.TMDbId = Result.Id}
             }
 
         If bwTMDB.CancellationPending Or Result Is Nothing Then Return Nothing
@@ -731,7 +731,7 @@ Public Class Scraper
         If filteredOptions.bEpisodeRating Then
             nTVEpisode.Ratings.Add(New MediaContainers.RatingDetails With {
                                    .Max = 10,
-                                   .Name = "themoviedb",
+                                   .Type = "themoviedb",
                                    .Value = Result.VoteAverage,
                                    .Votes = Result.VoteCount
                                    })
@@ -936,14 +936,14 @@ Public Class Scraper
 
         If bwTMDB.CancellationPending Then Return Nothing
 
-        'Countries 'TODO: Change from OriginCountry to ProductionCountries (not yet supported by API)
-        'If FilteredOptions.bMainCountry Then
-        '    If Show.OriginCountry IsNot Nothing AndAlso Show.OriginCountry.Count > 0 Then
-        '        For Each aCountry As String In Show.OriginCountry
-        '            nShow.Countries.Add(aCountry)
-        '        Next
-        '    End If
-        'End If
+        'Countries 
+        If filteredOptions.bMainCountries Then
+            If Result.ProductionCountries IsNot Nothing AndAlso Result.ProductionCountries.Count > 0 Then
+                For Each aCountry In Result.ProductionCountries
+                    nTVShow.Countries.Add(aCountry.Name)
+                Next
+            End If
+        End If
 
         If bwTMDB.CancellationPending Then Return Nothing
 
@@ -1014,7 +1014,7 @@ Public Class Scraper
         If filteredOptions.bMainRating Then
             nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {
                                     .Max = 10,
-                                    .Name = "themoviedb",
+                                    .Type = "themoviedb",
                                     .Value = Result.VoteAverage,
                                     .Votes = Result.VoteCount
                                     })
@@ -1416,7 +1416,7 @@ Public Class Scraper
                         .Plot = tPlot,
                         .Title = tTitle,
                         .ThumbPoster = tThumbPoster,
-                        .UniqueIDs = New MediaContainers.UniqueidContainer With {.TMDbId = aMovie.Id},
+                        .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.Movie) With {.TMDbId = aMovie.Id},
                         .Year = tYear
                         }
                         R.Matches.Add(lNewMovie)
@@ -1471,7 +1471,7 @@ Public Class Scraper
                         'End If
                         R.Matches.Add(New MediaContainers.Movieset With {
                                       .Title = strTitle,
-                                      .UniqueIDs = New MediaContainers.UniqueidContainer With {.TMDbId = aMovieSet.Id}
+                                      .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.MovieSet) With {.TMDbId = aMovieSet.Id}
                                       })
                     Next
                 End If
@@ -1529,7 +1529,7 @@ Public Class Scraper
                         R.Matches.Add(New MediaContainers.TVShow With {
                                       .Premiered = strYear,
                                       .Title = strTitle,
-                                      .UniqueIDs = New MediaContainers.UniqueidContainer With {.TMDbId = aShow.Id}
+                                      .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.TVShow) With {.TMDbId = aShow.Id}
                                       })
                     Next
                 End If

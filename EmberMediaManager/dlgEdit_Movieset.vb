@@ -853,8 +853,8 @@ Public Class dlgEdit_Movieset
         btnMovieRemove.Enabled = lvMoviesInSet.SelectedItems.Count > 0
     End Sub
 
-    Private Sub TextBox_NumericOnly(sender As Object, e As KeyPressEventArgs) Handles txtCollectionID.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    Private Sub TextBox_UIntegerOnly(sender As Object, e As KeyPressEventArgs) Handles txtCollectionID.KeyPress
+        e.Handled = StringUtils.UIntegerOnly(e.KeyChar)
     End Sub
 
     Private Sub TextBox_SelectAll(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown

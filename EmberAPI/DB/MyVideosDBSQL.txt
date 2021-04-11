@@ -197,7 +197,8 @@ CREATE TABLE episode (
         strIMDB         text,
         strTMDB         text,
         strTVDB         text,
-        iUserRating		integer NOT NULL DEFAULT 0
+        iUserRating		integer NOT NULL DEFAULT 0,
+		userNote		text
         );
 
         CREATE TRIGGER delete_episode
@@ -229,8 +230,9 @@ CREATE TABLE genre (
         );
 
 CREATE TABLE genrelinkmovie (
-        idGenre  integer,
-        idMovie  integer
+        idGenre	integer,
+        idMovie	integer,
+		iOrder	integer
         );
 
         CREATE UNIQUE INDEX ix_genrelinkmovie_1
@@ -242,8 +244,9 @@ CREATE TABLE genrelinkmovie (
         (idMovie, idGenre);
 
 CREATE TABLE genrelinktvshow (
-        idGenre  integer,
-        idShow   integer
+        idGenre	integer,
+        idShow	integer,
+		iOrder	integer
         );
 
         CREATE UNIQUE INDEX ix_genrelinktvshow_1
@@ -281,7 +284,8 @@ CREATE TABLE tag (
 CREATE TABLE taglinks (
         idTag       integer,
         idMedia     integer,
-        media_type  text
+        media_type  text,
+		iOrder		integer
         );
 
         CREATE UNIQUE INDEX ix_taglinks_1
@@ -349,7 +353,9 @@ CREATE TABLE movie (
         HasSet          bool NOT NULL DEFAULT 0,
         iLastPlayed     integer,
         Language        text,
-        iUserRating		integer NOT NULL DEFAULT 0
+        iUserRating		integer NOT NULL DEFAULT 0,
+		userNote		text,
+		edition			text
         );
 
         CREATE TRIGGER delete_movie
@@ -494,7 +500,9 @@ CREATE TABLE tvshow (
 		strIMDB				text,
 		strTMDB				text,
 		strOriginalTitle	text,
-		iUserRating			integer NOT NULL DEFAULT 0
+		iUserRating			integer NOT NULL DEFAULT 0,
+        Certification		text,
+		userNote			text
 		);
 
         CREATE UNIQUE INDEX UniqueTVShowPath

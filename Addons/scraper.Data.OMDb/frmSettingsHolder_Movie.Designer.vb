@@ -27,7 +27,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblApiKey = New System.Windows.Forms.Label()
         Me.txtApiKey = New System.Windows.Forms.TextBox()
-        Me.pbTMDBApiKeyInfo = New System.Windows.Forms.PictureBox()
+        Me.pbApiKeyInfo = New System.Windows.Forms.PictureBox()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
@@ -48,7 +48,7 @@ Partial Class frmSettingsHolder_Movie
         Me.lblInfoBottom = New System.Windows.Forms.Label()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
-        CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
@@ -84,7 +84,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperOpts.Controls.Add(Me.lblApiKey, 0, 0)
         Me.tblScraperOpts.Controls.Add(Me.txtApiKey, 1, 0)
-        Me.tblScraperOpts.Controls.Add(Me.pbTMDBApiKeyInfo, 2, 0)
+        Me.tblScraperOpts.Controls.Add(Me.pbApiKeyInfo, 2, 0)
         Me.tblScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperOpts.Name = "tblScraperOpts"
@@ -118,15 +118,15 @@ Partial Class frmSettingsHolder_Movie
         Me.txtApiKey.Size = New System.Drawing.Size(230, 22)
         Me.txtApiKey.TabIndex = 1
         '
-        'pbTMDBApiKeyInfo
+        'pbApiKeyInfo
         '
-        Me.pbTMDBApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pbTMDBApiKeyInfo.Image = CType(resources.GetObject("pbTMDBApiKeyInfo.Image"), System.Drawing.Image)
-        Me.pbTMDBApiKeyInfo.Location = New System.Drawing.Point(329, 6)
-        Me.pbTMDBApiKeyInfo.Name = "pbTMDBApiKeyInfo"
-        Me.pbTMDBApiKeyInfo.Size = New System.Drawing.Size(16, 16)
-        Me.pbTMDBApiKeyInfo.TabIndex = 5
-        Me.pbTMDBApiKeyInfo.TabStop = False
+        Me.pbApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbApiKeyInfo.Image = CType(resources.GetObject("pbApiKeyInfo.Image"), System.Drawing.Image)
+        Me.pbApiKeyInfo.Location = New System.Drawing.Point(329, 6)
+        Me.pbApiKeyInfo.Name = "pbApiKeyInfo"
+        Me.pbApiKeyInfo.Size = New System.Drawing.Size(16, 16)
+        Me.pbApiKeyInfo.TabIndex = 5
+        Me.pbApiKeyInfo.TabStop = False
         '
         'chkEnabled
         '
@@ -387,7 +387,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperOpts.PerformLayout()
         Me.tblScraperOpts.ResumeLayout(False)
         Me.tblScraperOpts.PerformLayout()
-        CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlSettingsTop.ResumeLayout(False)
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)
@@ -425,7 +425,7 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents gbScraperFieldsOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkIMDb As System.Windows.Forms.CheckBox
     Friend WithEvents chkMetascore As System.Windows.Forms.CheckBox
-    Friend WithEvents pbTMDBApiKeyInfo As System.Windows.Forms.PictureBox
+    Friend WithEvents pbApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkTomatometer As System.Windows.Forms.CheckBox
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel

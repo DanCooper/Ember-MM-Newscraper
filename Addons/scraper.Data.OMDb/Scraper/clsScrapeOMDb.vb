@@ -73,30 +73,27 @@ Public Class Scraper
     ''' </summary>
     ''' <param name="ImdbId">IMDb ID of movie to be scraped</param>
     ''' <returns>True: success, false: no success</returns>
-    Public Function GetInfo_Movie(ByVal ImdbId As String, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
+    Public Function GetRatingsByImbId(ByVal ImdbId As String, ByVal contentType As Enums.ContentType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.RatingContainer
         If String.IsNullOrEmpty(ImdbId) Then Return Nothing
 
         Dim APIResult As Task(Of OpenMovieDatabase.Models.Movie) = Nothing
         Dim intTMDBID As Integer = -1
 
         If ImdbId.ToLower.StartsWith("tt") Then
-            'search movie by IMDB ID
+            'search movie/tvshow/episode by IMDB ID
             APIResult = Task.Run(Function() _Client.SearchMovieByImdbIdAsync(ImdbId))
-            'ElseIf Integer.TryParse(ImdbId, intTMDBID) Then
-            '    'search movie by TMDB ID
-            '    APIResult = Task.Run(Function() _Client.GetMovieAsync(intTMDBID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
         Else
-            _Logger.Error(String.Format("Can't scrape or movie not found: [0]", ImdbId))
+            _Logger.Error(String.Format("Can't scrape or movie/tvshow/epissode not found with IMDb ID [0]", ImdbId))
             Return Nothing
         End If
 
         If APIResult Is Nothing OrElse APIResult.Result Is Nothing OrElse String.IsNullOrEmpty(APIResult.Result.ImdbId) OrElse APIResult.Exception IsNot Nothing Then
-            _Logger.Error(String.Format("Can't scrape or movie not found: [0]", ImdbId))
+            _Logger.Error(String.Format("Can't scrape or movie/tvshow/epissode not found with IMDb ID [0]", ImdbId))
             Return Nothing
         End If
 
         Dim Result As OpenMovieDatabase.Models.Movie = APIResult.Result
-        Dim nMovie As New MediaContainers.Movie With {.Scrapersource = "OMDb"}
+        Dim nRatings As New MediaContainers.RatingContainer(contentType)
 
         'Rating
         If FilteredOptions.bMainRating Then
@@ -105,23 +102,23 @@ Public Class Scraper
                 Dim dblRating As Double
                 Dim iVotes As Integer
                 If Double.TryParse(Result.ImdbRating, dblRating) AndAlso Integer.TryParse(NumUtils.CleanVotes(Result.ImdbVotes), iVotes) Then
-                    nMovie.Ratings.Add(New MediaContainers.RatingDetails With {
-                                       .Max = 10,
-                                       .Name = "imdb",
-                                       .Value = dblRating,
-                                       .Votes = iVotes
-                                       })
+                    nRatings.Add(New MediaContainers.RatingDetails With {
+                                 .Max = 10,
+                                 .Type = "imdb",
+                                 .Value = dblRating,
+                                 .Votes = iVotes
+                                 })
                 End If
             End If
             'Metascore
             If _addonSettings.Metascore AndAlso Result.Metascore IsNot Nothing Then
                 Dim dblRating As Double
                 If Double.TryParse(Result.Metascore, dblRating) Then
-                    nMovie.Ratings.Add(New MediaContainers.RatingDetails With {
-                                       .Max = 100,
-                                       .Name = "metacritic",
-                                       .Value = dblRating
-                                       })
+                    nRatings.Add(New MediaContainers.RatingDetails With {
+                                 .Max = 100,
+                                 .Type = "metacritic",
+                                 .Value = dblRating
+                                 })
                 End If
             End If
             'Rotten Tomatoes
@@ -132,17 +129,17 @@ Public Class Scraper
                             Dim dblRating As Double
                             Dim strRating = Regex.Match(tRating.Value, "\d*").Value
                             If Double.TryParse(strRating, dblRating) Then
-                                nMovie.Ratings.Add(New MediaContainers.RatingDetails With {
-                                                   .Max = 100,
-                                                   .Name = "tomatometerallcritics",
-                                                   .Value = dblRating
-                                                   })
+                                nRatings.Add(New MediaContainers.RatingDetails With {
+                                             .Max = 100,
+                                             .Type = "tomatometerallcritics",
+                                             .Value = dblRating
+                                             })
                             End If
                         End If
                 End Select
             Next
         End If
-        Return nMovie
+        Return nRatings
     End Function
 
 #End Region 'Methods

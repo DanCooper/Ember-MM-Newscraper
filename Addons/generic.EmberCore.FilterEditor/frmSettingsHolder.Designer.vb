@@ -342,6 +342,7 @@ Partial Class frmSettingsHolder
         Me.tblCustomTabs.Controls.Add(Me.btnCustomTabRemove, 2, 1)
         Me.tblCustomTabs.Controls.Add(Me.dgvCustomTab, 0, 0)
         Me.tblCustomTabs.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblCustomTabs.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.tblCustomTabs.Location = New System.Drawing.Point(3, 16)
         Me.tblCustomTabs.Name = "tblCustomTabs"
         Me.tblCustomTabs.RowCount = 3
@@ -420,7 +421,7 @@ Partial Class frmSettingsHolder
         Me.colCustomTabList.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
         Me.colCustomTabList.Width = 360
         '
-        'frmMediaListEditor
+        'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -429,7 +430,7 @@ Partial Class frmSettingsHolder
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmMediaListEditor"
+        Me.Name = "frmSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "frmFilterEditor"

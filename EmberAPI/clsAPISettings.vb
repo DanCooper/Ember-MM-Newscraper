@@ -268,7 +268,10 @@ Public Class Settings
     Public Property MovieScraperDurationRuntimeFormat() As String = "<m>"
     Public Property MovieScraperGenre() As Boolean = True
     Public Property MovieScraperGenreLimit() As Integer = 0
-    Public Property MovieScraperIdDefault() As String = "imdb"
+    Public Property MovieScraperIdDefaultType() As String = "imdb"
+    Public Property MovieScraperIdWriteNodeDefaultId() As Boolean = True
+    Public Property MovieScraperIdWriteNodeTMDbCollectionId() As Boolean = False
+    Public Property MovieScraperIdWriteNodeTMDbId() As Boolean = False
     Public Property MovieScraperMPAA() As Boolean = True
     Public Property MovieScraperMPAANotRated() As String = String.Empty
     <XmlIgnore>
@@ -288,9 +291,9 @@ Public Class Settings
     Public Property MovieScraperPlotForOutlineIfEmpty() As Boolean = False
     Public Property MovieScraperPremiered() As Boolean = True
     Public Property MovieScraperRating() As Boolean = True
-    Public Property MovieScraperRatingDefault() As String = "imdb"
-    Public Property MovieScraperRatingSingleRating() As Boolean = True
-    Public Property MovieScraperReleaseDate() As Boolean = True
+    Public Property MovieScraperRatingDefaultType() As String = "imdb"
+    Public Property MovieScraperRatingVotesWriteNode() As Boolean = True
+    Public Property MovieScraperReleaseDateWriteNode() As Boolean = True
     Public Property MovieScraperRuntime() As Boolean = True
     Public Property MovieScraperStudio() As Boolean = True
     Public Property MovieScraperStudioLimit() As Integer = 0
@@ -356,7 +359,8 @@ Public Class Settings
     Public Property MovieSetPosterPrefSizeOnly() As Boolean = False
     Public Property MovieSetPosterResize() As Boolean = False
     Public Property MovieSetPosterWidth() As Integer = 0
-    Public Property MovieSetScraperIdDefault() As String = "tmdb"
+    Public Property MovieSetScraperIdDefaultType() As String = "tmdb"
+    Public Property MovieSetScraperIdWriteNodeDefaultId() As Boolean = False
     Public Property MovieSetScraperPlot() As Boolean = True
     Public Property MovieSetScraperTitle() As Boolean = True
     Public Property MovieSetSortTokens() As List(Of String) = New List(Of String)
@@ -499,7 +503,7 @@ Public Class Settings
     Public Property TVScraperEpisodeOriginalTitle() As Boolean = True
     Public Property TVScraperEpisodePlot() As Boolean = True
     Public Property TVScraperEpisodeRating() As Boolean = True
-    Public Property TVScraperEpisodeRatingDefault() As String = "themoviedb"
+    Public Property TVScraperEpisodeRatingDefaultType() As String = "themoviedb"
     Public Property TVScraperEpisodeRuntime() As Boolean = True
     Public Property TVScraperEpisodeTitle() As Boolean = True
     Public Property TVScraperEpisodeUserRating() As Boolean = True
@@ -521,7 +525,11 @@ Public Class Settings
     Public Property TVScraperShowEpiGuideURL() As Boolean = False
     Public Property TVScraperShowGenre() As Boolean = True
     Public Property TVScraperShowGenreLimit() As Integer = 0
-    Public Property TVScraperShowIdDefault() As String = "tvdb"
+    Public Property TVScraperShowIdDefaultType() As String = "tvdb"
+    Public Property TVScraperShowIdWriteNodeDefaultId() As Boolean = True
+    Public Property TVScraperShowIdWriteNodeIMDbId() As Boolean = False
+    Public Property TVScraperShowIdWriteNodeTMDbId() As Boolean = False
+    Public Property TVScraperShowIdWriteNodeTVDbId() As Boolean = False
     Public Property TVScraperShowMPAA() As Boolean = True
     Public Property TVScraperShowMPAANotRated() As String = String.Empty
     Public Property TVScraperShowOriginalTitle() As Boolean = True
@@ -529,7 +537,7 @@ Public Class Settings
     Public Property TVScraperShowPlot() As Boolean = True
     Public Property TVScraperShowPremiered() As Boolean = True
     Public Property TVScraperShowRating() As Boolean = True
-    Public Property TVScraperShowRatingDefault() As String = "themoviedb"
+    Public Property TVScraperShowRatingDefaultType() As String = "themoviedb"
     Public Property TVScraperShowRuntime() As Boolean = True
     Public Property TVScraperShowStatus() As Boolean = True
     Public Property TVScraperShowStudio() As Boolean = True
@@ -1144,7 +1152,7 @@ Public Class Settings
             Master.eSettings.MovieSortTokens.Add("the\s")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MoviesetSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty)) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty)) Then
             Master.eSettings.MovieSetSortTokens.Clear()
             Master.eSettings.MovieSetSortTokens.Add("a\s")
             Master.eSettings.MovieSetSortTokens.Add("an\s")
@@ -1234,7 +1242,7 @@ Public Class Settings
             Next
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MoviesetListSorting) AndAlso (Force OrElse Master.eSettings.MovieSetGeneralMediaListSorting.Count <= 0) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetListSorting) AndAlso (Force OrElse Master.eSettings.MovieSetGeneralMediaListSorting.Count <= 0) Then
             Master.eSettings.MovieSetGeneralMediaListSorting.Clear()
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.Hide = False, .Column = "ListTitle", .LabelID = 21, .LabelText = "Title"})
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.Hide = True, .Column = "Language", .LabelID = 610, .LabelText = "Language"})

@@ -24,14 +24,6 @@ Imports System.Windows.Forms
 Public Class genericMediaListEditor
     Implements Interfaces.GenericModule
 
-#Region "Delegates"
-
-    Public Delegate Sub Delegate_SetTabPageItem(value As TabPage)
-    Public Delegate Sub Delegate_RemoveTabPageItem(value As TabPage)
-    Public Delegate Sub Delegate_TabPageAdd(cTabs As List(Of TabPage), tabc As System.Windows.Forms.TabControl)
-
-#End Region 'Delegates
-
 #Region "Fields"
 
     Private _AssemblyName As String = String.Empty
@@ -42,12 +34,9 @@ Public Class genericMediaListEditor
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
-
     Public Event ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
-
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
 
 #End Region 'Events
@@ -59,7 +48,7 @@ Public Class genericMediaListEditor
             Return True
         End Get
         Set(ByVal value As Boolean)
-            Enable()
+            Return
         End Set
     End Property
 
@@ -95,7 +84,7 @@ Public Class genericMediaListEditor
         _AssemblyName = sAssemblyName
     End Sub
 
-    Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
+    Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmSettingsHolder
         SPanel.Name = _name
@@ -119,8 +108,8 @@ Public Class genericMediaListEditor
         RaiseEvent SetupNeedsRestart()
     End Sub
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+        Return New Interfaces.ModuleResult
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
@@ -132,46 +121,6 @@ Public Class genericMediaListEditor
         End If
     End Sub
 
-    Sub Enable()
-        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
-        If CustomTabs IsNot Nothing Then
-            Dim tabc As New TabControl
-            Dim NewCustomTabs As New List(Of TabPage)
-            tabc = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTabControl, TabControl)
-            For Each cTab In CustomTabs
-                If Master.DB.ViewExists(cTab.Value) Then
-                    Dim cTabType As Enums.ContentType = Enums.ContentType.None
-                    If cTab.Value.StartsWith("movie-") Then
-                        cTabType = Enums.ContentType.Movie
-                    ElseIf cTab.Value.StartsWith("sets-") Then
-                        cTabType = Enums.ContentType.MovieSet
-                    ElseIf cTab.Value.StartsWith("tvshow-") Then
-                        cTabType = Enums.ContentType.TV
-                    End If
-                    If Not cTabType = Enums.ContentType.None AndAlso Not String.IsNullOrEmpty(cTab.Name) Then
-                        Dim NewTabPage As New TabPage
-                        NewTabPage.Text = cTab.Name
-                        NewTabPage.Tag = New Structures.MainTabType With {.ContentName = cTab.Name, .ContentType = cTabType, .DefaultList = cTab.Value}
-                        NewCustomTabs.Add(NewTabPage)
-                    End If
-                End If
-            Next
-            TabPageAdd(NewCustomTabs, tabc)
-        End If
-    End Sub
-
-    Public Sub TabPageAdd(cTabs As List(Of TabPage), tabc As System.Windows.Forms.TabControl)
-        If (tabc.InvokeRequired) Then
-            tabc.Invoke(New Delegate_TabPageAdd(AddressOf TabPageAdd), New Object() {cTabs, tabc})
-            Exit Sub
-        End If
-        tabc.TabPages.AddRange(cTabs.ToArray)
-    End Sub
-
 #End Region 'Methods
-
-#Region "Nested Types"
-
-#End Region 'Nested Types
 
 End Class

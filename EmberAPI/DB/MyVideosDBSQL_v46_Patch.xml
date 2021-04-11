@@ -375,15 +375,55 @@
     </command>
     <!-- END uniqueid related modifications -->
 
+    <!-- START table genrelinkmovie/genrelinktvshow/taglinks modifications-->
+    <command type="DB">
+      <description>add "order" to tables genrelinkmovie/genrelinktvshow/taglinks</description>
+      <execute>
+        ALTER TABLE genrelinkmovie
+        ADD COLUMN iOrder integer;
+        ALTER TABLE genrelinktvshow
+        ADD COLUMN iOrder integer;
+        ALTER TABLE taglinks
+        ADD COLUMN iOrder integer;
+      </execute>
+    </command>
+    <!-- END table genrelinkmovie/genrelinktvshow/taglinks modifications-->
+
     <!-- START table/view episode/episodelist modifications-->
     <command type="DB">
-      <description>add "OriginalTitle" to table episode</description>
+      <description>add "OriginalTitle" and "userNote" to table episode</description>
       <execute>
         ALTER TABLE episode
         ADD COLUMN OriginalTitle text;
+        ALTER TABLE episode
+        ADD COLUMN userNote;
       </execute>
     </command>
     <!-- END table/view episode/episodelist modifications-->
+
+    <!-- START table/view movie/movielist modifications-->
+    <command type="DB">
+      <description>add "userNote" and "edition" to table movie</description>
+      <execute>
+        ALTER TABLE movie
+        ADD COLUMN userNote text;
+        ALTER TABLE movie
+        ADD COLUMN edition text;
+      </execute>
+    </command>
+    <!-- END table/view tvshow/tvshowlist modifications-->
+
+    <!-- START table/view tvshow/tvshowlist modifications-->
+    <command type="DB">
+      <description>add "Certification" and "userNote" to table tvshow</description>
+      <execute>
+        ALTER TABLE tvshow
+        ADD COLUMN Certification text;
+        ALTER TABLE tvshow
+        ADD COLUMN userNote text;
+      </execute>
+    </command>
+    <!-- END table/view tvshow/tvshowlist modifications-->
 
     <!-- START delete trigger modifications-->
     <command type="DB">

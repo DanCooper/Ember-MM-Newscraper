@@ -747,17 +747,32 @@ Public Class StringUtils
     ''' <summary>
     ''' Determines whether the supplied character is valid for a numeric-only field such as a text-box.
     ''' </summary>
-    ''' <param name="KeyChar"><c>Char</c> to evaluate</param>
-    ''' <param name="isIP"></param>
-    ''' <returns><c>False</c> if <paramref name="KeyChar"/> is something that should be kept (and processed by the
+    ''' <param name="keyChar"><c>Char</c> to evaluate</param>
+    ''' <returns><c>False</c> if <paramref name="keyChar"/> is something that should be kept (and processed by the
     ''' underlying control) or <c>True</c> if it should be ignored.</returns>
     ''' <remarks>Intended to be used when determining whether a textbox or equivalent numeric-only field should
     ''' handle a keypress or not, this method returns <c>True</c> when the key should be ignored and not processed,
     ''' and <c>False</c> when it should be allowed to pass and be processed.
     ''' </remarks>
-    Public Shared Function NumericOnly(ByVal KeyChar As Char, Optional ByVal isIP As Boolean = False) As Boolean
-        'TODO Dekker500 - This method is horribly named. It should be something like "IsInvalidNumericChar". Also, why are we allowing control chars, whitespace, or period?
-        If Char.IsNumber(KeyChar) OrElse Char.IsControl(KeyChar) OrElse (isIP AndAlso Convert.ToInt32(KeyChar) = 46) Then
+    Public Shared Function IntegerOnly(ByVal keyChar As Char) As Boolean
+        If Char.IsNumber(keyChar) OrElse Char.IsControl(keyChar) OrElse Convert.ToInt32(keyChar) = 45 Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
+    ''' <summary>
+    ''' Determines whether the supplied character is valid for a numeric-only field such as a text-box.
+    ''' </summary>
+    ''' <param name="keyChar"><c>Char</c> to evaluate</param>
+    ''' <returns><c>False</c> if <paramref name="keyChar"/> is something that should be kept (and processed by the
+    ''' underlying control) or <c>True</c> if it should be ignored.</returns>
+    ''' <remarks>Intended to be used when determining whether a textbox or equivalent numeric-only field should
+    ''' handle a keypress or not, this method returns <c>True</c> when the key should be ignored and not processed,
+    ''' and <c>False</c> when it should be allowed to pass and be processed.
+    ''' </remarks>
+    Public Shared Function UIntegerOnly(ByVal keyChar As Char) As Boolean
+        If Char.IsDigit(keyChar) OrElse Char.IsControl(keyChar) Then
             Return False
         Else
             Return True

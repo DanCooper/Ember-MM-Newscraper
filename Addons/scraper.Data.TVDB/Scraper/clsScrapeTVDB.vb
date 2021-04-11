@@ -149,7 +149,7 @@ Namespace TVDBs
                         R.Matches.Add(New MediaContainers.TVShow With {
                                       .Premiered = strPremiered,
                                       .Title = strTitle,
-                                      .UniqueIDs = New MediaContainers.UniqueidContainer With {.TVDbId = aShow.Id}
+                                      .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.TVShow) With {.TVDbId = aShow.Id}
                                       })
                     End If
                 Next
@@ -293,8 +293,12 @@ Namespace TVDBs
 
             'Rating
             If FilteredOptions.bMainRating Then
-                nTVShow.Rating = CStr(TVShowInfo.Series.Rating)
-                nTVShow.Votes = CStr(TVShowInfo.Series.RatingCount)
+                nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {
+                                    .Max = 10,
+                                    .Type = "tvdb",
+                                    .Value = TVShowInfo.Series.Rating,
+                                    .Votes = TVShowInfo.Series.RatingCount
+                                    })
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
@@ -336,7 +340,7 @@ Namespace TVDBs
                     If lSeasonList.Count = 0 Then
                         nTVShow.KnownSeasons.Add(New MediaContainers.SeasonDetails With {
                                                  .Season = aEpisode.SeasonNumber,
-                                                 .UniqueIDs = New MediaContainers.UniqueidContainer With {.TVDbId = aEpisode.SeasonId}
+                                                 .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.TVSeason) With {.TVDbId = aEpisode.SeasonId}
                                                  })
                     End If
                 End If
@@ -532,9 +536,13 @@ Namespace TVDBs
             End If
 
             'Rating
-            If FilteredOptions.bEpisodeRating Then
-                nEpisode.Rating = CStr(EpisodeInfo.Rating)
-                nEpisode.Votes = CStr(EpisodeInfo.RatingCount)
+            If FilteredOptions.bMainRating Then
+                nEpisode.Ratings.Add(New MediaContainers.RatingDetails With {
+                                     .Max = 10,
+                                     .Type = "tvdb",
+                                     .Value = EpisodeInfo.Rating,
+                                     .Votes = EpisodeInfo.RatingCount
+                                     })
             End If
 
             'ThumbPoster

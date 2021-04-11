@@ -232,7 +232,7 @@ Public Class clsAPITrakt
                 If nGlobalRating IsNot Nothing AndAlso nGlobalRating.Rating IsNot Nothing AndAlso nGlobalRating.Votes IsNot Nothing Then
                     nMovie.Ratings.Add(New MediaContainers.RatingDetails With {
                                        .Max = 10,
-                                       .Name = "trakt",
+                                       .Type = "trakt",
                                        .Value = Math.Round(nGlobalRating.Rating.Value, 1),
                                        .Votes = CInt(nGlobalRating.Votes)
                                        })
@@ -280,7 +280,7 @@ Public Class clsAPITrakt
                 If nGlobalRating IsNot Nothing AndAlso nGlobalRating.Rating IsNot Nothing AndAlso nGlobalRating.Votes IsNot Nothing Then
                     nTVEpisode.Ratings.Add(New MediaContainers.RatingDetails With {
                                            .Max = 10,
-                                           .Name = "trakt",
+                                           .Type = "trakt",
                                            .Value = CDbl(Math.Round(nGlobalRating.Rating.Value, 1)),
                                            .Votes = CInt(nGlobalRating.Votes)
                                            })
@@ -324,7 +324,7 @@ Public Class clsAPITrakt
                 If nGlobalRating IsNot Nothing AndAlso nGlobalRating.Rating IsNot Nothing AndAlso nGlobalRating.Votes IsNot Nothing Then
                     nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {
                                         .Max = 10,
-                                        .Name = "trakt",
+                                        .Type = "trakt",
                                         .Value = CDbl(Math.Round(nGlobalRating.Rating.Value, 1)),
                                         .Votes = CInt(nGlobalRating.Votes)
                                         })

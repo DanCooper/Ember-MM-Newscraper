@@ -476,10 +476,6 @@ Public Class dlgEdit_TVSeason
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub TextBox_NumericOnly(sender As Object, e As KeyPressEventArgs)
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
     Private Sub TextBox_SelectAll(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
         If e.KeyData = (Keys.Control Or Keys.A) Then
             DirectCast(sender, TextBox).SelectAll()

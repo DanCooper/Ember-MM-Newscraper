@@ -637,7 +637,7 @@ Public Class dlgEdit_TVShow
             'Premiered
             .Premiered = dtpPremiered.Value.ToString("yyyy-MM-dd")
             'Ratings
-            .Ratings = Ratings_Get()
+            .Ratings.Items = Ratings_Get()
             'Runtime
             .Runtime = txtRuntime.Text.Trim
             'SortTitle
@@ -658,7 +658,7 @@ Public Class dlgEdit_TVShow
             'Title
             .Title = txtTitle.Text.Trim
             'UniqueIDs
-            .UniqueIDs = UniqueIds_Get()
+            .UniqueIDs.Items = UniqueIds_Get()
             'UserRating
             .UserRating = CInt(cbUserRating.SelectedItem)
         End With
@@ -1272,11 +1272,11 @@ Public Class dlgEdit_TVShow
     Private Sub Ratings_Fill()
         dgvRatings.SuspendLayout()
 
-        For Each tRating In tmpDBElement.TVShow.Ratings.OrderBy(Function(f) Not f.IsDefault)
+        For Each tRating In tmpDBElement.TVShow.Ratings.Items.OrderBy(Function(f) Not f.IsDefault)
             Dim i As Integer = dgvRatings.Rows.Add
             dgvRatings.Rows(i).Tag = tRating
             dgvRatings.Rows(i).Cells(colRatingsDefault.Name).Value = tRating.IsDefault
-            dgvRatings.Rows(i).Cells(colRatingsSource.Name).Value = tRating.Name
+            dgvRatings.Rows(i).Cells(colRatingsSource.Name).Value = tRating.Type
             dgvRatings.Rows(i).Cells(colRatingsValue.Name).Value = tRating.Value
             dgvRatings.Rows(i).Cells(colRatingsMax.Name).Value = tRating.Max
             dgvRatings.Rows(i).Cells(colRatingsVotes.Name).Value = tRating.Votes
@@ -1298,9 +1298,9 @@ Public Class dlgEdit_TVShow
                     Double.TryParse(r.Cells(colRatingsValue.Name).Value.ToString, dblValue) AndAlso
                     Integer.TryParse(r.Cells(colRatingsVotes.Name).Value.ToString, iVotes) Then
                     nList.Add(New MediaContainers.RatingDetails With {
-                             .IsDefault = CBool(r.Cells(colRatingsDefault.Name).Value),
+                              .IsDefault = CBool(r.Cells(colRatingsDefault.Name).Value),
                              .Max = iMax,
-                             .Name = r.Cells(colRatingsSource.Name).Value.ToString.Trim,
+                             .Type = r.Cells(colRatingsSource.Name).Value.ToString.Trim,
                              .Value = dblValue,
                              .Votes = iVotes
                              })
@@ -1327,10 +1327,6 @@ Public Class dlgEdit_TVShow
         End If
         'add the rest of all tags
         clbTags.Items.AddRange(Master.DB.GetAllTags.Where(Function(f) Not clbTags.Items.Contains(f)).ToArray)
-    End Sub
-
-    Private Sub TextBox_NumericOnly(sender As Object, e As KeyPressEventArgs)
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub TextBox_SelectAll(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
@@ -1409,19 +1405,19 @@ Public Class dlgEdit_TVShow
         dgvUniqueIds.ResumeLayout()
     End Sub
 
-    Private Function UniqueIds_Get() As MediaContainers.UniqueidContainer
-        Dim nList As New MediaContainers.UniqueidContainer
+    Private Function UniqueIds_Get() As List(Of MediaContainers.Uniqueid)
+        Dim nList As New List(Of MediaContainers.Uniqueid)
         For Each r As DataGridViewRow In dgvUniqueIds.Rows
             If Not r.IsNewRow Then
                 If r.Cells(colUniqueIdsType.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colUniqueIdsType.Name).Value.ToString.Trim) AndAlso
                     r.Cells(colUniqueIdsValue.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim) Then
-                    nList.Items.Add(New MediaContainers.Uniqueid With {
-                                    .IsDefault = CBool(r.Cells(colUniqueIdsDefault.Name).Value),
-                                    .Type = r.Cells(colUniqueIdsType.Name).Value.ToString.Trim,
-                                    .Value = r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim
-                                    })
+                    nList.Add(New MediaContainers.Uniqueid With {
+                              .IsDefault = CBool(r.Cells(colUniqueIdsDefault.Name).Value),
+                              .Type = r.Cells(colUniqueIdsType.Name).Value.ToString.Trim,
+                              .Value = r.Cells(colUniqueIdsValue.Name).Value.ToString.Trim
+                              })
                 End If
             End If
         Next

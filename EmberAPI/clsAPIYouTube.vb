@@ -94,6 +94,7 @@ Namespace YouTube
                     Dim nStreams = SetInformationByITag(nResults)
                     If nStreams IsNot Nothing Then
                         Return New MediaContainers.MediaFile With {
+                            .Duration = StringUtils.SecondsToDuration(nResults(0).Info.LengthSeconds.ToString),
                             .Source = "YouTube",
                             .Streams = nStreams,
                             .Title = nResults(0).Title,

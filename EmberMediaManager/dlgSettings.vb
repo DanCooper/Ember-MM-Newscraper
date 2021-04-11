@@ -3113,6 +3113,9 @@ Public Class dlgSettings
             chkMovieScraperCountry.Checked = .MovieScraperCountry
             chkMovieScraperDirector.Checked = .MovieScraperDirector
             chkMovieScraperGenre.Checked = .MovieScraperGenre
+            chkMovieScraperIdWriteNodeDefaultId.Checked = .MovieScraperIdWriteNodeDefaultId
+            chkMovieScraperIdWriteNodeTMDbCollectionId.Checked = .MovieScraperIdWriteNodeTMDbCollectionId
+            chkMovieScraperIdWriteNodeTMDbId.Checked = .MovieScraperIdWriteNodeTMDbId
             chkMovieScraperMetaDataIFOScan.Checked = .MovieScraperMetaDataIFOScan
             chkMovieScraperMetaDataScan.Checked = .MovieScraperMetaDataScan
             chkMovieScraperMPAA.Checked = .MovieScraperMPAA
@@ -3124,8 +3127,8 @@ Public Class dlgSettings
             chkMovieScraperPlotForOutlineIfEmpty.Checked = .MovieScraperPlotForOutlineIfEmpty
             chkMovieScraperPremiered.Checked = .MovieScraperPremiered
             chkMovieScraperRatings.Checked = .MovieScraperRating
-            chkMovieScraperRatingSingleRating.Checked = .MovieScraperRatingSingleRating
-            chkMovieScraperReleaseDate.Checked = .MovieScraperReleaseDate
+            chkMovieScraperRatingVotesWriteNode.Checked = .MovieScraperRatingVotesWriteNode
+            chkMovieScraperReleaseDateWriteNode.Checked = .MovieScraperReleaseDateWriteNode
             chkMovieScraperRuntime.Checked = .MovieScraperRuntime
             chkMovieScraperStudio.Checked = .MovieScraperStudio
             chkMovieScraperStudioWithImg.Checked = .MovieScraperStudioWithImgOnly
@@ -3197,7 +3200,7 @@ Public Class dlgSettings
             chkTVLockEpisodeLanguageA.Checked = .TVLockEpisodeLanguageA
             chkTVLockEpisodeLanguageV.Checked = .TVLockEpisodeLanguageV
             chkTVLockEpisodePlot.Checked = .TVLockEpisodePlot
-            chkTVLockEpisodeRating.Checked = .TVLockEpisodeRating
+            chkTVLockEpisodeRatings.Checked = .TVLockEpisodeRating
             chkTVLockEpisodeRuntime.Checked = .TVLockEpisodeRuntime
             chkTVLockEpisodeTitle.Checked = .TVLockEpisodeTitle
             chkTVLockEpisodeUserRating.Checked = .TVLockEpisodeUserRating
@@ -3209,7 +3212,7 @@ Public Class dlgSettings
             chkTVLockShowMPAA.Checked = .TVLockShowMPAA
             chkTVLockShowOriginalTitle.Checked = .TVLockShowOriginalTitle
             chkTVLockShowPlot.Checked = .TVLockShowPlot
-            chkTVLockShowRating.Checked = .TVLockShowRating
+            chkTVLockShowRatings.Checked = .TVLockShowRating
             chkTVLockShowRuntime.Checked = .TVLockShowRuntime
             chkTVLockShowStatus.Checked = .TVLockShowStatus
             chkTVLockShowStudio.Checked = .TVLockShowStudio
@@ -3225,10 +3228,11 @@ Public Class dlgSettings
             chkTVScraperEpisodeGuestStars.Checked = .TVScraperEpisodeGuestStars
             chkTVScraperEpisodeGuestStarsToActors.Checked = .TVScraperEpisodeGuestStarsToActors
             chkTVScraperEpisodePlot.Checked = .TVScraperEpisodePlot
-            chkTVScraperEpisodeRating.Checked = .TVScraperEpisodeRating
+            chkTVScraperEpisodeRatings.Checked = .TVScraperEpisodeRating
             chkTVScraperEpisodeRuntime.Checked = .TVScraperEpisodeRuntime
             chkTVScraperEpisodeTitle.Checked = .TVScraperEpisodeTitle
             chkTVScraperEpisodeUserRating.Checked = .TVScraperEpisodeUserRating
+            chkTVScraperIdWriteNodeDefaultId.Checked = .TVScraperShowIdWriteNodeDefaultId
             chkTVScraperMetaDataScan.Checked = .TVScraperMetaDataScan
             chkTVScraperSeasonAired.Checked = .TVScraperSeasonAired
             chkTVScraperSeasonPlot.Checked = .TVScraperSeasonPlot
@@ -3246,7 +3250,7 @@ Public Class dlgSettings
             chkTVScraperShowOriginalTitleAsTitle.Checked = .TVScraperShowOriginalTitleAsTitle
             chkTVScraperShowPlot.Checked = .TVScraperShowPlot
             chkTVScraperShowPremiered.Checked = .TVScraperShowPremiered
-            chkTVScraperShowRating.Checked = .TVScraperShowRating
+            chkTVScraperShowRatings.Checked = .TVScraperShowRating
             chkTVScraperShowRuntime.Checked = .TVScraperShowRuntime
             chkTVScraperShowStatus.Checked = .TVScraperShowStatus
             chkTVScraperShowStudio.Checked = .TVScraperShowStudio
@@ -3344,9 +3348,10 @@ Public Class dlgSettings
             txtMovieScraperCountryLimit.Text = .MovieScraperCountryLimit.ToString
             txtMovieScraperDurationRuntimeFormat.Text = .MovieScraperDurationRuntimeFormat
             txtMovieScraperGenreLimit.Text = .MovieScraperGenreLimit.ToString
+            txtMovieScraperIdDefaultType.Text = .MovieScraperIdDefaultType
             txtMovieScraperMPAANotRated.Text = .MovieScraperMPAANotRated
             txtMovieScraperOutlineLimit.Text = .MovieScraperOutlineLimit.ToString
-            txtMovieScraperRatingDefault.Text = .MovieScraperRatingDefault
+            txtMovieScraperRatingDefaultType.Text = .MovieScraperRatingDefaultType
             txtMovieScraperStudioLimit.Text = .MovieScraperStudioLimit.ToString
             txtMovieSkipLessThan.Text = .MovieSkipLessThan.ToString
             txtMovieThemeDefaultSearch.Text = .MovieThemeDefaultSearch
@@ -4064,9 +4069,9 @@ Public Class dlgSettings
 
     Private Sub LoadLangs()
         cbMovieLanguageOverlay.Items.Add(Master.eLang.Disabled)
-        cbMovieLanguageOverlay.Items.AddRange(Localization.IsoLangGetLanguagesList.ToArray)
+        cbMovieLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
         cbTVLanguageOverlay.Items.Add(Master.eLang.Disabled)
-        cbTVLanguageOverlay.Items.AddRange(Localization.IsoLangGetLanguagesList.ToArray)
+        cbTVLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
     End Sub
 
     Private Sub LoadMovieGeneralMediaListSorting()
@@ -5141,6 +5146,10 @@ Public Class dlgSettings
             .MovieScraperDurationRuntimeFormat = txtMovieScraperDurationRuntimeFormat.Text
             .MovieScraperGenre = chkMovieScraperGenre.Checked
             Integer.TryParse(txtMovieScraperGenreLimit.Text, .MovieScraperGenreLimit)
+            .MovieScraperIdDefaultType = txtMovieScraperIdDefaultType.Text
+            .MovieScraperIdWriteNodeDefaultId = chkMovieScraperIdWriteNodeDefaultId.Checked
+            .MovieScraperIdWriteNodeTMDbCollectionId = chkMovieScraperIdWriteNodeTMDbCollectionId.Checked
+            .MovieScraperIdWriteNodeTMDbId = chkMovieScraperIdWriteNodeTMDbId.Checked
             .MovieScraperMetaDataIFOScan = chkMovieScraperMetaDataIFOScan.Checked
             .MovieScraperMetaDataScan = chkMovieScraperMetaDataScan.Checked
             .MovieScraperMPAA = chkMovieScraperMPAA.Checked
@@ -5158,9 +5167,9 @@ Public Class dlgSettings
             .MovieScraperPlotForOutlineIfEmpty = chkMovieScraperPlotForOutlineIfEmpty.Checked
             .MovieScraperPremiered = chkMovieScraperPremiered.Checked
             .MovieScraperRating = chkMovieScraperRatings.Checked
-            .MovieScraperRatingDefault = txtMovieScraperRatingDefault.Text
-            .MovieScraperRatingSingleRating = chkMovieScraperRatingSingleRating.Checked
-            .MovieScraperReleaseDate = chkMovieScraperReleaseDate.Checked
+            .MovieScraperRatingDefaultType = txtMovieScraperRatingDefaultType.Text
+            .MovieScraperRatingVotesWriteNode = chkMovieScraperRatingVotesWriteNode.Checked
+            .MovieScraperReleaseDateWriteNode = chkMovieScraperReleaseDateWriteNode.Checked
             .MovieScraperRuntime = chkMovieScraperRuntime.Checked
             .MovieScraperStudio = chkMovieScraperStudio.Checked
             .MovieScraperStudioWithImgOnly = chkMovieScraperStudioWithImg.Checked
@@ -5263,7 +5272,7 @@ Public Class dlgSettings
             .TVLockEpisodeLanguageA = chkTVLockEpisodeLanguageA.Checked
             .TVLockEpisodeLanguageV = chkTVLockEpisodeLanguageV.Checked
             .TVLockEpisodePlot = chkTVLockEpisodePlot.Checked
-            .TVLockEpisodeRating = chkTVLockEpisodeRating.Checked
+            .TVLockEpisodeRating = chkTVLockEpisodeRatings.Checked
             .TVLockEpisodeRuntime = chkTVLockEpisodeRuntime.Checked
             .TVLockEpisodeTitle = chkTVLockEpisodeTitle.Checked
             .TVLockEpisodeUserRating = chkTVLockEpisodeUserRating.Checked
@@ -5275,7 +5284,7 @@ Public Class dlgSettings
             .TVLockShowMPAA = chkTVLockShowMPAA.Checked
             .TVLockShowOriginalTitle = chkTVLockShowOriginalTitle.Checked
             .TVLockShowPlot = chkTVLockShowPlot.Checked
-            .TVLockShowRating = chkTVLockShowRating.Checked
+            .TVLockShowRating = chkTVLockShowRatings.Checked
             .TVLockShowRuntime = chkTVLockShowRuntime.Checked
             .TVLockShowStatus = chkTVLockShowStatus.Checked
             .TVLockShowStudio = chkTVLockShowStudio.Checked
@@ -5297,7 +5306,7 @@ Public Class dlgSettings
             Integer.TryParse(txtTVScraperEpisodeGuestStarsLimit.Text, .TVScraperEpisodeGuestStarsLimit)
             .TVScraperEpisodeGuestStarsToActors = chkTVScraperEpisodeGuestStarsToActors.Checked
             .TVScraperEpisodePlot = chkTVScraperEpisodePlot.Checked
-            .TVScraperEpisodeRating = chkTVScraperEpisodeRating.Checked
+            .TVScraperEpisodeRating = chkTVScraperEpisodeRatings.Checked
             .TVScraperEpisodeRuntime = chkTVScraperEpisodeRuntime.Checked
             .TVScraperEpisodeTitle = chkTVScraperEpisodeTitle.Checked
             .TVScraperEpisodeUserRating = chkTVScraperEpisodeUserRating.Checked
@@ -5329,7 +5338,7 @@ Public Class dlgSettings
             .TVScraperShowMPAANotRated = txtTVScraperShowMPAANotRated.Text
             .TVScraperShowPlot = chkTVScraperShowPlot.Checked
             .TVScraperShowPremiered = chkTVScraperShowPremiered.Checked
-            .TVScraperShowRating = chkTVScraperShowRating.Checked
+            .TVScraperShowRating = chkTVScraperShowRatings.Checked
             .TVScraperShowRuntime = chkTVScraperShowRuntime.Checked
             .TVScraperShowStatus = chkTVScraperShowStatus.Checked
             .TVScraperShowStudio = chkTVScraperShowStudio.Checked
@@ -6651,7 +6660,7 @@ Public Class dlgSettings
         'Rating
         Dim strRatings As String = Master.eLang.GetString(1145, "Ratings")
         lblMovieScraperGlobalRatings.Text = strRatings
-        lblTVScraperGlobalRating.Text = strRatings
+        lblTVScraperGlobalRatings.Text = strRatings
 
         'Runtime
         Dim strRuntime As String = Master.eLang.GetString(238, "Runtime")
@@ -6888,7 +6897,7 @@ Public Class dlgSettings
         chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Plot Outline")
         chkMovieScraperPlotForOutlineIfEmpty.Text = Master.eLang.GetString(958, "Only if Plot Outline is empty")
-        chkMovieScraperReleaseDate.Text = Master.eLang.GetString(57, "Still write <releasedate> with the value of <premiered>")
+        chkMovieScraperReleaseDateWriteNode.Text = Master.eLang.GetString(57, "Still write <releasedate> with the value of <premiered>")
         chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
         chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         chkMovieScraperXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "Save YouTube-Trailer-Links in XBMC compatible format")
@@ -7008,6 +7017,64 @@ Public Class dlgSettings
         LoadTVScraperOptionsOrdering()
     End Sub
 
+    Private Sub TextBox_UIntegerOnly(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles _
+        txtMovieBannerHeight.KeyPress,
+        txtMovieBannerWidth.KeyPress,
+        txtMovieExtrafanartsHeight.KeyPress,
+        txtMovieExtrafanartsLimit.KeyPress,
+        txtMovieExtrafanartsWidth.KeyPress,
+        txtMovieExtrathumbsHeight.KeyPress,
+        txtMovieExtrathumbsLimit.KeyPress,
+        txtMovieExtrathumbsWidth.KeyPress,
+        txtMovieFanartHeight.KeyPress,
+        txtMovieFanartWidth.KeyPress,
+        txtMovieKeyartHeight.KeyPress,
+        txtMovieKeyartWidth.KeyPress,
+        txtMovieLevTolerance.KeyPress,
+        txtMoviePosterHeight.KeyPress,
+        txtMoviePosterWidth.KeyPress,
+        txtMovieScraperCastLimit.KeyPress,
+        txtMovieScraperCountryLimit.KeyPress,
+        txtMovieScraperGenreLimit.KeyPress,
+        txtMovieScraperOutlineLimit.KeyPress,
+        txtMovieScraperStudioLimit.KeyPress,
+        txtMovieSetBannerHeight.KeyPress,
+        txtMovieSetBannerWidth.KeyPress,
+        txtMovieSetFanartHeight.KeyPress,
+        txtMovieSetFanartWidth.KeyPress,
+        txtMovieSetPosterHeight.KeyPress,
+        txtMovieSetPosterWidth.KeyPress,
+        txtMovieSkipLessThan.KeyPress,
+        txtProxyPort.KeyPress,
+        txtTVAllSeasonsBannerHeight.KeyPress,
+        txtTVAllSeasonsBannerWidth.KeyPress,
+        txtTVAllSeasonsFanartHeight.KeyPress,
+        txtTVAllSeasonsFanartWidth.KeyPress,
+        txtTVAllSeasonsPosterHeight.KeyPress,
+        txtTVAllSeasonsPosterWidth.KeyPress,
+        txtTVEpisodeFanartHeight.KeyPress,
+        txtTVEpisodeFanartWidth.KeyPress,
+        txtTVEpisodePosterHeight.KeyPress,
+        txtTVEpisodePosterWidth.KeyPress,
+        txtTVScraperEpisodeActorsLimit.KeyPress,
+        txtTVScraperEpisodeGuestStarsLimit.KeyPress,
+        txtTVScraperShowActorsLimit.KeyPress,
+        txtTVScraperShowGenreLimit.KeyPress,
+        txtTVScraperShowStudioLimit.KeyPress,
+        txtTVShowBannerHeight.KeyPress,
+        txtTVShowBannerWidth.KeyPress,
+        txtTVShowExtrafanartsHeight.KeyPress,
+        txtTVShowExtrafanartsLimit.KeyPress,
+        txtTVShowExtrafanartsWidth.KeyPress,
+        txtTVShowFanartHeight.KeyPress,
+        txtTVShowFanartWidth.KeyPress,
+        txtTVShowPosterHeight.KeyPress,
+        txtTVShowPosterWidth.KeyPress,
+        txtTVSkipLessThan.KeyPress
+
+        e.Handled = StringUtils.UIntegerOnly(e.KeyChar)
+    End Sub
+
     Private Sub ToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs) 'TODO: check why no Handles (maybe not needed)
         currText = DirectCast(sender, ToolStripButton).Text
         FillList(currText)
@@ -7027,34 +7094,6 @@ Public Class dlgSettings
         pnlSettingsMain.Refresh()
     End Sub
 
-    Private Sub txtMovieScraperCastLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperCastLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVAllSeasonsBannerHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsBannerHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVAllSeasonsBannerWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsBannerWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVAllSeasonsPosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsPosterHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVAllSeasonsPosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsPosterWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVAllSeasonsFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsFanartHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVAllSeasonsFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsFanartWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
     Private Sub txtMovieBackdropsPath_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtMovieSourcesBackdropsFolderPath.TextChanged
         SetApplyButton(True)
 
@@ -7066,163 +7105,12 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub txtMovieLevTolerance_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieLevTolerance.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
     Private Sub txtMovieScraperDefFIExt_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtMovieScraperDefFIExt.TextChanged
         btnMovieScraperDefFIExtAdd.Enabled = Not String.IsNullOrEmpty(txtMovieScraperDefFIExt.Text) AndAlso Not lstMovieScraperDefFIExt.Items.Contains(If(txtMovieScraperDefFIExt.Text.StartsWith("."), txtMovieScraperDefFIExt.Text, String.Concat(".", txtMovieScraperDefFIExt.Text)))
         If btnMovieScraperDefFIExtAdd.Enabled Then
             btnMovieScraperDefFIExtEdit.Enabled = False
             btnMovieScraperDefFIExtRemove.Enabled = False
         End If
-    End Sub
-
-    Private Sub txtTVEpisodeFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVEpisodeFanartHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVEpisodeFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVEpisodeFanartWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVEpisodePosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVEpisodePosterHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVEpisodePosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVEpisodePosterWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieBannerHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieBannerHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieBannerWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieBannerWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieSetBannerHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetBannerHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieSetBannerWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetBannerWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowExtrafanartsHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowExtrafanartsHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowExtrafanartsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowExtrafanartsLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowExtrafanartsWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowExtrafanartsWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrafanartsHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrafanartsHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrafanartsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrafanartsLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrafanartsWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrafanartsWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrathumbsHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrathumbsHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrathumbsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrathumbsLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrathumbsWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrathumbsWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieFanartHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieFanartWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieKeyartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieKeyartHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieKeyartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieKeyartWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieSetFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetFanartHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieSetFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetFanartWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieScraperGenreLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperGenreLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-    Private Sub txtMovieScraperOutlineLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperOutlineLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMoviePosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMoviePosterHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMoviePosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMoviePosterWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieSetPosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetPosterHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieSetPosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetPosterWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtProxyPort.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieScraperCountryLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperCountryLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieScraperStudioLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperStudioLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVScraperEpisodeActorsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVScraperEpisodeActorsLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVScraperEpisodeGuestStarsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVScraperEpisodeGuestStarsLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVScraperShowActorsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVScraperShowActorsLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVScraperShowGenreLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVScraperShowGenreLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVScraperShowStudioLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVScraperShowStudioLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtTVSourcesRegexTVShowMatchingRegex_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTVSourcesRegexTVShowMatchingRegex.TextChanged
@@ -7233,42 +7121,10 @@ Public Class dlgSettings
         ValidateTVShowMatching()
     End Sub
 
-    Private Sub txtTVShowBannerHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowBannerHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowBannerWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowBannerWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowFanartHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowFanartWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowPosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowPosterHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowPosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowPosterWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSkipLessThan.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
     Private Sub txtMovieSkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtMovieSkipLessThan.TextChanged
         SetApplyButton(True)
         sResult.NeedsDBClean_Movie = True
         sResult.NeedsDBUpdate_Movie = True
-    End Sub
-
-    Private Sub txtTVSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVSkipLessThan.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtTVSkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTVSkipLessThan.TextChanged
@@ -7309,7 +7165,7 @@ Public Class dlgSettings
 
         Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer _
            Implements IComparer.Compare
-            Return [String].Compare(CType(x, ListViewItem).SubItems(col).Text, CType(y, ListViewItem).SubItems(col).Text)
+            Return String.Compare(CType(x, ListViewItem).SubItems(col).Text, CType(y, ListViewItem).SubItems(col).Text)
         End Function
     End Class
 
@@ -8226,9 +8082,9 @@ Public Class dlgSettings
         chkMovieScraperOutline.CheckedChanged,
         chkMovieScraperPlotForOutlineIfEmpty.CheckedChanged,
         chkMovieScraperPremiered.CheckedChanged,
-        chkMovieScraperRatingSingleRating.CheckedChanged,
+        chkMovieScraperRatingVotesWriteNode.CheckedChanged,
         chkMovieScraperRatings.CheckedChanged,
-        chkMovieScraperReleaseDate.CheckedChanged,
+        chkMovieScraperReleaseDateWriteNode.CheckedChanged,
         chkMovieScraperRuntime.CheckedChanged,
         chkMovieScraperStudioWithImg.CheckedChanged,
         chkMovieScraperTagline.CheckedChanged,
@@ -8325,7 +8181,7 @@ Public Class dlgSettings
         chkTVLockEpisodeLanguageA.CheckedChanged,
         chkTVLockEpisodeLanguageV.CheckedChanged,
         chkTVLockEpisodePlot.CheckedChanged,
-        chkTVLockEpisodeRating.CheckedChanged,
+        chkTVLockEpisodeRatings.CheckedChanged,
         chkTVLockEpisodeRuntime.CheckedChanged,
         chkTVLockEpisodeTitle.CheckedChanged,
         chkTVLockEpisodeUserRating.CheckedChanged,
@@ -8337,7 +8193,7 @@ Public Class dlgSettings
         chkTVLockShowMPAA.CheckedChanged,
         chkTVLockShowOriginalTitle.CheckedChanged,
         chkTVLockShowPlot.CheckedChanged,
-        chkTVLockShowRating.CheckedChanged,
+        chkTVLockShowRatings.CheckedChanged,
         chkTVLockShowRuntime.CheckedChanged,
         chkTVLockShowStatus.CheckedChanged,
         chkTVLockShowStudio.CheckedChanged,
@@ -8351,7 +8207,7 @@ Public Class dlgSettings
         chkTVScraperEpisodeDirector.CheckedChanged,
         chkTVScraperEpisodeGuestStarsToActors.CheckedChanged,
         chkTVScraperEpisodePlot.CheckedChanged,
-        chkTVScraperEpisodeRating.CheckedChanged,
+        chkTVScraperEpisodeRatings.CheckedChanged,
         chkTVScraperEpisodeRuntime.CheckedChanged,
         chkTVScraperEpisodeTitle.CheckedChanged,
         chkTVScraperEpisodeUserRating.CheckedChanged,
@@ -8364,7 +8220,7 @@ Public Class dlgSettings
         chkTVScraperShowOriginalTitleAsTitle.CheckedChanged,
         chkTVScraperShowPlot.CheckedChanged,
         chkTVScraperShowPremiered.CheckedChanged,
-        chkTVScraperShowRating.CheckedChanged,
+        chkTVScraperShowRatings.CheckedChanged,
         chkTVScraperShowStatus.CheckedChanged,
         chkTVScraperShowTitle.CheckedChanged,
         chkTVScraperShowUserRating.CheckedChanged,
@@ -8494,7 +8350,7 @@ Public Class dlgSettings
         txtMovieScraperGenreLimit.TextChanged,
         txtMovieScraperMPAANotRated.TextChanged,
         txtMovieScraperOutlineLimit.TextChanged,
-        txtMovieScraperRatingDefault.TextChanged,
+        txtMovieScraperRatingDefaultType.TextChanged,
         txtMovieScraperStudioLimit.TextChanged,
         txtMovieSetBannerExpertSingle.TextChanged,
         txtMovieSetBannerHeight.TextChanged,
@@ -8567,7 +8423,7 @@ Public Class dlgSettings
         txtTVShowPosterWidth.TextChanged,
         txtTVShowThemeDefaultSearch.TextChanged,
         txtTVShowThemeTvTunesCustomPath.TextChanged,
-        txtTVShowThemeTvTunesSubDir.TextChanged, cbGeneralMovieTheme.SelectedIndexChanged
+        txtTVShowThemeTvTunesSubDir.TextChanged, cbGeneralMovieTheme.SelectedIndexChanged, txtMovieScraperIdDefaultType.TextChanged, chkMovieScraperIdWriteNodeTMDbCollectionId.CheckedChanged, chkMovieScraperIdWriteNodeTMDbId.CheckedChanged, chkMovieScraperIdWriteNodeDefaultId.CheckedChanged
 
         SetApplyButton(True)
     End Sub

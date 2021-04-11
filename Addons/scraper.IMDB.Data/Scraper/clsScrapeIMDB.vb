@@ -197,7 +197,7 @@ Public Class Scraper
 
             strPosterURL = String.Empty
             Dim nMovie As New MediaContainers.Movie With {
-                .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = id},
+                .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.Movie) With {.IMDbId = id},
                 .Scrapersource = "IMDB"
             }
 
@@ -480,7 +480,7 @@ Public Class Scraper
             strPosterURL = String.Empty
             Dim nTVEpisode As New MediaContainers.EpisodeDetails With {
                 .Scrapersource = "IMDB",
-                .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = id}
+                .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.TVEpisode) With {.IMDbId = id}
             }
 
             'get season and episode number
@@ -676,7 +676,7 @@ Public Class Scraper
             strPosterURL = String.Empty
             Dim nTVShow As New MediaContainers.TVShow With {
                 .Scrapersource = "IMDB",
-                .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = id}
+                .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.TVShow) With {.IMDbId = id}
             }
 
             'reset all local objects
@@ -1307,7 +1307,7 @@ Public Class Scraper
                 Integer.TryParse(NumUtils.CleanVotes(Regex.Match(selNodeVotes.InnerText.Trim, "[0-9,.]+").Value), iVotes) Then
                 Return New MediaContainers.RatingDetails With {
                     .Max = 10,
-                    .Name = "imdb",
+                    .Type = "imdb",
                     .Value = dblRating,
                     .Votes = iVotes
                 }
@@ -1455,7 +1455,7 @@ Public Class Scraper
                     R.PopularTitles.Add(New MediaContainers.Movie With {
                                         .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
                                         .Title = nResult.SelectSingleNode("a").InnerText,
-                                        .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.OuterHtml)},
+                                        .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.Movie) With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.OuterHtml)},
                                         .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
                                         })
                 Next
@@ -1470,7 +1470,7 @@ Public Class Scraper
                     R.PartialMatches.Add(New MediaContainers.Movie With {
                                          .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
                                          .Title = nResult.SelectSingleNode("a").InnerText,
-                                         .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.OuterHtml)},
+                                         .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.Movie) With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.OuterHtml)},
                                          .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
                                          })
                 Next
@@ -1485,7 +1485,7 @@ Public Class Scraper
                     R.TvTitles.Add(New MediaContainers.Movie With {
                                    .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
                                    .Title = nResult.SelectSingleNode("a").InnerText,
-                                   .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.InnerHtml)},
+                                   .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.Movie) With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.InnerHtml)},
                                    .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
                                    })
                 Next
@@ -1500,7 +1500,7 @@ Public Class Scraper
                     R.VideoTitles.Add(New MediaContainers.Movie With {
                                       .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
                                       .Title = nResult.SelectSingleNode("a").InnerText,
-                                      .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.InnerHtml)},
+                                      .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.Movie) With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.InnerHtml)},
                                       .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
                                       })
                 Next
@@ -1515,7 +1515,7 @@ Public Class Scraper
                     R.ShortTitles.Add(New MediaContainers.Movie With {
                                       .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
                                       .Title = nResult.SelectSingleNode("a").InnerText,
-                                      .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.InnerHtml)},
+                                      .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.Movie) With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.InnerHtml)},
                                       .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
                                       })
                 Next
@@ -1530,7 +1530,7 @@ Public Class Scraper
                     R.ExactMatches.Add(New MediaContainers.Movie With {
                                            .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
                                            .Title = nResult.SelectSingleNode("a").InnerText,
-                                           .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.OriginalName)},
+                                           .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.Movie) With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.OriginalName)},
                                            .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
                                            })
                 Next
@@ -1570,7 +1570,7 @@ Public Class Scraper
                     If attIMDBID IsNot Nothing AndAlso attTitle IsNot Nothing Then
                         R.Matches.Add(New MediaContainers.TVShow With {
                                       .Title = attTitle.Value,
-                                      .UniqueIDs = New MediaContainers.UniqueidContainer With {.IMDbId = attIMDBID.Value}
+                                      .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.TVShow) With {.IMDbId = attIMDBID.Value}
                                       })
                     End If
                 End If

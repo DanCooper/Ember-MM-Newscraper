@@ -23,7 +23,7 @@ Imports NLog
 
 Public Class OMDb_Data
     Implements Interfaces.ScraperModule_Data_Movie
-    'Implements Interfaces.ScraperModule_Data_TV
+    Implements Interfaces.ScraperModule_Data_TV
 
 
 #Region "Fields"
@@ -38,6 +38,7 @@ Public Class OMDb_Data
 
     Private _SpecialSettings_Movie As New SpecialSettings
     Private _SpecialSettings_TV As New SpecialSettings
+    Private _SpecialSettings_TVEpisode As New SpecialSettings
     Private _Name As String = "OMDb_Data"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_TV As Boolean = False
@@ -57,22 +58,22 @@ Public Class OMDb_Data
     Public Event SetupNeedsRestart_Movie() Implements Interfaces.ScraperModule_Data_Movie.SetupNeedsRestart
 
     'TV part
-    'Public Event ModuleSettingsChanged_TV() Implements Interfaces.ScraperModule_Data_TV.ModuleSettingsChanged
-    'Public Event ScraperEvent_TV(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_TV.ScraperEvent
-    'Public Event ScraperSetupChanged_TV(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Data_TV.ScraperSetupChanged
-    'Public Event SetupNeedsRestart_TV() Implements Interfaces.ScraperModule_Data_TV.SetupNeedsRestart
+    Public Event ModuleSettingsChanged_TV() Implements Interfaces.ScraperModule_Data_TV.ModuleSettingsChanged
+    Public Event ScraperEvent_TV(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_TV.ScraperEvent
+    Public Event ScraperSetupChanged_TV(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Data_TV.ScraperSetupChanged
+    Public Event SetupNeedsRestart_TV() Implements Interfaces.ScraperModule_Data_TV.SetupNeedsRestart
 
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Data_Movie.ModuleName ', Interfaces.ScraperModule_Data_TV.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Data_Movie.ModuleName, Interfaces.ScraperModule_Data_TV.ModuleName
         Get
             Return _Name
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Data_Movie.ModuleVersion ', Interfaces.ScraperModule_Data_TV.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Data_Movie.ModuleVersion, Interfaces.ScraperModule_Data_TV.ModuleVersion
         Get
             Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
@@ -90,17 +91,17 @@ Public Class OMDb_Data
         End Set
     End Property
 
-    'Property ScraperEnabled_TV() As Boolean Implements Interfaces.ScraperModule_Data_TV.ScraperEnabled
-    '    Get
-    '        Return _ScraperEnabled_TV
-    '    End Get
-    '    Set(ByVal value As Boolean)
-    '        _ScraperEnabled_TV = value
-    '        If _ScraperEnabled_TV Then
-    '            _OMDbAPI_TV.CreateAPI(_SpecialSettings_TV)
-    '        End If
-    '    End Set
-    'End Property
+    Property ScraperEnabled_TV() As Boolean Implements Interfaces.ScraperModule_Data_TV.ScraperEnabled
+        Get
+            Return _ScraperEnabled_TV
+        End Get
+        Set(ByVal value As Boolean)
+            _ScraperEnabled_TV = value
+            If _ScraperEnabled_TV Then
+                _OMDbAPI_TV.CreateAPI(_SpecialSettings_TV)
+            End If
+        End Set
+    End Property
 
 #End Region 'Properties
 
@@ -110,36 +111,37 @@ Public Class OMDb_Data
         RaiseEvent ModuleSettingsChanged_Movie()
     End Sub
 
-    'Private Sub Handle_ModuleSettingsChanged_TV()
-    '    RaiseEvent ModuleSettingsChanged_TV()
-    'End Sub
+    Private Sub Handle_ModuleSettingsChanged_TV()
+        RaiseEvent ModuleSettingsChanged_TV()
+    End Sub
 
     Private Sub Handle_SetupNeedsRestart_Movie()
         RaiseEvent SetupNeedsRestart_Movie()
     End Sub
-    'Private Sub Handle_SetupNeedsRestart_TV()
-    '    RaiseEvent SetupNeedsRestart_TV()
-    'End Sub
+
+    Private Sub Handle_SetupNeedsRestart_TV()
+        RaiseEvent SetupNeedsRestart_TV()
+    End Sub
 
     Private Sub Handle_SetupScraperChanged_Movie(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled_Movie = state
         RaiseEvent ScraperSetupChanged_Movie(String.Concat(_Name, "_Movie"), state, difforder)
     End Sub
 
-    'Private Sub Handle_SetupScraperChanged_TV(ByVal state As Boolean, ByVal difforder As Integer)
-    '    ScraperEnabled_TV = state
-    '    RaiseEvent ScraperSetupChanged_TV(String.Concat(_Name, "_TV"), state, difforder)
-    'End Sub
+    Private Sub Handle_SetupScraperChanged_TV(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled_TV = state
+        RaiseEvent ScraperSetupChanged_TV(String.Concat(_Name, "_TV"), state, difforder)
+    End Sub
 
     Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Data_Movie.Init
         _AssemblyName = sAssemblyName
         LoadSettings_Movie()
     End Sub
 
-    'Sub Init_TV(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Data_TV.Init
-    '    _AssemblyName = sAssemblyName
-    '    LoadSettings_TV()
-    'End Sub
+    Sub Init_TV(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Data_TV.Init
+        _AssemblyName = sAssemblyName
+        LoadSettings_TV()
+    End Sub
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
@@ -151,7 +153,7 @@ Public Class OMDb_Data
         _setup_Movie.chkTomatometer.Checked = _SpecialSettings_Movie.Tomatometer
         _setup_Movie.txtApiKey.Text = _SpecialSettings_Movie.APIKey
 
-        _setup_Movie.orderChanged()
+        _setup_Movie.OrderChanged()
 
         SPanel.Name = String.Concat(_Name, "_Movie")
         SPanel.Text = "OMDb"
@@ -168,55 +170,31 @@ Public Class OMDb_Data
         Return SPanel
     End Function
 
-    'Function InjectSetupScraper_TV() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_TV.InjectSetupScraper
-    '    Dim SPanel As New Containers.SettingsPanel
-    '    _setup_TV = New frmSettingsHolder_TV
-    '    LoadSettings_TV()
-    '    _setup_TV.chkEnabled.Checked = _ScraperEnabled_TV
-    '    _setup_TV.chkFallBackEng.Checked = _SpecialSettings_TV.FallBackEng
-    '    _setup_TV.chkGetAdultItems.Checked = _SpecialSettings_TV.GetAdultItems
-    '    _setup_TV.chkScraperEpisodeActors.Checked = ConfigScrapeOptions_TV.bEpisodeActors
-    '    _setup_TV.chkScraperEpisodeAired.Checked = ConfigScrapeOptions_TV.bEpisodeAired
-    '    _setup_TV.chkScraperEpisodeCredits.Checked = ConfigScrapeOptions_TV.bEpisodeCredits
-    '    _setup_TV.chkScraperEpisodeDirectors.Checked = ConfigScrapeOptions_TV.bEpisodeDirectors
-    '    _setup_TV.chkScraperEpisodeGuestStars.Checked = ConfigScrapeOptions_TV.bEpisodeGuestStars
-    '    _setup_TV.chkScraperEpisodePlot.Checked = ConfigScrapeOptions_TV.bEpisodePlot
-    '    _setup_TV.chkScraperEpisodeRating.Checked = ConfigScrapeOptions_TV.bEpisodeRating
-    '    _setup_TV.chkScraperEpisodeTitle.Checked = ConfigScrapeOptions_TV.bEpisodeTitle
-    '    _setup_TV.chkScraperSeasonAired.Checked = ConfigScrapeOptions_TV.bSeasonAired
-    '    _setup_TV.chkScraperSeasonPlot.Checked = ConfigScrapeOptions_TV.bSeasonPlot
-    '    _setup_TV.chkScraperSeasonTitle.Checked = ConfigScrapeOptions_TV.bSeasonTitle
-    '    _setup_TV.chkScraperShowActors.Checked = ConfigScrapeOptions_TV.bMainActors
-    '    _setup_TV.chkScraperShowCertifications.Checked = ConfigScrapeOptions_TV.bMainCertifications
-    '    _setup_TV.chkScraperShowCountries.Checked = ConfigScrapeOptions_TV.bMainCountries
-    '    _setup_TV.chkScraperShowCreators.Checked = ConfigScrapeOptions_TV.bMainCreators
-    '    _setup_TV.chkScraperShowGenres.Checked = ConfigScrapeOptions_TV.bMainGenres
-    '    _setup_TV.chkScraperShowOriginalTitle.Checked = ConfigScrapeOptions_TV.bMainOriginalTitle
-    '    _setup_TV.chkScraperShowPlot.Checked = ConfigScrapeOptions_TV.bMainPlot
-    '    _setup_TV.chkScraperShowPremiered.Checked = ConfigScrapeOptions_TV.bMainPremiered
-    '    _setup_TV.chkScraperShowRating.Checked = ConfigScrapeOptions_TV.bMainRating
-    '    _setup_TV.chkScraperShowRuntime.Checked = ConfigScrapeOptions_TV.bMainRuntime
-    '    _setup_TV.chkScraperShowStatus.Checked = ConfigScrapeOptions_TV.bMainStatus
-    '    _setup_TV.chkScraperShowStudios.Checked = ConfigScrapeOptions_TV.bMainStudios
-    '    _setup_TV.chkScraperShowTitle.Checked = ConfigScrapeOptions_TV.bMainTitle
-    '    _setup_TV.txtApiKey.Text = strPrivateAPIKey
+    Function InjectSetupScraper_TV() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_TV.InjectSetupScraper
+        Dim SPanel As New Containers.SettingsPanel
+        _setup_TV = New frmSettingsHolder_TV
+        LoadSettings_TV()
+        _setup_TV.chkEnabled.Checked = _ScraperEnabled_TV
+        _setup_TV.chkEpisodeIMDb.Checked = _SpecialSettings_TVEpisode.IMDb
+        _setup_TV.chkShowIMDb.Checked = _SpecialSettings_TV.IMDb
+        _setup_TV.txtApiKey.Text = _SpecialSettings_TV.APIKey
 
-    '    _setup_TV.orderChanged()
+        _setup_TV.OrderChanged()
 
-    '    SPanel.Name = String.Concat(_Name, "_TV")
-    '    SPanel.Text = "OMDb"
-    '    SPanel.Prefix = "OMDbTVInfo_"
-    '    SPanel.Order = 110
-    '    SPanel.Parent = "pnlTVData"
-    '    SPanel.Type = Master.eLang.GetString(653, "TV Shows")
-    '    SPanel.ImageIndex = If(_ScraperEnabled_TV, 9, 10)
-    '    SPanel.Panel = _setup_TV.pnlSettings
+        SPanel.Name = String.Concat(_Name, "_TV")
+        SPanel.Text = "OMDb"
+        SPanel.Prefix = "OMDbTVInfo_"
+        SPanel.Order = 110
+        SPanel.Parent = "pnlTVData"
+        SPanel.Type = Master.eLang.GetString(653, "TV Shows")
+        SPanel.ImageIndex = If(_ScraperEnabled_TV, 9, 10)
+        SPanel.Panel = _setup_TV.pnlSettings
 
-    '    AddHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV
-    '    AddHandler _setup_TV.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_TV
-    '    AddHandler _setup_TV.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_TV
-    '    Return SPanel
-    'End Function
+        AddHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV
+        AddHandler _setup_TV.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_TV
+        AddHandler _setup_TV.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_TV
+        Return SPanel
+    End Function
 
     Sub LoadSettings_Movie()
         _SpecialSettings_Movie.APIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.Movie)
@@ -227,35 +205,13 @@ Public Class OMDb_Data
         ConfigScrapeOptions_Movie.bMainRating = _SpecialSettings_Movie.AnyRatingEnabled
     End Sub
 
-    'Sub LoadSettings_TV()
-    '    ConfigScrapeOptions_TV.bEpisodeActors = AdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVEpisode)
-    '    ConfigScrapeOptions_TV.bEpisodeAired = AdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.ContentType.TVEpisode)
-    '    ConfigScrapeOptions_TV.bEpisodeCredits = AdvancedSettings.GetBooleanSetting("DoCredits", True, , Enums.ContentType.TVEpisode)
-    '    ConfigScrapeOptions_TV.bEpisodeDirectors = AdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.ContentType.TVEpisode)
-    '    ConfigScrapeOptions_TV.bEpisodeGuestStars = AdvancedSettings.GetBooleanSetting("DoGuestStars", True, , Enums.ContentType.TVEpisode)
-    '    ConfigScrapeOptions_TV.bEpisodePlot = AdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVEpisode)
-    '    ConfigScrapeOptions_TV.bEpisodeRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
-    '    ConfigScrapeOptions_TV.bEpisodeTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVEpisode)
-    '    ConfigScrapeOptions_TV.bSeasonAired = AdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.ContentType.TVSeason)
-    '    ConfigScrapeOptions_TV.bSeasonPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVSeason)
-    '    ConfigScrapeOptions_TV.bSeasonTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVSeason)
-    '    ConfigScrapeOptions_TV.bMainActors = AdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainCertifications = AdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainCountries = AdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainCreators = AdvancedSettings.GetBooleanSetting("DoCreator", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainEpisodeGuide = AdvancedSettings.GetBooleanSetting("DoEpisodeGuide", False, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainGenres = AdvancedSettings.GetBooleanSetting("DoGenre", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainOriginalTitle = AdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainPremiered = AdvancedSettings.GetBooleanSetting("DoPremiered", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainRuntime = AdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainStatus = AdvancedSettings.GetBooleanSetting("DoStatus", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainStudios = AdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.TVShow)
-    '    ConfigScrapeOptions_TV.bMainTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVShow)
+    Sub LoadSettings_TV()
+        _SpecialSettings_TV.APIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.TV)
+        _SpecialSettings_TVEpisode.IMDb = AdvancedSettings.GetBooleanSetting("IMDb", False, , Enums.ContentType.TVEpisode)
+        _SpecialSettings_TV.IMDb = AdvancedSettings.GetBooleanSetting("IMDb", False, , Enums.ContentType.TVShow)
 
-    '    _SpecialSettings_TV.APIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.TV)
-    'End Sub
+        ConfigScrapeOptions_TV.bMainRating = _SpecialSettings_TV.AnyRatingEnabled
+    End Sub
 
     Sub SaveSettings_Movie()
         Using settings = New AdvancedSettings()
@@ -266,36 +222,13 @@ Public Class OMDb_Data
         End Using
     End Sub
 
-    'Sub SaveSettings_TV()
-    '    Using settings = New AdvancedSettings()
-    '        settings.SetBooleanSetting("DoActors", ConfigScrapeOptions_TV.bEpisodeActors, , , Enums.ContentType.TVEpisode)
-    '        settings.SetBooleanSetting("DoAired", ConfigScrapeOptions_TV.bEpisodeAired, , , Enums.ContentType.TVEpisode)
-    '        settings.SetBooleanSetting("DoCredits", ConfigScrapeOptions_TV.bEpisodeCredits, , , Enums.ContentType.TVEpisode)
-    '        settings.SetBooleanSetting("DoDirector", ConfigScrapeOptions_TV.bEpisodeDirectors, , , Enums.ContentType.TVEpisode)
-    '        settings.SetBooleanSetting("DoGuestStars", ConfigScrapeOptions_TV.bEpisodeGuestStars, , , Enums.ContentType.TVEpisode)
-    '        settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions_TV.bEpisodePlot, , , Enums.ContentType.TVEpisode)
-    '        settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_TV.bEpisodeRating, , , Enums.ContentType.TVEpisode)
-    '        settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions_TV.bEpisodeTitle, , , Enums.ContentType.TVEpisode)
-    '        settings.SetBooleanSetting("DoAired", ConfigScrapeOptions_TV.bSeasonAired, , , Enums.ContentType.TVSeason)
-    '        settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions_TV.bSeasonPlot, , , Enums.ContentType.TVSeason)
-    '        settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions_TV.bSeasonTitle, , , Enums.ContentType.TVSeason)
-    '        settings.SetBooleanSetting("DoActors", ConfigScrapeOptions_TV.bMainActors, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoCert", ConfigScrapeOptions_TV.bMainCertifications, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoCountry", ConfigScrapeOptions_TV.bMainCountries, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoCreator", ConfigScrapeOptions_TV.bMainCreators, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoEpisodeGuide", ConfigScrapeOptions_TV.bMainEpisodeGuide, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoGenre", ConfigScrapeOptions_TV.bMainGenres, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoOriginalTitle", ConfigScrapeOptions_TV.bMainOriginalTitle, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions_TV.bMainPlot, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoPremiered", ConfigScrapeOptions_TV.bMainPremiered, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_TV.bMainRating, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoRuntime", ConfigScrapeOptions_TV.bMainRuntime, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoStatus", ConfigScrapeOptions_TV.bMainStatus, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoStudio", ConfigScrapeOptions_TV.bMainStudios, , , Enums.ContentType.TVShow)
-    '        settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions_TV.bMainTitle, , , Enums.ContentType.TVShow)
-    '        settings.SetSetting("APIKey", _setup_TV.txtApiKey.Text.Trim, , , Enums.ContentType.TV)
-    '    End Using
-    'End Sub
+    Sub SaveSettings_TV()
+        Using settings = New AdvancedSettings()
+            settings.SetSetting("APIKey", _SpecialSettings_TV.APIKey, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("IMDb", _SpecialSettings_TVEpisode.IMDb, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("IMDb", _SpecialSettings_TV.IMDb, , , Enums.ContentType.TVShow)
+        End Using
+    End Sub
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
         Dim bAPIKeyChanged = Not _SpecialSettings_Movie.APIKey = _setup_Movie.txtApiKey.Text.Trim
@@ -317,45 +250,24 @@ Public Class OMDb_Data
         End If
     End Sub
 
-    'Sub SaveSetupScraper_TV(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_TV.SaveSetupScraper
-    '    ConfigScrapeOptions_TV.bEpisodeActors = _setup_TV.chkScraperEpisodeActors.Checked
-    '    ConfigScrapeOptions_TV.bEpisodeAired = _setup_TV.chkScraperEpisodeAired.Checked
-    '    ConfigScrapeOptions_TV.bEpisodeCredits = _setup_TV.chkScraperEpisodeCredits.Checked
-    '    ConfigScrapeOptions_TV.bEpisodeDirectors = _setup_TV.chkScraperEpisodeDirectors.Checked
-    '    ConfigScrapeOptions_TV.bEpisodeGuestStars = _setup_TV.chkScraperEpisodeGuestStars.Checked
-    '    ConfigScrapeOptions_TV.bEpisodePlot = _setup_TV.chkScraperEpisodePlot.Checked
-    '    ConfigScrapeOptions_TV.bEpisodeRating = _setup_TV.chkScraperEpisodeRating.Checked
-    '    ConfigScrapeOptions_TV.bEpisodeTitle = _setup_TV.chkScraperEpisodeTitle.Checked
-    '    ConfigScrapeOptions_TV.bMainActors = _setup_TV.chkScraperShowActors.Checked
-    '    ConfigScrapeOptions_TV.bMainCertifications = _setup_TV.chkScraperShowCertifications.Checked
-    '    ConfigScrapeOptions_TV.bMainCreators = _setup_TV.chkScraperShowCreators.Checked
-    '    ConfigScrapeOptions_TV.bMainCountries = _setup_TV.chkScraperShowCountries.Checked
-    '    ConfigScrapeOptions_TV.bMainGenres = _setup_TV.chkScraperShowGenres.Checked
-    '    ConfigScrapeOptions_TV.bMainOriginalTitle = _setup_TV.chkScraperShowOriginalTitle.Checked
-    '    ConfigScrapeOptions_TV.bMainPlot = _setup_TV.chkScraperShowPlot.Checked
-    '    ConfigScrapeOptions_TV.bMainPremiered = _setup_TV.chkScraperShowPremiered.Checked
-    '    ConfigScrapeOptions_TV.bMainRating = _setup_TV.chkScraperShowRating.Checked
-    '    ConfigScrapeOptions_TV.bMainRuntime = _setup_TV.chkScraperShowRuntime.Checked
-    '    ConfigScrapeOptions_TV.bMainStatus = _setup_TV.chkScraperShowStatus.Checked
-    '    ConfigScrapeOptions_TV.bMainStudios = _setup_TV.chkScraperShowStudios.Checked
-    '    ConfigScrapeOptions_TV.bMainTitle = _setup_TV.chkScraperShowTitle.Checked
-    '    ConfigScrapeOptions_TV.bSeasonAired = _setup_TV.chkScraperSeasonAired.Checked
-    '    ConfigScrapeOptions_TV.bSeasonPlot = _setup_TV.chkScraperSeasonPlot.Checked
-    '    ConfigScrapeOptions_TV.bSeasonTitle = _setup_TV.chkScraperSeasonTitle.Checked
+    Sub SaveSetupScraper_TV(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_TV.SaveSetupScraper
+        Dim bAPIKeyChanged = Not _SpecialSettings_TV.APIKey = _setup_TV.txtApiKey.Text.Trim
+        _SpecialSettings_TV.APIKey = _setup_TV.txtApiKey.Text.Trim
+        _SpecialSettings_TV.IMDb = _setup_TV.chkShowIMDb.Checked
+        _SpecialSettings_TVEpisode.IMDb = _setup_TV.chkEpisodeIMDb.Checked
 
-    '    Dim bAPIKeyChanged = Not strPrivateAPIKey = _setup_TV.txtApiKey.Text.Trim
-    '    _SpecialSettings_TV.APIKey = _setup_TV.txtApiKey.Text.Trim
+        ConfigScrapeOptions_TV.bMainRating = _SpecialSettings_TV.AnyRatingEnabled
 
-    '    SaveSettings_TV()
+        SaveSettings_TV()
 
-    '    If bAPIKeyChanged Then _OMDbAPI_TV.CreateAPI(_SpecialSettings_TV)
+        If bAPIKeyChanged Then _OMDbAPI_TV.CreateAPI(_SpecialSettings_TV)
 
-    '    If DoDispose Then
-    '        RemoveHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV
-    '        RemoveHandler _setup_TV.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_TV
-    '        _setup_TV.Dispose()
-    '    End If
-    'End Sub
+        If DoDispose Then
+            RemoveHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV
+            RemoveHandler _setup_TV.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_TV
+            _setup_TV.Dispose()
+        End If
+    End Sub
     ''' <summary>
     '''  Scrape MovieDetails from TMDB
     ''' </summary>
@@ -370,7 +282,10 @@ Public Class OMDb_Data
 
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch AndAlso _OMDbAPI_Movie.IsClientCreated Then
             If oDBElement.Movie.UniqueIDs.IMDbIdSpecified Then
-                nMovie = _OMDbAPI_Movie.GetInfo_Movie(oDBElement.Movie.UniqueIDs.IMDbId, FilteredOptions)
+                Dim nRatings = _OMDbAPI_Movie.GetRatingsByImbId(oDBElement.Movie.UniqueIDs.IMDbId, oDBElement.ContentType, FilteredOptions)
+                If nRatings IsNot Nothing Then
+                    nMovie = New MediaContainers.Movie With {.Ratings = nRatings}
+                End If
             Else
                 _Logger.Trace("[OMDb_Data] [Scraper_Movie] [Abort] Need IMDb ID to get data")
                 Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
@@ -389,89 +304,94 @@ Public Class OMDb_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    'Function Scraper_TV(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
-    '    _Logger.Trace("[OMDb_Data] [Scraper_TV] [Start]")
-    '    Dim nTVShow As MediaContainers.TVShow = Nothing
-    '    Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
+    Function Scraper_TV(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
+        _Logger.Trace("[OMDb_Data] [Scraper_TV] [Start]")
+        Dim nTVshow As MediaContainers.TVShow = Nothing
+        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
-    '    If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
-    '        If oDBElement.TVShow.IMDBSpecified Then
-    '            nTVShow = _OMDbAPI_TV.GetInfo_TVShow(oDBElement.TVShow.TMDB, ScrapeModifiers, FilteredOptions, False)
-    '        Else
-    '            _Logger.Trace(String.Format("[OMDb_Data] [Scraper_TV] [Abort] Need IMDb ID to get data"))
-    '            Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
-    '        End If
-    '    End If
+        If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch AndAlso _OMDbAPI_TV.IsClientCreated Then
+            If oDBElement.TVShow.UniqueIDs.IMDbIdSpecified Then
+                Dim nRatings = _OMDbAPI_TV.GetRatingsByImbId(oDBElement.TVShow.UniqueIDs.IMDbId, oDBElement.ContentType, FilteredOptions)
+                If nRatings IsNot Nothing Then
+                    nTVshow = New MediaContainers.TVShow With {.Ratings = nRatings}
+                End If
+            Else
+                _Logger.Trace("[OMDb_Data] [Scraper_TV] [Abort] Need IMDb ID to get data")
+                Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+            End If
+        ElseIf Not _OMDbAPI_TV.IsClientCreated Then
+            _Logger.Error("[OMDb_Data] [Scraper_TV] [Abort] Can't create API client (API key missing?)")
+        End If
 
-    '    _Logger.Trace("[OMDb_Data] [Scraper_TV] [Done]")
-    '    Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
-    'End Function
+        _Logger.Trace("[OMDb_Data] [Scraper_TV] [Done]")
+        Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVshow}
+    End Function
 
-    'Public Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
-    '    _Logger.Trace("[OMDb_Data] [Scraper_TVEpisode] [Start]")
-    '    Dim nTVEpisode As MediaContainers.EpisodeDetails = Nothing
-    '    Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
+    Public Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
+        _Logger.Trace("[OMDb_Data] [Scraper_TVEpisode] [Start]")
+        Dim nTVEpisode As MediaContainers.EpisodeDetails = Nothing
+        '    Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
-    '    If oDBElement.TVShow.TMDBSpecified Then
-    '        If Not oDBElement.TVEpisode.Episode = -1 AndAlso Not oDBElement.TVEpisode.Season = -1 Then
-    '            nTVEpisode = _OMDbAPI_TV.GetInfo_TVEpisode(CInt(oDBElement.TVShow.TMDB), oDBElement.TVEpisode.Season, oDBElement.TVEpisode.Episode, FilteredOptions)
-    '        ElseIf oDBElement.TVEpisode.AiredSpecified Then
-    '            nTVEpisode = _OMDbAPI_TV.GetInfo_TVEpisode(CInt(oDBElement.TVShow.TMDB), oDBElement.TVEpisode.Aired, FilteredOptions)
-    '        Else
-    '            _Logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No search result found"))
-    '            Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
-    '        End If
-    '        'if still no search result -> exit
-    '        If nTVEpisode Is Nothing Then
-    '            _Logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No search result found"))
-    '            Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
-    '        End If
-    '    Else
-    '        _Logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No TV Show TMDB ID available"))
-    '        Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
-    '    End If
+        '    If oDBElement.TVShow.TMDBSpecified Then
+        '        If Not oDBElement.TVEpisode.Episode = -1 AndAlso Not oDBElement.TVEpisode.Season = -1 Then
+        '            nTVEpisode = _OMDbAPI_TV.GetInfo_TVEpisode(CInt(oDBElement.TVShow.TMDB), oDBElement.TVEpisode.Season, oDBElement.TVEpisode.Episode, FilteredOptions)
+        '        ElseIf oDBElement.TVEpisode.AiredSpecified Then
+        '            nTVEpisode = _OMDbAPI_TV.GetInfo_TVEpisode(CInt(oDBElement.TVShow.TMDB), oDBElement.TVEpisode.Aired, FilteredOptions)
+        '        Else
+        '            _Logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No search result found"))
+        '            Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
+        '        End If
+        '        'if still no search result -> exit
+        '        If nTVEpisode Is Nothing Then
+        '            _Logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No search result found"))
+        '            Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
+        '        End If
+        '    Else
+        '        _Logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No TV Show TMDB ID available"))
+        '        Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
+        '    End If
 
-    '    _Logger.Trace("[OMDb_Data] [Scraper_TVEpisode] [Done]")
-    '    Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = nTVEpisode}
-    'End Function
+        _Logger.Trace("[OMDb_Data] [Scraper_TVEpisode] [Done]")
+        Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = nTVEpisode}
+    End Function
 
-    'Public Function Scraper_TVSeason(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVSeason Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
-    '    _Logger.Trace("[OMDb_Data] [Scraper_TVSeason] [Start]")
-    '    Dim nTVSeason As MediaContainers.SeasonDetails = Nothing
-    '    Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
+    Public Function Scraper_TVSeason(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVSeason Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
+        _Logger.Trace("[OMDb_Data] [Scraper_TVSeason] [Start]")
+        Dim nTVSeason As MediaContainers.SeasonDetails = Nothing
+        '    Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
-    '    If Not oDBElement.TVShow.TMDBSpecified AndAlso oDBElement.TVShow.TVDBSpecified Then
-    '        oDBElement.TVShow.TMDB = _OMDbAPI_TV.GetTMDBbyTVDB(oDBElement.TVShow.TVDB)
-    '    End If
+        '    If Not oDBElement.TVShow.TMDBSpecified AndAlso oDBElement.TVShow.TVDBSpecified Then
+        '        oDBElement.TVShow.TMDB = _OMDbAPI_TV.GetTMDBbyTVDB(oDBElement.TVShow.TVDB)
+        '    End If
 
-    '    If oDBElement.TVShow.TMDBSpecified Then
-    '        If oDBElement.TVSeason.SeasonSpecified Then
-    '            nTVSeason = _OMDbAPI_TV.GetInfo_TVSeason(CInt(oDBElement.TVShow.TMDB), oDBElement.TVSeason.Season, FilteredOptions)
-    '        Else
-    '            _Logger.Trace(String.Format("[OMDb_Data] [Scraper_TVSeason] [Abort] Season is not specified"))
-    '            Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
-    '        End If
-    '        'if still no search result -> exit
-    '        If nTVSeason Is Nothing Then
-    '            _Logger.Trace(String.Format("[OMDb_Data] [Scraper_TVSeason] [Abort] No search result found"))
-    '            Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
-    '        End If
-    '    Else
-    '        _Logger.Trace(String.Format("[OMDb_Data] [Scraper_TVSeason] [Abort] No TV Show TMDB ID available"))
-    '        Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
-    '    End If
+        '    If oDBElement.TVShow.TMDBSpecified Then
+        '        If oDBElement.TVSeason.SeasonSpecified Then
+        '            nTVSeason = _OMDbAPI_TV.GetInfo_TVSeason(CInt(oDBElement.TVShow.TMDB), oDBElement.TVSeason.Season, FilteredOptions)
+        '        Else
+        '            _Logger.Trace(String.Format("[OMDb_Data] [Scraper_TVSeason] [Abort] Season is not specified"))
+        '            Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
+        '        End If
+        '        'if still no search result -> exit
+        '        If nTVSeason Is Nothing Then
+        '            _Logger.Trace(String.Format("[OMDb_Data] [Scraper_TVSeason] [Abort] No search result found"))
+        '            Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
+        '        End If
+        '    Else
+        '        _Logger.Trace(String.Format("[OMDb_Data] [Scraper_TVSeason] [Abort] No TV Show TMDB ID available"))
+        '        Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
+        '    End If
 
-    '    _Logger.Trace("[OMDb_Data] [Scraper_TVSeason] [Done]")
-    '    Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = nTVSeason}
-    'End Function
+        _Logger.Trace("[OMDb_Data] [Scraper_TVSeason] [Done]")
+        Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = nTVSeason}
+    End Function
 
     Public Sub ScraperOrderChanged_Movie() Implements Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged
-        _setup_Movie.orderChanged()
+        _setup_Movie.OrderChanged()
     End Sub
 
-    'Public Sub ScraperOrderChanged_TV() Implements Interfaces.ScraperModule_Data_TV.ScraperOrderChanged
-    '    _setup_TV.orderChanged()
-    'End Sub
+    Public Sub ScraperOrderChanged_TV() Implements Interfaces.ScraperModule_Data_TV.ScraperOrderChanged
+        _setup_TV.OrderChanged()
+    End Sub
 
     Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
         Return New Interfaces.ModuleResult With {.breakChain = False}

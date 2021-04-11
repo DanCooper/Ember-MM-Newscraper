@@ -34,11 +34,11 @@ Public Class frmSettingsHolder_Movie
 
     Public Sub New()
         InitializeComponent()
-        SetUp()
+        Setup()
     End Sub
 
-    Private Sub pbTMDBApiKeyInfo_Click(sender As Object, e As EventArgs) Handles pbTMDBApiKeyInfo.Click
-        Functions.Launch(My.Resources.urlAPIKey)
+    Private Sub pbTMDBApiKeyInfo_Click(sender As Object, e As EventArgs) Handles pbApiKeyInfo.Click
+        Functions.Launch(My.Resources.urlApiKey)
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDown.Click
@@ -47,7 +47,7 @@ Public Class frmSettingsHolder_Movie
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = OMDb_Data._AssemblyName).ModuleOrder = order + 1
             RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
-            orderChanged()
+            OrderChanged()
         End If
     End Sub
 
@@ -57,7 +57,7 @@ Public Class frmSettingsHolder_Movie
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = OMDb_Data._AssemblyName).ModuleOrder = order - 1
             RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
-            orderChanged()
+            OrderChanged()
         End If
     End Sub
 
@@ -69,7 +69,7 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Sub orderChanged()
+    Sub OrderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = OMDb_Data._AssemblyName).ModuleOrder
         If ModulesManager.Instance.externalScrapersModules_Data_Movie.Count > 1 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Data_Movie.Count - 1)
@@ -80,7 +80,7 @@ Public Class frmSettingsHolder_Movie
         End If
     End Sub
 
-    Private Sub SetUp()
+    Private Sub Setup()
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")

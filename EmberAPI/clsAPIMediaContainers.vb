@@ -88,6 +88,35 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable>
+    Public Class DefaultId
+
+#Region "Properties"
+
+        <XmlText>
+        Public Property Value As String = String.Empty
+
+        <XmlIgnore>
+        Public ReadOnly Property ValueSpecified As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Value)
+            End Get
+        End Property
+
+        <XmlAttribute("type")>
+        Public Property Type As String = String.Empty
+
+        <XmlIgnore>
+        Public ReadOnly Property TypeSpecified As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Type)
+            End Get
+        End Property
+
+#End Region 'Properties
+
+    End Class
+
 
     <Serializable()>
     <XmlRoot("episodedetails")>
@@ -96,6 +125,7 @@ Namespace MediaContainers
 
 #Region "Fields"
 
+        Private _contentType As Enums.ContentType = Enums.ContentType.TVEpisode
         Private _rating As String = String.Empty
 
 #End Region 'Fields
@@ -103,37 +133,60 @@ Namespace MediaContainers
 #Region "Properties"
 
         <XmlElement("id")>
-        Public Property ID() As String = String.Empty
+        Public Property DefaultId() As DefaultId
+            Get
+                Return UniqueIDs.GetDefaultId()
+            End Get
+            Set(value As DefaultId)
+                UniqueIDs.Add(value)
+            End Set
+        End Property
 
         <XmlIgnore()>
-        Public ReadOnly Property IDSpecified() As Boolean
+        Public ReadOnly Property DefaultIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(ID)
+                Return DefaultId.ValueSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeDefaultId
             End Get
         End Property
 
         <XmlElement("imdb")>
-        Public Property IMDbId() As String = String.Empty
+        Public Property IMDbId() As String
+            Get
+                Return UniqueIDs.IMDbId.ToString
+            End Get
+            Set(value As String)
+                UniqueIDs.Add("imdb", value)
+            End Set
+        End Property
 
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property IMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(IMDbId)
+                Return UniqueIDs.IMDbIdSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeIMDbId
             End Get
         End Property
 
         <XmlElement("tmdb")>
-        Public Property TMDbId() As String = String.Empty
+        Public Property TMDbId() As String
+            Get
+                Return UniqueIDs.TMDbId.ToString
+            End Get
+            Set(value As String)
+                UniqueIDs.Add("tmdb", value)
+            End Set
+        End Property
 
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TMDbId)
+                Return UniqueIDs.TMDbIdSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeTMDbId
             End Get
         End Property
 
         <XmlIgnore()>
-        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
+        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer(_contentType)
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
@@ -143,12 +196,12 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("uniqueid")>
-        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+        Public Property UniqueIDs_Kodi() As Uniqueid()
             Get
-                Return UniqueIDs.Items
+                Return UniqueIDs.Items.ToArray
             End Get
-            Set(ByVal value As List(Of Uniqueid))
-                UniqueIDs.AddRange(value)
+            Set(value As Uniqueid())
+                If value IsNot Nothing Then UniqueIDs.AddRange(value.ToList)
             End Set
         End Property
 
@@ -219,15 +272,25 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlArray("ratings")>
-        <XmlArrayItem("rating")>
-        Public Property Ratings() As List(Of RatingDetails) = New List(Of RatingDetails)
+        <XmlIgnore()>
+        Public Property Ratings() As New RatingContainer(_contentType)
 
         <XmlIgnore()>
         Public ReadOnly Property RatingsSpecified() As Boolean
             Get
-                Return Ratings.Count > 0
+                Return Ratings.AnyRatingSpecified
             End Get
+        End Property
+
+        <XmlArray("ratings")>
+        <XmlArrayItem("rating")>
+        Public Property Ratings_Kodi() As RatingDetails()
+            Get
+                Return Ratings.Items.ToArray
+            End Get
+            Set(value As RatingDetails())
+                Ratings.AddRange(value.ToList)
+            End Set
         End Property
 
         <XmlElement("userrating")>
@@ -402,6 +465,9 @@ Namespace MediaContainers
 
         <XmlElement("locked")>
         Public Property Locked() As Boolean
+
+        <XmlElement("user_note")>
+        Public Property UserNote() As String = String.Empty
 
         <XmlIgnore()>
         Public Property Scrapersource() As String = String.Empty
@@ -1015,9 +1081,9 @@ Namespace MediaContainers
 
         Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
+        Private _contentType As Enums.ContentType = Enums.ContentType.Movie
         Private _certifications As New List(Of String)
         Private _lastplayed As String = String.Empty
-        Private _rating As String = String.Empty
         Private _sets As New List(Of SetDetails)
         Private _tags As New List(Of String)
 
@@ -1026,19 +1092,19 @@ Namespace MediaContainers
 #Region "Properties"
 
         <XmlElement("id")>
-        Public Property ID() As String
+        Public Property DefaultId() As DefaultId
             Get
-                Return UniqueIDs.GetDefaultId(Enums.ContentType.Movie)
+                Return UniqueIDs.GetDefaultId()
             End Get
-            Set(value As String)
-                UniqueIDs.Add("imdb", value)
+            Set(value As DefaultId)
+                UniqueIDs.Add(value)
             End Set
         End Property
 
         <XmlIgnore()>
-        Public ReadOnly Property IDSpecified() As Boolean
+        Public ReadOnly Property DefaultIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(ID)
+                Return DefaultId.ValueSpecified AndAlso Master.eSettings.MovieScraperIdWriteNodeDefaultId
             End Get
         End Property
 
@@ -1052,11 +1118,11 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <Obsolete>
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return False
+                Return UniqueIDs.TMDbIdSpecified AndAlso Master.eSettings.MovieScraperIdWriteNodeTMDbId
             End Get
         End Property
 
@@ -1070,16 +1136,16 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <Obsolete>
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property TMDbCollectionIdSpecified() As Boolean
             Get
-                Return UniqueIDs.TMDbCollectionIdSpecified
+                Return UniqueIDs.TMDbCollectionIdSpecified AndAlso Master.eSettings.MovieScraperIdWriteNodeTMDbCollectionId
             End Get
         End Property
 
         <XmlIgnore()>
-        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
+        Public Property UniqueIDs() As New UniqueidContainer(_contentType)
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
@@ -1089,12 +1155,12 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("uniqueid")>
-        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+        Public Property UniqueIDs_Kodi() As Uniqueid()
             Get
-                Return UniqueIDs.Items
+                Return UniqueIDs.Items.ToArray
             End Get
-            Set(ByVal value As List(Of Uniqueid))
-                UniqueIDs.AddRange(value)
+            Set(value As Uniqueid())
+                If value IsNot Nothing Then UniqueIDs.AddRange(value.ToList)
             End Set
         End Property
 
@@ -1125,6 +1191,16 @@ Namespace MediaContainers
         Public ReadOnly Property SortTitleSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(SortTitle)
+            End Get
+        End Property
+
+        <XmlElement("edition")>
+        Public Property Edition() As String = String.Empty
+
+        <XmlIgnore()>
+        Public ReadOnly Property EditionSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Edition)
             End Get
         End Property
 
@@ -1161,10 +1237,11 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property ReleaseDateSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(ReleaseDate) AndAlso Master.eSettings.MovieScraperReleaseDate
+                Return Not String.IsNullOrEmpty(ReleaseDate) AndAlso Master.eSettings.MovieScraperReleaseDateWriteNode
             End Get
         End Property
 
@@ -1198,44 +1275,71 @@ Namespace MediaContainers
             End Get
         End Property
 
-
         <XmlElement("rating")>
         Public Property Rating() As String
             Get
-                Return _rating.Replace(",", ".")
+                Dim nRating = Ratings.GetDefaultRating()
+                If nRating IsNot Nothing Then
+                    Return nRating.ValueNormalized.ToString
+                Else
+                    Return String.Empty
+                End If
             End Get
             Set(ByVal value As String)
-                _rating = value.Replace(",", ".")
+                'Rating = value.Replace(",", ".")
             End Set
         End Property
 
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property RatingSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Rating) AndAlso Not String.IsNullOrEmpty(Votes)
+                Return Not String.IsNullOrEmpty(Rating) AndAlso Not String.IsNullOrEmpty(Votes) AndAlso Master.eSettings.MovieScraperRatingVotesWriteNode
             End Get
         End Property
 
-
         <XmlElement("votes")>
-        Public Property Votes() As String = String.Empty
+        Public Property Votes() As String
+            Get
+                Dim nRating = Ratings.GetDefaultRating()
+                If nRating IsNot Nothing AndAlso nRating.VotesSpecified Then
+                    Return nRating.Votes.ToString
+                Else
+                    Return String.Empty
+                End If
+            End Get
+            Set(value As String)
 
+            End Set
+        End Property
+
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Votes) AndAlso Not String.IsNullOrEmpty(Rating)
+                Return Not String.IsNullOrEmpty(Votes) AndAlso Not String.IsNullOrEmpty(Rating) AndAlso Master.eSettings.MovieScraperRatingVotesWriteNode
+            End Get
+        End Property
+
+        <XmlIgnore()>
+        Public Property Ratings() As New RatingContainer(_contentType)
+
+        <XmlIgnore()>
+        Public ReadOnly Property RatingsSpecified() As Boolean
+            Get
+                Return Ratings.AnyRatingSpecified
             End Get
         End Property
 
         <XmlArray("ratings")>
         <XmlArrayItem("rating")>
-        Public Property Ratings() As List(Of RatingDetails) = New List(Of RatingDetails)
-
-        <XmlIgnore()>
-        Public ReadOnly Property RatingsSpecified() As Boolean
+        Public Property Ratings_Kodi() As RatingDetails()
             Get
-                Return Ratings.Count > 0
+                Return Ratings.Items.ToArray
             End Get
+            Set(value As RatingDetails())
+                Ratings.AddRange(value.ToList)
+            End Set
         End Property
 
         <XmlElement("userrating")>
@@ -1561,9 +1665,38 @@ Namespace MediaContainers
         <XmlElement("locked")>
         Public Property Locked() As Boolean
 
+        <XmlElement("user_note")>
+        Public Property UserNote() As String = String.Empty
+
+        <XmlIgnore()>
+        Public ReadOnly Property UserNoteSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(UserNote)
+            End Get
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
+
+        Public Sub AddCertificationsFromString(ByVal value As String)
+            _certifications.Clear()
+            If String.IsNullOrEmpty(value) Then Return
+
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
+                For Each certification As String In values
+                    certification = certification.Trim
+                    If Not _certifications.Contains(certification) Then
+                        _certifications.Add(certification)
+                    End If
+                Next
+            Else
+                If Not _certifications.Contains(value) Then
+                    _certifications.Add(value.Trim)
+                End If
+            End If
+        End Sub
 
         Public Sub AddSet(ByVal tSetDetails As SetDetails)
             If tSetDetails IsNot Nothing AndAlso tSetDetails.TitleSpecified Then
@@ -1636,25 +1769,6 @@ Namespace MediaContainers
             If String.IsNullOrEmpty(value) Then Return
             If Not _tags.Contains(value) Then
                 _tags.Add(value.Trim)
-            End If
-        End Sub
-
-        Public Sub AddCertificationsFromString(ByVal value As String)
-            _certifications.Clear()
-            If String.IsNullOrEmpty(value) Then Return
-
-            If value.Contains(" / ") Then
-                Dim values As String() = Regex.Split(value, " / ")
-                For Each certification As String In values
-                    certification = certification.Trim
-                    If Not _certifications.Contains(certification) Then
-                        _certifications.Add(certification)
-                    End If
-                Next
-            Else
-                If Not _certifications.Contains(value) Then
-                    _certifications.Add(value.Trim)
-                End If
             End If
         End Sub
 
@@ -1824,27 +1938,33 @@ Namespace MediaContainers
     <XmlRoot("movieset")>
     Public Class Movieset
 
+#Region "Fields"
+
+        Private _contentType As Enums.ContentType = Enums.ContentType.MovieSet
+
+#End Region 'Fields
+
 #Region "Properties"
 
         <XmlElement("id")>
-        Public Property TMDbId() As String
+        Public Property DefaultId() As DefaultId
             Get
-                Return UniqueIDs.GetDefaultId(Enums.ContentType.MovieSet)
+                Return UniqueIDs.GetDefaultId()
             End Get
-            Set(value As String)
-
+            Set(value As DefaultId)
+                UniqueIDs.Add(value)
             End Set
         End Property
 
         <XmlIgnore()>
-        Public ReadOnly Property TMDbIdSpecified() As Boolean
+        Public ReadOnly Property DefaultIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TMDbId)
+                Return DefaultId.ValueSpecified
             End Get
         End Property
 
         <XmlIgnore()>
-        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
+        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer(_contentType)
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
@@ -1854,12 +1974,12 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("uniqueid")>
-        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+        Public Property UniqueIDs_Kodi() As Uniqueid()
             Get
-                Return UniqueIDs.Items
+                Return UniqueIDs.Items.ToArray
             End Get
-            Set(ByVal value As List(Of Uniqueid))
-                UniqueIDs.AddRange(value)
+            Set(value As Uniqueid())
+                If value IsNot Nothing Then UniqueIDs.AddRange(value.ToList)
             End Set
         End Property
 
@@ -2031,12 +2151,12 @@ Namespace MediaContainers
         Public Property ID() As Long = -1
 
         <XmlAttribute("name")>
-        Public Property Name() As String = String.Empty
+        Public Property Type() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property NameSpecified() As Boolean
+        Public ReadOnly Property TypeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Name)
+                Return Not String.IsNullOrEmpty(Type)
             End Get
         End Property
 
@@ -2095,11 +2215,184 @@ Namespace MediaContainers
 
     End Class
 
+
+    <Serializable()>
+    Public Class RatingContainer
+
+#Region "Fields"
+
+        Private _contentType As Enums.ContentType
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New(ByVal type As Enums.ContentType)
+            _contentType = type
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlIgnore>
+        Public ReadOnly Property AnyRatingSpecified As Boolean
+            Get
+                Return Items.Count > 0
+            End Get
+        End Property
+
+        <XmlElement("rating")>
+        Public Property Items() As New List(Of RatingDetails)
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Add(ByVal rating As RatingDetails)
+            If rating.TypeSpecified AndAlso rating.ValueSpecified Then
+                'remove existing entry with same "type", only one entry per "type" is allowed
+                RemoveAll(rating.Type)
+                'set a default by settings
+                rating.IsDefault = (rating.Type = GetDefaultType())
+                Items.Add(rating)
+            End If
+        End Sub
+
+        Public Sub AddRange(ByVal ratingList As List(Of RatingDetails))
+            For Each entry In ratingList
+                Add(entry)
+            Next
+        End Sub
+
+        Public Sub AddRange(ByVal ratingContainer As RatingContainer)
+            For Each entry In ratingContainer.Items
+                Add(entry)
+            Next
+        End Sub
+
+        Public Function GetDefaultRating() As RatingDetails
+            Dim nRating = Items.FirstOrDefault(Function(f) f.IsDefault)
+            If nRating IsNot Nothing Then
+                Return nRating
+            Else
+                Return GetDefaultBySettings()
+            End If
+        End Function
+
+        Public Function GetDefaultBySettings() As RatingDetails
+            Dim strDefaultType As String = GetDefaultType()
+            If Not String.IsNullOrEmpty(strDefaultType) Then
+                Return Items.FirstOrDefault(Function(f) f.Type = strDefaultType)
+            End If
+            Return Nothing
+        End Function
+
+        Private Function GetDefaultType() As String
+            Select Case _contentType
+                Case Enums.ContentType.Movie
+                    Return Master.eSettings.MovieScraperRatingDefaultType
+                Case Enums.ContentType.TVEpisode
+                    Return Master.eSettings.TVScraperEpisodeRatingDefaultType
+                Case Enums.ContentType.TVShow
+                    Return Master.eSettings.TVScraperShowRatingDefaultType
+                Case Else
+                    Return String.Empty
+            End Select
+        End Function
+
+        Private Sub RemoveAll(ByVal type As String)
+            Items.RemoveAll(Function(f) f.Type = type)
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
     <Serializable()>
     <XmlRoot("seasondetails")>
     Public Class SeasonDetails
 
+#Region "Fields"
+
+        Private _contentType As Enums.ContentType = Enums.ContentType.TVSeason
+
+#End Region 'Fields
+
 #Region "Properties"
+
+        <XmlElement("id")>
+        Public Property DefaultId() As DefaultId
+            Get
+                Return UniqueIDs.GetDefaultId()
+            End Get
+            Set(value As DefaultId)
+                UniqueIDs.Add(value)
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property DefaultIdSpecified() As Boolean
+            Get
+                Return DefaultId.ValueSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeDefaultId
+            End Get
+        End Property
+
+        <XmlElement("tmdb")>
+        Public Property TMDbId() As String
+            Get
+                Return UniqueIDs.TMDbId.ToString
+            End Get
+            Set(value As String)
+                UniqueIDs.Add("tmdb", value)
+            End Set
+        End Property
+
+        <Obsolete()>
+        <XmlIgnore()>
+        Public ReadOnly Property TMDbIdSpecified() As Boolean
+            Get
+                Return UniqueIDs.TMDbIdSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeTMDbId
+            End Get
+        End Property
+
+        <XmlElement("tvdb")>
+        Public Property TVDbId() As String
+            Get
+                Return UniqueIDs.TVDbId.ToString
+            End Get
+            Set(value As String)
+                UniqueIDs.Add("tvdb", value)
+            End Set
+        End Property
+
+        <Obsolete()>
+        <XmlIgnore()>
+        Public ReadOnly Property TVDbIdSpecified() As Boolean
+            Get
+                Return UniqueIDs.TVDbIdSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeTVDbId
+            End Get
+        End Property
+
+        <XmlIgnore()>
+        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer(_contentType)
+
+        <XmlIgnore()>
+        Public ReadOnly Property UniqueIDsSpecified() As Boolean
+            Get
+                Return UniqueIDs.Items.Count > 0
+            End Get
+        End Property
+
+        <XmlElement("uniqueid")>
+        Public Property UniqueIDs_Kodi() As Uniqueid()
+            Get
+                Return UniqueIDs.Items.ToArray
+            End Get
+            Set(value As Uniqueid())
+                If value IsNot Nothing Then UniqueIDs.AddRange(value.ToList)
+            End Set
+        End Property
 
         <XmlElement("aired")>
         Public Property Aired() As String = String.Empty
@@ -2158,48 +2451,8 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("tmdb")>
-        Public Property TMDbId() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property TMDbIdSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(TMDbId)
-            End Get
-        End Property
-
-        <XmlElement("tvdb")>
-        Public Property TVDbId() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property TVDbIdSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(TVDbId)
-            End Get
-        End Property
-
         <XmlElement("locked")>
         Public Property Locked() As Boolean
-
-        <XmlIgnore()>
-        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
-
-        <XmlIgnore()>
-        Public ReadOnly Property UniqueIDsSpecified() As Boolean
-            Get
-                Return UniqueIDs.Items.Count > 0
-            End Get
-        End Property
-
-        <XmlElement("uniqueid")>
-        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
-            Get
-                Return UniqueIDs.Items
-            End Get
-            Set(ByVal value As List(Of Uniqueid))
-                UniqueIDs.AddRange(value)
-            End Set
-        End Property
 
 #End Region 'Properties 
 
@@ -2247,6 +2500,7 @@ Namespace MediaContainers
 
 #Region "Fields"
 
+        Private _contentType As Enums.ContentType = Enums.ContentType.TVShow
         Private _certifications As New List(Of String)
         Private _rating As String = String.Empty
         Private _tags As New List(Of String)
@@ -2256,19 +2510,19 @@ Namespace MediaContainers
 #Region "Properties"
 
         <XmlElement("id")>
-        Public Property ID() As String
+        Public Property DefaultId() As DefaultId
             Get
-                Return UniqueIDs.GetDefaultId(Enums.ContentType.TVShow)
+                Return UniqueIDs.GetDefaultId()
             End Get
-            Set(ByVal value As String)
-
+            Set(value As DefaultId)
+                UniqueIDs.Add(value)
             End Set
         End Property
 
         <XmlIgnore()>
-        Public ReadOnly Property IDSpecified() As Boolean
+        Public ReadOnly Property DefaultIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(ID)
+                Return DefaultId.ValueSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeDefaultId
             End Get
         End Property
 
@@ -2278,7 +2532,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property IMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(IMDbId)
+                Return Not String.IsNullOrEmpty(IMDbId) AndAlso Master.eSettings.TVScraperShowIdWriteNodeIMDbId
             End Get
         End Property
 
@@ -2288,12 +2542,12 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TMDbId)
+                Return Not String.IsNullOrEmpty(TMDbId) AndAlso Master.eSettings.TVScraperShowIdWriteNodeTMDbId
             End Get
         End Property
 
         <XmlIgnore()>
-        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer
+        Public Property UniqueIDs() As UniqueidContainer = New UniqueidContainer(_contentType)
 
         <XmlIgnore()>
         Public ReadOnly Property UniqueIDsSpecified() As Boolean
@@ -2303,12 +2557,12 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("uniqueid")>
-        Public Property UniqueIDs_Kodi() As List(Of Uniqueid)
+        Public Property UniqueIDs_Kodi() As Uniqueid()
             Get
-                Return UniqueIDs.Items
+                Return UniqueIDs.Items.ToArray
             End Get
-            Set(ByVal value As List(Of Uniqueid))
-                UniqueIDs.AddRange(value)
+            Set(value As Uniqueid())
+                If value IsNot Nothing Then UniqueIDs.AddRange(value.ToList)
             End Set
         End Property
 
@@ -2353,12 +2607,12 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("boxeeTvDb")>
-        Public Property BoxeeTvDb() As Integer = -1
+        Public Property BoxeeTVDb() As Integer = -1
 
         <XmlIgnore()>
         Public ReadOnly Property BoxeeTvDbSpecified() As Boolean
             Get
-                Return Not BoxeeTvDb = -1
+                Return Not BoxeeTVDb = -1
             End Get
         End Property
 
@@ -2399,15 +2653,25 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlArray("ratings")>
-        <XmlArrayItem("rating")>
-        Public Property Ratings() As List(Of RatingDetails) = New List(Of RatingDetails)
+        <XmlIgnore()>
+        Public Property Ratings() As New RatingContainer(_contentType)
 
         <XmlIgnore()>
         Public ReadOnly Property RatingsSpecified() As Boolean
             Get
-                Return Ratings.Count > 0
+                Return Ratings.AnyRatingSpecified
             End Get
+        End Property
+
+        <XmlArray("ratings")>
+        <XmlArrayItem("rating")>
+        Public Property Ratings_Kodi() As RatingDetails()
+            Get
+                Return Ratings.Items.ToArray
+            End Get
+            Set(value As RatingDetails())
+                Ratings.AddRange(value.ToList)
+            End Set
         End Property
 
         <XmlElement("userrating")>
@@ -2585,6 +2849,9 @@ Namespace MediaContainers
         <XmlElement("locked")>
         Public Property Locked() As Boolean
 
+        <XmlElement("user_note")>
+        Public Property UserNote() As String = String.Empty
+
         <XmlElement("seasons")>
         Public Property Seasons() As New Seasons
 
@@ -2662,11 +2929,11 @@ Namespace MediaContainers
         End Sub
 
         Public Sub BlankId()
-            ID = String.Empty
+            DefaultId = New DefaultId
         End Sub
 
         Public Sub BlankBoxeeId()
-            _BoxeeTvDb = -1
+            _BoxeeTVDb = -1
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
@@ -4093,6 +4360,20 @@ Namespace MediaContainers
     <Serializable()>
     Public Class UniqueidContainer
 
+#Region "Fields"
+
+        Private _contentType As Enums.ContentType
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New(ByVal type As Enums.ContentType)
+            _contentType = type
+        End Sub
+
+#End Region 'Constructors
+
 #Region "Properties"
 
         <XmlIgnore>
@@ -4102,7 +4383,7 @@ Namespace MediaContainers
             End Get
         End Property
 
-        Public Property Items() As List(Of Uniqueid) = New List(Of Uniqueid)
+        Public Property Items() As New List(Of Uniqueid)
 
         <XmlIgnore>
         Public Property IMDbId() As String
@@ -4204,36 +4485,32 @@ Namespace MediaContainers
 
 #End Region 'Properties
 
-        '#Region "Constructors"
-
-        '        Public Sub New()
-        '            Items = New List(Of Uniqueid)
-        '        End Sub
-
-        '        Public Sub New(ByVal uniqueids As String)
-        '            If Not String.IsNullOrEmpty(uniqueids) Then
-        '                Dim aUniqueID = Regex.Split(uniqueids, ",")
-        '                For Each entry In aUniqueID
-        '                    Dim lstEntry = Regex.Split(entry, ":")
-        '                    If lstEntry.Count = 2 Then
-        '                        Items.Add(New Uniqueid With {
-        '                                  .Type = lstEntry(0),
-        '                                  .Value = lstEntry(1)
-        '                                  })
-        '                    End If
-        '                Next
-        '            End If
-        '        End Sub
-
-        '#End Region 'Constructors
-
 #Region "Methods"
 
         Public Sub Add(ByVal type As String, ByVal value As String)
             If Not String.IsNullOrEmpty(type) AndAlso Not String.IsNullOrEmpty(value) Then
                 'remove existing entry with same "type", only one entry per "type" is allowed
                 RemoveAll(type)
-                Items.Add(New Uniqueid With {.Type = type, .Value = value})
+                Items.Add(New Uniqueid With {
+                          .Type = type,
+                          .Value = value
+                          })
+            End If
+        End Sub
+
+        Public Sub Add(ByVal defaultId As DefaultId)
+            If defaultId.TypeSpecified AndAlso defaultId.ValueSpecified Then
+                'remove existing entry with same "type", only one entry per "type" is allowed
+                RemoveAll(defaultId.Type)
+                Items.Add(New Uniqueid With {
+                          .Type = defaultId.Type,
+                          .Value = defaultId.Value
+                          })
+            ElseIf defaultId.ValueSpecified Then
+                Dim strDefaultType As String = GetDefaultType()
+                If Not String.IsNullOrEmpty(strDefaultType) Then
+                    Add(strDefaultType, defaultId.Value)
+                End If
             End If
         End Sub
 
@@ -4249,32 +4526,43 @@ Namespace MediaContainers
             Next
         End Sub
 
-        Public Function GetDefaultId(ByVal contentType As Enums.ContentType) As String
+        Public Function GetDefaultId() As DefaultId
             Dim nID = Items.FirstOrDefault(Function(f) f.IsDefault)
             If nID IsNot Nothing Then
-                Return nID.Value
+                Return New DefaultId With {
+                    .Value = nID.Value,
+                    .Type = nID.Type
+                }
             Else
-                Return GetDefaultBySettings(contentType)
+                Return GetDefaultBySettings()
             End If
         End Function
 
-        Public Function GetDefaultBySettings(ByVal contentType As Enums.ContentType) As String
-            Dim strIdDefaultType As String = String.Empty
-            Select Case contentType
-                Case Enums.ContentType.Movie
-                    strIdDefaultType = Master.eSettings.MovieScraperIdDefault
-                Case Enums.ContentType.MovieSet
-                    strIdDefaultType = Master.eSettings.MoviesetScraperIdDefault
-                Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    strIdDefaultType = Master.eSettings.TVScraperShowIdDefault
-            End Select
-            If Not String.IsNullOrEmpty(strIdDefaultType) Then
-                Dim nID = Items.FirstOrDefault(Function(f) f.Type = strIdDefaultType)
+        Public Function GetDefaultBySettings() As DefaultId
+            Dim strDefaultType As String = GetDefaultType()
+            If Not String.IsNullOrEmpty(strDefaultType) Then
+                Dim nID = Items.FirstOrDefault(Function(f) f.Type = strDefaultType)
                 If nID IsNot Nothing Then
-                    Return nID.Value
+                    Return New DefaultId With {
+                        .Value = nID.Value,
+                        .Type = nID.Type
+                    }
                 End If
             End If
-            Return String.Empty
+            Return New DefaultId
+        End Function
+
+        Private Function GetDefaultType() As String
+            Select Case _contentType
+                Case Enums.ContentType.Movie
+                    Return Master.eSettings.MovieScraperIdDefaultType
+                Case Enums.ContentType.MovieSet
+                    Return Master.eSettings.MovieSetScraperIdDefaultType
+                Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
+                    Return Master.eSettings.TVScraperShowIdDefaultType
+                Case Else
+                    Return String.Empty
+            End Select
         End Function
 
         Public Function GetIdByName(ByVal name As String) As String
@@ -4293,7 +4581,7 @@ Namespace MediaContainers
             Return False
         End Function
 
-        Public Sub RemoveAll(ByVal type As String)
+        Private Sub RemoveAll(ByVal type As String)
             Items.RemoveAll(Function(f) f.Type = type)
         End Sub
 
