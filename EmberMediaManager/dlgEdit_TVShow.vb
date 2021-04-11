@@ -302,7 +302,7 @@ Public Class dlgEdit_TVShow
         End If
     End Sub
 
-    Private Sub CheckedListBox_ItemCheck(ByVal sender As Object, ByVal e As ItemCheckEventArgs) Handles clbTags.ItemCheck, clbGenres.ItemCheck
+    Private Sub CheckedListBox_ItemCheck(ByVal sender As Object, ByVal e As ItemCheckEventArgs)
         Dim nCheckedListBox = DirectCast(sender, CheckedListBox)
         If e.Index = 0 Then
             For i As Integer = 1 To nCheckedListBox.Items.Count - 1
@@ -426,12 +426,16 @@ Public Class dlgEdit_TVShow
                 dgvStudios.Rows.Add(New Object() {v})
             Next
             dgvStudios.ClearSelection()
+            'Tagline
+            txtTagline.Text = .Tagline
             'Tags
             Tags_Fill()
             'Title
             txtTitle.Text = .Title
             'Unique IDs
             UniqueIds_Fill()
+            'UserNote
+            txtUserNote.Text = .UserNote
             'UserRating
             cbUserRating.Text = .UserRating.ToString
         End With
@@ -616,13 +620,10 @@ Public Class dlgEdit_TVShow
             'Creators
             .Creators = DataGridView_RowsToList(dgvCreators)
             'Genres
-            If clbGenres.CheckedItems.Count > 0 Then
-                If clbGenres.CheckedIndices.Contains(0) Then
-                    .Genres.Clear()
-                Else
-                    .Genres = clbGenres.CheckedItems.Cast(Of String).ToList
-                    .Genres.Sort()
-                End If
+            If lbGenres.Items.Count > 0 Then
+                .Genres = lbGenres.Items.Cast(Of String).ToList
+            Else
+                .Genres.Clear()
             End If
             'MPAA
             If Not String.IsNullOrEmpty(txtMPAA.Text.Trim) Then
@@ -646,19 +647,20 @@ Public Class dlgEdit_TVShow
             .Status = txtStatus.Text.Trim
             'Studios
             .Studios = DataGridView_RowsToList(dgvStudios)
+            'Tagline
+            .Tagline = txtTagline.Text.Trim
             'Tags
-            If clbTags.CheckedItems.Count > 0 Then
-                If clbTags.CheckedIndices.Contains(0) Then
-                    .Tags.Clear()
-                Else
-                    .Tags = clbTags.CheckedItems.Cast(Of String).ToList
-                    .Tags.Sort()
-                End If
+            If lbTags.Items.Count > 0 Then
+                .Tags = lbTags.Items.Cast(Of String).ToList
+            Else
+                .Tags.Clear()
             End If
             'Title
             .Title = txtTitle.Text.Trim
             'UniqueIDs
             .UniqueIDs.Items = UniqueIds_Get()
+            'UserNote
+            .UserNote = txtUserNote.Text.Trim
             'UserRating
             .UserRating = CInt(cbUserRating.SelectedItem)
         End With
@@ -691,24 +693,39 @@ Public Class dlgEdit_TVShow
         Next
         Return newList
     End Function
-    ''' <summary>
-    ''' Fills the genre list with selected genres first in list and all known genres from database as second
-    ''' </summary>
-    Private Sub Genres_Fill()
-        clbGenres.Items.Add(Master.eLang.None)
-        If tmpDBElement.TVShow.GenresSpecified Then
-            tmpDBElement.TVShow.Genres.Sort()
-            clbGenres.Items.AddRange(tmpDBElement.TVShow.Genres.ToArray)
-            'enable all selected genres, skip the first entry "[none]"
-            For i As Integer = 1 To clbGenres.Items.Count - 1
-                clbGenres.SetItemChecked(i, True)
-            Next
-        Else
-            'select "[none]" if no genre has been specified
-            clbGenres.SetItemChecked(0, True)
+
+    Private Sub Genres_Add(sender As Object, e As EventArgs) Handles btnGenres_Add.Click
+        If Not String.IsNullOrEmpty(cbGenres.Text.Trim) AndAlso Not lbGenres.Items.Contains(cbGenres.Text.Trim) Then lbGenres.Items.Add(cbGenres.Text.Trim)
+    End Sub
+
+    Private Sub Genres_Down(sender As Object, e As EventArgs) Handles btnGenres_Down.Click
+        If lbGenres.SelectedIndex < lbGenres.Items.Count - 1 Then
+            Dim i = lbGenres.SelectedIndex + 2
+            lbGenres.Items.Insert(i, lbGenres.SelectedItem)
+            lbGenres.Items.RemoveAt(lbGenres.SelectedIndex)
+            lbGenres.SelectedIndex = i - 1
         End If
-        'add the rest of all genres
-        clbGenres.Items.AddRange(APIXML.GetGenreList.Where(Function(f) Not clbGenres.Items.Contains(f)).ToArray)
+    End Sub
+
+    Private Sub Genres_Fill()
+        If tmpDBElement.TVShow.GenresSpecified Then
+            lbGenres.Items.AddRange(tmpDBElement.TVShow.Genres.ToArray)
+        End If
+        'add the rest of all genres to the ComboBox
+        cbGenres.Items.AddRange(APIXML.GetGenreList.ToArray)
+    End Sub
+
+    Private Sub Genres_Remove(sender As Object, e As EventArgs) Handles btnGenres_Remove.Click
+        If lbGenres.SelectedItem IsNot Nothing Then lbGenres.Items.Remove(lbGenres.SelectedItem)
+    End Sub
+
+    Private Sub Genres_Up(sender As Object, e As EventArgs) Handles btnGenres_Up.Click
+        If lbGenres.SelectedIndex > 0 Then
+            Dim i = lbGenres.SelectedIndex - 1
+            lbGenres.Items.Insert(i, lbGenres.SelectedItem)
+            lbGenres.Items.RemoveAt(lbGenres.SelectedIndex)
+            lbGenres.SelectedIndex = i
+        End If
     End Sub
 
     Private Sub Image_Clipboard_Click(ByVal sender As Object, ByVal e As EventArgs) Handles _
@@ -1309,24 +1326,39 @@ Public Class dlgEdit_TVShow
         Next
         Return nList
     End Function
-    ''' <summary>
-    ''' Fills the tag list with selected tags first in list and all known gtagsenres from database as second
-    ''' </summary>
-    Private Sub Tags_Fill()
-        clbTags.Items.Add(Master.eLang.None)
-        If tmpDBElement.TVShow.TagsSpecified Then
-            tmpDBElement.TVShow.Tags.Sort()
-            clbTags.Items.AddRange(tmpDBElement.TVShow.Tags.ToArray)
-            'enable all selected tags, skip the first entry "[none]"
-            For i As Integer = 1 To clbTags.Items.Count - 1
-                clbTags.SetItemChecked(i, True)
-            Next
-        Else
-            'select "[none]" if no tag has been specified
-            clbTags.SetItemChecked(0, True)
+
+    Private Sub Tags_Add(sender As Object, e As EventArgs) Handles btnTags_Add.Click
+        If Not String.IsNullOrEmpty(cbTags.Text.Trim) AndAlso Not lbTags.Items.Contains(cbTags.Text.Trim) Then lbTags.Items.Add(cbTags.Text.Trim)
+    End Sub
+
+    Private Sub Tags_Down(sender As Object, e As EventArgs) Handles btnTags_Down.Click
+        If lbTags.SelectedIndex < lbTags.Items.Count - 1 Then
+            Dim i = lbTags.SelectedIndex + 2
+            lbTags.Items.Insert(i, lbTags.SelectedItem)
+            lbTags.Items.RemoveAt(lbTags.SelectedIndex)
+            lbTags.SelectedIndex = i - 1
         End If
-        'add the rest of all tags
-        clbTags.Items.AddRange(Master.DB.GetAllTags.Where(Function(f) Not clbTags.Items.Contains(f)).ToArray)
+    End Sub
+
+    Private Sub Tags_Fill()
+        If tmpDBElement.TVShow.TagsSpecified Then
+            lbTags.Items.AddRange(tmpDBElement.TVShow.Tags.ToArray)
+        End If
+        'add the rest of all tags to the ComboBox
+        cbTags.Items.AddRange(Master.DB.GetAllTags)
+    End Sub
+
+    Private Sub Tags_Remove(sender As Object, e As EventArgs) Handles btnTags_Remove.Click
+        If lbTags.SelectedItem IsNot Nothing Then lbTags.Items.Remove(lbTags.SelectedItem)
+    End Sub
+
+    Private Sub Tags_Up(sender As Object, e As EventArgs) Handles btnTags_Up.Click
+        If lbTags.SelectedIndex > 0 Then
+            Dim i = lbTags.SelectedIndex - 1
+            lbTags.Items.Insert(i, lbTags.SelectedItem)
+            lbTags.Items.RemoveAt(lbTags.SelectedIndex)
+            lbTags.SelectedIndex = i
+        End If
     End Sub
 
     Private Sub TextBox_SelectAll(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
@@ -1427,110 +1459,6 @@ Public Class dlgEdit_TVShow
     Private Sub Watched_CheckedChanged(sender As Object, e As EventArgs) Handles chkWatched.CheckedChanged
         dtpLastPlayed_Date.Enabled = chkWatched.Checked
         dtpLastPlayed_Time.Enabled = chkWatched.Checked
-    End Sub
-
-    Private Sub TrailerLink_TextChanged(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub TrailerLink_Scrape_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub TrailerLink_Play_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Actors_Edit_Click(sender As Object, e As EventArgs) Handles lvActors.DoubleClick, btnActorsEdit.Click
-
-    End Sub
-
-    Private Sub Actors_Add(sender As Object, e As EventArgs) Handles btnActorsAdd.Click
-
-    End Sub
-
-    Private Sub Actors_Remove_Click(sender As Object, e As EventArgs) Handles btnActorsRemove.Click
-
-    End Sub
-
-    Private Sub Trailer_TextChanged(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Trailer_Play_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Trailer_Remove_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Trailer_Local_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Trailer_Scrape_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Trailer_Download_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Subtitles_SelectedIndexChanged(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Subtitles_DoubleClick(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Subtitles_KeyDown(sender As Object, e As KeyEventArgs)
-
-    End Sub
-
-    Private Sub Subtitles_Remove_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Image_Extrathumbs_Refresh(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Image_Extrafanarts_Refresh(sender As Object, e As EventArgs) Handles btnRefreshExtrafanarts.Click
-
-    End Sub
-
-    Private Sub FrameExtraction_SaveAsExtrathumb_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub FrameExtraction_SaveAsExtrafanart_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub FrameExtraction_Scroll(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub FrameExtraction_FrameChange(sender As Object, e As KeyEventArgs)
-
-    End Sub
-
-    Private Sub FrameExtraction_FrameChange(sender As Object, e As MouseEventArgs)
-
-    End Sub
-
-    Private Sub FrameExtraction_SaveAsFanart_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub FrameExtraction_LoadVideo_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub ClearSelection(sender As Object, e As EventArgs) Handles tcEdit.SelectedIndexChanged
-
     End Sub
 
 #End Region 'Methods

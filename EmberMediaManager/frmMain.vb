@@ -10339,6 +10339,7 @@ Public Class frmMain
         lblPremieredHeader.Text = Master.eLang.GetString(724, "Premiered")
         lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
         lblStatus.Text = currTV.TVShow.Status
+        lblTagline.Text = currTV.TVShow.Tagline
         lblTags.Text = String.Join(" / ", currTV.TVShow.Tags.ToArray)
         txtIMDBID.Text = currTV.TVShow.UniqueIDs.IMDbId
         txtPlot.Text = currTV.TVShow.Plot
@@ -12276,8 +12277,8 @@ Public Class frmMain
                     mnuScrapeOptionStatus.Visible = True
                     mnuScrapeOptionStudios.Enabled = .TVScraperShowStudio
                     mnuScrapeOptionStudios.Visible = True
-                    mnuScrapeOptionTagline.Enabled = False
-                    mnuScrapeOptionTagline.Visible = False
+                    mnuScrapeOptionTagline.Enabled = .TVScraperShowTagline
+                    mnuScrapeOptionTagline.Visible = True
                     mnuScrapeOptionTitle.Enabled = .TVScraperShowTitle
                     mnuScrapeOptionTitle.Visible = True
                     mnuScrapeOptionTop250.Enabled = False
@@ -12635,7 +12636,31 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub SingleDataField(ByVal sender As Object, ByVal e As EventArgs) Handles mnuScrapeOptionWriters.Click, mnuScrapeOptionUserRating.Click, mnuScrapeOptionTrailer.Click, mnuScrapeOptionTop250.Click, mnuScrapeOptionTitle.Click, mnuScrapeOptionTagline.Click, mnuScrapeOptionStudios.Click, mnuScrapeOptionStatus.Click, mnuScrapeOptionRuntime.Click, mnuScrapeOptionRating.Click, mnuScrapeOptionPremiered.Click, mnuScrapeOptionPlot.Click, mnuScrapeOptionOutline.Click, mnuScrapeOptionOriginalTitle.Click, mnuScrapeOptionMPAA.Click, mnuScrapeOptionGuestStars.Click, mnuScrapeOptionGenres.Click, mnuScrapeOptionEpiGuideURL.Click, mnuScrapeOptionDirectors.Click, mnuScrapeOptionCreators.Click, mnuScrapeOptionCountries.Click, mnuScrapeOptionCollectionID.Click, mnuScrapeOptionCertifications.Click, mnuScrapeOptionAired.Click, mnuScrapeOptionActors.Click
+    Private Sub SingleDataField(ByVal sender As Object, ByVal e As EventArgs) Handles mnuScrapeOptionWriters.Click,
+        mnuScrapeOptionUserRating.Click,
+        mnuScrapeOptionTrailer.Click,
+        mnuScrapeOptionTop250.Click,
+        mnuScrapeOptionTitle.Click,
+        mnuScrapeOptionTagline.Click,
+        mnuScrapeOptionStudios.Click,
+        mnuScrapeOptionStatus.Click,
+        mnuScrapeOptionRuntime.Click,
+        mnuScrapeOptionRating.Click,
+        mnuScrapeOptionPremiered.Click,
+        mnuScrapeOptionPlot.Click,
+        mnuScrapeOptionOutline.Click,
+        mnuScrapeOptionOriginalTitle.Click,
+        mnuScrapeOptionMPAA.Click,
+        mnuScrapeOptionGuestStars.Click,
+        mnuScrapeOptionGenres.Click,
+        mnuScrapeOptionEpiGuideURL.Click,
+        mnuScrapeOptionDirectors.Click,
+        mnuScrapeOptionCreators.Click,
+        mnuScrapeOptionCountries.Click,
+        mnuScrapeOptionCollectionID.Click,
+        mnuScrapeOptionCertifications.Click,
+        mnuScrapeOptionAired.Click,
+        mnuScrapeOptionActors.Click
 
         Dim ContentType As String = String.Empty
         Dim ScrapeOption As String = String.Empty
@@ -18059,7 +18084,7 @@ Public Class frmMain
         mnuScrapeOptionOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         mnuScrapeOptionPlot.Text = Master.eLang.GetString(65, "Plot")
         mnuScrapeOptionPremiered.Text = Master.eLang.GetString(724, "Premiered")
-        mnuScrapeOptionRating.Text = Master.eLang.GetString(400, "Rating")
+        mnuScrapeOptionRating.Text = Master.eLang.GetString(1145, "Ratings")
         mnuScrapeOptionRuntime.Text = Master.eLang.GetString(238, "Runtime")
         mnuScrapeOptionStatus.Text = Master.eLang.GetString(215, "Status")
         mnuScrapeOptionStudios.Text = Master.eLang.GetString(226, "Studios")

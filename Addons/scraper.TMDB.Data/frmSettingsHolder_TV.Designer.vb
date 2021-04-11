@@ -77,6 +77,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
         Me.lblInfoBottom = New System.Windows.Forms.Label()
+        Me.chkScraperShowTagline = New System.Windows.Forms.CheckBox()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -400,7 +401,8 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowPremiered, 1, 0)
         Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowStatus, 1, 3)
         Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowStudios, 1, 4)
-        Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowTitle, 1, 5)
+        Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowTitle, 1, 6)
+        Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowTagline, 1, 5)
         Me.tblScraperFieldsShow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsShow.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsShow.Name = "tblScraperFieldsShow"
@@ -488,7 +490,7 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperShowOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScraperShowOriginalTitle.Location = New System.Drawing.Point(3, 118)
         Me.chkScraperShowOriginalTitle.Name = "chkScraperShowOriginalTitle"
-        Me.chkScraperShowOriginalTitle.Size = New System.Drawing.Size(92, 17)
+        Me.chkScraperShowOriginalTitle.Size = New System.Drawing.Size(93, 17)
         Me.chkScraperShowOriginalTitle.TabIndex = 0
         Me.chkScraperShowOriginalTitle.Text = "Original Title"
         Me.chkScraperShowOriginalTitle.UseVisualStyleBackColor = True
@@ -552,9 +554,9 @@ Partial Class frmSettingsHolder_TV
         '
         Me.chkScraperShowTitle.AutoSize = True
         Me.chkScraperShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowTitle.Location = New System.Drawing.Point(103, 118)
+        Me.chkScraperShowTitle.Location = New System.Drawing.Point(103, 141)
         Me.chkScraperShowTitle.Name = "chkScraperShowTitle"
-        Me.chkScraperShowTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkScraperShowTitle.Size = New System.Drawing.Size(48, 17)
         Me.chkScraperShowTitle.TabIndex = 0
         Me.chkScraperShowTitle.Text = "Title"
         Me.chkScraperShowTitle.UseVisualStyleBackColor = True
@@ -660,7 +662,7 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperEpisodeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScraperEpisodeTitle.Location = New System.Drawing.Point(117, 72)
         Me.chkScraperEpisodeTitle.Name = "chkScraperEpisodeTitle"
-        Me.chkScraperEpisodeTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkScraperEpisodeTitle.Size = New System.Drawing.Size(48, 17)
         Me.chkScraperEpisodeTitle.TabIndex = 0
         Me.chkScraperEpisodeTitle.Text = "Title"
         Me.chkScraperEpisodeTitle.UseVisualStyleBackColor = True
@@ -747,7 +749,7 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperSeasonTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScraperSeasonTitle.Location = New System.Drawing.Point(3, 49)
         Me.chkScraperSeasonTitle.Name = "chkScraperSeasonTitle"
-        Me.chkScraperSeasonTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkScraperSeasonTitle.Size = New System.Drawing.Size(48, 17)
         Me.chkScraperSeasonTitle.TabIndex = 4
         Me.chkScraperSeasonTitle.Text = "Title"
         Me.chkScraperSeasonTitle.UseVisualStyleBackColor = True
@@ -804,6 +806,17 @@ Partial Class frmSettingsHolder_TV
         Me.lblInfoBottom.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " &
     "for more options."
         Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'chkScraperShowTagline
+        '
+        Me.chkScraperShowTagline.AutoSize = True
+        Me.chkScraperShowTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowTagline.Location = New System.Drawing.Point(103, 118)
+        Me.chkScraperShowTagline.Name = "chkScraperShowTagline"
+        Me.chkScraperShowTagline.Size = New System.Drawing.Size(63, 17)
+        Me.chkScraperShowTagline.TabIndex = 0
+        Me.chkScraperShowTagline.Text = "Tagline"
+        Me.chkScraperShowTagline.UseVisualStyleBackColor = True
         '
         'frmSettingsHolder_TV
         '
@@ -915,5 +928,5 @@ Partial Class frmSettingsHolder_TV
     Friend WithEvents chkScraperSeasonAired As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperSeasonPlot As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperSeasonTitle As System.Windows.Forms.CheckBox
-
+    Friend WithEvents chkScraperShowTagline As CheckBox
 End Class

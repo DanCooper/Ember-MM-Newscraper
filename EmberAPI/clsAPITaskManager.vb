@@ -332,6 +332,7 @@ Public Class TaskManager
                             DataField_ClearString(.bMainRuntime, tmpDBElement.TVShow.Runtime)
                             DataField_CompareStrings(.bMainStatus, tmpDBElement.TVShow.Status, nInfo.Status)
                             DataField_CompareLists(.bMainStudios, tmpDBElement.TVShow.Studios, nInfo.Studios)
+                            DataField_CompareStrings(.bMainTagline, tmpDBElement.TVShow.Tagline, nInfo.Tagline)
                             DataField_CompareLists(.bMainTags, tmpDBElement.TVShow.Tags, nInfo.Tags)
                             DataField_CompareIntegers(.bMainUserRating, tmpDBElement.TVShow.UserRating, nInfo.UserRating)
                         End With

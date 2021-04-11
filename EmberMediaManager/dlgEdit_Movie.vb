@@ -833,7 +833,7 @@ Public Class dlgEdit_Movie
             'UniqueIDs
             .UniqueIDs.Items = UniqueIds_Get()
             'UserNote
-            .UserNote = txtUserNote.Text
+            .UserNote = txtUserNote.Text.Trim
             'UserRating
             .UserRating = CInt(cbUserRating.SelectedItem)
             'Watched/Lastplayed
@@ -1909,11 +1909,16 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub Tags_Add(sender As Object, e As EventArgs) Handles btnTags_Add.Click
-
+        If Not String.IsNullOrEmpty(cbTags.Text.Trim) AndAlso Not lbTags.Items.Contains(cbTags.Text.Trim) Then lbTags.Items.Add(cbTags.Text.Trim)
     End Sub
 
     Private Sub Tags_Down(sender As Object, e As EventArgs) Handles btnTags_Down.Click
-
+        If lbTags.SelectedIndex < lbTags.Items.Count - 1 Then
+            Dim i = lbTags.SelectedIndex + 2
+            lbTags.Items.Insert(i, lbTags.SelectedItem)
+            lbTags.Items.RemoveAt(lbTags.SelectedIndex)
+            lbTags.SelectedIndex = i - 1
+        End If
     End Sub
 
     Private Sub Tags_Fill()
@@ -1925,11 +1930,16 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub Tags_Remove(sender As Object, e As EventArgs) Handles btnTags_Remove.Click
-
+        If lbTags.SelectedItem IsNot Nothing Then lbTags.Items.Remove(lbTags.SelectedItem)
     End Sub
 
     Private Sub Tags_Up(sender As Object, e As EventArgs) Handles btnTags_Up.Click
-
+        If lbTags.SelectedIndex > 0 Then
+            Dim i = lbTags.SelectedIndex - 1
+            lbTags.Items.Insert(i, lbTags.SelectedItem)
+            lbTags.Items.RemoveAt(lbTags.SelectedIndex)
+            lbTags.SelectedIndex = i
+        End If
     End Sub
 
     Private Sub TextBox_UIntegerOnly(sender As Object, e As KeyPressEventArgs) Handles _

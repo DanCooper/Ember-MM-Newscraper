@@ -1204,6 +1204,16 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("tagline")>
+        Public Property Tagline() As String = String.Empty
+
+        <XmlIgnore()>
+        Public ReadOnly Property TaglineSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Tagline)
+            End Get
+        End Property
+
         <XmlElement("language")>
         Public Property Language() As String = String.Empty
 
@@ -1441,16 +1451,6 @@ Namespace MediaContainers
         Public ReadOnly Property CreditsSpecified() As Boolean
             Get
                 Return Credits.Count > 0
-            End Get
-        End Property
-
-        <XmlElement("tagline")>
-        Public Property Tagline() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property TaglineSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Tagline)
             End Get
         End Property
 
@@ -2593,6 +2593,16 @@ Namespace MediaContainers
         Public ReadOnly Property SortTitleSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(SortTitle)
+            End Get
+        End Property
+
+        <XmlElement("tagline")>
+        Public Property Tagline() As String = String.Empty
+
+        <XmlIgnore()>
+        Public ReadOnly Property TaglineSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Tagline)
             End Get
         End Property
 

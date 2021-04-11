@@ -186,16 +186,16 @@ Public Class Database
         Return ID
     End Function
 
-    Private Sub AddGenreToMovie(ByVal idMovie As Long, ByVal idGenre As Long)
-        AddToLinkTable("genrelinkmovie", "idGenre", idGenre, "idMovie", idMovie)
+    Private Sub AddGenreToMovie(ByVal idMovie As Long, ByVal idGenre As Long, ByVal sorting As Integer)
+        AddToLinkTable("genrelinkmovie", "idGenre", idGenre, "idMovie", idMovie, "sorting", sorting)
     End Sub
 
-    Private Sub AddGenreToMusicVideo(ByVal idMVideo As Long, ByVal idGenre As Long)
-        AddToLinkTable("genrelinkmusicvideo", "idGenre", idGenre, "idMVideo", idMVideo)
+    Private Sub AddGenreToMusicVideo(ByVal idMVideo As Long, ByVal idGenre As Long, ByVal sorting As Integer)
+        AddToLinkTable("genrelinkmusicvideo", "idGenre", idGenre, "idMVideo", idMVideo, "sorting", sorting)
     End Sub
 
-    Private Sub AddGenreToTvShow(ByVal idShow As Long, ByVal idGenre As Long)
-        AddToLinkTable("genrelinktvshow", "idGenre", idGenre, "idShow", idShow)
+    Private Sub AddGenreToTvShow(ByVal idShow As Long, ByVal idGenre As Long, ByVal sorting As Integer)
+        AddToLinkTable("genrelinktvshow", "idGenre", idGenre, "idShow", idShow, "sorting", sorting)
     End Sub
 
     Private Sub AddGuestStar(ByVal idMedia As Long, ByVal table As String, ByVal field As String, ByVal cast As List(Of MediaContainers.Person))
@@ -365,6 +365,39 @@ Public Class Database
         End If
     End Function
 
+    Private Function AddToLinkTable(ByVal table As String, ByVal firstField As String, ByVal firstID As Long, ByVal secondField As String, ByVal secondID As Long,
+                               ByVal thirdField As String, ByVal thirdValue As Integer,
+                               Optional ByVal typeField As String = "", Optional ByVal type As String = "") As Boolean
+        Dim doesExist As Boolean = False
+
+        Using SQLcommand_select As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand_select.CommandText = String.Format("SELECT * FROM {0} WHERE {1}={2} AND {3}={4} AND {5}={6}", table, firstField, firstID, secondField, secondID, thirdField, thirdValue)
+            If Not String.IsNullOrEmpty(typeField) AndAlso Not String.IsNullOrEmpty(type) Then
+                SQLcommand_select.CommandText = String.Concat(SQLcommand_select.CommandText, String.Format(" AND {0}='{1}'", typeField, type))
+            End If
+            Using SQLreader As SQLiteDataReader = SQLcommand_select.ExecuteReader()
+                While SQLreader.Read
+                    doesExist = True
+                    Exit While
+                End While
+            End Using
+        End Using
+
+        If Not doesExist Then
+            Using SQLcommand_insert As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                If String.IsNullOrEmpty(typeField) AndAlso String.IsNullOrEmpty(type) Then
+                    SQLcommand_insert.CommandText = String.Format("INSERT INTO {0} ({1},{2},{3}) VALUES ({4},{5},{6})", table, firstField, secondField, thirdField, firstID, secondID, thirdValue)
+                Else
+                    SQLcommand_insert.CommandText = String.Format("INSERT INTO {0} ({1},{2},{3},{4}) VALUES ({5},{6},{7},'{8}')", table, firstField, secondField, thirdField, typeField, firstID, secondID, thirdValue, type)
+                End If
+                SQLcommand_insert.ExecuteNonQuery()
+                Return True
+            End Using
+        Else
+            Return False
+        End If
+    End Function
+
     Private Function AddToTable(ByVal table As String, ByVal firstField As String, ByVal secondField As String, ByVal value As String) As Long
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
@@ -394,9 +427,9 @@ Public Class Database
         Return ID
     End Function
 
-    Private Sub AddTagToItem(ByVal idMedia As Long, ByVal idTag As Long, ByVal type As String)
+    Private Sub AddTagToItem(ByVal idMedia As Long, ByVal idTag As Long, ByVal type As String, ByVal sorting As Integer)
         If String.IsNullOrEmpty(type) Then Return
-        AddToLinkTable("taglinks", "idTag", idTag, "idMedia", idMedia, "media_type", type)
+        AddToLinkTable("taglinks", "idTag", idTag, "idMedia", idMedia, "sorting", sorting, "media_type", type)
     End Sub
 
     Private Function AddUniqueID(ByVal idMedia As Long,
@@ -2332,7 +2365,7 @@ Public Class Database
         'Genres
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT B.strGenre FROM genrelinkmovie ",
-                                                   "AS A INNER JOIN genre AS B ON (A.idGenre = B.idGenre) WHERE A.idMovie = ", _movieDB.ID, ";")
+                                                   "AS A INNER JOIN genre AS B ON (A.idGenre = B.idGenre) WHERE A.idMovie = ", _movieDB.ID, " ORDER BY sorting;")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     If Not DBNull.Value.Equals(SQLreader("strGenre")) Then _movieDB.Movie.Genres.Add(SQLreader("strGenre").ToString)
@@ -2439,7 +2472,7 @@ Public Class Database
         'Tags
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT B.strTag FROM taglinks ",
-                                                   "AS A INNER JOIN tag AS B ON (A.idTag = B.idTag) WHERE A.idMedia = ", _movieDB.ID, " AND A.media_type = 'movie';")
+                                                   "AS A INNER JOIN tag AS B ON (A.idTag = B.idTag) WHERE A.idMedia = ", _movieDB.ID, " AND A.media_type = 'movie' ORDER BY sorting;")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     If Not DBNull.Value.Equals(SQLreader("strTag")) Then _movieDB.Movie.Tags.Add(SQLreader("strTag").ToString)
@@ -3124,6 +3157,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))
                         If Not DBNull.Value.Equals(SQLreader("Certification")) Then .AddCertificationsFromString(SQLreader("Certification").ToString)
                         If Not DBNull.Value.Equals(SQLreader("userNote")) Then .UserNote = SQLreader("userNote").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Tagline")) Then .Tagline = SQLreader("Tagline").ToString
                     End With
                 End If
             End Using
@@ -3195,7 +3229,7 @@ Public Class Database
             SQLcommand.CommandText = String.Concat("SELECT genre.strGenre ",
                                                    "FROM genre ",
                                                    "INNER JOIN genrelinktvshow ON (genre.idGenre = genrelinktvshow.idGenre) ",
-                                                   "WHERE genrelinktvshow.idShow = ", _TVDB.ID, ";")
+                                                   "WHERE genrelinktvshow.idShow = ", _TVDB.ID, " ORDER BY sorting;")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     If Not DBNull.Value.Equals(SQLreader("strGenre")) Then _TVDB.TVShow.Genres.Add(SQLreader("strGenre").ToString)
@@ -3222,7 +3256,7 @@ Public Class Database
         'Tags
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT B.strTag FROM taglinks ",
-                                                   "AS A INNER JOIN tag AS B ON (A.idTag = B.idTag) WHERE A.idMedia = ", _TVDB.ID, " And A.media_type = 'tvshow';")
+                                                   "AS A INNER JOIN tag AS B ON (A.idTag = B.idTag) WHERE A.idMedia = ", _TVDB.ID, " And A.media_type = 'tvshow' ORDER BY sorting;")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim tag As String
                 While SQLreader.Read
@@ -3721,6 +3755,7 @@ Public Class Database
                             End If
                         End If
 
+#Disable Warning BC40000 ' The type or member is obsolete.
                         For Each value As String In valuelist
                             Select Case table
                                 Case "movie"
@@ -3729,6 +3764,7 @@ Public Class Database
                                     AddGenreToTvShow(idMedia, AddGenre(value))
                             End Select
                         Next
+#Enable Warning BC40000 ' The type or member is obsolete.
                     End If
                 End While
             End Using
@@ -4480,8 +4516,10 @@ Public Class Database
                     SQLcommand_genrelink.CommandText = String.Format("DELETE FROM genrelinkmovie WHERE idMovie = {0};", _movieDB.ID)
                     SQLcommand_genrelink.ExecuteNonQuery()
                 End Using
+                Dim iGenre As Integer = 0
                 For Each genre As String In _movieDB.Movie.Genres
-                    AddGenreToMovie(_movieDB.ID, AddGenre(genre))
+                    AddGenreToMovie(_movieDB.ID, AddGenre(genre), iGenre)
+                    iGenre += 1
                 Next
 
                 'Images
@@ -4518,8 +4556,10 @@ Public Class Database
                     SQLcommand_taglinks.CommandText = String.Format("DELETE FROM taglinks WHERE idMedia = {0} AND media_type = 'movie';", _movieDB.ID)
                     SQLcommand_taglinks.ExecuteNonQuery()
                 End Using
+                Dim iTag As Integer = 0
                 For Each tag As String In _movieDB.Movie.Tags
-                    AddTagToItem(_movieDB.ID, AddTag(tag), "movie")
+                    AddTagToItem(_movieDB.ID, AddTag(tag), "movie", iTag)
+                    iTag += 1
                 Next
 
                 'UniqueIDs
@@ -5463,15 +5503,15 @@ Public Class Database
                  "idSource, TVShowPath, New, Mark, TVDB, Lock, ListTitle, EpisodeGuide, ",
                  "Plot, Premiered, MPAA, Rating, NfoPath, Language, Ordering, ",
                  "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ",
-                 "strIMDB, strTMDB, strOriginalTitle, iUserRating, Certification, userNote",
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
+                 "strIMDB, strTMDB, strOriginalTitle, iUserRating, Certification, userNote, Tagline",
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (",
                  "idShow, idSource, TVShowPath, New, Mark, TVDB, Lock, ListTitle, EpisodeGuide, ",
                  "Plot, Premiered, MPAA, Rating, NfoPath, Language, Ordering, ",
                  "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ",
-                 "strIMDB, strTMDB, strOriginalTitle, iUserRating, Certification, userNote",
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
+                 "strIMDB, strTMDB, strOriginalTitle, iUserRating, Certification, userNote, Tagline",
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
                 Dim par_lngTVShowID As SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.Int64, 0, "idShow")
                 par_lngTVShowID.Value = _show.ID
             End If
@@ -5505,6 +5545,7 @@ Public Class Database
             Dim par_iUserRating As SQLiteParameter = SQLcommand.Parameters.Add("par_iUserRating", DbType.Int64, 0, "iUserRating")
             Dim par_Certification As SQLiteParameter = SQLcommand.Parameters.Add("par_Certification", DbType.String, 0, "Certification")
             Dim par_userNote As SQLiteParameter = SQLcommand.Parameters.Add("par_userNote", DbType.String, 0, "userNote")
+            Dim par_Tagline As SQLiteParameter = SQLcommand.Parameters.Add("par_Tagline", DbType.String, 0, "Tagline")
 
             With _show.TVShow
                 par_Certification.Value = String.Join(" / ", .Certifications.ToArray)
@@ -5519,6 +5560,7 @@ Public Class Database
                 par_strRuntime.Value = .Runtime
                 par_strSortTitle.Value = .SortTitle
                 par_strStatus.Value = .Status
+                par_Tagline.Value = .Tagline
                 par_strTMDB.Value = .UniqueIDs.TMDbId
                 par_strTVDB.Value = .UniqueIDs.TVDbId
                 par_strTitle.Value = .Title
@@ -5603,9 +5645,10 @@ Public Class Database
                     SQLcommand_genrelink.CommandText = String.Format("DELETE FROM genrelinktvshow WHERE idShow = {0};", _show.ID)
                     SQLcommand_genrelink.ExecuteNonQuery()
                 End Using
-                Dim i As Integer = 0
+                Dim iGenre As Integer = 0
                 For Each genre As String In _show.TVShow.Genres
-                    AddGenreToTvShow(_show.ID, AddGenre(genre))
+                    AddGenreToTvShow(_show.ID, AddGenre(genre), iGenre)
+                    iGenre += 1
                 Next
 
                 'Images
@@ -5639,8 +5682,10 @@ Public Class Database
                     SQLcommand_taglinks.CommandText = String.Format("DELETE FROM taglinks WHERE idMedia = {0} AND media_type = 'tvshow';", _show.ID)
                     SQLcommand_taglinks.ExecuteNonQuery()
                 End Using
+                Dim iTag As Integer = 0
                 For Each tag As String In _show.TVShow.Tags
-                    AddTagToItem(_show.ID, AddTag(tag), "tvshow")
+                    AddTagToItem(_show.ID, AddTag(tag), "tvshow", iTag)
+                    iTag += 1
                 Next
 
                 'UniqueIDs
@@ -6064,6 +6109,20 @@ Public Class Database
     End Function
 
 #End Region 'Methods
+
+#Region "Deprecated Methodes"
+
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddGenreToItem instead.")>
+    Private Sub AddGenreToMovie(ByVal idMovie As Long, ByVal idGenre As Long)
+        AddToLinkTable("genrelinkmovie", "idGenre", idGenre, "idMovie", idMovie)
+    End Sub
+
+    <Obsolete("This method is deprecated and only to use for database upgrade, use AddGenreToItem instead.")>
+    Private Sub AddGenreToTvShow(ByVal idShow As Long, ByVal idGenre As Long)
+        AddToLinkTable("genrelinktvshow", "idGenre", idGenre, "idShow", idShow)
+    End Sub
+
+#End Region 'Deprecated Methodes
 
 #Region "Nested Types"
 

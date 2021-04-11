@@ -484,6 +484,7 @@ Public Class Settings
     Public Property TVLockShowRuntime() As Boolean = False
     Public Property TVLockShowStatus() As Boolean = False
     Public Property TVLockShowStudio() As Boolean = False
+    Public Property TVLockShowTagline() As Boolean = False
     Public Property TVLockShowTitle() As Boolean = False
     Public Property TVLockShowUserRating() As Boolean = False
     Public Property TVMetadataPerFileType() As List(Of MetadataPerType) = New List(Of MetadataPerType)
@@ -542,6 +543,7 @@ Public Class Settings
     Public Property TVScraperShowStatus() As Boolean = True
     Public Property TVScraperShowStudio() As Boolean = True
     Public Property TVScraperShowStudioLimit() As Integer = 0
+    Public Property TVScraperShowTagline() As Boolean = True
     Public Property TVScraperShowTitle() As Boolean = True
     Public Property TVScraperShowUserRating() As Boolean = True
     Public Property TVScraperUseDisplaySeasonEpisode() As Boolean = True

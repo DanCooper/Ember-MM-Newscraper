@@ -114,6 +114,7 @@ Public Class frmSettingsHolder_TV
         chkScraperShowRuntime.CheckedChanged,
         chkScraperShowStatus.CheckedChanged,
         chkScraperShowStudios.CheckedChanged,
+        chkScraperShowTagline.CheckedChanged,
         chkScraperShowTitle.CheckedChanged
 
         RaiseEvent ModuleSettingsChanged()
@@ -162,6 +163,7 @@ Public Class frmSettingsHolder_TV
         chkScraperShowRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
         chkScraperShowStudios.Text = Master.eLang.GetString(226, "Studios")
+        chkScraperShowTagline.Text = Master.eLang.GetString(397, "Tagline")
         chkScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
         gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")

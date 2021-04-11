@@ -1209,6 +1209,7 @@ Public Class Functions
             .bMainRuntime = Master.eSettings.TVScraperShowRuntime
             .bMainStatus = Master.eSettings.TVScraperShowStatus
             .bMainStudios = Master.eSettings.TVScraperShowStudio
+            .bMainTagline = Master.eSettings.TVScraperShowTagline
             .bMainTitle = Master.eSettings.TVScraperShowTitle
             .bMainUserRating = Master.eSettings.TVScraperShowUserRating
             .bSeasonAired = Master.eSettings.TVScraperSeasonAired

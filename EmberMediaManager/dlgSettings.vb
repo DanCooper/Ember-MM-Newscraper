@@ -3216,6 +3216,7 @@ Public Class dlgSettings
             chkTVLockShowRuntime.Checked = .TVLockShowRuntime
             chkTVLockShowStatus.Checked = .TVLockShowStatus
             chkTVLockShowStudio.Checked = .TVLockShowStudio
+            chkTVLockShowTagline.Checked = .TVLockShowTagline
             chkTVLockShowTitle.Checked = .TVLockShowTitle
             chkTVLockShowUserRating.Checked = .TVLockShowUserRating
             chkTVScanOrderModify.Checked = .TVScanOrderModify
@@ -3254,6 +3255,7 @@ Public Class dlgSettings
             chkTVScraperShowRuntime.Checked = .TVScraperShowRuntime
             chkTVScraperShowStatus.Checked = .TVScraperShowStatus
             chkTVScraperShowStudio.Checked = .TVScraperShowStudio
+            chkTVScraperShowTagline.Checked = .TVScraperShowTagline
             chkTVScraperShowTitle.Checked = .TVScraperShowTitle
             chkTVScraperShowUserRating.Checked = .TVScraperShowUserRating
             chkTVScraperUseDisplaySeasonEpisode.Checked = .TVScraperUseDisplaySeasonEpisode
@@ -5288,6 +5290,7 @@ Public Class dlgSettings
             .TVLockShowRuntime = chkTVLockShowRuntime.Checked
             .TVLockShowStatus = chkTVLockShowStatus.Checked
             .TVLockShowStudio = chkTVLockShowStudio.Checked
+            .TVLockShowTagline = chkTVLockShowTagline.Checked
             .TVLockShowTitle = chkTVLockShowTitle.Checked
             .TVLockShowUserRating = chkTVLockShowUserRating.Checked
             .TVMetadataPerFileType.Clear()
@@ -5343,6 +5346,7 @@ Public Class dlgSettings
             .TVScraperShowStatus = chkTVScraperShowStatus.Checked
             .TVScraperShowStudio = chkTVScraperShowStudio.Checked
             Integer.TryParse(txtTVScraperShowStudioLimit.Text, .TVScraperShowStudioLimit)
+            .TVScraperShowTagline = chkTVScraperShowTagline.Checked
             .TVScraperShowTitle = chkTVScraperShowTitle.Checked
             .TVScraperShowUserRating = chkTVScraperShowUserRating.Checked
             .TVScraperUseDisplaySeasonEpisode = chkTVScraperUseDisplaySeasonEpisode.Checked
@@ -6762,6 +6766,7 @@ Public Class dlgSettings
         'Tagline
         Dim strTagline As String = Master.eLang.GetString(397, "Tagline")
         lblMovieScraperGlobalTagline.Text = strTagline
+        lblTVScraperGlobalTagline.Text = strTagline
 
         'Theme
         Dim strTheme As String = Master.eLang.GetString(1118, "Theme")
@@ -8423,7 +8428,14 @@ Public Class dlgSettings
         txtTVShowPosterWidth.TextChanged,
         txtTVShowThemeDefaultSearch.TextChanged,
         txtTVShowThemeTvTunesCustomPath.TextChanged,
-        txtTVShowThemeTvTunesSubDir.TextChanged, cbGeneralMovieTheme.SelectedIndexChanged, txtMovieScraperIdDefaultType.TextChanged, chkMovieScraperIdWriteNodeTMDbCollectionId.CheckedChanged, chkMovieScraperIdWriteNodeTMDbId.CheckedChanged, chkMovieScraperIdWriteNodeDefaultId.CheckedChanged
+        txtTVShowThemeTvTunesSubDir.TextChanged,
+        cbGeneralMovieTheme.SelectedIndexChanged,
+        txtMovieScraperIdDefaultType.TextChanged,
+        chkMovieScraperIdWriteNodeTMDbCollectionId.CheckedChanged,
+        chkMovieScraperIdWriteNodeTMDbId.CheckedChanged,
+        chkMovieScraperIdWriteNodeDefaultId.CheckedChanged,
+        chkTVScraperShowTagline.CheckedChanged,
+        chkTVLockShowTagline.CheckedChanged
 
         SetApplyButton(True)
     End Sub

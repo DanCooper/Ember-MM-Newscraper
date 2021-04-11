@@ -232,7 +232,7 @@ CREATE TABLE genre (
 CREATE TABLE genrelinkmovie (
         idGenre	integer,
         idMovie	integer,
-		iOrder	integer
+		sorting	integer
         );
 
         CREATE UNIQUE INDEX ix_genrelinkmovie_1
@@ -246,7 +246,7 @@ CREATE TABLE genrelinkmovie (
 CREATE TABLE genrelinktvshow (
         idGenre	integer,
         idShow	integer,
-		iOrder	integer
+		sorting	integer
         );
 
         CREATE UNIQUE INDEX ix_genrelinktvshow_1
@@ -285,7 +285,7 @@ CREATE TABLE taglinks (
         idTag       integer,
         idMedia     integer,
         media_type  text,
-		iOrder		integer
+		sorting		integer
         );
 
         CREATE UNIQUE INDEX ix_taglinks_1
@@ -502,7 +502,8 @@ CREATE TABLE tvshow (
 		strOriginalTitle	text,
 		iUserRating			integer NOT NULL DEFAULT 0,
         Certification		text,
-		userNote			text
+		userNote			text,
+		Tagline				text
 		);
 
         CREATE UNIQUE INDEX UniqueTVShowPath

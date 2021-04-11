@@ -1053,6 +1053,17 @@ Public Class Scraper
 
         If bwTMDB.CancellationPending Then Return Nothing
 
+        'Tagline
+        If filteredOptions.bMainTagline Then
+            If Result.Tagline IsNot Nothing AndAlso Not String.IsNullOrEmpty(Result.Tagline) Then
+                nTVShow.Tagline = Result.Tagline
+            ElseIf RunFallback_TVShow(Result.Id) AndAlso _Fallback_TVShow.Tagline IsNot Nothing AndAlso Not String.IsNullOrEmpty(_Fallback_TVShow.Tagline) Then
+                nTVShow.Tagline = _Fallback_TVShow.Tagline
+            End If
+        End If
+
+        If bwTMDB.CancellationPending Then Return Nothing
+
         'Title
         If filteredOptions.bMainTitle Then
             If Not String.IsNullOrEmpty(Result.Name) Then

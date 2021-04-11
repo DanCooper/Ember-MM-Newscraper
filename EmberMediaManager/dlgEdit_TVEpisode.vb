@@ -341,6 +341,8 @@ Public Class dlgEdit_TVEpisode
             txtTitle.Text = .Title
             'Unique IDs
             UniqueIds_Fill()
+            'UserNote
+            txtUserNote.Text = .UserNote
             'UserRating
             cbUserRating.Text = .UserRating.ToString
             'Videosource
@@ -500,6 +502,8 @@ Public Class dlgEdit_TVEpisode
             .Season = If(Integer.TryParse(txtSeason.Text.Trim, 0), CInt(txtSeason.Text.Trim), 0)
             'Title
             .Title = txtTitle.Text.Trim
+            'UserNote
+            .UserNote = txtUserNote.Text.Trim
             'UserRating
             .UserRating = CInt(cbUserRating.SelectedItem)
             'Watched/Lastplayed

@@ -177,7 +177,6 @@ Public Class dlgClearOrReplace
                 chkVideoSource.Visible = False
                 chkWriters.Visible = False
                 txtAired.Visible = False
-                txtTagline.Visible = False
                 txtVideoSource.Visible = False
                 txtWriters.Visible = False
         End Select
@@ -295,6 +294,8 @@ Public Class dlgClearOrReplace
                     nInfo.Status = txtStatus.Text.Trim
                     .bMainStudios = chkStudios.Checked
                     nInfo.Studios = DoSplit(txtStudios)
+                    .bMainTagline = chkTagline.Checked
+                    nInfo.Tagline = txtTagline.Text.Trim
                     .bMainTags = chkTags.Checked
                     nInfo.Tags = DoSplit(txtTags)
                     .bMainUserRating = chkUserRating.Checked

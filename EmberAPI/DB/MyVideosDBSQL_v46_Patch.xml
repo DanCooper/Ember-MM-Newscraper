@@ -377,14 +377,14 @@
 
     <!-- START table genrelinkmovie/genrelinktvshow/taglinks modifications-->
     <command type="DB">
-      <description>add "order" to tables genrelinkmovie/genrelinktvshow/taglinks</description>
+      <description>add "sorting" to tables genrelinkmovie/genrelinktvshow/taglinks</description>
       <execute>
         ALTER TABLE genrelinkmovie
-        ADD COLUMN iOrder integer;
+        ADD COLUMN sorting integer;
         ALTER TABLE genrelinktvshow
-        ADD COLUMN iOrder integer;
+        ADD COLUMN sorting integer;
         ALTER TABLE taglinks
-        ADD COLUMN iOrder integer;
+        ADD COLUMN sorting integer;
       </execute>
     </command>
     <!-- END table genrelinkmovie/genrelinktvshow/taglinks modifications-->
@@ -415,12 +415,14 @@
 
     <!-- START table/view tvshow/tvshowlist modifications-->
     <command type="DB">
-      <description>add "Certification" and "userNote" to table tvshow</description>
+      <description>add "Certification", "userNote" and "Tagline" to table tvshow</description>
       <execute>
         ALTER TABLE tvshow
         ADD COLUMN Certification text;
         ALTER TABLE tvshow
         ADD COLUMN userNote text;
+        ALTER TABLE tvshow
+        ADD COLUMN Tagline text;
       </execute>
     </command>
     <!-- END table/view tvshow/tvshowlist modifications-->

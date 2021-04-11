@@ -467,6 +467,7 @@ Public Class NFO
         Dim new_Runtime As Boolean = False
         Dim new_Status As Boolean = False
         Dim new_Studio As Boolean = False
+        Dim new_Tagline As Boolean = False
         Dim new_Title As Boolean = False
         Dim new_UserRating As Boolean = False
 
@@ -647,6 +648,15 @@ Public Class NFO
                 new_Studio = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStudio AndAlso Not Master.eSettings.TVLockShowStudio Then
                 DBTV.TVShow.Studios.Clear()
+            End If
+
+            'Tagline
+            If (Not DBTV.TVShow.TaglineSpecified OrElse Not Master.eSettings.TVLockShowTagline) AndAlso ScrapeOptions.bMainTagline AndAlso
+                scrapedshow.TaglineSpecified AndAlso Master.eSettings.TVScraperShowTagline AndAlso Not new_Tagline Then
+                DBTV.TVShow.Tagline = scrapedshow.Tagline
+                new_Tagline = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScrapershowTagline AndAlso Not Master.eSettings.TVLockshowTagline Then
+                DBTV.TVShow.Tagline = String.Empty
             End If
 
             'Title

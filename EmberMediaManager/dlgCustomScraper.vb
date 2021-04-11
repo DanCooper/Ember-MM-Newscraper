@@ -882,7 +882,7 @@ Public Class dlgCustomScraper
                     oMainRuntimeAllowed = .TVScraperShowRuntime
                     oMainStatusAllowed = .TVScraperShowStatus
                     oMainStudiosAllowed = .TVScraperShowStudio
-                    oMainTaglineAllowed = False
+                    oMainTaglineAllowed = .TVScraperShowTagline
                     oMainTitleAllowed = .TVScraperShowTitle
                     oMainTop250Allowed = False
                     oMainTrailerAllowed = False

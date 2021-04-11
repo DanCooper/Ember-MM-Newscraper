@@ -24,11 +24,11 @@ Partial Class dlgEdit_TVEpisode
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEdit_TVEpisode))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ListViewGroup4 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem4 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.tblTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
@@ -175,6 +175,8 @@ Partial Class dlgEdit_TVEpisode
         Me.btnFrameLoadVideo = New System.Windows.Forms.Button()
         Me.tpMetaData = New System.Windows.Forms.TabPage()
         Me.pnlFileInfo = New System.Windows.Forms.Panel()
+        Me.lblUserNote = New System.Windows.Forms.Label()
+        Me.txtUserNote = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         Me.tblTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -518,14 +520,17 @@ Partial Class dlgEdit_TVEpisode
         Me.tblDetails.Controls.Add(Me.txtDisplaySeason, 1, 2)
         Me.tblDetails.Controls.Add(Me.txtDisplayEpisode, 3, 2)
         Me.tblDetails.Controls.Add(Me.cbVideosource, 1, 7)
+        Me.tblDetails.Controls.Add(Me.lblUserNote, 0, 8)
+        Me.tblDetails.Controls.Add(Me.txtUserNote, 1, 8)
         Me.tblDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblDetails.Location = New System.Drawing.Point(3, 3)
         Me.tblDetails.Name = "tblDetails"
-        Me.tblDetails.RowCount = 10
+        Me.tblDetails.RowCount = 11
         Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
+        Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -723,7 +728,7 @@ Partial Class dlgEdit_TVEpisode
         Me.dgvUniqueIds.Location = New System.Drawing.Point(598, 311)
         Me.dgvUniqueIds.Name = "dgvUniqueIds"
         Me.dgvUniqueIds.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.tblDetails.SetRowSpan(Me.dgvUniqueIds, 4)
+        Me.tblDetails.SetRowSpan(Me.dgvUniqueIds, 5)
         Me.dgvUniqueIds.Size = New System.Drawing.Size(400, 218)
         Me.dgvUniqueIds.TabIndex = 17
         '
@@ -809,8 +814,8 @@ Partial Class dlgEdit_TVEpisode
         'colRatingsValue
         '
         Me.colRatingsValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle10
         Me.colRatingsValue.HeaderText = "Value"
         Me.colRatingsValue.Name = "colRatingsValue"
         Me.colRatingsValue.Width = 60
@@ -818,8 +823,8 @@ Partial Class dlgEdit_TVEpisode
         'colRatingsMax
         '
         Me.colRatingsMax.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle11
         Me.colRatingsMax.HeaderText = "Max"
         Me.colRatingsMax.Name = "colRatingsMax"
         Me.colRatingsMax.Width = 53
@@ -827,8 +832,8 @@ Partial Class dlgEdit_TVEpisode
         'colRatingsVotes
         '
         Me.colRatingsVotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle12
         Me.colRatingsVotes.HeaderText = "Votes"
         Me.colRatingsVotes.Name = "colRatingsVotes"
         Me.colRatingsVotes.Width = 60
@@ -1461,13 +1466,13 @@ Partial Class dlgEdit_TVEpisode
         Me.lvSubtitles.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup1.Header = "Local Subtitles"
-        ListViewGroup1.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
+        ListViewGroup4.Header = "Local Subtitles"
+        ListViewGroup4.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup4})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.lvSubtitles.HideSelection = False
-        ListViewItem1.Group = ListViewGroup1
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        ListViewItem4.Group = ListViewGroup4
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem4})
         Me.lvSubtitles.Location = New System.Drawing.Point(3, 3)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -1922,6 +1927,24 @@ Partial Class dlgEdit_TVEpisode
         Me.pnlFileInfo.Size = New System.Drawing.Size(1090, 652)
         Me.pnlFileInfo.TabIndex = 0
         '
+        'lblUserNote
+        '
+        Me.lblUserNote.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblUserNote.AutoSize = True
+        Me.lblUserNote.Location = New System.Drawing.Point(55, 398)
+        Me.lblUserNote.Name = "lblUserNote"
+        Me.lblUserNote.Size = New System.Drawing.Size(35, 13)
+        Me.lblUserNote.TabIndex = 45
+        Me.lblUserNote.Text = "Note:"
+        '
+        'txtUserNote
+        '
+        Me.tblDetails.SetColumnSpan(Me.txtUserNote, 3)
+        Me.txtUserNote.Location = New System.Drawing.Point(96, 394)
+        Me.txtUserNote.Name = "txtUserNote"
+        Me.txtUserNote.Size = New System.Drawing.Size(400, 22)
+        Me.txtUserNote.TabIndex = 62
+        '
         'dlgEdit_TVEpisode
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -2145,4 +2168,6 @@ Partial Class dlgEdit_TVEpisode
     Friend WithEvents colUniqueIdsDefault As DataGridViewCheckBoxColumn
     Friend WithEvents colUniqueIdsType As DataGridViewTextBoxColumn
     Friend WithEvents colUniqueIdsValue As DataGridViewTextBoxColumn
+    Friend WithEvents lblUserNote As Label
+    Friend WithEvents txtUserNote As TextBox
 End Class

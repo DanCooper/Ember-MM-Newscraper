@@ -301,6 +301,7 @@ Public Class TMDB_Data
         _setup_TV.chkScraperShowRuntime.Checked = ConfigScrapeOptions_TV.bMainRuntime
         _setup_TV.chkScraperShowStatus.Checked = ConfigScrapeOptions_TV.bMainStatus
         _setup_TV.chkScraperShowStudios.Checked = ConfigScrapeOptions_TV.bMainStudios
+        _setup_TV.chkScraperShowTagline.Checked = ConfigScrapeOptions_TV.bMainTagline
         _setup_TV.chkScraperShowTitle.Checked = ConfigScrapeOptions_TV.bMainTitle
         _setup_TV.txtApiKey.Text = strPrivateAPIKey
 
@@ -390,6 +391,7 @@ Public Class TMDB_Data
         ConfigScrapeOptions_TV.bMainRuntime = AdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions_TV.bMainStatus = AdvancedSettings.GetBooleanSetting("DoStatus", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions_TV.bMainStudios = AdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.TVShow)
+        ConfigScrapeOptions_TV.bMainTagline = AdvancedSettings.GetBooleanSetting("DoTagline", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions_TV.bMainTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVShow)
 
         strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.TV)
@@ -463,6 +465,7 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoRuntime", ConfigScrapeOptions_TV.bMainRuntime, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoStatus", ConfigScrapeOptions_TV.bMainStatus, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoStudio", ConfigScrapeOptions_TV.bMainStudios, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoTagline", ConfigScrapeOptions_TV.bMainTagline, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions_TV.bMainTitle, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("FallBackEn", _SpecialSettings_TV.FallBackEng, , , Enums.ContentType.TV)
             settings.SetBooleanSetting("GetAdultItems", _SpecialSettings_TV.GetAdultItems, , , Enums.ContentType.TV)
@@ -551,6 +554,7 @@ Public Class TMDB_Data
         ConfigScrapeOptions_TV.bMainRuntime = _setup_TV.chkScraperShowRuntime.Checked
         ConfigScrapeOptions_TV.bMainStatus = _setup_TV.chkScraperShowStatus.Checked
         ConfigScrapeOptions_TV.bMainStudios = _setup_TV.chkScraperShowStudios.Checked
+        ConfigScrapeOptions_TV.bMainTagline = _setup_TV.chkScraperShowTagline.Checked
         ConfigScrapeOptions_TV.bMainTitle = _setup_TV.chkScraperShowTitle.Checked
         ConfigScrapeOptions_TV.bSeasonAired = _setup_TV.chkScraperSeasonAired.Checked
         ConfigScrapeOptions_TV.bSeasonPlot = _setup_TV.chkScraperSeasonPlot.Checked
