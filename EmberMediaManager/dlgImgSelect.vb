@@ -984,14 +984,14 @@ Public Class dlgImgSelect
         'Description
         If tImage IsNot Nothing AndAlso tImage.ImageOriginal IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
             Dim imgText As String = String.Empty
-            If String.IsNullOrEmpty(tImage.Width) OrElse String.IsNullOrEmpty(tImage.Height) Then
+            If NumUtils.ConvertToSingle(tImage.Width) <= 0 OrElse NumUtils.ConvertToSingle(tImage.Height) <= 0 Then
                 nTag.strResolution = String.Format("{0}x{1}", tImage.ImageOriginal.Image.Size.Width, tImage.ImageOriginal.Image.Size.Height)
             Else
                 nTag.strResolution = String.Format("{0}x{1}", tImage.Width, tImage.Height)
             End If
         ElseIf tImage IsNot Nothing AndAlso tImage.ImageThumb IsNot Nothing AndAlso tImage.ImageThumb.Image IsNot Nothing Then
             Dim imgText As String = String.Empty
-            If CDbl(tImage.Width) = 0 OrElse CDbl(tImage.Height) = 0 Then
+            If NumUtils.ConvertToSingle(tImage.Width) <= 0 OrElse NumUtils.ConvertToSingle(tImage.Height) <= 0 Then
                 nTag.strResolution = String.Concat("unknown", Environment.NewLine, tImage.LongLang)
             Else
                 nTag.strResolution = String.Format("{0}x{1}", tImage.Width, tImage.Height)
