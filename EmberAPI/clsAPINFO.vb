@@ -87,6 +87,12 @@ Public Class NFO
                 DBMovie.Movie.TMDB = scrapedmovie.TMDB
             End If
 
+            'Language
+            If scrapedmovie.LanguageSpecified Then
+                DBMovie.Movie.Language = scrapedmovie.Language
+                DBMovie.Language = scrapedmovie.Language
+            End If
+
             'Actors
             If (Not DBMovie.Movie.ActorsSpecified OrElse Not Master.eSettings.MovieLockActors) AndAlso ScrapeOptions.bMainActors AndAlso
                 scrapedmovie.ActorsSpecified AndAlso Master.eSettings.MovieScraperCast AndAlso Not new_Actors Then
