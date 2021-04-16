@@ -4591,6 +4591,14 @@ Namespace MediaContainers
             Return False
         End Function
 
+        Public Sub RemoveIMDbId()
+            RemoveAll("imdb")
+        End Sub
+
+        Public Sub RemoveTMDbId()
+            RemoveAll("tmdb")
+        End Sub
+
         Private Sub RemoveAll(ByVal type As String)
             Items.RemoveAll(Function(f) f.Type = type)
         End Sub
