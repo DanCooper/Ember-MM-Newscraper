@@ -293,7 +293,10 @@ Public Class dlgEdit_TVEpisode
                 lvActorsItem.SubItems.Add(tActor.URLOriginal)
             Next
             'Aired
-            dtpAired.Text = .Aired
+            If .AiredSpecified Then
+                dtpAired.Text = .Aired
+                dtpAired.Checked = True
+            End If
             'Credits
             For Each v In .Credits
                 dgvCredits.Rows.Add(New Object() {v})
@@ -464,7 +467,11 @@ Public Class dlgEdit_TVEpisode
                 Next
             End If
             'Aired
-            .Aired = dtpAired.Value.ToString("yyyy-MM-dd")
+            If dtpAired.Checked Then
+                .Aired = dtpAired.Value.ToString("yyyy-MM-dd")
+            Else
+                .Aired = String.Empty
+            End If
             'Credits
             .Credits = DataGridView_RowsToList(dgvCredits)
             'Directors

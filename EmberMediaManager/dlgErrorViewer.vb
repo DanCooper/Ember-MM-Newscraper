@@ -18,9 +18,9 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Text
-Imports System.Net
 Imports EmberAPI
+Imports System.Net
+Imports System.Text
 
 Public Class dlgErrorViewer
 
@@ -40,7 +40,7 @@ Public Class dlgErrorViewer
         StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Sub Show(ByVal owner As System.Windows.Forms.Form)
+    Public Overloads Sub Show(ByVal owner As Form)
         If Visible Then
             BuildErrorLog()
             Activate()
@@ -54,17 +54,17 @@ Public Class dlgErrorViewer
         BuildErrorLog()
     End Sub
 
-    Private Sub btnCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy.Click
+    Private Sub btnCopy_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCopy.Click
         Select Case btnCopy.Tag.ToString
             Case "p"
                 Dim bReturn As String = String.Empty
                 Using wc As New WebClient
-                    System.Net.ServicePointManager.Expect100Continue = False
+                    ServicePointManager.Expect100Continue = False
                     Dim nvColl As New Specialized.NameValueCollection
                     nvColl.Add("paste_code", sBuilder.ToString)
                     nvColl.Add("paste_subdomain", "embermm")
                     wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
-                    bReturn = System.Text.Encoding.ASCII.GetString(wc.UploadValues("http://pastebin.com/api_public.php", "POST", nvColl))
+                    bReturn = Encoding.ASCII.GetString(wc.UploadValues("http://pastebin.com/api_public.php", "POST", nvColl))
                     nvColl = Nothing
                 End Using
 
@@ -118,12 +118,12 @@ Public Class dlgErrorViewer
         btnCopy.Enabled = True
     End Sub
 
-    Private Sub dlgErrorViewer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub dlgErrorViewer_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         SetUp()
         BuildErrorLog()
     End Sub
 
-    Private Sub llblURL_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llblURL.LinkClicked
+    Private Sub llblURL_LinkClicked(ByVal sender As Object, ByVal e As LinkLabelLinkClickedEventArgs) Handles llblURL.LinkClicked
         If Master.isWindows Then
             Process.Start("http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/open")
         Else
@@ -135,7 +135,7 @@ Public Class dlgErrorViewer
         End If
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         Close()
     End Sub
 

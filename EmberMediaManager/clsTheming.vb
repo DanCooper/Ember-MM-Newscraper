@@ -77,8 +77,8 @@ Public Class XMLTheme
         Public ReadOnly Property Font As Font
             Get
                 If String.IsNullOrEmpty(FontName) OrElse
-                   FontSize = 0 OrElse
-                   FontStyleFromXML = 0 Then
+                   FontSize = -1 OrElse
+                   FontStyleFromXML = -1 Then
                     Return New Font("Microsoft Sans Serif", 8, FontStyle.Regular)
                 Else
                     Return New Font(FontName, FontSize, DirectCast(FontStyleFromXML, FontStyle))
@@ -87,10 +87,10 @@ Public Class XMLTheme
         End Property
 
         <XmlElement("font")>
-        Public Property FontName As String
+        Public Property FontName As String = String.Empty
 
         <XmlElement("fontsize")>
-        Public Property FontSize As Integer
+        Public Property FontSize As Integer = -1
 
         <XmlElement("fontstyle")>
         Public Property FontStyleFromXML As Integer = -1
@@ -588,29 +588,21 @@ Public Class Theming
         frmMain.MediaListColors = _theme.MediaList
 
         'Top Panel
+        SetTopPanelSettings()
         SetControlSettings_TopPanel(frmMain.lblOriginalTitle, _theme.TopPanel.OriginalTitle)
-        SetControlSettings_TopPanel(frmMain.lblRating, _theme.TopPanel.Rating)
-        SetControlSettings_TopPanel(frmMain.lblRuntime, _theme.TopPanel.Runtime)
+        'SetControlSettings_TopPanel(frmMain.lblRuntime, _theme.TopPanel.Runtime)
         SetControlSettings_TopPanel(frmMain.lblStudio, _theme.TopPanel.Studio)
         SetControlSettings_TopPanel(frmMain.lblTagline, _theme.TopPanel.Tagline)
         SetControlSettings_TopPanel(frmMain.lblTitle, _theme.TopPanel.Title)
-        SetControlSettings_TopPanel(frmMain.lblRating, _theme.TopPanel.Rating)
-        SetControlSettings_TopPanel(frmMain.lblRating, _theme.TopPanel.Rating)
-        SetControlSettings_TopPanel(frmMain.lblRating, _theme.TopPanel.Rating)
-        SetControlSettings_TopPanel(frmMain.lblRating, _theme.TopPanel.Rating)
         frmMain.pbAudioChannels.BackColor = _theme.TopPanel.GlobalSettings.BackColor
         frmMain.pbAudioCodec.BackColor = _theme.TopPanel.GlobalSettings.BackColor
-        frmMain.pbStar1.BackColor = _theme.TopPanel.GlobalSettings.BackColor
-        frmMain.pbStar2.BackColor = _theme.TopPanel.GlobalSettings.BackColor
-        frmMain.pbStar3.BackColor = _theme.TopPanel.GlobalSettings.BackColor
-        frmMain.pbStar4.BackColor = _theme.TopPanel.GlobalSettings.BackColor
-        frmMain.pbStar5.BackColor = _theme.TopPanel.GlobalSettings.BackColor
         frmMain.pbStudio.BackColor = _theme.TopPanel.GlobalSettings.BackColor
         frmMain.pbVideoResolution.BackColor = _theme.TopPanel.GlobalSettings.BackColor
         frmMain.pbVideoSource.BackColor = _theme.TopPanel.GlobalSettings.BackColor
         frmMain.pnlInfoIcons.BackColor = _theme.TopPanel.GlobalSettings.BackColor
         frmMain.pnlRating.BackColor = _theme.TopPanel.GlobalSettings.BackColor
         frmMain.pnlTop.BackColor = _theme.TopPanel.GlobalSettings.BackColor
+        frmMain.TopPanelColors = _theme.TopPanel
 
         'InfoPanel
         SetInfoPanelSettings(contentType)
@@ -823,14 +815,6 @@ Public Class Theming
     Private Sub SetControlSettings_TopPanel(ByVal control As Object, ByVal controlsettings As XMLTheme.ControlSettings)
         If TypeOf control Is Label Then
             Dim nControl = DirectCast(control, Label)
-            Dim globalSettings = _theme.TopPanel.GlobalSettings
-            If globalSettings IsNot Nothing Then
-                If controlsettings.BackColor.IsEmpty Then controlsettings.BackColor = globalSettings.BackColor
-                If controlsettings.ForeColor.IsEmpty Then controlsettings.ForeColor = globalSettings.ForeColor
-                If String.IsNullOrEmpty(controlsettings.FontName) Then controlsettings.FontName = globalSettings.FontName
-                If controlsettings.FontSize = 0 Then controlsettings.FontSize = globalSettings.FontSize
-                If controlsettings.FontStyleFromXML = -1 Then controlsettings.FontStyleFromXML = globalSettings.FontStyleFromXML
-            End If
             nControl.BackColor = controlsettings.BackColor
             nControl.ForeColor = controlsettings.ForeColor
             nControl.Font = controlsettings.Font
@@ -1003,6 +987,54 @@ Public Class Theming
                 control.Width = EvaluateFormula(controlsettings.Width)
         End Select
         control.Visible = True
+    End Sub
+
+    Private Sub SetTopPanelSettings()
+        Dim globalSettings = _theme.TopPanel.GlobalSettings
+        If globalSettings IsNot Nothing Then
+            With _theme.TopPanel.OriginalTitle
+                If .BackColor.IsEmpty Then .BackColor = globalSettings.BackColor
+                If .ForeColor.IsEmpty Then .ForeColor = globalSettings.ForeColor
+                If String.IsNullOrEmpty(.FontName) Then .FontName = globalSettings.FontName
+                If .FontSize = 0 Then .FontSize = globalSettings.FontSize
+                If .FontStyleFromXML = -1 Then .FontStyleFromXML = globalSettings.FontStyleFromXML
+            End With
+            With _theme.TopPanel.Rating
+                If .BackColor.IsEmpty Then .BackColor = globalSettings.BackColor
+                If .ForeColor.IsEmpty Then .ForeColor = globalSettings.ForeColor
+                If String.IsNullOrEmpty(.FontName) Then .FontName = globalSettings.FontName
+                If .FontSize = 0 Then .FontSize = globalSettings.FontSize
+                If .FontStyleFromXML = -1 Then .FontStyleFromXML = globalSettings.FontStyleFromXML
+            End With
+            With _theme.TopPanel.Runtime
+                If .BackColor.IsEmpty Then .BackColor = globalSettings.BackColor
+                If .ForeColor.IsEmpty Then .ForeColor = globalSettings.ForeColor
+                If String.IsNullOrEmpty(.FontName) Then .FontName = globalSettings.FontName
+                If .FontSize = 0 Then .FontSize = globalSettings.FontSize
+                If .FontStyleFromXML = -1 Then .FontStyleFromXML = globalSettings.FontStyleFromXML
+            End With
+            With _theme.TopPanel.Studio
+                If .BackColor.IsEmpty Then .BackColor = globalSettings.BackColor
+                If .ForeColor.IsEmpty Then .ForeColor = globalSettings.ForeColor
+                If String.IsNullOrEmpty(.FontName) Then .FontName = globalSettings.FontName
+                If .FontSize = 0 Then .FontSize = globalSettings.FontSize
+                If .FontStyleFromXML = -1 Then .FontStyleFromXML = globalSettings.FontStyleFromXML
+            End With
+            With _theme.TopPanel.Tagline
+                If .BackColor.IsEmpty Then .BackColor = globalSettings.BackColor
+                If .ForeColor.IsEmpty Then .ForeColor = globalSettings.ForeColor
+                If String.IsNullOrEmpty(.FontName) Then .FontName = globalSettings.FontName
+                If .FontSize = 0 Then .FontSize = globalSettings.FontSize
+                If .FontStyleFromXML = -1 Then .FontStyleFromXML = globalSettings.FontStyleFromXML
+            End With
+            With _theme.TopPanel.Title
+                If .BackColor.IsEmpty Then .BackColor = globalSettings.BackColor
+                If .ForeColor.IsEmpty Then .ForeColor = globalSettings.ForeColor
+                If String.IsNullOrEmpty(.FontName) Then .FontName = globalSettings.FontName
+                If .FontSize = 0 Then .FontSize = globalSettings.FontSize
+                If .FontStyleFromXML = -1 Then .FontStyleFromXML = globalSettings.FontStyleFromXML
+            End With
+        End If
     End Sub
 
 #End Region 'Methods

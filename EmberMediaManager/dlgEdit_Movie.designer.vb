@@ -24,11 +24,11 @@ Partial Class dlgEdit_Movie
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEdit_Movie))
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ListViewGroup3 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -74,6 +74,7 @@ Partial Class dlgEdit_Movie
         Me.lblRatings = New System.Windows.Forms.Label()
         Me.lblCertifications = New System.Windows.Forms.Label()
         Me.dgvCertifications = New System.Windows.Forms.DataGridView()
+        Me.colCertificationsName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dgvRatings = New System.Windows.Forms.DataGridView()
         Me.colRatingsDefault = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.colRatingsSource = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -133,6 +134,7 @@ Partial Class dlgEdit_Movie
         Me.btnTags_Down = New System.Windows.Forms.Button()
         Me.cbTags = New System.Windows.Forms.ComboBox()
         Me.lbGenres = New System.Windows.Forms.ListBox()
+        Me.lbTags = New System.Windows.Forms.ListBox()
         Me.tpCastCrew = New System.Windows.Forms.TabPage()
         Me.tblCastCrew = New System.Windows.Forms.TableLayoutPanel()
         Me.lblActors = New System.Windows.Forms.Label()
@@ -313,8 +315,6 @@ Partial Class dlgEdit_Movie
         Me.chkMarkedCustom3 = New System.Windows.Forms.CheckBox()
         Me.chkMarkedCustom2 = New System.Windows.Forms.CheckBox()
         Me.chkMarkedCustom4 = New System.Windows.Forms.CheckBox()
-        Me.lbTags = New System.Windows.Forms.ListBox()
-        Me.colCertificationsName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlTop.SuspendLayout()
         Me.tblTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -826,11 +826,13 @@ Partial Class dlgEdit_Movie
         '
         'dtpPremiered
         '
+        Me.dtpPremiered.Checked = False
         Me.dtpPremiered.CustomFormat = "yyyy-dd-MM"
         Me.dtpPremiered.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dtpPremiered.Location = New System.Drawing.Point(595, 3)
         Me.dtpPremiered.Name = "dtpPremiered"
-        Me.dtpPremiered.Size = New System.Drawing.Size(100, 22)
+        Me.dtpPremiered.ShowCheckBox = True
+        Me.dtpPremiered.Size = New System.Drawing.Size(120, 22)
         Me.dtpPremiered.TabIndex = 6
         '
         'lblRuntime
@@ -849,7 +851,7 @@ Partial Class dlgEdit_Movie
         Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
         Me.txtRuntime.Location = New System.Drawing.Point(595, 60)
         Me.txtRuntime.Name = "txtRuntime"
-        Me.txtRuntime.Size = New System.Drawing.Size(100, 22)
+        Me.txtRuntime.Size = New System.Drawing.Size(120, 22)
         Me.txtRuntime.TabIndex = 10
         Me.txtRuntime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -870,7 +872,7 @@ Partial Class dlgEdit_Movie
         Me.cbUserRating.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
         Me.cbUserRating.Location = New System.Drawing.Point(595, 88)
         Me.cbUserRating.Name = "cbUserRating"
-        Me.cbUserRating.Size = New System.Drawing.Size(100, 21)
+        Me.cbUserRating.Size = New System.Drawing.Size(120, 21)
         Me.cbUserRating.TabIndex = 11
         '
         'lblRatings
@@ -909,6 +911,13 @@ Partial Class dlgEdit_Movie
         Me.dgvCertifications.Size = New System.Drawing.Size(400, 136)
         Me.dgvCertifications.TabIndex = 16
         '
+        'colCertificationsName
+        '
+        Me.colCertificationsName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colCertificationsName.HeaderText = "Name"
+        Me.colCertificationsName.Name = "colCertificationsName"
+        Me.colCertificationsName.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        '
         'dgvRatings
         '
         Me.dgvRatings.BackgroundColor = System.Drawing.SystemColors.Window
@@ -939,8 +948,8 @@ Partial Class dlgEdit_Movie
         'colRatingsValue
         '
         Me.colRatingsValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle4
         Me.colRatingsValue.HeaderText = "Value"
         Me.colRatingsValue.Name = "colRatingsValue"
         Me.colRatingsValue.Width = 60
@@ -948,8 +957,8 @@ Partial Class dlgEdit_Movie
         'colRatingsMax
         '
         Me.colRatingsMax.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle5
         Me.colRatingsMax.HeaderText = "Max"
         Me.colRatingsMax.Name = "colRatingsMax"
         Me.colRatingsMax.Width = 53
@@ -957,8 +966,8 @@ Partial Class dlgEdit_Movie
         'colRatingsVotes
         '
         Me.colRatingsVotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle6
         Me.colRatingsVotes.HeaderText = "Votes"
         Me.colRatingsVotes.Name = "colRatingsVotes"
         Me.colRatingsVotes.Width = 60
@@ -1008,7 +1017,7 @@ Partial Class dlgEdit_Movie
         Me.txtTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtTop250.Location = New System.Drawing.Point(801, 88)
         Me.txtTop250.Name = "txtTop250"
-        Me.txtTop250.Size = New System.Drawing.Size(100, 22)
+        Me.txtTop250.Size = New System.Drawing.Size(136, 22)
         Me.txtTop250.TabIndex = 12
         Me.txtTop250.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -1563,6 +1572,15 @@ Partial Class dlgEdit_Movie
         Me.tblDetails2.SetRowSpan(Me.lbGenres, 5)
         Me.lbGenres.Size = New System.Drawing.Size(400, 147)
         Me.lbGenres.TabIndex = 68
+        '
+        'lbTags
+        '
+        Me.lbTags.FormattingEnabled = True
+        Me.lbTags.Location = New System.Drawing.Point(603, 296)
+        Me.lbTags.Name = "lbTags"
+        Me.tblDetails2.SetRowSpan(Me.lbTags, 5)
+        Me.lbTags.Size = New System.Drawing.Size(400, 147)
+        Me.lbTags.TabIndex = 68
         '
         'tpCastCrew
         '
@@ -2216,13 +2234,13 @@ Partial Class dlgEdit_Movie
         Me.lvSubtitles.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup3.Header = "Local Subtitles"
-        ListViewGroup3.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup3})
+        ListViewGroup2.Header = "Local Subtitles"
+        ListViewGroup2.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.lvSubtitles.HideSelection = False
-        ListViewItem3.Group = ListViewGroup3
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3})
+        ListViewItem2.Group = ListViewGroup2
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
         Me.lvSubtitles.Location = New System.Drawing.Point(3, 3)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -3905,22 +3923,6 @@ Partial Class dlgEdit_Movie
         Me.chkMarkedCustom4.TabIndex = 6
         Me.chkMarkedCustom4.Text = "Custom #4"
         Me.chkMarkedCustom4.UseVisualStyleBackColor = True
-        '
-        'lbTags
-        '
-        Me.lbTags.FormattingEnabled = True
-        Me.lbTags.Location = New System.Drawing.Point(603, 296)
-        Me.lbTags.Name = "lbTags"
-        Me.tblDetails2.SetRowSpan(Me.lbTags, 5)
-        Me.lbTags.Size = New System.Drawing.Size(400, 147)
-        Me.lbTags.TabIndex = 68
-        '
-        'colCertificationsName
-        '
-        Me.colCertificationsName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.colCertificationsName.HeaderText = "Name"
-        Me.colCertificationsName.Name = "colCertificationsName"
-        Me.colCertificationsName.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         '
         'dlgEdit_Movie
         '

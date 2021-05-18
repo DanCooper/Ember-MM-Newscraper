@@ -231,6 +231,7 @@ Public Class frmMain
     Public Property MediaListColors As New XMLTheme.MediaListSettings
     Public Property PosterMaxHeight() As Integer = 160
     Public Property PosterMaxWidth() As Integer = 113
+    Public Property TopPanelColors As New XMLTheme.TopPanelSettings
 
 #End Region 'Properties
 
@@ -335,6 +336,9 @@ Public Class frmMain
         Catch
         End Try
 
+        'remove all current ratings
+        FillScreenInfoWithRatings(New List(Of MediaContainers.RatingDetails), 0)
+
         If pbMPAA.Image IsNot Nothing Then
             pbMPAA.Image = Nothing
         End If
@@ -355,9 +359,8 @@ Public Class frmMain
         lblLandscapeSize.Text = String.Empty
         lblOriginalTitle.Text = String.Empty
         lblPosterSize.Text = String.Empty
-        lblRating.Text = String.Empty
         lblPremiered.Text = String.Empty
-        lblRuntime.Text = String.Empty
+        'lblRuntime.Text = String.Empty
         lblStatus.Text = String.Empty
         lblStudio.Text = String.Empty
         lblTagline.Text = String.Empty
@@ -372,26 +375,6 @@ Public Class frmMain
         txtTMDBID.Text = String.Empty
         txtTVDBID.Text = String.Empty
         txtTrailerPath.Text = String.Empty
-        pbStar1.Image = Nothing
-        pbStar2.Image = Nothing
-        pbStar3.Image = Nothing
-        pbStar4.Image = Nothing
-        pbStar5.Image = Nothing
-        pbStar6.Image = Nothing
-        pbStar7.Image = Nothing
-        pbStar8.Image = Nothing
-        pbStar9.Image = Nothing
-        pbStar10.Image = Nothing
-        ToolTips.SetToolTip(pbStar1, String.Empty)
-        ToolTips.SetToolTip(pbStar2, String.Empty)
-        ToolTips.SetToolTip(pbStar3, String.Empty)
-        ToolTips.SetToolTip(pbStar4, String.Empty)
-        ToolTips.SetToolTip(pbStar5, String.Empty)
-        ToolTips.SetToolTip(pbStar6, String.Empty)
-        ToolTips.SetToolTip(pbStar7, String.Empty)
-        ToolTips.SetToolTip(pbStar8, String.Empty)
-        ToolTips.SetToolTip(pbStar9, String.Empty)
-        ToolTips.SetToolTip(pbStar10, String.Empty)
 
         lstActors.Items.Clear()
         If alActors IsNot Nothing Then
@@ -1035,260 +1018,6 @@ Public Class frmMain
 
             SortingSave_Movies()
         End If
-    End Sub
-
-    Private Sub BuildStars(ByVal sinRating As Single)
-        Try
-            pbStar1.Image = Nothing
-            pbStar2.Image = Nothing
-            pbStar3.Image = Nothing
-            pbStar4.Image = Nothing
-            pbStar5.Image = Nothing
-            pbStar6.Image = Nothing
-            pbStar7.Image = Nothing
-            pbStar8.Image = Nothing
-            pbStar9.Image = Nothing
-            pbStar10.Image = Nothing
-
-            Dim tTip As String = String.Concat(Master.eLang.GetString(245, "Rating:"), String.Format(" {0:N}", sinRating))
-            ToolTips.SetToolTip(pbStar1, tTip)
-            ToolTips.SetToolTip(pbStar2, tTip)
-            ToolTips.SetToolTip(pbStar3, tTip)
-            ToolTips.SetToolTip(pbStar4, tTip)
-            ToolTips.SetToolTip(pbStar5, tTip)
-            ToolTips.SetToolTip(pbStar6, tTip)
-            ToolTips.SetToolTip(pbStar7, tTip)
-            ToolTips.SetToolTip(pbStar8, tTip)
-            ToolTips.SetToolTip(pbStar9, tTip)
-            ToolTips.SetToolTip(pbStar10, tTip)
-
-            If sinRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
-                Select Case (sinRating)
-                    Case Is <= 0.5
-                        pbStar1.Image = My.Resources.starhalf
-                        pbStar2.Image = My.Resources.starempty
-                        pbStar3.Image = My.Resources.starempty
-                        pbStar4.Image = My.Resources.starempty
-                        pbStar5.Image = My.Resources.starempty
-                        pbStar6.Image = My.Resources.starempty
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 1
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.starempty
-                        pbStar3.Image = My.Resources.starempty
-                        pbStar4.Image = My.Resources.starempty
-                        pbStar5.Image = My.Resources.starempty
-                        pbStar6.Image = My.Resources.starempty
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 1.5
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.starhalf
-                        pbStar3.Image = My.Resources.starempty
-                        pbStar4.Image = My.Resources.starempty
-                        pbStar5.Image = My.Resources.starempty
-                        pbStar6.Image = My.Resources.starempty
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 2
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.starempty
-                        pbStar4.Image = My.Resources.starempty
-                        pbStar5.Image = My.Resources.starempty
-                        pbStar6.Image = My.Resources.starempty
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 2.5
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.starhalf
-                        pbStar4.Image = My.Resources.starempty
-                        pbStar5.Image = My.Resources.starempty
-                        pbStar6.Image = My.Resources.starempty
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 3
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.starempty
-                        pbStar5.Image = My.Resources.starempty
-                        pbStar6.Image = My.Resources.starempty
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 3.5
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.starhalf
-                        pbStar5.Image = My.Resources.starempty
-                        pbStar6.Image = My.Resources.starempty
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 4
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.starempty
-                        pbStar6.Image = My.Resources.starempty
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 4.5
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.starhalf
-                        pbStar6.Image = My.Resources.starempty
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 5
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.starempty
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 5.5
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.starhalf
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 6
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.star
-                        pbStar7.Image = My.Resources.starempty
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 6.5
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.star
-                        pbStar7.Image = My.Resources.starhalf
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 7
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.star
-                        pbStar7.Image = My.Resources.star
-                        pbStar8.Image = My.Resources.starempty
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 7.5
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.star
-                        pbStar7.Image = My.Resources.star
-                        pbStar8.Image = My.Resources.starhalf
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 8
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.star
-                        pbStar7.Image = My.Resources.star
-                        pbStar8.Image = My.Resources.star
-                        pbStar9.Image = My.Resources.starempty
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 8.5
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.star
-                        pbStar7.Image = My.Resources.star
-                        pbStar8.Image = My.Resources.star
-                        pbStar9.Image = My.Resources.starhalf
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 9
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.star
-                        pbStar7.Image = My.Resources.star
-                        pbStar8.Image = My.Resources.star
-                        pbStar9.Image = My.Resources.star
-                        pbStar10.Image = My.Resources.starempty
-                    Case Is <= 9.5
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.star
-                        pbStar7.Image = My.Resources.star
-                        pbStar8.Image = My.Resources.star
-                        pbStar9.Image = My.Resources.star
-                        pbStar10.Image = My.Resources.starhalf
-                    Case Else
-                        pbStar1.Image = My.Resources.star
-                        pbStar2.Image = My.Resources.star
-                        pbStar3.Image = My.Resources.star
-                        pbStar4.Image = My.Resources.star
-                        pbStar5.Image = My.Resources.star
-                        pbStar6.Image = My.Resources.star
-                        pbStar7.Image = My.Resources.star
-                        pbStar8.Image = My.Resources.star
-                        pbStar9.Image = My.Resources.star
-                        pbStar10.Image = My.Resources.star
-                End Select
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
     End Sub
 
     Private Sub bwCleanDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCleanDB.DoWork
@@ -9845,6 +9574,73 @@ Public Class frmMain
         If pbPoster.Image IsNot Nothing Then pnlPoster.Visible = True
     End Sub
 
+    Private Sub FillScreenInfoWithRatings(ByVal ratings As List(Of MediaContainers.RatingDetails), Optional ByVal top250 As Integer = 0)
+        For iControl = pnlTopPanelRating.Controls.Count - 1 To 0 Step -1
+            pnlTopPanelRating.Controls.RemoveAt(iControl)
+        Next
+        tblTopPanelRating = New TableLayoutPanel With {
+            .AutoSize = True,
+            .AutoSizeMode = AutoSizeMode.GrowAndShrink,
+            .ColumnCount = 1,
+            .Dock = DockStyle.Fill,
+            .RowCount = 3
+            }
+        'first column is empty and set to 100% as a spacer
+        tblTopPanelRating.ColumnStyles.Add(New ColumnStyle With {.SizeType = SizeType.Percent, .Width = 100})
+        'first row is empty and set to 20 as a spacer
+        tblTopPanelRating.RowStyles.Add(New RowStyle With {.Height = 20, .SizeType = SizeType.Absolute})
+        'second row contains the images an is 40 px
+        tblTopPanelRating.RowStyles.Add(New RowStyle With {.Height = 40, .SizeType = SizeType.Absolute})
+        'third row  contains the rating value label an is 20 px
+        tblTopPanelRating.RowStyles.Add(New RowStyle With {.Height = 20, .SizeType = SizeType.Absolute})
+
+        'set the default column style for new columns
+        Dim nColumnStyle = New ColumnStyle With {.SizeType = SizeType.AutoSize, .Width = 80}
+
+        'add all ratings
+        Dim i As Integer = 1
+        For Each rating In ratings
+            tblTopPanelRating.ColumnCount += 1
+            tblTopPanelRating.ColumnStyles.Add(New ColumnStyle(nColumnStyle.SizeType, nColumnStyle.Width))
+            tblTopPanelRating.Controls.Add(New PictureBox With {
+                                       .Dock = DockStyle.Fill,
+                                       .Margin = New Padding With {.All = 0},
+                                       .SizeMode = PictureBoxSizeMode.CenterImage,
+                                       .Size = New Size With {.Height = 40, .Width = 80},
+                                       .Image = APIXML.GetRatingFlag(rating.Type)
+                                       }, i, 1)
+            tblTopPanelRating.Controls.Add(New Label With {
+                                       .Dock = DockStyle.Fill,
+                                       .Font = TopPanelColors.Rating.Font,
+                                       .ForeColor = TopPanelColors.Rating.ForeColor,
+                                       .Text = If(rating.Max = 100, String.Concat(rating.Value.ToString, "%"), String.Concat(rating.Value.ToString, " / ", rating.Max.ToString)),
+                                       .TextAlign = ContentAlignment.TopCenter
+                                       }, i, 2)
+            i += 1
+        Next
+        'add IMDb Top 250 if specified
+        If top250 > 0 Then
+            tblTopPanelRating.ColumnCount += 1
+            tblTopPanelRating.ColumnStyles.Add(New ColumnStyle(nColumnStyle.SizeType, nColumnStyle.Width))
+            tblTopPanelRating.Controls.Add(New PictureBox With {
+                                       .Dock = DockStyle.Fill,
+                                       .Margin = New Padding With {.All = 0},
+                                       .SizeMode = PictureBoxSizeMode.CenterImage,
+                                       .Size = New Size With {.Height = 40, .Width = 80},
+                                       .Image = APIXML.GetRatingFlag("imdb_top250")
+                                       }, i, 1)
+            tblTopPanelRating.Controls.Add(New Label With {
+                                       .Dock = DockStyle.Fill,
+                                       .Font = TopPanelColors.Rating.Font,
+                                       .ForeColor = TopPanelColors.Rating.ForeColor,
+                                       .Text = top250.ToString,
+                                       .TextAlign = ContentAlignment.TopCenter
+                                       }, i, 2)
+            i += 1
+        End If
+        pnlTopPanelRating.Controls.Add(tblTopPanelRating)
+    End Sub
+
     Private Sub FillScreenInfoWith_Movie()
         SuspendLayout()
 
@@ -9884,38 +9680,14 @@ Public Class frmMain
         txtTMDBID.Text = If(currMovie.Movie.UniqueIDs.TMDbIdSpecified, currMovie.Movie.UniqueIDs.TMDbId.ToString, String.Empty)
         txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.Movie.Trailer)
 
-        ''Top250
-        'If currMovie.Movie.Top250Specified Then
-        '    pnlTop250.Visible = True
-        '    lblTop250.Text = currMovie.Movie.Top250.ToString
-        'Else
-        '    pnlTop250.Visible = False
-        'End If
-
-        'Rating
-        Try
-            If currMovie.Movie.RatingSpecified Then
-                If currMovie.Movie.VotesSpecified Then
-                    Dim strRating As String = Double.Parse(currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    Dim strVotes As String = Double.Parse(currMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
-                    lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
-                Else
-                    Dim strRating As String = Double.Parse(currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    lblRating.Text = String.Concat(strRating, "/10")
-                End If
-            End If
-        Catch ex As Exception
-            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currMovie.Movie.Rating, " / ", currMovie.Movie.Votes, ")"))
-            lblRating.Text = "Error: Please rescrape Rating"
-        End Try
-        Dim tmpRating As Single = NumUtils.ConvertToSingle(currMovie.Movie.Rating)
-        If tmpRating > 0 Then
-            BuildStars(tmpRating)
+        'Rating & Top250
+        If currMovie.Movie.RatingsSpecified OrElse currMovie.Movie.Top250Specified Then
+            FillScreenInfoWithRatings(currMovie.Movie.Ratings.Items, currMovie.Movie.Top250)
         End If
 
         'Runtime
         If currMovie.Movie.RuntimeSpecified Then
-            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Left(currMovie.Movie.Runtime, currMovie.Movie.Runtime.IndexOf("|")), currMovie.Movie.Runtime)).Trim
+            'lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Left(currMovie.Movie.Runtime, currMovie.Movie.Runtime.IndexOf("|")), currMovie.Movie.Runtime)).Trim
         End If
 
         'Actors
@@ -9964,7 +9736,7 @@ Public Class frmMain
 
         'Studios
         If currMovie.Movie.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currMovie.Movie.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Image = APIXML.GetStudioImage(currMovie.Movie.Studios.Item(0).ToLower) 'ByDef all image files are lower case
             pbStudio.Tag = currMovie.Movie.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
@@ -10075,25 +9847,9 @@ Public Class frmMain
         txtTMDBID.Text = If(currTV.TVEpisode.UniqueIDs.TMDbIdSpecified, currTV.TVEpisode.UniqueIDs.TMDbId.ToString, String.Empty)
         txtTVDBID.Text = If(currTV.TVEpisode.UniqueIDs.TVDbIdSpecified, currTV.TVEpisode.UniqueIDs.TVDbId.ToString, String.Empty)
 
-        'Rating
-        Try
-            If currTV.TVEpisode.RatingSpecified Then
-                If currTV.TVEpisode.VotesSpecified Then
-                    Dim strRating As String = Double.Parse(currTV.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    Dim strVotes As String = Double.Parse(currTV.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
-                    lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
-                Else
-                    Dim strRating As String = Double.Parse(currTV.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    lblRating.Text = String.Concat(strRating, "/10")
-                End If
-            End If
-        Catch ex As Exception
-            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.TVEpisode.Rating, " / ", currTV.TVEpisode.Votes, ")"))
-            lblRating.Text = "Error: Please rescrape Rating"
-        End Try
-        Dim tmpRating As Single = NumUtils.ConvertToSingle(currTV.TVEpisode.Rating)
-        If tmpRating > 0 Then
-            BuildStars(tmpRating)
+        'Ratings
+        If currTV.TVEpisode.RatingsSpecified Then
+
         End If
 
         'Season / Episode Number
@@ -10177,7 +9933,7 @@ Public Class frmMain
 
         'Studios
         If currTV.TVShow.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image files are lower case
             pbStudio.Tag = currTV.TVShow.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
@@ -10214,7 +9970,7 @@ Public Class frmMain
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currTV)
         lblPremiered.Text = currTV.TVSeason.Aired
         lblPremieredHeader.Text = Master.eLang.GetString(728, "Aired")
-        lblRuntime.Text = currTV.TVShow.Runtime
+        'lblRuntime.Text = currTV.TVShow.Runtime
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currTV)
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(currTV)
         lblTitle.Text = currTV.TVSeason.Title
@@ -10231,24 +9987,8 @@ Public Class frmMain
         End If
 
         'Rating
-        Try
-            If currTV.TVShow.RatingSpecified Then
-                If currTV.TVShow.VotesSpecified Then
-                    Dim strRating As String = Double.Parse(currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    Dim strVotes As String = Double.Parse(currTV.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
-                    lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
-                Else
-                    Dim strRating As String = Double.Parse(currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    lblRating.Text = String.Concat(strRating, "/10")
-                End If
-            End If
-        Catch ex As Exception
-            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.TVShow.Rating, " / ", currTV.TVShow.Votes, ")"))
-            lblRating.Text = "Error: Please rescrape Rating"
-        End Try
-        Dim tmpRating As Single = NumUtils.ConvertToSingle(currTV.TVShow.Rating)
-        If tmpRating > 0 Then
-            BuildStars(tmpRating)
+        If currTV.TVShow.RatingsSpecified Then
+
         End If
 
         'Actors
@@ -10297,7 +10037,7 @@ Public Class frmMain
 
         'Studios
         If currTV.TVShow.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image files are lower case
             pbStudio.Tag = currTV.TVShow.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
@@ -10337,7 +10077,7 @@ Public Class frmMain
         lblDirectorsHeader.Text = Master.eLang.GetString(744, "Creators")
         lblPremiered.Text = currTV.TVShow.Premiered
         lblPremieredHeader.Text = Master.eLang.GetString(724, "Premiered")
-        lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
+        'lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
         lblStatus.Text = currTV.TVShow.Status
         lblTagline.Text = currTV.TVShow.Tagline
         lblTags.Text = String.Join(" / ", currTV.TVShow.Tags.ToArray)
@@ -10346,21 +10086,10 @@ Public Class frmMain
         txtTMDBID.Text = currTV.TVShow.UniqueIDs.TMDbId.ToString
         txtTVDBID.Text = currTV.TVShow.UniqueIDs.TVDbId.ToString
 
-        Try
-            If currTV.TVShow.RatingSpecified Then
-                If currTV.TVShow.VotesSpecified Then
-                    Dim strRating As String = Double.Parse(currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    Dim strVotes As String = Double.Parse(currTV.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
-                    lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
-                Else
-                    Dim strRating As String = Double.Parse(currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    lblRating.Text = String.Concat(strRating, "/10")
-                End If
-            End If
-        Catch ex As Exception
-            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.TVShow.Rating, " / ", currTV.TVShow.Votes, ")"))
-            lblRating.Text = "Error: Please rescrape Rating"
-        End Try
+        'Ratings
+        If currTV.TVShow.RatingsSpecified Then
+
+        End If
 
         alActors = New List(Of String)
 
@@ -10400,17 +10129,12 @@ Public Class frmMain
             End If
         End If
 
-        Dim tmpRating As Single = NumUtils.ConvertToSingle(currTV.TVShow.Rating)
-        If tmpRating > 0 Then
-            BuildStars(tmpRating)
-        End If
-
         If currTV.TVShow.Genres.Count > 0 Then
             createGenreThumbs(currTV.TVShow.Genres)
         End If
 
         If currTV.TVShow.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image files are lower case
             pbStudio.Tag = currTV.TVShow.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
@@ -18056,7 +17780,6 @@ Public Class frmMain
         mnuMainHelpAbout.Text = Master.eLang.GetString(6, "&About...")
         mnuMainHelpUpdate.Text = Master.eLang.GetString(850, "&Check For Updates...")
         mnuMainHelpVersions.Text = Master.eLang.GetString(793, "&Versions...")
-        mnuMainHelpWiki.Text = Master.eLang.GetString(869, "EmberMM.com &Wiki...")
         mnuMainToolsExport.Text = Master.eLang.GetString(1174, "Export")
         mnuMainToolsExportMovies.Text = Master.eLang.GetString(36, "Movies")
         mnuMainToolsExportTvShows.Text = Master.eLang.GetString(653, "TV Shows")
@@ -18921,7 +18644,7 @@ Public Class frmMain
         Functions.Launch(My.Resources.urlEmberBugTracker)
     End Sub
 
-    Private Sub mnuMainHelpWiki_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainHelpWiki.Click
+    Private Sub mnuMainHelpWiki_Click(ByVal sender As Object, ByVal e As EventArgs)
         Functions.Launch(My.Resources.urlEmberWiki)
     End Sub
 

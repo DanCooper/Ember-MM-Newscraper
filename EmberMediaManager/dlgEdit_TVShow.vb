@@ -412,7 +412,10 @@ Public Class dlgEdit_TVShow
             'Plot
             txtPlot.Text = .Plot
             'Premiered
-            dtpPremiered.Text = .Premiered
+            If .PremieredSpecified Then
+                dtpPremiered.Text = .Premiered
+                dtpPremiered.Checked = True
+            End If
             'Ratings
             Ratings_Fill()
             'Runtime
@@ -636,7 +639,11 @@ Public Class dlgEdit_TVShow
             'Plot
             .Plot = txtPlot.Text.Trim
             'Premiered
-            .Premiered = dtpPremiered.Value.ToString("yyyy-MM-dd")
+            If dtpPremiered.Checked Then
+                .Premiered = dtpPremiered.Value.ToString("yyyy-MM-dd")
+            Else
+                .Premiered = String.Empty
+            End If
             'Ratings
             .Ratings.Items = Ratings_Get()
             'Runtime

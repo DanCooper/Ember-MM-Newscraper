@@ -85,6 +85,8 @@ Public Class NumUtils
         Dim parsedDate As Date
         If Date.TryParse(strDate, parsedDate) Then
             Return parsedDate.ToString("yyyy-MM-dd")
+        ElseIf Date.TryParseExact(strDate, "yyyy", Nothing, DateTimeStyles.None, parsedDate) Then
+            Return parsedDate.ToString("yyyy-MM-dd")
         Else
             Return String.Empty
         End If

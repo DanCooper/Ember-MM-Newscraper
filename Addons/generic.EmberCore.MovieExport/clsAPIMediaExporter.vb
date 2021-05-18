@@ -645,7 +645,7 @@ Public Class MediaExporter
     End Sub
 
     Private Function ProcessPattern_Flags(ByVal tDBElement As Database.DBElement, ByVal strRow As String, ByVal tContentType As Enums.ContentType) As String
-        If APIXML.lFlags.Count > 0 Then
+        If APIXML.Flags.Count > 0 Then
             Dim fiAV As New MediaContainers.Fileinfo
             Select Case tContentType
                 Case Enums.ContentType.Movie
@@ -656,52 +656,52 @@ Public Class MediaExporter
             Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
             Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, False)
 
-            Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
+            Dim vresFlag As APIXML.Flag = APIXML.Flags.FirstOrDefault(Function(f) f.Name = NFO.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
             If vresFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
             Else
-                vresFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoResolution)
+                vresFlag = APIXML.Flags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoResolution)
                 If vresFlag IsNot Nothing Then
                     strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
                 End If
             End If
 
             'Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = APIXML.GetFileSource(AVMovie.Filename) AndAlso f.Type = APIXML.FlagType.VideoSource)
-            Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name.ToLower = tDBElement.VideoSource AndAlso f.Type = APIXML.FlagType.VideoSource)
+            Dim vsourceFlag As APIXML.Flag = APIXML.Flags.FirstOrDefault(Function(f) f.Name.ToLower = tDBElement.VideoSource AndAlso f.Type = APIXML.FlagType.VideoSource)
             If vsourceFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_VSOURCE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
             Else
-                vsourceFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoSource)
+                vsourceFlag = APIXML.Flags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoSource)
                 If vsourceFlag IsNot Nothing Then
                     strRow = strRow.Replace("<$FLAG_VSOURCE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
                 End If
             End If
 
-            Dim vcodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = APIXML.FlagType.VideoCodec)
+            Dim vcodecFlag As APIXML.Flag = APIXML.Flags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = APIXML.FlagType.VideoCodec)
             If vcodecFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_VTYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
             Else
-                vcodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoCodec)
+                vcodecFlag = APIXML.Flags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoCodec)
                 If vcodecFlag IsNot Nothing Then
                     strRow = strRow.Replace("<$FLAG_VTYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
                 End If
             End If
 
-            Dim acodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = APIXML.FlagType.AudioCodec)
+            Dim acodecFlag As APIXML.Flag = APIXML.Flags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = APIXML.FlagType.AudioCodec)
             If acodecFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_ATYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
             Else
-                acodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioCodec)
+                acodecFlag = APIXML.Flags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioCodec)
                 If acodecFlag IsNot Nothing Then
                     strRow = strRow.Replace("<$FLAG_ATYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
                 End If
             End If
 
-            Dim achanFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = APIXML.FlagType.AudioChan)
+            Dim achanFlag As APIXML.Flag = APIXML.Flags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = APIXML.FlagType.AudioChan)
             If achanFlag IsNot Nothing Then
                 strRow = strRow.Replace("<$FLAG_ACHAN>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
             Else
-                achanFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioChan)
+                achanFlag = APIXML.Flags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioChan)
                 If achanFlag IsNot Nothing Then
                     strRow = strRow.Replace("<$FLAG_ACHAN>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
                 End If
@@ -777,8 +777,8 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$OUTLINE>", StringUtils.HtmlEncode(tMovie.Movie.Outline))
         strRow = strRow.Replace("<$PLAYCOUNT>", CStr(tMovie.Movie.PlayCount))
         strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tMovie.Movie.Plot))
+        strRow = strRow.Replace("<$PREMIERED>", StringUtils.HtmlEncode(tMovie.Movie.Premiered))
         strRow = strRow.Replace("<$RATING>", StringUtils.HtmlEncode(If(tMovie.Movie.RatingSpecified, Double.Parse(tMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), String.Empty)))
-        strRow = strRow.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(tMovie.Movie.Premiered))
         strRow = strRow.Replace("<$RUNTIME>", StringUtils.HtmlEncode(tMovie.Movie.Runtime))
         strRow = strRow.Replace("<$STUDIOS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Studios.ToArray)))
         strRow = strRow.Replace("<$TAGLINE>", StringUtils.HtmlEncode(tMovie.Movie.Tagline))
@@ -1088,282 +1088,55 @@ Public Class MediaExporter
 
     Private Class AVSInfo
 
-#Region "Fields"
-
-        Private _audBitrate As String
-        Private _audChannels As String
-        Private _audDetails As String
-        Private _audLanguage As String
-        Private _audLongLanguage As String
-        Private _subLanguage As String
-        Private _subLongLanguage As String
-        Private _subType As String
-        Private _vidAspect As String
-        Private _vidBitrate As String
-        Private _vidDetails As String
-        Private _vidDimensions As String
-        Private _vidDuration As String
-        Private _vidFileSize As String
-        Private _vidHeight As String
-        Private _vidLanguage As String
-        Private _vidLongLanguage As String
-        Private _vidMultiViewCount As String
-        Private _vidMultiViewLayout As String
-        Private _vidPrivateensions As String
-        Private _vidScantype As String
-        Private _vidStereoMode As String
-        Private _vidWidth As String
-
-#End Region 'Fields
-
 #Region "Properties"
 
-        Public Property audBitrate() As String
-            Get
-                Return _audBitrate
-            End Get
-            Set(ByVal value As String)
-                _audBitrate = value
-            End Set
-        End Property
+        Public Property audBitrate() As String = String.Empty
 
-        Public Property audChannels() As String
-            Get
-                Return _audChannels
-            End Get
-            Set(ByVal value As String)
-                _audChannels = value
-            End Set
-        End Property
+        Public Property audChannels() As String = String.Empty
 
-        Public Property audDetails() As String
-            Get
-                Return _audDetails
-            End Get
-            Set(ByVal value As String)
-                _audDetails = value
-            End Set
-        End Property
+        Public Property audDetails() As String = String.Empty
 
-        Public Property audLanguage() As String
-            Get
-                Return _audLanguage
-            End Get
-            Set(ByVal value As String)
-                _audLanguage = value
-            End Set
-        End Property
+        Public Property audLanguage() As String = String.Empty
 
-        Public Property audLongLanguage() As String
-            Get
-                Return _audLongLanguage
-            End Get
-            Set(ByVal value As String)
-                _audLongLanguage = value
-            End Set
-        End Property
+        Public Property audLongLanguage() As String = String.Empty
 
-        Public Property subLanguage() As String
-            Get
-                Return _subLanguage
-            End Get
-            Set(ByVal value As String)
-                _subLanguage = value
-            End Set
-        End Property
+        Public Property subLanguage() As String = String.Empty
 
-        Public Property subLongLanguage() As String
-            Get
-                Return _subLongLanguage
-            End Get
-            Set(ByVal value As String)
-                _subLongLanguage = value
-            End Set
-        End Property
+        Public Property subLongLanguage() As String = String.Empty
 
-        Public Property subType() As String
-            Get
-                Return _subType
-            End Get
-            Set(ByVal value As String)
-                _subType = value
-            End Set
-        End Property
+        Public Property subType() As String = String.Empty
 
-        Public Property vidAspect() As String
-            Get
-                Return _vidAspect
-            End Get
-            Set(ByVal value As String)
-                _vidAspect = value
-            End Set
-        End Property
+        Public Property vidAspect() As String = String.Empty
 
-        Public Property vidBitrate() As String
-            Get
-                Return _vidBitrate
-            End Get
-            Set(ByVal value As String)
-                _vidBitrate = value
-            End Set
-        End Property
+        Public Property vidBitrate() As String = String.Empty
 
-        Public Property vidDetails() As String
-            Get
-                Return _vidDetails
-            End Get
-            Set(ByVal value As String)
-                _vidDetails = value
-            End Set
-        End Property
+        Public Property vidDetails() As String = String.Empty
 
-        Public Property vidDimensions() As String
-            Get
-                Return _vidDimensions
-            End Get
-            Set(ByVal value As String)
-                _vidDimensions = value
-            End Set
-        End Property
+        Public Property vidDimensions() As String = String.Empty
 
-        Public Property vidDuration() As String
-            Get
-                Return _vidDuration
-            End Get
-            Set(ByVal value As String)
-                _vidDuration = value
-            End Set
-        End Property
+        Public Property vidDuration() As String = String.Empty
 
-        Public Property vidFileSize() As String
-            Get
-                Return _vidFileSize
-            End Get
-            Set(ByVal value As String)
-                _vidFileSize = value
-            End Set
-        End Property
+        Public Property vidFileSize() As String = String.Empty
 
-        Public Property vidHeight() As String
-            Get
-                Return _vidHeight
-            End Get
-            Set(ByVal value As String)
-                _vidHeight = value
-            End Set
-        End Property
+        Public Property vidHeight() As String = String.Empty
 
-        Public Property vidLanguage() As String
-            Get
-                Return _vidLanguage
-            End Get
-            Set(ByVal value As String)
-                _vidLanguage = value
-            End Set
-        End Property
+        Public Property vidLanguage() As String = String.Empty
 
-        Public Property vidLongLanguage() As String
-            Get
-                Return _vidLongLanguage
-            End Get
-            Set(ByVal value As String)
-                _vidLongLanguage = value
-            End Set
-        End Property
+        Public Property vidLongLanguage() As String = String.Empty
 
-        Public Property vidMultiViewCount() As String
-            Get
-                Return _vidMultiViewCount
-            End Get
-            Set(ByVal value As String)
-                _vidMultiViewCount = value
-            End Set
-        End Property
+        Public Property vidMultiViewCount() As String = String.Empty
 
-        Public Property vidMultiViewLayout() As String
-            Get
-                Return _vidMultiViewLayout
-            End Get
-            Set(ByVal value As String)
-                _vidMultiViewLayout = value
-            End Set
-        End Property
+        Public Property vidMultiViewLayout() As String = String.Empty
 
-        Public Property vidPrivateensions() As String
-            Get
-                Return _vidPrivateensions
-            End Get
-            Set(ByVal value As String)
-                _vidPrivateensions = value
-            End Set
-        End Property
+        Public Property vidPrivateensions() As String = String.Empty
 
-        Public Property vidScantype() As String
-            Get
-                Return _vidScantype
-            End Get
-            Set(ByVal value As String)
-                _vidScantype = value
-            End Set
-        End Property
+        Public Property vidScantype() As String = String.Empty
 
-        Public Property vidStereoMode() As String
-            Get
-                Return _vidStereoMode
-            End Get
-            Set(ByVal value As String)
-                _vidStereoMode = value
-            End Set
-        End Property
+        Public Property vidStereoMode() As String = String.Empty
 
-        Public Property vidWidth() As String
-            Get
-                Return _vidWidth
-            End Get
-            Set(ByVal value As String)
-                _vidWidth = value
-            End Set
-        End Property
+        Public Property vidWidth() As String = String.Empty
 
 #End Region 'Properties
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _audBitrate = String.Empty
-            _audChannels = String.Empty
-            _audDetails = String.Empty
-            _audLanguage = String.Empty
-            _audLongLanguage = String.Empty
-            _subLanguage = String.Empty
-            _subLongLanguage = String.Empty
-            _subType = String.Empty
-            _vidAspect = String.Empty
-            _vidBitrate = String.Empty
-            _vidDetails = String.Empty
-            _vidDimensions = String.Empty
-            _vidDuration = String.Empty
-            _vidFileSize = String.Empty
-            _vidHeight = String.Empty
-            _vidLanguage = String.Empty
-            _vidLongLanguage = String.Empty
-            _vidMultiViewCount = String.Empty
-            _vidMultiViewLayout = String.Empty
-            _vidPrivateensions = String.Empty
-            _vidScantype = String.Empty
-            _vidStereoMode = String.Empty
-            _vidWidth = String.Empty
-        End Sub
-
-#End Region 'Methods
 
     End Class
 

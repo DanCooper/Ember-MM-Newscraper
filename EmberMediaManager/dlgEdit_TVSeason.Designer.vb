@@ -382,11 +382,13 @@ Partial Class dlgEdit_TVSeason
         '
         'dtpAired
         '
+        Me.dtpAired.Checked = False
         Me.dtpAired.CustomFormat = "yyyy-dd-MM"
         Me.dtpAired.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dtpAired.Location = New System.Drawing.Point(46, 31)
         Me.dtpAired.Name = "dtpAired"
-        Me.dtpAired.Size = New System.Drawing.Size(100, 22)
+        Me.dtpAired.ShowCheckBox = True
+        Me.dtpAired.Size = New System.Drawing.Size(120, 22)
         Me.dtpAired.TabIndex = 4
         '
         'lblPlot

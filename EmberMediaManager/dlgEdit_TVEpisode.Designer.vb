@@ -24,11 +24,11 @@ Partial Class dlgEdit_TVEpisode
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEdit_TVEpisode))
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ListViewGroup4 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem4 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.tblTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
@@ -91,6 +91,8 @@ Partial Class dlgEdit_TVEpisode
         Me.txtDisplaySeason = New System.Windows.Forms.TextBox()
         Me.txtDisplayEpisode = New System.Windows.Forms.TextBox()
         Me.cbVideosource = New System.Windows.Forms.ComboBox()
+        Me.lblUserNote = New System.Windows.Forms.Label()
+        Me.txtUserNote = New System.Windows.Forms.TextBox()
         Me.tpCastCrew = New System.Windows.Forms.TabPage()
         Me.tblCastCrew = New System.Windows.Forms.TableLayoutPanel()
         Me.lblActors = New System.Windows.Forms.Label()
@@ -175,8 +177,6 @@ Partial Class dlgEdit_TVEpisode
         Me.btnFrameLoadVideo = New System.Windows.Forms.Button()
         Me.tpMetaData = New System.Windows.Forms.TabPage()
         Me.pnlFileInfo = New System.Windows.Forms.Panel()
-        Me.lblUserNote = New System.Windows.Forms.Label()
-        Me.txtUserNote = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         Me.tblTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -223,7 +223,7 @@ Partial Class dlgEdit_TVEpisode
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(1104, 56)
+        Me.pnlTop.Size = New System.Drawing.Size(1284, 56)
         Me.pnlTop.TabIndex = 3
         '
         'tblTop
@@ -241,7 +241,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tblTop.RowCount = 2
         Me.tblTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTop.Size = New System.Drawing.Size(1102, 54)
+        Me.tblTop.Size = New System.Drawing.Size(1282, 54)
         Me.tblTop.TabIndex = 2
         '
         'pbTopLogo
@@ -290,9 +290,9 @@ Partial Class dlgEdit_TVEpisode
         Me.pnlBottom.AutoSize = True
         Me.pnlBottom.Controls.Add(Me.tblBottom)
         Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottom.Location = New System.Drawing.Point(0, 740)
+        Me.pnlBottom.Location = New System.Drawing.Point(0, 780)
         Me.pnlBottom.Name = "pnlBottom"
-        Me.pnlBottom.Size = New System.Drawing.Size(1104, 29)
+        Me.pnlBottom.Size = New System.Drawing.Size(1284, 29)
         Me.pnlBottom.TabIndex = 82
         '
         'tblBottom
@@ -318,7 +318,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tblBottom.Name = "tblBottom"
         Me.tblBottom.RowCount = 1
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblBottom.Size = New System.Drawing.Size(1104, 29)
+        Me.tblBottom.Size = New System.Drawing.Size(1284, 29)
         Me.tblBottom.TabIndex = 78
         '
         'btnOK
@@ -326,7 +326,7 @@ Partial Class dlgEdit_TVEpisode
         Me.btnOK.AutoSize = True
         Me.btnOK.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnOK.Location = New System.Drawing.Point(949, 3)
+        Me.btnOK.Location = New System.Drawing.Point(1129, 3)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(70, 23)
         Me.btnOK.TabIndex = 4
@@ -338,7 +338,7 @@ Partial Class dlgEdit_TVEpisode
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(1025, 3)
+        Me.btnCancel.Location = New System.Drawing.Point(1205, 3)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(76, 23)
         Me.btnCancel.TabIndex = 5
@@ -351,7 +351,7 @@ Partial Class dlgEdit_TVEpisode
         Me.btnChange.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnChange.Image = CType(resources.GetObject("btnChange.Image"), System.Drawing.Image)
         Me.btnChange.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnChange.Location = New System.Drawing.Point(541, 3)
+        Me.btnChange.Location = New System.Drawing.Point(631, 3)
         Me.btnChange.Name = "btnChange"
         Me.btnChange.Size = New System.Drawing.Size(107, 23)
         Me.btnChange.TabIndex = 3
@@ -366,7 +366,7 @@ Partial Class dlgEdit_TVEpisode
         Me.btnRescrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRescrape.Image = CType(resources.GetObject("btnRescrape.Image"), System.Drawing.Image)
         Me.btnRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRescrape.Location = New System.Drawing.Point(437, 3)
+        Me.btnRescrape.Location = New System.Drawing.Point(527, 3)
         Me.btnRescrape.Name = "btnRescrape"
         Me.btnRescrape.Size = New System.Drawing.Size(98, 23)
         Me.btnRescrape.TabIndex = 2
@@ -402,9 +402,9 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.StatusStrip.ImageScalingSize = New System.Drawing.Size(18, 18)
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslFilename, Me.tsslSpring, Me.tsslStatus, Me.tspbStatus})
-        Me.StatusStrip.Location = New System.Drawing.Point(0, 769)
+        Me.StatusStrip.Location = New System.Drawing.Point(0, 809)
         Me.StatusStrip.Name = "StatusStrip"
-        Me.StatusStrip.Size = New System.Drawing.Size(1104, 22)
+        Me.StatusStrip.Size = New System.Drawing.Size(1284, 22)
         Me.StatusStrip.TabIndex = 83
         Me.StatusStrip.Text = "StatusStrip1"
         '
@@ -417,7 +417,7 @@ Partial Class dlgEdit_TVEpisode
         'tsslSpring
         '
         Me.tsslSpring.Name = "tsslSpring"
-        Me.tsslSpring.Size = New System.Drawing.Size(1034, 17)
+        Me.tsslSpring.Size = New System.Drawing.Size(1214, 17)
         Me.tsslSpring.Spring = True
         '
         'tsslStatus
@@ -446,7 +446,7 @@ Partial Class dlgEdit_TVEpisode
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 56)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(1104, 684)
+        Me.pnlMain.Size = New System.Drawing.Size(1284, 724)
         Me.pnlMain.TabIndex = 84
         '
         'tcEdit
@@ -462,7 +462,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tcEdit.Location = New System.Drawing.Point(0, 0)
         Me.tcEdit.Name = "tcEdit"
         Me.tcEdit.SelectedIndex = 0
-        Me.tcEdit.Size = New System.Drawing.Size(1104, 684)
+        Me.tcEdit.Size = New System.Drawing.Size(1284, 724)
         Me.tcEdit.TabIndex = 0
         '
         'tpDetails
@@ -472,7 +472,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tpDetails.Location = New System.Drawing.Point(4, 22)
         Me.tpDetails.Name = "tpDetails"
         Me.tpDetails.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpDetails.Size = New System.Drawing.Size(1096, 658)
+        Me.tpDetails.Size = New System.Drawing.Size(1276, 698)
         Me.tpDetails.TabIndex = 0
         Me.tpDetails.Text = "Details"
         '
@@ -537,7 +537,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetails.Size = New System.Drawing.Size(1090, 652)
+        Me.tblDetails.Size = New System.Drawing.Size(1270, 692)
         Me.tblDetails.TabIndex = 78
         '
         'lblDateAdded
@@ -586,7 +586,7 @@ Partial Class dlgEdit_TVEpisode
         Me.dtpDateAdded_Date.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpDateAdded_Date.Location = New System.Drawing.Point(96, 311)
         Me.dtpDateAdded_Date.Name = "dtpDateAdded_Date"
-        Me.dtpDateAdded_Date.Size = New System.Drawing.Size(97, 22)
+        Me.dtpDateAdded_Date.Size = New System.Drawing.Size(100, 22)
         Me.dtpDateAdded_Date.TabIndex = 7
         Me.dtpDateAdded_Date.Value = New Date(2021, 1, 1, 0, 0, 0, 0)
         '
@@ -610,7 +610,7 @@ Partial Class dlgEdit_TVEpisode
         Me.dtpLastPlayed_Date.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpLastPlayed_Date.Location = New System.Drawing.Point(96, 339)
         Me.dtpLastPlayed_Date.Name = "dtpLastPlayed_Date"
-        Me.dtpLastPlayed_Date.Size = New System.Drawing.Size(97, 22)
+        Me.dtpLastPlayed_Date.Size = New System.Drawing.Size(100, 22)
         Me.dtpLastPlayed_Date.TabIndex = 10
         Me.dtpLastPlayed_Date.Value = New Date(2021, 1, 1, 20, 0, 0, 0)
         '
@@ -669,11 +669,13 @@ Partial Class dlgEdit_TVEpisode
         '
         'dtpAired
         '
+        Me.dtpAired.Checked = False
         Me.dtpAired.CustomFormat = "yyyy-dd-MM"
         Me.dtpAired.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dtpAired.Location = New System.Drawing.Point(598, 3)
         Me.dtpAired.Name = "dtpAired"
-        Me.dtpAired.Size = New System.Drawing.Size(100, 22)
+        Me.dtpAired.ShowCheckBox = True
+        Me.dtpAired.Size = New System.Drawing.Size(120, 22)
         Me.dtpAired.TabIndex = 13
         '
         'lblRuntime
@@ -692,7 +694,7 @@ Partial Class dlgEdit_TVEpisode
         Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
         Me.txtRuntime.Location = New System.Drawing.Point(598, 31)
         Me.txtRuntime.Name = "txtRuntime"
-        Me.txtRuntime.Size = New System.Drawing.Size(100, 22)
+        Me.txtRuntime.Size = New System.Drawing.Size(120, 22)
         Me.txtRuntime.TabIndex = 14
         Me.txtRuntime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -760,7 +762,7 @@ Partial Class dlgEdit_TVEpisode
         Me.cbUserRating.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
         Me.cbUserRating.Location = New System.Drawing.Point(598, 59)
         Me.cbUserRating.Name = "cbUserRating"
-        Me.cbUserRating.Size = New System.Drawing.Size(100, 21)
+        Me.cbUserRating.Size = New System.Drawing.Size(120, 21)
         Me.cbUserRating.TabIndex = 15
         '
         'lblRatings
@@ -781,7 +783,7 @@ Partial Class dlgEdit_TVEpisode
         Me.dtpLastPlayed_Time.Location = New System.Drawing.Point(202, 339)
         Me.dtpLastPlayed_Time.Name = "dtpLastPlayed_Time"
         Me.dtpLastPlayed_Time.ShowUpDown = True
-        Me.dtpLastPlayed_Time.Size = New System.Drawing.Size(97, 22)
+        Me.dtpLastPlayed_Time.Size = New System.Drawing.Size(100, 22)
         Me.dtpLastPlayed_Time.TabIndex = 11
         Me.dtpLastPlayed_Time.Value = New Date(2021, 2, 2, 20, 0, 0, 0)
         '
@@ -814,8 +816,8 @@ Partial Class dlgEdit_TVEpisode
         'colRatingsValue
         '
         Me.colRatingsValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle1
         Me.colRatingsValue.HeaderText = "Value"
         Me.colRatingsValue.Name = "colRatingsValue"
         Me.colRatingsValue.Width = 60
@@ -823,8 +825,8 @@ Partial Class dlgEdit_TVEpisode
         'colRatingsMax
         '
         Me.colRatingsMax.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle2
         Me.colRatingsMax.HeaderText = "Max"
         Me.colRatingsMax.Name = "colRatingsMax"
         Me.colRatingsMax.Width = 53
@@ -832,8 +834,8 @@ Partial Class dlgEdit_TVEpisode
         'colRatingsVotes
         '
         Me.colRatingsVotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle3
         Me.colRatingsVotes.HeaderText = "Votes"
         Me.colRatingsVotes.Name = "colRatingsVotes"
         Me.colRatingsVotes.Width = 60
@@ -845,7 +847,7 @@ Partial Class dlgEdit_TVEpisode
         Me.dtpDateAdded_Time.Location = New System.Drawing.Point(202, 311)
         Me.dtpDateAdded_Time.Name = "dtpDateAdded_Time"
         Me.dtpDateAdded_Time.ShowUpDown = True
-        Me.dtpDateAdded_Time.Size = New System.Drawing.Size(97, 22)
+        Me.dtpDateAdded_Time.Size = New System.Drawing.Size(100, 22)
         Me.dtpDateAdded_Time.TabIndex = 8
         Me.dtpDateAdded_Time.Value = New Date(2021, 2, 2, 20, 0, 0, 0)
         '
@@ -853,7 +855,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.lblEpisode.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblEpisode.AutoSize = True
-        Me.lblEpisode.Location = New System.Drawing.Point(248, 35)
+        Me.lblEpisode.Location = New System.Drawing.Point(251, 35)
         Me.lblEpisode.Name = "lblEpisode"
         Me.lblEpisode.Size = New System.Drawing.Size(51, 13)
         Me.lblEpisode.TabIndex = 4
@@ -863,7 +865,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.txtEpisode.BackColor = System.Drawing.SystemColors.Window
         Me.txtEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtEpisode.Location = New System.Drawing.Point(305, 31)
+        Me.txtEpisode.Location = New System.Drawing.Point(308, 31)
         Me.txtEpisode.Name = "txtEpisode"
         Me.txtEpisode.Size = New System.Drawing.Size(100, 22)
         Me.txtEpisode.TabIndex = 3
@@ -882,7 +884,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.lblDisplayEpisode.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblDisplayEpisode.AutoSize = True
-        Me.lblDisplayEpisode.Location = New System.Drawing.Point(208, 63)
+        Me.lblDisplayEpisode.Location = New System.Drawing.Point(211, 63)
         Me.lblDisplayEpisode.Name = "lblDisplayEpisode"
         Me.lblDisplayEpisode.Size = New System.Drawing.Size(91, 13)
         Me.lblDisplayEpisode.TabIndex = 4
@@ -901,7 +903,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.txtDisplayEpisode.BackColor = System.Drawing.SystemColors.Window
         Me.txtDisplayEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtDisplayEpisode.Location = New System.Drawing.Point(305, 59)
+        Me.txtDisplayEpisode.Location = New System.Drawing.Point(308, 59)
         Me.txtDisplayEpisode.Name = "txtDisplayEpisode"
         Me.txtDisplayEpisode.Size = New System.Drawing.Size(100, 22)
         Me.txtDisplayEpisode.TabIndex = 5
@@ -915,6 +917,24 @@ Partial Class dlgEdit_TVEpisode
         Me.cbVideosource.Size = New System.Drawing.Size(203, 21)
         Me.cbVideosource.TabIndex = 12
         '
+        'lblUserNote
+        '
+        Me.lblUserNote.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblUserNote.AutoSize = True
+        Me.lblUserNote.Location = New System.Drawing.Point(55, 398)
+        Me.lblUserNote.Name = "lblUserNote"
+        Me.lblUserNote.Size = New System.Drawing.Size(35, 13)
+        Me.lblUserNote.TabIndex = 45
+        Me.lblUserNote.Text = "Note:"
+        '
+        'txtUserNote
+        '
+        Me.tblDetails.SetColumnSpan(Me.txtUserNote, 3)
+        Me.txtUserNote.Location = New System.Drawing.Point(96, 394)
+        Me.txtUserNote.Name = "txtUserNote"
+        Me.txtUserNote.Size = New System.Drawing.Size(400, 22)
+        Me.txtUserNote.TabIndex = 62
+        '
         'tpCastCrew
         '
         Me.tpCastCrew.BackColor = System.Drawing.SystemColors.Control
@@ -922,7 +942,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tpCastCrew.Location = New System.Drawing.Point(4, 22)
         Me.tpCastCrew.Name = "tpCastCrew"
         Me.tpCastCrew.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpCastCrew.Size = New System.Drawing.Size(1096, 658)
+        Me.tpCastCrew.Size = New System.Drawing.Size(1276, 698)
         Me.tpCastCrew.TabIndex = 19
         Me.tpCastCrew.Text = "Cast & Crew"
         '
@@ -972,7 +992,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tblCastCrew.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblCastCrew.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
         Me.tblCastCrew.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.tblCastCrew.Size = New System.Drawing.Size(1090, 652)
+        Me.tblCastCrew.Size = New System.Drawing.Size(1270, 692)
         Me.tblCastCrew.TabIndex = 0
         '
         'lblActors
@@ -998,7 +1018,7 @@ Partial Class dlgEdit_TVEpisode
         Me.lvActors.Location = New System.Drawing.Point(77, 3)
         Me.lvActors.Name = "lvActors"
         Me.tblCastCrew.SetRowSpan(Me.lvActors, 6)
-        Me.lvActors.Size = New System.Drawing.Size(1010, 248)
+        Me.lvActors.Size = New System.Drawing.Size(1190, 262)
         Me.lvActors.TabIndex = 5
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
@@ -1083,11 +1103,11 @@ Partial Class dlgEdit_TVEpisode
         Me.dgvDirectors.ColumnHeadersVisible = False
         Me.dgvDirectors.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colDirectorsName})
         Me.dgvDirectors.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvDirectors.Location = New System.Drawing.Point(626, 531)
+        Me.dgvDirectors.Location = New System.Drawing.Point(716, 559)
         Me.dgvDirectors.Name = "dgvDirectors"
         Me.dgvDirectors.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.tblCastCrew.SetRowSpan(Me.dgvDirectors, 2)
-        Me.dgvDirectors.Size = New System.Drawing.Size(461, 118)
+        Me.dgvDirectors.Size = New System.Drawing.Size(551, 130)
         Me.dgvDirectors.TabIndex = 13
         '
         'colDirectorsName
@@ -1107,11 +1127,11 @@ Partial Class dlgEdit_TVEpisode
         Me.dgvCredits.ColumnHeadersVisible = False
         Me.dgvCredits.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colCreditsName})
         Me.dgvCredits.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvCredits.Location = New System.Drawing.Point(77, 531)
+        Me.dgvCredits.Location = New System.Drawing.Point(77, 559)
         Me.dgvCredits.Name = "dgvCredits"
         Me.dgvCredits.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.tblCastCrew.SetRowSpan(Me.dgvCredits, 2)
-        Me.dgvCredits.Size = New System.Drawing.Size(461, 118)
+        Me.dgvCredits.Size = New System.Drawing.Size(551, 130)
         Me.dgvCredits.TabIndex = 12
         '
         'colCreditsName
@@ -1125,7 +1145,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.lblCredits.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblCredits.AutoSize = True
-        Me.lblCredits.Location = New System.Drawing.Point(25, 535)
+        Me.lblCredits.Location = New System.Drawing.Point(25, 563)
         Me.lblCredits.Name = "lblCredits"
         Me.lblCredits.Size = New System.Drawing.Size(46, 13)
         Me.lblCredits.TabIndex = 41
@@ -1135,7 +1155,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.lblDirectors.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblDirectors.AutoSize = True
-        Me.lblDirectors.Location = New System.Drawing.Point(564, 535)
+        Me.lblDirectors.Location = New System.Drawing.Point(654, 563)
         Me.lblDirectors.Name = "lblDirectors"
         Me.lblDirectors.Size = New System.Drawing.Size(56, 13)
         Me.lblDirectors.TabIndex = 43
@@ -1145,7 +1165,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.lblGuestStars.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblGuestStars.AutoSize = True
-        Me.lblGuestStars.Location = New System.Drawing.Point(3, 261)
+        Me.lblGuestStars.Location = New System.Drawing.Point(3, 275)
         Me.lblGuestStars.Name = "lblGuestStars"
         Me.lblGuestStars.Size = New System.Drawing.Size(68, 13)
         Me.lblGuestStars.TabIndex = 30
@@ -1155,7 +1175,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.btnGuestStarsAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnGuestStarsAdd.Image = CType(resources.GetObject("btnGuestStarsAdd.Image"), System.Drawing.Image)
-        Me.btnGuestStarsAdd.Location = New System.Drawing.Point(48, 285)
+        Me.btnGuestStarsAdd.Location = New System.Drawing.Point(48, 299)
         Me.btnGuestStarsAdd.Name = "btnGuestStarsAdd"
         Me.btnGuestStarsAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnGuestStarsAdd.TabIndex = 6
@@ -1165,7 +1185,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.btnGuestStarsRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnGuestStarsRemove.Image = CType(resources.GetObject("btnGuestStarsRemove.Image"), System.Drawing.Image)
-        Me.btnGuestStarsRemove.Location = New System.Drawing.Point(48, 314)
+        Me.btnGuestStarsRemove.Location = New System.Drawing.Point(48, 328)
         Me.btnGuestStarsRemove.Name = "btnGuestStarsRemove"
         Me.btnGuestStarsRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnGuestStarsRemove.TabIndex = 7
@@ -1175,7 +1195,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.btnGuestStarsUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnGuestStarsUp.Image = CType(resources.GetObject("btnGuestStarsUp.Image"), System.Drawing.Image)
-        Me.btnGuestStarsUp.Location = New System.Drawing.Point(48, 343)
+        Me.btnGuestStarsUp.Location = New System.Drawing.Point(48, 357)
         Me.btnGuestStarsUp.Name = "btnGuestStarsUp"
         Me.btnGuestStarsUp.Size = New System.Drawing.Size(23, 23)
         Me.btnGuestStarsUp.TabIndex = 8
@@ -1185,7 +1205,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.btnGuestStarsDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnGuestStarsDown.Image = CType(resources.GetObject("btnGuestStarsDown.Image"), System.Drawing.Image)
-        Me.btnGuestStarsDown.Location = New System.Drawing.Point(48, 372)
+        Me.btnGuestStarsDown.Location = New System.Drawing.Point(48, 386)
         Me.btnGuestStarsDown.Name = "btnGuestStarsDown"
         Me.btnGuestStarsDown.Size = New System.Drawing.Size(23, 23)
         Me.btnGuestStarsDown.TabIndex = 9
@@ -1195,7 +1215,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.btnGuestStarsEdit.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnGuestStarsEdit.Image = CType(resources.GetObject("btnGuestStarsEdit.Image"), System.Drawing.Image)
-        Me.btnGuestStarsEdit.Location = New System.Drawing.Point(48, 401)
+        Me.btnGuestStarsEdit.Location = New System.Drawing.Point(48, 415)
         Me.btnGuestStarsEdit.Name = "btnGuestStarsEdit"
         Me.btnGuestStarsEdit.Size = New System.Drawing.Size(23, 23)
         Me.btnGuestStarsEdit.TabIndex = 10
@@ -1211,10 +1231,10 @@ Partial Class dlgEdit_TVEpisode
         Me.lvGuestStars.FullRowSelect = True
         Me.lvGuestStars.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.lvGuestStars.HideSelection = False
-        Me.lvGuestStars.Location = New System.Drawing.Point(77, 257)
+        Me.lvGuestStars.Location = New System.Drawing.Point(77, 271)
         Me.lvGuestStars.Name = "lvGuestStars"
         Me.tblCastCrew.SetRowSpan(Me.lvGuestStars, 6)
-        Me.lvGuestStars.Size = New System.Drawing.Size(1010, 248)
+        Me.lvGuestStars.Size = New System.Drawing.Size(1190, 262)
         Me.lvGuestStars.TabIndex = 11
         Me.lvGuestStars.UseCompatibleStateImageBehavior = False
         Me.lvGuestStars.View = System.Windows.Forms.View.Details
@@ -1245,7 +1265,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tpOther.Controls.Add(Me.tblOther)
         Me.tpOther.Location = New System.Drawing.Point(4, 22)
         Me.tpOther.Name = "tpOther"
-        Me.tpOther.Size = New System.Drawing.Size(1096, 658)
+        Me.tpOther.Size = New System.Drawing.Size(1276, 698)
         Me.tpOther.TabIndex = 17
         Me.tpOther.Text = "Other"
         '
@@ -1266,7 +1286,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tblOther.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblOther.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblOther.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblOther.Size = New System.Drawing.Size(1096, 658)
+        Me.tblOther.Size = New System.Drawing.Size(1276, 698)
         Me.tblOther.TabIndex = 0
         '
         'gbMediaStub
@@ -1278,7 +1298,7 @@ Partial Class dlgEdit_TVEpisode
         Me.gbMediaStub.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMediaStub.Location = New System.Drawing.Point(3, 3)
         Me.gbMediaStub.Name = "gbMediaStub"
-        Me.gbMediaStub.Size = New System.Drawing.Size(1093, 117)
+        Me.gbMediaStub.Size = New System.Drawing.Size(1270, 117)
         Me.gbMediaStub.TabIndex = 0
         Me.gbMediaStub.TabStop = False
         Me.gbMediaStub.Text = "MediaStub"
@@ -1302,7 +1322,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tblMediaStub.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMediaStub.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMediaStub.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMediaStub.Size = New System.Drawing.Size(1087, 96)
+        Me.tblMediaStub.Size = New System.Drawing.Size(1264, 96)
         Me.tblMediaStub.TabIndex = 5
         '
         'lblMediaStubTitle
@@ -1322,7 +1342,7 @@ Partial Class dlgEdit_TVEpisode
         Me.txtMediaStubMessage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.txtMediaStubMessage.Location = New System.Drawing.Point(3, 71)
         Me.txtMediaStubMessage.Name = "txtMediaStubMessage"
-        Me.txtMediaStubMessage.Size = New System.Drawing.Size(1081, 22)
+        Me.txtMediaStubMessage.Size = New System.Drawing.Size(1258, 22)
         Me.txtMediaStubMessage.TabIndex = 1
         '
         'lblMediaStubMessage
@@ -1342,7 +1362,7 @@ Partial Class dlgEdit_TVEpisode
         Me.txtMediaStubTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.txtMediaStubTitle.Location = New System.Drawing.Point(3, 23)
         Me.txtMediaStubTitle.Name = "txtMediaStubTitle"
-        Me.txtMediaStubTitle.Size = New System.Drawing.Size(1081, 22)
+        Me.txtMediaStubTitle.Size = New System.Drawing.Size(1258, 22)
         Me.txtMediaStubTitle.TabIndex = 0
         '
         'gbSubtitles
@@ -1354,7 +1374,7 @@ Partial Class dlgEdit_TVEpisode
         Me.gbSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSubtitles.Location = New System.Drawing.Point(3, 126)
         Me.gbSubtitles.Name = "gbSubtitles"
-        Me.gbSubtitles.Size = New System.Drawing.Size(1093, 529)
+        Me.gbSubtitles.Size = New System.Drawing.Size(1270, 569)
         Me.gbSubtitles.TabIndex = 3
         Me.gbSubtitles.TabStop = False
         Me.gbSubtitles.Text = "Subtitles"
@@ -1384,7 +1404,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tblSubtitles.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSubtitles.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSubtitles.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSubtitles.Size = New System.Drawing.Size(1087, 508)
+        Me.tblSubtitles.Size = New System.Drawing.Size(1264, 548)
         Me.tblSubtitles.TabIndex = 0
         '
         'txtSubtitlesPreview
@@ -1397,7 +1417,7 @@ Partial Class dlgEdit_TVEpisode
         Me.txtSubtitlesPreview.Name = "txtSubtitlesPreview"
         Me.txtSubtitlesPreview.ReadOnly = True
         Me.txtSubtitlesPreview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtSubtitlesPreview.Size = New System.Drawing.Size(1081, 327)
+        Me.txtSubtitlesPreview.Size = New System.Drawing.Size(1258, 367)
         Me.txtSubtitlesPreview.TabIndex = 5
         '
         'btnSetSubtitleLocal
@@ -1416,7 +1436,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.btnRemoveSubtitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRemoveSubtitle.Image = CType(resources.GetObject("btnRemoveSubtitle.Image"), System.Drawing.Image)
-        Me.btnRemoveSubtitle.Location = New System.Drawing.Point(1061, 129)
+        Me.btnRemoveSubtitle.Location = New System.Drawing.Point(1238, 129)
         Me.btnRemoveSubtitle.Name = "btnRemoveSubtitle"
         Me.btnRemoveSubtitle.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveSubtitle.TabIndex = 4
@@ -1466,17 +1486,17 @@ Partial Class dlgEdit_TVEpisode
         Me.lvSubtitles.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup4.Header = "Local Subtitles"
-        ListViewGroup4.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup4})
+        ListViewGroup1.Header = "Local Subtitles"
+        ListViewGroup1.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.lvSubtitles.HideSelection = False
-        ListViewItem4.Group = ListViewGroup4
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem4})
+        ListViewItem1.Group = ListViewGroup1
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvSubtitles.Location = New System.Drawing.Point(3, 3)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
-        Me.lvSubtitles.Size = New System.Drawing.Size(1081, 120)
+        Me.lvSubtitles.Size = New System.Drawing.Size(1258, 120)
         Me.lvSubtitles.TabIndex = 0
         Me.lvSubtitles.UseCompatibleStateImageBehavior = False
         Me.lvSubtitles.View = System.Windows.Forms.View.Details
@@ -1500,7 +1520,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tpImages.Location = New System.Drawing.Point(4, 22)
         Me.tpImages.Name = "tpImages"
         Me.tpImages.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpImages.Size = New System.Drawing.Size(1096, 658)
+        Me.tpImages.Size = New System.Drawing.Size(1276, 698)
         Me.tpImages.TabIndex = 16
         Me.tpImages.Text = "Images"
         '
@@ -1520,9 +1540,9 @@ Partial Class dlgEdit_TVEpisode
         Me.tblImages.Name = "tblImages"
         Me.tblImages.RowCount = 1
         Me.tblImages.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblImages.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 652.0!))
-        Me.tblImages.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 652.0!))
-        Me.tblImages.Size = New System.Drawing.Size(1090, 652)
+        Me.tblImages.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 692.0!))
+        Me.tblImages.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 692.0!))
+        Me.tblImages.Size = New System.Drawing.Size(1270, 692)
         Me.tblImages.TabIndex = 2
         '
         'pnlPoster
@@ -1800,7 +1820,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tpFrameExtraction.Location = New System.Drawing.Point(4, 22)
         Me.tpFrameExtraction.Name = "tpFrameExtraction"
         Me.tpFrameExtraction.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpFrameExtraction.Size = New System.Drawing.Size(1096, 658)
+        Me.tpFrameExtraction.Size = New System.Drawing.Size(1276, 698)
         Me.tpFrameExtraction.TabIndex = 3
         Me.tpFrameExtraction.Text = "Frame Extraction"
         '
@@ -1827,7 +1847,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tblFrameExtraction.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFrameExtraction.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFrameExtraction.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFrameExtraction.Size = New System.Drawing.Size(1090, 652)
+        Me.tblFrameExtraction.Size = New System.Drawing.Size(1270, 692)
         Me.tblFrameExtraction.TabIndex = 28
         '
         'pbFrame
@@ -1839,7 +1859,7 @@ Partial Class dlgEdit_TVEpisode
         Me.pbFrame.Location = New System.Drawing.Point(3, 3)
         Me.pbFrame.Name = "pbFrame"
         Me.tblFrameExtraction.SetRowSpan(Me.pbFrame, 4)
-        Me.pbFrame.Size = New System.Drawing.Size(982, 613)
+        Me.pbFrame.Size = New System.Drawing.Size(1162, 653)
         Me.pbFrame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbFrame.TabIndex = 25
         Me.pbFrame.TabStop = False
@@ -1850,7 +1870,7 @@ Partial Class dlgEdit_TVEpisode
         Me.btnFrameSaveAsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnFrameSaveAsPoster.Image = CType(resources.GetObject("btnFrameSaveAsPoster.Image"), System.Drawing.Image)
         Me.btnFrameSaveAsPoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFrameSaveAsPoster.Location = New System.Drawing.Point(991, 533)
+        Me.btnFrameSaveAsPoster.Location = New System.Drawing.Point(1171, 573)
         Me.btnFrameSaveAsPoster.Name = "btnFrameSaveAsPoster"
         Me.btnFrameSaveAsPoster.Size = New System.Drawing.Size(96, 83)
         Me.btnFrameSaveAsPoster.TabIndex = 4
@@ -1865,9 +1885,9 @@ Partial Class dlgEdit_TVEpisode
         Me.tbFrame.Cursor = System.Windows.Forms.Cursors.Default
         Me.tbFrame.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tbFrame.Enabled = False
-        Me.tbFrame.Location = New System.Drawing.Point(3, 622)
+        Me.tbFrame.Location = New System.Drawing.Point(3, 662)
         Me.tbFrame.Name = "tbFrame"
-        Me.tbFrame.Size = New System.Drawing.Size(917, 27)
+        Me.tbFrame.Size = New System.Drawing.Size(1097, 27)
         Me.tbFrame.TabIndex = 1
         Me.tbFrame.TickStyle = System.Windows.Forms.TickStyle.None
         '
@@ -1877,7 +1897,7 @@ Partial Class dlgEdit_TVEpisode
         Me.btnFrameSaveAsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnFrameSaveAsFanart.Image = CType(resources.GetObject("btnFrameSaveAsFanart.Image"), System.Drawing.Image)
         Me.btnFrameSaveAsFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFrameSaveAsFanart.Location = New System.Drawing.Point(991, 444)
+        Me.btnFrameSaveAsFanart.Location = New System.Drawing.Point(1171, 484)
         Me.btnFrameSaveAsFanart.Name = "btnFrameSaveAsFanart"
         Me.btnFrameSaveAsFanart.Size = New System.Drawing.Size(96, 83)
         Me.btnFrameSaveAsFanart.TabIndex = 2
@@ -1888,7 +1908,7 @@ Partial Class dlgEdit_TVEpisode
         'lblTime
         '
         Me.lblTime.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTime.Location = New System.Drawing.Point(926, 624)
+        Me.lblTime.Location = New System.Drawing.Point(1106, 664)
         Me.lblTime.Name = "lblTime"
         Me.lblTime.Size = New System.Drawing.Size(59, 23)
         Me.lblTime.TabIndex = 24
@@ -1900,7 +1920,7 @@ Partial Class dlgEdit_TVEpisode
         Me.btnFrameLoadVideo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnFrameLoadVideo.Image = CType(resources.GetObject("btnFrameLoadVideo.Image"), System.Drawing.Image)
         Me.btnFrameLoadVideo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFrameLoadVideo.Location = New System.Drawing.Point(991, 3)
+        Me.btnFrameLoadVideo.Location = New System.Drawing.Point(1171, 3)
         Me.btnFrameLoadVideo.Name = "btnFrameLoadVideo"
         Me.btnFrameLoadVideo.Size = New System.Drawing.Size(96, 83)
         Me.btnFrameLoadVideo.TabIndex = 0
@@ -1915,7 +1935,7 @@ Partial Class dlgEdit_TVEpisode
         Me.tpMetaData.Location = New System.Drawing.Point(4, 22)
         Me.tpMetaData.Name = "tpMetaData"
         Me.tpMetaData.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpMetaData.Size = New System.Drawing.Size(1096, 658)
+        Me.tpMetaData.Size = New System.Drawing.Size(1276, 698)
         Me.tpMetaData.TabIndex = 5
         Me.tpMetaData.Text = "Meta Data"
         '
@@ -1924,32 +1944,14 @@ Partial Class dlgEdit_TVEpisode
         Me.pnlFileInfo.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlFileInfo.Location = New System.Drawing.Point(3, 3)
         Me.pnlFileInfo.Name = "pnlFileInfo"
-        Me.pnlFileInfo.Size = New System.Drawing.Size(1090, 652)
+        Me.pnlFileInfo.Size = New System.Drawing.Size(1270, 692)
         Me.pnlFileInfo.TabIndex = 0
-        '
-        'lblUserNote
-        '
-        Me.lblUserNote.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblUserNote.AutoSize = True
-        Me.lblUserNote.Location = New System.Drawing.Point(55, 398)
-        Me.lblUserNote.Name = "lblUserNote"
-        Me.lblUserNote.Size = New System.Drawing.Size(35, 13)
-        Me.lblUserNote.TabIndex = 45
-        Me.lblUserNote.Text = "Note:"
-        '
-        'txtUserNote
-        '
-        Me.tblDetails.SetColumnSpan(Me.txtUserNote, 3)
-        Me.txtUserNote.Location = New System.Drawing.Point(96, 394)
-        Me.txtUserNote.Name = "txtUserNote"
-        Me.txtUserNote.Size = New System.Drawing.Size(400, 22)
-        Me.txtUserNote.TabIndex = 62
         '
         'dlgEdit_TVEpisode
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(1104, 791)
+        Me.ClientSize = New System.Drawing.Size(1284, 831)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlBottom)
         Me.Controls.Add(Me.pnlTop)

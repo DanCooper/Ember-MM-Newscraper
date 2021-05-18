@@ -23,9 +23,9 @@ Partial Class dlgEdit_TVShow
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEdit_TVShow))
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.tblTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
@@ -75,6 +75,7 @@ Partial Class dlgEdit_TVShow
         Me.lblRatings = New System.Windows.Forms.Label()
         Me.lblCertifications = New System.Windows.Forms.Label()
         Me.dgvCertifications = New System.Windows.Forms.DataGridView()
+        Me.colCertificationsName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dgvRatings = New System.Windows.Forms.DataGridView()
         Me.colRatingsDefault = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.colRatingsSource = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -100,13 +101,6 @@ Partial Class dlgEdit_TVShow
         Me.dtpDateAdded_Date = New System.Windows.Forms.DateTimePicker()
         Me.chkWatched = New System.Windows.Forms.CheckBox()
         Me.dtpLastPlayed_Date = New System.Windows.Forms.DateTimePicker()
-        Me.lblCountries = New System.Windows.Forms.Label()
-        Me.dgvCountries = New System.Windows.Forms.DataGridView()
-        Me.colCountriesName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.lblStudios = New System.Windows.Forms.Label()
-        Me.dgvStudios = New System.Windows.Forms.DataGridView()
-        Me.colStudiosName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.lblTags = New System.Windows.Forms.Label()
         Me.dtpDateAdded_Time = New System.Windows.Forms.DateTimePicker()
         Me.dtpLastPlayed_Time = New System.Windows.Forms.DateTimePicker()
         Me.lblGenres = New System.Windows.Forms.Label()
@@ -116,6 +110,24 @@ Partial Class dlgEdit_TVShow
         Me.colUniqueIdsType = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colUniqueIdsValue = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.lbGenres = New System.Windows.Forms.ListBox()
+        Me.btnGenres_Add = New System.Windows.Forms.Button()
+        Me.btnGenres_Remove = New System.Windows.Forms.Button()
+        Me.btnGenres_Up = New System.Windows.Forms.Button()
+        Me.btnGenres_Down = New System.Windows.Forms.Button()
+        Me.lblStudios = New System.Windows.Forms.Label()
+        Me.dgvCountries = New System.Windows.Forms.DataGridView()
+        Me.colCountriesName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.lblCountries = New System.Windows.Forms.Label()
+        Me.dgvStudios = New System.Windows.Forms.DataGridView()
+        Me.colStudiosName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.lblTags = New System.Windows.Forms.Label()
+        Me.lbTags = New System.Windows.Forms.ListBox()
+        Me.cbGenres = New System.Windows.Forms.ComboBox()
+        Me.cbTags = New System.Windows.Forms.ComboBox()
+        Me.btnTags_Add = New System.Windows.Forms.Button()
+        Me.btnTags_Remove = New System.Windows.Forms.Button()
+        Me.btnTags_Up = New System.Windows.Forms.Button()
+        Me.btnTags_Down = New System.Windows.Forms.Button()
         Me.tpCastCrew = New System.Windows.Forms.TabPage()
         Me.tblCastCrew = New System.Windows.Forms.TableLayoutPanel()
         Me.lblActors = New System.Windows.Forms.Label()
@@ -236,18 +248,6 @@ Partial Class dlgEdit_TVShow
         Me.btnClipboardKeyart = New System.Windows.Forms.Button()
         Me.pnlImagesRight = New System.Windows.Forms.Panel()
         Me.tblImagesRight = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnGenres_Add = New System.Windows.Forms.Button()
-        Me.btnGenres_Remove = New System.Windows.Forms.Button()
-        Me.btnGenres_Up = New System.Windows.Forms.Button()
-        Me.btnGenres_Down = New System.Windows.Forms.Button()
-        Me.lbTags = New System.Windows.Forms.ListBox()
-        Me.cbGenres = New System.Windows.Forms.ComboBox()
-        Me.cbTags = New System.Windows.Forms.ComboBox()
-        Me.btnTags_Add = New System.Windows.Forms.Button()
-        Me.btnTags_Remove = New System.Windows.Forms.Button()
-        Me.btnTags_Up = New System.Windows.Forms.Button()
-        Me.btnTags_Down = New System.Windows.Forms.Button()
-        Me.colCertificationsName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlTop.SuspendLayout()
         Me.tblTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -262,9 +262,9 @@ Partial Class dlgEdit_TVShow
         CType(Me.dgvRatings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpDetails2.SuspendLayout()
         Me.tblDetails2.SuspendLayout()
+        CType(Me.dgvUniqueIds, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvCountries, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvStudios, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dgvUniqueIds, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpCastCrew.SuspendLayout()
         Me.tblCastCrew.SuspendLayout()
         CType(Me.dgvCreators, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -851,11 +851,13 @@ Partial Class dlgEdit_TVShow
         '
         'dtpPremiered
         '
+        Me.dtpPremiered.Checked = False
         Me.dtpPremiered.CustomFormat = "yyyy-dd-MM"
         Me.dtpPremiered.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dtpPremiered.Location = New System.Drawing.Point(595, 3)
         Me.dtpPremiered.Name = "dtpPremiered"
-        Me.dtpPremiered.Size = New System.Drawing.Size(100, 22)
+        Me.dtpPremiered.ShowCheckBox = True
+        Me.dtpPremiered.Size = New System.Drawing.Size(120, 22)
         Me.dtpPremiered.TabIndex = 6
         '
         'cbUserRating
@@ -865,7 +867,7 @@ Partial Class dlgEdit_TVShow
         Me.cbUserRating.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
         Me.cbUserRating.Location = New System.Drawing.Point(595, 87)
         Me.cbUserRating.Name = "cbUserRating"
-        Me.cbUserRating.Size = New System.Drawing.Size(100, 21)
+        Me.cbUserRating.Size = New System.Drawing.Size(120, 21)
         Me.cbUserRating.TabIndex = 11
         '
         'lblRatings
@@ -904,6 +906,13 @@ Partial Class dlgEdit_TVShow
         Me.dgvCertifications.Size = New System.Drawing.Size(400, 136)
         Me.dgvCertifications.TabIndex = 16
         '
+        'colCertificationsName
+        '
+        Me.colCertificationsName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colCertificationsName.HeaderText = "Name"
+        Me.colCertificationsName.Name = "colCertificationsName"
+        Me.colCertificationsName.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        '
         'dgvRatings
         '
         Me.dgvRatings.BackgroundColor = System.Drawing.SystemColors.Window
@@ -934,8 +943,8 @@ Partial Class dlgEdit_TVShow
         'colRatingsValue
         '
         Me.colRatingsValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle1
         Me.colRatingsValue.HeaderText = "Value"
         Me.colRatingsValue.Name = "colRatingsValue"
         Me.colRatingsValue.Width = 60
@@ -943,8 +952,8 @@ Partial Class dlgEdit_TVShow
         'colRatingsMax
         '
         Me.colRatingsMax.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle2
         Me.colRatingsMax.HeaderText = "Max"
         Me.colRatingsMax.Name = "colRatingsMax"
         Me.colRatingsMax.Width = 53
@@ -952,8 +961,8 @@ Partial Class dlgEdit_TVShow
         'colRatingsVotes
         '
         Me.colRatingsVotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle3
         Me.colRatingsVotes.HeaderText = "Votes"
         Me.colRatingsVotes.Name = "colRatingsVotes"
         Me.colRatingsVotes.Width = 60
@@ -1042,7 +1051,7 @@ Partial Class dlgEdit_TVShow
         Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
         Me.txtRuntime.Location = New System.Drawing.Point(595, 59)
         Me.txtRuntime.Name = "txtRuntime"
-        Me.txtRuntime.Size = New System.Drawing.Size(100, 22)
+        Me.txtRuntime.Size = New System.Drawing.Size(120, 22)
         Me.txtRuntime.TabIndex = 10
         Me.txtRuntime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -1062,7 +1071,7 @@ Partial Class dlgEdit_TVShow
         Me.txtStatus.BackColor = System.Drawing.SystemColors.Window
         Me.txtStatus.Location = New System.Drawing.Point(595, 31)
         Me.txtStatus.Name = "txtStatus"
-        Me.txtStatus.Size = New System.Drawing.Size(100, 22)
+        Me.txtStatus.Size = New System.Drawing.Size(120, 22)
         Me.txtStatus.TabIndex = 10
         '
         'lblUserNote
@@ -1169,7 +1178,7 @@ Partial Class dlgEdit_TVShow
         Me.dtpDateAdded_Date.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpDateAdded_Date.Location = New System.Drawing.Point(81, 3)
         Me.dtpDateAdded_Date.Name = "dtpDateAdded_Date"
-        Me.dtpDateAdded_Date.Size = New System.Drawing.Size(97, 22)
+        Me.dtpDateAdded_Date.Size = New System.Drawing.Size(100, 22)
         Me.dtpDateAdded_Date.TabIndex = 31
         Me.dtpDateAdded_Date.Value = New Date(2021, 1, 1, 0, 0, 0, 0)
         Me.dtpDateAdded_Date.Visible = False
@@ -1195,97 +1204,19 @@ Partial Class dlgEdit_TVShow
         Me.dtpLastPlayed_Date.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpLastPlayed_Date.Location = New System.Drawing.Point(81, 31)
         Me.dtpLastPlayed_Date.Name = "dtpLastPlayed_Date"
-        Me.dtpLastPlayed_Date.Size = New System.Drawing.Size(97, 22)
+        Me.dtpLastPlayed_Date.Size = New System.Drawing.Size(100, 22)
         Me.dtpLastPlayed_Date.TabIndex = 31
         Me.dtpLastPlayed_Date.Value = New Date(2021, 1, 1, 20, 0, 0, 0)
         Me.dtpLastPlayed_Date.Visible = False
-        '
-        'lblCountries
-        '
-        Me.lblCountries.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblCountries.AutoSize = True
-        Me.lblCountries.Location = New System.Drawing.Point(15, 59)
-        Me.lblCountries.Name = "lblCountries"
-        Me.lblCountries.Size = New System.Drawing.Size(60, 13)
-        Me.lblCountries.TabIndex = 59
-        Me.lblCountries.Text = "Countries:"
-        '
-        'dgvCountries
-        '
-        Me.dgvCountries.AllowUserToResizeColumns = False
-        Me.dgvCountries.AllowUserToResizeRows = False
-        Me.dgvCountries.BackgroundColor = System.Drawing.SystemColors.Window
-        Me.dgvCountries.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.dgvCountries.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvCountries.ColumnHeadersVisible = False
-        Me.dgvCountries.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colCountriesName})
-        Me.tblDetails2.SetColumnSpan(Me.dgvCountries, 2)
-        Me.dgvCountries.Location = New System.Drawing.Point(81, 59)
-        Me.dgvCountries.Name = "dgvCountries"
-        Me.dgvCountries.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.tblDetails2.SetRowSpan(Me.dgvCountries, 2)
-        Me.dgvCountries.Size = New System.Drawing.Size(400, 150)
-        Me.dgvCountries.TabIndex = 60
-        '
-        'colCountriesName
-        '
-        Me.colCountriesName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.colCountriesName.HeaderText = "Name"
-        Me.colCountriesName.Name = "colCountriesName"
-        Me.colCountriesName.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        '
-        'lblStudios
-        '
-        Me.lblStudios.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblStudios.AutoSize = True
-        Me.lblStudios.Location = New System.Drawing.Point(507, 59)
-        Me.lblStudios.Name = "lblStudios"
-        Me.lblStudios.Size = New System.Drawing.Size(49, 13)
-        Me.lblStudios.TabIndex = 61
-        Me.lblStudios.Text = "Studios:"
-        '
-        'dgvStudios
-        '
-        Me.dgvStudios.AllowUserToResizeColumns = False
-        Me.dgvStudios.AllowUserToResizeRows = False
-        Me.dgvStudios.BackgroundColor = System.Drawing.SystemColors.Window
-        Me.dgvStudios.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.dgvStudios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvStudios.ColumnHeadersVisible = False
-        Me.dgvStudios.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colStudiosName})
-        Me.dgvStudios.Location = New System.Drawing.Point(562, 59)
-        Me.dgvStudios.Name = "dgvStudios"
-        Me.dgvStudios.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.tblDetails2.SetRowSpan(Me.dgvStudios, 2)
-        Me.dgvStudios.Size = New System.Drawing.Size(400, 150)
-        Me.dgvStudios.TabIndex = 62
-        '
-        'colStudiosName
-        '
-        Me.colStudiosName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.colStudiosName.HeaderText = "Name"
-        Me.colStudiosName.Name = "colStudiosName"
-        Me.colStudiosName.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        '
-        'lblTags
-        '
-        Me.lblTags.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblTags.AutoSize = True
-        Me.lblTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTags.Location = New System.Drawing.Point(523, 219)
-        Me.lblTags.Name = "lblTags"
-        Me.lblTags.Size = New System.Drawing.Size(33, 13)
-        Me.lblTags.TabIndex = 56
-        Me.lblTags.Text = "Tags:"
         '
         'dtpDateAdded_Time
         '
         Me.dtpDateAdded_Time.CustomFormat = ""
         Me.dtpDateAdded_Time.Format = System.Windows.Forms.DateTimePickerFormat.Time
-        Me.dtpDateAdded_Time.Location = New System.Drawing.Point(184, 3)
+        Me.dtpDateAdded_Time.Location = New System.Drawing.Point(187, 3)
         Me.dtpDateAdded_Time.Name = "dtpDateAdded_Time"
         Me.dtpDateAdded_Time.ShowUpDown = True
-        Me.dtpDateAdded_Time.Size = New System.Drawing.Size(97, 22)
+        Me.dtpDateAdded_Time.Size = New System.Drawing.Size(100, 22)
         Me.dtpDateAdded_Time.TabIndex = 31
         Me.dtpDateAdded_Time.Value = New Date(2021, 2, 2, 20, 0, 0, 0)
         Me.dtpDateAdded_Time.Visible = False
@@ -1295,10 +1226,10 @@ Partial Class dlgEdit_TVShow
         Me.dtpLastPlayed_Time.CustomFormat = ""
         Me.dtpLastPlayed_Time.Enabled = False
         Me.dtpLastPlayed_Time.Format = System.Windows.Forms.DateTimePickerFormat.Time
-        Me.dtpLastPlayed_Time.Location = New System.Drawing.Point(184, 31)
+        Me.dtpLastPlayed_Time.Location = New System.Drawing.Point(187, 31)
         Me.dtpLastPlayed_Time.Name = "dtpLastPlayed_Time"
         Me.dtpLastPlayed_Time.ShowUpDown = True
-        Me.dtpLastPlayed_Time.Size = New System.Drawing.Size(97, 22)
+        Me.dtpLastPlayed_Time.Size = New System.Drawing.Size(100, 22)
         Me.dtpLastPlayed_Time.TabIndex = 31
         Me.dtpLastPlayed_Time.Value = New Date(2021, 2, 2, 20, 0, 0, 0)
         Me.dtpLastPlayed_Time.Visible = False
@@ -1371,6 +1302,190 @@ Partial Class dlgEdit_TVShow
         Me.tblDetails2.SetRowSpan(Me.lbGenres, 5)
         Me.lbGenres.Size = New System.Drawing.Size(400, 147)
         Me.lbGenres.TabIndex = 68
+        '
+        'btnGenres_Add
+        '
+        Me.btnGenres_Add.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnGenres_Add.Image = CType(resources.GetObject("btnGenres_Add.Image"), System.Drawing.Image)
+        Me.btnGenres_Add.Location = New System.Drawing.Point(52, 243)
+        Me.btnGenres_Add.Name = "btnGenres_Add"
+        Me.btnGenres_Add.Size = New System.Drawing.Size(23, 23)
+        Me.btnGenres_Add.TabIndex = 64
+        Me.btnGenres_Add.UseVisualStyleBackColor = True
+        '
+        'btnGenres_Remove
+        '
+        Me.btnGenres_Remove.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnGenres_Remove.Image = CType(resources.GetObject("btnGenres_Remove.Image"), System.Drawing.Image)
+        Me.btnGenres_Remove.Location = New System.Drawing.Point(52, 272)
+        Me.btnGenres_Remove.Name = "btnGenres_Remove"
+        Me.btnGenres_Remove.Size = New System.Drawing.Size(23, 23)
+        Me.btnGenres_Remove.TabIndex = 65
+        Me.btnGenres_Remove.UseVisualStyleBackColor = True
+        '
+        'btnGenres_Up
+        '
+        Me.btnGenres_Up.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnGenres_Up.Image = CType(resources.GetObject("btnGenres_Up.Image"), System.Drawing.Image)
+        Me.btnGenres_Up.Location = New System.Drawing.Point(52, 301)
+        Me.btnGenres_Up.Name = "btnGenres_Up"
+        Me.btnGenres_Up.Size = New System.Drawing.Size(23, 23)
+        Me.btnGenres_Up.TabIndex = 66
+        Me.btnGenres_Up.UseVisualStyleBackColor = True
+        '
+        'btnGenres_Down
+        '
+        Me.btnGenres_Down.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnGenres_Down.Image = CType(resources.GetObject("btnGenres_Down.Image"), System.Drawing.Image)
+        Me.btnGenres_Down.Location = New System.Drawing.Point(52, 330)
+        Me.btnGenres_Down.Name = "btnGenres_Down"
+        Me.btnGenres_Down.Size = New System.Drawing.Size(23, 23)
+        Me.btnGenres_Down.TabIndex = 67
+        Me.btnGenres_Down.UseVisualStyleBackColor = True
+        '
+        'lblStudios
+        '
+        Me.lblStudios.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblStudios.AutoSize = True
+        Me.lblStudios.Location = New System.Drawing.Point(507, 59)
+        Me.lblStudios.Name = "lblStudios"
+        Me.lblStudios.Size = New System.Drawing.Size(49, 13)
+        Me.lblStudios.TabIndex = 61
+        Me.lblStudios.Text = "Studios:"
+        '
+        'dgvCountries
+        '
+        Me.dgvCountries.AllowUserToResizeColumns = False
+        Me.dgvCountries.AllowUserToResizeRows = False
+        Me.dgvCountries.BackgroundColor = System.Drawing.SystemColors.Window
+        Me.dgvCountries.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvCountries.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvCountries.ColumnHeadersVisible = False
+        Me.dgvCountries.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colCountriesName})
+        Me.tblDetails2.SetColumnSpan(Me.dgvCountries, 2)
+        Me.dgvCountries.Location = New System.Drawing.Point(81, 59)
+        Me.dgvCountries.Name = "dgvCountries"
+        Me.dgvCountries.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.tblDetails2.SetRowSpan(Me.dgvCountries, 2)
+        Me.dgvCountries.Size = New System.Drawing.Size(400, 150)
+        Me.dgvCountries.TabIndex = 60
+        '
+        'colCountriesName
+        '
+        Me.colCountriesName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colCountriesName.HeaderText = "Name"
+        Me.colCountriesName.Name = "colCountriesName"
+        Me.colCountriesName.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        '
+        'lblCountries
+        '
+        Me.lblCountries.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblCountries.AutoSize = True
+        Me.lblCountries.Location = New System.Drawing.Point(15, 59)
+        Me.lblCountries.Name = "lblCountries"
+        Me.lblCountries.Size = New System.Drawing.Size(60, 13)
+        Me.lblCountries.TabIndex = 59
+        Me.lblCountries.Text = "Countries:"
+        '
+        'dgvStudios
+        '
+        Me.dgvStudios.AllowUserToResizeColumns = False
+        Me.dgvStudios.AllowUserToResizeRows = False
+        Me.dgvStudios.BackgroundColor = System.Drawing.SystemColors.Window
+        Me.dgvStudios.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvStudios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvStudios.ColumnHeadersVisible = False
+        Me.dgvStudios.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colStudiosName})
+        Me.dgvStudios.Location = New System.Drawing.Point(562, 59)
+        Me.dgvStudios.Name = "dgvStudios"
+        Me.dgvStudios.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.tblDetails2.SetRowSpan(Me.dgvStudios, 2)
+        Me.dgvStudios.Size = New System.Drawing.Size(400, 150)
+        Me.dgvStudios.TabIndex = 62
+        '
+        'colStudiosName
+        '
+        Me.colStudiosName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colStudiosName.HeaderText = "Name"
+        Me.colStudiosName.Name = "colStudiosName"
+        Me.colStudiosName.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        '
+        'lblTags
+        '
+        Me.lblTags.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblTags.AutoSize = True
+        Me.lblTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTags.Location = New System.Drawing.Point(523, 219)
+        Me.lblTags.Name = "lblTags"
+        Me.lblTags.Size = New System.Drawing.Size(33, 13)
+        Me.lblTags.TabIndex = 56
+        Me.lblTags.Text = "Tags:"
+        '
+        'lbTags
+        '
+        Me.lbTags.FormattingEnabled = True
+        Me.lbTags.Location = New System.Drawing.Point(562, 215)
+        Me.lbTags.Name = "lbTags"
+        Me.tblDetails2.SetRowSpan(Me.lbTags, 5)
+        Me.lbTags.Size = New System.Drawing.Size(400, 147)
+        Me.lbTags.TabIndex = 68
+        '
+        'cbGenres
+        '
+        Me.tblDetails2.SetColumnSpan(Me.cbGenres, 2)
+        Me.cbGenres.FormattingEnabled = True
+        Me.cbGenres.Location = New System.Drawing.Point(81, 368)
+        Me.cbGenres.Name = "cbGenres"
+        Me.cbGenres.Size = New System.Drawing.Size(400, 21)
+        Me.cbGenres.TabIndex = 69
+        '
+        'cbTags
+        '
+        Me.cbTags.FormattingEnabled = True
+        Me.cbTags.Location = New System.Drawing.Point(562, 368)
+        Me.cbTags.Name = "cbTags"
+        Me.cbTags.Size = New System.Drawing.Size(400, 21)
+        Me.cbTags.TabIndex = 70
+        '
+        'btnTags_Add
+        '
+        Me.btnTags_Add.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnTags_Add.Image = CType(resources.GetObject("btnTags_Add.Image"), System.Drawing.Image)
+        Me.btnTags_Add.Location = New System.Drawing.Point(533, 243)
+        Me.btnTags_Add.Name = "btnTags_Add"
+        Me.btnTags_Add.Size = New System.Drawing.Size(23, 23)
+        Me.btnTags_Add.TabIndex = 64
+        Me.btnTags_Add.UseVisualStyleBackColor = True
+        '
+        'btnTags_Remove
+        '
+        Me.btnTags_Remove.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnTags_Remove.Image = CType(resources.GetObject("btnTags_Remove.Image"), System.Drawing.Image)
+        Me.btnTags_Remove.Location = New System.Drawing.Point(533, 272)
+        Me.btnTags_Remove.Name = "btnTags_Remove"
+        Me.btnTags_Remove.Size = New System.Drawing.Size(23, 23)
+        Me.btnTags_Remove.TabIndex = 65
+        Me.btnTags_Remove.UseVisualStyleBackColor = True
+        '
+        'btnTags_Up
+        '
+        Me.btnTags_Up.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnTags_Up.Image = CType(resources.GetObject("btnTags_Up.Image"), System.Drawing.Image)
+        Me.btnTags_Up.Location = New System.Drawing.Point(533, 301)
+        Me.btnTags_Up.Name = "btnTags_Up"
+        Me.btnTags_Up.Size = New System.Drawing.Size(23, 23)
+        Me.btnTags_Up.TabIndex = 66
+        Me.btnTags_Up.UseVisualStyleBackColor = True
+        '
+        'btnTags_Down
+        '
+        Me.btnTags_Down.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnTags_Down.Image = CType(resources.GetObject("btnTags_Down.Image"), System.Drawing.Image)
+        Me.btnTags_Down.Location = New System.Drawing.Point(533, 330)
+        Me.btnTags_Down.Name = "btnTags_Down"
+        Me.btnTags_Down.Size = New System.Drawing.Size(23, 23)
+        Me.btnTags_Down.TabIndex = 67
+        Me.btnTags_Down.UseVisualStyleBackColor = True
         '
         'tpCastCrew
         '
@@ -2949,119 +3064,6 @@ Partial Class dlgEdit_TVShow
         Me.tblImagesRight.Size = New System.Drawing.Size(0, 0)
         Me.tblImagesRight.TabIndex = 2
         '
-        'btnGenres_Add
-        '
-        Me.btnGenres_Add.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnGenres_Add.Image = CType(resources.GetObject("btnGenres_Add.Image"), System.Drawing.Image)
-        Me.btnGenres_Add.Location = New System.Drawing.Point(52, 243)
-        Me.btnGenres_Add.Name = "btnGenres_Add"
-        Me.btnGenres_Add.Size = New System.Drawing.Size(23, 23)
-        Me.btnGenres_Add.TabIndex = 64
-        Me.btnGenres_Add.UseVisualStyleBackColor = True
-        '
-        'btnGenres_Remove
-        '
-        Me.btnGenres_Remove.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnGenres_Remove.Image = CType(resources.GetObject("btnGenres_Remove.Image"), System.Drawing.Image)
-        Me.btnGenres_Remove.Location = New System.Drawing.Point(52, 272)
-        Me.btnGenres_Remove.Name = "btnGenres_Remove"
-        Me.btnGenres_Remove.Size = New System.Drawing.Size(23, 23)
-        Me.btnGenres_Remove.TabIndex = 65
-        Me.btnGenres_Remove.UseVisualStyleBackColor = True
-        '
-        'btnGenres_Up
-        '
-        Me.btnGenres_Up.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnGenres_Up.Image = CType(resources.GetObject("btnGenres_Up.Image"), System.Drawing.Image)
-        Me.btnGenres_Up.Location = New System.Drawing.Point(52, 301)
-        Me.btnGenres_Up.Name = "btnGenres_Up"
-        Me.btnGenres_Up.Size = New System.Drawing.Size(23, 23)
-        Me.btnGenres_Up.TabIndex = 66
-        Me.btnGenres_Up.UseVisualStyleBackColor = True
-        '
-        'btnGenres_Down
-        '
-        Me.btnGenres_Down.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnGenres_Down.Image = CType(resources.GetObject("btnGenres_Down.Image"), System.Drawing.Image)
-        Me.btnGenres_Down.Location = New System.Drawing.Point(52, 330)
-        Me.btnGenres_Down.Name = "btnGenres_Down"
-        Me.btnGenres_Down.Size = New System.Drawing.Size(23, 23)
-        Me.btnGenres_Down.TabIndex = 67
-        Me.btnGenres_Down.UseVisualStyleBackColor = True
-        '
-        'lbTags
-        '
-        Me.lbTags.FormattingEnabled = True
-        Me.lbTags.Location = New System.Drawing.Point(562, 215)
-        Me.lbTags.Name = "lbTags"
-        Me.tblDetails2.SetRowSpan(Me.lbTags, 5)
-        Me.lbTags.Size = New System.Drawing.Size(400, 147)
-        Me.lbTags.TabIndex = 68
-        '
-        'cbGenres
-        '
-        Me.tblDetails2.SetColumnSpan(Me.cbGenres, 2)
-        Me.cbGenres.FormattingEnabled = True
-        Me.cbGenres.Location = New System.Drawing.Point(81, 368)
-        Me.cbGenres.Name = "cbGenres"
-        Me.cbGenres.Size = New System.Drawing.Size(400, 21)
-        Me.cbGenres.TabIndex = 69
-        '
-        'cbTags
-        '
-        Me.cbTags.FormattingEnabled = True
-        Me.cbTags.Location = New System.Drawing.Point(562, 368)
-        Me.cbTags.Name = "cbTags"
-        Me.cbTags.Size = New System.Drawing.Size(400, 21)
-        Me.cbTags.TabIndex = 70
-        '
-        'btnTags_Add
-        '
-        Me.btnTags_Add.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnTags_Add.Image = CType(resources.GetObject("btnTags_Add.Image"), System.Drawing.Image)
-        Me.btnTags_Add.Location = New System.Drawing.Point(533, 243)
-        Me.btnTags_Add.Name = "btnTags_Add"
-        Me.btnTags_Add.Size = New System.Drawing.Size(23, 23)
-        Me.btnTags_Add.TabIndex = 64
-        Me.btnTags_Add.UseVisualStyleBackColor = True
-        '
-        'btnTags_Remove
-        '
-        Me.btnTags_Remove.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnTags_Remove.Image = CType(resources.GetObject("btnTags_Remove.Image"), System.Drawing.Image)
-        Me.btnTags_Remove.Location = New System.Drawing.Point(533, 272)
-        Me.btnTags_Remove.Name = "btnTags_Remove"
-        Me.btnTags_Remove.Size = New System.Drawing.Size(23, 23)
-        Me.btnTags_Remove.TabIndex = 65
-        Me.btnTags_Remove.UseVisualStyleBackColor = True
-        '
-        'btnTags_Up
-        '
-        Me.btnTags_Up.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnTags_Up.Image = CType(resources.GetObject("btnTags_Up.Image"), System.Drawing.Image)
-        Me.btnTags_Up.Location = New System.Drawing.Point(533, 301)
-        Me.btnTags_Up.Name = "btnTags_Up"
-        Me.btnTags_Up.Size = New System.Drawing.Size(23, 23)
-        Me.btnTags_Up.TabIndex = 66
-        Me.btnTags_Up.UseVisualStyleBackColor = True
-        '
-        'btnTags_Down
-        '
-        Me.btnTags_Down.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnTags_Down.Image = CType(resources.GetObject("btnTags_Down.Image"), System.Drawing.Image)
-        Me.btnTags_Down.Location = New System.Drawing.Point(533, 330)
-        Me.btnTags_Down.Name = "btnTags_Down"
-        Me.btnTags_Down.Size = New System.Drawing.Size(23, 23)
-        Me.btnTags_Down.TabIndex = 67
-        Me.btnTags_Down.UseVisualStyleBackColor = True
-        '
-        'colCertificationsName
-        '
-        Me.colCertificationsName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.colCertificationsName.HeaderText = "Name"
-        Me.colCertificationsName.Name = "colCertificationsName"
-        Me.colCertificationsName.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        '
         'dlgEdit_TVShow
         '
         Me.AcceptButton = Me.btnOK
@@ -3102,9 +3104,9 @@ Partial Class dlgEdit_TVShow
         Me.tpDetails2.PerformLayout()
         Me.tblDetails2.ResumeLayout(False)
         Me.tblDetails2.PerformLayout()
+        CType(Me.dgvUniqueIds, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvCountries, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvStudios, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dgvUniqueIds, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpCastCrew.ResumeLayout(False)
         Me.tpCastCrew.PerformLayout()
         Me.tblCastCrew.ResumeLayout(False)

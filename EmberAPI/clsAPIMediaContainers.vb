@@ -1086,6 +1086,7 @@ Namespace MediaContainers
         Private _lastplayed As String = String.Empty
         Private _sets As New List(Of SetDetails)
         Private _tags As New List(Of String)
+        Private _year As String = String.Empty
 
 #End Region 'Fields
 
@@ -1225,7 +1226,20 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("year")>
-        Public Property Year() As String = String.Empty
+        Public Property Year() As String
+            Get
+                Dim nDate As New Date
+                If PremieredSpecified AndAlso Date.TryParse(Premiered, nDate) Then
+                    Return nDate.Year.ToString
+                End If
+                Return _year
+            End Get
+            Set(value As String)
+                If Not PremieredSpecified Then
+                    _year = value
+                End If
+            End Set
+        End Property
 
         <XmlIgnore()>
         Public ReadOnly Property YearSpecified() As Boolean
@@ -2144,6 +2158,7 @@ Namespace MediaContainers
 
     <Serializable()>
     Public Class RatingDetails
+        Implements IComparable(Of RatingDetails)
 
 #Region "Properties"
 
@@ -2212,6 +2227,19 @@ Namespace MediaContainers
         End Property
 
 #End Region 'Properties
+
+#Region "Methods"
+
+        Public Function CompareTo(ByVal other As RatingDetails) As Integer Implements IComparable(Of RatingDetails).CompareTo
+            Try
+                Dim retVal As Integer = If(IsDefault, -1, Type.CompareTo(other.Type))
+                Return retVal
+            Catch ex As Exception
+                Return 0
+            End Try
+        End Function
+
+#End Region 'Methods
 
     End Class
 

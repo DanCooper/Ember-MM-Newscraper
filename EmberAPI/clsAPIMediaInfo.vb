@@ -910,8 +910,8 @@ Public Class MediaInfo
 
                     aLang = Get_(StreamKind.Audio, a, "Language/String")
                     If Not String.IsNullOrEmpty(aLang) Then
-                        miAudio.LongLanguage = aLang
-                        If Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage) <> "" Then
+                        miAudio.LongLanguage = Regex.Match(aLang, "\w*").Value.Trim
+                        If Not String.IsNullOrEmpty(Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)) Then
                             miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
                         End If
                         'IFO Scan results (used when scanning VIDEO_TS files)
@@ -937,8 +937,8 @@ Public Class MediaInfo
 
                     sLang = Get_(StreamKind.Text, s, "Language/String")
                     If Not String.IsNullOrEmpty(sLang) Then
-                        miSubtitle.LongLanguage = sLang
-                        If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
+                        miSubtitle.LongLanguage = Regex.Match(sLang, "\w*").Value.Trim
+                        If Not String.IsNullOrEmpty(Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)) Then
                             miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
                         End If
                         miSubtitle.Forced = True

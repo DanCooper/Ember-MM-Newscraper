@@ -461,7 +461,10 @@ Public Class dlgEdit_Movie
             'Plot
             txtPlot.Text = .Plot
             'Premiered
-            dtpPremiered.Text = .Premiered
+            If .PremieredSpecified Then
+                dtpPremiered.Text = .Premiered
+                dtpPremiered.Checked = True
+            End If
             'Ratings
             Ratings_Fill()
             'Runtime
@@ -798,7 +801,11 @@ Public Class dlgEdit_Movie
             'Plot
             .Plot = txtPlot.Text.Trim
             'Premiered
-            .Premiered = dtpPremiered.Value.ToString("yyyy-MM-dd")
+            If dtpPremiered.Checked Then
+                .Premiered = dtpPremiered.Value.ToString("yyyy-MM-dd")
+            Else
+                .Premiered = String.Empty
+            End If
             'Ratings
             .Ratings.Items = Ratings_Get()
             'Runtime
@@ -2193,14 +2200,6 @@ Public Class dlgEdit_Movie
     Private Sub Watched_CheckedChanged(sender As Object, e As EventArgs) Handles chkWatched.CheckedChanged
         dtpLastPlayed_Date.Enabled = chkWatched.Checked
         dtpLastPlayed_Time.Enabled = chkWatched.Checked
-    End Sub
-
-    Private Sub Actors_Add(sender As Object, e As EventArgs) Handles btnActorsAdd.Click
-
-    End Sub
-
-    Private Sub Actors_Remove_Click(sender As Object, e As EventArgs) Handles btnActorsRemove.Click
-
     End Sub
 
 #End Region 'Methods

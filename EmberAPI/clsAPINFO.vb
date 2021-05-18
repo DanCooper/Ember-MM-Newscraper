@@ -373,6 +373,9 @@ Public Class NFO
             DBMovie.Movie.Outline = StringUtils.ShortenOutline(DBMovie.Movie.Plot, Master.eSettings.MovieScraperOutlineLimit)
         End If
 
+        'sort Ratings by Default and Type (name)
+        DBMovie.Movie.Ratings.Items.Sort()
+
         'set ListTitle at the end of merging
         If DBMovie.Movie.TitleSpecified Then
             DBMovie.ListTitle = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
@@ -736,6 +739,9 @@ Public Class NFO
             DBTV.TVShow.Title = DBTV.TVShow.OriginalTitle
         End If
 
+        'sort Ratings by Default and Type (name)
+        DBTV.TVShow.Ratings.Items.Sort()
+
         'set ListTitle at the end of merging
         If DBTV.TVShow.TitleSpecified Then
             DBTV.ListTitle = StringUtils.SortTokens_TV(DBTV.TVShow.Title)
@@ -1096,6 +1102,9 @@ Public Class NFO
             'reorder again
             ReorderPersons(DBTVEpisode.TVEpisode.Actors)
         End If
+
+        'sort Ratings by Default and Type (name)
+        DBTVEpisode.TVEpisode.Ratings.Items.Sort()
 
         'TV Show Runtime for Episode Runtime
         If Not DBTVEpisode.TVEpisode.RuntimeSpecified AndAlso Master.eSettings.TVScraperUseSRuntimeForEp AndAlso DBTVEpisode.TVShow.RuntimeSpecified Then

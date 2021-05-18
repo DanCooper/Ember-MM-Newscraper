@@ -140,7 +140,10 @@ Public Class dlgEdit_TVSeason
         'Information part
         With tmpDBElement.TVSeason
             'Aired
-            dtpAired.Text = .Aired
+            If .AiredSpecified Then
+                dtpAired.Text = .Aired
+                dtpAired.Checked = True
+            End If
             'Plot
             txtPlot.Text = .Plot
             'Title
@@ -242,7 +245,11 @@ Public Class dlgEdit_TVSeason
         'Information part
         With tmpDBElement.TVSeason
             'Aired
-            .Aired = dtpAired.Value.ToString("yyyy-MM-dd")
+            If dtpAired.Checked Then
+                .Aired = dtpAired.Value.ToString("yyyy-MM-dd")
+            Else
+                .Aired = String.Empty
+            End If
             'Plot
             .Plot = txtPlot.Text.Trim
             'Title

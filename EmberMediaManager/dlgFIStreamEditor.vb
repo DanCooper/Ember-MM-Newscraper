@@ -45,7 +45,7 @@ Public Class dlgFIStreamEditor
 
         If stream_type = Master.eLang.GetString(595, "Video Streams") Then
             gbVideoStreams.Visible = True
-            cbVideoCodec.Items.AddRange((From vCo In APIXML.lFlags Where vCo.Type = APIXML.FlagType.VideoCodec AndAlso Not vCo.Name = "defaultscreen" Select vCo.Name).ToArray)
+            cbVideoCodec.Items.AddRange((From vCo In APIXML.Flags Where vCo.Type = APIXML.FlagType.VideoCodec AndAlso Not vCo.Name = "defaultscreen" Select vCo.Name).ToArray)
             cbVideoLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
             If Not movie Is Nothing Then
                 cbVideoCodec.Text = movie.StreamDetails.Video(idx).Codec
@@ -69,7 +69,7 @@ Public Class dlgFIStreamEditor
         End If
         If stream_type = Master.eLang.GetString(596, "Audio Streams") Then
             gbAudioStreams.Visible = True
-            cbAudioCodec.Items.AddRange((From aCo In APIXML.lFlags Where aCo.Type = APIXML.FlagType.AudioCodec AndAlso Not aCo.Name = "defaultaudio" Select aCo.Name).ToArray)
+            cbAudioCodec.Items.AddRange((From aCo In APIXML.Flags Where aCo.Type = APIXML.FlagType.AudioCodec AndAlso Not aCo.Name = "defaultaudio" Select aCo.Name).ToArray)
             cbAudioLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
             cbAudioChannels.Items.AddRange(New String() {"8", "7", "6", "2", "1"})
             If Not movie Is Nothing Then

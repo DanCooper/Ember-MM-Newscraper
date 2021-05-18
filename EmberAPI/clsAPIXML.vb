@@ -41,7 +41,7 @@ Public Class APIXML
     Public Shared StudioMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Studios.xml"))
     Public Shared StudioIcons As New Dictionary(Of String, String)
     Public Shared alGenres As New List(Of String)
-    Public Shared lFlags As New List(Of Flag)
+    Public Shared Flags As New List(Of Flag)
 
 #End Region 'Fields
 
@@ -61,7 +61,7 @@ Public Class APIXML
                             fType = GetFlagTypeFromString(cFileName.Substring(0, cFileName.IndexOf("_")))
                             If Not fType = FlagType.Unknown Then
                                 Using fsImage As New FileStream(lFile, FileMode.Open, FileAccess.Read)
-                                    lFlags.Add(New Flag With {.Name = cFileName.Remove(0, cFileName.IndexOf("_") + 1), .Image = Image.FromStream(fsImage), .Path = lFile, .Type = fType})
+                                    Flags.Add(New Flag With {.Name = cFileName.Remove(0, cFileName.IndexOf("_") + 1), .Image = Image.FromStream(fsImage), .Path = lFile, .Type = fType})
                                 End Using
                             End If
                         End If
@@ -123,16 +123,16 @@ Public Class APIXML
             End If
 
             'Studio icons
-            Dim sPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
-            If Directory.Exists(Directory.GetParent(sPath).FullName) Then
+            Dim sPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Studios")
+            If Directory.Exists(sPath) Then
                 Try
                     'get all images in the main folder
-                    For Each lFile As String In Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png")
+                    For Each lFile As String In Directory.GetFiles(sPath, "*.png")
                         StudioIcons.Add(Path.GetFileNameWithoutExtension(lFile).ToLower, lFile)
                     Next
 
                     'now get all images in sub folders
-                    For Each iDir As String In Directory.GetDirectories(Directory.GetParent(sPath).FullName)
+                    For Each iDir As String In Directory.GetDirectories(sPath)
                         For Each lFile As String In Directory.GetFiles(iDir, "*.png")
                             'hard code "\" here, then replace when retrieving images
                             StudioIcons.Add(String.Concat(Directory.GetParent(iDir).Name, "\", Path.GetFileNameWithoutExtension(lFile).ToLower), lFile)
@@ -173,19 +173,19 @@ Public Class APIXML
         End Try
     End Sub
 
-    Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
+    Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.Fileinfo, ByVal fName As String, ByVal isTV As Boolean, ByVal videoSource As String) As Image()
         Dim iReturn(19) As Image
         Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
-        Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, ForTV)
+        Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, isTV)
 
-        If lFlags.Count > 0 OrElse LanguageIcons.Count > 0 Then
+        If Flags.Count > 0 OrElse LanguageIcons.Count > 0 Then
             Try
                 Dim vRes As String = NFO.GetResFromDimensions(tVideo).ToLower
-                Dim vresFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = vRes AndAlso f.Type = FlagType.VideoResolution)
+                Dim vresFlag As Flag = Flags.FirstOrDefault(Function(f) f.Name = vRes AndAlso f.Type = FlagType.VideoResolution)
                 If vresFlag IsNot Nothing Then
                     iReturn(0) = vresFlag.Image
                 Else
-                    vresFlag = lFlags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.VideoResolution)
+                    vresFlag = Flags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.VideoResolution)
                     If vresFlag IsNot Nothing Then
                         iReturn(0) = vresFlag.Image
                     Else
@@ -194,11 +194,11 @@ Public Class APIXML
                 End If
 
                 Dim vSource As String = videoSource 'GetFileSource(fName)
-                Dim vSourceFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name.ToLower = vSource.ToLower AndAlso f.Type = FlagType.VideoSource)
+                Dim vSourceFlag As Flag = Flags.FirstOrDefault(Function(f) f.Name.ToLower = vSource.ToLower AndAlso f.Type = FlagType.VideoSource)
                 If vSourceFlag IsNot Nothing Then
                     iReturn(1) = vSourceFlag.Image
                 Else
-                    vSourceFlag = lFlags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.VideoSource)
+                    vSourceFlag = Flags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.VideoSource)
                     If vSourceFlag IsNot Nothing Then
                         iReturn(1) = vSourceFlag.Image
                     Else
@@ -206,11 +206,11 @@ Public Class APIXML
                     End If
                 End If
 
-                Dim vcodecFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = FlagType.VideoCodec)
+                Dim vcodecFlag As Flag = Flags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = FlagType.VideoCodec)
                 If vcodecFlag IsNot Nothing Then
                     iReturn(2) = vcodecFlag.Image
                 Else
-                    vcodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.VideoCodec)
+                    vcodecFlag = Flags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.VideoCodec)
                     If vcodecFlag IsNot Nothing Then
                         iReturn(2) = vcodecFlag.Image
                     Else
@@ -219,13 +219,13 @@ Public Class APIXML
                 End If
 
                 If tVideo.MultiViewCountSpecified Then
-                    Dim vchanFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tVideo.MultiViewCount AndAlso f.Type = FlagType.VideoChan)
+                    Dim vchanFlag As Flag = Flags.FirstOrDefault(Function(f) f.Name = tVideo.MultiViewCount AndAlso f.Type = FlagType.VideoChan)
                     If vchanFlag IsNot Nothing Then
                         iReturn(19) = vchanFlag.Image
                     End If
                 End If
 
-                Dim acodecFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = FlagType.AudioCodec)
+                Dim acodecFlag As Flag = Flags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = FlagType.AudioCodec)
                 If acodecFlag IsNot Nothing Then
                     If tAudio.HasPreferred Then
                         Dim acodecFlagTemp As Image = acodecFlag.Image
@@ -234,7 +234,7 @@ Public Class APIXML
                         iReturn(3) = acodecFlag.Image
                     End If
                 Else
-                    acodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.AudioCodec)
+                    acodecFlag = Flags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.AudioCodec)
                     If acodecFlag IsNot Nothing Then
                         If tAudio.HasPreferred Then
                             Dim acodecFlagTemp As Image = acodecFlag.Image
@@ -251,11 +251,11 @@ Public Class APIXML
                     End If
                 End If
 
-                Dim achanFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = FlagType.AudioChan)
+                Dim achanFlag As Flag = Flags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = FlagType.AudioChan)
                 If achanFlag IsNot Nothing Then
                     iReturn(4) = achanFlag.Image
                 Else
-                    achanFlag = lFlags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.AudioChan)
+                    achanFlag = Flags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.AudioChan)
                     If achanFlag IsNot Nothing Then
                         iReturn(4) = achanFlag.Image
                     Else
@@ -458,6 +458,16 @@ Public Class APIXML
         Return retGenre.ToArray
     End Function
 
+    Public Shared Function GetRatingFlag(ByVal ratingprovider As String) As Image
+        Dim imgRating As Image = Nothing
+        Dim ratingFlag = Flags.FirstOrDefault(Function(f) f.Name = ratingprovider AndAlso f.Type = FlagType.Rating)
+        If ratingFlag IsNot Nothing Then
+            Return ratingFlag.Image
+        Else
+            Return Nothing
+        End If
+    End Function
+
     Public Shared Function GetRatingImage(ByVal strRating As String) As Image
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim imgRating As Image = Nothing
@@ -580,6 +590,12 @@ Public Class APIXML
 
     Public Shared Function GetFlagTypeFromString(ByVal sType As String) As FlagType
         Select Case sType
+            Case "acodec"
+                Return FlagType.AudioCodec
+            Case "achan"
+                Return FlagType.AudioChan
+            Case "rating"
+                Return FlagType.Rating
             Case "vchan"
                 Return FlagType.VideoChan
             Case "vcodec"
@@ -588,10 +604,6 @@ Public Class APIXML
                 Return FlagType.VideoResolution
             Case "vsource"
                 Return FlagType.VideoSource
-            Case "acodec"
-                Return FlagType.AudioCodec
-            Case "achan"
-                Return FlagType.AudioChan
             Case Else
                 Return FlagType.Unknown
         End Select
@@ -604,6 +616,7 @@ Public Class APIXML
     Public Enum FlagType
         AudioChan
         AudioCodec
+        Rating
         Unknown
         VideoChan
         VideoCodec
