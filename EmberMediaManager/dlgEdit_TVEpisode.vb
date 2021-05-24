@@ -446,6 +446,7 @@ Public Class dlgEdit_TVEpisode
 
         'Database related part
         With tmpDBElement
+            'States
             .IsLock = chkLocked.Checked
             .IsMark = chkMarked.Checked
             'Videosource

@@ -33,6 +33,7 @@ Public Class APIXML
     Public Shared CertificationLanguages As New clsXMLCertificationLanguages()
     Public Shared CertificationMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Certifications.xml"))
     Public Shared CountryMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Countries.xml"))
+    Public Shared EditionMapping As New clsXMLRegexMapping("Core.Mapping.Editions.xml")
     Public Shared GenreMapping As New clsXMLGenreMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Genres.xml"))
     Public Shared LanguageIcons As New Dictionary(Of String, String)
     Public Shared RatingXML As New clsXMLRatings
@@ -94,6 +95,9 @@ Public Class APIXML
                 Catch
                 End Try
             End If
+
+            'Edition mapping
+            EditionMapping.Load()
 
             'Genre mapping
             If File.Exists(GenreMapping.FileNameFullPath) Then

@@ -44,11 +44,13 @@ Public Class genericMapping
     Private _enabled As Boolean = False
     Private WithEvents cmnuTrayToolsCertificationMapping As New ToolStripMenuItem
     Private WithEvents cmnuTrayToolsCountryMapping As New ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsEditionMapping As New ToolStripMenuItem
     Private WithEvents cmnuTrayToolsGenreMapping As New ToolStripMenuItem
     Private WithEvents cmnuTrayToolsStatusMapping As New ToolStripMenuItem
     Private WithEvents cmnuTrayToolsStudioMapping As New ToolStripMenuItem
     Private WithEvents mnuMainToolsCertificationMapping As New ToolStripMenuItem
     Private WithEvents mnuMainToolsCountryMapping As New ToolStripMenuItem
+    Private WithEvents mnuMainToolsEditionMapping As New ToolStripMenuItem
     Private WithEvents mnuMainToolsGenreMapping As New ToolStripMenuItem
     Private WithEvents mnuMainToolsStatusMapping As New ToolStripMenuItem
     Private WithEvents mnuMainToolsStudioMapping As New ToolStripMenuItem
@@ -145,6 +147,7 @@ Public Class genericMapping
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(mnuMainToolsCertificationMapping)
         tsi.DropDownItems.Remove(mnuMainToolsCountryMapping)
+        tsi.DropDownItems.Remove(mnuMainToolsEditionMapping)
         tsi.DropDownItems.Remove(mnuMainToolsGenreMapping)
         tsi.DropDownItems.Remove(mnuMainToolsStatusMapping)
         tsi.DropDownItems.Remove(mnuMainToolsStudioMapping)
@@ -153,6 +156,7 @@ Public Class genericMapping
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(cmnuTrayToolsCertificationMapping)
         tsi.DropDownItems.Remove(cmnuTrayToolsCountryMapping)
+        tsi.DropDownItems.Remove(cmnuTrayToolsEditionMapping)
         tsi.DropDownItems.Remove(cmnuTrayToolsGenreMapping)
         tsi.DropDownItems.Remove(cmnuTrayToolsStatusMapping)
         tsi.DropDownItems.Remove(cmnuTrayToolsStudioMapping)
@@ -173,6 +177,12 @@ Public Class genericMapping
         mnuMainToolsCountryMapping.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsCountryMapping)
+
+        mnuMainToolsEditionMapping.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsEditionMapping.Text = Master.eLang.GetString(126, "Edition Mapping")
+        mnuMainToolsEditionMapping.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, mnuMainToolsEditionMapping)
 
         mnuMainToolsGenreMapping.Image = New Bitmap(My.Resources.icon)
         mnuMainToolsGenreMapping.Text = Master.eLang.GetString(782, "Genre Mapping")
@@ -202,6 +212,11 @@ Public Class genericMapping
         cmnuTrayToolsCountryMapping.Text = Master.eLang.GetString(884, "Country Mapping")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, cmnuTrayToolsCountryMapping)
+
+        cmnuTrayToolsEditionMapping.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsEditionMapping.Text = Master.eLang.GetString(126, "Edition Mapping")
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, cmnuTrayToolsEditionMapping)
 
         cmnuTrayToolsGenreMapping.Image = New Bitmap(My.Resources.icon)
         cmnuTrayToolsGenreMapping.Text = Master.eLang.GetString(782, "Genre Mapping")
@@ -239,6 +254,15 @@ Public Class genericMapping
     Private Sub CountryMapping_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsCountryMapping.Click, cmnuTrayToolsCountryMapping.Click
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
         Using dlgMapping As New dlgSimpleMapping(dlgSimpleMapping.MappingType.CountryMapping)
+            dlgMapping.ShowDialog()
+        End Using
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
+    End Sub
+
+    Private Sub EditionMapping_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsEditionMapping.Click, cmnuTrayToolsEditionMapping.Click
+        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        Using dlgMapping As New dlgRegexMapping(dlgRegexMapping.MappingType.EditionMapping)
             dlgMapping.ShowDialog()
         End Using
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))

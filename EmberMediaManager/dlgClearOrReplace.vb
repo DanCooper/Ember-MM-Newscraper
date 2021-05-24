@@ -49,7 +49,7 @@ Public Class dlgClearOrReplace
     End Sub
 
     Public Overloads Function ShowDialog(ByVal tContentType As Enums.ContentType) As DialogResult
-        SetUp()
+        Setup()
 
         _Result.ContentType = tContentType
         _Result.TaskType = Enums.TaskManagerType.DataFields_ClearOrReplace
@@ -70,6 +70,7 @@ Public Class dlgClearOrReplace
                 chkCountries.Visible = False
                 chkCreators.Visible = False
                 chkDirectors.Visible = False
+                chkEdition.Visible = False
                 chkGenres.Visible = False
                 chkGuestStars.Visible = False
                 chkMPAA.Visible = False
@@ -107,6 +108,7 @@ Public Class dlgClearOrReplace
                 chkCertifications.Visible = False
                 chkCountries.Visible = False
                 chkCreators.Visible = False
+                chkEdition.Visible = False
                 chkGenres.Visible = False
                 chkMPAA.Visible = False
                 chkOriginalTitle.Visible = True
@@ -135,6 +137,7 @@ Public Class dlgClearOrReplace
                 chkCountries.Visible = False
                 chkCreators.Visible = False
                 chkDirectors.Visible = False
+                chkEdition.Visible = False
                 chkGenres.Visible = False
                 chkGuestStars.Visible = False
                 chkMPAA.Visible = False
@@ -168,6 +171,7 @@ Public Class dlgClearOrReplace
                 txtWriters.Visible = False
             Case Enums.ContentType.TVShow
                 chkAired.Visible = False
+                chkEdition.Visible = False
                 chkGuestStars.Visible = False
                 chkOutline.Visible = False
                 chkTagline.Visible = False
@@ -192,7 +196,7 @@ Public Class dlgClearOrReplace
     End Sub
 
     Private Sub dlgEditDataField_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        SetUp()
+        Setup()
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
@@ -211,6 +215,8 @@ Public Class dlgClearOrReplace
                     nInfo.Countries = DoSplit(txtCountries)
                     .bMainDirectors = chkDirectors.Checked
                     nInfo.Directors = DoSplit(txtDirectors)
+                    .bMainEdition = chkEdition.Checked
+                    nInfo.Edition = txtEdition.Text.Trim
                     .bMainGenres = chkGenres.Checked
                     nInfo.Genres = DoSplit(txtGenres)
                     .bMainMPAA = chkMPAA.Checked
@@ -332,6 +338,10 @@ Public Class dlgClearOrReplace
         txtDirectors.Enabled = chkDirectors.Checked
     End Sub
 
+    Private Sub chkEdition_CheckedChanged(sender As Object, e As EventArgs) Handles chkEdition.CheckedChanged
+        txtEdition.Enabled = chkEdition.Checked
+    End Sub
+
     Private Sub chkGenres_CheckedChanged(sender As Object, e As EventArgs) Handles chkGenres.CheckedChanged
         txtGenres.Enabled = chkGenres.Checked
     End Sub
@@ -418,7 +428,7 @@ Public Class dlgClearOrReplace
         Return nList
     End Function
 
-    Private Sub SetUp()
+    Private Sub Setup()
         Text = Master.eLang.GetString(1087, "Clear or Replace Data Fields")
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         btnOK.Text = Master.eLang.GetString(179, "OK")
@@ -429,6 +439,7 @@ Public Class dlgClearOrReplace
         chkCountries.Text = Master.eLang.GetString(237, "Countries")
         chkCreators.Text = Master.eLang.GetString(744, "Creators")
         chkDirectors.Text = Master.eLang.GetString(940, "Directors")
+        chkEdition.Text = Master.eLang.GetString(308, "Edition")
         chkGenres.Text = Master.eLang.GetString(725, "Genres")
         chkGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
         chkMPAA.Text = Master.eLang.GetString(401, "MPAA")

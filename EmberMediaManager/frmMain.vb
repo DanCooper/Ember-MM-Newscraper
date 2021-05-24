@@ -337,7 +337,7 @@ Public Class frmMain
         End Try
 
         'remove all current ratings
-        FillScreenInfoWithRatings(New List(Of MediaContainers.RatingDetails), 0)
+        FillScreenInfoWithRatings(New List(Of MediaContainers.RatingDetails), 0, 0)
 
         If pbMPAA.Image IsNot Nothing Then
             pbMPAA.Image = Nothing
@@ -5487,11 +5487,11 @@ Public Class frmMain
             colName = "Year"
             ) AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvMovies.Item("Mark", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.SelectionForeColor = Color.Crimson
+                e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvMovies.Item("New", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.SelectionForeColor = Color.Green
+                e.CellStyle.ForeColor = MediaListColors.New.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom1", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
                 e.CellStyle.SelectionForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
@@ -5505,9 +5505,9 @@ Public Class frmMain
                 e.CellStyle.ForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
                 e.CellStyle.SelectionForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
             Else
-                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.ForeColor = MediaListColors.Default.ForeColor
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+                e.CellStyle.SelectionForeColor = MediaListColors.Default.SelectionForeColor
             End If
         End If
 
@@ -5515,14 +5515,14 @@ Public Class frmMain
 
             'background
             If Convert.ToBoolean(dgvMovies.Item("Lock", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = Color.LightSteelBlue
-                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+                e.CellStyle.BackColor = MediaListColors.Locked.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Locked.SelectionBackColor
             ElseIf Convert.ToBoolean(dgvMovies.Item("OutOfTolerance", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = Color.MistyRose
-                e.CellStyle.SelectionBackColor = Color.DarkMagenta
+                e.CellStyle.BackColor = MediaListColors.OutOfTolerance.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.OutOfTolerance.SelectionBackColor
             Else
-                e.CellStyle.BackColor = Color.White
-                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                e.CellStyle.BackColor = MediaListColors.Default.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Default.SelectionBackColor
             End If
 
             'path fields
@@ -6106,15 +6106,15 @@ Public Class frmMain
             colName = "TMDBColID"
             ) AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvMovieSets.Item("Mark", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.SelectionForeColor = Color.Crimson
+                e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvMovieSets.Item("New", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.SelectionForeColor = Color.Green
+                e.CellStyle.ForeColor = MediaListColors.New.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
             Else
-                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.ForeColor = MediaListColors.Default.ForeColor
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+                e.CellStyle.SelectionForeColor = MediaListColors.Default.SelectionForeColor
             End If
         End If
 
@@ -6122,11 +6122,11 @@ Public Class frmMain
 
             'background
             If Convert.ToBoolean(dgvMovieSets.Item("Lock", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = Color.LightSteelBlue
-                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+                e.CellStyle.BackColor = MediaListColors.Locked.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Locked.SelectionBackColor
             Else
-                e.CellStyle.BackColor = Color.White
-                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                e.CellStyle.BackColor = MediaListColors.Default.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Default.SelectionBackColor
             End If
 
             'path fields
@@ -6588,18 +6588,18 @@ Public Class frmMain
             colName = "VideoSource"
             ) AndAlso e.RowIndex >= 0 Then
             If Convert.ToInt64(dgvTVEpisodes.Item("idFile", e.RowIndex).Value) = -1 Then
-                e.CellStyle.ForeColor = Color.Gray
-                e.CellStyle.SelectionForeColor = Color.LightGray
+                e.CellStyle.ForeColor = MediaListColors.Missing.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Missing.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvTVEpisodes.Item("Mark", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.SelectionForeColor = Color.Crimson
+                e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvTVEpisodes.Item("New", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.SelectionForeColor = Color.Green
+                e.CellStyle.ForeColor = MediaListColors.New.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
             Else
-                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.ForeColor = MediaListColors.Default.ForeColor
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+                e.CellStyle.SelectionForeColor = MediaListColors.Default.SelectionForeColor
             End If
         End If
 
@@ -6607,14 +6607,14 @@ Public Class frmMain
 
             'background
             If Convert.ToInt64(dgvTVEpisodes.Item("idFile", e.RowIndex).Value) = -1 Then
-                e.CellStyle.BackColor = Color.White
-                e.CellStyle.SelectionBackColor = Color.DarkGray
+                e.CellStyle.BackColor = MediaListColors.Missing.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Missing.SelectionBackColor
             ElseIf Convert.ToBoolean(dgvTVEpisodes.Item("Lock", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = Color.LightSteelBlue
-                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+                e.CellStyle.BackColor = MediaListColors.Locked.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Locked.SelectionBackColor
             Else
-                e.CellStyle.BackColor = Color.White
-                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                e.CellStyle.BackColor = MediaListColors.Default.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Default.SelectionBackColor
             End If
 
             'path fields
@@ -7074,19 +7074,19 @@ Public Class frmMain
             colName = "strTVDB"
             ) AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvTVSeasons.Item("Missing", e.RowIndex).Value) AndAlso Not CInt(dgvTVSeasons.Item("Season", e.RowIndex).Value) = -1 Then
-                e.CellStyle.ForeColor = Color.Gray
-                e.CellStyle.SelectionForeColor = Color.LightGray
+                e.CellStyle.ForeColor = MediaListColors.Missing.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Missing.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvTVSeasons.Item("Mark", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.SelectionForeColor = Color.Crimson
+                e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvTVSeasons.Item("New", e.RowIndex).Value) OrElse
                 Not String.IsNullOrEmpty(dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
-                e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.SelectionForeColor = Color.Green
+                e.CellStyle.ForeColor = MediaListColors.New.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
             Else
-                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.ForeColor = MediaListColors.Default.ForeColor
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+                e.CellStyle.SelectionForeColor = MediaListColors.Default.SelectionForeColor
             End If
         End If
 
@@ -7094,11 +7094,11 @@ Public Class frmMain
 
             'background
             If Convert.ToBoolean(dgvTVSeasons.Item("Lock", e.RowIndex).Value) Then
-                e.CellStyle.BackColor = Color.LightSteelBlue
-                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+                e.CellStyle.BackColor = MediaListColors.Locked.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Locked.SelectionBackColor
             Else
-                e.CellStyle.BackColor = Color.White
-                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                e.CellStyle.BackColor = MediaListColors.Default.BackColor
+                e.CellStyle.SelectionBackColor = MediaListColors.Default.SelectionBackColor
             End If
 
             'path fields
@@ -7577,16 +7577,16 @@ Public Class frmMain
             colName = "iUserRating"
             ) AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvTVShows.Item("Mark", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.SelectionForeColor = Color.Crimson
+                e.CellStyle.ForeColor = MediaListColors.Marked.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.Marked.SelectionForeColor
             ElseIf Convert.ToBoolean(dgvTVShows.Item("New", e.RowIndex).Value) OrElse
                 Not String.IsNullOrEmpty(dgvTVShows.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(dgvTVShows.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
-                e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.SelectionForeColor = Color.Green
+                e.CellStyle.ForeColor = MediaListColors.New.ForeColor
+                e.CellStyle.SelectionForeColor = MediaListColors.New.SelectionForeColor
             Else
-                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.ForeColor = MediaListColors.Default.ForeColor
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+                e.CellStyle.SelectionForeColor = MediaListColors.Default.SelectionForeColor
             End If
         End If
 
@@ -8433,6 +8433,13 @@ Public Class frmMain
                 dgvMovies.Columns("DiscArtPath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("DiscArtPath").Visible = Not CheckColumnHide_Movies("DiscArtPath")
                 dgvMovies.Columns("DiscArtPath").ToolTipText = Master.eLang.GetString(1098, "DiscArt")
+                dgvMovies.Columns("edition").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                dgvMovies.Columns("edition").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("edition").ReadOnly = True
+                dgvMovies.Columns("edition").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("edition").Visible = Not CheckColumnHide_Movies("edition")
+                dgvMovies.Columns("edition").ToolTipText = Master.eLang.GetString(308, "Edition")
+                dgvMovies.Columns("edition").HeaderText = Master.eLang.GetString(308, "Edition")
                 dgvMovies.Columns("EFanartsPath").Width = 20
                 dgvMovies.Columns("EFanartsPath").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("EFanartsPath").ReadOnly = True
@@ -9574,7 +9581,7 @@ Public Class frmMain
         If pbPoster.Image IsNot Nothing Then pnlPoster.Visible = True
     End Sub
 
-    Private Sub FillScreenInfoWithRatings(ByVal ratings As List(Of MediaContainers.RatingDetails), Optional ByVal top250 As Integer = 0)
+    Private Sub FillScreenInfoWithRatings(ByVal ratings As List(Of MediaContainers.RatingDetails), ByVal userRating As Integer, Optional ByVal top250 As Integer = 0)
         For iControl = pnlTopPanelRating.Controls.Count - 1 To 0 Step -1
             pnlTopPanelRating.Controls.RemoveAt(iControl)
         Next
@@ -9618,6 +9625,26 @@ Public Class frmMain
                                        }, i, 2)
             i += 1
         Next
+        'add UserRating if specified
+        If userRating > 0 Then
+            tblTopPanelRating.ColumnCount += 1
+            tblTopPanelRating.ColumnStyles.Add(New ColumnStyle(nColumnStyle.SizeType, nColumnStyle.Width))
+            tblTopPanelRating.Controls.Add(New PictureBox With {
+                                       .Dock = DockStyle.Fill,
+                                       .Margin = New Padding With {.All = 0},
+                                       .SizeMode = PictureBoxSizeMode.CenterImage,
+                                       .Size = New Size With {.Height = 40, .Width = 80},
+                                       .Image = APIXML.GetRatingFlag("userrating")
+                                       }, i, 1)
+            tblTopPanelRating.Controls.Add(New Label With {
+                                       .Dock = DockStyle.Fill,
+                                       .Font = TopPanelColors.Rating.Font,
+                                       .ForeColor = TopPanelColors.Rating.ForeColor,
+                                       .Text = userRating.ToString,
+                                       .TextAlign = ContentAlignment.TopCenter
+                                       }, i, 2)
+            i += 1
+        End If
         'add IMDb Top 250 if specified
         If top250 > 0 Then
             tblTopPanelRating.ColumnCount += 1
@@ -9645,13 +9672,19 @@ Public Class frmMain
         SuspendLayout()
 
         'Title
-        If currMovie.Movie.TitleSpecified AndAlso currMovie.Movie.YearSpecified Then
-            lblTitle.Text = String.Format("{0} ({1})", currMovie.Movie.Title, currMovie.Movie.Year)
-        ElseIf currMovie.Movie.TitleSpecified AndAlso Not currMovie.Movie.YearSpecified Then
-            lblTitle.Text = currMovie.Movie.Title
-        ElseIf Not currMovie.Movie.TitleSpecified AndAlso currMovie.Movie.YearSpecified Then
-            lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), currMovie.Movie.Year)
+        Dim strTitle As String = String.Empty
+        If currMovie.Movie.TitleSpecified Then
+            strTitle = currMovie.Movie.Title
+        Else
+            strTitle = Master.eLang.GetString(117, "Unknown Movie")
         End If
+        If currMovie.Movie.EditionSpecified Then
+            strTitle = String.Concat(strTitle, String.Format(" ({0})", currMovie.Movie.Edition))
+        End If
+        If currMovie.Movie.YearSpecified Then
+            strTitle = String.Concat(strTitle, String.Format(" ({0})", currMovie.Movie.Year))
+        End If
+        lblTitle.Text = strTitle.Trim
 
         'OriginalTitle
         If currMovie.Movie.OriginalTitleSpecified AndAlso Not currMovie.Movie.OriginalTitle = currMovie.Movie.Title Then
@@ -9680,9 +9713,9 @@ Public Class frmMain
         txtTMDBID.Text = If(currMovie.Movie.UniqueIDs.TMDbIdSpecified, currMovie.Movie.UniqueIDs.TMDbId.ToString, String.Empty)
         txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.Movie.Trailer)
 
-        'Rating & Top250
-        If currMovie.Movie.RatingsSpecified OrElse currMovie.Movie.Top250Specified Then
-            FillScreenInfoWithRatings(currMovie.Movie.Ratings.Items, currMovie.Movie.Top250)
+        'Ratings, UserRating & Top250
+        If currMovie.Movie.RatingsSpecified OrElse currMovie.Movie.UserRatingSpecified OrElse currMovie.Movie.Top250Specified Then
+            FillScreenInfoWithRatings(currMovie.Movie.Ratings.Items, currMovie.Movie.UserRating, currMovie.Movie.Top250)
         End If
 
         'Runtime
@@ -9847,9 +9880,9 @@ Public Class frmMain
         txtTMDBID.Text = If(currTV.TVEpisode.UniqueIDs.TMDbIdSpecified, currTV.TVEpisode.UniqueIDs.TMDbId.ToString, String.Empty)
         txtTVDBID.Text = If(currTV.TVEpisode.UniqueIDs.TVDbIdSpecified, currTV.TVEpisode.UniqueIDs.TVDbId.ToString, String.Empty)
 
-        'Ratings
-        If currTV.TVEpisode.RatingsSpecified Then
-
+        'Ratings & UserRating
+        If currTV.TVEpisode.RatingsSpecified OrElse currTV.TVEpisode.UserRatingSpecified Then
+            FillScreenInfoWithRatings(currTV.TVEpisode.Ratings.Items, currTV.TVEpisode.UserRating)
         End If
 
         'Season / Episode Number
@@ -9986,9 +10019,9 @@ Public Class frmMain
             lblOriginalTitle.Text = String.Empty
         End If
 
-        'Rating
-        If currTV.TVShow.RatingsSpecified Then
-
+        'Ratings & UserRating
+        If currTV.TVShow.RatingsSpecified OrElse currTV.TVShow.UserRatingSpecified Then
+            FillScreenInfoWithRatings(currTV.TVShow.Ratings.Items, currTV.TVShow.UserRating)
         End If
 
         'Actors
@@ -10086,9 +10119,9 @@ Public Class frmMain
         txtTMDBID.Text = currTV.TVShow.UniqueIDs.TMDbId.ToString
         txtTVDBID.Text = currTV.TVShow.UniqueIDs.TVDbId.ToString
 
-        'Ratings
-        If currTV.TVShow.RatingsSpecified Then
-
+        'Ratings & UserRating
+        If currTV.TVShow.RatingsSpecified OrElse currTV.TVShow.UserRatingSpecified Then
+            FillScreenInfoWithRatings(currTV.TVShow.Ratings.Items, currTV.TVShow.UserRating)
         End If
 
         alActors = New List(Of String)

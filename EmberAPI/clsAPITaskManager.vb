@@ -29,7 +29,7 @@ Public Class TaskManager
     Private _bHasChanged As Boolean
     Private TaskList As New Queue(Of TaskItem)
 
-    Friend WithEvents bwTaskManager As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwTaskManager As New ComponentModel.BackgroundWorker
 
 #End Region 'Fields
 
@@ -60,7 +60,7 @@ Public Class TaskManager
         End If
     End Sub
 
-    Private Sub bwTaskManager_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTaskManager.DoWork
+    Private Sub bwTaskManager_DoWork(ByVal sender As Object, ByVal e As ComponentModel.DoWorkEventArgs) Handles bwTaskManager.DoWork
         While TaskList.Count > 0
             If bwTaskManager.CancellationPending Then Return
 
@@ -115,12 +115,12 @@ Public Class TaskManager
         End While
     End Sub
 
-    Private Sub bwTaskManager_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTaskManager.ProgressChanged
+    Private Sub bwTaskManager_ProgressChanged(ByVal sender As Object, ByVal e As ComponentModel.ProgressChangedEventArgs) Handles bwTaskManager.ProgressChanged
         Dim tProgressValue As ProgressValue = DirectCast(e.UserState, ProgressValue)
         RaiseEvent ProgressUpdate(tProgressValue)
     End Sub
 
-    Private Sub bwTaskManager_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTaskManager.RunWorkerCompleted
+    Private Sub bwTaskManager_RunWorkerCompleted(ByVal sender As Object, ByVal e As ComponentModel.RunWorkerCompletedEventArgs) Handles bwTaskManager.RunWorkerCompleted
         RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.TaskManagerEventType.TaskManagerEnded})
     End Sub
 
@@ -158,6 +158,8 @@ Public Class TaskManager
                             DataField_CompareLists(.bMainCertifications, tmpDBElement.Movie.Certifications, nInfo.Certifications)
                             DataField_CompareLists(.bMainCountries, tmpDBElement.Movie.Countries, nInfo.Countries)
                             DataField_CompareLists(.bMainDirectors, tmpDBElement.Movie.Directors, nInfo.Directors)
+                            DataField_CompareStrings(.bMainEdition, tmpDBElement.Edition, nInfo.Edition)
+                            tmpDBElement.Movie.Edition = tmpDBElement.Edition
                             DataField_CompareLists(.bMainGenres, tmpDBElement.Movie.Genres, nInfo.Genres)
                             DataField_CompareStrings(.bMainMPAA, tmpDBElement.Movie.MPAA, nInfo.MPAA)
                             DataField_ClearString(.bMainOriginalTitle, tmpDBElement.Movie.OriginalTitle)
@@ -1255,7 +1257,7 @@ Public Class TaskManager
             Threading.Thread.Sleep(50)
         End While
         RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.TaskManagerEventType.TaskManagerStarted, .Message = "TaskManager is running"})
-        bwTaskManager = New System.ComponentModel.BackgroundWorker
+        bwTaskManager = New ComponentModel.BackgroundWorker
         bwTaskManager.WorkerReportsProgress = True
         bwTaskManager.WorkerSupportsCancellation = True
         bwTaskManager.RunWorkerAsync()

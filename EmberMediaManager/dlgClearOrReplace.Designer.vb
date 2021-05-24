@@ -79,6 +79,8 @@ Partial Class dlgClearOrReplace
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.chkEdition = New System.Windows.Forms.CheckBox()
+        Me.txtEdition = New System.Windows.Forms.TextBox()
         Me.tblMain.SuspendLayout()
         Me.pnlMain.SuspendLayout()
         Me.pnlBottom.SuspendLayout()
@@ -96,56 +98,59 @@ Partial Class dlgClearOrReplace
         Me.tblMain.Controls.Add(Me.chkCertifications, 0, 2)
         Me.tblMain.Controls.Add(Me.chkCountries, 0, 3)
         Me.tblMain.Controls.Add(Me.chkDirectors, 0, 5)
-        Me.tblMain.Controls.Add(Me.chkGenres, 0, 6)
-        Me.tblMain.Controls.Add(Me.chkMPAA, 0, 8)
-        Me.tblMain.Controls.Add(Me.chkOriginalTitle, 0, 9)
-        Me.tblMain.Controls.Add(Me.chkOutline, 0, 11)
-        Me.tblMain.Controls.Add(Me.chkRating, 0, 13)
-        Me.tblMain.Controls.Add(Me.chkRuntime, 0, 14)
-        Me.tblMain.Controls.Add(Me.chkStudios, 0, 16)
-        Me.tblMain.Controls.Add(Me.chkTagline, 0, 17)
-        Me.tblMain.Controls.Add(Me.chkTags, 0, 18)
-        Me.tblMain.Controls.Add(Me.chkTop250, 0, 20)
-        Me.tblMain.Controls.Add(Me.chkTrailer, 0, 21)
-        Me.tblMain.Controls.Add(Me.chkWriters, 0, 24)
-        Me.tblMain.Controls.Add(Me.chkVideoSource, 0, 23)
-        Me.tblMain.Controls.Add(Me.chkUserRating, 0, 22)
-        Me.tblMain.Controls.Add(Me.txtVideoSource, 1, 23)
-        Me.tblMain.Controls.Add(Me.txtTagline, 1, 17)
-        Me.tblMain.Controls.Add(Me.txtMPAA, 1, 8)
+        Me.tblMain.Controls.Add(Me.chkGenres, 0, 7)
+        Me.tblMain.Controls.Add(Me.chkMPAA, 0, 9)
+        Me.tblMain.Controls.Add(Me.chkOriginalTitle, 0, 10)
+        Me.tblMain.Controls.Add(Me.chkOutline, 0, 12)
+        Me.tblMain.Controls.Add(Me.chkRating, 0, 14)
+        Me.tblMain.Controls.Add(Me.chkRuntime, 0, 15)
+        Me.tblMain.Controls.Add(Me.chkStudios, 0, 17)
+        Me.tblMain.Controls.Add(Me.chkTagline, 0, 18)
+        Me.tblMain.Controls.Add(Me.chkTags, 0, 19)
+        Me.tblMain.Controls.Add(Me.chkTop250, 0, 21)
+        Me.tblMain.Controls.Add(Me.chkTrailer, 0, 22)
+        Me.tblMain.Controls.Add(Me.chkWriters, 0, 25)
+        Me.tblMain.Controls.Add(Me.chkVideoSource, 0, 24)
+        Me.tblMain.Controls.Add(Me.chkUserRating, 0, 23)
+        Me.tblMain.Controls.Add(Me.txtVideoSource, 1, 24)
+        Me.tblMain.Controls.Add(Me.txtTagline, 1, 18)
+        Me.tblMain.Controls.Add(Me.txtMPAA, 1, 9)
         Me.tblMain.Controls.Add(Me.chkAired, 0, 1)
-        Me.tblMain.Controls.Add(Me.chkGuestStars, 0, 7)
+        Me.tblMain.Controls.Add(Me.chkGuestStars, 0, 8)
         Me.tblMain.Controls.Add(Me.chkCreators, 0, 4)
-        Me.tblMain.Controls.Add(Me.chkPremiered, 0, 12)
-        Me.tblMain.Controls.Add(Me.txtPremiered, 1, 12)
-        Me.tblMain.Controls.Add(Me.txtUserRating, 1, 22)
+        Me.tblMain.Controls.Add(Me.chkPremiered, 0, 13)
+        Me.tblMain.Controls.Add(Me.txtPremiered, 1, 13)
+        Me.tblMain.Controls.Add(Me.txtUserRating, 1, 23)
         Me.tblMain.Controls.Add(Me.txtAired, 1, 1)
-        Me.tblMain.Controls.Add(Me.chkStatus, 0, 15)
-        Me.tblMain.Controls.Add(Me.txtStatus, 1, 15)
-        Me.tblMain.Controls.Add(Me.chkTitle, 0, 19)
+        Me.tblMain.Controls.Add(Me.chkStatus, 0, 16)
+        Me.tblMain.Controls.Add(Me.txtStatus, 1, 16)
+        Me.tblMain.Controls.Add(Me.chkTitle, 0, 20)
         Me.tblMain.Controls.Add(Me.txtCertifications, 1, 2)
         Me.tblMain.Controls.Add(Me.txtCountries, 1, 3)
         Me.tblMain.Controls.Add(Me.txtCreators, 1, 4)
         Me.tblMain.Controls.Add(Me.txtDirectors, 1, 5)
-        Me.tblMain.Controls.Add(Me.txtGenres, 1, 6)
-        Me.tblMain.Controls.Add(Me.txtStudios, 1, 16)
-        Me.tblMain.Controls.Add(Me.txtTags, 1, 18)
-        Me.tblMain.Controls.Add(Me.txtWriters, 1, 24)
-        Me.tblMain.Controls.Add(Me.chkPlot, 0, 10)
+        Me.tblMain.Controls.Add(Me.txtGenres, 1, 7)
+        Me.tblMain.Controls.Add(Me.txtStudios, 1, 17)
+        Me.tblMain.Controls.Add(Me.txtTags, 1, 19)
+        Me.tblMain.Controls.Add(Me.txtWriters, 1, 25)
+        Me.tblMain.Controls.Add(Me.chkPlot, 0, 11)
         Me.tblMain.Controls.Add(Me.lblActors, 1, 0)
-        Me.tblMain.Controls.Add(Me.lblGuestStars, 1, 7)
-        Me.tblMain.Controls.Add(Me.lblOriginalTitle, 1, 9)
-        Me.tblMain.Controls.Add(Me.lblPlot, 1, 10)
-        Me.tblMain.Controls.Add(Me.lblOutline, 1, 11)
-        Me.tblMain.Controls.Add(Me.lblRating, 1, 13)
-        Me.tblMain.Controls.Add(Me.lblRuntime, 1, 14)
-        Me.tblMain.Controls.Add(Me.lblTitle, 1, 19)
-        Me.tblMain.Controls.Add(Me.lblTop250, 1, 20)
-        Me.tblMain.Controls.Add(Me.lblTrailer, 1, 21)
+        Me.tblMain.Controls.Add(Me.lblGuestStars, 1, 8)
+        Me.tblMain.Controls.Add(Me.lblOriginalTitle, 1, 10)
+        Me.tblMain.Controls.Add(Me.lblPlot, 1, 11)
+        Me.tblMain.Controls.Add(Me.lblOutline, 1, 12)
+        Me.tblMain.Controls.Add(Me.lblRating, 1, 14)
+        Me.tblMain.Controls.Add(Me.lblRuntime, 1, 15)
+        Me.tblMain.Controls.Add(Me.lblTitle, 1, 20)
+        Me.tblMain.Controls.Add(Me.lblTop250, 1, 21)
+        Me.tblMain.Controls.Add(Me.lblTrailer, 1, 22)
+        Me.tblMain.Controls.Add(Me.chkEdition, 0, 6)
+        Me.tblMain.Controls.Add(Me.txtEdition, 1, 6)
         Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMain.Location = New System.Drawing.Point(0, 0)
         Me.tblMain.Name = "tblMain"
-        Me.tblMain.RowCount = 26
+        Me.tblMain.RowCount = 27
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -224,7 +229,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkGenres.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGenres.AutoSize = True
-        Me.chkGenres.Location = New System.Drawing.Point(3, 157)
+        Me.chkGenres.Location = New System.Drawing.Point(3, 183)
         Me.chkGenres.Name = "chkGenres"
         Me.chkGenres.Size = New System.Drawing.Size(60, 17)
         Me.chkGenres.TabIndex = 11
@@ -235,7 +240,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkMPAA.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMPAA.AutoSize = True
-        Me.chkMPAA.Location = New System.Drawing.Point(3, 206)
+        Me.chkMPAA.Location = New System.Drawing.Point(3, 232)
         Me.chkMPAA.Name = "chkMPAA"
         Me.chkMPAA.Size = New System.Drawing.Size(56, 17)
         Me.chkMPAA.TabIndex = 14
@@ -246,7 +251,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkOriginalTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkOriginalTitle.AutoSize = True
-        Me.chkOriginalTitle.Location = New System.Drawing.Point(3, 231)
+        Me.chkOriginalTitle.Location = New System.Drawing.Point(3, 257)
         Me.chkOriginalTitle.Name = "chkOriginalTitle"
         Me.chkOriginalTitle.Size = New System.Drawing.Size(84, 17)
         Me.chkOriginalTitle.TabIndex = 16
@@ -257,7 +262,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkOutline.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkOutline.AutoSize = True
-        Me.chkOutline.Location = New System.Drawing.Point(3, 277)
+        Me.chkOutline.Location = New System.Drawing.Point(3, 303)
         Me.chkOutline.Name = "chkOutline"
         Me.chkOutline.Size = New System.Drawing.Size(80, 17)
         Me.chkOutline.TabIndex = 18
@@ -268,7 +273,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkRating.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkRating.AutoSize = True
-        Me.chkRating.Location = New System.Drawing.Point(3, 326)
+        Me.chkRating.Location = New System.Drawing.Point(3, 352)
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(95, 17)
         Me.chkRating.TabIndex = 21
@@ -279,7 +284,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkRuntime.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkRuntime.AutoSize = True
-        Me.chkRuntime.Location = New System.Drawing.Point(3, 349)
+        Me.chkRuntime.Location = New System.Drawing.Point(3, 375)
         Me.chkRuntime.Name = "chkRuntime"
         Me.chkRuntime.Size = New System.Drawing.Size(65, 17)
         Me.chkRuntime.TabIndex = 24
@@ -290,7 +295,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkStudios.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkStudios.AutoSize = True
-        Me.chkStudios.Location = New System.Drawing.Point(3, 399)
+        Me.chkStudios.Location = New System.Drawing.Point(3, 425)
         Me.chkStudios.Name = "chkStudios"
         Me.chkStudios.Size = New System.Drawing.Size(61, 17)
         Me.chkStudios.TabIndex = 27
@@ -301,7 +306,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkTagline.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTagline.AutoSize = True
-        Me.chkTagline.Location = New System.Drawing.Point(3, 425)
+        Me.chkTagline.Location = New System.Drawing.Point(3, 451)
         Me.chkTagline.Name = "chkTagline"
         Me.chkTagline.Size = New System.Drawing.Size(61, 17)
         Me.chkTagline.TabIndex = 29
@@ -312,7 +317,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkTags.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTags.AutoSize = True
-        Me.chkTags.Location = New System.Drawing.Point(3, 451)
+        Me.chkTags.Location = New System.Drawing.Point(3, 477)
         Me.chkTags.Name = "chkTags"
         Me.chkTags.Size = New System.Drawing.Size(50, 17)
         Me.chkTags.TabIndex = 31
@@ -323,7 +328,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkTop250.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTop250.AutoSize = True
-        Me.chkTop250.Location = New System.Drawing.Point(3, 499)
+        Me.chkTop250.Location = New System.Drawing.Point(3, 525)
         Me.chkTop250.Name = "chkTop250"
         Me.chkTop250.Size = New System.Drawing.Size(66, 17)
         Me.chkTop250.TabIndex = 34
@@ -334,7 +339,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTrailer.AutoSize = True
-        Me.chkTrailer.Location = New System.Drawing.Point(3, 522)
+        Me.chkTrailer.Location = New System.Drawing.Point(3, 548)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(55, 17)
         Me.chkTrailer.TabIndex = 35
@@ -345,7 +350,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkWriters.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkWriters.AutoSize = True
-        Me.chkWriters.Location = New System.Drawing.Point(3, 598)
+        Me.chkWriters.Location = New System.Drawing.Point(3, 624)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(100, 17)
         Me.chkWriters.TabIndex = 40
@@ -356,7 +361,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkVideoSource.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkVideoSource.AutoSize = True
-        Me.chkVideoSource.Location = New System.Drawing.Point(3, 572)
+        Me.chkVideoSource.Location = New System.Drawing.Point(3, 598)
         Me.chkVideoSource.Name = "chkVideoSource"
         Me.chkVideoSource.Size = New System.Drawing.Size(87, 17)
         Me.chkVideoSource.TabIndex = 38
@@ -367,7 +372,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkUserRating.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkUserRating.AutoSize = True
-        Me.chkUserRating.Location = New System.Drawing.Point(3, 546)
+        Me.chkUserRating.Location = New System.Drawing.Point(3, 572)
         Me.chkUserRating.Name = "chkUserRating"
         Me.chkUserRating.Size = New System.Drawing.Size(82, 17)
         Me.chkUserRating.TabIndex = 36
@@ -377,7 +382,7 @@ Partial Class dlgClearOrReplace
         'txtVideoSource
         '
         Me.txtVideoSource.Enabled = False
-        Me.txtVideoSource.Location = New System.Drawing.Point(109, 571)
+        Me.txtVideoSource.Location = New System.Drawing.Point(109, 597)
         Me.txtVideoSource.Name = "txtVideoSource"
         Me.txtVideoSource.Size = New System.Drawing.Size(200, 20)
         Me.txtVideoSource.TabIndex = 39
@@ -385,7 +390,7 @@ Partial Class dlgClearOrReplace
         'txtTagline
         '
         Me.txtTagline.Enabled = False
-        Me.txtTagline.Location = New System.Drawing.Point(109, 424)
+        Me.txtTagline.Location = New System.Drawing.Point(109, 450)
         Me.txtTagline.Name = "txtTagline"
         Me.txtTagline.Size = New System.Drawing.Size(200, 20)
         Me.txtTagline.TabIndex = 30
@@ -393,7 +398,7 @@ Partial Class dlgClearOrReplace
         'txtMPAA
         '
         Me.txtMPAA.Enabled = False
-        Me.txtMPAA.Location = New System.Drawing.Point(109, 205)
+        Me.txtMPAA.Location = New System.Drawing.Point(109, 231)
         Me.txtMPAA.Name = "txtMPAA"
         Me.txtMPAA.Size = New System.Drawing.Size(200, 20)
         Me.txtMPAA.TabIndex = 15
@@ -413,7 +418,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkGuestStars.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGuestStars.AutoSize = True
-        Me.chkGuestStars.Location = New System.Drawing.Point(3, 182)
+        Me.chkGuestStars.Location = New System.Drawing.Point(3, 208)
         Me.chkGuestStars.Name = "chkGuestStars"
         Me.chkGuestStars.Size = New System.Drawing.Size(81, 17)
         Me.chkGuestStars.TabIndex = 13
@@ -435,7 +440,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkPremiered.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkPremiered.AutoSize = True
-        Me.chkPremiered.Location = New System.Drawing.Point(3, 301)
+        Me.chkPremiered.Location = New System.Drawing.Point(3, 327)
         Me.chkPremiered.Name = "chkPremiered"
         Me.chkPremiered.Size = New System.Drawing.Size(73, 17)
         Me.chkPremiered.TabIndex = 19
@@ -445,7 +450,7 @@ Partial Class dlgClearOrReplace
         'txtPremiered
         '
         Me.txtPremiered.Enabled = False
-        Me.txtPremiered.Location = New System.Drawing.Point(109, 300)
+        Me.txtPremiered.Location = New System.Drawing.Point(109, 326)
         Me.txtPremiered.Name = "txtPremiered"
         Me.txtPremiered.Size = New System.Drawing.Size(90, 20)
         Me.txtPremiered.TabIndex = 20
@@ -455,7 +460,7 @@ Partial Class dlgClearOrReplace
         'txtUserRating
         '
         Me.txtUserRating.Enabled = False
-        Me.txtUserRating.Location = New System.Drawing.Point(109, 545)
+        Me.txtUserRating.Location = New System.Drawing.Point(109, 571)
         Me.txtUserRating.Name = "txtUserRating"
         Me.txtUserRating.Size = New System.Drawing.Size(40, 20)
         Me.txtUserRating.TabIndex = 37
@@ -476,7 +481,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkStatus.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkStatus.AutoSize = True
-        Me.chkStatus.Location = New System.Drawing.Point(3, 373)
+        Me.chkStatus.Location = New System.Drawing.Point(3, 399)
         Me.chkStatus.Name = "chkStatus"
         Me.chkStatus.Size = New System.Drawing.Size(56, 17)
         Me.chkStatus.TabIndex = 25
@@ -486,7 +491,7 @@ Partial Class dlgClearOrReplace
         'txtStatus
         '
         Me.txtStatus.Enabled = False
-        Me.txtStatus.Location = New System.Drawing.Point(109, 372)
+        Me.txtStatus.Location = New System.Drawing.Point(109, 398)
         Me.txtStatus.Name = "txtStatus"
         Me.txtStatus.Size = New System.Drawing.Size(200, 20)
         Me.txtStatus.TabIndex = 26
@@ -495,7 +500,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTitle.AutoSize = True
-        Me.chkTitle.Location = New System.Drawing.Point(3, 476)
+        Me.chkTitle.Location = New System.Drawing.Point(3, 502)
         Me.chkTitle.Name = "chkTitle"
         Me.chkTitle.Size = New System.Drawing.Size(46, 17)
         Me.chkTitle.TabIndex = 33
@@ -545,7 +550,7 @@ Partial Class dlgClearOrReplace
         'txtGenres
         '
         Me.txtGenres.Enabled = False
-        Me.txtGenres.Location = New System.Drawing.Point(109, 156)
+        Me.txtGenres.Location = New System.Drawing.Point(109, 182)
         Me.txtGenres.Name = "txtGenres"
         Me.txtGenres.Size = New System.Drawing.Size(200, 20)
         Me.txtGenres.TabIndex = 12
@@ -555,7 +560,7 @@ Partial Class dlgClearOrReplace
         'txtStudios
         '
         Me.txtStudios.Enabled = False
-        Me.txtStudios.Location = New System.Drawing.Point(109, 398)
+        Me.txtStudios.Location = New System.Drawing.Point(109, 424)
         Me.txtStudios.Name = "txtStudios"
         Me.txtStudios.Size = New System.Drawing.Size(200, 20)
         Me.txtStudios.TabIndex = 28
@@ -565,7 +570,7 @@ Partial Class dlgClearOrReplace
         'txtTags
         '
         Me.txtTags.Enabled = False
-        Me.txtTags.Location = New System.Drawing.Point(109, 450)
+        Me.txtTags.Location = New System.Drawing.Point(109, 476)
         Me.txtTags.Name = "txtTags"
         Me.txtTags.Size = New System.Drawing.Size(200, 20)
         Me.txtTags.TabIndex = 32
@@ -575,7 +580,7 @@ Partial Class dlgClearOrReplace
         'txtWriters
         '
         Me.txtWriters.Enabled = False
-        Me.txtWriters.Location = New System.Drawing.Point(109, 597)
+        Me.txtWriters.Location = New System.Drawing.Point(109, 623)
         Me.txtWriters.Name = "txtWriters"
         Me.txtWriters.Size = New System.Drawing.Size(200, 20)
         Me.txtWriters.TabIndex = 41
@@ -586,7 +591,7 @@ Partial Class dlgClearOrReplace
         '
         Me.chkPlot.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkPlot.AutoSize = True
-        Me.chkPlot.Location = New System.Drawing.Point(3, 254)
+        Me.chkPlot.Location = New System.Drawing.Point(3, 280)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(44, 17)
         Me.chkPlot.TabIndex = 17
@@ -612,7 +617,7 @@ Partial Class dlgClearOrReplace
         Me.lblGuestStars.AutoSize = True
         Me.lblGuestStars.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblGuestStars.ForeColor = System.Drawing.Color.Red
-        Me.lblGuestStars.Location = New System.Drawing.Point(109, 184)
+        Me.lblGuestStars.Location = New System.Drawing.Point(109, 210)
         Me.lblGuestStars.Name = "lblGuestStars"
         Me.lblGuestStars.Size = New System.Drawing.Size(74, 13)
         Me.lblGuestStars.TabIndex = 13
@@ -625,7 +630,7 @@ Partial Class dlgClearOrReplace
         Me.lblOriginalTitle.AutoSize = True
         Me.lblOriginalTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOriginalTitle.ForeColor = System.Drawing.Color.Red
-        Me.lblOriginalTitle.Location = New System.Drawing.Point(109, 233)
+        Me.lblOriginalTitle.Location = New System.Drawing.Point(109, 259)
         Me.lblOriginalTitle.Name = "lblOriginalTitle"
         Me.lblOriginalTitle.Size = New System.Drawing.Size(74, 13)
         Me.lblOriginalTitle.TabIndex = 13
@@ -638,7 +643,7 @@ Partial Class dlgClearOrReplace
         Me.lblPlot.AutoSize = True
         Me.lblPlot.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblPlot.ForeColor = System.Drawing.Color.Red
-        Me.lblPlot.Location = New System.Drawing.Point(109, 256)
+        Me.lblPlot.Location = New System.Drawing.Point(109, 282)
         Me.lblPlot.Name = "lblPlot"
         Me.lblPlot.Size = New System.Drawing.Size(74, 13)
         Me.lblPlot.TabIndex = 13
@@ -651,7 +656,7 @@ Partial Class dlgClearOrReplace
         Me.lblOutline.AutoSize = True
         Me.lblOutline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOutline.ForeColor = System.Drawing.Color.Red
-        Me.lblOutline.Location = New System.Drawing.Point(109, 279)
+        Me.lblOutline.Location = New System.Drawing.Point(109, 305)
         Me.lblOutline.Name = "lblOutline"
         Me.lblOutline.Size = New System.Drawing.Size(74, 13)
         Me.lblOutline.TabIndex = 13
@@ -664,7 +669,7 @@ Partial Class dlgClearOrReplace
         Me.lblRating.AutoSize = True
         Me.lblRating.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblRating.ForeColor = System.Drawing.Color.Red
-        Me.lblRating.Location = New System.Drawing.Point(109, 328)
+        Me.lblRating.Location = New System.Drawing.Point(109, 354)
         Me.lblRating.Name = "lblRating"
         Me.lblRating.Size = New System.Drawing.Size(74, 13)
         Me.lblRating.TabIndex = 13
@@ -677,7 +682,7 @@ Partial Class dlgClearOrReplace
         Me.lblRuntime.AutoSize = True
         Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblRuntime.ForeColor = System.Drawing.Color.Red
-        Me.lblRuntime.Location = New System.Drawing.Point(109, 351)
+        Me.lblRuntime.Location = New System.Drawing.Point(109, 377)
         Me.lblRuntime.Name = "lblRuntime"
         Me.lblRuntime.Size = New System.Drawing.Size(74, 13)
         Me.lblRuntime.TabIndex = 13
@@ -690,7 +695,7 @@ Partial Class dlgClearOrReplace
         Me.lblTitle.AutoSize = True
         Me.lblTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTitle.ForeColor = System.Drawing.Color.Red
-        Me.lblTitle.Location = New System.Drawing.Point(109, 478)
+        Me.lblTitle.Location = New System.Drawing.Point(109, 504)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(74, 13)
         Me.lblTitle.TabIndex = 13
@@ -703,7 +708,7 @@ Partial Class dlgClearOrReplace
         Me.lblTop250.AutoSize = True
         Me.lblTop250.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTop250.ForeColor = System.Drawing.Color.Red
-        Me.lblTop250.Location = New System.Drawing.Point(109, 501)
+        Me.lblTop250.Location = New System.Drawing.Point(109, 527)
         Me.lblTop250.Name = "lblTop250"
         Me.lblTop250.Size = New System.Drawing.Size(74, 13)
         Me.lblTop250.TabIndex = 13
@@ -716,7 +721,7 @@ Partial Class dlgClearOrReplace
         Me.lblTrailer.AutoSize = True
         Me.lblTrailer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTrailer.ForeColor = System.Drawing.Color.Red
-        Me.lblTrailer.Location = New System.Drawing.Point(109, 524)
+        Me.lblTrailer.Location = New System.Drawing.Point(109, 550)
         Me.lblTrailer.Name = "lblTrailer"
         Me.lblTrailer.Size = New System.Drawing.Size(74, 13)
         Me.lblTrailer.TabIndex = 13
@@ -781,6 +786,25 @@ Partial Class dlgClearOrReplace
         Me.btnCancel.TabIndex = 1
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'chkEdition
+        '
+        Me.chkEdition.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkEdition.AutoSize = True
+        Me.chkEdition.Location = New System.Drawing.Point(3, 157)
+        Me.chkEdition.Name = "chkEdition"
+        Me.chkEdition.Size = New System.Drawing.Size(58, 17)
+        Me.chkEdition.TabIndex = 42
+        Me.chkEdition.Text = "Edition"
+        Me.chkEdition.UseVisualStyleBackColor = True
+        '
+        'txtEdition
+        '
+        Me.txtEdition.Enabled = False
+        Me.txtEdition.Location = New System.Drawing.Point(109, 156)
+        Me.txtEdition.Name = "txtEdition"
+        Me.txtEdition.Size = New System.Drawing.Size(200, 20)
+        Me.txtEdition.TabIndex = 26
         '
         'dlgClearOrReplace
         '
@@ -866,4 +890,6 @@ Partial Class dlgClearOrReplace
     Friend WithEvents lblTitle As Label
     Friend WithEvents lblTop250 As Label
     Friend WithEvents lblTrailer As Label
+    Friend WithEvents chkEdition As CheckBox
+    Friend WithEvents txtEdition As TextBox
 End Class

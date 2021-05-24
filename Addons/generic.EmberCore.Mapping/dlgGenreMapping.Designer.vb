@@ -22,10 +22,10 @@ Partial Class dlgGenreMapping
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgGenreMapping))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
         Me.lblMappingFilter = New System.Windows.Forms.Label()
@@ -161,8 +161,8 @@ Partial Class dlgGenreMapping
         '
         'MappingSearchString
         '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.MappingSearchString.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.MappingSearchString.DefaultCellStyle = DataGridViewCellStyle4
         Me.MappingSearchString.FillWeight = 180.0!
         Me.MappingSearchString.HeaderText = "Mapping"
         Me.MappingSearchString.Name = "MappingSearchString"
@@ -332,11 +332,11 @@ Partial Class dlgGenreMapping
         '
         'GenreEnabled
         '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.NullValue = False
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black
-        Me.GenreEnabled.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle5.NullValue = False
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black
+        Me.GenreEnabled.DefaultCellStyle = DataGridViewCellStyle5
         Me.GenreEnabled.FillWeight = 22.0!
         Me.GenreEnabled.HeaderText = ""
         Me.GenreEnabled.Name = "GenreEnabled"
@@ -344,8 +344,8 @@ Partial Class dlgGenreMapping
         '
         'GenreName
         '
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.GenreName.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.GenreName.DefaultCellStyle = DataGridViewCellStyle6
         Me.GenreName.FillWeight = 158.0!
         Me.GenreName.HeaderText = "Genres"
         Me.GenreName.Name = "GenreName"

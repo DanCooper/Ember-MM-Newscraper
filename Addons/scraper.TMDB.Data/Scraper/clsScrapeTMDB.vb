@@ -662,7 +662,7 @@ Public Class Scraper
 
         'Season # Standard
         If Result.SeasonNumber >= 0 Then
-            nTVEpisode.Season = CInt(Result.SeasonNumber)
+            nTVEpisode.Season = Result.SeasonNumber
         End If
 
         'Cast (Actors)
@@ -728,11 +728,12 @@ Public Class Scraper
         End If
 
         'Rating
+        'VoteAverage is rounded to get a comparable result as with other reviews 
         If filteredOptions.bEpisodeRating Then
             nTVEpisode.Ratings.Add(New MediaContainers.RatingDetails With {
                                    .Max = 10,
                                    .Type = "themoviedb",
-                                   .Value = Result.VoteAverage,
+                                   .Value = Math.Round(Result.VoteAverage, 1),
                                    .Votes = Result.VoteCount
                                    })
         End If

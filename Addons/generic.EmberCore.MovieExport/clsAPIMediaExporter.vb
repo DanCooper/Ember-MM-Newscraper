@@ -767,6 +767,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$DATEADDED>", StringUtils.HtmlEncode(tMovie.Movie.DateAdded))
         strRow = strRow.Replace("<$DATEMODIFIED>", StringUtils.HtmlEncode(tMovie.Movie.DateModified))
         strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Directors.ToArray)))
+        strRow = strRow.Replace("<$EDITION>", StringUtils.HtmlEncode(tMovie.Movie.Edition))
         strRow = strRow.Replace("<$GENRES>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Genres.ToArray)))
         strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tMovie.Movie.UniqueIDs.IMDbId))
         strRow = strRow.Replace("<$LANGUAGE>", StringUtils.HtmlEncode(tMovie.Movie.Language))

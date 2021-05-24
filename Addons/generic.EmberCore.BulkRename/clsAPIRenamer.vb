@@ -546,6 +546,11 @@ Public Class FileFolderRenamer
             MovieFile.Director = String.Join(" / ", _DBElement.Movie.Directors.ToArray)
         End If
 
+        'Edition
+        If _DBElement.Movie.EditionSpecified Then
+            MovieFile.Edition = _DBElement.Movie.Edition
+        End If
+
         'Genres
         If _DBElement.Movie.GenresSpecified Then
             MovieFile.Genre = String.Join(" / ", _DBElement.Movie.Genres.ToArray)
@@ -1200,6 +1205,7 @@ Public Class FileFolderRenamer
                         strCond = ApplyPattern(strCond, "3", f.ShortStereoMode)
                         strCond = ApplyPattern(strCond, "4", f.StereoMode)
                         strCond = ApplyPattern(strCond, "5", f.CollectionListTitle)
+                        strCond = ApplyPattern(strCond, "6", f.Edition)
                         strCond = ApplyPattern(strCond, "A", f.AudioChannels)
                         strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not needed here, Only to HaveBase
                         strCond = ApplyPattern(strCond, "C", f.Director)
@@ -1273,7 +1279,7 @@ Public Class FileFolderRenamer
                             End If
                         End If
 
-                        strNoFlags = Regex.Replace(strNoFlags, "\$((?:OO|[12345ABCDEFHIJKLMNOPQRSTVWY]|G[. -,]|U[. -,]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                        strNoFlags = Regex.Replace(strNoFlags, "\$((?:OO|[123456ABCDEFHIJKLMNOPQRSTVWY]|G[. -,]|U[. -,]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                         If strCond.Trim = strNoFlags.Trim Then
                             strCond = String.Empty
                         Else
@@ -1293,6 +1299,7 @@ Public Class FileFolderRenamer
                 pattern = ApplyPattern(pattern, "3", f.ShortStereoMode)
                 pattern = ApplyPattern(pattern, "4", f.StereoMode)
                 pattern = ApplyPattern(pattern, "5", f.CollectionListTitle)
+                pattern = ApplyPattern(pattern, "6", f.Edition)
                 pattern = ApplyPattern(pattern, "A", f.AudioChannels)
                 pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
                 pattern = ApplyPattern(pattern, "C", f.Director)
@@ -1787,669 +1794,138 @@ Public Class FileFolderRenamer
 
     Class FileRename
 
-#Region "Fields"
-
-        Private _aired As String
-        Private _audiochannels As String
-        Private _audiocodec As String
-        Private _basepath As String
-        Private _collection As String
-        Private _collectionlisttitle As String
-        Private _country As String
-        Private _direxist As Boolean
-        Private _director As String
-        Private _dorename As Boolean
-        Private _extension As String
-        Private _fileexist As Boolean
-        Private _genre As String
-        Private _id As Long
-        Private _imdb As String
-        Private _ismultiepisode As Boolean
-        Private _issingle As Boolean
-        Private _isbdmv As Boolean
-        Private _islock As Boolean
-        Private _isvideots As Boolean
-        Private _listtitle As String
-        Private _mpaa As String
-        Private _multiviewcount As String
-        Private _multiviewlayout As String
-        Private _newfilename As String
-        Private _newpath As String
-        Private _oldfilename As String
-        Private _oldfullfilename As String
-        Private _oldfullpath As String
-        Private _oldpath As String
-        Private _originaltitle As String
-        Private _parent As String
-        Private _path As String
-        Private _rating As String
-        Private _resolution As String
-        Private _seasonsepisodes As New List(Of SeasonsEpisodes)
-        Private _shortstereomode As String
-        Private _showfullpath As String
-        Private _showpath As String
-        Private _showtitle As String
-        Private _sorttitle As String
-        Private _status As String
-        Private _stereomode As String
-        Private _title As String
-        Private _tvdbid As String
-        Private _videocodec As String
-        Private _videosource As String
-        Private _year As String
-
-#End Region 'Fields
-
 #Region "Properties"
 
-        Public Property Aired() As String
-            Get
-                Return _aired
-            End Get
-            Set(ByVal value As String)
-                _aired = value
-            End Set
-        End Property
+        Public Property Aired() As String = String.Empty
 
-        Public Property AudioChannels() As String
-            Get
-                Return _audiochannels
-            End Get
-            Set(ByVal value As String)
-                _audiochannels = value
-            End Set
-        End Property
+        Public Property AudioChannels() As String = String.Empty
 
-        Public Property AudioCodec() As String
-            Get
-                Return _audiocodec
-            End Get
-            Set(ByVal value As String)
-                _audiocodec = value
-            End Set
-        End Property
+        Public Property AudioCodec() As String = String.Empty
 
-        Public Property BasePath() As String
-            Get
-                Return _basepath
-            End Get
-            Set(ByVal value As String)
-                _basepath = value
-            End Set
-        End Property
+        Public Property BasePath() As String = String.Empty
 
-        Public Property Collection() As String
-            Get
-                Return _collection
-            End Get
-            Set(ByVal value As String)
-                _collection = value
-            End Set
-        End Property
+        Public Property Collection() As String = String.Empty
 
-        Public Property CollectionListTitle() As String
-            Get
-                Return _collectionlisttitle
-            End Get
-            Set(ByVal value As String)
-                _collectionlisttitle = value
-            End Set
-        End Property
+        Public Property CollectionListTitle() As String = String.Empty
 
-        Public Property DirExist() As Boolean
-            Get
-                Return _direxist
-            End Get
-            Set(ByVal value As Boolean)
-                _direxist = value
-            End Set
-        End Property
+        Public Property DirExist() As Boolean = False
 
-        Public Property DoRename() As Boolean
-            Get
-                Return _dorename
-            End Get
-            Set(ByVal value As Boolean)
-                _dorename = value
-            End Set
-        End Property
+        Public Property DoRename() As Boolean = False
 
-        Public Property Extension() As String
-            Get
-                Return _extension
-            End Get
-            Set(ByVal value As String)
-                _extension = value.Trim
-            End Set
-        End Property
+        Public Property Edition() As String = String.Empty
 
-        Public Property FileExist() As Boolean
-            Get
-                Return _fileexist
-            End Get
-            Set(ByVal value As Boolean)
-                _fileexist = value
-            End Set
-        End Property
+        Public Property Extension() As String = String.Empty
 
-        Public Property ID() As Long
-            Get
-                Return _id
-            End Get
-            Set(ByVal value As Long)
-                _id = value
-            End Set
-        End Property
+        Public Property FileExist() As Boolean = False
 
-        Public Property IsBDMV() As Boolean
-            Get
-                Return _isbdmv
-            End Get
-            Set(ByVal value As Boolean)
-                _isbdmv = value
-            End Set
-        End Property
+        Public Property ID() As Long = -1
 
-        Public Property IsLock() As Boolean
-            Get
-                Return _islock
-            End Get
-            Set(ByVal value As Boolean)
-                _islock = value
-            End Set
-        End Property
+        Public Property IsBDMV() As Boolean = False
 
-        Public Property IsMultiEpisode() As Boolean
-            Get
-                Return _ismultiepisode
-            End Get
-            Set(ByVal value As Boolean)
-                _ismultiepisode = value
-            End Set
-        End Property
+        Public Property IsLock() As Boolean = False
 
-        Public Property IsSingle() As Boolean
-            Get
-                Return _issingle
-            End Get
-            Set(ByVal value As Boolean)
-                _issingle = value
-            End Set
-        End Property
+        Public Property IsMultiEpisode() As Boolean = False
 
-        Public Property IsVideoTS() As Boolean
-            Get
-                Return _isvideots
-            End Get
-            Set(ByVal value As Boolean)
-                _isvideots = value
-            End Set
-        End Property
+        Public Property IsSingle() As Boolean = False
 
-        Public Property ListTitle() As String
-            Get
-                Return _listtitle
-            End Get
-            Set(ByVal value As String)
-                _listtitle = value.Trim
-            End Set
-        End Property
+        Public Property IsVideoTS() As Boolean = False
 
-        Public Property MPAA() As String
-            Get
-                Return _mpaa
-            End Get
-            Set(ByVal value As String)
-                _mpaa = value
-            End Set
-        End Property
+        Public Property ListTitle() As String = String.Empty
 
-        Public Property MultiViewCount() As String
-            Get
-                Return _multiviewcount
-            End Get
-            Set(ByVal value As String)
-                _multiviewcount = value
-            End Set
-        End Property
+        Public Property MPAA() As String = String.Empty
 
-        Public Property MultiViewLayout() As String
-            Get
-                Return _multiviewlayout
-            End Get
-            Set(ByVal value As String)
-                _multiviewlayout = value
-            End Set
-        End Property
+        Public Property MultiViewCount() As String = String.Empty
 
-        Public Property NewFileName() As String
-            Get
-                Return _newfilename
-            End Get
-            Set(ByVal value As String)
-                _newfilename = value.Trim
-            End Set
-        End Property
+        Public Property MultiViewLayout() As String = String.Empty
 
-        Public Property NewPath() As String
-            Get
-                Return _newpath
-            End Get
-            Set(ByVal value As String)
-                _newpath = value.Trim
-            End Set
-        End Property
+        Public Property NewFileName() As String = String.Empty
 
-        Public Property OldFileName() As String
-            Get
-                Return _oldfilename
-            End Get
-            Set(ByVal value As String)
-                _oldfilename = value.Trim
-            End Set
-        End Property
+        Public Property NewPath() As String = String.Empty
 
-        Public Property OldFullFileName() As String
-            Get
-                Return _oldfullfilename
-            End Get
-            Set(ByVal value As String)
-                _oldfullfilename = value.Trim
-            End Set
-        End Property
+        Public Property OldFileName() As String = String.Empty
 
-        Public Property OldFullPath() As String
-            Get
-                Return _oldfullpath
-            End Get
-            Set(ByVal value As String)
-                _oldfullpath = value.Trim
-            End Set
-        End Property
+        Public Property OldFullFileName() As String = String.Empty
 
-        Public Property OldPath() As String
-            Get
-                Return _oldpath
-            End Get
-            Set(ByVal value As String)
-                _oldpath = value.Trim
-            End Set
-        End Property
+        Public Property OldFullPath() As String = String.Empty
 
-        Public Property OriginalTitle() As String
-            Get
-                Return _originaltitle
-            End Get
-            Set(ByVal value As String)
-                _originaltitle = value.Trim
-            End Set
-        End Property
+        Public Property OldPath() As String = String.Empty
 
-        Public Property Parent() As String
-            Get
-                Return _parent
-            End Get
-            Set(ByVal value As String)
-                _parent = value.Trim
-            End Set
-        End Property
+        Public Property OriginalTitle() As String = String.Empty
 
-        Public Property Path() As String
-            Get
-                Return _path
-            End Get
-            Set(ByVal value As String)
-                _path = value.Trim
-            End Set
-        End Property
+        Public Property Parent() As String = String.Empty
 
-        Public Property Rating() As String
-            Get
-                Return _rating
-            End Get
-            Set(ByVal value As String)
-                _rating = value
-            End Set
-        End Property
+        Public Property Path() As String = String.Empty
 
-        Public Property Resolution() As String
-            Get
-                Return _resolution
-            End Get
-            Set(ByVal value As String)
-                _resolution = value
-            End Set
-        End Property
+        Public Property Rating() As String = String.Empty
 
-        Public Property Country() As String
-            Get
-                Return _country
-            End Get
-            Set(ByVal value As String)
-                _country = value.Trim
-            End Set
-        End Property
+        Public Property Resolution() As String = String.Empty
 
-        Public Property Title() As String
-            Get
-                Return _title
-            End Get
-            Set(ByVal value As String)
-                _title = value.Trim
-            End Set
-        End Property
+        Public Property Country() As String = String.Empty
 
-        Public Property TVDBID() As String
-            Get
-                Return _tvdbid
-            End Get
-            Set(ByVal value As String)
-                _tvdbid = value.Trim
-            End Set
-        End Property
+        Public Property Title() As String = String.Empty
 
-        Public Property SeasonsEpisodes() As List(Of SeasonsEpisodes)
-            Get
-                Return _seasonsepisodes
-            End Get
-            Set(ByVal value As List(Of SeasonsEpisodes))
-                _seasonsepisodes = value
-            End Set
-        End Property
+        Public Property TVDBID() As String = String.Empty
 
-        Public Property ShortStereoMode() As String
-            Get
-                Return _shortstereomode
-            End Get
-            Set(ByVal value As String)
-                _shortstereomode = value.Trim
-            End Set
-        End Property
+        Public Property SeasonsEpisodes() As List(Of SeasonsEpisodes) = New List(Of SeasonsEpisodes)
 
-        Public Property ShowFullPath() As String
-            Get
-                Return _showfullpath
-            End Get
-            Set(ByVal value As String)
-                _showfullpath = value.Trim
-            End Set
-        End Property
+        Public Property ShortStereoMode() As String = String.Empty
 
-        Public Property ShowPath() As String
-            Get
-                Return _showpath
-            End Get
-            Set(ByVal value As String)
-                _showpath = value.Trim
-            End Set
-        End Property
+        Public Property ShowFullPath() As String = String.Empty
 
-        Public Property ShowTitle() As String
-            Get
-                Return _showtitle
-            End Get
-            Set(ByVal value As String)
-                _showtitle = value.Trim
-            End Set
-        End Property
+        Public Property ShowPath() As String = String.Empty
 
-        Public Property SortTitle() As String
-            Get
-                Return _sorttitle
-            End Get
-            Set(ByVal value As String)
-                _sorttitle = value.Trim
-            End Set
-        End Property
+        Public Property ShowTitle() As String = String.Empty
 
-        Public Property Status() As String
-            Get
-                Return _status
-            End Get
-            Set(ByVal value As String)
-                _status = value.Trim
-            End Set
-        End Property
+        Public Property SortTitle() As String = String.Empty
 
-        Public Property StereoMode() As String
-            Get
-                Return _stereomode
-            End Get
-            Set(ByVal value As String)
-                _stereomode = value.Trim
-            End Set
-        End Property
+        Public Property Status() As String = String.Empty
 
-        Public Property VideoCodec() As String
-            Get
-                Return _videocodec
-            End Get
-            Set(ByVal value As String)
-                _videocodec = value
-            End Set
-        End Property
+        Public Property StereoMode() As String = String.Empty
 
-        Public Property Year() As String
-            Get
-                Return _year
-            End Get
-            Set(ByVal value As String)
-                _year = value
-            End Set
-        End Property
+        Public Property VideoCodec() As String = String.Empty
 
-        Public Property IMDB() As String
-            Get
-                Return _imdb
-            End Get
-            Set(ByVal value As String)
-                _imdb = value.Trim
-            End Set
-        End Property
+        Public Property Year() As String = String.Empty
 
-        Public Property Genre() As String
-            Get
-                Return _genre
-            End Get
-            Set(ByVal value As String)
-                _genre = value.Trim
-            End Set
-        End Property
+        Public Property IMDB() As String = String.Empty
 
-        Public Property Director() As String
-            Get
-                Return _director
-            End Get
-            Set(ByVal value As String)
-                _director = value.Trim
-            End Set
-        End Property
+        Public Property Genre() As String = String.Empty
 
-        Public Property VideoSource() As String
-            Get
-                Return _videosource
-            End Get
-            Set(ByVal value As String)
-                _videosource = value.Trim
-            End Set
-        End Property
+        Public Property Director() As String = String.Empty
 
-#End Region 'Properties
+        Public Property VideoSource() As String = String.Empty
 
-#Region "Methods"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-        Public Sub Clear()
-            _aired = String.Empty
-            _audiochannels = String.Empty
-            _audiocodec = String.Empty
-            _basepath = String.Empty
-            _collection = String.Empty
-            _collectionlisttitle = String.Empty
-            _country = String.Empty
-            _direxist = False
-            _director = String.Empty
-            _dorename = False
-            _extension = String.Empty
-            _fileexist = False
-            _videosource = String.Empty
-            _genre = String.Empty
-            _id = -1
-            _imdb = String.Empty
-            _ismultiepisode = False
-            _issingle = False
-            _isbdmv = False
-            _islock = False
-            _isvideots = False
-            _listtitle = String.Empty
-            _mpaa = String.Empty
-            _multiviewcount = String.Empty
-            _multiviewlayout = String.Empty
-            _newfilename = String.Empty
-            _newpath = String.Empty
-            _oldfilename = String.Empty
-            _oldfullfilename = String.Empty
-            _oldfullpath = String.Empty
-            _oldpath = String.Empty
-            _originaltitle = String.Empty
-            _parent = String.Empty
-            _path = String.Empty
-            _rating = String.Empty
-            _resolution = String.Empty
-            _seasonsepisodes.Clear()
-            _showfullpath = String.Empty
-            _showpath = String.Empty
-            _showtitle = String.Empty
-            _sorttitle = String.Empty
-            _status = String.Empty
-            _stereomode = String.Empty
-            _title = String.Empty
-            _tvdbid = String.Empty
-            _videocodec = String.Empty
-            _year = String.Empty
-        End Sub
-
-#End Region 'Methods
+#End Region 'Properties 
 
     End Class
 
     Class SeasonsEpisodes
 
-#Region "Fields"
-
-        Private _season As Integer
-        Private _episodes As List(Of Episode)
-
-#End Region 'Fields
-
 #Region "Properties"
 
-        Public Property Season() As Integer
-            Get
-                Return _season
-            End Get
-            Set(ByVal value As Integer)
-                _season = value
-            End Set
-        End Property
+        Public Property Season() As Integer = -1
 
-        Public Property Episodes() As List(Of Episode)
-            Get
-                Return _episodes
-            End Get
-            Set(ByVal value As List(Of Episode))
-                _episodes = value
-            End Set
-        End Property
+        Public Property Episodes() As List(Of Episode) = New List(Of Episode)
 
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub New()
-            _season = -1
-            _episodes = New List(Of Episode)
-        End Sub
-
-        Public Sub Clear()
-            _season = -1
-            _episodes.Clear()
-        End Sub
-
-#End Region 'Methods
+#End Region 'Properties 
 
     End Class
 
     Class Episode
         Implements IComparable(Of Episode)
 
-#Region "Fields"
-
-        Private _id As Integer
-        Private _episode As Integer
-        Private _subepisode As Integer
-        Private _title As String
-
-#End Region 'Fields
-
 #Region "Properties"
 
-        Public Property ID() As Integer
-            Get
-                Return _id
-            End Get
-            Set(ByVal value As Integer)
-                _id = value
-            End Set
-        End Property
+        Public Property ID() As Integer = -1
 
-        Public Property Episode() As Integer
-            Get
-                Return _episode
-            End Get
-            Set(ByVal value As Integer)
-                _episode = value
-            End Set
-        End Property
+        Public Property Episode() As Integer = -1
 
-        Public Property SubEpisode() As Integer
-            Get
-                Return _subepisode
-            End Get
-            Set(ByVal value As Integer)
-                _subepisode = value
-            End Set
-        End Property
+        Public Property SubEpisode() As Integer = -1
 
-        Public Property Title() As String
-            Get
-                Return _title
-            End Get
-            Set(ByVal value As String)
-                _title = value
-            End Set
-        End Property
+        Public Property Title() As String = String.Empty
 
 #End Region 'Properties
 
 #Region "Methods"
-
-        Public Sub New()
-            _id = -1
-            _episode = -1
-            _subepisode = -1
-            _title = String.Empty
-        End Sub
-
-        Public Sub Clear()
-            _id = -1
-            _episode = -1
-            _subepisode = -1
-            _title = String.Empty
-        End Sub
 
         Public Function CompareTo(ByVal obj As Episode) As Integer Implements IComparable(Of Episode).CompareTo
             Return Episode.CompareTo(obj.Episode)

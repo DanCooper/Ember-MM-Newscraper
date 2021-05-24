@@ -174,6 +174,7 @@ Public Class dlgEdit_Movie
             lblCredits.Text = String.Concat(.GetString(228, "Credits"), ":")
             lblDirectors.Text = String.Concat(.GetString(940, "Directors"), ":")
             lblDiscArt.Text = .GetString(1098, "DiscArt")
+            lblEdition.Text = .GetString(308, "Edition")
             lblExtrafanarts.Text = String.Format("{0} ({1})", .GetString(992, "Extrafanarts"), pnlExtrafanartsList.Controls.Count)
             lblExtrathumbs.Text = String.Format("{0} ({1})", .GetString(153, "Extrathumbs"), pnlExtrafanartsList.Controls.Count)
             lblFanart.Text = .GetString(149, "Fanart")
@@ -182,8 +183,8 @@ Public Class dlgEdit_Movie
             lblLandscape.Text = .GetString(1059, "Landscape")
             lblLanguage.Text = .GetString(610, "Language")
             lblLinkTrailer.Text = String.Concat(.GetString(227, "Trailer URL"), ":")
-            lblMPAA.Text = .GetString(235, "MPAA Rating:")
-            lblMPAADesc.Text = .GetString(229, "MPAA Rating Description:")
+            lblMPAA.Text = String.Concat(.GetString(235, "MPAA Rating"), ":")
+            lblMPAADesc.Text = String.Concat(.GetString(229, "MPAA Rating Description:"), ":")
             lblOriginalTitle.Text = String.Concat(.GetString(302, "Original Title"), ":")
             lblOutline.Text = String.Concat(.GetString(64, "Plot Outline"), ":")
             lblPlot.Text = String.Concat(.GetString(65, "Plot"), ":")
@@ -709,6 +710,10 @@ Public Class dlgEdit_Movie
 
         'Database related part
         With tmpDBElement
+            'Edition
+            .Edition = cbEdition.Text.Trim
+            .Movie.Edition = .Edition
+            'States
             .IsLock = chkLocked.Checked
             .IsMark = chkMarked.Checked
             .IsMarkCustom1 = chkMarkedCustom1.Checked
@@ -757,8 +762,6 @@ Public Class dlgEdit_Movie
             .DateAdded = nDateAdded.ToString("yyyy-MM-dd HH:mm:ss")
             'Directors
             .Directors = DataGridView_RowsToList(dgvDirectors)
-            'Edition
-            .Edition = cbEdition.Text.Trim
             'FileInfo
             Dim cIndex = pnlFileInfo.Controls.IndexOfKey("dlgFileInfo")
             If Not cIndex = -1 Then

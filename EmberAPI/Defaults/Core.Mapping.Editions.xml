@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<regexmapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <mapping regexp="(?i)[\W_]extended[\W_]collectors[\W_]edition">Extended Collectors Edition</mapping>
+  <mapping regexp="(?i)[\W_]extended[\W_]uncut[\W_]edition">Extended Uncut Eduition</mapping>
+  <mapping regexp="(?i)[\W_]limited[\W_]collectors[\W_]edition">Collectors Edition</mapping>
+  <mapping regexp="(?i)[\W_]limitierte[\W_]collectors[\W_]edition">Limited Collectors Edition</mapping>
+  <mapping regexp="(?i)[\W_]preview[\W_]cut[\W_]edition">Preview Cut Edition</mapping>
+  <mapping regexp="(?i)[\W_]special[\W_]extended[\W_]edition">Special Extended Edition</mapping>
+  <mapping regexp="(?i)[\W_]uncut[\W_]limited[\W_]edition">Uncut Limited Edition</mapping>
+  <mapping regexp="(?i)[\W_]uncut[\W_]theatrical[\W_]version">Uncut Theatrical Edition</mapping>
+  <mapping regexp="(?i)[\W_]unrated[\W_]extended[\W_]cut">Unrated Extended Cut</mapping>
+  <mapping regexp="(?i)[\W_]unrated[\W_]extended[\W_]edition">Unrated Extended Edition</mapping>  
+  <mapping regexp="(?i)[\W_]anniversary[\W_]edition">Annyversary Edition</mapping>
+  <mapping regexp="(?i)[\W_]collectors[\W_]edition">Collectors Edition</mapping>
+  <mapping regexp="(?i)[\W_]comedy[\W_]version">Comedy Edition</mapping>
+  <mapping regexp="(?i)[\W_]unrated[\W_]d(ir(ector'?s?)?)?[\W_]?c(ut)?">Unrated Director's Cut</mapping>
+  <mapping regexp="(?i)[\W_]d(ir(ector'?s?)?)?[\W_]?c(ut)?">Director's Cut</mapping>
+  <mapping regexp="(?i)[\W_]extended[\W_]edition">Extended Edition</mapping>
+  <mapping regexp="(?i)[\W_]extended[\W_]version">Extended Version</mapping>
+  <mapping regexp="(?i)[\W_]extra[\W_]edition">Extra Edition</mapping>
+  <mapping regexp="(?i)[\W_]limited[\W_]edition">Limited Edition</mapping>
+  <mapping regexp="(?i)[\W_]noir[\W_]edition">Noir Edition</mapping>
+  <mapping regexp="(?i)[\W_]platinum[\W_]edition">Platinum Edition</mapping>
+  <mapping regexp="(?i)[\W_]special[\W_]edition">Special Edition</mapping>
+  <mapping regexp="(?i)[\W_]theatrical[\W_]edition">Theatrical Edition</mapping>
+  <mapping regexp="(?i)[\W_]uk[\W_]version">UK Version</mapping>
+  <mapping regexp="(?i)[\W_]unrated[\W_]bootleg">Unrated Bootleg</mapping>
+  <mapping regexp="(?i)[\W_]unrated[\W_]collection">Unrated Collection</mapping>
+  <mapping regexp="(?i)[\W_]unrated[\W_]cut">Unrated Cut</mapping>
+  <mapping regexp="(?i)[\W_]unrated[\W_]extended">Unrated Extended</mapping>
+  <mapping regexp="(?i)[\W_]unrated[\W_]remastered">Unrated Remastered</mapping>  
+  <mapping regexp="(?i)[\W_]extended">Extended</mapping>
+  <mapping regexp="(?i)[\W_]imax">IMAX</mapping>
+  <mapping regexp="(?i)[\W_]remastered">Remastered</mapping>
+  <mapping regexp="(?i)[\W_]uncut">Uncut</mapping>
+  <mapping regexp="(?i)[\W_]unrated">Unrated</mapping>
+</regexmapping>

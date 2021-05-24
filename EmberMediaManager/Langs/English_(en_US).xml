@@ -115,7 +115,7 @@
   <string id="114">* This MUST be enabled to use extrathumbs and file naming options like movie.tbn, fanart.jpg, etc.</string>
   <string id="115">Add Regex</string>
   <string id="116">Performing Preliminary Tasks (Gathering Data)...</string>
-  <string id="117">Unknown Movie ({0})</string>
+  <string id="117">Unknown Movie</string>
   <string id="118">{0} Votes</string>
   <string id="119">Canceling File Cleaner...</string>
   <string id="120">Cancel Cleaner</string>
@@ -124,7 +124,7 @@
   <string id="123">Clear</string>
   <string id="124">Update Regex</string>
   <string id="125">Cleanup disabled fields</string>
-  <string id="126"></string>
+  <string id="126">Edition Mapping</string>
   <string id="127">Scraping Media (All Movies - Ask):</string>
   <string id="128">Scraping Media (All Movies - Auto):</string>
   <string id="129">Cleaning Files:</string>
@@ -227,14 +227,14 @@
   <string id="226">Studios</string>
   <string id="227">Trailer URL</string>
   <string id="228">Credits</string>
-  <string id="229">MPAA Rating Description:</string>
+  <string id="229">MPAA Rating Description</string>
   <string id="230">Manual Edit</string>
   <string id="231">Actors</string>
   <string id="232">Name</string>
   <string id="233">Role</string>
   <string id="234">Thumb</string>
-  <string id="235">MPAA Rating:</string>
-  <string id="236">Release Date:</string>
+  <string id="235">MPAA Rating</string>
+  <string id="236"></string>
   <string id="237">Countries</string>
   <string id="238">Runtime</string>
   <string id="239">Director:</string>
@@ -260,7 +260,7 @@
   <string id="259">File Pattern</string>
   <string id="260">Folder Pattern (for Multiple movies in Folder)</string>
   <string id="261">Display Only Movies That Will Be Renamed</string>
-  <string id="262">$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$5 = Collection List Title{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot, comma or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value</string>
+  <string id="262">$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$5 = Collection List Title{0}$6 = Edition{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot, comma or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value</string>
   <string id="263">Manual Rename</string>
   <string id="264">Exclude</string>
   <string id="265">Scraping Episode Images</string>
@@ -306,7 +306,7 @@
   <string id="305">Save as Extrathumb</string>
   <string id="306">Extracting Frame...</string>
   <string id="307">Load Video</string>
-  <string id="308"></string>
+  <string id="308">Edition</string>
   <string id="309">Save as Poster</string>
   <string id="310">Frame Extractor</string>
   <string id="311">Media File Manager</string>

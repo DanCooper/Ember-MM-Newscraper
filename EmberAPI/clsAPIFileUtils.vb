@@ -580,16 +580,16 @@ Namespace FileUtils
             Return filename
         End Function
 
-        Public Shared Function ReturnSettingsFile(Dir As String, Name As String) As String
+        Public Shared Function ReturnSettingsFile(ByVal dir As String, ByVal name As String) As String
             'Cocotus, Load from central Dir folder if it exists!
-            Dim configpath As String = String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar, Name)
+            Dim configpath As String = String.Concat(Functions.AppPath, dir, Path.DirectorySeparatorChar, name)
 
             'AdvancedSettings.xml is still at old place (root) -> move to new place if there's no AdvancedSettings.xml !
-            If Not File.Exists(configpath) AndAlso File.Exists(Path.Combine(Functions.AppPath, Name)) AndAlso Directory.Exists(String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar)) Then
-                File.Move(Path.Combine(Functions.AppPath, Name), String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar, Name))
+            If Not File.Exists(configpath) AndAlso File.Exists(Path.Combine(Functions.AppPath, name)) AndAlso Directory.Exists(String.Concat(Functions.AppPath, dir, Path.DirectorySeparatorChar)) Then
+                File.Move(Path.Combine(Functions.AppPath, name), String.Concat(Functions.AppPath, dir, Path.DirectorySeparatorChar, name))
                 'New Settings folder doesn't exist -> do it the old way...
-            ElseIf Not Directory.Exists(String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar)) Then
-                configpath = Path.Combine(Functions.AppPath, Name)
+            ElseIf Not Directory.Exists(String.Concat(Functions.AppPath, dir, Path.DirectorySeparatorChar)) Then
+                configpath = Path.Combine(Functions.AppPath, name)
             End If
 
             Return configpath

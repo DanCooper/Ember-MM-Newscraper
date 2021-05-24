@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class dlgSimpleMapping
+Partial Class dlgRegexMapping
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
@@ -22,14 +22,14 @@ Partial Class dlgSimpleMapping
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSimpleMapping))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgRegexMapping))
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.tsslSpring = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tspbStatus = New System.Windows.Forms.ToolStripProgressBar()
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
         Me.dgvMappings = New System.Windows.Forms.DataGridView()
-        Me.colInput = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colRegex = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colMapping = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
@@ -90,7 +90,7 @@ Partial Class dlgSimpleMapping
         Me.tblMain.Name = "tblMain"
         Me.tblMain.RowCount = 1
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 410.0!))
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 710.0!))
         Me.tblMain.Size = New System.Drawing.Size(584, 710)
         Me.tblMain.TabIndex = 0
         '
@@ -98,19 +98,19 @@ Partial Class dlgSimpleMapping
         '
         Me.dgvMappings.BackgroundColor = System.Drawing.Color.White
         Me.dgvMappings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvMappings.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colInput, Me.colMapping})
+        Me.dgvMappings.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colRegex, Me.colMapping})
         Me.dgvMappings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMappings.Location = New System.Drawing.Point(3, 3)
         Me.dgvMappings.Name = "dgvMappings"
         Me.dgvMappings.Size = New System.Drawing.Size(578, 704)
         Me.dgvMappings.TabIndex = 0
         '
-        'colInput
+        'colRegex
         '
-        Me.colInput.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.colInput.HeaderText = "Input"
-        Me.colInput.Name = "colInput"
-        Me.colInput.Width = 56
+        Me.colRegex.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.colRegex.HeaderText = "Regex"
+        Me.colRegex.Name = "colRegex"
+        Me.colRegex.Width = 63
         '
         'colMapping
         '
@@ -166,7 +166,7 @@ Partial Class dlgSimpleMapping
         Me.btnOK.Text = "OK"
         Me.btnOK.UseVisualStyleBackColor = True
         '
-        'dlgSimpleMapping
+        'dlgRegexMapping
         '
         Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -179,10 +179,10 @@ Partial Class dlgSimpleMapping
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgSimpleMapping"
+        Me.Name = "dlgRegexMapping"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Country Mapping"
+        Me.Text = "Edition Mapping"
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
         Me.pnlMain.ResumeLayout(False)
@@ -207,6 +207,6 @@ Partial Class dlgSimpleMapping
     Friend WithEvents tsslSpring As Windows.Forms.ToolStripStatusLabel
     Friend WithEvents tspbStatus As Windows.Forms.ToolStripProgressBar
     Friend WithEvents dgvMappings As Windows.Forms.DataGridView
-    Friend WithEvents colInput As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colRegex As Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colMapping As Windows.Forms.DataGridViewTextBoxColumn
 End Class

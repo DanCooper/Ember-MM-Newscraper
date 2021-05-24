@@ -42,46 +42,47 @@ Public Class frmSettingsHolder
 #Region "Methods"
 
     Private Sub CreateDummies()
-        _fDummyMultiEpisode.Clear()
-        _fDummyMultiEpisode.AudioChannels = "2"
-        _fDummyMultiEpisode.AudioCodec = "mp3"
-        _fDummyMultiEpisode.BasePath = ""
-        _fDummyMultiEpisode.Collection = ""
-        _fDummyMultiEpisode.Country = ""
-        _fDummyMultiEpisode.Director = ""
-        _fDummyMultiEpisode.DirExist = False
-        _fDummyMultiEpisode.FileExist = False
-        _fDummyMultiEpisode.OldFileName = "OldFileName"
-        _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
-        _fDummyMultiEpisode.ID = -1
-        _fDummyMultiEpisode.IMDB = "tt8440328"
-        _fDummyMultiEpisode.IsBDMV = False
-        _fDummyMultiEpisode.IsLock = False
-        _fDummyMultiEpisode.IsMultiEpisode = True
-        _fDummyMultiEpisode.DoRename = False
-        _fDummyMultiEpisode.IsSingle = True
-        _fDummyMultiEpisode.IsVideoTS = False
-        _fDummyMultiEpisode.ListTitle = "Mess You Leave Behind, The"
-        _fDummyMultiEpisode.MPAA = "TV-14"
-        _fDummyMultiEpisode.MultiViewCount = "3d"
-        _fDummyMultiEpisode.MultiViewLayout = "Side by Side (left eye first)"
-        _fDummyMultiEpisode.NewFileName = ""
-        _fDummyMultiEpisode.NewPath = ""
-        _fDummyMultiEpisode.OldPath = ""
-        _fDummyMultiEpisode.OriginalTitle = "El desorden que dejas"
-        _fDummyMultiEpisode.Parent = "OldDirectoryName"
-        _fDummyMultiEpisode.Path = ""
-        _fDummyMultiEpisode.Rating = "7.3"
-        _fDummyMultiEpisode.Resolution = "720p"
-        _fDummyMultiEpisode.ShortStereoMode = "sbs"
-        _fDummyMultiEpisode.ShowTitle = "The Mess You Leave Behind"
-        _fDummyMultiEpisode.SortTitle = "Mess You Leave Behind"
-        _fDummyMultiEpisode.StereoMode = "left_right"
-        _fDummyMultiEpisode.Title = "Into the Lion's Den"
-        _fDummyMultiEpisode.TVDBID = "58056"
-        _fDummyMultiEpisode.VideoCodec = "xvid"
-        _fDummyMultiEpisode.VideoSource = "dvd"
-        _fDummyMultiEpisode.Year = "2007"
+        _fDummyMultiEpisode = New FileFolderRenamer.FileRename With {
+            .AudioChannels = "2",
+            .AudioCodec = "mp3",
+            .BasePath = "",
+            .Collection = "",
+            .Country = "",
+            .Director = "",
+            .DirExist = False,
+            .FileExist = False,
+            .OldFileName = "OldFileName",
+            .Genre = "Comedy / Lovestory",
+            .ID = -1,
+            .IMDB = "tt8440328",
+            .IsBDMV = False,
+            .IsLock = False,
+            .IsMultiEpisode = True,
+            .DoRename = False,
+            .IsSingle = True,
+            .IsVideoTS = False,
+            .ListTitle = "Mess You Leave Behind, The",
+            .MPAA = "TV-14",
+            .MultiViewCount = "3d",
+            .MultiViewLayout = "Side by Side (left eye first)",
+            .NewFileName = "",
+            .NewPath = "",
+            .OldPath = "",
+            .OriginalTitle = "El desorden que dejas",
+            .Parent = "OldDirectoryName",
+            .Path = "",
+            .Rating = "7.3",
+            .Resolution = "720p",
+            .ShortStereoMode = "sbs",
+            .ShowTitle = "The Mess You Leave Behind",
+            .SortTitle = "Mess You Leave Behind",
+            .StereoMode = "left_right",
+            .Title = "Into the Lion's Den",
+            .TVDBID = "58056",
+            .VideoCodec = "xvid",
+            .VideoSource = "dvd",
+            .Year = "2007"
+        }
         Dim dMEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Into the Lion's Den"}
         Dim dMEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "They Know"}
         Dim dMEpisodeList As New List(Of FileFolderRenamer.Episode)
@@ -89,46 +90,47 @@ Public Class frmSettingsHolder
         dMEpisodeList.Add(dMEpisode2)
         _fDummyMultiEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dMEpisodeList})
 
-        _fDummyMultiSeason.Clear()
-        _fDummyMultiSeason.AudioChannels = "2"
-        _fDummyMultiSeason.AudioCodec = "mp3"
-        _fDummyMultiSeason.BasePath = ""
-        _fDummyMultiSeason.Collection = ""
-        _fDummyMultiSeason.Country = ""
-        _fDummyMultiSeason.Director = ""
-        _fDummyMultiSeason.DirExist = False
-        _fDummyMultiSeason.FileExist = False
-        _fDummyMultiSeason.OldFileName = "OldFileName"
-        _fDummyMultiSeason.Genre = "Comedy / Lovestory"
-        _fDummyMultiSeason.ID = -1
-        _fDummyMultiSeason.IMDB = "tt8440328"
-        _fDummyMultiSeason.IsBDMV = False
-        _fDummyMultiSeason.IsLock = False
-        _fDummyMultiSeason.IsMultiEpisode = True
-        _fDummyMultiSeason.DoRename = False
-        _fDummyMultiSeason.IsSingle = True
-        _fDummyMultiSeason.IsVideoTS = False
-        _fDummyMultiSeason.ListTitle = "Mess You Leave Behind, The"
-        _fDummyMultiSeason.MPAA = "TV-14"
-        _fDummyMultiSeason.MultiViewCount = "3d"
-        _fDummyMultiSeason.MultiViewLayout = "Side by Side (left eye first)"
-        _fDummyMultiSeason.NewFileName = ""
-        _fDummyMultiSeason.NewPath = ""
-        _fDummyMultiSeason.OldPath = ""
-        _fDummyMultiSeason.OriginalTitle = "El desorden que dejas"
-        _fDummyMultiSeason.Parent = "OldDirectoryName"
-        _fDummyMultiSeason.Path = ""
-        _fDummyMultiSeason.Rating = "7.3"
-        _fDummyMultiSeason.Resolution = "720p"
-        _fDummyMultiSeason.ShortStereoMode = "sbs"
-        _fDummyMultiSeason.ShowTitle = "The Mess You Leave Behind"
-        _fDummyMultiSeason.SortTitle = "Mess You Leave Behind"
-        _fDummyMultiSeason.StereoMode = "left_right"
-        _fDummyMultiSeason.Title = "Into the Lion's Den"
-        _fDummyMultiSeason.TVDBID = "58056"
-        _fDummyMultiSeason.VideoCodec = "xvid"
-        _fDummyMultiSeason.VideoSource = "dvd"
-        _fDummyMultiSeason.Year = "2007"
+        _fDummyMultiSeason = New FileFolderRenamer.FileRename With {
+            .AudioChannels = "2",
+            .AudioCodec = "mp3",
+            .BasePath = "",
+            .Collection = "",
+            .Country = "",
+            .Director = "",
+            .DirExist = False,
+            .FileExist = False,
+            .OldFileName = "OldFileName",
+            .Genre = "Comedy / Lovestory",
+            .ID = -1,
+            .IMDB = "tt8440328",
+            .IsBDMV = False,
+            .IsLock = False,
+            .IsMultiEpisode = True,
+            .DoRename = False,
+            .IsSingle = True,
+            .IsVideoTS = False,
+            .ListTitle = "Mess You Leave Behind, The",
+            .MPAA = "TV-14",
+            .MultiViewCount = "3d",
+            .MultiViewLayout = "Side by Side (left eye first)",
+            .NewFileName = "",
+            .NewPath = "",
+            .OldPath = "",
+            .OriginalTitle = "El desorden que dejas",
+            .Parent = "OldDirectoryName",
+            .Path = "",
+            .Rating = "7.3",
+            .Resolution = "720p",
+            .ShortStereoMode = "sbs",
+            .ShowTitle = "The Mess You Leave Behind",
+            .SortTitle = "Mess You Leave Behind",
+            .StereoMode = "left_right",
+            .Title = "Into the Lion's Den",
+            .TVDBID = "58056",
+            .VideoCodec = "xvid",
+            .VideoSource = "dvd",
+            .Year = "2007"
+        }
         Dim dMSEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Into the Lion's Den"}
         Dim dMSEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "They Know"}
         Dim dMSEpisode3 As New FileFolderRenamer.Episode With {.ID = 3, .Episode = 1, .Title = "Count to Three"}
@@ -142,92 +144,95 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dMSEpisodeList1})
         _fDummyMultiSeason.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 2, .Episodes = dMSEpisodeList2})
 
-        _fDummySingleEpisode.Clear()
-        _fDummySingleEpisode.AudioChannels = "2"
-        _fDummySingleEpisode.AudioCodec = "mp3"
-        _fDummySingleEpisode.BasePath = ""
-        _fDummySingleEpisode.Collection = ""
-        _fDummySingleEpisode.Country = ""
-        _fDummySingleEpisode.Director = ""
-        _fDummySingleEpisode.DirExist = False
-        _fDummySingleEpisode.FileExist = False
-        _fDummySingleEpisode.OldFileName = "OldFileName"
-        _fDummySingleEpisode.Genre = "Comedy / Lovestory"
-        _fDummySingleEpisode.ID = -1
-        _fDummySingleEpisode.IMDB = "tt8440328"
-        _fDummySingleEpisode.IsBDMV = False
-        _fDummySingleEpisode.IsLock = False
-        _fDummySingleEpisode.IsMultiEpisode = False
-        _fDummySingleEpisode.DoRename = False
-        _fDummySingleEpisode.IsSingle = True
-        _fDummySingleEpisode.IsVideoTS = False
-        _fDummySingleEpisode.ListTitle = "Mess You Leave Behind, The"
-        _fDummySingleEpisode.MPAA = "TV-14"
-        _fDummySingleEpisode.MultiViewCount = "3d"
-        _fDummySingleEpisode.MultiViewLayout = "Side by Side (left eye first)"
-        _fDummySingleEpisode.NewFileName = ""
-        _fDummySingleEpisode.NewPath = ""
-        _fDummySingleEpisode.OldPath = ""
-        _fDummySingleEpisode.OriginalTitle = "El desorden que dejas"
-        _fDummySingleEpisode.Parent = "OldDirectoryName"
-        _fDummySingleEpisode.Path = ""
-        _fDummySingleEpisode.Rating = "7.3"
-        _fDummySingleEpisode.Resolution = "720p"
-        _fDummySingleEpisode.ShortStereoMode = "sbs"
-        _fDummySingleEpisode.ShowTitle = "The Mess You Leave Behind"
-        _fDummySingleEpisode.SortTitle = "Mess You Leave Behind"
-        _fDummySingleEpisode.StereoMode = "left_right"
-        _fDummySingleEpisode.Title = "Into the Lion's Den"
-        _fDummySingleEpisode.TVDBID = "58056"
-        _fDummySingleEpisode.VideoCodec = "xvid"
-        _fDummySingleEpisode.VideoSource = "dvd"
-        _fDummySingleEpisode.Year = "2007"
+        _fDummySingleEpisode = New FileFolderRenamer.FileRename With {
+            .AudioChannels = "2",
+            .AudioCodec = "mp3",
+            .BasePath = "",
+            .Collection = "",
+            .Country = "",
+            .Director = "",
+            .DirExist = False,
+            .FileExist = False,
+            .OldFileName = "OldFileName",
+            .Genre = "Comedy / Lovestory",
+            .ID = -1,
+            .IMDB = "tt8440328",
+            .IsBDMV = False,
+            .IsLock = False,
+            .IsMultiEpisode = False,
+            .DoRename = False,
+            .IsSingle = True,
+            .IsVideoTS = False,
+            .ListTitle = "Mess You Leave Behind, The",
+            .MPAA = "TV-14",
+            .MultiViewCount = "3d",
+            .MultiViewLayout = "Side by Side (left eye first)",
+            .NewFileName = "",
+            .NewPath = "",
+            .OldPath = "",
+            .OriginalTitle = "El desorden que dejas",
+            .Parent = "OldDirectoryName",
+            .Path = "",
+            .Rating = "7.3",
+            .Resolution = "720p",
+            .ShortStereoMode = "sbs",
+            .ShowTitle = "The Mess You Leave Behind",
+            .SortTitle = "Mess You Leave Behind",
+            .StereoMode = "left_right",
+            .Title = "Into the Lion's Den",
+            .TVDBID = "58056",
+            .VideoCodec = "xvid",
+            .VideoSource = "dvd",
+            .Year = "2007"
+        }
         Dim dSEpisode As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Into the Lion's Den"}
         Dim dSEpisodeList As New List(Of FileFolderRenamer.Episode)
         dSEpisodeList.Add(dSEpisode)
         _fDummySingleEpisode.SeasonsEpisodes.Add(New FileFolderRenamer.SeasonsEpisodes With {.Season = 1, .Episodes = dSEpisodeList})
 
-        _fDummySingleMovie.Clear()
-        _fDummySingleMovie.AudioChannels = "6"
-        _fDummySingleMovie.AudioCodec = "dts"
-        _fDummySingleMovie.BasePath = "D:\Movies"
-        _fDummySingleMovie.Collection = "The Avengers Collection"
-        _fDummySingleMovie.CollectionListTitle = "Avengers Collection, The"
-        _fDummySingleMovie.Country = "United States of America / Japan"
-        _fDummySingleMovie.Director = "Joss Whedon"
-        _fDummySingleMovie.DirExist = False
-        _fDummySingleMovie.FileExist = False
-        _fDummySingleMovie.OldFileName = "OldFileName"
-        _fDummySingleMovie.Genre = "Action / Sci-Fi"
-        _fDummySingleMovie.ID = -1
-        _fDummySingleMovie.IMDB = "tt0848228"
-        _fDummySingleMovie.IsBDMV = False
-        _fDummySingleMovie.IsLock = False
-        _fDummySingleMovie.IsMultiEpisode = False
-        _fDummySingleMovie.DoRename = False
-        _fDummySingleMovie.IsSingle = True
-        _fDummySingleMovie.IsVideoTS = False
-        _fDummySingleMovie.ListTitle = "Avengers, The"
-        _fDummySingleMovie.MPAA = "13"
-        _fDummySingleMovie.MultiViewCount = "3d"
-        _fDummySingleMovie.MultiViewLayout = "Side by Side (left eye first)"
-        _fDummySingleMovie.NewFileName = ""
-        _fDummySingleMovie.NewPath = ""
-        _fDummySingleMovie.OldPath = ""
-        _fDummySingleMovie.OriginalTitle = "Marvel's The Avengers"
-        _fDummySingleMovie.Parent = "OldDirectoryName"
-        _fDummySingleMovie.Path = ""
-        _fDummySingleMovie.Rating = "7.3"
-        _fDummySingleMovie.Resolution = "1080p"
-        _fDummySingleMovie.ShortStereoMode = "sbs"
-        _fDummySingleMovie.ShowTitle = ""
-        _fDummySingleMovie.SortTitle = "Avengers"
-        _fDummySingleMovie.StereoMode = "left_right"
-        _fDummySingleMovie.Title = "The Avengers"
-        _fDummySingleMovie.TVDBID = ""
-        _fDummySingleMovie.VideoCodec = "h264"
-        _fDummySingleMovie.VideoSource = "bluray"
-        _fDummySingleMovie.Year = "2012"
+        _fDummySingleMovie = New FileFolderRenamer.FileRename With {
+            .AudioChannels = "6",
+            .AudioCodec = "dts",
+            .BasePath = "D:\Movies",
+            .Collection = "The Avengers Collection",
+            .CollectionListTitle = "Avengers Collection, The",
+            .Country = "United States of America / Japan",
+            .Director = "Joss Whedon",
+            .Edition = "Direcor's Cut",
+            .DirExist = False,
+            .FileExist = False,
+            .OldFileName = "OldFileName",
+            .Genre = "Action / Sci-Fi",
+            .ID = -1,
+            .IMDB = "tt0848228",
+            .IsBDMV = False,
+            .IsLock = False,
+            .IsMultiEpisode = False,
+            .DoRename = False,
+            .IsSingle = True,
+            .IsVideoTS = False,
+            .ListTitle = "Avengers, The",
+            .MPAA = "13",
+            .MultiViewCount = "3d",
+            .MultiViewLayout = "Side by Side (left eye first)",
+            .NewFileName = "",
+            .NewPath = "",
+            .OldPath = "",
+            .OriginalTitle = "Marvel's The Avengers",
+            .Parent = "OldDirectoryName",
+            .Path = "",
+            .Rating = "7.3",
+            .Resolution = "1080p",
+            .ShortStereoMode = "sbs",
+            .ShowTitle = "",
+            .SortTitle = "Avengers",
+            .StereoMode = "left_right",
+            .Title = "The Avengers",
+            .TVDBID = "",
+            .VideoCodec = "h264",
+            .VideoSource = "bluray",
+            .Year = "2012"
+        }
     End Sub
 
     Private Sub CreatePreview_MultiEpisode()
@@ -286,7 +291,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnFolderPatternMoviesReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternMoviesReset.Click
-        txtFolderPatternMovies.Text = "$T {($Y)}"
+        txtFolderPatternMovies.Text = "$T{ ($6)}{ ($Y)}"
     End Sub
 
     Private Sub btnFolderPatternSeasonsReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternSeasonsReset.Click
@@ -341,7 +346,7 @@ Public Class frmSettingsHolder
         lblFilePatternMovies.Text = Master.eLang.GetString(286, "Files Pattern")
         lblFolderPatternMovies.Text = Master.eLang.GetString(287, "Folders Pattern")
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$5 = Collection List Title{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen, comma to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
+        lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$5 = Collection List Title{0}$6 = Edition{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen, comma to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot, comma or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
     End Sub
 
     Private Sub txtFilePatternMovies_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFilePatternMovies.TextChanged

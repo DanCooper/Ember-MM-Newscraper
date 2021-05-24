@@ -2278,6 +2278,7 @@ Public Class Database
                     _movieDB.IsMarkCustom4 = Convert.ToBoolean(SQLreader("MarkCustom4"))
                     If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _movieDB.VideoSource = SQLreader("VideoSource").ToString
                     If Not DBNull.Value.Equals(SQLreader("Language")) Then _movieDB.Language = SQLreader("Language").ToString
+                    If Not DBNull.Value.Equals(SQLreader("edition")) Then _movieDB.Edition = SQLreader("edition").ToString
 
                     With _movieDB.Movie
                         If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdded"))).ToString("yyyy-MM-dd HH:mm:ss")
@@ -4433,7 +4434,6 @@ Public Class Database
 
             With _movieDB.Movie
                 par_movie_Certification.Value = String.Join(" / ", .Certifications.ToArray)
-                par_movie_edition.Value = .Edition
                 par_movie_Imdb.Value = .UniqueIDs.IMDbId
                 par_movie_iUserRating.Value = .UserRating
                 par_movie_MPAA.Value = .MPAA
@@ -4463,6 +4463,7 @@ Public Class Database
             par_movie_OutOfTolerance.Value = _movieDB.OutOfTolerance
             par_movie_VideoSource.Value = _movieDB.VideoSource
             par_movie_Language.Value = _movieDB.Language
+            par_movie_edition.Value = _movieDB.Edition
 
             par_movie_idSource.Value = _movieDB.Source.ID
 
@@ -6217,6 +6218,14 @@ Public Class Database
         End Property
 
         Public ReadOnly Property ContentType() As Enums.ContentType
+
+        Public Property Edition() As String = String.Empty
+
+        Public ReadOnly Property EditionSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Edition)
+            End Get
+        End Property
 
         Public Property Episodes() As New List(Of DBElement)
 

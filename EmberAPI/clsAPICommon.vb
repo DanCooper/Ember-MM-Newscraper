@@ -1938,6 +1938,7 @@ Public Class Structures
         Dim bMainCountries As Boolean
         Dim bMainCreators As Boolean
         Dim bMainDirectors As Boolean
+        Dim bMainEdition As Boolean
         Dim bMainEpisodeGuide As Boolean
         Dim bMainGenres As Boolean
         Dim bMainMPAA As Boolean

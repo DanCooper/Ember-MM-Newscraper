@@ -82,7 +82,6 @@ Public Class genericVideoSourceMapping
 
     Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
         _AssemblyName = sAssemblyName
-        'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
     End Sub
 
     Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup

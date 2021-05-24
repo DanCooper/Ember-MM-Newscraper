@@ -691,6 +691,17 @@ Public Class Scanner
                 Next
             End If
 
+            'Edition 
+            DBMovie.Edition = String.Empty
+            Dim strEdition As String = String.Empty
+            If APIXML.EditionMapping.RunRegex(DBMovie.Filename, strEdition) Then
+                DBMovie.Edition = strEdition
+                DBMovie.Movie.Edition = strEdition
+            End If
+            If Not DBMovie.EditionSpecified AndAlso DBMovie.Movie.EditionSpecified Then
+                DBMovie.Edition = DBMovie.Movie.Edition
+            End If
+
             'Language
             If DBMovie.Movie.LanguageSpecified Then
                 DBMovie.Language = DBMovie.Movie.Language
@@ -705,8 +716,8 @@ Public Class Scanner
             End If
 
             'VideoSource
-            Dim vSource As String = APIXML.GetVideoSource(DBMovie.Filename, False)
             DBMovie.VideoSource = String.Empty
+            Dim vSource As String = APIXML.GetVideoSource(DBMovie.Filename, False)
             If Not String.IsNullOrEmpty(vSource) Then
                 DBMovie.VideoSource = vSource
                 DBMovie.Movie.VideoSource = vSource
@@ -879,8 +890,8 @@ Public Class Scanner
             End If
 
             'VideoSource
-            Dim vSource As String = APIXML.GetVideoSource(cEpisode.Filename, True)
             cEpisode.VideoSource = String.Empty
+            Dim vSource As String = APIXML.GetVideoSource(cEpisode.Filename, True)
             If Not String.IsNullOrEmpty(vSource) Then
                 cEpisode.VideoSource = vSource
                 cEpisode.TVEpisode.VideoSource = vSource

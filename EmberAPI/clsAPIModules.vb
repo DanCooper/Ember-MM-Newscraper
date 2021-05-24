@@ -926,11 +926,12 @@ Public Class ModulesManager
             'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
             If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifiers.DoSearch Then
                 DBElement.ImagesContainer = New MediaContainers.ImagesContainer
-                DBElement.Movie = New MediaContainers.Movie
-
-                DBElement.Movie.Title = StringUtils.FilterTitleFromPath_Movie(DBElement.Filename, DBElement.IsSingle, DBElement.Source.UseFolderName)
-                DBElement.Movie.VideoSource = DBElement.VideoSource
-                DBElement.Movie.Year = StringUtils.FilterYearFromPath_Movie(DBElement.Filename, DBElement.IsSingle, DBElement.Source.UseFolderName)
+                DBElement.Movie = New MediaContainers.Movie With {
+                    .Edition = DBElement.Edition,
+                    .Title = StringUtils.FilterTitleFromPath_Movie(DBElement.Filename, DBElement.IsSingle, DBElement.Source.UseFolderName),
+                    .VideoSource = DBElement.VideoSource,
+                    .Year = StringUtils.FilterYearFromPath_Movie(DBElement.Filename, DBElement.IsSingle, DBElement.Source.UseFolderName)
+                }
             End If
 
             'create a clone of DBMovie
@@ -1011,9 +1012,9 @@ Public Class ModulesManager
             Dim tmpTitle As String = DBElement.MovieSet.Title
 
             DBElement.ImagesContainer = New MediaContainers.ImagesContainer
-            DBElement.MovieSet = New MediaContainers.Movieset
-
-            DBElement.MovieSet.Title = tmpTitle
+            DBElement.MovieSet = New MediaContainers.Movieset With {
+                .Title = tmpTitle
+            }
         End If
 
         'create a clone of DBMovieSet
@@ -1212,9 +1213,9 @@ Public Class ModulesManager
                 DBElement.NfoPath = String.Empty
                 DBElement.Seasons.Clear()
                 DBElement.Theme = New MediaContainers.MediaFile
-                DBElement.TVShow = New MediaContainers.TVShow
-
-                DBElement.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
+                DBElement.TVShow = New MediaContainers.TVShow With {
+                    .Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
+                }
 
                 For Each sEpisode As Database.DBElement In DBElement.Episodes
                     Dim iEpisode As Integer = sEpisode.TVEpisode.Episode
