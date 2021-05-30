@@ -22,7 +22,7 @@ CLS
 ECHO *******************************************
 ECHO *       Get all files from Transifex      *
 ECHO *******************************************
-tx pull -a
+tx pull -a --parallel --minimum-perc=40
 CLS
 ECHO *******************************************
 ECHO *       Delete unused language files      *
@@ -32,6 +32,7 @@ CLS
 ECHO *******************************************
 ECHO *          Rename files for Ember         *
 ECHO *******************************************
+BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(bn):Bengali_(bn) /EXECUTE /QUIET
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(cs):Czech_(cs) /EXECUTE /QUIET
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(da_DK):Danish_(da_DK) /EXECUTE /QUIET
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(en_AU):English_(en_AU) /EXECUTE /QUIET
