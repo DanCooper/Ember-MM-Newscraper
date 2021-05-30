@@ -1829,6 +1829,12 @@ Public Class dlgSettings
         If Not chkMovieScraperCountry.Checked Then txtMovieScraperCountryLimit.Text = "0"
     End Sub
 
+    Private Sub chkTVScraperShowCountry_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperShowCountry.CheckedChanged
+        SetApplyButton(True)
+        txtTVScraperShowCountryLimit.Enabled = chkTVScraperShowCountry.Checked
+        If Not chkTVScraperShowCountry.Checked Then txtTVScraperShowCountryLimit.Text = "0"
+    End Sub
+
     Private Sub chkMovieScraperCast_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCast.CheckedChanged
         SetApplyButton(True)
 
@@ -3207,6 +3213,7 @@ Public Class dlgSettings
             chkTVLockSeasonPlot.Checked = .TVLockSeasonPlot
             chkTVLockSeasonTitle.Checked = .TVLockSeasonTitle
             chkTVLockShowCert.Checked = .TVLockShowCert
+            chkTVLockShowCountry.Checked = .TVLockShowCountry
             chkTVLockShowCreators.Checked = .TVLockShowCreators
             chkTVLockShowGenre.Checked = .TVLockShowGenre
             chkTVLockShowMPAA.Checked = .TVLockShowMPAA
@@ -3240,6 +3247,7 @@ Public Class dlgSettings
             chkTVScraperSeasonTitle.Checked = .TVScraperSeasonTitle
             chkTVScraperShowActors.Checked = .TVScraperShowActors
             chkTVScraperShowCert.Checked = .TVScraperShowCert
+            chkTVScraperShowCountry.Checked = .TVScraperShowCountry
             chkTVScraperShowCreators.Checked = .TVScraperShowCreators
             chkTVScraperShowCertForMPAA.Checked = .TVScraperShowCertForMPAA
             chkTVScraperShowCertForMPAAFallback.Checked = .TVScraperShowCertForMPAAFallback
@@ -3362,6 +3370,7 @@ Public Class dlgSettings
             txtTVScraperEpisodeActorsLimit.Text = .TVScraperEpisodeActorsLimit.ToString
             txtTVScraperEpisodeGuestStarsLimit.Text = .TVScraperEpisodeGuestStarsLimit.ToString
             txtTVScraperShowActorsLimit.Text = .TVScraperShowActorsLimit.ToString
+            txtTVScraperShowCountryLimit.Text = .TVScraperShowCountryLimit.ToString
             txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
             txtTVScraperShowGenreLimit.Text = .TVScraperShowGenreLimit.ToString
             txtTVScraperShowStudioLimit.Text = .TVScraperShowStudioLimit.ToString
@@ -5281,6 +5290,7 @@ Public Class dlgSettings
             .TVLockSeasonPlot = chkTVLockSeasonPlot.Checked
             .TVLockSeasonTitle = chkTVLockSeasonTitle.Checked
             .TVLockShowCert = chkTVLockShowCert.Checked
+            .TVLockShowCountry = chkTVLockShowCountry.Checked
             .TVLockShowCreators = chkTVLockShowCreators.Checked
             .TVLockShowGenre = chkTVLockShowGenre.Checked
             .TVLockShowMPAA = chkTVLockShowMPAA.Checked
@@ -5321,6 +5331,8 @@ Public Class dlgSettings
             .TVScraperShowActors = chkTVScraperShowActors.Checked
             Integer.TryParse(txtTVScraperShowActorsLimit.Text, .TVScraperShowActorsLimit)
             .TVScraperShowCert = chkTVScraperShowCert.Checked
+            .TVScraperShowCountry = chkTVScraperShowCountry.Checked
+            Integer.TryParse(txtTVScraperShowCountryLimit.Text, .TVScraperShowCountryLimit)
             .TVScraperShowCreators = chkTVScraperShowCreators.Checked
             .TVScraperShowCertForMPAA = chkTVScraperShowCertForMPAA.Checked
             .TVScraperShowCertForMPAAFallback = chkTVScraperShowCertForMPAAFallback.Checked
@@ -6043,6 +6055,7 @@ Public Class dlgSettings
         'Countries
         Dim strCountries As String = Master.eLang.GetString(237, "Countries")
         lblMovieScraperGlobalCountries.Text = strCountries
+        lblTVScraperGlobalCountries.Text = strCountries
 
         'Creators
         Dim strCreators As String = Master.eLang.GetString(744, "Creators")
@@ -7075,7 +7088,8 @@ Public Class dlgSettings
         txtTVShowFanartWidth.KeyPress,
         txtTVShowPosterHeight.KeyPress,
         txtTVShowPosterWidth.KeyPress,
-        txtTVSkipLessThan.KeyPress
+        txtTVSkipLessThan.KeyPress,
+        txtTVScraperShowCountryLimit.KeyPress
 
         e.Handled = StringUtils.UIntegerOnly(e.KeyChar)
     End Sub
@@ -8435,7 +8449,9 @@ Public Class dlgSettings
         chkMovieScraperIdWriteNodeTMDbId.CheckedChanged,
         chkMovieScraperIdWriteNodeDefaultId.CheckedChanged,
         chkTVScraperShowTagline.CheckedChanged,
-        chkTVLockShowTagline.CheckedChanged
+        chkTVLockShowTagline.CheckedChanged,
+        chkTVLockShowCountry.CheckedChanged,
+        txtTVScraperShowCountryLimit.TextChanged
 
         SetApplyButton(True)
     End Sub
