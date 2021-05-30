@@ -18,22 +18,19 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-Imports System.Xml.Serialization
 Imports NLog
-Imports System.Runtime.Serialization
+Imports System.IO
 Imports System.Windows.Forms
+Imports System.Xml.Serialization
 
 Public Class Localization
 
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
-    Shared help_logger As Logger = LogManager.GetLogger("HelpString")
     Shared lang_logger As Logger = LogManager.GetLogger("LanguageString")
 
     Private Shared htArrayStrings As New List(Of Locs)
-    Private Shared htHelpStrings As New clsXMLLanguageHelp
     Private Shared htStrings As New clsXMLLanguage
     Private Shared _ISOLanguages As New clsXMLLanguages
 
@@ -47,11 +44,6 @@ Public Class Localization
     Private _ok As String
     Private _skip As String
 
-#If DEBUG Then
-    Private Shared _loggingString As New Object
-    Private Shared _loggingHelp As New Object
-#End If
-
 #End Region 'Fields
 
 #Region "Constructors"
@@ -63,7 +55,7 @@ Public Class Localization
     ''' 2013/10/31 Dekker500 - Fixed bug with missing directory separator between AppPath and Langs
     ''' </remarks>
     Public Sub New()
-        Me.Clear()
+        Clear()
         Dim lPath As String = FileUtils.Common.ReturnSettingsFile("Langs", "Languages.xml")
         If File.Exists(lPath) Then
             Dim objStreamReader As New StreamReader(lPath)
@@ -144,8 +136,10 @@ Public Class Localization
 #End Region 'Properties
 
 #Region "Methods"
+
     ' ************************************************************************************************
     ' This are functions for country/Language codes under ISO639 Alpha-2 and Alpha-3(ie: Used by DVD/GoogleAPI)
+    ' ************************************************************************************************
     Shared Function ISOGetLangByCode2(ByVal code As String) As String
         If Not String.IsNullOrEmpty(code) AndAlso Not code = "00" AndAlso Not code.ToLower = "xx" Then
             Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha2 = code))(0)
@@ -247,25 +241,9 @@ Public Class Localization
         _skip = "Skip"
     End Sub
 
-    Public Function GetHelpString(ByVal ctrlName As String) As String
-        Dim aStr As String
-        Dim x1 As System.Collections.Generic.IEnumerable(Of HelpString)
-
-        x1 = From x As HelpString In htHelpStrings.string Where (x.control = ctrlName)
-        If x1.Count = 0 Then
-            help_logger.Warn(String.Format("Missing language_help_string: {0}", ctrlName), New StackFrame().GetMethod().Name)
-            aStr = String.Empty
-        Else
-            aStr = x1(0).Value
-        End If
-
-        Return aStr
-    End Function
-
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
         Dim tStr As String
-        Dim x1 As System.Collections.Generic.IEnumerable(Of LanguageString)
-
+        Dim x1 As IEnumerable(Of LanguageString)
         Dim Assembly = "*EmberAPP"
         htStrings = htArrayStrings.FirstOrDefault(Function(x) x.AssenblyName = Assembly).htStrings
         If htStrings Is Nothing Then
@@ -283,7 +261,6 @@ Public Class Localization
                 End If
             End If
         End If
-
         Return tStr
     End Function
 
@@ -293,21 +270,10 @@ Public Class Localization
             _none = "[none]"
             _disabled = "[Disabled]"
 
-            htHelpStrings.string.Clear()
             htArrayStrings.Clear()
             htStrings.string.Clear()
         End If
         LoadLanguage(language)
-    End Sub
-
-    Public Sub LoadHelpStrings(ByVal hPath As String)
-        If File.Exists(hPath) Then
-            Dim objStreamReader As New StreamReader(hPath)
-            Dim xHelpString As New XmlSerializer(htHelpStrings.GetType)
-
-            htHelpStrings = CType(xHelpString.Deserialize(objStreamReader), clsXMLLanguageHelp)
-            objStreamReader.Close()
-        End If
     End Sub
 
     Public Sub LoadLanguage(ByVal Language As String, Optional ByVal rAssembly As String = "", Optional ByVal force As Boolean = False)
@@ -340,9 +306,11 @@ Public Class Localization
             End If
             If Not force AndAlso Not htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly).AssenblyName Is Nothing Then Return
 
-            LoadHelpStrings(lhPath)
-
-            htStrings.string.Clear()
+            If htStrings Is Nothing Then
+                htStrings = New clsXMLLanguage
+            Else
+                htStrings.string.Clear()
+            End If
 
             If File.Exists(lPath) Then
                 Dim objStreamReader As New StreamReader(lPath)
@@ -380,7 +348,6 @@ Public Class Localization
 
 #Region "Nested Types"
 
-    ' ************************************************************************************************
     Structure Locs
 
 #Region "Fields"
@@ -393,36 +360,6 @@ Public Class Localization
 
     End Structure
 
-    Structure _ISOLanguage
-
-#Region "Fields"
-
-        Public Alpha2Code As String
-        Public Alpha3Code As String
-        Public Language As String
-
-#End Region 'Fields
-
-    End Structure
-
 #End Region 'Nested Types
 
-End Class
-
-<DataContract> _
-Public Class [langHash]
-    ' need a parameterless constructor for serialization
-    Public Sub New()
-        MyDictionary = New Dictionary(Of String, String)()
-    End Sub
-    <DataMember> _
-    Public Property MyDictionary() As Dictionary(Of String, String)
-        Get
-            Return m_MyDictionary
-        End Get
-        Set(value As Dictionary(Of String, String))
-            m_MyDictionary = value
-        End Set
-    End Property
-    Private m_MyDictionary As Dictionary(Of String, String)
 End Class

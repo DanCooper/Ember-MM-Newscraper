@@ -1,52 +1,48 @@
 ﻿
 '''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="strings")> _
+<Xml.Serialization.XmlType(AnonymousType:=True),
+ Xml.Serialization.XmlRoot([Namespace]:="", IsNullable:=False, ElementName:="strings")>
 Partial Public Class clsXMLLanguage
 
     Private _stringField As New List(Of LanguageString)
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("string")> _
+    <Xml.Serialization.XmlElement("string")>
     Public Property [string]() As List(Of LanguageString)
         Get
-            Return Me._stringField
+            Return _stringField
         End Get
         Set(value As List(Of LanguageString))
-            Me._stringField = value
+            _stringField = value
         End Set
     End Property
 End Class
 
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+<Xml.Serialization.XmlType(AnonymousType:=True)>
 Partial Public Class LanguageString
 
     Private _idField As UShort
 
     Private _valueField As String
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
+    <Xml.Serialization.XmlAttribute()>
     Public Property id() As UShort
         Get
-            Return Me._idField
+            Return _idField
         End Get
         Set(value As UShort)
-            Me._idField = Value
+            _idField = value
         End Set
     End Property
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlTextAttribute()> _
+    <Xml.Serialization.XmlText()>
     Public Property Value() As String
         Get
-            Return Me._valueField
+            Return _valueField
         End Get
         Set(value As String)
-            Me._valueField = Value
+            _valueField = value
         End Set
     End Property
 End Class
-
-
