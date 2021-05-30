@@ -18,13 +18,13 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 1230; 900
-' # Move the panels (pnl*) from 900;900 to 0;0 to edit. Move it back after editing.
+' # Dialog size: 1400;1000
+' # Move the panels (pnl*) from 0;1000 to 0;0 to edit. Move it back after editing.
 
-Imports System.IO
 Imports EmberAPI
-Imports System.Net
 Imports NLog
+Imports System.IO
+Imports System.Net
 
 Public Class dlgSettings
 
@@ -224,29 +224,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub AddHelpHandlers(ByVal Parent As Control, ByVal Prefix As String)
-        Dim pfName As String = String.Empty
-
-        For Each ctrl As Control In Parent.Controls
-            If Not TypeOf ctrl Is GroupBox AndAlso Not TypeOf ctrl Is Panel AndAlso Not TypeOf ctrl Is Label AndAlso
-            Not TypeOf ctrl Is TreeView AndAlso Not TypeOf ctrl Is ToolStrip AndAlso Not TypeOf ctrl Is PictureBox AndAlso
-            Not TypeOf ctrl Is TabControl Then
-                pfName = String.Concat(Prefix, ctrl.Name)
-                ctrl.AccessibleDescription = pfName
-                If dHelp.ContainsKey(pfName) Then
-                    dHelp.Item(pfName) = Master.eLang.GetHelpString(pfName)
-                Else
-                    AddHandler ctrl.MouseEnter, AddressOf HelpMouseEnter
-                    AddHandler ctrl.MouseLeave, AddressOf HelpMouseLeave
-                    dHelp.Add(pfName, Master.eLang.GetHelpString(pfName))
-                End If
-            End If
-            If ctrl.HasChildren Then
-                AddHelpHandlers(ctrl, Prefix)
-            End If
-        Next
-    End Sub
-
     Private Sub AddPanels()
         SettingsPanels.Clear()
 
@@ -390,7 +367,6 @@ Public Class dlgSettings
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass_Data_MovieSet In ModulesManager.Instance.externalScrapersModules_Data_MovieSet.OrderBy(Function(x) x.ModuleOrder)
@@ -401,7 +377,6 @@ Public Class dlgSettings
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass_Data_TV In ModulesManager.Instance.externalScrapersModules_Data_TV.OrderBy(Function(x) x.ModuleOrder)
@@ -412,7 +387,6 @@ Public Class dlgSettings
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass_Image_Movie In ModulesManager.Instance.externalScrapersModules_Image_Movie.OrderBy(Function(x) x.ModuleOrder)
@@ -423,7 +397,6 @@ Public Class dlgSettings
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass_Image_MovieSet In ModulesManager.Instance.externalScrapersModules_Image_MovieSet.OrderBy(Function(x) x.ModuleOrder)
@@ -434,7 +407,6 @@ Public Class dlgSettings
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass_Image_TV In ModulesManager.Instance.externalScrapersModules_Image_TV.OrderBy(Function(x) x.ModuleOrder)
@@ -445,7 +417,6 @@ Public Class dlgSettings
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass_Theme_Movie In ModulesManager.Instance.externalScrapersModules_Theme_Movie.OrderBy(Function(x) x.ModuleOrder)
@@ -456,7 +427,6 @@ Public Class dlgSettings
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass_Theme_TV In ModulesManager.Instance.externalScrapersModules_Theme_TV.OrderBy(Function(x) x.ModuleOrder)
@@ -467,7 +437,6 @@ Public Class dlgSettings
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass_Trailer_Movie In ModulesManager.Instance.externalScrapersModules_Trailer_Movie.OrderBy(Function(x) x.ModuleOrder)
@@ -478,7 +447,6 @@ Public Class dlgSettings
             AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
         For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalGenericModules
@@ -494,7 +462,6 @@ Public Class dlgSettings
                 AddHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
                 AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
                 AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-                AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
             End If
         Next
     End Sub
@@ -2255,6 +2222,18 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkMovieSetKeyartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetKeyartResize.CheckedChanged
+        SetApplyButton(True)
+
+        txtMovieSetKeyartWidth.Enabled = chkMovieSetKeyartResize.Checked
+        txtMovieSetKeyartHeight.Enabled = chkMovieSetKeyartResize.Checked
+
+        If Not chkMovieSetKeyartResize.Checked Then
+            txtMovieSetKeyartWidth.Text = String.Empty
+            txtMovieSetKeyartHeight.Text = String.Empty
+        End If
+    End Sub
+
     Private Sub chkTVShowbannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowBannerResize.CheckedChanged
         SetApplyButton(True)
 
@@ -2288,6 +2267,18 @@ Public Class dlgSettings
         If Not chkTVShowPosterResize.Checked Then
             txtTVShowPosterWidth.Text = String.Empty
             txtTVShowPosterHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub chkTVShowKeyartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowKeyartResize.CheckedChanged
+        SetApplyButton(True)
+
+        txtTVShowKeyartWidth.Enabled = chkTVShowKeyartResize.Checked
+        txtTVShowKeyartHeight.Enabled = chkTVShowKeyartResize.Checked
+
+        If Not chkTVShowKeyartResize.Checked Then
+            txtTVShowKeyartWidth.Text = String.Empty
+            txtTVShowKeyartHeight.Text = String.Empty
         End If
     End Sub
 
@@ -2905,6 +2896,7 @@ Public Class dlgSettings
             cbMovieSetFanartPrefSize.SelectedValue = .MovieSetFanartPrefSize
             cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieSetGeneralCustomScrapeButtonModifierType
             cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieSetGeneralCustomScrapeButtonScrapeType
+            cbMovieSetKeyartPrefSize.SelectedValue = .MovieSetKeyartPrefSize
             cbMovieSetPosterPrefSize.SelectedValue = .MovieSetPosterPrefSize
             cbMovieTrailerMinVideoQual.SelectedValue = .MovieTrailerMinVideoQual
             cbMovieTrailerPrefVideoQual.SelectedValue = .MovieTrailerPrefVideoQual
@@ -2926,6 +2918,7 @@ Public Class dlgSettings
             cbTVShowBannerPrefType.SelectedValue = .TVShowBannerPrefType
             cbTVShowExtrafanartsPrefSize.SelectedValue = .TVShowExtrafanartsPrefSize
             cbTVShowFanartPrefSize.SelectedValue = .TVShowFanartPrefSize
+            cbTVShowKeyartPrefSize.SelectedValue = .TVShowKeyartPrefSize
             cbTVShowPosterPrefSize.SelectedValue = .TVShowPosterPrefSize
             chkCleanDotFanartJPG.Checked = .CleanDotFanartJPG
             chkCleanExtrathumbs.Checked = .CleanExtrathumbs
@@ -3090,6 +3083,13 @@ Public Class dlgSettings
                 chkMovieSetImagesMediaLanguageOnly.Checked = True
                 chkMovieSetImagesGetBlankImages.Checked = .MovieSetImagesGetBlankImages
                 chkMovieSetImagesGetEnglishImages.Checked = .MovieSetImagesGetEnglishImages
+            End If
+            chkMovieSetKeyartKeepExisting.Checked = .MovieSetKeyartKeepExisting
+            chkMovieSetKeyartPrefOnly.Checked = .MovieSetKeyartPrefSizeOnly
+            chkMovieSetKeyartResize.Checked = .MovieSetKeyartResize
+            If .MovieSetKeyartResize Then
+                txtMovieSetKeyartHeight.Text = .MovieSetKeyartHeight.ToString
+                txtMovieSetKeyartWidth.Text = .MovieSetKeyartWidth.ToString
             End If
             chkMovieSetLandscapeKeepExisting.Checked = .MovieSetLandscapeKeepExisting
             chkMovieSetLockPlot.Checked = .MovieSetLockPlot
@@ -3316,6 +3316,13 @@ Public Class dlgSettings
                 txtTVShowFanartHeight.Text = .TVShowFanartHeight.ToString
                 txtTVShowFanartWidth.Text = .TVShowFanartWidth.ToString
             End If
+            chkTVShowKeyartKeepExisting.Checked = .TVShowKeyartKeepExisting
+            chkTVShowKeyartPrefSizeOnly.Checked = .TVShowKeyartPrefSizeOnly
+            chkTVShowKeyartResize.Checked = .TVShowKeyartResize
+            If .TVShowKeyartResize Then
+                txtTVShowKeyartHeight.Text = .TVShowKeyartHeight.ToString
+                txtTVShowKeyartWidth.Text = .TVShowKeyartWidth.ToString
+            End If
             chkTVShowLandscapeKeepExisting.Checked = .TVShowLandscapeKeepExisting
             chkTVShowPosterKeepExisting.Checked = .TVShowPosterKeepExisting
             chkTVShowPosterPrefSizeOnly.Checked = .TVShowPosterPrefSizeOnly
@@ -3369,6 +3376,8 @@ Public Class dlgSettings
             txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat
             txtTVScraperEpisodeActorsLimit.Text = .TVScraperEpisodeActorsLimit.ToString
             txtTVScraperEpisodeGuestStarsLimit.Text = .TVScraperEpisodeGuestStarsLimit.ToString
+            txtTVScraperIdDefaultType.Text = .TVScraperShowIdDefaultType
+            txtTVScraperRatingDefaultType.Text = .TVScraperShowRatingDefaultType
             txtTVScraperShowActorsLimit.Text = .TVScraperShowActorsLimit.ToString
             txtTVScraperShowCountryLimit.Text = .TVScraperShowCountryLimit.ToString
             txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
@@ -3928,7 +3937,6 @@ Public Class dlgSettings
         Setup()
         AddPanels()
         AddButtons()
-        AddHelpHandlers(Me, "Core_")
 
         'get optimal panel size
         Dim pWidth As Integer = CInt(Width)
@@ -4054,14 +4062,6 @@ Public Class dlgSettings
         End If
         ResumeLayout()
         SetApplyButton(True)
-    End Sub
-
-    Private Sub HelpMouseEnter(ByVal sender As Object, ByVal e As EventArgs)
-        lblHelp.Text = dHelp.Item(DirectCast(sender, Control).AccessibleDescription)
-    End Sub
-
-    Private Sub HelpMouseLeave(ByVal sender As Object, ByVal e As EventArgs)
-        lblHelp.Text = String.Empty
     End Sub
 
     Private Sub LoadIntLangs()
@@ -4329,6 +4329,9 @@ Public Class dlgSettings
         cbMoviePosterPrefSize.DataSource = items.ToList
         cbMoviePosterPrefSize.DisplayMember = "Key"
         cbMoviePosterPrefSize.ValueMember = "Value"
+        cbMovieSetKeyartPrefSize.DataSource = items.ToList
+        cbMovieSetKeyartPrefSize.DisplayMember = "Key"
+        cbMovieSetKeyartPrefSize.ValueMember = "Value"
         cbMovieSetPosterPrefSize.DataSource = items.ToList
         cbMovieSetPosterPrefSize.DisplayMember = "Key"
         cbMovieSetPosterPrefSize.ValueMember = "Value"
@@ -4391,6 +4394,9 @@ Public Class dlgSettings
         cbTVAllSeasonsPosterPrefSize.DataSource = items.ToList
         cbTVAllSeasonsPosterPrefSize.DisplayMember = "Key"
         cbTVAllSeasonsPosterPrefSize.ValueMember = "Value"
+        cbTVShowKeyartPrefSize.DataSource = items.ToList
+        cbTVShowKeyartPrefSize.DisplayMember = "Key"
+        cbTVShowKeyartPrefSize.ValueMember = "Value"
         cbTVShowPosterPrefSize.DataSource = items.ToList
         cbTVShowPosterPrefSize.DisplayMember = "Key"
         cbTVShowPosterPrefSize.ValueMember = "Value"
@@ -4591,12 +4597,6 @@ Public Class dlgSettings
     Private Sub RefreshTVEpisodeFilters()
         lstTVEpisodeFilter.Items.Clear()
         lstTVEpisodeFilter.Items.AddRange(Master.eSettings.TVEpisodeFilterCustom.ToArray)
-    End Sub
-
-    Private Sub RefreshHelpStrings(ByVal Language As String)
-        For Each sKey As String In dHelp.Keys
-            dHelp.Item(sKey) = Master.eLang.GetHelpString(sKey)
-        Next
     End Sub
 
     Private Sub RefreshMovieFilters()
@@ -5119,6 +5119,12 @@ Public Class dlgSettings
             .MovieSetImagesGetBlankImages = chkMovieSetImagesGetBlankImages.Checked
             .MovieSetImagesGetEnglishImages = chkMovieSetImagesGetEnglishImages.Checked
             .MovieSetImagesMediaLanguageOnly = chkMovieSetImagesMediaLanguageOnly.Checked
+            .MovieSetKeyartHeight = If(Not String.IsNullOrEmpty(txtMovieSetKeyartHeight.Text), Convert.ToInt32(txtMovieSetKeyartHeight.Text), 0)
+            .MovieSetKeyartKeepExisting = chkMovieSetKeyartKeepExisting.Checked
+            .MovieSetKeyartPrefSizeOnly = chkMovieSetKeyartPrefOnly.Checked
+            .MovieSetKeyartPrefSize = CType(cbMovieSetKeyartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MoviePosterSize)).Value
+            .MovieSetKeyartResize = chkMovieSetKeyartResize.Checked
+            .MovieSetKeyartWidth = If(Not String.IsNullOrEmpty(txtMovieSetKeyartWidth.Text), Convert.ToInt32(txtMovieSetKeyartWidth.Text), 0)
             .MovieSetLandscapeKeepExisting = chkMovieSetLandscapeKeepExisting.Checked
             .MovieSetLockPlot = chkMovieSetLockPlot.Checked
             .MovieSetLockTitle = chkMovieSetLockTitle.Checked
@@ -5347,6 +5353,7 @@ Public Class dlgSettings
             .TVScraperShowEpiGuideURL = chkTVScraperShowEpiGuideURL.Checked
             .TVScraperShowGenre = chkTVScraperShowGenre.Checked
             Integer.TryParse(txtTVScraperShowGenreLimit.Text, .TVScraperShowGenreLimit)
+            .TVScraperShowIdDefaultType = txtTVScraperIdDefaultType.Text
             .TVScraperShowMPAA = chkTVScraperShowMPAA.Checked
             .TVScraperShowOriginalTitle = chkTVScraperShowOriginalTitle.Checked
             .TVScraperShowOriginalTitleAsTitle = chkTVScraperShowOriginalTitleAsTitle.Checked
@@ -5354,6 +5361,7 @@ Public Class dlgSettings
             .TVScraperShowPlot = chkTVScraperShowPlot.Checked
             .TVScraperShowPremiered = chkTVScraperShowPremiered.Checked
             .TVScraperShowRating = chkTVScraperShowRatings.Checked
+            .TVScraperShowRatingDefaultType = txtTVScraperRatingDefaultType.Text
             .TVScraperShowRuntime = chkTVScraperShowRuntime.Checked
             .TVScraperShowStatus = chkTVScraperShowStatus.Checked
             .TVScraperShowStudio = chkTVScraperShowStudio.Checked
@@ -5412,6 +5420,12 @@ Public Class dlgSettings
             .TVShowFilterCustom.AddRange(lstTVShowFilter.Items.OfType(Of String).ToList)
             If .TVShowFilterCustom.Count <= 0 Then .TVShowFilterCustomIsEmpty = True
             .TVShowLandscapeKeepExisting = chkTVShowLandscapeKeepExisting.Checked
+            .TVShowKeyartHeight = If(Not String.IsNullOrEmpty(txtTVShowKeyartHeight.Text), Convert.ToInt32(txtTVShowKeyartHeight.Text), 0)
+            .TVShowKeyartKeepExisting = chkTVShowKeyartKeepExisting.Checked
+            .TVShowKeyartPrefSize = CType(cbTVShowKeyartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVPosterSize)).Value
+            .TVShowKeyartPrefSizeOnly = chkTVShowKeyartPrefSizeOnly.Checked
+            .TVShowKeyartResize = chkTVShowKeyartResize.Checked
+            .TVShowKeyartWidth = If(Not String.IsNullOrEmpty(txtTVShowKeyartWidth.Text), Convert.ToInt32(txtTVShowKeyartWidth.Text), 0)
             .TVShowPosterHeight = If(Not String.IsNullOrEmpty(txtTVShowPosterHeight.Text), Convert.ToInt32(txtTVShowPosterHeight.Text), 0)
             .TVShowPosterKeepExisting = chkTVShowPosterKeepExisting.Checked
             .TVShowPosterPrefSize = CType(cbTVShowPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVPosterSize)).Value
@@ -5943,6 +5957,7 @@ Public Class dlgSettings
         chkMovieFanartResize.Text = strAutomaticallyResize
         chkMovieSetBannerResize.Text = strAutomaticallyResize
         chkMovieSetFanartResize.Text = strAutomaticallyResize
+        chkMovieSetKeyartResize.Text = strAutomaticallyResize
         chkMovieSetPosterResize.Text = strAutomaticallyResize
         chkTVAllSeasonsBannerResize.Text = strAutomaticallyResize
         chkTVAllSeasonsFanartResize.Text = strAutomaticallyResize
@@ -5955,6 +5970,7 @@ Public Class dlgSettings
         chkTVShowBannerResize.Text = strAutomaticallyResize
         chkTVShowExtrafanartsResize.Text = strAutomaticallyResize
         chkTVShowFanartResize.Text = strAutomaticallyResize
+        chkTVShowKeyartResize.Text = strAutomaticallyResize
         chkTVShowPosterResize.Text = strAutomaticallyResize
 
         'Banner
@@ -6311,6 +6327,7 @@ Public Class dlgSettings
         chkMovieExtrafanartsKeepExisting.Text = strKeepExisting
         chkMovieExtrathumbsKeepExisting.Text = strKeepExisting
         chkMovieFanartKeepExisting.Text = strKeepExisting
+        chkMovieKeyartKeepExisting.Text = strKeepExisting
         chkMovieLandscapeKeepExisting.Text = strKeepExisting
         chkMoviePosterKeepExisting.Text = strKeepExisting
         chkMovieSetBannerKeepExisting.Text = strKeepExisting
@@ -6318,6 +6335,7 @@ Public Class dlgSettings
         chkMovieSetClearLogoKeepExisting.Text = strKeepExisting
         chkMovieSetDiscArtKeepExisting.Text = strKeepExisting
         chkMovieSetFanartKeepExisting.Text = strKeepExisting
+        chkMovieSetKeyartKeepExisting.Text = strKeepExisting
         chkMovieSetLandscapeKeepExisting.Text = strKeepExisting
         chkMovieSetPosterKeepExisting.Text = strKeepExisting
         chkMovieThemeKeepExisting.Text = strKeepExisting
@@ -6339,12 +6357,15 @@ Public Class dlgSettings
         chkTVShowExtrafanartsKeepExisting.Text = strKeepExisting
         chkTVShowFanartKeepExisting.Text = strKeepExisting
         chkTVShowLandscapeKeepExisting.Text = strKeepExisting
+        chkTVShowKeyartKeepExisting.Text = strKeepExisting
         chkTVShowPosterKeepExisting.Text = strKeepExisting
         chkTVShowThemeKeepExisting.Text = strKeepExisting
 
         'Keyart
         Dim strKeyart As String = Master.eLang.GetString(1237, "Keyart")
         gbMovieImagesKeyartOpts.Text = strKeyart
+        gbMovieSetImagesKeyartOpts.Text = strKeyart
+        gbTVImagesShowKeyartOpts.Text = strKeyart
         lblMovieSourcesFilenamingExpertBDMVKeyart.Text = strKeyart
         lblMovieSourcesFilenamingExpertMultiKeyart.Text = strKeyart
         lblMovieSourcesFilenamingExpertSingleKeyart.Text = strKeyart
@@ -6416,9 +6437,11 @@ Public Class dlgSettings
         lblMovieExtrafanartsHeight.Text = strMaxHeight
         lblMovieExtrathumbsHeight.Text = strMaxHeight
         lblMovieFanartHeight.Text = strMaxHeight
+        lblMovieKeyartHeight.Text = strMaxHeight
         lblMoviePosterHeight.Text = strMaxHeight
         lblMovieSetBannerHeight.Text = strMaxHeight
         lblMovieSetFanartHeight.Text = strMaxHeight
+        lblMovieSetKeyartHeight.Text = strMaxHeight
         lblMovieSetPosterHeight.Text = strMaxHeight
         lblTVAllSeasonsBannerHeight.Text = strMaxHeight
         lblTVAllSeasonsFanartHeight.Text = strMaxHeight
@@ -6431,6 +6454,7 @@ Public Class dlgSettings
         lblTVShowBannerHeight.Text = strMaxHeight
         lblTVShowExtrafanartsHeight.Text = strMaxHeight
         lblTVShowFanartHeight.Text = strMaxHeight
+        lblTVShowKeyartHeight.Text = strMaxHeight
         lblTVShowPosterHeight.Text = strMaxHeight
 
         'Max Height:
@@ -6439,9 +6463,11 @@ Public Class dlgSettings
         lblMovieExtrafanartsWidth.Text = strMaxWidth
         lblMovieExtrathumbsWidth.Text = strMaxWidth
         lblMovieFanartWidth.Text = strMaxWidth
+        lblMovieKeyartWidth.Text = strMaxWidth
         lblMoviePosterWidth.Text = strMaxWidth
         lblMovieSetBannerWidth.Text = strMaxWidth
         lblMovieSetFanartWidth.Text = strMaxWidth
+        lblMovieSetKeyartWidth.Text = strMaxWidth
         lblMovieSetPosterWidth.Text = strMaxWidth
         lblTVAllSeasonsBannerWidth.Text = strMaxWidth
         lblTVAllSeasonsFanartWidth.Text = strMaxWidth
@@ -6454,6 +6480,7 @@ Public Class dlgSettings
         lblTVShowBannerWidth.Text = strMaxWidth
         lblTVShowExtrafanartsWidth.Text = strMaxWidth
         lblTVShowFanartWidth.Text = strMaxWidth
+        lblTVShowKeyartWidth.Text = strMaxWidth
         lblTVShowPosterWidth.Text = strMaxWidth
 
         'Meta Data
@@ -6518,9 +6545,11 @@ Public Class dlgSettings
         chkMovieExtrafanartsPrefOnly.Text = strOnly
         chkMovieExtrathumbsPrefOnly.Text = strOnly
         chkMovieFanartPrefOnly.Text = strOnly
+        chkMovieKeyartPrefOnly.Text = strOnly
         chkMoviePosterPrefOnly.Text = strOnly
         chkMovieSetBannerPrefOnly.Text = strOnly
         chkMovieSetFanartPrefOnly.Text = strOnly
+        chkMovieSetKeyartPrefOnly.Text = strOnly
         chkMovieSetPosterPrefOnly.Text = strOnly
         chkTVAllSeasonsBannerPrefSizeOnly.Text = strOnly
         chkTVAllSeasonsFanartPrefSizeOnly.Text = strOnly
@@ -6533,6 +6562,7 @@ Public Class dlgSettings
         chkTVShowBannerPrefSizeOnly.Text = strOnly
         chkTVShowExtrafanartsPrefSizeOnly.Text = strOnly
         chkTVShowFanartPrefSizeOnly.Text = strOnly
+        chkTVShowKeyartPrefSizeOnly.Text = strOnly
         chkTVShowPosterPrefSizeOnly.Text = strOnly
 
         'Only Get Images for the Media Language
@@ -6636,9 +6666,11 @@ Public Class dlgSettings
         lblMovieExtrafanartsSize.Text = strPreferredSize
         lblMovieExtrathumbsSize.Text = strPreferredSize
         lblMovieFanartSize.Text = strPreferredSize
+        lblMovieKeyartSize.Text = strPreferredSize
         lblMoviePosterSize.Text = strPreferredSize
         lblMovieSetBannerSize.Text = strPreferredSize
         lblMovieSetFanartSize.Text = strPreferredSize
+        lblMovieSetKeyartSize.Text = strPreferredSize
         lblMovieSetPosterSize.Text = strPreferredSize
         lblTVAllSeasonsBannerPrefSize.Text = strPreferredSize
         lblTVAllSeasonsFanartPrefSize.Text = strPreferredSize
@@ -6651,6 +6683,7 @@ Public Class dlgSettings
         lblTVShowBannerPrefSize.Text = strPreferredSize
         lblTVShowExtrafanartsSize.Text = strPreferredSize
         lblTVShowFanartPrefSize.Text = strPreferredSize
+        lblTVShowKeyartPrefSize.Text = strPreferredSize
         lblTVShowPosterPrefSize.Text = strPreferredSize
 
         'Preferred Type:
@@ -6957,7 +6990,6 @@ Public Class dlgSettings
         gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
         gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
         gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
-        gbSettingsHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
         gbTVEpisodeFilterOpts.Text = Master.eLang.GetString(671, "Episode Folder/File Name Filters")
         gbTVGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
@@ -7060,6 +7092,8 @@ Public Class dlgSettings
         txtMovieSetBannerWidth.KeyPress,
         txtMovieSetFanartHeight.KeyPress,
         txtMovieSetFanartWidth.KeyPress,
+        txtMovieSetKeyartHeight.KeyPress,
+        txtMovieSetKeyartWidth.KeyPress,
         txtMovieSetPosterHeight.KeyPress,
         txtMovieSetPosterWidth.KeyPress,
         txtMovieSkipLessThan.KeyPress,
@@ -7086,6 +7120,8 @@ Public Class dlgSettings
         txtTVShowExtrafanartsWidth.KeyPress,
         txtTVShowFanartHeight.KeyPress,
         txtTVShowFanartWidth.KeyPress,
+        txtTVShowKeyartHeight.KeyPress,
+        txtTVShowKeyartWidth.KeyPress,
         txtTVShowPosterHeight.KeyPress,
         txtTVShowPosterWidth.KeyPress,
         txtTVSkipLessThan.KeyPress,
@@ -7917,6 +7953,7 @@ Public Class dlgSettings
 
     Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
         cbGeneralDateTime.SelectedIndexChanged,
+        cbGeneralMovieTheme.SelectedIndexChanged,
         cbGeneralTheme.SelectedIndexChanged,
         cbMovieBannerPrefSize.SelectedIndexChanged,
         cbMovieExtrafanartsPrefSize.SelectedIndexChanged,
@@ -7935,6 +7972,7 @@ Public Class dlgSettings
         cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
         cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
         cbMovieSetImagesForcedLanguage.SelectedIndexChanged,
+        cbMovieSetKeyartPrefSize.SelectedIndexChanged,
         cbMovieSetPosterPrefSize.SelectedIndexChanged,
         cbMovieTrailerMinVideoQual.SelectedIndexChanged,
         cbTVAllSeasonsBannerPrefType.SelectedIndexChanged,
@@ -7954,6 +7992,7 @@ Public Class dlgSettings
         cbTVShowBannerPrefType.SelectedIndexChanged,
         cbTVShowExtrafanartsPrefSize.SelectedIndexChanged,
         cbTVShowFanartPrefSize.SelectedIndexChanged,
+        cbTVShowKeyartPrefSize.SelectedIndexChanged,
         cbTVShowPosterPrefSize.SelectedIndexChanged,
         chkCleanDotFanartJPG.CheckedChanged,
         chkCleanExtrathumbs.CheckedChanged,
@@ -8094,6 +8133,9 @@ Public Class dlgSettings
         chkMovieScraperCollectionsYAMJCompatibleSets.CheckedChanged,
         chkMovieScraperCredits.CheckedChanged,
         chkMovieScraperDirector.CheckedChanged,
+        chkMovieScraperIdWriteNodeDefaultId.CheckedChanged,
+        chkMovieScraperIdWriteNodeTMDbCollectionId.CheckedChanged,
+        chkMovieScraperIdWriteNodeTMDbId.CheckedChanged,
         chkMovieScraperMPAA.CheckedChanged,
         chkMovieScraperMetaDataIFOScan.CheckedChanged,
         chkMovieScraperMetaDataScan.CheckedChanged,
@@ -8140,7 +8182,9 @@ Public Class dlgSettings
         chkMovieSetImagesGetBlankImages.CheckedChanged,
         chkMovieSetImagesGetEnglishImages.CheckedChanged,
         chkMovieSetKeyartExtended.CheckedChanged,
+        chkMovieSetKeyartKeepExisting.CheckedChanged,
         chkMovieSetKeyartMatrix.CheckedChanged,
+        chkMovieSetKeyartPrefOnly.CheckedChanged,
         chkMovieSetLandscapeExtended.CheckedChanged,
         chkMovieSetLandscapeKeepExisting.CheckedChanged,
         chkMovieSetLandscapeMSAA.CheckedChanged,
@@ -8207,6 +8251,7 @@ Public Class dlgSettings
         chkTVLockSeasonPlot.CheckedChanged,
         chkTVLockSeasonTitle.CheckedChanged,
         chkTVLockShowCert.CheckedChanged,
+        chkTVLockShowCountry.CheckedChanged,
         chkTVLockShowCreators.CheckedChanged,
         chkTVLockShowGenre.CheckedChanged,
         chkTVLockShowMPAA.CheckedChanged,
@@ -8216,6 +8261,7 @@ Public Class dlgSettings
         chkTVLockShowRuntime.CheckedChanged,
         chkTVLockShowStatus.CheckedChanged,
         chkTVLockShowStudio.CheckedChanged,
+        chkTVLockShowTagline.CheckedChanged,
         chkTVLockShowTitle.CheckedChanged,
         chkTVLockShowUserRating.CheckedChanged,
         chkTVScanOrderModify.CheckedChanged,
@@ -8230,6 +8276,8 @@ Public Class dlgSettings
         chkTVScraperEpisodeRuntime.CheckedChanged,
         chkTVScraperEpisodeTitle.CheckedChanged,
         chkTVScraperEpisodeUserRating.CheckedChanged,
+        chkTVScraperIdWriteNodeDefaultId.CheckedChanged,
+        chkTVScraperRatingVotesWriteNode.CheckedChanged,
         chkTVScraperSeasonAired.CheckedChanged,
         chkTVScraperSeasonPlot.CheckedChanged,
         chkTVScraperSeasonTitle.CheckedChanged,
@@ -8241,6 +8289,7 @@ Public Class dlgSettings
         chkTVScraperShowPremiered.CheckedChanged,
         chkTVScraperShowRatings.CheckedChanged,
         chkTVScraperShowStatus.CheckedChanged,
+        chkTVScraperShowTagline.CheckedChanged,
         chkTVScraperShowTitle.CheckedChanged,
         chkTVScraperShowUserRating.CheckedChanged,
         chkTVScraperUseDisplaySeasonEpisode.CheckedChanged,
@@ -8367,6 +8416,7 @@ Public Class dlgSettings
         txtMovieScraperCountryLimit.TextChanged,
         txtMovieScraperDurationRuntimeFormat.TextChanged,
         txtMovieScraperGenreLimit.TextChanged,
+        txtMovieScraperIdDefaultType.TextChanged,
         txtMovieScraperMPAANotRated.TextChanged,
         txtMovieScraperOutlineLimit.TextChanged,
         txtMovieScraperRatingDefaultType.TextChanged,
@@ -8382,6 +8432,8 @@ Public Class dlgSettings
         txtMovieSetFanartWidth.TextChanged,
         txtMovieSetKeyartExpertSingle.TextChanged,
         txtMovieSetLandscapeExpertSingle.TextChanged,
+        txtMovieSetKeyartHeight.TextChanged,
+        txtMovieSetKeyartWidth.TextChanged,
         txtMovieSetNFOExpertSingle.TextChanged,
         txtMovieSetPathMSAA.TextChanged,
         txtMovieSetPosterExpertSingle.TextChanged,
@@ -8413,7 +8465,10 @@ Public Class dlgSettings
         txtTVScraperDurationRuntimeFormat.TextChanged,
         txtTVScraperEpisodeActorsLimit.TextChanged,
         txtTVScraperEpisodeGuestStarsLimit.TextChanged,
+        txtTVScraperIdDefaultType.TextChanged,
+        txtTVScraperRatingDefaultType.TextChanged,
         txtTVScraperShowActorsLimit.TextChanged,
+        txtTVScraperShowCountryLimit.TextChanged,
         txtTVScraperShowStudioLimit.TextChanged,
         txtTVSeasonBannerHeight.TextChanged,
         txtTVSeasonBannerWidth.TextChanged,
@@ -8442,16 +8497,7 @@ Public Class dlgSettings
         txtTVShowPosterWidth.TextChanged,
         txtTVShowThemeDefaultSearch.TextChanged,
         txtTVShowThemeTvTunesCustomPath.TextChanged,
-        txtTVShowThemeTvTunesSubDir.TextChanged,
-        cbGeneralMovieTheme.SelectedIndexChanged,
-        txtMovieScraperIdDefaultType.TextChanged,
-        chkMovieScraperIdWriteNodeTMDbCollectionId.CheckedChanged,
-        chkMovieScraperIdWriteNodeTMDbId.CheckedChanged,
-        chkMovieScraperIdWriteNodeDefaultId.CheckedChanged,
-        chkTVScraperShowTagline.CheckedChanged,
-        chkTVLockShowTagline.CheckedChanged,
-        chkTVLockShowCountry.CheckedChanged,
-        txtTVScraperShowCountryLimit.TextChanged
+        txtTVShowThemeTvTunesSubDir.TextChanged
 
         SetApplyButton(True)
     End Sub

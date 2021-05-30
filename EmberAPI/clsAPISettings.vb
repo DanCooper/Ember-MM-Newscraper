@@ -80,9 +80,9 @@ Public Class Settings
     Public Property GeneralDisplayLandscape() As Boolean = True
     Public Property GeneralDisplayPoster() As Boolean = True
     Public Property GeneralDoubleClickScrape() As Boolean = False
-    Public Property GeneralFilterPanelIsRaisedMovie() As Boolean = False
-    Public Property GeneralFilterPanelIsRaisedMovieSet() As Boolean = False
-    Public Property GeneralFilterPanelIsRaisedTVShow() As Boolean = False
+    Public Property GeneralFilterPanelIsRaisedMovie() As Boolean = True
+    Public Property GeneralFilterPanelIsRaisedMovieSet() As Boolean = True
+    Public Property GeneralFilterPanelIsRaisedTVShow() As Boolean = True
     Public Property GeneralImageFilter() As Boolean = False
     Public Property GeneralImageFilterAutoscraper() As Boolean = False
     Public Property GeneralImageFilterFanart() As Boolean = False
@@ -91,9 +91,9 @@ Public Class Settings
     Public Property GeneralImageFilterPoster() As Boolean = False
     Public Property GeneralImageFilterPosterMatchTolerance() As Integer = 1
     Public Property GeneralImagesGlassOverlay() As Boolean = False
-    Public Property GeneralInfoPanelStateMovie() As Integer = 200
-    Public Property GeneralInfoPanelStateMovieSet() As Integer = 200
-    Public Property GeneralInfoPanelStateTVShow() As Integer = 200
+    Public Property GeneralInfoPanelStateMovie() As Integer = 2
+    Public Property GeneralInfoPanelStateMovieSet() As Integer = 2
+    Public Property GeneralInfoPanelStateTVShow() As Integer = 2
     Public Property GeneralLanguage() As String = "English_(en_US)"
     Public Property GeneralMainFilterSortColumn_Episodes() As Integer = 1
     Public Property GeneralMainFilterSortColumn_MovieSets() As Integer = 1
@@ -628,7 +628,7 @@ Public Class Settings
     Public Property TVShowThemeDefaultSearch() As String = "theme soundtrack"
     Public Property TVShowThemeKeepExisting() As Boolean = False
     Public Property TVSkipLessThan() As Integer = 0
-    Public Property TVSortTokens() As List(Of String)
+    Public Property TVSortTokens() As List(Of String) = New List(Of String)
     Public Property TVSortTokensIsEmpty() As Boolean = False
     Public Property Username() As String = String.Empty
     Public Property Version() As String = String.Empty
