@@ -1374,6 +1374,10 @@ Public Class dlgEdit_TVShow
         End If
     End Sub
 
+    Private Sub Title_TextChanged(sender As Object, e As EventArgs) Handles txtTitle.TextChanged
+        btnOK.Enabled = Not String.IsNullOrEmpty(txtTitle.Text.Trim)
+    End Sub
+
     Private Sub Theme_Load(ByVal Theme As MediaContainers.MediaFile)
         txtLocalTheme.Text =
             If(Theme.LocalFilePathSpecified, Theme.LocalFilePath,

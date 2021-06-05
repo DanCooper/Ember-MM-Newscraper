@@ -325,6 +325,7 @@ Partial Class dlgEdit_TVEpisode
         '
         Me.btnOK.AutoSize = True
         Me.btnOK.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnOK.Enabled = False
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnOK.Location = New System.Drawing.Point(1129, 3)
         Me.btnOK.Name = "btnOK"
@@ -1949,8 +1950,10 @@ Partial Class dlgEdit_TVEpisode
         '
         'dlgEdit_TVEpisode
         '
+        Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(1284, 831)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlBottom)

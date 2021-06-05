@@ -382,6 +382,7 @@ Partial Class dlgEdit_TVShow
         '
         'btnOK
         '
+        Me.btnOK.Enabled = False
         Me.btnOK.Location = New System.Drawing.Point(1129, 30)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(70, 23)

@@ -24,7 +24,7 @@ Partial Class dlgEdit_Movieset
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEdit_Movieset))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.tblTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
@@ -354,6 +354,7 @@ Partial Class dlgEdit_Movieset
         '
         Me.btnOK.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.btnOK.AutoSize = True
+        Me.btnOK.Enabled = False
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnOK.Location = New System.Drawing.Point(900, 26)
         Me.btnOK.Name = "btnOK"
@@ -555,8 +556,8 @@ Partial Class dlgEdit_Movieset
         Me.dgvDatabaseList.AllowUserToDeleteRows = False
         Me.dgvDatabaseList.AllowUserToResizeColumns = False
         Me.dgvDatabaseList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvDatabaseList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvDatabaseList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvDatabaseList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvDatabaseList.BackgroundColor = System.Drawing.Color.White
         Me.dgvDatabaseList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -1861,8 +1862,10 @@ Partial Class dlgEdit_Movieset
         '
         'dlgEdit_Movieset
         '
+        Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(1057, 831)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTop)

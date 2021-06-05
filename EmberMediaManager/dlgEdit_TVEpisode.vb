@@ -1113,6 +1113,10 @@ Public Class dlgEdit_TVEpisode
         End If
     End Sub
 
+    Private Sub Title_TextChanged(sender As Object, e As EventArgs) Handles txtTitle.TextChanged
+        btnOK.Enabled = Not String.IsNullOrEmpty(txtTitle.Text.Trim)
+    End Sub
+
     Private Sub UniqueIds_Fill()
         dgvUniqueIds.SuspendLayout()
 

@@ -443,18 +443,29 @@ Public Class dlgEdit_Movieset
         End If
     End Sub
 
-    Private Sub DatabaseList_SearchMovies_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearchMovie.Click
+    Private Sub DatabaseList_SearchMovies_Click() Handles btnSearchMovie.Click
         Controls_SetEnabled(False)
         Application.DoEvents()
         DatabaseList_Fill()
         DatabaseList_RunFilter()
     End Sub
 
+    Private Sub DatabaseList_SearchMovies_Enter(sender As Object, e As EventArgs) Handles txtSearchMovies.Enter
+        AcceptButton = Nothing
+    End Sub
+
     Private Sub DatabaseList_SearchMovies_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtSearchMovies.KeyPress
         e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
+            If dgvDatabaseList.DataSource Is Nothing Then
+                DatabaseList_SearchMovies_Click()
+            End If
             dgvDatabaseList.Focus()
         End If
+    End Sub
+
+    Private Sub DatabaseList_SearchMovies_Leave(sender As Object, e As EventArgs) Handles txtSearchMovies.Leave
+        AcceptButton = btnOK
     End Sub
 
     Private Sub DatabaseList_SearchMovies_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtSearchMovies.TextChanged
@@ -864,7 +875,7 @@ Public Class dlgEdit_Movieset
     End Sub
 
     Private Sub Title_TextChanged(sender As Object, e As EventArgs) Handles txtTitle.TextChanged
-        btnOK.Enabled = Not String.IsNullOrEmpty(txtTitle.Text)
+        btnOK.Enabled = Not String.IsNullOrEmpty(txtTitle.Text.Trim)
     End Sub
 
     Private Sub TMDbColID_Get_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGetTMDbColID.Click
