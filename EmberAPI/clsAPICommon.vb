@@ -1384,40 +1384,6 @@ Public Class Functions
         Return String.Empty
     End Function
     ''' <summary>
-    ''' Determine whether the supplied path is already defined as a TV Show season subdirectory
-    ''' </summary>
-    ''' <param name="sPath">The path to look for</param>
-    ''' <returns><c>True</c> if the supplied path is found in the list of configured TV Show season directories, <c>False</c> otherwise</returns>
-    ''' <remarks></remarks>
-    Public Shared Function IsSeasonDirectory(ByVal sPath As String) As Boolean
-        'TODO Warning - Potential for false positives and false negatives as paths can be defined in different ways to arrive at the same destination
-        Dim SeasonFolderPattern As New List(Of String)
-        SeasonFolderPattern.Add("(?<season>specials?)$")
-        SeasonFolderPattern.Add("^(s(eason)?)?[\W_]*(?<season>[0-9]+)$")
-        SeasonFolderPattern.Add("[^\w]s(eason)?[\W_]*(?<season>[0-9]+)")
-        For Each pattern In SeasonFolderPattern
-            If Regex.IsMatch(FileUtils.Common.GetDirectory(sPath), pattern, RegexOptions.IgnoreCase) Then Return True
-        Next
-        'no matches
-        Return False
-    End Function
-    ''' <summary>
-    ''' Convert a List(of T) to a string of separated values
-    ''' </summary>
-    ''' <param name="source">List(of T)</param>
-    ''' <param name="separator">Character or string to use as a value separator</param>
-    ''' <returns>String of separated List values.
-    ''' If the list is empty, an empty string will be returned.
-    ''' If the separator is empty or missing, assume "," is the separator</returns>
-    Public Shared Function ListToStringWithSeparator(Of T)(ByVal source As IList(Of T), ByVal separator As String) As String
-        If source Is Nothing Then Return String.Empty
-        If String.IsNullOrEmpty(separator) Then separator = ","
-
-        Dim values As String() = source.Cast(Of Object)().Where(Function(n) n IsNot Nothing).Select(Function(s) s.ToString).ToArray
-
-        Return String.Join(separator, values)
-    End Function
-    ''' <summary>
     ''' Set the DoubleBuffered property of the supplied Panel. This will tell the control to redraw its surface using a 
     ''' secondary buffer to reduce/prevent flicker.
     ''' </summary>

@@ -18,10 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Drawing
-Imports System.Windows.Forms
-Imports System.Runtime.CompilerServices
 Imports NLog
+Imports System.Drawing
+Imports System.Runtime.CompilerServices
+Imports System.Windows.Forms
 
 <Assembly: InternalsVisibleTo("EmberAPI_Test")> 
 
@@ -107,32 +107,6 @@ Public Class ImageUtils
 
         Return oImage
     End Function
-    ''' <summary>
-    ''' Draw a gradiated ellipse on the supplied <paramref name="graphics"/>, defined by <paramref name="bounds"/>,
-    ''' with a line color of <paramref name="outerColor"/> and a center/fill of <paramref name="centerColor"/>.
-    ''' </summary>
-    ''' <param name="graphics"><c>Graphics</c> surface to draw on</param>
-    ''' <param name="bounds"><c>Rectangle</c> that defines the boundaries of the ellipse</param>
-    ''' <param name="centerColor">The center <c>Color</c></param>
-    ''' <param name="outerColor">The outer edge <c>Color</c></param>
-    ''' <remarks></remarks>
-    Public Shared Sub DrawGradEllipse(ByRef graphics As Graphics, ByVal bounds As Rectangle, ByVal centerColor As Color, ByVal outerColor As Color)
-        'Some quick-and-dirty sanity checking
-        If graphics Is Nothing OrElse (bounds.Width = 0 And bounds.Height = 0) Then Return
-
-        Try
-            Using gPath As New Drawing2D.GraphicsPath
-                gPath.AddEllipse(bounds.X, bounds.Y, bounds.Width, bounds.Height)
-                Using pgBrush = New Drawing2D.PathGradientBrush(gPath)
-                    pgBrush.CenterColor = centerColor
-                    pgBrush.SurroundColors = New Color() {outerColor, outerColor, outerColor, outerColor}
-                    graphics.FillEllipse(pgBrush, bounds.X, bounds.Y, bounds.Width, bounds.Height)
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
     ''' <summary>
     ''' Resize the supplied <paramref name="_image"/>, preserving proportions.
     ''' </summary>
@@ -366,64 +340,13 @@ Public Class ImageUtils
 
         Return imgUnderlay
     End Function
-
-    'cocotus, 2013/02 Export HTML expanded: configurable resizable images
-    ' New Image methods added here (resizing/compressing)
-
-    ''' <summary>
-    ''' Compress JPEG <c>Image</c> and save result as local image
-    ''' </summary>
-    ''' <param name="Image">Image which should be compressed/encoded</param>
-    ''' <param name="OutPutFile">Savepath of recoded image</param>
-    ''' <param name="Qualitiy">Quality Setting 0-100</param>
-    Public Shared Sub JPEGCompression(ByVal Image As Image, ByVal OutPutFile As String, ByVal Qualitiy As Integer)
-        If String.IsNullOrEmpty(OutPutFile) Then Return
-
-        Dim ImageCodecs() As Imaging.ImageCodecInfo
-        Dim ImageParameters As Imaging.EncoderParameters
-
-        ImageCodecs = Imaging.ImageCodecInfo.GetImageEncoders()
-        ImageParameters = New Imaging.EncoderParameters(1)
-        ImageParameters.Param(0) = New Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, Qualitiy)
-        Image.Save(OutPutFile, ImageCodecs(1), ImageParameters)
-    End Sub
-    ''' <summary>
-    ''' Resize the supplied <c>Image</c>
-    ''' </summary>
-    ''' <param name="poImage"><c>Image</c> which should be resized</param>
-    ''' <param name="poSize"><c>Size</c> of image</param>
-    Public Shared Function ResizeImage(ByVal poImage As Image, ByVal poSize As Size) As Image
-        'TODO 2013/12/16 Dekker500 - This method fails unit tests. This STRETCHES the images, not a true resize. Don't think this is what is actually desired
-
-        If (poImage Is Nothing) _
-            OrElse (poSize.IsEmpty) _
-            OrElse (poSize.Width <= 0 OrElse poSize.Height <= 0) Then
-            Return poImage
-        End If
-        Dim ResizedImage As Image
-        Using Original As Image = DirectCast(poImage.Clone(), Image)
-            ResizedImage = New Bitmap(poSize.Width, poSize.Height, Original.PixelFormat)
-            Using oGraphic As Graphics = Graphics.FromImage(ResizedImage)
-                oGraphic.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
-                oGraphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality
-                oGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic
-                Dim oRectangle As Rectangle = New Rectangle(0, 0, poSize.Width, poSize.Height)
-                oGraphic.DrawImage(Original, oRectangle)
-            End Using
-        End Using
-
-        Return ResizedImage
-    End Function
-
-    'cocotus end
-
     ''' <summary>
     ''' Adds the supplied <paramref name="genreString"/> to the given <paramref name="image"/>
     ''' </summary>
     ''' <param name="image">Source <c>Image</c> to manipulate</param>
     ''' <param name="genreString"><c>String</c> to superimpose</param>
     ''' <remarks>If an error is encountered, the source image is returned.</remarks>
-    Public Shared Function AddGenreString(ByRef image As System.Drawing.Image, genreString As String) As Bitmap
+    Public Shared Function AddGenreString(ByRef image As Image, genreString As String) As Bitmap
         If (image Is Nothing) OrElse (image.Size.IsEmpty) Then
             logger.Error("Invalid image parameter", New StackTrace().ToString())
             Return Nothing
@@ -451,8 +374,6 @@ Public Class ImageUtils
     End Function
 
 #End Region 'Methods
-
-
     ''' <summary>
     ''' Contains methods for image comparison and recognition. 
     ''' </summary>
@@ -469,8 +390,6 @@ Public Class ImageUtils
             AverageHash = 0
             PHash = 1
         End Enum
-
-
         ''' <summary>
         ''' Check similarity between two given images
         ''' </summary>
@@ -493,7 +412,6 @@ Public Class ImageUtils
 
             Return CalculateHammingDistance(imagehash_1, imagehash_2)
         End Function
-
         ''' <summary>
         ''' Check similarity between two given images
         ''' </summary>
@@ -517,7 +435,6 @@ Public Class ImageUtils
 
             Return CalculateHammingDistance(imagehash_1, imagehash_2)
         End Function
-
         ''' <summary>
         ''' Check similarity between two given images
         ''' </summary>
@@ -542,7 +459,6 @@ Public Class ImageUtils
 
             Return CalculateHammingDistance(imagehash_1, imagehash_2)
         End Function
-
         ''' <summary>
         ''' Check similarity between two given hashes (of images)
         ''' </summary>
@@ -574,7 +490,6 @@ Public Class ImageUtils
                 Return False
             End If
         End Function
-
         ''' <summary>
         ''' Computes the HammingDistance between the hashcode of two images
         ''' </summary>
@@ -597,7 +512,6 @@ Public Class ImageUtils
             Loop
             Return same
         End Function
-
         ''' <summary>
         ''' Reduce size of image
         ''' </summary>
@@ -620,7 +534,6 @@ Public Class ImageUtils
             tmpcanvas.Dispose()
             Return bmp
         End Function
-
 
         ''' <summary>
         ''' Reduce color of image and convert to grayscale
@@ -959,4 +872,5 @@ Public Class ImageUtils
 #End Region
 
     End Class
+
 End Class
