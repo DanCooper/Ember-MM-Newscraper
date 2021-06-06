@@ -610,6 +610,7 @@
     <Content Include="Images\Flags\rating_userrating.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\hasKeyart.png" />
     <Content Include="Themes\FullHD-DarkBlue.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

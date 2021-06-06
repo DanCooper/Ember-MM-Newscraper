@@ -273,6 +273,16 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property hasKeyart() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hasKeyart", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property hasLandscape() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("hasLandscape", resourceCulture)

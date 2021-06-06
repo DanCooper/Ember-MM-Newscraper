@@ -5438,7 +5438,7 @@ Public Class frmMain
             ElseIf colName = "FanartPath" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 9)
             ElseIf colName = "KeyartPath" Then
-                ilColumnIcons.Draw(e.Graphics, pt, 12)
+                ilColumnIcons.Draw(e.Graphics, pt, 20)
             ElseIf colName = "LandscapePath" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 10)
             ElseIf colName = "NfoPath" Then
@@ -6087,7 +6087,7 @@ Public Class frmMain
             ElseIf colName = "FanartPath" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 9)
             ElseIf colName = "KeyartPath" Then
-                ilColumnIcons.Draw(e.Graphics, pt, 12)
+                ilColumnIcons.Draw(e.Graphics, pt, 20)
             ElseIf colName = "LandscapePath" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 10)
             ElseIf colName = "NfoPath" Then
@@ -7535,7 +7535,7 @@ Public Class frmMain
             ElseIf colName = "FanartPath" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 9)
             ElseIf colName = "KeyartPath" Then
-                ilColumnIcons.Draw(e.Graphics, pt, 12)
+                ilColumnIcons.Draw(e.Graphics, pt, 20)
             ElseIf colName = "LandscapePath" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 10)
             ElseIf colName = "NfoPath" Then
