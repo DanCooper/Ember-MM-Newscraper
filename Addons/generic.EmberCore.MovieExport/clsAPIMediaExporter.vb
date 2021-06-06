@@ -790,7 +790,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$TOP250>", StringUtils.HtmlEncode(tMovie.Movie.Top250.ToString))
         strRow = strRow.Replace("<$TRAILER>", StringUtils.HtmlEncode(tMovie.Movie.Trailer))
         strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tMovie.Movie.VideoSource))
-        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tMovie.Movie.VotesSpecified, Double.Parse(tMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
+        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tMovie.Movie.VotesSpecified, Integer.Parse(tMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
         strRow = strRow.Replace("<$YEAR>", tMovie.Movie.Year)
 
         'FileInfo
@@ -900,7 +900,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tEpisode.TVEpisode.UniqueIDs.TMDbId.ToString))
         strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tEpisode.TVEpisode.UniqueIDs.TVDbId.ToString))
         strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tEpisode.TVEpisode.VideoSource))
-        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.TVEpisode.VotesSpecified, Double.Parse(tEpisode.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
+        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.TVEpisode.VotesSpecified, Integer.Parse(tEpisode.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
         'FileInfo
         Dim fInfo As AVSInfo = GetAVSInfo(tEpisode.TVEpisode.FileInfo)
@@ -1039,7 +1039,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(Title))
         strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tShow.TVShow.UniqueIDs.TMDbId.ToString))
         strRow = strRow.Replace("<$TVDBID>", tShow.TVShow.UniqueIDs.TVDbId.ToString)
-        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tShow.TVShow.VotesSpecified, Double.Parse(tShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
+        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tShow.TVShow.VotesSpecified, Integer.Parse(tShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
         Return strRow
     End Function

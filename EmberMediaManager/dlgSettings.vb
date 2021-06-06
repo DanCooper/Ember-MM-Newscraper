@@ -3240,8 +3240,9 @@ Public Class dlgSettings
             chkTVScraperEpisodeRuntime.Checked = .TVScraperEpisodeRuntime
             chkTVScraperEpisodeTitle.Checked = .TVScraperEpisodeTitle
             chkTVScraperEpisodeUserRating.Checked = .TVScraperEpisodeUserRating
-            chkTVScraperIdWriteNodeDefaultId.Checked = .TVScraperShowIdWriteNodeDefaultId
+            chkTVScraperIdWriteNodeDefaultId.Checked = .TVScraperIdWriteNodeDefaultId
             chkTVScraperMetaDataScan.Checked = .TVScraperMetaDataScan
+            chkTVScraperRatingVotesWriteNode.Checked = .TVScraperRatingVotesWriteNode
             chkTVScraperSeasonAired.Checked = .TVScraperSeasonAired
             chkTVScraperSeasonPlot.Checked = .TVScraperSeasonPlot
             chkTVScraperSeasonTitle.Checked = .TVScraperSeasonTitle
@@ -3376,8 +3377,8 @@ Public Class dlgSettings
             txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat
             txtTVScraperEpisodeActorsLimit.Text = .TVScraperEpisodeActorsLimit.ToString
             txtTVScraperEpisodeGuestStarsLimit.Text = .TVScraperEpisodeGuestStarsLimit.ToString
-            txtTVScraperIdDefaultType.Text = .TVScraperShowIdDefaultType
-            txtTVScraperRatingDefaultType.Text = .TVScraperShowRatingDefaultType
+            txtTVScraperIdDefaultType.Text = .TVScraperIdDefaultType
+            txtTVScraperRatingDefaultType.Text = .TVScraperRatingDefaultType
             txtTVScraperShowActorsLimit.Text = .TVScraperShowActorsLimit.ToString
             txtTVScraperShowCountryLimit.Text = .TVScraperShowCountryLimit.ToString
             txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
@@ -5331,6 +5332,7 @@ Public Class dlgSettings
             .TVScraperEpisodeUserRating = chkTVScraperEpisodeUserRating.Checked
             .TVScraperMetaDataScan = chkTVScraperMetaDataScan.Checked
             .TVScraperOptionsOrdering = CType(cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.EpisodeOrdering)).Value
+            .TVScraperRatingVotesWriteNode = chkTVScraperRatingVotesWriteNode.Checked
             .TVScraperSeasonAired = chkTVScraperSeasonAired.Checked
             .TVScraperSeasonPlot = chkTVScraperSeasonPlot.Checked
             .TVScraperSeasonTitle = chkTVScraperSeasonTitle.Checked
@@ -5353,7 +5355,7 @@ Public Class dlgSettings
             .TVScraperShowEpiGuideURL = chkTVScraperShowEpiGuideURL.Checked
             .TVScraperShowGenre = chkTVScraperShowGenre.Checked
             Integer.TryParse(txtTVScraperShowGenreLimit.Text, .TVScraperShowGenreLimit)
-            .TVScraperShowIdDefaultType = txtTVScraperIdDefaultType.Text
+            .TVScraperIdDefaultType = txtTVScraperIdDefaultType.Text
             .TVScraperShowMPAA = chkTVScraperShowMPAA.Checked
             .TVScraperShowOriginalTitle = chkTVScraperShowOriginalTitle.Checked
             .TVScraperShowOriginalTitleAsTitle = chkTVScraperShowOriginalTitleAsTitle.Checked
@@ -5361,7 +5363,7 @@ Public Class dlgSettings
             .TVScraperShowPlot = chkTVScraperShowPlot.Checked
             .TVScraperShowPremiered = chkTVScraperShowPremiered.Checked
             .TVScraperShowRating = chkTVScraperShowRatings.Checked
-            .TVScraperShowRatingDefaultType = txtTVScraperRatingDefaultType.Text
+            .TVScraperRatingDefaultType = txtTVScraperRatingDefaultType.Text
             .TVScraperShowRuntime = chkTVScraperShowRuntime.Checked
             .TVScraperShowStatus = chkTVScraperShowStatus.Checked
             .TVScraperShowStudio = chkTVScraperShowStudio.Checked

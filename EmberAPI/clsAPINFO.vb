@@ -376,6 +376,9 @@ Public Class NFO
         'sort Ratings by Default and Type (name)
         DBMovie.Movie.Ratings.Items.Sort()
 
+        'sort UniqueIds by Default and Type (name)
+        DBMovie.Movie.UniqueIDs.Items.Sort()
+
         'set ListTitle at the end of merging
         If DBMovie.Movie.TitleSpecified Then
             DBMovie.ListTitle = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
@@ -422,6 +425,9 @@ Public Class NFO
         For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
             DBMovieSet.MovieSet.Title = DBMovieSet.MovieSet.Title.Replace(sett.Name.Substring(21), sett.Value)
         Next
+
+        'sort UniqueIds by Default and Type (name)
+        DBMovieSet.MovieSet.UniqueIDs.Items.Sort()
 
         'set ListTitle at the end of merging
         If DBMovieSet.MovieSet.TitleSpecified Then
@@ -742,6 +748,9 @@ Public Class NFO
         'sort Ratings by Default and Type (name)
         DBTV.TVShow.Ratings.Items.Sort()
 
+        'sort UniqueIds by Default and Type (name)
+        DBTV.TVShow.UniqueIDs.Items.Sort()
+
         'set ListTitle at the end of merging
         If DBTV.TVShow.TitleSpecified Then
             DBTV.ListTitle = StringUtils.SortTokens_TV(DBTV.TVShow.Title)
@@ -920,6 +929,9 @@ Public Class NFO
                 DBTVSeason.TVSeason.Title = String.Empty
             End If
         Next
+
+        'sort UniqueIds by Default and Type (name)
+        DBTVSeason.TVSeason.UniqueIDs.Items.Sort()
 
         Return DBTVSeason
     End Function
@@ -1105,6 +1117,9 @@ Public Class NFO
 
         'sort Ratings by Default and Type (name)
         DBTVEpisode.TVEpisode.Ratings.Items.Sort()
+
+        'sort UniqueIds by Default and Type (name)
+        DBTVEpisode.TVEpisode.UniqueIDs.Items.Sort()
 
         'TV Show Runtime for Episode Runtime
         If Not DBTVEpisode.TVEpisode.RuntimeSpecified AndAlso Master.eSettings.TVScraperUseSRuntimeForEp AndAlso DBTVEpisode.TVShow.RuntimeSpecified Then

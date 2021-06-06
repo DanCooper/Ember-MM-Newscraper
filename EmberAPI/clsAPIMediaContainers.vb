@@ -126,7 +126,8 @@ Namespace MediaContainers
 #Region "Fields"
 
         Private _contentType As Enums.ContentType = Enums.ContentType.TVEpisode
-        Private _rating As String = String.Empty
+        Private _rating As Double = 0
+        Private _votes As Integer = 0
 
 #End Region 'Fields
 
@@ -145,7 +146,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property DefaultIdSpecified() As Boolean
             Get
-                Return DefaultId.ValueSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeDefaultId
+                Return DefaultId.ValueSpecified AndAlso Master.eSettings.TVScraperIdWriteNodeDefaultId
             End Get
         End Property
 
@@ -163,7 +164,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property IMDbIdSpecified() As Boolean
             Get
-                Return UniqueIDs.IMDbIdSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeIMDbId
+                Return UniqueIDs.IMDbIdSpecified AndAlso Master.eSettings.TVScraperIdWriteNodeIMDbId
             End Get
         End Property
 
@@ -181,7 +182,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return UniqueIDs.TMDbIdSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeTMDbId
+                Return UniqueIDs.TMDbIdSpecified AndAlso Master.eSettings.TVScraperIdWriteNodeTMDbId
             End Get
         End Property
 
@@ -248,27 +249,70 @@ Namespace MediaContainers
         <XmlElement("rating")>
         Public Property Rating() As String
             Get
-                Return _rating.Replace(",", ".")
+                Dim nRating = Ratings.GetDefaultRating()
+                If nRating IsNot Nothing Then
+                    Return nRating.ValueNormalized.ToString
+                Else
+                    Return String.Empty
+                End If
             End Get
             Set(ByVal value As String)
-                _rating = value.Replace(",", ".")
+                Dim dblRatings As Double
+                If Double.TryParse(value.Replace(",", "."), dblRatings) Then
+                    _rating = dblRatings
+                    If Not _votes = 0 Then Ratings.Add(New RatingDetails With {
+                                                       .IsDefault = True,
+                                                       .Max = If(_rating <= 10, 10, 100),
+                                                       .Type = "default",
+                                                       .Value = _rating,
+                                                       .Votes = _votes
+                                                       })
+                Else
+                    _rating = 0
+                End If
             End Set
         End Property
 
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property RatingSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Rating) AndAlso Not String.IsNullOrEmpty(Votes)
+                Return Not String.IsNullOrEmpty(Rating) AndAlso Not String.IsNullOrEmpty(Votes) AndAlso Master.eSettings.TVScraperRatingVotesWriteNode
             End Get
         End Property
 
         <XmlElement("votes")>
-        Public Property Votes() As String = String.Empty
+        Public Property Votes() As String
+            Get
+                Dim nRating = Ratings.GetDefaultRating()
+                If nRating IsNot Nothing AndAlso nRating.VotesSpecified Then
+                    Return nRating.Votes.ToString
+                Else
+                    Return String.Empty
+                End If
+            End Get
+            Set(value As String)
+                Dim iVotes As Integer
+                If Integer.TryParse(Regex.Replace(value, "\D", String.Empty), iVotes) Then
+                    _votes = iVotes
+                    If Not _rating = 0 Then Ratings.Add(New RatingDetails With {
+                                                        .IsDefault = True,
+                                                        .Max = If(_rating <= 10, 10, 100),
+                                                        .Type = "default",
+                                                        .Value = _rating,
+                                                        .Votes = _votes
+                                                        })
+                Else
+                    _votes = 0
+                End If
+            End Set
+        End Property
 
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Votes) AndAlso Not String.IsNullOrEmpty(Rating)
+                Return Not String.IsNullOrEmpty(Votes) AndAlso Not String.IsNullOrEmpty(Rating) AndAlso Master.eSettings.TVScraperRatingVotesWriteNode
             End Get
         End Property
 
@@ -1084,8 +1128,10 @@ Namespace MediaContainers
         Private _contentType As Enums.ContentType = Enums.ContentType.Movie
         Private _certifications As New List(Of String)
         Private _lastplayed As String = String.Empty
+        Private _rating As Double = 0
         Private _sets As New List(Of SetDetails)
         Private _tags As New List(Of String)
+        Private _votes As Integer = 0
         Private _year As String = String.Empty
 
 #End Region 'Fields
@@ -1310,7 +1356,19 @@ Namespace MediaContainers
                 End If
             End Get
             Set(ByVal value As String)
-                'Rating = value.Replace(",", ".")
+                Dim dblRatings As Double
+                If Double.TryParse(value.Replace(",", "."), dblRatings) Then
+                    _rating = dblRatings
+                    If Not _votes = 0 Then Ratings.Add(New RatingDetails With {
+                                                       .IsDefault = True,
+                                                       .Max = If(_rating <= 10, 10, 100),
+                                                       .Type = "default",
+                                                       .Value = _rating,
+                                                       .Votes = _votes
+                                                       })
+                Else
+                    _rating = 0
+                End If
             End Set
         End Property
 
@@ -1333,7 +1391,19 @@ Namespace MediaContainers
                 End If
             End Get
             Set(value As String)
-
+                Dim iVotes As Integer
+                If Integer.TryParse(Regex.Replace(value, "\D", String.Empty), iVotes) Then
+                    _votes = iVotes
+                    If Not _rating = 0 Then Ratings.Add(New RatingDetails With {
+                                                        .IsDefault = True,
+                                                        .Max = If(_rating <= 10, 10, 100),
+                                                        .Type = "default",
+                                                        .Value = _rating,
+                                                        .Votes = _votes
+                                                        })
+                Else
+                    _votes = 0
+                End If
             End Set
         End Property
 
@@ -2281,8 +2351,8 @@ Namespace MediaContainers
             If rating.TypeSpecified AndAlso rating.ValueSpecified Then
                 'remove existing entry with same "type", only one entry per "type" is allowed
                 RemoveAll(rating.Type)
-                'set a default by settings
-                rating.IsDefault = (rating.Type = GetDefaultType())
+                'set as default by settings
+                rating.IsDefault = If(rating.IsDefault, True, rating.Type = GetDefaultType())
                 Items.Add(rating)
             End If
         End Sub
@@ -2320,10 +2390,8 @@ Namespace MediaContainers
             Select Case _contentType
                 Case Enums.ContentType.Movie
                     Return Master.eSettings.MovieScraperRatingDefaultType
-                Case Enums.ContentType.TVEpisode
-                    Return Master.eSettings.TVScraperEpisodeRatingDefaultType
-                Case Enums.ContentType.TVShow
-                    Return Master.eSettings.TVScraperShowRatingDefaultType
+                Case Enums.ContentType.TVEpisode, Enums.ContentType.TVShow
+                    Return Master.eSettings.TVScraperRatingDefaultType
                 Case Else
                     Return String.Empty
             End Select
@@ -2362,7 +2430,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property DefaultIdSpecified() As Boolean
             Get
-                Return DefaultId.ValueSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeDefaultId
+                Return DefaultId.ValueSpecified AndAlso Master.eSettings.TVScraperIdWriteNodeDefaultId
             End Get
         End Property
 
@@ -2380,7 +2448,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return UniqueIDs.TMDbIdSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeTMDbId
+                Return UniqueIDs.TMDbIdSpecified AndAlso Master.eSettings.TVScraperIdWriteNodeTMDbId
             End Get
         End Property
 
@@ -2398,7 +2466,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TVDbIdSpecified() As Boolean
             Get
-                Return UniqueIDs.TVDbIdSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeTVDbId
+                Return UniqueIDs.TVDbIdSpecified AndAlso Master.eSettings.TVScraperIdWriteNodeTVDbId
             End Get
         End Property
 
@@ -2530,8 +2598,9 @@ Namespace MediaContainers
 
         Private _contentType As Enums.ContentType = Enums.ContentType.TVShow
         Private _certifications As New List(Of String)
-        Private _rating As String = String.Empty
+        Private _rating As Double = 0
         Private _tags As New List(Of String)
+        Private _votes As Integer = 0
 
 #End Region 'Fields 
 
@@ -2550,7 +2619,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property DefaultIdSpecified() As Boolean
             Get
-                Return DefaultId.ValueSpecified AndAlso Master.eSettings.TVScraperShowIdWriteNodeDefaultId
+                Return DefaultId.ValueSpecified AndAlso Master.eSettings.TVScraperIdWriteNodeDefaultId
             End Get
         End Property
 
@@ -2560,7 +2629,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property IMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(IMDbId) AndAlso Master.eSettings.TVScraperShowIdWriteNodeIMDbId
+                Return Not String.IsNullOrEmpty(IMDbId) AndAlso Master.eSettings.TVScraperIdWriteNodeIMDbId
             End Get
         End Property
 
@@ -2570,7 +2639,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TMDbId) AndAlso Master.eSettings.TVScraperShowIdWriteNodeTMDbId
+                Return Not String.IsNullOrEmpty(TMDbId) AndAlso Master.eSettings.TVScraperIdWriteNodeTMDbId
             End Get
         End Property
 
@@ -2667,27 +2736,70 @@ Namespace MediaContainers
         <XmlElement("rating")>
         Public Property Rating() As String
             Get
-                Return _rating.Replace(",", ".")
+                Dim nRating = Ratings.GetDefaultRating()
+                If nRating IsNot Nothing Then
+                    Return nRating.ValueNormalized.ToString
+                Else
+                    Return String.Empty
+                End If
             End Get
             Set(ByVal value As String)
-                _rating = value.Replace(",", ".")
+                Dim dblRatings As Double
+                If Double.TryParse(value.Replace(",", "."), dblRatings) Then
+                    _rating = dblRatings
+                    If Not _votes = 0 Then Ratings.Add(New RatingDetails With {
+                                                       .IsDefault = True,
+                                                       .Max = If(_rating <= 10, 10, 100),
+                                                       .Type = "default",
+                                                       .Value = _rating,
+                                                       .Votes = _votes
+                                                       })
+                Else
+                    _rating = 0
+                End If
             End Set
         End Property
 
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property RatingSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Rating) AndAlso Not String.IsNullOrEmpty(Votes)
+                Return Not String.IsNullOrEmpty(Rating) AndAlso Not String.IsNullOrEmpty(Votes) AndAlso Master.eSettings.TVScraperRatingVotesWriteNode
             End Get
         End Property
 
         <XmlElement("votes")>
-        Public Property Votes() As String = String.Empty
+        Public Property Votes() As String
+            Get
+                Dim nRating = Ratings.GetDefaultRating()
+                If nRating IsNot Nothing AndAlso nRating.VotesSpecified Then
+                    Return nRating.Votes.ToString
+                Else
+                    Return String.Empty
+                End If
+            End Get
+            Set(value As String)
+                Dim iVotes As Integer
+                If Integer.TryParse(Regex.Replace(value, "\D", String.Empty), iVotes) Then
+                    _votes = iVotes
+                    If Not _rating = 0 Then Ratings.Add(New RatingDetails With {
+                                                        .IsDefault = True,
+                                                        .Max = If(_rating <= 10, 10, 100),
+                                                        .Type = "default",
+                                                        .Value = _rating,
+                                                        .Votes = _votes
+                                                        })
+                Else
+                    _votes = 0
+                End If
+            End Set
+        End Property
 
+        <Obsolete()>
         <XmlIgnore()>
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Votes) AndAlso Not String.IsNullOrEmpty(Rating)
+                Return Not String.IsNullOrEmpty(Votes) AndAlso Not String.IsNullOrEmpty(Rating) AndAlso Master.eSettings.TVScraperRatingVotesWriteNode
             End Get
         End Property
 
@@ -4354,6 +4466,7 @@ Namespace MediaContainers
 
     <Serializable()>
     Public Class Uniqueid
+        Implements IComparable(Of Uniqueid)
 
 #Region "Properties"
 
@@ -4391,6 +4504,19 @@ Namespace MediaContainers
         End Property
 
 #End Region 'Properties
+
+#Region "Methods"
+
+        Public Function CompareTo(ByVal other As Uniqueid) As Integer Implements IComparable(Of Uniqueid).CompareTo
+            Try
+                Dim retVal As Integer = If(IsDefault, -1, Type.CompareTo(other.Type))
+                Return retVal
+            Catch ex As Exception
+                Return 0
+            End Try
+        End Function
+
+#End Region 'Methods
 
     End Class
 
@@ -4530,6 +4656,7 @@ Namespace MediaContainers
                 'remove existing entry with same "type", only one entry per "type" is allowed
                 RemoveAll(type)
                 Items.Add(New Uniqueid With {
+                          .IsDefault = type = GetDefaultType(),
                           .Type = type,
                           .Value = value
                           })
@@ -4541,6 +4668,7 @@ Namespace MediaContainers
                 'remove existing entry with same "type", only one entry per "type" is allowed
                 RemoveAll(defaultId.Type)
                 Items.Add(New Uniqueid With {
+                          .IsDefault = True,
                           .Type = defaultId.Type,
                           .Value = defaultId.Value
                           })
@@ -4597,7 +4725,7 @@ Namespace MediaContainers
                 Case Enums.ContentType.MovieSet
                     Return Master.eSettings.MovieSetScraperIdDefaultType
                 Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    Return Master.eSettings.TVScraperShowIdDefaultType
+                    Return Master.eSettings.TVScraperIdDefaultType
                 Case Else
                     Return String.Empty
             End Select
