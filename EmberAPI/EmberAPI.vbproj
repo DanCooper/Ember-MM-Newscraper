@@ -213,6 +213,7 @@
     <Compile Include="clsAPIXML.vb" />
     <Compile Include="clsAPIYouTube.vb" />
     <Compile Include="clsAPIMediaFiles.vb" />
+    <Compile Include="clsAPINotifications.vb" />
     <Compile Include="dlgVersions.Designer.vb">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </Compile>

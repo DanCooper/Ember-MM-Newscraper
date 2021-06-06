@@ -1100,6 +1100,13 @@ Namespace Kodi
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
                 logger.Error(String.Format("[APIKodi] [{0}] TestConnectionToHost | No connection to Host!", _currenthost.Label))
+                Notifications.NewNotification(
+                    Notifications.Type.Error,
+                    Master.eLang.GetString(1422, "Kodi Interface"),
+                    String.Format("{0} | {1}",
+                                  _currenthost.Label,
+                                  "No Connection to Host"
+                                  ))
                 Return False
             End Try
         End Function
@@ -1111,6 +1118,13 @@ Namespace Kodi
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
                 logger.Error(String.Format("[APIKodi] [{0}] TestConnectionToHost | No connection to Host!", _currenthost.Label))
+                Notifications.NewNotification(
+                    Notifications.Type.Error,
+                    Master.eLang.GetString(1422, "Kodi Interface"),
+                    String.Format("{0} | {1}",
+                                  _currenthost.Label,
+                                  "No Connection to Host"
+                                  ))
                 Return False
             End Try
         End Function
@@ -1932,6 +1946,7 @@ Namespace Kodi
                 Dim response As String = String.Empty
                 response = Await _kodi.VideoLibrary.Clean.ConfigureAwait(False)
                 logger.Trace("[APIKodi] VideoLibrary_Clean: " & _currenthost.Label)
+                VideoLibrary_OnCleanFinished()
                 Return response
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -1943,9 +1958,16 @@ Namespace Kodi
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks>just an example for eventhandler</remarks>
-        Private Sub VideoLibrary_OnCleanFinished(ByVal sender As String, ByVal data As Object)
+        Private Sub VideoLibrary_OnCleanFinished()
             'Finished cleaning of video library
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+            Notifications.NewNotification(
+                Notifications.Type.Info,
+                Master.eLang.GetString(1422, "Kodi Interface"),
+                String.Format("{0} | {1}: {2}",
+                              _currenthost.Label,
+                              Master.eLang.GetString(1450, "Cleaning Video Library"),
+                              Master.eLang.GetString(326, "Done")
+                              ))
         End Sub
 
         ''' <summary>
@@ -1953,9 +1975,16 @@ Namespace Kodi
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks>just an example for eventhandler</remarks>
-        Private Sub VideoLibrary_OnScanFinished(ByVal sender As String, ByVal data As Object)
+        Private Sub VideoLibrary_OnScanFinished()
             'Finished updating video library
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+            Notifications.NewNotification(
+                Notifications.Type.Info,
+                Master.eLang.GetString(1422, "Kodi Interface"),
+                String.Format("{0} | {1}: {2}",
+                              _currenthost.Label,
+                              Master.eLang.GetString(1448, "Updating Video Library"),
+                              Master.eLang.GetString(326, "Done")
+                              ))
         End Sub
         ''' <summary>
         ''' Scan video library of Kodi host
@@ -1974,6 +2003,7 @@ Namespace Kodi
                 Dim response As String = String.Empty
                 response = Await _kodi.VideoLibrary.Scan.ConfigureAwait(False)
                 logger.Trace("[APIKodi] VideoLibrary_Scan: " & _currenthost.Label)
+                VideoLibrary_OnScanFinished()
                 Return response
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)

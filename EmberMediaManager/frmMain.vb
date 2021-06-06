@@ -52,6 +52,10 @@ Public Class frmMain
 
     Public fCommandLine As New CommandLine
 
+    'Private fNotifications As New Notifications
+    Private fScanner As New Scanner
+    Private fTaskManager As New TaskManager
+
     Private TaskList As New List(Of Task)
     Private TasksDone As Boolean = True
 
@@ -77,9 +81,6 @@ Public Class frmMain
     Private dtTVEpisodes As New DataTable
     Private dtTVSeasons As New DataTable
     Private dtTVShows As New DataTable
-
-    Private fScanner As New Scanner
-    Private fTaskManager As New TaskManager
 
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
@@ -1622,7 +1623,7 @@ Public Class frmMain
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString, Nothing}))
+            Notifications.NewNotification(Notifications.Type.Scraped_Movie, e.UserState.ToString)
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_Movie(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -1784,7 +1785,7 @@ Public Class frmMain
 
     Private Sub bwMovieSetScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieSetScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviesetscraped", 3, Master.eLang.GetString(1204, "MovieSet Scraped"), e.UserState.ToString, Nothing}))
+            Notifications.NewNotification(Notifications.Type.Scraped_Movieset, e.UserState.ToString)
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_MovieSet(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -1959,7 +1960,7 @@ Public Class frmMain
 
     Private Sub bwTVScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvshowscraped", 3, Master.eLang.GetString(248, "Show Scraped"), e.UserState.ToString, Nothing}))
+            Notifications.NewNotification(Notifications.Type.Scraped_TVShow, e.UserState.ToString)
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVShow(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -2108,7 +2109,7 @@ Public Class frmMain
 
     Private Sub bwTVEpisodeScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVEpisodeScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvepisodescraped", 3, Master.eLang.GetString(883, "Episode Scraped"), e.UserState.ToString, Nothing}))
+            Notifications.NewNotification(Notifications.Type.Scraped_TVEpisode, e.UserState.ToString)
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVEpisode(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -2242,7 +2243,7 @@ Public Class frmMain
 
     Private Sub bwTVSeasonScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVSeasonScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvseasonscraped", 3, Master.eLang.GetString(247, "Season Scraped"), e.UserState.ToString, Nothing}))
+            Notifications.NewNotification(Notifications.Type.Scraped_TVSeason, e.UserState.ToString)
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVSeason(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -10365,6 +10366,7 @@ Public Class frmMain
         AddHandler fCommandLine.TaskEvent, AddressOf TaskRunCallBack
         AddHandler fScanner.ProgressUpdate, AddressOf ScannerProgressUpdate
         AddHandler fTaskManager.ProgressUpdate, AddressOf TaskManagerProgressUpdate
+        AddHandler Notifications.ShowNotification, AddressOf ShowNotification
         AddHandler ModulesManager.Instance.GenericEvent, AddressOf GenericRunCallBack
         AddHandler Master.DB.GenericEvent, AddressOf GenericRunCallBack
 
@@ -10710,13 +10712,6 @@ Public Class frmMain
                     Case "filllist"
                         FillList_Main(CBool(_params(1)), CBool(_params(2)), CBool(_params(3)))
                 End Select
-            Case Enums.ModuleEventType.Notification
-                Select Case _params(0).ToString
-                    Case "error"
-                        dlgErrorViewer.Show(Me)
-                    Case Else
-                        Activate()
-                End Select
 
             Case Enums.ModuleEventType.AfterEdit_Movie
                 RefreshRow_Movie(Convert.ToInt64(_params(0)))
@@ -10742,8 +10737,6 @@ Public Class frmMain
             Case Enums.ModuleEventType.Remove_TVShow
                 RemoveRow_TVShow(Convert.ToInt64(_params(0)))
 
-            Case Else
-                logger.Warn("Callback for <{0}> with no handler.", mType)
         End Select
     End Sub
 
@@ -14049,7 +14042,7 @@ Public Class frmMain
                 Select Case MainTab_GetCurrentTag.ContentType
                     Case Enums.ContentType.Movie
                         Return
-                    Case Enums.ContentType.Movieset
+                    Case Enums.ContentType.MovieSet
                         Return
                     Case Enums.ContentType.TV
                         'TV Show list
@@ -14131,13 +14124,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14148,7 +14141,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -14236,13 +14229,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14253,7 +14246,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -14341,13 +14334,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14358,7 +14351,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -14432,13 +14425,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14449,7 +14442,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -14692,13 +14685,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14709,7 +14702,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -14824,13 +14817,13 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.Movieset
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14841,7 +14834,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.Save_Movieset(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -16302,6 +16295,10 @@ Public Class frmMain
                 txtSearchShows.Focus()
             End If
         End If
+    End Sub
+
+    Private Sub ShowNotification(ByVal timeout As Integer, ByVal title As String, ByVal message As String, ByVal icon As ToolTipIcon)
+        TrayIcon.ShowBalloonTip(timeout, title, message, icon)
     End Sub
 
     Private Sub SortingRestore_Movies()

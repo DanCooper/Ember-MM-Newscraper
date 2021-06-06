@@ -1842,9 +1842,9 @@ Public Class Scanner
 
         Select Case tProgressValue.EventType
             Case Enums.ScannerEventType.Added_Movie
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newmovie", 3, Master.eLang.GetString(817, "New Movie Added"), tProgressValue.Message, Nothing}))
+                Notifications.NewNotification(Notifications.Type.Added_Movie, tProgressValue.Message)
             Case Enums.ScannerEventType.Added_TVEpisode
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newep", 4, Master.eLang.GetString(818, "New Episode Added"), tProgressValue.Message, Nothing}))
+                Notifications.NewNotification(Notifications.Type.Added_TVEpisode, tProgressValue.Message)
         End Select
     End Sub
 
