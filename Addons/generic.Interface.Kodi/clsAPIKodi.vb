@@ -1271,9 +1271,11 @@ Namespace Kodi
                         mUniqueID.Add(nUniqueID.Type, nUniqueID.Value)
                     Next
                     'remove other unique ID's stored in Kodi's database
-                    For Each oldUniqueID In KodiElement.uniqueid.Where(Function(f) Not mUniqueID.ContainsKey(f.Key))
-                        mUniqueID.Add(oldUniqueID.Key, Nothing)
-                    Next
+                    If KodiElement.uniqueid IsNot Nothing Then
+                        For Each oldUniqueID In KodiElement.uniqueid.Where(Function(f) Not mUniqueID.ContainsKey(f.Key))
+                            mUniqueID.Add(oldUniqueID.Key, Nothing)
+                        Next
+                    End If
 
                     'Ratings
                     Dim mRatings As New Dictionary(Of String, Video.Rating)
@@ -1285,9 +1287,11 @@ Namespace Kodi
                                      })
                     Next
                     'remove other ratings stored in Kodi's database
-                    For Each oldRating In KodiElement.ratings.Where(Function(f) Not mRatings.ContainsKey(f.Key))
-                        mRatings.Add(oldRating.Key, Nothing)
-                    Next
+                    If KodiElement.ratings IsNot Nothing Then
+                        For Each oldRating In KodiElement.ratings.Where(Function(f) Not mRatings.ContainsKey(f.Key))
+                            mRatings.Add(oldRating.Key, Nothing)
+                        Next
+                    End If
 
                     Dim response As String = Await _kodi.VideoLibrary.SetMovieDetails(
                         KodiElement.movieid,
@@ -1549,9 +1553,11 @@ Namespace Kodi
                         mUniqueID.Add(nUniqueID.Type, nUniqueID.Value)
                     Next
                     'remove other unique ID's stored in Kodi's database
-                    For Each oldUniqueID In KodiElement.uniqueid.Where(Function(f) Not mUniqueID.ContainsKey(f.Key))
-                        mUniqueID.Add(oldUniqueID.Key, Nothing)
-                    Next
+                    If KodiElement.uniqueid IsNot Nothing Then
+                        For Each oldUniqueID In KodiElement.uniqueid.Where(Function(f) Not mUniqueID.ContainsKey(f.Key))
+                            mUniqueID.Add(oldUniqueID.Key, Nothing)
+                        Next
+                    End If
 
                     'Ratings
                     Dim mRatings As New Dictionary(Of String, Video.Rating)
@@ -1563,9 +1569,11 @@ Namespace Kodi
                                      })
                     Next
                     'remove other ratings stored in Kodi's database
-                    For Each oldRating In KodiElement.ratings.Where(Function(f) Not mRatings.ContainsKey(f.Key))
-                        mRatings.Add(oldRating.Key, Nothing)
-                    Next
+                    If KodiElement.ratings IsNot Nothing Then
+                        For Each oldRating In KodiElement.ratings.Where(Function(f) Not mRatings.ContainsKey(f.Key))
+                            mRatings.Add(oldRating.Key, Nothing)
+                        Next
+                    End If
 
                     Dim response As String = Await _kodi.VideoLibrary.SetEpisodeDetails(
                         KodiElement.episodeid,
@@ -1841,9 +1849,11 @@ Namespace Kodi
                         mUniqueID.Add(nUniqueID.Type, nUniqueID.Value)
                     Next
                     'remove other unique ID's stored in Kodi's database
-                    For Each oldUniqueID In KodiElement.uniqueid.Where(Function(f) Not mUniqueID.ContainsKey(f.Key))
-                        mUniqueID.Add(oldUniqueID.Key, Nothing)
-                    Next
+                    If KodiElement.uniqueid IsNot Nothing Then
+                        For Each oldUniqueID In KodiElement.uniqueid.Where(Function(f) Not mUniqueID.ContainsKey(f.Key))
+                            mUniqueID.Add(oldUniqueID.Key, Nothing)
+                        Next
+                    End If
 
                     'Ratings
                     Dim mRatings As New Dictionary(Of String, Video.Rating)
@@ -1855,9 +1865,11 @@ Namespace Kodi
                                      })
                     Next
                     'remove other ratings stored in Kodi's database
-                    For Each oldRating In KodiElement.ratings.Where(Function(f) Not mRatings.ContainsKey(f.Key))
-                        mRatings.Add(oldRating.Key, Nothing)
-                    Next
+                    If KodiElement.ratings IsNot Nothing Then
+                        For Each oldRating In KodiElement.ratings.Where(Function(f) Not mRatings.ContainsKey(f.Key))
+                            mRatings.Add(oldRating.Key, Nothing)
+                        Next
+                    End If
 
                     Dim response As String = Await _kodi.VideoLibrary.SetTVShowDetails(
                         KodiElement.tvshowid,
