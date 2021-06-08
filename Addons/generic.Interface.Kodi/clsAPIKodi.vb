@@ -485,9 +485,10 @@ Namespace Kodi
                 If KodiElement IsNot Nothing Then
                     'check if we have to retrieve the PlayCount from Kodi
                     If Not mDBElement.Movie.PlayCount = KodiElement.playcount OrElse Not mDBElement.Movie.LastPlayed = KodiElement.lastplayed Then
-                        Dim WatchedState As New WatchedState
-                        WatchedState.PlayCount = KodiElement.playcount
-                        WatchedState.LastPlayed = KodiElement.lastplayed
+                        Dim WatchedState As New WatchedState With {
+                            .LastPlayed = KodiElement.lastplayed,
+                            .PlayCount = KodiElement.playcount
+                        }
                         logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | Synced to Ember", _currenthost.Label, mDBElement.Movie.Title))
                         Return WatchedState
                     Else
@@ -2540,63 +2541,15 @@ Namespace Kodi
 
         Public Class WatchedState
 
-#Region "Fields"
-
-            Private _alreadyinsync As Boolean
-            Private _lastplayed As String
-            Private _playcount As Integer
-
-#End Region 'Fields
-
 #Region "Properties"
 
-            Public Property AlreadyInSync() As Boolean
-                Get
-                    Return _alreadyinsync
-                End Get
-                Set(ByVal value As Boolean)
-                    _alreadyinsync = value
-                End Set
-            End Property
+            Public Property AlreadyInSync() As Boolean = False
 
-            Public Property LastPlayed() As String
-                Get
-                    Return _lastplayed
-                End Get
-                Set(ByVal value As String)
-                    _lastplayed = value
-                End Set
-            End Property
+            Public Property LastPlayed() As String = String.Empty
 
-            Public Property PlayCount() As Integer
-                Get
-                    Return _playcount
-                End Get
-                Set(ByVal value As Integer)
-                    _playcount = value
-                End Set
-            End Property
+            Public Property PlayCount() As Integer = 0
 
 #End Region 'Properties
-
-#Region "Constructors"
-
-            Public Sub New()
-                Clear()
-            End Sub
-
-#End Region 'Constructors
-
-#Region "Methods"
-
-            Public Sub Clear()
-                _alreadyinsync = False
-                _lastplayed = String.Empty
-                _playcount = 0
-            End Sub
-
-#End Region 'Methods
-
 
         End Class
 

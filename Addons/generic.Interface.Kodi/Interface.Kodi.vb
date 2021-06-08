@@ -245,7 +245,6 @@ Public Class KodiInterface
         Dim GenericEventProgressAsync = New Progress(Of GenericEventCallBackAsync)(GenericEventActionAsync)
 
         TasksDone = False
-        'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1439, "Run Tasks"), New Bitmap(My.Resources.logo)}))
         While TaskList.Count > 0
             ChangeTaskManagerStatus(lblTaskManagerStatus, String.Concat("Pending Tasks: ", TaskList.Count.ToString))
             ChangeTaskManagerProgressBar(tspTaskManager, ProgressBarStyle.Marquee)
@@ -258,9 +257,17 @@ Public Class KodiInterface
         ChangeTaskManagerProgressBar(tspTaskManager, ProgressBarStyle.Continuous)
         ChangeTaskManagerStatus(lblTaskManagerStatus, "No Pending Tasks")
         If Not getError Then
-            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(251, "All Tasks Done"), New Bitmap(My.Resources.logo)}))
+            Notifications.NewNotification(
+                Notifications.Type.Info,
+                Master.eLang.GetString(1422, "Kodi Interface"),
+                Master.eLang.GetString(251, "All Tasks Done")
+                )
         Else
-            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), String.Format(Master.eLang.GetString(969, "One or more Task(s) failed.{0}Please check log for more informations"), Environment.NewLine), Nothing}))
+            Notifications.NewNotification(
+                Notifications.Type.Error,
+                Master.eLang.GetString(1422, "Kodi Interface"),
+                String.Format(Master.eLang.GetString(969, "One or more Task(s) failed.{0}Please check log for more informations"), Environment.NewLine)
+                )
         End If
     End Sub
 
@@ -316,19 +323,8 @@ Public Class KodiInterface
                                                 String.Format("{0} | {1}: {2}",
                                                               mHost.Label,
                                                               mDBElement.Movie.Title,
-                                                              Master.eLang.GetString(1444, "Sync OK")
+                                                              Master.eLang.GetString(1452, "Watched-State synced")
                                                               ))
-                                        Else
-                                            logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.Movie.Title))
-                                            Notifications.NewNotification(
-                                                Notifications.Type.Error,
-                                                Master.eLang.GetString(1422, "Kodi Interface"),
-                                                String.Format("{0} | {1}: {2}",
-                                                              mHost.Label,
-                                                              mDBElement.Movie.Title,
-                                                              Master.eLang.GetString(1445, "Sync Failed")
-                                                              ))
-                                            getError = True
                                         End If
                                     Else
                                         logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
@@ -370,19 +366,8 @@ Public Class KodiInterface
                                                 String.Format("{0} | {1}: {2}",
                                                               mHost.Label,
                                                               mDBElement.TVEpisode.Title,
-                                                              Master.eLang.GetString(1444, "Sync OK")
+                                                              Master.eLang.GetString(1452, "Watched-State synced")
                                                               ))
-                                        Else
-                                            logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.TVEpisode.Title))
-                                            Notifications.NewNotification(
-                                                Notifications.Type.Error,
-                                                Master.eLang.GetString(1422, "Kodi Interface"),
-                                                String.Format("{0} | {1}: {2}",
-                                                              mHost.Label,
-                                                              mDBElement.TVEpisode.Title,
-                                                              Master.eLang.GetString(1445, "Sync Failed")
-                                                              ))
-                                            getError = True
                                         End If
                                     Else
                                         logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
@@ -425,19 +410,8 @@ Public Class KodiInterface
                                                         String.Format("{0} | {1}: {2}",
                                                                       mHost.Label,
                                                                       tEpisode.TVEpisode.Title,
-                                                                      Master.eLang.GetString(1444, "Sync OK")
+                                                              Master.eLang.GetString(1452, "Watched-State synced")
                                                                       ))
-                                                Else
-                                                    logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", tEpisode.TVEpisode.Title))
-                                                    Notifications.NewNotification(
-                                                        Notifications.Type.Error,
-                                                        Master.eLang.GetString(1422, "Kodi Interface"),
-                                                        String.Format("{0} | {1}: {2}",
-                                                                      mHost.Label,
-                                                                      tEpisode.TVEpisode.Title,
-                                                                      Master.eLang.GetString(1445, "Sync Failed")
-                                                                      ))
-                                                    getError = True
                                                 End If
                                             Else
                                                 logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
@@ -1312,11 +1286,7 @@ Public Class KodiInterface
             getError = True
         End If
 
-        If Not getError Then
-            Return True
-        Else
-            Return False
-        End If
+        Return Not getError
     End Function
 
     ''' <summary>
