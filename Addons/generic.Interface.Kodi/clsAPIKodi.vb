@@ -1979,7 +1979,7 @@ Namespace Kodi
                 String.Format("{0} | {1}: {2}",
                               _currenthost.Label,
                               Master.eLang.GetString(1450, "Cleaning Video Library"),
-                              Master.eLang.GetString(326, "Done")
+                              Master.eLang.GetString(362, "Done")
                               ))
         End Sub
 
@@ -1996,7 +1996,7 @@ Namespace Kodi
                 String.Format("{0} | {1}: {2}",
                               _currenthost.Label,
                               Master.eLang.GetString(1448, "Updating Video Library"),
-                              Master.eLang.GetString(326, "Done")
+                              Master.eLang.GetString(362, "Done")
                               ))
         End Sub
         ''' <summary>

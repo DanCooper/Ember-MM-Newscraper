@@ -81,7 +81,7 @@ Public Class dlgTagManager
     Sub SetUp()
         lblTopTitle.Text = Text
         OK_Button.Text = Master.eLang.GetString(19, "Close")
-        lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
+        lblCompiling.Text = Master.eLang.GetString(326, "Loading. Please wait...")
         lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
