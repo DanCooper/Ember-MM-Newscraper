@@ -314,6 +314,7 @@ Public Class Settings
     Public Property MovieScraperTitle() As Boolean = True
     Public Property MovieScraperTop250() As Boolean = True
     Public Property MovieScraperTrailer() As Boolean = True
+    Public Property MovieScraperTrailerFromTrailerScrapers() As Boolean = False
     Public Property MovieScraperUseMDDuration() As Boolean = True
     Public Property MovieScraperUserRating() As Boolean = True
     Public Property MovieScraperXBMCTrailerFormat() As Boolean = False

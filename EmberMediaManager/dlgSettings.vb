@@ -2013,6 +2013,12 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkMovieScraperTrailer_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperTrailer.CheckedChanged
+        SetApplyButton(True)
+        chkMovieScraperTrailerFromTrailerScrapers.Enabled = chkMovieScraperTrailer.Checked
+        If Not chkMovieScraperTrailer.Checked Then chkMovieScraperTrailerFromTrailerScrapers.Checked = False
+    End Sub
+
     Private Sub chkMovieScraperOriginalTitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperOriginalTitle.CheckedChanged
         SetApplyButton(True)
 
@@ -3155,6 +3161,7 @@ Public Class dlgSettings
             chkMovieScraperUserRating.Checked = .MovieScraperUserRating
             chkMovieScraperTop250.Checked = .MovieScraperTop250
             chkMovieScraperTrailer.Checked = .MovieScraperTrailer
+            chkMovieScraperTrailerFromTrailerScrapers.Checked = .MovieScraperTrailerFromTrailerScrapers
             chkMovieScraperUseMDDuration.Checked = .MovieScraperUseMDDuration
             chkMovieScraperCredits.Checked = .MovieScraperCredits
             chkMovieScraperXBMCTrailerFormat.Checked = .MovieScraperXBMCTrailerFormat
@@ -5220,6 +5227,7 @@ Public Class dlgSettings
             .MovieScraperTitle = chkMovieScraperTitle.Checked
             .MovieScraperTop250 = chkMovieScraperTop250.Checked
             .MovieScraperTrailer = chkMovieScraperTrailer.Checked
+            .MovieScraperTrailerFromTrailerScrapers = chkMovieScraperTrailerFromTrailerScrapers.Checked
             .MovieScraperUserRating = chkMovieScraperUserRating.Checked
             .MovieScraperUseMDDuration = chkMovieScraperUseMDDuration.Checked
             .MovieScraperCredits = chkMovieScraperCredits.Checked
@@ -6988,6 +6996,7 @@ Public Class dlgSettings
         chkMovieScraperPlotForOutlineIfEmpty.Text = Master.eLang.GetString(958, "Only if Plot Outline is empty")
         chkMovieScraperReleaseDateWriteNode.Text = Master.eLang.GetString(57, "Still write <releasedate> with the value of <premiered>")
         chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
+        chkMovieScraperTrailerFromTrailerScrapers.Text = Master.eLang.GetString(236, "also use Trailer Scrapers")
         chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         chkMovieScraperXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "Save YouTube-Trailer-Links in XBMC compatible format")
         chkMovieScraperCollectionsYAMJCompatibleSets.Text = Master.eLang.GetString(561, "Save YAMJ Compatible Sets to NFO")
@@ -8060,6 +8069,18 @@ Public Class dlgSettings
         chkGeneralImageFilterImagedialog.CheckedChanged,
         chkGeneralImageFilterPoster.CheckedChanged,
         chkGeneralImagesGlassOverlay.CheckedChanged,
+        chkGeneralNotificationAdded_Movie.CheckedChanged,
+        chkGeneralNotificationAdded_MovieSet.CheckedChanged,
+        chkGeneralNotificationAdded_TVEpisode.CheckedChanged,
+        chkGeneralNotificationAdded_TVShow.CheckedChanged,
+        chkGeneralNotificationError.CheckedChanged,
+        chkGeneralNotificationInformation.CheckedChanged,
+        chkGeneralNotificationScraped_Movie.CheckedChanged,
+        chkGeneralNotificationScraped_MovieSet.CheckedChanged,
+        chkGeneralNotificationScraped_TVEpisode.CheckedChanged,
+        chkGeneralNotificationScraped_TVSeason.CheckedChanged,
+        chkGeneralNotificationScraped_TVShow.CheckedChanged,
+        chkGeneralNotificationWarning.CheckedChanged,
         chkGeneralOverwriteNfo.CheckedChanged,
         chkGeneralSourceFromFolder.CheckedChanged,
         chkMovieActorThumbsEden.CheckedChanged,
@@ -8190,7 +8211,7 @@ Public Class dlgSettings
         chkMovieScraperTagline.CheckedChanged,
         chkMovieScraperTitle.CheckedChanged,
         chkMovieScraperTop250.CheckedChanged,
-        chkMovieScraperTrailer.CheckedChanged,
+        chkMovieScraperTrailerFromTrailerScrapers.CheckedChanged,
         chkMovieScraperUserRating.CheckedChanged,
         chkMovieScraperXBMCTrailerFormat.CheckedChanged,
         chkMovieSetBannerExtended.CheckedChanged,
@@ -8470,9 +8491,9 @@ Public Class dlgSettings
         txtMovieSetFanartHeight.TextChanged,
         txtMovieSetFanartWidth.TextChanged,
         txtMovieSetKeyartExpertSingle.TextChanged,
-        txtMovieSetLandscapeExpertSingle.TextChanged,
         txtMovieSetKeyartHeight.TextChanged,
         txtMovieSetKeyartWidth.TextChanged,
+        txtMovieSetLandscapeExpertSingle.TextChanged,
         txtMovieSetNFOExpertSingle.TextChanged,
         txtMovieSetPathMSAA.TextChanged,
         txtMovieSetPosterExpertSingle.TextChanged,

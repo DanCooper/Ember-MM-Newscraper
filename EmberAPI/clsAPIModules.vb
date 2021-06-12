@@ -969,6 +969,23 @@ Public Class ModulesManager
                     If ret.breakChain Then Exit For
                 Next
 
+                'workaround to get trailer links from trailer scrapers
+                If ScrapeOptions.bMainTrailer AndAlso Master.eSettings.MovieScraperTrailerFromTrailerScrapers Then
+                    Dim nTrailerList As New List(Of MediaContainers.MediaFile)
+                    Instance.ScrapeTrailer_Movie(oDBMovie, Enums.ModifierType.MainTrailer, nTrailerList)
+                    If nTrailerList IsNot Nothing Then
+                        Dim newPreferredTrailer As New MediaContainers.MediaFile
+                        If MediaFiles.GetPreferredMovieTrailer(nTrailerList, newPreferredTrailer) Then
+                            If newPreferredTrailer IsNot Nothing AndAlso newPreferredTrailer.UrlForNfoSpecified Then
+                                ScrapedList.Add(New MediaContainers.Movie With {
+                                                .Scrapersource = newPreferredTrailer.Scraper,
+                                                .Trailer = newPreferredTrailer.UrlForNfo
+                                                })
+                            End If
+                        End If
+                    End If
+                End If
+
                 'Merge scraperresults considering global datascraper settings
                 DBElement = NFO.MergeDataScraperResults_Movie(DBElement, ScrapedList, ScrapeType, ScrapeOptions)
 
